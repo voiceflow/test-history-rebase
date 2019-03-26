@@ -3,6 +3,7 @@ import "./onboarding.css"
 import axios from 'axios'
 import StepProgressBar from './../../components/StepProgressBar'
 import { Form, FormGroup, Input} from 'reactstrap'
+import Select from 'react-select'
 
 const PROG_XP = (xp) => {
 	switch(xp){
@@ -15,6 +16,24 @@ const PROG_XP = (xp) => {
 	}
 }
 
+const user_roles = [
+	{value: 'designer', label: 'Designer'},
+	{ value: 'developer', label: 'Developer' },
+	{value: 'product', label: 'Product'},
+	{value: 'others', label: 'Other'},
+]
+
+const selectStyle =  {
+	option: (provided) => ({
+		...provided,
+		textAlign: 'left',
+	}),
+	control: (provided) => ({
+		...provided,
+		height: '45px'
+	})
+}
+
 const SHOW_CALENDLY_NUMBER = 20
 class Onboarding extends Component{
 	constructor(props){
@@ -24,6 +43,7 @@ class Onboarding extends Component{
 			stage: null,
 			company_name: '',
 			company_role: '',
+			new_company_role: '',
 			company_size: '',
 			type: '',
 			experience: '',
@@ -59,6 +79,7 @@ class Onboarding extends Component{
 				company_name: s.company_name,
 				company_role: s.company_role,
 				company_size: s.company_size,
+				new_company_role: s.new_company_role,
 				purpose: s.purpose,
 				design: s.design,
 				build: s.build
@@ -141,13 +162,22 @@ class Onboarding extends Component{
 					<StepProgressBar num_stages={6} stage={(this.state.company_size >= SHOW_CALENDLY_NUMBER ? 4: 5)} classes={"onboarding-progress"}/>
 						<p className="modal-bg-txt text-center mb-5 mt-4">What best describes you?</p>
 						<div className="row justify-content-center mb-3">
-							<button className={(this.state.purpose === 'EXPLORING' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'EXPLORING'})}}>I'm interested in voice and want to explore</button>
+							<button className={(this.state.purpose === 'EXPLORING' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'EXPLORING'})}}>
+								My company is exploring voice
+							</button>
+						</div>
+						<div className="row justify-content-center mb-3">
+							<button className={(this.state.purpose === 'BUILDING' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'BUILDING'})}}>
+								My company is building a voice app
+							</button>
 						</div>
 						<div className="row justify-content-center mb-5">
-							<button className={(this.state.purpose === 'IDEA' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'IDEA'})}}>I have an idea and want to build it</button>
+							<button className={(this.state.purpose === 'BUILT' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'BUILT'})}}>
+								My company has already built voice apps
+							</button>
 						</div>
 						<div className="justify-content-center">
-							<button className={"purple-btn" + (!['EXPLORING', 'IDEA'].includes(this.state.purpose) ? ' disabled': '')} disabled={!['EXPLORING', 'IDEA'].includes(this.state.purpose)} onClick={() => {
+						<button className={"purple-btn" + (!['EXPLORING', 'BUILDING', 'BUILT'].includes(this.state.purpose) ? ' disabled' : '')} disabled={!['EXPLORING', 'BUILDING', 'BUILT'].includes(this.state.purpose)} onClick={() => {
 								if(this.state.company_size >= SHOW_CALENDLY_NUMBER){
 									this.setState({stage: 'calendly'})
 								} else {
@@ -176,8 +206,12 @@ class Onboarding extends Component{
 					</div>
 					<div className="justify-content-center">
 						<button className={"purple-btn" + (!(['beginner', 'intermediate', 'expert'].includes(this.state.experience)) ? ' disabled': '')} disabled={!(['beginner', 'intermediate', 'expert'].includes(this.state.experience))} onClick={() => {
-							this.setState({stage: 'purpose_stage'})
-						}}>Next Question</button>
+							if (this.state.type === 'WORK') {
+								this.setState({ stage: 'purpose_stage' })
+							} else {
+								this.submitSurvey()
+							}
+						}}>{this.state.type === 'WORK' ? 'Next Question' : 'Complete'}</button>
 					</div>
 				</React.Fragment>
 			case 'work_plan':
@@ -195,7 +229,13 @@ class Onboarding extends Component{
 						</div>
 					</div>
 					<div className="justify-content-center">
-						<button className={"purple-btn" + (!(this.state.design || this.state.build) ? ' disabled': '')} disabled={!(this.state.design || this.state.build) } onClick={() => {this.setState({stage: 'code_stage'})}}>Next Question</button>
+						<button className={"purple-btn" + (!(this.state.design || this.state.build) ? ' disabled' : '')} disabled={!(this.state.design || this.state.build)} onClick={() => {
+							if (this.state.type === 'WORK') {
+								this.setState({ stage: 'purpose_stage' })
+							} else {
+								this.submitSurvey()
+							}
+						}}>{this.state.type === 'WORK' ? 'Next Question' : 'Complete'}</button>
 					</div>
 				</React.Fragment>
 			case 'work_name':
@@ -205,11 +245,22 @@ class Onboarding extends Component{
 					<div className="d-flex justify-content-center mb-3">
 						<Form className="w-100">
 							<FormGroup>
-								<Input className="form-bg" name="company_name" onChange={this.handleChange} placeholder="Company name" value={this.state.company_name}/>
+								<Input className="form-bg" name="company_name" onChange={this.handleChange} placeholder="Company Name" value={this.state.company_name}/>
 							</FormGroup>
 							<FormGroup>
-								<Input className="form-bg" name="company_role" onChange={this.handleChange} placeholder="Role" value={this.state.company_role}/>
+								<Select classNamePrefix="select-box" onChange={selected => {
+									this.setState({company_role: selected.value})
+								}}
+								placeholder="Your Role"
+								options={user_roles}
+								styles={selectStyle}
+								/>
 							</FormGroup>
+							{this.state.company_role === 'others' &&
+								<FormGroup>
+									<Input className="form-bg" name="new_company_role" onChange={this.handleChange} placeholder="Your Role" value={this.state.new_company_role} />
+								</FormGroup>
+							}
 							<FormGroup>
 								<Input className="form-bg" type="number" name="company_size" onChange={this.handleChange} placeholder="Number of Employees" value={this.state.company_size}/>
 							</FormGroup>

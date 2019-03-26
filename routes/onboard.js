@@ -51,6 +51,7 @@ const submitOnboardSurvey = (req, res) => {
 			name: req.user.name,
 			usage: req.body.usage_type,
 			company: req.body.company_name,
+			company_role: req.body.company_role,
 			company_size: req.body.company_size,
 			design: req.body.design,
 			build: req.body.build,
@@ -63,6 +64,7 @@ const submitOnboardSurvey = (req, res) => {
 			event: 'Completed onboarding survey',
 			properties: {
 				hasIdea: req.body.purpose === 'IDEA',
+				qualified: req.body.company_role !== 'others',
 			},
 		})
 	})

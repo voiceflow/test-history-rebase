@@ -312,8 +312,8 @@ export class Display extends Component {
                         tabSize: 2,
                         useWorker: false
                     }}/>
-                {window.user_detail.admin === 70 && <label>APL Commands</label>}
-                {window.user_detail.admin === 70 && <AceEditor
+                <label>APL Commands</label>
+                <AceEditor
                     name="apl_commands_editor"
                     className="datasource_editor"
                     mode="json_custom"
@@ -341,7 +341,7 @@ export class Display extends Component {
                         showLineNumbers: true,
                         tabSize: 2,
                         useWorker: false
-                    }}/>}
+                    }}/>
                 </div>
             </React.Fragment>
         );

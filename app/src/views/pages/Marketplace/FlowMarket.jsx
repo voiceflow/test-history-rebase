@@ -12,12 +12,15 @@ class FlowMarket extends Component {
 
     this.state = {
       modules: [],
-      curr_module: null
+      curr_module: null,
+      show_module_modal: false,
+      conflicts: []
     }
 
     this.onLoadModules = this.onLoadModules.bind(this)
     this.showModuleDetailView = this.showModuleDetailView.bind(this)
     this.toggleModalView = this.toggleModalView.bind(this)
+    this.hideModule = this.hideModule.bind(this)
   }
 
   onLoadModules(){
@@ -40,26 +43,34 @@ class FlowMarket extends Component {
 
   showModuleDetailView(targ_module){
     this.setState({
-      curr_module: targ_module
+      curr_module: targ_module,
+      show_module_modal: true
     })  
   }
 
   toggleModalView(){
-    if(this.state.curr_module){
-      this.setState({
-        curr_module: null
-      })
-    }
+    this.setState((prev_state) => ({
+      show_module_modal: !prev_state.show_module_modal
+    }))
+  }
+
+  hideModule(module_id){
+    let filtered_modules = this.state.modules.filter(module => module.module_id !== module_id)
+    this.setState({
+      modules: filtered_modules
+    })
   }
 
   render() {
     return (
       <div className="marketplace-window">
         <ModuleModal
-          isOpen={this.state.curr_module !== null} 
+          isOpen={this.state.show_module_modal} 
           toggle={this.toggleModalView}
           module={this.state.curr_module}
+          hideModule={this.hideModule}
         />
+
         <Masonry elementType='div' className="skills-container">
           {this.state.modules.map((module, i) => 
             <ModuleCard

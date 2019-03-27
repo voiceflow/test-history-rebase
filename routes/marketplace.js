@@ -257,7 +257,6 @@ const removeAccess = async (req, res) => {
 const checkConflicts = async (req, res) => {
 	let project_id = hashids.decode(req.params.project_id)[0]
 	let module_id = hashids.decode(req.params.module_id)[0]
-	console.log(project_id, module_id)
 	try {
 		let current_dev_data = (await pool.query(`
 			SELECT * 
@@ -278,13 +277,11 @@ const checkConflicts = async (req, res) => {
 			WHERE module_id = $1
 		`, [module_id])).rows[0]
 
-		let globals_intersect = setIntersect(current_dev_data.global, module_data.global, DEFAULT_VARIABLES)
-		// console.log(globals_intersect)
 
-		// console.log(current_dev_data.intents, current_dev_data.slots)
-		// console.log('------')
-		// console.log(module_data.intents, module_data.slots)
-		res.send(globals_intersect)
+		let globals_intersect = setIntersect(current_dev_data.global, module_data.global, DEFAULT_VARIABLES)
+
+		// TODO: intents intersect
+		res.send({globals_intersect: Array.from(globals_intersect)})
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 		res.sendStatus(500)
@@ -295,15 +292,24 @@ const giveAccess = async (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0]
 	let project_id = hashids.decode(req.params.project_id)[0]
 	let creator_id = req.user.id
+	let user_module_data
 
 	try{
-		let user_module_data = (await pool.query(`SELECT * FROM user_modules WHERE module_id = $1 AND creator_id = $2 AND project_id = $3`, [module_id, creator_id, project_id])).rows
+		user_module_data = (await pool.query(`SELECT * FROM user_modules WHERE module_id = $1 AND creator_id = $2 AND project_id = $3`, [module_id, creator_id, project_id])).rows
 		if(user_module_data.length > 0){
 			res.sendStatus(400)
 		}
 		await pool.query(`INSERT INTO user_modules (creator_id, module_id, project_id) VALUES ($1, $2, $3)`, [creator_id, module_id, project_id])
+	} catch (err) {
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+		res.sendStatus(500)
+	}
+
+	try{
+		await copyFlow()
 		res.sendStatus(200)
 	} catch (err) {
+		await pool.query(`DELETE FROM user_modules WHERE creator_id = $1, module_id = $2, project_id = $3`, [creator_id, module_id, project_id])
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 		res.sendStatus(500)
 	}
@@ -384,15 +390,16 @@ const getCertModule = (req, res) => {
 }
 
 const getUserModules = async (req, res) => {
-	let user_id = req.user.id;
+	let user_id = req.user.id
+	let project_id = hashids.decode(req.params.project_id)[0]
 
 	try{
 		let user_modules = (await pool.query(`
 			SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, modules.color
 			FROM modules 
 			INNER JOIN user_modules ON modules.module_id = user_modules.module_id
-			WHERE user_modules.creator_id = $1
-		`, [user_id])).rows
+			WHERE user_modules.creator_id = $1 AND user_modules.project_id = $2
+		`, [user_id, project_id])).rows
 		res.send(user_modules)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})

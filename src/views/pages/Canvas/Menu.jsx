@@ -56,6 +56,7 @@ class Menu extends Component {
         if (this.sidebar.style.width && (e.clientX < 280 || e.clientX > 960)) return;
         this.m_pos = e.x;
         this.sidebar.style.width = (parseInt(getComputedStyle(this.sidebar, '').width) - dx) + "px";
+        localStorage.setItem('sideWidth', (parseInt(getComputedStyle(this.sidebar, '').width) - dx) + "px")
     }
 
     componentDidMount() {

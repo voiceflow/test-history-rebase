@@ -56,37 +56,39 @@ export class Blocks extends PureComponent {
     }
 
     loadUserModules(){
-        axios.get(`/marketplace/user_module`)
+        axios.get(`/marketplace/user_module/${this.props.project_id}`)
         .then(res => {
-            let module_section = res.data.map(module => {
-                let name = module.title.match(/\b(\w)/g)
-                if(name) { name = name.join('') }
-                else { name = module.title }
-                name = name.substring(0,3)
-                
-                let module_colors = module.color.split('|')
-                if(module_colors.length === 1){
-                    module_colors = ['F86683', 'FEF2F4']
-                }
+            if (Array.isArray(res.data) && res.data.length > 0) {
+                let module_section = res.data.map(module => {
+                    let name = module.title.match(/\b(\w)/g)
+                    if(name) { name = name.join('') }
+                    else { name = module.title }
+                    name = name.substring(0,3)
+                    
+                    let module_colors = module.color.split('|')
+                    if(module_colors.length === 1){
+                        module_colors = ['F86683', 'FEF2F4']
+                    }
 
-                let icon_style = {
-                    backgroundColor: `#${module_colors[1]}`,
-                    color: `#${module_colors[0]}`
-                }
-                
-                let icon = <div className="no-image module-image" style={icon_style}><h1>{name}</h1></div>
+                    let icon_style = {
+                        backgroundColor: `#${module_colors[1]}`,
+                        color: `#${module_colors[0]}`
+                    }
+                    
+                    let icon = <div className="no-image module-image" style={icon_style}><h1>{name}</h1></div>
 
-                return {
-                    text: module.title,
-                    type: 'flow',
-                    icon: icon,
-                    tip: module.descr
-                }
-            })
+                    return {
+                        text: module.title,
+                        type: 'flow',
+                        icon: icon,
+                        tip: module.descr
+                    }
+                })
 
-            this.setState({
-                module_section: {title: 'Flows', items: module_section}
-            })
+                this.setState({
+                    module_section: {title: 'Flows', items: module_section}
+                })
+            }
         })
         .catch(err => {
             console.log(err)
@@ -163,6 +165,7 @@ export class Blocks extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-    live_mode: state.skills.live_mode
+    live_mode: state.skills.live_mode,
+    project_id: state.skills.skill.project_id
 })
 export default connect(mapStateToProps)(withRenderModuleIcon(Blocks));

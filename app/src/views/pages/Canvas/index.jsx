@@ -32,7 +32,7 @@ import ActionGroup from './ActionGroup'
 import HelpModal from './HelpModal'
 import TestModal from './Test/TestModal'
 import new_template from './../../../assets/templates/new'
-import { Alert, ListGroup, ListGroupItem, Input } from 'reactstrap'
+import { Alert, ListGroup, ListGroupItem } from 'reactstrap'
 
 import cloneDeep from 'lodash/cloneDeep'
 import * as util from './util'
@@ -1601,7 +1601,10 @@ export class Canvas extends Component {
                 id="diagram"
                 className={this.props.preview ? " no-padding" : ""}
                 onDrop={this.onDrop}
-                onDragOver={e => e.preventDefault()}
+                onDragOver={e => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                }}
                 onMouseLeave={() => (this.diagram_focus = false)}
                 onContextMenu={this.generateBlockMenu}
               >

@@ -478,6 +478,14 @@ audio {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+.edit-input{
+   background: none;
+   border: none;
+   outline: none;
+   margin-left: -1px;
+   margin-top: -5px;
+}
 .plain-input{
     background: none;
     border: none;

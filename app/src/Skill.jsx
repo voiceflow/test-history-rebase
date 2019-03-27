@@ -53,7 +53,8 @@ class Skill extends Component {
             linter: [],
             upgrade_modal: false,
             selected_plan: 1,
-            load_skill: true
+            load_skill: true,
+            editName: false
         }
 
         this.time_mounted = null
@@ -221,11 +222,13 @@ class Skill extends Component {
         return <React.Fragment>
           {!this.props.preview && <SecondaryNavBar page={this.props.page} history={this.props.history}/>}
           <DefaultModal open={this.props.show_live_mode_modal} toggle={()=>{this.props.setLiveModal(false)}} content={live_modal_content} header="Live Mode Disclaimer" close_button_text="Confirm"></DefaultModal>
-          <div className="skill-name-top-left fixed-top">
+            <div className="skill-name-top-left fixed-top" onDoubleClick={() => this.setState({ editName: true })}>
             <Link to="/" className="mx-2">
                 <img src={"/back.svg"} alt="back" className="mr-3" />
             </Link>
-            {this.props.skill && this.props.skill.name ? this.props.skill.name : "Loading Skill"}
+                {this.state.editName ? <input autoFocus className="edit-input" value={this.props.skill.name} onChange={e => { this.props.updateSkill('name', e.target.value); this.props.updateSkill('inv_name', e.target.value) }} onBlur={() => this.setState({ editName: false })} /> :
+            this.props.skill && this.props.skill.name ? this.props.skill.name : "Loading Skill"
+            }
           </div>
           {((this.state.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)) ? 
             React.createElement(Spinner,  {name: 'Skill'}) :

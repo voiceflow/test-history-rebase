@@ -62,7 +62,7 @@ class Menu extends Component {
     componentDidMount() {
         this.props.build(this.updateTree)
         this.sidebar.addEventListener('mousedown', e => {
-            if (!e.srcElement.classList.contains('MenuItem')){
+            if (e.srcElement.classList.contains('open')){
                 this.m_pos = e.x;
                 document.addEventListener("mousemove", this.resize, false);
             }

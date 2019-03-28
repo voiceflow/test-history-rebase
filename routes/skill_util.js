@@ -391,7 +391,7 @@ const renderSkill = async (skill, user) => {
     })
   }
   try{
-    await renderDiagram(req.user, skill.diagram, skill.skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots}, undefined, skill.platform)
+    await renderDiagram(user, skill.diagram, skill.skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots}, undefined, skill.platform)
     // UPDATE SKILL 
     await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1', 
     [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify(used_choices), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
@@ -556,66 +556,64 @@ exports.copySkill = async (req, res, options, cb = false) => {
   }
 }
 
-// exports.copyDiagramFromSkill = async (skill_id, new_user, target_skill_id) => {
-//   // skill_id = hashids.decode(skill_id)[0]
-//   // if(target_skill_id){
-//   //   target_skill_id = hashids.decode(target_skill_id)[0]
-//   // }
+// Expect origin_skill_id and dest_skill_id to be decoded
+exports.copyDiagramsFromSkill = async (origin_skill_id, dest_skill_id, new_creator_id, new_flow_name) => {
+  return new Promise(async (resolve, reject) => {
+    let diagram_names = {}
+    let diagram_mapping = {}
+    let remapped_products
+    let remapped_emails
+    let remapped_displays
+    let root_diagram_id = generateID()
 
-//   const copyDynamo = (diagram_id) => {
-//     let get_params = {
-//       TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
-//       Key: {
-//         'id': diagram_id
-//       }
-//     }
+    try{
+      remapped_products = await copyProducts(origin_skill_id, dest_skill_id)
+      remapped_emails = await copyEmailTemplates(origin_skill_id, dest_skill_id, new_creator_id)
+      remapped_displays = await copyDisplays(origin_skill_id, dest_skill_id, new_creator_id)
+      
+      let platform = (await pool.query(`SELECT platform FROM skills WHERE skill_id = $1`, [origin_skill_id])).rows[0].platform
+      let diagram_data = await pool.query('SELECT id, diagrams.name, intents, slots FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1', [origin_skill_id])
+      let remap_and_copy_promises = []
+      for (let i = 0; i < diagram_data.rows.length; i++) {
+        diagram_names[diagram_data.rows[i].id] = diagram_data.rows[i].name
+        if (diagram_data.rows[i].name === 'ROOT') {
+          diagram_names[diagram_data.rows[i].id] = new_flow_name
+          diagram_mapping[diagram_data.rows[i].id] = root_diagram_id
+        } else {
+          diagram_mapping[diagram_data.rows[i].id] = generateID()
+        }
+        remap_and_copy_promises.push(
+          remapAndCopyDiagram(diagram_data.rows[i].id, dest_skill_id, platform, new_creator_id, {
+            diagram: diagram_mapping,
+            display: remapped_displays,
+            product: remapped_products,
+            email: remapped_emails,
+            names: diagram_names
+          })
+        )
+      }
 
-//     try{
-//       let data = await docClient.get(get_params).promise()
-//       if(data.Item){
-//         remapDiagramIds(data.Item)
-//       } else {
-//         return null
-//       }
+      // Update global variables for new skill
+      let origin_globals = new Set((await pool.query(`SELECT global FROM skills WHERE skill_id = $1`, [origin_skill_id])).rows[0].global)
+      let dest_globals = new Set((await pool.query(`SELECT global FROM skills WHERE skill_id = $1`, [dest_skill_id])).rows[0].global)
+      
+      for(let elem of origin_globals){
+        dest_globals.add(elem)
+      }
+      let total_globals = JSON.stringify(Array.from(dest_globals))
+      await pool.query(`UPDATE skills SET global = $1 WHERE skill_id = $2`, [total_globals, dest_skill_id])
 
-//     } catch (err){
-//       writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-//       return null
-//     }
-//   }
-
-//   const copyDiagram = (diagram_row, user) => {
-//     if(user === undefined){
-//       user = 185 // TODO: set to marketplace user
-//     }
-
-//     return new Promise((resolve, reject) => {
-//       let new_diagram_id = copyDynamo()
-
-//       // Copy on SQL
-//     })
-//   }
-
-//   try{
-//     let diagram_data = (await pool.query(`SELECT * FROM diagrams WHERE skill_id = $1`, [skill_id])).rows
-//     let copied_diagram_promises = []
-//     for(let i in diagram_data){
-//       copied_diagram_promises.push(copyDiagram(diagram_data[i], new_user))
-//     }
-
-//     Promise.all(copied_diagram_promises)
-//     .then(() => {
-//       console.log('goteem')
-//       return 200
-//     })
-//     .catch(err => {
-//       writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-//       return 500
-//     })
-
-//     return 500
-//   } catch (err) {
-//     writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-//     return 500
-//   }
-// }
+      Promise.all(remap_and_copy_promises)
+      .then(() => {
+        resolve(total_globals)
+      })
+      .catch(err => {
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+        reject(err)
+      })
+    } catch (err) {
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+      reject(err)
+    }
+  })
+}

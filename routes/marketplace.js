@@ -1,5 +1,5 @@
 const { pool, hashids, docClient, writeToLogs } = require('./../services')
-const { copySkill, deleteVersionPromise } = require('./skill_util')
+const { copySkill, deleteVersionPromise, copyDiagramsFromSkill } = require('./skill_util')
 const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
 
 const DEFAULT_VARIABLES = ['sessions', 'user_id', 'timestamp', 'platform', 'locale', 'access_token']
@@ -57,7 +57,7 @@ const getModules = async (req, res) => {
 				ON creators.creator_id = modules.creator_id
 			WHERE modules.module_id NOT IN (
 				SELECT module_id FROM user_modules WHERE user_modules.project_id = $2 AND user_modules.creator_id = $3
-			) LIMIT $1
+			) AND modules.template_index = 0 LIMIT $1
 		`, [module_limit, project_id, req.user.id])).rows
 		hashIds(module_data)
 		res.send(module_data)
@@ -306,10 +306,20 @@ const giveAccess = async (req, res) => {
 	}
 
 	try{
-		await copyFlow()
-		res.sendStatus(200)
+		let dest_skill_id = (await pool.query(`SELECT dev_version FROM projects WHERE project_id = $1`, [project_id])).rows[0].dev_version
+		let origin_skill = (await pool.query(`
+			SELECT project_versions.version_id, modules.title 
+			FROM modules 
+			INNER JOIN projects ON modules.module_project_id = projects.project_id
+			INNER JOIN project_versions ON modules.module_project_id = project_versions.project_id
+			WHERE module_id = $1 AND cert_approved IS NOT NULL
+			ORDER BY cert_approved DESC
+			LIMIT 1
+		`, [module_id])).rows[0]
+		let new_globals = await copyDiagramsFromSkill(origin_skill.version_id, dest_skill_id, creator_id, origin_skill.title)
+		res.send({globals: new_globals})
 	} catch (err) {
-		await pool.query(`DELETE FROM user_modules WHERE creator_id = $1, module_id = $2, project_id = $3`, [creator_id, module_id, project_id])
+		await pool.query(`DELETE FROM user_modules WHERE creator_id = $1 AND module_id = $2 AND project_id = $3`, [creator_id, module_id, project_id])
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 		res.sendStatus(500)
 	}

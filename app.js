@@ -214,6 +214,7 @@ app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
 /*
     COMMENT OUT ACTUAL MARKETPLACE ROUTES FOR MASTER
 */
+app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
 app.get('/marketplace/:project_id', ensureLoggedIn(), Marketplace.getModules)
 app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)
 app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules)
@@ -229,7 +230,6 @@ app.post('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Ma
 app.get('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.checkConflicts)
 app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess)
 app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate)
-app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
 app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
 
 // app.get('/marketplace', ensureAdmin(), Marketplace.getModules)

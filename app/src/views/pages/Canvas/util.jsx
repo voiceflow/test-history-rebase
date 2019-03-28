@@ -159,7 +159,6 @@ const canSave = currentModel => {
 
 const createDropNode = (event, engine, type, name) => {
     var node = new BlockNodeModel(name, null, toolkit.UID())
-
     if (type) {
         if (type === 'choice') {
             node.addInPort(' ')
@@ -225,10 +224,11 @@ const createDropNode = (event, engine, type, name) => {
                 reminder: null
             }
         } else if (type === 'flow') {
+            let diagram_id = event.dataTransfer.getData('diagram_id')
             node.addInPort(' ')
             node.addOutPort(' ').setMaximumLinks(1)
             node.extras = {
-                diagram_id: null,
+                diagram_id: diagram_id,
                 inputs: [],
                 outputs: []
             }

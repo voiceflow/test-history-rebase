@@ -570,18 +570,27 @@ exports.copyDiagramsFromSkill = async (origin_skill_id, dest_skill_id, new_creat
       remapped_products = await copyProducts(origin_skill_id, dest_skill_id)
       remapped_emails = await copyEmailTemplates(origin_skill_id, dest_skill_id, new_creator_id)
       remapped_displays = await copyDisplays(origin_skill_id, dest_skill_id, new_creator_id)
+
+      let dest_diagram_names = (await pool.query(`SELECT diagrams.name FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1`, [dest_skill_id])).rows
+      dest_diagram_names = new Set(dest_diagram_names.map((row) => {return row.name}))
       
       let platform = (await pool.query(`SELECT platform FROM skills WHERE skill_id = $1`, [origin_skill_id])).rows[0].platform
       let diagram_data = await pool.query('SELECT id, diagrams.name, intents, slots FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1', [origin_skill_id])
       let remap_and_copy_promises = []
       for (let i = 0; i < diagram_data.rows.length; i++) {
-        diagram_names[diagram_data.rows[i].id] = diagram_data.rows[i].name
+        if(dest_diagram_names.has(diagram_data.rows[i].name)){
+          diagram_names[diagram_data.rows[i].id] = `${diagram_data.rows[i].name} (${new_flow_name})`
+        } else {
+          diagram_names[diagram_data.rows[i].id] = diagram_data.rows[i].name
+        }
+        
         if (diagram_data.rows[i].name === 'ROOT') {
           diagram_names[diagram_data.rows[i].id] = new_flow_name
           diagram_mapping[diagram_data.rows[i].id] = root_diagram_id
         } else {
           diagram_mapping[diagram_data.rows[i].id] = generateID()
         }
+
         remap_and_copy_promises.push(
           remapAndCopyDiagram(diagram_data.rows[i].id, dest_skill_id, platform, new_creator_id, {
             diagram: diagram_mapping,

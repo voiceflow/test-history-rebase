@@ -8,7 +8,6 @@ import { Button, Collapse } from 'reactstrap';
 import {getSections, checkBlockDisabledLive} from './../Blocks'
 import axios from 'axios';
 import withRenderModuleIcon from './../../../HOC/ModuleIcon'
-// const TABS = ['blocks', 'modules']
 
 export class Blocks extends PureComponent {
     constructor(props) {

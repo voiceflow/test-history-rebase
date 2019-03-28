@@ -59,7 +59,7 @@ export class Blocks extends PureComponent {
         axios.get(`/marketplace/user_module/${this.props.project_id}`)
         .then(res => {
             if (Array.isArray(res.data) && res.data.length > 0) {
-                let module_section = res.data.map(module => {
+                let module_array = res.data.map(module => {
                     let name = module.title.match(/\b(\w)/g)
                     if(name) { name = name.join('') }
                     else { name = module.title }
@@ -76,17 +76,21 @@ export class Blocks extends PureComponent {
                     }
                     
                     let icon = <div className="no-image module-image" style={icon_style}><h1>{name}</h1></div>
-
                     return {
                         text: module.title,
                         type: 'flow',
                         icon: icon,
-                        tip: module.descr
+                        tip: module.descr,
+                        diagram_id: this.props.diagrams.filter(diagram => diagram.name === module.title)[0].id
                     }
                 })
 
+                let module_section = {title: 'Flows', items: module_array}
+                let sections = this.state.sections
+                sections.push(module_section)
                 this.setState({
-                    module_section: {title: 'Flows', items: module_section}
+                    module_section: module_section,
+                    sections: sections
                 })
             }
         })
@@ -166,6 +170,7 @@ export class Blocks extends PureComponent {
 
 const mapStateToProps = state => ({
     live_mode: state.skills.live_mode,
-    project_id: state.skills.skill.project_id
+    project_id: state.skills.skill.project_id,
+    diagrams: state.diagrams.diagrams
 })
 export default connect(mapStateToProps)(withRenderModuleIcon(Blocks));

@@ -29,6 +29,7 @@ class ModuleModal extends React.Component {
     let module_id = this.props.module.module_id
     axios.post(`/marketplace/user_module/${this.props.project_id}/${module_id}`)
 			.then(res => {
+        console.log(res.data)
         this.props.toggle()
         this.props.hideModule(module_id)
 			})
@@ -75,7 +76,7 @@ class ModuleModal extends React.Component {
         If these are fine, hit confirm to add the flow to your project or cancel to not.
         <div className="row justify-content-center mt-2">
           <button className="white-btn mr-2" onClick={this.cancelAddFlow}>Cancel</button>
-          <button className="purple-btn ml-2" onClick={this.props.addFlow}>Confirm</button>
+          <button className="purple-btn ml-2" onClick={this.addFlow}>Confirm</button>
         </div>
       </div>
     )

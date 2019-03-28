@@ -10,7 +10,6 @@ class MenuItem extends Component {
         if (this.props.platform === 'google' && !ALLOWED_GOOGLE_BLOCKS.includes(this.props.item.type)) {
             className = `${className} faded-node`
         }
-
         return (
             <div className="wrap" style={(!this.props.draggable) ? {opacity: 0.3} : null}>
                 <div
@@ -24,6 +23,9 @@ class MenuItem extends Component {
                         }
                         if(this.props.name){
                             event.dataTransfer.setData('name', this.props.name)
+                        }
+                        if(this.props.item.diagram_id){
+                            event.dataTransfer.setData('diagram_id', this.props.item.diagram_id)
                         }
                     }}
                 >

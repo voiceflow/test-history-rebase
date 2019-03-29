@@ -31,7 +31,7 @@ const MODULE_COLOURS = [
 	'697986|EEF0F1'
 ]
 
-const module_limit = 10;
+const MODULE_LIMIT = 20;
 const hashIds = (rows) => {
 	for(var i=0;i<rows.length;i++){
 		rows[i].skill_id = hashids.encode(rows[i].skill_id)
@@ -58,7 +58,7 @@ const getModules = async (req, res) => {
 			WHERE modules.module_id NOT IN (
 				SELECT module_id FROM user_modules WHERE user_modules.project_id = $2 AND user_modules.creator_id = $3
 			) AND modules.template_index = 0 LIMIT $1
-		`, [module_limit, project_id, req.user.id])).rows
+		`, [MODULE_LIMIT, project_id, req.user.id])).rows
 		hashIds(module_data)
 		res.send(module_data)
 	} catch (err) {
@@ -317,6 +317,9 @@ const giveAccess = async (req, res) => {
 			LIMIT 1
 		`, [module_id])).rows[0]
 		let new_globals = await copyDiagramsFromSkill(origin_skill.version_id, dest_skill_id, creator_id, origin_skill.title)
+
+		//Increment # of downloads
+		await pool.query(`UPDATE modules SET downloads = downloads + 1 WHERE module_id = $1`, [module_id])		
 		res.send({globals: new_globals})
 	} catch (err) {
 		await pool.query(`DELETE FROM user_modules WHERE creator_id = $1 AND module_id = $2 AND project_id = $3`, [creator_id, module_id, project_id])

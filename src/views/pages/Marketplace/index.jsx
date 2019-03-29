@@ -41,7 +41,7 @@ class Marketplace extends Component {
   render() {
     return (
       <div id="business">
-        <div md="3" className="sidebar-nav">
+        {/* <div md="3" className="sidebar-nav">
           {TABS.map((tab, i) => {
             if(tab.match.includes(this.props.page)){
               return <div key={i} className="nav-item active">
@@ -53,7 +53,7 @@ class Marketplace extends Component {
               </Link>
             }
           })}
-        </div>
+        </div> */}
         <div md="9" className="business-page">
           {this.renderPage()}
         </div>

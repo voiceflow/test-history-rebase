@@ -5,6 +5,7 @@ import Masonry from 'react-masonry-component'
 import './Marketplace.css'
 import { connect } from 'react-redux'
 import ModuleModal from './../../components/Modals/ModuleModal'
+import { Input } from 'reactstrap'
 
 class FlowMarket extends Component {
   constructor(props){
@@ -14,7 +15,8 @@ class FlowMarket extends Component {
       modules: [],
       curr_module: null,
       show_module_modal: false,
-      conflicts: []
+      conflicts: [],
+      loading: true
     }
 
     this.onLoadModules = this.onLoadModules.bind(this)
@@ -63,7 +65,7 @@ class FlowMarket extends Component {
 
   render() {
     return (
-      <div className="marketplace-window">
+      <div className="marketplace-window justify-content-center">
         <ModuleModal
           isOpen={this.state.show_module_modal} 
           toggle={this.toggleModalView}
@@ -71,7 +73,33 @@ class FlowMarket extends Component {
           hideModule={this.hideModule}
         />
 
-        <Masonry elementType='div' className="skills-container">
+        <div className="flow-market-sidebar">
+          <div className="flow-market-sidebar-bordered p-4">
+            <h5>Flows</h5>
+            <p>Flows act as pieces of functionality that you can add to your project. Here's a video on how it works!</p>
+            <iframe width="160" height="100" src="https://www.youtube.com/embed/Dk_-DxyiQe4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+
+          <div className="flow-market-sidebar-bordered mt-4">
+            <Input className='search-input form-control-2' placeholder="Search Flows" onChange={(e) => this.onFilter("name", e.target)}/>
+          </div>
+
+          <div className="mt-4">
+            <button className="btn btn-link flow-market-filter pl-0 pb-0 pt-0">Featured</button>
+            <button className="btn btn-link flow-market-filter pl-0 pb-0">Most popular</button>
+            <button className="btn btn-link flow-market-filter pl-0 pb-0">Onboarding</button>
+            <button className="btn btn-link flow-market-filter pl-0 pb-0">Up-sell</button>
+            <button className="btn btn-link flow-market-filter pl-0 pb-0">Ordering</button>
+            <button className="btn btn-link flow-market-filter pl-0 pb-0">Booking</button>
+            <button className="btn btn-link flow-market-filter pl-0 pb-0">Accounting</button>
+            <button className="btn btn-link flow-market-filter pl-0 pb-0">Database</button>
+          </div>
+        </div>
+
+        <Masonry 
+          elementType='div' 
+          className="module-container">
+          {this.state.loading && <div className="text-center w-100 h-100"><span className="market-loader"/></div>}
           {this.state.modules.map((module, i) => 
             <ModuleCard
               key={i}

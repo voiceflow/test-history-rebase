@@ -79,11 +79,10 @@ export class Speak extends Component {
 
     reorder = (dragIndex, hoverIndex) => {
         const drag = this.state.node.extras.dialogs[dragIndex]
-        this.setState({
-            node: update(this.state.node, {
-                extras: {dialogs: {$splice: [[dragIndex, 1], [hoverIndex, 0, drag]],
-            }}}),
-        })
+        let node = this.state.node
+        node.extras.dialogs.splice(dragIndex, 1)
+        node.extras.dialogs.splice(hoverIndex, 0, drag)
+        this.onUpdate();
     }
     render() {
         let properties = this.state.node.extras

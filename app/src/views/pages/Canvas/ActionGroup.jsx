@@ -933,7 +933,7 @@ export class ActionGroup extends PureComponent {
                       delay: 0
                   }}/>
               </div>}
-              <Modal size={this.state.stage === 0 && "lg"} isOpen={this.state.updateModal && this.state.is_first_upload} toggle={()=>this.setState({updateModal: false})} onClosed={this.shouldReset} className="stage_modal">
+              <Modal size={this.state.stage === 0 ? "lg" : undefined} isOpen={this.state.updateModal && this.state.is_first_upload} toggle={()=>this.setState({updateModal: false})} onClosed={this.shouldReset} className="stage_modal">
                   <ModalHeader toggle={()=>this.setState({updateModal: false})} className="pb-0 mb--4">Upload Project</ModalHeader>
                   <ModalBody className="modal-info" style={{padding: '1rem 2rem'}}>
                       <div>

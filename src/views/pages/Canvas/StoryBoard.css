@@ -1069,7 +1069,6 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
 .toggle-group {
     display: flex;
     width: 100%;
-    max-width: 250px;
     background-color: #f1f5f8;
     border-radius: 50px;
     border: 1px solid #DFE3ED;

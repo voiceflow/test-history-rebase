@@ -82,7 +82,7 @@ export class Project extends PureComponent {
         }
 
         return <React.Fragment>
-            <ButtonGroup className="toggle-group mb-2">
+            <ButtonGroup className="toggle-group mb-2 mw-250">
                 {TABS.map(tab => {
                     return <Button
                         key={tab}

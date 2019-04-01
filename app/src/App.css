@@ -469,6 +469,10 @@ audio {
 .row{
     color: #2b3950;
 }
+
+.mw-250 {
+    max-width: 250px;
+}
 .no-select {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */

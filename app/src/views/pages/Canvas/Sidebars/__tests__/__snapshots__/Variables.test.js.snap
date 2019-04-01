@@ -3,7 +3,7 @@
 exports[`Sidebar Variables render variable sidebar on global 1`] = `
 <Fragment>
   <ButtonGroup
-    className="toggle-group mb-2"
+    className="toggle-group mb-2 mw-250"
     role="group"
     tag="div"
   >
@@ -381,7 +381,7 @@ exports[`Sidebar Variables render variable sidebar on global 1`] = `
 exports[`Sidebar Variables render variable sidebar on local 1`] = `
 <Fragment>
   <ButtonGroup
-    className="toggle-group mb-2"
+    className="toggle-group mb-2 mw-250"
     role="group"
     tag="div"
   >

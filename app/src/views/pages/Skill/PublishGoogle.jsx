@@ -417,7 +417,7 @@ class GooglePublish extends Component {
         <div>
           <img src="/images/preview.svg" alt="Success" height="160" />
           <br />
-          Your Skill Has been uploaded to Google Actions!
+          Your Action Has been uploaded to Google Actions!
         <span className="text-muted text-center">
             You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
         </span>
@@ -460,7 +460,7 @@ class GooglePublish extends Component {
     if (!this.state.loaded) return <div className="super-center h-100 w-100">
       <div className='text-center'>
         <h1><span className="loader" /></h1>
-        Getting Skill Status
+        Getting Action Status
       </div>
     </div>;
 
@@ -523,14 +523,14 @@ class GooglePublish extends Component {
               {this.state.live ?
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0">This skill currently has a live version in production</h5>
+                    <h5 className="mb-0">This Action currently has a live version in production</h5>
                   </div>
                 </div>
                 : null}
               {this.state.project_id && this.state.uploaded ?
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
-                    <span>This skill is linked on the Google Actions Console</span>
+                    <span>This Action is linked on the Google Actions Console</span>
                     <b onClick={() => this.setState({ id_collapse: !this.state.id_collapse })} className="pointer">{this.state.id_collapse ? 'Hide' : 'More Info'} <span style={{ width: '9px', display: 'inline-block', textAlign: 'right' }}><i className={"fas fa-caret-left rotate" + (this.state.id_collapse ? " fa-rotate--90" : "")} /></span></b>
                   </div>
                   <Collapse isOpen={this.state.id_collapse}>
@@ -566,10 +566,10 @@ class GooglePublish extends Component {
               {DISALLOW_CHANGES_STAGES.has(this.state.stage) ?
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0">This skill is currently in review so you cannot edit it.</h5>
+                    <h5 className="mb-0">This Action is currently in review so you cannot edit it.</h5>
                     <div>
                       <MUIButton variant="contained" className="white-btn" href={googleConsoleUrl} target="_blank">Visit Dashboard</MUIButton>
-                      <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Skill</MUIButton>
+                      <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Action</MUIButton>
                     </div>
                   </div>
                 </div>
@@ -652,7 +652,7 @@ class GooglePublish extends Component {
                       <div className="row">
                         <div className="col-3 publish-info">
                           <p className="helper-text">
-                            Your skill's <b>Main Language</b> determines its availability. Your skill will be available in regions which speak your selected language.
+                            Your Action's <b>Main Language</b> determines its availability. Your Action will be available in regions which speak your selected language.
                                     </p>
                         </div>
                         <div className="col-9">
@@ -697,7 +697,7 @@ class GooglePublish extends Component {
                       <div className="row">
                         <div className="col-3 publish-info">
                           <p className="helper-text">
-                            The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Skill (this field is for reference only).
+                            The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Action (this field is for reference only).
                                             </p>
                         </div>
                         <div className="col-9">
@@ -711,7 +711,7 @@ class GooglePublish extends Component {
                       <div className="row">
                         <div className="col-3 publish-info">
                           <p className="helper-text">
-                            The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Skill (this field is for reference only).
+                            The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Action (this field is for reference only).
                                             </p>
                         </div>
                         <div className="col-9">

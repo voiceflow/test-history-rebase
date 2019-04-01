@@ -17,6 +17,7 @@ const isVarName = require('is-var-name');
 			}else{
 				if(result.rows[0].account_linking){
           try{
+            if(!result.rows[0].account_linking.clientSecret) throw new Error()
             result.rows[0].account_linking.clientSecret = jwt.verify(result.rows[0].account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE)
           }catch(err){
             result.rows[0].account_linking.clientSecret = ''

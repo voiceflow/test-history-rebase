@@ -10,3 +10,5 @@ const setupIndices = () => {
     console.log(err)
   }
 }
+
+setupIndices()

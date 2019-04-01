@@ -45,6 +45,38 @@ const getModuleColour = () => {
 	return MODULE_COLOURS[Math.floor(Math.random() * MODULE_COLOURS.length)]
 }
 
+const updateModuleInES = (module_data) => {
+	return new Promise((resolve, reject) => {
+		let index_options = {
+			index: 'flows',
+			id: module_data.module_id, 
+			type: tag, //category?
+			body: {
+				title: module_data.title,
+				descr: module_data.descr,
+				created: module_data.created,
+				overview: module_data.overview,
+				module_icon: module_data.module_icon,
+				color: module_data.color,
+				download: module_data.downloads
+			}
+		}
+		try{
+			if(module_data.tags){
+				for(let tag of module_data.tags){
+					options.type = tag
+					await ESclient.index(index_options)
+				}
+			}
+			options.type = 'GENERAL'
+			await ESclient.index(index_options)
+			resolve()
+		} catch (err) {
+			reject(err)
+		}
+	})
+}
+
 const getModules = async (req, res) => {
 	let project_id = hashids.decode(req.params.project_id)[0]
 	try{
@@ -172,8 +204,10 @@ const giveCertification = async (req, res) => {
 				AND cert_approved IS NULL 
 				AND cert_requested IS NOT NULL`,
 			[project_id])
-		
-		// TODO: add to index
+
+		let module_data = (await pool.query(`SELECT * FROM modules WHERE project_id = $1`, [project_id])).rows[0]
+		await updateModuleInES(module_data)
+
 		res.sendStatus(200)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -305,8 +339,10 @@ const giveAccess = async (req, res) => {
 		`, [module_id])).rows[0]
 		let new_globals = await copyDiagramsFromSkill(origin_skill.version_id, dest_skill_id, creator_id, origin_skill.title)
 
-		//Increment # of downloads
-		await pool.query(`UPDATE modules SET downloads = downloads + 1 WHERE module_id = $1`, [module_id])		
+		//Increment # of downloads and update ES index
+		let module_data = (await pool.query(`UPDATE modules SET downloads = downloads + 1 WHERE module_id = $1 RETURNING *`, [module_id])).rows[0]
+		await updateModuleInES(module_data)
+
 		res.send({globals: new_globals})
 	} catch (err) {
 		await pool.query(`DELETE FROM user_modules WHERE creator_id = $1 AND module_id = $2 AND project_id = $3`, [creator_id, module_id, project_id])

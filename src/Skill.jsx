@@ -100,6 +100,7 @@ class Skill extends Component {
         )
         if(this.props.computedMatch && this.props.computedMatch.params && this.props.computedMatch.params.skill_id){
           this.props.getSkills(this.props.computedMatch.params.skill_id, this.props.preview, this.props.computedMatch.params.diagram_id).then(() => {
+            document.title=this.props.skill.name
             this.setState({load_skill: false})
             if (!this.props.preview){
               if (window.user_detail && window.user_detail.admin > 0 && this.props.skill) {
@@ -145,6 +146,8 @@ class Skill extends Component {
 
         document.removeEventListener(visibilityChange, this.handleVisibilityChange)
         this.componentGracefulUnmount()
+
+        document.title='Voiceflow Creator'
     }
 
     handleVisibilityChange = () => {

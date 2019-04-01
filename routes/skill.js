@@ -860,7 +860,9 @@ exports.buildSkill = async (req, res) => {
                   }
                   account_linking.domains = _.flattenDeep(account_linking.domains)
                   account_linking.scopes = _.flattenDeep(account_linking.scopes)
-                  account_linking.clientSecret = jwt.verify(account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE)
+                  if(account_linking.clientSecret) {
+                    account_linking.clientSecret = jwt.verify(account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE)
+                  }
                   try {
                     await axios.request({
                       url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/accountLinkingClient`,

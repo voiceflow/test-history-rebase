@@ -760,7 +760,7 @@ class Skill extends Component {
                                 <FormGroup>
                                     <div className="row">
                                         <div className="col-3 publish-info">
-                                            <p className="mb-0 helper-text"><b>Display Name</b> is what we display for your skill on VoiceFlow/Amazon</p>
+                                            <p className="mb-0 helper-text"><b>Display Name</b> is what we display for your Skill on VoiceFlow/Amazon</p>
                                         </div>
                                         <div className="col-9">
                                             <Label className="publish-label">Display Name *</Label>
@@ -919,7 +919,7 @@ class Skill extends Component {
                                     <div className="row">
                                         <div className="col-3 publish-info">
                                             <p className="helper-text">
-                                                <b>Locale</b> determines your skill's availability. Your skill will be available in regions which have your selected locale(s) as the primary language.
+                                                <b>Locale</b> determines your Skill's availability. Your skill will be available in regions which have your selected locale(s) as the primary language.
                                             </p>
                                         </div>
                                         <div className="col-9">

@@ -211,12 +211,12 @@ class API extends Component {
                 // Set time before response
                 this.setState({loading: true})
                 let time = Date.now()
-                const markdownToObject = (nodes, url=false) => {
+                const markdownToObject = (nodes) => {
                     let object = {}
                     _.forEach(nodes, node => {
-                        let value = draftToMarkdown(node.key).replace(/\{([A-Za-z0-9_]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables, url))
+                        let value = draftToMarkdown(node.key).replace(/\{([A-Za-z0-9_]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
                         if(value){
-                            object[value] = draftToMarkdown(node.val).replace(/\{([A-Za-z0-9_]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables, url))
+                            object[value] = draftToMarkdown(node.val).replace(/\{([A-Za-z0-9_]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
                         }
                     })
                     return object
@@ -230,7 +230,7 @@ class API extends Component {
                 let request_obj = {
                     method: method ? method : 'GET',
                     url: new_url,
-                    params: markdownToObject(params, true)
+                    params: markdownToObject(params)
                 }
                 userHeader = markdownToObject(headers)
                 if(!_.isEmpty(userHeader)){

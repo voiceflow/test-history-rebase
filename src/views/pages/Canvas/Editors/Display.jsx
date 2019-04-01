@@ -136,10 +136,9 @@ export class Display extends Component {
                 datasource = datasource.replace(re, replacement)
             })
 
-            const payload = {
-                datasource: datasource
-            }
-            axios.post(`/multimodal/display/render/${this.state.node.extras.display_id}`, payload)
+            axios.post(`/multimodal/display/render/${this.state.node.extras.display_id}`, {
+              datasource: datasource
+            })
             .then(res => {
                 this.setState({
                     modalContent: res.data,

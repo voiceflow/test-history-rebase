@@ -83,10 +83,10 @@ export class Canvas extends Component {
         let diagram_name = ''
 
         if (window.Appcues){
-            window.Appcues.identify(window.user_detail.id, {
-                email: window.user_detail.email,
-                name: window.user_detail.name,
-                roles: window.user_detail.admin
+            window.Appcues.identify(this.props.user.id, {
+                email: this.props.user.email,
+                name: this.props.user.name,
+                roles: this.props.user.admin
             })
         }
         this.loaded = false
@@ -1676,6 +1676,7 @@ export class Canvas extends Component {
 
 const mapStateToProps = state => {
   return {
+    user: state.account,
     skill: state.skills.skill,
     diagram_id: state.skills.skill.diagram,
     diagrams: state.diagrams.diagrams,

@@ -3,6 +3,7 @@ import { getDevice } from 'Helper'
 import serializeError from "serialize-error";
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -12,7 +13,6 @@ class ErrorBoundary extends React.Component {
         }
     }
 
-
     componentDidCatch(error, info){
         error = serializeError(error)
         axios.post('/errors', {
@@ -21,7 +21,7 @@ class ErrorBoundary extends React.Component {
             error: error.stack,
             componentTree: info.componentStack,
             browser: getDevice(),
-            user_detail: window.user_detail,
+            user_detail: this.props.user,
         })
         this.setState({
             hasError: true,
@@ -41,4 +41,8 @@ class ErrorBoundary extends React.Component {
     }
 }
 
-export default ErrorBoundary
+const mapStateToProps = state => ({
+  user: state.account
+})
+
+export default connect(mapStateToProps)(ErrorBoundary)

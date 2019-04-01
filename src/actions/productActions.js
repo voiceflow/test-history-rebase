@@ -46,8 +46,8 @@ export const fetchProducts = skill_id => {
 }
 
 export const copyProduct = (skill_id, product_id) => {
-    return dispatch => {
-        return axios.post(`/skill/${skill_id}/${product_id}/${window.user_detail.id}/copy`).then(res => {
+    return (dispatch, getState) => {
+        return axios.post(`/skill/${skill_id}/${product_id}/${getState().account.id}/copy`).then(res => {
             dispatch(addProduct(res.data))
         })
     }

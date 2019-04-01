@@ -171,7 +171,7 @@ class BasicAdvancedSettings extends Component{
                     </div>
                     <div className="settings-content clearfix">
                       <FormGroup>
-                        {window.user_detail.admin >= 60 && <div className="mt-4">
+                        {this.props.user.admin >= 60 && <div className="mt-4">
                             <Label>
                               Skill Events (events: {"{object}"}
                               )
@@ -320,7 +320,8 @@ class BasicAdvancedSettings extends Component{
 }
 
 const mapStateToProps = state => ({
-    skill: state.skills.skill,
+  user: state.account,
+  skill: state.skills.skill,
 })
 
 const mapDispatchToProps = dispatch => {

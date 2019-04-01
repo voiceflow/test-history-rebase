@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import './Skill.css'
-import AuthenticationService from '../../../services/Authentication'
-
 import axios from 'axios'
 
 import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Button, ButtonGroup, Alert, ModalHeader } from 'reactstrap'
@@ -14,6 +12,7 @@ import { GOOGLE_LOCALES } from 'Constants'
 import { Tooltip } from 'react-tippy';
 
 import { setConfirm, setError } from 'ducks/modal'
+import { verifyGoogleToken, dialogflowToken, googleAccessToken } from 'ducks/account'
 
 const MAX_SIZE = 10 * 1024 * 1024
 
@@ -160,8 +159,8 @@ class GooglePublish extends Component {
 
   componentDidMount() {
     try {
-      AuthenticationService.googleAccessToken().then(g_token => {
-        AuthenticationService.dialogflowToken(this.props.skill_id).then(d_token => {
+      googleAccessToken().then(g_token => {
+        dialogflowToken(this.props.skill_id).then(d_token => {
           this.setState({
             credentials: d_token ? true : false,
             publish_modal_open: d_token && !g_token,
@@ -258,7 +257,7 @@ class GooglePublish extends Component {
       stage: 1
     })
     try {
-      await AuthenticationService.verifyGoogleToken(this.state.google_token)
+      await verifyGoogleToken(this.state.google_token)
       this.setState({
         stage: 2,
         publish_modal_open: this.state.publish_clicked

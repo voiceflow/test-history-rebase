@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import {
   Collapse,
   Navbar,
@@ -11,10 +12,11 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { logout } from 'ducks/account'
+import { User } from 'views/components/User'
 
 import './NavBar.css';
-import AuthenticationService from './../../../services/Authentication';
 import Intercom from 'react-intercom';
 
 const NUM_TO_PLAN = (plan) => {
@@ -38,20 +40,13 @@ const getPage = (path) => {
 class NavBar extends Component {
 
   constructor(props) {
-    super(props);
-
+    super(props)
     this.toggle = this.toggle.bind(this);
     this.logout = this.logout.bind(this);
     this.intercom_user = {}
 
     let tabs = []
-    //   {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
-    //   {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
-    //   // {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
-    // ]
-
-    let user = window.user_detail
-
+    let user = props.user
     if(user.id !== null){
       // if(user.admin > 0){
       //   tabs.push({link: '/business', 'text': <React.Fragment>Business</React.Fragment>})
@@ -90,10 +85,10 @@ class NavBar extends Component {
   }
 
   logout(e) {
-    e.preventDefault();
-    AuthenticationService.logout(() => {
-      this.props.history.push('/login');
-    });
+    e.preventDefault()
+    this.props.logout().then(() => {
+      this.props.history.push('/login')
+    })
     return false;
   }
 
@@ -104,7 +99,7 @@ class NavBar extends Component {
 
   render() {
 
-    let page_name = '/' + getPage(this.props.location.pathname);
+    let page_name = '/' + getPage(this.props.history.location.pathname);
 
     return (
         <div>
@@ -139,17 +134,17 @@ class NavBar extends Component {
               <Nav className="ml-auto" navbar>
                 <UncontrolledDropdown nav inNavbar className="account-dropdown">
                   <DropdownToggle className="account" nav tag="div">
-                    <img src={'/user.svg'} alt="user" width="23"/>
+                    <User user={this.props.user}/>
                   </DropdownToggle>
                   <DropdownMenu right className="arrow arrow-right no-select">
                     <DropdownItem header>
-                      {window.user_detail.email}
+                      {this.props.user.email}
                     </DropdownItem>
                     <DropdownItem divider />
                     <Link className="dropdown-item" to="/account">
                       Account
                     </Link>
-                    { window.user_detail.admin >= 100 &&
+                    { this.props.user.admin >= 100 &&
                         <Link className="dropdown-item" to="/admin">
                           Admin
                         </Link>
@@ -169,4 +164,13 @@ class NavBar extends Component {
   }
 }
 
-export default NavBar;
+const mapStateToProps = state => ({
+  user: state.account
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(logout())
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

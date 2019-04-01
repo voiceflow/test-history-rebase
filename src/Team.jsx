@@ -17,7 +17,14 @@ class Team extends PureComponent {
   constructor(props) {
     super(props)
 
-    props.fetchTeams().then(() => {
+    this.state = {
+      loading: true
+    }
+  }
+
+  componentDidMount() {
+    this.props.fetchTeams().then(() => {
+      this.setState({loading: false})
       if(this.props.teams.allIds.length > 0){
         let urlTeam = getTeamFromURL(this.props.computedMatch)
         if(!this.props.team_id){
@@ -45,7 +52,7 @@ class Team extends PureComponent {
   }
 
   render() {
-    if(!this.props.team || this.props.teams.loading) return <Spinner name="Team"/>
+    if(this.state.loading) return <Spinner name="Team"/>
 
     switch(this.props.page) {
       case 'template':

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import AuthenticationService from './../../../services/Authentication'
-import { setConfirm } from 'ducks/modal'
+import { setConfirm, setError } from 'ducks/modal'
+import { AmazonAccessToken, googleAccessToken, updateAccount } from 'ducks/account'
 import {Button, Alert} from 'reactstrap'
 import moment from 'moment'
 import axios from 'axios'
@@ -38,10 +38,12 @@ class Account extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this)
+    this.uploadProfile = this.uploadProfile.bind(this)
     this.toggle = this.toggle.bind(this)
     this.resetAmazon = this.resetAmazon.bind(this)
-    this.logout = this.logout.bind(this)
     this.resetGoogle = this.resetGoogle.bind(this)
+
+    if(props.user.expiry) this.expiry = moment.unix(props.user.expiry).fromNow()
   }
 
   resetAmazon() {
@@ -87,34 +89,25 @@ class Account extends Component {
   }
 
   componentDidMount() {
-      AuthenticationService.AmazonAccessToken(data => {
-        if(data){
-          this.setState({
-              amzn: !!data.token ? LINKED : UNLINKED,
-              token: data.token,
-              profile: data.profile
-          })
-        } else {
-          this.setState({
-            amzn: UNLINKED,
-          })
-        }
-      })
-
-      AuthenticationService.googleAccessToken().then(g_token => {
+    AmazonAccessToken().then(data => {
+      if(data){
         this.setState({
-          google: !!g_token ? LINKED : UNLINKED
+            amzn: !!data.token ? LINKED : UNLINKED,
+            token: data.token,
+            profile: data.profile
         })
-      })
+      } else {
+        this.setState({
+          amzn: UNLINKED,
+        })
+      }
+    })
 
-      axios.get('/user')
-      .then(res => {
-        if(res.data && !isNaN(res.data.expiry) && (res.data.expiry*1000) > Date.now()){
-          this.setState({
-            expiry: moment.unix(res.data.expiry).fromNow()
-          })
-        }
+    googleAccessToken().then(g_token => {
+      this.setState({
+        google: !!g_token ? LINKED : UNLINKED
       })
+    })
   }
 
   handleChange = event => {
@@ -142,17 +135,35 @@ class Account extends Component {
     }
   }
 
-  logout(e) {
-    e.preventDefault();
-    AuthenticationService.logout(() => {
-      this.props.history.push('/login');
-    });
-    return false;
+  uploadProfile(url) {
+    this.props.updateAccount({image: url})
   }
 
   render() {
     return <div id="app" className="pt-6">
               <div className="container my-5 pt-4">
+                <h5 className="ml-3">Profile</h5>
+                <div className="mb-5 card d-flex flex-row p-4">
+                  <Image
+                    className='icon-image large-icon mr-4'
+                    path='/user/profile/picture'
+                    image={this.props.user.image}
+                    update={this.uploadProfile}
+                    replace
+                  />
+                  <div className="helper-text super-center border-left pl-4">
+                    <div className="col-0">
+                      Name:<br/>
+                      Email:<br/>
+                      Joined:<br/>
+                    </div>
+                    <div className="col-sm">
+                      {this.props.user.name}<br/>
+                      {this.props.user.email}<br/>
+                      {moment(this.props.user.created).format('MMMM Do, YYYY')}<br/>
+                    </div>
+                  </div>
+                </div>
                 <h5 className="ml-3">Status</h5>
                 <div className="card mb-5">
                   <div className="p-4 space-between">
@@ -161,9 +172,9 @@ class Account extends Component {
                       {this.props.user.admin < 1 && <h4 className="text-muted mr-3 mb-0">$0.00/mo</h4>}
                       {this.props.user.admin > 0 ? 
                         <React.Fragment>
-                          {this.state.expiry ? 
+                          {this.expiry ? 
                             <React.Fragment>
-                              <div className="btn btn-clear disabled">Renews {this.state.expiry}</div>
+                              <div className="btn btn-clear disabled">Renews {this.expiry}</div>
                               <div className="btn btn-clear ml-2" onClick={this.toggle}><i className="fas fa-cog"/> Upgrade</div>
                             </React.Fragment> : null}
                         </React.Fragment> : 
@@ -210,9 +221,15 @@ class Account extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  user: state.account
+})
+
 const mapDispatchToProps = dispatch => {
   return {
-    setConfirm: confirm => dispatch(setConfirm(confirm))
+    setConfirm: confirm => dispatch(setConfirm(confirm)),
+    setError: error => dispatch(setError(error)),
+    updateAccount: payload => dispatch(updateAccount(payload))
   }
 }
-export default connect(null, mapDispatchToProps)(Account);
+export default connect(mapStateToProps, mapDispatchToProps)(Account);

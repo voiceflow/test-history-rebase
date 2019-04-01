@@ -46,7 +46,7 @@ const getModuleColour = () => {
 }
 
 const updateModuleInES = (module_data) => {
-	return new Promise((resolve, reject) => {
+	return new Promise(async (resolve, reject) => {
 		let index_options = {
 			index: 'flows',
 			id: module_data.module_id, 

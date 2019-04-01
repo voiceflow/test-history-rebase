@@ -106,8 +106,7 @@ export class Blocks extends PureComponent {
     }
 
     render() {
-        let block_content;
-        if (!window.user_detail) return null;
+        let block_content
         if(this.state.tab === 'blocks'){
             block_content =
                 this.state.sections.map((section, i) => {
@@ -122,7 +121,7 @@ export class Blocks extends PureComponent {
                                 <span className={(section.title !== 'favorites' ? "title-dot " + section.title : section.title)}/>
                         </div>
                         <Collapse isOpen={this.state.show[section.title]}>
-                            {(section.title === 'business' && window.user_detail.admin === 0) ?
+                            {(section.title === 'business' && this.props.user.admin === 0) ?
                                 <div className="premium-block">
                                     <div>
                                         <span>Upgrade to access these premium features</span>
@@ -132,13 +131,13 @@ export class Blocks extends PureComponent {
                                     </div>
                                 </div>
                             : null}
-                            <div className="mb-3 section-blocks" style={(section.title === 'business' && window.user_detail.admin === 0) ? {opacity: 0.3} : null}>
+                            <div className="mb-3 section-blocks" style={(section.title === 'business' && this.props.user.admin === 0) ? {opacity: 0.3} : null}>
                                 {section.items.map((item, i) => 
                                     item && <MenuItem 
                                             item={item} 
                                             key={i} 
                                             data-tip={item.tip} 
-                                            draggable={((section.title === 'business' && window.user_detail.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}/>
+                                            draggable={((section.title === 'business' && this.props.user.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}/>
                                 )}
                             </div>
                         </Collapse>
@@ -163,6 +162,7 @@ export class Blocks extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-    live_mode: state.skills.live_mode
+  user: state.account,
+  live_mode: state.skills.live_mode
 })
 export default connect(mapStateToProps)(withRenderModuleIcon(Blocks));

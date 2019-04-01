@@ -3,7 +3,8 @@ import { Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap'
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
 
-import AuthenticationService from './../../../services/Authentication'
+import { connect } from 'react-redux'
+import { signup, googleLogin, fbLogin, login } from 'ducks/account'
 import './Account.css'
 import {Link} from 'react-router-dom'
 import queryString from 'query-string'
@@ -66,112 +67,112 @@ class Account extends Component {
 
   signupSubmit(e) {
     e.preventDefault();
-    AuthenticationService.signup({
+    this.props.signup({
       name: this.state.r_name,
       email: this.state.r_email,
       password: this.state.r_password,
       code: this.state.r_code,
-    }, (error) => {
-      if(error){
-        this.setState({
-          signup_error: error.response.data
-        });
-        if(this.signup_timeout){
-          clearTimeout(this.signup_timeout)
-        }
-        this.signup_timeout = setTimeout(function() {
-          this.setState({signup_error: false})
-        }.bind(this), 5000)
-      }else{
-        localStorage.setItem('is_first_upload', 'true')
-        localStorage.setItem('is_first_session', 'true')
-        this.props.history.push('/onboarding')
+    })
+    .then(() => {
+      localStorage.setItem('is_first_upload', 'true')
+      localStorage.setItem('is_first_session', 'true')
+      this.props.history.push('/onboarding')
+    })
+    .catch(err => {
+      this.setState({
+        signup_error: err.response.data
+      });
+      if(this.signup_timeout){
+        clearTimeout(this.signup_timeout)
       }
-    });
+      this.signup_timeout = setTimeout(function() {
+        this.setState({signup_error: false})
+      }.bind(this), 5000)
+    })
     return false;
   }
 
   loginSubmit(e) {
     e.preventDefault();
-    AuthenticationService.login({
+    this.props.login({
       email: this.state.email,
       password: this.state.password,
-    }, (error) => {
-      if(error){
-        this.setState({
-          login_error: error && error.response && error.response.data
-        });
-        if(this.login_timeout){
-          clearTimeout(this.login_timeout);
-        }
-        this.login_timeout = setTimeout(function() {
-          this.setState({login_error: false});
-        }.bind(this), 5000)
-      }else{
-        this.props.history.push('/')
+    })
+    .then(() => {
+      this.props.history.push('/')
+    })
+    .catch(err => {
+      this.setState({
+        login_error: err && err.response && err.response.data
+      });
+      if(this.login_timeout){
+        clearTimeout(this.login_timeout);
       }
-    });
+      this.login_timeout = setTimeout(function() {
+        this.setState({login_error: false});
+      }.bind(this), 5000)
+    })
     return false;
   }
 
   googleLogin = (userProfile) => {
-    AuthenticationService.googleLogin({
+    this.props.googleLogin({
       name: userProfile.profileObj.name,
       email: userProfile.profileObj.email,
       googleId: userProfile.profileObj.googleId,
       token: userProfile.tokenId,
-    }, (error, res) => {
-      if(error){
-        this.setState({
-          auth_error: error.response.data
-        });
-        if(this.auth_timeout){
-          clearTimeout(this.auth_timeout);
-        }
-        this.auth_timeout = setTimeout(function() {
-          this.setState({auth_error: false});
-        }.bind(this), 5000)
-      }else{
-        if (!res.first_login) {
-          this.props.history.push('/')
-        } else {
-          this.props.history.push('/onboarding');
-        }
+    })
+    .then(res => {
+      if (!res.first_login) {
+        this.props.history.push('/')
+      } else {
+        this.props.history.push('/onboarding');
       }
-    });
+    })
+    .catch(err => {
+      this.setState({
+        auth_error: err.response.data
+      });
+      if(this.auth_timeout){
+        clearTimeout(this.auth_timeout);
+      }
+      this.auth_timeout = setTimeout(function() {
+        this.setState({auth_error: false});
+      }.bind(this), 5000)
+    })
     return false;
   }
 
   fbLogin = (fbUser) => {
-    AuthenticationService.fbLogin({
+    this.props.fbLogin({
       name: fbUser.name,
       email: fbUser.email,
       fbId: fbUser.id,
       code: fbUser.accessToken,
       uri: window.location.href,
-    }, (error, res) => {
-      if(error){
-        this.setState({
-          auth_error: error.response.data
-        });
-        if(this.auth_timeout){
-          clearTimeout(this.auth_timeout);
-        }
-        this.auth_timeout = setTimeout(function() {
-          this.setState({auth_error: false});
-        }.bind(this), 5000)
-      }else{
-        if (res){
-          if (!res.first_login) {
-            this.props.history.push('/')
-          } else {
-            this.props.history.push('/onboarding');
-          }
+    })
+    .then(res => {
+      if (res){
+        if (!res.first_login) {
+          this.props.history.push('/')
         } else {
-            this.setState({unverified: true})
+          this.props.history.push('/onboarding');
         }
+      } else {
+          this.setState({unverified: true})
       }
-    });
+    })
+    .catch(err => {
+      this.setState({
+        auth_error: err.response.data
+      });
+      if(this.auth_timeout){
+        clearTimeout(this.auth_timeout);
+      }
+      this.auth_timeout = setTimeout(function() {
+        this.setState({auth_error: false});
+      }.bind(this), 5000)
+    })
     return false;
   }
 
@@ -197,7 +198,7 @@ class Account extends Component {
     }
     return (
       <div className="d-flex flex-row align-items-center justify-content-center" id="main">
-        <div className={"login-card " + (this.props.login ? null : "open-register")}>
+        <div className={"login-card " + (this.props.page === 'login' ? null : "open-register")}>
             <div id="side-form">
               <Form id="login-form" onSubmit={this.loginSubmit}>
                 <img className="login-logo" src="/logo.svg" alt="logo"/>
@@ -298,4 +299,12 @@ class Account extends Component {
   }
 }
 
-export default Account;
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (user) => dispatch(login(user)),
+    signup: (user) => dispatch(signup(user)),
+    fbLogin: (user) => dispatch(fbLogin(user)),
+    googleLogin: (user) => dispatch(googleLogin(user))
+  }
+}
+export default connect(null, mapDispatchToProps)(Account);

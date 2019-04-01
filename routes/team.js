@@ -28,6 +28,7 @@ const createTeam = async (name, image, creator) => {
   return result.rows[0].team_id
 }
 
+
 exports.verifyTeam = async (req, res, next) => {
   try {
     let team_id = team_hash.decode(req.params.team_id)[0]
@@ -191,7 +192,7 @@ exports.getMembers = async (req, res) => {
     if(!team_id) return res.sendStatus(404)
 
     let members = (await pool.query(`
-      SELECT c.name, c.email, c.image FROM teams t
+      SELECT c.name, c.email, c.image, c.creator_id FROM teams t
       INNER JOIN team_members tm ON t.team_id = tm.team_id
       INNER JOIN creators c ON c.creator_id = tm.creator_id
       WHERE 
@@ -207,6 +208,18 @@ exports.getMembers = async (req, res) => {
     }
   } catch (err) {
     writeToLogs('TEAM MEMBERS', err)
+    res.sendStatus(500)
+  }
+}
+
+exports.updatePicture = async (req, res) => {
+  try {
+    let url = `https://s3.amazonaws.com/com.getstoryflow.api.images/${req.file.transforms[0].key}`
+    console.log(req.params._team_id, req.params)
+    await pool.query('UPDATE teams SET image = $1 WHERE team_id = $2', [url, req.params._team_id])
+    res.send(url)
+  } catch(err) {
+    console.log(err)
     res.sendStatus(500)
   }
 }

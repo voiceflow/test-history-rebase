@@ -128,7 +128,7 @@ export const setCanFulfill = (intent_key, new_value) => {
 }
 
 export const fetchVersion = (version_id, preview, diagram_id) => {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch(fetchVersionBegin());
         // TODO UPDATE THIS ROUTE
         return axios.get(`/skill/${version_id}?${preview ? 'preview=1' : 'simple=1'}`, {
@@ -147,7 +147,7 @@ export const fetchVersion = (version_id, preview, diagram_id) => {
                 let globals = Array.isArray(skill.global) ? skill.global : []
                 // make sure that there are no duplicate variables and that the defaults are included
                 let global_variables = ['sessions', 'user_id', 'timestamp', 'platform', 'locale']
-                if (window.user_detail.admin > 0) {
+                if (getState().account.admin > 0) {
                     global_variables.push('access_token')
                 }
                 if (Array.isArray(globals)) {

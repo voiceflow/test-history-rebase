@@ -19,13 +19,13 @@ import AmazonLogin from '../../components/Forms/AmazonLogin'
 import Select from 'react-select'
 import './Skill.css'
 import {Link} from 'react-router-dom'
-import AuthenticationService from '../../../services/Authentication'
 import LOCALE_MAP from '../../../services/LocaleMap'
 
 import { AMAZON_CATEGORIES } from '../../../services/Categories'
 
 import { updateVersion, updateEntireVersion } from "./../../../actions/versionActions"
 import { setConfirm, setError } from 'ducks/modal'
+import { AmazonAccessToken } from 'ducks/account'
 
 const _ = require('lodash');
 
@@ -80,11 +80,11 @@ class Skill extends Component {
     }
 
     componentDidMount() {
-        AuthenticationService.AmazonAccessToken(token => {
+        AmazonAccessToken().then(token => {
             this.setState({
                 stage: token ? 2 : 0
             });
-        });
+        })
 
         axios.get('/skill/' + this.props.skill_id + '?verbose=1')
         .then(res => {
@@ -778,7 +778,7 @@ class Skill extends Component {
                                             <Image
                                                 className='icon-image large-icon text-center mr-xl-5 mr-4'
                                                 isDisabled={disabled_stages.has(this.state.stage)}
-                                                path='/large_icon'
+                                                path='/image/large_icon'
                                                 image={this.state.large_icon}
                                                 update={(url) => this.setState({large_icon: url})}
                                                 title='Large Icon *'/>
@@ -787,7 +787,7 @@ class Skill extends Component {
                                             <Image
                                                 className='icon-image small-icon text-center'
                                                 isDisabled={disabled_stages.has(this.state.stage)}
-                                                path='/small_icon'
+                                                path='/image/small_icon'
                                                 image={this.state.small_icon}
                                                 update={(url) => this.setState({small_icon: url})}
                                                 title='Small Icon *'/>

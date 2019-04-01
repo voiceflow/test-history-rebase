@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import { connect } from "react-redux"
 import axios from 'axios'
 
 const MAX_POLL_COUNT = 15;
@@ -10,9 +11,13 @@ const STRIPE_KEY =
     ? "pk_live_9QXjJjWc0sjk8VSwbQT3viub"
     : "pk_test_G3o7CC0pvrW2cIbIU1bLkMSR";
 
-const StripeHandler = (WrappedComponent) =>
+const mapStateToProps = state => ({
+  user: state.account
+})
+    
+const StripeHandler = (config) => (WrappedComponent) =>
 
-class extends Component {
+connect(mapStateToProps)(class extends Component {
   constructor(props) {
     super(props)
 
@@ -27,27 +32,22 @@ class extends Component {
   }
 
   componentDidMount() {
-    const CONFIG = {
-      name:"Voiceflow", 
-      description:"Team Plan Monthly",
-      image:"https://s3.amazonaws.com/com.getstoryflow.api.images/logo.png",
-      email: window.user_detail.email,
-      zipCode: true,
-      key: STRIPE_KEY,
-      source: this.onSource
-    }
+  
+    config.key = STRIPE_KEY
+    config.source = this.onSource
+    config.email = this.props.user.email
 
     if(!window.StripeCheckout){
       const script = document.createElement('script')
       script.src = 'https://checkout.stripe.com/checkout.js'
       script.onload = () => {
-        this.stripeHandler = window.StripeCheckout.configure(CONFIG)
+        this.stripeHandler = window.StripeCheckout.configure(config)
         this.setState({ stripe_load: false })
       }
       document.body.appendChild(script)
       this.script = script
     }else{
-      this.stripeHandler = window.StripeCheckout.configure(CONFIG)
+      this.stripeHandler = window.StripeCheckout.configure(config)
     }
   }
 
@@ -143,6 +143,6 @@ class extends Component {
       stripe_error={this.state.stripe_error}
     />
   }
-}
+})
 
 export default StripeHandler

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { Provider } from "react-redux";
-import AuthenticationService from "./services/Authentication";
 import ReactGA from "react-ga";
 import { store, history } from "./containers/store";
 import { Alert } from "reactstrap";
@@ -37,6 +36,8 @@ import { setConfirm } from 'ducks/modal'
 import ConfirmModal from "./views/components/Modals/ConfirmModal"
 import ErrorModal from './views/components/Modals/ErrorModal'
 
+import { getAuth, getUser } from 'ducks/account'
+
 // SECRET
 // var STRIPE_KEY
 // if (process.env.NODE_ENV === 'production') {
@@ -47,31 +48,30 @@ import ErrorModal from './views/components/Modals/ErrorModal'
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
-    <Route
-      {...rest}
-      render={props =>
-        !AuthenticationService.isAuth() ? (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: props.location }
-            }}
-          />
+    <Route {...rest} render={props =>
+        !getAuth() ? (
+          <Redirect to={{ pathname: "/login", state: { from: props.location } }}/>
         ) : (
-          <React.Fragment>
-            <ErrorBoundary>
-              <Component
-                {...props}
-                {...rest}
-                user={AuthenticationService.getUser()}
-              />
-            </ErrorBoundary>
-          </React.Fragment>
+          <ErrorBoundary>
+            <Component {...props} {...rest}/>
+          </ErrorBoundary>
         )
       }
     />
   );
 };
+
+const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
+  <Route {...rest} render={props =>
+      getAuth() ? (
+        <Redirect to={{ pathname: "/dashboard", state: { from: props.location } }}
+        />
+      ) : (
+        <Component {...props} {...rest} name={Name} />
+      )
+    }
+  />
+);
 
 const getEndpoint = () => {
   let port = "";
@@ -113,24 +113,6 @@ window.addEventListener("beforeunload", function() {
   }
 });
 
-const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      AuthenticationService.isAuth() ? (
-        <Redirect
-          to={{
-            pathname: "/dashboard",
-            state: { from: props.location }
-          }}
-        />
-      ) : (
-        <Component {...props} {...rest} name={Name} />
-      )
-    }
-  />
-);
-
 ReactGA.initialize("UA-124745244-3");
 
 history.listen((location, action) => {
@@ -140,37 +122,28 @@ history.listen((location, action) => {
 
 class App extends Component {
   constructor(props) {
-    super(props);
-
+    super(props)
     this.state = {
-      loading: AuthenticationService.isAuth(),
+      loading: !!getAuth(),
       session: false,
       stripe: null,
     }
 
-    if(AuthenticationService.isAuth()){
-      AuthenticationService.check((err, res) => {
-        if (err) {
-          console.log(err);
-          this.setState({
-            loading: false
-          });
-          history.push("/login");
-        } else {
-          this.setState({
-            session: true,
-            loading: false
-          });
-        }
-      });
+    if(this.state.loading){
+      store.dispatch(getUser())
+      .then(() => this.setState({session: true, loading: false}))
+      .catch(err => {
+        console.log(err);
+        this.setState({ loading: false });
+        history.push("/login");
+      })
     }
 
-    history.listen((location, action) => {
-      this.setState({
-        session: AuthenticationService.isAuth()
-      });
+    history.listen(() => {
+      this.setState({session: !!getAuth()});
     });
 
+    // REDIRECT TO MAINTENANCE
     evaluateMaintenance((time) => {
       if(time){
         setTimeout(() => store.dispatch(setConfirm({
@@ -185,7 +158,7 @@ class App extends Component {
         window.location.href = 'https://getvoiceflow.com/maintenance'
         throw new Error('MAINTENANCE')
       }
-    });
+    })
   }
 
   render() {
@@ -200,20 +173,18 @@ class App extends Component {
       );
     }
     return (
-        <Provider store={store}>
+      <Provider store={store}>
+        <Router history={history}>
           <ConfirmModal/>
           <ErrorModal />
-        <Router history={history}>
           <div id="body">
-            {(this.state.session && history.location.pathname !== '/onboarding') && <Route render={(props) => {
-                  return <NavBar {...props}/>
-            }} /> }
+            {(this.state.session && history.location.pathname !== '/onboarding') && <NavBar history={history}/>}
               <Switch>
                 {/* User routes */}
                 <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
                 <PublicRoute exact path="/reset" name="Reset" component={Reset} />
-                <PublicRoute exact path="/login" name="Login" login component={Register} />
-                <PublicRoute exact path="/signup" name="SignUp" component={Register} />                
+                <PublicRoute exact path="/login" name="Login" page="login" component={Register} />
+                <PublicRoute exact path="/signup" name="SignUp" page="signup" component={Register} />                
                 {/* Team routes */}
                 <PrivateRoute path="/dashboard" name="Dashboard" component={Team}/>
                 <PrivateRoute exact path="/team/new" component={NewTeam}/>
@@ -256,7 +227,7 @@ class App extends Component {
                 <PrivateRoute path="/account" name="Account" component={Account} />\
                 <PrivateRoute path="/creator_logs/:skill_id" component={Skill} page="logs"/>
                 <Route exact path="/" render={() => (
-                  AuthenticationService.isAuth() ? (
+                  getAuth() ? (
                     <Redirect to="/dashboard" />
                   ) : (
                     <Redirect to="/signup" />

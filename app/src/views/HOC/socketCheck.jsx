@@ -2,7 +2,7 @@ import React from 'react'
 import { lifecycle, withState } from 'recompose'
 import { getDevice } from 'Helper'
 import { Alert } from 'reactstrap'
-import AuthenticationService from "./../../services/Authentication";
+import { getAuth } from 'ducks/account'
 
 const session_warning_content = <div style={{ maxWidth: 600 }} className="text-center">
     <img className="modal-img-small mb-4 mt-3" src="/warning.svg" alt="Upload" />
@@ -26,7 +26,7 @@ export const socketCheck = lifecycle({
             if(window.CreatorSocket.status === 'CONNECTED'){
                 window.CreatorSocket.emit('project', {
                     skill_id: skill_id,
-                    auth: AuthenticationService.getAuth(),
+                    auth: getAuth(),
                     device: getDevice()
                 })
                 window.CreatorSocket.on('occupied', data => {
@@ -41,7 +41,7 @@ export const socketCheck = lifecycle({
                 window.CreatorSocket.connectedCB[`SKILL_${skill_id}`] = () => {
                     window.CreatorSocket.emit('project', {
                         skill_id: skill_id,
-                        auth: AuthenticationService.getAuth(),
+                        auth: getAuth(),
                         device: getDevice(),
                         reconnect: true
                     })

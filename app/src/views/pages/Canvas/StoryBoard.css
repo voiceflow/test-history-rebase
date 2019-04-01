@@ -2912,6 +2912,7 @@ button.close:hover{
 
 .dropdown-item{
     cursor: pointer;
+    padding: .6rem 1.5rem;
 }
 
 #widget-bar {

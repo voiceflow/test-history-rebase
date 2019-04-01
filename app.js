@@ -137,6 +137,7 @@ app.get('/user/verify/:token', Authentication.verifyUser);
 app.post('/user/reset/password', Authentication.resetPassword);
 app.get('/decode/:id', ensureAdmin(),Decode.decodeId);
 app.get('/encode/:id', ensureAdmin(),Decode.encodeId);
+app.post('/user/profile/picture', ensureLoggedIn(), uploadResize(512,512).single('image'), Authentication.updateProfilePicture);
 
 app.get('/creator/privacy_policy', policy)
 app.get('/creator/terms', terms)
@@ -195,6 +196,7 @@ app.get('/team/:team_id/projects', ensureLoggedIn(), Team.getProjects)
 app.get('/team/:team_id/members', ensureLoggedIn(), Team.getMembers)
 app.post('/team/:team_id/copy/module/:module_id', ensureLoggedIn(), Team.verifyTeam, Marketplace.copyDefaultTemplate)
 app.delete('/team/:team_id', Team.deleteTeam)
+app.post('/team/:team_id/picture', ensureLoggedIn(), Team.verifyTeam, uploadResize(512,512).single('image'), Team.updatePicture);
 
 // STRIPE PAYMENT ENDPOINTS
 app.get('/customer', ensurePlan(1), Customer.checkStatus)

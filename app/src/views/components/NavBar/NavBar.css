@@ -164,10 +164,26 @@ div.nav-item{
 .popover .popover-header:before{
 	border-color: #fff !important;
 }
+.dropdown-button {
+  padding: 5px 9px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #8da2b5;
+  border: 1px solid transparent
+}
 
+.dropdown.show .dropdown-button {
+  border-color: #dce5e8;
+}
+.dropdown .dropdown-button .standard, .dropdown.show .dropdown-button .active{
+  display: block;
+}
+.dropdown .dropdown-button .active, .dropdown.show .dropdown-button .standard{
+  display: none;
+}
 #navbar .account-dropdown .dropdown-menu{
-	margin-top: 8px;
-	right: -8px;
+	margin-top: 4px;
+	right: -5px;
 }
 .dropdown-menu.arrow.arrow-right:before{
 	left: auto !important;

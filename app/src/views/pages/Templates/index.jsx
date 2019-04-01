@@ -9,6 +9,7 @@ import './Template.css'
 import LightCanvas from './../Canvas/LightCanvas'
 import MUIButton from '@material-ui/core/Button';
 import { Spinner } from 'views/components/Spinner'
+import { connect } from 'react-redux'
 
 class Templates extends Component {
     constructor(props) {
@@ -60,7 +61,7 @@ class Templates extends Component {
         switch (this.state.stage) {
             case 0:
                 if (this.state.name.trim() && Array.isArray(this.state.locales) && this.state.locales.length !== 0) {
-                    const stage = window.user_detail.admin === -1 ? 1 : 2 // Multiplatform paywall soft-disable
+                    const stage = this.props.user.admin === -1 ? 1 : 2 // Multiplatform paywall soft-disable
                     this.setState({ stage: stage, error: '' })
                 } else {
                     this.setState({ error: 'Please Complete All Fields' })
@@ -68,7 +69,7 @@ class Templates extends Component {
                 break
             case 1:
                 if (this.state.google || this.state.alexa) {
-                    if (this.state.google && this.state.alexa && window.user_detail.admin === -1) { // Multiplatform paywall soft-disable
+                    if (this.state.google && this.state.alexa && this.props.user.admin === -1) { // Multiplatform paywall soft-disable
                         // Modal
                     } else {
                         this.setState({ stage: 2, error: '' })
@@ -88,7 +89,7 @@ class Templates extends Component {
                 this.setState({ stage: 0 })
                 break
             case 2:
-                this.setState({ stage: window.user_detail.admin === -1 ? 1 : 0 }) // Multiplatform paywall soft-disable
+                this.setState({ stage: this.props.user.admin === -1 ? 1 : 0 }) // Multiplatform paywall soft-disable
                 break
             default:
                 break
@@ -162,7 +163,7 @@ class Templates extends Component {
     }
 
     renderContinueButton() {
-        if (this.state.alexa && this.state.google && window.user_detail.admin === -1) { // Multiplatform paywall soft-disable
+        if (this.state.alexa && this.state.google && this.props.user.admin === -1) { // Multiplatform paywall soft-disable
             return (<div className="mt-1">
                 <div className="mb-4 text-muted">Building for both platforms simultaneously is a premium feature.<br />Please upgrade to continue</div>
                 <MUIButton varient="contained" className="purple-btn" onClick={() => this.props.history.push('/account/upgrade')}>Upgrade</MUIButton>
@@ -282,4 +283,8 @@ class Templates extends Component {
     }
 }
 
-export default Templates
+const mapStateToProps = state => ({
+  user: state.account
+})
+
+export default connect(mapStateToProps)(Templates)

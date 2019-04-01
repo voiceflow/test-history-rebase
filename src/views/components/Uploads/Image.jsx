@@ -34,7 +34,7 @@ class Image extends Component {
         let data = new FormData();
         data.append('image', files[0]);
         this.setState({loading: true});
-        axios.post('/image' + (this.props.path ? this.props.path : ''), data)
+        axios.post(this.props.path || '/image', data)
         .then(res => {
             this.setState({loading: false});
           this.props.update(res.data);
@@ -70,7 +70,21 @@ class Image extends Component {
                     </button>
                 </div>
             </div>
-        }else if(this.props.image){
+        } else if(this.props.image && this.props.replace) {
+          render = <Dropzone
+                    className="dropzone image-box"
+                    activeClassName="active"
+                    rejectClassName="reject"
+                    multiple={false}
+                    disableClick={false}
+                    maxSize={this.max_size}
+                    accept="image/jpeg,image/png"
+                    onDrop={this.onDropImage}
+                >
+                  <div className="image" style={{backgroundImage: `url(${this.props.image})`}}></div>
+                  <div className="rejected-file text-danger text-center super-center h-100">File not Accepted</div>
+                </Dropzone>
+        } else if(this.props.image) {
             render = <div className="image-box">
                 <div className="image" style={{backgroundImage: `url(${this.props.image})`}}></div>
                 <button disabled={this.props.isDisabled} onClick={() => this.props.update(null)}>&times;</button>
@@ -85,36 +99,38 @@ class Image extends Component {
                 </div>
             </div>
         }else{
-            render = <React.Fragment>
-                <Dropzone
-                    className="dropzone"
-                    activeClassName="active"
-                    rejectClassName="reject"
-                    multiple={false}
-                    disableClick={false}
-                    maxSize={this.max_size}
-                    accept="image/jpeg,image/png"
-                    onDrop={this.onDropImage}
-                >
-                    <div className="w-100">
-                        <div className="drop-child">
-                            Drag-n-Drop Image or <span className="btn-link">browse</span><br/>
-                            {this.props.url && <button className="upload-btn btn btn-default" onClick={(e)=>{
-                                e.preventDefault()
-                                e.stopPropagation()
-                                this.setState({url_open: true})
-                                return false
-                            }}>URL</button>}
-                        </div>
-                        <div className="rejected-file text-danger text-center">
-                            <b>File not Accepted</b>
-                        </div>
-                    </div>
-                </Dropzone>
-            </React.Fragment>
+          render = <Dropzone
+            className="dropzone"
+            activeClassName="active"
+            rejectClassName="reject"
+            multiple={false}
+            disableClick={false}
+            maxSize={this.max_size}
+            accept="image/jpeg,image/png"
+            onDrop={this.onDropImage}
+            >
+              <div className="w-100">
+                  <div className="drop-child">
+                    {this.props.tiny ? 
+                    <i class="fas fa-cloud-upload-alt text-muted"/> : 
+                    <>
+                      Drag-n-Drop Image or <span className="btn-link">browse</span><br/>
+                      {this.props.url && <button className="upload-btn btn btn-default" onClick={(e)=>{
+                          e.preventDefault()
+                          e.stopPropagation()
+                          this.setState({url_open: true})
+                          return false
+                      }}>URL</button>}
+                    </>}
+                  </div>
+                  <div className="rejected-file super-center text-danger text-center">
+                    {this.props.tiny ? <i className="far fa-exclamation-triangle"/> : "File not Accepted"}
+                  </div>
+              </div>
+            </Dropzone>
         }
 
-        return <div className={(this.props.className ? this.props.className : 'image-standard' ) + (this.props.isDisabled ? ' disabled-image' : '')}>
+        return <div className={(this.props.className ? this.props.className : 'image-standard' ) + (this.props.isDisabled ? ' disabled-image' : '') + (this.props.tiny ? ' tiny' : '')}>
             {!!this.props.title && <label>{this.props.title}</label>}
             {render}
         </div>

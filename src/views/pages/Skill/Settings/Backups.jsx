@@ -112,9 +112,9 @@ class BackupSettings extends Component{
                         <Label>
                             Backups
                         </Label>
-                        <div className="helper-text mb-2">Restore your skill to previous versions. A version is saved every time you upload your skill to Alexa{window.user_detail.admin > 0 ? "" : ". Upgrade to access this premium feature"}</div>
+                        <div className="helper-text mb-2">Restore your skill to previous versions. A version is saved every time you upload your skill to Alexa{this.props.user.admin > 0 ? "" : ". Upgrade to access this premium feature"}</div>
                         <div id="backup">
-                            {window.user_detail.admin === 0 &&
+                            {this.props.user.admin === 0 &&
                             <div id="backup-overlay" className="d-flex justify-content-center">
                                 <div id="backup-upgrade-btn" className="text-center">
                                     <Link className="purple-btn" to='/account/upgrade'>
@@ -168,9 +168,13 @@ class BackupSettings extends Component{
     }
 }
 
+const mapStateToProps = state => ({
+  user: state.account
+})
+
 const mapDispatchToProps = dispatch => {
     return {
         setConfirm: (confirm) => dispatch(setConfirm(confirm))
     }
 }
-export default connect(null, mapDispatchToProps)(BackupSettings)
+export default connect(mapStateToProps, mapDispatchToProps)(BackupSettings)

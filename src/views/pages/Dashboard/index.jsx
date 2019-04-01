@@ -12,10 +12,10 @@ import VoiceCards from "views/components/Cards/VoiceCards";
 import EmptyCard from "views/components/Cards/EmptyCard";
 import LoadingModal from "views/components/Modals/LoadingModal";
 import TeamSettings from "./TeamSettings"
-import { Alert, Input } from "reactstrap";
+import { Alert, Input, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import { setConfirm, setError } from 'ducks/modal'
 import { connect } from "react-redux";
-import Members from './members'
+import { Members } from 'views/components/User'
 import {
   fetchProjects,
   deleteProject,
@@ -93,7 +93,7 @@ class DashBoard extends Component {
     this.props.fetchProjects(this.props.team_id)
 
     let last_update_seen = localStorage.getItem(
-      "last_update_seen_" + window.user_detail.id
+      "last_update_seen_" + this.props.user.id
     )
 
     if (!last_update_seen) {
@@ -113,7 +113,7 @@ class DashBoard extends Component {
         }
         last_update_seen = Date.now();
         localStorage.setItem(
-          "last_update_seen_" + window.user_detail.id,
+          "last_update_seen_" + this.props.user.id,
           last_update_seen
         );
       })
@@ -221,10 +221,26 @@ class DashBoard extends Component {
               </Link>
             )}
           </div>
-          <div className="pr-4 super-center">
+          <div className="mr-4 super-center">
             {this.props.team && <>
               <Members members={this.props.team.members}/>
-              <i className="fas fa-cog" onClick={() => this.setState({team_settings: true})}/>
+              <UncontrolledDropdown inNavbar>
+                <DropdownToggle tag="div" className="dropdown-button">
+                  <i className="fas fa-cog standard"/><i className="fal fa-cog active"/>
+                </DropdownToggle>
+                <DropdownMenu right className="no-select">
+                  <DropdownItem onClick={()=>this.setState({team_settings: 'MEMBERS'})}>
+                    Manage Members
+                  </DropdownItem>
+                  <DropdownItem onClick={()=>this.setState({team_settings: 'SETTINGS'})}>
+                    Team Settings
+                  </DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem>
+                    Leave Team
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
             </>}
           </div>
         </div>
@@ -328,6 +344,7 @@ class DashBoard extends Component {
 }
 
 const mapStateToProps = state => ({
+  user: state.account,
   projects_array: unnormalize(state.project),
   projects: state.project,
   loading: state.project.loading

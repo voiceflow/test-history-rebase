@@ -4,6 +4,7 @@ import Toggle from 'react-toggle'
 import axios from 'axios'
 import ReactTable from 'react-table'
 import moment from 'moment'
+import { connect } from 'react-redux'
 
 const COLUMNS = [
   {
@@ -138,4 +139,8 @@ class Home extends Component {
   }
 }
 
-export default Home;
+const mapStateToProps = state => ({
+  user: state.account
+})
+
+export default connect(mapStateToProps)(Home)

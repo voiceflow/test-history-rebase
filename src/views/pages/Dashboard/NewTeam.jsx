@@ -261,7 +261,7 @@ class NewTeam extends Component {
               <div className="super-center mt-4">
                 <div style={{ minWidth: 400 }}>
                   <WrapForm
-                    value={window.user_detail.email}
+                    value={this.props.user.email}
                     disabled
                     className="disabled"
                   >
@@ -345,7 +345,7 @@ class NewTeam extends Component {
               <div className="text-center">
                 <Image
                   className="icon-image icon-image-sm text-center mb-2"
-                  path="/large_icon"
+                  path="/image/large_icon"
                   image={this.state.image_url}
                   update={url => this.setState({ image_url: url })}
                 />
@@ -383,6 +383,7 @@ class NewTeam extends Component {
 
 const mapStateToProps = state => {
   return {
+    user: state.account,
     skill: state.skills.skill,
     diagram_id: state.skills.skill.diagram,
     diagrams: state.diagrams.diagrams,
@@ -411,5 +412,11 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  StripeHandler
+  StripeHandler({
+    name:"Voiceflow", 
+    description:"Team Plan Monthly",
+    image:"https://s3.amazonaws.com/com.getstoryflow.api.images/logo.png",
+    zipCode: true,
+    panelLabel: 'Start Trial'
+  })
 )(NewTeam);

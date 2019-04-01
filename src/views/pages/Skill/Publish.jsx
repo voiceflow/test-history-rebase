@@ -33,7 +33,7 @@ class Publish extends Component {
         super(props)
 
         let TABS = cloneDeep(tabs)
-        if (window.user_detail.admin >= 100) {
+        if (this.props.user.admin >= 100) {
             TABS.push({
                 display: (key) => <React.Fragment key={key}><i className="far fa-store-alt mr-2" /> Marketplace</React.Fragment>,
                 match: ['market'],
@@ -51,7 +51,7 @@ class Publish extends Component {
         if (this.props.page === 'market') {
             page = <PublishMarket {...this.props} />
         } else if (this.props.page === 'google') {
-            if (window.user_detail.admin === -1 && this.props.platform !== 'google') { // Multiplatform paywall soft-disable
+            if (this.props.user.admin === -1 && this.props.platform !== 'google') { // Multiplatform paywall soft-disable
                 page = <div className="w-100 h-100">
                 <div className="d-flex justify-content-center mt-5">
                     <div className="card" id="upgrade">
@@ -70,7 +70,7 @@ class Publish extends Component {
                 page = <PublishGoogle {...this.props} />
             }
         } else {
-            if (window.user_detail.admin === -1 && this.props.platform !== 'alexa') { // Multiplatform paywall soft-disable
+            if (this.props.user.admin === -1 && this.props.platform !== 'alexa') { // Multiplatform paywall soft-disable
                 page = <div className="w-100 h-100">
                 <div className="d-flex justify-content-center mt-5">
                     <div className="card" id="upgrade">
@@ -119,8 +119,9 @@ class Publish extends Component {
 }
 
 const mapStateToProps = state => ({
-    skill_id: state.skills.skill.skill_id,
-    platform: state.skills.skill.platform,
+  user: state.account,
+  skill_id: state.skills.skill.skill_id,
+  platform: state.skills.skill.platform,
 })
 
 export default connect(mapStateToProps)(Publish)

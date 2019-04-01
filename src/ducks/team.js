@@ -4,7 +4,6 @@ import NORMALIZE, { normalize, deleteNormalize } from 'ducks/util'
 
 const initialState = {
   team_id: localStorage.getItem('team'),
-  loading: true,
   byId: {},
   allIds: []
 }
@@ -12,11 +11,6 @@ const initialState = {
 // Reducer
 export default function teamReducer(state = initialState, action) {
   switch (action.type) {
-    case 'LOADING_TEAM':
-      return {
-        ...state,
-        loading: true
-      }
     case 'UPDATE_CURRENT_TEAM':
       localStorage.setItem('team', action.payload)
       return {
@@ -27,8 +21,7 @@ export default function teamReducer(state = initialState, action) {
       return {
         ...state,
         byId: action.payload.byId,
-        allIds: action.payload.allIds,
-        loading: false
+        allIds: action.payload.allIds
       }
     default:
       return state
@@ -72,6 +65,15 @@ export const updateCurrentTeam = team_id => {
   }
 }
 
+export const updateCurrentTeamItem = (payload) => {
+  return (dispatch, getStore) => {
+    let team_id = getStore().team.team_id
+    if (team_id) {
+      dispatch(updateTeam(team_id, payload))
+    }
+  }
+}
+
 export const deleteTeam = team_id => {
   return async (dispatch, getState) => {
     try{
@@ -95,8 +97,6 @@ export const deleteTeam = team_id => {
 export const fetchTeams = () => {
   return async (dispatch, getState) => {
     try{
-      dispatch({type: 'LOADING_TEAMS'})
-
       let res = await axios.get('/teams')
       
       // NORMALIZE TEAMS

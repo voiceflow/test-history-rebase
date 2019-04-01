@@ -11,18 +11,20 @@ import userSetting from './userReducer'
 import project from 'ducks/project'
 import modal from 'ducks/modal'
 import team from 'ducks/team'
+import account from 'ducks/account'
 
 export default (history) => combineReducers({
-    router: connectRouter(history),
-    skills,
-    products,
-    displays,
-    emails,
-    diagrams,
-    variables,
-    userSetting,
-    diagramVariables,
-    project,
-    modal,
-    team
+  router: connectRouter(history),
+  skills,
+  products,
+  displays,
+  emails,
+  diagrams,
+  variables,
+  userSetting,
+  diagramVariables,
+  project,
+  modal,
+  team,
+  account
 })

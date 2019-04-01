@@ -15,8 +15,7 @@ import Toggle from 'react-toggle'
 import { Progress } from 'react-sweet-progress'
 import "react-sweet-progress/lib/style.css"
 import Confetti from 'react-dom-confetti'
-
-import AuthenticationService from './../../../services/Authentication'
+import { AmazonAccessToken, googleAccessToken } from 'ducks/account'
 import InvRegex from 'services/Regex'
 // import { timingSafeEqual } from 'crypto';
 
@@ -180,16 +179,14 @@ export class ActionGroup extends PureComponent {
     this.renderUploadButton = this.renderUploadButton.bind(this)
     this.isUploadLoading = this.isUploadLoading.bind(this)
     this.displayUploadPrompt = this.displayUploadPrompt.bind(this)
-
-    // localStorage.setItem('is_first_session_' + window.user_detail.id, 'true')
   }
 
   componentDidMount() {
-    AuthenticationService.AmazonAccessToken(token => {
+    AmazonAccessToken().then(token => {
         this.token = token;
         this.reset()
     })
-    AuthenticationService.googleAccessToken(this.props.skill.skill_id).then(token => {
+    googleAccessToken(this.props.skill.skill_id).then(token => {
         this.google_token = token;
         this.reset()
     })
@@ -233,7 +230,7 @@ export class ActionGroup extends PureComponent {
       amzn_error: false,
       stage: this.token ? 0 : 5,
       google_stage: this.google_token ? 2 : 0,
-      is_first_upload: (localStorage.getItem('is_first_session_' + window.user_detail.id) !== 'false'),
+      is_first_upload: (localStorage.getItem('is_first_session_' + this.props.user.id) !== 'false'),
       // // TESTING PURPOSES
       // saving: true,
       // show_upload_prompt: true,
@@ -254,8 +251,8 @@ export class ActionGroup extends PureComponent {
     }else{
       this.updateAlexaStage(2)
     }
-    if(localStorage.getItem('is_first_session_' + window.user_detail.id) !== 'false'){
-      localStorage.setItem('is_first_session_' + window.user_detail.id, 'false')
+    if(localStorage.getItem('is_first_session_' + this.props.user.id) !== 'false'){
+      localStorage.setItem('is_first_session_' + this.props.user.id, 'false')
       setTimeout(()=>this.setState({should_pop_confetti: true}), 300)
       axios.post('/analytics/track_first_session_upload')
     }
@@ -984,16 +981,17 @@ export class ActionGroup extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-    skill: state.skills.skill,
-    platform: state.skills.skill.platform,
-    diagram_id: state.skills.skill.diagram,
-    live_mode: state.skills.live_mode,
+  user: state.account,
+  skill: state.skills.skill,
+  platform: state.skills.skill.platform,
+  diagram_id: state.skills.skill.diagram,
+  live_mode: state.skills.live_mode,
 })
 
 const mapDispatchToProps = dispatch => {
-    return {
-        updateSkill: (type, val) => dispatch(updateVersion(type, val)),
-        setError: err => dispatch(setError(err))
-    }
+  return {
+    updateSkill: (type, val) => dispatch(updateVersion(type, val)),
+    setError: err => dispatch(setError(err))
+  }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ActionGroup);

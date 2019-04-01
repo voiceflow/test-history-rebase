@@ -12,7 +12,7 @@ class IconsForm extends Component {
                   <label className="mt-0 text-center"><b>Small icon</b> *</label>
                   <Image
                       className='icon-image small-icon'
-                      path='/small_icon'
+                      path='/image/small_icon'
                       image={this.props.small_icon}
                       update={this.props.handleChange('small_icon')}
                     />
@@ -21,7 +21,7 @@ class IconsForm extends Component {
                   <label className="mt-0 text-center"><b>Large icon</b> *</label>
                   <Image
                       className='icon-image large-icon'
-                      path='/large_icon'
+                      path='/image/large_icon'
                       image={this.props.large_icon}
                       update={this.props.handleChange('large_icon')}
                     />

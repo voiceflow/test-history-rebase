@@ -145,19 +145,6 @@ class Logs extends Component {
 
     componentDidMount() {
         this.onLoad()
-        // const socket = io(this.state.endpoint)
-
-        // socket.on('connect', () => {
-        //     socket.emit('join', `${window.user_detail.id}:${this.state.skill_id}`)
-        // })
-
-        // socket.on('log', data => {
-        //     let logs = this.state.logs
-        //     logs.unshift(data)
-        //     this.setState({
-        //         logs: logs
-        //     })
-        // })
     }
 
     parseRequest(request) {

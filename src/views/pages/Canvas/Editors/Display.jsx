@@ -312,8 +312,8 @@ export class Display extends Component {
                         tabSize: 2,
                         useWorker: false
                     }}/>
-                {window.user_detail.admin === 70 && <label>APL Commands</label>}
-                {window.user_detail.admin === 70 && <AceEditor
+                {this.props.user.admin === 70 && <label>APL Commands</label>}
+                {this.props.user.admin === 70 && <AceEditor
                     name="apl_commands_editor"
                     className="datasource_editor"
                     mode="json_custom"
@@ -349,7 +349,8 @@ export class Display extends Component {
 }
 
 const mapStateToProps = state => ({
-    skill_id: state.skills.skill_id,
-    displays: state.displays.displays,
+  user: state.account,
+  skill_id: state.skills.skill_id,
+  displays: state.displays.displays,
 })
 export default connect(mapStateToProps)(Display);

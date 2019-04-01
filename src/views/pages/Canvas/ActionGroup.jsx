@@ -626,7 +626,7 @@ export class ActionGroup extends PureComponent {
                       </div> </Button>
           } else {
               return <Tooltip
-                  html={<div style={{ width: 155 }}>{(this.props.platform === 'google') ? 'Test your skill on your own Google device, or in the Google Actions console' : 'Test your skill on your own Alexa device, or in the Alexa developer console'}</div>}
+                  html={<div style={{ width: 155 }}>{(this.props.platform === 'google') ? 'Test your Action on your own Google device, or in the Google Actions console' : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}</div>}
                   position="bottom"
                   distance={16}
               >
@@ -689,7 +689,7 @@ export class ActionGroup extends PureComponent {
                   return <div className="text-center">
                       <div className="d-flex align-items-center justify-content-center upload-prompt-title mb-2"> <span className="pass-icon mr-2"/> Upload Successful </div>
                       <div className="upload-prompt-text">
-                          Your skill is now available to test on your Alexa and the <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${locale}/`}
+                          Your Skill is now available to test on your Alexa and the <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${locale}/`}
                               target="_blank" rel="noopener noreferrer">
                               Amazon console
                           </a>.
@@ -718,7 +718,7 @@ export class ActionGroup extends PureComponent {
           case 5:
               return <div className={"modal-txt flex-fill text-center mb-4" + (modal ? " w-100" : " mt-4") }>
                   {this.state.amzn_error && <Alert color="danger"><span className="fail-icon"/> Login With Amazon Failed - Try Again</Alert>}
-                  Login with Amazon to test your skill on your own Alexa device, or in the Alexa developer console
+                  Login with Amazon to test your Skill on your own Alexa device, or in the Alexa developer console
                   {modal && Video('https://s3.amazonaws.com/com.getvoiceflow.videos/first.mp4')}
                   <div className="text-center mt-4">
                       <AmazonLogin
@@ -773,7 +773,7 @@ export class ActionGroup extends PureComponent {
                   <div className="d-flex text-muted align-items-center">
                       <label className="mr-1">Invocation Name</label>
                       <Tooltip
-                          html={(<React.Fragment>Alexa listens for the Invocation Name<br /> to launch your skill<br /> e.g. <i>Alexa, open <b>Invocation Name</b></i></React.Fragment>)}
+                          html={(<React.Fragment>Alexa listens for the Invocation Name<br /> to launch your Skill<br /> e.g. <i>Alexa, open <b>Invocation Name</b></i></React.Fragment>)}
                           position="bottom"
                       >
                           <i className="fal fa-question-circle" />
@@ -821,7 +821,7 @@ export class ActionGroup extends PureComponent {
               }
               return <div>
                   <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
-                  <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
+                  <div className="modal-bg-txt text-center mt-2"> Upload your Skill for testing</div>
                   <div className="modal-txt text-center mt-2"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console</div>
                   <div className="super-center mb-3 mt-3">
                       <button className="purple-btn" onClick={this.updateAlexa}>Continue</button>
@@ -900,12 +900,12 @@ export class ActionGroup extends PureComponent {
           } else {
             modal_content = <div>
                 <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
-                <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
+                <div className="modal-bg-txt text-center mt-2"> Upload your Action for testing</div>
                 <div className="modal-txt text-center mt-2"> Updating to Google will allow you to test on your Google device or the Google Actions Console.</div>
                 {(this.props.skill.live || this.props.skill.review) && <hr />}
                 <div>
-                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
-                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
+                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.live && <Alert color="danger">This Action is in production, updating will change the flow for all production users</Alert>}
+                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.review && <Alert color="danger">This Action is under review, updating will change the flow during the review process</Alert>}
                 </div>
 
                 <div className="super-center mb-3 mt-3">

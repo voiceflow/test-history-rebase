@@ -51,6 +51,7 @@ class IntentInputs extends Component {
                     this.props.intents.splice(i, 1)
                     this.props.setCanFulfill(key, false)
                     this.props.update()
+                    this.forceUpdate()
                 }
             }
         })

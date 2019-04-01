@@ -54,7 +54,6 @@ class SpeakElement extends Component {
             isDragging,
             connectDragSource,
             connectDropTarget,
-            result,
             d,
             properties,
         } = this.props

@@ -83,19 +83,17 @@ class ModuleModal extends React.Component {
   }
 
   renderConflictBody(){
+    let conflict_string = this.state.conflicts.reduce((accumulator, curr_string) => {
+      return accumulator + `${curr_string}, `
+    }, '')
+
     return (
-      <div className="text-center pt-3">
-        <h5>Flow Conflicts</h5>
-        The following global variables exist in both your project and the flow you are importing.
-        {this.state.conflicts.map((conflict, i) => {
-          return(
-            <div key={i}>
-              {conflict}
-            </div>
-          )
-        })}
-        If these are fine, hit confirm to add the flow to your project or cancel to not.
-        <div className="row justify-content-center mt-2">
+      <div className="pt-3 pl-3 flow-conflict-text">
+        <h5 className="modal-title mb-4">Flow Conflicts</h5>
+        <p>The following global variables exist in both your project and the flow you are importing:</p>
+        <p className="font-weight-bold">{conflict_string}</p>
+        <p>If these are fine, hit confirm to add the flow to your project or cancel to not.</p>
+        <div className="row justify-content-center mt-4">
           <button className="white-btn mr-2" onClick={this.cancelAddFlow} disabled={this.state.loading}>Cancel</button>
           <button className="purple-btn ml-2" onClick={this.addFlow} disabled={this.state.loading}>Confirm</button>
         </div>

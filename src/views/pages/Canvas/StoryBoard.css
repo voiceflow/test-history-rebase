@@ -878,7 +878,7 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
     background-color: #E2E9EC;
     position: absolute;
     right: 0px;
-    width: 4px;
+    width: 2px;
     height: 100%;
     cursor: col-resize !important;
     z-index: 1500;

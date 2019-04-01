@@ -1,4 +1,4 @@
-const { pool, hashids, docClient, writeToLogs } = require('./../services')
+const { pool, hashids, docClient, writeToLogs, ESclient } = require('./../services')
 const { copySkill, deleteVersionPromise, copyDiagramsFromSkill } = require('./skill_util')
 const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
 
@@ -172,6 +172,8 @@ const giveCertification = async (req, res) => {
 				AND cert_approved IS NULL 
 				AND cert_requested IS NOT NULL`,
 			[project_id])
+		
+		// TODO: add to index
 		res.sendStatus(200)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -238,22 +240,6 @@ const removeAccess = async (req, res) => {
 	}
 }
 
-// const hasAccess = async (req, res) => {
-// 	let module_id = hashids.decode(req.params.module_id)[0]
-// 	let user_id = req.user.id
-	
-// 	try{
-// 		let user_module_data = (await pool.query(`SELECT * FROM user_modules WHERE creator_id = $1 AND module_id = $2`, [user_id, module_id])).rows
-// 		if(user_module_data.length > 0){
-// 			res.send(true)
-// 		}
-// 		res.send(false)
-// 	} catch (err) {
-// 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-// 		res.sendStatus(500)
-// 	}
-// }
-
 const checkConflicts = async (req, res) => {
 	let project_id = hashids.decode(req.params.project_id)[0]
 	let module_id = hashids.decode(req.params.module_id)[0]
@@ -273,7 +259,8 @@ const checkConflicts = async (req, res) => {
 				(SELECT max(version_id) 
 				FROM project_versions 
 				INNER JOIN modules ON project_versions.project_id = modules.module_project_id
-				WHERE project_versions.cert_approved IS NOT NULL)
+				WHERE project_versions.cert_approved IS NOT NULL
+				AND module_id = $1)
 			WHERE module_id = $1
 		`, [module_id])).rows[0]
 

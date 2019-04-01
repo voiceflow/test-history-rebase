@@ -388,3 +388,7 @@
     height: 5em;
     line-height: 1;
 }
+
+.flow-conflict-text{
+    white-space:pre-wrap
+}

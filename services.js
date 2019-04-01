@@ -9,6 +9,7 @@ const sharp = require('sharp');
 const Hashids = require('hashids');
 const Intercom = require('intercom-client');
 
+
 const moment = require('moment')
 const _ = require('lodash')
 const StackTrace = require('stacktrace-js')
@@ -238,6 +239,22 @@ const logAxiosError = (err, context='', data=null) => {
     writeToLogs('CREATOR_BACKEND_ERRORS', msg)
 }
 
+const ESclient = require('elasticsearch').Client({
+    hosts: [process.env['ELASTIC_SEARCH_HOST']],
+    connectionClass: require('http-aws-es'),
+    log: 'trace'
+})   
+ESclient.ping({
+    // ping usually has a 3000ms timeout
+    requestTimeout: 1000
+  }, function (error) {
+    if (error) {
+      console.trace('elasticsearch cluster is down!');
+    } else {
+      console.log('All is well');
+    }
+  });
+
 module.exports = {
     upload: upload,
     docClient: docClient,
@@ -253,7 +270,8 @@ module.exports = {
     logging_pool: logging_pool,
     verify: verify,
     logAxiosError: logAxiosError,
-    writeToLogs: writeToLogs
+    writeToLogs: writeToLogs,
+    ESclient
 }
 
 // SECRET

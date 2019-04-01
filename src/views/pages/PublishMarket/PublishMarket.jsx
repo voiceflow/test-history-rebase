@@ -61,7 +61,6 @@ class PublishMarket extends Component {
             let curr_tags = this.state.tags
             curr_tags.push(this.state.tags_input)
             this.setState({
-                saved: false,
                 tags: curr_tags,
                 tags_input: ''
             })
@@ -70,16 +69,21 @@ class PublishMarket extends Component {
                 failed_tag_add: true
             })
         }
+        this.save()
     }
 
     handleDeleteTag(i){
+        if(this.state.in_review){
+            return false
+        }
+
         let curr_tags = this.state.tags
         curr_tags.splice(i, 1)
         this.setState({
-            saved: false,
             tags: curr_tags,
             failed_tag_add: false
         })
+        this.save()
     }
 
 	handleChange(event){
@@ -421,8 +425,8 @@ class PublishMarket extends Component {
                                                     {this.state.tags.length > 0 ? 
                                                         <div className="mb-3">
                                                             {this.state.tags.map((tag, i) => 
-                                                            <span key={i} className="publish-tag mr-2">
-                                                                {tag} <i className="fal fa-times ml-1" onClick={() => {this.handleDeleteTag(i)}}></i>
+                                                            <span key={i} className="publish-tag mr-2" onClick={() => {this.handleDeleteTag(i)}}>
+                                                                {tag}
                                                             </span>)}
                                                         </div>
                                                         :

@@ -55,10 +55,10 @@ class ModuleAdminPage extends Component {
     }
 
     render() {
-        let styles = {
-            width: '60px',
-            height: '60px',
-        }
+        // let styles = {
+        //     width: '60px',
+        //     height: '60px',
+        // }
 
         let content = null
         if(this.state.approved){

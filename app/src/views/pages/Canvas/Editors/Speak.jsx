@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import update from 'immutability-helper'
 import SpeakElement from './components/SpeakElement'
 import randomstring from 'randomstring';
 import { Input, InputGroup} from 'reactstrap';

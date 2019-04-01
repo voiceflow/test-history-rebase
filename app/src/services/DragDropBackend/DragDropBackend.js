@@ -1,13 +1,13 @@
 import defaults from 'lodash/defaults';
-import shallowEqual from './shallowEqual';
+// import shallowEqual from './shallowEqual';
 import EnterLeaveCounter from './EnterLeaveCounter';
 import { isFirefox } from './BrowserDetector';
 import { getNodeClientOffset, getEventClientOffset, getDragPreviewOffset } from './OffsetUtils';
 import { createNativeDragSource, matchNativeItemType } from './NativeDragSources';
 import * as NativeTypes from './NativeTypes';
-import memoizeOne from 'memoize-one'
+// import memoizeOne from 'memoize-one'
 
-const shallowMemoize = memoizeOne(shallowEqual)
+// const shallowMemoize = memoizeOne(shallowEqual)
 
 export default class DragDropBackend {
   constructor(manager) {
@@ -105,7 +105,6 @@ export default class DragDropBackend {
     this.sourceNodeOptions[sourceId] = options;
 
     const handleDragStart = e => this.handleDragStart(e, sourceId);
-    const handleSelectStart = e => this.handleSelectStart(e, sourceId);
 
     node.setAttribute('draggable', true);
     node.addEventListener('dragstart', handleDragStart);
@@ -154,7 +153,7 @@ export default class DragDropBackend {
   }
 
   getCurrentSourcePreviewNodeOptions() {
-    const sourceId = this.monitor.getSourceId();
+    // const sourceId = this.monitor.getSourceId();
 
     return defaults({}, {
       anchorX: 0.5,

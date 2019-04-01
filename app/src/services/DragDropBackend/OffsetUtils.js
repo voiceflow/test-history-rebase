@@ -1,7 +1,7 @@
 /* eslint
    no-mixed-operators: off
 */
-import { isSafari, isFirefox } from './BrowserDetector';
+import { isFirefox } from './BrowserDetector';
 import MonotonicInterpolant from './MonotonicInterpolant';
 
 const ELEMENT_NODE = 1;

@@ -57,7 +57,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
           <div
             className="modal-bg-txt text-center mt-2"
           >
-             Upload your skill for testing
+             Upload your Skill for testing
           </div>
           <div
             className="modal-txt text-center mt-2"
@@ -420,7 +420,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
             }
           }
         >
-          Test your skill on your own Alexa device, or in the Alexa developer console
+          Test your Skill on your own Alexa device, or in the Alexa developer console
         </div>
       }
       inertia={false}

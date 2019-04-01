@@ -9,6 +9,7 @@ exports[`MailEditor render mail block editor 1`] = `
   </span>
   <Link
     className="btn btn-clear btn-block mt-2"
+    replace={false}
     to="/business/undefined/emails"
   >
     Add Templates

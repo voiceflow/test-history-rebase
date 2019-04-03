@@ -33,7 +33,7 @@ class ModuleModal extends React.Component {
     this.setState({
       loading: true
     })
-
+    
     axios.post(`/marketplace/user_module/${this.props.project_id}/${module_id}`)
 			.then(res => {
         this.props.updateVersion('global', JSON.parse(res.data.globals))

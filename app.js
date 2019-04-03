@@ -10,6 +10,7 @@ const {policy, terms} = require('./policy');
 const AWS = require('aws-sdk')
 const { request_logger } = require('./logger.js')
 const { underMaintenance } = require('./app/src/MAINTENANCE.js')
+const proxy = require('http-proxy-middleware')
 
 AWS.config = new AWS.Config({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -69,7 +70,26 @@ app.use(bodyParser.urlencoded({
     limit: '50mb',
     extended: true
 }))
+// app.use(bodyParser.text({ type: 'application/x-ndjson' }))
 app.use(cookieParser())
+
+const ES_proxy_options = {
+    target: 'http//localhost:4000',
+    changeOrigin: true,
+    onProxyReq: (proxyReq, res) => {
+        // TODO: amzn stuff
+        const { body } = req
+        if(body) {
+            if(typeof body === 'object'){
+                proxyReq.write(JSON.stringify(body))
+            } else {
+                proxyReq.write(body)
+            }
+        }
+    }
+}
+
+// app.use('*', proxy(ES_proxy_options))
 
 app.use(express.static(path.join(__dirname, 'app', 'build')))
 

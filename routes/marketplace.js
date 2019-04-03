@@ -50,7 +50,7 @@ const updateModuleInES = (module_data) => {
 		let index_options = {
 			index: 'marketplace',
 			type: 'flows',
-			id: module_data.module_id,
+			id: hashids.encode(module_data.module_id),
 			body: {
 				'title': module_data.title,
 				'descr': module_data.descr,
@@ -58,23 +58,26 @@ const updateModuleInES = (module_data) => {
 				'overview': module_data.overview,
 				'module_icon': module_data.module_icon,
 				'color': module_data.color,
-				'download': module_data.downloads
+				'download': module_data.downloads,
+				'tag': ''
 			}
 		}
 		
 		try{
+			// Insert at least once
+			await ESclient.index(index_options)
+
 			if(typeof module_data.tags === 'string') {
 				module_data.tags = JSON.parse(module_data.tags)
 			}
 
 			if(module_data.tags && module_data.tags.length > 0){
 				for(let tag of module_data.tags){
-					index_options.body.type = tag
+					index_options.body.tag = tag
 					await ESclient.index(index_options)
 				}
 			}
-			index_options.body.type = 'GENERAL'
-			await ESclient.index(index_options)
+			
 			resolve()
 		} catch (err) {
 			reject(err)
@@ -433,7 +436,6 @@ const getCertModule = (req, res) => {
 const getUserModules = async (req, res) => {
 	let user_id = req.user.id
 	let project_id = hashids.decode(req.params.project_id)[0]
-
 	try{
 		let user_modules = (await pool.query(`
 			SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, modules.color
@@ -441,6 +443,7 @@ const getUserModules = async (req, res) => {
 			INNER JOIN user_modules ON modules.module_id = user_modules.module_id
 			WHERE user_modules.creator_id = $1 AND user_modules.project_id = $2
 		`, [user_id, project_id])).rows
+		hashIds(user_modules)
 		res.send(user_modules)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})

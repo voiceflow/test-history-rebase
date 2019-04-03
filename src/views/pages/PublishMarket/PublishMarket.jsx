@@ -10,14 +10,7 @@ import './PublishMarket.css'
 import types from './../../../services/Types'
 import { setConfirm, clearModal } from 'actions/modalActions'
 import Select from 'react-select'
-
-const TAGS = [
-    {value: 'UPSELL', label: 'Up-sell'},
-    {value: 'ORDERING', label: 'Ordering'},
-    {value: 'BOOKING', label: 'Booking'},
-    {value: 'ACCOUNTING', label: 'Accounting'},
-    {value: 'DATABASE', label: 'Database'}
-]
+import { TAGS } from './../Marketplace/tags.js'
 
 class PublishMarket extends Component {
 	constructor(props){

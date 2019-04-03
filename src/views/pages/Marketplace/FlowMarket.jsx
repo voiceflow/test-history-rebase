@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import ModuleCard from './ModuleCard'
-import Masonry from 'react-masonry-component'
 import './Marketplace.css'
 import { connect } from 'react-redux'
 import ModuleModal from './../../components/Modals/ModuleModal'
-import { Input } from 'reactstrap'
+import { ReactiveBase, DataSearch, ResultCard, SingleDataList } from '@appbaseio/reactivesearch'
+import { TAGS } from './tags'
+import withRenderModuleIcon from '../../HOC/ModuleIcon'
+
+const ESURL = (process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'production' ? process.env['ELASTIC_SEARCH_HOST'] : 'http://localhost:9200')
 
 class FlowMarket extends Component {
   constructor(props){
@@ -13,6 +15,7 @@ class FlowMarket extends Component {
 
     this.state = {
       modules: [],
+      user_modules: new Set(),
       curr_module: null,
       show_module_modal: false,
       conflicts: [],
@@ -23,6 +26,7 @@ class FlowMarket extends Component {
     this.showModuleDetailView = this.showModuleDetailView.bind(this)
     this.toggleModalView = this.toggleModalView.bind(this)
     this.hideModule = this.hideModule.bind(this)
+    this.filterTags = this.filterTags.bind(this)
   }
 
   onLoadModules(){
@@ -37,13 +41,46 @@ class FlowMarket extends Component {
     .catch(err => {
       console.log(err)
     })
+
+    axios.get(`/marketplace/user_module/${this.props.project_id}`)
+    .then(res => {
+      let user_modules = new Set()
+      for(let module of res.data){
+        user_modules.add(module.module_id)
+      }
+      this.setState({
+        user_modules: user_modules
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 
   componentDidMount(){
     this.onLoadModules()
   }
 
+  filterTags = (value, props) => {
+    if(value !== null){
+      return {
+        query: {
+            match: {
+                tag: value
+            }
+        }
+      }
+    } else {
+      return {
+        query: {
+          match_all: {}
+        }
+      }
+    }
+  }
+
   showModuleDetailView(targ_module){
+    targ_module.module_id = targ_module._id
     this.setState({
       curr_module: targ_module,
       show_module_modal: true
@@ -72,45 +109,64 @@ class FlowMarket extends Component {
           module={this.state.curr_module}
           hideModule={this.hideModule}
         />
-
-        <div className="flow-market-sidebar">
-          <div className="flow-market-sidebar-bordered p-4">
-            <h5>Flows</h5>
-            <p>Flows act as pieces of functionality that you can add to your project. Here's a video on how it works!</p>
-            <iframe width="160" height="100" src="https://www.youtube.com/embed/Dk_-DxyiQe4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-
-          <div className="flow-market-sidebar-bordered mt-4">
-            <Input className='search-input form-control-2' placeholder="Search Flows" onChange={(e) => this.onFilter("name", e.target)}/>
-          </div>
-
-          <div className="mt-4">
-            <button className="btn btn-link flow-market-filter pl-0 pb-0 pt-0">Featured</button>
-            <button className="btn btn-link flow-market-filter pl-0 pb-0">Most popular</button>
-            <button className="btn btn-link flow-market-filter pl-0 pb-0">Onboarding</button>
-            <button className="btn btn-link flow-market-filter pl-0 pb-0">Up-sell</button>
-            <button className="btn btn-link flow-market-filter pl-0 pb-0">Ordering</button>
-            <button className="btn btn-link flow-market-filter pl-0 pb-0">Booking</button>
-            <button className="btn btn-link flow-market-filter pl-0 pb-0">Accounting</button>
-            <button className="btn btn-link flow-market-filter pl-0 pb-0">Database</button>
-          </div>
-        </div>
-
-        <Masonry 
-          elementType='div' 
-          className="module-container">
-          {this.state.loading && <div className="text-center w-100 h-100"><span className="market-loader"/></div>}
-          {this.state.modules.map((module, i) => 
-            <ModuleCard
-              key={i}
-              module={module}
-              showModuleDetailView={this.showModuleDetailView}
-              onClick={() => {this.props.history.push('/market/' + module.module_id)}}
-              ownership={this.state.user_modules}
-              onOwnershipChange={this.handleOwnershipChange}
+        <ReactiveBase
+          app="marketplace"
+          url={ESURL}
+          type="flows"
+        >
+					<div style={{ display: "flex", flexDirection: "row" }}>
+						<div style={{ display: "flex", flexDirection: "column", width: "20%" }}>
+							<DataSearch
+								componentId="flow-search-box"
+								dataField="title"
+                placeholder="Search for Flows"
+                // customQuery={(value, props) => {return this.filterName(value, props)}}
+							/>
+							<SingleDataList
+                componentId="filter-category"
+                dataField="tag"
+                data={TAGS}
+                placeholder="Category"
+                showSearch={false}
+                customQuery={(value, props) => {return this.filterTags(value, props)}}
+              />
+						</div>
+						<ResultCard
+							componentId="result"
+							dataField="model"
+							from={0}
+							size={6}
+							pagination={true}
+							react={{
+								and: ["flow-search-box", "filter-category"]
+              }}
+              showResultStats={false}
+							renderData={(res) => {
+								return {
+                  description: (
+                    <React.Fragment>
+                      {this.props.renderIcon(res)}
+                      <h5 onClick={this.props.onClick}>{res.title}</h5>
+                      <p className="text-secondary module-card-text">{res.descr}</p>
+                      <hr className="m-0"/>
+                      <div className="row w-100 justify-content-between mr-0 ml-0 p-3">
+                        <span className="align-middle text-secondary">{res.name}</span> 
+                        <span className="align-middle text-secondary">{res.downloads}<i className="fas fa-long-arrow-alt-up"></i></span> 
+                      </div>
+                    </React.Fragment>
+                  ),
+                  containerProps: {
+                    onClick: () => {this.showModuleDetailView(res)}
+                  }
+                }
+							}}
+							style={{
+								width: "80%",
+								textAlign: "center"
+							}}
             />
-          )}
-        </Masonry>
+					</div>
+				</ReactiveBase> 
       </div>
     )
   }
@@ -125,4 +181,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FlowMarket)
+export default connect(mapStateToProps, mapDispatchToProps)(withRenderModuleIcon(FlowMarket))

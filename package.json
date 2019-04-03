@@ -17,6 +17,7 @@
     "staging": "NODE_ENV=staging node index.js",
     "client": "cd app && npm run start",
     "redis": "redis-server",
+    "elasticsearch": "elasticsearch",
     "update": "npm install && cd app && npm install",
     "dev": "concurrently --kill-others-on-fail \"npm run local\" \"npm run client\""
   },

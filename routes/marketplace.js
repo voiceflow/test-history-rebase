@@ -48,27 +48,32 @@ const getModuleColour = () => {
 const updateModuleInES = (module_data) => {
 	return new Promise(async (resolve, reject) => {
 		let index_options = {
-			index: 'flows',
-			id: module_data.module_id, 
-			type: tag, //category?
+			index: 'marketplace',
+			type: 'flows',
+			id: module_data.module_id,
 			body: {
-				title: module_data.title,
-				descr: module_data.descr,
-				created: module_data.created,
-				overview: module_data.overview,
-				module_icon: module_data.module_icon,
-				color: module_data.color,
-				download: module_data.downloads
+				'title': module_data.title,
+				'descr': module_data.descr,
+				'created': module_data.created,
+				'overview': module_data.overview,
+				'module_icon': module_data.module_icon,
+				'color': module_data.color,
+				'download': module_data.downloads
 			}
 		}
+		
 		try{
-			if(module_data.tags){
+			if(typeof module_data.tags === 'string') {
+				module_data.tags = JSON.parse(module_data.tags)
+			}
+
+			if(module_data.tags && module_data.tags.length > 0){
 				for(let tag of module_data.tags){
-					options.type = tag
+					index_options.body.type = tag
 					await ESclient.index(index_options)
 				}
 			}
-			options.type = 'GENERAL'
+			index_options.body.type = 'GENERAL'
 			await ESclient.index(index_options)
 			resolve()
 		} catch (err) {

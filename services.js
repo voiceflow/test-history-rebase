@@ -239,21 +239,29 @@ const logAxiosError = (err, context='', data=null) => {
     writeToLogs('CREATOR_BACKEND_ERRORS', msg)
 }
 
-const ESclient = require('elasticsearch').Client({
-    hosts: [process.env['ELASTIC_SEARCH_HOST']],
-    connectionClass: require('http-aws-es'),
-    log: 'trace'
-})   
-ESclient.ping({
-    // ping usually has a 3000ms timeout
-    requestTimeout: 1000
-  }, function (error) {
-    if (error) {
-      console.trace('elasticsearch cluster is down!');
-    } else {
-      console.log('All is well');
+const setupESIndices = async() => {
+    try{
+      let res = await ESclient.indices.create({
+        index: 'marketplace'
+      })
+      console.log('marketplace index', res)
+    } catch (err) {
+      console.log('marketplace index already exists')
     }
-  });
+}
+
+const ESoptions = (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') ?
+    {
+        hosts: [process.env['ELASTIC_SEARCH_HOST']],
+        connectionClass: require('http-aws-es'),
+        awsConfig: AWS.config
+    }:
+    {
+        host: 'localhost:9200'
+    }
+
+const ESclient = require('elasticsearch').Client(ESoptions)  
+setupESIndices()
 
 module.exports = {
     upload: upload,
@@ -271,7 +279,7 @@ module.exports = {
     verify: verify,
     logAxiosError: logAxiosError,
     writeToLogs: writeToLogs,
-    ESclient
+    ESclient: ESclient
 }
 
 // SECRET

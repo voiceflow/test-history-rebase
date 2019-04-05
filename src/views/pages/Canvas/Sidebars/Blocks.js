@@ -23,7 +23,8 @@ export class Blocks extends PureComponent {
                 advanced: false,
                 functional: false,
                 business: false,
-                symbols: false
+                symbols: false,
+                flows: false
             }
         } else {
             show = JSON.parse(show)
@@ -57,8 +58,9 @@ export class Blocks extends PureComponent {
     loadUserModules(){
         axios.get(`/marketplace/user_module/${this.props.project_id}`)
         .then(res => {
+            let module_array = []
             if (Array.isArray(res.data) && res.data.length > 0) {
-                let module_array = res.data.map(module => {
+                module_array = res.data.map(module => {
                     let name = module.title.match(/\b(\w)/g)
                     if(name) { name = name.join('') }
                     else { name = module.title }
@@ -83,15 +85,17 @@ export class Blocks extends PureComponent {
                         diagram_id: this.props.diagrams.filter(diagram => diagram.name === module.title)[0].id
                     }
                 })
-
-                let module_section = {title: 'Flows', items: module_array}
-                let sections = this.state.sections
-                sections.push(module_section)
-                this.setState({
-                    module_section: module_section,
-                    sections: sections
-                })
             }
+
+            // Append marketplace button
+            module_array.push({type: 'marketplace_link'})
+            let module_section = {title: 'Flows', items: module_array}
+            // let sections = this.state.sections
+            // sections.push(module_section)
+            this.setState({
+                module_section: module_section,
+                // sections: sections
+            })
         })
         .catch(err => {
             console.log(err)
@@ -138,13 +142,21 @@ export class Blocks extends PureComponent {
                                 </div>
                             : null}
                             <div className="mb-3 section-blocks" style={(section.title === 'business' && window.user_detail.admin === 0) ? {opacity: 0.3} : null}>
-                                {section.items.map((item, i) => 
-                                    item && <MenuItem 
+                                {section.items.map((item, i) => {
+                                        if(item.type === 'marketplace_link'){
+                                            return <div className="wrap" key={i}>
+                                                <div className='MenuItem text-center pt-2' onClick={() => {this.props.history.push(`/market/${this.props.skill_id}`)}}>
+                                                    <span className="text-secondary">+ Add Flows</span>
+                                                </div>
+                                            </div>
+                                        } else if(item){ 
+                                            return <MenuItem 
                                             item={item} 
                                             key={i} 
                                             data-tip={item.tip} 
                                             draggable={((section.title === 'business' && window.user_detail.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}/>
-                                )}
+                                        }
+                                    })}
                             </div>
                         </Collapse>
                     </div>
@@ -170,6 +182,7 @@ export class Blocks extends PureComponent {
 const mapStateToProps = state => ({
     live_mode: state.skills.live_mode,
     project_id: state.skills.skill.project_id,
-    diagrams: state.diagrams.diagrams
+    diagrams: state.diagrams.diagrams,
+    skill_id: state.skills.skill.skill_id
 })
 export default connect(mapStateToProps)(withRenderModuleIcon(Blocks));

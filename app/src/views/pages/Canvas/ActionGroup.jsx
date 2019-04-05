@@ -870,34 +870,7 @@ export class ActionGroup extends PureComponent {
                   .catch(err => {
                       console.error(err)
                   })
-              modal_content = <div id="name-box" className="text-center">
-                      <div className="mb-5 mt-3">
-                          <input
-                              id="skill-name"
-                              className="input-underline"
-                              type="text"
-                              name="name"
-                              value={this.props.skill.name}
-                              onChange={e => {this.props.updateSkill('name', e.target.value); this.props.updateSkill('inv_name', e.target.value)}}
-                              placeholder="Enter your project name"
-                              required
-                              autoFocus
-                          />
-                      </div>
-                      <div className="text-muted mt-4 mb-3">Select Regions</div>
-                      <div className="grid-col-3 mx--1">
-                          {LOCALE_MAP.map((locale, i) => {
-                              const active = this.props.skill.locales.includes(locale.value) ? "active" : "";
-                              return <button className={`country-checkbox btn-darken ${active}`} key={i} onClick={() => { this.props.updateSkillLocale(locale.value) }}>
-                                  <span>{locale.name}</span><img src={`/images/icons/countries/${locale.value}.svg`} alt={locale.name}></img>
-                              </button>
-                          })}
-                      </div>
-                      <div className="mt-5 mb-3">
-                          <Button varient="contained" className="purple-btn" onClick={(e) => {this.updateAlexa(); this.props.saveSkill()}}>Upload</Button>
-                      </div>
-                  </div>
-          } else {
+            }
             modal_content = <div>
                 <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
                 <div className="modal-bg-txt text-center mt-2"> Upload your Action for testing</div>
@@ -912,7 +885,6 @@ export class ActionGroup extends PureComponent {
                     <button className="purple-btn" onClick={this.updateGoogle}>Confirm Upload</button>
                 </div>
             </div>
-          }
       }
       return modal_content
   }

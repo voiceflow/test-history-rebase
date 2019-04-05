@@ -126,6 +126,10 @@ class FlowMarket extends Component {
 								dataField="title"
                 placeholder="Search for Flows"
                 className="mb-1"
+                innerClass={{
+                  input: 'form-control-border search-input form-control flow-market-search'
+                }}
+                showIcon={false}
 							/>
 							<SingleDataList
                 componentId="filter-category"
@@ -134,6 +138,9 @@ class FlowMarket extends Component {
                 placeholder="Category"
                 showSearch={false}
                 customQuery={(value, props) => {return this.filterTags(value, props)}}
+                innerClass={{
+                  label: 'text-secondary flow-radio-text'
+                }}
               />
 						</div>
 						<ResultCard
@@ -155,7 +162,7 @@ class FlowMarket extends Component {
                       <p className="text-secondary module-card-text">{res.descr}</p>
                       <hr className="m-0"/>
                       <div className="row w-100 justify-content-between mr-0 ml-0 p-3">
-                        <span className="align-middle text-secondary">{res.name}</span> 
+                        <span className="align-middle text-secondary">{res.author}</span> 
                         <span className="align-middle text-secondary">{res.downloads}<i className="fas fa-long-arrow-alt-up"></i></span> 
                       </div>
                     </React.Fragment>

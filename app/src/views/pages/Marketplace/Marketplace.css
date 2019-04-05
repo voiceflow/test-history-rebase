@@ -392,3 +392,11 @@
 .flow-conflict-text{
     white-space:pre-wrap
 }
+
+.flow-radio-text{
+    font-weight: normal !important;
+}
+
+.flow-market-search {
+    border: 1px solid #D4D9E6 !important;
+}

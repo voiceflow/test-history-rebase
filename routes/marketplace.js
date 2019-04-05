@@ -58,7 +58,8 @@ const updateModuleInES = (module_data) => {
 				'overview': module_data.overview,
 				'module_icon': module_data.module_icon,
 				'color': module_data.color,
-				'download': module_data.downloads,
+				'downloads': module_data.downloads,
+				'author': module_data.name,
 				'tag': ''
 			}
 		}
@@ -176,7 +177,6 @@ const saveCertification = async (req, res) => {
 	const updateModule = async (module_id) => {
 		// Leaving module icon in for now, but not using it anymore
 		req.body.module_icon = null
-
 		try{
 			await pool.query(
 				`UPDATE modules SET title = $1, descr = $2, tags = $3, type = $4, overview = $5, module_icon = $6, color = $7, input = $8, output = $9 WHERE module_id = $10`, 
@@ -213,7 +213,11 @@ const giveCertification = async (req, res) => {
 				AND cert_requested IS NOT NULL`,
 			[project_id])
 
-		let module_data = (await pool.query(`SELECT * FROM modules WHERE project_id = $1`, [project_id])).rows[0]
+		let module_data = (await pool.query(`
+			SELECT * 
+			FROM modules 
+			INNER JOIN creators ON modules.creator_id = creators.creator_id
+			WHERE modules.project_id = $1`, [project_id])).rows[0]
 		await updateModuleInES(module_data)
 
 		res.sendStatus(200)
@@ -226,14 +230,12 @@ const giveCertification = async (req, res) => {
 const requestCertification = async (req, res) => {
 	let project_id = hashids.decode(req.params.project_id)[0]
 	let module_project_id
-
 	try{
 		let module_data = (await pool.query(`
 			SELECT * 
 			FROM modules
 			WHERE project_id = $1`, [project_id])).rows
 		module_project_id = module_data[0].module_project_id
-	
 		// Creates a new version of the skill at this pt
 		req.params.id = req.params.skill_id
 		req.params.target_creator = ADMIN_MARKETPLACE_ACC
@@ -348,7 +350,13 @@ const giveAccess = async (req, res) => {
 		let new_globals = await copyDiagramsFromSkill(origin_skill.version_id, dest_skill_id, creator_id, origin_skill.title)
 
 		//Increment # of downloads and update ES index
-		let module_data = (await pool.query(`UPDATE modules SET downloads = downloads + 1 WHERE module_id = $1 RETURNING *`, [module_id])).rows[0]
+		await pool.query(`UPDATE modules SET downloads = downloads + 1 WHERE module_id = $1`, [module_id])
+		let module_data = (await pool.query(`
+			SELECT *
+			FROM modules
+			INNER JOIN creators ON modules.creator_id = creators.creator_id
+			WHERE modules.module_id = $1
+		`, [module_id]))
 		await updateModuleInES(module_data)
 
 		res.send({globals: new_globals})

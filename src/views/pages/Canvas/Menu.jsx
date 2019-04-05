@@ -127,7 +127,7 @@ class Menu extends Component {
                     history={this.props.history}
                 />
             default:
-                return <Blocks user_modules={this.props.user_modules} user={this.props.user} toggleUpgrade={this.props.toggleUpgrade} type_counter={this.props.type_counter}/>
+                return <Blocks user_modules={this.props.user_modules} user={this.props.user} toggleUpgrade={this.props.toggleUpgrade} type_counter={this.props.type_counter} history={this.props.history}/>
         }
     }
 

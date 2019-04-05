@@ -3,7 +3,7 @@
   width: 30px;
   border-radius: 100%;
   text-align: center;
-  line-height: 30px;
+  line-height: 28px;
   border: 1px solid #fff;
   box-shadow: 0 0 0 1px #fff, 0 1px 2px 1px rgba(17,49,96,.16);
   margin-left: -4px;
@@ -11,12 +11,23 @@
   background-position: center center;
   background-size: contain;
   background-color: #F7F9FB;
+  color: #8DA2B5
+}
+
+.hover:hover .member-icon {
+  box-shadow: 0 0 0 1px #fff, 0 1px 3px 1px rgba(17,49,96,.3);
+}
+
+.member-icon.solid {
+  border: 1px solid #dce5e8;
+  box-shadow: none;
+  background-color: #fff;
 }
 
 .member-icon.lg {
   height: 48px;
   width: 48px;
-  line-height: 48px;
+  line-height: 46px;
   font-size: 24px;
 }
 
@@ -24,8 +35,9 @@
   display: flex;
   align-items: center;
   border-bottom: 1px solid #dce5e8;
-  padding: 20px 0px;
+  height: 90px;
 }
+
 .add-skill {
   background-image: linear-gradient( 89.8deg,  rgba(39,115,255,1) 4.3%, rgba(62,211,232,1) 101.4% ) !important;
 /*  background-color: #8EC5FC !important;
@@ -318,9 +330,6 @@
     overflow: hidden;
   padding-bottom: 10px;
 }
-.far{
-    font-weight: 600;
-}
 .skill-card .card-footer {
     border: none !important;
     background-color: #fff !important;
@@ -387,6 +396,65 @@
         width: 25%;
   }
 }*/
+
+.upgrade-plan {
+  margin-right: -3rem !important;
+  margin-left: -3rem !important;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  background-image: -webkit-gradient(linear,left top,left bottom,from(rgba(238,244,246,.5)),to(rgba(238,244,246,.65)));
+  background-image: -webkit-linear-gradient(top,rgba(238,244,246,.5),rgba(238,244,246,.65));
+  background-image: -o-linear-gradient(top,rgba(238,244,246,.5),rgba(238,244,246,.65));
+  background-image: linear-gradient(-180deg,rgba(238,244,246,.5),rgba(238,244,246,.65));
+  padding-top: 17px;
+  padding-bottom: 16px;
+  border: 1px solid #eaeff4;
+  border-top: none;
+  margin: 0;
+}
+
+.upgrade-plan:first-child {
+  border-top: 1px solid #eaeff4;
+  margin-top: 24px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.upgrade-plan:last-child {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin-bottom: 23px;
+}
+
+.upgrade-plan-price-sum__symbol {
+  min-width: 0;
+  font-size: 13px;
+  color: #62778c;
+  margin-right: 4px;
+  padding-top: 0;
+}
+
+.upgrade-plan-price-sum__cost {
+  min-width: 0;
+  font-size: 40px;
+  line-height: 1;
+  font-weight: 600;
+  color: rgba(19,33,68,.65);
+}
+
+.upgrade-plan-price-sum__period {
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+  color: #8da2b5;
+  margin-left: 6px;
+  padding-bottom: 2px;
+}
+
 @media(max-width: 1200px){
   .skill-card-container{
         width: calc(100%/3);

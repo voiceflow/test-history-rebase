@@ -13,8 +13,8 @@ export const User = (props) => {
     style.backgroundImage = `url(${props.user.image})`
   }
 
-  return <div className={["member-icon no-select", props.className].join(" ")} style={style}>
-    {letter}
+  return <div className={["member-icon", props.className].join(" ")} style={style}>
+    <span className="no-select">{letter}</span>
   </div>
 }
 
@@ -25,7 +25,7 @@ export const Members = (props) => {
 
   return <div className="mr-3 super-center">
     <div className="d-flex flex-row-reverse">
-      {props.members.slice(0, 8).map(m => {
+      {props.members.filter(m => !!m.creator_id).slice(0, 8).map(m => {
         return <Tooltip
           key={m.creator_id}
           title={m.name}

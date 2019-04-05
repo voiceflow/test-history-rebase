@@ -226,7 +226,7 @@ class DashBoard extends Component {
               <Members members={this.props.team.members}/>
               <UncontrolledDropdown inNavbar>
                 <DropdownToggle tag="div" className="dropdown-button">
-                  <i className="fas fa-cog standard"/><i className="fal fa-cog active"/>
+                  <i className="fas fa-cog"/>
                 </DropdownToggle>
                 <DropdownMenu right className="no-select">
                   <DropdownItem onClick={()=>this.setState({team_settings: 'MEMBERS'})}>
@@ -301,6 +301,7 @@ class DashBoard extends Component {
                             src="/create.svg"
                             alt="skill-icon"
                             width="130"
+                            height="127"
                             className="mb-3"
                           />
                         </div>

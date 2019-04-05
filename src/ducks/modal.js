@@ -1,12 +1,12 @@
 const SET_CONFIRM = 'SET_CONFIRM'
 const SET_ERROR = 'SET_ERROR'
-const SET_DEFAULT = 'SET_DEFAULT'
+const SET_MODAL = 'SET_MODAL'
 const CLEAR_MODAL = 'CLEAR_MODAL'
 
 const initialState = {
   confirmModal: null,
   errorModal: null,
-  defaultModal: null,
+  modal: null,
 }
 
 export default function modalReducer(state = initialState, action) {
@@ -21,17 +21,17 @@ export default function modalReducer(state = initialState, action) {
         ...state,
         errorModal: action.payload.error
       }
-    case SET_DEFAULT:
+    case SET_MODAL:
       return {
         ...state,
-        defaultModal: action.payload.def
+        modal: action.payload.def
       }
     case CLEAR_MODAL:
       return {
         ...state,
         confirmModal: null,
         errorModal: null,
-        defaultModal: null,
+        modal: null,
       }
     default:
       return state
@@ -39,7 +39,7 @@ export default function modalReducer(state = initialState, action) {
 }
 
 export const setConfirm = confirm => ({
-  type: "SET_CONFIRM",
+  type: SET_CONFIRM,
   payload: {
     confirm: {
       ...confirm,
@@ -60,20 +60,20 @@ export const setError = error => {
   if(typeof error === 'string') error = {message: error}
 
   return {
-    type: "SET_ERROR",
+    type: SET_ERROR,
     payload: {
       error
     }
   }
 }
 
-export const setDefault = def => ({
-  type: "SET_DEFAULT",
+export const setModal = def => ({
+  type: SET_MODAL,
   payload: {
     def
   }
 })
 
 export const clearModal = () => ({
-  type: "CLEAR_MODAL"
+  type: CLEAR_MODAL
 })

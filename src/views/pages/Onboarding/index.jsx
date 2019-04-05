@@ -3,6 +3,7 @@ import "./onboarding.css"
 import axios from 'axios'
 import StepProgressBar from './../../components/StepProgressBar'
 import { Form, FormGroup, Input} from 'reactstrap'
+import { connect } from "react-redux";
 
 const PROG_XP = (xp) => {
 	switch(xp){
@@ -281,4 +282,8 @@ class Onboarding extends Component{
 	}	
 }
 
-export default Onboarding;
+const mapStateToProps = state => ({
+  user: state.account
+})
+
+export default connect(mapStateToProps)(Onboarding);

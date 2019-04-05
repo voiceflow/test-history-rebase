@@ -133,8 +133,8 @@ class NavBar extends Component {
               </Nav>
               <Nav className="ml-auto" navbar>
                 <UncontrolledDropdown nav inNavbar className="account-dropdown">
-                  <DropdownToggle className="account" nav tag="div">
-                    <User user={this.props.user}/>
+                  <DropdownToggle className="account hover" nav tag="div">
+                    <User user={this.props.user} className="pointer"/>
                   </DropdownToggle>
                   <DropdownMenu right className="arrow arrow-right no-select">
                     <DropdownItem header>

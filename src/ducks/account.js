@@ -8,7 +8,7 @@ const initialState = {
   loading: false,
   email: null,
 	name: null,
-	id: null,
+	creator_id: null,
   admin: 0,
   image: null
 }

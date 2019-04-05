@@ -60,25 +60,12 @@ const updateModuleInES = (module_data) => {
 				'color': module_data.color,
 				'downloads': module_data.downloads,
 				'author': module_data.name,
-				'tag': ''
+				'tag': (typeof module_data.tags === 'string'? JSON.parse(module_data.tags) : '')
 			}
 		}
 		
 		try{
-			// Insert at least once
 			await ESclient.index(index_options)
-
-			if(typeof module_data.tags === 'string') {
-				module_data.tags = JSON.parse(module_data.tags)
-			}
-
-			if(module_data.tags && module_data.tags.length > 0){
-				for(let tag of module_data.tags){
-					index_options.body.tag = tag
-					await ESclient.index(index_options)
-				}
-			}
-			
 			resolve()
 		} catch (err) {
 			reject(err)
@@ -356,7 +343,7 @@ const giveAccess = async (req, res) => {
 			FROM modules
 			INNER JOIN creators ON modules.creator_id = creators.creator_id
 			WHERE modules.module_id = $1
-		`, [module_id]))
+		`, [module_id])).rows[0]
 		await updateModuleInES(module_data)
 
 		res.send({globals: new_globals})

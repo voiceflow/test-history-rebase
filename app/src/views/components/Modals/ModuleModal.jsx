@@ -110,7 +110,7 @@ class ModuleModal extends React.Component {
           {this.props.module.name}
         </div>
 
-        <p>{this.props.module.title}</p>
+        <div className="lg-header">{this.props.module.title}</div>
         <p className="text-secondary">{this.props.module.descr}</p>
         <div className="row justify-content-center mb-3">
           <button className="white-btn mr-2" onClick={this.previewFlow} disabled={this.state.loading}>Preview</button>

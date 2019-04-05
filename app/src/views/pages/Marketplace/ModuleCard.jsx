@@ -10,17 +10,15 @@ class ModuleCard extends Component{
 			<div className="module-card-container">
 				<a onClick={() => {this.props.showModuleDetailView(this.props.module)}} className="card-link">
 					<Card 
-											className="market-card"
-						onMouseEnter={() => {this.setState({hover:true})}}
-						onMouseLeave={() => {this.setState({hover:false})}}
+						className="market-card"
 					>
 						<CardBody className="text-center pb-0">
 							{this.props.renderIcon(this.props.module)}
-							<h5 onClick={this.props.onClick}>{this.props.module.title}</h5>
+							<h5>{this.props.module.title}</h5>
 							<p className="text-secondary module-card-text">{this.props.module.descr}</p>
 							<hr className="m-0"/>
 							<div className="row w-100 justify-content-between mr-0 ml-0 p-3">
-								<span className="align-middle text-secondary">{this.props.module.name}</span> 
+								<span className="align-middle text-secondary">{this.props.module.author}</span> 
 								<span className="align-middle text-secondary">{this.props.module.downloads}<i className="fas fa-long-arrow-alt-up"></i></span> 
 							</div>
 						</CardBody>

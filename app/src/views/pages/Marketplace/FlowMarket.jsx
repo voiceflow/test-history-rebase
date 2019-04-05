@@ -3,9 +3,11 @@ import axios from 'axios'
 import './Marketplace.css'
 import { connect } from 'react-redux'
 import ModuleModal from './../../components/Modals/ModuleModal'
-import { ReactiveBase, DataSearch, ResultCard, SingleDataList } from '@appbaseio/reactivesearch'
+import { ReactiveBase, DataSearch, ReactiveList, SingleDataList } from '@appbaseio/reactivesearch'
 import { TAGS } from './tags'
 import withRenderModuleIcon from '../../HOC/ModuleIcon'
+import ModuleCard from './ModuleCard'
+import Masonry from 'react-masonry-component'
 
 const ESURL = (process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'production' ? process.env['ELASTIC_SEARCH_HOST'] : 'http://localhost:9200')
 
@@ -27,6 +29,7 @@ class FlowMarket extends Component {
     this.toggleModalView = this.toggleModalView.bind(this)
     this.hideModule = this.hideModule.bind(this)
     this.filterTags = this.filterTags.bind(this)
+    this.renderModules = this.renderModules.bind(this)
   }
 
   onLoadModules(){
@@ -100,6 +103,22 @@ class FlowMarket extends Component {
     })
   }
 
+  renderModules(res){
+    return (
+      <Masonry elementType='div' className="flow-market-container">
+        {res.results.map((module, i) => {
+          if(!this.state.user_modules.has(module.id)){
+            return <ModuleCard
+              key={i}
+              module={module}
+              showModuleDetailView={this.showModuleDetailView}
+            />
+          }
+        })}
+      </Masonry>
+    )
+  }
+
   render() {
     return (
       <div className="marketplace-window justify-content-center">
@@ -119,7 +138,7 @@ class FlowMarket extends Component {
               <div className="flow-market-sidebar-bordered p-4 mt-2 mb-3">
                 <h5>Flows</h5>
                 <p className="text-secondary">Flows act as pieces of functionality that you can add to your project. Here's a video on how it works!</p>
-                <iframe width="160" height="100" src="https://www.youtube.com/embed/Dk_-DxyiQe4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="160" height="100" src="https://www.youtube.com/embed/Dk_-DxyiQe4" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
               </div>
 							<DataSearch
 								componentId="flow-search-box"
@@ -143,7 +162,7 @@ class FlowMarket extends Component {
                 }}
               />
 						</div>
-						<ResultCard
+            <ReactiveList
 							componentId="result"
 							dataField="model"
 							from={0}
@@ -153,30 +172,11 @@ class FlowMarket extends Component {
 								and: ["flow-search-box", "filter-category"]
               }}
               showResultStats={false}
-							renderData={(res) => {
-								return {
-                  description: (
-                    <React.Fragment>
-                      {this.props.renderIcon(res)}
-                      <h5 onClick={this.props.onClick}>{res.title}</h5>
-                      <p className="text-secondary module-card-text">{res.descr}</p>
-                      <hr className="m-0"/>
-                      <div className="row w-100 justify-content-between mr-0 ml-0 p-3">
-                        <span className="align-middle text-secondary">{res.author}</span> 
-                        <span className="align-middle text-secondary">{res.downloads}<i className="fas fa-long-arrow-alt-up"></i></span> 
-                      </div>
-                    </React.Fragment>
-                  ),
-                  containerProps: {
-                    onClick: () => {this.showModuleDetailView(res)}
-                  }
-                }
-							}}
-							style={{
+              style={{
 								width: "80%",
                 textAlign: "center"
               }}
-            />
+              renderAllData={this.renderModules}/>
 					</div>
 				</ReactiveBase> 
       </div>

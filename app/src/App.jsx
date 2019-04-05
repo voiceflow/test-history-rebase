@@ -35,6 +35,7 @@ import NewTeam from './views/pages/Dashboard/NewTeam'
 import { setConfirm } from 'ducks/modal'
 import ConfirmModal from "./views/components/Modals/ConfirmModal"
 import ErrorModal from './views/components/Modals/ErrorModal'
+import Modal from 'views/components/Modals/Modal'
 
 import { getAuth, getUser } from 'ducks/account'
 
@@ -177,6 +178,7 @@ class App extends Component {
         <Router history={history}>
           <ConfirmModal/>
           <ErrorModal />
+          <Modal />
           <div id="body">
             {(this.state.session && history.location.pathname !== '/onboarding') && <NavBar history={history}/>}
               <Switch>

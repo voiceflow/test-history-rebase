@@ -1,0 +1,231 @@
+import React, { Component } from "react";
+import StripeHandler from "views/HOC/StripeHandler";
+import { CardElement } from "react-stripe-elements";
+import { Collapse, Input } from "reactstrap";
+import { connect } from 'react-redux';
+import { setError } from 'ducks/modal'
+import moment from "moment";
+import axios from "axios";
+
+const MAX_POLL_COUNT = 30;
+const POLL_INTERVAL = 1000;
+const STAGES = {
+  "CHECKOUT": {},
+  "SOURCE": { loader: 'Verifying Card'},
+  "CREATE": { loader: 'Creating Team'}
+}
+
+class SeatsCheckout extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      coupon: "",
+      coupon_toggle: false,
+      support: false,
+      loading: true,
+      stage: "CHECKOUT"
+    };
+
+    this.calculatePrice = this.calculatePrice.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.checkout = this.checkout.bind(this);
+    this.checkChargeable = this.checkChargeable.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  calculatePrice() {
+    let price = 0;
+    let members = 0;
+    if (this.state.support) {
+      price += 249;
+    }
+    if (Array.isArray(this.props.invites)) {
+      members = (this.props.invites.length + 1)
+      price += members * 29;
+    } else if (Array.isArray(this.props.members)) {
+      members = this.props.members.length
+      price += members * 29;
+    }
+    return {members, price}
+  }
+
+  async checkout(e) {
+    try {
+      this.setState({ stage: "SOURCE" });
+
+      const { source } = await this.props.stripe.createSource({
+        type: "card",
+        metadata: {
+          team: this.props.team_name
+        },
+        owner: {
+          name: this.props.user.name,
+          email: this.props.user.email
+        }
+      });
+
+      await this.checkChargeable(source);
+
+      this.setState({ stage: "CREATE" });
+      if (Array.isArray(this.props.invites)) {
+        const team_id = (await axios.post("/team/checkout", {
+          source: source,
+          invites: this.props.invites,
+          name: this.props.team.name,
+          image: this.props.team.image
+        })).data;
+
+        this.props.next({ team_id: team_id });
+      } else if (Array.isArray(this.props.members)) {
+        const team = (await axios.patch(`/team/${this.props.team.team_id}/members`, {
+          source: source,
+          members: this.props.members
+        }))
+        this.props.next(team);
+      } else {
+        this.props.next();
+      }
+    } catch (err) {
+      this.setState({ stage: 'CHECKOUT' })
+      console.error(err)
+      this.props.setError((err && err.response && err.response.data) || JSON.stringify(err))
+    }
+  }
+
+  checkChargeable(source) {
+    return new Promise((resolve, reject) => {
+      let pollCount = 0;
+      const pollForSourceStatus = () => {
+        this.props.stripe
+          .retrieveSource({
+            id: source.id,
+            client_secret: source.client_secret
+          })
+          .then(result => {
+            // Depending on the Charge status, show your customer the relevant message.
+            var temp_source = result.source;
+            if (temp_source.status === "chargeable") {
+              resolve();
+            } else if (
+              temp_source.status === "pending" &&
+              pollCount < MAX_POLL_COUNT
+            ) {
+              // Try again in a second, if the Source is still `pending`:
+              pollCount += 1;
+              setTimeout(pollForSourceStatus, POLL_INTERVAL);
+            } else {
+              reject('Payment not valid - unable to verify card');
+            }
+          });
+      };
+      pollForSourceStatus();
+    });
+  }
+
+  render() {
+    var loader
+    if(this.state.loading){
+      loader = <span className="loader text-lg"/>
+    }else if(STAGES[this.state.stage] && STAGES[this.state.stage].loader){
+      loader = <>
+        <span className="loader text-lg"/><br/>
+        {STAGES[this.state.stage].loader}
+      </>
+    }
+
+    const {price, members} = this.calculatePrice()
+    return (
+      <>
+        {loader && <div className="w-100 position-relative">
+          <div className="text-center mt-4 position-absolute w-100">
+            {loader}
+          </div>
+        </div>}
+        <div
+          style={{ visibility: !!loader ? "hidden" : "visible" }}
+          className="text-left"
+        >
+          <div>
+            <div className="upgrade-plan">
+              <div className="super-center">
+                <img
+                  alt="collab"
+                  src="/images/icons/collaborate-selected.svg"
+                  height={64}
+                  width={64}
+                  className="mr-4"
+                />
+                <div>
+                  <span>{members} Collaborators</span>
+                  <br />
+                  <small className="text-muted">Billed Monthly</small>
+                </div>
+              </div>
+              <div className="d-flex">
+                <div className="upgrade-plan-price-sum__symbol">$</div>
+                <div className="upgrade-plan-price-sum__cost">{price}</div>
+                <div className="upgrade-plan-price-sum__period">/ mo</div>
+              </div>
+            </div>
+          </div>
+          <Collapse isOpen={this.state.coupon_toggle}>
+            <Input
+              name="coupon"
+              value={this.state.coupon}
+              onChange={this.handleChange}
+              placeholder="Coupon Code"
+            />
+          </Collapse>
+          <div className="space-between">
+            <label>Payment Details</label>
+            <small
+              className="btn-link"
+              onClick={() =>
+                this.setState({ coupon_toggle: !this.state.coupon_toggle })
+              }
+            >
+              {this.state.coupon_toggle ? "Cancel Coupon" : "I Have Coupon"}
+            </small>
+          </div>
+          <CardElement onReady={() => this.setState({ loading: false })} />
+          <div className="super-center">
+            <button
+              className="btn purple-btn mt-4 mb-4"
+              style={{ width: 144 }}
+              onClick={(e) => {e.preventDefault(); this.checkout()}}
+            >
+              {this.props.prompt || "Start Free Trial"}
+            </button>
+          </div>
+          {this.props.trial && (
+            <div className="text-center">
+              <div className="text-muted text-sm">
+                Your trial will end on{" "}
+                <span className="text-dark">
+                  {moment()
+                    .add(14, "days")
+                    .format("MMMM Qo, YYYY")}
+                </span>
+                <br />
+                at which point you will be charged{" "}
+                <span className="text-dark">${price}/mo</span>
+              </div>
+            </div>
+          )}
+        </div>
+      </>
+    );
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  setError: err => dispatch(setError(err))
+});
+
+export default StripeHandler(connect(null, mapDispatchToProps)(SeatsCheckout));

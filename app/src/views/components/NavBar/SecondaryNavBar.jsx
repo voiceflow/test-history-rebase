@@ -6,7 +6,7 @@ import Toggle from 'react-toggle'
 
 import { toggleLive, setLiveModeModal } from "./../../../actions/versionActions";
 import { updateDiagramRoot, fetchDiagrams } from './../../../actions/diagramActions'
-const PAGES = ['canvas', 'settings', 'visuals', 'business', 'publish', 'market']
+const PAGES = ['canvas', 'settings', 'visuals', 'business', 'publish']
 
 class SecondaryNavBar extends Component {
     constructor(props){

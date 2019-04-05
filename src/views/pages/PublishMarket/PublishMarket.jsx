@@ -335,7 +335,7 @@ class PublishMarket extends Component {
 
                             <Form>
                                 <div className="big-settings-alignment-div">
-                                    <div className="mb-4 mt-5"><b>Basic Skill Info</b></div>
+                                    <div className="mb-4 mt-5"><b>Basic Flow Info</b></div>
                                     <div className="big-settings-content">
                                         <FormGroup>
                                             <div className="row">
@@ -344,7 +344,7 @@ class PublishMarket extends Component {
                                                 </div>
                                                 <div className="col-9">
                                                     <Label className="publish-label">Title *</Label>
-                                                    <Input className="form-bg" type="text" name="title" placeholder="Storyflow - Interactive Story Adventures" value={this.state.title} disabled={this.state.in_review} onChange={this.handleChange} maxLength={20}/>
+                                                    <Input className="form-bg" type="text" name="title" placeholder="Onboarding" value={this.state.title} disabled={this.state.in_review} onChange={this.handleChange} maxLength={20}/>
                                                 </div>
                                             </div>
                                         </FormGroup>
@@ -376,11 +376,11 @@ class PublishMarket extends Component {
                                             <div className="row">
                                                 <div className="col-3 publish-info">
                                                     <p className="mb-0 helper-text">
-                                                        <b>Description</b> is a summary of your flow that shows on its card in the Marketplace. 
+                                                        <b>Short Description</b> One sentence summary of your flow that shows on its card in the Marketplace. 
                                                     </p>
                                                 </div>
                                                 <div className="col-9">
-                                                    <Label className="publish-label">Description *</Label>
+                                                    <Label className="publish-label">Short Description</Label>
                                                     <Textarea
                                                         name="descr"
                                                         className="form-control"
@@ -388,7 +388,8 @@ class PublishMarket extends Component {
                                                         value={this.state.descr}
                                                         onChange={this.handleChange}
                                                         minRows={3}
-                                                        placeholder="Module description"
+                                                        placeholder="New user onboarding"
+                                                        maxLength={20}
                                                     />
                                                 </div>
                                             </div>
@@ -398,12 +399,12 @@ class PublishMarket extends Component {
                                             <div className="row">
                                                 <div className="col-3 publish-info">
                                                     <p className="mb-0 helper-text">
-                                                        <b>Overview</b> is a detailed description of your flow. If you're using variables, writing a
+                                                        <b>Detailed Description</b> is an in-depth overview of your flow. If you're using variables, writing a
                                                         detailed description is essential for your users' understanding. 
                                                     </p>
                                                 </div>
                                                 <div className="col-9">
-                                                    <Label className="publish-label">Overview *</Label>
+                                                    <Label className="publish-label">Detailed Description</Label>
                                                     <Textarea
                                                         name="overview"
                                                         className="form-control"

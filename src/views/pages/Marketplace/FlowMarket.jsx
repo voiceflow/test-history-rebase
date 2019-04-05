@@ -135,10 +135,10 @@ class FlowMarket extends Component {
         >
 					<div style={{ display: "flex", flexDirection: "row" }}>
 						<div style={{ display: "flex", flexDirection: "column", width: "20%" }}>
-              <div className="flow-market-sidebar-bordered p-4 mt-2 mb-3">
+              <div className="flow-market-sidebar-bordered p-4 mt-2 mb-2">
                 <div className="lg-header">Flows</div>
                 <p className="text-secondary">Flows act as pieces of functionality that you can add to your project. Here's a video on how it works!</p>
-                <iframe width="160" height="100" src="https://www.youtube.com/embed/Dk_-DxyiQe4" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                <iframe width="220" height="125" src="https://www.youtube.com/embed/EMpqNf2HhKw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
               </div>
 							<DataSearch
 								componentId="flow-search-box"
@@ -174,7 +174,8 @@ class FlowMarket extends Component {
               showResultStats={false}
               style={{
 								width: "80%",
-                textAlign: "center"
+                textAlign: "center",
+                marginLeft: "50px",
               }}
               renderAllData={this.renderModules}/>
 					</div>

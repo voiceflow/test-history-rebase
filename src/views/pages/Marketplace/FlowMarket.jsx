@@ -117,7 +117,7 @@ class FlowMarket extends Component {
 					<div style={{ display: "flex", flexDirection: "row" }}>
 						<div style={{ display: "flex", flexDirection: "column", width: "20%" }}>
               <div className="flow-market-sidebar-bordered p-4 mt-2 mb-3">
-                <h5>Flows</h5>
+                <div className="lg-header">Flows</div>
                 <p className="text-secondary">Flows act as pieces of functionality that you can add to your project. Here's a video on how it works!</p>
                 <iframe width="160" height="100" src="https://www.youtube.com/embed/Dk_-DxyiQe4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
               </div>
@@ -145,7 +145,7 @@ class FlowMarket extends Component {
 						</div>
 						<ResultCard
 							componentId="result"
-							dataField="model"
+              dataField="model"
 							from={0}
 							size={6}
 							pagination={true}
@@ -158,13 +158,14 @@ class FlowMarket extends Component {
                   description: (
                     <React.Fragment>
                       {this.props.renderIcon(res)}
-                      <h5 onClick={this.props.onClick}>{res.title}</h5>
+                      <div className="lg-header" onClick={this.props.onClick}>{res.title}</div>
                       <p className="text-secondary module-card-text">{res.descr}</p>
                       <hr className="m-0"/>
-                      <div className="row w-100 justify-content-between mr-0 ml-0 p-3">
+                      <div className="row w-100 space-between mr-0 ml-0 p-3">
                         <span className="align-middle text-secondary">{res.author}</span> 
-                        <span className="align-middle text-secondary">{res.downloads}<i className="fas fa-long-arrow-alt-up"></i></span> 
-                      </div>
+                        <div><span className="align-middle text-secondary mr-2">{res.downloads}</span><img src={'/downloads.svg'} alt="user" width="16"/></div>
+                        </div>
+  
                     </React.Fragment>
                   ),
                   containerProps: {

@@ -1983,8 +1983,8 @@ kbd {
 }
 
 .module-card-icon {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 40px;
@@ -1996,6 +1996,11 @@ kbd {
 }
 
 .module-card-icon .module-image {
-    -webkit-box-shadow: 0 0 5px 0 rgba(17,49,96,.3);
-    box-shadow: 0 0 5px 0 rgba(17,49,96,.3);
+    -webkit-box-shadow: 0 2px 3px 0 rgba(14, 30, 37, 0.10);
+    box-shadow: 0 2px 3px 0 rgba(14, 30, 37, 0.14);
+}
+.lg-header{
+    font-size: 20px;
+    color: #132042;
+    font-weight: 600;
 }

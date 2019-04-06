@@ -260,10 +260,11 @@ const certStatus = (req, res) => {
 
 const removeAccess = async (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0]
+	let project_id = hashids.decode(req.params.project_id)[0]
 	let user_id = req.user.id
 
 	try{
-		await pool.query(`DELETE FROM user_modules WHERE creator_id = $1 AND module_id = $2`, [user_id, module_id])
+		await pool.query(`DELETE FROM user_modules WHERE creator_id = $1 AND module_id = $2 AND project_id = $3`, [user_id, module_id, project_id])
 		res.sendStatus(200)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})

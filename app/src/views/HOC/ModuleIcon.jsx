@@ -12,7 +12,7 @@ function withRenderModuleIcon(WrappedComponent) {
         let name = targ_module.title.match(/\b(\w)/g)
         if(name) { name = name.join('') }
         else { name = targ_module.title }
-        name = name.substring(0,3)
+        name = name.substring(0,2)
         
         let module_colors = targ_module.color.split('|')
         if(module_colors.length === 1){

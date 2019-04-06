@@ -82,7 +82,8 @@ export class Blocks extends PureComponent {
                         type: 'flow',
                         icon: icon,
                         tip: module.descr,
-                        diagram_id: this.props.diagrams.filter(diagram => diagram.name === module.title)[0].id
+                        diagram_id: this.props.diagrams.filter(diagram => diagram.name === module.title)[0].id,
+                        module_id: module.module_id
                     }
                 })
             }
@@ -181,7 +182,6 @@ export class Blocks extends PureComponent {
 
 const mapStateToProps = state => ({
     live_mode: state.skills.live_mode,
-    project_id: state.skills.skill.project_id,
     diagrams: state.diagrams.diagrams,
     skill_id: state.skills.skill.skill_id
 })

@@ -2,8 +2,24 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import {Tooltip} from 'react-tippy';
 import { ALLOWED_GOOGLE_BLOCKS } from 'Constants'
+import axios from 'axios'
 
 class MenuItem extends Component {
+    constructor(props){
+        super(props)
+
+        this.removeFlow = this.removeFlow.bind(this)
+    }
+
+    async removeFlow(){
+        try{
+            await axios.delete(`/marketplace/user_module/${this.props.project_id}/${this.props.item.module_id}`)
+            // TODO: remove from flow bar
+        } catch (err){
+            console.log(err)
+        }   
+    }
+
     render() {
 
         let className = `MenuItem ${this.props.item.type}`
@@ -35,6 +51,9 @@ class MenuItem extends Component {
                     <div className="MenuText">
                         <span>{this.props.item.text}</span> 
                         {this.props.draggable ?
+                            this.props.item.diagram_id ?
+                            <span className="delete-flow-icon" onClick={this.removeFlow}></span>
+                            :
                             <Tooltip 
                                 html={this.props.item.tip}
                                 className="menu-tip"
@@ -54,7 +73,8 @@ class MenuItem extends Component {
 }
 
 const mapStateToProps = state => ({
-    platform: state.skills.skill.platform
+    platform: state.skills.skill.platform,
+    project_id: state.skills.skill.project_id
 })
 
 export default connect(mapStateToProps)(MenuItem);

@@ -113,7 +113,8 @@ class FlowMarket extends Component {
               module={module}
               showModuleDetailView={this.showModuleDetailView}
             />
-          }
+          } 
+          return
         })}
       </Masonry>
     )
@@ -138,7 +139,7 @@ class FlowMarket extends Component {
               <div className="flow-market-sidebar-bordered p-4 mt-2 mb-2">
                 <div className="lg-header">Flows</div>
                 <p className="text-secondary">Flows act as pieces of functionality that you can add to your project. Here's a video on how it works!</p>
-                <iframe width="220" height="125" src="https://www.youtube.com/embed/EMpqNf2HhKw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {/* <iframe width="220" height="125" src="https://www.youtube.com/embed/EMpqNf2HhKw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> */}
               </div>
 							<DataSearch
 								componentId="flow-search-box"
@@ -158,7 +159,7 @@ class FlowMarket extends Component {
                 showSearch={false}
                 customQuery={(value, props) => {return this.filterTags(value, props)}}
                 innerClass={{
-                  label: 'text-secondary flow-radio-text'
+                  label: 'flow-radio'
                 }}
               />
 						</div>
@@ -177,7 +178,11 @@ class FlowMarket extends Component {
                 textAlign: "center",
                 marginLeft: "50px",
               }}
-              renderAllData={this.renderModules}/>
+              renderAllData={this.renderModules}
+              innerClass = {{
+                pagination: "flow-pagination",
+                label: "text-secondary"
+              }}/>
 					</div>
 				</ReactiveBase> 
       </div>

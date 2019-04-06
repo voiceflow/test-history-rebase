@@ -340,7 +340,7 @@ class PublishMarket extends Component {
                                         <FormGroup>
                                             <div className="row">
                                                 <div className="col-3 publish-info">
-                                                    <p className="mb-0 helper-text"><b>Title</b> is what we display for your flow on the Marketplace and can be 20 characters at most.</p>
+                                                    <p className="mb-0 helper-text"><b>Title</b> is what we display for your flow on the Marketplace (max 20 characters).</p>
                                                 </div>
                                                 <div className="col-9">
                                                     <Label className="publish-label">Title *</Label>
@@ -376,21 +376,12 @@ class PublishMarket extends Component {
                                             <div className="row">
                                                 <div className="col-3 publish-info">
                                                     <p className="mb-0 helper-text">
-                                                        <b>Short Description</b> One sentence summary of your flow that shows on its card in the Marketplace. 
+                                                        <b>Short Description</b> One sentence summary of your flow that shows on its card in the Marketplace (max 20 characters). 
                                                     </p>
                                                 </div>
                                                 <div className="col-9">
-                                                    <Label className="publish-label">Short Description</Label>
-                                                    <Textarea
-                                                        name="descr"
-                                                        className="form-control"
-                                                        disabled={this.state.in_review}
-                                                        value={this.state.descr}
-                                                        onChange={this.handleChange}
-                                                        minRows={3}
-                                                        placeholder="New user onboarding"
-                                                        maxLength={20}
-                                                    />
+                                                    <Label className="publish-label">Short Description *</Label>
+                                                    <Input className="form-bg" type="text" name="title" placeholder="This flow fixes all your problems" value={this.state.title} disabled={this.state.in_review} onChange={this.handleChange} maxLength={20}/>
                                                 </div>
                                             </div>
                                         </FormGroup>
@@ -412,7 +403,7 @@ class PublishMarket extends Component {
                                                         value={this.state.overview}
                                                         onChange={this.handleChange}
                                                         minRows={3}
-                                                        placeholder="Module overview"
+                                                        placeholder="Detailed Description"
                                                     />
                                                 </div>
                                             </div>

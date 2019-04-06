@@ -3175,3 +3175,22 @@ button.close:hover{
 .create-variable{
     border-top: 5px solid red;
 }
+
+.delete-flow-icon {
+    float:right;
+    display: inline-block;
+    position: absolute;
+    top: 12px;
+    right: 7px;
+    background-image: url("/remove.svg");
+    width: 16px;
+    height: 16px;
+}
+
+.delete-flow-icon:hover{
+    display: inline-block;
+    background-image: url("/remove-hover.svg");
+    transition: all 0.15s ease;
+    width: 16px;
+    height: 16px;
+}

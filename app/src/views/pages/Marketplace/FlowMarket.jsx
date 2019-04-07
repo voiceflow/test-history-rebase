@@ -114,7 +114,7 @@ class FlowMarket extends Component {
               showModuleDetailView={this.showModuleDetailView}
             />
           } 
-          return
+          return null
         })}
       </Masonry>
     )
@@ -129,62 +129,69 @@ class FlowMarket extends Component {
           module={this.state.curr_module}
           hideModule={this.hideModule}
         />
-        <ReactiveBase
-          app="marketplace"
-          url={ESURL}
-          type="flows"
-        >
-					<div style={{ display: "flex", flexDirection: "row" }}>
-						<div style={{ display: "flex", flexDirection: "column", width: "20%" }}>
-              <div className="flow-market-sidebar-bordered p-4 mt-2 mb-2">
-                <div className="lg-header">Flows</div>
-                <p className="text-secondary">Flows act as pieces of functionality that you can add to your project. Here's a video on how it works!</p>
-                {/* <iframe width="220" height="125" src="https://www.youtube.com/embed/EMpqNf2HhKw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> */}
+
+        <div className="container">
+          <ReactiveBase
+            app="marketplace"
+            url={ESURL}
+            type="flows"
+          >
+            <div className="row">
+              <div className="col-3">
+                <div className="flow-market-sidebar-bordered p-4 mt-2 mb-2">
+                  <div className="lg-header">Flows</div>
+                  <p className="text-secondary">Flows act as pieces of functionality that you can add to your project. Here's a video on how it works!</p>
+                  <div className="embed-responsive embed-responsive-16by9">
+                    <iframe title="Flow Market Intro" className="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowFullScreen></iframe>
+                  </div>
+                </div>
+                <DataSearch
+                  componentId="flow-search-box"
+                  dataField="title"
+                  placeholder="Search for Flows"
+                  className="mb-1"
+                  innerClass={{
+                    input: 'form-control-border search-input form-control flow-market-search'
+                  }}
+                  showIcon={false}
+                />
+                <SingleDataList
+                  componentId="filter-category"
+                  dataField="tag"
+                  data={TAGS}
+                  placeholder="Category"
+                  showSearch={false}
+                  customQuery={(value, props) => {return this.filterTags(value, props)}}
+                  innerClass={{
+                    label: 'flow-radio'
+                  }}
+                />
               </div>
-							<DataSearch
-								componentId="flow-search-box"
-								dataField="title"
-                placeholder="Search for Flows"
-                className="mb-1"
-                innerClass={{
-                  input: 'form-control-border search-input form-control flow-market-search'
-                }}
-                showIcon={false}
-							/>
-							<SingleDataList
-                componentId="filter-category"
-                dataField="tag"
-                data={TAGS}
-                placeholder="Category"
-                showSearch={false}
-                customQuery={(value, props) => {return this.filterTags(value, props)}}
-                innerClass={{
-                  label: 'flow-radio'
-                }}
-              />
-						</div>
-            <ReactiveList
-							componentId="result"
-              dataField="model"
-							from={0}
-							size={6}
-							pagination={true}
-							react={{
-								and: ["flow-search-box", "filter-category"]
-              }}
-              showResultStats={false}
-              style={{
-								width: "80%",
-                textAlign: "center",
-                marginLeft: "50px",
-              }}
-              renderAllData={this.renderModules}
-              innerClass = {{
-                pagination: "flow-pagination",
-                label: "text-secondary"
-              }}/>
-					</div>
-				</ReactiveBase> 
+              <div className="col-9">
+                <ReactiveList
+                  componentId="result"
+                  dataField="model"
+                  from={0}
+                  size={6}
+                  pagination={true}
+                  react={{
+                    and: ["flow-search-box", "filter-category"]
+                  }}
+                  showResultStats={false}
+                  style={{
+                    width: "80%",
+                    textAlign: "center",
+                    marginLeft: "50px",
+                  }}
+                  renderAllData={this.renderModules}
+                  innerClass = {{
+                    pagination: "flow-pagination",
+                    label: "text-secondary"
+                  }}/>
+              </div>
+            </div>
+				  </ReactiveBase> 
+        </div>
       </div>
     )
   }

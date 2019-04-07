@@ -8,7 +8,7 @@ class ModuleCard extends Component{
 	render(){
 		return (
 			<div className="module-card-container">
-				<a onClick={() => {this.props.showModuleDetailView(this.props.module)}} className="card-link">
+				<a href="/#" onClick={(e) => {e.preventDefault(); this.props.showModuleDetailView(this.props.module)}} className="card-link">
 					<Card 
 						className="market-card"
 					>
@@ -19,7 +19,7 @@ class ModuleCard extends Component{
 							<hr className="m-0"/>
 							<div className="row w-100 justify-content-between mr-0 ml-0 p-3">
 								<span className="align-middle text-secondary">{this.props.module.author}</span> 
-								<div><span className="align-middle text-secondary mr-2">{this.props.module.downloads}</span><img src={'/downloads.svg'} width="16"></img></div>
+								<div><span className="align-middle text-secondary mr-2">{this.props.module.downloads}</span><img src={'/downloads.svg'} width="16" alt="download-icon"></img></div>
 							</div>
 						</CardBody>
 					</Card>

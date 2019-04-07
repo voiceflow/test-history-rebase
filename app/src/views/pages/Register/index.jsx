@@ -34,6 +34,7 @@ class Account extends Component {
       unverified: false,
     }
 
+    this.invite = query.invite
     this.openLogin = this.openLogin.bind(this);
     this.openRegister = this.openRegister.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -76,7 +77,14 @@ class Account extends Component {
     .then(() => {
       localStorage.setItem('is_first_upload', 'true')
       localStorage.setItem('is_first_session', 'true')
-      this.props.history.push('/onboarding')
+      if(this.invite){
+        this.props.history.push({
+          pathname: '/dashboard',
+          search: this.props.location.search
+        })
+      }else{
+        this.props.history.push('/onboarding')
+      }
     })
     .catch(err => {
       this.setState({
@@ -99,7 +107,10 @@ class Account extends Component {
       password: this.state.password,
     })
     .then(() => {
-      this.props.history.push('/')
+      this.props.history.push({
+        pathname: '/dashboard',
+        search: this.props.location.search
+      })
     })
     .catch(err => {
       this.setState({
@@ -123,8 +134,11 @@ class Account extends Component {
       token: userProfile.tokenId,
     })
     .then(res => {
-      if (!res.first_login) {
-        this.props.history.push('/')
+      if (!res.first_login || this.invite) {
+        this.props.history.push({
+          pathname: '/dashboard',
+          search: this.props.location.search
+        })
       } else {
         this.props.history.push('/onboarding');
       }
@@ -153,8 +167,11 @@ class Account extends Component {
     })
     .then(res => {
       if (res){
-        if (!res.first_login) {
-          this.props.history.push('/')
+        if (!res.first_login || this.invite) {
+          this.props.history.push({
+            pathname: '/dashboard',
+            search: this.props.location.search
+          })
         } else {
           this.props.history.push('/onboarding');
         }

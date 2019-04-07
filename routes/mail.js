@@ -1,7 +1,8 @@
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey('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');
 const {
-  writeToLogs
+  writeToLogs,
+  encryptJSON
 } = require('./../services')
 
 
@@ -89,6 +90,12 @@ exports.sendVerificationEmail = async (name, user_id, random, email) => {
 }
 
 exports.sendTeamInvite = async (inviter, team_name, team_id, email) => {
+
+  const invite_code = encryptJSON({
+    email,
+    team_id
+  })
+
   let data = {
     'template_id': 'd-bc046346f2be4b37af218810f72abd90',
     'from': {
@@ -102,7 +109,7 @@ exports.sendTeamInvite = async (inviter, team_name, team_id, email) => {
       "dynamic_template_data": {
         inviter: inviter,
         team_name: team_name,
-        team_id: team_id
+        invite_code: `${encodeURIComponent(invite_code)}&email=${encodeURIComponent(email)}`
       }
     }]
   }

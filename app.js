@@ -192,10 +192,12 @@ app.delete('/skill/:id/product/:pid', ensureLoggedIn(), Skill.deleteProduct);
 app.post('/team', ensureLoggedIn(), Team.addTeam)
 app.post('/team/checkout', ensureLoggedIn(), Team.checkout)
 app.get('/teams', ensureLoggedIn(), Team.getTeams)
+app.post('/team/invite/:invite_code', ensureLoggedIn(), Team.checkInvite)
 app.get('/team/:team_id/projects', ensureLoggedIn(), Team.getProjects)
 app.get('/team/:team_id/members', ensureLoggedIn(), Team.getMembers)
 app.patch('/team/:team_id/members', ensureLoggedIn(), Team.updateMembers)
 app.post('/team/:team_id/copy/module/:module_id', ensureLoggedIn(), Team.verifyTeam, Marketplace.copyDefaultTemplate)
+app.delete('/team/:team_id/member/:creator_id', Team.deleteMember)
 app.delete('/team/:team_id', Team.deleteTeam)
 app.post('/team/:team_id/picture', ensureLoggedIn(), Team.verifyTeam, uploadResize(512,512).single('image'), Team.updatePicture);
 

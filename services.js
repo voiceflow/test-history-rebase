@@ -238,22 +238,27 @@ const logAxiosError = (err, context='', data=null) => {
     writeToLogs('CREATOR_BACKEND_ERRORS', msg)
 }
 
+const encryptJSON = data => jwt.sign(data, process.env.JWT_SECRET)
+const decryptJSON = token => jwt.verify(token, process.env.JWT_SECRET)
+
 module.exports = {
-    upload: upload,
-    docClient: docClient,
-    pool: pool,
-    redisClient: redisClient,
-    jwt: jwt,
-    config: config,
-    s3: s3,
-    s3Stream: s3Stream,
-    uploadResize: uploadResize,
-    hashids: hashids,
-    validateEmail: validateEmail,
-    logging_pool: logging_pool,
-    verify: verify,
-    logAxiosError: logAxiosError,
-    writeToLogs: writeToLogs
+  upload: upload,
+  docClient: docClient,
+  pool: pool,
+  redisClient: redisClient,
+  jwt: jwt,
+  config: config,
+  s3: s3,
+  s3Stream: s3Stream,
+  uploadResize: uploadResize,
+  hashids: hashids,
+  validateEmail: validateEmail,
+  logging_pool: logging_pool,
+  verify: verify,
+  logAxiosError: logAxiosError,
+  writeToLogs: writeToLogs,
+  encryptJSON: encryptJSON,
+  decryptJSON: decryptJSON
 }
 
 // SECRET

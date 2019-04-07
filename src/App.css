@@ -1967,8 +1967,8 @@ kbd {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 30px;
-    width: 30px;
+    height: 80px;
+    width: 80px;
     border-radius: 50%;
     border: 2px solid white;
     box-shadow: 0 1px 2px 1px rgba(17,49,96,.10);
@@ -1978,6 +1978,11 @@ kbd {
 .module-image h1{
     font-size: 14px;
     margin-bottom: 0px;
+}
+
+.MenuItem .module-image {
+    width: 30px;
+    height: 30px;
 }
 
 .MenuItem .module-icon{
@@ -1994,7 +1999,7 @@ kbd {
 }
 
 .module-card-icon .module-image h1 {
-    font-size: 16px;
+    font-size: 24px;
 }
 
 .module-card-icon .module-image {

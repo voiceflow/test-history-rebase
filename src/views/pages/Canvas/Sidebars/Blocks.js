@@ -184,6 +184,7 @@ export class Blocks extends PureComponent {
 const mapStateToProps = state => ({
     live_mode: state.skills.live_mode,
     diagrams: state.diagrams.diagrams,
-    skill_id: state.skills.skill.skill_id
+    skill_id: state.skills.skill.skill_id,
+    project_id: state.skills.skill.project_id
 })
 export default connect(mapStateToProps)(withRenderModuleIcon(Blocks));

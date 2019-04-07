@@ -2,6 +2,8 @@ import React from 'react'
 import { Tooltip } from "react-tippy";
 
 export const User = (props) => {
+  if(!props.user.image) return null
+  
   const style = {}
   var letter = null
   if(props.user.image.length === 13 && props.user.image.includes('|')){

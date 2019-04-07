@@ -32,8 +32,7 @@ class DashBoard extends Component {
     this.state = {
       filter_text: "",
       loading_modal: false,
-      show_updates_modal: false,
-      team_settings: false
+      show_updates_modal: false
     };
 
     this.openProject = this.openProject.bind(this);
@@ -192,10 +191,6 @@ class DashBoard extends Component {
     return (
       <>
         <LoadingModal open={this.state.loading_modal} />
-        <TeamSettings
-          open={this.state.team_settings}
-          close={()=>this.setState({team_settings: false})}
-        />
         <div id="secondary-nav">
           <div>
             {this.props.teams.allIds.map(team_id => {
@@ -224,23 +219,11 @@ class DashBoard extends Component {
           <div className="mr-4 super-center">
             {this.props.team && <>
               <Members members={this.props.team.members}/>
-              <UncontrolledDropdown inNavbar>
-                <DropdownToggle tag="div" className="dropdown-button">
-                  <i className="fas fa-cog"/>
-                </DropdownToggle>
-                <DropdownMenu right className="no-select">
-                  <DropdownItem onClick={()=>this.setState({team_settings: 'MEMBERS'})}>
-                    Manage Members
-                  </DropdownItem>
-                  <DropdownItem onClick={()=>this.setState({team_settings: 'SETTINGS'})}>
-                    Team Settings
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>
-                    Leave Team
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
+              <TeamSettings
+                open={this.state.team_settings}
+                update={(setting) => this.setState({team_settings: setting})}
+                close={() => this.setState({team_settings: false})}
+              />
             </>}
           </div>
         </div>
@@ -292,47 +275,39 @@ class DashBoard extends Component {
           {!this.props.loading && this.props.projects_array.length === 0 ? (
             <div className="h-100 d-flex justify-content-center">
               <div className="align-self-center">
-                <div className="super-center w-100 text-muted d-flex">
-                  <div className="horizontal-center align-self-center mb-5">
-                    <div className="">
-                      <div className="card-body p-4">
-                        <div className="pl-4">
-                          <img
-                            src="/create.svg"
-                            alt="skill-icon"
-                            width="130"
-                            height="127"
-                            className="mb-3"
-                          />
-                        </div>
-                        <br />
-                        <Link
-                          to={`/team/${this.props.team_id}/template`}
-                          className="no-underline super-center"
-                        >
-                          <button
-                            varient="contained"
-                            className="purple-btn"
-                            id="createskill"
-                          >
-                            New Project
-                          </button>
-                        </Link>
-                        <small>
-                          <a
-                            href="https://intercom.help/vfu"
-                            className="text-muted super-center mt-3"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <b>Voiceflow University</b>
-                            <i className="fal fa-long-arrow-right ml-1" />
-                          </a>
-                        </small>
-                      </div>
-                    </div>
-                  </div>
+                <div className="pl-4">
+                  <img
+                    src="/create.svg"
+                    alt="skill-icon"
+                    width="130"
+                    height="127"
+                    className="mb-3"
+                  />
                 </div>
+                <br />
+                <Link
+                  to={`/team/${this.props.team_id}/template`}
+                  className="no-underline super-center"
+                >
+                  <button
+                    varient="contained"
+                    className="purple-btn"
+                    id="createskill"
+                  >
+                    New Project
+                  </button>
+                </Link>
+                <small>
+                  <a
+                    href="https://intercom.help/vfu"
+                    className="text-muted super-center mt-3"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <b>Voiceflow University</b>
+                    <i className="fal fa-long-arrow-right ml-1" />
+                  </a>
+                </small>
               </div>
             </div>
           ) : (

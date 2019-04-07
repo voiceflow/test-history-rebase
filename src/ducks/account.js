@@ -65,7 +65,7 @@ export const checkSession = () => {
     } catch(err) {
       cookies.remove('auth', {path: '/'})
       dispatch(resetAccount())
-      return Promise.reject()
+      return Promise.reject(err)
     }
   }
 }
@@ -79,22 +79,22 @@ export const getUser = () => {
     } catch(err) {
       cookies.remove('auth', {path: '/'})
       dispatch(resetAccount())
-      return Promise.reject()
+      return Promise.reject(err)
     }
   }
 }
 
 export const logout = () => {
   return async dispatch => {
-    localStorage.clear()
-    dispatch(resetAccount())
-
     try {
       await axios.delete('/session')
     } catch(err) {
       console.error(err)
     }
     cookies.remove('auth', {path: '/'});
+    localStorage.clear()
+    dispatch(resetAccount())
+    
     return Promise.resolve()
   }
 }
@@ -107,8 +107,7 @@ const createSession = (endpoint) => {
         dispatch(initalizeLogin(data.user, data.token))
         return Promise.resolve(data.user)
       } catch(err) {
-        console.error(err)
-        return Promise.reject()
+        return Promise.reject(err)
       }
     }
   }

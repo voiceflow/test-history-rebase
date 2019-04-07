@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { updateCurrentTeamItem, deleteTeam } from "ducks/team";
+import { updateMembers, deleteTeam, leaveTeam } from "ducks/team";
 import {
   Modal,
   ModalBody,
@@ -17,6 +17,7 @@ import Image from "views/components/Uploads/Image";
 import { cloneDeep } from "lodash";
 import update from "immutability-helper";
 import SeatsCheckout from "./SeatsCheckout";
+import { setConfirm } from 'ducks/modal'
 
 // SETTING STATES: MEMBERS, SETTINGS, DELETE
 const STATES = {
@@ -121,6 +122,7 @@ class TeamSettings extends Component {
     this.priceEstimate = this.priceEstimate.bind(this)
     this.applyChanges = this.applyChanges.bind(this)
     this.teamUpdate = this.teamUpdate.bind(this)
+    this.leaveTeam = this.leaveTeam.bind(this)
   }
 
   componentDidUpdate(prevProps) {
@@ -168,12 +170,26 @@ class TeamSettings extends Component {
     e.preventDefault()
     if (this.props.team.status === 0 && this.state.members.length > 2) {
       this.setState({state: 'CHECKOUT'})
+    }else{
+      this.setState({state: 'UPDATING_MEMBERS'})
+      this.props.updateMembers(this.state.members)
+      .then(this.teamUpdate)
+      .catch(this.teamUpdate)
     }
   }
 
-  teamUpdate(team) {
-    this.props.updateTeam(team)
-    this.setState({state: "MEMBERS"})
+  teamUpdate() {
+    this.setState({
+      state: "MEMBERS",
+      members: cloneDeep(this.props.team.members)
+    })
+  }
+
+  leaveTeam() {
+    this.props.setConfirm({
+      text: 'Are you sure you want to leave this team?',
+      confirm: () => this.props.leaveTeam(this.props.team.team_id)
+    })
   }
 
   renderBody() {
@@ -268,10 +284,10 @@ class TeamSettings extends Component {
           </div>
         );
       default:
-         const IS_ADMIN = this.props.user.creator_id === this.props.team.creator_id
+        const UPDATING = this.state.state === 'UPDATING_MEMBERS'
         return (
-          <>
-            { IS_ADMIN && <small className="d-flex text-muted"><span className="badge mr-1">{this.props.team.seats}</span> current seats</small> }
+          <div className={ UPDATING ? "disabled" : ""}>
+            { this.IS_ADMIN && <small className="d-flex text-muted"><span className="badge mr-1">{this.props.team.seats}</span> current seats</small> }
             {this.state.members.map((m, i) => {
               return (
                 <MemberRow
@@ -294,27 +310,29 @@ class TeamSettings extends Component {
                 />
               );
             })}
-            { IS_ADMIN && <div className="my-3">
+            { this.IS_ADMIN && <div className="my-3">
               <div className="text-center mb-3">
                 <div className="btn-link pointer" onClick={this.addMember}>
                   Add more teammates
                 </div>
               </div>
               <div className="text-center mt-4">
-                <button className="btn purple-btn" onClick={this.applyChanges}>Apply Changes</button>
+                <button className="btn purple-btn" onClick={this.applyChanges} disabled={ UPDATING } style={{width: 145}}>
+                  { UPDATING ? <span className="loader"/> : "Apply Changes"} 
+                </button>
               </div>
               {this.props.team.status === 1 && this.priceEstimate()}
             </div>}
-          </>
+          </div>
         );
     }
   }
 
   priceEstimate() {
-    if (this.props.team.seats < this.state.member.length) {
-
-    } else if(this.props.team.seats > this.state.member.length){
-
+    if (this.props.team.seats < this.state.members.length) {
+      return <div className="text-center text-muted mt-2">+${(this.state.members.length - this.props.team.seats) * 29}/mo</div>
+    } else if(this.props.team.seats > this.state.members.length){
+      return null
     } else {
       return null
     }
@@ -322,18 +340,40 @@ class TeamSettings extends Component {
 
   render() {
     if (!this.props.team) return null;
+    this.IS_ADMIN = this.props.user.creator_id === this.props.team.creator_id
 
     return (
-      <Modal
-        isOpen={!!this.props.open}
-        onClosed={this.reset}
-        toggle={this.props.close}
-      >
-        <ModalHeader toggle={this.props.close} className="pb-2">
-          {STATES[this.state.state] && STATES[this.state.state].title}
-        </ModalHeader>
-        <ModalBody className="px-45 pt-0 overflow-hidden">{this.renderBody()}</ModalBody>
-      </Modal>
+      <>
+        <UncontrolledDropdown inNavbar>
+          <DropdownToggle tag="div" className="dropdown-button">
+            <i className="fas fa-cog"/>
+          </DropdownToggle>
+          <DropdownMenu right className="no-select">
+            <DropdownItem onClick={()=>this.props.update('MEMBERS')}>
+              { this.IS_ADMIN ? "Manage Members" : "Team Members" }
+            </DropdownItem>
+            { this.IS_ADMIN ? 
+              <DropdownItem onClick={()=>this.props.update('SETTINGS')}>
+                Team Settings
+              </DropdownItem> : <>
+              <DropdownItem divider />
+              <DropdownItem onClick={this.leaveTeam}>
+                Leave Team
+              </DropdownItem>
+            </>}
+          </DropdownMenu>
+        </UncontrolledDropdown>
+        <Modal
+          isOpen={!!this.props.open}
+          onClosed={this.reset}
+          toggle={this.props.close}
+        >
+          <ModalHeader toggle={this.props.close} className="pb-2">
+            {STATES[this.state.state] && STATES[this.state.state].title}
+          </ModalHeader>
+          <ModalBody className="px-45 pt-0 overflow-hidden">{this.renderBody()}</ModalBody>
+        </Modal>
+      </>
     );
   }
 }
@@ -345,8 +385,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateTeam: payload => dispatch(updateCurrentTeamItem(payload)),
-    deleteTeam: team_id => dispatch(deleteTeam(team_id))
+    updateMembers: (members, options) => dispatch(updateMembers(members, options)),
+    deleteTeam: team_id => dispatch(deleteTeam(team_id)),
+    leaveTeam: team_id => dispatch(leaveTeam(team_id)),
+    setConfirm: confirm => dispatch(setConfirm(confirm))
   };
 };
 

@@ -4,15 +4,17 @@ import { CardElement } from "react-stripe-elements";
 import { Collapse, Input } from "reactstrap";
 import { connect } from 'react-redux';
 import { setError } from 'ducks/modal'
+import { updateMembers, createTeam } from 'ducks/team';
 import moment from "moment";
 import axios from "axios";
+import update from "immutability-helper";
 
 const MAX_POLL_COUNT = 30;
 const POLL_INTERVAL = 1000;
 const STAGES = {
   "CHECKOUT": {},
   "SOURCE": { loader: 'Verifying Card'},
-  "CREATE": { loader: 'Creating Team'}
+  "CREATE": { loader: 'Creating Subscription'}
 }
 
 class SeatsCheckout extends Component {
@@ -74,27 +76,24 @@ class SeatsCheckout extends Component {
 
       this.setState({ stage: "CREATE" });
       if (Array.isArray(this.props.invites)) {
-        const team_id = (await axios.post("/team/checkout", {
-          source: source,
+        const team = await this.props.createTeam({
+          source,
           invites: this.props.invites,
           name: this.props.team.name,
           image: this.props.team.image
-        })).data;
+        })
 
-        this.props.next({ team_id: team_id });
-      } else if (Array.isArray(this.props.members)) {
-        const team = (await axios.patch(`/team/${this.props.team.team_id}/members`, {
-          source: source,
-          members: this.props.members
-        }))
         this.props.next(team);
-      } else {
+      } else if (Array.isArray(this.props.members)) {
+        // use the checkout to update existing members
+        await this.props.updateMembers(this.props.members, {source})
         this.props.next();
+      } else {
+        throw new Error("Invalid Member Format")
       }
     } catch (err) {
+      if(err) this.props.setError(err)
       this.setState({ stage: 'CHECKOUT' })
-      console.error(err)
-      this.props.setError((err && err.response && err.response.data) || JSON.stringify(err))
     }
   }
 
@@ -134,7 +133,7 @@ class SeatsCheckout extends Component {
       loader = <span className="loader text-lg"/>
     }else if(STAGES[this.state.stage] && STAGES[this.state.stage].loader){
       loader = <>
-        <span className="loader text-lg"/><br/>
+        <span className="loader text-lg mb-3"/><br/>
         {STAGES[this.state.stage].loader}
       </>
     }
@@ -143,7 +142,7 @@ class SeatsCheckout extends Component {
     return (
       <>
         {loader && <div className="w-100 position-relative">
-          <div className="text-center mt-4 position-absolute w-100">
+          <div className="text-center mt-5 position-absolute w-100">
             {loader}
           </div>
         </div>}
@@ -225,7 +224,9 @@ class SeatsCheckout extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  setError: err => dispatch(setError(err))
+  setError: err => dispatch(setError(err)),
+  updateMembers: (members, options) => dispatch(updateMembers(members, options)),
+  createTeam: (data) => dispatch(createTeam(data))
 });
 
 export default StripeHandler(connect(null, mapDispatchToProps)(SeatsCheckout));

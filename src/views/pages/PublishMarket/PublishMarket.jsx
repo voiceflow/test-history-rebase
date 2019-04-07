@@ -105,11 +105,7 @@ class PublishMarket extends Component {
                 return TAGS.find((tag) => {
                     return tag.value === curr_tag
                 })
-            }).filter((curr_tag) =>  {
-                if(curr_tag){
-                    return curr_tag
-                }
-            })
+            }).filter((curr_tag) =>  !!curr_tag)
 
     		this.setState({
     			...res.data
@@ -134,18 +130,13 @@ class PublishMarket extends Component {
         // const type = (s.type && s.type.value ? s.type.value : null);
         const type = 'FLOW'
         try{
-            let tags = s.tags.map((curr_tag) => {
+            let tags = s.tags.filter((curr_tag) => {
                 let found_tag = TAGS.find((tag) => {
                     return tag.value === curr_tag.value
                 })
-
-                if(found_tag){
-                    return found_tag.value
-                }
-            }).filter((tag) => {
-                if(tag){
-                    return tag
-                }
+                return !!found_tag
+            }).map((curr_tag) => {
+                return curr_tag.value
             })
 
             await axios.patch('/marketplace/cert/' + this.props.project_id, {
@@ -381,7 +372,7 @@ class PublishMarket extends Component {
                                                 </div>
                                                 <div className="col-9">
                                                     <Label className="publish-label">Short Description *</Label>
-                                                    <Input className="form-bg" type="text" name="title" placeholder="This flow fixes all your problems" value={this.state.title} disabled={this.state.in_review} onChange={this.handleChange} maxLength={20}/>
+                                                    <Input className="form-bg" type="text" name="descr" placeholder="This flow fixes all your problems" value={this.state.descr} disabled={this.state.in_review} onChange={this.handleChange} maxLength={20}/>
                                                 </div>
                                             </div>
                                         </FormGroup>
@@ -426,6 +417,7 @@ class PublishMarket extends Component {
                                                         placeholder='Tags'
                                                         options={TAGS}
                                                         value={this.state.tags}
+                                                        isDisabled={this.state.in_review}
                                                     />
                                                 </div>
                                             </div>

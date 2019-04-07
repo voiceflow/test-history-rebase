@@ -157,6 +157,7 @@ export class Blocks extends PureComponent {
                                             data-tip={item.tip} 
                                             draggable={((section.title === 'business' && window.user_detail.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}/>
                                         }
+                                        return null
                                     })}
                             </div>
                         </Collapse>

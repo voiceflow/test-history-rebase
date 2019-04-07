@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Router, Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { Provider } from "react-redux";
 import ReactGA from "react-ga";
 import { store, history } from "./containers/store";
 import { Alert } from "reactstrap";
+import { ConnectedRouter } from 'connected-react-router'
 
 // Import Dependent CSS
 import "react-tippy/dist/tippy.css";
@@ -62,17 +63,18 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   );
 };
 
-const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
-  <Route {...rest} render={props =>
-      getAuth() ? (
-        <Redirect to={{ pathname: "/dashboard", state: { from: props.location } }}
-        />
-      ) : (
-        <Component {...props} {...rest} name={Name} />
-      )
-    }
-  />
-);
+const PublicRoute = ({ component: Component, name: Name, ...rest }) => {
+  return (
+    <Route {...rest} render={props =>
+        getAuth() ? (
+          <Redirect to={{ pathname: "/dashboard", state: { from: props.location } }}/>
+        ) : (
+          <Component {...props} {...rest} name={Name} />
+        )
+      }
+    />
+  )
+};
 
 const getEndpoint = () => {
   let port = "";
@@ -175,7 +177,7 @@ class App extends Component {
     }
     return (
       <Provider store={store}>
-        <Router history={history}>
+        <ConnectedRouter history={history}>
           <ConfirmModal/>
           <ErrorModal />
           <Modal />
@@ -228,18 +230,24 @@ class App extends Component {
                 <PrivateRoute path="/account/upgrade" name="Account" component={Account} upgrade/>
                 <PrivateRoute path="/account" name="Account" component={Account} />\
                 <PrivateRoute path="/creator_logs/:skill_id" component={Skill} page="logs"/>
+                <Route exact path="/invite/:invite_code" render={props => {
+                  const code = props.match.params.invite_code
+                  return (
+                    getAuth() ? 
+                      <Redirect to={`/dashboard?invite=${code}`}/> : 
+                      <Redirect to={`/signup?invite=${code}${props.location.search}`}/>
+                  )}}
+                />
                 <Route exact path="/" render={() => (
-                  getAuth() ? (
-                    <Redirect to="/dashboard" />
-                  ) : (
+                  getAuth() ?
+                    <Redirect to="/dashboard" /> :
                     <Redirect to="/signup" />
-                  )
                 )}/>
               {/* Warning Routes */}
               <Route component={Page404} />
             </Switch>
           </div>
-        </Router>
+        </ConnectedRouter>
       </Provider>
     );
   }

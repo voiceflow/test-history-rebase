@@ -94,6 +94,7 @@ ul {
   height: 40px;
   padding: 10px 12px;
   border-radius: 4px;
+  width: 100%;
   border: 1px solid #d4d9e6;
 }
 
@@ -799,8 +800,8 @@ border-radius: 0px 5px 5px 0px !important;
     background-color: #fff !important;
 }
 .faux-purple-btn{
-    /* padding: 8px 22px 9px !important; */
-    border-radius: 40px !important;
+  border-radius: 40px !important;
+  height: 42px;
 }
 .purple-btn{
     padding: 11px 21px 11px 20px !important;

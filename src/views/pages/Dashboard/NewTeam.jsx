@@ -9,6 +9,7 @@ import { Spinner } from "views/components/Spinner";
 import { compose } from "recompose";
 import { connect } from "react-redux";
 import { setError, setModal } from "ducks/modal";
+import { createTeam } from "ducks/team"
 import SeatsCheckout from "./SeatsCheckout";
 import ImageOptions from 'views/components/Forms/ImageOptions'
 
@@ -86,7 +87,7 @@ class NewTeam extends Component {
         header: true,
         body: (<div className="text-center py-5 mb-5 text-muted">
           <img src="/images/icons/takeoff.svg" alt="blast off"/><br/><br/>
-          Your workspace has been<br/>
+          Your workspace <i><b>{team.name}</b></i> has been
           successfully created
         </div>)
       })
@@ -106,15 +107,12 @@ class NewTeam extends Component {
       this.setState({ stage: "CHECKOUT" });
     } else {
       this.setState({ stage: "CREATING" });
-      axios
-        .post("/team", {
-          invites: this.state.invites,
-          name: this.state.name,
-          image: this.state.image_url
-        })
-        .then(res => {
-          this.nextStep({team_id: res.data});
-        });
+      this.props.createTeam({
+        invites: this.state.invites,
+        name: this.state.name,
+        image: this.state.image_url
+      })
+      .then(team => this.nextStep(team))
     }
   }
 
@@ -358,12 +356,11 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setError: err => dispatch(setError(err)),
-    setModal: confirm => dispatch(setModal(confirm))
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  createTeam: data => dispatch(createTeam(data)),
+  setError: err => dispatch(setError(err)),
+  setModal: confirm => dispatch(setModal(confirm))
+});
 
 export default compose(
   connect(

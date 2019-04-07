@@ -94,6 +94,24 @@ export const deleteTeam = team_id => {
   }
 }
 
+export const leaveTeam = team_id => {
+  return async (dispatch, getState) => {
+    try {
+      const store = getState()
+      await axios.delete(`/team/${team_id}/member/${store.account.creator_id}`)
+
+      const state = deleteNormalize(team_id, store.team)
+      // default to the first existing team
+      let new_team = state.allIds.length > 0 ? state.allIds[0] : undefined
+      dispatch(updateCurrentTeam(new_team))
+      dispatch(updateTeams(state))
+    } catch (err) {
+      dispatch(setError((err && err.response && err.response.data) || (err && JSON.stringify(err)) || 'Unable to Update Members'))
+      return Promise.reject()
+    }
+  }
+}
+
 export const fetchTeams = () => {
   return async (dispatch, getState) => {
     try{
@@ -115,6 +133,66 @@ export const fetchTeams = () => {
     }catch(err){
       dispatch(setError("Unable to fetch workspaces"))
       console.error(err)
+      return Promise.reject()
     }
+  }
+}
+
+export const createTeam = data => {
+  return async dispatch => {
+    try {
+      var team
+      if(data.source) {
+        // creating the team from a paid source
+        team = (await axios.post("/team/checkout", data)).data
+      }else{
+        // creating a free tier team
+        team = (await axios.post("/team", data)).data;
+      }
+
+      return Promise.resolve(team)
+    } catch (err) {
+      dispatch(setError((err && err.response && err.response.data) || (err && JSON.stringify(err)) || 'Unable to Update Members'))
+      return Promise.reject()
+    }
+  }
+}
+
+export const updateMembers = (new_members, options) => {
+  return async (dispatch, getState) => {
+    try {
+      const team = (await axios.patch(`/team/${getState().team.team_id}/members`, {
+        ...options,
+        members: new_members.map(m => {
+          // switch invite field to email field
+          return {
+            ...m,
+            email: m.invite || m.email
+          }
+        })
+      })).data
+
+      dispatch(updateCurrentTeamItem(team))
+
+      return Promise.resolve()
+    }catch(err){
+      dispatch(setError((err && err.response && err.response.data) || (err && JSON.stringify(err)) || 'Unable to Update Members'))
+      return Promise.reject()
+    }
+  }
+}
+
+export const teamInvite = (invite) => {
+  return async (dispatch) => {
+    try {
+      const team_id = (await axios.post(`/team/invite/${invite}`)).data
+      dispatch({
+        type: "UPDATE_CURRENT_TEAM",
+        payload: team_id
+      })
+    }catch(err){
+      dispatch(setError((err && err.response && err.response.data) || (err && JSON.stringify(err)) || 'Invite Invalid'))
+    }
+    return Promise.resolve()
   }
 }

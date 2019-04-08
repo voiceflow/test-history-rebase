@@ -146,8 +146,8 @@ export class Blocks extends PureComponent {
                                 {section.items.map((item, i) => {
                                         if(item.type === 'marketplace_link'){
                                             return <div className="wrap" key={i}>
-                                                <div className='MenuItem text-center pt-2' onClick={() => {this.props.history.push(`/market/${this.props.skill_id}`)}}>
-                                                    <span className="text-secondary">+ Add Flows</span>
+                                                <div className='MenuItem dashed text-center pt-2' onClick={() => {this.props.history.push(`/market/${this.props.skill_id}`)}}>
+                                                    <span className="text-secondary">Add Flows</span>
                                                 </div>
                                             </div>
                                         } else if(item){ 

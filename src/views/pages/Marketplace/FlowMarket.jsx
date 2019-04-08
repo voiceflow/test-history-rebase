@@ -179,7 +179,6 @@ class FlowMarket extends Component {
                   }}
                   showResultStats={false}
                   style={{
-                    width: "80%",
                     textAlign: "center",
                     marginLeft: "50px",
                   }}

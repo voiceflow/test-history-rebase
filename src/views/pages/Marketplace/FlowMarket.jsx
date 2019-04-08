@@ -17,7 +17,6 @@ class FlowMarket extends Component {
 
     this.state = {
       modules: [],
-      user_modules: new Set(),
       curr_module: null,
       show_module_modal: false,
       conflicts: [],
@@ -39,20 +38,6 @@ class FlowMarket extends Component {
       this.setState({
         modules: modules,
         loading: false
-      })
-    })
-    .catch(err => {
-      console.log(err)
-    })
-
-    axios.get(`/marketplace/user_module/${this.props.project_id}`)
-    .then(res => {
-      let user_modules = new Set()
-      for(let module of res.data){
-        user_modules.add(module.module_id)
-      }
-      this.setState({
-        user_modules: user_modules
       })
     })
     .catch(err => {
@@ -107,7 +92,7 @@ class FlowMarket extends Component {
     return (
       <Masonry elementType='div' className="flow-market-container">
         {res.results.map((module, i) => {
-          if(!this.state.user_modules.has(module.id)){
+          if(this.props.user_modules === undefined || !this.props.user_modules[module._id]){
             return <ModuleCard
               key={i}
               module={module}
@@ -197,7 +182,8 @@ class FlowMarket extends Component {
 }
 
 const mapStateToProps = state => ({
-  project_id: state.skills.skill.project_id
+  project_id: state.skills.skill.project_id,
+  user_modules: state.skills.user_modules
 })
 
 const mapDispatchToProps = dispatch => {

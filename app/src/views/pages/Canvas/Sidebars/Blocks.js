@@ -46,60 +46,58 @@ export class Blocks extends PureComponent {
     componentWillReceiveProps(props){
         if(props.type_counter !== this.props.type_counter){
             let sections = getSections(props.type_counter)
-            if(this.state.module_section){
-                sections.push(this.state.module_section)
-            }
             this.setState({
                 sections: sections
             })
+
+            this.loadUserModules()
         }
     }
 
     loadUserModules(){
-        axios.get(`/marketplace/user_module/${this.props.project_id}`)
-        .then(res => {
-            let module_array = []
-            if (Array.isArray(res.data) && res.data.length > 0) {
-                module_array = res.data.map(module => {
-                    let name = module.title.match(/\b(\w)/g)
-                    if(name) { name = name.join('') }
-                    else { name = module.title }
-                    name = name.substring(0,3)
-                    
-                    let module_colors = module.color.split('|')
-                    if(module_colors.length === 1){
-                        module_colors = ['F86683', 'FEF2F4']
-                    }
+        let module_array = []
+        let module_keys = Object.keys(this.props.user_modules)
+        let module_section = {title: 'flows', items: module_array}
 
-                    let icon_style = {
-                        backgroundColor: `#${module_colors[1]}`,
-                        color: `#${module_colors[0]}`
-                    }
-                    
-                    let icon = <div className="no-image module-image" style={icon_style}><h1>{name}</h1></div>
-                    return {
-                        text: module.title,
-                        type: 'flow',
-                        icon: icon,
-                        tip: module.descr,
-                        diagram_id: this.props.diagrams.filter(diagram => diagram.name === module.title)[0].id,
-                        module_id: module.module_id
-                    }
+        if(module_keys.length > 0){
+            for(let key of module_keys){
+                let module = this.props.user_modules[key]
+                let name = module.title.match(/\b(\w)/g)
+                if(name) { name = name.join('') }
+                else { name = module.title }
+                name = name.substring(0,3)
+                
+                let module_colors = module.color.split('|')
+                if(module_colors.length === 1){
+                    module_colors = ['F86683', 'FEF2F4']
+                }
+
+                let icon_style = {
+                    backgroundColor: `#${module_colors[1]}`,
+                    color: `#${module_colors[0]}`
+                }
+                
+                let icon = <div className="no-image module-image" style={icon_style}><h1>{name}</h1></div>
+                module_array.push({
+                    text: module.title,
+                    type: 'flow',
+                    icon: icon,
+                    tip: module.descr,
+                    diagram_id: this.props.diagrams.filter(diagram => diagram.name === module.title)[0].id,
+                    module_id: module.module_id
                 })
             }
+        }
 
-            // Append marketplace button
-            module_array.push({type: 'marketplace_link'})
-            let module_section = {title: 'Flows', items: module_array}
-            // let sections = this.state.sections
-            // sections.push(module_section)
-            this.setState({
-                module_section: module_section,
-                // sections: sections
-            })
-        })
-        .catch(err => {
-            console.log(err)
+        module_array.push({type: 'marketplace_link'})
+        let current_sections = this.state.sections
+        if(current_sections[current_sections.length - 1].title === 'flows'){
+            current_sections[current_sections.length - 1] = module_section
+        } else {
+            current_sections.push(module_section)
+        }
+        this.setState({
+            sections: current_sections
         })
     }
 
@@ -185,6 +183,7 @@ const mapStateToProps = state => ({
     live_mode: state.skills.live_mode,
     diagrams: state.diagrams.diagrams,
     skill_id: state.skills.skill.skill_id,
-    project_id: state.skills.skill.project_id
+    project_id: state.skills.skill.project_id,
+    user_modules: state.skills.user_modules
 })
 export default connect(mapStateToProps)(withRenderModuleIcon(Blocks));

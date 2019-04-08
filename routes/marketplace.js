@@ -335,8 +335,7 @@ const giveAccess = async (req, res) => {
 			ORDER BY cert_approved DESC
 			LIMIT 1
 		`, [module_id])).rows[0]
-		let new_globals = await copyDiagramsFromSkill(origin_skill.version_id, dest_skill_id, creator_id, origin_skill.title)
-
+		let {new_diagrams, new_globals} = await copyDiagramsFromSkill(origin_skill.version_id, dest_skill_id, creator_id, origin_skill.title)
 		//Increment # of downloads and update ES index
 		await pool.query(`UPDATE modules SET downloads = downloads + 1 WHERE module_id = $1`, [module_id])
 		let module_data = (await pool.query(`
@@ -347,7 +346,8 @@ const giveAccess = async (req, res) => {
 		`, [module_id])).rows[0]
 		await updateModuleInES(module_data)
 
-		res.send({globals: new_globals})
+		module_data.module_id = hashids.encode(module_data.module_id)
+		res.send({new_module: module_data, globals: new_globals, new_diagrams: new_diagrams})
 	} catch (err) {
 		await pool.query(`DELETE FROM user_modules WHERE creator_id = $1 AND module_id = $2 AND project_id = $3`, [creator_id, module_id, project_id])
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})

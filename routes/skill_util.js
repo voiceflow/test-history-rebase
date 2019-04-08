@@ -288,11 +288,11 @@ const uploadCopiedDiagram = (data, new_skill_id, new_creator_id, diagram_names) 
   }
 
   try {
-    await pool.query(
-      `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, used_intents) (SELECT $1, $2, $3, $4, used_intents FROM diagrams WHERE id = $5)`,
-      [data.diagram.id, diagram_names[data.old_diagram_id], new_skill_id, JSON.stringify(data.sub_diagrams), data.old_diagram_id])
+    let new_diagram_data = (await pool.query(
+      `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, used_intents) (SELECT $1, $2, $3, $4, used_intents FROM diagrams WHERE id = $5) RETURNING *`,
+      [data.diagram.id, diagram_names[data.old_diagram_id], new_skill_id, JSON.stringify(data.sub_diagrams), data.old_diagram_id])).rows[0]
     await docClient.put(params).promise()
-    resolve()
+    resolve(new_diagram_data)
   } catch (err) {
     writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
     reject()
@@ -500,7 +500,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
     }
 
     Promise.all(remap_and_copy_promises)
-      .then(async () => {
+      .then(async (values) => {
         // Add working version to table
         if (options.copying_default_template || options.user_copy) {
           try{
@@ -613,8 +613,8 @@ exports.copyDiagramsFromSkill = async (origin_skill_id, dest_skill_id, new_creat
       await pool.query(`UPDATE skills SET global = $1 WHERE skill_id = $2`, [total_globals, dest_skill_id])
 
       Promise.all(remap_and_copy_promises)
-      .then(() => {
-        resolve(total_globals)
+      .then((values) => {
+        resolve({new_diagrams: values, new_globals: total_globals})
       })
       .catch(err => {
         writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})

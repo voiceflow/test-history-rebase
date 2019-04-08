@@ -11,7 +11,8 @@ import {
   UPDATE_FULFILLMENT,
   REMOVE_FULFILLMENT,
   UPDATE_VERSION_MERGE,
-  UPDATE_ENTIRE_VERSION
+  UPDATE_ENTIRE_VERSION,
+  UPDATE_USER_MODULES
 } from '../actions/versionActions';
 
 import update from 'immutability-helper';
@@ -19,7 +20,8 @@ import update from 'immutability-helper';
 const initialState = {
   skill: {},
   loading: false,
-  error: null
+  error: null,
+  user_modules: {}
 };
 
 export default function skillReducer(state = initialState, action) {
@@ -35,7 +37,8 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        skill: action.payload.skills
+        skill: action.payload.skills,
+        user_modules: action.payload.user_modules
       };
     case RESET_VERSION:
       return {
@@ -98,6 +101,11 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         skill: update(state.skill, { [action.payload.type]: {$merge: action.payload.val }})
+      }
+    case UPDATE_USER_MODULES:
+      return {
+        ...state,
+        user_modules: update(state.user_modules, {[action.payload.module.module_id]: {$set: action.payload.module}})
       }
     case SET_LIVE_MODE_MODAL:
       return {

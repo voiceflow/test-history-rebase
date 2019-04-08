@@ -402,13 +402,39 @@
 }
 
 .flow-pagination a{
-    background-color: blue;
+    background-color: #fff;
+    color: #62778C;
+    box-shadow: 0 1px 2px 1px rgba(17,49,96,.08);
+    border: none !important;
+    margin: 0 5px !important;
 }
-
+.flow-pagination a:hover{
+    background-color: #fff !important;
+    color: #132042 !important;
+}
 .flow-pagination .active{
-    background-color: red !important;
+    background-color: #fff !important;
+    border: none !important;
+    box-shadow: 0 1px 2px 1px rgba(17,49,96,.08);
+    outline: none !important;
 }
-
+.flow-pagination a:focus{
+    border: none !important;
+    box-shadow: 0 3px 5px 1px rgba(17,49,96,.15);
+    outline: none !important;
+    background-color: #fff !important;
+    color: #132042;
+}
 .flow-radio::before {
-    background-color: blue !important;
+    background-color: #f7f9fa !important;
+    border-color: #8da2b580 !important;
+    height: 13px !important;
+    width: 15px !important;
+    margin-top: 4px !important;
+}
+.flow-radio::after {
+    background-color: #5d9df5 !important;
+    width: 9px !important;
+    height: 9px !important;
+    top: 13px !important;
 }

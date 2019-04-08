@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import {Tooltip} from 'react-tippy';
 import { ALLOWED_GOOGLE_BLOCKS } from 'Constants'
 import axios from 'axios'
+import { removeUserModules } from './../../../../../actions/versionActions'
 
 class MenuItem extends Component {
     constructor(props){
@@ -14,6 +15,7 @@ class MenuItem extends Component {
     async removeFlow(){
         try{
             await axios.delete(`/marketplace/user_module/${this.props.project_id}/${this.props.item.module_id}`)
+            this.props.removeUserModules(this.props.item.module_id)
         } catch (err){
             console.log(err)
         }   
@@ -75,4 +77,10 @@ const mapStateToProps = state => ({
     platform: state.skills.skill.platform,
     project_id: state.skills.skill.project_id
 })
-export default connect(mapStateToProps)(MenuItem);
+
+const mapDispatchToProps = dispatch => {
+    return {
+      removeUserModules: (module_id) => dispatch(removeUserModules(module_id))
+    }
+  }
+export default connect(mapStateToProps, mapDispatchToProps)(MenuItem);

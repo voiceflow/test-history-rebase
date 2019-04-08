@@ -83,6 +83,11 @@ export const updateUserModules = module => ({
     payload: { module }
 })
 
+export const removeUserModules = module_id => ({
+    type: "REMOVE_USER_MODULES",
+    payload: { module_id }
+})
+
 export const updateIntents = () => {
     return (dispatch, getState) => {
         const intents = getState().skills.skill.intents
@@ -239,3 +244,4 @@ export const REMOVE_FULFILLMENT = 'REMOVE_FULFILLMENT'
 export const UPDATE_FULFILLMENT = 'UPDATE_FULFILLMENT'
 export const RESET_VERSION = 'RESET_VERSION'
 export const UPDATE_USER_MODULES = 'UPDATE_USER_MODULES'
+export const REMOVE_USER_MODULES = 'REMOVE_USER_MODULES'

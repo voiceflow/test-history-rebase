@@ -26,6 +26,11 @@ export const updateDiagramRoot = (root_id)=> ({
   payload: {root_id}
 })
 
+export const appendDiagrams = diagrams => ({
+  type: "APPEND_DIAGRAMS",
+  payload: {diagrams}
+})
+
 export const fetchDiagrams = skill_id => {
     return dispatch => {
       dispatch(fetchDiagramsBegin());
@@ -97,3 +102,4 @@ export const FETCH_DIAGRAMS_FAILURE = 'FETCH_DIAGRAMS_FAILURE'
 export const FETCH_DIAGRAM = 'FETCH_DIAGRAM'
 export const ON_FLOW_RENAME = 'ON_FLOW_RENAME'
 export const UPDATE_DIAGRAM_ROOT = 'UPDATE_DIAGRAM_ROOT'
+export const APPEND_DIAGRAMS = 'APPEND_DIAGRAMS'

@@ -4,6 +4,7 @@ import {
   FETCH_DIAGRAMS_FAILURE,
   ON_FLOW_RENAME,
   UPDATE_DIAGRAM_ROOT,
+  APPEND_DIAGRAMS
 } from '../actions/diagramActions';
 import update from 'immutability-helper'
 
@@ -19,6 +20,11 @@ export default function diagramReducer(state = initialState, action) {
       return {
         ...state,
         root_id: action.payload.root_id
+      }
+    case APPEND_DIAGRAMS:
+      return {
+        ...state,
+        diagrams: update(state.diagrams, {$push: action.payload.diagrams})
       }
     case FETCH_DIAGRAMS_BEGIN:
       return {

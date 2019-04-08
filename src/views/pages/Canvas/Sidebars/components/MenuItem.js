@@ -14,7 +14,6 @@ class MenuItem extends Component {
     async removeFlow(){
         try{
             await axios.delete(`/marketplace/user_module/${this.props.project_id}/${this.props.item.module_id}`)
-            // TODO: remove from flow bar
         } catch (err){
             console.log(err)
         }   
@@ -76,5 +75,4 @@ const mapStateToProps = state => ({
     platform: state.skills.skill.platform,
     project_id: state.skills.skill.project_id
 })
-
 export default connect(mapStateToProps)(MenuItem);

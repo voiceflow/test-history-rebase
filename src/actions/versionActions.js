@@ -9,9 +9,9 @@ export const fetchVersionBegin = () => ({
   type: "FETCH_VERSION_BEGIN"
 });
 
-export const fetchVersionSuccess = skills => ({
+export const fetchVersionSuccess = (skills, user_modules) => ({
   type: "FETCH_VERSION_SUCCESS",
-  payload: { skills }
+  payload: { skills, user_modules }
 });
 
 export const fetchVersionBlocked = message => ({
@@ -78,6 +78,11 @@ export const updateFulfillment = ( intent_key, slot_config ) => ({
     payload: { intent_key, slot_config }
 })
 
+export const updateUserModules = module => ({
+    type: "UPDATE_USER_MODULES",
+    payload: { module }
+})
+
 export const updateIntents = () => {
     return (dispatch, getState) => {
         const intents = getState().skills.skill.intents
@@ -130,12 +135,10 @@ export const fetchVersion = (skill_id, preview, diagram_id) => {
     return dispatch => {
         dispatch(fetchVersionBegin());
         // TODO UPDATE THIS ROUTE
-        return axios.get(`/skill/${skill_id}?${preview ? 'preview=1' : 'simple=1'}`, {
-                headers: {
-                    Pragma: 'no-cache'
-                }
-            })
-            .then(res => {
+        return new Promise(async (resolve, reject) => {
+            try{
+                let res = await axios.get(`/skill/${skill_id}?${preview ? 'preview=1' : 'simple=1'}&user_modules=1`)
+
                 let skill = res.data
                 if (preview && !skill.preview) {
                     dispatch(fetchVersionBlocked(<Alert color="danger">Preview not enabled for this skill</Alert>))
@@ -168,16 +171,24 @@ export const fetchVersion = (skill_id, preview, diagram_id) => {
                     skill.diagram = diagram_id
                 }
 
+                let user_modules = {}
+                let module_data = (await axios.get(`/marketplace/user_module/${skill.project_id}`)).data
+                for(let row of module_data){
+                    user_modules[row.module_id] = row
+                }
+
                 if(!preview){
-                  dispatch(fetchDevVersionSuccess(skill))
-                  dispatch(fetchLiveVersion(skill.project_id))
+                    dispatch(fetchDevVersionSuccess(skill))
+                    dispatch(fetchLiveVersion(skill.project_id))
                 }
                 
-                dispatch(fetchVersionSuccess(skill))
-            })
-            .catch(err => {
+                dispatch(fetchVersionSuccess(skill, user_modules))
+                resolve()
+            } catch (err) {
                 dispatch(fetchVersionFailure('Unable to load project'))
-            })
+                reject(err)
+            }
+        })
     }
 }
 
@@ -227,3 +238,4 @@ export const SET_LIVE_MODE_MODAL = 'SET_LIVE_MODE_MODAL';
 export const REMOVE_FULFILLMENT = 'REMOVE_FULFILLMENT'
 export const UPDATE_FULFILLMENT = 'UPDATE_FULFILLMENT'
 export const RESET_VERSION = 'RESET_VERSION'
+export const UPDATE_USER_MODULES = 'UPDATE_USER_MODULES'

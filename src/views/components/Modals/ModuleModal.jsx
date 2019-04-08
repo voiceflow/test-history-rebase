@@ -4,7 +4,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Modal, ModalBody } from 'reactstrap'
 import axios from 'axios'
-import { updateVersion } from './../../../actions/versionActions'
+import { updateVersion, updateUserModules } from './../../../actions/versionActions'
+import { appendDiagrams } from './../../../actions/diagramActions'
 
 class ModuleModal extends React.Component {
   constructor(props){
@@ -36,6 +37,8 @@ class ModuleModal extends React.Component {
     
     axios.post(`/marketplace/user_module/${this.props.project_id}/${module_id}`)
 			.then(res => {
+        this.props.appendDiagrams(res.data.new_diagrams)
+        this.props.updateUserModules(res.data.new_module)
         this.props.updateVersion('global', JSON.parse(res.data.globals))
         this.props.toggle()
         this.props.hideModule(module_id)
@@ -137,12 +140,15 @@ class ModuleModal extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  project_id: state.skills.skill.project_id
+  project_id: state.skills.skill.project_id,
+  user_modules: state.skills.user_modules
 })
 
 const mapDispatchToProps = dispatch => {
   return {
     updateVersion: (key, val) => dispatch(updateVersion(key, val)),
+    updateUserModules: (module) => dispatch(updateUserModules(module)),
+    appendDiagrams: (diagrams) => dispatch(appendDiagrams(diagrams))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withRenderModuleIcon(ModuleModal));

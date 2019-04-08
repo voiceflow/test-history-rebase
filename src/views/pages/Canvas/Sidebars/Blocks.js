@@ -49,19 +49,23 @@ export class Blocks extends PureComponent {
             this.setState({
                 sections: sections
             })
-
             this.loadUserModules()
+        } else if(props.user_modules !== this.props.user_modules){
+            this.loadUserModules(props)
         }
     }
 
-    loadUserModules(){
+    loadUserModules(props){
+        if(props === undefined){
+            props = this.props
+        }
         let module_array = []
-        let module_keys = Object.keys(this.props.user_modules)
+        let module_keys = Object.keys(props.user_modules)
         let module_section = {title: 'flows', items: module_array}
 
         if(module_keys.length > 0){
             for(let key of module_keys){
-                let module = this.props.user_modules[key]
+                let module = props.user_modules[key]
                 let name = module.title.match(/\b(\w)/g)
                 if(name) { name = name.join('') }
                 else { name = module.title }

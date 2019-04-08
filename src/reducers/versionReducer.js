@@ -12,7 +12,8 @@ import {
   REMOVE_FULFILLMENT,
   UPDATE_VERSION_MERGE,
   UPDATE_ENTIRE_VERSION,
-  UPDATE_USER_MODULES
+  UPDATE_USER_MODULES,
+  REMOVE_USER_MODULES
 } from '../actions/versionActions';
 
 import update from 'immutability-helper';
@@ -106,6 +107,11 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         user_modules: update(state.user_modules, {[action.payload.module.module_id]: {$set: action.payload.module}})
+      }
+    case REMOVE_USER_MODULES:
+      return {
+        ...state,
+        user_modules: update(state.user_modules, {$unset: [action.payload.module_id]})
       }
     case SET_LIVE_MODE_MODAL:
       return {

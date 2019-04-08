@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 import { Button, Collapse } from 'reactstrap';
 // import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import {getSections, checkBlockDisabledLive} from './../Blocks'
-import axios from 'axios';
 import withRenderModuleIcon from './../../../HOC/ModuleIcon'
 
 export class Blocks extends PureComponent {
@@ -103,6 +102,7 @@ export class Blocks extends PureComponent {
         this.setState({
             sections: current_sections
         })
+        this.forceUpdate()
     }
 
     componentDidMount(){

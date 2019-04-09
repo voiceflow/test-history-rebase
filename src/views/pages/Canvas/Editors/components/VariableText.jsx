@@ -78,7 +78,13 @@ class VariableText extends Component {
         const plugins = [this.mentionPlugin];
 
         return (
-            <div className={this.props.className}>
+            <div
+            className={this.props.className} draggable
+            onDragStart={e => {
+                e.preventDefault();
+                e.stopPropagation();
+            }}
+            >
                 <Editor
                     plugins={plugins}
                     editorState={this.state.editorState}

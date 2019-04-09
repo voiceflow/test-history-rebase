@@ -171,7 +171,7 @@ class FlowMarket extends Component {
               <div className="col-9">
                 <ReactiveList
                   componentId="result"
-                  dataField="model"
+                  dataField="downloads"
                   from={0}
                   size={9}
                   pagination={true}
@@ -183,6 +183,7 @@ class FlowMarket extends Component {
                     textAlign: "center",
                     marginLeft: "50px"
                   }}
+                  sortBy="desc"
                   renderNoResults={() => {}}
                   renderAllData={this.renderModules}
                   innerClass = {{

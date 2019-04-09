@@ -641,6 +641,24 @@ const copyDefaultTemplate = (req, res) => {
 	)
 }
 
+const getModuleDiagram = async (req, res) => {
+	let module_id = hashids.decode(req.params.module_id)[0]
+	try{
+		let project_id = (await pool.query(`SELECT module_project_id FROM modules WHERE module_id = $1`, [module_id])).rows[0].module_project_id
+		let latest_version_data = (await pool.query(`
+			SELECT *
+			FROM project_versions
+			INNER JOIN skills ON project_versions.version_id = skills.skill_id
+			WHERE project_versions.cert_approved = (SELECT max(cert_approved) FROM project_versions WHERE project_id = $1)
+				AND project_id = $1
+		`, [project_id])).rows[0]
+		res.send({diagram_id: latest_version_data.diagram})
+	} catch (err) {
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+		res.sendStatus(500)
+	}
+}
+
 module.exports = {
 	getModules: getModules,
 	getModule: getModule,
@@ -660,5 +678,6 @@ module.exports = {
 	getDefaultTemplates: getDefaultTemplates,
 	copyDefaultTemplate: copyDefaultTemplate,
 	checkConflicts: checkConflicts,
-	getInitialTemplate: getInitialTemplate
+	getInitialTemplate: getInitialTemplate,
+	getModuleDiagram: getModuleDiagram
 }

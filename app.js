@@ -253,6 +253,7 @@ app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrie
 app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
 app.get('/marketplace/initial_template', ensureLoggedIn(), Marketplace.getInitialTemplate)
 app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
+app.get('/marketplace/diagram/:module_id', ensureLoggedIn(), Marketplace.getModuleDiagram)
 
 // app.get('/marketplace', ensureAdmin(), Marketplace.getModules)
 // app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)

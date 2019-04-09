@@ -35,6 +35,11 @@ class ModuleModal extends React.Component {
     
     axios.post(`/marketplace/user_module/${this.props.project_id}/${module_id}`)
 			.then(res => {
+        for(let diagram of res.data.new_diagrams){
+          if(typeof diagram.sub_diagrams === 'string'){
+            diagram.sub_diagrams = JSON.parse(diagram.sub_diagrams)
+          }
+        }
         this.props.appendDiagrams(res.data.new_diagrams)
         this.props.updateUserModules(res.data.new_module)
         this.props.updateVersion('global', JSON.parse(res.data.globals))

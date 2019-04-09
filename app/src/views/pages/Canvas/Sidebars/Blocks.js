@@ -81,14 +81,18 @@ export class Blocks extends PureComponent {
                 }
                 
                 let icon = <div className="no-image module-image" style={icon_style}><h1>{name}</h1></div>
-                module_array.push({
-                    text: module.title,
-                    type: 'flow',
-                    icon: icon,
-                    tip: module.descr,
-                    diagram_id: this.props.diagrams.filter(diagram => diagram.name === module.title)[0].id,
-                    module_id: module.module_id
-                })
+                let diagram = this.props.diagrams.filter(diagram => diagram.name === module.title)[0]
+                if(diagram !== undefined){
+                    module_array.push({
+                        text: module.title,
+                        type: 'flow',
+                        icon: icon,
+                        tip: module.descr,
+                        diagram_id: diagram.id,
+                        module_id: module.module_id
+                    })
+                }
+                
             }
         }
 
@@ -156,7 +160,7 @@ export class Blocks extends PureComponent {
                                             return <MenuItem 
                                             item={item} 
                                             key={i} 
-                                            data-tip={item.tip} 
+                                            data-tip={item.tip}
                                             draggable={((section.title === 'business' && window.user_detail.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}/>
                                         }
                                         return null

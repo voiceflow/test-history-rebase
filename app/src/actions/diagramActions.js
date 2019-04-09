@@ -31,6 +31,11 @@ export const appendDiagrams = diagrams => ({
   payload: {diagrams}
 })
 
+export const replaceDiagrams = diagrams => ({
+  type: "REPLACE_DIAGRAMS",
+  payload: {diagrams}
+})
+
 export const fetchDiagrams = skill_id => {
     return dispatch => {
       dispatch(fetchDiagramsBegin());
@@ -41,7 +46,8 @@ export const fetchDiagrams = skill_id => {
                   return {
                       id: flow.id,
                       name: flow.name,
-                      sub_diagrams: JSON.parse(flow.sub_diagrams)
+                      sub_diagrams: JSON.parse(flow.sub_diagrams),
+                      module_id: flow.module_id
                   }
               } catch (err) {
                   return {
@@ -103,3 +109,4 @@ export const FETCH_DIAGRAM = 'FETCH_DIAGRAM'
 export const ON_FLOW_RENAME = 'ON_FLOW_RENAME'
 export const UPDATE_DIAGRAM_ROOT = 'UPDATE_DIAGRAM_ROOT'
 export const APPEND_DIAGRAMS = 'APPEND_DIAGRAMS'
+export const REPLACE_DIAGRAMS = 'REPLACE_DIAGRAMS'

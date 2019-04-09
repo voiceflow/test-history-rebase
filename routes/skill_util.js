@@ -275,7 +275,7 @@ copyDisplays = (old_skill_id, new_skill_id, new_creator_id) => new Promise(async
   }
 })
 
-const uploadCopiedDiagram = (data, new_skill_id, new_creator_id, diagram_names) => new Promise(async (resolve, reject) => {
+const uploadCopiedDiagram = (data, new_skill_id, new_creator_id, diagram_names, module_id) => new Promise(async (resolve, reject) => {
   let params = {
     TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
     Item: {
@@ -288,9 +288,12 @@ const uploadCopiedDiagram = (data, new_skill_id, new_creator_id, diagram_names) 
   }
 
   try {
+    if(module_id === undefined){
+      module_id = null
+    }
     let new_diagram_data = (await pool.query(
-      `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, used_intents) (SELECT $1, $2, $3, $4, used_intents FROM diagrams WHERE id = $5) RETURNING *`,
-      [data.diagram.id, diagram_names[data.old_diagram_id], new_skill_id, JSON.stringify(data.sub_diagrams), data.old_diagram_id])).rows[0]
+      `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, used_intents, module_id) (SELECT $1, $2, $3, $4, used_intents, $5 FROM diagrams WHERE id = $6) RETURNING *`,
+      [data.diagram.id, diagram_names[data.old_diagram_id], new_skill_id, JSON.stringify(data.sub_diagrams), module_id, data.old_diagram_id])).rows[0]
     await docClient.put(params).promise()
     resolve(new_diagram_data)
   } catch (err) {
@@ -299,7 +302,7 @@ const uploadCopiedDiagram = (data, new_skill_id, new_creator_id, diagram_names) 
   }
 })
 
-const remapDiagramIds = async (diagram, new_skill_id, new_creator_id, mappings, platform) => {
+const remapDiagramIds = async (diagram, new_skill_id, new_creator_id, mappings, platform, module_id) => {
   let sub_diagrams = new Set()
   let old_diagram_id = diagram.id
 
@@ -346,11 +349,11 @@ const remapDiagramIds = async (diagram, new_skill_id, new_creator_id, mappings, 
     diagram: diagram,
     sub_diagrams: [...sub_diagrams],
     old_diagram_id: old_diagram_id
-  }, new_skill_id, new_creator_id, mappings.names)
+  }, new_skill_id, new_creator_id, mappings.names, module_id)
   return result
 }
 
-const remapAndCopyDiagram = (diagram_id, new_skill_id, platform, new_creator_id, mappings) => {
+const remapAndCopyDiagram = (diagram_id, new_skill_id, platform, new_creator_id, mappings, module_id) => {
   return new Promise((resolve, reject) => {
     let get_params = {
       TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
@@ -364,7 +367,7 @@ const remapAndCopyDiagram = (diagram_id, new_skill_id, platform, new_creator_id,
         writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
         reject(err)
       } else if (data.Item) {
-        let result = await remapDiagramIds(data.Item, new_skill_id, new_creator_id, mappings, platform)
+        let result = await remapDiagramIds(data.Item, new_skill_id, new_creator_id, mappings, platform, module_id)
         if (typeof result === 'Error') {
           reject(result)
         } else {
@@ -557,7 +560,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
 }
 
 // Expect origin_skill_id and dest_skill_id to be decoded
-exports.copyDiagramsFromSkill = async (origin_skill_id, dest_skill_id, new_creator_id, new_flow_name) => {
+exports.copyDiagramsFromSkill = async (origin_skill_id, dest_skill_id, new_creator_id, new_flow_name, module_id) => {
   return new Promise(async (resolve, reject) => {
     let diagram_names = {}
     let diagram_mapping = {}
@@ -598,7 +601,7 @@ exports.copyDiagramsFromSkill = async (origin_skill_id, dest_skill_id, new_creat
             product: remapped_products,
             email: remapped_emails,
             names: diagram_names
-          })
+          }, module_id)
         )
       }
 

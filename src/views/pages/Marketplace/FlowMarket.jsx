@@ -89,10 +89,11 @@ class FlowMarket extends Component {
   }
 
   renderModules(res){
-    return (
-      <Masonry elementType='div' className="flow-market-container">
+    let num_displayed = 0
+    let masonry_ele = <Masonry elementType='div' className="flow-market-container">
         {res.results.map((module, i) => {
           if(this.props.user_modules === undefined || !this.props.user_modules[module._id]){
+            num_displayed += 1
             return <ModuleCard
               key={i}
               module={module}
@@ -102,7 +103,22 @@ class FlowMarket extends Component {
           return null
         })}
       </Masonry>
-    )
+    
+    if(num_displayed > 0){
+      return masonry_ele
+    } else if (res.results.length === 0){
+      return <div className="text-center flow-market-empty">
+        <img src="/images/No-reports.svg"/>
+        <h5>No Flows Found</h5>
+        <p className="text-secondary">Looks like no Flows with this title exist yet</p>
+      </div>
+    } else {
+      return <div className="text-center flow-market-empty">
+        <img src="/images/No-reports.svg"/>
+        <h5>No Flows Found</h5>
+        <p className="text-secondary">Looks like you already have all these Flows</p>
+      </div>
+    }
   }
 
   render() {
@@ -157,7 +173,7 @@ class FlowMarket extends Component {
                   componentId="result"
                   dataField="model"
                   from={0}
-                  size={6}
+                  size={9}
                   pagination={true}
                   react={{
                     and: ["flow-search-box", "filter-category"]
@@ -165,8 +181,9 @@ class FlowMarket extends Component {
                   showResultStats={false}
                   style={{
                     textAlign: "center",
-                    marginLeft: "50px",
+                    marginLeft: "50px"
                   }}
+                  renderNoResults={() => {}}
                   renderAllData={this.renderModules}
                   innerClass = {{
                     pagination: "flow-pagination",

@@ -3218,3 +3218,6 @@ button.close:hover{
     width: 16px;
     height: 16px;
 }
+.disabled{
+    opacity: 0.3;
+  }

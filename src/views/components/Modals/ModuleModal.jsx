@@ -6,6 +6,7 @@ import { Modal, ModalBody } from 'reactstrap'
 import axios from 'axios'
 import { updateVersion, updateUserModules } from './../../../actions/versionActions'
 import { appendDiagrams } from './../../../actions/diagramActions'
+import LightCanvas from './../../pages/Canvas/LightCanvas'
 
 class ModuleModal extends React.Component {
   constructor(props){
@@ -13,19 +14,16 @@ class ModuleModal extends React.Component {
 
     this.state = {
       conflicts: [],
-      loading: false
+      loading: false,
+      preview: false,
+      module_diagram: null
     }
 
-    this.previewFlow = this.previewFlow.bind(this)
     this.addFlow = this.addFlow.bind(this)
     this.checkFlowConflicts = this.checkFlowConflicts.bind(this)
     this.renderModalBody = this.renderModalBody.bind(this)
     this.renderConflictBody = this.renderConflictBody.bind(this)
     this.cancelAddFlow = this.cancelAddFlow.bind(this)
-  }
-
-  previewFlow(){
-    alert('Preview')
   }
 
   addFlow(){
@@ -52,6 +50,23 @@ class ModuleModal extends React.Component {
           loading: false
         })
       })
+  }
+
+  componentWillReceiveProps(props){
+    if(props.isOpen === true && this.props.isOpen === false){
+      let module_id = props.module.module_id
+      axios.get(`/marketplace/diagram/${module_id}`)
+      .then(res => {
+        if(res.data.diagram_id){
+          this.setState({
+            module_diagram: res.data.diagram_id
+          })
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
   }
 
   checkFlowConflicts(){
@@ -107,25 +122,37 @@ class ModuleModal extends React.Component {
   renderModalBody(){
     return (
       this.props.module && 
-      <div className="text-center pt-5">
-        <div className="module-modal-icon">{this.props.module && this.props.renderIcon(this.props.module)}</div>
-        <div className="module-modal-author text-secondary">
-          {this.props.module.name}
-        </div>
+      <React.Fragment>
+        <Modal isOpen={this.state.preview} size="xl" toggle={()=>this.setState({preview: false})} className="light-canvas-modal">
+          <div id="light-canvas-wrap">
+            <div className="no-select" id="PreviewBar">
+              {this.props.module.title}
+            </div>
+            {!!this.state.module_diagram && <LightCanvas diagram_id={this.state.module_diagram}/>}
+          </div>
+          <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
+        </Modal>
 
-        <div className="lg-header">{this.props.module.title}</div>
-        <p className="text-secondary">{this.props.module.descr}</p>
-        <div className="row justify-content-center mb-3">
-          <button className={"white-btn mr-2" + (this.state.loading ? " disabled" : "")} onClick={this.previewFlow} disabled={this.state.loading}>Preview</button>
-          <button className={"purple-btn ml-2" + (this.state.loading ? " disabled" : "")} onClick={this.checkFlowConflicts} disabled={this.state.loading}>{
-            this.state.loading?
-            <span className="loader"/>
-            :
-            "Add Flow"
-          }</button>
+        <div className="text-center pt-5">
+          <div className="module-modal-icon">{this.props.module && this.props.renderIcon(this.props.module)}</div>
+          <div className="module-modal-author text-secondary">
+            {this.props.module.name}
+          </div>
+
+          <div className="lg-header">{this.props.module.title}</div>
+          <p className="text-secondary">{this.props.module.descr}</p>
+          <div className="row justify-content-center mb-3">
+            <button className={"white-btn mr-2" + (this.state.loading ? " disabled" : "")} onClick={()=>{this.setState({preview: true})}} disabled={this.state.loading}>Preview</button>
+            <button className={"purple-btn ml-2" + (this.state.loading ? " disabled" : "")} onClick={this.checkFlowConflicts} disabled={this.state.loading}>{
+              this.state.loading?
+              <span className="loader"/>
+              :
+              "Add Flow"
+            }</button>
+          </div>
+          <p>{this.props.module.overview}</p>
         </div>
-        <p>{this.props.module.overview}</p>
-      </div>
+      </React.Fragment>
     )
   }
 

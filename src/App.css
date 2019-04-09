@@ -469,6 +469,10 @@ audio {
 .row{
     color: #2b3950;
 }
+
+.mw-250 {
+    max-width: 250px;
+}
 .no-select {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -477,6 +481,14 @@ audio {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
+}
+
+.edit-input{
+   background: none;
+   border: none;
+   outline: none;
+   margin-left: -1px;
+   margin-top: -5px;
 }
 .plain-input{
     background: none;

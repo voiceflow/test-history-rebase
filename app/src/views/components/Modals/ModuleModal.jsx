@@ -40,13 +40,14 @@ class ModuleModal extends React.Component {
         this.props.appendDiagrams(res.data.new_diagrams)
         this.props.updateUserModules(res.data.new_module)
         this.props.updateVersion('global', JSON.parse(res.data.globals))
+        this.setState({
+          loading: false
+        })
         this.props.toggle()
         this.props.hideModule(module_id)
 			})
 			.catch(error => {
-				console.log(error)
-      })
-      .finally(() => {
+        console.log(error)
         this.setState({
           loading: false
         })
@@ -62,7 +63,8 @@ class ModuleModal extends React.Component {
       .then(res => {
         if(Object.keys(res.data.globals_intersect).length > 0){
           this.setState({
-            conflicts: res.data.globals_intersect
+            conflicts: res.data.globals_intersect,
+            loading: false
           })
         } else {
           this.addFlow()
@@ -70,8 +72,6 @@ class ModuleModal extends React.Component {
       })
       .catch(error => {
         console.log(error)
-      })
-      .finally(() => {
         this.setState({
           loading: false
         })
@@ -116,8 +116,13 @@ class ModuleModal extends React.Component {
         <div className="lg-header">{this.props.module.title}</div>
         <p className="text-secondary">{this.props.module.descr}</p>
         <div className="row justify-content-center mb-3">
-          <button className="white-btn mr-2" onClick={this.previewFlow} disabled={this.state.loading}>Preview</button>
-          <button className="purple-btn ml-2" onClick={this.checkFlowConflicts} disabled={this.state.loading}>Add Flow</button>
+          <button className={"white-btn mr-2" + (this.state.loading ? " disabled" : "")} onClick={this.previewFlow} disabled={this.state.loading}>Preview</button>
+          <button className={"purple-btn ml-2" + (this.state.loading ? " disabled" : "")} onClick={this.checkFlowConflicts} disabled={this.state.loading}>{
+            this.state.loading?
+            <span className="loader"/>
+            :
+            "Add Flow"
+          }</button>
         </div>
         <p>{this.props.module.overview}</p>
       </div>

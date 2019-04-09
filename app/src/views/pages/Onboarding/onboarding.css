@@ -58,10 +58,6 @@
   cursor: pointer;
 }
 
-.disabled{
-  opacity: 0.3;
-}
-
 .onboarding-profile {
   border-radius: 50%;
   height: 100px;

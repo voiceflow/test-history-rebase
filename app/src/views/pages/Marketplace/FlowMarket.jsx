@@ -143,7 +143,7 @@ class FlowMarket extends Component {
                   <div className="lg-header">Flows</div>
                   <p className="text-secondary">Flows act as pieces of functionality that you can add to your project. Here's a video on how it works!</p>
                   <div className="embed-responsive embed-responsive-16by9">
-                    <iframe title="Flow Market Intro" className="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowFullScreen></iframe>
+                    <iframe title="Flow Market Intro" className="embed-responsive-item" src="https://www.youtube.com/embed/c9Q72qYWxKQ" allowFullScreen></iframe>
                   </div>
                 </div>
                 <DataSearch

@@ -659,5 +659,6 @@ module.exports = {
 	getPendingModules: getPendingModules,
 	getDefaultTemplates: getDefaultTemplates,
 	copyDefaultTemplate: copyDefaultTemplate,
-	checkConflicts: checkConflicts
+	checkConflicts: checkConflicts,
+	getInitialTemplate: getInitialTemplate
 }

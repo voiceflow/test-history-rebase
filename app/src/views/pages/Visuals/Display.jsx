@@ -166,8 +166,10 @@ class Display extends Component {
                     data = JSON.parse(data)
                     if(data.document && data.document.type && data.document.version){
                         document = data.document
-                        if(data.dataSources){
-                            datasource = data.dataSources
+                        if(data.datasources){
+                          datasource = data.datasources
+                        }else if(data.dataSources){
+                          datasource = data.dataSources
                         }
                     }else if(data.type && data.version){
                         document = data

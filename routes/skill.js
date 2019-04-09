@@ -366,6 +366,7 @@ exports.patchSkill = async (req, res) => {
       if (typeof b.repeat !== 'number') {
         b.repeat = 100
       }
+      if(!b.alexa_events) b.alexa_events = undefined
       // UPDATE COLUMNS RELATED TO SETTINGS
       await pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6, alexa_events = $7, repeat = $8  WHERE skill_id = $1 AND creator_id = $2`,
         [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.alexa_events, b.repeat])
@@ -860,7 +861,9 @@ exports.buildSkill = async (req, res) => {
                   }
                   account_linking.domains = _.flattenDeep(account_linking.domains)
                   account_linking.scopes = _.flattenDeep(account_linking.scopes)
-                  account_linking.clientSecret = jwt.verify(account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE)
+                  if(account_linking.clientSecret) {
+                    account_linking.clientSecret = jwt.verify(account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE)
+                  }
                   try {
                     await axios.request({
                       url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/accountLinkingClient`,

@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Alert} from 'reactstrap'
 import { getSlotsForKeys } from '../util'
 import { getIntentSlots } from '../Helper'
+import { setError } from './modalActions'
 import _ from 'lodash'
 
 export const fetchVersionBegin = () => ({
@@ -87,6 +88,19 @@ export const removeUserModules = module_id => ({
     type: "REMOVE_USER_MODULES",
     payload: { module_id }
 })
+export const updateLocales = (locale) => {
+    return (dispatch, getState) => {
+        let locales = getState().skills.skill.locales;
+        if (locales.includes(locale)) {
+            if (locales.length > 1) {
+                _.remove(locales, (v) => { return v === locale })
+            }
+        } else {
+            locales.push(locale)
+        }
+        dispatch(updateVersion('locales', locales))
+    }
+}
 
 export const updateIntents = () => {
     return (dispatch, getState) => {
@@ -225,6 +239,59 @@ export const fetchDevVersion = project_id => {
             .catch(err => {
                 console.error(err)
                 dispatch(fetchVersionFailure('Unable to fetch dev skills'))
+            })
+    }
+}
+
+export const updateSkillDB = (publish = false, cb) => {
+    return (dispatch, getState) => {
+        const s = getState().skills.skill
+        const category = (s.category && s.category.value ? s.category.value : null)
+
+        let store;
+
+        if (publish === true) {
+            store = {
+                purchase: s.purchase,
+                personal: s.personal,
+                copa: s.copa,
+                ads: s.ads,
+                export: s.export,
+                instructions: s.instructions
+            }
+        }
+
+        let properties = {
+            name: s.name,
+            inv_name: s.inv_name,
+            summary: s.summary,
+            description: s.description,
+            keywords: s.keywords,
+            invocations: s.invocations,
+            small_icon: s.small_icon,
+            large_icon: s.large_icon,
+            category: category,
+            locales: s.locales,
+            privacy_policy: !_.isEmpty(s.privacy_policy) ? s.privacy_policy : '',
+            terms_and_cond: s.terms_and_cond,
+            ...store
+        }
+
+        if (!properties.name) {
+            return dispatch(setError('Publish Settings not Saved: No Project Name'))
+        }
+
+        axios.patch(('/skill/' + s.skill_id + (publish === true ? '?publish=true' : '')), {
+                ...properties,
+                locales: JSON.stringify(properties.locales)
+            })
+            .then(res => {
+                dispatch(updateEntireVersion(properties))
+                if (typeof cb === 'function') cb()
+            })
+            .catch(err => {
+                console.log(err)
+                dispatch(setError('Save Error, Publish Settings not Saved'))
             })
     }
 }

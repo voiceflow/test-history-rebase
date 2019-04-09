@@ -54,7 +54,7 @@ class SecondaryNavBar extends Component {
             })
             .catch((err) => {
               console.error(err)
-              alert("Unable to fetch live skill")
+              alert("Unable to fetch live version")
             })
         }
     }

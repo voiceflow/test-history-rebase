@@ -19,7 +19,7 @@ const addHours = function(date, hours) {
 
 function getDates(start_date, stop_date, is_hour) {
   var date_array = []
-  var current_date = start_date;
+  var current_date = start_date
   while (current_date <= stop_date) {
     date_array.push(new Date (current_date))
     if(is_hour){
@@ -31,6 +31,32 @@ function getDates(start_date, stop_date, is_hour) {
   return date_array
 }
 
+const calculateRange = (filter_type) => {
+  let beginning = new Date()
+  let end = new Date()
+
+  if (typeof filter_type === 'object') {
+    beginning = new Date(filter_type.from.getFullYear(), filter_type.from.getMonth(), filter_type.from.getDate(), 0, 0, 0)
+    end = new Date(filter_type.to.getFullYear(), filter_type.to.getMonth(), filter_type.to.getDate(), 0, 0, 0)
+
+  } else {
+    // Convert to date for ez conversion to 0th hr of day
+    if (filter_type === 'yd') {
+      end = new Date(beginning.getFullYear(), beginning.getMonth(), beginning.getDate())
+      beginning = new Date(beginning.getFullYear(), beginning.getMonth(), beginning.getDate() - 1)
+    } else if (filter_type === '7d') {
+      beginning = new Date(beginning.getFullYear(), beginning.getMonth(), beginning.getDate() - 6)
+    } else if (filter_type === '30d') {
+      beginning = new Date(beginning.getFullYear(), beginning.getMonth(), beginning.getDate() - 29)
+    } else if (filter_type === 'td') {
+      beginning = new Date(beginning.getFullYear(), beginning.getMonth(), beginning.getDate())
+    }
+  }
+
+  // Make sure they're the right timezones
+  beginning.setTime(beginning.getTime() + (end.getTimezoneOffset() - beginning.getTimezoneOffset()) * 60 * 1000)
+  return [beginning, end]
+}
 class Home extends Component {
 
   constructor(props) {
@@ -54,31 +80,17 @@ class Home extends Component {
   }
 
   getDAUs(filter_type) {
-    let beginning = new Date()
-    let end = new Date()
-
-    if (typeof filter_type === 'object') {
-      beginning = new Date(filter_type.from.getFullYear(), filter_type.from.getMonth(), filter_type.from.getDate(), 0, 0, 0)
-      end = new Date(filter_type.to.getFullYear(), filter_type.to.getMonth(), filter_type.to.getDate(), 0, 0, 0)
-    } else {
-      // Convert to date for ez conversion to 0th hr of day
-      if (filter_type === 'yd') {
-        end = new Date(beginning.getFullYear(), beginning.getMonth(), beginning.getDate(), 0, 0, 0)
-        beginning = new Date(beginning.getFullYear(), beginning.getMonth(), beginning.getDate() - 1, 0, 0, 0)
-      } else if (filter_type === '7d') {
-        beginning = new Date(beginning.getFullYear(), beginning.getMonth(), beginning.getDate() - 6, 0, 0, 0)
-      } else if (filter_type === '30d') {
-        beginning = new Date(beginning.getFullYear(), beginning.getMonth(), beginning.getDate() - 29, 0, 0, 0)
-      } else if (filter_type === 'td') {
-        beginning = new Date(beginning.getFullYear(), beginning.getMonth(), beginning.getDate(), 0, 0, 0)
-      }
-    }
+    let DAUrange = calculateRange(filter_type)
+    let from = Math.trunc(DAUrange[0].getTime() / 1000)
+    let to = Math.trunc(DAUrange[1].getTime() / 1000)
+    let tz_offset = parseInt(new Date().getTimezoneOffset()) / 60
 
     // Convert to unix time for comparison on backend, also keep in seconds
-    let from = Math.trunc(beginning.getTime() / 1000)
-    let to = Math.trunc(end.getTime() / 1000)
+    // let from = Math.trunc(beginning.getTime() / 1000)
+    // let to = Math.trunc(end.getTime() / 1000)
+    // let tz_offset = new Date().getTimezoneOffset() / 60
 
-    axios.get(`/analytics/${this.props.skill_id}/${from}/${to}/DAU`)
+    axios.get(`/analytics/${this.props.project_id}/${from}/${to}/${tz_offset}/DAU`)
       .then(res => {
         let dau = []
         let dates = []
@@ -86,10 +98,12 @@ class Home extends Component {
         let dau_index = 0
 
         // Generate range of times for the period
-        date_range = getDates(beginning, end, to - from <= 259200)
-
+        date_range = getDates(DAUrange[0], DAUrange[1], to - from <= 259200)
         // For loop adds a 0 for any period of time that didn't have users
         for(let i=0;i < date_range.length; i++){
+          if(dau_index < res.data.length){
+            // console.log(date_range[i], date_range[i].getTime(), res.data[dau_index].dau_date, new Date(res.data[dau_index].dau_date).getTime())
+          }
           if(dau_index < res.data.length && date_range[i].getTime() === new Date(res.data[dau_index].dau_date).getTime()){
             dau.push(parseInt(res.data[dau_index].user_count))
             dau_index += 1

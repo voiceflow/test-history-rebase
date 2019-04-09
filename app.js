@@ -250,6 +250,8 @@ app.post('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Ma
 app.get('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.checkConflicts)
 app.delete('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.removeAccess)
 app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate)
+app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
+app.get('/marketplace/initial_template', ensureLoggedIn(), Marketplace.getInitialTemplate)
 app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
 
 // app.get('/marketplace', ensureAdmin(), Marketplace.getModules)
@@ -278,7 +280,7 @@ app.post('/analytics/track_first_project', ensureLoggedIn(), Track.trackFirstPro
 app.post('/analytics/track_dev_account', ensureLoggedIn(), Track.trackDevAccount)
 
 app.get('/analytics/:project_id/users', ensureLoggedIn(), Analytics.getUsersData)
-app.get('/analytics/:project_id/:from/:to/DAU', ensureLoggedIn(), Analytics.getDAU)
+app.get('/analytics/:project_id/:from/:to/:user_tz/DAU', ensureLoggedIn(), Analytics.getDAU)
 app.get('/analytics/:project_id', ensureLoggedIn(), Analytics.getStats)
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);

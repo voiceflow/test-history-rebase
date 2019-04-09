@@ -3,7 +3,7 @@
 exports[`SideBar Project render project sidebar with root 1`] = `
 <Fragment>
   <ButtonGroup
-    className="toggle-group mb-2"
+    className="toggle-group mb-2 mw-250"
     role="group"
     tag="div"
   >
@@ -59,7 +59,7 @@ exports[`SideBar Project render project sidebar with root 1`] = `
 exports[`SideBar Project render project with sub diagrams 1`] = `
 <Fragment>
   <ButtonGroup
-    className="toggle-group mb-2"
+    className="toggle-group mb-2 mw-250"
     role="group"
     tag="div"
   >

@@ -108,13 +108,13 @@ class FlowMarket extends Component {
       return masonry_ele
     } else if (res.results.length === 0){
       return <div className="text-center flow-market-empty">
-        <img src="/images/No-reports.svg"/>
+        <img src="/images/No-reports.svg" alt="No Flows Found"/>
         <h5>No Flows Found</h5>
         <p className="text-secondary">Looks like no Flows with this title exist yet</p>
       </div>
     } else {
       return <div className="text-center flow-market-empty">
-        <img src="/images/No-reports.svg"/>
+        <img src="/images/No-reports.svg" alt="No Flows Found"/>
         <h5>No Flows Found</h5>
         <p className="text-secondary">Looks like you already have all these Flows</p>
       </div>

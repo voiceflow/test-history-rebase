@@ -1,7 +1,10 @@
 exports.TAGS = [
-  {value: 'UPSELL', label: 'Up-sell'},
-  {value: 'ORDERING', label: 'Ordering'},
-  {value: 'BOOKING', label: 'Booking'},
-  {value: 'ACCOUNTING', label: 'Accounting'},
-  {value: 'DATABASE', label: 'Database'}
+  {value: 'GREETINGS', label: 'Greetings'},
+  {value: 'LOGIC', label: 'Logic'},
+  {value: 'CODE', label: 'Code'},
+  {value: 'INTEGRATIONS', label: 'Integrations'},
+  {value: 'ENDING', label: 'Ending'},
+  {value: 'VISUALS', label: 'Visuals'},
+  {value: 'ERRORS', label: 'Errors'},
+  {value: 'EARCONS', label: 'Earcons'}
 ]

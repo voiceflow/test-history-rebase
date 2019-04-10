@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import MenuItem from './components/MenuItem';
-import { connect } from 'react-redux'
 import ModuleItem from './components/ModuleItem';
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button, Collapse } from 'reactstrap';
 // import { Button, Collapse, ButtonGroup } from 'reactstrap';
@@ -156,6 +156,12 @@ export class Blocks extends PureComponent {
                                                     <span className="text-secondary">Add Flows</span>
                                                 </div>
                                             </div>
+                                        } else if(item.module_id){
+                                            return <ModuleItem
+                                            item={item}
+                                            key={i}
+                                            data-tip={item.tip}
+                                            draggable={true}/>
                                         } else if(item){ 
                                             return <MenuItem 
                                             item={item} 

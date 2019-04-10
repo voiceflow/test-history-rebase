@@ -33,7 +33,8 @@ class Publish extends Component {
         super(props)
 
         let TABS = cloneDeep(tabs)
-        if (window.user_detail.admin >= 100) {
+        // MARKETPLACE BETA
+        if (window.user_detail.admin === 7) {
             TABS.push({
                 display: (key) => <React.Fragment key={key}><i className="far fa-store-alt mr-2" /> Marketplace</React.Fragment>,
                 match: ['market'],

@@ -9,7 +9,6 @@ import Emails from './Emails'
 import Home from './Home'
 import Products from './Products/Products';
 import EditProduct from './Products/EditProduct';
-import { Button } from 'reactstrap'
 
 const PAID_FEATURES = ['Multi-Platform Publishing', 'In-depth Analytics', 'Email Automation', 'Business Support', 'In Skill Purchases', 'Project Backups']
 
@@ -69,11 +68,11 @@ class Business extends Component {
                     <div className="card" id="upgrade">
                         <h2>Upgrade to access business features</h2>
                         <p className="text-muted">To gain access to business features such as analytics, In-skill purchasing and Email automation upgrade your Voiceflow account to a paid tier</p>
-                        {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/images/icons/circle_check.svg" width={25} className="mr-3" alt="check"/>{feature}</p>)}
+                        {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/images/icons/circle_check.svg" width={18} className="mr-3" alt="check"/>{feature}</p>)}
                         <div className="mt-2">
-                            <Button className="purple-btn" onClick={() => this.props.history.push('/account/upgrade')}>
+                            <button className="btn-primary" onClick={() => this.props.history.push('/account/upgrade')}>
                                 Upgrade Plan
-                            </Button>
+                            </button>
                         </div>
                     </div>
                 </div>

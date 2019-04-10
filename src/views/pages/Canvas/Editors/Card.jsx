@@ -46,7 +46,7 @@ class Card extends Component {
                 <VariableInput
                     className="form-control"
                     raw={this.state.node.extras.title}
-                    placeholder='Welcome to Skill Name'
+                    placeholder='Insert card title'
                     variables={this.props.variables}
                     updateRaw={(raw) => this.updateContent('title', raw)}
                 />
@@ -69,14 +69,14 @@ class Card extends Component {
                                 margin
                             />
                         </div>}
-                        <div className="my-2">
-                                <Button color="clear" block onClick={()=>this.updateContent('small_img', (this.state.node.extras.small_img === undefined ? null : undefined))}>
+                        <div className="my-2 text-center">
+                                <button className="btn-tertiary" block onClick={()=>this.updateContent('small_img', (this.state.node.extras.small_img === undefined ? null : undefined))}>
                                     {this.state.node.extras.small_img === undefined ? <Tooltip position="bottom" html={<div style={{ width: 165 }}>Small screens use the normal image by default</div>}>
-                                        <i className="fal fa-plus"/> Small Screen Image
+                                    Add Small Screen Image
                                     </Tooltip> : <React.Fragment>
                                     Remove Small Image
                                     </React.Fragment>}
-                                </Button>
+                                </button>
                         </div>
                     </React.Fragment>
                 }
@@ -85,7 +85,7 @@ class Card extends Component {
                     <VariableText
                         className="editor"
                         raw={this.state.node.extras.content}
-                        placeholder={<React.Fragment>{'Here are some actions you can do'}<br/>- Action 1<br/>- Action 2 etc.<br/></React.Fragment>}
+                        placeholder={<React.Fragment>{'Add content to your card here'}</React.Fragment>}
                         variables={this.props.variables}
                         updateRaw={(raw) => this.updateContent('content', raw)}
                     />

@@ -209,7 +209,7 @@ class BasicAdvancedSettings extends Component{
                           </span>
                           <br />
                           <Button color="danger" onClick={this.confirmDelete}>
-                            Delete Skill
+                            Delete Project
                           </Button>
                         </Alert>
                       </FormGroup>
@@ -227,7 +227,7 @@ class BasicAdvancedSettings extends Component{
                       <FormGroup>
                         <Label className="mb-1">Repeat</Label>
                         <div className="helper-text mb-3">
-                          <div className="row mb-3">
+                          <div className="row mb-3 space-between">
                                 <div className="helper-text col-10">
                                     Users will be able to say repeat at any choice/interaction and the dialog will repeat
                                 </div>

@@ -123,7 +123,7 @@ class IntentInputs extends Component {
         return (
             <div className="w-100">
                 {length > 4 && <Input type="search" onChange={this.onSearchChange} id="searchIntents" className="form-control-border mb-3 search-input" placeholder="Search Intents" value={this.state.search_value}></Input>}
-                {length < 251 && <button className="btn btn-clear btn-lg btn-block mb-3" onClick={this.handleAddIntent} disabled={this.props.live_mode}><i className="far fa-plus"></i> Add Intent</button>}
+                {length < 251 && <button className="btn btn-clear btn-lg btn-block mb-3" onClick={this.handleAddIntent} disabled={this.props.live_mode}><i className="far fa-plus mr-2"></i> Add Intent</button>}
                 {reverse}
             </div>
         );

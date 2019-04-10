@@ -129,9 +129,9 @@ class ChoiceInput extends Component {
             return utterances.map( (u, i) => {
                 if(i === 0) return null
                 i = utterances.length - i
-                return <div className="interaction-utterance" key={utterances[i].key}>
+                return <div className="choice-utterance" key={utterances[i].key}>
                   <ContainedTextarea value={utterances[i].text} onChange={(text) => this.updateSample(text, i)}/>
-                  <i onClick={(e) => {this.deleteUtterance(e, i)}} className="fas fa-backspace trash-icon"></i>
+                  <i onClick={(e) => {this.deleteUtterance(e, i)}} className="fas fa-backspace trash-icon mt-2"></i>
                 </div>
             });
         }
@@ -149,16 +149,16 @@ class ChoiceInput extends Component {
           <div className="interaction-block">
             <div className="choice-title">
               <span>{this.props.index+1}</span>
-              <button className="close" onClick={()=>this.props.remove()} disabled={this.props.live_mode}>&times;</button>
+              <button className="close" onClick={()=>this.props.remove()} disabled={this.props.live_mode}></button>
             </div>
             {has_entry && <div>
               <ContainedTextarea
                 placeholder='Enter user reply'
-                className="form-control user-input mb-3 form-bg" 
+                className="form-control user-input mb-2" 
                 value={this.state.samples[0].text} 
                 onChange={(text) => this.updateSample(text, 0)}/>
               <div className="space-between pointer ml-1 mb-1" onClick={this.toggleOpen}>
-                <label>Synonyms ({this.state.samples.length - 1})</label>
+                <div className="section-title">Synonyms ({this.state.samples.length - 1})</div>
                 <i className={"text-muted fas fa-caret-down rotate" + (this.props.choice.open ? "" : " fa-rotate-90")}/>
               </div>
             </div>}
@@ -173,7 +173,7 @@ class ChoiceInput extends Component {
                   html={this.state.text_error}
               >
                 <Textarea
-                  className={`form-control form-bg user-input ${this.state.samples.length === 1 ?  ' mb-3' : ''}`}
+                  className={`form-control ${this.state.samples.length === 1 ?  ' mb-1' : ''}`}
                   value={this.state.text}
                   onChange={this.onTextChange}
                   placeholder={this.state.samples.length ? "Enter synonyms of the user reply" : "Enter user reply"}
@@ -182,7 +182,7 @@ class ChoiceInput extends Component {
                 />
               </Tooltip>
               {!has_entry && <div className="space-between my-2 pl-1">
-                <small className="text-muted">Press "Enter" to add</small>
+                <small className="text-muted">Press <b>'Enter'</b> to add</small>
                 <span className="key-bubble forward pointer" onClick={this.addUtterance}><i className="far fa-long-arrow-right"/></span>
               </div>}
               {has_entry && this.renderUtterances(this.state.samples)}

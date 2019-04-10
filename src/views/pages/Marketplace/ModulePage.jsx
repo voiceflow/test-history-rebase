@@ -118,9 +118,9 @@ class ModulePage extends Component{
 
 					{
                     	this.state.has_access?
-                    	<MUIButton variant="contained" className="purple-btn mb-3" onClick={this.handleRemoveFromLib}>Remove from Library <i className="fas fa-layer-minus ml-2"></i></MUIButton>
+                    	<MUIButton variant="contained" className="btn-primary mb-3" onClick={this.handleRemoveFromLib}>Remove from Library <i className="fas fa-layer-minus ml-2"></i></MUIButton>
                         :
-                        <MUIButton variant="contained" className="purple-btn" onClick={this.handleAddtoLib}>Add to Library <i className="fas fa-layer-plus ml-2"></i></MUIButton>
+                        <MUIButton variant="contained" className="btn-primary" onClick={this.handleAddtoLib}>Add to Library <i className="fas fa-layer-plus ml-2"></i></MUIButton>
                     }
 			    </div>
 			</div>

@@ -19,23 +19,33 @@
 }
 .interaction-utterance {
     border-bottom: 1px solid #e9eef3 !important;
-    padding: 6px 0px 6px 0px;
+    padding: 10px 0px 10px 0px;
     display: flex;
     color: #8DA2B5 !important;
 }
 .interaction-utterance:last-child {
     border: none !important;
 }
+.interaction-utterance:first-child {
+    margin-top: 10px !important;
+}
 .interaction-utterance>div{
     flex: 1;
     word-break: break-word;
     display: inline-block;
 }
-
+.choice-utterance{
+    border-bottom: 1px solid #e9eef3 !important;
+    padding: 3px 0px 3px 0px;
+    display: flex;
+    color: #8DA2B5 !important;
+}
+.choice-utterance:last-child {
+    border: none !important;
+}
 .trash-icon:hover {
     color: #8DA2B5;
 }
-
 .trash-icon {
     padding: 5px 4px 0 5px;
     cursor: pointer;
@@ -59,7 +69,7 @@
 /*    font-size: 14px;*/
     outline: none;
     width: 100%;
-    color: #282828;
+    color: #132144;
 }
 
 .interaction-title, .intent-title {
@@ -79,26 +89,17 @@
 }
 
 .interaction-title span {
-    /*padding: 5px 10px 0px 10px;*/
-    padding-top: 2px;
+    padding: 2px 6px;
     height: 20px;
-    padding-left: 6px;
-    padding-right: 6px;
     text-align: center;
-    line-height: 16px;
+    line-height: 14px;
     border-radius: 5px;
     overflow: hidden;
-    background-color: #edf5ff;
-    color: #42A5FF;
-    border: 1px solid #42A5FF50;
-    /* font-weight: bold; */
-    font-size: 12px;
-    margin-right: 8px;
-    margin-left: -3px;
-    /* box-shadow: 0 2px 4px 0 rgba(14,30,37,.12); */
+    color: #8DA2B5;
+    border: 1px solid #d4d9e6;
+    font-size: 11px;
     font-weight: 600;
-    margin-top: 3px;
-    margin-left: 2px;
+    cursor: pointer;
 }
 
 .intent-title span {
@@ -108,6 +109,7 @@
     color: #8da2b5;
     line-height: 16px;
     margin-left: -10px;
+    cursor: pointer;
 }
 
 .interaction-name-input::placeholder {
@@ -149,7 +151,7 @@
     border: 1px solid rgba(141, 162, 181, 0.4) !important;
 }
 .mentions-input__input:focus, .slot-input:focus{
-    border-color: #42A5FF !important;
+    border-color: #5D9DF5 !important;
 }
 
 .mentions-input:focus, .mentions-input.blank:focus {
@@ -210,13 +212,12 @@
     margin-top: 3px;
 }
 
-.slot-utterance {
-    padding: 4px 0px 3px 0px;
+.slot-utterance{
+    border-bottom: 1px solid #e9eef3 !important;
+    padding: 7px 0px 7px 0px;
     display: flex;
     color: #8DA2B5 !important;
-    border-bottom: 1px solid #e9eef3 !important;
 }
-
 .slot-utterance>textarea {
   padding: 5px 0;
   font-size: 1rem;

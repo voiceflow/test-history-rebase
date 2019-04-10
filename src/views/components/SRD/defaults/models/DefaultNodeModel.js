@@ -24,8 +24,8 @@ export class DefaultNodeModel extends NodeModel {
 	setSelected(selected) {
 		super.setSelected(selected)
 	}
-	deSerialize(object, engine) {
-		super.deSerialize(object, engine);
+	deSerialize(object, engine, keepLink) {
+		super.deSerialize(object, engine, keepLink);
 		this.name = object.name;
 		this.color = null;
 	}

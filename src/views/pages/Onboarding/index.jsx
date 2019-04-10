@@ -205,10 +205,10 @@ class Onboarding extends Component{
 						<div className="calendly-inline-widget" id="calendly" data-url="https://calendly.com/voiceflow"/>
 					</div>
 					{this.state.loading ? 
-						<Button id="submit-calendly" variant="contained" className="purple-btn" disabled>
+						<Button id="submit-calendly" variant="contained" className="btn-primary" disabled>
 							<p className="loading-btn m-0 p-0">Loading</p>
 						</Button> :
-					<button id="submit-calendly" className="purple-btn" onClick={this.submitSurvey}>Complete</button>
+						<button id="submit-calendly" className="btn-primary" onClick={this.submitSurvey}>Complete</button>
 					}
 				</React.Fragment>
 			case 'purpose_stage':
@@ -232,10 +232,10 @@ class Onboarding extends Component{
 						</div>
 						<div className="justify-content-center">
 						{this.state.loading ? 
-							<Button variant="contained" className="purple-btn" disabled>
+							<Button variant="contained" className="btn-primary" disabled>
 								<p className="loading-btn m-0 p-0">Loading</p>
 							</Button>:
-							<button className={"purple-btn" + (!['EXPLORING', 'BUILDING', 'BUILT'].includes(this.state.purpose) ? ' disabled' : '')} disabled={!['EXPLORING', 'BUILDING', 'BUILT'].includes(this.state.purpose)} onClick={() => {
+							<button className={"btn-primary" + (!['EXPLORING', 'BUILDING', 'BUILT'].includes(this.state.purpose) ? ' disabled' : '')} disabled={!['EXPLORING', 'BUILDING', 'BUILT'].includes(this.state.purpose)} onClick={() => {
 								if(this.state.company_size >= SHOW_CALENDLY_NUMBER){
 									this.setState({stage: 'calendly'})
 								} else {
@@ -268,7 +268,7 @@ class Onboarding extends Component{
 							<p className="loading-btn m-0 p-0">Loading</p>
 						</Button> :
 					<div className="justify-content-center">
-						<button className={"purple-btn" + (!(['beginner', 'intermediate', 'expert'].includes(this.state.experience)) ? ' disabled': '')} disabled={!(['beginner', 'intermediate', 'expert'].includes(this.state.experience))} onClick={() => {
+						<button className={"btn-primary" + (!(['beginner', 'intermediate', 'expert'].includes(this.state.experience)) ? ' disabled': '')} disabled={!(['beginner', 'intermediate', 'expert'].includes(this.state.experience))} onClick={() => {
 							if (this.state.type === 'WORK') {
 								this.setState({ stage: 'purpose_stage' })
 							} else {
@@ -298,7 +298,7 @@ class Onboarding extends Component{
 							<p className="loading-btn m-0 p-0">Loading</p>
 						</Button> :
 					<div className="justify-content-center">
-						<button className={"purple-btn" + (!(this.state.design || this.state.build) ? ' disabled' : '')} disabled={!(this.state.design || this.state.build)} onClick={() => {
+						<button className={"btn-primary" + (!(this.state.design || this.state.build) ? ' disabled' : '')} disabled={!(this.state.design || this.state.build)} onClick={() => {
 							if (this.state.type === 'WORK') {
 								this.setState({ stage: 'purpose_stage' })
 							} else {
@@ -339,7 +339,7 @@ class Onboarding extends Component{
 					</div>
 					<div className="justify-content-center">
 						<button 
-							className={"purple-btn" + (!(!!this.state.company_name && !!this.state.company_role && parseInt(this.state.company_size) > 0) ? ' disabled': '')} 
+							className={"btn-primary" + (!(!!this.state.company_name && !!this.state.company_role && parseInt(this.state.company_size) > 0) ? ' disabled': '')} 
 							disabled={!(!!this.state.company_name && !!this.state.company_role && parseInt(this.state.company_size) > 0)} 
 							onClick={() => {this.setState({stage: 'work_plan'})}}>
 							Next Question
@@ -361,7 +361,7 @@ class Onboarding extends Component{
 						</div>
 					</div>
 					<div className="justify-content-center">
-						<button className={"purple-btn" + (!['WORK', 'PERSONAL'].includes(this.state.type) ? ' disabled': '')} disabled={!['WORK', 'PERSONAL'].includes(this.state.type)} onClick={() => {
+						<button className={"btn-primary" + (!['WORK', 'PERSONAL'].includes(this.state.type) ? ' disabled': '')} disabled={!['WORK', 'PERSONAL'].includes(this.state.type)} onClick={() => {
 							if(this.state.type === 'WORK'){
 								this.setState({stage: 'work_name'})
 							} else if(this.state.type === 'PERSONAL'){
@@ -379,7 +379,7 @@ class Onboarding extends Component{
 					<p className="onboarding-modal-txt text-center mb-2">You just joined the worlds biggest community of VUI designer and developers building voice apps. We have a few questions to personalize your experience!</p>
 					<p className="onboarding-modal-txt text-center mb-4">- Voiceflow team <span role="img" aria-label="Heart">❤️</span></p>
 					<div className="justify-content-center">
-						<button className="purple-btn" onClick={() => {this.setState({stage: 'work_type'})}}>Continue</button>
+						<button className="btn-primary" onClick={() => {this.setState({stage: 'work_type'})}}>Continue</button>
 					</div>
 				</React.Fragment>
 		}

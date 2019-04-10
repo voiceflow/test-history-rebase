@@ -21,25 +21,29 @@ exports[`Audio Drop Test render audio drop 1`] = `
     <div
       className="drop-child"
     >
-      Drag and Drop files here
-      <br />
+      <div
+        className="mb-1"
+      >
+        Drag and Drop files here
+      </div>
       <small>
         OR
       </small>
       <br />
       <div
-        className="space-between"
+        className="mt-2"
       >
         <div
-          className="upload-btn btn btn-primary-small"
+          className="btn btn-primary-small mb-2"
         >
-          Add File
+          Add Audio
         </div>
+        <br />
         <div
-          className="upload-btn btn btn-default"
+          className="btn-link"
           onClick={[Function]}
         >
-          URL
+          Add URL
         </div>
       </div>
     </div>

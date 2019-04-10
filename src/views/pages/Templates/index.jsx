@@ -164,11 +164,11 @@ class Templates extends Component {
         if (this.state.alexa && this.state.google && window.user_detail.admin === -1) { // Multiplatform paywall soft-disable
             return (<div className="mt-1">
                 <div className="mb-4 text-muted">Building for both platforms simultaneously is a premium feature.<br />Please upgrade to continue</div>
-                <MUIButton varient="contained" className="purple-btn" onClick={() => this.props.history.push('/account/upgrade')}>Upgrade</MUIButton>
+                <MUIButton varient="contained" className="btn-primary" onClick={() => this.props.history.push('/account/upgrade')}>Upgrade</MUIButton>
             </div>)
         } else {
             return (<div className="mt-1">
-                <MUIButton varient="contained" className="purple-btn" onClick={this.saveSettings}>Continue</MUIButton>
+                <MUIButton varient="contained" className="btn-primary" onClick={this.saveSettings}>Continue</MUIButton>
             </div>)
         }
     }
@@ -177,7 +177,7 @@ class Templates extends Component {
         switch (this.state.stage) {
             case 2:
                 return <div className="container text-center">
-                    <h5 className="text-dark mb-5">Choose Your Template</h5>
+                    <h5 className="uppercase-header mb-5">Choose Your Template</h5>
                     <div className="mt-4">
                         <div className="grid-col-3 mx--4">
                             {this.state.templates.map(template =>
@@ -223,11 +223,11 @@ class Templates extends Component {
             default:
                 return <div id="name-box" className="text-center">
                     <div className="mb-5">
-                        <h5 className="text-dark">Create Project</h5>
+                        <h5 className="uppercase-header">Create Project</h5>
                         <Alert color='danger' style={{ visibility: this.state.error ? 'visible' : 'hidden' }} className="mt-3 d-inline-block">&nbsp;{this.state.error}&nbsp;</Alert><br />
                         <input
                             id="skill-name"
-                            className="input-underline"
+                            className="input-underline mb-4"
                             type="text"
                             name="name"
                             value={this.state.name}
@@ -236,7 +236,7 @@ class Templates extends Component {
                             required
                         />
                     </div>
-                    <div className="text-muted mt-4 mb-3">Select Regions</div>
+                    <label className="mt-4 mb-3 form-title">Select Regions</label>
                     <div className="grid-col-3 mx--1">
                         {LOCALE_MAP.map((locale, i) => {
                             const active = this.state.locales.includes(locale.value) ? "active" : "";
@@ -246,7 +246,7 @@ class Templates extends Component {
                         })}
                     </div>
                     <div className="mt-5">
-                        <MUIButton varient="contained" className="purple-btn" onClick={this.saveSettings}>Continue</MUIButton>
+                        <button varient="contained" className="btn-primary" onClick={this.saveSettings}>Continue</button>
                     </div>
                 </div>
         }
@@ -260,9 +260,9 @@ class Templates extends Component {
         return <div id="template-box-container">
             <div className="card">
                 {[1,2].includes(this.state.stage) &&
-                    <div><img src={"/back.svg"} alt="back" className="mr-3 back-arrow" onClick={()=>this.goBack()}/></div>
+                    <div id="return-template" className="mr-3 btn-icon" onClick={()=>this.goBack()}/>
                 }
-                <Link id="exit-template" to='/dashboard' className="close">&times;</Link>
+                <Link id="exit-template" to='/dashboard' className="btn-icon"></Link>
                 {this.renderBody()}
             </div>
             <Modal isOpen={this.state.preview} size="xl" toggle={() => this.setState({ preview: false })} onClosed={() => { this.setState({ diagram_id: null }) }} className="light-canvas-modal">
@@ -274,7 +274,7 @@ class Templates extends Component {
                 </div>
                 <button className="goback-btn position-absolute" onClick={() => this.setState({ preview: false })} style={{ top: 320, left: -90 }} />
                 <div className="position-absolute" style={{ bottom: -75, left: '50%', marginLeft: -73 }}>
-                    <MUIButton varient="contained" className="purple-btn" onClick={() => this.createSkill(this.state.template.module_id)}>Select Template</MUIButton>
+                    <MUIButton varient="contained" className="btn-primary" onClick={() => this.createSkill(this.state.template.module_id)}>Select Template</MUIButton>
                 </div>
             </Modal>
         </div>

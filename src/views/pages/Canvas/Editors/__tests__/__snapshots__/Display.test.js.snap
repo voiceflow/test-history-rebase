@@ -1,14 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DisplayEditor render display block editor 1`] = `
-<div>
+<div
+  className="text-center"
+>
+  <img
+    alt="user"
+    className="mb-3 mt-5"
+    src="/images/desktop.svg"
+    width="80"
+  />
+  <br />
   <span
     className="text-muted"
   >
     You currently have no Multimodal Displays
   </span>
   <Link
-    className="btn btn-clear btn-block mt-2"
+    className="btn btn-secondary mt-3"
     replace={false}
     to="/visuals/undefined"
   >

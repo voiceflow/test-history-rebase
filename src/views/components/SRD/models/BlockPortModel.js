@@ -47,7 +47,7 @@ export class BlockPortModel extends PortModel {
 
 	canLinkToPort(port) {
 		if (port instanceof BlockPortModel) {
-			return (this.in !== port.in && (port.in || _.size(port.links) <= port.maximumLinks) && this.parent !== port.parent)
+			return (this.in !== port.in && (port.in || _.size(port.links) <= port.maximumLinks) && (this.parent !== port.parent || (port.parent.extras.type === 'god' && this.parent.extras.type === 'god')))
 		}
 		return false
 	}
@@ -65,7 +65,6 @@ export class BlockPortModel extends PortModel {
 			_.values(this.links).forEach(link => link.remove())
 		}
 		this.setSelected(true)
-
 		if(!link) link = new BlockLinkModel("default", toolkit.UID(), false)
 
 		return link

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { deleteEmail } from './../../../actions/emailActions';
-import MUIButton from '@material-ui/core/Button'
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
 import Masonry from 'react-masonry-component';
@@ -37,7 +36,7 @@ class Emails extends Component {
                                 <p className="empty">No Email Templates Exist</p>
                                 <p className="empty-desc">Send users emails from within your project to provide context or deliver relivant content</p>
                                 <Link to={`/business/${this.props.skill_id}/email/new`} className="no-underline">
-                                    <MUIButton varient="contained" className="purple-btn">Create a Template</MUIButton>
+                                    <button varient="contained" className="btn-primary">Create a Template</button>
                                 </Link>
                             </div>
                         </div>
@@ -46,7 +45,7 @@ class Emails extends Component {
                             <div className="products-container position-relative">
                                 <div className="space-between w-100 px-3 mb-1">
                                     <h5 className="text-muted mb-0">Email Templates</h5>
-                                    <Link to={`/business/${this.props.skill_id}/email/new`} className="no-underline btn purple-btn">
+                                    <Link to={`/business/${this.props.skill_id}/email/new`} className="no-underline btn btn-primary">
                                         New Template
                                     </Link>
                                 </div>

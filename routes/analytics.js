@@ -1,22 +1,22 @@
 const { pool, logging_pool, hashids, writeToLogs } = require('../services')
 
-const checkUserOwnsSkill = (req, res, cb) => {
-    let skill_id = hashids.decode(req.params.skill_id)[0]
+const checkUserOwnsProject = (req, res, cb) => {
+    let project_id = hashids.decode(req.params.project_id)[0]
 
     if(req.user.admin >= 100){
         cb()
     } else {
         pool.query(
             `
-            SELECT * FROM skills WHERE skill_id = $1
+            SELECT * FROM projects WHERE project_id = $1 AND creator_id = $2
             `,
-            [skill_id],
+            [project_id, req.user.id],
             (err, data) => {
                 if(err){
                     writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
                     res.sendStatus(500)
                 } 
-                if(data.rows.length > 0 && data.rows[0].creator_id === req.user.id){
+                if(data.rows.length > 0){
                     cb()
                 } else {
                     res.sendStatus(403)
@@ -27,7 +27,7 @@ const checkUserOwnsSkill = (req, res, cb) => {
 }
 
 exports.getUsersData = (req, res) => {
-    checkUserOwnsSkill(req, res, async () => {
+    checkUserOwnsProject(req, res, async () => {
         let project_id = hashids.decode(req.params.project_id)[0]
         let live_skill_id = (await pool.query(`
             SELECT s.skill_id 
@@ -59,9 +59,8 @@ exports.getUsersData = (req, res) => {
     })
 }
 
-
 exports.getDAU = (req, res) => {
-    checkUserOwnsSkill(req, res, async () => {
+    checkUserOwnsProject(req, res, async () => {
         let project_id = hashids.decode(req.params.project_id)[0]
         let live_skill_id = (await pool.query(`
             SELECT s.skill_id 
@@ -77,7 +76,7 @@ exports.getDAU = (req, res) => {
             // If period less than 3days, group by hr
             if(to - from <= 259200){
                 dau_query = `
-                    SELECT count(DISTINCT user_id) AS user_count, date_trunc('hour', to_timestamp(session_begin / 1000)) AS dau_date
+                    SELECT count(DISTINCT user_id) AS user_count, date_trunc('hour', to_timestamp(session_begin / 1000)) AT TIME ZONE $4 AS dau_date
                     FROM sessions 
                     WHERE 
                     skill_id = $1 
@@ -87,7 +86,7 @@ exports.getDAU = (req, res) => {
                     ORDER BY dau_date ASC`
             } else {
                 dau_query = `
-                    SELECT count(DISTINCT user_id) AS user_count, to_timestamp(session_begin / 1000)::date AS dau_date
+                    SELECT count(DISTINCT user_id) AS user_count, to_timestamp(session_begin / 1000)::date AT TIME ZONE $4 AS dau_date
                     FROM sessions 
                     WHERE 
                         skill_id = $1 
@@ -98,7 +97,7 @@ exports.getDAU = (req, res) => {
             }
             logging_pool.query(
                 dau_query,
-                [live_skill_id, from, to],
+                [live_skill_id, from, to, -req.params.user_tz],
                 (err, data) => {
                     if(err){
                         writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})

@@ -16,7 +16,12 @@ const isVarName = require('is-var-name');
 				res.sendStatus(404);
 			}else{
 				if(result.rows[0].account_linking){
-					result.rows[0].account_linking.clientSecret = jwt.verify(result.rows[0].account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE)
+          try{
+            if(!result.rows[0].account_linking.clientSecret) throw new Error()
+            result.rows[0].account_linking.clientSecret = jwt.verify(result.rows[0].account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE)
+          }catch(err){
+            result.rows[0].account_linking.clientSecret = ''
+          }
 				}
 				result.rows[0].skill_id = hashids.encode(result.rows[0].skill_id);
 				res.send(result.rows[0]);
@@ -33,8 +38,10 @@ const isVarName = require('is-var-name');
 		return res.sendStatus(400)
 	}
 	if(req.body){
-		let account_linking = req.body
-		account_linking.clientSecret = jwt.sign(account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE);
+    let account_linking = req.body
+    if(account_linking.clientSecret){
+      account_linking.clientSecret = jwt.sign(account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE);
+    }
  		pool.query(
 			'UPDATE skills SET account_linking = $2 WHERE (creator_id = $1 AND skill_id = $3) RETURNING *',
 			[req.user.id, account_linking, skill_id], (err, skill) => {

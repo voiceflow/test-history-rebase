@@ -68,7 +68,7 @@ exports[`Multiple Field Test multiple fields 1`] = `
         className="text-center"
       >
         <Button
-          className="previous-btn"
+          className="btn-tertiary-gray"
           color="secondary"
           onClick={[Function]}
           tag="button"

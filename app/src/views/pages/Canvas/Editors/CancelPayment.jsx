@@ -62,9 +62,10 @@ class CancelPaymentBlock extends Component {
     render() {
 
         if(!Array.isArray(this.props.products) || this.props.products.length === 0){
-            return <div>
+            return <div className="text-center">
+                <img className="mb-3 mt-5" src={'/images/OpenSafe.svg'} alt="user" width="80"/><br/>
                 <span className="text-muted">You currently have no In Skill Products</span>
-                <Link className="btn btn-clear btn-block mt-2" to={`/business/${this.props.skill_id}/products`}>Add Products</Link> 
+                <Link className="btn btn-secondary mt-3" to={`/business/${this.props.skill_id}/products`}>Add Products</Link> 
             </div>
         }
 

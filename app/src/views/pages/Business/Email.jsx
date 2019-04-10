@@ -154,12 +154,12 @@ class Template extends Component {
                     <div className="space-between">
                         <h5 className="text-muted mb-0">Email Template</h5>
                         <div className="subheader-right">
-                            <MUIButton varient="contained" className="previous-btn mr-2" onClick={()=>{
+                            <MUIButton varient="contained" className="btn-tertiary-gray mr-2" onClick={()=>{
                                 this.props.history.push(`/business/${this.props.skill_id}/emails`);
                             }}>
                                 <i className="fas fa-arrow-left mr-2"/>{' '}Back
                             </MUIButton>
-                            <MUIButton varient="contained" className="purple-btn" onClick={this.save} style={{width: 100}}>
+                            <MUIButton varient="contained" className="btn-primary" onClick={this.save} style={{width: 100}}>
                                 {this.state.saving ? 
                                     <span className="loader"/> : 
                                     <React.Fragment>

@@ -174,7 +174,7 @@ app.get('/skills', ensureLoggedIn(), Project.getProjects)
 app.get('/skill/:skill_id/live_version', ensureLoggedIn(), Project.getProjectFromSkill, Project.getLiveVersion)
 app.get('/skill/:skill_id/dev_version', ensureLoggedIn(), Project.getProjectFromSkill, Project.getDevVersion)
 app.get('/skill/:skill_id/versions', ensureLoggedIn(), Project.getProjectFromSkill, Project.getProjectVersions)
-app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Project.getProjectFromSkill, Project.render);
+// app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Project.getProjectFromSkill, Project.render);
 app.post('/skill/:skill_id/publish', ensureLoggedIn(), Project.getProjectFromSkill, Skill.buildSkill);
 app.post('/skill/:skill_id/publishgoogle', ensureLoggedIn(), Project.getProjectFromSkill, Skill.buildGoogleSkill);
 // DELETE BEFORE APRIL 2019
@@ -230,6 +230,7 @@ app.get('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Mar
 app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess)
 app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate)
 app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
+app.get('/marketplace/initial_template', ensureLoggedIn(), Marketplace.getInitialTemplate)
 app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
 
 // app.get('/marketplace', ensureAdmin(), Marketplace.getModules)
@@ -258,7 +259,7 @@ app.post('/analytics/track_first_project', ensureLoggedIn(), Track.trackFirstPro
 app.post('/analytics/track_dev_account', ensureLoggedIn(), Track.trackDevAccount)
 
 app.get('/analytics/:project_id/users', ensureLoggedIn(), Analytics.getUsersData)
-app.get('/analytics/:project_id/:from/:to/DAU', ensureLoggedIn(), Analytics.getDAU)
+app.get('/analytics/:project_id/:from/:to/:user_tz/DAU', ensureLoggedIn(), Analytics.getDAU)
 app.get('/analytics/:project_id', ensureLoggedIn(), Analytics.getStats)
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);

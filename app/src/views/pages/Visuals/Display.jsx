@@ -6,7 +6,6 @@ import { setError } from 'actions/modalActions'
 
 import { Spinner } from 'views/components/Spinner'
 import axios from 'axios';
-import MUIButton from '@material-ui/core/Button';
 import { Input, Row, Col, FormGroup, Button } from 'reactstrap';
 import Dropzone from 'react-dropzone';
 
@@ -166,8 +165,10 @@ class Display extends Component {
                     data = JSON.parse(data)
                     if(data.document && data.document.type && data.document.version){
                         document = data.document
-                        if(data.dataSources){
-                            datasource = data.dataSources
+                        if(data.datasources){
+                          datasource = data.datasources
+                        }else if(data.dataSources){
+                          datasource = data.dataSources
                         }
                     }else if(data.type && data.version){
                         document = data
@@ -230,19 +231,19 @@ class Display extends Component {
                             <div className="space-between">
                                 <div className="text-muted"><h5 className="mb-0">APL Template</h5> <small><i className="far fa-link"/> ( <a href="https://developer.amazon.com/alexa/console/ask/displays" target="_blank" rel="noopener noreferrer">Authoring Tool</a> )</small></div>
                                 <div className="subheader-right">
-                                    <MUIButton varient="contained" className="previous-btn mr-2" onClick={()=>{
+                                    <button varient="contained" className="btn-tertiary mr-2" onClick={()=>{
                                         this.props.history.push(`/visuals/${this.props.skill_id}`);
                                     }}>
-                                        <i className="fas fa-arrow-left mr-2"/>{' '}Back
-                                    </MUIButton>
-                                    <MUIButton varient="contained" className="purple-btn" onClick={this.save} style={{width: 100}}>
+                                        {' '}Back
+                                    </button>
+                                    <button varient="contained" className="btn-primary" onClick={this.save} style={{width: 100}}>
                                         {this.state.saving ? 
                                             <span className="loader"/> : 
                                             <React.Fragment>
                                                 Save{this.state.saved ? '' : '*'}
                                             </React.Fragment>
                                         }
-                                    </MUIButton>
+                                    </button>
                                 </div>
                             </div>
                             <hr/>

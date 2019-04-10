@@ -9,7 +9,11 @@ import { BaseWidget} from "./../main.js";
 import Textarea from 'react-textarea-autosize';
 import AnimateHeight from 'react-animate-height'
 import { Tooltip } from 'react-tippy'
+// import Select from 'react-select'
+import Select from 'views/components/Dropdowns/Searchable'
+import { getBlocks } from 'views/pages/Canvas/Blocks'
 
+const premiums = ['permission', 'permissions', 'mail', 'link_account', 'payment', 'cancel', 'reminder'];
 const toolkit = new Toolkit()
 export class BlockNodeWidget extends BaseWidget {
 	constructor(props) {
@@ -17,7 +21,8 @@ export class BlockNodeWidget extends BaseWidget {
 		this.state={
 			dropdownOpen: false,
 			edit: false,
-			name: props.node ? props.node.name : ''
+			name: props.node ? props.node.name : '',
+			blocks: window.user_detail.admin > 0 ? getBlocks() : _.filter(getBlocks(), b => !_.includes(premiums, b.type))
 		};
 		this.onMouseEnter = this.onMouseEnter.bind(this);
 		this.onMouseLeave = this.onMouseLeave.bind(this);
@@ -27,6 +32,7 @@ export class BlockNodeWidget extends BaseWidget {
 		this.combineNode = this.combineNode.bind(this);
 		this.close = this.close.bind(this);
 		this.addCommand = this.addCommand.bind(this)
+		this.inputRef = React.createRef();
 	}
 
 	static getDerivedStateFromProps(props){
@@ -72,6 +78,35 @@ export class BlockNodeWidget extends BaseWidget {
 		this.props.node.combines.push(node)
 		engine.enableRepaintEntities([this.props.node]);
 		engine.repaintCanvas(false)
+	}
+
+	addBlocks = (e) => {
+		const engine = this.props.diagramEngine
+		this.props.nodeProps.setBlockMenu(
+            <React.Fragment>
+              <div style={{top: engine.getDiagramModel().getGridPosition(e.clientY - 90), left: engine.getDiagramModel().getGridPosition(e.clientX - 130), cursor: 'pointer', position: 'absolute', zIndex: 10, width: '300px'}}>
+                  <Select
+					onBlur={this.props.cancel}
+					autoFocus
+					classNamePrefix='searchable__dropdown'
+					onChange={(selected) => {
+						this.props.nodeProps.addCombineNode(this.props.node, selected.value)
+						this.props.nodeProps.setBlockMenu(null)
+					}}
+					options={this.state.blocks.map(block => ({
+						label: block.text,
+						value: block.type
+					}))}
+					maxMenuHeight={124}
+					menuIsOpen
+					value={null}
+					placeholder="Search Block"
+					filterOption={(value, input) => {
+						return value.label.toLowerCase().startsWith(input.toLowerCase().trim())
+					}}
+				/>
+              </div>
+            </React.Fragment>)
 	}
 
 	generatePort(port) {
@@ -151,31 +186,12 @@ export class BlockNodeWidget extends BaseWidget {
 			var node;
 			if (targetNode.extras && targetNode.extras.type !== "god" ) {
 				e.nodeHover = true;
-				node = new BlockNodeModel('Combine Block', null, toolkit.UID())
+				node = new BlockNodeModel('New Block', null, toolkit.UID())
 				node.extras.type = "god"
 				if (!(combineAppendValidation(targetNode))) {
 					let temp = selected;
 					selected = targetNode;
 					targetNode = temp
-				}
-				// node.ports = {}
-				let selected_ports = selected.getPorts()
-				let target_ports = targetNode.getPorts()
-				for (var name in selected_ports) {
-					let port = selected_ports[name]
-					// port.parent=null
-					if (!port.in) {
-						port.parent = node
-						node.ports[name] = _.clone(port);
-					}
-				}
-				for (var name2 in target_ports) {
-					let port = target_ports[name2]
-					// port.parent = null
-					if (port.in) {
-						port.parent = node
-						node.ports[name2] = _.clone(port)
-					}
 				}
 				targetNode.parentCombine = node;
 				selected.parentCombine = node;
@@ -185,11 +201,11 @@ export class BlockNodeWidget extends BaseWidget {
 				targetNode.y = targetNode.y + 40
 				selected.x = targetNode.x
 				selected.y = targetNode.y + 40
-				node.combines = [targetNode.serialize()]
-				node.combines.push(selected.serialize());
+				node.combines = [targetNode]
+				node.combines.push(selected);
 				if (selected && targetNode) {
-					selected.remove()
-					targetNode.remove()
+					selected.remove(false)
+					targetNode.remove('combine')
 				}
 				node.setSelected()
 				engine.getDiagramModel().clearSelection()
@@ -227,12 +243,13 @@ export class BlockNodeWidget extends BaseWidget {
 			</div>
 		}
 		const fade = this.props.node.fade ? " faded-node" : ""
-
+		const paddingStyle = (this.props.node.extras.type === 'god' && combineAppendValidation(_.last(this.props.node.combines))) ? {padding: '0px 12px 10px 12px'} : {padding: '0px 12px 0px 12px'}
 		return (
 			<div className={`srd-default-node ${this.props.node.extras.type !== 'card' ? this.props.node.extras.type : 'kard'} ${this.props.isLast ? 'last' : ''} ${this.props.selected ? 'selected' : 'no-select'} ${this.props.node.isMoving && this.props.node.parentCombine ? 'moving' : ''} ${fade}`}
 				data-nodeid = {
 					this.props.node.id
 				}
+				style={this.props.node.extras.type === 'god' ? paddingStyle : {}}
 				onMouseDown={(e) => {
 					if (this.props.onClick && !e.didRun){
 						this.props.onClick()
@@ -282,9 +299,6 @@ export class BlockNodeWidget extends BaseWidget {
 						position="left"
 						onShow={this.updateHeight}
 						html={<div className="linter-tooltip">
-							<div className="linter-title">
-								Block Errors
-							</div>
 							{this.props.node.linter.map((s, i) => {
 								return (
 									<div className="linter-element d-flex justify-content-start" key={i}>
@@ -329,13 +343,13 @@ export class BlockNodeWidget extends BaseWidget {
 						this.props.node.extras.type === 'story' ?
 						<div className="home-block">
 						{
-							this.props.node.extras.type === 'story' &&
-							<Tooltip
+							this.props.node.extras.type === 'story' && <Tooltip
 								className="float-left menu-tip-home"
 								position="left"
 								title="This is where your project begins"
 								distance={18}
-							><img src={'/home.svg'} height={11} width={11} alt="home"/></Tooltip>
+							><img src={'/home.svg'} height={13} width={13} alt="home"/>
+							</Tooltip>
 						}
 							<div className="home-title">{this.props.nodeProps.diagram ? (this.props.nodeProps.diagram.name === 'ROOT' ? 'Home' : this.props.nodeProps.diagram.name) : 'Flow'}</div>
 							<div className="faux-start-block">Start</div>
@@ -347,24 +361,43 @@ export class BlockNodeWidget extends BaseWidget {
 									title = "Commands can be accessed by the user from anywhere in your skill. For example, if a user says “Alexa, help” while in your skill, they will activate the help flow. Once a user is done the help flow they will be returned to the wherever they previously were in the skill."
 									distance={18}
 									color={"#8da2b5"}
-								>?</Tooltip>
+								></Tooltip>
 								<div className="home-title">Commands</div>
 							</React.Fragment>}
 						</div> :
 						<div className={this.bem("__name")} style={this.props.node.parentCombine ? {fontSize: '13px', textAlign: 'left', padding: '0 10px', fontWeight: '500'} : {padding: '0 40px'}}>
-							{this.props.node.edit ? 
+						{
+							this.props.node.extras.type === 'god' &&
+							<Tooltip
+								className="float-left menu-tip-home edit-name"
+								position="left"
+								title="Edit block name"
+								distance={18}
+							><img src={'/edit-name.svg'} height={13} width={13} alt="edit" onClick={() => {
+								this.setState({ edit: true });
+								this.inputRef.current && this.inputRef.current.focus()
+							}} />
+							</Tooltip>
+						}
+							{this.props.node.edit || this.state.edit ? 
 									<input
 										name="name"
 										value={this.state.name}
 										onChange={this.handleChange}
-										onKeyDown={(e) => e.keyCode===13 && this.close()}
+										onKeyDown={(e) => {
+											e.keyCode===13 && this.close()
+											e.keyCode===13 && this.setState({ edit: false })
+										}}
 										className='plain-input'
+										onKeyUp={e => e.stopPropagation()}
+										ref={this.inputRef}
+										onFocus={e => e.target.select()}
 										autoFocus
 									/>:
 							< span > {
 								_.trim(this.props.node.name) ?
 								this.props.node.name :
-								_.startCase(this.props.node.extras.type === 'god' ? 'Combine Block' : this.props.node.extras.type)
+								_.startCase(this.props.node.extras.type === 'god' ? 'New Block' : this.props.node.extras.type)
 							} </span>}
 							{
 								this.props.node.extras.type ==='command' && !!this.props.node.parentCombine 
@@ -375,7 +408,7 @@ export class BlockNodeWidget extends BaseWidget {
 										className="btn btn-black btn-sm"
 										onMouseDown={(e) => e.stopPropagation()}
 										onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras['alexa'].diagram_id)}>
-										<i className="fas fa-clone mr-1"/>Enter Flow
+										<img src={"/flows.svg"} alt="flows" className="mr-2" width="10" />Enter Flow
 									</button>
 								</div>
 							}
@@ -409,6 +442,9 @@ export class BlockNodeWidget extends BaseWidget {
 						>
 							{_.map(this.props.node.combines,(node, idx) => {
 										if (!(node instanceof String) && node.id){
+											// node.parentCombine = this.props.node
+											let keepLink = false
+											if (this.props.node.extras.type === 'god') keepLink = true
 											return React.createElement(
 													BlockNodeWidget,
 													{
@@ -416,13 +452,13 @@ export class BlockNodeWidget extends BaseWidget {
 														key: node.id,
 														isLast: idx === this.props.node.combines.length-1,
 														selected: this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().id===node.id,
-														node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter),
+														node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter, keepLink),
 														nodeProps: this.props.nodeProps,
 														onClick: () => {
-															this.props.diagramEngine.setSuperSelect(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
+															this.props.diagramEngine.setSuperSelect(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter, keepLink))
 														},
 													},
-													this.props.diagramEngine.generateWidgetForNode(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
+													this.props.diagramEngine.generateWidgetForNode(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter, keepLink))
 												)
 										} else {
 											return <AnimateHeight
@@ -448,21 +484,21 @@ export class BlockNodeWidget extends BaseWidget {
 						className="btn btn-black btn-sm mt-1 mx-2"
 						onMouseDown={(e) => e.stopPropagation()}
 						onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras.diagram_id)}>
-						<i className="fas fa-clone mr-1"/>Enter Flow
+						<img src={"/flows.svg"} alt="flows" className="mr-2" width="10" />Enter Flow
 					</button>}
 					<div className={`${this.bem("__out")} ${this.props.node.extras.type !== 'card' && this.props.node.extras.type}`}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}
 					</div>
 				</div>
-				{this.props.node.extras.type === 'story' && <div id="add-command" onMouseUp={this.addCommand}>
+				{(this.props.node.extras.type === 'story' || (this.props.node.extras.type === 'god' && combineAppendValidation(_.last(this.props.node.combines)))
+				|| (!this.props.node.parentCombine && appendValidator(this.props.node) && combineAppendValidation(this.props.node)))  &&
+				<div id="add-command" onMouseUp={(e) => {this.props.node.extras.type === 'story' ? this.addCommand(e) : this.addBlocks(e)}}>
 						<Tooltip
 							position="bottom"
-							title="Add Command"
+							title={this.props.node.extras.type === 'story' ? "Add Command" : 'Add Step'}
 							distance={18}
 						>
-							<button className="round-btn">
-								<i className="fal fa-plus"/>
-							</button>
+							<button className="round-btn"></button>
 						</Tooltip>
 					</div>
 				}

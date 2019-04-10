@@ -1311,8 +1311,8 @@ exports.DEFAULT_INTENTS = {
       },
       {
         "name": "AMAZON.YesIntent",
-        "samples": ["yes", "si", "decir si"],
-        "keep": ["si"]
+        "samples": ["yes", "si", "sí", "decir si"],
+        "keep": ["sí"]
       },
       {
         "name": "AMAZON.NoIntent",

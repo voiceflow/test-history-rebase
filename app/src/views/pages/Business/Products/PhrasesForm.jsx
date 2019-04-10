@@ -42,17 +42,17 @@ class PhrasesForm extends React.Component {
                   );
                 })}
               <div className="text-center">
-                <Button className='previous-btn' onClick={this.props.handleAdd}>Add Phrase<i className="far fa-long-arrow-right ml-2"></i></Button>
+                <Button className='btn-tertiary-gray' onClick={this.props.handleAdd}>Add Phrase<i className="far fa-long-arrow-right ml-2"></i></Button>
               </div>
             </div>
             <div className="product-stage-button">
-              <Button className="previous-btn"
+              <Button className="btn-tertiary-gray"
                 variant="contained"
                 onClick={() => this.props.updateStage(1)}
               >
                 Previous
               </Button>
-              <Button className="purple-btn ml-2"
+              <Button className="btn-primary ml-2"
                 variant="contained"
               
               >

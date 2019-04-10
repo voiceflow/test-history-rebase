@@ -471,10 +471,11 @@ export class DiagramWidget extends BaseWidget {
 				for (let i in element.combines) {
 					let new_node = new BlockNodeModel().deSerialize(element.combines[i], this.props.diagramEngine, null, false, [], true)
 					// new_node.getInPorts().links = inPorts.links
-					if (checkBlockDisabledLive(!this.props.live_mode, new_node.extras.type)) {
+					if (checkBlockDisabledLive(this.props.live_mode, new_node.extras.type)) {
 						elements_to_not_delete.push(new_node)
 					}
 				}
+
 				_.forEach(elements_to_not_delete, good_element => this.props.diagramEngine.getDiagramModel().addNode(good_element))
 				element.remove()
 			}

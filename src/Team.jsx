@@ -43,6 +43,11 @@ class Team extends PureComponent {
           this.props.updateCurrentTeam( this.props.team_id )
         }
         if(!urlTeam) this.props.history.push(`/team/${this.props.team_id}`)
+      }else{
+        if(this.props.location.pathname !== '/dashboard') this.props.history.push({
+          pathname: '/dashboard',
+          search: this.props.location.search
+        })
       }
     })
   }
@@ -71,25 +76,23 @@ class Team extends PureComponent {
     if(this.props.teams.allIds.length === 0) {
       return <div className="h-100 d-flex justify-content-center">
         <div className="align-self-center text-center">
-          {/* <div className="pl-4">
-            <img
-              src="/create.svg"
-              alt="skill-icon"
-              width="130"
-              height="127"
-              className="mb-3"
-            />
-          </div>
-          <br /> */}
-          <label>Create a Workspace</label>
+          <img
+            src="/images/icons/conversation.svg"
+            alt="skill-icon"
+            width="200"
+            height="105"
+            className="mb-3"
+          />
+          <br />
+          <label>Create a Board</label>
           <span className="text-muted">
-            Create a shared workspace where your<br/> 
+            Create a shared board where your<br/> 
             team can collaboratively design and build<br/>
             incredible voice experiences
           </span><br/>
           <Link to={`/team/new`} className="no-underline">
-            <button className="purple-btn mt-3">
-              New Workspace
+            <button className="purple-btn mt-4">
+              New Board
             </button>
           </Link>
         </div>

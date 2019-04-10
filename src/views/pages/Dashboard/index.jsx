@@ -12,7 +12,7 @@ import VoiceCards from "views/components/Cards/VoiceCards";
 import EmptyCard from "views/components/Cards/EmptyCard";
 import LoadingModal from "views/components/Modals/LoadingModal";
 import TeamSettings from "./TeamSettings"
-import { Alert, Input, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import { Alert, Input } from "reactstrap";
 import { setConfirm, setError } from 'ducks/modal'
 import { connect } from "react-redux";
 import { Members } from 'views/components/User'
@@ -84,12 +84,24 @@ class DashBoard extends Component {
 
   componentDidUpdate(prevProps) {
     if(prevProps.team_id !== this.props.team_id){
-      this.props.fetchProjects(this.props.team_id)
+      this.updateTeam()
     }
   }
 
-  componentDidMount() {
+  updateTeam() {
+    console.log(this.props.team)
+    if(["incomplete_expired", "incomplete", "unpaid"].includes(this.props.team.stripe_status)){
+      alert("U UNPAID IGGA")
+    }
+    if(["past_due"].includes(this.props.team.stripe_status)){
+      alert("PAST DUE")
+      this.setState({team_settings: "PAST_DUE"})
+    }
     this.props.fetchProjects(this.props.team_id)
+  }
+
+  componentDidMount() {
+    this.updateTeam()
 
     let last_update_seen = localStorage.getItem(
       "last_update_seen_" + this.props.user.id
@@ -212,7 +224,7 @@ class DashBoard extends Component {
             })}
             {this.props.teams.allIds.length < 3 && (
               <Link className="nav-item" to="/team/new">
-                <i className="fal fa-plus" /> New Team
+                <i className="fal fa-plus" /> New Board
               </Link>
             )}
           </div>

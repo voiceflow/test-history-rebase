@@ -104,6 +104,10 @@ const createSession = (endpoint) => {
     return async dispatch => {
       try {
         let data = (await axios.put(endpoint, {user: user, device: getDevice()})).data
+        if(data.user.id){
+          data.user.creator_id = data.user.id
+          delete data.user.id
+        }
         dispatch(initalizeLogin(data.user, data.token))
         return Promise.resolve(data.user)
       } catch(err) {

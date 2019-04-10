@@ -52,7 +52,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
     <Route {...rest} render={props =>
         !getAuth() ? (
-          <Redirect to={{ pathname: "/login", state: { from: props.location } }}/>
+          <Redirect to={{ 
+            pathname: "/login",
+            search: props.location.search,
+            state: { from: props.location } 
+          }}/>
         ) : (
           <ErrorBoundary>
             <Component {...props} {...rest}/>
@@ -67,7 +71,11 @@ const PublicRoute = ({ component: Component, name: Name, ...rest }) => {
   return (
     <Route {...rest} render={props =>
         getAuth() ? (
-          <Redirect to={{ pathname: "/dashboard", state: { from: props.location } }}/>
+          <Redirect to={{ 
+            pathname: "/dashboard", 
+            search: props.location.search,
+            state: { from: props.location } 
+          }}/>
         ) : (
           <Component {...props} {...rest} name={Name} />
         )
@@ -118,11 +126,6 @@ window.addEventListener("beforeunload", function() {
 
 ReactGA.initialize("UA-124745244-3");
 
-history.listen((location, action) => {
-  ReactGA.set({ page: location.pathname });
-  ReactGA.pageview(location.pathname);
-});
-
 class App extends Component {
   constructor(props) {
     super(props)
@@ -142,7 +145,9 @@ class App extends Component {
       })
     }
 
-    history.listen(() => {
+    history.listen((location) => {
+      ReactGA.set({ page: location.pathname });
+      ReactGA.pageview(location.pathname);
       this.setState({session: !!getAuth()});
     });
 

@@ -11,7 +11,8 @@
   background-position: center center;
   background-size: contain;
   background-color: #F7F9FB;
-  color: #8DA2B5
+  color: #8DA2B5;
+  font-size: 15px;
 }
 
 .hover:hover .member-icon {

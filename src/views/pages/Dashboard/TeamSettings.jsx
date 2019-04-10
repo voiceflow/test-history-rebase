@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { updateMembers, deleteTeam, leaveTeam } from "ducks/team";
+import { updateMembers, deleteTeam, leaveTeam, updateCurrentTeamItem } from "ducks/team";
 import {
   Modal,
   ModalBody,
@@ -17,22 +17,31 @@ import Image from "views/components/Uploads/Image";
 import { cloneDeep } from "lodash";
 import update from "immutability-helper";
 import SeatsCheckout from "./SeatsCheckout";
-import { setConfirm } from 'ducks/modal'
+import { setConfirm, setError } from 'ducks/modal'
+import Billing from "./Billing"
 
 // SETTING STATES: MEMBERS, SETTINGS, DELETE
-const STATES = {
-  CHECKOUT: { title: "Upgrade Workspace" },
+const STAGES = {
+  CHECKOUT: { title: "Upgrade Board" },
+  PAST_DUE: { title: "Payment Overdue" },
+  UNPAID: { title: "Payment Required" },
   MEMBERS: { title: "Manage Members" },
   SETTINGS: { title: "Team Settings" },
-  DELETE: { title: "Delete Team" }
+  DELETE: { title: "Delete Team" },
+  BILLING: { title: "Billing" }
 };
 
 const MemberRow = props => {
   const m = props.member;
   const IS_ADMIN = props.admin === props.user
 
-  var info;
+  var info, type, remove_action;
   if (m.creator_id) {
+    type = 'FILLED'
+    remove_action = () => props.confirm({
+      text: 'Are you sure you want to remove this member?',
+      confirm: () => props.update({creator_id: null, email: null, invite: ''})
+    })
     // HAS CREATOR ID ASSOCIATED: ACCEPTED INVITE FULL MEMBERSHIP
     info = (
       <>
@@ -45,7 +54,12 @@ const MemberRow = props => {
       </>
     );
   } else if (m.email) {
+    type = 'INVITE'
     // ONLY HAS EMAIL: INVITE SENT OUT BUT NOT ACCEPTED
+    remove_action = () => props.confirm({
+      text: 'Are you sure you want to cancel this invite?',
+      confirm: () => props.update({email: null, invite: ''})
+    })
     info = (
       <>
         <div className="member-icon lg solid">
@@ -61,6 +75,8 @@ const MemberRow = props => {
   } else {
     if(!IS_ADMIN) return null
     // NO INVITE: EMPTY SEAT
+    type = 'EMPTY'
+    remove_action = props.remove
     info = (
       <>
         <div className="member-icon lg solid">
@@ -90,11 +106,21 @@ const MemberRow = props => {
               <i className="far fa-ellipsis-v"/>
             </DropdownToggle>
             <DropdownMenu right className="no-select py-1">
-              <DropdownItem
-                onClick={props.remove}
-              >
-                Remove Seat
-              </DropdownItem>
+              {type === 'FILLED' && 
+                <DropdownItem onClick={remove_action}>
+                  Remove Member
+                </DropdownItem>
+              }
+              {type === 'INVITE' && 
+                <DropdownItem onClick={remove_action}>
+                  Cancel Invite
+                </DropdownItem>
+              }
+              {type === 'EMPTY' &&
+                <DropdownItem onClick={remove_action}>
+                  Remove Seat
+                </DropdownItem>
+              }
             </DropdownMenu>
           </UncontrolledDropdown>
         }
@@ -108,7 +134,7 @@ class TeamSettings extends Component {
     super(props);
 
     this.state = {
-      state: "MEMBERS",
+      stage: "MEMBERS",
       input: "",
       name: "",
       members: []
@@ -132,7 +158,7 @@ class TeamSettings extends Component {
       typeof this.props.open === "string"
     ) {
       this.setState({
-        state: this.props.open,
+        stage: this.props.open,
         members: cloneDeep(this.props.team.members)
       });
     }
@@ -149,7 +175,7 @@ class TeamSettings extends Component {
   }
 
   deleteTeam() {
-    this.setState({ state: "DELETING" });
+    this.setState({ stage: "DELETING" });
     this.props
       .deleteTeam(this.props.team.team_id)
       .then(() => {
@@ -169,9 +195,9 @@ class TeamSettings extends Component {
   applyChanges(e) {
     e.preventDefault()
     if (this.props.team.status === 0 && this.state.members.length > 2) {
-      this.setState({state: 'CHECKOUT'})
+      this.setState({stage: 'CHECKOUT'})
     }else{
-      this.setState({state: 'UPDATING_MEMBERS'})
+      this.setState({stage: 'UPDATING_MEMBERS'})
       this.props.updateMembers(this.state.members)
       .then(this.teamUpdate)
       .catch(this.teamUpdate)
@@ -180,7 +206,7 @@ class TeamSettings extends Component {
 
   teamUpdate() {
     this.setState({
-      state: "MEMBERS",
+      stage: "MEMBERS",
       members: cloneDeep(this.props.team.members)
     })
   }
@@ -193,7 +219,7 @@ class TeamSettings extends Component {
   }
 
   renderBody() {
-    switch (this.state.state) {
+    switch (this.state.stage) {
       case "CHECKOUT":
         return <>
           <div className="mt-4">
@@ -248,7 +274,18 @@ class TeamSettings extends Component {
             </div>
           </>
         );
+      case "PAST_DUE":
+      case "UNPAID":
+      case "BILLING":
+        if(!this.IS_ADMIN) break
+        return <Billing
+          setError={this.props.setError}
+          user={this.props.user}
+          team={this.props.team}
+          update={(stage) => this.setState({stage: stage})}
+        />
       case "SETTINGS":
+        if(!this.IS_ADMIN) break
         return (
           <div className="my-3">
             <div className="super-center">
@@ -269,10 +306,18 @@ class TeamSettings extends Component {
               value={this.state.name}
             />
             <hr />
+            <label>Info</label>
+            <button
+              className="btn btn-link"
+              onClick={() => this.setState({ stage: "BILLING" })}
+            >
+              Billing
+            </button>
+            <hr />
             <label>Privacy</label>
             <button
               className="btn btn-link"
-              onClick={() => this.setState({ state: "DELETE", input: "" })}
+              onClick={() => this.setState({ stage: "DELETE", input: "" })}
             >
               Delete Team
             </button>
@@ -284,7 +329,7 @@ class TeamSettings extends Component {
           </div>
         );
       default:
-        const UPDATING = this.state.state === 'UPDATING_MEMBERS'
+        const UPDATING = this.state.stage === 'UPDATING_MEMBERS'
         return (
           <div className={ UPDATING ? "disabled" : ""}>
             { this.IS_ADMIN && <small className="d-flex text-muted"><span className="badge mr-1">{this.props.team.seats}</span> current seats</small> }
@@ -307,6 +352,7 @@ class TeamSettings extends Component {
                       $splice: [[i, 1]]
                     })
                   })}
+                  confirm={this.props.setConfirm}
                 />
               );
             })}
@@ -369,7 +415,7 @@ class TeamSettings extends Component {
           toggle={this.props.close}
         >
           <ModalHeader toggle={this.props.close} className="pb-2">
-            {STATES[this.state.state] && STATES[this.state.state].title}
+            {(STAGES[this.state.stage] && STAGES[this.state.stage].title) || "Team Settings"}
           </ModalHeader>
           <ModalBody className="px-45 pt-0 overflow-hidden">{this.renderBody()}</ModalBody>
         </Modal>
@@ -388,7 +434,9 @@ const mapDispatchToProps = dispatch => {
     updateMembers: (members, options) => dispatch(updateMembers(members, options)),
     deleteTeam: team_id => dispatch(deleteTeam(team_id)),
     leaveTeam: team_id => dispatch(leaveTeam(team_id)),
-    setConfirm: confirm => dispatch(setConfirm(confirm))
+    setConfirm: confirm => dispatch(setConfirm(confirm)),
+    updateTeam: payload => dispatch(updateCurrentTeamItem(payload)),
+    setError: error => dispatch(setError(error))
   };
 };
 

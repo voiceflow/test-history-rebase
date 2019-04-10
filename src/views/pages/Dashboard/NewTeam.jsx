@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 import { Alert, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import _ from "lodash";
@@ -70,7 +69,7 @@ class NewTeam extends Component {
     //     message:
     //       !this.props.stripe_error ||
     //       this.props.stripe_error === "Payment Failed"
-    //         ? "Unable to Create Workspace - Please try again later or contact support"
+    //         ? "Unable to Create Board - Please try again later or contact support"
     //         : this.props.stripe_error
     //   });
     //   this.props.resetStripe();
@@ -87,7 +86,7 @@ class NewTeam extends Component {
         header: true,
         body: (<div className="text-center py-5 mb-5 text-muted">
           <img src="/images/icons/takeoff.svg" alt="blast off"/><br/><br/>
-          Your workspace <i><b>{team.name}</b></i> has been
+          Your board <i><b>{team.name}</b></i> has been
           successfully created
         </div>)
       })
@@ -259,7 +258,7 @@ class NewTeam extends Component {
         return (
           <div id="name-box" className="text-center">
             <div className="mb-4">
-              <h5 className="text-dark">Create Workspace</h5>
+              <h5 className="text-dark">Create Board</h5>
               <div style={{ minHeight: 45 }} className="mt-3 super-center">
                 {this.state.error && (
                   <Alert color="danger small" className="m-0">
@@ -274,7 +273,7 @@ class NewTeam extends Component {
                 name="name"
                 value={this.state.name}
                 onChange={this.handleChange}
-                placeholder="Enter Your Workspace Name"
+                placeholder="Enter Your Board Name"
                 required
               />
             </div>
@@ -287,7 +286,7 @@ class NewTeam extends Component {
                     image={this.state.image_url}
                     update={url => this.setState({ image_url: url })}
                   />
-                  <small className="text-muted">Add Workspace Icon (optional)</small>
+                  <small className="text-muted">Add Board Icon (optional)</small>
                 </div>
               </div> 
             }
@@ -302,10 +301,10 @@ class NewTeam extends Component {
         return (
           <div id="name-box" className="text-center">
             <div className="mb-4">
-              <h5 className="text-dark">Create Workspace</h5>
+              <h5 className="text-dark">Create Board</h5>
               <div className="mt-5 pt-4">
                 <ImageOptions
-                  question="Who's using this workspace?"
+                  question="Who's using this board?"
                   state={this.state.type}
                   update={(type) => this.setState({type: type})}
                   options={TYPE_OPTIONS}

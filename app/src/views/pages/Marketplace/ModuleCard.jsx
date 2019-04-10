@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Card, CardBody } from 'reactstrap'
 import './Marketplace.css'
-import withRenderModuleIcon from '../../HOC/ModuleIcon'
+import ModuleIcon from './ModuleIcon'
 
 class ModuleCard extends Component{
 
@@ -13,7 +13,7 @@ class ModuleCard extends Component{
 						className="market-card"
 					>
 						<CardBody className="text-center pb-0">
-							{this.props.renderIcon(this.props.module)}
+							<div className="module-card-icon"><ModuleIcon module={this.props.module}/></div>
 							<div className="lg-header pl-2 pr-2">{this.props.module.title}</div>
 							<p className="pl-2 pr-2 text-secondary module-card-text">{this.props.module.descr}</p>
 							<hr className="m-0"/>
@@ -31,4 +31,4 @@ class ModuleCard extends Component{
 
 }
 
-export default withRenderModuleIcon(ModuleCard)
+export default ModuleCard

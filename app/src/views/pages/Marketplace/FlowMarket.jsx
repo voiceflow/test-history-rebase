@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import ModuleModal from './../../components/Modals/ModuleModal'
 import { ReactiveBase, DataSearch, ReactiveList, SingleDataList } from '@appbaseio/reactivesearch'
 import { TAGS } from './tags'
-import withRenderModuleIcon from '../../HOC/ModuleIcon'
 import ModuleCard from './ModuleCard'
 import Masonry from 'react-masonry-component'
 
@@ -90,6 +89,7 @@ class FlowMarket extends Component {
 
   renderModules(res){
     let num_displayed = 0
+    // TODO: add this filtering to the elastic search query
     let masonry_ele = <Masonry elementType='div' className="flow-market-container">
         {res.results.map((module, i) => {
           if(this.props.user_modules === undefined || !this.props.user_modules[module._id]){
@@ -209,4 +209,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRenderModuleIcon(FlowMarket))
+export default connect(mapStateToProps, mapDispatchToProps)(FlowMarket)

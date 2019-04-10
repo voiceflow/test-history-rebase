@@ -73,7 +73,7 @@ class SpeakElement extends Component {
                         <img src={'/volume-red.svg'} alt="speak" />&nbsp;&nbsp;&nbsp;
                         {d.audio ? d.audio.split('/').pop() : 'Audio'}
                     </div>
-                    <button className="close mt-4" onClick={() => { this.props.handleRemoveBlock(i) }}>&times;</button>
+                    <button className="close mt-4" onClick={() => { this.props.handleRemoveBlock(i) }}></button>
                 </div>
                 <Collapse isOpen={d.open} className="speak-audio">
                     <div className="pb-2">
@@ -128,7 +128,7 @@ class SpeakElement extends Component {
                             options={localStorage.getItem('recent_speak') ? [{ label: 'Recent', options: JSON.parse(localStorage.getItem('recent_speak')) }].concat(VOICES) : VOICES}
                         />
                     </div>
-                    <button className="close mt-4" onClick={() => { this.props.handleRemoveBlock(i) }}>&times;</button>
+                    <button className="close mt-4" onClick={() => { this.props.handleRemoveBlock(i) }}></button>
                 </div>
                 <Collapse isOpen={d.open}>
                     <VariableText

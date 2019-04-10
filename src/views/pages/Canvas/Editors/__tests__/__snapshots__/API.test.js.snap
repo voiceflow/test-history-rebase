@@ -28,14 +28,9 @@ exports[`API render api editor 1`] = `
     zIndex={1050}
   >
     <ModalHeader
-      charCode={215}
-      closeAriaLabel="Close"
-      tag="h5"
+      header="API Test"
       toggle={[Function]}
-      wrapTag="div"
-    >
-      API Test
-    </ModalHeader>
+    />
     <ModalBody
       tag="div"
     >
@@ -129,13 +124,13 @@ exports[`API render api editor 1`] = `
   </InputGroup>
   <Button
     block={true}
+    className="btn-lg btn-block"
     color="clear"
     onClick={[Function]}
-    size="sm"
     tag="button"
   >
     <i
-      className="fas fa-power-off mr-1"
+      className="fas fa-power-off mr-2"
     />
     Test Endpoint
   </Button>

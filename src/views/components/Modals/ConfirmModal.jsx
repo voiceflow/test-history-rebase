@@ -18,8 +18,8 @@ export class ConfirmModal extends React.Component {
           {this.props.confirm.text}
         </ModalBody>
         <ModalFooter className="justify-content-center">
-          <Button className="previous-btn" color="clear" onClick={this.props.toggle}>Cancel</Button>
-          <Button className="faux-purple-btn" color={this.props.confirm.warning ? "warning" : "primary"} 
+          <button className="btn-tertiary" onClick={this.props.toggle}>Cancel</button>
+          <Button className="btn-primary" color={this.props.confirm.warning ? "warning" : "primary"} 
             onClick={() => {
               if(this.props.confirm.params){
                 this.props.confirm.confirm(...this.props.confirm.params)

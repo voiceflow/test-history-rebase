@@ -186,10 +186,10 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 				{Top}
 				{svgPosition && this.state.selected && !this.props.preview ? (
 				<foreignObject
-					x={svgPosition.x - 15}
+					x={svgPosition.x - 20}
 					y={svgPosition.y - 15}
-					width='30px'
-					height='30px'
+					width='40px'
+					height='40px'
 					style={{
 					zIndex: 10,
 					position: 'absolute',
@@ -206,9 +206,7 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 					this.setState({ selected: true });
 					}}
 				>
-					<button className="white-circ mr-2">
-					<i className="fa fa-trash" />
-					</button>
+					<button id="trash" className="btn-action ml-1"></button>
 				</foreignObject>
 				) : null}
 			</g>

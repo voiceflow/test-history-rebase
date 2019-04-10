@@ -168,13 +168,13 @@ class PricingForm extends React.Component {
         </Dropdown>
       </AvGroup>
       <div className="product-stage-button">
-          <Button className="previous-btn"
+          <Button className="btn-tertiary-gray"
             variant="contained"
             onClick={() => this.props.updateStage(0)}
           >
             Previous
           </Button>
-          <Button className="purple-btn ml-2" style={{fontSize: '15px'}}
+          <Button className="btn-primary ml-2" style={{fontSize: '15px'}}
             variant="contained"
             color="primary"
           >

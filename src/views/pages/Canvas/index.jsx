@@ -20,7 +20,7 @@ import { keyboardModal } from './../../HOC/ModalHandlers'
 import { WidgetBar } from './components/WidgetBar'
 import CanvasWarning from './components/CanvasWarning'
 //Helpers
-import { combineAppendValidation } from './../../helpers/combineHelper'
+import { combineAppendValidation, appendValidator } from './../../helpers/combineHelper'
 
 import { updateVersion, updateIntents, setCanFulfill } from "./../../../actions/versionActions";
 import { setVariables } from './../../../actions/variableActions'
@@ -414,6 +414,44 @@ export class Canvas extends Component {
         }
     }
 
+    addCombineNode = (node, type) => {
+        let engine = this.state.engine;
+
+        var newNode = new BlockNodeModel(_.startCase(type), null, toolkit.UID());
+        util.createCombineNode(newNode, type, node)
+        newNode.extras.type = type;
+        if (node.extras.type !== 'god') {
+            var combineNode = new BlockNodeModel('Combine Block', null, toolkit.UID())
+            combineNode.extras.type = 'god'
+            node.parentCombine = combineNode;
+            newNode.parentCombine = combineNode;
+            combineNode.x = node.x-10;
+            combineNode.y = node.y-15;
+
+            newNode.x = node.x
+            newNode.y = node.y + 40;
+            combineNode.combines = [node]
+            combineNode.combines.push(newNode);
+            node.remove('combine')
+            newNode.remove('combine')
+            combineNode.setSelected();
+            this.state.engine.setSuperSelect(combineNode)
+            this.state.engine.getDiagramModel().addNode(combineNode);
+            this.state.engine.enableRepaintEntities([combineNode])
+            this.forceRepaint();
+
+        } else {
+            newNode.parentCombine = node
+            newNode.x = _.last(node.combines).x
+            newNode.y = _.last(node.combines).y + 40
+            if (appendValidator(newNode) && combineAppendValidation(_.last(node.combines))) {
+                node.combines.push(newNode)
+                engine.setSuperSelect(node);
+                this.forceRepaint()
+            }
+        }
+    }
+
     appendCombineNode = (node) => {
         let idx = _.findIndex(node.parentCombine.combines, c => c.id === node.id);
         let amountZoom = this.state.engine.getDiagramModel().getZoomLevel() / 100;
@@ -430,7 +468,7 @@ export class Canvas extends Component {
                 port.in ? newNode.addInPort(port.label) : newNode.addOutPort(port.label).setMaximumLinks(1)
             }
             _.map(newNode.ports, p => p.parent = newNode);
-            node.parentCombine.combines.splice(idx + 1, 0, newNode.serialize())
+            node.parentCombine.combines.splice(idx + 1, 0, newNode)
             if (idx === node.parentCombine.combines.length){
                 let parentPorts = node.parentCombine.getOutPorts()
                 for (name in parentPorts) {
@@ -470,50 +508,26 @@ export class Canvas extends Component {
         }
     }
 
-    removeCombineNode = (node) => {
+    removeCombineNode = (node) => {   
         const removeNode = () => {
-            let nodeIdx
             let diagramEngine = this.state.engine
             let amountZoom = diagramEngine.getDiagramModel().getZoomLevel() / 100;
             let combineBlock = node.parentCombine
             _.remove(combineBlock.combines, (c, idx) => {
                 if (c.id === node.id) {
-                    nodeIdx = idx;
                     diagramEngine.setSuperSelect(null)
+                    c.remove()
                     return true;
                 }
             })
             
             if(combineBlock.extras.type !== 'god') return this.forceRepaint()
-            let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), diagramEngine);
-            if (nodeIdx === combineBlock.combines.length) {
-                _.forEach(combineBlock.ports, p => {
-                    if (!p.in) {
-                        combineBlock.removePort(p);
-                    }
-                })
-                _.forEach(lastNode.ports, p => {
-                    if (!p.in) {
-                        combineBlock.ports[p.name] = p
-                    }
-                })
-            } else {
-                _.forEach(node.parentCombine.getOutPorts(), port => {
-                    if (!port.in && !_.isEmpty(port.links)) {
-                        let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
-                        let point = _.first(_.values(port.links)).points[pointIdx]
-                        if (point instanceof PointModel) {
-                            _.first(_.values(port.links)).points[pointIdx].updateLocation({ x: point.x, y: point.y - 40 });
-                        }
-
-                    }
-                })
-            }
+            let lastNode = _.last(combineBlock.combines);
             if (combineBlock.combines.length === 1) {
-                let removed = new BlockNodeModel().deSerialize(lastNode, diagramEngine);
-                diagramEngine.getDiagramModel().addNode(removed)
+                let removed = lastNode;
                 removed.parentCombine = null;
                 removed.extras.nextID = null;
+                diagramEngine.getDiagramModel().addNode(removed)
                 combineBlock.remove();
             }
             let totalHeight = 40;
@@ -557,7 +571,7 @@ export class Canvas extends Component {
 
             this.props.setConfirm({
                 warning: true,
-                text: <Alert color="danger" className="mb-0">Remove this command?</Alert>,
+                text: <Alert color="danger" className="mb-0">Are you sure you want to remove this command?</Alert>,
                 confirm: removeNode
             })
         }else{
@@ -570,7 +584,6 @@ export class Canvas extends Component {
       let current = this.state.engine.getSuperSelect();
         var nodeElement = e ? toolkit.closest(e.target, ".node[data-nodeid]") : null;
         let element = nodeElement ? this.state.engine.getDiagramModel().getNode(nodeElement.getAttribute("data-nodeid")) : null;
-        var name
       _.map(_.values(this.state.engine.getDiagramModel().getNodes()), (target_node, idx) => {
         if (current && target_node){
           if (target_node.id === current.id){
@@ -582,71 +595,16 @@ export class Canvas extends Component {
                  return c === 'temp'
               })
              if (tempIdx >=0){
-                 let parentPorts = parent.ports
-                 let firstNode = _.head(_.filter(parent.combines, c => c !== 'temp'));
                  let lastNode = _.last(_.filter(parent.combines, c => c !== 'temp'));
-                 if (tempIdx === 0){
-                     firstNode = current;
-                 } else if (tempIdx === parent.combines.length-1){
+                 if (tempIdx === parent.combines.length-1){
+                     lastNode.clearOutLinks()
                      lastNode = current;
+                 } else {
+                     current.clearOutLinks()
                  }
                  current.x = parent.x + 10;
-                 firstNode = new BlockNodeModel().deSerialize(firstNode, this.state.engine);
-                 lastNode = new BlockNodeModel().deSerialize(lastNode, this.state.engine);
-                 let isValid = current;
-                 if (tempIdx <= parent.combines.length && current.parentCombine) {
-                     if (_.last(current.parentCombine.combines) !== 'temp') {
-                         isValid = _.last(current.parentCombine.combines)
-                     }
-                 }
-                 if ((tempIdx <= parent.combines.length && current.parentCombine && combineAppendValidation(isValid)) || (!current.parentCombine && tempIdx + 1 === parent.combines.length)){
-                    for (name in parentPorts){
-                        let parentPort = parentPorts[name]
-                        if (parentPort.in){
-                            if (_.find(firstNode.ports, cp => cp.in)){
-                                let portIdx = _.find(firstNode.ports, cp => cp.in)
-                                portIdx.parent = parent
-                                parentPort = portIdx;
-                            } else {
-                                parent.removePort(parent.ports[name])
-                            }
-                        } else {
-                            parent.removePort(parent.ports[name])
-                        }
-                    }
-                     if (tempIdx <= parent.combines.length && current.parentCombine){
-                        _.forEach(lastNode.ports, cp => {
-                            if (!cp.in){
-                                cp.parent = parent
-                                parent.ports[cp.name] = cp;
-                            }
-                        })
-                    } else {
-                        _.forEach(current.getOutPorts(), cp => {
-                            if (!cp.in) {
-                                cp.parent = parent
-                                parent.ports[cp.name] = cp;
-                            }
-                        }) 
-                    }
-                 } else {
-                     _.forEach(parent.getOutPorts(), port => {
-                         if (!port.in && !_.isEmpty(port.links) && !current.parentCombine) {
-                             let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
-                             let point = _.first(_.values(port.links)).points[pointIdx]
-                             if (point instanceof PointModel) {
-                                 _.first(_.values(port.links)).points[pointIdx].updateLocation({ x: point.x, y: point.y + 40 });
-                             }
 
-                         }
-                     })
-                 }
-                let parentIn = _.find(parent.ports, cp => cp.in);
-                let firstNodeIn = _.find(firstNode.ports, cp => cp.in);
-                if (!parentIn && firstNodeIn){
-                    parent.ports[firstNodeIn.name] = firstNodeIn
-                }
-                parent.combines[tempIdx] = current.serialize();
+                parent.combines[tempIdx] = current;
                 let totalHeight = 40;
                 _.forEach(parent.combines, (c, idx) => {
                     if (!(c instanceof String) && c.id !== parent.id) {
@@ -659,7 +617,7 @@ export class Canvas extends Component {
                         }
                     }
                 });
-                current.remove();
+                current.remove(false);
                 this.state.engine.getDiagramModel().clearSelection()
                 this.state.engine.setSuperSelect(parent)
                 this.state.engine.enableRepaintEntities([parent]);
@@ -791,7 +749,6 @@ export class Canvas extends Component {
                         })
                     }
                 })
-
                 if(state){
                     // UPDATE DIAGRAM STRUCTURE
                     let diagrams = this.props.diagrams
@@ -1655,7 +1612,9 @@ export class Canvas extends Component {
                     removeNode: this.removeNode,
                     diagram: this.props.diagram,
                     removeCombineNode: this.removeCombineNode,
+                    addCombineNode: this.addCombineNode,
                     generateBlockMenu: this.generateBlockMenu,
+                    setBlockMenu: this.props.setBlockMenu,
                     disabled: !!this.props.preview
                   }}
                   removeHandler={node => {

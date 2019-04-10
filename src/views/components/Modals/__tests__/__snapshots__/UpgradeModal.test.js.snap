@@ -26,13 +26,8 @@ exports[`Upgrade Modal Test render upgrade modal 1`] = `
   zIndex={1050}
 >
   <ModalHeader
-    charCode={215}
-    closeAriaLabel="Close"
-    tag="h5"
-    wrapTag="div"
-  >
-    Upgrade Account
-  </ModalHeader>
+    header="Upgrade Account"
+  />
   <ModalBody
     tag="div"
   >
@@ -109,7 +104,7 @@ exports[`Upgrade Modal Test render upgrade modal 1`] = `
               alt="check"
               className="mr-3"
               src="/images/icons/circle_check.svg"
-              width={25}
+              width={18}
             />
             Intercom Support
           </div>
@@ -121,7 +116,7 @@ exports[`Upgrade Modal Test render upgrade modal 1`] = `
               alt="check"
               className="mr-3"
               src="/images/icons/circle_check.svg"
-              width={25}
+              width={18}
             />
             Voiceflow Emails
           </div>
@@ -133,7 +128,7 @@ exports[`Upgrade Modal Test render upgrade modal 1`] = `
               alt="check"
               className="mr-3"
               src="/images/icons/circle_check.svg"
-              width={25}
+              width={18}
             />
             Project Backups (5)
           </div>
@@ -145,7 +140,7 @@ exports[`Upgrade Modal Test render upgrade modal 1`] = `
               alt="check"
               className="mr-3"
               src="/images/icons/circle_check.svg"
-              width={25}
+              width={18}
             />
             In Skill Purchases
           </div>
@@ -157,7 +152,7 @@ exports[`Upgrade Modal Test render upgrade modal 1`] = `
               alt="check"
               className="mr-3"
               src="/images/icons/circle_check.svg"
-              width={25}
+              width={18}
             />
             Basic Analytics
           </div>
@@ -169,7 +164,7 @@ exports[`Upgrade Modal Test render upgrade modal 1`] = `
               alt="check"
               className="mr-3"
               src="/images/icons/circle_check.svg"
-              width={25}
+              width={18}
             />
             Multi-Platform Support (Google Assistant and Alexa)
           </div>
@@ -181,7 +176,7 @@ exports[`Upgrade Modal Test render upgrade modal 1`] = `
               alt="check"
               className="mr-3"
               src="/images/icons/circle_check.svg"
-              width={25}
+              width={18}
             />
             30,000 utterances/mo
           </div>

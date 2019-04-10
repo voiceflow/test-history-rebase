@@ -231,7 +231,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           key="0"
         />
         <Connect(MenuItem)
-          data-tip="Handle intents, from within the skill and upon skill launch with CanFulfillIntent)"
+          data-tip="Handle intents, from within the skill and upon skill launch with CanFulfillIntent"
           draggable={true}
           item={
             Object {
@@ -239,7 +239,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
                 className="fas fa-step-forward"
               />,
               "text": "Intent",
-              "tip": "Handle intents, from within the skill and upon skill launch with CanFulfillIntent)",
+              "tip": "Handle intents, from within the skill and upon skill launch with CanFulfillIntent",
               "type": "intent",
             }
           }
@@ -368,7 +368,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           item={
             Object {
               "icon": <i
-                className="fas fa-sticky-note"
+                class="fas fa-poll-h"
               />,
               "text": "Card",
               "tip": "Tell Alexa to show a card",
@@ -383,7 +383,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           item={
             Object {
               "icon": <i
-                className="far fa-image"
+                class="fas fa-image"
               />,
               "text": "Display",
               "tip": "Show a Multimodal Display on the screen using APL",
@@ -438,7 +438,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
             Upgrade to access these premium features
           </span>
           <Link
-            className="purple-btn mt-3 d-block no-underline"
+            className="btn-primary mt-3 d-block no-underline"
             replace={false}
             to="/account/upgrade"
           >
@@ -781,7 +781,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           key="0"
         />
         <Connect(MenuItem)
-          data-tip="Handle intents, from within the skill and upon skill launch with CanFulfillIntent)"
+          data-tip="Handle intents, from within the skill and upon skill launch with CanFulfillIntent"
           draggable={true}
           item={
             Object {
@@ -789,7 +789,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
                 className="fas fa-step-forward"
               />,
               "text": "Intent",
-              "tip": "Handle intents, from within the skill and upon skill launch with CanFulfillIntent)",
+              "tip": "Handle intents, from within the skill and upon skill launch with CanFulfillIntent",
               "type": "intent",
             }
           }
@@ -918,7 +918,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           item={
             Object {
               "icon": <i
-                className="fas fa-sticky-note"
+                class="fas fa-poll-h"
               />,
               "text": "Card",
               "tip": "Tell Alexa to show a card",
@@ -933,7 +933,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           item={
             Object {
               "icon": <i
-                className="far fa-image"
+                class="fas fa-image"
               />,
               "text": "Display",
               "tip": "Show a Multimodal Display on the screen using APL",

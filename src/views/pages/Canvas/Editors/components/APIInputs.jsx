@@ -36,8 +36,8 @@ class APIInputs extends Component {
                                 </InputGroup>
                             </div> )
                     }) : null}
-                    <button className="btn btn-clear btn-block" onClick={this.props.onAdd}>
-                        <i className="far fa-plus"></i> Add Pair
+                    <button className="btn btn-lg btn-clear btn-block" onClick={this.props.onAdd}>
+                        <i className="far fa-plus mr-2"></i> Add Pair
                     </button>
                 </div>
 

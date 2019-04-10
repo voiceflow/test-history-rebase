@@ -61,7 +61,7 @@ class Multiple extends Component {
                         />
                         { this.props.list.length > 1 ?
                             <InputGroupAddon addonType="append">
-                                <button className="btn-float ml-2" onClick={()=>this.delete(i)}></button>
+                                <button className="close ml-3" onClick={()=>this.delete(i)}></button>
                             </InputGroupAddon> : null
                         }
                   </InputGroup>

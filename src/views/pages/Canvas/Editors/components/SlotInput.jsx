@@ -122,7 +122,7 @@ class SlotInput extends Component {
                             className="interaction-name-input"
                         />
                     </Tooltip>                                
-                    <button className="close" onClick={()=>this.props.removeSlot(this.props.slot.key)} disabled={this.props.live_mode}>&times;</button>
+                    <button className="close mt-1" onClick={()=>this.props.removeSlot(this.props.slot.key)} disabled={this.props.live_mode}></button>
                 </div>
                 <Collapse isOpen={this.props.slot.open}>
                     {disabled && <div className='unavailable-input'><div><i className="fas fa-frown"></i></div>This Slot Type is Unavailable on {(this.props.platform === 'google') ? 'Google Assistant' : 'Alexa'}</div>}
@@ -142,7 +142,7 @@ class SlotInput extends Component {
                                 isDisabled={this.props.live_mode}
                             />
                         </div>
-                        <hr className={`mt-1 ${this.props.slot.inputs && this.props.slot.inputs.length > 0 ? 'mb-0' : 'mb-2'}`}/>
+                        <div className={`${this.props.slot.inputs && this.props.slot.inputs.length > 0 ? 'mb-0' : 'mb-2'}`}></div>
                         <SlotSynonyms
                             inputs={this.props.slot.inputs}
                             update={() => this.forceUpdate()}

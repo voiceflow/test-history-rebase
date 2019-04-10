@@ -7,7 +7,7 @@ import PublishMarket from '../PublishMarket/PublishMarket'
 import PublishGoogle from './PublishGoogle'
 import cloneDeep from 'lodash/cloneDeep';
 
-import { Badge, Button } from 'reactstrap';
+import { Badge} from 'reactstrap';
 
 const PAID_FEATURES = ['Multi-Platform Publishing', 'In-depth Analytics', 'Email Automation', 'Business Support', 'In Skill Purchases', 'Project Backups']
 
@@ -60,9 +60,9 @@ class Publish extends Component {
                         <p className="text-muted">To gain access to business features such as Multi-Platform Publishing, upgrade your Voiceflow account to a paid tier</p>
                         {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/icon/blue_check.svg" width={25} className="mr-3" alt="check"/>{feature}</p>)}
                         <div className="mt-2">
-                            <Button className="purple-btn" onClick={() => this.props.history.push('/account/upgrade')}>
+                            <button className="btn-primary" onClick={() => this.props.history.push('/account/upgrade')}>
                                 Upgrade Plan
-                            </Button>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -79,9 +79,9 @@ class Publish extends Component {
                         <p className="text-muted">To gain access to business features such as Multi-Platform Publishing, upgrade your Voiceflow account to a paid tier</p>
                         {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/icon/blue_check.svg" width={25} className="mr-3" alt="check"/>{feature}</p>)}
                         <div className="mt-2">
-                            <Button className="purple-btn" onClick={() => this.props.history.push('/account/upgrade')}>
+                            <button className="btn-primary" onClick={() => this.props.history.push('/account/upgrade')}>
                                 Upgrade Plan
-                            </Button>
+                            </button>
                         </div>
                     </div>
                 </div>

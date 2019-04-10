@@ -29,12 +29,12 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
     zIndex={1050}
   >
     <ModalHeader
-      charCode={215}
       className="pb-0 mb--4"
-      closeAriaLabel="Close"
-      tag="h5"
       toggle={[Function]}
+<<<<<<< HEAD
+=======
       wrapTag="div"
+>>>>>>> master
     >
       Upload Project
     </ModalHeader>
@@ -42,7 +42,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       className="modal-info"
       style={
         Object {
-          "padding": "1rem 2rem",
+          "padding": "0rem 2rem",
         }
       }
       tag="div"
@@ -68,7 +68,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
             className="super-center mb-3 mt-3"
           >
             <button
-              className="purple-btn"
+              className="btn-primary"
               onClick={[Function]}
             >
               Continue
@@ -104,14 +104,9 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
     zIndex={1050}
   >
     <ModalHeader
-      charCode={215}
-      closeAriaLabel="Close"
-      tag="h5"
+      header="Update Live Version"
       toggle={[Function]}
-      wrapTag="div"
-    >
-      Update Live Version
-    </ModalHeader>
+    />
     <ModalBody
       className="modal-info"
       tag="div"
@@ -133,7 +128,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
           This update will effect the live version of your project. Please be sure you wish to do this.
         </div>
         <button
-          className="purple-btn mb-3"
+          className="btn-primary mb-3"
           onClick={[Function]}
         >
           Confirm Update
@@ -302,7 +297,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
         unmountHTMLWhenHide={false}
       >
         <button
-          className="nav-btn-border"
+          className="nav-btn-border fas fa-share"
           id="icon-share"
           onClick={[Function]}
         />
@@ -322,11 +317,6 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
         target="icon-share"
         toggle={[Function]}
       >
-        <PopoverHeader
-          tag="h3"
-        >
-          Share Link
-        </PopoverHeader>
         <PopoverBody
           style={
             Object {
@@ -460,9 +450,9 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
           >
             <img
               alt="upload"
-              height="18"
-              src="/up-arrow.svg"
-              width="18"
+              height="15"
+              src="/up.svg"
+              width="15"
             />
           </div>
           <div
@@ -470,9 +460,9 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
           >
             <img
               alt="check"
-              height="16"
-              src="/rocket.svg"
-              width="16"
+              height="15"
+              src="/check-white.svg"
+              width="15"
             />
           </div>
         </div>

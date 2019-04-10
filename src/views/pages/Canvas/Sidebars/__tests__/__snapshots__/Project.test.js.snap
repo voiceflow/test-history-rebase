@@ -2,6 +2,8 @@
 
 exports[`SideBar Project render project sidebar with root 1`] = `
 <Fragment>
+<<<<<<< HEAD
+=======
   <ButtonGroup
     className="toggle-group mb-2 mw-250"
     role="group"
@@ -28,8 +30,9 @@ exports[`SideBar Project render project sidebar with root 1`] = `
       flows
     </Button>
   </ButtonGroup>
+>>>>>>> master
   <label
-    className="section-title mt-4"
+    className="section-title mt-1"
   >
     Project Flows
   </label>
@@ -58,6 +61,8 @@ exports[`SideBar Project render project sidebar with root 1`] = `
 
 exports[`SideBar Project render project with sub diagrams 1`] = `
 <Fragment>
+<<<<<<< HEAD
+=======
   <ButtonGroup
     className="toggle-group mb-2 mw-250"
     role="group"
@@ -84,8 +89,9 @@ exports[`SideBar Project render project with sub diagrams 1`] = `
       flows
     </Button>
   </ButtonGroup>
+>>>>>>> master
   <label
-    className="section-title mt-4"
+    className="section-title mt-1"
   >
     Project Flows
   </label>

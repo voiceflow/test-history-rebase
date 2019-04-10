@@ -132,7 +132,7 @@ export class Blocks extends PureComponent {
                                 <div className="premium-block">
                                     <div>
                                         <span>Upgrade to access these premium features</span>
-                                        <Link className="purple-btn mt-3 d-block no-underline" to='/account/upgrade'>
+                                        <Link className="btn-primary mt-3 d-block no-underline" to='/account/upgrade'>
                                             Upgrade
                                         </Link>
                                     </div>

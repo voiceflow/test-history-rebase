@@ -76,7 +76,7 @@ class VariableText extends Component {
     render() {
         const { MentionSuggestions } = this.mentionPlugin;
         const plugins = [this.mentionPlugin];
-
+        
         return (
             <div
             className={this.props.className} draggable

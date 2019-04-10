@@ -31,10 +31,6 @@ export const appendValidator = node => {
             return false;
         case 'story':
             return false;
-        case 'flow':
-            return false;
-        case 'intent':
-            return false;
         case 'comment':
             return false;
         case 'command':
@@ -169,10 +165,6 @@ export const combineValidation = (current, target, setError) => {
     switch(target.extras.type){
         case 'story':
             return false;
-        case 'flow':
-            return false;
-        case 'intent':
-            return false;
         case 'comment':
             return false;
         case 'command':
@@ -184,10 +176,6 @@ export const combineValidation = (current, target, setError) => {
         case 'god':
             return false;
         case 'story':
-            return false;
-        case 'flow':
-            return false;
-        case 'intent':
             return false;
         case 'comment':
             return false;

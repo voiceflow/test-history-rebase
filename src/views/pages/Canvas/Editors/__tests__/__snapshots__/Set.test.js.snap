@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SetEditor render set block editor 1`] = `
-<div>
+<div
+  className="text-center"
+>
   <Connect(SetExpression)
     block={
       Object {
@@ -15,13 +17,10 @@ exports[`SetEditor render set block editor 1`] = `
     onUpdate={[Function]}
   />
   <button
-    className="btn btn-clear btn-lg btn-block"
+    className="btn btn-tertiary-variable mt-1"
     onClick={[Function]}
   >
-    <i
-      className="far fa-plus"
-    />
-     Add Variable Set
+    Add Variable Set
   </button>
 </div>
 `;

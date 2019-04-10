@@ -137,6 +137,26 @@ export class DiagramWidget extends BaseWidget {
 					}
 				}
 			}
+			nodeElement = toolkit.closest(target, '.srd-default-node[data-nodeid]')
+			if (!diagramModel.getNode(nodeElement.getAttribute("data-nodeid"))) {
+				let combine_nodes = []
+				_.forEach(diagramModel.nodes, node => {
+					combine_nodes = combine_nodes.concat(node.combines);
+				})
+				let newNode = _.find(combine_nodes, c => c.id === nodeElement.getAttribute("data-nodeid"))
+				if (newNode) {
+					newNode = _.find(newNode.ports, p => p.name === element.getAttribute("data-name"));
+					return {
+						model: newNode,
+						element: element
+					}
+				} else {
+					return {
+						model: null,
+						element: element
+					}
+				}
+			}
 			let port = diagramModel
 				.getNode(nodeElement.getAttribute("data-nodeid"))
 				.getPort(element.getAttribute("data-name"))
@@ -234,7 +254,7 @@ export class DiagramWidget extends BaseWidget {
 				}
 			}
 		}
-		this.props.setBlockMenu(null)
+		// this.props.setBlockMenu(null)
 	} 
 
 	onMouseMove(event) {
@@ -275,6 +295,7 @@ export class DiagramWidget extends BaseWidget {
 			let amountY = event.clientY - this.state.action.mouseY;
 			if (amountX === 0 && amountY === 0) return;
 			let amountZoom = diagramModel.getZoomLevel() / 100;
+			// console.log(this.state.action.selectionModels)
 			_.forEach(this.state.action.selectionModels, model => {
 				// in this case we need to also work out the relative grid position
 				if (
@@ -324,11 +345,11 @@ export class DiagramWidget extends BaseWidget {
 									});
 									if (nodeCount === 1) {
 										// console.log(target_node.combines[firstNode])
-										let removed = new BlockNodeModel().deSerialize(target_node.combines[firstNode], this.props.diagramEngine);
+										let removed = target_node.combines[firstNode];
 										this.props.diagramEngine.getDiagramModel().addNode(removed)
 										removed.parentCombine = null;
 										removed.extras.nextID = null;
-										target_node.remove();
+										target_node.remove(false);
 									}
 								}
 								let tempIdx;
@@ -346,7 +367,7 @@ export class DiagramWidget extends BaseWidget {
 									})
 									_.forEach(current.ports, cp => cp.parent = current);
 									let lastNode = _.last(current.parentCombine.combines)
-									lastNode = new BlockNodeModel().deSerialize(lastNode, this.props.diagramEngine);
+									lastNode = new BlockNodeModel().deSerialize(lastNode, this.props.diagramEngine, null, false, [], true);
 									_.forEach(lastNode.ports, lp => {
 										if (!lp.in) {
 											lp.parent = current.parentCombine
@@ -402,8 +423,16 @@ export class DiagramWidget extends BaseWidget {
 				} else if (model.model instanceof PointModel) {
 					// we want points that are connected to ports, to not necessarily snap to grid
 					// this stuff needs to be pixel perfect, dont touch it
-					model.model.x = model.initialX + diagramModel.getGridPosition(amountX / amountZoom);
-					model.model.y = model.initialY + diagramModel.getGridPosition(amountY / amountZoom);
+					if (_.last(model.model.parent.points).id === model.model.id){
+						let target = this.props.diagramEngine.getPortCenter(model.model.parent.targetPort)
+						model.model.updateLocation(target)
+					} else if (_.head(model.model.parent.points)) {
+						let source = this.props.diagramEngine.getPortCenter(model.model.parent.sourcePort)
+						model.model.updateLocation(source)
+					} else {
+						model.model.x = model.initialX + diagramModel.getGridPosition(amountX / amountZoom);
+						model.model.y = model.initialY + diagramModel.getGridPosition(amountY / amountZoom);
+					}
 				}
 			});
 
@@ -440,12 +469,13 @@ export class DiagramWidget extends BaseWidget {
 				// let inPorts = _.filter(element.ports, p => !p.in)
 				// Filter which elements to not delete and deserialize
 				for (let i in element.combines) {
-					let new_node = new BlockNodeModel().deSerialize(element.combines[i], this.props.diagramEngine)
+					let new_node = new BlockNodeModel().deSerialize(element.combines[i], this.props.diagramEngine, null, false, [], true)
 					// new_node.getInPorts().links = inPorts.links
-					if (checkBlockDisabledLive(!this.props.live_mode, new_node.extras.type)) {
+					if (checkBlockDisabledLive(this.props.live_mode, new_node.extras.type)) {
 						elements_to_not_delete.push(new_node)
 					}
 				}
+
 				_.forEach(elements_to_not_delete, good_element => this.props.diagramEngine.getDiagramModel().addNode(good_element))
 				element.remove()
 			}
@@ -566,6 +596,15 @@ export class DiagramWidget extends BaseWidget {
 					}
 					delete this.props.diagramEngine.linksThatHaveInitiallyRendered[link.getID()];
 				}
+				if (model.model instanceof PointModel && model.model.parent.sourcePort && model.model.parent.targetPort) {
+					if (_.last(model.model.parent.points).id === model.model.id) {
+						let target = this.props.diagramEngine.getPortCenter(model.model.parent.targetPort)
+						model.model.updateLocation(target)
+					} else if (_.head(model.model.parent.points).id === model.model.id) {
+						let source = this.props.diagramEngine.getPortCenter(model.model.parent.sourcePort)
+						model.model.updateLocation(source)
+					} 
+				}
 			});
 			//check for / remove any loose links in any models which have been moved
 			if (!this.props.allowLooseLinks) {
@@ -609,7 +648,6 @@ export class DiagramWidget extends BaseWidget {
 					}
 				}
 			});
-
 			this.stopFiringAction(!this.state.wasMoved);
 		} else {
 			this.stopFiringAction();
@@ -726,7 +764,7 @@ export class DiagramWidget extends BaseWidget {
 					} else if (model.model instanceof PortModel) {
 						diagramEngine.enableRepaintEntities(diagramModel.getSelectedItems());
 						//its a port element, we want to drag a link
-						if (!this.props.diagramEngine.isModelLocked(model.model)) {
+						if (!this.props.diagramEngine.isModelLocked(model.model) && !model.model.in) {
 							relative = diagramEngine.getRelativeMousePoint(event);
 							var sourcePort = model.model;
 							var link = sourcePort.createLinkModel();

@@ -1,5 +1,5 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
-import withRenderModuleIcon from '../../HOC/ModuleIcon'
+import ModuleIcon from '../../pages/Marketplace/ModuleIcon'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Modal, ModalBody } from 'reactstrap'
@@ -109,6 +109,7 @@ class ModuleModal extends React.Component {
     let conflict_string = this.state.conflicts.reduce((accumulator, curr_string) => {
       return accumulator + `${curr_string}, `
     }, '')
+    conflict_string = conflict_string.substring(0, conflict_string.length - 2)
 
     return (
       <div className="pt-3 pl-3 flow-conflict-text">
@@ -118,7 +119,11 @@ class ModuleModal extends React.Component {
         <p>If these are fine, hit confirm to add the flow to your project or cancel to not.</p>
         <div className="row justify-content-center mt-4">
           <button className="white-btn mr-2" onClick={this.cancelAddFlow} disabled={this.state.loading}>Cancel</button>
-          <button className="purple-btn ml-2" onClick={this.addFlow} disabled={this.state.loading}>Confirm</button>
+          <button className="purple-btn ml-2" onClick={this.addFlow} disabled={this.state.loading}>
+              {this.state.loading?
+              <span className="loader"/>
+              :
+              "Confirm"}</button>
         </div>
       </div>
     )
@@ -139,7 +144,7 @@ class ModuleModal extends React.Component {
         </Modal>
 
         <div className="text-center pt-5">
-          <div className="module-modal-icon">{this.props.module && this.props.renderIcon(this.props.module)}</div>
+          <div className="module-modal-icon">{this.props.module && <div className="module-card-icon"><ModuleIcon module={this.props.module}/></div>}</div>
           <div className="module-modal-author text-secondary">
             {this.props.module.name}
           </div>
@@ -188,4 +193,4 @@ const mapDispatchToProps = dispatch => {
     appendDiagrams: (diagrams) => dispatch(appendDiagrams(diagrams))
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(withRenderModuleIcon(ModuleModal));
+export default connect(mapStateToProps, mapDispatchToProps)(ModuleModal);

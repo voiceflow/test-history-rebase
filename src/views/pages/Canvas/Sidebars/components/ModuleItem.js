@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import {Tooltip} from 'react-tippy';
-import { ALLOWED_GOOGLE_BLOCKS } from 'Constants'
 import axios from 'axios'
 import { removeUserModules } from './../../../../../actions/versionActions'
 import { replaceDiagrams } from './../../../../../actions/diagramActions'
@@ -89,7 +87,6 @@ class ModuleItem extends Component {
     }
 
     render() {
-
         let className = `MenuItem ${this.props.item.type}`
         return (
             <div className="wrap" style={(!this.props.draggable) ? {opacity: 0.3} : null}>

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { Button, Collapse } from 'reactstrap';
 // import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import {getSections, checkBlockDisabledLive} from './../Blocks'
-import withRenderModuleIcon from './../../../HOC/ModuleIcon'
+import ModuleIcon from './../../Marketplace/ModuleIcon'
 
 export class Blocks extends PureComponent {
     constructor(props) {
@@ -65,22 +65,7 @@ export class Blocks extends PureComponent {
         if(module_keys.length > 0){
             for(let key of module_keys){
                 let module = props.user_modules[key]
-                let name = module.title.match(/\b(\w)/g)
-                if(name) { name = name.join('') }
-                else { name = module.title }
-                name = name.substring(0,3)
-                
-                let module_colors = module.color.split('|')
-                if(module_colors.length === 1){
-                    module_colors = ['F86683', 'FEF2F4']
-                }
-
-                let icon_style = {
-                    backgroundColor: `#${module_colors[1]}`,
-                    color: `#${module_colors[0]}`
-                }
-                
-                let icon = <div className="no-image module-image" style={icon_style}><h1>{name}</h1></div>
+                let icon = <ModuleIcon module={module}/>
                 let diagram = this.props.diagrams.filter(diagram => diagram.name === module.title)[0]
                 if(diagram !== undefined){
                     module_array.push({
@@ -200,4 +185,4 @@ const mapStateToProps = state => ({
     project_id: state.skills.skill.project_id,
     user_modules: state.skills.user_modules
 })
-export default connect(mapStateToProps)(withRenderModuleIcon(Blocks));
+export default connect(mapStateToProps)(Blocks);

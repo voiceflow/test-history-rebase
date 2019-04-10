@@ -2,35 +2,6 @@
 
 exports[`SideBar Project render project sidebar with root 1`] = `
 <Fragment>
-<<<<<<< HEAD
-=======
-  <ButtonGroup
-    className="toggle-group mb-2 mw-250"
-    role="group"
-    tag="div"
-  >
-    <Button
-      color="secondary"
-      disabled={true}
-      key="structure"
-      onClick={[Function]}
-      outline={false}
-      tag="button"
-    >
-      structure
-    </Button>
-    <Button
-      color="secondary"
-      disabled={false}
-      key="flows"
-      onClick={[Function]}
-      outline={true}
-      tag="button"
-    >
-      flows
-    </Button>
-  </ButtonGroup>
->>>>>>> master
   <label
     className="section-title mt-1"
   >
@@ -61,35 +32,6 @@ exports[`SideBar Project render project sidebar with root 1`] = `
 
 exports[`SideBar Project render project with sub diagrams 1`] = `
 <Fragment>
-<<<<<<< HEAD
-=======
-  <ButtonGroup
-    className="toggle-group mb-2 mw-250"
-    role="group"
-    tag="div"
-  >
-    <Button
-      color="secondary"
-      disabled={true}
-      key="structure"
-      onClick={[Function]}
-      outline={false}
-      tag="button"
-    >
-      structure
-    </Button>
-    <Button
-      color="secondary"
-      disabled={false}
-      key="flows"
-      onClick={[Function]}
-      outline={true}
-      tag="button"
-    >
-      flows
-    </Button>
-  </ButtonGroup>
->>>>>>> master
   <label
     className="section-title mt-1"
   >

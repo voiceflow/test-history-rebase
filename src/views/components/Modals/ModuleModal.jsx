@@ -153,7 +153,7 @@ class ModuleModal extends React.Component {
           <p className="text-secondary">{this.props.module.descr}</p>
           <div className="row justify-content-center mb-3">
             <button className={"white-btn mr-2" + (this.state.loading ? " disabled" : "")} onClick={()=>{this.setState({preview: true})}} disabled={this.state.loading}>Preview</button>
-            <button className={"purple-btn ml-2" + (this.state.loading ? " disabled" : "")} onClick={this.checkFlowConflicts} disabled={this.state.loading}>{
+            <button className={"btn-primary ml-2" + (this.state.loading ? " disabled" : "")} onClick={this.checkFlowConflicts} disabled={this.state.loading}>{
               this.state.loading?
               <span className="loader"/>
               :

@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
+import LOCALE_MAP from "./../../../services/LocaleMap";
 
-import { updateVersion } from './../../../actions/versionActions'
+import { updateVersion, updateLocales, updateSkillDB } from './../../../actions/versionActions'
 import { setError } from 'actions/modalActions'
 import {
-    Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
-    ModalHeader, ModalBody, Button
+    Popover, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, ModalBody, Button
 } from 'reactstrap'
+import { ModalHeader } from 'views/components/Modals/ModalHeader'
 import ClipBoard from './../../components/ClipBoard'
 import AmazonLogin from './../../components/Forms/AmazonLogin'
 import axios from 'axios'
@@ -535,8 +536,8 @@ export class ActionGroup extends PureComponent {
   displayUploadPrompt() {
     if(this.state.show_upload_prompt){
       return  <div className="upload-success-popup">
+        <button className="close close-upload-success-popup" onClick={this.closePrompt}>&times;</button>
           {this.renderBody(false)}
-          <button className="close close-upload-success-popup" onClick={this.closePrompt}>&times;</button>
       </div>
     } 
     return
@@ -591,7 +592,7 @@ export class ActionGroup extends PureComponent {
               <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live.svg" alt="Upload" />
               <div className="modal-bg-txt text-center mt-2"> Confirm Live Update</div>
               <div className="modal-txt text-center mt-2 mb-3">This update will effect the live version of your project. Please be sure you wish to do this.</div>
-              <button className="purple-btn mb-3" onClick={this.updateLiveVersion}>Confirm Update</button>
+              <button className="btn-primary mb-3" onClick={this.updateLiveVersion}>Confirm Update</button>
           </React.Fragment>
       }
   }
@@ -606,7 +607,7 @@ export class ActionGroup extends PureComponent {
               <Button variant="contained" className="publish-btn" onClick={this.openUpdateLive}>
                   Update Live <div className="launch">
                       <div className="first">
-                          <img src={'/up-arrow.svg'} alt="upload" width="18" height="18" />
+                          <img src={'/up.svg'} alt="upload" width="16" height="16" />
                       </div>
                       <div className="second">
                           <img src={'/rocket.svg'} alt="check" width="16" height="16" />
@@ -622,21 +623,20 @@ export class ActionGroup extends PureComponent {
                           <div className="load-spinner pt-1">
                               <span className="save-loader-white"/>
                           </div>
-                      </div>
-                  </Button>
+                      </div> </Button>
           } else {
               return <Tooltip
-                  html={<div style={{ width: 155 }}>{(this.props.platform === 'google') ? 'Test your skill on your own Google device, or in the Google Actions console' : 'Test your skill on your own Alexa device, or in the Alexa developer console'}</div>}
+                  html={<div style={{ width: 155 }}>{(this.props.platform === 'google') ? 'Test your Action on your own Google device, or in the Google Actions console' : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}</div>}
                   position="bottom"
                   distance={16}
               >
                   <Button variant="contained" className="publish-btn" onClick={this.openUpdate}>
                       {(this.props.platform === 'google') ? 'Upload to Google' : 'Upload to Alexa'}<div className="launch">
                           <div className="first">
-                              <img src={'/up-arrow.svg'} alt="upload" width="18" height="18" />
+                              <img src={'/up.svg'} alt="upload" width="15" height="15" />
                           </div>
                           <div className="second">
-                              <img src={'/rocket.svg'} alt="check" width="16" height="16" />
+                              <img src={'/check-white.svg'} alt="check" width="15" height="15" />
                           </div>
                       </div>
                   </Button>
@@ -689,7 +689,7 @@ export class ActionGroup extends PureComponent {
                   return <div className="text-center">
                       <div className="d-flex align-items-center justify-content-center upload-prompt-title mb-2"> <span className="pass-icon mr-2"/> Upload Successful </div>
                       <div className="upload-prompt-text">
-                          Your skill is now available to test on your Alexa and the <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${locale}/`}
+                          Your Skill is now available to test on your Alexa and the <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${locale}/`}
                               target="_blank" rel="noopener noreferrer">
                               Amazon console
                           </a>.
@@ -705,7 +705,7 @@ export class ActionGroup extends PureComponent {
                       {!!this.SucceedLocale && <Alert className="w-75 mb-1 mt-3 text-center"><b>Alexa,</b> open {this.props.skill.inv_name}</Alert>}
                       <div className="my-45">
                           <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${locale}/`}
-                              className="purple-btn mr-2 no-underline" target="_blank" rel="noopener noreferrer">
+                              className="btn-primary mr-2 no-underline" target="_blank" rel="noopener noreferrer">
                               Test on Alexa Simulator
                           </a>
                       </div>
@@ -718,7 +718,7 @@ export class ActionGroup extends PureComponent {
           case 5:
               return <div className={"modal-txt flex-fill text-center mb-4" + (modal ? " w-100" : " mt-4") }>
                   {this.state.amzn_error && <Alert color="danger"><span className="fail-icon"/> Login With Amazon Failed - Try Again</Alert>}
-                  Login with Amazon to test your skill on your own Alexa device, or in the Alexa developer console
+                  Login with Amazon to test your Skill on your own Alexa device, or in the Alexa developer console
                   {modal && Video('https://s3.amazonaws.com/com.getvoiceflow.videos/first.mp4')}
                   <div className="text-center mt-4">
                       <AmazonLogin
@@ -742,10 +742,10 @@ export class ActionGroup extends PureComponent {
                   <div className="text-muted mb-4 margin-auto" style={{maxWidth: 350}}><b>Important:</b> Make sure to use the same email associated with your Amazon account.</div>
                   <hr className="full-width"/>
                   <div className={modal ? 'super-center mb-2' : ''}>
-                      <a href="https://developer.amazon.com/login.html" className="purple-btn mr-3 no-underline d-inline-block mb-2" target="_blank" rel="noopener noreferrer">
+                      <a href="https://developer.amazon.com/login.html" className="btn-primary mr-3 no-underline d-inline-block mb-2" target="_blank" rel="noopener noreferrer">
                           Developer Sign Up
                       </a>
-                      <Button color="clear" className="faux-purple-btn d-inline-block mb-2" onClick={this.checkVendor}>
+                      <Button color="clear" className="faux-btn-primary d-inline-block mb-2" onClick={this.checkVendor}>
                           <i className="fas fa-sync-alt" /> Check Again
                       </Button>
                   </div>
@@ -773,7 +773,7 @@ export class ActionGroup extends PureComponent {
                   <div className="d-flex text-muted align-items-center">
                       <label className="mr-1">Invocation Name</label>
                       <Tooltip
-                          html={(<React.Fragment>Alexa listens for the Invocation Name<br /> to launch your skill<br /> e.g. <i>Alexa, open <b>Invocation Name</b></i></React.Fragment>)}
+                          html={(<React.Fragment>Alexa listens for the Invocation Name<br /> to launch your Skill<br /> e.g. <i>Alexa, open <b>Invocation Name</b></i></React.Fragment>)}
                           position="bottom"
                       >
                           <i className="fal fa-question-circle" />
@@ -782,7 +782,7 @@ export class ActionGroup extends PureComponent {
                   <input className="form-control" value={this.state.inv_name} placeholder='Invocation Name' onChange={(e) => this.setState({ inv_name: e.target.value, inv_name_error: invNameError(e.target.value, this.props.skill.locales) })} />
                   <small className={"text-blue" + (this.state.flash ? ' blink' : '')}>{this.state.inv_name_error}</small>
                   <div className="super-center mt-3 mb-2">
-                      <button className="purple-btn" onClick={this.updateAlexa}>Continue</button>
+                      <button className="btn-primary" onClick={this.updateAlexa}>Continue</button>
                   </div>
               </div>
           default:
@@ -791,13 +791,40 @@ export class ActionGroup extends PureComponent {
                       .catch(err => {
                           console.error(err)
                       })
+                  return <div id="name-box" className="text-center">
+                      <div className="mb-5 mt-3">
+                          <input
+                              id="skill-name"
+                              className="input-underline"
+                              type="text"
+                              name="name"
+                              value={this.props.skill.name}
+                              onChange={e => { this.props.updateSkill('name', e.target.value); this.props.updateSkill('inv_name', e.target.value) }}
+                              placeholder="Enter your project name"
+                              autoFocus
+                              required
+                          />
+                      </div>
+                      <div className="text-muted mt-4 mb-3">Select Regions</div>
+                      <div className="grid-col-3 mx--1">
+                          {LOCALE_MAP.map((locale, i) => {
+                              const active = this.props.skill.locales.includes(locale.value) ? "active" : "";
+                              return <button className={`country-checkbox btn-darken ${active}`} key={i} onClick={() => { this.props.updateSkillLocale(locale.value) }}>
+                                  <span>{locale.name}</span><img src={`/images/icons/countries/${locale.value}.svg`} alt={locale.name}></img>
+                              </button>
+                          })}
+                      </div>
+                      <div className="mt-5 mb-3">
+                          <Button varient="contained" className="purple-btn" onClick={(e) => {this.updateAlexa(); this.props.saveSkill()}}>Upload</Button>
+                      </div>
+                  </div>
               }
               return <div>
                   <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
-                  <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
+                  <div className="modal-bg-txt text-center mt-2"> Upload your Skill for testing</div>
                   <div className="modal-txt text-center mt-2"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console</div>
                   <div className="super-center mb-3 mt-3">
-                      <button className="purple-btn" onClick={this.updateAlexa}>Continue</button>
+                      <button className="btn-primary" onClick={this.updateAlexa}>Continue</button>
                   </div>
               </div>
       }
@@ -843,21 +870,21 @@ export class ActionGroup extends PureComponent {
                   .catch(err => {
                       console.error(err)
                   })
-          }
-          modal_content = <div>
-              <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
-              <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
-              <div className="modal-txt text-center mt-2"> Updating to Google will allow you to test on your Google device or the Google Actions Console.</div>
-              {(this.props.skill.live || this.props.skill.review) && <hr />}
-              <div>
-                  {this.props.skill.google_publish_info && this.props.skill.google_publish_info.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
-                  {this.props.skill.google_publish_info && this.props.skill.google_publish_info.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
-              </div>
+            }
+            modal_content = <div>
+                <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
+                <div className="modal-bg-txt text-center mt-2"> Upload your Action for testing</div>
+                <div className="modal-txt text-center mt-2"> Updating to Google will allow you to test on your Google device or the Google Actions Console.</div>
+                {(this.props.skill.live || this.props.skill.review) && <hr />}
+                <div>
+                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.live && <Alert color="danger">This Action is in production, updating will change the flow for all production users</Alert>}
+                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.review && <Alert color="danger">This Action is under review, updating will change the flow during the review process</Alert>}
+                </div>
 
-              <div className="super-center mb-3 mt-3">
-                  <button className="purple-btn" onClick={this.updateGoogle}>Confirm Upload</button>
-              </div>
-          </div>
+                <div className="super-center mb-3 mt-3">
+                    <button className="btn-primary" onClick={this.updateGoogle}>Confirm Upload</button>
+                </div>
+            </div>
       }
       return modal_content
   }
@@ -878,9 +905,9 @@ export class ActionGroup extends PureComponent {
                       delay: 0
                   }}/>
               </div>}
-              <Modal isOpen={this.state.updateModal && this.state.is_first_upload} toggle={()=>this.setState({updateModal: false})} onClosed={this.shouldReset} className="stage_modal">
-                  <ModalHeader toggle={()=>this.setState({updateModal: false})} className="pb-0 mb--4"/>
-                  <ModalBody className="modal-info" style={{padding: '1rem 2rem'}}>
+              <Modal size={this.state.stage === 0 ? "lg" : undefined} isOpen={this.state.updateModal && this.state.is_first_upload} toggle={()=>this.setState({updateModal: false})} onClosed={this.shouldReset} className="stage_modal">
+                  <ModalHeader toggle={()=>this.setState({updateModal: false})} className="pb-0 mb--4">Upload Project</ModalHeader>
+                  <ModalBody className="modal-info" style={{padding: '0rem 2rem'}}>
                       <div>
                           {this.renderBody(true)}
                       </div>
@@ -888,7 +915,7 @@ export class ActionGroup extends PureComponent {
               </Modal>
 
               <Modal isOpen={this.state.updateLiveModal} toggle={this.toggleUpdateLive} onClosed={() => { this.setState({ live_update_stage: 0 }) }} className="stage_modal">
-                  <ModalHeader toggle={this.toggleUpdateLive}>Update Live Version</ModalHeader>
+                  <ModalHeader toggle={this.toggleUpdateLive} header='Update Live Version' />
                   <ModalBody className="modal-info">
                       <div>
                           {this.renderLiveStage()}
@@ -920,7 +947,7 @@ export class ActionGroup extends PureComponent {
                           position="bottom"
                           className="mr-4"
                       >
-                          <button id="icon-save" className={`${this.props.saved ? 'nav-btn btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''}`} onClick={this.props.onSave}>
+                          <button id="icon-save" className={`${this.props.saved ? 'btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''}`} onClick={this.props.onSave}>
                               {this.props.saving && <span className="save-loader" />}
                           </button>
                       </Tooltip>
@@ -932,10 +959,9 @@ export class ActionGroup extends PureComponent {
                           position="bottom"
                           distance={16}
                       >
-                          <button id="icon-share" className="nav-btn-border" onClick={this.toggleShare}></button>
+                          <button id="icon-share" className="nav-btn-border fas fa-share" onClick={this.toggleShare}></button>
                       </Tooltip>
                       <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
-                          <PopoverHeader>Share Link</PopoverHeader>
                           <PopoverBody style={{ minWidth: '260px' }}>
                               <div className="space-between">
                                   <label>Allow preview sharing</label>
@@ -951,7 +977,7 @@ export class ActionGroup extends PureComponent {
                                       <InputGroupAddon addonType="prepend">
                                           <ClipBoard
                                               component="button"
-                                              className="btn btn-primary"
+                                              className="btn btn-clear copy-link"
                                               value={link}
                                               id="shareLink"
                                           >
@@ -993,7 +1019,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
     return {
         updateSkill: (type, val) => dispatch(updateVersion(type, val)),
-        setError: err => dispatch(setError(err))
+        setError: err => dispatch(setError(err)),
+        updateSkillLocale: (val) => dispatch(updateLocales(val)),
+        saveSkill: (publish, cb) => dispatch(updateSkillDB(publish, cb))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ActionGroup);

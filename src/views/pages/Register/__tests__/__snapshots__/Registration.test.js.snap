@@ -27,11 +27,11 @@ exports[`Onboarding renders without crashing 1`] = `
           <div
             className="text-center"
           >
-            <h3
-              className="mb-3"
+            <h4
+              className="mb-4"
             >
               Login
-            </h3>
+            </h4>
           </div>
           <div
             className="social-login"
@@ -109,15 +109,13 @@ exports[`Onboarding renders without crashing 1`] = `
               value=""
             />
           </FormGroup>
-          <Button
+          <button
             block={true}
-            className="purple-btn login-btn"
-            color="secondary"
-            tag="button"
+            className="btn-primary btn-lg btn-block"
             type="submit"
           >
             Login
-          </Button>
+          </button>
           <div
             className="text-center small mt-2"
           >
@@ -163,11 +161,11 @@ exports[`Onboarding renders without crashing 1`] = `
           <div
             className="text-center"
           >
-            <h3
-              className="mb-3"
+            <h4
+              className="mb-4"
             >
               Sign Up
-            </h3>
+            </h4>
           </div>
           <div
             className="social-login"
@@ -220,21 +218,6 @@ exports[`Onboarding renders without crashing 1`] = `
           <FormGroup
             tag="div"
           >
-            <Label
-              for="name"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Name
-            </Label>
             <Input
               className="form-bg"
               minLength="3"
@@ -249,27 +232,12 @@ exports[`Onboarding renders without crashing 1`] = `
           <FormGroup
             tag="div"
           >
-            <Label
-              for="email"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Email
-            </Label>
             <Input
               className="form-bg"
               minLength="6"
               name="r_email"
               onChange={[Function]}
-              placeholder="bezos@amazon.com"
+              placeholder="Email"
               required={true}
               type="email"
               value=""
@@ -278,21 +246,6 @@ exports[`Onboarding renders without crashing 1`] = `
           <FormGroup
             tag="div"
           >
-            <Label
-              for="password"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Password
-            </Label>
             <Input
               className="form-bg"
               minLength="8"
@@ -304,15 +257,13 @@ exports[`Onboarding renders without crashing 1`] = `
               value=""
             />
           </FormGroup>
-          <Button
+          <button
             block={true}
-            className="purple-btn login-btn"
-            color="secondary"
-            tag="button"
+            className="btn-primary btn-lg btn-block"
             type="submit"
           >
             Create Account
-          </Button>
+          </button>
           <hr />
           <div
             className="text-center"

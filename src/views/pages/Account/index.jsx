@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import AuthenticationService from './../../../services/Authentication'
 import UpgradeModal from './../../components/Modals/UpgradeModal'
 import { setConfirm } from 'actions/modalActions'
-import {Button, Alert} from 'reactstrap'
+import { Alert } from 'reactstrap'
 import moment from 'moment'
 import axios from 'axios'
 import './Account.css'
@@ -134,11 +134,11 @@ class Account extends Component {
   renderButton(stage, action){
     switch(stage){
       case LOADING:
-        return <Button color="clear" className="purple-btn"><span className="loader"/></Button>
+        return <button color="clear" className="btn-primary"><span className="loader"/></button>
       case UNLINKED:
-        return <Button color="clear" className="purple-btn" disabled>Unlinked</Button>
+        return <button color="clear" className="btn-primary" disabled>Unlinked</button>
       default:
-        return <Button onClick={action} className="purple-btn">Reset</Button>
+        return <button onClick={action} className="btn-primary">Reset</button>
     }
   }
 
@@ -185,7 +185,7 @@ class Account extends Component {
                               <div className="btn btn-clear ml-2" onClick={this.toggle}><i className="fas fa-cog"/> Upgrade</div>
                             </React.Fragment> : null}
                         </React.Fragment> : 
-                      <Button onClick={this.toggle} className="purple-btn">Upgrade</Button>}
+                      <button onClick={this.toggle} className="btn-primary">Upgrade</button>}
                     </div>
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Alert, Input} from 'reactstrap';
+import { Alert, Input} from 'reactstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { setConfirm } from 'actions/modalActions'
@@ -86,7 +86,7 @@ class DiagramBlock extends Component {
             .map(diagram => {
                 return {
                     value: diagram.id + "::" + diagram.name,
-                    label: <><i className="fas fa-clone mr-2 text-muted"/>{diagram.name}</>
+                    label: <><img src={'/flows.svg'} alt="flows" width="15"/>&nbsp;&nbsp; {diagram.name}</>
                 }
             })
 
@@ -107,11 +107,11 @@ class DiagramBlock extends Component {
                 {!this.state.node.extras.diagram_id ? 
                     <React.Fragment>
                         <label>Create a New Flow</label>
-                        <Button block className="btn-lg" onClick={() => {
+                        <button block className="btn-clear btn-block btn-lg" onClick={() => {
                             this.props.setConfirm({
                                 text: <>
-                                    <div className="mb-2">Name New Flow</div>
-                                    <Input className="form-bg mb-1"
+                                    <label className="mb-2">Name New Flow</label>
+                                    <Input className="mb-1"
                                         placeholder={`Enter flow name`}
                                         value={this.state.newFlowName}
                                         onChange={e => this.setState({
@@ -122,14 +122,16 @@ class DiagramBlock extends Component {
                                 confirm: () => this.props.createDiagram(this.state.node, this.state.newFlowName)
                             })
                         }}>
-                          <i className="fas fa-clone mr-1"/> Create New Flow
-                        </Button>
-                        <hr className="mb-1"/>
+                          <img src={"/flows.svg"} alt="back" className="mr-2" /> Create New Flow
+                        </button>
+                        <div class="break">
+                        <span class="or">OR</span>
+                        </div>
                         {this.props.diagrams && this.props.diagrams.length > 0 ? 
                             <React.Fragment>
                                 <label>Select Existing Flow</label>
                                 <Select
-                                    placeholder={<><i className="fas fa-clone mr-1"/> Select Flow</>}
+                                    placeholder={<><img src={'/flows.svg'} alt="flows" width="15"/>&nbsp;&nbsp; Select Flow</>}
                                     classNamePrefix="select-box"
                                     onChange={(selected) => {
                                         let node = this.state.node
@@ -146,9 +148,9 @@ class DiagramBlock extends Component {
                     </React.Fragment>
                     : 
                     <React.Fragment>
-                        <Button block className="mb-3 btn-lg" onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>
+                        <button block className="btn-primary btn-block mb-3 btn-lg" onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>
                           <i className="fas fa-clone mr-1"/> Enter Flow
-                        </Button>
+                        </button>
                         {/* <Select
                             classNamePrefix="select-box"
                             onChange={(selected) => {

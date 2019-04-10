@@ -38,13 +38,22 @@ export class NodeModel extends BaseModel{
 					})
 				);
 			});
+			_.forEach(this.combines, c => {
+				_.forEach(c.ports, port => {
+					entities = entities.concat(
+						_.map(port.getLinks(), link => {
+							return link.getPointForPort(port);
+						})
+					);
+				})
+			})
 		}
 		return entities;
 	}
 	setSelected(selected) {
 		super.setSelected(selected)
 	}
-	deSerialize(ob, engine: DiagramEngine) {
+	deSerialize(ob, engine: DiagramEngine, keepLink) {
 		super.deSerialize(ob, engine);
 		this.x = ob.x;
 		this.y = ob.y;
@@ -53,6 +62,9 @@ export class NodeModel extends BaseModel{
 		//deserialize ports
 		_.forEach(ob.ports, (port: any) => {
 			let portOb = engine.getPortFactory(port.type).getNewInstance();
+			if (keepLink && ob instanceof NodeModel) {
+				portOb.links = port.links
+			}
 			portOb.deSerialize(port, engine);
 			this.addPort(portOb);
 		});
@@ -77,14 +89,24 @@ export class NodeModel extends BaseModel{
 		});
 	}
 
-	remove() {
+	remove(removeLink = true) {
 		if (this.extras.type !== 'story'){
 			super.remove();
-			_.forEach(this.ports, port => {
-				_.forEach(port.getLinks(), link => {
-					link.remove();
+			if (removeLink === true){
+				_.forEach(this.ports, port => {
+					_.forEach(port.getLinks(), link => {
+						link.remove();
+					});
 				});
-			});
+			} else if (removeLink === 'combine'){
+				_.forEach(this.ports, port => {
+					if (!port.in) {
+						_.forEach(port.getLinks(), link => {
+							link.remove();
+						});
+					}
+				})
+			}
 		}
 	}
 

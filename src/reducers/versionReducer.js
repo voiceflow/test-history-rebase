@@ -81,7 +81,7 @@ export default function skillReducer(state = initialState, action) {
     case UPDATE_FULFILLMENT:
       return {
         ...state,
-        skill: update(state.skill, { fulfillment: {[action.payload.intent_key]: {$set: {[action.payload.slot_config]: action.payload.slot_config}}}})
+        skill: update(state.skill, { fulfillment: {[action.payload.intent_key]: {$set: {slot_config : action.payload.slot_config}}}})
       }
 
     case REMOVE_FULFILLMENT:

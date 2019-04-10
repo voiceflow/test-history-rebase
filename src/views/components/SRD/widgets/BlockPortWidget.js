@@ -22,8 +22,16 @@ export class BlockPortWidget extends BaseWidget {
 	}
 
 	getClassName() {
-		return `port ${this.props.port.in? 'in' : 'out'} ${this.props.isHidden ? 'd-none' : ''} `
-		+ super.getClassName() + (this.state.selected ? this.bem("--selected") : "" + (this.isUnlinked() ? "unlinked" : ""));
+		return `port ${this.props.port.in? 'in' : 'out'} ${this.props.isHidden ? 'd-none' : ''} ${(this.props.node.parentCombine && this.props.port.in) ? 'combine-port': ''} ${this.props.isMoving ? 'moving': ''} `
+		+ super.getClassName() + (this.state.selected ? this.bem("--selected") : "" + (this.isUnlinked() ? "unlinked" : "") );
+	}
+
+	// componentDidMount() {
+	// 	this.props.node.centerLinks(this.props.diagramEngine)
+	// }
+
+	componentDidUpdate() {
+		this.props.node.centerLinks(this.props.diagramEngine)
 	}
 
 	setLinks(isSelected = false){
@@ -51,8 +59,10 @@ export class BlockPortWidget extends BaseWidget {
 			<div
 				{...this.getProps()}
 				onMouseEnter={e => {
-					this.setLinks(true);
-					this.setState({ selected: true });
+					if (!this.props.port.in) {
+						this.setLinks(true);
+						this.setState({ selected: true });
+					}
 				}}
 				onMouseLeave={e => {
 					this.setLinks(false);

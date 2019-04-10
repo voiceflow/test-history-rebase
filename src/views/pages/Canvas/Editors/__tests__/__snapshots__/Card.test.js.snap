@@ -36,7 +36,7 @@ exports[`Card render card block editor 1`] = `
   </label>
   <VariableInput
     className="form-control"
-    placeholder="Welcome to Skill Name"
+    placeholder="Insert card title"
     raw={Object {}}
     updateRaw={[Function]}
   />
@@ -47,12 +47,7 @@ exports[`Card render card block editor 1`] = `
     className="editor"
     placeholder={
       <React.Fragment>
-        Here are some actions you can do
-        <br />
-        - Action 1
-        <br />
-        - Action 2 etc.
-        <br />
+        Add content to your card here
       </React.Fragment>
     }
     raw={Object {}}

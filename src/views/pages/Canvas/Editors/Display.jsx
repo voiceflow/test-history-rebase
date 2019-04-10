@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Select from 'react-select'
 import axios from 'axios';
 import { connect } from 'react-redux'
-import { Button, InputGroup, Input, Modal, ModalHeader, ModalBody, InputGroupAddon } from 'reactstrap'
+import { Button, InputGroup, Input, Modal, ModalBody, InputGroupAddon } from 'reactstrap'
+import { ModalHeader } from 'views/components/Modals/ModalHeader'
 import {Tooltip} from 'react-tippy'
 import {Link} from 'react-router-dom'
 
@@ -136,10 +137,9 @@ export class Display extends Component {
                 datasource = datasource.replace(re, replacement)
             })
 
-            const payload = {
-                datasource: datasource
-            }
-            axios.post(`/multimodal/display/render/${this.state.node.extras.display_id}`, payload)
+            axios.post(`/multimodal/display/render/${this.state.node.extras.display_id}`, {
+              datasource: datasource
+            })
             .then(res => {
                 this.setState({
                     modalContent: res.data,
@@ -226,9 +226,10 @@ export class Display extends Component {
 
     render() {
         if(this.props.displays.length === 0){
-            return <div>
+            return <div className="text-center">
+                <img className="mb-3 mt-5" src={'/images/desktop.svg'} alt="user" width="80"/><br/>
                 <span className="text-muted">You currently have no Multimodal Displays</span>
-                <Link className="btn btn-clear btn-block mt-2" to={`/visuals/${this.props.skill_id}`}>Add Displays</Link> 
+                <Link className="btn btn-secondary mt-3" to={`/visuals/${this.props.skill_id}`}>Add Displays</Link> 
             </div>
         }
 
@@ -242,7 +243,7 @@ export class Display extends Component {
             >
                 <ModalHeader toggle={()=>this.setState({
                     modal: false
-                })}>Multimodal Display Test</ModalHeader>
+                })} header='Multimodal Display Test' />
                 <ModalBody>
                 {this.state.modal && this.renderDisplayTest()}
                 </ModalBody>
@@ -312,8 +313,8 @@ export class Display extends Component {
                         tabSize: 2,
                         useWorker: false
                     }}/>
-                {window.user_detail.admin === 70 && <label>APL Commands</label>}
-                {window.user_detail.admin === 70 && <AceEditor
+                <label>APL Commands</label>
+                <AceEditor
                     name="apl_commands_editor"
                     className="datasource_editor"
                     mode="json_custom"
@@ -341,7 +342,7 @@ export class Display extends Component {
                         showLineNumbers: true,
                         tabSize: 2,
                         useWorker: false
-                    }}/>}
+                    }}/>
                 </div>
             </React.Fragment>
         );

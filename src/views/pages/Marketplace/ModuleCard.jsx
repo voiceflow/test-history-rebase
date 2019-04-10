@@ -8,7 +8,7 @@ class ModuleCard extends Component{
 	render(){
 		return (
 			<div className="card-container">
-				<a onClick={() => {this.props.showModuleDetailView(this.props.module)}} className="card-link">
+				<a onClick={() => {this.props.showModuleDetailView(this.props.module)}} href="card" className="card-link">
 					<Card 
 											className="market-card"
 						onMouseEnter={() => {this.setState({hover:true})}}

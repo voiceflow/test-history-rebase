@@ -42,7 +42,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         style={null}
       >
         <Connect(MenuItem)
-          data-tip="Tell Alexa to play sounds or talk to the user"
+          data-tip="Tell Alexa what to say, or play audio clips"
           draggable={true}
           item={
             Object {
@@ -50,7 +50,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
                 className="fas fa-comment"
               />,
               "text": "Speak",
-              "tip": "Tell Alexa to play sounds or talk to the user",
+              "tip": "Tell Alexa what to say, or play audio clips",
               "type": "speak",
             }
           }
@@ -231,15 +231,15 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           key="0"
         />
         <Connect(MenuItem)
-          data-tip="Handle intents, from within the skill and upon skill launch with CanFulfillIntent"
+          data-tip="Handle intents, from within the skill and upon skill launch with CanFulfillIntent)"
           draggable={true}
           item={
             Object {
               "icon": <i
-                className="fas fa-step-forward"
+                class="fas fa-arrow-alt-from-left"
               />,
-              "text": "Intent",
-              "tip": "Handle intents, from within the skill and upon skill launch with CanFulfillIntent",
+              "text": "Jump",
+              "tip": "Handle intents, from within the skill and upon skill launch with CanFulfillIntent)",
               "type": "intent",
             }
           }
@@ -592,7 +592,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         style={null}
       >
         <Connect(MenuItem)
-          data-tip="Tell Alexa to play sounds or talk to the user"
+          data-tip="Tell Alexa what to say, or play audio clips"
           draggable={true}
           item={
             Object {
@@ -600,7 +600,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
                 className="fas fa-comment"
               />,
               "text": "Speak",
-              "tip": "Tell Alexa to play sounds or talk to the user",
+              "tip": "Tell Alexa what to say, or play audio clips",
               "type": "speak",
             }
           }
@@ -781,15 +781,15 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           key="0"
         />
         <Connect(MenuItem)
-          data-tip="Handle intents, from within the skill and upon skill launch with CanFulfillIntent"
+          data-tip="Handle intents, from within the skill and upon skill launch with CanFulfillIntent)"
           draggable={true}
           item={
             Object {
               "icon": <i
-                className="fas fa-step-forward"
+                class="fas fa-arrow-alt-from-left"
               />,
-              "text": "Intent",
-              "tip": "Handle intents, from within the skill and upon skill launch with CanFulfillIntent",
+              "text": "Jump",
+              "tip": "Handle intents, from within the skill and upon skill launch with CanFulfillIntent)",
               "type": "intent",
             }
           }

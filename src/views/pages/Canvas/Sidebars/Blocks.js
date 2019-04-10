@@ -55,6 +55,11 @@ export class Blocks extends PureComponent {
     }
 
     loadUserModules(props){
+        // MARKETPLACE BETA
+        if(window.user_detail.admin !== 7){
+            return
+        }
+
         if(props === undefined){
             props = this.props
         }

@@ -105,19 +105,19 @@ export class Speak extends Component {
                 { properties.dialogs.length < BLOCK_LIMIT ?
                     <React.Fragment>
                         <div className="d-flex my-3">
-                            <button className="btn btn-clear btn-vertical mr-3" onClick={() => this.handleAddBlock(false)}>
-                                <img src={'/comment.svg'} alt="comment" className="mr-2" width='20px'/>
+                            <button className="btn btn-secondary mr-3" onClick={() => this.handleAddBlock(false)}>
+                                <img src={'/comment.svg'} alt="comment" className="mr-3 mb-1" width='17px'/>
                                 Add Speech
                             </button>
-                            <button className="btn-clear btn-vertical" onClick={() => this.handleAddBlock(true)}>
-                            <img src={'/volume.svg'} alt="volume" className="mr-2" width='20px'/>
+                            <button className="btn btn-secondary" onClick={() => this.handleAddBlock(true)}>
+                            <img src={'/volume.svg'} alt="volume" className="mr-3 mb-1" width='16px'/>
                                 Add Audio
                             </button>
                         </div>
                         <InputGroup className="my-2">
                             <label className="input-group-text w-100 text-left">
                                 <Input addon type="checkbox" checked={!!properties.randomize} onChange={()=>{properties.randomize = !properties.randomize; this.forceUpdate()}}/>
-                                <span className="ml-1">Output Random Entry</span>
+                                <span className="ml-2">Output Random Entry</span>
                             </label>
                         </InputGroup>
                     </React.Fragment>

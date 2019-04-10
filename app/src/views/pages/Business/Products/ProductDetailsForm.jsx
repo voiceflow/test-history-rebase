@@ -131,13 +131,13 @@ class ProductDetailsForm extends React.Component {
             />
           </AvGroup>
           <div className="product-stage-button">
-            <Button className="previous-btn mr-2"
+            <Button className="btn-tertiary-gray mr-2"
               variant="contained"
               onClick={() => this.props.updateStage(3)}
             >
               Previous
             </Button>
-            <Button className="purple-btn"
+            <Button className="btn-primary"
               variant="contained"
             >
               Submit

@@ -9,9 +9,9 @@ import Project from './Sidebars/Project'
 
 const tabs = {
     top: [
-        {tab: "blocks", icon: <i className="fas fa-plus-square"></i>, tip: 'Blocks'},
-        {tab: "project", icon: <i className="fas fa-clone"/>, tip: 'Project'},
-        {tab: "variables", icon: <i className="fas fa-code"/>, tip: 'Variables'},
+        {tab: "blocks", icon: <i className="blocks-icon pl-3 pr-3 pt-3 pb-3 mt-2"></i>, tip: 'Blocks'},
+        {tab: "project", icon: <i className="flows-icon pl-3 pr-3 pt-3 pb-3 mt-2"/>, tip: 'Project'},
+        {tab: "variables", icon: <i className="var-icon pl-3 pr-3 pt-3 pb-3 mt-2"/>, tip: 'Variables'},
     ],
     bottom: [
         {link: "https://forum.getvoiceflow.com", icon: <i className="fas fa-question"/>, tip: 'Join the Voiceflow Forum for help & updates'},
@@ -87,7 +87,7 @@ class Menu extends Component {
                     let block = this.props.diagrams.find(d => d.id === diagram_id);
 
                     if(block){
-                        return <div className="sub-diagram" key={i}>
+                        return <div className="sub-diagram space-between" key={i}>
                             <div className="sub-column">
                                 {this.buildTree(block, current_id, depth+1)}
                             </div>
@@ -198,7 +198,7 @@ class Menu extends Component {
                                     this.sidebar.style.width = "240px"
                                 }}>
                                     <h5 className="mb-0">{this.props.tab}</h5>
-                                    <div className="close py-3">&times;</div>
+                                    <div className="close pl-3 py-3"></div>
                                 </div>
                             </div>
                             <div className="sidebar-content">

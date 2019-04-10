@@ -39,7 +39,7 @@ class MenuItem extends Component {
                                 theme="menu"
                                 position="bottom"
                             >
-                                ?
+                                &nbsp;&nbsp;
                             </Tooltip>
                             : 
                             null

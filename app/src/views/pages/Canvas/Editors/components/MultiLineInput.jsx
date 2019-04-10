@@ -66,7 +66,7 @@ class MultiLineInput extends Component {
                     <div className="multi-title" onClick={()=>{this.toggleCollapse('collapse')}}>
                         <span className="text-muted">{this.state.line.collapse ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} {this.state.index + 1}</span> {this.state.line.title} 
                     </div>
-                    <button className="close" onClick={() => {this.props.onRemove(this.state.index)}}>&times;</button>
+                    <button className="close" onClick={() => {this.props.onRemove(this.state.index)}}></button>
                 </div>
                 <Collapse isOpen={this.state.line.collapse}>
                     <AudioDrop

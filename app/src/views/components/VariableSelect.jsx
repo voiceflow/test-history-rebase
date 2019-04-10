@@ -12,10 +12,20 @@ export const selectStyles = {
                 ...provided,
                 borderTop: '1px solid #dce5e8',
                 textAlign: 'center',
-                color: '#42a5ff',
+                color: '#3153E4',
                 bottom: -5,
                 position: 'sticky',
                 backgroundColor: 'white',
+                borderRadius: '0px 0px 8px 8px',
+                padding: '18px 12px',
+                backgroundImage: 'none',
+                '&:hover': {
+                    backgroundImage: 'none',
+                    color: '#3153E4'
+                },
+                '&:active': {
+                    backgroundImage: 'none'
+                }
             }
         }
         return {

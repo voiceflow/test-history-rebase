@@ -96,7 +96,7 @@ class Permission extends Component {
         }
         return (
             <div className="solid-border set-block">
-                <div className="close" onClick={this.props.onRemove}>&times;</div>
+                <div className="close" onClick={this.props.onRemove}></div>
                 <label className="mt-0">{variable_map ? 'Request User Information' : 'Check Permission Enabled' }</label>
                 <Select
                     classNamePrefix="select-box"

@@ -37,6 +37,8 @@ const latestSkillToIntercom = (id, name) => {
   })
 }
 
+const { checkSkillAccess } = require("./team")
+
 const incrementSkillsCreatedIntercom = (id) => {
   if(process.env.TEST) return
   intercom.users.find({
@@ -145,9 +147,11 @@ exports.getSkill = async (req, res) => {
       FROM
         skills s
         INNER JOIN project_versions pv ON pv.version_id = s.skill_id
+        INNER JOIN projects p ON p.project_id = pv.project_id
+        INNER JOIN team_members tm ON tm.team_id = p.team_id
         WHERE
           skill_id = $1
-          AND creator_id = $2
+          AND tm.creator_id = $2
         LIMIT 1`;
     params = [id, req.user.id]
   }
@@ -241,20 +245,10 @@ exports.setProduct = async (req, res) => {
   let product = req.body;
   product.skill = hashids.decode(product.skill)[0]
 
-  try {
-    let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [product.skill])
-
-    if (result.rows.length > 0 && result.rows[0].creator_id !== req.user.id && req.user.admin !== 10) {
-      return res.sendStatus(403)
-    } else {
-      product.creator = req.user.id
-    }
-  } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {
-      err: err
-    });
-    return res.sendStatus(500)
+  if(!(await checkSkillAccess(product.skill, req.user.id))){
+    return res.sendStatus(403)
   }
+  product.creator = req.user.id
 
   if (!product.name) {
     product.name = 'New Product'
@@ -301,13 +295,13 @@ exports.deleteProduct = async (req, res) => {
   let pid = req.params.pid;
   let result
   try {
-    result = await pool.query('SELECT p.amzn_prod_id FROM products p INNER JOIN skills s ON s.skill_id = p.skill_id WHERE s.creator_id = $1 AND p.id = $2 LIMIT 1', [req.user.id, pid])
+    result = (await pool.query('SELECT p.amzn_prod_id, p.skill_id FROM products p WHERE p.id = $2 LIMIT 1', [pid])).rows[0]
 
-    if (result.rows.length === 0) {
-      return res.sendStatus(412)
-    } else {
-      result = result.rows[0]
+    if(!(await checkSkillAccess(result.skill_id, req.user.id))){
+      return res.sendStatus(403)
     }
+
+    if (!result) return res.sendStatus(412)
   } catch (err) {
     writeToLogs('CREATOR_BACKEND_ERRORS', {
       err: err
@@ -345,6 +339,10 @@ exports.patchSkill = async (req, res) => {
   }
 
   let id = hashids.decode(req.params.id)[0]
+  if(!(await checkSkillAccess(id, req.user.id))){
+    return res.sendStatus(403)
+  }
+
   let b = req.body
 
   if (!b.locales) {
@@ -359,32 +357,31 @@ exports.patchSkill = async (req, res) => {
   try {
     if (req.query.fulfillment) {
       // UPDATE FULFILLMENT COLUMN
-      await pool.query(`UPDATE skills SET fulfillment = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.fulfillment])
+      await pool.query(`UPDATE skills SET fulfillment = $2 WHERE skill_id = $1`, [id, b.fulfillment])
     } else if (req.query.inv_name) {
-      await pool.query(`UPDATE skills SET inv_name = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.inv_name])
+      await pool.query(`UPDATE skills SET inv_name = $2 WHERE skill_id = $1`, [id, b.inv_name])
     } else if (req.query.settings) {
       if (typeof b.repeat !== 'number') {
         b.repeat = 100
       }
       // UPDATE COLUMNS RELATED TO SETTINGS
-      await pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6, alexa_events = $7, repeat = $8  WHERE skill_id = $1 AND creator_id = $2`,
-        [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.alexa_events, b.repeat])
+      await pool.query(`UPDATE skills SET name=$2, restart=$3, resume_prompt=$4, error_prompt=$5, alexa_events=$6, repeat=$7  WHERE skill_id = $1`,
+        [id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.alexa_events, b.repeat])
     } else if (req.query.intents) {
       // UPDATE INTENTS COLUMN
-      await pool.query(`UPDATE skills SET intents = $3, slots = $4, fulfillment = $5, account_linking = $6, platform = $7 WHERE skill_id = $1 AND creator_id = $2`,
-        [id, req.user.id, b.intents, b.slots, b.fulfillment, b.account_linking, b.platform])
+      await pool.query(`UPDATE skills SET intents=$2, slots=$3, fulfillment=$4, account_linking=$5, platform=$6 WHERE skill_id = $1`,
+        [id, b.intents, b.slots, b.fulfillment, b.account_linking, b.platform])
     } else if (req.query.preview) {
       // UPDATE PREVIEW COLUMN
-      await pool.query(`UPDATE skills SET preview = $2 WHERE skill_id = $1 AND creator_id = $3`, [id, b.isPreview, req.user.id])
+      await pool.query(`UPDATE skills SET preview = $2 WHERE skill_id = $1`, [id, b.isPreview])
     } else if (req.query.publish) {
       // UPDATE EVERYTHING RELATED TO PUBLISHING THE SKILL
       if (req.query.platform === 'google') {
         await pool.query(`
           UPDATE skills
-          SET
-          google_publish_info = $3
-          WHERE skill_id = $1 AND creator_id = $2`,
-          [id, req.user.id, JSON.stringify(b.google_publish_info)])
+          SET google_publish_info = $2
+          WHERE skill_id = $1`,
+          [id, JSON.stringify(b.google_publish_info)])
       } else {
         await pool.query(`
               UPDATE skills
@@ -407,12 +404,9 @@ exports.patchSkill = async (req, res) => {
               locales = $17,
               privacy_policy = $18,
               terms_and_cond = $19
-              WHERE skill_id = $1 AND creator_id = $20`,
-          [id, b.name, b.inv_name, b.summary, b.description, b.keywords, {
-              value: b.invocations
-            }, b.small_icon, b.large_icon, b.category,
-            b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales, b.privacy_policy, b.terms_and_cond, req.user.id
-          ])
+              WHERE skill_id = $1`,
+          [id, b.name, b.inv_name, b.summary, b.description, b.keywords, {value: b.invocations}, b.small_icon, b.large_icon, 
+          b.category, b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales, b.privacy_policy, b.terms_and_cond])
       }
       latestSkillToIntercom(req.user.id, b.name)
     } else {
@@ -432,12 +426,9 @@ exports.patchSkill = async (req, res) => {
               locales = $11,
               privacy_policy = $12,
               terms_and_cond = $13
-              WHERE skill_id = $1 AND creator_id = $14`,
-        [id, b.name, b.inv_name, b.summary, b.description, b.keywords, {
-            value: b.invocations
-          },
-          b.small_icon, b.large_icon, b.category, b.locales, b.privacy_policy, b.terms_and_cond, req.user.id
-        ])
+              WHERE skill_id = $1`,
+        [id, b.name, b.inv_name, b.summary, b.description, b.keywords, {value: b.invocations},
+        b.small_icon, b.large_icon, b.category, b.locales, b.privacy_policy, b.terms_and_cond])
       latestSkillToIntercom(req.user.id, b.name)
     }
     res.sendStatus(200)
@@ -1344,20 +1335,15 @@ exports.getGoogleSkill = async (req, res) => {
   }
 
   let id = hashids.decode(req.params.id)[0];
-  let sql;
-  let params;
+  if(!(await checkSkillAccess(id, req.user.id))){
+    return res.sendStatus(403)
+  }
 
-  sql = `
-        SELECT
-            created, diagram, google_publish_info, dialogflow_token, privacy_policy, terms_and_cond
-        FROM
-            skills
-        WHERE
-            skill_id = $1 AND
-            creator_id = $2 LIMIT 1`;
-  params = [id, req.user.id];
-
-  pool.query(sql, params, async (err, data) => {
+  pool.query(`
+    SELECT created, diagram, google_publish_info, dialogflow_token, privacy_policy, terms_and_cond
+    FROM skills
+    WHERE skill_id = $1 LIMIT 1`, 
+  [id], async (err, data) => {
     if (err) {
       console.trace(err);
       res.sendStatus(500);

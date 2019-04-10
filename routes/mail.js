@@ -89,11 +89,12 @@ exports.sendVerificationEmail = async (name, user_id, random, email) => {
   await sgMail.send(data)
 }
 
-exports.sendTeamInvite = async (inviter, team_name, team_id, email) => {
+exports.sendTeamInvite = async (inviter, team_name, team_id, email, time) => {
 
   const invite_code = encryptJSON({
     email,
-    team_id
+    team_id,
+    time
   })
 
   let data = {

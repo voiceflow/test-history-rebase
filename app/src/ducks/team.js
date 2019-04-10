@@ -131,7 +131,7 @@ export const fetchTeams = () => {
       dispatch(updateTeams(state))
       return Promise.resolve()
     }catch(err){
-      dispatch(setError("Unable to fetch workspaces"))
+      dispatch(setError("Unable to fetch boards"))
       console.error(err)
       return Promise.reject()
     }

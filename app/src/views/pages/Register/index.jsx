@@ -9,7 +9,6 @@ import './Account.css'
 import {Link} from 'react-router-dom'
 import queryString from 'query-string'
 import {googleClient, fbId} from './social-id.js';
-// import axios from 'axios'
 
 class Account extends Component {
 

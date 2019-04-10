@@ -112,7 +112,7 @@ class Image extends Component {
               <div className="w-100">
                   <div className="drop-child">
                     {this.props.tiny ? 
-                    <i class="fas fa-cloud-upload-alt text-muted"/> : 
+                    <i className="fas fa-cloud-upload-alt text-muted"/> : 
                     <>
                       Drag-n-Drop Image or <span className="btn-link">browse</span><br/>
                       {this.props.url && <button className="upload-btn btn btn-default" onClick={(e)=>{

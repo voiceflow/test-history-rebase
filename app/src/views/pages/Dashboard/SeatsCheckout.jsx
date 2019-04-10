@@ -6,11 +6,7 @@ import { connect } from 'react-redux';
 import { setError } from 'ducks/modal'
 import { updateMembers, createTeam } from 'ducks/team';
 import moment from "moment";
-import axios from "axios";
-import update from "immutability-helper";
 
-const MAX_POLL_COUNT = 30;
-const POLL_INTERVAL = 1000;
 const STAGES = {
   "CHECKOUT": {},
   "SOURCE": { loader: 'Verifying Card'},
@@ -32,7 +28,6 @@ class SeatsCheckout extends Component {
     this.calculatePrice = this.calculatePrice.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.checkout = this.checkout.bind(this);
-    this.checkChargeable = this.checkChargeable.bind(this);
   }
 
   handleChange(event) {
@@ -72,7 +67,9 @@ class SeatsCheckout extends Component {
         }
       });
 
-      await this.checkChargeable(source);
+      if(!source) throw new Error("Invalid Card Information")
+
+      await this.props.checkChargeable(source);
 
       this.setState({ stage: "CREATE" });
       if (Array.isArray(this.props.invites)) {
@@ -95,36 +92,6 @@ class SeatsCheckout extends Component {
       if(err) this.props.setError(err)
       this.setState({ stage: 'CHECKOUT' })
     }
-  }
-
-  checkChargeable(source) {
-    return new Promise((resolve, reject) => {
-      let pollCount = 0;
-      const pollForSourceStatus = () => {
-        this.props.stripe
-          .retrieveSource({
-            id: source.id,
-            client_secret: source.client_secret
-          })
-          .then(result => {
-            // Depending on the Charge status, show your customer the relevant message.
-            var temp_source = result.source;
-            if (temp_source.status === "chargeable") {
-              resolve();
-            } else if (
-              temp_source.status === "pending" &&
-              pollCount < MAX_POLL_COUNT
-            ) {
-              // Try again in a second, if the Source is still `pending`:
-              pollCount += 1;
-              setTimeout(pollForSourceStatus, POLL_INTERVAL);
-            } else {
-              reject('Payment not valid - unable to verify card');
-            }
-          });
-      };
-      pollForSourceStatus();
-    });
   }
 
   render() {
@@ -192,7 +159,9 @@ class SeatsCheckout extends Component {
               {this.state.coupon_toggle ? "Cancel Coupon" : "I Have Coupon"}
             </small>
           </div>
-          <CardElement onReady={() => this.setState({ loading: false })} />
+          <div style={{height: 40}}>
+            <CardElement onReady={() => this.setState({ loading: false })} />
+          </div>
           <div className="super-center">
             <button
               className="btn purple-btn mt-4 mb-4"
@@ -209,7 +178,7 @@ class SeatsCheckout extends Component {
                 <span className="text-dark">
                   {moment()
                     .add(14, "days")
-                    .format("MMMM Qo, YYYY")}
+                    .format("MMMM Do, YYYY")}
                 </span>
                 <br />
                 at which point you will be charged{" "}

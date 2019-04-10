@@ -20,7 +20,6 @@ AWS.config = new AWS.Config({
 
 // IMPORT ROUTES
 const Diagram = require('./routes/diagram.js');
-const Customer = require('./routes/customer.js');
 const Skill = require('./routes/skill.js');
 const Problem = require('./routes/error.js');
 const LinkAccount = require('./routes/linkaccount.js')
@@ -192,6 +191,9 @@ app.delete('/skill/:id/product/:pid', ensureLoggedIn(), Skill.deleteProduct);
 app.post('/team', ensureLoggedIn(), Team.addTeam)
 app.post('/team/checkout', ensureLoggedIn(), Team.checkout)
 app.get('/teams', ensureLoggedIn(), Team.getTeams)
+app.get('/team/:team_id/invoice', ensureLoggedIn(), Team.getInvoice)
+app.get('/team/:team_id/source', ensureLoggedIn(), Team.getSource)
+app.patch('/team/:team_id/source', ensureLoggedIn(), Team.updateSource)
 app.post('/team/invite/:invite_code', ensureLoggedIn(), Team.checkInvite)
 app.get('/team/:team_id/projects', ensureLoggedIn(), Team.getProjects)
 app.get('/team/:team_id/members', ensureLoggedIn(), Team.getMembers)
@@ -202,10 +204,7 @@ app.delete('/team/:team_id', Team.deleteTeam)
 app.post('/team/:team_id/picture', ensureLoggedIn(), Team.verifyTeam, uploadResize(512,512).single('image'), Team.updatePicture);
 
 // STRIPE PAYMENT ENDPOINTS
-app.get('/customer', ensurePlan(1), Customer.checkStatus)
-app.post('/customer/subscription', ensureLoggedIn(), Customer.create)
-app.post('/customer/webhook', Customer.webhook)
-app.get('/customer/promo/:code', ensureLoggedIn(), Customer.codes)
+app.post('/customer/webhook', Team.webhook)
 
 app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);
 app.get('/diagram/:id/variables', ensureLoggedIn(), Diagram.getVariables);

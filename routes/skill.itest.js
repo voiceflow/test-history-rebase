@@ -201,7 +201,7 @@ describe('Skill', () => {
         .expect(200)
         .expect(async res => {
           try{
-            let diagram_data = (await pool.query(`SELECT d.id, d.name, d.sub_diagrams FROM diagrams d
+            let diagram_data = (await pool.query(`SELECT d.id, d.name, d.sub_diagrams, d.module_id FROM diagrams d
                                                   INNER JOIN skills s ON s.skill_id = d.skill_id WHERE d.skill_id = $1`, [hashids.decode(skill_id)[0]])).rows
             expect(diagram_data).toEqual(res.body)
           } catch (err) {

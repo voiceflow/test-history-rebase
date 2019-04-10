@@ -68,7 +68,7 @@ class Stream extends Component {
                     })
                 }
                 if (!_.find(this.props.diagramEngine.getDiagramModel().getNodes(), n => n.id === node.id)) {
-                    node.parentCombine.combines[bestNode] = node.serialize()
+                    node.parentCombine.combines[bestNode] = node
                     node.parentCombine.combines[bestNode].extras.custom_pause = !node.parentCombine.combines[bestNode].extras.custom_pause;
                 }
             }

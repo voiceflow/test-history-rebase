@@ -621,7 +621,7 @@ class TestModal extends React.Component {
                     </React.Fragment> :
                     <div className="p-3">
                       <h6 className="mt-3 mb-3">Start Project from the beginning</h6>
-                      <button className="purple-btn mb-3" onClick={this.beginning}><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp;Start Test</button>
+                      <button className="btn-primary mb-3" onClick={this.beginning}><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp;Start Test</button>
                       <div className="break">
                       <span className="or">
                         OR
@@ -634,7 +634,7 @@ class TestModal extends React.Component {
                         value={this.state.selected_line}
                         onChange={this.handleLineSelection}
                         options={this.state.nodes} />
-                      <button className="purple-btn" onClick={this.startline}><i className="fas fa-fast-forward"></i>&nbsp;&nbsp;&nbsp;Start From Block</button>
+                      <button className="btn-primary" onClick={this.startline}><i className="fas fa-fast-forward"></i>&nbsp;&nbsp;&nbsp;Start From Block</button>
                     </div>
                   }
                 </div>

@@ -32,7 +32,7 @@ class ChoiceInputs extends Component {
                         remove={()=>this.props.onRemove(i)}
                     />)
                 }) : null}
-                <div><button className="btn btn-clear btn-lg btn-block" onClick={this.props.onAdd} disabled={this.props.live_mode}><i className="far fa-plus"></i> Add Choice</button></div>
+                <div className="text-center"><button className="btn-tertiary mt-2" onClick={this.props.onAdd} disabled={this.props.live_mode}>Add Choice</button></div>
             </div>
         );
     }

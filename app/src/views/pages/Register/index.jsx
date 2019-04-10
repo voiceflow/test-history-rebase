@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap'
+import { Form, FormGroup, Input, Alert } from 'reactstrap'
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
 
@@ -203,7 +203,7 @@ class Account extends Component {
                 <img className="login-logo" src="/logo.svg" alt="logo"/>
                 <div className="px-5 pb-5 pt-4">
                   <div className="text-center">
-                    <h3 className="mb-3">Login</h3>
+                    <h4 className="mb-4">Login</h4>
                   </div>
                   {auth_error}
                   <div className="social-login">
@@ -233,8 +233,8 @@ class Account extends Component {
                   <FormGroup>
                     <Input className="form-bg" type="password" name="password" onChange={this.handleChange} placeholder="Password" required minLength="8" value={this.state.password}/>
                   </FormGroup>
-                  <Button block className="purple-btn login-btn" type="submit">Login</Button>
-                  <div className="text-center small mt-2"><Link style={{color:'#8da2b5'}} to='/reset'>Forgot your password?</Link></div>
+                  <button block className="btn-primary btn-lg btn-block" type="submit">Login</button>
+                  <div className="text-center small mt-2"><Link style={{color:'#8da2b5'}}to='/reset'>Forgot your password?</Link></div>
                   <hr/>
                   <div className="text-center">Dont have an account? <a href="/signup" onClick={this.openRegister}>Sign Up</a></div>
                 </div>
@@ -243,7 +243,7 @@ class Account extends Component {
                   <img className="login-logo" src="/logo.svg" alt="logo"/>
                 <div className="px-5 pb-5 pt-4">
                   <div className="text-center">
-                    <h3 className="mb-3">Sign Up</h3>
+                    <h4 className="mb-4">Sign Up</h4>
                   </div>
                   {auth_error}
                   <div className="social-login">
@@ -270,18 +270,15 @@ class Account extends Component {
                   </div>
                   {signup_error}
                   <FormGroup>
-                    <Label for="name">Name</Label>
                     <Input className="form-bg" type="text" name="r_name" onChange={this.handleChange} placeholder="Full Name" required minLength="3" value={this.state.r_name}/>
                   </FormGroup>
                   <FormGroup>
-                    <Label for="email">Email</Label>
-                    <Input className="form-bg" type="email" name="r_email" onChange={this.handleChange} placeholder="bezos@amazon.com" required minLength="6" value={this.state.r_email}/>
+                    <Input className="form-bg" type="email" name="r_email" onChange={this.handleChange} placeholder="Email" required minLength="6" value={this.state.r_email}/>
                   </FormGroup>
                   <FormGroup>
-                    <Label for="password">Password</Label>
                     <Input className="form-bg" type="password" name="r_password" onChange={this.handleChange} placeholder="Password" required minLength="8" value={this.state.r_password}/>
                   </FormGroup>
-                  <Button block className="purple-btn login-btn" type="submit">Create Account</Button>
+                  <button block className="btn-primary btn-lg btn-block" type="submit">Create Account</button>
                   <hr/>
                   <div className="text-center">Already have an account? <a href="/login" onClick={this.openLogin}>Login</a></div>
                 </div>

@@ -2,6 +2,35 @@
 
 exports[`Sidebar Variables render variable sidebar on global 1`] = `
 <Fragment>
+<<<<<<< HEAD
+=======
+  <ButtonGroup
+    className="toggle-group mb-2 mw-250"
+    role="group"
+    tag="div"
+  >
+    <Button
+      color="secondary"
+      disabled={true}
+      key="global"
+      onClick={[Function]}
+      outline={false}
+      tag="button"
+    >
+      global
+    </Button>
+    <Button
+      color="secondary"
+      disabled={false}
+      key="local"
+      onClick={[Function]}
+      outline={true}
+      tag="button"
+    >
+      local
+    </Button>
+  </ButtonGroup>
+>>>>>>> master
   <form
     id="variable-submit"
     onSubmit={[Function]}
@@ -330,8 +359,64 @@ exports[`Sidebar Variables render variable sidebar on global 1`] = `
           {locale}
         </div>
       </Tooltip>
+<<<<<<< HEAD
       <div
         className="variable_tag global"
+=======
+    </div>
+  </div>
+</Fragment>
+`;
+
+exports[`Sidebar Variables render variable sidebar on local 1`] = `
+<Fragment>
+  <ButtonGroup
+    className="toggle-group mb-2 mw-250"
+    role="group"
+    tag="div"
+  >
+    <Button
+      color="secondary"
+      disabled={true}
+      key="global"
+      onClick={[Function]}
+      outline={false}
+      tag="button"
+    >
+      global
+    </Button>
+    <Button
+      color="secondary"
+      disabled={false}
+      key="local"
+      onClick={[Function]}
+      outline={true}
+      tag="button"
+    >
+      local
+    </Button>
+  </ButtonGroup>
+  <form
+    id="variable-submit"
+    onSubmit={[Function]}
+  >
+    <FormGroup
+      className="mb-0"
+      tag="div"
+    >
+      <Label
+        className="section-title mt-3"
+        tag="label"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+>>>>>>> master
       >
         {undefined}
          

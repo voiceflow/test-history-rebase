@@ -42,7 +42,7 @@ import { AvForm } from 'availity-reactstrap-validation';
                   );
                 })}
               <div className="text-center">
-                <Button className='previous-btn' onClick={() => this.props.handleAdd(this.props.type)}>Add {this.props.label}<i className="far fa-long-arrow-right ml-2"></i></Button>
+                <Button className='btn-tertiary-gray' onClick={() => this.props.handleAdd(this.props.type)}>Add {this.props.label}<i className="far fa-long-arrow-right ml-2"></i></Button>
               </div>
             </div>
           </AvForm>

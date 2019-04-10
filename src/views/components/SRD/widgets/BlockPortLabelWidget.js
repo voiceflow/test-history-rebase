@@ -20,23 +20,26 @@ export class BlockPortLabel extends BaseWidget {
 	}
 
 	render() {
+		let node = this.props.model.getParent()
+
 		var port = <BlockPortWidget
 			diagramEngine={this.props.diagramEngine}
 			isHidden = {
-				!!(this.props.model.parent.parentCombine || (_.includes(this.props.model.parent.combines, 'temp') && !this.props.model.in))
+				!!((node.parentCombine && (!this.props.model.in && !this.props.isLast && !this.props.isMoving )))
 			}
-			port={this.props.model} node={this.props.model.getParent()} name={this.props.model.name}
+			port={this.props.model} node={node} name={this.props.model.name}
 			link={isEmpty(this.props.model.links)}
+			isMoving={this.props.isMoving}
 		/>;
 		var label
-		if (!((this.props.model.getParent().parentCombine && (!this.props.isLast || this.props.model.getParent().isLast)) || (!_.isEmpty(this.props.model.getParent().combines)) || this.props.isMoving)){
+		if (!((node.parentCombine && (!this.props.isLast || node.isLast)) || (!_.isEmpty(node.combines)) || this.props.isMoving)){
 			if(this.props.model.label.toString().trim()) label = <div className="name">{this.props.model.label}</div>
 		}
 
 		return (
 			<div {...this.getProps()}>
-				{this.props.model.in || (this.props.model.getParent().parentCombine && !this.props.isLast) ? port : label}
-				{this.props.model.in || (this.props.model.getParent().parentCombine && !this.props.isLast) ? label : port}
+				{this.props.model.in || (node.parentCombine && !this.props.isLast) ? port : label}
+				{this.props.model.in || (node.parentCombine && !this.props.isLast) ? label : port}
 			</div>
 		);
 	}

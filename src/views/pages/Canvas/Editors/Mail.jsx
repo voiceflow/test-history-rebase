@@ -103,9 +103,10 @@ export class Mail extends Component {
 
     render() {
         if(this.props.templates.length === 0){
-            return <div>
+            return <div className="text-center">
+                <img className="mb-3 mt-5" src={'/images/email_2.svg'} alt="user" width="80"/><br/>
                 <span className="text-muted">You currently have no Email Templates</span>
-                <Link className="btn btn-clear btn-block mt-2" to={`/business/${this.props.skill_id}/emails`}>Add Templates</Link> 
+                <Link className="btn btn-secondary mt-3" to={`/business/${this.props.skill_id}/emails`}>Add Templates</Link> 
             </div>
         }
 

@@ -82,7 +82,7 @@ class SetBlock extends Component {
 
     render() {
         return (
-            <div>
+            <div className="text-center">
             	{this.state.node.extras.sets.map((block, i) => {
             		return (
             			<SetExpression
@@ -96,8 +96,8 @@ class SetBlock extends Component {
 	                )
             	})}
                 { this.state.node.extras.sets.length < 20 ?
-                    <button className="btn btn-clear btn-lg btn-block" onClick={this.handleAddBlock}>
-                        <i className="far fa-plus"></i> Add Variable Set
+                    <button className="btn btn-tertiary-variable mt-1" onClick={this.handleAddBlock}>
+                    Add Variable Set
                     </button> : null
                 }
             </div>

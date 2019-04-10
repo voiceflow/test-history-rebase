@@ -2,6 +2,14 @@
 
 exports[`RandomEditor render random block editor 1`] = `
 <div>
+  <div>
+    <button
+      className="btn btn-clear btn-lg btn-block mt-2"
+      onClick={[Function]}
+    >
+      Add Path
+    </button>
+  </div>
   <InputGroup
     className="my-3"
     tag="div"
@@ -16,22 +24,11 @@ exports[`RandomEditor render random block editor 1`] = `
         type="checkbox"
       />
       <span
-        className="ml-1"
+        className="ml-3"
       >
         No duplicates
       </span>
     </label>
   </InputGroup>
-  <div>
-    <button
-      className="btn btn-clear btn-lg btn-block"
-      onClick={[Function]}
-    >
-      Add Path
-      <i
-        className="far fa-plus ml-2"
-      />
-    </button>
-  </div>
 </div>
 `;

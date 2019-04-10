@@ -31,7 +31,7 @@ describe('Buttons test', () => {
         expect(clickFn).toHaveBeenCalled()
         setTimeout(() => {
             expect(component.exists('.modal')).toBe(true);
-            component.find('.modal .modal-body button.purple-btn').simulate('click')
+            component.find('.modal .modal-body button.btn-primary').simulate('click')
         }, 500);
     });
 })

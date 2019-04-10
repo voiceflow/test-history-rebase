@@ -53,7 +53,7 @@ class VariableMap extends Component {
 
                                     <InputGroupAddon addonType="append">
                                         <InputGroupText>
-                                            <button className="close" onClick={e => this.props.onRemove(e, i, this.props.type)}>&times;</button>
+                                            <button className="close" onClick={e => this.props.onRemove(e, i, this.props.type)}></button>
                                         </InputGroupText>
                                     </InputGroupAddon>
                                 </InputGroup>

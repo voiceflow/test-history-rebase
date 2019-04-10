@@ -3,6 +3,7 @@ import axios from "axios";
 import moment from "moment";
 import StripeHandler from "views/HOC/StripeHandler";
 import { CardElement } from "react-stripe-elements";
+import { Alert } from 'reactstrap'
 
 const Invoice = props => {
   if (!props.invoice) return null;
@@ -105,6 +106,9 @@ class Billing extends Component {
       default:
         return (
           <div className="mb-4">
+            {this.props.team.stripe_status === "PAST_DUE" && <Alert color="danger">
+              We were unable to charge your last invoice and will reattempt charging 4 more times in the next 30 days before disabling this Board. 
+            </Alert>}
             {this.state.source && (
               <div className="position-relative">
                 <label>Payment Option</label>

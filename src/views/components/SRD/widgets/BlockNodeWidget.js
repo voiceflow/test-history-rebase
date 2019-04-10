@@ -48,6 +48,8 @@ export class BlockNodeWidget extends BaseWidget {
 	}
 
 	addCommand(e){
+		e.preventDefault()
+		e.stopPropagation()
 		if(this.props.nodeProps.disabled) return
 		const engine = this.props.diagramEngine
 		const node = new BlockNodeModel('New Command', null, toolkit.UID())
@@ -67,8 +69,6 @@ export class BlockNodeWidget extends BaseWidget {
 		}
 		engine.setSuperSelect(node)
 		node.setSelected()
-		e.preventDefault()
-		e.stopPropagation()
 		this.props.node.combines.push(node)
 		engine.enableRepaintEntities([this.props.node]);
 		engine.repaintCanvas(false)

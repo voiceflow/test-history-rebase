@@ -138,7 +138,7 @@ export const setCanFulfill = (intent_key, new_value) => {
         if (fulfillment && !new_value){
             dispatch(removeFulfillment(intent_key))
         } else if (!fulfillment && new_value)  {
-            const slot_config = {};
+            const slot_config = {}
             const intent = _.find(skill.intents, {key: intent_key})
             const intent_slots = getIntentSlots(intent, skill.slots);
             

@@ -1,12 +1,20 @@
 .type-button {
-    border-radius: 20px;
-    margin-left: 5px;
-    padding: 2px 5px;
-    font-size: 10px;
-    background-color: rgba(0,0,0,0.2);
-    /*opacity: 0.4;*/
-    height: 20px;
-    border: none;
+    border-radius: 50%;
+    margin-left: 10px;
+    padding: 2px 3px;
+    font-size: 11px;
+	height: 22px;
+	width: 22px;
+	border: none !important;
+	background: #FFFFFF;
+	box-shadow: 0px 1px 4px rgba(17, 49, 96, 0.16), 0px 0px 0px rgba(17, 49, 96, 0.04);
+}
+.type-button:hover {
+	background: #FFFFFF;
+	box-shadow: 0px 1px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
+	background: #FFFFFF !important;
+	border: none !important;
+	color: #62778C !important;
 }
 .dropdown{
 	display: flex;
@@ -65,7 +73,7 @@
 }
 
 .brackets>.variable{
-	background-color: #E1BEE7;
+	background-color:linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2C85FF 100%) !important;
 	color: #6A1B9A;
 	border-radius: 5px;
 	padding: 2px 4px 4px 4px;
@@ -96,7 +104,7 @@
 	color: #EF5350;
 }
 .brackets>.unknown{
-	color: #F57F17;
+	color: #496cf6;
 	font-weight: bold;
 }
 .expressionfy{
@@ -105,6 +113,7 @@
 	border-radius: 5px;
 	border: 1px solid #DDD;
 	margin-bottom: 10px;
+	text-align: left;
 }
 
 

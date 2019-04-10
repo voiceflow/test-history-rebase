@@ -34,17 +34,17 @@ import Permissions from './Editors/Permissions';
 import Reminder from './Editors/Reminder'
 import Code from './Editors/Code'
 import PermissionCard from './Editors/PermissionCard'
-import {getBlocks} from './Blocks'
 import Prompt from 'views/components/Uploads/Prompt'
 
 import {
     Alert,
-    Modal, ModalBody, ModalHeader,
+    Modal, ModalBody,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem
 } from 'reactstrap';
+import { ModalHeader } from 'views/components/Modals/ModalHeader'
 
 import { SLOT_TYPES, BUILT_IN_INTENTS_ALEXA, BUILT_IN_INTENTS_GOOGLE } from 'Constants'
 
@@ -395,13 +395,44 @@ class Editor extends Component {
                 }
                 return <div id="label">Add Flow</div>
             default:
-              return (<input id="label" placeholder="Block Label"
+              return ( <div id="label-container" className="d-flex mb-3 pl-2">
+                <input id="label" placeholder="Block Label"
                     type="text"
                     name="name"
                     value={this.state.node.name}
                     onChange={this.handleChange.bind(this)}
                     onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
-                />);
+                />
+                <i className="more-info mb-2 mr-1 d-flex align-items-center" onClick={() => this.props.setHelp({ type: this.state.node.extras.type})} />
+                <UncontrolledDropdown nav inNavbar>
+                    <DropdownToggle nav tag="div">
+                        <div className="cog mb-2" />
+                    </DropdownToggle>
+                    <DropdownMenu right className="arrow arrow-right no-select" style={{ right: '-12px', marginTop: '5px' }}>
+                        <DropdownItem header>
+                            Block Options
+                                            </DropdownItem>
+                        {['interaction', 'choice', 'capture'].includes(this.state.node.extras.type) && !this.state.node.extras.reprompt &&
+                        
+                            <DropdownItem onClick={this.toggleReprompt}>
+                                Reprompt
+                                                </DropdownItem>
+                        }
+                        <DropdownItem onClick={() => this.setState({
+                              expanded: true,
+                              modal: true
+                          })}className="pointer">
+                            Expand
+                        </DropdownItem>
+                        <DropdownItem onClick={() => this.props.node.parentCombine ? this.props.appendCombineNode(this.state.node) : this.props.copyNode()} className="pointer">
+                            Copy
+                                            </DropdownItem>
+                        <DropdownItem onClick={() => this.props.node.parentCombine ? this.props.removeCombineNode(this.state.node) : this.props.removeNode()} className="pointer">
+                            Delete
+                        </DropdownItem>
+                    </DropdownMenu>
+                </UncontrolledDropdown>
+            </div>);
         }
     }
 
@@ -441,7 +472,7 @@ class Editor extends Component {
                 <hr/>
                 <div className="space-between">
                     <label>Custom Reprompt</label>
-                    <button className="close" onClick={this.toggleReprompt}>×</button>
+                    <button className="close" onClick={this.toggleReprompt}></button>
                 </div>
                 <Prompt
                     placeholder="Sorry I didn't get that! Do you like this or that?"
@@ -460,14 +491,7 @@ class Editor extends Component {
     }
 
     render() {
-        let type = this.state.node ? this.state.node.extras.type : null
-        let name = ''
-        if(type){
-            let find = getBlocks().find(block => block.type === type)
-            if(find){
-                name = find.text
-            }
-        }        
+        let type = this.state.node ? this.state.node.extras.type : null     
         if (type === 'god') {
             return null;
         }
@@ -492,48 +516,6 @@ class Editor extends Component {
             >
                 {type ?
                     <div className="controls" key={this.state.node.id}>
-                        <div className="top">
-                            <div className="property">
-                                <div id="close-editor" className="close" onClick={this.props.close}>&times;</div>
-                                <div className="d-flex">
-                                    <div className={"block " + type} onClick={() => this.props.setHelp({type: this.state.node.extras.type})}>
-                                        {name} Block <i className="fas fa-question-circle mr-1"/>
-                                    </div>
-                                    <div className="d-flex pl-2">
-                                        <div
-                                            className="delete-block"
-                                            onClick={()=>this.setState({
-                                                expanded: true,
-                                                modal: true
-                                            })}
-                                        >
-                                            <i className="far fa-expand-arrows-alt mr-2"/>
-                                        </div>
-                                        <UncontrolledDropdown nav inNavbar>
-                                            <DropdownToggle className="delete-block" nav tag="div">
-                                                <i className="fas fa-cog"/>
-                                            </DropdownToggle>
-                                            <DropdownMenu right className="arrow arrow-right no-select" style={{right: '-12px', marginTop: '5px'}}>
-                                                <DropdownItem header>
-                                                    Block Options
-                                                </DropdownItem>
-                                                {['interaction','choice', 'capture'].includes(this.state.node.extras.type) && !this.state.node.extras.reprompt &&
-                                                    <DropdownItem onClick={this.toggleReprompt}>
-                                                        <i className="fas fa-redo text-muted"/> Reprompt
-                                                    </DropdownItem>
-                                                }
-                                                <DropdownItem onClick={() => this.props.node.parentCombine ? this.props.appendCombineNode(this.state.node) : this.props.copyNode()} className="pointer">
-                                                    <i className="fas fa-copy text-muted"/> Copy
-                                                </DropdownItem>
-                                                <DropdownItem onClick={() => this.props.node.parentCombine ? this.props.removeCombineNode(this.state.node) : this.props.removeNode()} className="pointer">
-                                                    <i className="fas fa-file-times text-muted"/> Delete
-                                                </DropdownItem>
-                                            </DropdownMenu>
-                                        </UncontrolledDropdown>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div id="editor-section">
                             {this.renderTitle()}
                             {!this.state.expanded ? this.EditorRender() : <div className="text-center mt-5"><span className="loader text-lg"></span></div>}
@@ -545,7 +527,7 @@ class Editor extends Component {
                                         onClosed={()=>this.setState({expanded: false})}
                                         size="lg"
                                     >
-                                        <ModalHeader toggle={()=>this.setState({modal: false})}>{this.state.node.name} Settings</ModalHeader>
+                                        <ModalHeader toggle={()=>this.setState({modal: false})} header={`${this.state.node.name} Settings`} />
                                         <ModalBody className="pb-4 px-4">
                                             {this.EditorRender()}
                                         </ModalBody>

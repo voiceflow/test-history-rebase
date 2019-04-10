@@ -9,9 +9,9 @@ import Project from './Sidebars/Project'
 
 const tabs = {
     top: [
-        {tab: "blocks", icon: <i className="fas fa-plus-square"></i>, tip: 'Blocks'},
-        {tab: "project", icon: <i className="fas fa-clone"/>, tip: 'Project'},
-        {tab: "variables", icon: <i className="fas fa-code"/>, tip: 'Variables'},
+        {tab: "blocks", icon: <i className="blocks-icon pl-3 pr-3 pt-3 pb-3 mt-2"></i>, tip: 'Blocks'},
+        {tab: "project", icon: <i className="flows-icon pl-3 pr-3 pt-3 pb-3 mt-2"/>, tip: 'Project'},
+        {tab: "variables", icon: <i className="var-icon pl-3 pr-3 pt-3 pb-3 mt-2"/>, tip: 'Variables'},
     ],
     bottom: [
         {link: "https://forum.getvoiceflow.com", icon: <i className="fas fa-question"/>, tip: 'Join the Voiceflow Forum for help & updates'},
@@ -37,17 +37,39 @@ class Menu extends Component {
         this.buildTree = this.buildTree.bind(this)
         this.updateTree = this.updateTree.bind(this)
         this.renderSideBar = this.renderSideBar.bind(this)
+        this.resize = this.resize.bind(this)
         this.visited = new Set();
+        this.m_pos = 0;
     }
 
     componentWillReceiveProps(nextProps){
+        if (localStorage.getItem('sideWidth') && this.sidebar && nextProps.open) {
+            this.sidebar.style.width = localStorage.getItem('sideWidth')
+        }
         if (nextProps.diagrams.length !== this.state.depth){
             this.updateTree(nextProps.current)
         }
     }
 
+    resize(e){
+        const dx = this.m_pos - e.x;
+        if (this.sidebar.style.width && (e.clientX < 280 || e.clientX > 960)) return;
+        this.m_pos = e.x;
+        this.sidebar.style.width = (parseInt(getComputedStyle(this.sidebar, '').width) - dx) + "px";
+        localStorage.setItem('sideWidth', (parseInt(getComputedStyle(this.sidebar, '').width) - dx) + "px")
+    }
+
     componentDidMount() {
         this.props.build(this.updateTree)
+        this.sidebar.addEventListener('mousedown', e => {
+            if (e.srcElement.classList.contains('open')){
+                this.m_pos = e.x;
+                document.addEventListener("mousemove", this.resize, false);
+            }
+        }, false);
+        document.addEventListener("mouseup", () => {
+            document.removeEventListener('mousemove', this.resize, false);
+        })
     }
 
     buildTree(node, current_id, depth=0){
@@ -65,7 +87,7 @@ class Menu extends Component {
                     let block = this.props.diagrams.find(d => d.id === diagram_id);
 
                     if(block){
-                        return <div className="sub-diagram" key={i}>
+                        return <div className="sub-diagram space-between" key={i}>
                             <div className="sub-column">
                                 {this.buildTree(block, current_id, depth+1)}
                             </div>
@@ -164,14 +186,19 @@ class Menu extends Component {
                         })}
                     </div>
                 </div>
-                <div id="sidebar" className={(this.props.open ? 'open' : '')}>
+                <div id="sidebar" className={(this.props.open ? 'open' : '')} ref={ref => this.sidebar = ref}>
+                 <div className="sidebar-container">
                     {this.props.loading_diagram ?
                         null :
                         <React.Fragment>
                             <div>
-                                <div className='block-title no-select mb-3' onClick={() => this.props.closeTab()}>
+                                <div className='block-title no-select mb-3' onClick={() => {
+                                    this.props.closeTab()
+                                    localStorage.setItem('sideWidth', this.sidebar.style.width)
+                                    this.sidebar.style.width = "240px"
+                                }}>
                                     <h5 className="mb-0">{this.props.tab}</h5>
-                                    <div className="close pl-3 py-3">&times;</div>
+                                    <div className="close pl-3 py-3"></div>
                                 </div>
                             </div>
                             <div className="sidebar-content">
@@ -179,6 +206,7 @@ class Menu extends Component {
                             </div>
                         </React.Fragment>
                     }
+                    </div>
                 </div>
             </div>
         );

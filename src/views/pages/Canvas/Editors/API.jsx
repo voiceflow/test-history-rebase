@@ -6,7 +6,8 @@ import * as _ from 'lodash';
 import axios from 'axios';
 import isVarName from 'is-var-name';
 import ReactJson from 'react-json-view';
-import { Button, ButtonGroup, Modal, ModalHeader, ModalBody, Nav, NavItem, NavLink, InputGroupAddon, Input, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup } from 'reactstrap';
+import { Button, ButtonGroup, Modal, ModalBody, Nav, NavItem, NavLink, InputGroupAddon, Input, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup } from 'reactstrap';
+import { ModalHeader } from 'views/components/Modals/ModalHeader'
 import APIInputs from './components/APIInputs';
 import APIMapping from './components/APIMapping';
 import VariableInput from './components/VariableInput';
@@ -155,16 +156,16 @@ class API extends Component {
     }
 
     getEndpoint(firstClick=true){
-        let regex = /\{([^{}]*)\}/g;
+        let regex = /\{([A-Za-z0-9_]*)\}/g;
         let variables = []
         let userHeader = {}
         let userBody = {}
         let url = draftToMarkdown(this.state.node.extras.url);
         let method = this.state.node.extras.method;
         const { body, headers, params, bodyInputType, content, mapping } = this.props.node.extras
-        const replacer = (match, inner, variables_map) => {
+        const replacer = (match, inner, variables_map, url=false) => {
             if(inner in variables_map){
-                return variables_map[inner];
+                return url ?  encodeURIComponent(variables_map[inner]) : variables_map[inner];
             }else{
                 return match;
             }
@@ -172,39 +173,36 @@ class API extends Component {
 
         // Utility function to find all variables
         const finder = url => {
-            let match = regex.exec(url);
-    		while (match != null) {
-    			if(isVarName(match[1]) && !_.includes(variables, match[1])){
-    		    	variables.push(match[1]);
-    		    }
-    		    match = regex.exec(url);
-    		}
+          let match = regex.exec(url);
+          while (match != null) {
+            if(isVarName(match[1]) && !_.includes(variables, match[1])){
+                variables.push(match[1]);
+              }
+              match = regex.exec(url);
+          }
         }
 
-        // Replace url with user set variables
-        let new_url
-        new_url = url.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables)).trim()
         if(!_.isNull(url)){
-    		finder(url);
+    		    finder(url);
             // Distinguish between body rawInput and pairs
             if (bodyInputType === 'rawInput') {
             finder(content);
             } else {
-            _.forEach(_.concat(body), nodeValue => {
+              _.forEach(_.concat(body), nodeValue => {
                 _.forEach(_.concat(nodeValue['key'], nodeValue['val']), value => {
                 finder(draftToMarkdown(value))
                 })
-            })
+              })
             }
             // Find variables inside of Headers, Body, and Params
             _.forEach(_.concat(headers, params), nodeValue => {
-            _.forEach(_.concat(nodeValue['key'], nodeValue['val']), value => {
+              _.forEach(_.concat(nodeValue['key'], nodeValue['val']), value => {
                 finder(draftToMarkdown(value))
-            })
+              })
             });
             // Find variables inside of result variable mappings
             _.forEach(mapping, map => {
-            finder(draftToMarkdown(map.path))
+              finder(draftToMarkdown(map.path))
             });
 
             // Check if user requires variables to be filled
@@ -214,16 +212,20 @@ class API extends Component {
                 // Set time before response
                 this.setState({loading: true})
                 let time = Date.now()
-                const markdownToObject = nodes => {
+                const markdownToObject = (nodes) => {
                     let object = {}
                     _.forEach(nodes, node => {
-                        let value = draftToMarkdown(node.key).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
+                        let value = draftToMarkdown(node.key).replace(/\{([A-Za-z0-9_]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
                         if(value){
-                            object[value] = draftToMarkdown(node.val).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
+                            object[value] = draftToMarkdown(node.val).replace(/\{([A-Za-z0-9_]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
                         }
                     })
                     return object
                 }
+
+                // Replace url with user set variables
+                let new_url
+                new_url = url.replace(/\{([A-Za-z0-9_]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables, true)).trim()
 
                 // Check that variables are set before pushing in
                 let request_obj = {
@@ -236,7 +238,7 @@ class API extends Component {
                     request_obj.headers = userHeader
                 }
                 if (bodyInputType === 'rawInput') {
-                    request_obj.body = content.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
+                    request_obj.body = content.replace(/\{([A-Za-z0-9_]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
                 } else {
                     userBody = markdownToObject(body)
                     if(!_.isEmpty(userBody)){
@@ -252,7 +254,7 @@ class API extends Component {
                     _.forEach(mapping, map => {
                         if(map.var){
                             try {
-                                varMap[map.var] = JSON.stringify(this.findPath(draftToMarkdown(map.path).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables)), res.data), null, 4)
+                                varMap[map.var] = JSON.stringify(this.findPath(draftToMarkdown(map.path).replace(/\{([A-Za-z0-9_]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables)), res.data), null, 4)
                             } catch(error) {
                                 varMap[map.var] = 'undefined'
                             }
@@ -504,7 +506,7 @@ class API extends Component {
                   modal: false,
                   variables: [],
                   testHeader: {'status': null, 'time': null, 'size': null}
-                })}>API Test</ModalHeader>
+                })} header='API Test' />
                 <ModalBody>
                   {this.renderAPITest()}
                 </ModalBody>
@@ -542,7 +544,7 @@ class API extends Component {
                         placeholder="URL Endpoint"
                     />
                 </InputGroup>
-                <Button color="clear" onClick={this.getEndpoint} size="sm" block><i className="fas fa-power-off mr-1"></i>Test Endpoint</Button>
+                <Button className="btn-lg btn-block" color="clear" onClick={this.getEndpoint} block><i className="fas fa-power-off mr-2"></i>Test Endpoint</Button>
                 <hr/>
                 <Nav tabs className="mb-3">
                     <NavItem className="mr-2" onClick={() => this.setState({type: 'headers'})}>

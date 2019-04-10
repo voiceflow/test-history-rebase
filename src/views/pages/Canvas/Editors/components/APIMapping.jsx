@@ -38,8 +38,8 @@ class APIMapping extends Component {
                                 </InputGroup>
                             </div> )
                     }) : null}
-                    <button className="btn btn-clear btn-block" onClick={this.props.onAdd}>
-                        <i className="far fa-plus"></i> Add Mapping
+                    <button className="btn btn-clear btn-lg btn-block" onClick={this.props.onAdd}>
+                        <i className="far fa-plus mr-2"></i> Add Mapping
                     </button>
                 </div>
 

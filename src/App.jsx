@@ -5,6 +5,8 @@ import AuthenticationService from './services/Authentication';
 import ReactGA from 'react-ga';
 import {StripeProvider} from 'react-stripe-elements'
 import { store, history } from './containers/store'
+import { DragDropContext } from "react-dnd";
+import DragDropBackend from "./services/DragDropBackend";
 import { Alert } from 'reactstrap'
 
 // Import Dependent CSS
@@ -23,8 +25,8 @@ import Register from './views/pages/Register';
 import Reset from './views/pages/Register/reset';
 import ResetPassword from './views/pages/Register/resetPassword';
 import NavBar from './views/components/NavBar';
-import Marketplace from './views/pages/Marketplace';
-import ModulePage from './views/pages/Marketplace/ModulePage';
+// import Marketplace from './views/pages/Marketplace';
+// import ModulePage from './views/pages/Marketplace/ModulePage';
 import Templates from './views/pages/Templates'
 import Page404 from 'views/pages/404'
 import Onboarding from './views/pages/Onboarding';
@@ -270,4 +272,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default DragDropContext(DragDropBackend)(App);

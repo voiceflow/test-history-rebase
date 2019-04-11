@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="153px" height="153px" viewBox="0 0 153 153" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>badge</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#5D9DF5" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="#2C85FF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="linearGradient-2">
+            <stop stop-color="#6E849A" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="#6E849A" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-3" cx="72.5" cy="72.5" r="72.5"></circle>
+        <filter x="-4.8%" y="-3.4%" width="109.7%" height="109.7%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.168627451   0 0 0 0 0.223529412   0 0 0 0 0.31372549  0 0 0 0.185631793 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <linearGradient x1="50.0000018%" y1="1.69346098%" x2="50%" y2="100%" id="linearGradient-5">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.864668252" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="badge" transform="translate(4.000000, 2.000000)">
+            <g id="Oval">
+                <g id="path-2-link" fill="#000000">
+                    <circle id="path-2" cx="72.5" cy="72.5" r="72.5"></circle>
+                </g>
+                <g id="path-2-link">
+                    <g id="path-2">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                        <use fill="url(#linearGradient-2)" fill-rule="evenodd" xlink:href="#path-3"></use>
+                    </g>
+                </g>
+            </g>
+            <path d="M72.5583054,30 C77.1309343,30 81,32.5683433 81,37.1206418 C81,51.0115043 79.3585889,70.9731567 79.3585889,84.8640192 C79.3585889,88.4829201 75.3722036,90 72.5583054,90 C68.8069137,90 65.6410566,88.4825672 65.6410566,84.8640192 C65.6410566,70.9731567 64,51.0115043 64,37.1206418 C64,32.5683433 67.7513917,30 72.5583054,30 Z M73.0588607,115 C67.8826737,115 64,110.792226 64,106 C64,101.090813 67.8823181,97 73.0588607,97 C77.882239,97 82,101.090813 82,106 C82,110.792226 77.882239,115 73.0588607,115 Z" id="Shape" fill="url(#linearGradient-5)" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>

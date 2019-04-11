@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="22px" viewBox="0 0 26 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>IT</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-66.7%" y="-85.7%" width="233.3%" height="271.4%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.0745098039   0 0 0 0 0.129411765   0 0 0 0 0.266666667  0 0 0 0.129812047 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <rect id="path-2" x="0" y="0" width="18" height="14" rx="2"></rect>
+    </defs>
+    <g id="Team-Mode" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Skills_dashboard_create-team_1-step" transform="translate(-780.000000, -432.000000)">
+            <g id="IT" filter="url(#filter-1)" transform="translate(784.000000, 434.000000)">
+                <mask id="mask-3" fill="white">
+                    <use xlink:href="#path-2"></use>
+                </mask>
+                <rect stroke="#F5F5F5" stroke-width="0.5" x="0.25" y="0.25" width="17.5" height="13.5" rx="2"></rect>
+                <rect id="Mask" fill="#E43D4C" mask="url(#mask-3)" x="12" y="0" width="6" height="14"></rect>
+                <rect id="Rectangle-2" fill="#1BB65D" mask="url(#mask-3)" x="0" y="0" width="6" height="14"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

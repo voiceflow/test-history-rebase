@@ -2,7 +2,8 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Table, Button, Modal, ModalBody, ModalHeader, ModalFooter, InputGroup, Input, InputGroupAddon, Form, Alert, ListGroup, ListGroupItem } from 'reactstrap'
+import { Table, Button, Modal, ModalBody, ModalFooter, InputGroup, Input, InputGroupAddon, Form, Alert, ListGroup, ListGroupItem } from 'reactstrap'
+import { ModalHeader } from 'views/components/Modals/ModalHeader'
 import axios from 'axios'
 import moment from 'moment'
 import Select from 'react-select'
@@ -544,7 +545,7 @@ class TestModal extends React.Component {
   render() {
     return (
       <Modal isOpen={this.props.open} size='lg'>
-        <ModalHeader toggle={this.props.toggle}>Project Testing</ModalHeader>
+        <ModalHeader toggle={this.props.toggle} header="Project Testing" />
         <ModalBody className="text-center env-modal test-modal">
           { this.props.testing_info !== false ? 
             <React.Fragment>

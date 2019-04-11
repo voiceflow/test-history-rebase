@@ -23,11 +23,9 @@ import Billing from "./Billing"
 // SETTING STATES: MEMBERS, SETTINGS, DELETE
 const STAGES = {
   CHECKOUT: { title: "Upgrade Board" },
-  PAST_DUE: { title: "Payment Overdue" },
-  UNPAID: { title: "Payment Required" },
   MEMBERS: { title: "Manage Members" },
   UPDATING_MEMBERS: { title: "Manage Members" },
-  SETTINGS: { title: "Team Settings" },
+  SETTINGS: { title: "Board Settings" },
   DELETE: { title: "Delete Team" },
   BILLING: { title: "Billing" }
 };
@@ -293,32 +291,42 @@ class TeamSettings extends Component {
       case "SETTINGS":
         if(!this.IS_ADMIN) break;
         return (
-          <div className="my-3">
-            <div className="super-center">
+          <div className="mb-3">
+            <label>Team Icon</label>
+            { this.props.team.status === 0 ?
+              <div className="mb-3">
+                <img src='/images/icons/vf_logo.png' alt="Voiceflow" width={100} className="py-2 mb-1 no-select"/><br/>
+                <small className="text-muted">
+                  Update this board under <b>Billing</b> to add custom icons
+                </small>
+              </div> :
               <Image
                 tiny
-                className="icon-image icon-image-sm icon-image-square"
+                className="icon-image icon-image-sm icon-image-square mb-3"
                 path={`/team/${this.props.team.team_id}/picture`}
                 image={this.props.team.image}
                 update={url => this.props.updateTeam({ image: url })}
                 replace
               />
-            </div>
+            }
             <label>Name</label>
             <Input
               name="name"
               placeholder="Team Name"
-              onChange={this.handleChange}
+              // onChange={this.handleChange}
               value={this.state.name}
+              disabled
             />
             <hr />
-            <label>Info</label>
             <button
               className="btn btn-link"
               onClick={() => this.setState({ stage: "BILLING" })}
             >
               Billing
-            </button>
+            </button><br/>
+            <small className="text-muted">
+              View invoices, update your payment options
+            </small>
             <hr />
             <label>Privacy</label>
             <button
@@ -424,15 +432,15 @@ class TeamSettings extends Component {
           </ModalHeader>
           <ModalBody className="px-45 pt-0 overflow-hidden">
             {["WARNING", "LOCKED"].includes(this.props.team.state) && (this.state.update_pay ? 
-              <Alert color="danger">
+              <Alert>
                 Please refresh your page to see updates
               </Alert> : 
               <>
-                {this.props.team.state === "WARNING" && <Alert color="danger" onClick={() => this.setState({stage: "UNPAID"})}>
+                {this.props.team.state === "WARNING" && <Alert color="danger" onClick={() => this.setState({stage: "BILLING"})}>
                   We were unable to charge your last invoice<br/><br/>
                   If there is an issue with your current card please update your payment option
                 </Alert>}
-                {this.props.team.state === "LOCKED" && <Alert color="danger" onClick={() => this.setState({stage: "WARNING"})}>
+                {this.props.team.state === "LOCKED" && <Alert color="danger" onClick={() => this.setState({stage: "BILLING"})}>
                   Your subscription failed<br/>
                   Please update your payment option to continue
                 </Alert>}

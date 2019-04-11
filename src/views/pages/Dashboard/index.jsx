@@ -309,7 +309,7 @@ class DashBoard extends Component {
           { LOCKED && <div className="w-100 h-100 super-center position-absolute z-hard">
             <Alert 
               color="danger" 
-              onClick={() => this.setState({team_settings: "UNPAID"})} 
+              onClick={() => this.setState({team_settings: "BILLING"})} 
               className="pointer text-center py-3">
               <h1><i className="far fa-ban"/></h1>
               Your subscription has failed<br/>

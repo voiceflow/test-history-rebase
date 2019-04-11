@@ -285,12 +285,13 @@ class NewTeam extends Component {
               <div className="super-center mt-5">
                 <div className="text-center">
                   <Image
-                    className="icon-image icon-image-sm text-center mb-2 mx-auto"
+                    replace
+                    className="icon-image icon-image-sm text-center icon-image-square mb-2 mx-auto"
                     path="/image/large_icon"
                     image={this.state.image_url}
                     update={url => this.setState({ image_url: url })}
                   />
-                  <small className="text-muted">Add Board Icon (optional)</small>
+                  <small className="text-muted">Add Team Icon (optional)</small>
                 </div>
               </div> 
             }

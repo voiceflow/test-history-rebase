@@ -89,7 +89,7 @@ import { setError } from 'ducks/modal'
       this.setState({
           saving: true
       });
-      axios.post(`/link_account/template/?skill_id=${this.props.skill_id}`, this.state.accountLinkingRequest)
+      axios.post(`/link_account/template/${this.props.skill_id}`, this.state.accountLinkingRequest)
       .then(()=>{
           this.setState({
               saving: false

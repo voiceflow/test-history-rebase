@@ -2,7 +2,8 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Table, Button, Modal, ModalBody, ModalHeader, ModalFooter, InputGroup, Input, InputGroupAddon, Form, Alert, ListGroup, ListGroupItem } from 'reactstrap'
+import { Table, Button, Modal, ModalBody, ModalFooter, InputGroup, Input, InputGroupAddon, Form, Alert, ListGroup, ListGroupItem } from 'reactstrap'
+import { ModalHeader } from 'views/components/Modals/ModalHeader'
 import axios from 'axios'
 import moment from 'moment'
 import Select from 'react-select'
@@ -621,7 +622,7 @@ class TestModal extends React.Component {
                     </React.Fragment> :
                     <div className="p-3">
                       <h6 className="mt-3 mb-3">Start Project from the beginning</h6>
-                      <button className="purple-btn mb-3" onClick={this.beginning}><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp;Start Test</button>
+                      <button className="btn-primary mb-3" onClick={this.beginning}><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp;Start Test</button>
                       <div className="break">
                       <span className="or">
                         OR
@@ -634,7 +635,7 @@ class TestModal extends React.Component {
                         value={this.state.selected_line}
                         onChange={this.handleLineSelection}
                         options={this.state.nodes} />
-                      <button className="purple-btn" onClick={this.startline}><i className="fas fa-fast-forward"></i>&nbsp;&nbsp;&nbsp;Start From Block</button>
+                      <button className="btn-primary" onClick={this.startline}><i className="fas fa-fast-forward"></i>&nbsp;&nbsp;&nbsp;Start From Block</button>
                     </div>
                   }
                 </div>

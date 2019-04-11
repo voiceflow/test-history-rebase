@@ -36,7 +36,7 @@ export class Choice extends Component {
                 node.parentCombine.combines,
                 npc => npc.id === node.id
             );
-            node.parentCombine.combines[bestNode] = node.serialize();
+            node.parentCombine.combines[bestNode] = node
         }
         this.setState({
             node: node
@@ -64,7 +64,7 @@ export class Choice extends Component {
                 node.parentCombine.ports[newPort[0].name].parent = node.parentCombine
             }
             let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
-            node.parentCombine.combines[bestNode] = node.serialize()
+            node.parentCombine.combines[bestNode] = node
 
         }
         this.setState({
@@ -98,7 +98,7 @@ export class Choice extends Component {
         node.extras.choices.splice(i, 1)
         node.extras.inputs.splice(i, 1)
         if (node.parentCombine){
-            node.parentCombine.combines[bestNode] = node.serialize()
+            node.parentCombine.combines[bestNode] = node
         }
         this.setState({
             node: node

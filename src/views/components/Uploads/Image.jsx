@@ -87,15 +87,15 @@ class Image extends Component {
         } else if(this.props.image) {
             render = <div className="image-box">
                 <div className="image" style={{backgroundImage: `url(${this.props.image})`}}></div>
-                <button disabled={this.props.isDisabled} onClick={() => this.props.update(null)}>&times;</button>
+                <button className="close" disabled={this.props.isDisabled} onClick={() => this.props.update(null)}></button>
             </div>
         }else if(this.state.url_open){
-            render = <div className="dropzone enter-url">
+            render = <div className="dropzone">
                 <div className="text-center w-100">
-                    <p className="prompt-text">Enter Image URL</p>
+                    <label>Enter Image URL</label>
                     <Input placeholder="URL Link" value={this.state.url} onChange={this.handleChange} name="url"/>
-                    <button onClick={()=>this.setState({url_open: false})} className="upload-btn btn btn-default exit"><i className="far fa-chevron-left"/>Back</button>
-                    <button onClick={()=>this.props.update(this.state.url)} className="upload-btn btn btn-primary-small">Confirm</button>
+                    <button onClick={()=>this.setState({url_open: false})} className="btn-tertiary mt-3 mr-1">Back</button>
+                    <button onClick={()=>this.props.update(this.state.url)} className="btn btn-primary mr-1">Confirm</button>
                 </div>
             </div>
         }else{
@@ -124,7 +124,7 @@ class Image extends Component {
                       </>
                     }
                   </div>
-                  <div className="rejected-file super-center text-danger text-center">
+                  <div className="rejected-file text-danger text-center">
                     {this.props.tiny ? <i className="far fa-exclamation-triangle"/> : "File not Accepted"}
                   </div>
               </div>

@@ -2,7 +2,8 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import { Modal, ModalBody, ModalFooter } from "reactstrap";
+import { ModalHeader } from 'views/components/Modals/ModalHeader'
 
 import { clearModal } from "ducks/modal";
 

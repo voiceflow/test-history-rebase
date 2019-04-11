@@ -17,7 +17,7 @@ export default (props) => {
     </div>
     <div className="justify-content-center">
       <button 
-        className={"purple-btn" + (!(option_map.includes(props.state)) ? ' disabled': '')} 
+        className={"btn-primary" + (!(option_map.includes(props.state)) ? ' disabled': '')} 
         disabled={!(option_map.includes(props.state))} 
         onClick={props.next}>
         { props.button || "Next Question" }

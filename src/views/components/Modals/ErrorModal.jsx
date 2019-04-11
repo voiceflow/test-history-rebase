@@ -25,7 +25,7 @@ export class ErrorModal extends Component {
                 }
               </React.Fragment> :
               <Alert color="danger">
-                {this.props.error.error}
+                {typeof this.props.error === 'string' ? this.props.error : this.props.error.error}
               </Alert>
             }
             <hr/>

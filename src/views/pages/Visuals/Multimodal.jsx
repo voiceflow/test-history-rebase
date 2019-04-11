@@ -6,7 +6,6 @@ import { deleteDisplay } from './../../../actions/displayActions'
 import { setConfirm } from 'ducks/modal'
 
 import { Alert } from 'reactstrap'
-import MUIButton from '@material-ui/core/Button';
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
 import { Spinner } from 'views/components/Spinner'
@@ -47,7 +46,7 @@ class Multimodal extends Component {
                             <p className="empty">No Visual Templates Exist</p>
                             <p className="empty-desc">Add viduals to your project and create stunning visuals with Alexa Presentation Language</p>
                             <Link to={`/visuals/${this.props.skill_id}/display/new`} className="no-underline">
-                                <MUIButton varient="contained" className="purple-btn">New Display</MUIButton>
+                                <button varient="contained" className="btn-primary">New Display</button>
                             </Link>
                         </div>
                         </div>
@@ -56,7 +55,7 @@ class Multimodal extends Component {
                         <div className="products-container position-relative">
                         <div className="space-between w-100 px-3">
                             <h5 className="text-muted mb-0">Visuals</h5>
-                            <Link to={`/visuals/${this.props.skill_id}/display/new`} className="no-underline btn purple-btn">
+                            <Link to={`/visuals/${this.props.skill_id}/display/new`} className="no-underline btn btn-primary">
                                 New Display
                             </Link>
                         </div>

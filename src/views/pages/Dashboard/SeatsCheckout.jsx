@@ -164,7 +164,7 @@ class SeatsCheckout extends Component {
           </div>
           <div className="super-center">
             <button
-              className="btn purple-btn mt-4 mb-4"
+              className="btn btn-primary mt-4 mb-4"
               style={{ width: 144 }}
               onClick={(e) => {e.preventDefault(); this.checkout()}}
             >

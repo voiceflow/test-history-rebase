@@ -6,7 +6,6 @@ import Select from 'react-select';
 
 import MultipleFields from './../../components/Forms/MultipleFields';
 import axios from 'axios';
-import MUIButton from '@material-ui/core/Button';
 import { Nav, NavItem, NavLink, Input } from 'reactstrap';
 
 import { setError } from 'ducks/modal'
@@ -143,14 +142,14 @@ import { setError } from 'ducks/modal'
                     <div className="space-between">
                         <h5 className="text-muted mb-0">Account Linking Template</h5>
                         <div className="subheader-right">
-                            <MUIButton varient="contained" className="purple-btn" onClick={this.save} style={{width: 100}}>
+                            <button varient="contained" className="btn-primary" onClick={this.save} style={{width: 100}}>
                                 {this.state.saving ?
                                     <span className="loader"/> :
                                     <React.Fragment>
                                         Save
                                     </React.Fragment>
                                 }
-                            </MUIButton>
+                            </button>
                         </div>
                     </div>
                     <hr/>
@@ -286,7 +285,7 @@ import { setError } from 'ducks/modal'
                               />
                             <label>Client Authentication Scheme</label>
                               <Select
-                                  classNamePrefix="variable-box"
+                                  classNamePrefix="select-box"
                                   className="map-box"
                                   onChange={(e) => {
                                     let accountLinkingRequest = this.state.accountLinkingRequest

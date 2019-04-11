@@ -510,7 +510,7 @@ audio {
  }
 .alert-danger{
     color: #ff3562 !important;
-    background-color: #ff7c8824 !important;
+    background-color: #FFECEE !important;
     border-color: transparent;
 }
 .text-dark {
@@ -1150,6 +1150,9 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
   width: 100px !important;
   height: 100px !important;
 }
+.icon-image.tiny > * {
+  cursor: pointer !important;
+}
 
 .icon-image>.dropzone {
   height: 100%;
@@ -1182,7 +1185,10 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
   border-radius: 100px;
   border: 1px solid #c5d6e450;
 }
-
+.icon-image-square > *, .icon-image-square>.image-box>.image {
+  border-radius: 0px !important;
+  background-color: #fff !important;
+}
 .icon-image-sm>.image-box {
   padding: 0 !important;
   border-width: 2px !important;
@@ -2124,4 +2130,11 @@ kbd {
 .module-card-icon .module-image {
     -webkit-box-shadow: 0 0 5px 0 rgba(17,49,96,.3);
     box-shadow: 0 0 5px 0 rgba(17,49,96,.3);
+}
+
+@media only screen and (max-width: 1200px) {
+  .icon-image{
+    height: 160px;
+    width: 160px
+  }
 }

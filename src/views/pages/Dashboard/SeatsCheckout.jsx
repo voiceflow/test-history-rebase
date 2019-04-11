@@ -118,7 +118,7 @@ class SeatsCheckout extends Component {
           className="text-left"
         >
           <div>
-            <div className="upgrade-plan">
+            <div className="upgrade-plan pointer" onClick={this.props.collab}>
               <div className="super-center">
                 <img
                   alt="collab"

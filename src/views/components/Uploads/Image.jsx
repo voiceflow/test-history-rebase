@@ -112,16 +112,17 @@ class Image extends Component {
               <div className="w-100">
                   <div className="drop-child">
                     {this.props.tiny ? 
-                    <i className="fas fa-cloud-upload-alt text-muted"/> : 
-                    <>
-                      Drag-n-Drop Image or <span className="btn-link">browse</span><br/>
-                      {this.props.url && <button className="upload-btn btn btn-default" onClick={(e)=>{
-                          e.preventDefault()
-                          e.stopPropagation()
-                          this.setState({url_open: true})
-                          return false
-                      }}>URL</button>}
-                    </>}
+                      <i className="far fa-image text-muted" style={{fontSize: 30}}/> : 
+                      <>
+                        Drag-n-Drop Image or <span className="btn-link">browse</span><br/>
+                        {this.props.url && <button className="upload-btn btn btn-default" onClick={(e)=>{
+                            e.preventDefault()
+                            e.stopPropagation()
+                            this.setState({url_open: true})
+                            return false
+                        }}>URL</button>}
+                      </>
+                    }
                   </div>
                   <div className="rejected-file super-center text-danger text-center">
                     {this.props.tiny ? <i className="far fa-exclamation-triangle"/> : "File not Accepted"}

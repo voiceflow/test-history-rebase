@@ -5,6 +5,14 @@
     color: #8da2b5;
 }
 
+.voiceflow-logo {
+  height: 36px;
+  width: 36px;
+  background-size: 100% auto;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .nav-item{
 	font-size: 15px;
 	letter-spacing: 0.2px;

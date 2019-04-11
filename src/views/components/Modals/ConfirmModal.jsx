@@ -2,7 +2,8 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
+import { ModalHeader } from 'views/components/Modals/ModalHeader'
 
 import { clearModal } from "ducks/modal";
 
@@ -32,16 +33,14 @@ export class ConfirmModal extends React.Component {
         <ModalFooter className="justify-content-center">
           {cancel && (
             <Button
-              className="previous-btn"
+              className="btn-tertiary"
               color="clear"
               onClick={this.props.toggle}
             >
               Cancel
             </Button>
           )}
-          <Button
-            className="faux-purple-btn"
-            color={this.props.confirm.warning ? "warning" : "primary"}
+          <Button color={this.props.confirm.warning ? "warning" : "primary"} 
             onClick={() => {
               if (typeof this.props.confirm.confirm !== "function")
                 return this.props.toggle();

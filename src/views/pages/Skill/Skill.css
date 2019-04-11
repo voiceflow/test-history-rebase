@@ -399,7 +399,7 @@ textarea::placeholder {
 
 .product-body {
   display: flex;
-  padding-bottom: 20px;
+  padding-bottom: 13px;
   padding-top: 20px;
   padding-left: 25px;
   -webkit-box-pack: veritcal;
@@ -538,13 +538,13 @@ textarea::placeholder {
 }
 
 .google-link {
-  color: #3691b0;
+  color: #42a5ff;
   text-decoration: underline;
 }
 
 .google-upload {
   height: auto;
-  padding: 1em;
+  padding: 3em;
 }
 
 .google-verification-info {
@@ -573,18 +573,22 @@ textarea::placeholder {
   line-height: 20px;
   text-align: center;
   margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   font-size: 10px !important;
+
 }
 .combinie-node .srd-default-node .srd-default-node__title .srd-default-node__name{
   font-size: 10px !important;
 }
 
 .srd-default-node.moving{
- width: 230px !important;
- height: 40px !important;
- border-radius: 8px !important;
- transform: rotate(-3deg) !important;
+  width: 230px !important;
+  height: 36px !important;
+  border-radius: 8px !important;
+  transform: rotate(-3deg) !important;
+  border-width: 1px !important;
+  border-radius: 6px !important;
+  padding-left: 23px !important;
 }
 
 .combine-node-title {

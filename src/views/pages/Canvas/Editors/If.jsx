@@ -60,7 +60,7 @@ class IfBlock extends Component {
                     node.parentCombine.ports[newPort[0].name].parent = node.parentCombine
                 }
                 let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
-                node.parentCombine.combines[bestNode] = node.serialize()
+                node.parentCombine.combines[bestNode] = node
 
             }
             this.setState({
@@ -99,7 +99,7 @@ class IfBlock extends Component {
 
             node.extras.expressions.splice(i, 1);
             if (node.parentCombine){
-                node.parentCombine.combines[bestNode] = node.serialize()
+                node.parentCombine.combines[bestNode] = node
             }
             this.setState({
                 node: node
@@ -114,7 +114,7 @@ class IfBlock extends Component {
         return (
             <div>
                 <p>
-                    <small className="text-muted">If Statements Evaluated in Numerical Order</small>
+                    <small className="text-muted">If statements are evaluated in numerical order</small>
                 </p>
                 {this.state.node.extras.expressions.map((expression, i) => {
                     let show = !(expression.type === 'value' || expression.type === 'variable');
@@ -122,11 +122,11 @@ class IfBlock extends Component {
                     return (
                         <div key={i} className="solid-border set-block">
                             {this.state.node.extras.expressions.length > 1 ?
-                                <div className="close" onClick={()=>this.handleRemoveBlock(i)}>&times;</div> 
+                                <div className="close" onClick={()=>this.handleRemoveBlock(i)}></div> 
                                 : null 
                             }
                             <div className="variable-group">
-                                <div className="square-bubble mr-1">{i + 1}</div><span>If </span>
+                                <div className="number-bubble mr-2">{i + 1}</div><span>If </span>
                             </div>
                             { show ? <Expressionfy expression={expression}/> : null}
                             <Expression expression={expression} variables={this.props.variables} onUpdate={this.onUpdate}/>
@@ -135,9 +135,9 @@ class IfBlock extends Component {
                 })}
 
                 { this.state.node.extras.expressions.length < BLOCK_LIMIT ?
-                    <button className="btn btn-clear btn-lg btn-block" onClick={this.handleAddBlock}>
-                        <i className="far fa-plus"></i> Add If Statement
-                    </button> : null
+                    <div className="text-center"><button className="btn-tertiary-variable mt-1" onClick={this.handleAddBlock}>
+                    Add If Statement
+                    </button></div> : null
                 }
             </div>
         );

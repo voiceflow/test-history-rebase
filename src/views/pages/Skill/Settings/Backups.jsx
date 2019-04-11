@@ -101,7 +101,7 @@ class BackupSettings extends Component{
                 <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
                 
                 <ModalFooter>
-                    <button className="purple-btn ml-auto mr-auto" onClick={() => this.confirmRestore(this.state.curr_preview.skill_id, this.state.curr_preview.canonical_skill_id, this.state.curr_preview)}>Restore</button>
+                    <button className="btn-primary ml-auto mr-auto" onClick={() => this.confirmRestore(this.state.curr_preview.skill_id, this.state.curr_preview.canonical_skill_id, this.state.curr_preview)}>Restore</button>
                 </ModalFooter>
             </Modal>
 
@@ -117,7 +117,7 @@ class BackupSettings extends Component{
                             {this.props.user.admin === 0 &&
                             <div id="backup-overlay" className="d-flex justify-content-center">
                                 <div id="backup-upgrade-btn" className="text-center">
-                                    <Link className="purple-btn" to='/account/upgrade'>
+                                    <Link className="btn-primary" to='/account/upgrade'>
                                         Upgrade
                                     </Link>
                                 </div>
@@ -125,10 +125,10 @@ class BackupSettings extends Component{
                             <Table>
                                 <thead>
                                     <tr>
-                                        <th>Saved</th>
-                                        <th>Platform</th>
-                                        <th>Preview</th>
-                                        <th>Restore</th>
+                                        <th><label className="text-left">Saved</label></th>
+                                        <th><label className="text-left">Platform</label></th>
+                                        <th><label className="text-left ml-4">Preview</label></th>
+                                        <th><label className="text-left">Restore</label></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -137,10 +137,10 @@ class BackupSettings extends Component{
                                         <tr className="table-primary">
                                             <td>{moment(this.state.live_version.created).fromNow()} <br/> (Current live version) </td>
                                             <td>
-                                                <Button className='purple-btn' onClick={() => this.previewBackup(this.state.live_version)}>Preview</Button>
+                                                <Button className='btn-primary' onClick={() => this.previewBackup(this.state.live_version)}>Preview</Button>
                                             </td>
                                             <td>
-                                                <Button className='purple-btn' onClick={() => this.confirmRestore(this.state.live_version.skill_id, this.state.live_version.canonical_skill_id, this.state.live_version)}>Restore</Button>
+                                                <Button className='btn-primary' onClick={() => this.confirmRestore(this.state.live_version.skill_id, this.state.live_version.canonical_skill_id, this.state.live_version)}>Restore</Button>
                                             </td>
                                         </tr>
                                         :
@@ -151,10 +151,10 @@ class BackupSettings extends Component{
                                             <td >{moment(version.created).fromNow()}</td>
                                             <td className="text-center">{version.published_platform === 'google' ? <i className="fab fa-google"/> :  <i className="fab fa-amazon"/>}</td>
                                             <td>
-                                                <Button className='purple-btn' onClick={() => this.previewBackup(version)}>Preview</Button>
+                                                <button className='btn-tertiary' onClick={() => this.previewBackup(version)}>Preview</button>
                                             </td>
                                             <td>
-                                                <Button className='purple-btn' onClick={() => this.confirmRestore(version.skill_id, version.canonical_skill_id, version)}>Restore</Button>
+                                                <button className='btn-primary-small' onClick={() => this.confirmRestore(version.skill_id, version.canonical_skill_id, version)}>Restore</button>
                                             </td>
                                         </tr>
                                     })}

@@ -36,7 +36,7 @@ class DiagramVariables extends Component {
                     </div>)
                 })}
                 <button className="btn btn-clear btn-lg btn-block" onClick={this.props.onAdd}>
-                    <i className="far fa-plus"></i> Add Variable Map
+                    <i className="far fa-plus mr-1"></i> Add Variable Map
                 </button>
             </React.Fragment>
         );

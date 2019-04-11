@@ -92,28 +92,36 @@ exports[`CommandEditor render command block editor 1`] = `
         value={null}
       />
     </div>
+    <hr />
     <div
-      className="choice-block pb-4 pt-3 mt-3"
+      className="mt-1"
     >
-      <h5
-        className="mb-3 text-muted"
-      >
+      <label>
         Link Command Flow
-      </h5>
-      <Button
+      </label>
+      <button
         block={true}
-        color="secondary"
+        className="btn-clear btn-block btn-lg"
         onClick={[Function]}
-        tag="button"
       >
-        <i
-          className="fas fa-clone mr-1"
+        <img
+          alt="home"
+          className="mr-2"
+          height={15}
+          src="/flows.svg"
+          width={15}
         />
          Create New Flow
-      </Button>
-      <hr
-        className="mb-1"
-      />
+      </button>
+      <div
+        class="break"
+      >
+        <span
+          class="or"
+        >
+          OR
+        </span>
+      </div>
       <label>
         Select Existing Flow
       </label>
@@ -126,10 +134,12 @@ exports[`CommandEditor render command block editor 1`] = `
         options={Array []}
         placeholder={
           <React.Fragment>
-            <i
-              className="fas fa-clone mr-1"
+            <img
+              alt="flows"
+              src="/flows.svg"
+              width="15"
             />
-             Select Flow
+               Select Flow
           </React.Fragment>
         }
       />

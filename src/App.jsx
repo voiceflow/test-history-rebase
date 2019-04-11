@@ -5,6 +5,8 @@ import ReactGA from "react-ga";
 import { store, history } from "./containers/store";
 import { Alert } from "reactstrap";
 import { ConnectedRouter } from 'connected-react-router'
+import { DragDropContext } from "react-dnd";
+import DragDropBackend from "./services/DragDropBackend";
 
 // Import Dependent CSS
 import "react-tippy/dist/tippy.css";
@@ -258,4 +260,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default DragDropContext(DragDropBackend)(App);

@@ -6,12 +6,12 @@ import {
   ModalBody,
   Alert,
   Input,
-  ModalHeader,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
+import { ModalHeader } from 'views/components/Modals/ModalHeader'
 import { User } from "views/components/User";
 import Image from "views/components/Uploads/Image";
 import { cloneDeep } from "lodash";
@@ -377,7 +377,7 @@ class TeamSettings extends Component {
                 </div>
               </div>
               <div className="text-center mt-4">
-                <button className="btn purple-btn" onClick={this.applyChanges} disabled={ UPDATING } style={{width: 145}}>
+                <button className="btn btn-primary" onClick={this.applyChanges} disabled={ UPDATING } style={{width: 150}}>
                   { UPDATING ? <span className="loader"/> : "Apply Changes"} 
                 </button>
               </div>

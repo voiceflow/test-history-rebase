@@ -13,7 +13,6 @@ import { Tooltip } from 'react-tippy'
 import Select from 'views/components/Dropdowns/Searchable'
 import { getBlocks } from 'views/pages/Canvas/Blocks'
 
-const premiums = ['permission', 'permissions', 'mail', 'link_account', 'payment', 'cancel', 'reminder'];
 const toolkit = new Toolkit()
 export class BlockNodeWidget extends BaseWidget {
 	constructor(props) {
@@ -22,7 +21,7 @@ export class BlockNodeWidget extends BaseWidget {
 			dropdownOpen: false,
 			edit: false,
 			name: props.node ? props.node.name : '',
-			blocks: window.user_detail.admin > 0 ? getBlocks() : _.filter(getBlocks(), b => !_.includes(premiums, b.type))
+			blocks: getBlocks()
 		};
 		this.onMouseEnter = this.onMouseEnter.bind(this);
 		this.onMouseLeave = this.onMouseLeave.bind(this);

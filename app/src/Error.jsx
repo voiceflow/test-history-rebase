@@ -16,7 +16,7 @@ class ErrorScreen extends PureComponent {
                     <Alert className="mb-4">
                         We won't be able to verify if there are other sessions logged on to this account - This may cause save issues if different sessions save over each other
                     </Alert>
-                    <button onClick={this.props.error.action} className="btn purple-btn">Continue Anyway</button>
+                    <button onClick={this.props.error.action} className="btn btn-primary">Continue Anyway</button>
                 </div>
             case 'socket-used':
                 return <div className="text-center">

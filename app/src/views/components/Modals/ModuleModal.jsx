@@ -41,7 +41,7 @@ class ModuleModal extends React.Component {
               <p className="text-secondary">{this.props.module.descr}</p>
               <div className="row justify-content-center mb-3">
                 <button className="white-btn mr-2" onClick={this.previewFlow}>Preview</button>
-                <button className="purple-btn ml-2" onClick={this.addFlow}>Add Flow</button>
+                <button className="btn-primary ml-2" onClick={this.addFlow}>Add Flow</button>
               </div>
               <p>{this.props.module.overview}</p>
             </div>

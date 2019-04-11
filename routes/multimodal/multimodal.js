@@ -1,4 +1,5 @@
 const { pool, hashids } = require('../../services');
+const axios = require('axios');
 const { checkSkillAccess } = require("./../team")
 
 const checkDisplayAccess = async (display_id, user_id) => {
@@ -106,3 +107,22 @@ exports.deleteDisplay = async (req, res) => {
     }
   })
 }
+
+exports.renderDisplay = async (req, res) => {
+  try {
+    const id = hashids.decode(req.params.id)[0];
+    if(!(await checkDisplayAccess(id, req.user.id))) return res.sendStatus(403)
+
+    const document = (await pool.query('SELECT document FROM displays WHERE id = $1 LIMIT 1', [id])).rows[0].document
+
+    let result = await axios.post('http://18.207.123.181:8080/render', {
+      document,
+      datasource: req.body.datasource
+    })
+    res.send(result.data)
+  } catch(err) {
+    writeToLogs('APL TEST ERROR', err)
+    res.sendStatus(500)
+  }
+}
+

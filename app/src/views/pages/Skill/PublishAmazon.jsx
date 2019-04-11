@@ -23,7 +23,7 @@ import LOCALE_MAP from '../../../services/LocaleMap'
 
 import { AMAZON_CATEGORIES } from '../../../services/Categories'
 
-import { updateVersion, updateEntireVersion } from "./../../../actions/versionActions"
+import { updateVersion, updateEntireVersion, updateSkillDB } from "./../../../actions/versionActions"
 import { setConfirm, setError } from 'ducks/modal'
 import { AmazonAccessToken } from 'ducks/account'
 
@@ -452,7 +452,7 @@ class Skill extends Component {
                         <p className="text-muted">
                             Your skill has been successfully submitted for review to the Amazon Skill store. You will be updated on the status of your skill via email.
                         </p>
-                        <Link to="/dashboard"><MUIButton variant="contained" className="purple-btn">Dashboard</MUIButton></Link>
+                        <Link to="/dashboard"><MUIButton variant="contained" className="btn-primary">Dashboard</MUIButton></Link>
                         <MUIButton variant="contained" className="white-btn ml-3" onClick={() => this.setState({stage: 2})}>Return to Project</MUIButton>
                     </div>
                     <img src="/images/success.svg" alt="success"/>
@@ -549,7 +549,7 @@ class Skill extends Component {
                         placeholder="Any Particular Testing Instructions for Amazon Approval Process"
                     />
                 </Paper>
-                <button className="purple-btn btn" onClick={this.onPublish}>Submit to Alexa</button>
+                <button className="btn-primary btn" onClick={this.onPublish}>Submit to Alexa</button>
             </div>
         }else if(this.state.stage === 5 || this.state.stage === 6){
             content = <div>
@@ -605,7 +605,7 @@ class Skill extends Component {
                     onClosed={this.closePublish}>
                     <ModalBody>
                         <div className="d-flex justify-content-between" ref={this.privacyTop}>
-                            <b>{stage_title[this.state.stage]}</b> <button type="button" className="close" onClick={this.togglePublish}>&times;</button>
+                            <b>{stage_title[this.state.stage]}</b> <button type="button" className="close" onClick={this.togglePublish}></button>
                         </div>
                         <div className="modal-info">
                             {content}
@@ -724,7 +724,7 @@ class Skill extends Component {
                         <div className="alert alert-success mb-4" role="alert">
                             <div className="d-flex justify-content-between align-items-center">
                                 <span>This skill is linked on Amazon Developer Console</span>
-                                <b onClick={()=>this.setState({id_collapse: !this.state.id_collapse})} className="pointer">{this.state.id_collapse ? 'Hide' : 'More Info'} <span style={{width: '9px', display: 'inline-block', textAlign: 'right'}}><i className={"fas fa-caret-left rotate" + (this.state.id_collapse ? " fa-rotate--90" : "")}/></span></b>
+                                <div onClick={()=>this.setState({id_collapse: !this.state.id_collapse})} className="pointer">{this.state.id_collapse ? 'Hide' : 'More Info'} <span style={{width: '9px', display: 'inline-block', textAlign: 'right'}}><i className={"fas fa-caret-left rotate" + (this.state.id_collapse ? " fa-rotate--90" : "")}/></span></div>
                             </div>
                             <Collapse isOpen={this.state.id_collapse}>
                                 <hr/>
@@ -741,8 +741,8 @@ class Skill extends Component {
                                 <h5 className="mb-0">This skill is currently in review so you cannot edit it.</h5>
                                 <div>
                                     <MUIButton variant="contained" className="white-btn" href={alexaDashboardUrl} target="_blank">Visit Dashboard</MUIButton>
-                                    <MUIButton variant="contained" className="purple-btn ml-3" onClick={()=>{
-                                        this.props.setConfirm({
+                                    <MUIButton variant="contained" className="btn-primary ml-3" onClick={()=>{
+                                        this.props.onConfirm({
                                             text: "Are you sure you want to withdraw this Skill?",
                                             confirm: this.onWithdraw
                                         })
@@ -755,14 +755,14 @@ class Skill extends Component {
                     
                     <Form>
                         <div className="big-settings-alignment-div">
-                            <div className="mb-4 mt-5"><b>Basic Skill Info</b></div>
+                            <div className="mb-3 mt-5"><label className="dark">Basic Skill Info</label></div>
                             <div className="big-settings-content">
                                 <FormGroup>
                                     <div className="row">
                                         <div className="col-3 publish-info">
-                                            <p className="mb-0 helper-text"><b>Display Name</b> is what we display for your skill on VoiceFlow/Amazon</p>
+                                            <p className="mb-0 helper-text"><b>Display Name</b> is what we display for your Skill on VoiceFlow/Amazon</p>
                                         </div>
-                                        <div className="col-9">
+                                        <div className="col-9 mb-4">
                                             <Label className="publish-label">Display Name *</Label>
                                             <Input className="form-bg" type="text" name="name" disabled={disabled_stages.has(this.state.stage)} placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
                                         </div>
@@ -798,7 +798,7 @@ class Skill extends Component {
                         </div>
 
                         <div className="big-settings-alignment-div">
-                            <div className="mb-4"><b>Skill Description</b></div>
+                            <div className="mb-4"><label className="dark">Skill Description</label></div>
                             <div className="big-settings-content">
                                 <FormGroup className="mt-0">
                                     <div className="row">
@@ -807,7 +807,7 @@ class Skill extends Component {
                                                 <b>Summary</b> is a one sentence description of your amazing Skill.
                                             </p>
                                         </div>
-                                        <div className="col-9">
+                                        <div className="col-9 mb-4">
                                             <Label className="publish-label">Summary *</Label>
                                             <Input className="form-bg" type="text" name="summary" disabled={disabled_stages.has(this.state.stage)} placeholder="One Sentence Skill Summary" value={this.state.summary} onChange={this.handleChange} />
                                         </div>
@@ -821,7 +821,7 @@ class Skill extends Component {
                                                 <b>Description</b> is where you can provide a more detailed explanation of your Skill.
                                             </p>
                                         </div>
-                                        <div className="col-9">
+                                        <div className="col-9 mb-4">
                                             <Label className="publish-label">Description *</Label>
                                             <Textarea
                                                 name="description"
@@ -840,13 +840,13 @@ class Skill extends Component {
                                     <div className="row">
                                         <div className="col-3 publish-info">
                                             <p className="helper-text">
-                                                <b>Category</b> is the type of your Skill. This helps users find your Skill more easily so choose the category that best applies to you.
+                                                <b>Category</b> is the type of your Skill. This helps users find your Skill in the store.
                                             </p>
                                         </div>
-                                        <div className="col-9">
+                                        <div className="col-9 mb-4">
                                             <Label className="publish-label">Category *</Label>
                                             <Select
-                                                className="input-select"
+                                                classNamePrefix="select-box"
                                                 name="category"
                                                 isDisabled={disabled_stages.has(this.state.stage)}
                                                 value={this.state.category}
@@ -861,7 +861,7 @@ class Skill extends Component {
                                     <div className="row">
                                         <div className="col-3 publish-info">
                                             <p className="helper-text">
-                                                <b>Keywords</b> are words that will help your Skill be found when users are searching. There is a limit of 30 keywords and their total length must be less than or equal to 150.
+                                                <b>Keywords</b> are words that will help your Skill be found when users are searching the Skill store.
                                             </p>
                                         </div>
                                         <div className="col-9">
@@ -874,14 +874,14 @@ class Skill extends Component {
                         </div>
 
                         <div className="big-settings-alignment-div">
-                            <div className="mb-4"><b>Skill Invocation</b></div>
+                            <div className="mb-4"><label className="dark">Skill Invocation</label></div>
                             <div className="big-settings-content">
                                 <FormGroup>
                                     <div className="row">
                                         <div className="col-3 publish-info">
                                             <p className="mb-0 helper-text"><b>Invocation Name</b> is what users will use to open your Skill. For example, "<i>Tiny Tales</i>".</p>
                                         </div>
-                                        <div className="col-9">
+                                        <div className="col-9 mb-4">
                                             <Label className="publish-label">Invocation Name *</Label>
                                             <Input className="form-bg" type="text" name="inv_name" disabled={disabled_stages.has(this.state.stage)} placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
                                         </div>
@@ -891,7 +891,7 @@ class Skill extends Component {
                                 <FormGroup className="mt-0">
                                     <div className="row">
                                         <div className="col-3 publish-info">
-                                            <p className="helper-text"><b>Invocations</b> are the various phrases that Amazon Alexa will detect to run your Skill.</p>
+                                            <p className="helper-text"><b>Invocations</b> are the various phrases that will open your Skill.</p>
                                         </div>
                                         <div className="col-9">
                                             <Label className="publish-label">Invocations *</Label>
@@ -912,14 +912,14 @@ class Skill extends Component {
                         </div>
 
                         <div className="big-settings-alignment-div">
-                            <div className="mb-4"><b>Locales</b></div>
+                            <div className="mb-4"><label className="dark">Locales</label></div>
                             <div className="big-settings-content">
                                 
                                 <FormGroup className="mt-0">
                                     <div className="row">
                                         <div className="col-3 publish-info">
                                             <p className="helper-text">
-                                                <b>Locale</b> determines your skill's availability. Your skill will be available in regions which have your selected locale(s) as the primary language.
+                                                <b>Locale</b> determines your skill's availability. Your skill will be available in the regions you select here.
                                             </p>
                                         </div>
                                         <div className="col-9">
@@ -937,7 +937,7 @@ class Skill extends Component {
                         </div>
 
                         <div className="big-settings-alignment-div">
-                            <div className="mb-4"><b>Legal Information</b></div>
+                            <div className="mb-4"><label className="dark">Privacy and Terms</label></div>
                             <div className="big-settings-content">
                                 <FormGroup>
                                     <div className="row">
@@ -946,7 +946,7 @@ class Skill extends Component {
                                                 The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Skill.
                                             </p>
                                         </div>
-                                        <div className="col-9">
+                                        <div className="col-9 mb-4">
                                             <Label className="publish-label">Privacy Policy URL</Label>
                                             <Input className="form-bg" type="text" name="privacy_policy" disabled={disabled_stages.has(this.state.stage)} placeholder="Privacy Policy" value={this.state.privacy_policy} onChange={this.handleChange} />
                                         </div>
@@ -960,7 +960,7 @@ class Skill extends Component {
                                                 The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Skill.
                                             </p>
                                         </div>
-                                        <div className="col-9">
+                                        <div className="col-9 mb-4">
                                             <Label className="publish-label">Terms and Conditions URL</Label>
                                             <Input className="form-bg" type="text" name="terms_and_cond" disabled={disabled_stages.has(this.state.stage)} placeholder="Terms and Conditions" value={this.state.terms_and_cond} onChange={this.handleChange} />
                                         </div>
@@ -974,7 +974,7 @@ class Skill extends Component {
                                 null:
                                     <button
                                     variant="contained"
-                                    className="purple-btn"
+                                    className="btn-primary"
                                     onClick={() => {
                                         this.validateForm()
                                     }}
@@ -1002,6 +1002,7 @@ const mapDispatchToProps = dispatch => {
         updateEntireSkill: (val) => dispatch(updateEntireVersion(val)),
         setConfirm: (confirm) => dispatch(setConfirm(confirm)),
         setError: err => dispatch(setError(err)),
+        save: (publish, cb) => dispatch(updateSkillDB(publish, cb))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Skill);

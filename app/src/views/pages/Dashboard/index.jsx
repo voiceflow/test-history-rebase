@@ -277,7 +277,7 @@ class DashBoard extends Component {
                 </button>
               </Tooltip>
             </form>
-            <button className="btn purple-btn ml-1" onClick={this.newProject}>
+            <button className="btn btn-primary ml-1" onClick={this.newProject}>
               New Project
             </button>
           </div>
@@ -344,8 +344,7 @@ class DashBoard extends Component {
                     className="no-underline super-center"
                   >
                     <button
-                      varient="contained"
-                      className="purple-btn"
+                      className="btn-primary"
                       id="createskill"
                     >
                       New Project

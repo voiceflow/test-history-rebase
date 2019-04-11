@@ -5,6 +5,9 @@ import { Tooltip } from 'react-tippy'
 import { getIntentSlots } from 'Helper'
 import _ from 'lodash'
 import FulfillInput from './FulfillInput'
+import { updateFulfillment } from './../../../../actions/versionActions'
+import update from 'immutability-helper';
+import { connect } from 'react-redux'
 
 class Canfulfill extends PureComponent {
   constructor(props) {
@@ -15,25 +18,24 @@ class Canfulfill extends PureComponent {
       slots: this.props.slots,
       text: '',
       open: [],
-      selected_intent: null,
-      fulfillment: null
+      selected_intent: null
     }
   }
 
-  static getDerivedStateFromProps(props, state) {
-    if (!state.selected_intent || (props.selected_intent && state.selected_intent.key !== props.selected_intent.key) || !_.isEqual(state.fulfillment, props.fulfillment)) {
+  componentDidMount() {
+    const intent_slots = getIntentSlots(this.props.selected_intent, this.props.slots)
 
-      const intent_slots = getIntentSlots(props.selected_intent, props.slots)
-
-      return {
-        selected_intent: props.selected_intent,
-        open: state.open ? state.open : _.fill(Array(intent_slots.length), false),
-        intent_slots: intent_slots,
-        fulfillment: _.clone(props.fulfillment)
+    intent_slots.map((slot, i) => {
+      let slot_config = this.props.fulfillment[this.props.selected_intent.key].slot_config[slot.key]
+      if (!slot_config) {
+        this.props.updateFulfillment(this.props.selected_intent.key, update(this.props.fulfillment[this.props.selected_intent.key].slot_config, {
+          [slot.key]: {
+            $set: []
+          }
+        }))
       }
-    } else {
-      return null
-    }
+    })
+
   }
 
   toggleCollapse(i) {
@@ -45,45 +47,57 @@ class Canfulfill extends PureComponent {
     this.forceUpdate()
   }
 
+  updateSlotArray = (key, new_array) => {
+    this.props.updateFulfillment(this.props.selected_intent.key, update(this.props.fulfillment[this.props.selected_intent.key].slot_config, {
+      [key]: {
+        $set: new_array
+      }
+    }))
+  }
+
   render() {
-    if(!this.props.fulfillment[this.state.selected_intent.key]){
+    if (!this.props.fulfillment[this.props.selected_intent.key]) {
       return <Alert color="danger">Slot Fulfillment not found - Check Canvas</Alert>
     }
 
-    const inputs = this.state.intent_slots.map((slot, i) => {
-      let slot_config = this.props.fulfillment[this.state.selected_intent.key].slot_config[slot.key]
-      if (!slot_config) {
-        this.props.fulfillment[this.state.selected_intent.key].slot_config[slot.key] = []
-        slot_config = this.props.fulfillment[this.state.selected_intent.key].slot_config[slot.key]
-      }
-      return (
-        <div className="my-2" key={i}>
-          <div className="slot-box">
-            <button className="btn btn-clear w-100 d-flex space-between nb" onClick={() => { this.toggleCollapse(i) }}>
-              <span className="slot-fulfillment"><i className={`fas ${this.state.open[i] ? "fa-caret-down" : "fa-caret-right"} mr-2`}></i>{slot.name}</span>
-              {slot_config.length === 0 && <Tooltip
-                target="tooltip"
-                theme="menu"
-                position="bottom"
-                title='You have not entered any slot fulfillment values for this slot. All slot values in a CanFulfillIntent request will be understood by your skill by default.'
-              >
-                <span className="badge badge-info all-badge">ALL</span>
-              </Tooltip>}
+    const intent_slots = getIntentSlots(this.props.selected_intent, this.props.slots)
 
-            </button>
-            <Collapse className="slot-collapse" isOpen={this.state.open[i]}>
-              <FulfillInput onInputUpdate={() => {this.forceUpdate(); this.props.save()}} slot={slot} slot_config={slot_config} />
-            </Collapse>
-          </div>
-        </div>
+    const inputs = intent_slots.map((slot, i) => {
+      let slot_config = this.props.fulfillment[this.props.selected_intent.key].slot_config[slot.key]
+      return (<>
+          {slot_config ? <div className="my-2" key={i}>
+            <div className="slot-box">
+              <button className="btn btn-clear w-100 d-flex space-between nb" onClick={() => { this.toggleCollapse(i) }}>
+                <span className="slot-fulfillment"><i className={`fas ${this.state.open[i] ? "fa-caret-down" : "fa-caret-right"} mr-2`}></i>{slot.name}</span>
+                {slot_config.length === 0 && <Tooltip
+                  target="tooltip"
+                  theme="menu"
+                  position="bottom"
+                  title='You have not entered any slot fulfillment values for this slot. All slot values in a CanFulfillIntent request will be understood by your skill by default.'
+                >
+                  <span className="badge badge-info all-badge">ALL</span>
+                </Tooltip>}
+
+              </button>
+              <Collapse className="slot-collapse" isOpen={this.state.open[i]}>
+                <FulfillInput onInputUpdate={() => { this.forceUpdate(); this.props.save() }} slot={slot} slot_config={slot_config} updateSlotConfig={(new_arr) => this.updateSlotArray(slot.key, new_arr)} />
+              </Collapse>
+            </div>
+          </div> : null}
+        </>
       )
     })
 
     return (<div>
-      <Alert>Setting Slot Fulfillment For Intent <b>{this.state.selected_intent.name}</b></Alert>
+      <Alert>Setting Slot Fulfillment For Intent <b>{this.props.selected_intent.name}</b></Alert>
       {inputs}
     </div>)
   }
 }
 
-export default Canfulfill
+const mapDispatchToProps = dispatch => {
+  return {
+    updateFulfillment: (intent_key, slot_config) => dispatch(updateFulfillment(intent_key, slot_config))
+  }
+}
+export default connect(null, mapDispatchToProps)(Canfulfill)

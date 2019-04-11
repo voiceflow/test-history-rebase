@@ -432,6 +432,28 @@ const getDefaultTemplates = (req, res) => {
 	)
 }
 
+const getInitialTemplate = (req, res) => {
+	pool.query(
+	`
+		SELECT *
+		FROM modules 
+			INNER JOIN project_versions ON modules.module_project_id = project_versions.project_id
+		WHERE modules.template_index > 0
+			AND cert_approved IS NOT NULL
+		ORDER BY modules.template_index DESC LIMIT 1
+	`,
+	[],
+	(err, data) => {
+		if (err){
+			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+			res.sendStatus(500)
+		} else {
+			hashIds(data.rows)
+			res.send(data.rows)
+		}
+	})
+}
+
 // NEW PROJECTS CREATED HERE
 const copyDefaultTemplate = (req, res) => {
   let team_id = req.params._team_id
@@ -439,6 +461,7 @@ const copyDefaultTemplate = (req, res) => {
   if(!team_id || !name) return res.sendStatus(400)
 
 	let module_id = hashids.decode(req.params.module_id)[0]
+
 	// Retrieve diagram, trying 5 times 
 	const getDiagram = (row, num_tries) => {
 		let params = {
@@ -539,5 +562,6 @@ module.exports = {
 	retrieveTemplate: retrieveTemplate,
 	getPendingModules: getPendingModules,
 	getDefaultTemplates: getDefaultTemplates,
+	getInitialTemplate: getInitialTemplate,
 	copyDefaultTemplate: copyDefaultTemplate
 }

@@ -177,7 +177,7 @@ export class Command extends Component {
                     .map(diagram => {
                         return {
                             value: diagram.id + "::" + diagram.name,
-                            label: <><i className="fas fa-clone mr-2 text-muted"/>{diagram.name}</>
+                            label: <><img src={'/flows.svg'} alt="flows" width="15"/>&nbsp;&nbsp; {diagram.name}</>
                         }
                     })
             }
@@ -219,19 +219,19 @@ export class Command extends Component {
                     />
                 </React.Fragment>
             }
-            <div className="choice-block pb-4 pt-3 mt-3">
+            <hr/>
+            <div className="mt-1">
                 {extras.diagram_id ?
                     <React.Fragment>
                         {diagram_name ? <React.Fragment>
-                            <h5 className="text-muted"><i className="fas fa-long-arrow-right mr-2" />{diagram_name}</h5>
-                            <Button block className="mt-3" onClick={() => this.props.enterFlow(extras.diagram_id)}>
-                              <i className="fas fa-clone mr-1"/> Enter Flow
-                            </Button>
+                            <button block className="btn-primary btn-block btn-lg" onClick={() => this.props.enterFlow(extras.diagram_id)}>
+                            <img src={"/flows-white.svg"} alt="flows" className="mr-2" /> Enter {diagram_name} Flow
+                            </button>
                         </React.Fragment> : <Alert color="danger" className="text-center">
                                 <i className="fas fa-exclamation-triangle fa-2x mb-2" /><br />
                                 Unable to Retrieve Flow - This Flow may be broken or deleted
                         </Alert>}
-                        <Button block className="mt-2" onClick={() => { 
+                        <button block className="mt-3 btn-tertiary btn-lg btn-block btn" onClick={() => { 
                                 let node = this.state.node; 
                                 let extras = node.extras[this.props.platform]; extras.diagram_id = null; 
                                 this.setState({ node: node })
@@ -239,19 +239,21 @@ export class Command extends Component {
                             }} 
                             color="clear">
                             Unlink Flow
-                        </Button>
+                        </button>
                     </React.Fragment> :
                     <React.Fragment>
-                        <h5 className="mb-3 text-muted">Link Command Flow</h5>
-                        <Button block onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'), null, true)}>
-                          <i className="fas fa-clone mr-1"/> Create New Flow
-                        </Button>
-                        <hr className="mb-1" />
+                        <label>Link Command Flow</label>
+                        <button className="btn-clear btn-block btn-lg" block onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'), null, true)}>
+                        <img className="mr-2" src={'/flows.svg'} height={15} width={15} alt="home"/> Create New Flow
+                        </button>
+                        <div class="break">
+                        <span class="or">OR</span>
+                        </div>
                         {this.props.diagrams && this.props.diagrams.length > 0 ?
                             <React.Fragment>
                                 <label>Select Existing Flow</label>
                                 <Select
-                                    placeholder={<><i className="fas fa-clone mr-1"/> Select Flow</>}
+                                    placeholder={<><img src={'/flows.svg'} alt="flows" width="15"/>&nbsp;&nbsp; Select Flow</>}
                                     classNamePrefix="select-box"
                                     onChange={(selected) => {
                                         let diagram_id = selected.value.substring(0, selected.value.indexOf("::"))

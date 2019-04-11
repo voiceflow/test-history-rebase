@@ -13,9 +13,9 @@
     margin: 20px auto;
     height: 42px;
     width: 167px;
-    background: #f1f5f8;
+    background: #f7f9fb;
     border-radius: 50px;
-    border: 1px solid #DFE3ED;
+    border: 1px solid #dce5e8;
     /* -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1); */
 }
@@ -31,6 +31,7 @@
     text-align: center;
     cursor: pointer;
     margin-left: 5px;
+    padding-top: 2px;
 }
 
 .switch-label:active {

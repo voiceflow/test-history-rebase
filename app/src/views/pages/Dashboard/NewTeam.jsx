@@ -251,7 +251,7 @@ class NewTeam extends Component {
                 </div>
               </div>
               <div className="mt-5">
-                <Button className="purple-btn" onClick={this.confirmInvite}>
+                <Button className="btn-primary" onClick={this.confirmInvite}>
                   Continue
                 </Button>
               </div>
@@ -296,7 +296,7 @@ class NewTeam extends Component {
               </div> 
             }
             <div className="mt-5">
-              <Button className="purple-btn" onClick={this.saveTeam}>
+              <Button className="btn-primary" onClick={this.saveTeam}>
                 Continue
               </Button>
             </div>

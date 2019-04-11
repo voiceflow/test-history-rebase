@@ -28,7 +28,7 @@ class ProductDescriptionForm extends React.Component {
         <AvFeedback>Description is required</AvFeedback>
         </AvGroup>
         <div className="product-stage-button">
-          <button className='purple-btn'
+          <button className='btn-primary'
             variant="contained"
             color="publish"
           >

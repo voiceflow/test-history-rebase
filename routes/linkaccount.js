@@ -12,7 +12,12 @@ exports.getTemplate = async (req, res) => {
     if(result.rows.length === 0) return res.sendStatus(404);
 
     if(result.rows[0].account_linking){
-      result.rows[0].account_linking.clientSecret = jwt.verify(result.rows[0].account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE)
+      try{
+        if(!result.rows[0].account_linking.clientSecret) throw new Error()
+        result.rows[0].account_linking.clientSecret = jwt.verify(result.rows[0].account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE)
+      }catch(err){
+        result.rows[0].account_linking.clientSecret = ''
+      }
     }
     result.rows[0].skill_id = hashids.encode(result.rows[0].skill_id);
     res.send(result.rows[0]);
@@ -32,7 +37,9 @@ exports.setTemplate = async (req, res) => {
 
   try {
     let account_linking = req.body
-    account_linking.clientSecret = jwt.sign(account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE);
+    if(account_linking.clientSecret){
+      account_linking.clientSecret = jwt.sign(account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE);
+    }
     const skill = await pool.query(
       'UPDATE skills SET account_linking = $1 WHERE skill_id = $2 RETURNING *',
       [account_linking, skill_id])

@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import Textarea from 'react-textarea-autosize';
 import { setError } from 'ducks/modal'
+import update from 'immutability-helper'
 
 class FulfillInput extends PureComponent {
   constructor(props) {
@@ -35,7 +36,7 @@ class FulfillInput extends PureComponent {
     })
   }
 
-  addValue() {
+  addValue = async () => {
     const slot_config = this.props.slot_config
     const newValue = this.state.text;
 
@@ -48,10 +49,13 @@ class FulfillInput extends PureComponent {
     }
 
     if (newValue) {
-      slot_config.push(newValue);
+      const newSlotConfig = update(this.props.slot_config, {
+        $push: [newValue]
+      })
       this.setState({
         text: ''
       })
+      await this.props.updateSlotConfig(newSlotConfig)
     }
     this.props.onInputUpdate()
   }
@@ -72,10 +76,11 @@ class FulfillInput extends PureComponent {
     return null
   }
 
-  onRemoveSlotFulfillment(i) {
-    const slot_config = this.props.slot_config
-    slot_config.splice(i, 1)
-    this.forceUpdate()
+  onRemoveSlotFulfillment = async (i) => {
+    const newSlotConfig = update(this.props.slot_config, {
+      $splice: [[i, 1]]
+    })
+    await this.props.updateSlotConfig(newSlotConfig)
     this.props.onInputUpdate()
   }
 

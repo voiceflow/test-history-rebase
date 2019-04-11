@@ -113,6 +113,7 @@ export class DiagramModel extends BaseEntity {
 				return node.getSelectedEntities();
 			})
 		);
+
 		// find all the links
 		items = items.concat(
 			_.flatMap(this.links, link => {
@@ -128,7 +129,6 @@ export class DiagramModel extends BaseEntity {
 				});
 			})
 		);
-
 		items = _.uniq(items);
 
 		if (filters.length > 0) {
@@ -206,10 +206,22 @@ export class DiagramModel extends BaseEntity {
 		if (node instanceof NodeModel) {
 			return node;
 		}
-		if (!this.nodes[node]) {
+		let nodes = new Set()
+		_.forEach(this.nodes, node => {
+			if (!_.isEmpty(node.combines)) {
+				_.forEach(node.combines, c => {
+					nodes[c.id] = c
+				})
+			}
+		})
+		nodes = {
+			...this.nodes,
+			...nodes
+		};
+		if (!nodes[node]) {
 			return null;
 		}
-		return this.nodes[node];
+		return nodes[node];
 	}
 
 	getLink(link) {
@@ -284,7 +296,7 @@ export class DiagramModel extends BaseEntity {
 			});
 		}
 	}
-
+	
 	getLinks(){
 		return this.links;
 	}

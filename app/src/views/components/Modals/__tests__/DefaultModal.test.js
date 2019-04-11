@@ -17,7 +17,7 @@ describe('Default Modal Test', () => {
     })
     it('click close button', () => {
         const component = shallow(<DefaultModal toggle={clickFn} close_button_text={'test'} />);
-        component.find('.purple-btn').simulate('click')
+        component.find('.btn-primary').simulate('click')
         expect(clickFn).toBeCalled()
     })
 })

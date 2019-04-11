@@ -46,12 +46,12 @@ class FlowBar extends Component{
             <button id="home-button" className="btn-home pl-3" onClick={()=>this.props.enterFlow(this.props.root_id)}>
                 <span>Home</span>
             </button>
-            <div id="flow-bar"
+            <div id="flow-bar" className="text-center"
                 onContextMenu={this.generateFlowMenu}
             >
                 <div className="super-center px-5 w-100 no-select">
-                    <div className="text-muted text-max w-100 px-5">
-                        <i className="fas fa-clone mr-3"/>
+                    <div className="text-muted text-max w-100 px-5 mt-1">
+                        <i className="flow-icon mr-3">&nbsp;&nbsp;&nbsp;&nbsp;</i>
                         { this.state.edit ?
                             <input
                                 className='plain-input ml-2'
@@ -81,18 +81,17 @@ class FlowBar extends Component{
                 </div>
                 {!this.props.preview &&
                     <UncontrolledDropdown direction='up'>
-                        <DropdownToggle className="grey-icon position-absolute right mr-4" tag="button">
-                            <i className="far fa-ellipsis-h"/>
+                        <DropdownToggle className="grey-icon position-absolute right mr-4 mt-1" tag="button">
                         </DropdownToggle>
                         <DropdownMenu className="no-select">
                             <DropdownItem header>
                                 Flow Options
                             </DropdownItem>
                             <DropdownItem onClick={() => this.props.copyFlow(this.props.diagram)} className="pointer">
-                                <i className="fas fa-clone text-muted"/> Copy
+                            Copy
                             </DropdownItem>
                             <DropdownItem onClick={() => this.props.deleteFlow(this.props.diagram)} className="pointer">
-                                <i className="fas fa-times-square text-muted"/> Delete
+                            Delete
                             </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>

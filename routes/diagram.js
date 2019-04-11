@@ -19,7 +19,25 @@ const generateID = () => {
   })
 }
 
-const { checkSkillAccess, checkDiagramAccess } = require("./team")
+const { checkSkillAccess } = require("./team")
+
+const checkDiagramAccess = async (diagram_id, user_id) => {
+  if(diagram_id) {
+    try {
+      const result = await pool.query(`
+        SELECT 1 FROM diagrams d
+        INNER JOIN skills s ON s.skill_id = d.skill_id
+        INNER JOIN project_versions pv ON pv.version_id = s.skill_id
+        INNER JOIN projects p ON p.project_id = pv.project_id
+        INNER JOIN team_members tm ON tm.team_id = p.team_id
+        WHERE d.id = $1 AND tm.creator_id = $2 LIMIT 1
+      `, [diagram_id, user_id])
+      if(result.rowCount !== 0) return true
+    } catch(err) {
+    }
+  }
+  return false
+}
 
 const getVariables = (req, res) => {
   let params = {

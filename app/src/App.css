@@ -1186,8 +1186,14 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
   border: 1px solid #c5d6e450;
 }
 .icon-image-square > *, .icon-image-square>.image-box>.image {
-  border-radius: 0px !important;
+  border-radius: 5px !important;
   background-color: #fff !important;
+}
+.icon-image-square>.image-box {
+  border-color: transparent;
+}
+.icon-image-square>.image-box:hover {
+  border-color: #42A5FF;
 }
 .icon-image-sm>.image-box {
   padding: 0 !important;

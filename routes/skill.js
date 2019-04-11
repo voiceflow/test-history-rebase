@@ -24,6 +24,7 @@ const {
   copySkill,
   deleteSkillDiagramsPromise
 } = require('./skill_util')
+const { checkSkillAccess } = require("./team")
 
 const DialogflowClient = require('../clients/Dialogflow/Dialogflow')
 
@@ -36,8 +37,6 @@ const latestSkillToIntercom = (id, name) => {
     }
   })
 }
-
-const { checkSkillAccess } = require("./team")
 
 const incrementSkillsCreatedIntercom = (id) => {
   if(process.env.TEST) return

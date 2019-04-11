@@ -143,8 +143,8 @@ app.get('/creator/terms', terms)
 
 app.post('/test/api', ensureLoggedIn(), Test.api)
 
-app.get('/link_account/template/:id', ensurePlan(1), LinkAccount.getTemplate);
-app.post('/link_account/template', ensurePlan(1), LinkAccount.setTemplate);
+app.get('/link_account/template/:skill_id', ensurePlan(1), LinkAccount.getTemplate);
+app.post('/link_account/template/:skill_id', ensurePlan(1), LinkAccount.setTemplate);
 
 app.get('/email/templates', ensurePlan(1), Email.getTemplates);
 app.get('/email/template/:id', ensurePlan(1), Email.getTemplate);
@@ -157,7 +157,6 @@ app.get('/multimodal/display/:id', ensureLoggedIn(), Multimodal.getDisplay);
 app.post('/multimodal/display', ensureLoggedIn(), Multimodal.setDisplay);
 app.patch('/multimodal/display/:id', ensureLoggedIn(), Multimodal.setDisplay);
 app.delete('/multimodal/display/:id', ensureLoggedIn(), Multimodal.deleteDisplay);
-app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDisplay);
 
 app.get('/project/:project_id/version/:version_id', ensureLoggedIn(), Skill.getSkill)
 app.delete('/projects/:project_id', ensureLoggedIn(), Team.verifyProjectAccess, Project.deleteProject)

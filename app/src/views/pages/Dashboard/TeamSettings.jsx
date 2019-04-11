@@ -427,9 +427,11 @@ class TeamSettings extends Component {
           isOpen={!!this.props.open}
           toggle={this.props.close}
         >
-          <ModalHeader toggle={this.props.close} className="pb-2">
-            {(STAGES[this.state.stage] && STAGES[this.state.stage].title) || "Team Settings"}
-          </ModalHeader>
+          <ModalHeader 
+            toggle={this.props.close} 
+            className="pb-2"
+            header={(STAGES[this.state.stage] && STAGES[this.state.stage].title) || "Team Settings"}
+          />
           <ModalBody className="px-45 pt-0 overflow-hidden">
             {["WARNING", "LOCKED"].includes(this.props.team.state) && (this.state.update_pay ? 
               <Alert>

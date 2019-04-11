@@ -100,14 +100,16 @@ class NavBar extends Component {
   render() {
 
     let page_name = '/' + getPage(this.props.history.location.pathname);
+    let image = "/images/icons/vf_logo.png"
+    if(this.props.team && this.props.team.status > 0 && this.props.team.image){
+      image = this.props.team.image
+    }
 
     return (
         <div>
           <Navbar dark expand="md" className={"fixed-top " + page_name} id="navbar">
             <Link to="/dashboard" className="mx-2">
-              <img className='voiceflow-logo' src={'/favicon.png'} alt='logo' 
-                height="30" width="40"
-              />
+              <div className="voiceflow-logo" style={{backgroundImage: `url('${image}')`}}/>
             </Link>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
@@ -165,7 +167,8 @@ class NavBar extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.account
+  user: state.account,
+  team: state.team.byId[state.team.team_id]
 })
 
 const mapDispatchToProps = dispatch => {

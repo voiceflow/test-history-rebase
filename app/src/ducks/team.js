@@ -2,6 +2,9 @@ import axios from 'axios'
 import { setError } from 'ducks/modal'
 import NORMALIZE, { normalize, deleteNormalize } from 'ducks/util'
 
+const INVALID_STATES = ["incomplete_expired", "incomplete", "unpaid"]
+const WARNING_STATES = ["past_due"]
+
 const initialState = {
   team_id: localStorage.getItem('team'),
   byId: {},
@@ -46,9 +49,11 @@ export const getMembers = team_id => {
     try {
       let members = (await axios.get(`/team/${team_id}/members`)).data
       dispatch(TEAM('update', {id: team_id, data: {members}}))
+      Promise.resolve()
     } catch(err) {
       console.error(err)
       dispatch(setError("Unable to retrieve members"))
+      Promise.reject()
     }
   }
 }
@@ -60,7 +65,6 @@ export const updateCurrentTeam = team_id => {
         type: "UPDATE_CURRENT_TEAM",
         payload: team_id
       })
-      dispatch(getMembers(team_id))
     }
   }
 }
@@ -119,7 +123,8 @@ export const fetchTeams = () => {
       
       // NORMALIZE TEAMS
       const state = normalize('team_id', res.data.map(t => {
-        t.members = []
+        t.members = [];
+        t.state = (INVALID_STATES.includes(t.stripe_status) && "LOCKED") || (WARNING_STATES.includes(t.stripe_status) && "WARNING");
         return t
       }))
 
@@ -184,8 +189,9 @@ export const updateMembers = (new_members, options) => {
 
 export const teamInvite = (invite) => {
   return async (dispatch) => {
+    let team_id
     try {
-      const team_id = (await axios.post(`/team/invite/${invite}`)).data
+      team_id = (await axios.post(`/team/invite/${invite}`)).data
       dispatch({
         type: "UPDATE_CURRENT_TEAM",
         payload: team_id
@@ -193,6 +199,6 @@ export const teamInvite = (invite) => {
     }catch(err){
       dispatch(setError((err && err.response && err.response.data) || (err && JSON.stringify(err)) || 'Invite Invalid'))
     }
-    return Promise.resolve()
+    return Promise.resolve(team_id)
   }
 }

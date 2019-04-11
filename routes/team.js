@@ -33,13 +33,22 @@ const STATUS_TO_PLAN = {
 }
 
 const INVALID_STATES = ["incomplete_expired", "incomplete", "unpaid"]
+const INVALID_INVOICE_STATES = ["open", "void", "uncollectible"]
 
 // create a new team
-const createTeam = async (name, image, creator) => {
-  let result = await pool.query(
-    "INSERT INTO teams (name, image, creator_id) VALUES ($1, $2, $3) RETURNING *",
-    [name, image, creator.id]
-  );
+const createTeam = async (name, image, creator, seats=false) => {
+  let result
+  if(seats) {
+    result = await pool.query(
+      "INSERT INTO teams (name, image, creator_id, seats) VALUES ($1, $2, $3, $4) RETURNING *",
+      [name, image, creator.id, seats]
+    );
+  } else {
+    result = await pool.query(
+      "INSERT INTO teams (name, image, creator_id) VALUES ($1, $2, $3) RETURNING *",
+      [name, image, creator.id]
+    );
+  }
   return result.rows[0];
 };
 
@@ -208,7 +217,7 @@ exports.addTeam = async (req, res) => {
   }
 
   try {
-    let team = await createTeam(req.body.name, req.body.image, req.user);
+    let team = await createTeam(req.body.name, req.body.image, req.user, req.body.invites.length + 1);
     const { invites, now } = await populateTeam(team.team_id, req.user, req.body.invites);
 
     // send out emails to all valid members
@@ -255,9 +264,9 @@ const initalizeStripe = async (team, user, seats, source_id, options={}) => {
         team_id: team.team_id
       }
     }
-    // !IMPORTANT: RESET THIS
-    // if(options.trial_days) subscription_data.trial_period_days = options.trial_days
-    subscription_data.trial_end = (Math.floor((Date.now()/1000)) + 10)
+
+    if(options.trial_days) subscription_data.trial_period_days = options.trial_days
+    // subscription_data.trial_end = (Math.floor((Date.now()/1000)) + 10)
     subscription = await stripe.subscriptions.create(subscription_data)
 
     return (await pool.query(`
@@ -449,20 +458,18 @@ exports.updateMembers = async (req, res) => {
     }
 
     // no seats time to charge on stripe
-    if(new_members.length !== team.seats) {
-      if((req.body.source || new_members.length > team.seats || team.status !== 0)){
-        if(team.stripe_id && team.stripe_sub_id) {
-          team = await updateSubscription(team, new_members.length)
-        } else if (req.body.source) {
-          team = await initalizeStripe(team, req.user, new_members.length, req.body.source.id)
-        } else {
-          throw "No Payment Added"
-        }
-      }else{
+    if(new_members.length !== team.seats || req.body.source) {
+      if(team.status !== 0 && team.stripe_id && team.stripe_sub_id) {
+        team = await updateSubscription(team, new_members.length)
+      } else if(req.body.source) {
+        team = await initalizeStripe(team, req.user, new_members.length, req.body.source.id)
+      } else if (team.status === 0 && team.seats <= FREE_SEATS) {
         await pool.query(
           'UPDATE teams SET seats = $1 WHERE team_id = $2', 
           [new_members.length, team.team_id])
         team.seats = new_members.length
+      } else {
+        throw {status: "Invalid Payment"}
       }
     }
 
@@ -686,6 +693,7 @@ exports.getInvoice = async (req, res) => {
     res.send({
       invoices: invoices.data.map(i => {
         return {
+          status: INVALID_INVOICE_STATES.includes(i.status) && i.status,
           amount: i.amount_paid,
           timestamp: i.finalized_at,
           items: i.lines.data.map(l => l.description)
@@ -771,7 +779,7 @@ exports.updateSource = async (req, res) => {
     }
 
     const team = (await pool.query(`
-      SELECT team_id, stripe_id, stripe_sub_id, seats, status FROM teams t
+      SELECT t.team_id, stripe_id, stripe_sub_id, seats, t.status FROM teams t
       INNER JOIN team_members tm ON tm.team_id = t.team_id
       WHERE t.team_id = $1 AND tm.creator_id = $2 AND tm.status = 100
     `, [team_id, req.user.id])).rows[0]

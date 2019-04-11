@@ -26,10 +26,16 @@ const STAGES = {
   PAST_DUE: { title: "Payment Overdue" },
   UNPAID: { title: "Payment Required" },
   MEMBERS: { title: "Manage Members" },
+  UPDATING_MEMBERS: { title: "Manage Members" },
   SETTINGS: { title: "Team Settings" },
   DELETE: { title: "Delete Team" },
   BILLING: { title: "Billing" }
 };
+
+const Contact = <Alert className="text-center py-3 mt-2">
+  <h1><i className="fas fa-comment-plus"/></h1>
+  Contact the administrators of this board to upgrade
+</Alert>
 
 const MemberRow = props => {
   const m = props.member;
@@ -140,7 +146,6 @@ class TeamSettings extends Component {
       members: []
     };
 
-    this.reset = this.reset.bind(this);
     this.renderBody = this.renderBody.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.deleteTeam = this.deleteTeam.bind(this);
@@ -158,7 +163,9 @@ class TeamSettings extends Component {
       typeof this.props.open === "string"
     ) {
       this.setState({
+        name: this.props.team.name,
         stage: this.props.open,
+        update_pay: false,
         members: cloneDeep(this.props.team.members)
       });
     }
@@ -168,10 +175,6 @@ class TeamSettings extends Component {
     this.setState({
       [event.target.name]: event.target.value
     });
-  }
-
-  reset() {
-    this.setState({ name: this.props.team.name });
   }
 
   deleteTeam() {
@@ -207,6 +210,7 @@ class TeamSettings extends Component {
   teamUpdate() {
     this.setState({
       stage: "MEMBERS",
+      update_pay: true,
       members: cloneDeep(this.props.team.members)
     })
   }
@@ -221,6 +225,7 @@ class TeamSettings extends Component {
   renderBody() {
     switch (this.state.stage) {
       case "CHECKOUT":
+        if(!this.IS_ADMIN) return Contact
         return <>
           <div className="mt-4">
             <div className="mb-1"><b>Team Plan</b> Includes:</div>
@@ -236,6 +241,7 @@ class TeamSettings extends Component {
             team={this.props.team}
             next={this.teamUpdate}
             user={this.props.user}
+            collab={() => this.setState({stage: "MEMBERS"})}
           />
         </>
       case "DELETING":
@@ -274,24 +280,24 @@ class TeamSettings extends Component {
             </div>
           </>
         );
-      case "PAST_DUE":
-      case "UNPAID":
       case "BILLING":
-        if(!this.IS_ADMIN) break
+        if(!this.IS_ADMIN) return Contact
         return <Billing
+          stage={this.state.stage}
           setError={this.props.setError}
           user={this.props.user}
           team={this.props.team}
+          update_pay={() => this.setState({update_pay: true})}
           update={(stage) => this.setState({stage: stage})}
         />
       case "SETTINGS":
-        if(!this.IS_ADMIN) break
+        if(!this.IS_ADMIN) break;
         return (
           <div className="my-3">
             <div className="super-center">
               <Image
                 tiny
-                className="icon-image icon-image-sm"
+                className="icon-image icon-image-sm icon-image-square"
                 path={`/team/${this.props.team.team_id}/picture`}
                 image={this.props.team.image}
                 update={url => this.props.updateTeam({ image: url })}
@@ -411,13 +417,29 @@ class TeamSettings extends Component {
         </UncontrolledDropdown>
         <Modal
           isOpen={!!this.props.open}
-          onClosed={this.reset}
           toggle={this.props.close}
         >
           <ModalHeader toggle={this.props.close} className="pb-2">
             {(STAGES[this.state.stage] && STAGES[this.state.stage].title) || "Team Settings"}
           </ModalHeader>
-          <ModalBody className="px-45 pt-0 overflow-hidden">{this.renderBody()}</ModalBody>
+          <ModalBody className="px-45 pt-0 overflow-hidden">
+            {["WARNING", "LOCKED"].includes(this.props.team.state) && (this.state.update_pay ? 
+              <Alert color="danger">
+                Please refresh your page to see updates
+              </Alert> : 
+              <>
+                {this.props.team.state === "WARNING" && <Alert color="danger" onClick={() => this.setState({stage: "UNPAID"})}>
+                  We were unable to charge your last invoice<br/><br/>
+                  If there is an issue with your current card please update your payment option
+                </Alert>}
+                {this.props.team.state === "LOCKED" && <Alert color="danger" onClick={() => this.setState({stage: "WARNING"})}>
+                  Your subscription failed<br/>
+                  Please update your payment option to continue
+                </Alert>}
+              </>
+            )}
+            {this.renderBody()}
+          </ModalBody>
         </Modal>
       </>
     );

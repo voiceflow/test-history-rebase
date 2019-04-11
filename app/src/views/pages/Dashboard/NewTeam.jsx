@@ -149,7 +149,11 @@ class NewTeam extends Component {
       this.setState({ error: "Please Fill in Team Name" });
       resetError();
     } else {
-      this.state.type === 'SOLO' ? this.confirmInvite() : this.setState({ stage: "INVITE" })
+      if(this.state.type === 'SOLO'){
+        this.setState({invites: []}, () => this.confirmInvite())
+      }else{
+        this.setState({ stage: "INVITE" })
+      }
     }
   }
 

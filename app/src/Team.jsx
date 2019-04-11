@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux';
 import { fetchTeams, updateCurrentTeam, teamInvite } from "ducks/team";
-import { setConfirm, setError } from 'ducks/modal'
+import { setConfirm, setError, setModal } from 'ducks/modal'
 
 import Templates from 'views/pages/Templates'
 import Dashboard from 'views/pages/Dashboard'
@@ -29,7 +29,17 @@ class Team extends PureComponent {
     if(this.props.location.search){
       let query = queryString.parse(this.props.location.search)
       if(query.invite) {
-        await this.props.teamInvite(query.invite)
+        if((await this.props.teamInvite(query.invite))) {
+          this.props.setModal({
+            size: 'sm',
+            header: true,
+            body: (<div className="text-center py-5 mb-5 text-muted">
+              <img src="/images/icons/takeoff.svg" alt="blast off"/><br/><br/>
+              Successfully Accepted Invite<br/>
+              Welcome to Voiceflow
+            </div>)
+          })
+        }
       }
     }
 
@@ -120,7 +130,8 @@ const mapDispatchToProps = dispatch => {
     updateCurrentTeam: team_id => dispatch(updateCurrentTeam(team_id)),
     setConfirm: confirm => dispatch(setConfirm(confirm)),
     setError: err => dispatch(setError(err)),
-    teamInvite: invite => dispatch(teamInvite(invite))
+    teamInvite: invite => dispatch(teamInvite(invite)),
+    setModal: modal => dispatch(setModal(modal))
   };
 };
 

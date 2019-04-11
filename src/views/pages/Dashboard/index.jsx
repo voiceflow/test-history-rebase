@@ -21,9 +21,10 @@ import {
   deleteProject,
   copyProject,
 } from "ducks/project";
+import {
+  getMembers,
+} from "ducks/team";
 import { unnormalize } from "ducks/util"
-
-// const FILTER_OPTIONS = ["All", "Published", "Development"];
 
 class DashBoard extends Component {
   constructor(props) {
@@ -41,6 +42,7 @@ class DashBoard extends Component {
     this.renderProjects = this.renderProjects.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.copyProject = this.copyProject.bind(this);
+    this.newProject = this.newProject.bind(this)
   }
 
   handleChange(e) {
@@ -89,14 +91,16 @@ class DashBoard extends Component {
   }
 
   updateTeam() {
-    console.log(this.props.team)
-    if(["incomplete_expired", "incomplete", "unpaid"].includes(this.props.team.stripe_status)){
-      alert("U UNPAID IGGA")
-    }
-    if(["past_due"].includes(this.props.team.stripe_status)){
-      alert("PAST DUE")
-      this.setState({team_settings: "PAST_DUE"})
-    }
+    this.props.getMembers(this.props.team_id)
+    .then(() => {
+      if(["LOCKED", "WARNING"].includes(this.props.team.state)){
+        this.setState({team_settings: "BILLING"})
+      } else {
+        this.setState({team_settings: false})
+      }
+    })
+    .catch(() => { throw new Error("Can't Retrieve Members") })
+    // ensure team hasn't changed
     this.props.fetchProjects(this.props.team_id)
   }
 
@@ -143,6 +147,14 @@ class DashBoard extends Component {
     this.setState(prev_state => ({
       show_updates_modal: !prev_state.show_updates_modal
     }));
+  }
+
+  newProject() {
+    if(this.props.projects_array.length >= this.props.team.projects) {
+      this.setState({team_settings: "BILLING"})
+    } else { 
+      this.props.history.push(`/team/${this.props.team_id}/template`)
+    }
   }
 
   renderProjects() {
@@ -193,13 +205,25 @@ class DashBoard extends Component {
               />
             );
           })}
-          <EmptyCard onClick={() => this.props.history.push(`/team/${this.props.team_id}/template`)} />
+          { this.props.projects_array.length >= this.props.team.projects ?
+            <div className="empty-card update-card text-center">
+              <div onClick={this.newProject}>
+                <h5>
+                  Update Board<br/>
+                  For More Projects
+                </h5>
+              </div>
+            </div> :
+            <EmptyCard onClick={this.newProject} />
+          }
         </Masonry>
       </React.Fragment>
     );
   }
 
   render() {
+    const LOCKED = (this.props.team.state === "LOCKED")
+
     return (
       <>
         <LoadingModal open={this.state.loading_modal} />
@@ -241,23 +265,21 @@ class DashBoard extends Component {
         </div>
         <div className="title-group no-select pr-2">
           <div className="subheader-right">
-              <form action="https://forum.getvoiceflow.com">
-                <Tooltip
-                  distance={19}
-                  title="Join the Voiceflow forum for help and updates"
-                  position="bottom"
-                  className="ml-1 mr-4"
-                >
-                  <button className="nav-btn" type="submit">
-                    <i className="fas fa-info-circle" />
-                  </button>
-                </Tooltip>
-              </form>
-            <Link to={`/team/${this.props.team_id}/template`} className="no-underline ml-1">
-              <button varient="contained" className="btn purple-btn">
-                New Project
-              </button>
-            </Link>
+            <form action="https://forum.getvoiceflow.com">
+              <Tooltip
+                distance={19}
+                title="Join the Voiceflow forum for help and updates"
+                position="bottom"
+                className="ml-1 mr-4"
+              >
+                <button className="nav-btn" type="submit">
+                  <i className="fas fa-info-circle" />
+                </button>
+              </Tooltip>
+            </form>
+            <button className="btn purple-btn ml-1" onClick={this.newProject}>
+              New Project
+            </button>
           </div>
         </div>
         <div id="app" className="secondary-padding dashboard">
@@ -267,7 +289,7 @@ class DashBoard extends Component {
             product_updates={this.state.product_updates}
           />
           <div id="navbar-top-left">
-            <div className="searchBar ml-4">
+            <div className="searchBar ml-3">
               <Input
                 name="filter_text"
                 className="search-input form-control-2"
@@ -284,47 +306,68 @@ class DashBoard extends Component {
               </div>
             </div>
           )}
-          {!this.props.loading && this.props.projects_array.length === 0 ? (
-            <div className="h-100 d-flex justify-content-center">
-              <div className="align-self-center">
-                <div className="pl-4">
-                  <img
-                    src="/create.svg"
-                    alt="skill-icon"
-                    width="130"
-                    height="127"
-                    className="mb-3"
-                  />
+          { LOCKED && <div className="w-100 h-100 super-center position-absolute z-hard">
+            <Alert 
+              color="danger" 
+              onClick={() => this.setState({team_settings: "UNPAID"})} 
+              className="pointer text-center py-3">
+              <h1><i className="far fa-ban"/></h1>
+              Your subscription has failed<br/>
+              Please update your payment to continue
+            </Alert>
+          </div> }
+          <div 
+            className={ "w-100 h-100"  + (LOCKED ? " disabled" : "")}
+            onClick={(e) => {
+              // prevent all click events
+              if(LOCKED){
+                e.preventDefault()
+                return false
+              }
+            }}
+          >
+            {!this.props.loading && this.props.projects_array.length === 0 ? (
+              <div className="h-100 d-flex justify-content-center">
+                <div className="align-self-center">
+                  <div className="pl-4">
+                    <img
+                      src="/create.svg"
+                      alt="skill-icon"
+                      width="130"
+                      height="127"
+                      className="mb-3"
+                    />
+                  </div>
+                  <br />
+                  <Link
+                    to={`/team/${this.props.team_id}/template`}
+                    className="no-underline super-center"
+                  >
+                    <button
+                      varient="contained"
+                      className="purple-btn"
+                      id="createskill"
+                    >
+                      New Project
+                    </button>
+                  </Link>
+                  <small>
+                    <a
+                      href="https://intercom.help/vfu"
+                      className="text-muted super-center mt-3"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <b>Voiceflow University</b>
+                      <i className="fal fa-long-arrow-right ml-1" />
+                    </a>
+                  </small>
                 </div>
-                <br />
-                <Link
-                  to={`/team/${this.props.team_id}/template`}
-                  className="no-underline super-center"
-                >
-                  <button
-                    varient="contained"
-                    className="purple-btn"
-                    id="createskill"
-                  >
-                    New Project
-                  </button>
-                </Link>
-                <small>
-                  <a
-                    href="https://intercom.help/vfu"
-                    className="text-muted super-center mt-3"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <b>Voiceflow University</b>
-                    <i className="fal fa-long-arrow-right ml-1" />
-                  </a>
-                </small>
               </div>
-            </div>
-          ) : (
-            <div className="mb-5 mt-4 container">{this.renderProjects()}</div>
-          )}
+            ) : (
+              <div className="mb-5 mt-4 container">{this.renderProjects()}</div>
+            )}
+          </div>
         </div>
       </>
     );
@@ -344,6 +387,7 @@ const mapDispatchToProps = dispatch => {
     deleteProject: project_id => dispatch(deleteProject(project_id)),
     copyProject: (project_id, team_id) => dispatch(copyProject(project_id, team_id)),
     setConfirm: confirm => dispatch(setConfirm(confirm)),
+    getMembers: team_id => dispatch(getMembers(team_id)),
     setError: err => dispatch(setError(err))
   };
 };

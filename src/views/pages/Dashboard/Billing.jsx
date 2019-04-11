@@ -3,20 +3,22 @@ import axios from "axios";
 import moment from "moment";
 import StripeHandler from "views/HOC/StripeHandler";
 import { CardElement } from "react-stripe-elements";
-import { Alert } from 'reactstrap'
 
 const Invoice = props => {
   if (!props.invoice) return null;
   return (
-    <>
-      <span>{moment.unix(props.invoice.timestamp).format("MMMM Do YYYY")}</span>
+    <div className="card px-4 py-3 mb-3">
+      <span>
+        {moment.unix(props.invoice.timestamp).format("MMMM Do YYYY")} 
+        {props.invoice.status && <b className="text-danger ml-2">({props.invoice.status})</b>}
+      </span>
       <h2 className="my-2">${props.invoice.amount / 100}</h2>
       <span className="text-muted">
         {props.invoice.items.map((item, i) => (
           <div key={i}>{item}</div>
         ))}
       </span>
-    </>
+    </div>
   );
 };
 
@@ -88,6 +90,8 @@ class Billing extends Component {
         stage: "INVOICE"
       })
 
+      this.props.update_pay()
+
     } catch (err) {
       this.props.setError(
         (err && err.response && err.response.data) || err || 'Unable to Retrieve Information'
@@ -106,9 +110,6 @@ class Billing extends Component {
       default:
         return (
           <div className="mb-4">
-            {this.props.team.stripe_status === "PAST_DUE" && <Alert color="danger">
-              We were unable to charge your last invoice and will reattempt charging 4 more times in the next 30 days before disabling this Board. 
-            </Alert>}
             {this.state.source && (
               <div className="position-relative">
                 <label>Payment Option</label>

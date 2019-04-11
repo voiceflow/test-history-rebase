@@ -618,13 +618,6 @@ textarea::placeholder {
   margin-top: -2px;
 }
 
-@media only screen and (max-width: 1200px) {
-  .icon-image{
-    height: 160px;
-    width: 160px
-  }
-}
-
 .publish-loader > .loader {
   height: 2.5em;
   width: 2.5em;

@@ -260,7 +260,7 @@ class Templates extends Component {
         return <div id="template-box-container">
             <div className="card">
                 {[1,2].includes(this.state.stage) &&
-                    <div id="return-template" className="mr-3 btn-icon" onClick={()=>this.goBack()}/>
+                    <div className="mr-3 btn-icon back-btn-large" onClick={()=>this.goBack()}/>
                 }
                 <Link id="exit-template" to='/dashboard' className="btn-icon"></Link>
                 {this.renderBody()}

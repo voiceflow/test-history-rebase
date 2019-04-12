@@ -29,9 +29,6 @@
 .expression-block>.operator>.dropdown>.type-button{
 	margin-left: 10px;
 }
-.variable-box__control{
-	border: none !important;
-}
 
 .expression-block {
 	padding: 5px 4px;

@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import FlowButton from './components/FlowButton'
 import { Button, ButtonGroup, Input } from 'reactstrap'
 
+const TABS = ['structure', 'flows']
+
 export class Project extends PureComponent {
     constructor(props) {
         super(props);

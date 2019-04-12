@@ -50,7 +50,7 @@ const SECTIONS = [{
         BLOCK_TYPES.interaction,
         BLOCK_TYPES.intent,
         BLOCK_TYPES.stream,
-        BLOCK_TYPES.integrations,
+        BLOCK_TYPES.api,
         BLOCK_TYPES.flow,
         BLOCK_TYPES.code,
         BLOCK_TYPES.exit

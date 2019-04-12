@@ -33,7 +33,6 @@ class Account extends Component {
       unverified: false,
     }
 
-    this.invite = query.invite
     this.openLogin = this.openLogin.bind(this);
     this.openRegister = this.openRegister.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -73,18 +72,6 @@ class Account extends Component {
       password: this.state.r_password,
       code: this.state.r_code,
     })
-    .then(() => {
-      localStorage.setItem('is_first_upload', 'true')
-      localStorage.setItem('is_first_session', 'true')
-      if(this.invite){
-        this.props.history.push({
-          pathname: '/dashboard',
-          search: this.props.location.search
-        })
-      }else{
-        this.props.history.push('/onboarding')
-      }
-    })
     .catch(err => {
       this.setState({
         signup_error: err.response.data
@@ -104,12 +91,6 @@ class Account extends Component {
     this.props.login({
       email: this.state.email,
       password: this.state.password,
-    })
-    .then(() => {
-      this.props.history.push({
-        pathname: '/dashboard',
-        search: this.props.location.search
-      })
     })
     .catch(err => {
       this.setState({
@@ -132,16 +113,6 @@ class Account extends Component {
       googleId: userProfile.profileObj.googleId,
       token: userProfile.tokenId,
     })
-    .then(res => {
-      if (!res.first_login || this.invite) {
-        this.props.history.push({
-          pathname: '/dashboard',
-          search: this.props.location.search
-        })
-      } else {
-        this.props.history.push('/onboarding');
-      }
-    })
     .catch(err => {
       this.setState({
         auth_error: err.response.data
@@ -163,20 +134,6 @@ class Account extends Component {
       fbId: fbUser.id,
       code: fbUser.accessToken,
       uri: window.location.href,
-    })
-    .then(res => {
-      if (res){
-        if (!res.first_login || this.invite) {
-          this.props.history.push({
-            pathname: '/dashboard',
-            search: this.props.location.search
-          })
-        } else {
-          this.props.history.push('/onboarding');
-        }
-      } else {
-          this.setState({unverified: true})
-      }
     })
     .catch(err => {
       this.setState({
@@ -250,7 +207,7 @@ class Account extends Component {
                   <FormGroup>
                     <Input className="form-bg" type="password" name="password" onChange={this.handleChange} placeholder="Password" required minLength="8" value={this.state.password}/>
                   </FormGroup>
-                  <button block className="btn-primary btn-lg btn-block" type="submit">Login</button>
+                  <button className="btn-primary btn-lg btn-block" type="submit">Login</button>
                   <div className="text-center small mt-2"><Link style={{color:'#8da2b5'}}to='/reset'>Forgot your password?</Link></div>
                   <hr/>
                   <div className="text-center">Dont have an account? <a href="/signup" onClick={this.openRegister}>Sign Up</a></div>
@@ -295,7 +252,7 @@ class Account extends Component {
                   <FormGroup>
                     <Input className="form-bg" type="password" name="r_password" onChange={this.handleChange} placeholder="Password" required minLength="8" value={this.state.r_password}/>
                   </FormGroup>
-                  <button block className="btn-primary btn-lg btn-block" type="submit">Create Account</button>
+                  <button className="btn-primary btn-lg btn-block" type="submit">Create Account</button>
                   <hr/>
                   <div className="text-center">Already have an account? <a href="/login" onClick={this.openLogin}>Login</a></div>
                 </div>
@@ -304,11 +261,6 @@ class Account extends Component {
         </div>
       </div>
     );
-    // <FormGroup>
-    // <Label for="code">Invite Code</Label>
-    // <Input type="text" name="r_code" onChange={this.handleChange} placeholder="XXXXXXXXX" required minLength="6"/>
-    // </FormGroup>
-    // <p>Doesn't have an Access Code? <a href="https://getvoiceflow.com">Request access</a></p>
   }
 }
 

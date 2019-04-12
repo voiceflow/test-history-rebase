@@ -1,6 +1,8 @@
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 import {getDevice} from 'Helper'
+import {push} from 'connected-react-router'
+import queryString from 'query-string'
 // import { setError } from 'ducks/modal'
 
 const cookies = new Cookies()
@@ -37,24 +39,6 @@ export const updateAccount = (payload) => ({
   type: 'UPDATE_ACCOUNT',
   payload: payload
 })
-
-const initalizeLogin = (user, token) => {
-  return dispatch => {
-    cookies.set('auth', token, {path: '/'});
-    cookies.remove('last_session');
-    
-    dispatch(updateAccount(user))
-
-    if (window.Appcues) {
-      window.Appcues.identify(user.id, {
-        email: user.email,
-        name: user.name,
-        roles: user.admin
-      })
-    }
-    return Promise.resolve(user)
-  }
-}
 
 export const checkSession = () => {
   return async dispatch => {
@@ -101,15 +85,43 @@ export const logout = () => {
 
 const createSession = (endpoint) => {
   return (user) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
       try {
         let data = (await axios.put(endpoint, {user: user, device: getDevice()})).data
         if(data.user.id){
           data.user.creator_id = data.user.id
           delete data.user.id
         }
-        dispatch(initalizeLogin(data.user, data.token))
-        return Promise.resolve(data.user)
+
+        cookies.set('auth', data.token, {path: '/'});
+        cookies.remove('last_session');
+
+        dispatch(updateAccount(data.user))
+
+        const location = getState().router.location
+        const search = queryString.parse(location.search)
+
+        if(search.invite || !data.user.first_login){
+          dispatch(push({
+            pathname: '/dashboard',
+            search: location.search,
+            state: { from: location } 
+          }))
+        } else {
+          localStorage.setItem('is_first_upload', 'true')
+          localStorage.setItem('is_first_session', 'true')
+          dispatch(push('/onboarding'))
+        }
+    
+        if (window.Appcues) {
+          window.Appcues.identify(user.id, {
+            email: user.email,
+            name: user.name,
+            roles: user.admin
+          })
+        }
+
+        return Promise.resolve()
       } catch(err) {
         return Promise.reject(err)
       }

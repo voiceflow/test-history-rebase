@@ -3,7 +3,6 @@ import { Collapse, Alert } from 'reactstrap';
 // import Select from 'react-select'
 import { Tooltip } from 'react-tippy'
 import { getIntentSlots } from 'Helper'
-import _ from 'lodash'
 import FulfillInput from './FulfillInput'
 import { updateFulfillment } from './../../../../actions/versionActions'
 import update from 'immutability-helper';
@@ -25,7 +24,7 @@ class Canfulfill extends PureComponent {
   componentDidMount() {
     const intent_slots = getIntentSlots(this.props.selected_intent, this.props.slots)
 
-    intent_slots.map((slot, i) => {
+    intent_slots.forEach(slot => {
       let slot_config = this.props.fulfillment[this.props.selected_intent.key].slot_config[slot.key]
       if (!slot_config) {
         this.props.updateFulfillment(this.props.selected_intent.key, update(this.props.fulfillment[this.props.selected_intent.key].slot_config, {

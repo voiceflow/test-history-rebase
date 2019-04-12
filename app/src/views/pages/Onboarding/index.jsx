@@ -74,49 +74,49 @@ class Onboarding extends Component{
         });
     }
 
-	createSkill = () => {
-		axios.post(`/marketplace/template/${this.state.templates[0].module_id}/copy`, {
-			name: 'My First Project',
-			locales: ['en-US'],
-			platform: 'alexa'
-		})
-			.then(res => {
-				if (res.data.skill_id && res.data.diagram) {
-					setTimeout(() => {
-						this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
-					}, 3000)
-				} else {
-					throw new Error('Invalid Response Format')
-				}
-			})
-			.catch(err => {
-				console.error(err)
-				alert('unable to create skill')
-			})
-	}
+	// createSkill = () => {
+	// 	axios.post(`/marketplace/template/${this.state.templates[0].module_id}/copy`, {
+	// 		name: 'My First Project',
+	// 		locales: ['en-US'],
+	// 		platform: 'alexa'
+	// 	})
+	// 		.then(res => {
+	// 			if (res.data.skill_id && res.data.diagram) {
+	// 				setTimeout(() => {
+	// 					this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+	// 				}, 3000)
+	// 			} else {
+	// 				throw new Error('Invalid Response Format')
+	// 			}
+	// 		})
+	// 		.catch(err => {
+	// 			console.error(err)
+	// 			alert('unable to create skill')
+	// 		})
+	// }
 
-	loadDefaultTemplates = () => {
-		axios.get('/marketplace/initial_template')
-			.then(res => {
-				if (Array.isArray(res.data)) {
-					this.setState({
-						templates: res.data
-					})
-					// preload images for performance
-					this.images = []
-					res.data.forEach((template, i) => {
-						this.images[i] = new Image()
-						this.images[i].src = template.module_icon
-					})
-				} else {
-					throw new Error('Malformed Response')
-				}
-			})
-			.catch(err => {
-				console.log(err.response)
-				alert('Unable to Retrieve Templates')
-			})
-	}
+	// loadDefaultTemplates = () => {
+	// 	axios.get('/marketplace/initial_template')
+	// 		.then(res => {
+	// 			if (Array.isArray(res.data)) {
+	// 				this.setState({
+	// 					templates: res.data
+	// 				})
+	// 				// preload images for performance
+	// 				this.images = []
+	// 				res.data.forEach((template, i) => {
+	// 					this.images[i] = new Image()
+	// 					this.images[i].src = template.module_icon
+	// 				})
+	// 			} else {
+	// 				throw new Error('Malformed Response')
+	// 			}
+	// 		})
+	// 		.catch(err => {
+	// 			console.log(err.response)
+	// 			alert('Unable to Retrieve Templates')
+	// 		})
+	// }
 
     submitSurvey(prog_xp){
 			var s = this.state;
@@ -136,19 +136,19 @@ class Onboarding extends Component{
 			})
 			.then(res => {
 				localStorage.setItem('onboarding', PROG_XP(s.experience))
-				this.createSkill()
+				this.props.history.push('/team/template')
 			})
 			.catch(err => {
 				localStorage.setItem('onboarding', PROG_XP(s.experience))
-				this.createSkill()
+				this.props.history.push('/team/template')
 			})
     }
 
-    handleSizeSelection(value) {
+  handleSizeSelection(value) {
 		this.setState({
-            saved: false,
-           	company_size: value
-        });
+      saved: false,
+      company_size: value
+    });
 	}
 
 	handleIndustrySelection(value) {
@@ -173,7 +173,7 @@ class Onboarding extends Component{
       img.src = picture.fileName;
     })
 		// this.trackOnboardingPage('Initial Page')
-		this.loadDefaultTemplates()
+		// this.loadDefaultTemplates()
 	}
 
 	componentWillUnmount() {

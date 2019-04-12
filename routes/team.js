@@ -216,6 +216,11 @@ exports.addTeam = async (req, res) => {
   }
 };
 
+exports.createPersonalTeam = async (user) => {
+  const team = await createTeam("Personal", null, user, 1);
+  await populateTeam(team.team_id, user, []);
+}
+
 const initalizeStripe = async (team, user, seats, source_id, options={}) => {
   var customer;
   var subscription;

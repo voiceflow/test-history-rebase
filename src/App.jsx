@@ -185,10 +185,10 @@ class App extends Component {
     return (
       <Provider store={store}>
         <ConnectedRouter history={history}>
-          <ConfirmModal/>
-          <ErrorModal />
-          <Modal />
           <div id="body">
+            <ConfirmModal/>
+            <ErrorModal />
+            <Modal />
             {(this.state.session && history.location.pathname !== '/onboarding') && <NavBar history={history}/>}
               <Switch>
                 {/* User routes */}
@@ -199,7 +199,7 @@ class App extends Component {
                 {/* Team routes */}
                 <PrivateRoute path="/dashboard" name="Dashboard" component={Team}/>
                 <PrivateRoute exact path="/team/new" component={NewTeam}/>
-                <PrivateRoute exact path="/team/:team_id/template" component={Team} page="template"/>
+                <PrivateRoute exact path="/team/template" component={Team} page="template"/>
                 <PrivateRoute exact path="/team/:team_id" component={Team}/>
                 {/* Canvas Routes */}
                 <PrivateRoute path="/preview/:skill_id/:diagram_id" component={Skill} page="canvas" preview/>

@@ -52,7 +52,7 @@ class Team extends PureComponent {
         }else{
           this.props.updateCurrentTeam( this.props.team_id )
         }
-        if(!urlTeam) this.props.history.push(`/team/${this.props.team_id}`)
+        if(!urlTeam && this.props.page !== 'template') this.props.history.push(`/team/${this.props.team_id}`)
       }else{
         if(this.props.location.pathname !== '/dashboard') this.props.history.push({
           pathname: '/dashboard',

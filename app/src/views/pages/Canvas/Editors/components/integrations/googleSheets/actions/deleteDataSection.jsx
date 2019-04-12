@@ -72,7 +72,7 @@ class CreateDataSection extends Component {
               </div>
             </div>
           </div>
-          <div className="text-center my-3"><Button onClick={this.props.showNextSection} className={`purple-btn ${this.state.completed ? '' : 'disabled'}`}>Next</Button></div>
+          <div className="text-center my-3"><Button onClick={this.props.showNextSection} className={`btn-primary ${this.state.completed ? '' : 'disabled'}`}>Next</Button></div>
         </Collapse>
       </>
     )

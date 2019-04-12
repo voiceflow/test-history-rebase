@@ -34,7 +34,7 @@ class Team extends PureComponent {
             size: 'sm',
             header: true,
             body: (<div className="text-center py-5 mb-5 text-muted">
-              <img src="/images/icons/takeoff.svg" alt="blast off"/><br/><br/>
+              <img src="/images/icons/takeoff.svg" height={140} alt="blast off"/><br/><br/>
               Successfully Accepted Invite<br/>
               Welcome to Voiceflow
             </div>)

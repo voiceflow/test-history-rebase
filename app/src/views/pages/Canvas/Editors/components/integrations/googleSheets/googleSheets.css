@@ -1,0 +1,31 @@
+.google-sheets-input > .DraftEditor-root {
+  z-index: 0;
+}
+
+.google-sheets-input {
+  overflow: auto;
+}
+
+.auth-dropdown {
+  font-size: 15px;
+}
+
+.spreadsheet-link {
+  font-size: 1.3em;
+  background-image: url('/logs.svg');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  width: 16px;
+  height: 16px;
+}
+
+.spreadsheet-link:hover {
+  cursor: pointer;
+  background-image: url('/log-hover.svg');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+
+.google-sheets-dropdown {
+  text-overflow: ellipsis;
+}

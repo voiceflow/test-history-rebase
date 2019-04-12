@@ -261,16 +261,16 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           key="2"
         />
         <Connect(MenuItem)
-          data-tip="Use external APIs and store responses into variables"
+          data-tip="Integrate external services into your skill"
           draggable={true}
           item={
             Object {
               "icon": <i
                 className="fas fa-globe"
               />,
-              "text": "API",
-              "tip": "Use external APIs and store responses into variables",
-              "type": "api",
+              "text": "Integrations",
+              "tip": "Integrate external services into your skill",
+              "type": "integrations",
             }
           }
           key="3"
@@ -368,7 +368,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           item={
             Object {
               "icon": <i
-                class="fas fa-poll-h"
+                className="fas fa-poll-h"
               />,
               "text": "Card",
               "tip": "Tell Alexa to show a card",
@@ -383,7 +383,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           item={
             Object {
               "icon": <i
-                class="fas fa-image"
+                className="fas fa-image"
               />,
               "text": "Display",
               "tip": "Show a Multimodal Display on the screen using APL",
@@ -811,16 +811,16 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           key="2"
         />
         <Connect(MenuItem)
-          data-tip="Use external APIs and store responses into variables"
+          data-tip="Integrate external services into your skill"
           draggable={true}
           item={
             Object {
               "icon": <i
                 className="fas fa-globe"
               />,
-              "text": "API",
-              "tip": "Use external APIs and store responses into variables",
-              "type": "api",
+              "text": "Integrations",
+              "tip": "Integrate external services into your skill",
+              "type": "integrations",
             }
           }
           key="3"
@@ -918,7 +918,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           item={
             Object {
               "icon": <i
-                class="fas fa-poll-h"
+                className="fas fa-poll-h"
               />,
               "text": "Card",
               "tip": "Tell Alexa to show a card",
@@ -933,7 +933,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           item={
             Object {
               "icon": <i
-                class="fas fa-image"
+                className="fas fa-image"
               />,
               "text": "Display",
               "tip": "Show a Multimodal Display on the screen using APL",

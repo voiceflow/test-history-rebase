@@ -19,6 +19,7 @@ const {
 const Mail = require('./mail.js');
 const del = require('del');
 const spawn = require('child_process').spawn
+const { createPersonalTeam } = require('./team')
 
 const mkdirp = require('mkdirp');
 
@@ -418,21 +419,25 @@ const googleLogin = async (req, res) => {
           } else {
             let image = getProfile()
             pool.query('INSERT INTO creators (name, email, gid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id',
-              [name, email, gid, image], (err, insert_result) => {
+              [name, email, gid, image], async (err, insert_result) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {
                     err: err
                   });
                   res.status(500).send('Something Went Wrong');
                 } else {
-                  // console.log(insert_result);
+                  const user = insert_result.rows[0]
+                  await createPersonalTeam({
+                    id: user.creator_id,
+                    email: email
+                  })
                   createLogin({
-                    id: insert_result.rows[0].creator_id,
+                    id: user.creator_id,
                     email: email,
                     name: name,
                     admin: 0,
                     first_login: true,
-                    verified: insert_result.rows[0].verified,
+                    verified: true,
                     image: image
                   }, {
                     platform: 'Google',
@@ -617,17 +622,21 @@ const fbLogin = async (req, res) => {
           } else {
             let image = getProfile()
             pool.query('INSERT INTO creators (name, email, fid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id',
-              [name, email, fid, image], (err, insert_result) => {
+              [name, email, fid, image], async (err, insert_result) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {
                     err: err
                   });
                   res.status(500).send('Something Went Wrong');
                 } else {
-
+                  const user = insert_result.rows[0]
+                  await createPersonalTeam({
+                    id: user.creator_id,
+                    email: email
+                  })
                   // console.log(insert_result);
                   createLogin({
-                    id: insert_result.rows[0].creator_id,
+                    id: user.creator_id,
                     email: email,
                     name: name,
                     admin: 0,
@@ -677,22 +686,25 @@ const putUser = async (req, res) => {
           } else {
             let image = getProfile()
             pool.query('INSERT INTO creators (name, email, password, image) VALUES ($1, $2, $3, $4) RETURNING creator_id',
-              [name, email, hash, image], (err, insert_result) => {
+              [name, email, hash, image], async (err, insert_result) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {
                     err: err
                   });
                   res.status(500).send('Something Went Wrong')
                 } else {
-
-                  // console.log(insert_result);
+                  const user = insert_result.rows[0]
+                  await createPersonalTeam({
+                    id: user.creator_id,
+                    email: email
+                  })
                   createLogin({
-                    id: insert_result.rows[0].creator_id,
+                    id: user.creator_id,
                     email: email,
                     name: name,
                     admin: 0,
                     first_login: true,
-                    verified: insert_result.rows[0].verified,
+                    verified: false,
                     image: image
                   }, {
                     platform: 'VF',

@@ -39,6 +39,9 @@ const Project = require('./routes/project.js');
 const {copySkill} = require('./routes/skill_util')
 const Track = require('./routes/track.js')
 const ProductUpdates = require('./routes/product_updates.js')
+const Integrations = require('./routes/integrations')
+const GoogleSheets = require('./routes/integrations/googleSheets')
+const Custom = require('./routes/integrations/custom')
 
 app.use(cors())
 app.use(helmet())
@@ -90,7 +93,7 @@ app.use((req, res, next) => {
 
 const ensureLoggedIn = () => {
     return (req, res, next) => {
-        if(req.user) next();
+        if(req.user || /development/.test(process.env.NODE_ENV)) next();
         else res.sendStatus(401);
     }
 }
@@ -258,6 +261,23 @@ app.post('/analytics/track_session_time', ensureLoggedIn(), Track.trackSessionTi
 app.post('/analytics/track_active_canvas', ensureLoggedIn(), Track.trackCanvasTime)
 app.post('/analytics/track_first_session_upload', ensureLoggedIn(), Track.trackFirstSessionUpload)
 app.post('/analytics/track_first_project', ensureLoggedIn(), Track.trackFirstProject)
+app.post('/analytics/track_dev_account', ensureLoggedIn(), Track.trackDevAccount)
+
+app.post('/integrations/get_users', ensureLoggedIn(), Integrations.getAllUsers)
+app.post('/integrations/add_user', ensureLoggedIn(), Integrations.addUser)
+app.post('/integrations/delete_user', ensureLoggedIn(), Integrations.deleteUser)
+
+app.post('/integrations/google_sheets/spreadsheets', ensureLoggedIn(), GoogleSheets.getSpreadsheets)
+app.post('/integrations/google_sheets/spreadsheet_sheets', ensureLoggedIn(), GoogleSheets.getSpreadsheetSheets)
+app.post('/integrations/google_sheets/sheet_headers', ensureLoggedIn(), GoogleSheets.getSheetHeaders)
+
+app.post('/integrations/google_sheets/retrieve_data', ensureLoggedIn(), GoogleSheets.retrieveData)
+app.post('/integrations/google_sheets/create_data', ensureLoggedIn(), GoogleSheets.createData)
+app.post('/integrations/google_sheets/update_data', ensureLoggedIn(), GoogleSheets.updateData)
+app.post('/integrations/google_sheets/delete_data', ensureLoggedIn(), GoogleSheets.deleteData)
+
+app.post('/integrations/custom/make_test_api_call', ensureLoggedIn(), Custom.makeTestAPICall)
+
 app.post('/analytics/track_dev_account', ensureLoggedIn(), Track.trackDevAccount)
 
 app.get('/analytics/:project_id/users', ensureLoggedIn(), Analytics.getUsersData)

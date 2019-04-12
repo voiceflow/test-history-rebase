@@ -1,4 +1,4 @@
-const { pool, hashids } = require('../../services');
+const { pool, hashids, writeToLogs } = require('../../services');
 const axios = require('axios');
 const { checkSkillAccess } = require("./../team")
 

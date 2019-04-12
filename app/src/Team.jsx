@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { fetchTeams, updateCurrentTeam, teamInvite } from "ducks/team";
 import { setConfirm, setError, setModal } from 'ducks/modal'
 
+import Onboarding from 'views/pages/Onboarding'
 import Templates from 'views/pages/Templates'
 import Dashboard from 'views/pages/Dashboard'
 
@@ -23,6 +24,10 @@ class Team extends PureComponent {
     this.state = {
       loading: true
     }
+  }
+
+  updateTeam(team_id){
+    if(!this.props.page) this.props.history.push(`/team/${team_id}`)
   }
 
   async initialize() {
@@ -49,10 +54,8 @@ class Team extends PureComponent {
         let urlTeam = getTeamFromURL(this.props.computedMatch)
         if(!this.props.team_id){
           this.props.updateCurrentTeam( urlTeam || this.props.teams.allIds[0])
-        }else{
-          this.props.updateCurrentTeam( this.props.team_id )
         }
-        if(!urlTeam) this.props.history.push(`/team/${this.props.team_id}`)
+        if(!urlTeam && this.props.page !== 'template') this.updateTeam(this.props.team_id)
       }else{
         if(this.props.location.pathname !== '/dashboard') this.props.history.push({
           pathname: '/dashboard',
@@ -70,7 +73,7 @@ class Team extends PureComponent {
     const new_team = getTeamFromURL(this.props.computedMatch)
     // If redux store updated and url doesn't match
     if (prevProps.team_id !== this.props.team_id && this.props.team_id !== new_team) {
-      this.props.history.push(`/team/${this.props.team_id}`)
+      this.updateTeam(this.props.team_id)
     // If url updated and redux store doesn't match
     } else if (new_team && this.props.team_id !== new_team) {
       this.props.updateCurrentTeam(new_team)
@@ -110,6 +113,8 @@ class Team extends PureComponent {
     }
 
     switch(this.props.page) {
+      case 'onboarding':
+        return <Onboarding {...this.props}/>
       case 'template':
         return <Templates {...this.props}/>
       default:

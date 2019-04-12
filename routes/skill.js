@@ -160,6 +160,9 @@ exports.getSkill = async (req, res) => {
     if(skill_data === undefined){
       res.sendStatus(404)
     } else {
+      delete skill_data.dialogflow_token
+        // Don't expose these on front end
+
       skill_data.skill_id = req.params.skill_id
       skill_data.project_id = hashids.encode(skill_data.project_id)
       res.send(skill_data)

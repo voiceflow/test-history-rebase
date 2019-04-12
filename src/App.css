@@ -691,18 +691,18 @@ hr.full-width {
     opacity: 1 !important;
     background-repeat: no-repeat;
     background-position: center;
-    width: 20px;
-    height: 20px;
-    background-color: #fff;
-    border-radius: 50%;
-    background-image: url(/cancel.svg);
+    width: 11px;
+    height: 11px;
+    background-image: url(/close.svg);
     background-repeat: no-repeat;
     background-size: 11px;
     top: 20px;
+    border: none !important;
+    cursor: pointer;
 }
 .close-small:hover{
+    background-image: url(/close-dark.svg);
     color: #8da2b5 !important;
-    background-color: #F7F9FB;
 }
 .more-info{
     font-weight: normal;
@@ -1576,10 +1576,10 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
 }
 
 .text-muted {
-    color: #7d90a2 !important;
+    color: #62778c !important;
 }
 .tiny-txt{
-    color: #8da2b5 !important;
+    color: #62778c !important;
     font-size: 12px !important;
 }
 .super-center {

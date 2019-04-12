@@ -60,6 +60,7 @@ import { checkBlockDisabledLive } from './Blocks'
 import { Prompt } from 'react-router'
 import moment from 'moment'
 import Upgrade from '../../components/Modals/MultiPlatformModalContent.jsx';
+import { fetchIntegrationUsers } from '../../../actions/integrationUsersActions.js';
 
 const NLC = require('natural-language-commander')
 const _ = require('lodash')
@@ -194,6 +195,11 @@ export class Canvas extends Component {
                 }
             }, 10000)
         }
+        this.props.getIntegrationsUsers().then(() => {
+            if (this.props.integration_users_error) {
+                this.props.setError(this.props.integration_users_error)
+            }
+        })
     }
 
     componentWillUnmount() {
@@ -775,7 +781,7 @@ export class Canvas extends Component {
                     global: this.props.skill.global
                 }
                 const s = this.props.skill;
-                
+
                 const save_skill_intents = new Promise((resolve, reject) => {
                     axios.patch('/skill/' + s.skill_id + '?intents=true', {
                         intents: JSON.stringify(s.intents),
@@ -1403,6 +1409,12 @@ export class Canvas extends Component {
         this.unsave()
     }
 
+    updateExtras = (extras, callback) => {
+        const node = this.state.engine.getSuperSelect()
+        node.extras = extras
+        this.forceUpdate(callback)
+    }
+
     render() {
         return (
           <React.Fragment>
@@ -1552,6 +1564,7 @@ export class Canvas extends Component {
                 diagram_level_intents={this.state.diagram_level_intents}
                 setCanvasEvents={this.setMousetrap}
                 updateLinter={this.updateLinter}
+                updateExtras={this.updateExtras}
               />
               <div
                 key={this.props.diagram_id}
@@ -1649,7 +1662,8 @@ const mapStateToProps = state => {
     variables: state.variables.localVariables,
     diagram_set: new Set(state.diagrams.diagrams.map(d => d.id)),
     diagram: _.find(state.diagrams.diagrams, d => d.id === state.skills.skill.diagram),
-    canvasError: state.userSetting.canvasError
+    canvasError: state.userSetting.canvasError,
+    integration_users_error: state.integrationUsers.error
   }
 }
 
@@ -1662,7 +1676,8 @@ const mapDispatchToProps = dispatch => {
     renameFlow: (id, name) => dispatch(renameDiagram(id, name)),
     setCanvasError: (err) => dispatch(setCanvasError(err)),
     setError: (err) => dispatch(setError(err)),
-    setConfirm: (confirm) => dispatch(setConfirm(confirm))
+    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
+    getIntegrationsUsers: () => dispatch(fetchIntegrationUsers())
   }
 }
 

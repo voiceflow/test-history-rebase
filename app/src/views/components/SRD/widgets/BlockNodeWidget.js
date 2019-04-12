@@ -90,26 +90,26 @@ export class BlockNodeWidget extends BaseWidget {
 		this.props.nodeProps.setBlockMenu(
             <React.Fragment>
               <div style={{top: engine.getDiagramModel().getGridPosition(newY), left: engine.getDiagramModel().getGridPosition(newX - 115), cursor: 'pointer', position: 'absolute', zIndex: 10, width: '300px'}}>
-                  <Select
-					onBlur={this.props.cancel}
-					autoFocus
-					classNamePrefix='searchable__dropdown'
-					onChange={(selected) => {
-						this.props.nodeProps.addCombineNode(this.props.node, selected.value)
-						this.props.nodeProps.setBlockMenu(null)
-					}}
-					options={this.state.blocks.map(block => ({
-						label: block.text,
-						value: block.type
-					}))}
-					maxMenuHeight={124}
-					menuIsOpen
-					value={null}
-					placeholder="Search Block."
-					filterOption={(value, input) => {
-						return value.label.toLowerCase().startsWith(input.toLowerCase().trim())
-					}}
-				/>
+                <Select
+                  onBlur={this.props.cancel}
+                  autoFocus
+                  classNamePrefix='searchable__dropdown'
+                  onChange={(selected) => {
+                    this.props.nodeProps.addCombineNode(this.props.node, selected.value)
+                    this.props.nodeProps.setBlockMenu(null)
+                  }}
+                  options={this.state.blocks.map(block => ({
+                    label: block.text,
+                    value: block.type
+                  }))}
+                  maxMenuHeight={124}
+                  menuIsOpen
+                  value={null}
+                  placeholder="Search Block."
+                  filterOption={(value, input) => {
+                    return value.label.toLowerCase().startsWith(input.toLowerCase().trim())
+                  }}
+                />
               </div>
             </React.Fragment>)
 	}

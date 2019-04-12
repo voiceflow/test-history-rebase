@@ -236,7 +236,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           item={
             Object {
               "icon": <i
-                class="fas fa-arrow-alt-from-left"
+                className="fas fa-arrow-alt-from-left"
               />,
               "text": "Intent",
               "tip": "Handle intents, from within the skill and upon skill launch with CanFulfillIntent)",
@@ -786,7 +786,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           item={
             Object {
               "icon": <i
-                class="fas fa-arrow-alt-from-left"
+                className="fas fa-arrow-alt-from-left"
               />,
               "text": "Intent",
               "tip": "Handle intents, from within the skill and upon skill launch with CanFulfillIntent)",

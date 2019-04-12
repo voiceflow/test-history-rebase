@@ -61,7 +61,7 @@ class SpeakElement extends Component {
         if (d.audio !== undefined){
             return connectDragSource(
                 connectDropTarget(
-                <div key={d.index} className="multiline mb-2" style={Object.assign({}, style, { opacity })}>
+                <div key={d.index} className="multiline" style={Object.assign({}, style, { opacity })}>
                 <div className="multi-title-block">
                     <div className="multi-title" onClick={() =>this.props.toggleOpen()}>
                         <span className="text-muted">
@@ -92,7 +92,7 @@ class SpeakElement extends Component {
         } else {
             return connectDragSource(
                 connectDropTarget(
-                    <div key={d.index} className="multiline mb-2" style={Object.assign({}, style, { opacity })}>
+                    <div key={d.index} className="multiline" style={Object.assign({}, style, { opacity })}>
                 <div className="multi-title-block mb-2">
                     <div className="multi-title">
                         <span className="text-muted" onClick={() => this.props.toggleOpen()}>

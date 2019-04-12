@@ -188,10 +188,10 @@ class App extends Component {
     return (
       <Provider store={store}>
         <ConnectedRouter history={history}>
-          <div id="body">
-            <ConfirmModal/>
-            <ErrorModal />
-            <Modal />
+        <div id="body">
+          <ConfirmModal/>
+          <ErrorModal />
+          <Modal />
             {(this.state.session && history.location.pathname !== '/onboarding') && <NavBar history={history}/>}
               <Switch>
                 {/* User routes */}

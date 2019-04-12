@@ -20,7 +20,7 @@ export default (props) => {
         className={"btn-primary" + (!(option_map.includes(props.state)) ? ' disabled': '')} 
         disabled={!(option_map.includes(props.state))} 
         onClick={props.next}>
-        { props.button || "Next Question" }
+        { props.button || "Continue" }
       </button>
     </div>
   </>

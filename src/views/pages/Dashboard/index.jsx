@@ -248,7 +248,7 @@ class DashBoard extends Component {
             })}
             {this.props.teams.allIds.length < 3 && (
               <Link className="nav-item" to="/team/new">
-                <i className="fal fa-plus" /> New Board
+                <img src={'/add-board.svg'} className="mr-1 mb-1" height={15} width={15} /> New Board
               </Link>
             )}
           </div>
@@ -357,7 +357,7 @@ class DashBoard extends Component {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <b>Voiceflow University</b>
+                      Voiceflow University
                       <i className="fal fa-long-arrow-right ml-1" />
                     </a>
                   </small>

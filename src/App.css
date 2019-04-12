@@ -1173,6 +1173,9 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
     color: #132144 !important;
     font-weight: 400 !important;
     font-size: 15px;
+    font-weight: 500;
+    color: #62778C;
+    line-height: 20px;
 }
 .form-title{
     font-size: 15px;
@@ -1583,6 +1586,7 @@ body.modal-open {
   cursor: pointer;
   transition: transform 0.25s ease;
   border-radius: 5px !important;
+  font-family: OpenSans !important;
 }
 
 .social-button:hover {

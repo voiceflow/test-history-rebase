@@ -86,9 +86,10 @@ export class BlockNodeWidget extends BaseWidget {
 		const engine = this.props.diagramEngine
 		let getNodeRef = findDOMNode(this.nodeRef.current).getBoundingClientRect()
 		let newX = getNodeRef.width/2 + getNodeRef.x
+		let newY = getNodeRef.y + getNodeRef.height + 20
 		this.props.nodeProps.setBlockMenu(
             <React.Fragment>
-              <div style={{top: engine.getDiagramModel().getGridPosition(e.clientY - 110), left: engine.getDiagramModel().getGridPosition(newX - 115), cursor: 'pointer', position: 'absolute', zIndex: 10, width: '300px'}}>
+              <div style={{top: engine.getDiagramModel().getGridPosition(newY), left: engine.getDiagramModel().getGridPosition(newX - 115), cursor: 'pointer', position: 'absolute', zIndex: 10, width: '300px'}}>
                   <Select
 					onBlur={this.props.cancel}
 					autoFocus

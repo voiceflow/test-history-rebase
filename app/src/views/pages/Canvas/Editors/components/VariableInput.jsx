@@ -103,6 +103,7 @@ class VariableInput extends Component {
                         placeholder={this.props.placeholder}
                         blockRenderMap={this.singleLinePlugin.blockRenderMap}
                         stripPastedStyles={true}
+                        onBlur={() => { if(this.props.onBlur) this.props.onBlur()}}
                     />
                 </div>
                 <MentionSuggestions

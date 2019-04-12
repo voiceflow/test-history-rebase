@@ -545,7 +545,7 @@ class TestModal extends React.Component {
   render() {
     return (
       <Modal isOpen={this.props.open} size='lg'>
-        <ModalHeader toggle={this.props.toggle}>Project Testing</ModalHeader>
+        <ModalHeader toggle={this.props.toggle} header="Project Testing" />
         <ModalBody className="text-center env-modal test-modal">
           { this.props.testing_info !== false ? 
             <React.Fragment>

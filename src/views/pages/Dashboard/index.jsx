@@ -153,7 +153,7 @@ class DashBoard extends Component {
     if(this.props.projects_array.length >= this.props.team.projects) {
       this.setState({team_settings: "BILLING"})
     } else { 
-      this.props.history.push(`/team/${this.props.team_id}/template`)
+      this.props.history.push(`/team/template`)
     }
   }
 
@@ -340,7 +340,7 @@ class DashBoard extends Component {
                   </div>
                   <br />
                   <Link
-                    to={`/team/${this.props.team_id}/template`}
+                    to={`/team/template`}
                     className="no-underline super-center"
                   >
                     <button

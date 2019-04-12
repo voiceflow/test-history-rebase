@@ -70,9 +70,10 @@ class SpeakElement extends Component {
                         </span>
                     </div>
                     <div className="d-flex align-items-center flex-hard">
+                        <img src={'/volume-red.svg'} alt="speak" />&nbsp;&nbsp;&nbsp;
                         {d.audio ? d.audio.split('/').pop() : 'Audio'}
                     </div>
-                    <button className="close" onClick={() => { this.props.handleRemoveBlock(i) }}>&times;</button>
+                    <button className="close mt-4" onClick={() => { this.props.handleRemoveBlock(i) }}></button>
                 </div>
                 <Collapse isOpen={d.open} className="speak-audio">
                     <div className="pb-2">
@@ -99,8 +100,8 @@ class SpeakElement extends Component {
                             {properties.randomize ? <i className="far fa-random" /> : (i + 1)}
                         </span>
                     </div>
-                    <div className="super-center flex-hard mr-5">
-                        Speaking As
+                    <div className="super-center flex-hard mr-4">
+                    <img src={'/comment-blue.svg'} alt="comment" />&nbsp;&nbsp; Speaking as &nbsp;
                                     <Select
                             className="speak-box ml-2"
                             classNamePrefix="select-box"
@@ -127,7 +128,7 @@ class SpeakElement extends Component {
                             options={localStorage.getItem('recent_speak') ? [{ label: 'Recent', options: JSON.parse(localStorage.getItem('recent_speak')) }].concat(VOICES) : VOICES}
                         />
                     </div>
-                    <button className="close" onClick={() => { this.props.handleRemoveBlock(i) }}>&times;</button>
+                    <button className="close mt-4" onClick={() => { this.props.handleRemoveBlock(i) }}></button>
                 </div>
                 <Collapse isOpen={d.open}>
                     <VariableText
@@ -137,6 +138,7 @@ class SpeakElement extends Component {
                         variables={this.props.variables}
                         updateRaw={(raw) => { d.rawContent = raw; this.props.onUpdate() }}
                     />
+                    <small className="text-muted pb-3 pt-2 d-block">{'Press "{" to add variables'}</small>
                 </Collapse>
                 <hr />
             </div>

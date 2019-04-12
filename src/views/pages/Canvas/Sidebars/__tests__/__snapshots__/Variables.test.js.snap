@@ -2,42 +2,16 @@
 
 exports[`Sidebar Variables render variable sidebar on global 1`] = `
 <Fragment>
-  <ButtonGroup
-    className="toggle-group mb-2 mw-250"
-    role="group"
-    tag="div"
-  >
-    <Button
-      color="secondary"
-      disabled={true}
-      key="global"
-      onClick={[Function]}
-      outline={false}
-      tag="button"
-    >
-      global
-    </Button>
-    <Button
-      color="secondary"
-      disabled={false}
-      key="local"
-      onClick={[Function]}
-      outline={true}
-      tag="button"
-    >
-      local
-    </Button>
-  </ButtonGroup>
   <form
     id="variable-submit"
     onSubmit={[Function]}
   >
     <FormGroup
-      className="mb-0"
+      className="mb-0 text-center"
       tag="div"
     >
       <Label
-        className="section-title mt-3"
+        className="mt-2 text-left"
         tag="label"
         widths={
           Array [
@@ -49,49 +23,32 @@ exports[`Sidebar Variables render variable sidebar on global 1`] = `
           ]
         }
       >
-        Add New Global Variable
+        Create Variable
       </Label>
-      <InputGroup
-        tag="div"
-      >
-        <Input
-          autoFocus={true}
-          className="form-control-border left"
-          maxLength="16"
-          name="new_global"
-          onChange={[Function]}
-          placeholder="Variable Name"
-          type="text"
-          value=""
-        />
-        <InputGroupAddon
-          addonType="append"
-          tag="div"
-        >
-          <Button
-            className="new_var"
-            color="secondary"
-            tag="button"
-            type="submit"
-          >
-            <i
-              className="fas fa-plus"
-            />
-          </Button>
-        </InputGroupAddon>
-      </InputGroup>
+      <Input
+        autoFocus={true}
+        className="variable-box__control"
+        maxLength="16"
+        name="new_global"
+        onChange={[Function]}
+        placeholder="Variable Name"
+        type="text"
+        value=""
+      />
     </FormGroup>
   </form>
-  <h1
-    className="down-arrow"
+  <small
+    className="text-muted mb-4 pt-2 d-block"
   >
-    <i
-      className="far fa-long-arrow-alt-down"
-    />
-  </h1>
+    Press 
+    <b>
+      'Enter'
+    </b>
+     to add variable
+  </small>
   <div>
+    <hr />
     <Label
-      className="section-title"
       tag="label"
       widths={
         Array [
@@ -103,7 +60,7 @@ exports[`Sidebar Variables render variable sidebar on global 1`] = `
         ]
       }
     >
-      Global Variables
+      My Variables
     </Label>
     <div
       className="variables"
@@ -373,384 +330,19 @@ exports[`Sidebar Variables render variable sidebar on global 1`] = `
           {locale}
         </div>
       </Tooltip>
-    </div>
-  </div>
-</Fragment>
-`;
-
-exports[`Sidebar Variables render variable sidebar on local 1`] = `
-<Fragment>
-  <ButtonGroup
-    className="toggle-group mb-2 mw-250"
-    role="group"
-    tag="div"
-  >
-    <Button
-      color="secondary"
-      disabled={true}
-      key="global"
-      onClick={[Function]}
-      outline={false}
-      tag="button"
-    >
-      global
-    </Button>
-    <Button
-      color="secondary"
-      disabled={false}
-      key="local"
-      onClick={[Function]}
-      outline={true}
-      tag="button"
-    >
-      local
-    </Button>
-  </ButtonGroup>
-  <form
-    id="variable-submit"
-    onSubmit={[Function]}
-  >
-    <FormGroup
-      className="mb-0"
-      tag="div"
-    >
-      <Label
-        className="section-title mt-3"
-        tag="label"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        className="variable_tag global"
       >
-        Add New Global Variable
-      </Label>
-      <InputGroup
-        tag="div"
-      >
-        <Input
-          autoFocus={true}
-          className="form-control-border left"
-          maxLength="16"
-          name="new_global"
-          onChange={[Function]}
-          placeholder="Variable Name"
-          type="text"
-          value=""
-        />
-        <InputGroupAddon
-          addonType="append"
-          tag="div"
+        {undefined}
+         
+        <span
+          onClick={[Function]}
         >
-          <Button
-            className="new_var"
-            color="secondary"
-            tag="button"
-            type="submit"
-          >
-            <i
-              className="fas fa-plus"
-            />
-          </Button>
-        </InputGroupAddon>
-      </InputGroup>
-    </FormGroup>
-  </form>
-  <h1
-    className="down-arrow"
-  >
-    <i
-      className="far fa-long-arrow-alt-down"
-    />
-  </h1>
-  <div>
-    <Label
-      className="section-title"
-      tag="label"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-    >
-      Global Variables
-    </Label>
-    <div
-      className="variables"
-    >
-      <Tooltip
-        animateFill={true}
-        animation="shift"
-        arrow={false}
-        arrowSize="regular"
-        className=""
-        delay={0}
-        disabled={false}
-        distance={10}
-        duration={375}
-        followCursor={false}
-        hideDelay={0}
-        hideDuration={375}
-        hideOnClick={true}
-        html={
-          <div
-            style={
-              Object {
-                "width": 165,
-              }
-            }
-          >
-            The Number of times a particular user has opened the app
-          </div>
-        }
-        inertia={false}
-        interactive={false}
-        interactiveBorder={2}
-        key="sessions"
-        multiple={false}
-        offset={0}
-        onHidden={[Function]}
-        onHide={[Function]}
-        onRequestClose={[Function]}
-        onShow={[Function]}
-        onShown={[Function]}
-        popperOptions={Object {}}
-        position="bottom"
-        size="regular"
-        sticky={false}
-        stickyDuration={200}
-        style={Object {}}
-        theme="dark"
-        touchHold={false}
-        trigger="mouseenter focus"
-        unmountHTMLWhenHide={false}
-      >
-        <div
-          className="variable_tag global default"
-        >
-          {sessions}
-        </div>
-      </Tooltip>
-      <Tooltip
-        animateFill={true}
-        animation="shift"
-        arrow={false}
-        arrowSize="regular"
-        className=""
-        delay={0}
-        disabled={false}
-        distance={10}
-        duration={375}
-        followCursor={false}
-        hideDelay={0}
-        hideDuration={375}
-        hideOnClick={true}
-        html={
-          <div
-            style={
-              Object {
-                "width": 165,
-              }
-            }
-          >
-            The user's Amazon/Google unique id
-          </div>
-        }
-        inertia={false}
-        interactive={false}
-        interactiveBorder={2}
-        key="user_id"
-        multiple={false}
-        offset={0}
-        onHidden={[Function]}
-        onHide={[Function]}
-        onRequestClose={[Function]}
-        onShow={[Function]}
-        onShown={[Function]}
-        popperOptions={Object {}}
-        position="bottom"
-        size="regular"
-        sticky={false}
-        stickyDuration={200}
-        style={Object {}}
-        theme="dark"
-        touchHold={false}
-        trigger="mouseenter focus"
-        unmountHTMLWhenHide={false}
-      >
-        <div
-          className="variable_tag global default"
-        >
-          {user_id}
-        </div>
-      </Tooltip>
-      <Tooltip
-        animateFill={true}
-        animation="shift"
-        arrow={false}
-        arrowSize="regular"
-        className=""
-        delay={0}
-        disabled={false}
-        distance={10}
-        duration={375}
-        followCursor={false}
-        hideDelay={0}
-        hideDuration={375}
-        hideOnClick={true}
-        html={
-          <div
-            style={
-              Object {
-                "width": 165,
-              }
-            }
-          >
-            UNIX timestamp (number of seconds since January 1st, 1970 at UTC.)
-          </div>
-        }
-        inertia={false}
-        interactive={false}
-        interactiveBorder={2}
-        key="timestamp"
-        multiple={false}
-        offset={0}
-        onHidden={[Function]}
-        onHide={[Function]}
-        onRequestClose={[Function]}
-        onShow={[Function]}
-        onShown={[Function]}
-        popperOptions={Object {}}
-        position="bottom"
-        size="regular"
-        sticky={false}
-        stickyDuration={200}
-        style={Object {}}
-        theme="dark"
-        touchHold={false}
-        trigger="mouseenter focus"
-        unmountHTMLWhenHide={false}
-      >
-        <div
-          className="variable_tag global default"
-        >
-          {timestamp}
-        </div>
-      </Tooltip>
-      <Tooltip
-        animateFill={true}
-        animation="shift"
-        arrow={false}
-        arrowSize="regular"
-        className=""
-        delay={0}
-        disabled={false}
-        distance={10}
-        duration={375}
-        followCursor={false}
-        hideDelay={0}
-        hideDuration={375}
-        hideOnClick={true}
-        html={
-          <div
-            style={
-              Object {
-                "width": 165,
-              }
-            }
-          >
-            The platform your skill is running on ("alexa" or "google")
-          </div>
-        }
-        inertia={false}
-        interactive={false}
-        interactiveBorder={2}
-        key="platform"
-        multiple={false}
-        offset={0}
-        onHidden={[Function]}
-        onHide={[Function]}
-        onRequestClose={[Function]}
-        onShow={[Function]}
-        onShown={[Function]}
-        popperOptions={Object {}}
-        position="bottom"
-        size="regular"
-        sticky={false}
-        stickyDuration={200}
-        style={Object {}}
-        theme="dark"
-        touchHold={false}
-        trigger="mouseenter focus"
-        unmountHTMLWhenHide={false}
-      >
-        <div
-          className="variable_tag global default"
-        >
-          {platform}
-        </div>
-      </Tooltip>
-      <Tooltip
-        animateFill={true}
-        animation="shift"
-        arrow={false}
-        arrowSize="regular"
-        className=""
-        delay={0}
-        disabled={false}
-        distance={10}
-        duration={375}
-        followCursor={false}
-        hideDelay={0}
-        hideDuration={375}
-        hideOnClick={true}
-        html={
-          <div
-            style={
-              Object {
-                "width": 165,
-              }
-            }
-          >
-            The locale of the user (eg en-US, en-CA, it-IT, fr-FR ...)
-          </div>
-        }
-        inertia={false}
-        interactive={false}
-        interactiveBorder={2}
-        key="locale"
-        multiple={false}
-        offset={0}
-        onHidden={[Function]}
-        onHide={[Function]}
-        onRequestClose={[Function]}
-        onShow={[Function]}
-        onShown={[Function]}
-        popperOptions={Object {}}
-        position="bottom"
-        size="regular"
-        sticky={false}
-        stickyDuration={200}
-        style={Object {}}
-        theme="dark"
-        touchHold={false}
-        trigger="mouseenter focus"
-        unmountHTMLWhenHide={false}
-      >
-        <div
-          className="variable_tag global default"
-        >
-          {locale}
-        </div>
-      </Tooltip>
+          <i
+            className="fas fa-times"
+          />
+        </span>
+      </div>
     </div>
   </div>
 </Fragment>

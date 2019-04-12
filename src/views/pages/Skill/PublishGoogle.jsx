@@ -6,7 +6,8 @@ import AuthenticationService from '../../../services/Authentication'
 
 import axios from 'axios'
 
-import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Button, ButtonGroup, Alert, ModalHeader } from 'reactstrap'
+import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Button, ButtonGroup, Alert } from 'reactstrap'
+import { ModalHeader } from 'views/components/Modals/ModalHeader'
 import MUIButton from '@material-ui/core/Button'
 import GoogleAuth from '../../components/Modals/GoogleAuthenticationModalContent'
 import Dropzone from 'react-dropzone'
@@ -398,7 +399,7 @@ class GooglePublish extends Component {
       //         <div className="col-9 vertical-space">
       //           <Input className="form-bg" type="text" name="google_token" placeholder="Paste your Google Authentication Token here" value={this.state.google_token} onChange={this.handleChange} />
       //           <div className="subheader-right">
-      //             <button variant="contained" className="purple-btn google-verify-btn" onClick={() => this.verifyGoogleToken()}>Verify Token <i className="fab fa-google ml-2" /></button>
+      //             <button variant="contained" className="btn-primary google-verify-btn" onClick={() => this.verifyGoogleToken()}>Verify Token <i className="fab fa-google ml-2" /></button>
       //           </div>
       //         </div>
       //       </div>
@@ -474,11 +475,9 @@ class GooglePublish extends Component {
           size={[0, 1].includes(this.state.stage) ? "md" : "lg"}
           onClosed={this.closePublish}
           >
-          <ModalHeader toggle={this.togglePublish} className="w-100">
-            <div className="d-flex justify-content-between" ref={this.privacyTop}>
-              <div>{GOOGLE_PUBLISH_STAGES[this.state.stage]}</div>
-            </div>
-          </ModalHeader>
+          <ModalHeader toggle={this.togglePublish} className="w-100" header={<div className="d-flex justify-content-between" ref={this.privacyTop}>
+            <div>{GOOGLE_PUBLISH_STAGES[this.state.stage]}</div>
+          </div>} />
           <ModalBody className="p-0">
             <div className="modal-info" style={{padding: '0 2rem 1rem 2rem'}}>
               {modal_content}
@@ -569,14 +568,14 @@ class GooglePublish extends Component {
                     <h5 className="mb-0">This Action is currently in review so you cannot edit it.</h5>
                     <div>
                       <MUIButton variant="contained" className="white-btn" href={googleConsoleUrl} target="_blank">Visit Dashboard</MUIButton>
-                      <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Action</MUIButton>
+                      <MUIButton variant="contained" className="btn-primary ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Skill</MUIButton>
                     </div>
                   </div>
                 </div>
                 : null}
               <Form>
                 <div className="big-settings-alignment-div">
-                  <div className="mb-4 mt-5"><b>Credentials</b></div>
+                  <div className="mb-4 mt-5"><label className="dark">Credentials</label></div>
                   <div className="big-settings-content">
                     <FormGroup>
                       <div className="row">
@@ -599,10 +598,10 @@ class GooglePublish extends Component {
                             >
                               <div>
                                 {!this.state.credentials && !this.state.loading_creds && <div className="drop-child">
-                                  Drag and Drop your file here<br />
-                                  <small>OR</small><br />
-                                  <div className="space-between">
-                                    <div className="upload-btn btn btn-primary-small">
+                                  Drag and Drop your file here<br/>
+                                  <small className="d-inline-block mt-2">OR</small><br/>
+                                  <div>
+                                    <div className="btn-primary-small mt-2">
                                       Add File
                                     </div>
                                   </div>
@@ -726,7 +725,7 @@ class GooglePublish extends Component {
               {this.state.credentials && <div className="text-center">
                 <button
                   variant="contained"
-                  className="purple-btn"
+                  className="btn-primary"
                   onClick={this.onPublishClicked}
                 >
                   Publish Action

@@ -33,7 +33,7 @@ class ErrorBoundary extends React.Component {
             return (<div className="h-100 w-100 super-center">
                 <div className="text-center">
                     <h1>Whoops, something went wrong, please return to home</h1>
-                    <Link to="/" className="btn purple-btn mt-3"><i className="far fa-long-arrow-left mr-2" />Home</Link>
+                    <Link to="/" className="btn btn-primary mt-3"><i className="far fa-long-arrow-left mr-2" />Home</Link>
                 </div>
             </div>)
         }

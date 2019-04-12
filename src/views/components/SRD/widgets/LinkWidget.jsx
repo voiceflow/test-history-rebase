@@ -17,9 +17,9 @@ export class LinkWidget extends BaseWidget {
 		this.state = {};
 	}
 
-	shouldComponentUpdate() {
-		return this.props.diagramEngine.canEntityRepaint(this.props.link);
-	}
+	// shouldComponentUpdate() {
+	// 	return this.props.diagramEngine.canEntityRepaint(this.props.link);
+	// }
 
 	render() {
 		return this.props.children;

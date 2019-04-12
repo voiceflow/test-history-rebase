@@ -193,7 +193,7 @@ class IntentInput extends Component {
                             className="interaction-name-input"
                         />
                     </Tooltip>
-                    <button className="close" onClick={()=>this.props.removeIntent(this.props.intent.key)} disabled={this.props.live_mode}>&times;</button>
+                    <button className="close mt-1" onClick={()=>this.props.removeIntent(this.props.intent.key)} disabled={this.props.live_mode}></button>
                 </div>
                 <Collapse isOpen={this.props.intent.open}>
                 {disabled && <div className='unavailable-input'><div><i className="fas fa-frown"></i></div>This Intent is Unavailable on {(this.props.platform === 'google')? 'Google Assistant' : 'Alexa'}</div>}
@@ -211,7 +211,7 @@ class IntentInput extends Component {
                         html={this.state.text_error}
                     >
                         <MentionsInput
-                            className="mentions-input"
+                            className="mentions-input mt-2"
                             markup='{{[__display__].__id__}}'
                             displayTransform={(id, display) => { return '[' + display + ']'}}
                             value={this.state.text}

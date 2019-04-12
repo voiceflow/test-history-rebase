@@ -138,6 +138,7 @@ exports[`Canvas render canvas 1`] = `
       setCanvasEvents={[Function]}
       setHelp={[Function]}
       unfocus={[Function]}
+      updateExtras={[Function]}
       updateLinter={[Function]}
     />
     <div
@@ -300,6 +301,7 @@ exports[`Canvas render canvas 1`] = `
         maxNumberPointsPerLink={Infinity}
         nodeProps={
           Object {
+            "addCombineNode": [Function],
             "diagram": undefined,
             "disabled": false,
             "enterFlow": [Function],
@@ -307,6 +309,7 @@ exports[`Canvas render canvas 1`] = `
             "hasFlow": [Function],
             "removeCombineNode": [Function],
             "removeNode": [Function],
+            "setBlockMenu": undefined,
             "setCanvasError": undefined,
           }
         }

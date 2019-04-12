@@ -89,12 +89,12 @@ class AudioDrop extends Component {
                 </audio>
             </div>
         }else if(this.state.url_open){
-            return <div className="dropzone enter-url">
+            return <div className="dropzone">
                 <div className="text-center w-100">
-                    <b className="text-muted">Enter Audio URL</b>
-                    <Input placeholder="URL Link" value={this.state.url} onChange={this.handleChange} name="url"/>
-                    <button onClick={()=>this.setState({url_open: false})} className="upload-btn btn btn-default exit"><i className="far fa-chevron-left"/>Back</button>
-                    <button onClick={()=>this.props.update(this.state.url)} className="upload-btn btn btn-primary-small">Confirm</button>
+                    <label className="text-muted mb-3">Enter Audio URL</label>
+                    <Input className="mb-3" placeholder="URL Link" value={this.state.url} onChange={this.handleChange} name="url"/>
+                    <button onClick={()=>this.setState({url_open: false})} className="btn-tertiary mr-1">Back</button>
+                    <button onClick={()=>this.props.update(this.state.url)} className="btn-primary ml-1">Confirm</button>
                 </div>
             </div>
         }else{
@@ -110,18 +110,19 @@ class AudioDrop extends Component {
             >
                 <div>
                     <div className="drop-child">
-                        Drag and Drop files here<br/>
+                        <div className="mb-1">Drag and Drop files here</div>
                         <small>OR</small><br/>
-                        <div className="space-between">
-                            <div className="upload-btn btn btn-primary-small">
-                                Add File
+                        <div className="mt-2">
+                            <div className="btn btn-primary-small mb-2">
+                                Add Audio
                             </div>
-                            <div className="upload-btn btn btn-default" onClick={(e)=>{
+                            <br/>
+                            <div className="btn-link" onClick={(e)=>{
                                 e.preventDefault()
                                 e.stopPropagation()
                                 this.setState({url_open: true})
                                 return false
-                            }}>URL</div>
+                            }}>Add URL</div>
                         </div>
                     </div>
                     <div className="rejected-file text-danger">

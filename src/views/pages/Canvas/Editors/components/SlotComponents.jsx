@@ -132,7 +132,7 @@ class SlotSynonyms extends Component {
               onChange={(text) => this.updateInputText(text, i)}
               autoFocus={true}
             /> : <div onClick={() => this.beginSlotEdit(i)}>{this._synonymsToBadges(this.props.inputs[i])}</div>}
-            <i onClick={() => deleteExample(i)} className="fas fa-backspace trash-icon"></i>
+            <i onClick={() => deleteExample(i)} className="fas fa-backspace trash-icon mt-1"></i>
           </div>
         })
       }

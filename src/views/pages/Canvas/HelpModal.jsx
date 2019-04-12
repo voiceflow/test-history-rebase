@@ -1,7 +1,8 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
 import React from 'react';
-import { Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { Modal, ModalBody } from 'reactstrap';
+import { ModalHeader } from 'views/components/Modals/ModalHeader'
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 
@@ -150,11 +151,11 @@ class HelpModal extends React.Component {
 
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>{this.props.help && this.props.help.type ? this.props.help.type : 'Blocks'}</ModalHeader>
+        <ModalHeader header={this.props.help && this.props.help.type ? this.props.help.type : 'Blocks'} toggle={this.props.toggle} />
         <ModalBody>
           {this.props.help && this.props.help.type ? 
             <React.Fragment>
-              <div className="text-muted p-3 pt-0">
+              <div className="text-muted pl-3 pr-3 pb-3 pt-0">
                 {result ? <React.Fragment>
                   <p className="mb-4">{result.info}</p>
                   {result.video && 

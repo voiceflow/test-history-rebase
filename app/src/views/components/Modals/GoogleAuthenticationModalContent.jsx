@@ -23,7 +23,7 @@ class MultiPlatformModalContent extends React.Component {
           </div>
         </div>
         <div className="d-flex justify-content-center pt-1 mb-4 w-100">
-          {!this.props.loading && <button type="button" className="purple-btn mr-4" onClick={this.props.onVerify}>Verify</button>}
+          {!this.props.loading && <button type="button" className="btn-primary mr-4" onClick={this.props.onVerify}>Verify</button>}
           {this.props.loading && <span style={{height: '44px'}} className="loader"/>}
         </div>
       </div>

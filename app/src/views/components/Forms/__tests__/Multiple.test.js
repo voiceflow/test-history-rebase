@@ -23,7 +23,7 @@ describe('Multiple Form Test', () => {
         const component = mount(<Multiple update={() => {}} list={list} />)
         component.find('.dash-button').first().simulate('click');
         expect(addField).toBeCalled()
-        component.find('button.btn-float').last().simulate('click');
+        component.find('button.close').last().simulate('click');
         expect(removeField).toBeCalled()
     })
 })

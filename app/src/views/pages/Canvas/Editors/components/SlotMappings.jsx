@@ -97,7 +97,7 @@ class SlotMappings extends Component {
                                 placeholder="Slot"
                                 options={this.state.slot_options}
                             />
-                            <i className="far fa-arrow-right"/>
+                            <img src={'/arrow-right.svg'} className="mr-2 ml-2" width='7px' alt='map to'/>
                             <Select
                                 classNamePrefix="variable-box"
                                 className="map-box"
@@ -114,7 +114,7 @@ class SlotMappings extends Component {
                                 }) : null}
                             />
                         </div>
-                        <div className="close pl-2" onClick={() => this.handleRemoveMap(i)}>&times;</div>
+                        <div className="close-small ml-2" onClick={() => this.handleRemoveMap(i)}></div>
                     </div>)
                 })}
                 <button className="btn btn-clear btn-block mb-2" onClick={this.handleAddMap}>

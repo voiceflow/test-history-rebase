@@ -327,6 +327,12 @@ export class DiagramEngine extends BaseEntity {
 
 		var rel = this.getRelativePoint(sourceRect.left, sourceRect.top);
 
+		if (sourceRect.x === 0 && sourceRect.y === 0) {
+			return {
+				x: port.x,
+				y: port.y
+			}
+		}
 		return {
 			x:
 				sourceElement.offsetWidth / 2 +

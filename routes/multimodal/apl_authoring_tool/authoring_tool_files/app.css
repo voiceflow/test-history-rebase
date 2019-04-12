@@ -37,9 +37,10 @@
 }
 
 .alert-warning.dpc-alert-warning {
-  background-color: #fcf8e3;
+  background-color: #FFF3CD;
   border-color: #faebcc;
-  color: #8a6d3b;
+  color: #866603;
+  text-align: center;
 }
 .alert-warning.dpc-alert-warning hr {
   border-top-color: #f7e1b5;

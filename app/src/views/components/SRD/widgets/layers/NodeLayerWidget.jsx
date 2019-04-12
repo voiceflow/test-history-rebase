@@ -15,20 +15,6 @@ export class NodeLayerWidget extends BaseWidget {
 		this.state = {};
 	}
 
-	// updateNodeDimensions = () => {
-	// 	if (!this.props.diagramEngine.nodesRendered) {
-	// 		const diagramModel = this.props.diagramEngine.getDiagramModel();
-	// 		_.map(diagramModel.getNodes(), node => {
-	// 			node.updateDimensions(this.props.diagramEngine.getNodeDimensions(node));
-	// 		});
-	// 	}
-	// };
-
-	// componentDidUpdate() {
-	// 	this.updateNodeDimensions();
-	// 	this.props.diagramEngine.nodesRendered = true;
-	// }
-
 	render() {
 		var diagramModel = this.props.diagramEngine.getDiagramModel();
 		return (

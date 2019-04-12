@@ -11,11 +11,25 @@ export const selectStyles = {
             return {
                 ...provided,
                 borderTop: '1px solid #dce5e8',
-                textAlign: 'center',
-                color: '#42a5ff',
-                bottom: -5,
+                textAlign: 'center !important',
+                color: '#3153E4',
+                bottom: 0,
                 position: 'sticky',
                 backgroundColor: 'white',
+                borderRadius: '0px 0px 8px 8px',
+                paddingLeft: '0 !important',
+                paddingRight: '0 !important',
+                whiteSpace: 'nowrap',
+                overflowX: 'hidden',
+                overflowY: 'hidden',
+                backgroundImage: 'none',
+                '&:hover': {
+                    backgroundImage: 'none',
+                    color: '#3153E4'
+                },
+                '&:active': {
+                    backgroundImage: 'none',
+                }
             }
         }
         return {
@@ -36,7 +50,7 @@ export const variableComponent = props => {
                         localStorage.setItem(
                           "tab",
                           "variables"
-                        );
+                        )
                         props.data.openVar('variables')
                     }}
                 >

@@ -5,7 +5,7 @@ import { compose } from 'recompose'
 import { connect } from 'react-redux'
 
 // HOCs
-import {undo, redo} from './../../HOC/UndoRedo';
+import { undo, redo } from './../../HOC/UndoRedo';
 
 import Line from './Editors/Line';
 import Choice from './Editors/Choice';
@@ -24,6 +24,7 @@ import OldCommand from './Editors/OldCommand';
 import Command from './Editors/Command';
 import Diagram from './Editors/Diagram';
 import API from './Editors/API';
+import Integrations from './Editors/Integrations';
 import Payment from './Editors/Payment';
 import CancelPayment from './Editors/CancelPayment';
 import Module from './Editors/Module';
@@ -34,17 +35,17 @@ import Permissions from './Editors/Permissions';
 import Reminder from './Editors/Reminder'
 import Code from './Editors/Code'
 import PermissionCard from './Editors/PermissionCard'
-import {getBlocks} from './Blocks'
 import Prompt from 'views/components/Uploads/Prompt'
 
 import {
     Alert,
-    Modal, ModalBody, ModalHeader,
+    Modal, ModalBody,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem
 } from 'reactstrap';
+import { ModalHeader } from 'views/components/Modals/ModalHeader'
 
 import { SLOT_TYPES, BUILT_IN_INTENTS_ALEXA, BUILT_IN_INTENTS_GOOGLE } from 'Constants'
 
@@ -98,14 +99,14 @@ class Editor extends Component {
         this.EditorRender = this.EditorRender.bind(this)
     }
 
-    componentDidMount(){
+    componentDidMount() {
         Mousetrap.reset()
         Mousetrap.bind(['ctrl+z', 'command+z'], this.undo)
         Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo)
     }
 
-    static getDerivedStateFromProps(props, state){
-        if (state.node && props.node && state.node.id !== props.node.id){
+    static getDerivedStateFromProps(props, state) {
+        if (state.node && props.node && state.node.id !== props.node.id) {
             props.clearRedo();
             props.clearUndo();
         }
@@ -114,19 +115,19 @@ class Editor extends Component {
         }
     }
 
-    undo(e){
+    undo(e) {
         if (!_.isEmpty(this.props.undoEvents) && this.state.node) {
             let recent = _.last(this.props.undoEvents);
-            this.props.addRedo({node: _.cloneDeep(this.state.node.extras), eventType: _.cloneDeep(this.state.node.ports)})
+            this.props.addRedo({ node: _.cloneDeep(this.state.node.extras), eventType: _.cloneDeep(this.state.node.ports) })
             let node = this.state.node
             node.extras = recent.node
             if (recent.eventType) {
                 let diff = _.difference(_.keys(node.ports), _.keys(recent.eventType))
-                if (!_.isEmpty(diff)){
+                if (!_.isEmpty(diff)) {
                     node.removePort(node.ports[_.last(diff)])
                 } else {
                     diff = _.difference(_.keys(recent.eventType), _.keys(node.ports))
-                    if (!_.isEmpty(diff)){
+                    if (!_.isEmpty(diff)) {
                         node.addOutPort(recent.eventType[_.last(diff)].label)
                     }
                 }
@@ -140,15 +141,15 @@ class Editor extends Component {
         // e.preventDefault()
     }
 
-    redo(e){
+    redo(e) {
         if (!_.isEmpty(this.props.redoEvents) && this.state.node) {
             let recent = _.last(this.props.redoEvents);
-            this.props.addUndo(_.cloneDeep(this.state.node.extras),  _.cloneDeep(this.state.node.ports))
+            this.props.addUndo(_.cloneDeep(this.state.node.extras), _.cloneDeep(this.state.node.ports))
             let node = this.state.node
             node.extras = recent.node
             if (recent.eventType) {
                 let diff = _.difference(_.keys(recent.eventType), _.keys(node.ports))
-                if (!_.isEmpty(diff)){
+                if (!_.isEmpty(diff)) {
                     node.addOutPort(recent.eventType[_.last(diff)].label)
                 } else {
                     diff = _.difference(_.keys(node.ports), _.keys(recent.eventType))
@@ -170,15 +171,15 @@ class Editor extends Component {
         var name = e.target.getAttribute('name')
         var value = e.target.value
         node[name] = value
-        if (node.parentCombine){
-            _.find(node.parentCombine.combines, n => n.id === node.id).name=value;
+        if (node.parentCombine) {
+            _.find(node.parentCombine.combines, n => n.id === node.id).name = value;
 
         }
         this.setState({
             node: node
         }, () => {
             this.props.onUpdate();
-            if(name === 'name'){
+            if (name === 'name') {
                 this.props.repaint();
             }
         });
@@ -188,7 +189,7 @@ class Editor extends Component {
         let slots = [SLOT_TYPES[0]] //Custom Slot
         for (let i in SLOT_TYPES) {
             const slot = SLOT_TYPES[i]
-            if(filter && filter === slot.label) continue
+            if (filter && filter === slot.label) continue
             if (!slot.type[this.props.platform]) continue
 
             const slot_locales = slot.locales[this.props.platform]
@@ -221,7 +222,7 @@ class Editor extends Component {
             let value
             if ((type.type.alexa && type.type.google) || (!type.type.alexa && !type.type.google)) {
                 value = type.label
-            } 
+            }
             else if (type.type.alexa && !type.type.google) {
                 value = type.type.alexa
             }
@@ -229,35 +230,35 @@ class Editor extends Component {
                 value = type.type.google
             }
 
-            return {label: type.label, value: value}
+            return { label: type.label, value: value }
         })
     }
 
     BlockViewer(variables) {
-        switch(this.state.node.extras.type) {
+        switch (this.state.node.extras.type) {
             case 'story':
                 return;
             case 'choice':
             case 'choicenew':
                 return <Choice
-                        diagramEngine={this.props.diagramEngine}
-                        repaint={this.props.repaint}
-                    />
+                    diagramEngine={this.props.diagramEngine}
+                    repaint={this.props.repaint}
+                />
             case 'intent':
                 return <Intent
-                        diagramEngine={this.props.diagramEngine}
-                        updateLinter={this.props.updateLinter}
-                        slot_types={this.getSlotTypes(this.props.locales)}
-                        built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
-                        history={this.props.history}
-                        diagram_level_intents={this.props.diagram_level_intents}
-                        platform={this.props.platform}
-                        />
+                    diagramEngine={this.props.diagramEngine}
+                    updateLinter={this.props.updateLinter}
+                    slot_types={this.getSlotTypes(this.props.locales)}
+                    built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
+                    history={this.props.history}
+                    diagram_level_intents={this.props.diagram_level_intents}
+                    platform={this.props.platform}
+                />
             case 'command':
                 // DEPRECATE OLD COMMAND BLOCKS
-                if(typeof this.state.node.extras.commands === 'string'){
-                    return <OldCommand/>
-                }else{
+                if (typeof this.state.node.extras.commands === 'string') {
+                    return <OldCommand />
+                } else {
                     return <Command
                         slot_types={this.getSlotTypes(this.props.locales)}
                         updateLinter={this.props.updateLinter}
@@ -271,66 +272,67 @@ class Editor extends Component {
                 }
             case 'interaction':
                 return (
-                  <Interaction
-                    repaint={this.props.repaint}
-                    updateLinter={this.props.updateLinter}
-                    clearEvents={() => {
-                      this.props.clearRedo();
-                      this.props.clearUndo();
-                    }}
-                    onSlot={this.props.onSlot}
-                    onIntent={this.props.onIntent}
-                    diagramEngine={this.props.diagramEngine}
-                    slot_types={this.getSlotTypes(
-                      this.props.locales
-                    )}
-                    built_ins={
-                      this.props.platform === "google"
-                        ? GOOGLE_BUILT_INS
-                        : ALEXA_BUILT_INS
-                    }
-                    platform={this.props.platform}
-                  />
+                    <Interaction
+                        repaint={this.props.repaint}
+                        updateLinter={this.props.updateLinter}
+                        clearEvents={() => {
+                            this.props.clearRedo();
+                            this.props.clearUndo();
+                        }}
+                        onSlot={this.props.onSlot}
+                        onIntent={this.props.onIntent}
+                        diagramEngine={this.props.diagramEngine}
+                        slot_types={this.getSlotTypes(
+                            this.props.locales
+                        )}
+                        built_ins={
+                            this.props.platform === "google"
+                                ? GOOGLE_BUILT_INS
+                                : ALEXA_BUILT_INS
+                        }
+                        onConfirm={this.props.onConfirm}
+                        platform={this.props.platform}
+                    />
                 );
             case 'combine':
             case 'line':
             case 'audio':
             case 'multiline':
                 // DEPRECATE OLD LINE BLOCKS
-                if(this.state.node.extras.type !== 'combine'){
+                if (this.state.node.extras.type !== 'combine') {
                     let node = this.state.node
                     node.extras.type = 'combine'
-                    this.setState({node: node})
+                    this.setState({ node: node })
                 }
-                return <Line/>
+                return <Line />
             case 'set':
-                return <SetBlock/>
+                return <SetBlock />
             case 'variable':
-                return <Variable/>
+                return <Variable />
             case 'if':
                 // DEPRECATE OLD IF BLOCK
-                if(this.state.node.extras.expressions){
-                    return <IfBlock diagramEngine={this.props.diagramEngine} repaint={this.props.repaint}/>
-                }else{
-                    return <OldIfBlock repaint={this.props.repaint}/>
+                if (this.state.node.extras.expressions) {
+                    return <IfBlock diagramEngine={this.props.diagramEngine} repaint={this.props.repaint} />
+                } else {
+                    return <OldIfBlock repaint={this.props.repaint} />
                 }
             case 'random':
-                return <Random diagramEngine={this.props.diagramEngine} repaint={this.props.repaint}/>
+                return <Random diagramEngine={this.props.diagramEngine} repaint={this.props.repaint} />
             case 'speak':
                 // DEPRECATE OLD SPEAK BLOCKS
-                if(this.state.node.extras.raw !== undefined){
-                    return <OldSpeak/>
+                if (this.state.node.extras.raw !== undefined) {
+                    return <OldSpeak />
                 } else {
-                    return <Speak/>
+                    return <Speak />
                 }
             case 'card':
-                return <Card/>
+                return <Card />
             case 'capture':
                 return <Capture
                     slot_types={this.getSlotTypes(this.props.locales, 'SearchQuery')}
                     platform={this.props.platform}
                     node={this.state.node}
-                    onUpdate={this.props.onUpdate} 
+                    onUpdate={this.props.onUpdate}
                     variables={variables}
                 />
             case 'flow':
@@ -341,7 +343,13 @@ class Editor extends Component {
                     enterFlow={this.props.enterFlow}
                 />
             case 'api':
-                return <API/>
+                return <API />
+            case 'integrations':
+                return <Integrations
+                    onUpdate={this.props.onUpdate}
+                    variables={variables}
+                    editorOpen={this.props.open}
+                />
             case 'payment':
                 return <Payment
                     history={this.props.history}
@@ -354,38 +362,38 @@ class Editor extends Component {
                     editProduct={this.props.editProduct}
                 />
             case 'module':
-                return <Module user_modules={this.props.user_modules}/>
+                return <Module user_modules={this.props.user_modules} />
             case 'mail':
-                return <Mail/>
+                return <Mail />
             case 'display':
-                return <Display/>
+                return <Display />
             case 'stream':
-                return <Stream diagramEngine={this.props.diagramEngine} forceRepaint={this.props.forceRepaint} repaint={this.props.repaint}/>
+                return <Stream diagramEngine={this.props.diagramEngine} forceRepaint={this.props.forceRepaint} repaint={this.props.repaint} />
             case 'permissions':
                 return <Permissions />
             case 'exit':
                 return <Alert>This block ends the skill in its current flow and state</Alert>
             case 'reminder':
-                return <Reminder/>
+                return <Reminder />
             case 'permission':
                 return <PermissionCard />
             case 'code':
-                return <Code/>
+                return <Code />
             default:
-              return null
+                return null
         }
     }
 
-    renderTitle(){
-        switch(this.state.node.extras.type) {
+    renderTitle() {
+        switch (this.state.node.extras.type) {
             case 'story':
                 return (<div id="label">Start Block</div>)
             case 'module':
                 return (<div id="label">{this.state.node.name}</div>)
             case 'flow':
-                if(this.state.node.extras.diagram_id){
+                if (this.state.node.extras.diagram_id) {
                     let block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id)
-                    if(block && block.name !== this.state.node.name){
+                    if (block && block.name !== this.state.node.name) {
                         let node = this.state.node
                         node.name = block.name
                     }
@@ -395,53 +403,86 @@ class Editor extends Component {
                 }
                 return <div id="label">Add Flow</div>
             default:
-              return (<input id="label" placeholder="Block Label"
+              return ( <div id="label-container" className="d-flex mb-3 pl-2">
+                <input id="label" placeholder="Block Label"
                     type="text"
                     name="name"
                     value={this.state.node.name}
                     onChange={this.handleChange.bind(this)}
                     onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
-                />);
+                />
+                <i className="more-info mb-2 mr-1 d-flex align-items-center" onClick={() => this.props.setHelp({ type: this.state.node.extras.type})} />
+                <UncontrolledDropdown nav inNavbar>
+                    <DropdownToggle nav tag="div">
+                        <div className="cog mb-2" />
+                    </DropdownToggle>
+                    <DropdownMenu right className="arrow arrow-right no-select" style={{ right: '-12px', marginTop: '5px' }}>
+                        <DropdownItem header>
+                            Block Options
+                                            </DropdownItem>
+                        {['interaction', 'choice', 'capture'].includes(this.state.node.extras.type) && !this.state.node.extras.reprompt &&
+                        
+                            <DropdownItem onClick={this.toggleReprompt}>
+                                Reprompt
+                                                </DropdownItem>
+                        }
+                        <DropdownItem onClick={() => this.setState({
+                              expanded: true,
+                              modal: true
+                          })}className="pointer">
+                            Expand
+                        </DropdownItem>
+                        <DropdownItem onClick={() => this.props.node.parentCombine ? this.props.appendCombineNode(this.state.node) : this.props.copyNode()} className="pointer">
+                            Copy
+                                            </DropdownItem>
+                        <DropdownItem onClick={() => this.props.node.parentCombine ? this.props.removeCombineNode(this.state.node) : this.props.removeNode()} className="pointer">
+                            Delete
+                        </DropdownItem>
+                    </DropdownMenu>
+                </UncontrolledDropdown>
+            </div>);
         }
     }
 
-    eventHandler(e){
-        if(this.props.preview){
+    eventHandler(e) {
+        if (this.props.preview) {
             e.preventDefault()
             e.stopPropagation()
         }
     }
 
-    toggleReprompt () {
+    toggleReprompt() {
         let node = this.state.node
-        if(node.extras.reprompt){
+        if (node.extras.reprompt) {
             node.extras.reprompt = null
             delete node.extras.reprompt
-        }else{
+        } else {
             node.extras.reprompt = {
                 voice: 'Alexa',
                 content: ''
             }
         }
-        this.setState({node: node})
+        this.setState({ node: node })
     }
 
-    EditorRender(){
+    EditorRender() {
         let variables = this.props.global_variables.concat(this.props.variables)
         variables = variables.concat(['Create Variable'])
         return <React.Fragment>
-            {this.BlockViewer(variables) && React.cloneElement(this.BlockViewer(variables),{
+            {this.BlockViewer(variables) && React.cloneElement(this.BlockViewer(variables), {
                 node: this.state.node,
+                extras: this.props.node.extras,
                 onUpdate: this.props.onUpdate,
                 updateEvents: this.props.addUndo,
                 clearRedo: this.props.clearRedo,
                 variables: variables,
+                updateExtras: this.props.updateExtras
             })}
             {this.state.node.extras.reprompt && <React.Fragment>
-                <hr/>
+                <hr />
                 <div className="space-between">
                     <label>Custom Reprompt</label>
-                    <button className="close" onClick={this.toggleReprompt}>×</button>
+                    <button className="close" onClick={this.toggleReprompt}></button>
                 </div>
                 <Prompt
                     placeholder="Sorry I didn't get that! Do you like this or that?"
@@ -449,9 +490,9 @@ class Editor extends Component {
                     content={this.state.node.extras.reprompt.content}
                     updatePrompt={(prompt) => {
                         let node = this.state.node
-                        if(node && node.extras && node.extras.reprompt){
-                            node.extras.reprompt = {...node.extras.reprompt, ...prompt}
-                            this.setState({node: node})
+                        if (node && node.extras && node.extras.reprompt) {
+                            node.extras.reprompt = { ...node.extras.reprompt, ...prompt }
+                            this.setState({ node: node })
                         }
                     }}
                 />
@@ -460,19 +501,12 @@ class Editor extends Component {
     }
 
     render() {
-        let type = this.state.node ? this.state.node.extras.type : null
-        let name = ''
-        if(type){
-            let find = getBlocks().find(block => block.type === type)
-            if(find){
-                name = find.text
-            }
-        }        
+        let type = this.state.node ? this.state.node.extras.type : null     
         if (type === 'god') {
             return null;
         }
         return (
-            <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')}
+            <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open' : '')}
                 onFocus={this.props.unfocus}
                 onClickCapture={this.eventHandler}
                 onKeyDownCapture={this.eventHandler}
@@ -492,48 +526,6 @@ class Editor extends Component {
             >
                 {type ?
                     <div className="controls" key={this.state.node.id}>
-                        <div className="top">
-                            <div className="property">
-                                <div id="close-editor" className="close" onClick={this.props.close}>&times;</div>
-                                <div className="d-flex">
-                                    <div className={"block " + type} onClick={() => this.props.setHelp({type: this.state.node.extras.type})}>
-                                        {name} Block <i className="fas fa-question-circle mr-1"/>
-                                    </div>
-                                    <div className="d-flex pl-2">
-                                        <div
-                                            className="delete-block"
-                                            onClick={()=>this.setState({
-                                                expanded: true,
-                                                modal: true
-                                            })}
-                                        >
-                                            <i className="far fa-expand-arrows-alt mr-2"/>
-                                        </div>
-                                        <UncontrolledDropdown nav inNavbar>
-                                            <DropdownToggle className="delete-block" nav tag="div">
-                                                <i className="fas fa-cog"/>
-                                            </DropdownToggle>
-                                            <DropdownMenu right className="arrow arrow-right no-select" style={{right: '-12px', marginTop: '5px'}}>
-                                                <DropdownItem header>
-                                                    Block Options
-                                                </DropdownItem>
-                                                {['interaction','choice', 'capture'].includes(this.state.node.extras.type) && !this.state.node.extras.reprompt &&
-                                                    <DropdownItem onClick={this.toggleReprompt}>
-                                                        <i className="fas fa-redo text-muted"/> Reprompt
-                                                    </DropdownItem>
-                                                }
-                                                <DropdownItem onClick={() => this.props.node.parentCombine ? this.props.appendCombineNode(this.state.node) : this.props.copyNode()} className="pointer">
-                                                    <i className="fas fa-copy text-muted"/> Copy
-                                                </DropdownItem>
-                                                <DropdownItem onClick={() => this.props.node.parentCombine ? this.props.removeCombineNode(this.state.node) : this.props.removeNode()} className="pointer">
-                                                    <i className="fas fa-file-times text-muted"/> Delete
-                                                </DropdownItem>
-                                            </DropdownMenu>
-                                        </UncontrolledDropdown>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div id="editor-section">
                             {this.renderTitle()}
                             {!this.state.expanded ? this.EditorRender() : <div className="text-center mt-5"><span className="loader text-lg"></span></div>}
@@ -541,11 +533,11 @@ class Editor extends Component {
                                 <React.Fragment>
                                     <Modal
                                         isOpen={this.state.modal}
-                                        toggle={()=>this.setState({modal: false})}
-                                        onClosed={()=>this.setState({expanded: false})}
+                                        toggle={() => this.setState({ modal: false })}
+                                        onClosed={() => this.setState({ expanded: false })}
                                         size="lg"
                                     >
-                                        <ModalHeader toggle={()=>this.setState({modal: false})}>{this.state.node.name} Settings</ModalHeader>
+                                        <ModalHeader toggle={()=>this.setState({modal: false})} header={`${this.state.node.name} Settings`} />
                                         <ModalBody className="pb-4 px-4">
                                             {this.EditorRender()}
                                         </ModalBody>
@@ -554,7 +546,7 @@ class Editor extends Component {
                             }
                         </div>
                     </div>
-                : null}
+                    : null}
             </div>
         );
     }

@@ -3212,7 +3212,7 @@ button.close:hover{
     font-size: 14px;
 }
 
-.variable-box__control {
+.variable-box__control, .variable-box>input {
     background-color: #fff !important;
     border: 1px solid rgba(141, 162, 181, 0.4) !important;
     color: #8DA2B5 !important;
@@ -3223,14 +3223,32 @@ button.close:hover{
     color: #132144 !important;
     border-radius: 6px !important;
     height: 40px;
-    background-image: url(/logic.svg);
-    background-repeat: no-repeat;
-    background-position: 12px 53%;
-    padding-left: 27px;
 }
 
-input.variable-box__control {
-    padding-left: 38px;
+.variable-box__control {
+  background-image: url(/logic.svg) !important;
+  background-repeat: no-repeat !important;
+  background-position: 12px 12px !important;
+  padding-left: 27px;
+}
+
+.variable-box {
+  position: relative;
+}
+
+.variable-box>input {
+  padding-left: 38px;
+}
+
+.variable-box:before {
+  content: '';
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  background-image: url(/logic.svg) !important;
+  background-repeat: no-repeat !important;
+  left: 12px;
+  top: 13px;
 }
 
 .variable-box__menu {

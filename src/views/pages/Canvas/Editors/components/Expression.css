@@ -30,6 +30,10 @@
 	margin-left: 10px;
 }
 
+.variable-box__placeholder {
+	color: #0b1a38 !important
+}
+
 .expression-block {
 	padding: 5px 4px;
 	border: 1px solid;

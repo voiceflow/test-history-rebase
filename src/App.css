@@ -215,8 +215,13 @@ body {
     z-index: 10;
 }
 .modal {
-    overflow-y: scroll !important;
-    overflow-x: hidden !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.modal::-webkit-scrollbar { 
+  display: none;
 }
 .joyride-overlay{
     z-index: 1060!important
@@ -1065,7 +1070,7 @@ border-radius: 0px 5px 5px 0px !important;
 .card {
    /* border: 1px solid #fff; */
     border-radius: 6px;
-    /* box-shadow: 0 2px 4px 0 rgba(14,30,37,.12); */
+    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);
     border-radius: 10px;
     border: none;
     padding: 0px;

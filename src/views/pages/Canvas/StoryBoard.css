@@ -28,8 +28,7 @@
     overflow: auto;
     z-index: 1;
     max-height: 240px;
-    overflow-x: hidden;
-    overflow-y: scroll;
+    overflow: hidden;
     box-shadow: 0 0 0 1px rgba(17,49,96,.04), 0 8px 16px 0 rgba(17,49,96,.16) !important;
     border-radius: 6px;
 }
@@ -2770,6 +2769,13 @@ button.close:hover{
 
 .btn-outline-secondary:active {
     background-color: #fafafa !important;
+}
+
+.btn-group-vertical>.btn, .btn-group>.btn {
+  position: relative;
+  flex-grow: 1;
+  flex-basis: 0;
+  text-transform: capitalize
 }
 
 .btn-group-vertical>.btn:hover,

@@ -17,7 +17,7 @@ export default class SearchableDropdown extends Component {
 
     render() {
         return (
-            <div class="search__dropdown">
+            <div className="search__dropdown">
                 <div id="myDropdown" class="search__dropdown_content">
                     <input type="text" placeholder="Search..." id="myInput" onChange={this.onSearchChange} onKeyUp={e => e.stopPropagation()} />
                     

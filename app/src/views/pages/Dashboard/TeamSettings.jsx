@@ -67,7 +67,7 @@ const MemberRow = props => {
     info = (
       <>
         <div className="member-icon lg solid">
-          <i className="far fa-paper-plane" style={{ marginLeft: -3 }} />
+          <img src={'/pending.svg'} width='17' style={{ marginTop: -3 }} />
         </div>
         <div className="ml-3">
           <span>{m.email}</span>
@@ -84,15 +84,15 @@ const MemberRow = props => {
     info = (
       <>
         <div className="member-icon lg solid">
-          <i className="far fa-user" />
+        <img src={'/add-teammate.svg'} width='18' style={{ marginTop: -3 }} />
         </div>
-        <div className="ml-3 mt-1">
+        <div className="ml-3">
           <Input
+            className="w-300 form-bg"
             placeholder="Email"
             value={m.invite}
             onChange={e => props.update({ invite: e.target.value })}
           />
-          <small className="text-muted">Invite New Member</small>
         </div>
       </>
     );
@@ -318,11 +318,12 @@ class TeamSettings extends Component {
               disabled
             />
             <hr />
+            <label>Billing</label>
             <button
-              className="btn btn-link"
+              className="btn btn-link-lg"
               onClick={() => this.setState({ stage: "BILLING" })}
             >
-              Billing
+              Invoices
             </button><br/>
             <small className="text-muted">
               View invoices, update your payment options
@@ -330,7 +331,7 @@ class TeamSettings extends Component {
             <hr />
             <label>Privacy</label>
             <button
-              className="btn btn-link"
+              className="btn btn-link-lg"
               onClick={() => this.setState({ stage: "DELETE", input: "" })}
             >
               Delete Team
@@ -346,7 +347,7 @@ class TeamSettings extends Component {
         const UPDATING = this.state.stage === 'UPDATING_MEMBERS'
         return (
           <div className={ UPDATING ? "disabled" : ""}>
-            { this.IS_ADMIN && <small className="d-flex text-muted"><span className="badge mr-1">{this.props.team.seats}</span> current seats</small> }
+            { this.IS_ADMIN && <small className="d-flex text-muted mt-2 mb-2"><span className="badge mr-2">{this.props.team.seats}</span> current seats</small> }
             {this.state.members.map((m, i) => {
               return (
                 <MemberRow
@@ -372,11 +373,11 @@ class TeamSettings extends Component {
             })}
             { this.IS_ADMIN && <div className="my-3">
               <div className="text-center mb-3">
-                <div className="btn-link pointer" onClick={this.addMember}>
-                  Add more teammates
+                <div className="btn-link-lg pointer mt-4" onClick={this.addMember}>
+                  Add teammates
                 </div>
               </div>
-              <div className="text-center mt-4">
+              <div className="text-center mt-3">
                 <button className="btn btn-primary" onClick={this.applyChanges} disabled={ UPDATING } style={{width: 150}}>
                   { UPDATING ? <span className="loader"/> : "Apply Changes"} 
                 </button>
@@ -406,7 +407,7 @@ class TeamSettings extends Component {
       <>
         <UncontrolledDropdown inNavbar>
           <DropdownToggle tag="div" className="dropdown-button">
-            <i className="fas fa-cog"/>
+            <img src={'/cog.svg'} width={17}></img>
           </DropdownToggle>
           <DropdownMenu right className="no-select">
             <DropdownItem onClick={()=>this.props.update('MEMBERS')}>
@@ -427,8 +428,8 @@ class TeamSettings extends Component {
           isOpen={!!this.props.open}
           toggle={this.props.close}
         >
-          <ModalHeader 
-            toggle={this.props.close} 
+          <ModalHeader
+            toggle={this.props.close}
             className="pb-2"
             header={(STAGES[this.state.stage] && STAGES[this.state.stage].title) || "Team Settings"}
           />

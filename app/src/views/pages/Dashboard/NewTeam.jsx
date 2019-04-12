@@ -25,7 +25,7 @@ const TYPE_OPTIONS = [{
 }]
 
 const WrapForm = props => (
-  <div className={"form-control input-wrap " + (props.className || "")}>
+  <div className={"form-control input-wrap mt-3 form-bg"}>
     <input
       onChange={props.onChange}
       value={props.value}
@@ -84,8 +84,8 @@ class NewTeam extends Component {
       this.props.setModal({
         size: 'sm',
         header: true,
-        body: (<div className="text-center py-5 mb-5 text-muted">
-          <img src="/images/icons/takeoff.svg" alt="blast off"/><br/><br/>
+        body: (<div className="text-center mb-5 text-muted">
+          <img src="/images/icons/takeoff.svg" height={140} alt="blast off"/><br/><br/>
           Your board <i><b>{team.name}</b></i> has been
           successfully created
         </div>)
@@ -167,9 +167,9 @@ class NewTeam extends Component {
       case "CHECKOUT":
         return (
           <div className="text-center">
-            <h5 className="text-dark">{name}</h5>
+            <h5 className="uppercase-header">{name}</h5>
             <div className="my-5 pt-4 pb-5">
-              <span className="text-skinny text-muted">Confirm Team Plan</span>
+              <span className="uppercase text-muted">Confirm Team Plan</span>
               <div className="mx-auto max-w-400 mt-4">
                 <SeatsCheckout
                   prompt="Start Free Trial"
@@ -189,15 +189,15 @@ class NewTeam extends Component {
       case "INVITE":
         return (
           <div className="text-center mb-5">
-            <h5 className="text-dark">{name}</h5>
+            <h5 className="uppercase-header">{name}</h5>
             <div className="my-5 pt-4 pb-5">
               <div>
-                <span className="text-skinny text-muted">
+                <span className="text-muted uppercase">
                   Invite Team Members
                 </span>
                 <span className="grey-box ml-2">{seats}</span>
               </div>
-              <small className="text-muted">up to 2 members free</small>
+              {/* <small className="text-muted">up to 2 members free</small> */}
               <div className="super-center mt-4">
                 <div style={{ minWidth: 400 }}>
                   <WrapForm
@@ -205,9 +205,9 @@ class NewTeam extends Component {
                     disabled
                     className="disabled"
                   >
-                    <span className="text-dark font-weight-bold mr-2">
+                    <label className="text-muted mr-3">
                       OWNER
-                    </span>
+                    </label>
                   </WrapForm>
                   {this.state.invites.map((invite, i) => (
                     <div key={i} className="input-wrap-wrap">
@@ -226,7 +226,7 @@ class NewTeam extends Component {
                         }
                       />
                       <div
-                        className="close"
+                        className="remove"
                         onClick={() =>
                           this.setState({
                             invites: update(this.state.invites, {
@@ -235,25 +235,24 @@ class NewTeam extends Component {
                           })
                         }
                       >
-                        &times;
                       </div>
                     </div>
                   ))}
                   <Button
                     onClick={this.addInvite}
                     color="clear"
-                    className="border-none btn-lg mt-2"
-                    style={{ fontWeight: 300 }}
+                    className="btn-lg mt-3"
+                    style={{ fontWeight: 400 }}
                     block
                   >
-                    <i className="fal fa-plus" /> Add Team Member
+                    <img src={'/add-step.svg'} className="mr-2 mb-1" height={15}/> Add Teammate
                   </Button>
                 </div>
               </div>
               <div className="mt-5">
-                <Button className="btn-primary" onClick={this.confirmInvite}>
+                <button className="btn-primary" onClick={this.confirmInvite}>
                   Continue
-                </Button>
+                </button>
               </div>
             </div>
           </div>
@@ -262,7 +261,7 @@ class NewTeam extends Component {
         return (
           <div id="name-box" className="text-center">
             <div className="mb-4">
-              <h5 className="text-dark">Create Board</h5>
+              <h5 className="uppercase-header">Create Board</h5>
               <div style={{ minHeight: 45 }} className="mt-3 super-center">
                 {this.state.error && (
                   <Alert color="danger small" className="m-0">
@@ -277,7 +276,7 @@ class NewTeam extends Component {
                 name="name"
                 value={this.state.name}
                 onChange={this.handleChange}
-                placeholder="Enter Your Board Name"
+                placeholder="Enter Board Name"
                 required
               />
             </div>
@@ -291,14 +290,14 @@ class NewTeam extends Component {
                     image={this.state.image_url}
                     update={url => this.setState({ image_url: url })}
                   />
-                  <small className="text-muted">Add Team Icon (optional)</small>
+                 <div className="text-muted mt-4">Drop team icon here <br></br> or browse</div>
                 </div>
               </div> 
             }
             <div className="mt-5">
-              <Button className="btn-primary" onClick={this.saveTeam}>
+              <button className="btn-primary" onClick={this.saveTeam}>
                 Continue
-              </Button>
+              </button>
             </div>
           </div>
         );
@@ -306,7 +305,7 @@ class NewTeam extends Component {
         return (
           <div id="name-box" className="text-center">
             <div className="mb-4">
-              <h5 className="text-dark">Create Board</h5>
+              <h5 className="uppercase-header">Create Board</h5>
               <div className="mt-5 pt-4">
                 <ImageOptions
                   question="Who's using this board?"
@@ -331,9 +330,7 @@ class NewTeam extends Component {
               <img src={"/back.svg"} alt="back" className="mr-3 back-arrow" />
             </div>
           )}
-          <Link id="exit-template" to="/dashboard" className="close">
-            &times;
-          </Link>
+          <Link id="exit-template" to="/dashboard" className="close"></Link>
           <div className="container">{this.renderBody()}</div>
         </div>
       </div>

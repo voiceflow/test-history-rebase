@@ -369,7 +369,7 @@ class Onboarding extends Component{
 							} else if(this.state.type === 'PERSONAL'){
 								this.setState({stage: 'work_plan'})
 							}	
-						}}>Next Question</button>
+						}}>Continue</button>
 					</div>
 				</React.Fragment>
 			default:

@@ -138,6 +138,7 @@ exports[`Canvas render canvas 1`] = `
       setCanvasEvents={[Function]}
       setHelp={[Function]}
       unfocus={[Function]}
+      updateExtras={[Function]}
       updateLinter={[Function]}
     />
     <div

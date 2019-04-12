@@ -27,7 +27,6 @@ import NavBar from './views/components/NavBar';
 // import Marketplace from './views/pages/Marketplace';
 // import ModulePage from './views/pages/Marketplace/ModulePage';
 import Page404 from 'views/pages/404'
-import Onboarding from './views/pages/Onboarding';
 import ModuleAdminPage from './views/pages/ModuleAdminPage';
 import ErrorBoundary from './ErrorBoundary';
 import socket from 'socket.io-client'
@@ -50,41 +49,45 @@ import { getAuth, getUser } from 'ducks/account'
 //   STRIPE_KEY = 'pk_test_G3o7CC0pvrW2cIbIU1bLkMSR'
 // }
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  return (
-    <Route {...rest} render={props =>
-        !getAuth() ? (
-          <Redirect to={{ 
-            pathname: "/login",
-            search: props.location.search,
-            state: { from: props.location } 
-          }}/>
-        ) : (
-          <ErrorBoundary>
-            <Component {...props} {...rest}/>
-          </ErrorBoundary>
-        )
-      }
-    />
-  );
-};
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={props =>
+      !getAuth() ? (
+        <Redirect to={{ 
+          pathname: "/login",
+          search: props.location.search,
+          state: { from: props.location } 
+        }}/>
+      ) : (
+        <ErrorBoundary>
+          <Component {...props} {...rest}/>
+        </ErrorBoundary>
+      )
+    }
+  />
+);
 
-const PublicRoute = ({ component: Component, name: Name, ...rest }) => {
-  return (
-    <Route {...rest} render={props =>
-        getAuth() ? (
-          <Redirect to={{ 
-            pathname: "/dashboard", 
-            search: props.location.search,
-            state: { from: props.location } 
-          }}/>
-        ) : (
-          <Component {...props} {...rest} name={Name} />
-        )
-      }
-    />
-  )
-};
+class PublicComponent extends Component {
+  shouldComponentUpdate(prevProps) {
+    return prevProps.location !== this.props.location
+  }
+
+  render() {
+    const props = this.props
+    return (getAuth() ? (
+      <Redirect to={{ 
+        pathname: "/dashboard", 
+        search: props.location.search,
+        state: { from: props.location } 
+      }}/>
+    ) : (
+      <props.component {...props} />
+    ))
+  }
+}
+
+const PublicRoute = ({ component, ...rest }) => (
+  <Route {...rest} render={(route_props) => <PublicComponent {...route_props} {...rest} component={component}/>}/>
+)
 
 const getEndpoint = () => {
   let port = "";
@@ -199,8 +202,9 @@ class App extends Component {
                 {/* Team routes */}
                 <PrivateRoute path="/dashboard" name="Dashboard" component={Team}/>
                 <PrivateRoute exact path="/team/new" component={NewTeam}/>
-                <PrivateRoute exact path="/team/:team_id/template" component={Team} page="template"/>
+                <PrivateRoute exact path="/team/template" component={Team} page="template"/>
                 <PrivateRoute exact path="/team/:team_id" component={Team}/>
+                <PrivateRoute exact path="/onboarding" component={Team} page="onboarding"/>
                 {/* Canvas Routes */}
                 <PrivateRoute path="/preview/:skill_id/:diagram_id" component={Skill} page="canvas" preview/>
                 <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas"/>
@@ -232,7 +236,6 @@ class App extends Component {
                 <PrivateRoute path="/market/:skill_id/flows" name="Market" component={Skill} onConfirm={this.onConfirm} page="market" secondaryPage="flows"/>
                 <PrivateRoute path="/market/:skill_id/templates" name="Market" component={Skill} onConfirm={this.onConfirm} page="market" secondaryPage="templates"/>
                 <PrivateRoute path="/market/:skill_id" name="Market" component={Skill} onConfirm={this.onConfirm} page="market" secondaryPage="flows"/>
-                <PrivateRoute path="/onboarding" name="Onboarding" component={Onboarding} />
                 <PrivateRoute path="/stuff" name="Certification" component={ModuleAdminPage} />
                 <PrivateRoute path="/account/upgrade" name="Account" component={Account} upgrade/>
                 <PrivateRoute path="/account" name="Account" component={Account} />\

@@ -227,38 +227,6 @@
 .platform-image.alexa {
     bottom: -6rem;
 }
-.btn-icon {
-    font-weight: normal;
-    transition: all ease 0.25s;
-    opacity: 1 !important;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 50px;
-    height: 50px;
-    background-color: #fff;
-    border-radius: 50%;
-    background-repeat: no-repeat;
-    background-size: 20px;
-    top: 20px;
-    cursor: pointer;
-}
-.btn-icon:hover{
-    color: #8da2b5 !important;
-    background-color: #F7F9FB;
-}
-.btn-icon:active{
-    background-color: #EFF3F6;
-}
-#return-template{
-    background-image: url('/back-light.svg');
-    background-position: center;
-    position: absolute;
-    top: 20px;
-    left: 32px;
-}
-#return-template:hover {
-    background-image: url('/back.svg');
-}
 #exit-template{
     background-image: url('/close.svg');
     position: absolute;

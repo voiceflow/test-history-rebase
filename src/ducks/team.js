@@ -121,6 +121,7 @@ export const fetchTeams = () => {
     try{
       let res = await axios.get('/teams')
       
+      console.log("TEAMS", res.data)
       // NORMALIZE TEAMS
       const state = normalize('team_id', res.data.map(t => {
         t.members = [];
@@ -129,11 +130,13 @@ export const fetchTeams = () => {
       }))
 
       // If the current team doesn't exist, default it to something else
+      dispatch(updateTeams(state))
+
       if(!(getState().team.team_id in state.byId)){
         let new_team = state.allIds.length > 0 ? state.allIds[0] : undefined
         dispatch(updateCurrentTeam(new_team))
       }
-      dispatch(updateTeams(state))
+
       return Promise.resolve()
     }catch(err){
       dispatch(setError("Unable to fetch boards"))

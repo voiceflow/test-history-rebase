@@ -566,6 +566,40 @@
     box-shadow: 0 0 0 1px #eaeff4;
 }
 
+.back-btn-large{
+    background-image: url('/back-light.svg');
+    background-position: center;
+    position: absolute;
+    top: 20px;
+    left: 32px;
+}
+.back-btn-large:hover {
+    background-image: url('/back.svg');
+}
+
+.btn-icon {
+    font-weight: normal;
+    transition: all ease 0.25s;
+    opacity: 1 !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    top: 20px;
+    cursor: pointer;
+}
+.btn-icon:hover{
+    color: #8da2b5 !important;
+    background-color: #F7F9FB;
+}
+.btn-icon:active{
+    background-color: #EFF3F6;
+}
+
 .login-logo {
     width: 80px !important;
 }
@@ -1166,7 +1200,7 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
 
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
-    color: #42A5FF;
+    color: #5D9DF5;
     background-color: #fff;
     /*    border: 1px solid #42A5FF;*/
     border-radius: 5px;
@@ -1784,7 +1818,7 @@ label {
     border-color: #42A5FF !important;
 }
 /* ADVANCED BLOCKS */
-.srd-default-node.interaction, .srd-default-node.flow, .srd-default-node.stream, .srd-default-node.api, .srd-default-node.code,
+.srd-default-node.interaction, .srd-default-node.flow, .srd-default-node.stream, .srd-default-node.api, .srd-default-node.code, .srd-default-node.integrations,
 .srd-default-node.command, .srd-default-node.intent{
     border-top: 6px solid #F86683 !important;
     border-color: #F86683 !important;
@@ -2149,6 +2183,7 @@ label {
     padding-left: 23px !important;
     background-color: #fff !important;
 }
+.combine-node .srd-default-node.integrations,
 .combine-node .srd-default-node.api {
     background: url('/api.svg') 95% 10px no-repeat !important;;
     background-size: 13px !important;
@@ -2179,6 +2214,7 @@ label {
     background-size: 13px !important;
     background-color: #fff !important;
 }
+.combine-node .srd-default-node.integrations:hover,
 .combine-node .srd-default-node.api:hover{
     background: url('/api.svg') 85% 10px no-repeat, url('/grid.svg') 95% 10px no-repeat !important;
     background-size: 13px !important;
@@ -3107,9 +3143,6 @@ button.close:hover{
     line-height: 18px;
 }
 
-.variable-box__input {
-    color: #fff !important;
-}
 .variable-box__option{
     align-content: left !important;
     background-color: #fff;
@@ -3124,6 +3157,9 @@ button.close:hover{
     padding-top: none !important;
     padding-left: 43px !important;
     padding-top: 11px !important;
+    white-space: nowrap;
+    overflow-x: hidden;
+    position: relative;
 }
 .variable-box__option:hover{
     background-color: #F7F9FB !important;
@@ -3151,6 +3187,9 @@ button.close:hover{
     background-color: #F7F9FB;
     cursor: pointer;
     font-size: 15px !important;
+}
+.variable-box--is-disabled {
+    opacity: 0.3;
 }
 .variable-group>span {
     font-weight: 500;
@@ -3208,8 +3247,11 @@ input.variable-box__control {
     cursor: pointer !important;
     overflow: none !important;
     text-align: left;
-    max-width: 200px !important;
-    max-width: 199px !important;
+}
+
+.variable-box__menu-list {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
 }
 
 .variable-box__control--is-focused, .variable-box__control:focus {
@@ -3217,7 +3259,6 @@ input.variable-box__control {
     background-color: #fff !important;
 }
 
-.variable-box__placeholder,
 .variable-box__single-value,
 .variable-box__value-container--has-value>div {
     color: #132144 !important;

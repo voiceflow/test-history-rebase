@@ -1,8 +1,8 @@
-
 const  { find } = require('lodash')
 const { SLOT_TYPES } = require('./Constants')
 const randomstring = require("randomstring")
 const { validSpokenCharacters, validLatinChars } = require('./services/Regex')
+const draftToMarkdown = require('./services/draftConvert')
 
 const getUtterancesWithSlotNames = (utterances, slots, square_brackets=false, format_name=false) => {
 
@@ -189,9 +189,76 @@ exports.utteranceToIntentName = (utterance, existing) => {
 // 	exports.LANGUAGE_SET = LANGUAGE_SET
 // }
 
+const deepDraftToMarkdown = (object) => {
+  let result = object
+  let variables = new Set()
+  let regex = /\{([A-Za-z0-9_]*)\}/g
+
+  const finder = str => {
+    let match = regex.exec(str)
+    while (match != null) {
+      if(/[A-Za-z0-9_]{1,24}/.test(match[1])){
+          variables.add(match[1])
+        }
+        match = regex.exec(str)
+    }
+  }
+
+  const recurse = (sub_collection, resultToModify) => {
+    if (typeof sub_collection === 'object') {
+      for (let key in sub_collection) {
+        let val = sub_collection[key]
+        if (typeof val === 'object' && val && val.blocks && val.entityMap && Object.keys(val).length === 2) {
+          val = draftToMarkdown(val)
+        }
+        if (typeof val === 'object' && val && val.value !== undefined && typeof val.value !== 'object') {
+          val = val.value
+        }
+        resultToModify[key] = val
+        recurse(sub_collection[key], resultToModify[key])
+      }
+    } else {
+      if (typeof sub_collection === 'string') {
+        finder(sub_collection)
+      }
+    }
+  }
+
+  recurse(object, result)
+  return {
+    result,
+    variables: [...variables]
+  }
+}
+
+const deepVariableSubstitution = (object, variableMap) => {
+  const replacer = (match, inner, variables_map, uriEncode = false) => {
+    if(inner in variables_map){
+        return uriEncode ? encodeURIComponent(variables_map[inner]) : variables_map[inner]
+    }else{
+        return match
+    }
+  }
+
+  const recurse = (sub_collection, uriEncode = false) => {
+    if (typeof sub_collection === 'object') {
+      for (let key in sub_collection) {
+        sub_collection[key] = key === 'url' ? recurse(sub_collection[key], true) : recurse(sub_collection[key])
+      }
+    } else if (typeof sub_collection === 'string') {
+      return sub_collection.replace(/\{([A-Za-z0-9_]*)\}/g, (match, inner) => replacer(match, inner, variableMap, uriEncode))
+    }
+    return sub_collection
+  }
+
+  return recurse(object)
+}
+
 exports.findSlot = findSlot
 exports.getUtterancesWithSlotNames = getUtterancesWithSlotNames
 exports.formatName = formatName
 exports.getSlotsForKeysAndFormat = getSlotsForKeysAndFormat
 exports.getSlotsForKeys = getSlotsForKeys
 exports.getSlotType = getSlotType
+exports.deepDraftToMarkdown = deepDraftToMarkdown
+exports.deepVariableSubstitution = deepVariableSubstitution

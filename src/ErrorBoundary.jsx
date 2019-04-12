@@ -14,22 +14,23 @@ class ErrorBoundary extends React.Component {
     }
 
     componentDidCatch(error, info){
-        error = serializeError(error)
-        axios.post('/errors', {
-            name: error.name,
-            message: error.message,
-            error: error.stack,
-            componentTree: info.componentStack,
-            browser: getDevice(),
-            user_detail: this.props.user,
-        })
-        this.setState({
-            hasError: true,
-        });
+      if(!error) return
+      error = serializeError(error)
+      axios.post('/errors', {
+          name: error.name,
+          message: error.message,
+          error: error.stack,
+          componentTree: info.componentStack,
+          browser: getDevice(),
+          user_detail: this.props.user,
+      })
+      this.setState({
+          hasError: true,
+      });
     }
 
     render() {
-        if (this.state.hasError){
+        if (this.state.hasError || this.props.show){
             return (<div className="h-100 w-100 super-center">
                 <div className="text-center">
                     <h1>Whoops, something went wrong, please return to home</h1>

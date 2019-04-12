@@ -238,7 +238,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
               "icon": <i
                 class="fas fa-arrow-alt-from-left"
               />,
-              "text": "Intent",
+              "text": "Jump",
               "tip": "Handle intents, from within the skill and upon skill launch with CanFulfillIntent)",
               "type": "intent",
             }
@@ -261,16 +261,16 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           key="2"
         />
         <Connect(MenuItem)
-          data-tip="Use external APIs and store responses into variables"
+          data-tip="Integrate external services into your skill"
           draggable={true}
           item={
             Object {
               "icon": <i
                 className="fas fa-globe"
               />,
-              "text": "API",
-              "tip": "Use external APIs and store responses into variables",
-              "type": "api",
+              "text": "Integrations",
+              "tip": "Integrate external services into your skill",
+              "type": "integrations",
             }
           }
           key="3"
@@ -788,7 +788,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
               "icon": <i
                 class="fas fa-arrow-alt-from-left"
               />,
-              "text": "Intent",
+              "text": "Jump",
               "tip": "Handle intents, from within the skill and upon skill launch with CanFulfillIntent)",
               "type": "intent",
             }
@@ -811,16 +811,16 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           key="2"
         />
         <Connect(MenuItem)
-          data-tip="Use external APIs and store responses into variables"
+          data-tip="Integrate external services into your skill"
           draggable={true}
           item={
             Object {
               "icon": <i
                 className="fas fa-globe"
               />,
-              "text": "API",
-              "tip": "Use external APIs and store responses into variables",
-              "type": "api",
+              "text": "Integrations",
+              "tip": "Integrate external services into your skill",
+              "type": "integrations",
             }
           }
           key="3"

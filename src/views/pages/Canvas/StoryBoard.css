@@ -22,15 +22,20 @@
     color: #8DA2B5 !important;
 }
 .search__dropdown_content {
-    position: absolute;
-    background-color: #fff;
-    min-width: 230px;
-    overflow: auto;
-    z-index: 1;
-    max-height: 240px;
-    overflow: hidden;
-    box-shadow: 0 0 0 1px rgba(17,49,96,.04), 0 8px 16px 0 rgba(17,49,96,.16) !important;
-    border-radius: 6px;
+  position: absolute;
+  background-color: #fff;
+  min-width: 230px;
+  overflow: auto;
+  z-index: 1;
+  max-height: 240px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  box-shadow: 0 0 0 1px rgba(17,49,96,.04), 0 8px 16px 0 rgba(17,49,96,.16) !important;
+  border-radius: 6px;
+}
+
+.search__dropdown_content::-webkit-scrollbar { 
+  display: none;
 }
 
 .search__dropdown_content #myInput {

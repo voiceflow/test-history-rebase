@@ -994,7 +994,7 @@ export class ActionGroup extends PureComponent {
                           position="bottom"
                           className="ml-4 mr-4"
                       >
-                          <button className="nav-btn" onClick={this.props.onTest}><i className="far fa-play" /></button>
+                          <button className="nav-btn" onClick={this.props.onTest}><i className="fas fa-play" /></button>
                       </Tooltip>
                   </div>
 

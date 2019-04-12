@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="42px" height="26px" viewBox="0 0 42 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>equal</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#6E849A" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="#6E849A" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="equal" fill="url(#linearGradient-1)">
+            <path d="M4.941,10 L16,10 L26,10 L37.059,10 C39.776,10 42,7.718 42,5 C42,2.282 39.776,0 37.059,0 L26,0 L16,0 L4.941,0 C2.224,0 0,2.282 0,5 C0,7.718 2.224,10 4.941,10 Z" id="Path"></path>
+            <path d="M37.059,16 L26,16 L16,16 L4.941,16 C2.224,16 0,18.282 0,21 C0,23.718 2.224,26 4.941,26 L16,26 L26,26 L37.059,26 C39.776,26 42,23.718 42,21 C42,18.282 39.776,16 37.059,16 Z" id="Path"></path>
+        </g>
+    </g>
+</svg>

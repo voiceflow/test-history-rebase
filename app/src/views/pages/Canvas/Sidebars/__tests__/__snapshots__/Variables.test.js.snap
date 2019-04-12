@@ -25,16 +25,19 @@ exports[`Sidebar Variables render variable sidebar on global 1`] = `
       >
         Create Variable
       </Label>
-      <Input
-        autoFocus={true}
-        className="variable-box__control"
-        maxLength="16"
-        name="new_global"
-        onChange={[Function]}
-        placeholder="Variable Name"
-        type="text"
-        value=""
-      />
+      <div
+        className="variable-box"
+      >
+        <Input
+          autoFocus={true}
+          maxLength="16"
+          name="new_global"
+          onChange={[Function]}
+          placeholder="Variable Name"
+          type="text"
+          value=""
+        />
+      </div>
     </FormGroup>
   </form>
   <small

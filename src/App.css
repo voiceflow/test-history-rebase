@@ -278,8 +278,13 @@ ul {
     z-index: 10;
 }
 .modal {
-    overflow-y: scroll !important;
-    overflow-x: hidden !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.modal::-webkit-scrollbar { 
+  display: none;
 }
 .joyride-overlay{
     z-index: 1060!important

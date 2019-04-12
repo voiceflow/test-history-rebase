@@ -24,7 +24,7 @@ import InvRegex from 'services/Regex'
 import './ActionGroup.css'
 
 const loading = (message) => {
-    return <div className="super-center mb-2">
+    return <div className="super-center mb-4">
         <div className='text-center'>
             <p className="mb-0">{message}</p>
         </div>
@@ -536,7 +536,7 @@ export class ActionGroup extends PureComponent {
   displayUploadPrompt() {
     if(this.state.show_upload_prompt){
       return  <div className="upload-success-popup">
-        <button className="close close-upload-success-popup" onClick={this.closePrompt}>&times;</button>
+        <button className="close close-upload-success-popup mt-2" onClick={this.closePrompt} />
           {this.renderBody(false)}
       </div>
     } 
@@ -716,7 +716,7 @@ export class ActionGroup extends PureComponent {
                   <span className="fail-icon"/>  Rendering Error
               </Alert>
           case 5:
-              return <div className={"modal-txt flex-fill text-center mb-4" + (modal ? " w-100" : " mt-4") }>
+              return <div className={"modal-txt flex-fill text-center mb-4 mt-3" + (modal ? " w-100" : " mt-4") }>
                   {this.state.amzn_error && <Alert color="danger"><span className="fail-icon"/> Login With Amazon Failed - Try Again</Alert>}
                   Login with Amazon to test your Skill on your own Alexa device, or in the Alexa developer console
                   {modal && Video('https://s3.amazonaws.com/com.getvoiceflow.videos/first.mp4')}

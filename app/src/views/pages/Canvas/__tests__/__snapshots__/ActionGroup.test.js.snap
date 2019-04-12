@@ -30,10 +30,9 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
   >
     <ModalHeader
       className="pb-0 mb--4"
+      header="Upload Project"
       toggle={[Function]}
-    >
-      Upload Project
-    </ModalHeader>
+    />
     <ModalBody
       className="modal-info"
       style={

@@ -93,9 +93,9 @@ export class Blocks extends PureComponent {
         })
     }
 
-    componentDidMount(){
-        this.loadUserModules()
-    }
+    // componentDidMount(){
+        // this.loadUserModules()
+    // }
 
     toggleBlockSection(section_title){
         let s = this.state

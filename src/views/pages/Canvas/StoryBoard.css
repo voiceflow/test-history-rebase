@@ -2197,7 +2197,7 @@ label {
     background-color: #fff !important;
     transition: 0.15s ease-out all !important;
 }
-.combine-node .srd-default-node.intent:hover {
+.combine-node .srd-default-fnode.intent:hover {
     background: url('/jump.svg') 85% 12px no-repeat, url('/grid.svg') 95% 10px no-repeat !important;
     background-size: 13px !important;
     background-color: #fff !important;

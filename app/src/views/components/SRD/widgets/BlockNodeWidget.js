@@ -86,7 +86,7 @@ export class BlockNodeWidget extends BaseWidget {
 		const engine = this.props.diagramEngine
 		let getNodeRef = findDOMNode(this.nodeRef.current).getBoundingClientRect()
 		let newX = getNodeRef.width/2 + getNodeRef.x
-		let newY = getNodeRef.y + getNodeRef.height + 20
+		let newY = getNodeRef.y
 		this.props.nodeProps.setBlockMenu(
             <React.Fragment>
               <div style={{top: engine.getDiagramModel().getGridPosition(newY), left: engine.getDiagramModel().getGridPosition(newX - 115), cursor: 'pointer', position: 'absolute', zIndex: 10, width: '300px'}}>

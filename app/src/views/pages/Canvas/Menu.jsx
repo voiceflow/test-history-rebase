@@ -73,7 +73,7 @@ class Menu extends Component {
     }
 
     buildTree(node, current_id, depth=0){
-        if(depth < 4) {
+        if (depth < 4) {
             this.visited.add(node.id)
 
             let tree

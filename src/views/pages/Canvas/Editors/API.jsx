@@ -617,41 +617,6 @@ class API extends Component {
 
             </React.Fragment>
         )
-
-        // return <React.Fragment>
-        //     {this.state.body_state ?
-        //         <React.Fragment>
-        //             <Button color='clear' block onClick={
-        //                 ()=>this.setState({
-        //                     body_state: false,
-        //                     modal: true
-        //                 })
-        //             }><i className="far fa-expand-arrows-alt"/> Expand</Button>
-        //             {content}
-        //         </React.Fragment>
-        //         :
-        //         <React.Fragment>
-        //             <Button color='clear' block disabled>{ this.state.modal ?
-        //                 <React.Fragment>
-        //                     <i className="far fa-expand-arrows-alt"/> Expanded
-        //                 </React.Fragment> :
-        //                 <span className="loader"/>
-        //             }</Button>
-
-        //             <Modal
-        //                 isOpen={this.state.modal}
-        //                 toggle={()=>this.setState({modal: false})}
-        //                 onClosed={()=>this.setState({body_state: true})}
-        //                 size="lg"
-        //             >
-        //                 <ModalHeader toggle={()=>this.setState({modal: false})}>{this.state.node.name} Settings</ModalHeader>
-        //                 <ModalBody className="pb-5">
-        //                     {content}
-        //                 </ModalBody>
-        //             </Modal>
-        //         </React.Fragment>
-        //     }
-        // </React.Fragment>
     }
 }
 

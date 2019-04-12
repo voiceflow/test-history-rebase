@@ -12,6 +12,7 @@ import project from 'ducks/project'
 import modal from 'ducks/modal'
 import team from 'ducks/team'
 import account from 'ducks/account'
+import integrationUsers from './integrationUsersReducer'
 
 export default (history) => combineReducers({
   router: connectRouter(history),
@@ -26,5 +27,6 @@ export default (history) => combineReducers({
   project,
   modal,
   team,
-  account
+  account,
+  integrationUsers
 })

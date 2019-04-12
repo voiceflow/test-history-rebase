@@ -114,14 +114,14 @@ class Billing extends Component {
               <div className="position-relative">
                 <label>Payment Option</label>
                 {this.state.stage === "INVOICE" && 
-                  <div className="position-absolute w-100">
+                  <div className="position-absolute w-100" style={{backgroundColor: '#FFF'}}>
                     <input
                       value={`[${this.state.source.brand}] XXXX-XXXX-XXXX-${this.state.source.last4}`}
                       className="disabled form-control"
                       style={{ height: 40 }}
                       disabled
                     />
-                    <div className="mt-2 px-1">
+                    <div className="mt-2 px-1 space-between">
                       <button className="btn btn-link" onClick={() => this.setState({stage: "STRIPE"})}>Update</button>
                     </div>
                   </div>

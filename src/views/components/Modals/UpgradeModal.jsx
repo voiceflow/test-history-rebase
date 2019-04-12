@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import {Button, Modal, ModalHeader, ModalBody, Row, Col} from 'reactstrap'
+import {Button, Modal, ModalBody, Row, Col} from 'reactstrap'
+import { ModalHeader } from 'views/components/Modals/ModalHeader'
 import {Elements} from 'react-stripe-elements';
 import CheckoutForm from './../../pages/Account/CheckoutForm'
 import "./../../pages/Account/Account.css";
@@ -69,7 +70,7 @@ class UpgradeModal extends Component {
         let option = options.find(o => o.plan === this.state.selected_plan)
         if (option) {
             return <div>
-                {option.features.map((feature, i) => <div className="feature-item" key={i}><img src="/images/icons/circle_check.svg" width={25} className="mr-3" alt="check"/>{feature}</div>)}
+                {option.features.map((feature, i) => <div className="feature-item" key={i}><img src="/images/icons/circle_check.svg" width={18} className="mr-3" alt="check"/>{feature}</div>)}
             </div>
         }
         return null
@@ -77,7 +78,7 @@ class UpgradeModal extends Component {
 
     render() {
         return <Modal isOpen={this.props.upgrade_modal} toggle={this.props.toggle} size="xl">
-            <ModalHeader toggle={this.props.toggle}>Upgrade Account</ModalHeader>
+            <ModalHeader toggle={this.props.toggle} header='Upgrade Account' />
             <ModalBody>
                 <Row className="py-md-4">
                 <Col sm="3">

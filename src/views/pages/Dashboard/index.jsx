@@ -225,7 +225,7 @@ export class DashBoard extends Component {
                         </div>
                         <br/>
                         <Link to="/templates" className="no-underline super-center">
-                            <button varient="contained" className="purple-btn" id="createskill">New Project</button>
+                            <button varient="contained" className="btn-primary" id="createskill">New Project</button>
                         </Link>
                             <small>
                                 <a href="https://intercom.help/vfu" className="text-muted super-center mt-3" target="_blank" rel="noopener noreferrer">
@@ -310,7 +310,7 @@ export class DashBoard extends Component {
                 <UpdatesModal show_update_modal={this.state.show_updates_modal} toggle={this.toggleUpdatesModal} product_updates={this.state.product_updates}/>
                 <div id="navbar-top-left">
                     <div className="searchBar ml-4">
-                        <Input className='search-input form-control-2' placeholder="Search Skills" onChange={(e) => this.onFilter("name", e.target)}/>
+                        <Input className='search-input form-control-2' placeholder="Search projects" onChange={(e) => this.onFilter("name", e.target)}/>
                     </div>
                 </div>
                 <div className="title-group no-select pr-2">
@@ -322,11 +322,11 @@ export class DashBoard extends Component {
                             className="ml-1 mr-4"
                         >
                         <form action="https://forum.getvoiceflow.com">
-                            <button className="nav-btn" type="submit"><i className="fas fa-info-circle"/></button>
+                            <button id="icon-resources" className="nav-btn-border mt-1" type="submit"></button>
                         </form>
                         </Tooltip>
-                        <Link to="/templates" className="no-underline ml-1">
-                            <button varient="contained" className="btn purple-btn">New Project</button>
+                        <Link to="/templates" className="no-underline ml-1 mt-1">
+                            <button varient="contained" className="btn btn-primary">New Project</button>
                         </Link>
                     </div>
                 </div>

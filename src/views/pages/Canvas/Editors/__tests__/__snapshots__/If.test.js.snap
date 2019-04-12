@@ -6,7 +6,7 @@ exports[`IfEditor render if block editor 1`] = `
     <small
       className="text-muted"
     >
-      If Statements Evaluated in Numerical Order
+      If statements are evaluated in numerical order
     </small>
   </p>
   <div
@@ -17,7 +17,7 @@ exports[`IfEditor render if block editor 1`] = `
       className="variable-group"
     >
       <div
-        className="square-bubble mr-1"
+        className="number-bubble mr-2"
       >
         1
       </div>
@@ -36,14 +36,15 @@ exports[`IfEditor render if block editor 1`] = `
       onUpdate={[Function]}
     />
   </div>
-  <button
-    className="btn btn-clear btn-lg btn-block"
-    onClick={[Function]}
+  <div
+    className="text-center"
   >
-    <i
-      className="far fa-plus"
-    />
-     Add If Statement
-  </button>
+    <button
+      className="btn-tertiary-variable mt-1"
+      onClick={[Function]}
+    >
+      Add If Statement
+    </button>
+  </div>
 </div>
 `;

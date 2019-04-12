@@ -17,6 +17,8 @@ export const combineAppendValidation = current => {
             return false;
         case 'random':
             return false;
+        case 'capture':
+            return false;
         default:
             return true;
     }
@@ -30,10 +32,6 @@ export const appendValidator = node => {
         case 'god':
             return false;
         case 'story':
-            return false;
-        case 'flow':
-            return false;
-        case 'intent':
             return false;
         case 'comment':
             return false;
@@ -68,6 +66,8 @@ export const combineValidation = (current, target, setError) => {
                         return false;
                     case 'random':
                         return false;
+                    case 'capture':
+                        return false;
                     default:
                         break;
                 }
@@ -85,6 +85,8 @@ export const combineValidation = (current, target, setError) => {
                     case 'if':
                         return false;
                     case 'random':
+                        return false;
+                    case 'capture':
                         return false;
                     default:
                         break;
@@ -104,6 +106,8 @@ export const combineValidation = (current, target, setError) => {
                         return false;
                     case 'random':
                         return false;
+                    case 'capture':
+                        return false;
                     default:
                         break;
                 }
@@ -121,6 +125,8 @@ export const combineValidation = (current, target, setError) => {
                     case 'if':
                         return false;
                     case 'random':
+                        return false;
+                    case 'capture':
                         return false;
                     default:
                         break;
@@ -140,6 +146,8 @@ export const combineValidation = (current, target, setError) => {
                         return false;
                     case 'random':
                         return false;
+                    case 'capture':
+                        return false;
                     default:
                         break;
                 }
@@ -158,9 +166,31 @@ export const combineValidation = (current, target, setError) => {
                         return false;
                     case 'random':
                         return false;
+                    case 'capture':
+                        return false;
                     default:
                         break;
                 }
+            break;
+            case 'capture':
+            switch (current.extras.type) {
+                case 'if':
+                    return false;
+                case 'exit':
+                    return false;
+                case 'choice':
+                    return false;
+                case 'stream':
+                    return false;
+                case 'interaction':
+                    return false;
+                case 'random':
+                    return false;
+                case 'capture':
+                    return false;
+                default:
+                    break;
+            }
             break;
         default:
             break;
@@ -168,10 +198,6 @@ export const combineValidation = (current, target, setError) => {
     }
     switch(target.extras.type){
         case 'story':
-            return false;
-        case 'flow':
-            return false;
-        case 'intent':
             return false;
         case 'comment':
             return false;
@@ -184,10 +210,6 @@ export const combineValidation = (current, target, setError) => {
         case 'god':
             return false;
         case 'story':
-            return false;
-        case 'flow':
-            return false;
-        case 'intent':
             return false;
         case 'comment':
             return false;

@@ -6,7 +6,8 @@ import * as _ from 'lodash';
 import axios from 'axios';
 import isVarName from 'is-var-name';
 import ReactJson from 'react-json-view';
-import { Button, ButtonGroup, Modal, ModalHeader, ModalBody, Nav, NavItem, NavLink, InputGroupAddon, Input, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup } from 'reactstrap';
+import { Button, ButtonGroup, Modal, ModalBody, Nav, NavItem, NavLink, InputGroupAddon, Input, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup } from 'reactstrap';
+import { ModalHeader } from 'views/components/Modals/ModalHeader'
 import APIInputs from './components/APIInputs';
 import APIMapping from './components/APIMapping';
 import VariableInput from './components/VariableInput';
@@ -505,7 +506,7 @@ class API extends Component {
                   modal: false,
                   variables: [],
                   testHeader: {'status': null, 'time': null, 'size': null}
-                })}>API Test</ModalHeader>
+                })} header='API Test' />
                 <ModalBody>
                   {this.renderAPITest()}
                 </ModalBody>
@@ -543,7 +544,7 @@ class API extends Component {
                         placeholder="URL Endpoint"
                     />
                 </InputGroup>
-                <Button color="clear" onClick={this.getEndpoint} size="sm" block><i className="fas fa-power-off mr-1"></i>Test Endpoint</Button>
+                <Button className="btn-lg btn-block" color="clear" onClick={this.getEndpoint} block><i className="fas fa-power-off mr-2"></i>Test Endpoint</Button>
                 <hr/>
                 <Nav tabs className="mb-3">
                     <NavItem className="mr-2" onClick={() => this.setState({type: 'headers'})}>
@@ -616,41 +617,6 @@ class API extends Component {
 
             </React.Fragment>
         )
-
-        // return <React.Fragment>
-        //     {this.state.body_state ?
-        //         <React.Fragment>
-        //             <Button color='clear' block onClick={
-        //                 ()=>this.setState({
-        //                     body_state: false,
-        //                     modal: true
-        //                 })
-        //             }><i className="far fa-expand-arrows-alt"/> Expand</Button>
-        //             {content}
-        //         </React.Fragment>
-        //         :
-        //         <React.Fragment>
-        //             <Button color='clear' block disabled>{ this.state.modal ?
-        //                 <React.Fragment>
-        //                     <i className="far fa-expand-arrows-alt"/> Expanded
-        //                 </React.Fragment> :
-        //                 <span className="loader"/>
-        //             }</Button>
-
-        //             <Modal
-        //                 isOpen={this.state.modal}
-        //                 toggle={()=>this.setState({modal: false})}
-        //                 onClosed={()=>this.setState({body_state: true})}
-        //                 size="lg"
-        //             >
-        //                 <ModalHeader toggle={()=>this.setState({modal: false})}>{this.state.node.name} Settings</ModalHeader>
-        //                 <ModalBody className="pb-5">
-        //                     {content}
-        //                 </ModalBody>
-        //             </Modal>
-        //         </React.Fragment>
-        //     }
-        // </React.Fragment>
     }
 }
 

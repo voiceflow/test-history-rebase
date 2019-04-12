@@ -65,13 +65,14 @@ class FlowButton extends Component {
                 </InputGroup>
                 :
                 <ButtonGroup className="diagram-block">
-                    <Button disabled={active} 
+                    <button disabled={active}
+                        className="diagram-button"
                         onClick={active ? null : ()=>this.props.enterFlow(this.props.flow.id)} block>
                         < span className = "diagram-text" > {
                             this.props.flow.name === 'ROOT' ? 'HOME' : _.trim(this.props.name) ?
                                 (this.props.name.length > 15 ? `${this.props.name.substring(0,15)}...` : this.props.name) : 'Flow'
                         } </span>
-                    </Button>
+                    </button>
                     { (this.props.flow.name !== 'ROOT' && !this.props.preview) && 
                         <UncontrolledDropdown inNavbar>
                             <DropdownToggle className="diagram-edit append">
@@ -82,13 +83,13 @@ class FlowButton extends Component {
                                     Flow Options
                                 </DropdownItem>
                                 <DropdownItem onClick={()=>this.setState({edit: true, name: this.props.name})} className="pointer">
-                                    <i className="fas fa-edit text-muted"/> Edit Name
+                                     Edit Name
                                 </DropdownItem>
                                 <DropdownItem onClick={this.props.copyFlow} className="pointer">
-                                    <i className="fas fa-clone text-muted"/> Copy
+                                     Copy
                                 </DropdownItem>
                                 <DropdownItem onClick={this.props.deleteFlow} className="pointer">
-                                    <i className="fas fa-times-square text-muted"/> Delete
+                                     Delete
                                 </DropdownItem>
                             </DropdownMenu>
                         </UncontrolledDropdown> 

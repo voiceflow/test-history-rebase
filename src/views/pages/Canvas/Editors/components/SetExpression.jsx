@@ -13,7 +13,7 @@ class SetExpression extends Component {
 
         return (
             <div className="solid-border set-block">
-                <div className="close" onClick={this.props.onRemove}>&times;</div>
+                <div className="close" onClick={this.props.onRemove}></div>
                 <div className="variable-group">
                     <span>Set</span>
                     <Select
@@ -31,7 +31,7 @@ class SetExpression extends Component {
                             return { label: '{' + variable + '}', value: variable }
                         }) : null}
                     />
-                    <span>To:</span>
+                    <span>to:</span>
                 </div>
                 { show ? <Expressionfy expression={block.expression} />:null}
                 <Expression expression={block.expression} variables={this.props.variables} onUpdate={this.props.onUpdate}/>

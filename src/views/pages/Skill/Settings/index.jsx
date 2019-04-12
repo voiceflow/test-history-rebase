@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import axios from 'axios'
 import { ButtonGroup, Button } from 'reactstrap'
 import { connect } from 'react-redux'
@@ -90,7 +91,7 @@ class Settings extends Component {
                     (this.props.live_mode && tab === "backups")
                   }
                 >
-                  {tab}
+                  {_.startCase(tab)}
                 </Button>
               );
             })}

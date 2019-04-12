@@ -17,7 +17,7 @@ exports[`Dashboard render dashboard 1`] = `
       <Input
         className="search-input form-control-2"
         onChange={[Function]}
-        placeholder="Search Skills"
+        placeholder="Search projects"
         type="text"
       />
     </div>
@@ -69,22 +69,19 @@ exports[`Dashboard render dashboard 1`] = `
           action="https://forum.getvoiceflow.com"
         >
           <button
-            className="nav-btn"
+            className="nav-btn-border mt-1"
+            id="icon-resources"
             type="submit"
-          >
-            <i
-              className="fas fa-info-circle"
-            />
-          </button>
+          />
         </form>
       </Tooltip>
       <Link
-        className="no-underline ml-1"
+        className="no-underline ml-1 mt-1"
         replace={false}
         to="/templates"
       >
         <button
-          className="btn purple-btn"
+          className="btn btn-primary"
           varient="contained"
         >
           New Project

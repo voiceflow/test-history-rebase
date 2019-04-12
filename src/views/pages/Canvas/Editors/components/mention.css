@@ -8,20 +8,23 @@
   border-radius: 2px;
   text-decoration: none;
 }
-
 .mention:hover, .mention:focus {
   color: #677584;
   background: #edf5fd;
   outline: 0; /* reset for :focus */
 }
-
 .mention:active {
   color: #222;
   background: #455261;
 }
 .mentionSuggestionsEntry {
-  padding: 7px 10px 0px 10px;
-  color: #95a6bd;
+  font-size: 15px !important;
+  padding: 11px 10px 4px 33px;
+  color: #0b1a38;
+  background-image: url('/logic-gray.svg');
+  background-repeat: no-repeat;
+  background-position: 10% 50%;
+  transition: all ease 0.15s;
   /*transition: background-color 0.4s cubic-bezier(.27,1.27,.48,.56);*/
 }
 
@@ -30,9 +33,13 @@
 }
 */
 .mentionSuggestionsEntryFocused {
-  padding: 7px 10px 0px 10px;
-  background-color: #3D96F0;
-  color: #fff;
+  padding: 11px 10px 4px 33px;
+  background-color: #F7F9FB;
+  color: #0b1a38;
+  background-image: url('/logic.svg');
+  background-repeat: no-repeat;
+  background-position: 10% 50%;
+  font-size: 15px !important;
 }
 
 .mentionSuggestionsEntryText {
@@ -53,12 +60,13 @@
   border-radius: 12px;
 }
 .mentionSuggestions {
+  box-shadow: 0 0 0 1px rgba(17,49,96,.04), 0 8px 16px 0 rgba(17,49,96,.16);
+  border-radius: 5px;
+  color: #0b1a38 !important;
   margin-top: 0.4em;
   position: absolute;
-  min-width: 220px;
+  min-width: 150px;
   max-width: 440px;
-  border-radius: 2px;
-  box-shadow: 0 0 0 1px hsla(0,0%,0%,0.1), 0 4px 11px hsla(0,0%,0%,0.1);
   /*background-color: #373F53;*/
   background-color: #fff;
   cursor: pointer;

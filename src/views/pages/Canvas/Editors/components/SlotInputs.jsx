@@ -103,7 +103,7 @@ class SlotInputs extends Component {
         return (
             <div className="w-100">
                 {length > 4 && <Input type="search" onChange={this.onSearchChange} id="searchSlots" placeholder="Search Slots" className="mb-3 form-control-border search-input" value={this.state.search_value}></Input>}
-                {length < 251 && <button className="btn btn-lg btn-clear btn-block mb-3" onClick={this.handleAddSlot} disabled={this.props.live_mode}><i className="far fa-plus"></i> Add Slot</button>}
+                {length < 251 && <button className="btn btn-lg btn-clear btn-block mb-3" onClick={this.handleAddSlot} disabled={this.props.live_mode}><i className="far fa-plus mr-2"></i> Add Slot</button>}
                 {reverse}
             </div>
         );

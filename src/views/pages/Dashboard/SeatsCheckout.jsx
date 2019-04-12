@@ -165,7 +165,6 @@ class SeatsCheckout extends Component {
           <div className="super-center">
             <button
               className="btn btn-primary mt-4 mb-4"
-              style={{ width: 144 }}
               onClick={(e) => {e.preventDefault(); this.checkout()}}
             >
               {this.props.prompt || "Start Free Trial"}
@@ -174,7 +173,7 @@ class SeatsCheckout extends Component {
           {this.props.trial && (
             <div className="text-center">
               <div className="text-muted text-sm">
-                Your trial will end on{" "}
+                Your 14-day free trial will end on{" "}
                 <span className="text-dark">
                   {moment()
                     .add(14, "days")

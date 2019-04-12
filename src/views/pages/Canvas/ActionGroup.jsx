@@ -814,8 +814,8 @@ export class ActionGroup extends PureComponent {
                               </button>
                           })}
                       </div>
-                      <div className="mt-5 mb-3">
-                          <Button varient="contained" className="purple-btn" onClick={(e) => {this.updateAlexa(); this.props.saveSkill()}}>Upload</Button>
+                      <div className="mt-4 mb-5">
+                          <button varient="contained" className="btn-primary" onClick={(e) => {this.updateAlexa(); this.props.saveSkill()}}>Confirm Upload</button>
                       </div>
                   </div>
               }
@@ -906,7 +906,7 @@ export class ActionGroup extends PureComponent {
                   }}/>
               </div>}
               <Modal size={this.state.stage === 0 ? "lg" : undefined} isOpen={this.state.updateModal && this.state.is_first_upload} toggle={()=>this.setState({updateModal: false})} onClosed={this.shouldReset} className="stage_modal">
-                  <ModalHeader toggle={()=>this.setState({updateModal: false})} className="pb-0 mb--4">Upload Project</ModalHeader>
+                  <ModalHeader toggle={()=>this.setState({updateModal: false})} className="pb-0 mb--4" header="Upload Project" />
                   <ModalBody className="modal-info" style={{padding: '0rem 2rem'}}>
                       <div>
                           {this.renderBody(true)}

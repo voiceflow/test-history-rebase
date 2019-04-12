@@ -321,7 +321,7 @@ class PublishMarket extends Component {
                                     <div className="d-flex justify-content-between align-items-center">
                                         <span>This skill is currently being reviewed for the Marketplace.</span>
                                         <div>
-                                            <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Submission</MUIButton>
+                                            <MUIButton variant="contained" className="btn-primary ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Submission</MUIButton>
                                         </div>
                                     </div>
                                 </div>
@@ -494,7 +494,7 @@ class PublishMarket extends Component {
                             </Form>
                             {!this.state.in_review &&
                             <div className="text-center">
-                                <button variant="contained" className="purple-btn" onClick={this.toggleConfirmSubmission}>
+                                <button variant="contained" className="btn-primary" onClick={this.toggleConfirmSubmission}>
                                     Submit Flow
                                 </button>
                             </div>

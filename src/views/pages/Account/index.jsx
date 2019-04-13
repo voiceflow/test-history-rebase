@@ -50,7 +50,7 @@ class Account extends Component {
     this.props.setConfirm({
         text: <Alert color="danger" className="mb-0">
           <i className="fas fa-exclamation-triangle fa-2x"/><br/>
-          Resetting your Amazon Account is dangerous and will de-sync all your published projects. Do not reset unless you know what you are doing
+          Resetting your Amazon Account is dangerous and will de-sync all your published projects/versions and can lead to live skills being deleted. Do not reset unless you know what you are doing
         </Alert>,
         warning: true,
         confirm: () => {

@@ -14,7 +14,7 @@ if(process.NODE_ENV === 'development'){
 } else if (process.NODE_ENV === 'staging'){
   ESURL = 'https://staging.getvoiceflow.com/elasticsearch'
 } else {
-  ESURL = 'https://localhost/elasticsearch'
+  ESURL = 'http://localhost:8080/elasticsearch'
 }
 console.log(ESURL)
 class FlowMarket extends Component {

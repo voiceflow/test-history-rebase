@@ -49,44 +49,11 @@ class Publish extends Component {
     render() {
         let page;
         if (this.props.page === 'market') {
-            page = <PublishMarket {...this.props} />
+          page = <PublishMarket {...this.props} />
         } else if (this.props.page === 'google') {
-            if (this.props.user.admin === -1 && this.props.platform !== 'google') { // Multiplatform paywall soft-disable
-                page = <div className="w-100 h-100">
-                <div className="d-flex justify-content-center mt-5">
-                    <div className="card" id="upgrade">
-                        <h2>Upgrade to publish simultaneously to Alexa and Google</h2>
-                        <p className="text-muted">To gain access to business features such as Multi-Platform Publishing, upgrade your Voiceflow account to a paid tier</p>
-                        {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/icon/blue_check.svg" width={25} className="mr-3" alt="check"/>{feature}</p>)}
-                        <div className="mt-2">
-                            <button className="btn-primary" onClick={() => this.props.history.push('/account/upgrade')}>
-                                Upgrade Plan
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            } else {
-                page = <PublishGoogle {...this.props} />
-            }
+          page = <PublishGoogle {...this.props} />
         } else {
-            if (this.props.user.admin === -1 && this.props.platform !== 'alexa') { // Multiplatform paywall soft-disable
-                page = <div className="w-100 h-100">
-                <div className="d-flex justify-content-center mt-5">
-                    <div className="card" id="upgrade">
-                        <h2>Upgrade to publish simultaneously to Alexa and Google</h2>
-                        <p className="text-muted">To gain access to business features such as Multi-Platform Publishing, upgrade your Voiceflow account to a paid tier</p>
-                        {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/icon/blue_check.svg" width={25} className="mr-3" alt="check"/>{feature}</p>)}
-                        <div className="mt-2">
-                            <button className="btn-primary" onClick={() => this.props.history.push('/account/upgrade')}>
-                                Upgrade Plan
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>            } else {
-                page = <PublishAmazon {...this.props} />
-            }        
+          page = <PublishAmazon {...this.props} />     
         }
 
         return (

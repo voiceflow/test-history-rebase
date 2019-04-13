@@ -44,7 +44,7 @@ exports[`Spotlight render spotlight 1`] = `
           "value": "interaction",
         },
         Object {
-          "label": "Jump",
+          "label": "Intent",
           "value": "intent",
         },
         Object {
@@ -52,8 +52,8 @@ exports[`Spotlight render spotlight 1`] = `
           "value": "stream",
         },
         Object {
-          "label": "Integrations",
-          "value": "integrations",
+          "label": "API",
+          "value": "api",
         },
         Object {
           "label": "Flow",

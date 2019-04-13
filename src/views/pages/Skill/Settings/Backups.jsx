@@ -112,15 +112,10 @@ class BackupSettings extends Component{
                         <Label>
                             Backups
                         </Label>
-                        <div className="helper-text mb-2">Restore your skill to previous versions. A version is saved every time you upload your skill to Alexa{this.props.user.admin > 0 ? "" : ". Upgrade to access this premium feature"}</div>
+                        <div className="helper-text mb-2">Restore your skill to previous versions. A version is saved every time you upload your skill to Alexa</div>
                         <div id="backup">
-                            {this.props.user.admin === 0 &&
-                            <div id="backup-overlay" className="d-flex justify-content-center">
-                                <div id="backup-upgrade-btn" className="text-center">
-                                    <Link className="btn-primary" to='/account/upgrade'>
-                                        Upgrade
-                                    </Link>
-                                </div>
+                            <div id="backup-overlay" className="super-center">
+                                <h5 className="text-muted">Backups Temporarily Disabled</h5>
                             </div>}
                             <Table>
                                 <thead>
@@ -169,7 +164,8 @@ class BackupSettings extends Component{
 }
 
 const mapStateToProps = state => ({
-  user: state.account
+  user: state.account,
+  team: state.team.byId[state.team.team_id]
 })
 
 const mapDispatchToProps = dispatch => {

@@ -164,24 +164,6 @@ class Account extends Component {
                     </div>
                   </div>
                 </div>
-                <h5 className="ml-3">Status</h5>
-                <div className="card mb-5">
-                  <div className="p-4 space-between">
-                    <h4 className="mb-0 text-muted">{GET_STATUS(this.props.user.admin).name}</h4>
-                    <div className="super-center">
-                      {this.props.user.admin < 1 && <h4 className="text-muted mr-3 mb-0">$0.00/mo</h4>}
-                      {this.props.user.admin > 0 ? 
-                        <React.Fragment>
-                          {this.expiry ? 
-                            <React.Fragment>
-                              <div className="btn btn-clear disabled">Renews {this.expiry}</div>
-                              <div className="btn btn-clear ml-2" onClick={this.toggle}><i className="fas fa-cog"/> Upgrade</div>
-                            </React.Fragment> : null}
-                        </React.Fragment> : 
-                      <button onClick={this.toggle} className="btn-primary">Upgrade</button>}
-                    </div>
-                  </div>
-                </div>
                 <h5 className="ml-3">Developer Integration</h5>
                 <div className="card mb-5">
                   <div className={!!this.state.profile ? "pl-4 pr-4 pt-4 space-between" : "p-4 space-between"}>

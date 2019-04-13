@@ -8,8 +8,15 @@ import { TAGS } from './tags'
 import ModuleCard from './ModuleCard'
 import Masonry from 'react-masonry-component'
 
-const ESURL = (process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'production' ? process.env['ELASTIC_SEARCH_HOST'] : 'http://localhost:9200')
-
+let ESURL
+if(process.NODE_ENV === 'development'){
+  ESURL = 'https://creator.getvoiceflow.com/elasticsearch'
+} else if (process.NODE_ENV === 'staging'){
+  ESURL = 'https://staging.getvoiceflow.com/elasticsearch'
+} else {
+  ESURL = 'https://localhost/elasticsearch'
+}
+console.log(ESURL)
 class FlowMarket extends Component {
   constructor(props){
     super(props)

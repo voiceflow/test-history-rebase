@@ -92,12 +92,12 @@ class Team extends PureComponent {
           <img
             src="/images/icons/conversation.svg"
             alt="skill-icon"
-            width="200"
+            width="160"
             height="105"
-            className="mb-3"
+            className="mb-1"
           />
           <br />
-          <label>Create a Board</label>
+          <label className="dark">Create a Board</label>
           <span className="text-muted">
             Create a shared board where your<br/> 
             team can collaboratively design and build<br/>

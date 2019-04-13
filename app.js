@@ -117,7 +117,8 @@ const ensureBeta = ()=> {
     }
 }
 
-// Route for Elasticsearchapp.use(bodyParser.text({ type: 'application/x-ndjson' }))
+// Route for Elasticsearch
+app.use(bodyParser.text({ type: 'application/x-ndjson' }))
 app.post('/elasticsearch/*', (req, res) => {
     req.body = req.body.substring(24, req.body.length + 1)
     req.body = JSON.parse(req.body)
@@ -129,8 +130,7 @@ app.post('/elasticsearch/*', (req, res) => {
     }
     ESclient.search(ESoptions)
     .then((data) => {
-        console.log(data.hits.hits)
-        res.send(data)
+        res.send({responses: [data]})
     })
     .catch((err) => {
         console.log(err)

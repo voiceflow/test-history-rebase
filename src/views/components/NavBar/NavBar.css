@@ -35,7 +35,7 @@
 }
 #secondary-nav .nav-item{
 	color: #8DA2B5;
-	padding: 15px 28px 9px;
+	padding: 14px 28px 9px;
 	text-align: center;
 	text-transform: capitalize;
 	text-decoration: none;
@@ -174,11 +174,15 @@ div.nav-item{
 	border-color: #fff !important;
 }
 .dropdown-button {
-  padding: 5px 9px;
+  padding: 9px 9px;
   border-radius: 5px;
   cursor: pointer;
   color: #8da2b5;
-  border: 1px solid transparent
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
 }
 
 .dropdown.show .dropdown-button {

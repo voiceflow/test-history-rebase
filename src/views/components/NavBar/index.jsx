@@ -48,13 +48,6 @@ class NavBar extends Component {
     let tabs = []
     let user = props.user
     if(user.id !== null){
-      // if(user.admin > 0){
-      //   tabs.push({link: '/business', 'text': <React.Fragment>Business</React.Fragment>})
-      // }
-      // if(user.admin >= 100) {
-      //   tabs.push({link: '/admin', text: <React.Fragment>Admin</React.Fragment>});
-      //   //tabs.push({link: '/analytics', text: <React.Fragment>Analytics</React.Fragment>});
-      // }
       this.intercom_user = {
         user_id: user.id,
         name: user.name,

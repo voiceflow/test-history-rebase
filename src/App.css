@@ -85,7 +85,7 @@ ul {
     display: block;
     width: 100%;
     font: normal 15px Open Sans,Arial,sans-serif;
-    color: #132144;
+    color: #8da2b5;
     background-color: #fff;
     background-image: none;
     background-clip: padding-box;
@@ -1044,7 +1044,7 @@ border-radius: 0px 5px 5px 0px !important;
 }
 .btn-primary{
     font-family: 'Open Sans', sans-serif !important;
-    padding: 8px 22px 10px;
+    padding: 10px 22px 10px;
     color: #fff !important;
     background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2C85FF 100%) !important;
     text-transform: none !important;
@@ -1074,7 +1074,7 @@ border-radius: 0px 5px 5px 0px !important;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 58px 12px 22px!important;
+    padding: 11px 58px 12px 22px!important;
     color: #fff !important;
     font-weight: normal !important;
     background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2C85FF 100%);
@@ -1169,15 +1169,18 @@ border-radius: 0px 5px 5px 0px !important;
     border-bottom: 1px solid rgba(226, 233, 236, 0.63) !important;
 }
 .card {
-   /* border: 1px solid #fff; */
     border-radius: 6px;
-    /* box-shadow: 0 2px 4px 0 rgba(14,30,37,.12); */
     border-radius: 10px;
     border: none;
     padding: 0px;
     transition-duration: 172ms;
     will-change: transform, box-shadow;
 }
+
+.project-card .card, .container .card {
+    box-shadow: 0 2px 4px 0 rgba(14, 30, 37, .12);
+}
+
 .transalte-x-left{
     transform: translateX(0);
     transition: all 0.25s ease;
@@ -1268,9 +1271,11 @@ input, textarea, .text-to-voice, .choice-block,{
 }
 input::placeholder, textarea::placeholder, select:required:invalid, input.form-control::placeholder, textarea.form-control::placeholder,
 .select-box__placeholder {
-    color: #8DA2B5 !important;
     font-weight: 400 !important;
     font-size: 15px;
+    font-weight: 500;
+    color: #62778C;
+    line-height: 20px;
 }
 .form-title{
     font-size: 15px;

@@ -4,10 +4,10 @@ const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./ski
 
 const DEFAULT_VARIABLES = ['sessions', 'user_id', 'timestamp', 'platform', 'locale', 'access_token']
 
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-	ADMIN_MARKETPLACE_ACC = 19
-}else{
+if(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'development_prod'){
 	ADMIN_MARKETPLACE_ACC = 2125
+} else {
+	ADMIN_MARKETPLACE_ACC = 19
 }
 
 const setIntersect = (array_1, array_2, defaults) => {

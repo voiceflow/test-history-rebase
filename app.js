@@ -5,7 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const {upload, uploadResize, redisClient, jwt, config, verify} = require('./services');
+const {upload, uploadResize, ESclient, verify} = require('./services');
 const {policy, terms} = require('./policy');
 const AWS = require('aws-sdk')
 const { request_logger } = require('./logger.js')
@@ -116,6 +116,26 @@ const ensureBeta = ()=> {
         else res.sendStatus(401);
     }
 }
+
+// Route for Elasticsearchapp.use(bodyParser.text({ type: 'application/x-ndjson' }))
+app.post('/elasticsearch/*', (req, res) => {
+    req.body = req.body.substring(24, req.body.length + 1)
+    req.body = JSON.parse(req.body)
+    let ESparams = req.params[0].split('/')
+    ESoptions = {
+        index: ESparams[0],
+        type: ESparams[1],
+        body: req.body,
+    }
+    ESclient.search(ESoptions)
+    .then((data) => {
+        console.log(data.hits.hits)
+        res.send(data)
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+})
 
 app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.getAccessToken);
 app.get('/session/amazon/:code', ensureLoggedIn(), Authentication.getAmazonCode);

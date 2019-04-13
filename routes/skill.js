@@ -147,7 +147,7 @@ exports.getSkill = async (req, res) => {
         INNER JOIN project_versions pv ON pv.version_id = s.skill_id
         WHERE
           skill_id = $1
-          AND creator_id = $2
+          AND s.creator_id = $2
         LIMIT 1`;
     params = [id, req.user.id]
   }

@@ -12,6 +12,7 @@ const {
 } = require('./../services')
 const {
   AccessToken,
+  AmazonAccessToken,
   _getGoogleAccessToken
 } = require('./authentication')
 const {createManifest} = require('./../config/manifest')
@@ -24,6 +25,9 @@ const {
   copySkill,
   deleteSkillDiagramsPromise
 } = require('./skill_util')
+const {
+  pg_num
+} = require('./../util')
 const { checkSkillAccess } = require("./team")
 
 const DialogflowClient = require('../clients/Dialogflow/Dialogflow')
@@ -114,15 +118,7 @@ exports.getSkill = async (req, res) => {
 
   // Sync up with AMAZON
   // Check Current Amazon Status
-  AccessToken(req.user.id, async (token) => {
-    if (token !== null) {
-      try {
-        await checkVersions(req.user, project_id, 'alexa', {token: token, check_only: true})
-      } catch (err) {
-        logAxiosError(err, 'GET SKILL')
-      }
-    }
-  })
+  await checkVersions(project_id, 'alexa', {check_only: true})
 
   if (req.query.preview) {
     // expose as little information as possible if previewing
@@ -491,125 +487,201 @@ exports.enableSkill = async (req, res) => {
   })
 }
 
-const checkVersions = (user, project_id, platform, options) => {
-  if(!options) options = {}
+const checkVersions = (project_id, platform, options={}) => new Promise(async (resolve, reject) => {
+  // get the project id and dev version from this skill
+  try{
+    // get all the various base versions
+    const dev_versions = (await pool.query(`SELECT * FROM project_members WHERE project_id = $1`, [project_id])).rows
 
-  return new Promise(async (resolve, reject) => {
+    if(dev_versions.length === 0) return resolve()
 
-    // get the project id and dev version from this skill
-    let dev_version
-    try{
-      const project = await pool.query(`
-        SELECT project_id, dev_version FROM projects WHERE project_id = $1 LIMIT 1`, [project_id])
-      dev_version = project.rows[0].dev_version
-    }catch(err){
-      return reject(err)
+    // get all the project versions
+    const project_versions = (await pool.query(`
+      SELECT pv.* FROM project_versions pv
+      INNER JOIN projects p ON p.project_id = pv.project_id
+      WHERE pv.version_id != p.dev_version AND pv.project_id = $1 AND pv.platform = $2
+      ORDER BY created ASC`
+    ), [project_id, platform]).rows
+
+    if(project_versions.length === 0) return resolve()
+
+    const creators = new Set()
+
+    // If checking Alexa versions 
+    if(platform === 'alexa'){
+      const amzn_dev_versions = dev_versions.filter(v => !!v.amzn_id)
+      const remove_live = []
+      const add_live = []
+
+      for(dev_version of amzn_dev_versions){
+        try{
+          const token = await AmazonAccessToken(dev_version.creator_id)
+          // Check if this endpoint is LIVE
+          const response = await axios.request({
+            url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/live/manifest`,
+            method: 'GET',
+            headers: {
+              Authorization: token
+            }
+          })
+
+          // take the endpoint's Version ID
+          const split_uri = response.data.manifest.apis.custom.endpoint.uri.split('/')
+          const live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
+          
+          // find all the live skills for this creator
+          const creator_live_projects = project_versions.filter(v => ((v.creator_id === dev_version.creator_id) && v.live)).map(v => v.version_id)
+          const index = creator_live_projects.indexOf(live_id)
+
+          // If it doesn't exist already, update it as live. If it doesn't don't try to remove it
+          if(index === -1) {
+            add_live.push(live_id)
+          } else {
+            creator_live_projects.splice(index, 1)
+          }
+          remove_live.push(...creator_live_projects)
+
+          // skills published by this creator have been checked
+          creators.add(dev_version.creator_id)
+        }catch(err){}
+      }
+
+      if(remove_live.length > 0) {
+        await pool.query(`UPDATE project_versions SET live = FALSE WHERE version_id IN (${pg_num(remove_live.length)})`, remove_live)
+      }
+      if(add_live.length > 0) {
+
+      }
+
+      try {
+        // RESET LIVE IF THERE IS A LIVE
+        if(live_ids[0] && !current_live.includes(live_ids[0])) {
+          await pool.query(`
+            UPDATE skills s SET live = FALSE
+            FROM project_versions pv
+            WHERE pv.version_id = s.skill_id
+              AND pv.project_id = $1
+              AND pv.platform = $2
+          `, [project_id, platform])
+
+          await pool.query(`UPDATE skills s SET live = TRUE WHERE skill_id = $1`, [live_ids[0]])
+        }
+      } catch (err) {
+        writeToLogs('CREATOR_BACKEND_ERRORS', {
+          err: err
+        })
+        reject(err)
+      }
+      
+    }else if(platform === 'google'){
+
     }
 
-    pool.query(`
-      SELECT s.amzn_id, s.live, pv.* FROM skills s 
-      INNER JOIN project_versions pv ON pv.version_id = s.skill_id
-      WHERE pv.project_id = $1 
-        AND ( pv.platform = $2 OR pv.platform IS NULL OR pv.version_id = $3)
-        ORDER BY pv.created ASC`,
-      [project_id, platform, dev_version],
-      async (err, data) => {
-        if (err) {
-          writeToLogs('CREATOR_BACKEND_ERRORS', {
-            err: err
-          })
-          reject(err)
-        } else if (data.rows.length > 0){
-          // Check for live version
-          let current_live = data.rows.filter(v => !!v.live).map(v => v.version_id)
-          let live_ids = []
-          let dev_version_row = data.rows.find(version => version.version_id === dev_version)
+    // No need to delete on just the check
+    if(options.check_only) return resolve()
 
-          try {
-            // If so, we wanna know what version the live skill is pointing to rn
-            if (platform === 'alexa' && dev_version_row.amzn_id) {
-              if(!options.token) throw new Error('No Token')
+    // ensure users have max 10 versions of either google/amazon
+    let i = 0
+    let num_versions_to_delete = project_versions.length - 10
+    let deletion_promises = []
+    if (live_ids) {
+      num_versions_to_delete -= live_ids.length
+    }
 
-              let request = await axios.request({
-                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version_row.amzn_id)}/stages/live/manifest`,
-                method: 'GET',
-                headers: {
-                  Authorization: options.token
-                }
+    while (i < project_versions.length && num_versions_to_delete > 0) {
+      const v = project_versions[i]
+      if (
+        !live_ids.includes(v.version_id) && creators.has(v.creator_id)
+      ) {
+        deletion_promises.push(deleteVersionPromise(v.creator_id, v.version_id))
+        num_versions_to_delete -= 1
+      }
+      i += 1
+    }
+
+    await Promise.all(deletion_promises)
+    resolve()
+  }catch(err){
+    writeToLogs("CHECK VERSIONS", err)
+    resolve()
+  }
+
+  pool.query(`
+    SELECT * FROM project_versions
+    WHERE project_id = $1 
+      AND ( platform = $2 OR pv.platform IS NULL OR pv.version_id = $3)
+      ORDER BY pv.created ASC`,
+    [project_id, platform, dev_version],
+    async (err, data) => {
+      if (err) {
+        writeToLogs('CREATOR_BACKEND_ERRORS', {
+          err: err
+        })
+        reject(err)
+      } else if (data.rows.length > 0){
+        // Check for live version
+        let current_live = data.rows.filter(v => !!v.live).map(v => v.version_id)
+        let live_ids = []
+        let dev_version_row = data.rows.find(version => version.version_id === dev_version)
+
+        try {
+          // If so, we wanna know what version the live skill is pointing to rn
+          if (platform === 'alexa' && dev_version_row.amzn_id) {
+            if(!options.token) throw new Error('No Token')
+
+            let request = await axios.request({
+              url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version_row.amzn_id)}/stages/live/manifest`,
+              method: 'GET',
+              headers: {
+                Authorization: options.token
+              }
+            })
+            // Delete the oldest version that isn't live
+            let split_uri = request.data.manifest.apis.custom.endpoint.uri.split('/')
+            live_ids.push(hashids.decode(split_uri[split_uri.length - 1])[0])
+
+            try {
+              // RESET LIVE IF THERE IS A LIVE
+              if(live_ids[0] && !current_live.includes(live_ids[0])) {
+                await pool.query(`
+                  UPDATE skills s SET live = FALSE
+                  FROM project_versions pv
+                  WHERE pv.version_id = s.skill_id
+                    AND pv.project_id = $1
+                    AND pv.platform = $2
+                `, [project_id, platform])
+
+                await pool.query(`UPDATE skills s SET live = TRUE WHERE skill_id = $1`, [live_ids[0]])
+              }
+            } catch (err) {
+              writeToLogs('CREATOR_BACKEND_ERRORS', {
+                err: err
               })
-              // Delete the oldest version that isn't live
-              let split_uri = request.data.manifest.apis.custom.endpoint.uri.split('/')
-              live_ids.push(hashids.decode(split_uri[split_uri.length - 1])[0])
-
-              try {
-                // RESET LIVE IF THERE IS A LIVE
-                if(live_ids[0] && !current_live.includes(live_ids[0])) {
-                  await pool.query(`
-                    UPDATE skills s SET live = FALSE
-                    FROM project_versions pv
-                    WHERE pv.version_id = s.skill_id
-                      AND pv.project_id = $1
-                      AND pv.platform = $2
-                  `, [project_id, platform])
-
-                  await pool.query(`UPDATE skills s SET live = TRUE WHERE skill_id = $1`, [live_ids[0]])
-                }
-              } catch (err) {
-                writeToLogs('CREATOR_BACKEND_ERRORS', {
-                  err: err
-                })
-                reject(err)
-              }
-            } else if (platform === 'google') {
-              // Get the latest list of versions from skill_versions table
-              // Compare with each skill's attached versions
-              // If no matches, then it is ok to delete
-
-              const all_google_versions = dev_version_row.google_versions
-              for (const row of data.rows) {
-                if (row.version_id !== dev_version && row.google_versions) {
-                  const approvals = Object.keys(row.google_versions).map(key => all_google_versions[key].approval)
-                  if (approvals.length > 0 && approvals.filter(e => e !== 'DENIED').length > 0) {
-                    live_ids.push(row.version_id)
-                  }
-                }
-              }
-            }
-          } catch (err) {
-            if(Array.isArray(current_live)){
-              live_ids = live_ids.concat(current_live)
-            }
-          }
-          // No need to delete on just the check
-          if(options.check_only) return resolve()
-
-          let i = 0
-          let num_versions_to_delete = user.admin >= 100 ? data.rows.length - 10 : data.rows.length - 5
-          let deletion_promises = []
-          if (live_ids) {
-            num_versions_to_delete -= live_ids.length
-          }
-
-          while (i < data.rows.length && num_versions_to_delete > 0) {
-            if (!live_ids.includes(data.rows[i].version_id) && data.rows[i].version_id !== dev_version && data.rows[i].platform === platform) {
-              deletion_promises.push(deleteVersionPromise(user.id, data.rows[i].version_id))
-              num_versions_to_delete -= 1
-            }
-            i += 1
-          }
-
-          Promise.all(deletion_promises)
-            .then(() => {
-              resolve()
-            })
-            .catch((err) => {
-              writeToLogs('DELETE_CHECK_VERSION_ERRORS', {err})
               reject(err)
-            })
+            }
+          } else if (platform === 'google') {
+            // Get the latest list of versions from skill_versions table
+            // Compare with each skill's attached versions
+            // If no matches, then it is ok to delete
+
+            const all_google_versions = dev_version_row.google_versions
+            for (const row of data.rows) {
+              if (row.version_id !== dev_version && row.google_versions) {
+                const approvals = Object.keys(row.google_versions).map(key => all_google_versions[key].approval)
+                if (approvals.length > 0 && approvals.filter(e => e !== 'DENIED').length > 0) {
+                  live_ids.push(row.version_id)
+                }
+              }
+            }
+          }
+        } catch (err) {
+          if(Array.isArray(current_live)){
+            live_ids = live_ids.concat(current_live)
+          }
         }
-      })
-  })
-}
+      }
+    })
+})
 
 exports.buildSkill = async (req, res) => {
   let project_id = hashids.decode(req.params.project_id)[0];
@@ -633,7 +705,7 @@ exports.buildSkill = async (req, res) => {
     }
 
     // Asynchronously check version logic, doesn't affect publishing
-    checkVersions(req.user, project_id, 'alexa', {token: token})
+    checkVersions(project_id, 'alexa')
 
     pool.query(`
       SELECT s.*, pm.amzn_id AS amzn_id, pv.project_id AS project_id, pm.creator_id AS status 
@@ -1242,7 +1314,7 @@ exports.buildGoogleSkill = async (req, res) => {
       throw ('Credentials not found')
     }
 
-    checkVersions(req.user, vf_project_id, 'google')
+    checkVersions(vf_project_id, 'google')
 
     const main_client = new DialogflowClient(project_id, dialogflow_creds.private_key, dialogflow_creds.client_email)
 

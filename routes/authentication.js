@@ -196,6 +196,44 @@ async function fbAuth(data, cb) {
     })
 }
 
+// Promisfied version of Acccess Token (slowly replace existing ones)
+const AmazonAccessToken = (user_id) => new Promise((resolve, reject) => {
+  redisClient.get(`t_${user_id}`, function (err, token) {
+    if (err || token === null) {
+      return reject(err)
+    }
+
+    token = JSON.parse(token);
+    if (token.expire < Date.now()) {
+      axios.post('https://api.amazon.com/auth/o2/token', {
+        grant_type: "refresh_token",
+        client_id: process.env.CONFIG_CLIENT_ID,
+        client_secret: process.env.CONFIG_CLIENT_SECRET,
+        refresh_token: token.refresh_token
+      })
+      .then(result => {
+        let data = {
+          expire: Date.now() + (result.data.expires_in * 1000),
+          access_token: result.data.access_token,
+          refresh_token: result.data.refresh_token
+        }
+        redisClient.set(`t_${user_id}`, JSON.stringify(data), (err) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(data.access_token);
+          }
+        });
+      })
+      .catch(err => {
+        reject(err)
+      });
+    } else {
+      resolve(token.access_token);
+    }
+  });
+})
+
 // Gets the Amazon Login Access Token for Skill publishing
 const AccessToken = (user_id, cb) => {
   redisClient.get(`t_${user_id}`, function (err, token) {
@@ -245,23 +283,23 @@ const AccessToken = (user_id, cb) => {
   });
 }
 
-const getAccessToken = (req, res) => {
-  AccessToken(req.user.id, token => {
-    if (token === null) {
-      res.sendStatus(404);
-    } else {
-      axios.get(`https://api.amazon.com/user/profile?access_token=${token}`)
-        .then(result => {
-          res.send({
-            token: token,
-            profile: result.data
-          })
-        })
-        .catch(err => {
-          res.sendStatus(500)
-        })
+const getAccessToken = async (req, res) => {
+  try {
+    const token = await AmazonAccessToken(req.user.id)
+    if(!token) throw { status: 404 }
+
+    const result = await axios.get(`https://api.amazon.com/user/profile?access_token=${token}`)
+    res.send({
+      token: token,
+      profile: result.data
+    })
+  } catch (err) {
+    writeToLogs('ACCESS TOKEN ERROR', err)
+    if(err.message || err.status){
+      return res.status(err.status || 400).send(err.message)
     }
-  })
+    return res.sendStatus(500)
+  }
 }
 
 const getAmazonCode = (req, res) => {
@@ -1012,6 +1050,7 @@ const updateProfilePicture = async (req, res) => {
 module.exports = {
   updateProfilePicture: updateProfilePicture,
   AccessToken: AccessToken,
+  AmazonAccessToken: AmazonAccessToken,
   getAccessToken: getAccessToken,
   getAmazonCode: getAmazonCode,
   getSession: getSession,

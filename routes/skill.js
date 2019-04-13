@@ -297,7 +297,7 @@ exports.deleteProduct = async (req, res) => {
   let pid = req.params.pid;
   let result
   try {
-    result = (await pool.query('SELECT p.amzn_prod_id, p.skill_id FROM products p WHERE p.id = $2 LIMIT 1', [pid])).rows[0]
+    result = (await pool.query('SELECT p.amzn_prod, p.skill_id FROM products p WHERE p.id = $2 LIMIT 1', [pid])).rows[0]
 
     if(!(await checkSkillAccess(result.skill_id, req.user.id))){
       return res.sendStatus(403)
@@ -311,27 +311,26 @@ exports.deleteProduct = async (req, res) => {
     return res.sendStatus(500)
   }
 
-  if (result.amzn_prod_id) {
-    AccessToken(req.user.id, async (token) => {
-      if (token === null) {
-        return res.status(401).send({
-          message: "Invalid Amazon Login Token"
-        })
+  if (result.amzn_prod) {
+    for (const creator_id in result.amzn_prod) {
+      if (result.amzn_prod.hasOwnProperty(creator_id)) {  
+        AccessToken(creator_id, token => {
+          if (token === null) return
+          try {
+            axios.request({
+              url: `https://api.amazonalexa.com/v1/inSkillProducts/${result.amzn_prod[creator_id]}/stages/development`,
+              method: 'DELETE',
+              headers: {
+                Authorization: token
+              }
+            })
+          } catch (err) {}
+        })   
       }
-      try {
-        await axios.request({
-          url: `https://api.amazonalexa.com/v1/inSkillProducts/${result.amzn_prod_id}/stages/development`,
-          method: 'DELETE',
-          headers: {
-            Authorization: token
-          }
-        })
-      } catch (err) {}
-      deleteProductSQL(pid, res)
-    })
-  } else {
-    deleteProductSQL(pid, res)
+    }
   }
+  
+  deleteProductSQL(pid, res)
 }
 
 exports.patchSkill = async (req, res) => {
@@ -636,8 +635,14 @@ exports.buildSkill = async (req, res) => {
     // Asynchronously check version logic, doesn't affect publishing
     checkVersions(req.user, project_id, 'alexa', {token: token})
 
-    pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
-      if (err) {
+    pool.query(`
+      SELECT s.*, pm.amzn_id AS amzn_id, pv.project_id AS project_id, pm.creator_id AS status 
+      FROM skills s
+      INNER JOIN project_versions pv ON pv.version_id = s.skill_id
+      LEFT JOIN project_members pm ON pm.project_id = pv.project_id
+      WHERE s.skill_id = $1 AND (pm.creator_id = $2 OR pm.creator_id IS NULL) LIMIT 1
+    `, [id, req.user.id], async (err, data) => {
+      if (err || data.rowCount === 0) {
         writeToLogs('CREATOR_BACKEND_ERRORS', {
           err: err
         })
@@ -646,8 +651,9 @@ exports.buildSkill = async (req, res) => {
 
         let r = data.rows[0]
 
+        const project_id = r.project_id
         let amzn_id = r.amzn_id
-        let manifest = createManifest(r, original_id, req.user.name)
+        let manifest = createManifest(r, original_id)
 
         analytics.track({
           userId: req.user.id,
@@ -727,7 +733,14 @@ exports.buildSkill = async (req, res) => {
 
               amzn_id = request.data.skillId;
 
-              await pool.query("UPDATE skills SET amzn_id = $1 WHERE skill_id = $2", [amzn_id, r.skill_id]);
+              // Update AMZN ID in SQL
+              if(!!r.status){
+                await pool.query("UPDATE project_members SET amzn_id = $3 WHERE project_id = $1 AND creator_id = $2", 
+                [project_id, req.user.id, amzn_id]);
+              }else{
+                await pool.query("INSERT INTO project_members (project_id, creator_id, amzn_id) VALUES ($1, $2, $3)", 
+                [project_id, req.user.id, amzn_id])
+              }
             } else {
 
               await axios.request({
@@ -752,7 +765,8 @@ exports.buildSkill = async (req, res) => {
               for (row of products.rows) {
                 let product = row.data
                 let productId = row.id
-                let AmazonProductId = row.amzn_prod_id
+                if(!row.amzn_prod) row.amzn_prod = {}
+                let AmazonProductId = row.amzn_prod[req.user_id]
                 try {
                   // Try to update the product if it exists
                   if (!AmazonProductId) throw null
@@ -783,7 +797,8 @@ exports.buildSkill = async (req, res) => {
                   })
 
                   AmazonProductId = product_response.data.productId
-                  await pool.query("UPDATE products SET amzn_prod_id = $1 WHERE id = $2", [AmazonProductId, productId])
+                  row.amzn_prod[req.user.id] = AmazonProductId
+                  await pool.query("UPDATE products SET amzn_prod = $1 WHERE id = $2", [row.amzn_prod, productId])
 
                   await axios.request({
                     url: `https://api.amazonalexa.com/v1/inSkillProducts/${AmazonProductId}/skills/${amzn_id}`,
@@ -902,12 +917,14 @@ exports.buildSkill = async (req, res) => {
                           if(r.amzn_id !== amzn_id){
                             // Update canonical skill id's amzn id
                             try{
-                              await pool.query(`
-                              UPDATE skills SET amzn_id = $2 WHERE skill_id = (
-                                SELECT dev_version FROM projects p
-                                INNER JOIN project_versions pv ON p.project_id = pv.project_id
-                                WHERE version_id = $1 LIMIT 1)`, 
-                              [id, amzn_id])
+                              // Update AMZN ID in SQL
+                              if(!!r.status){
+                                await pool.query("UPDATE project_members SET amzn_id = $3 WHERE project_id = $1 AND creator_id = $2", 
+                                [project_id, req.user.id, amzn_id]);
+                              }else{
+                                await pool.query("INSERT INTO project_members (project_id, creator_id, amzn_id) VALUES ($1, $2, $3)", 
+                                [project_id, req.user.id, amzn_id])
+                              }
                             }catch(err){
                               writeToLogs('CREATOR_BACKEND_ERRORS', {err})
                               return res.sendStatus(500)
@@ -1100,48 +1117,6 @@ exports.copyProduct = async (req, res) => {
       // let new_product_id = data.rows[0].id
       data.rows[0].skill_id = hashids.encode(data.rows[0].skill_id)
       res.send(data.rows[0])
-    }
-  })
-}
-
-// Async call to copy all products
-copyAllProducts = (id, new_skill_id) => {
-  let copy_query = `
-    INSERT INTO products (skill_id, name, data, amzn_prod_id)
-    SELECT $1, name, data, amzn_prod_id FROM products WHERE id = $2
-  `
-
-  pool.query(copy_query, [new_skill_id, id], (err) => {
-    if (err) {
-      console.trace(err)
-    }
-  })
-}
-
-// Async call to copy all templates
-copyAllTemplates = (id, new_skill_id) => {
-  let copy_query = `
-    INSERT INTO email_templates (creator_id, title, created, content, sender, variables, subject, skill_id)
-    SELECT creator_id, title, NOW(), content, sender, variables, subject, $1 FROM email_templates WHERE skill_id = $2
-  `
-
-  pool.query(copy_query, [new_skill_id, id], (err) => {
-    if (err) {
-      console.trace(err)
-    }
-  })
-}
-
-// Async call to
-copyAllDisplays = (id, new_skill_id) => {
-  let copy_query = `
-    INSERT INTO displays (document, compatibility, created_at, creator_id, title, description, datasource, skill_id)
-    SELECT document, compatibility, NOW(), creator_id, title, description, datasource, $1 FROM displays WHERE skill_id = $2
-  `
-
-  pool.query(copy_query, [new_skill_id, id], (err) => {
-    if (err) {
-      console.trace(err)
     }
   })
 }

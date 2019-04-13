@@ -146,14 +146,14 @@ app.get('/creator/terms', terms)
 
 app.post('/test/api', ensureLoggedIn(), Test.api)
 
-app.get('/link_account/template/:skill_id', ensurePlan(1), LinkAccount.getTemplate);
-app.post('/link_account/template/:skill_id', ensurePlan(1), LinkAccount.setTemplate);
+app.get('/link_account/template/:skill_id', ensureLoggedIn(), LinkAccount.getTemplate);
+app.post('/link_account/template/:skill_id', ensureLoggedIn(), LinkAccount.setTemplate);
 
-app.get('/email/templates', ensurePlan(1), Email.getTemplates);
-app.get('/email/template/:id', ensurePlan(1), Email.getTemplate);
-app.post('/email/template', ensurePlan(1), Email.setTemplate);
-app.patch('/email/template/:id', ensurePlan(1), Email.setTemplate);
-app.delete('/email/template/:id', ensurePlan(1), Email.deleteTemplate);
+app.get('/email/templates', ensureLoggedIn(), Email.getTemplates);
+app.get('/email/template/:id', ensureLoggedIn(), Email.getTemplate);
+app.post('/email/template', ensureLoggedIn(), Email.setTemplate);
+app.patch('/email/template/:id', ensureLoggedIn(), Email.setTemplate);
+app.delete('/email/template/:id', ensureLoggedIn(), Email.deleteTemplate);
 
 app.get('/multimodal/displays', ensureLoggedIn(), Multimodal.getDisplays);
 app.get('/multimodal/display/:id', ensureLoggedIn(), Multimodal.getDisplay);

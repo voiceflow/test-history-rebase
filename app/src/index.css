@@ -4,6 +4,7 @@ body {
 }
 html, body, #root, #body{
   height: 100%;
+  overflow: hidden;
 }
 
 .border-none {

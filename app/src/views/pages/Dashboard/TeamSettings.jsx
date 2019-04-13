@@ -407,7 +407,7 @@ class TeamSettings extends Component {
       <>
         <UncontrolledDropdown inNavbar>
           <DropdownToggle tag="div" className="dropdown-button">
-            <img src={'/cog.svg'} width={17}></img>
+            <img src={'/cog.svg'} width={17} alt="cog"/>
           </DropdownToggle>
           <DropdownMenu right className="no-select">
             <DropdownItem onClick={()=>this.props.update('MEMBERS')}>

@@ -427,7 +427,7 @@ export class Canvas extends Component {
         util.createCombineNode(newNode, type, node)
         newNode.extras.type = type;
         if (node.extras.type !== 'god') {
-            var combineNode = new BlockNodeModel('Combine Block', null, toolkit.UID())
+            var combineNode = new BlockNodeModel('New Block', null, toolkit.UID())
             combineNode.extras.type = 'god'
             node.parentCombine = combineNode;
             newNode.parentCombine = combineNode;

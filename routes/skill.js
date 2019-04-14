@@ -507,8 +507,8 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
       SELECT s.* FROM skills s
       INNER JOIN projects p ON p.project_id = s.project_id
       WHERE s.skill_id != p.dev_version AND s.project_id = $1 AND s.platform = $2
-      ORDER BY created ASC`
-    ), [project_id, platform]).rows
+      ORDER BY created ASC
+    `, [project_id, platform])).rows
 
     if(project_versions.length === 0) return resolve()
 
@@ -637,7 +637,7 @@ exports.buildSkill = async (req, res) => {
     checkVersions(project_id, 'alexa')
 
     pool.query(`
-      SELECT s.*, pm.amzn_id AS amzn_id, s.project_id AS project_id, pm.creator_id AS status 
+      SELECT s.*, pm.amzn_id AS amzn_id, pm.creator_id AS status 
       FROM skills s
       LEFT JOIN project_members pm ON pm.project_id = s.project_id
       WHERE s.skill_id = $1 AND (pm.creator_id = $2 OR pm.creator_id IS NULL) LIMIT 1
@@ -650,7 +650,6 @@ exports.buildSkill = async (req, res) => {
       } else {
 
         let r = data.rows[0]
-
         const project_id = r.project_id
         let amzn_id = r.amzn_id
         let manifest = createManifest(r, original_id)
@@ -740,7 +739,12 @@ exports.buildSkill = async (req, res) => {
               }else{
                 await pool.query("INSERT INTO project_members (project_id, creator_id, amzn_id) VALUES ($1, $2, $3)", 
                 [project_id, req.user.id, amzn_id])
+                r.status = true
               }
+
+              // Update Amazon ID
+              r.amzn_id = amzn_id
+
             } else {
 
               await axios.request({
@@ -926,7 +930,7 @@ exports.buildSkill = async (req, res) => {
                                 [project_id, req.user.id, amzn_id])
                               }
                             }catch(err){
-                              writeToLogs('CREATOR_BACKEND_ERRORS', {err})
+                              writeToLogs('AMAZON PROJECT MEMBER', {err})
                               return res.sendStatus(500)
                             }
                           }

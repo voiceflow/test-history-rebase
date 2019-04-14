@@ -431,15 +431,15 @@ exports.copySkill = async (req, res, options, cb = false) => {
   if (options.complete_copy || options.renderDiagram) {
     copy_query = `
           INSERT INTO skills (
-            name, diagram,creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
+            name, diagram, creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
             purchase, personal, copa, ads, export, instructions, inv_name, stage, review, locales, restart, global,
             privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-            account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info
+            account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info, project_id
           )
           SELECT ${copy_str}, $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
               purchase, personal, copa, ads, export, instructions, inv_name, stage, review, locales, restart, global,
               privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-              account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info
+              account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info, project_id
           FROM skills WHERE skill_id = $3 RETURNING *`
   } else {
     copy_query = `
@@ -474,6 +474,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
 
     let diagram_data = await pool.query('SELECT id, diagrams.name, intents, slots FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1', [id])
     let retrieve_promises = []
+
     for (let i = 0; i < diagram_data.rows.length; i++) {
       diagram_names[diagram_data.rows[i].id] = diagram_data.rows[i].name
       if (diagram_data.rows[i].name === 'ROOT') {
@@ -485,6 +486,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
         retrieveDiagram(diagram_data.rows[i].id, copy_skill.skill_id, copy_skill.platform)
       )
     }
+
     Promise.all(retrieve_promises)
       .then(async () => {
         // Add working version to table

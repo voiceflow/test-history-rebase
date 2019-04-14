@@ -119,7 +119,7 @@ app.delete('/session/amazon', ensureLoggedIn(), Authentication.deleteAmazon);
 
 app.get('/session/google/access_token', ensureLoggedIn(), Authentication.hasGoogleAccessToken);
 app.delete('/session/google/access_token', ensureLoggedIn(), Authentication.deleteGoogleAccessToken);
-app.get('/session/google/dialogflow_access_token/:skill_id', ensureLoggedIn(), Authentication.hasDialogflowToken);
+app.get('/session/google/dialogflow_access_token/:project_id', ensureLoggedIn(), Authentication.hasDialogflowToken);
 app.post('/session/google/verify_token', ensureLoggedIn(), Authentication.verifyGoogleAccessToken);
 app.post('/session/google/verify_dialogflow_token', ensureLoggedIn(), Authentication.verifyDialogflowToken);
 app.delete('/session/google/dialogflow_access_token', ensureLoggedIn(), Authentication.deleteDialogflowToken);

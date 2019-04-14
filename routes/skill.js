@@ -485,15 +485,24 @@ exports.enableSkill = async (req, res) => {
   })
 }
 
-const checkVersions = (project_id, platform, options={}) => new Promise(async (resolve, reject) => {
+const checkVersions = (project_id, platform, options={}) => new Promise(async resolve => {
   // get the project id and dev version from this skill
   try{
-    // get all the various base versions
-    const dev_versions = (await pool.query(`SELECT * FROM project_members WHERE project_id = $1`, [project_id])).rows
 
+    // GET ALL THE BASE VERSIONS FROM PROJECT MEMBERS
+    var q
+    if (platform === 'alexa') {
+      q = `SELECT * FROM project_members WHERE project_id = $1 AND amzn_id IS NOT NULL`
+    } else if(platform === 'google') {
+      q = `SELECT * FROM project_members WHERE project_id = $1 AND google_versions IS NOT NULL`
+    } else {
+      return resolve()
+    }
+    const dev_versions = (await pool.query(q, [project_id])).rows
     if(dev_versions.length === 0) return resolve()
 
-    // get all the project versions
+
+    // GET ALL PROJECT VERSIONS
     const project_versions = (await pool.query(`
       SELECT s.* FROM skills s
       INNER JOIN projects p ON p.project_id = s.project_id
@@ -509,11 +518,10 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async (r
     // If checking Alexa versions 
     if(platform === 'alexa'){
 
-      const amzn_dev_versions = dev_versions.filter(v => !!v.amzn_id)
       const remove_live = new Set()
       const add_live = new Set()
 
-      for(dev_version of amzn_dev_versions){
+      for(dev_version of dev_versions){
         try{
           const token = await AmazonAccessToken(dev_version.creator_id)
           // Check if this endpoint is LIVE
@@ -558,10 +566,8 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async (r
         Array.from(add_live))
       }
     }else if(platform === 'google'){
-
-      const google_dev_versions = dev_versions.filter(v => !!v.google_versions)
       
-      for(dev_version of google_dev_versions){
+      for(dev_version of dev_versions){
         const all_google_versions = dev_version.google_versions
         const creator_versions = project_versions.filter(v => ((v.creator_id === dev_version.creator_id) && !!v.google_versions))
 
@@ -1188,19 +1194,24 @@ exports.restoreSkillVersion = async (req, res) => {
 
 exports.buildGoogleSkill = async (req, res) => {
 
-  let vf_project_id = hashids.decode(req.params.project_id)[0];
+  let project_id = hashids.decode(req.params.project_id)[0];
   let id = hashids.decode(req.params.version_id)[0];
   let original_id = req.params.version_id
 
   try {
-    const skill_info = (await pool.query('SELECT * FROM skills WHERE skill_id = $1 LIMIT 1', [id])).rows[0]
+    const version = (await pool.query(`
+      SELECT pm.*, s.google_publish_info, s.intents, s.slots, s.used_intents FROM project_members pm
+      INNER JOIN skills s ON s.project_id = pm.project_id
+      WHERE s.skill_id = $1 AND pm.creator_id = $2
+    `, [id, req.user.id])).rows[0]
 
-    const publish_info = skill_info.google_publish_info
-    if (!publish_info) {
-      throw ('No publish info found')
-    }
+    if(!version) throw ('Not Found')
 
-    const project_id = publish_info.project_id
+    const google_id = version.google_id
+    const publish_info = version.google_publish_info
+
+    if (!publish_info) throw ('No publish info found')
+    if (_.isNil(google_id)) throw ('Project ID not found')
 
     let {
       locales,
@@ -1213,22 +1224,18 @@ exports.buildGoogleSkill = async (req, res) => {
       main_locale = 'en'
     }
 
-    if (_.isNil(project_id)) {
-      throw ('Project ID not found')
-    }
-
-    skill_info.skill_id = original_id
+    version.skill_id = original_id
 
     let dialogflow_creds
     try {
-      dialogflow_creds = JSON.parse(skill_info.dialogflow_token)
+      dialogflow_creds = JSON.parse(version.dialogflow_token)
     } catch (e) {
       throw ('Credentials not found')
     }
 
-    checkVersions(vf_project_id, 'google')
+    checkVersions(project_id, 'google')
 
-    const main_client = new DialogflowClient(project_id, dialogflow_creds.private_key, dialogflow_creds.client_email)
+    const main_client = new DialogflowClient(google_id, dialogflow_creds.private_key, dialogflow_creds.client_email)
 
     let agent = await main_client.getAgent()
     if (agent && agent.length > 0) {
@@ -1239,49 +1246,32 @@ exports.buildGoogleSkill = async (req, res) => {
     await main_client.updateAgentFulfillment(original_id, main_locale, locales)
 
     const updates = []
-    const _package = generateDialogflowPackage(skill_info)
+    const _package = generateDialogflowPackage(version)
 
     if (!locales.includes(main_locale)) {
       locales.push(main_locale)
     }
 
     locales.forEach(locale => {
-      updates.push(updateDialogflowPackage(dialogflow_creds, project_id, _package, skill_info, locale))
+      updates.push(updateDialogflowPackage(dialogflow_creds, google_id, _package, locale))
     })
     await Promise.all(updates)
+
     publish_info.uploaded = true
+    await pool.query('UPDATE skills set google_publish_info = $2 WHERE skills.skill_id = $1', [id, publish_info])
 
-    await new Promise((resolve, reject) => {
-      pool.query('UPDATE skills set google_publish_info = $2 WHERE skills.skill_id = $1', [id, publish_info], async (err) => {
-        if (err) {
-          console.trace(err)
-          reject()
-        } else {
-          resolve()
-        }
-      })
-    })
+    res.status(200).send({google_id: google_id})
 
-    res.status(200).send({
-      project_id: project_id
-    })
   } catch (e) {
     console.trace(e)
     res.status(400).send(`Error while building skill: ${e}`)
   }
 }
 
-const updateDialogflowPackage = ({
-  private_key,
-  client_email
-}, project_id, {
-  intents,
-  slots
-}, {
-  skill_id
-}, locale) => new Promise(async (resolve, reject) => {
+const updateDialogflowPackage = ({private_key, client_email}, google_id, {intents,slots}, locale) => 
+new Promise(async (resolve, reject) => {
   try {
-    const client = new DialogflowClient(project_id, private_key, client_email)
+    const client = new DialogflowClient(google_id, private_key, client_email)
     client.setLocale(locale)
     await client.updateEntities(slots)
     await client.updateIntents(intents)
@@ -1316,7 +1306,7 @@ exports.getGoogleSkill = async (req, res) => {
     } else {
       let publish_info = data.rows[0].google_publish_info
 
-      let project_id
+      let google_id
       let private_key
       let client_email
 
@@ -1324,7 +1314,7 @@ exports.getGoogleSkill = async (req, res) => {
       if (data.rows[0].dialogflow_token) {
         try {
           let dialogflow_token = JSON.parse(data.rows[0].dialogflow_token)
-          project_id = dialogflow_token.project_id
+          google_id = dialogflow_token.google_id
           private_key = dialogflow_token.private_key
           client_email = dialogflow_token.client_email
 
@@ -1333,7 +1323,7 @@ exports.getGoogleSkill = async (req, res) => {
           console.trace('Parsing dialogflow_token failed', e)
         }
 
-        const client = new DialogflowClient(project_id, private_key, client_email)
+        const client = new DialogflowClient(google_id, private_key, client_email)
         const agents = await client.getAgent();
 
         ({
@@ -1342,8 +1332,9 @@ exports.getGoogleSkill = async (req, res) => {
         } = agents[0])
       }
 
+      // wut ????
       let {
-        google_id,
+        // google_id,
         created,
         diagram,
         privacy_policy,
@@ -1354,7 +1345,7 @@ exports.getGoogleSkill = async (req, res) => {
         publish_info,
         created,
         diagram,
-        project_id,
+        google_id,
         defaultLanguageCode,
         supportedLanguageCodes,
         privacy_policy,

@@ -521,16 +521,19 @@ const hasGoogleAccessToken = (req, res) => {
 }
 
 const hasDialogflowToken = (req, res) => {
-  let skill_id = req.params.skill_id
+  let project_id = req.params.project_id
+  project_id = hashids.decode(project_id)[0]
 
-  if (!skill_id) {
+  if (!project_id) {
     res.status(400).send('Missing skill ID')
     return
   }
 
-  skill_id = hashids.decode(skill_id)[0]
-
-  pool.query('SELECT dialogflow_token FROM skills WHERE skill_id = $1', [skill_id], (err, data) => {
+  pool.query(`
+    SELECT dialogflow_token 
+    FROM project_members
+    WHERE creator_id = $1 AND project_id = $2
+  `, [req.user.id, project_id], (err, data) => {
     if (err) {
       console.trace(err)
       res.status(500).send("Unable to Access Database");
@@ -548,15 +551,15 @@ const hasDialogflowToken = (req, res) => {
 
 const verifyDialogflowToken = async (req, res) => {
   let token = req.body.token
-  let skill_id = req.body.skill_id
+  let project_id = req.body.project_id
 
   try {
-    if (!token || !skill_id) {
+    project_id = hashids.decode(project_id)[0]
+
+    if (!token || !project_id) {
       res.status(400).send('Bad Request: Parameters missing')
       return
     }
-
-    skill_id = hashids.decode(skill_id)[0]
 
     const parsed = JSON.parse(token)
     if (!(parsed.type === 'service_account')) {
@@ -571,24 +574,29 @@ const verifyDialogflowToken = async (req, res) => {
     if (!parsed.client_email === 'service_account') {
       throw ('Missing client email in credentials')
     }
-    await new Promise((resolve, reject) => {
-      pool.query('UPDATE skills SET dialogflow_token = $2 WHERE skill_id = $1 RETURNING *', [skill_id, token], (err) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve()
-        }
-      })
-    })
 
-    let {
-      project_id,
+    const {
+      google_id,
       private_key,
       client_email
     } = parsed
 
-    const client = new DialogflowClient(project_id, private_key, client_email)
+    const client = new DialogflowClient(google_id, private_key, client_email)
     const agents = await client.getAgent();
+
+    const UPDATE = await pool.query(`
+      UPDATE project_members 
+      SET dialogflow_token = $1, google_id = $2 
+      WHERE project_id = $3 AND creator_id = $4`, 
+    [token, google_id, project_id, req.user.id])
+
+    // If nothing was updated create new row
+    if(UPDATE.rowCount === 0){
+      pool.query(`
+        INSERT INTO project_members (project_id, creator_id, dialogflow_token, google_id) 
+        VALUES ($1, $2, $3, $4)
+      `, [project_id, req.user.id, token, google_id])
+    }
 
     let {
       defaultLanguageCode,
@@ -596,7 +604,7 @@ const verifyDialogflowToken = async (req, res) => {
     } = agents[0]
 
     res.status(200).send({
-      project_id,
+      google_id,
       defaultLanguageCode,
       supportedLanguageCodes
     })
@@ -1010,7 +1018,7 @@ const deleteGoogleAccessToken = async (req, res) => {
 
   try {
     await pool.query('UPDATE creators SET gactions_token = NULL WHERE creator_id = $1', [creator_id])
-    await pool.query('UPDATE skills SET dialogflow_token = NULL, google_versions = NULL, google_publish_info=$2 WHERE creator_id = $1', [creator_id, {}])
+    await pool.query('UPDATE project_members SET dialogflow_token = NULL, gactions_token = NULL WHERE creator_id = $1', [creator_id])
 
     res.sendStatus(200)
   } catch (e) {
@@ -1020,16 +1028,16 @@ const deleteGoogleAccessToken = async (req, res) => {
 }
 
 const deleteDialogflowToken = async (req, res) => {
-  let skill_id = req.body.skill_id
-  if (!skill_id) {
+  let project_id = req.body.project_id
+  project_id = hashids.decode(project_id)[0]
+
+  if (!project_id) {
     res.status(400).send('Bad Request: Skill ID Missing')
     return
   }
 
-  skill_id = hashids.decode(skill_id)[0]
-
   try {
-    await pool.query('UPDATE skills SET dialogflow_token = NULL, google_publish_info=$2 WHERE skill_id = $1', [skill_id, {}])
+    await pool.query('UPDATE project_members SET dialogflow_token = NULL WHERE project_id = $1', [project_id])
     res.sendStatus(200)
   } catch (e) {
     res.status(500).send(e)

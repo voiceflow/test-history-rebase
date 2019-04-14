@@ -61,11 +61,10 @@ const SECTIONS = [{
         BLOCK_TYPES.display
     ]
 },{
-    title: 'business',
+    title: 'user',
     items: [
         BLOCK_TYPES.permission,
         BLOCK_TYPES.permissions,
-        BLOCK_TYPES.mail,
         BLOCK_TYPES.payment,
         BLOCK_TYPES.cancel,
         BLOCK_TYPES.reminder

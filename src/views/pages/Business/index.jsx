@@ -10,8 +10,6 @@ import Home from './Home'
 import Products from './Products/Products';
 import EditProduct from './Products/EditProduct';
 
-const PAID_FEATURES = ['Multi-Platform Publishing', 'In-depth Analytics', 'Email Automation', 'Business Support', 'In Skill Purchases', 'Project Backups']
-
 const updateLink = (link, skill_id) => {
     return link.replace(':skill_id', skill_id)
 }

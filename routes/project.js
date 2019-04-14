@@ -51,8 +51,8 @@ exports.getProjectVersions = (req, res) => {
   pool.query(`
       SELECT s.* FROM skills s
       INNER JOIN projects p ON p.project_id = s.project_id
-      WHERE pv.project_id = $1 AND p.dev_version != s.skill_id
-      ORDER BY pv.created DESC`, [project_id],
+      WHERE s.project_id = $1 AND p.dev_version != s.skill_id
+      ORDER BY s.created DESC`, [project_id],
     (err, data) => {
       if (err) {
         writeToLogs('CREATOR_BACKEND_ERRORS', {

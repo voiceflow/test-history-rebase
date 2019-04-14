@@ -245,7 +245,7 @@ class NewTeam extends Component {
                     style={{ fontWeight: 400 }}
                     block
                   >
-                    <img src={'/add-step.svg'} className="mr-2 mb-1" height={15}/> Add Teammate
+                    <img src={'/add-step.svg'} className="mr-2 mb-1" height={15} alt="add"/> Add Teammate
                   </Button>
                 </div>
               </div>

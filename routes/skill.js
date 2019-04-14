@@ -137,8 +137,7 @@ exports.getSkill = async (req, res) => {
   } else {
     sql = `
       SELECT
-        s.*,
-        pv.project_id
+        s.*
       FROM
         skills s
         INNER JOIN projects p ON p.project_id = s.project_id

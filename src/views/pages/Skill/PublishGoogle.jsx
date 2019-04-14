@@ -71,7 +71,7 @@ class GooglePublish extends Component {
       loaded: false,
       publish_modal_open: false,
       google_token: '',
-      project_id: '',
+      google_id: '',
       name: this.props.skill.name,
       credentials: false,
       locales: [],
@@ -110,7 +110,7 @@ class GooglePublish extends Component {
 
       let s = this.state;
 
-      if (!s.project_id) {
+      if (!s.google_id) {
         this.setState({
           publish_modal_open: false
         })
@@ -121,7 +121,7 @@ class GooglePublish extends Component {
 
       this.setState({ stage: 2 });
 
-      axios.post(`/project/${this.props.project_id}/render`, { platform: 'google', project_id: s.project_id })
+      axios.post(`/project/${this.props.project_id}/render`, { platform: 'google', google_id: s.google_id })
         .then(res => {
           this.setState({ stage: 3 });
           let new_version_data = res.data
@@ -129,7 +129,7 @@ class GooglePublish extends Component {
             .then(res => {
               this.setState({
                 stage: 4,
-                project_id: res.data.project_id || this.state.project_id,
+                google_id: res.data.google_id || this.state.google_id,
                 uploaded: true
               });
             })
@@ -161,7 +161,7 @@ class GooglePublish extends Component {
   componentDidMount() {
     try {
       googleAccessToken().then(g_token => {
-        dialogflowToken(this.props.skill_id).then(d_token => {
+        dialogflowToken(this.props.project_id).then(d_token => {
           this.setState({
             credentials: d_token ? true : false,
             publish_modal_open: d_token && !g_token,
@@ -198,13 +198,13 @@ class GooglePublish extends Component {
           publish_info.google_link_user = '0'
         }
 
-        let { project_id, created, diagram, privacy_policy, terms_and_cond } = res.data
+        let { google_id, created, diagram, privacy_policy, terms_and_cond } = res.data
 
         // TODO: Antipattern, fix this when we do redux
         this.setState({
           loaded: true,
           ...publish_info,
-          project_id,
+          google_id,
           created,
           diagram,
           privacy_policy,
@@ -226,8 +226,7 @@ class GooglePublish extends Component {
     const s = this.state;
 
     const publish_info = {
-        google_publish_info : {
-        project_id: s.project_id,
+      google_publish_info : {
         locales: s.locales,
         main_locale: s.main_locale,
         uploaded: s.uploaded,
@@ -283,7 +282,7 @@ class GooglePublish extends Component {
   onUnlinkClick() {
     this.props.setConfirm({
       warning: true,
-      text: <Alert color="warning" className="mb-0">Are you sure you want to unlink the google project {this.state.project_id}? You will be able to link a new google project afterwards.</Alert>,
+      text: <Alert color="warning" className="mb-0">Are you sure you want to unlink the google project {this.state.google_id}? You will be able to link a new google project afterwards.</Alert>,
       confirm: () => {
         this.unlinkGoogle()
       }
@@ -298,23 +297,21 @@ class GooglePublish extends Component {
     try {
       await axios.delete('/session/google/dialogflow_access_token', { 
         data: {
-          skill_id: this.props.skill_id
+          project_id: this.props.project_id
         }
       })
 
-      const publish_info = {
-        google_publish_info : {
-        project_id: null,
+      const reset_google_publish_info = {
         locales: [],
         main_locale: null,
         uploaded: false,
         google_link_user: 0
       }
-    }
 
       this.setState({
         credentials: false,
-        ...publish_info.google_publish_info
+        google_id: '',
+        ...reset_google_publish_info
       })
     } catch (e) {
       this.props.setError(e)
@@ -353,13 +350,13 @@ class GooglePublish extends Component {
         try {
           const res = await axios.post('/session/google/verify_dialogflow_token', {
             token: text,
-            skill_id: this.props.skill_id
+            project_id: this.props.project_id
           })
 
           this.setState({
             credentials: true,
             loading_creds: false,
-            project_id: res.data.project_id,
+            google_id: res.data.google_id,
             publish_modal_open: this.state.stage === 0
           })
         } catch (e) {
@@ -422,7 +419,7 @@ class GooglePublish extends Component {
             You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
         </span>
           <div className="my-3">
-            <a href={`https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.project_id}/simulator`}
+            <a href={`https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.google_id}/simulator`}
               className="btn btn-primary mr-4" target="_blank" rel="noopener noreferrer">
               Test on Google Actions Simulator
             </a>
@@ -455,7 +452,7 @@ class GooglePublish extends Component {
       modal_content = this.publishedContent()
     }
 
-    let googleConsoleUrl = `https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.project_id}/overview`;
+    let googleConsoleUrl = `https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.google_id}/overview`;
 
     if (!this.state.loaded) return <div className="super-center h-100 w-100">
       <div className='text-center'>
@@ -525,7 +522,7 @@ class GooglePublish extends Component {
                   </div>
                 </div>
                 : null}
-              {this.state.project_id && this.state.uploaded ?
+              {this.state.google_id && this.state.uploaded ?
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <span>This Action is linked on the Google Actions Console</span>
@@ -534,8 +531,8 @@ class GooglePublish extends Component {
                   <Collapse isOpen={this.state.id_collapse}>
                     <hr />
                     <span>Project ID | </span>
-                    <a href={`https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.project_id}/simulator`} target="_blank" rel="noopener noreferrer">
-                      <b>{this.state.project_id} </b>
+                    <a href={`https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.google_id}/simulator`} target="_blank" rel="noopener noreferrer">
+                      <b>{this.state.google_id} </b>
                     </a>
 
                     {!this.state.modify_url && <span onClick={() => { this.setState({ modify_url: true }) }} className='tooltip-link ml-2'>
@@ -543,10 +540,10 @@ class GooglePublish extends Component {
                     </span>}
 
                     {this.state.modify_url && <span className='ml-2 google-link-publish'>
-                      <a href={`https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.project_id}/simulator`} target="_blank" rel="noopener noreferrer">
+                      <a href={`https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.google_id}/simulator`} target="_blank" rel="noopener noreferrer">
                         {`https://console.actions.google.com/u/`}
                         <span><Input className="google-link-input" name='google_link_user' value={this.state.google_link_user} onChange={this.handleChange} onClick={e => e.preventDefault()}></Input></span>
-                        {`/project/${this.state.project_id}/simulator`}
+                        {`/project/${this.state.google_id}/simulator`}
                       </a>
                       <Tooltip
                         target="tooltip"
@@ -625,7 +622,7 @@ class GooglePublish extends Component {
                         </div>
                         <div className="col-9">
                           <Label className="publish-label">Google Project ID</Label>
-                          <Input className="form-bg" type="text" name="project_id" placeholder="No Project ID Found" value={this.state.project_id} readOnly />
+                          <Input className="form-bg" type="text" name="project_id" placeholder="No Project ID Found" value={this.state.google_id} readOnly />
                         </div>
                       </div>
                     </FormGroup>}

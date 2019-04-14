@@ -149,8 +149,8 @@ export const googleAccessToken = () => new Promise((resolve, reject) => {
   .catch(err => reject(err))
 })
 
-export const dialogflowToken = (skill_id) => new Promise((resolve, reject) => {
-  axios.get(`/session/google/dialogflow_access_token/${skill_id}`)
+export const dialogflowToken = (project_id) => new Promise((resolve, reject) => {
+  axios.get(`/session/google/dialogflow_access_token/${project_id}`)
   .then(res => resolve(!!(res.data && res.data.token)))
   .catch(err => reject(err))
 })

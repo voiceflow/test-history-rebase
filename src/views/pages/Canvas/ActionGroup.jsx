@@ -241,12 +241,12 @@ export class ActionGroup extends PureComponent {
     })
   }
 
-  uploadSuccess(platform='alexa', project_id){
+  uploadSuccess(platform='alexa', google_id){
     // Track upload on first session
     // They completed their first upload successfully
     if(platform === 'google'){
       this.setState({
-          project_id: project_id || this.state.project_id
+          google_id: google_id || this.state.google_id
       })
       this.updateGoogleStage(5)
     }else{
@@ -438,21 +438,21 @@ export class ActionGroup extends PureComponent {
     const s = this.state
     const p = this.props
 
-    if (s.google_stage === 0 || s.google_stage === 1 || !p.skill.google_publish_info || !p.skill.google_publish_info.project_id) {
+    if (s.google_stage === 0 || s.google_stage === 1 || !p.skill.google_publish_info || !p.skill.google_id) {
         p.history.push(`/publish/${p.skill.skill_id}/google`)
         return
     }
 
     this.updateGoogleStage(3)
 
-    axios.post(`/project/${this.props.skill.project_id}/render`, { platform: 'google', project_id: p.skill.google_publish_info.project_id })
+    axios.post(`/project/${this.props.skill.project_id}/render`, { platform: 'google', google_id: p.skill.google_id })
     .then(res => {
       this.updateGoogleStage(4)
       let new_version_data = res.data
       axios.post(`/project/${this.props.skill.project_id}/version/${new_version_data.new_skill.skill_id}/google`)
           .then(res => {
               // They completed their first upload successfully
-              this.uploadSuccess('google', res.data.project_id)
+              this.uploadSuccess('google', res.data.google_id)
           })
           .catch(err => {
               this.setState({
@@ -839,7 +839,7 @@ export class ActionGroup extends PureComponent {
               modal_content = <div className="text-center">
                   <div className="d-flex align-items-center justify-content-center upload-prompt-title mb-2"> <span className="pass-icon mr-2"/> Upload Successful </div>
                   <div className="upload-prompt-text">
-                    You may test on the <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.project_id}/simulator`}
+                    You may test on the <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.google_id}/simulator`}
                             target="_blank" rel="noopener noreferrer">
                             Google Actions Simulator
                     </a>. To submit for review, please follow the instructions on the Google Actions Developer Console.
@@ -854,7 +854,7 @@ export class ActionGroup extends PureComponent {
                       You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
               </span>
                   <div className="my-3">
-                      <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.project_id}/simulator`}
+                      <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.google_id}/simulator`}
                           className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
                           Test on Google Actions Simulator
                   </a>

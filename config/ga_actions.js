@@ -101,7 +101,7 @@ exports.checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promi
       resolve(attached_google_versions)
     })
 
-    const data = await pool.query('SELECT google_versions FROM project_versions WHERE version_id = $1', [skill_id])
+    const data = await pool.query('SELECT google_versions FROM skills WHERE skill_id = $1', [skill_id])
 
     let existing_google_versions = data.rows[0].google_versions
     let highest_existing_version = 0
@@ -135,7 +135,7 @@ exports.checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promi
       existing_google_versions[version] = all_google_versions[version]
     })
 
-    if (existing_google_versions) await pool.query('UPDATE project_versions SET google_versions = $2 WHERE version_id = $1', [skill_id, existing_google_versions])
+    if (existing_google_versions) await pool.query('UPDATE skills SET google_versions = $2 WHERE skill_id = $1', [skill_id, existing_google_versions])
   } catch (e) {
     await new Promise((resolve, reject) => {
       del([dir]).then(resolve()).catch(e => reject(e))

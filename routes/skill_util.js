@@ -132,15 +132,12 @@ exports.deleteVersionPromise = (creator_id, skill_id, opts) => {
 exports.deleteProjectPromise = (project_id) => {
   return new Promise(async (resolve, reject) => {
     let select_query = `
-      SELECT * FROM projects 
-        INNER JOIN project_versions ON projects.project_id = project_versions.project_id 
-        INNER JOIN skills ON project_versions.version_id = skills.skill_id
-        INNER JOIN diagrams ON skills.skill_id = diagrams.skill_id
-      WHERE projects.project_id = $1`
+      SELECT * FROM projects p
+        INNER JOIN skills s ON p.project_id = s.project_id
+        INNER JOIN diagrams d ON s.skill_id = d.skill_id
+      WHERE p.project_id = $1`
 
-    let delete_query = `
-      DELETE FROM skills WHERE skill_id IN 
-      (SELECT version_id FROM project_versions WHERE project_id = $1)`
+    let delete_query = `DELETE FROM skills WHERE project_id = $1`
 
     try{
       let project_data_rows = (await pool.query(select_query, [project_id])).rows
@@ -498,9 +495,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
         if (options.copying_default_template || options.user_copy) {
           try{
             if (options.request_cert && copy_skill){ 
-              await pool.query(
-                `INSERT INTO project_versions (project_id, version_id, cert_requested) VALUES ($1, $2, now())`, 
-                [options.project_id, copy_skill.skill_id])
+              await pool.query(`UPDATE skills SET project_id = $1, cert_requested = NOW() WHERE skill_id = $2`, [options.project_id, copy_skill.skill_id])
             } else if (copy_skill) {
               if(options.append_copy_str) options.name = copy_skill.name
 
@@ -510,7 +505,8 @@ exports.copySkill = async (req, res, options, cb = false) => {
                 RETURNING *`, 
               [options.name, copy_skill.creator_id, copy_skill.skill_id, team_id])).rows[0]
               copy_skill.project_id = hashids.encode(new_project_data.project_id)
-              await pool.query(`INSERT INTO project_versions (project_id, version_id) VALUES ($1, $2)`, [new_project_data.project_id, copy_skill.skill_id])
+
+              await pool.query(`UPDATE skills SET project_id = $1 WHERE skill_id = $2`, [new_project_data.project_id, copy_skill.skill_id])
             
               if(process.env.NODE_ENV !== 'test'){
                 analytics.track({

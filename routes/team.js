@@ -79,8 +79,7 @@ exports.checkSkillAccess = async (skill_id, user_id) => {
     try {
       const result = await pool.query(`
         SELECT 1 FROM skills s
-        INNER JOIN project_versions pv ON pv.version_id = s.skill_id
-        INNER JOIN projects p ON p.project_id = pv.project_id
+        INNER JOIN projects p ON p.project_id = s.project_id
         INNER JOIN team_members tm ON tm.team_id = p.team_id
         WHERE s.skill_id = $1 AND tm.creator_id = $2 LIMIT 1
       `, [skill_id, user_id])

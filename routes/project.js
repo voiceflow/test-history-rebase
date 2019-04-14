@@ -20,7 +20,7 @@ const {
 exports.getProjectFromSkill = async (req, res, next) => {
   try{
     let skill_id = hashids.decode(req.params.skill_id)[0]
-    let project_id = (await pool.query('SELECT project_id FROM project_versions WHERE version_id = $1 LIMIT 1', [skill_id])).rows[0].project_id
+    let project_id = (await pool.query('SELECT project_id FROM skills WHERE skill_id = $1 LIMIT 1', [skill_id])).rows[0].project_id
     req.params.project_id = hashids.encode(project_id)
     req.params.version_id = req.params.skill_id
     next()
@@ -50,8 +50,7 @@ exports.getProjectVersions = (req, res) => {
   let project_id = hashids.decode(req.params.project_id)[0]
   pool.query(`
       SELECT s.* FROM skills s
-      INNER JOIN project_versions pv ON pv.version_id = s.skill_id
-      INNER JOIN projects p ON p.project_id = pv.project_id
+      INNER JOIN projects p ON p.project_id = s.project_id
       WHERE pv.project_id = $1 AND p.dev_version != s.skill_id
       ORDER BY pv.created DESC`, [project_id],
     (err, data) => {
@@ -75,12 +74,11 @@ exports.getLiveVersion = async (req, res) => {
   try {
     // TODO ENFORCE THIS TEAM/CREATOR
     let live_version_data = await pool.query(`
-      SELECT s.skill_id AS sid, s.diagram AS sdia
-      FROM skills s 
-      INNER JOIN project_versions pv ON pv.version_id = s.skill_id 
+      SELECT skill_id AS sid, diagram AS sdia
+      FROM skills
       WHERE 
-        pv.project_id = $1
-        AND s.live = TRUE
+        project_id = $1
+        AND live = TRUE
       LIMIT 1
     `, [project_id])
 
@@ -146,7 +144,8 @@ exports.render = async (req, res) => {
         if (Object.keys(google_versions_to_update).length === 0) google_versions_to_update = null
 
         const versions = await pool.query(`
-          SELECT version_id FROM project_versions
+          SELECT skill_id 
+          FROM skills
           WHERE project_id = $1
             AND platform = $2
           ORDER BY
@@ -155,8 +154,8 @@ exports.render = async (req, res) => {
         [project_id, platform])
 
         if (versions.rows.length > 0) {
-          let latest_version_skill_id = versions.rows[0].version_id
-          await pool.query('UPDATE project_versions SET google_versions = $2 where version_id = $1', [latest_version_skill_id, google_versions_to_update])
+          let latest_version_skill_id = versions.rows[0].skill_id
+          await pool.query('UPDATE skills SET google_versions = $2 where skill_id = $1', [latest_version_skill_id, google_versions_to_update])
         }
       } catch (e) {
         console.error(e)
@@ -164,20 +163,9 @@ exports.render = async (req, res) => {
       }
     }
 
-    let version_query = `INSERT INTO project_versions (project_id, version_id, platform) VALUES ( $1, $2, $3 )`
-
-    pool.query(version_query, [project_id, new_skill_id_decoded, platform], async (err, data) => {
-      if (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {
-          err: err
-        })
-        res.sendStatus(500)
-      } else {
-        new_skill_row.project_id = project_id
-        res.send({
-          new_skill: new_skill_row
-        })
-      }
+    new_skill_row.project_id = project_id
+    res.send({
+      new_skill: new_skill_row
     })
   }
 

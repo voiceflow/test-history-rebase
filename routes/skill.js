@@ -141,8 +141,7 @@ exports.getSkill = async (req, res) => {
         pv.project_id
       FROM
         skills s
-        INNER JOIN project_versions pv ON pv.version_id = s.skill_id
-        INNER JOIN projects p ON p.project_id = pv.project_id
+        INNER JOIN projects p ON p.project_id = s.project_id
         INNER JOIN team_members tm ON tm.team_id = p.team_id
         WHERE
           skill_id = $1
@@ -497,21 +496,23 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async (r
 
     // get all the project versions
     const project_versions = (await pool.query(`
-      SELECT pv.* FROM project_versions pv
-      INNER JOIN projects p ON p.project_id = pv.project_id
-      WHERE pv.version_id != p.dev_version AND pv.project_id = $1 AND pv.platform = $2
+      SELECT s.* FROM skills s
+      INNER JOIN projects p ON p.project_id = s.project_id
+      WHERE s.skill_id != p.dev_version AND s.project_id = $1 AND s.platform = $2
       ORDER BY created ASC`
     ), [project_id, platform]).rows
 
     if(project_versions.length === 0) return resolve()
 
     const creators = new Set()
+    const live_ids = new Set()
 
     // If checking Alexa versions 
     if(platform === 'alexa'){
+
       const amzn_dev_versions = dev_versions.filter(v => !!v.amzn_id)
-      const remove_live = []
-      const add_live = []
+      const remove_live = new Set()
+      const add_live = new Set()
 
       for(dev_version of amzn_dev_versions){
         try{
@@ -529,58 +530,57 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async (r
           const split_uri = response.data.manifest.apis.custom.endpoint.uri.split('/')
           const live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
           
-          // find all the live skills for this creator
-          const creator_live_projects = project_versions.filter(v => ((v.creator_id === dev_version.creator_id) && v.live)).map(v => v.version_id)
-          const index = creator_live_projects.indexOf(live_id)
+          // find all the live skills for this amzn skill
+          const live_projects = project_versions.filter(v => ((v.amzn_id === dev_version.amzn_id) && v.live)).map(v => v.skill_id)
+          const index = live_projects.indexOf(live_id)
 
           // If it doesn't exist already, update it as live. If it doesn't don't try to remove it
           if(index === -1) {
-            add_live.push(live_id)
+            add_live.add(live_id)
           } else {
-            creator_live_projects.splice(index, 1)
+            live_projects.splice(index, 1)
           }
-          remove_live.push(...creator_live_projects)
+          live_projects.forEach(p => remove_live.add(p))
 
           // skills published by this creator have been checked
           creators.add(dev_version.creator_id)
+          live_ids.add(live_id)
         }catch(err){}
       }
 
-      if(remove_live.length > 0) {
-        await pool.query(`UPDATE project_versions SET live = FALSE WHERE version_id IN (${pg_num(remove_live.length)})`, remove_live)
+      if(remove_live.size > 0) {
+        await pool.query(
+          `UPDATE skills SET live = FALSE WHERE skill_id IN (${pg_num(remove_live.size)})`, 
+        Array.from(remove_live))
       }
-      if(add_live.length > 0) {
-
+      if(add_live.size > 0) {
+        await pool.query(
+          `UPDATE skills SET live = TRUE WHERE skill_id IN (${pg_num(add_live.size)})`, 
+        Array.from(add_live))
       }
-
-      try {
-        // RESET LIVE IF THERE IS A LIVE
-        if(live_ids[0] && !current_live.includes(live_ids[0])) {
-          await pool.query(`
-            UPDATE skills s SET live = FALSE
-            FROM project_versions pv
-            WHERE pv.version_id = s.skill_id
-              AND pv.project_id = $1
-              AND pv.platform = $2
-          `, [project_id, platform])
-
-          await pool.query(`UPDATE skills s SET live = TRUE WHERE skill_id = $1`, [live_ids[0]])
-        }
-      } catch (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {
-          err: err
-        })
-        reject(err)
-      }
-      
     }else if(platform === 'google'){
 
+      const google_dev_versions = dev_versions.filter(v => !!v.google_versions)
+      
+      for(dev_version of google_dev_versions){
+        const all_google_versions = dev_version.google_versions
+        const creator_versions = project_versions.filter(v => ((v.creator_id === dev_version.creator_id) && !!v.google_versions))
+
+        for(const version of creator_versions){
+          const approvals = Object.keys(version.google_versions).map(key => all_google_versions[key].approval)
+          if (approvals.length > 0 && approvals.filter(e => e !== 'DENIED').length > 0) {
+            live_ids.add(version.skill_id)
+          }
+        }
+
+        creators.add(dev_versions)
+      }
     }
 
     // No need to delete on just the check
     if(options.check_only) return resolve()
 
-    // ensure users have max 10 versions of either google/amazon
+    // ensure projects have max 10 versions of either google/amazon
     let i = 0
     let num_versions_to_delete = project_versions.length - 10
     let deletion_promises = []
@@ -591,9 +591,9 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async (r
     while (i < project_versions.length && num_versions_to_delete > 0) {
       const v = project_versions[i]
       if (
-        !live_ids.includes(v.version_id) && creators.has(v.creator_id)
+        !live_ids.has(v.skill_id) && creators.has(v.creator_id)
       ) {
-        deletion_promises.push(deleteVersionPromise(v.creator_id, v.version_id))
+        deletion_promises.push(deleteVersionPromise(v.creator_id, v.skill_id))
         num_versions_to_delete -= 1
       }
       i += 1
@@ -605,82 +605,6 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async (r
     writeToLogs("CHECK VERSIONS", err)
     resolve()
   }
-
-  pool.query(`
-    SELECT * FROM project_versions
-    WHERE project_id = $1 
-      AND ( platform = $2 OR pv.platform IS NULL OR pv.version_id = $3)
-      ORDER BY pv.created ASC`,
-    [project_id, platform, dev_version],
-    async (err, data) => {
-      if (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {
-          err: err
-        })
-        reject(err)
-      } else if (data.rows.length > 0){
-        // Check for live version
-        let current_live = data.rows.filter(v => !!v.live).map(v => v.version_id)
-        let live_ids = []
-        let dev_version_row = data.rows.find(version => version.version_id === dev_version)
-
-        try {
-          // If so, we wanna know what version the live skill is pointing to rn
-          if (platform === 'alexa' && dev_version_row.amzn_id) {
-            if(!options.token) throw new Error('No Token')
-
-            let request = await axios.request({
-              url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version_row.amzn_id)}/stages/live/manifest`,
-              method: 'GET',
-              headers: {
-                Authorization: options.token
-              }
-            })
-            // Delete the oldest version that isn't live
-            let split_uri = request.data.manifest.apis.custom.endpoint.uri.split('/')
-            live_ids.push(hashids.decode(split_uri[split_uri.length - 1])[0])
-
-            try {
-              // RESET LIVE IF THERE IS A LIVE
-              if(live_ids[0] && !current_live.includes(live_ids[0])) {
-                await pool.query(`
-                  UPDATE skills s SET live = FALSE
-                  FROM project_versions pv
-                  WHERE pv.version_id = s.skill_id
-                    AND pv.project_id = $1
-                    AND pv.platform = $2
-                `, [project_id, platform])
-
-                await pool.query(`UPDATE skills s SET live = TRUE WHERE skill_id = $1`, [live_ids[0]])
-              }
-            } catch (err) {
-              writeToLogs('CREATOR_BACKEND_ERRORS', {
-                err: err
-              })
-              reject(err)
-            }
-          } else if (platform === 'google') {
-            // Get the latest list of versions from skill_versions table
-            // Compare with each skill's attached versions
-            // If no matches, then it is ok to delete
-
-            const all_google_versions = dev_version_row.google_versions
-            for (const row of data.rows) {
-              if (row.version_id !== dev_version && row.google_versions) {
-                const approvals = Object.keys(row.google_versions).map(key => all_google_versions[key].approval)
-                if (approvals.length > 0 && approvals.filter(e => e !== 'DENIED').length > 0) {
-                  live_ids.push(row.version_id)
-                }
-              }
-            }
-          }
-        } catch (err) {
-          if(Array.isArray(current_live)){
-            live_ids = live_ids.concat(current_live)
-          }
-        }
-      }
-    })
 })
 
 exports.buildSkill = async (req, res) => {
@@ -708,10 +632,9 @@ exports.buildSkill = async (req, res) => {
     checkVersions(project_id, 'alexa')
 
     pool.query(`
-      SELECT s.*, pm.amzn_id AS amzn_id, pv.project_id AS project_id, pm.creator_id AS status 
+      SELECT s.*, pm.amzn_id AS amzn_id, s.project_id AS project_id, pm.creator_id AS status 
       FROM skills s
-      INNER JOIN project_versions pv ON pv.version_id = s.skill_id
-      LEFT JOIN project_members pm ON pm.project_id = pv.project_id
+      LEFT JOIN project_members pm ON pm.project_id = s.project_id
       WHERE s.skill_id = $1 AND (pm.creator_id = $2 OR pm.creator_id IS NULL) LIMIT 1
     `, [id, req.user.id], async (err, data) => {
       if (err || data.rowCount === 0) {
@@ -1200,8 +1123,8 @@ exports.restoreSkillVersion = async (req, res) => {
   try {
     let data = (await pool.query(`
       SELECT dev_version, team_id FROM projects p 
-      INNER JOIN project_versions pv ON p.project_id = pv.project_id
-      WHERE pv.version_id = $1`, 
+      INNER JOIN skills s ON p.project_id = s.project_id
+      WHERE s.skill_id = $1`, 
       [restore_id])
     ).rows[0]
     dev_version = data.dev_version
@@ -1271,17 +1194,7 @@ exports.buildGoogleSkill = async (req, res) => {
   let original_id = req.params.version_id
 
   try {
-    const skill_info = await new Promise((resolve, reject) => {
-      pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
-        if (err) {
-          console.trace(err)
-          reject()
-        } else {
-          let r = data.rows[0]
-          resolve(r)
-        }
-      })
-    })
+    const skill_info = (await pool.query('SELECT * FROM skills WHERE skill_id = $1 LIMIT 1', [id])).rows[0]
 
     const publish_info = skill_info.google_publish_info
     if (!publish_info) {

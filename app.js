@@ -226,9 +226,10 @@ app.get('/marketplace/user_module', ensureLoggedIn(), Marketplace.getUserModules
 app.get('/marketplace/cert/pending', ensureAdmin(), Marketplace.getPendingModules)
 app.get('/marketplace/cert/status/:project_id', ensureLoggedIn(), Marketplace.certStatus)
 app.get('/marketplace/cert/:project_id', ensureLoggedIn(), Marketplace.getCertModule)
-app.post('/marketplace/cert/:skill_id/:project_id', ensureLoggedIn(), Marketplace.requestCertification)
+app.post('/marketplace/cert/:version_id/:project_id', ensureLoggedIn(), Marketplace.requestCertification)
 app.put('/marketplace/cert/:project_id', ensureAdmin(), Marketplace.giveCertification)
-app.delete('/marketplace/cert/:skill_id/:project_id', ensureLoggedIn(), Marketplace.cancelCertification)
+// It doesn't appear that this route needs the version_id param
+app.delete('/marketplace/cert/:version_id/:project_id', ensureLoggedIn(), Marketplace.cancelCertification)
 app.patch('/marketplace/cert/:project_id', ensureLoggedIn(), Marketplace.saveCertification)
 app.post('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.giveAccess)
 app.get('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.hasAccess)

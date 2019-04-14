@@ -407,26 +407,22 @@ const getPendingModules = async (req, res) => {
 }
 
 const getDefaultTemplates = (req, res) => {
-	pool.query(
-		`
-			SELECT * 
-			FROM modules 
-				INNER JOIN skills s ON modules.module_project_id = s.project_id
-			WHERE modules.template_index > 0 
-				AND cert_approved IS NOT NULL
-			ORDER BY modules.template_index DESC
-		`,
-		[],
-		(err, data) => {
-			if(err){
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-				res.sendStatus(500)
-			} else {
-				hashIds(data.rows)
-				res.send(data.rows)
-			}
-		}
-	)
+	pool.query(`
+    SELECT * 
+    FROM modules 
+      INNER JOIN skills s ON modules.module_project_id = s.project_id
+    WHERE modules.template_index > 0 
+      AND cert_approved IS NOT NULL
+    ORDER BY modules.template_index DESC
+  `, (err, data) => {
+    if(err){
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+      res.sendStatus(500)
+    } else {
+      hashIds(data.rows)
+      res.send(data.rows)
+    }
+	})
 }
 
 const getInitialTemplate = (req, res) => {
@@ -518,7 +514,7 @@ const copyDefaultTemplate = (req, res) => {
 	}
 
 	pool.query(`
-		SELECT * 
+		SELECT s.skill_id 
 		FROM skills s
 			INNER JOIN modules ON s.project_id = modules.module_project_id 
 		WHERE modules.module_id = $1 AND cert_approved IS NOT NULL

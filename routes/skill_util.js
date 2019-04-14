@@ -276,7 +276,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
 
   if(!options) options = {}
 
-  let id = req.params._version_id || hashids.decode(req.params.version_id)[0]
+  let id = req.params._version_id ? req.params._version_id : hashids.decode(req.params.version_id)[0]
   let new_creator_id = options.creator_id || req.user.id
   let team_id = req.params._team_id
   let diagram_mapping = {}
@@ -426,7 +426,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
     }
   }
 
-  let copy_str = (options.append_copy_str ? `coalesce(name, '') || ' Copy' AS name, ` : 'name, ')
+  let copy_str = (options.append_copy_str ? `coalesce(name, '') || ' Copy' AS name` : 'name')
   let copy_query
   if (options.complete_copy || options.renderDiagram) {
     copy_query = `
@@ -436,9 +436,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
             privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
             account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info
           )
-          SELECT ` +
-      copy_str + `
-              $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
+          SELECT ${copy_str}, $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
               purchase, personal, copa, ads, export, instructions, inv_name, stage, review, locales, restart, global,
               privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
               account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info
@@ -450,9 +448,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
             personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
             intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events, platform, google_publish_info
           )
-          SELECT ` +
-      copy_str + `
-            $1 AS diagram, $2 AS creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
+          SELECT ${copy_str}, $1 AS diagram, $2 AS creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
             personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
             intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events, platform, google_publish_info
           FROM skills WHERE skill_id = $3 RETURNING *`

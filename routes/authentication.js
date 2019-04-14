@@ -592,7 +592,7 @@ const verifyDialogflowToken = async (req, res) => {
 
     // If nothing was updated create new row
     if(UPDATE.rowCount === 0){
-      pool.query(`
+      await pool.query(`
         INSERT INTO project_members (project_id, creator_id, dialogflow_token, google_id) 
         VALUES ($1, $2, $3, $4)
       `, [project_id, req.user.id, token, google_id])

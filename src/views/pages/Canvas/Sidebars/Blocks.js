@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import MenuItem from './components/MenuItem';
 import { connect } from 'react-redux'
 import ModuleItem from './components/ModuleItem';
-import { Link } from 'react-router-dom'
 import { Button, Collapse } from 'reactstrap';
 // import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import {getSections, checkBlockDisabledLive} from './../Blocks'

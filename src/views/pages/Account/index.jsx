@@ -12,20 +12,6 @@ const UNLINKED = 0
 const LOADING = 1
 const LINKED = 2
 
-const STATUS = {
-  0: {name: "Community (Free)", price: "0"},
-  1: {name: "Plus", price: "29"},
-  30: {name: "Business", price: "199"},
-  100: {name: "Admin", price: "100000000"}
-}
-const GET_STATUS = (status) => {
-  if(status in STATUS){
-    return STATUS[status]
-  }else{
-    return {name: 'Unknown', price: "0"}
-  }
-}
-
 class Account extends Component {
 
   constructor(props) {

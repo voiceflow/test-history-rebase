@@ -78,7 +78,16 @@ export class Variables extends PureComponent {
             <form id="variable-submit" onSubmit={this.addGlobalVariable}>
                 <FormGroup className="mb-0 text-center">
                     <Label className='mt-2 text-left'>Create Variable</Label>
-                        <Input autoFocus className="variable-box__control" readOnly={this.props.locked} name="new_global" value={this.state.new_global} onChange={this.handleChange} maxLength="16" placeholder="Variable Name"/>
+                    <div className="variable-box">
+                      <Input 
+                        autoFocus
+                        readOnly={this.props.locked} 
+                        name="new_global" 
+                        value={this.state.new_global} 
+                        onChange={this.handleChange} 
+                        maxLength="16" 
+                        placeholder="Variable Name"/>
+                    </div>
                 </FormGroup>
             </form>
             <small className="text-muted mb-4 pt-2 d-block">Press <b>'Enter'</b> to add variable</small>

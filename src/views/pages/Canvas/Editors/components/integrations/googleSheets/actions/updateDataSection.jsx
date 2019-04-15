@@ -92,7 +92,7 @@ class UpdateDataSection extends Component {
           </div>}
           {!this.props.headers_loading && this.props.sheet_headers && this.props.sheet_headers.length === 0 && <div className="text-center">No Sheet Headers Found</div>}
           {this.props.headers_loading && <div className="text-center my-4"><div className='loader text-lg' /></div>}
-          {!this.props.headers_loading && <div className="text-center my-3"><Button onClick={this.props.showNextSection} className={`purple-btn ${this.state.completed ? '' : 'disabled'}`}>Next</Button></div>}
+          {!this.props.headers_loading && <div className="text-center my-3"><Button onClick={this.props.showNextSection} className={`btn-primary ${this.state.completed ? '' : 'disabled'}`}>Next</Button></div>}
         </Collapse>}
       </>
     )

@@ -576,10 +576,10 @@ const verifyDialogflowToken = async (req, res) => {
     }
 
     const {
-      google_id,
       private_key,
       client_email
     } = parsed
+    const google_id = parsed.project_id
 
     const client = new DialogflowClient(google_id, private_key, client_email)
     const agents = await client.getAgent();

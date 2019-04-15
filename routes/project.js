@@ -18,13 +18,13 @@ const {
 } = require('./../config/ga_actions')
 
 exports.getProjectFromSkill = async (req, res, next) => {
-  try{
+  try {
     let skill_id = hashids.decode(req.params.skill_id)[0]
     let project_id = (await pool.query('SELECT project_id FROM skills WHERE skill_id = $1 LIMIT 1', [skill_id])).rows[0].project_id
     req.params.project_id = hashids.encode(project_id)
     req.params.version_id = req.params.skill_id
     next()
-  }catch(e){
+  } catch (e) {
     res.sendStatus(404)
   }
 }
@@ -84,9 +84,11 @@ exports.getLiveVersion = async (req, res) => {
 
     let live_version = null
     if (live_version_data.rows.length > 0) {
-        live_version = hashids.encode(live_version_data.rows[0].sid)
-    } 
-    res.send({live_version: live_version})
+      live_version = hashids.encode(live_version_data.rows[0].sid)
+    }
+    res.send({
+      live_version: live_version
+    })
 
   } catch (err) {
     console.trace(err)
@@ -129,7 +131,7 @@ exports.render = async (req, res) => {
   let google_project_id
 
   if (platform === 'google') {
-    google_project_id = req.body.project_id
+    google_project_id = req.body.google_id
     if (!google_project_id) return res.sendStatus(401)
   }
 
@@ -140,22 +142,24 @@ exports.render = async (req, res) => {
     if (platform === 'google') {
       try {
         const token = await _getGoogleAccessToken(req.user.id)
-        google_versions_to_update = await checkGactionsVersionChanged(token, google_project_id, skill_id)
+        google_versions_to_update = await checkGactionsVersionChanged(token, google_project_id, project_id, req.user.id)
         if (Object.keys(google_versions_to_update).length === 0) google_versions_to_update = null
 
-        const versions = await pool.query(`
+        if (google_versions_to_update) {
+          const versions = await pool.query(`
           SELECT skill_id 
           FROM skills
           WHERE project_id = $1
             AND platform = $2
           ORDER BY
             created DESC
-          LIMIT 1`,
-        [project_id, platform])
+          LIMIT 2`,
+            [project_id, platform])
 
-        if (versions.rows.length > 0) {
-          let latest_version_skill_id = versions.rows[0].skill_id
-          await pool.query('UPDATE skills SET google_versions = $2 where skill_id = $1', [latest_version_skill_id, google_versions_to_update])
+          if (versions.rows.length > 0) {
+            let latest_version_skill_id = versions.rows[versions.rows.length > 1 ? 1 : 0].skill_id // Update second-to-last
+            await pool.query('UPDATE skills SET google_versions = $2 where skill_id = $1', [latest_version_skill_id, google_versions_to_update])
+          }
         }
       } catch (e) {
         console.error(e)

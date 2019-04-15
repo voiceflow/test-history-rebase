@@ -98,7 +98,7 @@ class FlowMarket extends Component {
     let num_displayed = 0
     // TODO: add this filtering to the elastic search query
     let masonry_ele = <Masonry elementType='div' className="flow-market-container">
-        {res.results.map((module, i) => {
+        {res.data.map((module, i) => {
           if(this.props.user_modules === undefined || !this.props.user_modules[module._id]){
             num_displayed += 1
             return <ModuleCard
@@ -113,7 +113,7 @@ class FlowMarket extends Component {
     
     if(num_displayed > 0){
       return masonry_ele
-    } else if (res.results.length === 0){
+    } else if (res.data.length === 0){
       return <div className="text-center flow-market-empty">
         <img src="/images/No-reports.svg" alt="No Flows Found"/>
         <h5>No Flows Found</h5>
@@ -144,6 +144,7 @@ class FlowMarket extends Component {
               app="marketplace"
               url={ESURL}
               type="flows"
+              // transformRequest={(req) => {console.log(req)}}
             >
               <div className="row">
                 <div className="col-3">
@@ -193,7 +194,7 @@ class FlowMarket extends Component {
                     }}
                     sortBy="desc"
                     renderNoResults={() => {}}
-                    renderAllData={this.renderModules}
+                    render={this.renderModules}
                     innerClass = {{
                       pagination: "flow-pagination",
                       label: "text-secondary"

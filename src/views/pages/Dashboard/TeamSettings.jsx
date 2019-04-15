@@ -67,7 +67,7 @@ const MemberRow = props => {
     info = (
       <>
         <div className="member-icon lg solid">
-          <img src={'/pending.svg'} width='17' style={{ marginTop: -3 }} />
+          <img src={'/pending.svg'} width='17' style={{ marginTop: -3 }} alt="pending" />
         </div>
         <div className="ml-3">
           <span>{m.email}</span>
@@ -84,7 +84,7 @@ const MemberRow = props => {
     info = (
       <>
         <div className="member-icon lg solid">
-        <img src={'/add-teammate.svg'} width='18' style={{ marginTop: -3 }} />
+        <img src={'/add-teammate.svg'} width='18' style={{ marginTop: -3 }} alt="add"/>
         </div>
         <div className="ml-3">
           <Input
@@ -407,7 +407,7 @@ class TeamSettings extends Component {
       <>
         <UncontrolledDropdown inNavbar>
           <DropdownToggle tag="div" className="dropdown-button">
-            <img src={'/cog.svg'} width={17}></img>
+            <img src={'/cog.svg'} width={17} alt="cog"/>
           </DropdownToggle>
           <DropdownMenu right className="no-select">
             <DropdownItem onClick={()=>this.props.update('MEMBERS')}>

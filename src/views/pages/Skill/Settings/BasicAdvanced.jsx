@@ -171,15 +171,15 @@ class BasicAdvancedSettings extends Component{
                     </div>
                     <div className="settings-content clearfix">
                       <FormGroup>
-                        {this.props.user.admin >= 60 && <div className="mt-4">
-                            <Label>
-                              Skill Events (events: {"{object}"}
-                              )
-                            </Label>
-                            <AceEditor name="datasource_editor" className="datasource_editor" mode="json" onChange={value => {
-                                this.props.updateSkill('alexa_events', value)
-                              }} fontSize={14} showPrintMargin={false} showGutter={true} highlightActiveLine={true} value={this.props.skill.alexa_events} editorProps={{ $blockScrolling: true }} setOptions={{ enableBasicAutocompletion: true, enableLiveAutocompletion: false, enableSnippets: false, showLineNumbers: true, tabSize: 2, useWorker: false }} />
-                          </div>}
+                        <div className="mt-4">
+                          <Label>
+                            Skill Events (events: {"{object}"}
+                            )
+                          </Label>
+                          <AceEditor name="datasource_editor" className="datasource_editor" mode="json" onChange={value => {
+                              this.props.updateSkill('alexa_events', value)
+                            }} fontSize={14} showPrintMargin={false} showGutter={true} highlightActiveLine={true} value={this.props.skill.alexa_events} editorProps={{ $blockScrolling: true }} setOptions={{ enableBasicAutocompletion: true, enableLiveAutocompletion: false, enableSnippets: false, showLineNumbers: true, tabSize: 2, useWorker: false }} />
+                        </div>
                       </FormGroup>
                     </div>
                     { this.props.live_mode && 

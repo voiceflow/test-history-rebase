@@ -248,7 +248,7 @@ class DashBoard extends Component {
             })}
             {this.props.teams.allIds.length < 3 && (
               <Link className="nav-item" to="/team/new">
-                <img src={'/add-board.svg'} className="mr-1 mb-1" height={15} width={15} /> New Board
+                <img src={'/add-board.svg'} className="mr-1 mb-1" height={15} width={15} alt="add"/> New Board
               </Link>
             )}
           </div>
@@ -364,7 +364,7 @@ class DashBoard extends Component {
                 </div>
               </div>
             ) : (
-              <div className="mb-5 mt-4 container">{this.renderProjects()}</div>
+              <div className="pb-5 pt-4 container">{this.renderProjects()}</div>
             )}
           </div>
         </div>

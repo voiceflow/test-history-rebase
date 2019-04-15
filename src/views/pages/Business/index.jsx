@@ -10,8 +10,6 @@ import Home from './Home'
 import Products from './Products/Products';
 import EditProduct from './Products/EditProduct';
 
-const PAID_FEATURES = ['Multi-Platform Publishing', 'In-depth Analytics', 'Email Automation', 'Business Support', 'In Skill Purchases', 'Project Backups']
-
 const updateLink = (link, skill_id) => {
     return link.replace(':skill_id', skill_id)
 }
@@ -42,41 +40,24 @@ const tabs = [
 class Business extends Component {
   render() {
     let page
-    if(this.props.user.admin > 0){
-      switch(this.props.page){
-        case 'link_account':
-          page = <AccountLinkTemplate {...this.props}/>
-          break;
-        case 'emails':
-          page = <Emails {...this.props}/>
-          break
-        case 'email':
-          page = <Email {...this.props}/>
-          break
-        case 'products':
-          page = <Products {...this.props}/>
-          break
-        case 'product':
-          page = <EditProduct {...this.props}/>
-          break
-        default:
-          page = <Home {...this.props}/>
-      }
-    }else{
-      page = <div className="w-100 h-100">
-          <div className="d-flex justify-content-center mt-5">
-              <div className="card" id="upgrade">
-                  <h2>Upgrade to access business features</h2>
-                  <p className="text-muted">To gain access to business features such as analytics, In-skill purchasing and Email automation upgrade your Voiceflow account to a paid tier</p>
-                  {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/images/icons/circle_check.svg" width={25} className="mr-3" alt="check"/>{feature}</p>)}
-                  <div className="mt-2">
-                    <button className="btn-primary" onClick={() => this.props.history.push('/account/upgrade')}>
-                      Upgrade Plan
-                    </button>
-                  </div>
-              </div>
-          </div>
-      </div>
+    switch(this.props.page){
+      case 'link_account':
+        page = <AccountLinkTemplate {...this.props}/>
+        break;
+      case 'emails':
+        page = <Emails {...this.props}/>
+        break
+      case 'email':
+        page = <Email {...this.props}/>
+        break
+      case 'products':
+        page = <Products {...this.props}/>
+        break
+      case 'product':
+        page = <EditProduct {...this.props}/>
+        break
+      default:
+        page = <Home {...this.props}/>
     }
 
     return (

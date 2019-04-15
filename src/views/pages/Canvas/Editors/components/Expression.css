@@ -29,8 +29,9 @@
 .expression-block>.operator>.dropdown>.type-button{
 	margin-left: 10px;
 }
-.variable-box__control{
-	border: none !important;
+
+.variable-box__placeholder {
+	color: #0b1a38 !important
 }
 
 .expression-block {

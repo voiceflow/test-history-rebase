@@ -23,8 +23,8 @@ if (process.env.NODE_ENV === 'test') {
     app.listen(port, () => console.log(`TESTING ${name} | PORT ${port}`))
 }else{
     const io = require('socket.io')(app.listen(port, () => console.log(`${name} | PORT ${port}`)), {
-        pingInterval: 10000,
-        pingTimeout: 20000
+      pingInterval: 5000,
+      pingTimeout: 10000
     })
     const redisAdapter = require('socket.io-redis')
     io.adapter(redisAdapter({ host: process.env.REDIS_CLUSTER_HOST, port: process.env.REDIS_CLUSTER_PORT }))

@@ -137,12 +137,12 @@ exports.getSkill = async (req, res) => {
   } else {
     sql = `
       SELECT
-        s.*, pm.amzn_id
+        s.*, pm.amzn_id AS amzn_id
       FROM
         skills s
         INNER JOIN projects p ON p.project_id = s.project_id
         INNER JOIN team_members tm ON tm.team_id = p.team_id
-        LEFT JOIN (SELECT * FROM project_members WHERE creator_id = $1) pm ON pm.project_id = p.project_id
+        LEFT JOIN (SELECT * FROM project_members WHERE creator_id = $2) pm ON pm.project_id = p.project_id
         WHERE
           skill_id = $1
           AND tm.creator_id = $2
@@ -522,25 +522,49 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
       const remove_live = new Set()
       const add_live = new Set()
 
-      for(dev_version of dev_versions){
-        try{
-          const token = await AmazonAccessToken(dev_version.creator_id)
-          if(!token) throw ('No Token Found')
-          // Check if this endpoint is LIVE
-          const response = await axios.request({
-            url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/live/manifest`,
+      for(dev_version of dev_versions){        
+        var token
+
+        try {
+          token = await AmazonAccessToken(dev_version.creator_id)
+          if(!token) throw new Error("Token Not Found")
+          
+          await axios.request({
+            url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/development/manifest`,
             method: 'GET',
             headers: {
               Authorization: token
             }
-          })
+          });
+        } catch(err) {
+          writeToLogs("CHECK MANIFEST NOT FOUND", err)
+          continue
+        }
 
-          // take the endpoint's Version ID
-          const split_uri = response.data.manifest.apis.custom.endpoint.uri.split('/')
-          const live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
-          
-          // find all the live skills for this amzn skill
-          const live_projects = project_versions.filter(v => ((v.amzn_id === dev_version.amzn_id) && v.live)).map(v => v.skill_id)
+        // skills published by this creator have been checked
+        creators.add(dev_version.creator_id)
+
+        // find all the live skills for this amzn skill
+        const live_projects = project_versions.filter(v => ((v.amzn_id === dev_version.amzn_id) && v.live)).map(v => v.skill_id)
+        var live_id
+
+        try {
+          // Check if this endpoint is LIVE
+          // const response = await axios.request({
+          //   url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/live/manifest`,
+          //   method: 'GET',
+          //   headers: {
+          //     Authorization: token
+          //   }
+          // })
+
+          // // take the endpoint's Version ID
+          // const split_uri = response.data.manifest.apis.custom.endpoint.uri.split('/')
+          // live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
+
+          // TEST
+          live_id = 3741
+
           const index = live_projects.indexOf(live_id)
 
           // If it doesn't exist already, update it as live. If it doesn't don't try to remove it
@@ -549,15 +573,16 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
           } else {
             live_projects.splice(index, 1)
           }
-          live_projects.forEach(p => remove_live.add(p))
-
-          // skills published by this creator have been checked
-          creators.add(dev_version.creator_id)
-          live_ids.add(live_id)
-        }catch(err){
-          // if(err && err.response && err.response.data && err.response.data.message && err.response.data.message.startsWith('amzn1.ask.skill.0aa81e20-3e0e-468a-9242-af7d215541aa'))
-          console.log(err)
+        } catch(err) {
+          // If the response failed and it wasn't a 404 Not Found for Live Version
+          if (!(err && err.response && err.response.status === 404 )) {
+            creators.delete(dev_version.creator_id);
+            continue
+          }
         }
+
+        live_projects.forEach(p => remove_live.add(p))
+        live_ids.add(live_id)
       }
 
       if(remove_live.size > 0) {

@@ -77,7 +77,7 @@ exports.getLiveVersion = async (req, res) => {
       FROM skills
       WHERE project_id = $1 AND creator_id = $2 AND live = TRUE
       LIMIT 1
-    `, [project_id])
+    `, [project_id, req.user.id])
 
     let live_version = null
     if (live_version_data.rows.length > 0) {

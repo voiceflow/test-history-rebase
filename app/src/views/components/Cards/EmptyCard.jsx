@@ -5,7 +5,7 @@ class EmptyCard extends Component {
     return (
       <div className="empty-card">
         <div onClick={this.props.onClick}>
-          <img src='/images/PlusThin.svg' style={{height: '25px'}} alt="empty card"/>
+          <img src='/add-step.svg' style={{height: '25px'}} alt="empty card"/>
         </div>
       </div>
     )

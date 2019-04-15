@@ -13,6 +13,7 @@
   background-color: #F7F9FB;
   color: #8DA2B5;
   font-size: 15px;
+  transition: all 0.25s ease;
 }
 
 .hover:hover .member-icon {

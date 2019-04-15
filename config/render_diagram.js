@@ -124,10 +124,6 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
     if (data.Item) {
       // Add to set of rendered diagrams to prevent looping
       options.rendered_set.add(diagram_id)
-      if (data.Item.creator !== user.id && user.admin < 100) {
-        resolve(403);
-        return;
-      }
 
       let diagram = JSON.parse(data.Item.data);
       let combine_nodes = []

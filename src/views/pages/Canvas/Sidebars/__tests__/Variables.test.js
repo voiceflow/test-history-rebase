@@ -19,7 +19,7 @@ const mockLocalStorage = {
 describe('Sidebar Variables', () => {
     it('render variable sidebar on global', () => {
         global.storage = mockLocalStorage
-        const component = shallow(<Variables variables={globalVariables} />);
+        const component = shallow(<Variables global_variables={globalVariables} variables={globalVariables} />);
         expect(toJson(component)).toMatchSnapshot()
         component.unmount()
     });

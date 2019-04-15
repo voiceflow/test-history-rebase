@@ -20,7 +20,7 @@ const VALID_VERSION_REGEXES = [
   new RegExp('.-\\[([^\\[\\]]+)\\]\\S+')
 ]
 
-exports.checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise(async (resolve, reject) => {
+exports.checkGactionsVersionChanged = (creds, google_id, project_id, creator_id) => new Promise(async (resolve, reject) => {
   let random_id = uuid()
   let dir = `${GACTIONS_CLI_ROOT}/${random_id}`
   while (fs.existsSync(dir)) {
@@ -59,7 +59,7 @@ exports.checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promi
     })
 
     all_google_versions = await new Promise(async (resolve, reject) => {
-      const gactions = spawn('./gactions', ['list', `--project=${project_id}`], {
+      const gactions = spawn('./gactions', ['list', `--project=${google_id}`], {
         cwd: dir
       })
 
@@ -101,7 +101,7 @@ exports.checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promi
       resolve(attached_google_versions)
     })
 
-    const data = await pool.query('SELECT google_versions FROM skills WHERE skill_id = $1', [skill_id])
+    const data = await pool.query('SELECT google_versions FROM project_members WHERE project_id = $1 AND creator_id = $2', [project_id, creator_id])
 
     let existing_google_versions = data.rows[0].google_versions
     let highest_existing_version = 0
@@ -135,13 +135,13 @@ exports.checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promi
       existing_google_versions[version] = all_google_versions[version]
     })
 
-    if (existing_google_versions) await pool.query('UPDATE skills SET google_versions = $2 WHERE skill_id = $1', [skill_id, existing_google_versions])
+    if (existing_google_versions) await pool.query('UPDATE project_members SET google_versions = $3 WHERE project_id = $1 AND creator_id = $2', [project_id, creator_id, existing_google_versions])
   } catch (e) {
     await new Promise((resolve, reject) => {
       del([dir]).then(resolve()).catch(e => reject(e))
     })
     console.error(e)
-    reject(`Unable to check Google Actions version! Does the project ${project_id} belong to the same google account that you used for authentication?`)
+    reject(`Unable to check Google Actions version! Does the project ${google_id} belong to the same google account that you used for authentication?`)
   }
   await new Promise((resolve, reject) => {
     del([dir]).then(resolve()).catch(e => reject(e))

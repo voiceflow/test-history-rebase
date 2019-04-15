@@ -578,8 +578,7 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
             live_ids.add(version.skill_id)
           }
         }
-
-        creators.add(dev_versions)
+        creators.add(dev_version.creator_id)
       }
     }
 
@@ -591,7 +590,7 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
     let num_versions_to_delete = project_versions.length - 5
     let deletion_promises = []
     if (live_ids) {
-      num_versions_to_delete -= live_ids.length
+      num_versions_to_delete -= live_ids.size
     }
 
     while (i < project_versions.length && num_versions_to_delete > 0) {
@@ -1301,12 +1300,13 @@ exports.getGoogleSkill = async (req, res) => {
   if(!(await checkSkillAccess(id, req.user.id))){
     return res.sendStatus(403)
   }
-
   pool.query(`
-    SELECT created, diagram, google_publish_info, dialogflow_token, privacy_policy, terms_and_cond
-    FROM skills
-    WHERE skill_id = $1 LIMIT 1`, 
-  [id], async (err, data) => {
+    SELECT s.created, s.diagram, s.google_publish_info, s.privacy_policy, s.terms_and_cond, pm.dialogflow_token
+    FROM skills s
+    LEFT JOIN (SELECT * FROM project_members WHERE creator_id = $2) pm ON pm.project_id = s.project_id
+    WHERE skill_id = $1
+    LIMIT 1`, 
+  [id, req.user.id], async (err, data) => {
     if (err) {
       console.trace(err);
       res.sendStatus(500);
@@ -1323,7 +1323,7 @@ exports.getGoogleSkill = async (req, res) => {
       if (data.rows[0].dialogflow_token) {
         try {
           let dialogflow_token = JSON.parse(data.rows[0].dialogflow_token)
-          google_id = dialogflow_token.google_id
+          google_id = dialogflow_token.project_id
           private_key = dialogflow_token.private_key
           client_email = dialogflow_token.client_email
 
@@ -1341,9 +1341,7 @@ exports.getGoogleSkill = async (req, res) => {
         } = agents[0])
       }
 
-      // wut ????
       let {
-        // google_id,
         created,
         diagram,
         privacy_policy,

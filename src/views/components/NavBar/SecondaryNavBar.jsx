@@ -1,164 +1,203 @@
-import React, {Component} from 'react'
-import axios from 'axios'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import Toggle from 'react-toggle'
+import React, { Component } from "react";
+import axios from "axios";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import Toggle from "react-toggle";
 
-import { toggleLive, setLiveModeModal } from "./../../../actions/versionActions";
-import { updateDiagramRoot, fetchDiagrams } from './../../../actions/diagramActions'
-const PAGES = ['canvas', 'settings', 'visuals', 'business', 'publish']
+import {
+  toggleLive,
+  setLiveModeModal
+} from "./../../../actions/versionActions";
+import {
+  updateDiagramRoot,
+  fetchDiagrams
+} from "./../../../actions/diagramActions";
+const PAGES = ["canvas", "settings", "visuals", "business", "publish"];
 
 class SecondaryNavBar extends Component {
-    constructor(props){
-        super(props)
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            loading: false,
-        }
+    this.state = {
+      loading: false
+    };
 
-        this.renderItem = this.renderItem.bind(this)
-        this.toggleLiveMode = this.toggleLiveMode.bind(this)
+    this.renderItem = this.renderItem.bind(this);
+    this.toggleLiveMode = this.toggleLiveMode.bind(this);
+  }
+
+  toggleLiveMode() {
+    if (this.props.live_mode) {
+      this.props.updateDiagramRoot(this.props.dev_skill.diagram);
+      this.props.fetchDiagrams(this.props.dev_skill.skill_id);
+      this.props.setLiveModal(false);
+      this.props
+        .toggleLive(
+          this.props.dev_skill,
+          this.props.dev_skill.diagram,
+          this.props.skill_id,
+          false
+        )
+        .then(() => {
+          this.setState({
+            loading: false
+          });
+          this.props.history.push(
+            `/canvas/${this.props.dev_skill.skill_id}/${
+              this.props.dev_skill.diagram
+            }`
+          );
+        });
+    } else {
+      axios
+        .get(`/skill/${this.props.live_version}`)
+        .then(res => {
+          this.props.updateDiagramRoot(res.data.diagram);
+          this.props.fetchDiagrams(res.data.skill_id);
+          this.props.setLiveModal(true);
+          this.props
+            .toggleLive(res.data, res.data.diagram, res.data.skill_id, true)
+            .then(() => {
+              this.setState({
+                loading: false
+              });
+              this.props.history.push(
+                `/canvas/${res.data.skill_id}/${res.data.diagram}`
+              );
+            });
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Unable to fetch live version");
+        });
     }
+  }
 
-    toggleLiveMode() {
-        if (this.props.live_mode) {
-          this.props.updateDiagramRoot(this.props.dev_skill.diagram)
-          this.props.fetchDiagrams(this.props.dev_skill.skill_id)
-          this.props.setLiveModal(false)
-          this.props.toggleLive(
-              this.props.dev_skill,
-              this.props.dev_skill.diagram,
-              this.props.skill_id,
-              false
-          ).then(() => {
-            this.setState({
-              loading: false
-            })
-            this.props.history.push(`/canvas/${this.props.dev_skill.skill_id}/${this.props.dev_skill.diagram}`)
-          })
-        } else {
-            axios.get(`/skill/${this.props.live_version}`)
-            .then((res) => {
-              this.props.updateDiagramRoot(res.data.diagram)
-              this.props.fetchDiagrams(res.data.skill_id)
-              this.props.setLiveModal(true)
-              this.props.toggleLive(
-                  res.data,
-                  res.data.diagram,
-                  res.data.skill_id,
-                  true
-              ).then(() => {
-                this.setState({
-                  loading: false
-                })
-                this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
-              })
-            })
-            .catch((err) => {
-              console.error(err)
-              alert("Unable to fetch live version")
-            })
-        }
-    }
-
-    renderItem(page){
-        if(page === 'publish' && this.props.live_mode){
-            return <Link to='' key={page} className="nav-item live-mode-disabled" onClick={e => e.preventDefault()}>
-                {page}
-            </Link>
-        }else if(page === this.props.page){
-            return <div key={page} className="nav-item active">
-                {page}
-            </div>
-        }else if(this.props.skill_id){
-            let suffix = ''
-            if (page === 'settings') {
-                suffix = 'basic'
-            } else if (page === 'publish') {
-                suffix = this.props.platform === 'alexa' ? '' : this.props.platform
-            }
-            return <Link to={`/${page}/${this.props.skill_id}/${suffix}`} key={page} className="nav-item">
-                {page}
-            </Link>
-        }else{
-            return <div key={page} className="nav-item">
-                {page}
-            </div>
-        }
-    }
-
-    render(){
-        return <React.Fragment>
-            <div id="secondary-nav">
-            <div>
-                {PAGES.map(page => this.renderItem(page))}
-            </div>
-            <div id="secondary-nav-right-group">
-                {this.props.amzn_id &&
-                    <React.Fragment>
-                        {
-                            this.props.live_version?
-                            <React.Fragment>
-                                {
-                                    this.props.live_mode ? 
-                                    <div className="live-mode-text">
-                                        <p>Live</p>
-                                    </div>
-                                    :
-                                    <div className="live-mode-text">
-                                        <p>Development</p>
-                                    </div>
-                                }
-                                <Toggle
-                                    checked={this.props.live_mode}
-                                    icons={false}
-                                    onChange={() => {
-                                        this.setState({loading: true})
-                                        this.toggleLiveMode()
-                                    }}
-                                    disabled={this.props.page !== 'canvas' || this.state.loading}
-                                />
-                            </React.Fragment>
-                            :
-                            null
-                        }
-                        {this.props.page === 'logs' ?
-                            <div className="nav-item">
-                                <img src={'/logs.svg'} alt="logs" width="16" height="16"/>
-                            </div> :
-                            <Link to={`/creator_logs/${this.props.skill_id}`} className="nav-item">
-                                <img src={'/logs.svg'} alt="logs" width="16" height="16"/>
-                            </Link>
-                        }
-                    </React.Fragment>
-                }
-            </div>
+  renderItem(page) {
+    if (page === "publish" && this.props.live_mode) {
+      return (
+        <Link
+          to=""
+          key={page}
+          className="nav-item live-mode-disabled"
+          onClick={e => e.preventDefault()}
+        >
+          {page}
+        </Link>
+      );
+    } else if (page === this.props.page) {
+      return (
+        <div key={page} className="nav-item active">
+          {page}
         </div>
-        {this.state.loading && <div id="loading-diagram" style={{zIndex: 100}}>
-            <div className="text-center">
-                <h5 className="text-muted mb-2">Loading Version</h5>
-                <span className="loader"/>
-            </div>
-        </div>}
-        </React.Fragment>
+      );
+    } else if (this.props.skill_id) {
+      let suffix = "";
+      if (page === "settings") {
+        suffix = "basic";
+      } else if (page === "publish") {
+        suffix = this.props.platform === "alexa" ? "" : this.props.platform;
+      }
+      return (
+        <Link
+          to={`/${page}/${this.props.skill_id}/${suffix}`}
+          key={page}
+          className="nav-item"
+        >
+          {page}
+        </Link>
+      );
+    } else {
+      return (
+        <div key={page} className="nav-item">
+          {page}
+        </div>
+      );
     }
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <div id="secondary-nav">
+          <div>{PAGES.map(page => this.renderItem(page))}</div>
+          <div id="secondary-nav-right-group">
+            {this.props.amzn_id && (
+              <React.Fragment>
+                {this.props.live_version ? (
+                  <React.Fragment>
+                    {this.props.live_mode ? (
+                      <div className="live-mode-text">
+                        <p>Live</p>
+                      </div>
+                    ) : (
+                      <div className="live-mode-text">
+                        <p>Development</p>
+                      </div>
+                    )}
+                    <Toggle
+                      checked={this.props.live_mode}
+                      icons={false}
+                      onChange={() => {
+                        this.setState({ loading: true });
+                        this.toggleLiveMode();
+                      }}
+                      disabled={
+                        this.props.page !== "canvas" || this.state.loading
+                      }
+                    />
+                  </React.Fragment>
+                ) : null}
+                {this.props.page === "logs" ? (
+                  <div className="nav-item">
+                    <img src={"/logs.svg"} alt="logs" width="16" height="16" />
+                  </div>
+                ) : (
+                  <Link
+                    to={`/creator_logs/${this.props.skill_id}`}
+                    className="nav-item"
+                  >
+                    <img src={"/logs.svg"} alt="logs" width="16" height="16" />
+                  </Link>
+                )}
+              </React.Fragment>
+            )}
+          </div>
+        </div>
+        {this.state.loading && (
+          <div id="loading-diagram" style={{ zIndex: 100 }}>
+            <div className="text-center">
+              <h5 className="text-muted mb-2">Loading Version</h5>
+              <span className="loader" />
+            </div>
+          </div>
+        )}
+      </React.Fragment>
+    );
+  }
 }
 
 const mapStateToProps = state => ({
-    platform: state.skills.skill.platform,
-    skill_id: state.skills.skill.skill_id,
-    amzn_id: state.skills.skill.amzn_id,
-    live_mode: state.skills.live_mode,
-    live_version: state.skills.live_version,
-    dev_skill: state.skills.dev_skill ? state.skills.dev_skill : state.skills.skill
-})
+  platform: state.skills.skill.platform,
+  skill_id: state.skills.skill.skill_id,
+  amzn_id: state.skills.skill.amzn_id,
+  live_mode: state.skills.live_mode,
+  live_version: state.skills.live_version,
+  dev_skill: state.skills.dev_skill ?
+    state.skills.dev_skill :
+    state.skills.skill
+});
 
 const mapDispatchToProps = dispatch => {
-    return {
-        toggleLive: (dev_skill, diagram, live_version, isLive) => dispatch(toggleLive(dev_skill, diagram, live_version, isLive)),
-        updateDiagramRoot: (root_id) => dispatch(updateDiagramRoot(root_id)),
-        fetchDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id)),
-        setLiveModal: (isLive) => dispatch(setLiveModeModal(isLive)),
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(SecondaryNavBar)
+  return {
+    toggleLive: (dev_skill, diagram, live_version, isLive) =>
+    dispatch(toggleLive(dev_skill, diagram, live_version, isLive)),
+    updateDiagramRoot: root_id => dispatch(updateDiagramRoot(root_id)),
+    fetchDiagrams: skill_id => dispatch(fetchDiagrams(skill_id)),
+    setLiveModal: isLive => dispatch(setLiveModeModal(isLive))
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SecondaryNavBar);

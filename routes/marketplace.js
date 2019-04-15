@@ -40,7 +40,7 @@ const getModules = async (req, res) => {
 		let module_data = (await pool.query(`
 			SELECT * 
 			FROM modules 
-			INNER JOIN (SELECT DISTINCT project_id FROM project_versions WHERE cert_approved IS NOT NULL) AS distinct_versions 
+			INNER JOIN (SELECT DISTINCT project_id FROM skills WHERE cert_approved IS NOT NULL) AS distinct_versions 
 				ON modules.module_project_id = distinct_versions.project_id 
 			INNER JOIN creators 
 				ON creators.creator_id = modules.creator_id LIMIT $1
@@ -73,8 +73,8 @@ const cancelCertification = async (req, res) => {
 	let project_id = hashids.decode(req.params.project_id)[0]
 	try{
 		let skill_id = (await pool.query(`
-			SELECT version_id
-			FROM project_versions
+			SELECT skill_id
+			FROM skills
 			WHERE
 				project_id = 
 					(
@@ -84,7 +84,7 @@ const cancelCertification = async (req, res) => {
 					)
 				AND cert_requested IS NOT NULL
 				AND cert_approved IS NULL
-		`, [project_id])).rows[0].version_id
+		`, [project_id])).rows[0].skill_id
 		await deleteVersionPromise(ADMIN_MARKETPLACE_ACC, skill_id, {delete_diagrams: true})
 		res.sendStatus(200)
 	} catch (err) {
@@ -154,7 +154,7 @@ const giveCertification = async (req, res) => {
 
 	try{
 		await pool.query(`
-			UPDATE project_versions 
+			UPDATE skills
 			SET cert_approved = now() 
 			WHERE project_id = (SELECT module_project_id FROM modules WHERE project_id = $1) 
 				AND cert_approved IS NULL 
@@ -178,8 +178,6 @@ const requestCertification = async (req, res) => {
 			WHERE project_id = $1`, [project_id])).rows
 		module_project_id = module_data[0].module_project_id
 	
-		// Creates a new version of the skill at this pt
-    req.params.version_id = req.params.skill_id
     // TODO FIX THIS TO CENTRAL TEAM
 		req.params.target_creator = ADMIN_MARKETPLACE_ACC
 		copySkill(req, res, {user_copy: true, request_cert: true, project_id: module_project_id}, () => {
@@ -197,7 +195,7 @@ const certStatus = (req, res) => {
 	pool.query(`
 		SELECT *
 		FROM modules
-			INNER JOIN project_versions pv ON modules.module_project_id = pv.project_id
+			INNER JOIN skills s ON modules.module_project_id = s.project_id
 		WHERE modules.project_id = $1 AND cert_requested IS NOT NULL AND cert_approved IS NULL
 	`, [project_id], (err, data) => {
 			if(err){
@@ -357,8 +355,8 @@ const retrieveTemplate = (req, res) => {
 	pool.query(
 		`
 		SELECT * 
-		FROM project_versions 
-			INNER JOIN modules ON project_versions.project_id = modules.project_id
+		FROM skills s
+			INNER JOIN modules ON s.project_id = modules.project_id
 		WHERE module_id = $1 AND cert_approved = (
 			SELECT max(cert_approved) FROM versions WHERE module_id = $1)
 		`,
@@ -397,9 +395,8 @@ const getPendingModules = async (req, res) => {
 	try{ 
 		let module_data = (await pool.query(`
 			SELECT * 
-			FROM project_versions 
-				JOIN modules ON project_versions.project_id = modules.module_project_id 
-				JOIN skills ON project_versions.version_id = skills.skill_id
+			FROM skills s
+      JOIN modules ON s.project_id = modules.module_project_id 
 			WHERE cert_approved IS NULL AND cert_requested IS NOT NULL`)).rows
 		hashIds(module_data)
 		res.status(200).send(module_data)
@@ -410,26 +407,22 @@ const getPendingModules = async (req, res) => {
 }
 
 const getDefaultTemplates = (req, res) => {
-	pool.query(
-		`
-			SELECT * 
-			FROM modules 
-				INNER JOIN project_versions ON modules.module_project_id = project_versions.project_id
-			WHERE modules.template_index > 0 
-				AND cert_approved IS NOT NULL
-			ORDER BY modules.template_index DESC
-		`,
-		[],
-		(err, data) => {
-			if(err){
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-				res.sendStatus(500)
-			} else {
-				hashIds(data.rows)
-				res.send(data.rows)
-			}
-		}
-	)
+	pool.query(`
+    SELECT * 
+    FROM modules 
+      INNER JOIN skills s ON modules.module_project_id = s.project_id
+    WHERE modules.template_index > 0 
+      AND cert_approved IS NOT NULL
+    ORDER BY modules.template_index DESC
+  `, (err, data) => {
+    if(err){
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+      res.sendStatus(500)
+    } else {
+      hashIds(data.rows)
+      res.send(data.rows)
+    }
+	})
 }
 
 const getInitialTemplate = (req, res) => {
@@ -437,7 +430,7 @@ const getInitialTemplate = (req, res) => {
 	`
 		SELECT *
 		FROM modules 
-			INNER JOIN project_versions ON modules.module_project_id = project_versions.project_id
+			INNER JOIN skills s ON modules.module_project_id = s.project_id
 		WHERE modules.template_index > 0
 			AND cert_approved IS NOT NULL
 		ORDER BY modules.template_index DESC LIMIT 1
@@ -521,9 +514,9 @@ const copyDefaultTemplate = (req, res) => {
 	}
 
 	pool.query(`
-		SELECT * 
-		FROM project_versions 
-			INNER JOIN modules ON project_versions.project_id = modules.module_project_id 
+		SELECT s.skill_id 
+		FROM skills s
+			INNER JOIN modules ON s.project_id = modules.module_project_id 
 		WHERE modules.module_id = $1 AND cert_approved IS NOT NULL
 		ORDER BY cert_approved 
 		DESC LIMIT 1`,
@@ -534,7 +527,7 @@ const copyDefaultTemplate = (req, res) => {
 				res.sendStatus(500)
 			} else {
 				if(data.rows.length > 0){
-          req.params._version_id = data.rows[0].version_id
+          req.params._version_id = data.rows[0].skill_id
           req.params._team_id = team_id
 					copySkill(req, res, {copying_default_template: true, name}, updateSkill)
 				} else {

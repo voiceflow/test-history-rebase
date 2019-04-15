@@ -1,4 +1,4 @@
-exports.createManifest = (r, encoded_id, name) => {
+exports.createManifest = (r, encoded_id) => {
 	if(r.invocations && Array.isArray(r.invocations.value)){
 		r.invocations = r.invocations.value.map(item => ('Alexa, ' + item))
 	}else{

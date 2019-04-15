@@ -119,7 +119,7 @@ app.delete('/session/amazon', ensureLoggedIn(), Authentication.deleteAmazon);
 
 app.get('/session/google/access_token', ensureLoggedIn(), Authentication.hasGoogleAccessToken);
 app.delete('/session/google/access_token', ensureLoggedIn(), Authentication.deleteGoogleAccessToken);
-app.get('/session/google/dialogflow_access_token/:skill_id', ensureLoggedIn(), Authentication.hasDialogflowToken);
+app.get('/session/google/dialogflow_access_token/:project_id', ensureLoggedIn(), Authentication.hasDialogflowToken);
 app.post('/session/google/verify_token', ensureLoggedIn(), Authentication.verifyGoogleAccessToken);
 app.post('/session/google/verify_dialogflow_token', ensureLoggedIn(), Authentication.verifyDialogflowToken);
 app.delete('/session/google/dialogflow_access_token', ensureLoggedIn(), Authentication.deleteDialogflowToken);
@@ -146,14 +146,14 @@ app.get('/creator/terms', terms)
 
 app.post('/test/api', ensureLoggedIn(), Test.api)
 
-app.get('/link_account/template/:skill_id', ensurePlan(1), LinkAccount.getTemplate);
-app.post('/link_account/template/:skill_id', ensurePlan(1), LinkAccount.setTemplate);
+app.get('/link_account/template/:skill_id', ensureLoggedIn(), LinkAccount.getTemplate);
+app.post('/link_account/template/:skill_id', ensureLoggedIn(), LinkAccount.setTemplate);
 
-app.get('/email/templates', ensurePlan(1), Email.getTemplates);
-app.get('/email/template/:id', ensurePlan(1), Email.getTemplate);
-app.post('/email/template', ensurePlan(1), Email.setTemplate);
-app.patch('/email/template/:id', ensurePlan(1), Email.setTemplate);
-app.delete('/email/template/:id', ensurePlan(1), Email.deleteTemplate);
+app.get('/email/templates', ensureLoggedIn(), Email.getTemplates);
+app.get('/email/template/:id', ensureLoggedIn(), Email.getTemplate);
+app.post('/email/template', ensureLoggedIn(), Email.setTemplate);
+app.patch('/email/template/:id', ensureLoggedIn(), Email.setTemplate);
+app.delete('/email/template/:id', ensureLoggedIn(), Email.deleteTemplate);
 
 app.get('/multimodal/displays', ensureLoggedIn(), Multimodal.getDisplays);
 app.get('/multimodal/display/:id', ensureLoggedIn(), Multimodal.getDisplay);
@@ -226,9 +226,10 @@ app.get('/marketplace/user_module', ensureLoggedIn(), Marketplace.getUserModules
 app.get('/marketplace/cert/pending', ensureAdmin(), Marketplace.getPendingModules)
 app.get('/marketplace/cert/status/:project_id', ensureLoggedIn(), Marketplace.certStatus)
 app.get('/marketplace/cert/:project_id', ensureLoggedIn(), Marketplace.getCertModule)
-app.post('/marketplace/cert/:skill_id/:project_id', ensureLoggedIn(), Marketplace.requestCertification)
+app.post('/marketplace/cert/:version_id/:project_id', ensureLoggedIn(), Marketplace.requestCertification)
 app.put('/marketplace/cert/:project_id', ensureAdmin(), Marketplace.giveCertification)
-app.delete('/marketplace/cert/:skill_id/:project_id', ensureLoggedIn(), Marketplace.cancelCertification)
+// It doesn't appear that this route needs the version_id param
+app.delete('/marketplace/cert/:version_id/:project_id', ensureLoggedIn(), Marketplace.cancelCertification)
 app.patch('/marketplace/cert/:project_id', ensureLoggedIn(), Marketplace.saveCertification)
 app.post('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.giveAccess)
 app.get('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.hasAccess)

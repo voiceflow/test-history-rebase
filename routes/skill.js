@@ -12,6 +12,7 @@ const {
 } = require('./../services')
 const {
   AccessToken,
+  AmazonAccessToken,
   _getGoogleAccessToken
 } = require('./authentication')
 const {createManifest} = require('./../config/manifest')
@@ -24,6 +25,9 @@ const {
   copySkill,
   deleteSkillDiagramsPromise
 } = require('./skill_util')
+const {
+  pg_num
+} = require('./../util')
 const { checkSkillAccess } = require("./team")
 
 const DialogflowClient = require('../clients/Dialogflow/Dialogflow')
@@ -114,15 +118,7 @@ exports.getSkill = async (req, res) => {
 
   // Sync up with AMAZON
   // Check Current Amazon Status
-  AccessToken(req.user.id, async (token) => {
-    if (token !== null) {
-      try {
-        await checkVersions(req.user, project_id, 'alexa', {token: token, check_only: true})
-      } catch (err) {
-        logAxiosError(err, 'GET SKILL')
-      }
-    }
-  })
+  await checkVersions(project_id, 'alexa', {check_only: true})
 
   if (req.query.preview) {
     // expose as little information as possible if previewing
@@ -141,13 +137,12 @@ exports.getSkill = async (req, res) => {
   } else {
     sql = `
       SELECT
-        s.*,
-        pv.project_id
+        s.*, pm.amzn_id
       FROM
         skills s
-        INNER JOIN project_versions pv ON pv.version_id = s.skill_id
-        INNER JOIN projects p ON p.project_id = pv.project_id
+        INNER JOIN projects p ON p.project_id = s.project_id
         INNER JOIN team_members tm ON tm.team_id = p.team_id
+        LEFT JOIN (SELECT * FROM project_members WHERE creator_id = $1) pm ON pm.project_id = p.project_id
         WHERE
           skill_id = $1
           AND tm.creator_id = $2
@@ -297,7 +292,7 @@ exports.deleteProduct = async (req, res) => {
   let pid = req.params.pid;
   let result
   try {
-    result = (await pool.query('SELECT p.amzn_prod_id, p.skill_id FROM products p WHERE p.id = $2 LIMIT 1', [pid])).rows[0]
+    result = (await pool.query('SELECT p.amzn_prod, p.skill_id FROM products p WHERE p.id = $2 LIMIT 1', [pid])).rows[0]
 
     if(!(await checkSkillAccess(result.skill_id, req.user.id))){
       return res.sendStatus(403)
@@ -311,27 +306,26 @@ exports.deleteProduct = async (req, res) => {
     return res.sendStatus(500)
   }
 
-  if (result.amzn_prod_id) {
-    AccessToken(req.user.id, async (token) => {
-      if (token === null) {
-        return res.status(401).send({
-          message: "Invalid Amazon Login Token"
-        })
+  if (result.amzn_prod) {
+    for (const creator_id in result.amzn_prod) {
+      if (result.amzn_prod.hasOwnProperty(creator_id)) {  
+        AccessToken(creator_id, token => {
+          if (token === null) return
+          try {
+            axios.request({
+              url: `https://api.amazonalexa.com/v1/inSkillProducts/${result.amzn_prod[creator_id]}/stages/development`,
+              method: 'DELETE',
+              headers: {
+                Authorization: token
+              }
+            })
+          } catch (err) {}
+        })   
       }
-      try {
-        await axios.request({
-          url: `https://api.amazonalexa.com/v1/inSkillProducts/${result.amzn_prod_id}/stages/development`,
-          method: 'DELETE',
-          headers: {
-            Authorization: token
-          }
-        })
-      } catch (err) {}
-      deleteProductSQL(pid, res)
-    })
-  } else {
-    deleteProductSQL(pid, res)
+    }
   }
+  
+  deleteProductSQL(pid, res)
 }
 
 exports.patchSkill = async (req, res) => {
@@ -492,125 +486,128 @@ exports.enableSkill = async (req, res) => {
   })
 }
 
-const checkVersions = (user, project_id, platform, options) => {
-  if(!options) options = {}
+const checkVersions = (project_id, platform, options={}) => new Promise(async resolve => {
+  // get the project id and dev version from this skill
+  try{
 
-  return new Promise(async (resolve, reject) => {
+    // GET ALL THE BASE VERSIONS FROM PROJECT MEMBERS
+    var q
+    if (platform === 'alexa') {
+      q = `SELECT * FROM project_members WHERE project_id = $1 AND amzn_id IS NOT NULL`
+    } else if(platform === 'google') {
+      q = `SELECT * FROM project_members WHERE project_id = $1 AND google_versions IS NOT NULL`
+    } else {
+      return resolve()
+    }
+    const dev_versions = (await pool.query(q, [project_id])).rows
+    if(dev_versions.length === 0) return resolve()
 
-    // get the project id and dev version from this skill
-    let dev_version
-    try{
-      const project = await pool.query(`
-        SELECT project_id, dev_version FROM projects WHERE project_id = $1 LIMIT 1`, [project_id])
-      dev_version = project.rows[0].dev_version
-    }catch(err){
-      return reject(err)
+
+    // GET ALL PROJECT VERSIONS
+    const project_versions = (await pool.query(`
+      SELECT s.* FROM skills s
+      INNER JOIN projects p ON p.project_id = s.project_id
+      WHERE s.skill_id != p.dev_version AND s.project_id = $1 AND s.platform = $2
+      ORDER BY created ASC
+    `, [project_id, platform])).rows
+
+    if(project_versions.length === 0) return resolve()
+
+    const creators = new Set()
+    const live_ids = new Set()
+
+    // If checking Alexa versions 
+    if(platform === 'alexa'){
+
+      const remove_live = new Set()
+      const add_live = new Set()
+
+      for(dev_version of dev_versions){
+        try{
+          const token = await AmazonAccessToken(dev_version.creator_id)
+          if(!token) throw ('No Token Found')
+          // Check if this endpoint is LIVE
+          const response = await axios.request({
+            url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/live/manifest`,
+            method: 'GET',
+            headers: {
+              Authorization: token
+            }
+          })
+
+          // take the endpoint's Version ID
+          const split_uri = response.data.manifest.apis.custom.endpoint.uri.split('/')
+          const live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
+          
+          // find all the live skills for this amzn skill
+          const live_projects = project_versions.filter(v => ((v.amzn_id === dev_version.amzn_id) && v.live)).map(v => v.skill_id)
+          const index = live_projects.indexOf(live_id)
+
+          // If it doesn't exist already, update it as live. If it doesn't don't try to remove it
+          if(index === -1) {
+            add_live.add(live_id)
+          } else {
+            live_projects.splice(index, 1)
+          }
+          live_projects.forEach(p => remove_live.add(p))
+
+          // skills published by this creator have been checked
+          creators.add(dev_version.creator_id)
+          live_ids.add(live_id)
+        }catch(err){}
+      }
+
+      if(remove_live.size > 0) {
+        await pool.query(`UPDATE skills SET live = FALSE WHERE skill_id IN (${pg_num(remove_live.size)})`, Array.from(remove_live))
+      }
+      if(add_live.size > 0) {
+        await pool.query(`UPDATE skills SET live = TRUE WHERE skill_id IN (${pg_num(add_live.size)})`, Array.from(add_live))
+      }
+    }else if(platform === 'google'){
+      
+      for(dev_version of dev_versions){
+        const all_google_versions = dev_version.google_versions
+        const creator_versions = project_versions.filter(v => ((v.creator_id === dev_version.creator_id) && !!v.google_versions))
+
+        for(const version of creator_versions){
+          const approvals = Object.keys(version.google_versions).map(key => all_google_versions[key].approval)
+          if (approvals.length > 0 && approvals.filter(e => e !== 'DENIED').length > 0) {
+            live_ids.add(version.skill_id)
+          }
+        }
+        creators.add(dev_version.creator_id)
+      }
     }
 
-    pool.query(`
-      SELECT s.amzn_id, s.live, pv.* FROM skills s 
-      INNER JOIN project_versions pv ON pv.version_id = s.skill_id
-      WHERE pv.project_id = $1 
-        AND ( pv.platform = $2 OR pv.platform IS NULL OR pv.version_id = $3)
-        ORDER BY pv.created ASC`,
-      [project_id, platform, dev_version],
-      async (err, data) => {
-        if (err) {
-          writeToLogs('CREATOR_BACKEND_ERRORS', {
-            err: err
-          })
-          reject(err)
-        } else if (data.rows.length > 0){
-          // Check for live version
-          let current_live = data.rows.filter(v => !!v.live).map(v => v.version_id)
-          let live_ids = []
-          let dev_version_row = data.rows.find(version => version.version_id === dev_version)
+    // No need to delete on just the check
+    if(options.check_only) return resolve()
 
-          try {
-            // If so, we wanna know what version the live skill is pointing to rn
-            if (platform === 'alexa' && dev_version_row.amzn_id) {
-              if(!options.token) throw new Error('No Token')
+    // ensure projects have max 10 versions of either google/amazon
+    let i = 0
+    let num_versions_to_delete = project_versions.length - 10
+    let deletion_promises = []
+    if (live_ids) {
+      num_versions_to_delete -= live_ids.size
+    }
 
-              let request = await axios.request({
-                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version_row.amzn_id)}/stages/live/manifest`,
-                method: 'GET',
-                headers: {
-                  Authorization: options.token
-                }
-              })
-              // Delete the oldest version that isn't live
-              let split_uri = request.data.manifest.apis.custom.endpoint.uri.split('/')
-              live_ids.push(hashids.decode(split_uri[split_uri.length - 1])[0])
+    while (i < project_versions.length && num_versions_to_delete > 0) {
+      const v = project_versions[i]
+      if (
+        !live_ids.has(v.skill_id) && creators.has(v.creator_id)
+      ) {
+        deletion_promises.push(deleteVersionPromise(v.creator_id, v.skill_id))
+        num_versions_to_delete -= 1
+      }
+      i += 1
+    }
 
-              try {
-                // RESET LIVE IF THERE IS A LIVE
-                if(live_ids[0] && !current_live.includes(live_ids[0])) {
-                  await pool.query(`
-                    UPDATE skills s SET live = FALSE
-                    FROM project_versions pv
-                    WHERE pv.version_id = s.skill_id
-                      AND pv.project_id = $1
-                      AND pv.platform = $2
-                  `, [project_id, platform])
-
-                  await pool.query(`UPDATE skills s SET live = TRUE WHERE skill_id = $1`, [live_ids[0]])
-                }
-              } catch (err) {
-                writeToLogs('CREATOR_BACKEND_ERRORS', {
-                  err: err
-                })
-                reject(err)
-              }
-            } else if (platform === 'google') {
-              // Get the latest list of versions from skill_versions table
-              // Compare with each skill's attached versions
-              // If no matches, then it is ok to delete
-
-              const all_google_versions = dev_version_row.google_versions
-              for (const row of data.rows) {
-                if (row.version_id !== dev_version && row.google_versions) {
-                  const approvals = Object.keys(row.google_versions).map(key => all_google_versions[key].approval)
-                  if (approvals.length > 0 && approvals.filter(e => e !== 'DENIED').length > 0) {
-                    live_ids.push(row.version_id)
-                  }
-                }
-              }
-            }
-          } catch (err) {
-            if(Array.isArray(current_live)){
-              live_ids = live_ids.concat(current_live)
-            }
-          }
-          // No need to delete on just the check
-          if(options.check_only) return resolve()
-
-          let i = 0
-          let num_versions_to_delete = user.admin >= 100 ? data.rows.length - 10 : data.rows.length - 5
-          let deletion_promises = []
-          if (live_ids) {
-            num_versions_to_delete -= live_ids.length
-          }
-
-          while (i < data.rows.length && num_versions_to_delete > 0) {
-            if (!live_ids.includes(data.rows[i].version_id) && data.rows[i].version_id !== dev_version && data.rows[i].platform === platform) {
-              deletion_promises.push(deleteVersionPromise(user.id, data.rows[i].version_id))
-              num_versions_to_delete -= 1
-            }
-            i += 1
-          }
-
-          Promise.all(deletion_promises)
-            .then(() => {
-              resolve()
-            })
-            .catch((err) => {
-              writeToLogs('DELETE_CHECK_VERSION_ERRORS', {err})
-              reject(err)
-            })
-        }
-      })
-  })
-}
+    await Promise.all(deletion_promises)
+    resolve()
+  }catch(err){
+    writeToLogs("CHECK VERSIONS", err)
+    resolve()
+  }
+})
 
 exports.buildSkill = async (req, res) => {
   let project_id = hashids.decode(req.params.project_id)[0];
@@ -634,10 +631,15 @@ exports.buildSkill = async (req, res) => {
     }
 
     // Asynchronously check version logic, doesn't affect publishing
-    checkVersions(req.user, project_id, 'alexa', {token: token})
+    checkVersions(project_id, 'alexa')
 
-    pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
-      if (err) {
+    pool.query(`
+      SELECT s.*, pm.amzn_id AS amzn_id, pm.creator_id AS status 
+      FROM skills s
+      LEFT JOIN (SELECT * FROM project_members WHERE creator_id = $2) pm ON pm.project_id = s.project_id
+      WHERE s.skill_id = $1 LIMIT 1
+    `, [id, req.user.id], async (err, data) => {
+      if (err || data.rowCount === 0) {
         writeToLogs('CREATOR_BACKEND_ERRORS', {
           err: err
         })
@@ -645,9 +647,9 @@ exports.buildSkill = async (req, res) => {
       } else {
 
         let r = data.rows[0]
-
+        const project_id = r.project_id
         let amzn_id = r.amzn_id
-        let manifest = createManifest(r, original_id, req.user.name)
+        let manifest = createManifest(r, original_id)
 
         analytics.track({
           userId: req.user.id,
@@ -711,6 +713,7 @@ exports.buildSkill = async (req, res) => {
             })
           }
 
+          // UPDATE MANIFEST
           try {
             if (!amzn_id) {
 
@@ -727,7 +730,19 @@ exports.buildSkill = async (req, res) => {
 
               amzn_id = request.data.skillId;
 
-              await pool.query("UPDATE skills SET amzn_id = $1 WHERE skill_id = $2", [amzn_id, r.skill_id]);
+              // Update AMZN ID in SQL
+              if(!!r.status){
+                await pool.query("UPDATE project_members SET amzn_id = $3 WHERE project_id = $1 AND creator_id = $2", 
+                [project_id, req.user.id, amzn_id]);
+              }else{
+                await pool.query("INSERT INTO project_members (project_id, creator_id, amzn_id) VALUES ($1, $2, $3)", 
+                [project_id, req.user.id, amzn_id])
+                r.status = true
+              }
+
+              // Update Amazon ID
+              r.amzn_id = amzn_id
+
             } else {
 
               await axios.request({
@@ -744,6 +759,9 @@ exports.buildSkill = async (req, res) => {
             throw err
           }
 
+          // Update the AMZN ID of the current version (manifest updated)
+          await pool.query('UPDATE skills SET amzn_id = $1 WHERE skill_id = $2', [amzn_id, id])
+
           // Don't even bother with products if not in US
           if (Array.isArray(r.locales) && r.locales.includes('en-US')) {
             let products = await pool.query("SELECT * FROM products WHERE skill_id = $1", [r.skill_id]);
@@ -752,7 +770,8 @@ exports.buildSkill = async (req, res) => {
               for (row of products.rows) {
                 let product = row.data
                 let productId = row.id
-                let AmazonProductId = row.amzn_prod_id
+                if(!row.amzn_prod) row.amzn_prod = {}
+                let AmazonProductId = row.amzn_prod[req.user_id]
                 try {
                   // Try to update the product if it exists
                   if (!AmazonProductId) throw null
@@ -783,7 +802,8 @@ exports.buildSkill = async (req, res) => {
                   })
 
                   AmazonProductId = product_response.data.productId
-                  await pool.query("UPDATE products SET amzn_prod_id = $1 WHERE id = $2", [AmazonProductId, productId])
+                  row.amzn_prod[req.user.id] = AmazonProductId
+                  await pool.query("UPDATE products SET amzn_prod = $1 WHERE id = $2", [row.amzn_prod, productId])
 
                   await axios.request({
                     url: `https://api.amazonalexa.com/v1/inSkillProducts/${AmazonProductId}/skills/${amzn_id}`,
@@ -902,14 +922,16 @@ exports.buildSkill = async (req, res) => {
                           if(r.amzn_id !== amzn_id){
                             // Update canonical skill id's amzn id
                             try{
-                              await pool.query(`
-                              UPDATE skills SET amzn_id = $2 WHERE skill_id = (
-                                SELECT dev_version FROM projects p
-                                INNER JOIN project_versions pv ON p.project_id = pv.project_id
-                                WHERE version_id = $1 LIMIT 1)`, 
-                              [id, amzn_id])
+                              // Update AMZN ID in SQL
+                              if(!!r.status){
+                                await pool.query("UPDATE project_members SET amzn_id = $3 WHERE project_id = $1 AND creator_id = $2", 
+                                [project_id, req.user.id, amzn_id]);
+                              }else{
+                                await pool.query("INSERT INTO project_members (project_id, creator_id, amzn_id) VALUES ($1, $2, $3)", 
+                                [project_id, req.user.id, amzn_id])
+                              }
                             }catch(err){
-                              writeToLogs('CREATOR_BACKEND_ERRORS', {err})
+                              writeToLogs('AMAZON PROJECT MEMBER', {err})
                               return res.sendStatus(500)
                             }
                           }
@@ -1104,48 +1126,6 @@ exports.copyProduct = async (req, res) => {
   })
 }
 
-// Async call to copy all products
-copyAllProducts = (id, new_skill_id) => {
-  let copy_query = `
-    INSERT INTO products (skill_id, name, data, amzn_prod_id)
-    SELECT $1, name, data, amzn_prod_id FROM products WHERE id = $2
-  `
-
-  pool.query(copy_query, [new_skill_id, id], (err) => {
-    if (err) {
-      console.trace(err)
-    }
-  })
-}
-
-// Async call to copy all templates
-copyAllTemplates = (id, new_skill_id) => {
-  let copy_query = `
-    INSERT INTO email_templates (creator_id, title, created, content, sender, variables, subject, skill_id)
-    SELECT creator_id, title, NOW(), content, sender, variables, subject, $1 FROM email_templates WHERE skill_id = $2
-  `
-
-  pool.query(copy_query, [new_skill_id, id], (err) => {
-    if (err) {
-      console.trace(err)
-    }
-  })
-}
-
-// Async call to
-copyAllDisplays = (id, new_skill_id) => {
-  let copy_query = `
-    INSERT INTO displays (document, compatibility, created_at, creator_id, title, description, datasource, skill_id)
-    SELECT document, compatibility, NOW(), creator_id, title, description, datasource, $1 FROM displays WHERE skill_id = $2
-  `
-
-  pool.query(copy_query, [new_skill_id, id], (err) => {
-    if (err) {
-      console.trace(err)
-    }
-  })
-}
-
 exports.restoreSkillVersion = async (req, res) => {
   // Get dev version
   let dev_version, team_id
@@ -1153,8 +1133,8 @@ exports.restoreSkillVersion = async (req, res) => {
   try {
     let data = (await pool.query(`
       SELECT dev_version, team_id FROM projects p 
-      INNER JOIN project_versions pv ON p.project_id = pv.project_id
-      WHERE pv.version_id = $1`, 
+      INNER JOIN skills s ON p.project_id = s.project_id
+      WHERE s.skill_id = $1`, 
       [restore_id])
     ).rows[0]
     dev_version = data.dev_version
@@ -1219,29 +1199,24 @@ exports.restoreSkillVersion = async (req, res) => {
 
 exports.buildGoogleSkill = async (req, res) => {
 
-  let vf_project_id = hashids.decode(req.params.project_id)[0];
+  let project_id = hashids.decode(req.params.project_id)[0];
   let id = hashids.decode(req.params.version_id)[0];
   let original_id = req.params.version_id
 
   try {
-    const skill_info = await new Promise((resolve, reject) => {
-      pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
-        if (err) {
-          console.trace(err)
-          reject()
-        } else {
-          let r = data.rows[0]
-          resolve(r)
-        }
-      })
-    })
+    const version = (await pool.query(`
+      SELECT pm.*, s.google_publish_info, s.intents, s.slots, s.used_intents FROM project_members pm
+      INNER JOIN skills s ON s.project_id = pm.project_id
+      WHERE s.skill_id = $1 AND pm.creator_id = $2
+    `, [id, req.user.id])).rows[0]
 
-    const publish_info = skill_info.google_publish_info
-    if (!publish_info) {
-      throw ('No publish info found')
-    }
+    if(!version) throw ('Not Found')
 
-    const project_id = publish_info.project_id
+    const google_id = version.google_id
+    const publish_info = version.google_publish_info
+
+    if (!publish_info) throw ('No publish info found')
+    if (_.isNil(google_id)) throw ('Project ID not found')
 
     let {
       locales,
@@ -1254,22 +1229,18 @@ exports.buildGoogleSkill = async (req, res) => {
       main_locale = 'en'
     }
 
-    if (_.isNil(project_id)) {
-      throw ('Project ID not found')
-    }
-
-    skill_info.skill_id = original_id
+    version.skill_id = original_id
 
     let dialogflow_creds
     try {
-      dialogflow_creds = JSON.parse(skill_info.dialogflow_token)
+      dialogflow_creds = JSON.parse(version.dialogflow_token)
     } catch (e) {
       throw ('Credentials not found')
     }
 
-    checkVersions(req.user, vf_project_id, 'google')
+    checkVersions(project_id, 'google')
 
-    const main_client = new DialogflowClient(project_id, dialogflow_creds.private_key, dialogflow_creds.client_email)
+    const main_client = new DialogflowClient(google_id, dialogflow_creds.private_key, dialogflow_creds.client_email)
 
     let agent = await main_client.getAgent()
     if (agent && agent.length > 0) {
@@ -1280,49 +1251,32 @@ exports.buildGoogleSkill = async (req, res) => {
     await main_client.updateAgentFulfillment(original_id, main_locale, locales)
 
     const updates = []
-    const _package = generateDialogflowPackage(skill_info)
+    const _package = generateDialogflowPackage(version)
 
     if (!locales.includes(main_locale)) {
       locales.push(main_locale)
     }
 
     locales.forEach(locale => {
-      updates.push(updateDialogflowPackage(dialogflow_creds, project_id, _package, skill_info, locale))
+      updates.push(updateDialogflowPackage(dialogflow_creds, google_id, _package, locale))
     })
     await Promise.all(updates)
+
     publish_info.uploaded = true
+    await pool.query('UPDATE skills set google_publish_info = $2 WHERE skills.skill_id = $1', [id, publish_info])
 
-    await new Promise((resolve, reject) => {
-      pool.query('UPDATE skills set google_publish_info = $2 WHERE skills.skill_id = $1', [id, publish_info], async (err) => {
-        if (err) {
-          console.trace(err)
-          reject()
-        } else {
-          resolve()
-        }
-      })
-    })
+    res.status(200).send({google_id: google_id})
 
-    res.status(200).send({
-      project_id: project_id
-    })
   } catch (e) {
     console.trace(e)
     res.status(400).send(`Error while building skill: ${e}`)
   }
 }
 
-const updateDialogflowPackage = ({
-  private_key,
-  client_email
-}, project_id, {
-  intents,
-  slots
-}, {
-  skill_id
-}, locale) => new Promise(async (resolve, reject) => {
+const updateDialogflowPackage = ({private_key, client_email}, google_id, {intents,slots}, locale) => 
+new Promise(async (resolve, reject) => {
   try {
-    const client = new DialogflowClient(project_id, private_key, client_email)
+    const client = new DialogflowClient(google_id, private_key, client_email)
     client.setLocale(locale)
     await client.updateEntities(slots)
     await client.updateIntents(intents)
@@ -1343,12 +1297,13 @@ exports.getGoogleSkill = async (req, res) => {
   if(!(await checkSkillAccess(id, req.user.id))){
     return res.sendStatus(403)
   }
-
   pool.query(`
-    SELECT created, diagram, google_publish_info, dialogflow_token, privacy_policy, terms_and_cond
-    FROM skills
-    WHERE skill_id = $1 LIMIT 1`, 
-  [id], async (err, data) => {
+    SELECT s.created, s.diagram, s.google_publish_info, s.privacy_policy, s.terms_and_cond, pm.dialogflow_token
+    FROM skills s
+    LEFT JOIN (SELECT * FROM project_members WHERE creator_id = $2) pm ON pm.project_id = s.project_id
+    WHERE skill_id = $1
+    LIMIT 1`, 
+  [id, req.user.id], async (err, data) => {
     if (err) {
       console.trace(err);
       res.sendStatus(500);
@@ -1357,7 +1312,7 @@ exports.getGoogleSkill = async (req, res) => {
     } else {
       let publish_info = data.rows[0].google_publish_info
 
-      let project_id
+      let google_id
       let private_key
       let client_email
 
@@ -1365,7 +1320,7 @@ exports.getGoogleSkill = async (req, res) => {
       if (data.rows[0].dialogflow_token) {
         try {
           let dialogflow_token = JSON.parse(data.rows[0].dialogflow_token)
-          project_id = dialogflow_token.project_id
+          google_id = dialogflow_token.project_id
           private_key = dialogflow_token.private_key
           client_email = dialogflow_token.client_email
 
@@ -1374,7 +1329,7 @@ exports.getGoogleSkill = async (req, res) => {
           console.trace('Parsing dialogflow_token failed', e)
         }
 
-        const client = new DialogflowClient(project_id, private_key, client_email)
+        const client = new DialogflowClient(google_id, private_key, client_email)
         const agents = await client.getAgent();
 
         ({
@@ -1384,7 +1339,6 @@ exports.getGoogleSkill = async (req, res) => {
       }
 
       let {
-        google_id,
         created,
         diagram,
         privacy_policy,
@@ -1395,7 +1349,7 @@ exports.getGoogleSkill = async (req, res) => {
         publish_info,
         created,
         diagram,
-        project_id,
+        google_id,
         defaultLanguageCode,
         supportedLanguageCodes,
         privacy_policy,

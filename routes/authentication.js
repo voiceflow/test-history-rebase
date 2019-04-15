@@ -196,6 +196,43 @@ async function fbAuth(data, cb) {
     })
 }
 
+// Promisfied version of Acccess Token (slowly replace existing ones)
+const AmazonAccessToken = (user_id) => new Promise((resolve, reject) => {
+  redisClient.get(`t_${user_id}`, function (err, token) {
+    if (err) return reject(err)
+    if (!token) return resolve(null)
+
+    token = JSON.parse(token);
+    if (token.expire < Date.now()) {
+      axios.post('https://api.amazon.com/auth/o2/token', {
+        grant_type: "refresh_token",
+        client_id: process.env.CONFIG_CLIENT_ID,
+        client_secret: process.env.CONFIG_CLIENT_SECRET,
+        refresh_token: token.refresh_token
+      })
+      .then(result => {
+        let data = {
+          expire: Date.now() + (result.data.expires_in * 1000),
+          access_token: result.data.access_token,
+          refresh_token: result.data.refresh_token
+        }
+        redisClient.set(`t_${user_id}`, JSON.stringify(data), (err) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(data.access_token);
+          }
+        });
+      })
+      .catch(err => {
+        reject(err)
+      });
+    } else {
+      resolve(token.access_token);
+    }
+  });
+})
+
 // Gets the Amazon Login Access Token for Skill publishing
 const AccessToken = (user_id, cb) => {
   redisClient.get(`t_${user_id}`, function (err, token) {
@@ -245,23 +282,23 @@ const AccessToken = (user_id, cb) => {
   });
 }
 
-const getAccessToken = (req, res) => {
-  AccessToken(req.user.id, token => {
-    if (token === null) {
-      res.sendStatus(404);
-    } else {
-      axios.get(`https://api.amazon.com/user/profile?access_token=${token}`)
-        .then(result => {
-          res.send({
-            token: token,
-            profile: result.data
-          })
-        })
-        .catch(err => {
-          res.sendStatus(500)
-        })
+const getAccessToken = async (req, res) => {
+  try {
+    const token = await AmazonAccessToken(req.user.id)
+    if(!token) throw { status: 404 }
+
+    const result = await axios.get(`https://api.amazon.com/user/profile?access_token=${token}`)
+    res.send({
+      token: token,
+      profile: result.data
+    })
+  } catch (err) {
+    if(err.message || err.status){
+      return res.status(err.status || 400).send(err.message)
     }
-  })
+    writeToLogs('ACCESS TOKEN ERROR', err)
+    return res.sendStatus(500)
+  }
 }
 
 const getAmazonCode = (req, res) => {
@@ -483,16 +520,19 @@ const hasGoogleAccessToken = (req, res) => {
 }
 
 const hasDialogflowToken = (req, res) => {
-  let skill_id = req.params.skill_id
+  let project_id = req.params.project_id
+  project_id = hashids.decode(project_id)[0]
 
-  if (!skill_id) {
+  if (!project_id) {
     res.status(400).send('Missing skill ID')
     return
   }
 
-  skill_id = hashids.decode(skill_id)[0]
-
-  pool.query('SELECT dialogflow_token FROM skills WHERE skill_id = $1', [skill_id], (err, data) => {
+  pool.query(`
+    SELECT dialogflow_token 
+    FROM project_members
+    WHERE creator_id = $1 AND project_id = $2
+  `, [req.user.id, project_id], (err, data) => {
     if (err) {
       console.trace(err)
       res.status(500).send("Unable to Access Database");
@@ -510,15 +550,15 @@ const hasDialogflowToken = (req, res) => {
 
 const verifyDialogflowToken = async (req, res) => {
   let token = req.body.token
-  let skill_id = req.body.skill_id
+  let project_id = req.body.project_id
 
   try {
-    if (!token || !skill_id) {
+    project_id = hashids.decode(project_id)[0]
+
+    if (!token || !project_id) {
       res.status(400).send('Bad Request: Parameters missing')
       return
     }
-
-    skill_id = hashids.decode(skill_id)[0]
 
     const parsed = JSON.parse(token)
     if (!(parsed.type === 'service_account')) {
@@ -533,24 +573,29 @@ const verifyDialogflowToken = async (req, res) => {
     if (!parsed.client_email === 'service_account') {
       throw ('Missing client email in credentials')
     }
-    await new Promise((resolve, reject) => {
-      pool.query('UPDATE skills SET dialogflow_token = $2 WHERE skill_id = $1 RETURNING *', [skill_id, token], (err) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve()
-        }
-      })
-    })
 
-    let {
-      project_id,
+    const {
       private_key,
       client_email
     } = parsed
+    const google_id = parsed.project_id
 
-    const client = new DialogflowClient(project_id, private_key, client_email)
+    const client = new DialogflowClient(google_id, private_key, client_email)
     const agents = await client.getAgent();
+
+    const UPDATE = await pool.query(`
+      UPDATE project_members 
+      SET dialogflow_token = $1, google_id = $2 
+      WHERE project_id = $3 AND creator_id = $4`, 
+    [token, google_id, project_id, req.user.id])
+
+    // If nothing was updated create new row
+    if(UPDATE.rowCount === 0){
+      await pool.query(`
+        INSERT INTO project_members (project_id, creator_id, dialogflow_token, google_id) 
+        VALUES ($1, $2, $3, $4)
+      `, [project_id, req.user.id, token, google_id])
+    }
 
     let {
       defaultLanguageCode,
@@ -558,7 +603,7 @@ const verifyDialogflowToken = async (req, res) => {
     } = agents[0]
 
     res.status(200).send({
-      project_id,
+      google_id,
       defaultLanguageCode,
       supportedLanguageCodes
     })
@@ -972,8 +1017,7 @@ const deleteGoogleAccessToken = async (req, res) => {
 
   try {
     await pool.query('UPDATE creators SET gactions_token = NULL WHERE creator_id = $1', [creator_id])
-    await pool.query('UPDATE skills SET dialogflow_token = NULL, google_publish_info=$2 WHERE creator_id = $1', [creator_id, {}])
-    await pool.query('UPDATE project_versions AS pv SET google_versions = NULL FROM skills AS sk WHERE pv.version_id = sk.skill_id AND sk.creator_id = $1', [creator_id])
+    await pool.query('UPDATE project_members SET dialogflow_token = NULL, gactions_token = NULL WHERE creator_id = $1', [creator_id])
 
     res.sendStatus(200)
   } catch (e) {
@@ -983,16 +1027,16 @@ const deleteGoogleAccessToken = async (req, res) => {
 }
 
 const deleteDialogflowToken = async (req, res) => {
-  let skill_id = req.body.skill_id
-  if (!skill_id) {
+  let project_id = req.body.project_id
+  project_id = hashids.decode(project_id)[0]
+
+  if (!project_id) {
     res.status(400).send('Bad Request: Skill ID Missing')
     return
   }
 
-  skill_id = hashids.decode(skill_id)[0]
-
   try {
-    await pool.query('UPDATE skills SET dialogflow_token = NULL, google_publish_info=$2 WHERE skill_id = $1', [skill_id, {}])
+    await pool.query('UPDATE project_members SET dialogflow_token = NULL WHERE project_id = $1', [project_id])
     res.sendStatus(200)
   } catch (e) {
     res.status(500).send(e)
@@ -1012,6 +1056,7 @@ const updateProfilePicture = async (req, res) => {
 module.exports = {
   updateProfilePicture: updateProfilePicture,
   AccessToken: AccessToken,
+  AmazonAccessToken: AmazonAccessToken,
   getAccessToken: getAccessToken,
   getAmazonCode: getAmazonCode,
   getSession: getSession,

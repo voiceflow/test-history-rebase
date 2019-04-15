@@ -59,40 +59,25 @@ class Templates extends Component {
 
     saveSettings() {
         switch (this.state.stage) {
-            case 0:
-                if (this.state.name.trim() && Array.isArray(this.state.locales) && this.state.locales.length !== 0) {
-                    const stage = this.props.user.admin === -1 ? 1 : 2 // Multiplatform paywall soft-disable
-                    this.setState({ stage: stage, error: '' })
-                } else {
-                    this.setState({ error: 'Please Complete All Fields' })
-                }
-                break
-            case 1:
-                if (this.state.google || this.state.alexa) {
-                    if (this.state.google && this.state.alexa && this.props.user.admin === -1) { // Multiplatform paywall soft-disable
-                        // Modal
-                    } else {
-                        this.setState({ stage: 2, error: '' })
-                    }
-                } else {
-                    this.setState({ error: 'Must select at least one platform' })
-                }
-                break
-            default:
-                break
+          case 0:
+              if (this.state.name.trim() && Array.isArray(this.state.locales) && this.state.locales.length !== 0) {
+                  this.setState({ stage: 2, error: '' })
+              } else {
+                  this.setState({ error: 'Please Complete All Fields' })
+              }
+              break
+          default:
+              break
         }
     }
 
     goBack() {
         switch (this.state.stage) {
-            case 1:
-                this.setState({ stage: 0 })
-                break
-            case 2:
-                this.setState({ stage: this.props.user.admin === -1 ? 1 : 0 }) // Multiplatform paywall soft-disable
-                break
-            default:
-                break
+          case 2:
+              this.setState({ stage: 0 })
+              break
+          default:
+              break
         }
 
     }
@@ -163,16 +148,9 @@ class Templates extends Component {
     }
 
     renderContinueButton() {
-        if (this.state.alexa && this.state.google && this.props.user.admin === -1) { // Multiplatform paywall soft-disable
-            return (<div className="mt-1">
-                <div className="mb-4 text-muted">Building for both platforms simultaneously is a premium feature.<br />Please upgrade to continue</div>
-                <MUIButton varient="contained" className="btn-primary" onClick={() => this.props.history.push('/account/upgrade')}>Upgrade</MUIButton>
-            </div>)
-        } else {
-            return (<div className="mt-1">
-                <MUIButton varient="contained" className="btn-primary" onClick={this.saveSettings}>Continue</MUIButton>
-            </div>)
-        }
+      return (<div className="mt-1">
+          <MUIButton varient="contained" className="btn-primary" onClick={this.saveSettings}>Continue</MUIButton>
+      </div>)
     }
 
     renderBody() {
@@ -189,36 +167,6 @@ class Templates extends Component {
                                     createProject={this.createProject}
                                     previewTemplate={this.previewTemplate}
                                 />)}
-                        </div>
-                    </div>
-                </div>
-            case 1:
-                return <div className="container text-center d-flex flex-fill flex-column">
-                    <h5 className="text-dark mb-5">Select Your Platforms</h5>
-                    <div className="d-flex flex-fill flex-column justify-content-center">
-                        <div className="pb-5 mb-5 align-self-center">
-                            <div className="px-4 py-2 text-center project-card">
-                                <div className="mb-4 text-muted">Are you building for Alexa, Google, or both?</div>
-                                <div className="mx--1 d-flex justify-content-center">
-                                    <button color="primary" className={`d-flex justify-content-center template-platform-btn ${this.state.alexa ? 'active' : ''}`} onClick={() => { this.setState({ alexa: !this.state.alexa, error: '' }) }}>
-                                        <div className={`platform-checkbox ${this.state.alexa ? 'active' : ''}`}/>
-                                        <div className="image-container d-flex flex-column justify-content-between">
-                                            <div className={`platform-label mt-2 ${this.state.alexa ? 'active' : ''}`}>Alexa</div>
-                                            <img className="platform-image alexa" src="/alexa.png" alt="empty" />
-                                        </div>
-                                    </button>
-                                    <button color="primary" className={`d-flex justify-content-center template-platform-btn ${this.state.google ? 'active' : ''}`} onClick={() => { this.setState({ google: !this.state.google, error: '' }) }}>
-                                        <div className={`platform-checkbox ${this.state.google ? 'active' : ''}`}/>
-                                        <div>
-                                            <div className={`platform-label mt-2 ${this.state.google ? 'active' : ''}`}>Google</div>
-                                            <img className="platform-image mt-2" src="/google_home.png" alt="empty" />
-                                        </div>
-                                    </button>
-                                </div>
-                                {this.state.error && <Alert color='danger' style={{ visibility: this.state.error ? 'visible' : 'hidden' }} className="my-4 d-inline-block fadeIn">&nbsp;{this.state.error}&nbsp;</Alert>}
-                                <br />
-                            </div>
-                            {this.renderContinueButton()}
                         </div>
                     </div>
                 </div>
@@ -261,7 +209,7 @@ class Templates extends Component {
 
         return <div id="template-box-container">
             <div className="card">
-                {[1,2].includes(this.state.stage) &&
+                {[2].includes(this.state.stage) &&
                     <div className="mr-3 btn-icon back-btn-large" onClick={()=>this.goBack()}/>
                 }
                 <Link id="exit-template" to='/dashboard' className="btn-icon"></Link>

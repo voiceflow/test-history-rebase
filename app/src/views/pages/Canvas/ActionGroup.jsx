@@ -23,7 +23,7 @@ import InvRegex from 'services/Regex'
 import './ActionGroup.css'
 
 const loading = (message) => {
-    return <div className="super-center mb-2">
+    return <div className="super-center mb-4">
         <div className='text-center'>
             <p className="mb-0">{message}</p>
         </div>
@@ -241,12 +241,12 @@ export class ActionGroup extends PureComponent {
     })
   }
 
-  uploadSuccess(platform='alexa', project_id){
+  uploadSuccess(platform='alexa', google_id){
     // Track upload on first session
     // They completed their first upload successfully
     if(platform === 'google'){
       this.setState({
-          project_id: project_id || this.state.project_id
+          google_id: google_id || this.state.google_id
       })
       this.updateGoogleStage(5)
     }else{
@@ -438,21 +438,21 @@ export class ActionGroup extends PureComponent {
     const s = this.state
     const p = this.props
 
-    if (s.google_stage === 0 || s.google_stage === 1 || !p.skill.google_publish_info || !p.skill.google_publish_info.project_id) {
+    if (s.google_stage === 0 || s.google_stage === 1 || !p.skill.google_publish_info || !p.skill.google_id) {
         p.history.push(`/publish/${p.skill.skill_id}/google`)
         return
     }
 
     this.updateGoogleStage(3)
 
-    axios.post(`/project/${this.props.skill.project_id}/render`, { platform: 'google', project_id: p.skill.google_publish_info.project_id })
+    axios.post(`/project/${this.props.skill.project_id}/render`, { platform: 'google', google_id: p.skill.google_id })
     .then(res => {
       this.updateGoogleStage(4)
       let new_version_data = res.data
       axios.post(`/project/${this.props.skill.project_id}/version/${new_version_data.new_skill.skill_id}/google`)
           .then(res => {
               // They completed their first upload successfully
-              this.uploadSuccess('google', res.data.project_id)
+              this.uploadSuccess('google', res.data.google_id)
           })
           .catch(err => {
               this.setState({
@@ -533,7 +533,7 @@ export class ActionGroup extends PureComponent {
   displayUploadPrompt() {
     if(this.state.show_upload_prompt){
       return  <div className="upload-success-popup">
-        <button className="close close-upload-success-popup" onClick={this.closePrompt}>&times;</button>
+        <button className="close close-upload-success-popup mt-2" onClick={this.closePrompt} />
           {this.renderBody(false)}
       </div>
     } 
@@ -623,7 +623,7 @@ export class ActionGroup extends PureComponent {
                       </div> </Button>
           } else {
               return <Tooltip
-                  html={<div style={{ width: 155 }}>{(this.props.platform === 'google') ? 'Test your Action on your own Google device, or in the Google Actions console' : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}</div>}
+                  html={<div style={{ width: 180 }}>{(this.props.platform === 'google') ? 'Test your Action on your own Google device, or in the Google Actions console' : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}</div>}
                   position="bottom"
                   distance={16}
               >
@@ -713,7 +713,7 @@ export class ActionGroup extends PureComponent {
                   <span className="fail-icon"/>  Rendering Error
               </Alert>
           case 5:
-              return <div className={"modal-txt flex-fill text-center mb-4" + (modal ? " w-100" : " mt-4") }>
+              return <div className={"modal-txt flex-fill text-center mb-4 mt-3" + (modal ? " w-100" : " mt-4") }>
                   {this.state.amzn_error && <Alert color="danger"><span className="fail-icon"/> Login With Amazon Failed - Try Again</Alert>}
                   Login with Amazon to test your Skill on your own Alexa device, or in the Alexa developer console
                   {modal && Video('https://s3.amazonaws.com/com.getvoiceflow.videos/first.mp4')}
@@ -811,8 +811,8 @@ export class ActionGroup extends PureComponent {
                               </button>
                           })}
                       </div>
-                      <div className="mt-5 mb-3">
-                          <Button varient="contained" className="btn-primary" onClick={(e) => {this.updateAlexa(); this.props.saveSkill()}}>Upload</Button>
+                      <div className="mt-4 mb-5">
+                          <button varient="contained" className="btn-primary" onClick={(e) => {this.updateAlexa(); this.props.saveSkill()}}>Confirm Upload</button>
                       </div>
                   </div>
               }
@@ -839,7 +839,7 @@ export class ActionGroup extends PureComponent {
               modal_content = <div className="text-center">
                   <div className="d-flex align-items-center justify-content-center upload-prompt-title mb-2"> <span className="pass-icon mr-2"/> Upload Successful </div>
                   <div className="upload-prompt-text">
-                    You may test on the <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.project_id}/simulator`}
+                    You may test on the <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.google_id}/simulator`}
                             target="_blank" rel="noopener noreferrer">
                             Google Actions Simulator
                     </a>. To submit for review, please follow the instructions on the Google Actions Developer Console.
@@ -854,7 +854,7 @@ export class ActionGroup extends PureComponent {
                       You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
               </span>
                   <div className="my-3">
-                      <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.project_id}/simulator`}
+                      <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.google_id}/simulator`}
                           className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
                           Test on Google Actions Simulator
                   </a>
@@ -903,7 +903,7 @@ export class ActionGroup extends PureComponent {
                   }}/>
               </div>}
               <Modal size={this.state.stage === 0 ? "lg" : undefined} isOpen={this.state.updateModal && this.state.is_first_upload} toggle={()=>this.setState({updateModal: false})} onClosed={this.shouldReset} className="stage_modal">
-                  <ModalHeader toggle={()=>this.setState({updateModal: false})} className="pb-0 mb--4">Upload Project</ModalHeader>
+                  <ModalHeader toggle={()=>this.setState({updateModal: false})} className="pb-0 mb--4" header="Upload Project" />
                   <ModalBody className="modal-info" style={{padding: '0rem 2rem'}}>
                       <div>
                           {this.renderBody(true)}

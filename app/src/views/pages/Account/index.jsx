@@ -12,20 +12,6 @@ const UNLINKED = 0
 const LOADING = 1
 const LINKED = 2
 
-const STATUS = {
-  0: {name: "Community (Free)", price: "0"},
-  1: {name: "Plus", price: "29"},
-  30: {name: "Business", price: "199"},
-  100: {name: "Admin", price: "100000000"}
-}
-const GET_STATUS = (status) => {
-  if(status in STATUS){
-    return STATUS[status]
-  }else{
-    return {name: 'Unknown', price: "0"}
-  }
-}
-
 class Account extends Component {
 
   constructor(props) {
@@ -50,7 +36,7 @@ class Account extends Component {
     this.props.setConfirm({
         text: <Alert color="danger" className="mb-0">
           <i className="fas fa-exclamation-triangle fa-2x"/><br/>
-          Resetting your Amazon Account is dangerous and will de-sync all your published projects. Do not reset unless you know what you are doing
+          Resetting your Amazon Account is dangerous and will de-sync all your published projects/versions and can lead to live skills being deleted. Do not reset unless you know what you are doing
         </Alert>,
         warning: true,
         confirm: () => {
@@ -161,24 +147,6 @@ class Account extends Component {
                       {this.props.user.name}<br/>
                       {this.props.user.email}<br/>
                       {moment(this.props.user.created).format('MMMM Do, YYYY')}<br/>
-                    </div>
-                  </div>
-                </div>
-                <h5 className="ml-3">Status</h5>
-                <div className="card mb-5">
-                  <div className="p-4 space-between">
-                    <h4 className="mb-0 text-muted">{GET_STATUS(this.props.user.admin).name}</h4>
-                    <div className="super-center">
-                      {this.props.user.admin < 1 && <h4 className="text-muted mr-3 mb-0">$0.00/mo</h4>}
-                      {this.props.user.admin > 0 ? 
-                        <React.Fragment>
-                          {this.expiry ? 
-                            <React.Fragment>
-                              <div className="btn btn-clear disabled">Renews {this.expiry}</div>
-                              <div className="btn btn-clear ml-2" onClick={this.toggle}><i className="fas fa-cog"/> Upgrade</div>
-                            </React.Fragment> : null}
-                        </React.Fragment> : 
-                      <button onClick={this.toggle} className="btn-primary">Upgrade</button>}
                     </div>
                   </div>
                 </div>

@@ -120,8 +120,7 @@ export const fetchTeams = () => {
   return async (dispatch, getState) => {
     try{
       let res = await axios.get('/teams')
-      
-      console.log("TEAMS", res.data)
+
       // NORMALIZE TEAMS
       const state = normalize('team_id', res.data.map(t => {
         t.members = [];

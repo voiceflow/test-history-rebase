@@ -30,7 +30,7 @@ export const addNormalize = (id_type, data, structure) => {
   let allIds = structure.allIds
 
   if(data[id_type]){
-    byId = update(byId, {[id_type]: {$set: data}})
+    byId = update(byId, {[data[id_type]]: {$set: data}})
     allIds = update(allIds, {$push: [data[id_type]]})
   }
 

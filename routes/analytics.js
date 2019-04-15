@@ -30,9 +30,9 @@ exports.getUsersData = (req, res) => {
     checkUserOwnsProject(req, res, async () => {
         let project_id = hashids.decode(req.params.project_id)[0]
         let live_skill_id = (await pool.query(`
-            SELECT s.skill_id 
-            FROM skills s INNER JOIN project_versions pv ON pv.version_id = s.skill_id 
-            WHERE pv.project_id = $1 AND live = TRUE`, [project_id])).rows[0]
+            SELECT skill_id 
+            FROM skills
+            WHERE project_id = $1 AND live = TRUE`, [project_id])).rows[0]
         
         if(live_skill_id){
             live_skill_id = live_skill_id.skill_id
@@ -63,9 +63,9 @@ exports.getDAU = (req, res) => {
     checkUserOwnsProject(req, res, async () => {
         let project_id = hashids.decode(req.params.project_id)[0]
         let live_skill_id = (await pool.query(`
-            SELECT s.skill_id 
-            FROM skills s INNER JOIN project_versions pv ON pv.version_id = s.skill_id 
-            WHERE pv.project_id = $1 AND live = TRUE`, [project_id])).rows[0]
+            SELECT skill_id 
+            FROM skills
+            WHERE project_id = $1 AND live = TRUE`, [project_id])).rows[0]
 
         if(live_skill_id){
             live_skill_id = live_skill_id.skill_id
@@ -117,9 +117,9 @@ exports.getStats = async (req, res) => {
     try{
         let project_id = hashids.decode(req.params.project_id)[0]
         let live_skill_id = (await pool.query(`
-            SELECT s.skill_id 
-            FROM skills s INNER JOIN project_versions pv ON pv.version_id = s.skill_id 
-            WHERE pv.project_id = $1 AND live = TRUE`, [project_id])).rows[0]
+            SELECT skill_id 
+            FROM skills
+            WHERE project_id = $1 AND live = TRUE`, [project_id])).rows[0]
 
         if(live_skill_id) {
             live_skill_id = live_skill_id.skill_id

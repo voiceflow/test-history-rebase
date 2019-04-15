@@ -4,7 +4,7 @@ const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./ski
 
 const DEFAULT_VARIABLES = ['sessions', 'user_id', 'timestamp', 'platform', 'locale', 'access_token']
 
-if(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'development_prod'){
+if(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'development_prod' || process.env.NODE_ENV === 'test'){
 	ADMIN_MARKETPLACE_ACC = 2125
 } else {
 	ADMIN_MARKETPLACE_ACC = 19
@@ -144,7 +144,6 @@ const saveCertification = async (req, res) => {
 
 		// Randomly choose module colour
 		let colour = getModuleColour()
-
 		try{
 			let new_module_data = (await pool.query(`INSERT INTO projects (name, creator_id) VALUES ($1, $2) RETURNING *`, [req.body.title, ADMIN_MARKETPLACE_ACC])).rows[0]
 			await pool.query(
@@ -152,7 +151,7 @@ const saveCertification = async (req, res) => {
 				(title, descr, creator_id, tags, type, overview, module_icon, color, input, output, module_project_id, project_id) 
 			VALUES 
 				($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`, 
-			[req.body.title, req.body.descr, req.body.creator_id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, 
+			[req.body.title, req.body.descr, req.user.id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, 
 			 colour, req.body.input, req.body.output, new_module_data.project_id, project_id])
 			res.sendStatus(200)
 		} catch (err) {

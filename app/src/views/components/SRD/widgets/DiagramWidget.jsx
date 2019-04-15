@@ -652,6 +652,11 @@ export class DiagramWidget extends BaseWidget {
 		} else {
 			this.stopFiringAction();
 			this.props.setOpen(false)
+			if (diagramEngine.getSuperSelect()) {
+				diagramEngine.getSuperSelect().setSelected(false)
+				diagramEngine.setSuperSelect(null)
+				this.props.forceRepaint();
+			}
 		}
 		this.state.document.removeEventListener("mousemove", this.onMouseMove);
 		this.state.document.removeEventListener("mouseup", this.onMouseUp);

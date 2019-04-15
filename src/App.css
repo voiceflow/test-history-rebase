@@ -69,8 +69,12 @@ body {
 .pt-6 {
     padding-top: 4rem !important;
 }
+
+.variable-box .form-control:focus{
+    border: 1px solid #4666EA !important;
+}
 .form-control:focus{
-    border: 1px solid #5D9DF5 !important;
+    border: 1px solid #5D9DF5;
     box-shadow: rgba(50, 50, 93, 0.03) 0px 2px 3px, rgba(0, 0, 0, 0.03) 0px 1px 3px !important;
     color: #132042;
 }

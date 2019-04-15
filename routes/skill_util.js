@@ -146,34 +146,36 @@ exports.deleteProjectPromise = (project_id) => {
         return resolve()
       }
 
-      // Only if deleting the whole project
-      if(project_data_rows[0] && project_data_rows[0].amzn_id){
-        AccessToken(project_data_rows[0].creator_id, token => {
-          if (token === null) {
-            return;
-          }
-  
-          axios.request({
-              url: `https://api.amazonalexa.com/v1/skills/${project_data_rows[0].amzn_id}`,
-              method: 'DELETE',
-              headers: {
-                Authorization: token
-              }
-            })
-            .catch(err => {
-              logAxiosError(err, 'DELETE AMAZON SKILL')
-            })
-        })
-      }
-
       await pool.query(delete_query, [project_id])
       await pool.query('DELETE FROM projects WHERE project_id = $1', [project_id])
 
+      const checked_amzn = new Set()
+
       for(let i=0; i < project_data_rows.length; i++){
+        const version = project_data_rows[i]
+
+        // If versions have an Amazon ID
+        if(version.amzn_id && !checked_amzn.has(version.amzn_id)){
+          AccessToken(version.creator_id, token => {
+            if (token === null) return
+            axios.request({
+                url: `https://api.amazonalexa.com/v1/skills/${version.amzn_id}`,
+                method: 'DELETE',
+                headers: {
+                  Authorization: token
+                }
+              })
+              .catch(err => {
+                logAxiosError(err, 'DELETE AMAZON SKILL')
+              })
+          })
+          checked_amzn.add(version.amzn_id)
+        }
+
         // To0 f4st for 4mzn
         setTimeout(() => {
           try{
-            exports.deleteDynamoDiagramPromise(project_data_rows[i].id)
+            exports.deleteDynamoDiagramPromise(version[i].id)
           }catch(err){
             writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
           }
@@ -411,18 +413,21 @@ exports.copySkill = async (req, res, options, cb = false) => {
     }
   }
 
-  // Starts here: verify that the skill is under the current creator
-  if (!options.copying_default_template) {
-    if (req.user.admin < 100) {
-      try {
-        let data = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1', [id])
-        if (data.rows.length === 0 || data.rows[0].creator_id !== req.user.id) {
-          throw new Error('Not your skill')
-        }
-      } catch (err) {
-        // forbidden
-        return res.sendStatus(401)
-      }
+  // Starts here: verify that the skill is under the current BOARD
+  if (!options.copying_default_template && req.user.admin < 100) {
+    try {
+      const CHECK = await pool.query(`
+        SELECT 1 FROM skills s
+        INNER JOIN projects p ON p.project_id = s.project_id
+        INNER JOIN team_members tm ON tm.team_id = p.team_id
+        WHERE tm.creator_id = $1 AND s.skill_id = $2 LIMIT 1
+      `, [req.user.id, id])
+
+      if(CHECK.rowCount === 0) throw new Error('Not your skill')
+    } catch (err) {
+      // forbidden
+      console.log(err)
+      return res.sendStatus(401)
     }
   }
 
@@ -544,67 +549,3 @@ exports.copySkill = async (req, res, options, cb = false) => {
     res.sendStatus(500)
   }
 }
-
-// exports.copyDiagramFromSkill = async (skill_id, new_user, target_skill_id) => {
-//   // skill_id = hashids.decode(skill_id)[0]
-//   // if(target_skill_id){
-//   //   target_skill_id = hashids.decode(target_skill_id)[0]
-//   // }
-
-//   const copyDynamo = (diagram_id) => {
-//     let get_params = {
-//       TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
-//       Key: {
-//         'id': diagram_id
-//       }
-//     }
-
-//     try{
-//       let data = await docClient.get(get_params).promise()
-//       if(data.Item){
-//         remapDiagramIds(data.Item)
-//       } else {
-//         return null
-//       }
-
-//     } catch (err){
-//       writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-//       return null
-//     }
-//   }
-
-//   const copyDiagram = (diagram_row, user) => {
-//     if(user === undefined){
-//       user = 185 // TODO: set to marketplace user
-//     }
-
-//     return new Promise((resolve, reject) => {
-//       let new_diagram_id = copyDynamo()
-
-//       // Copy on SQL
-//     })
-//   }
-
-//   try{
-//     let diagram_data = (await pool.query(`SELECT * FROM diagrams WHERE skill_id = $1`, [skill_id])).rows
-//     let copied_diagram_promises = []
-//     for(let i in diagram_data){
-//       copied_diagram_promises.push(copyDiagram(diagram_data[i], new_user))
-//     }
-
-//     Promise.all(copied_diagram_promises)
-//     .then(() => {
-//       console.log('goteem')
-//       return 200
-//     })
-//     .catch(err => {
-//       writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-//       return 500
-//     })
-
-//     return 500
-//   } catch (err) {
-//     writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-//     return 500
-//   }
-// }

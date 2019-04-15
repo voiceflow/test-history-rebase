@@ -30,7 +30,7 @@ exports.getProjectFromSkill = async (req, res, next) => {
 }
 
 exports.deleteProject = async (req, res) => {
-  if (!req.user || !req.params._project_id) {
+  if (!req.params._project_id) {
     res.sendStatus(401)
     return
   }

@@ -137,11 +137,12 @@ exports.getSkill = async (req, res) => {
   } else {
     sql = `
       SELECT
-        s.*
+        s.*, pm.amzn_id
       FROM
         skills s
         INNER JOIN projects p ON p.project_id = s.project_id
         INNER JOIN team_members tm ON tm.team_id = p.team_id
+        LEFT JOIN (SELECT * FROM project_members WHERE creator_id = $1) pm ON pm.project_id = p.project_id
         WHERE
           skill_id = $1
           AND tm.creator_id = $2
@@ -524,6 +525,7 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
       for(dev_version of dev_versions){
         try{
           const token = await AmazonAccessToken(dev_version.creator_id)
+          if(!token) throw ('No Token Found')
           // Check if this endpoint is LIVE
           const response = await axios.request({
             url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/live/manifest`,
@@ -556,14 +558,10 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
       }
 
       if(remove_live.size > 0) {
-        await pool.query(
-          `UPDATE skills SET live = FALSE WHERE skill_id IN (${pg_num(remove_live.size)})`, 
-        Array.from(remove_live))
+        await pool.query(`UPDATE skills SET live = FALSE WHERE skill_id IN (${pg_num(remove_live.size)})`, Array.from(remove_live))
       }
       if(add_live.size > 0) {
-        await pool.query(
-          `UPDATE skills SET live = TRUE WHERE skill_id IN (${pg_num(add_live.size)})`, 
-        Array.from(add_live))
+        await pool.query(`UPDATE skills SET live = TRUE WHERE skill_id IN (${pg_num(add_live.size)})`, Array.from(add_live))
       }
     }else if(platform === 'google'){
       
@@ -639,8 +637,8 @@ exports.buildSkill = async (req, res) => {
     pool.query(`
       SELECT s.*, pm.amzn_id AS amzn_id, pm.creator_id AS status 
       FROM skills s
-      LEFT JOIN project_members pm ON pm.project_id = s.project_id
-      WHERE s.skill_id = $1 AND (pm.creator_id = $2 OR pm.creator_id IS NULL) LIMIT 1
+      LEFT JOIN (SELECT * FROM project_members WHERE creator_id = $2) pm ON pm.project_id = s.project_id
+      WHERE s.skill_id = $1 LIMIT 1
     `, [id, req.user.id], async (err, data) => {
       if (err || data.rowCount === 0) {
         writeToLogs('CREATOR_BACKEND_ERRORS', {
@@ -716,6 +714,7 @@ exports.buildSkill = async (req, res) => {
             })
           }
 
+          // UPDATE MANIFEST
           try {
             if (!amzn_id) {
 
@@ -760,6 +759,9 @@ exports.buildSkill = async (req, res) => {
             logAxiosError(err, 'PUT MANIFEST', JSON.stringify(manifest))
             throw err
           }
+
+          // Update the AMZN ID of the current version (manifest updated)
+          await pool.query('UPDATE skills SET amzn_id = $1 WHERE skill_id = $2', [amzn_id, id])
 
           // Don't even bother with products if not in US
           if (Array.isArray(r.locales) && r.locales.includes('en-US')) {

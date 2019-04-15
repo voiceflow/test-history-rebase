@@ -199,9 +199,8 @@ async function fbAuth(data, cb) {
 // Promisfied version of Acccess Token (slowly replace existing ones)
 const AmazonAccessToken = (user_id) => new Promise((resolve, reject) => {
   redisClient.get(`t_${user_id}`, function (err, token) {
-    if (err || token === null) {
-      return reject(err)
-    }
+    if (err) return reject(err)
+    if (!token) return resolve(null)
 
     token = JSON.parse(token);
     if (token.expire < Date.now()) {
@@ -294,10 +293,10 @@ const getAccessToken = async (req, res) => {
       profile: result.data
     })
   } catch (err) {
-    writeToLogs('ACCESS TOKEN ERROR', err)
     if(err.message || err.status){
       return res.status(err.status || 400).send(err.message)
     }
+    writeToLogs('ACCESS TOKEN ERROR', err)
     return res.sendStatus(500)
   }
 }

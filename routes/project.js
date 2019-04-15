@@ -72,13 +72,10 @@ exports.getProjectVersions = (req, res) => {
 exports.getLiveVersion = async (req, res) => {
   let project_id = hashids.decode(req.params.project_id)[0]
   try {
-    // TODO ENFORCE THIS TEAM/CREATOR
     let live_version_data = await pool.query(`
       SELECT skill_id AS sid, diagram AS sdia
       FROM skills
-      WHERE 
-        project_id = $1
-        AND live = TRUE
+      WHERE project_id = $1 AND creator_id = $2 AND live = TRUE
       LIMIT 1
     `, [project_id])
 

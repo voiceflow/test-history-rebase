@@ -554,7 +554,10 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
           // skills published by this creator have been checked
           creators.add(dev_version.creator_id)
           live_ids.add(live_id)
-        }catch(err){}
+        }catch(err){
+          // if(err && err.response && err.response.data && err.response.data.message && err.response.data.message.startsWith('amzn1.ask.skill.0aa81e20-3e0e-468a-9242-af7d215541aa'))
+          console.log(err)
+        }
       }
 
       if(remove_live.size > 0) {
@@ -585,7 +588,7 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
 
     // ensure projects have max 10 versions of either google/amazon
     let i = 0
-    let num_versions_to_delete = project_versions.length - 10
+    let num_versions_to_delete = project_versions.length - 5
     let deletion_promises = []
     if (live_ids) {
       num_versions_to_delete -= live_ids.length

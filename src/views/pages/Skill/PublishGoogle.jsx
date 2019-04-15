@@ -121,6 +121,8 @@ class GooglePublish extends Component {
 
       this.setState({ stage: 2 });
 
+      console.log("state", s)
+
       axios.post(`/project/${this.props.project_id}/render`, { platform: 'google', google_id: s.google_id })
         .then(res => {
           this.setState({ stage: 3 });
@@ -143,6 +145,7 @@ class GooglePublish extends Component {
             })
         })
         .catch(err => {
+          // TODO: do clean up here
           this.setState({
             publish_modal_open: false
           })
@@ -385,23 +388,6 @@ class GooglePublish extends Component {
     if (this.state.stage !== 0 && this.state.stage !== 1) {
       return null
     } else {
-      // return (
-      //   <div>
-      //     <FormGroup className="google-form-group">
-      //       <div className="row">
-      //         <div className="col-3 google-verification-info">
-      //           <p className="mb-0 text-secondary"><b>Allow Voiceflow to Manage your Google Assistant projects</b> by <a href="https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state" target="_blank" rel="noopener noreferrer" className="google-link">logging in</a> and pasting your authentication token here.</p>
-      //         </div>
-      //         <div className="col-9 vertical-space">
-      //           <Input className="form-bg" type="text" name="google_token" placeholder="Paste your Google Authentication Token here" value={this.state.google_token} onChange={this.handleChange} />
-      //           <div className="subheader-right">
-      //             <button variant="contained" className="btn-primary google-verify-btn" onClick={() => this.verifyGoogleToken()}>Verify Token <i className="fab fa-google ml-2" /></button>
-      //           </div>
-      //         </div>
-      //       </div>
-      //     </FormGroup>
-      //   </div>
-      // )
       return <GoogleAuth onVerify={this.verifyGoogleToken} token={this.state.google_token} onChange={this.handleChange} loading={this.state.stage === 1}/>
     }
   }

@@ -270,19 +270,6 @@ exports.setProduct = async (req, res) => {
   }
 }
 
-const deleteProductSQL = async (pid, res) => {
-  pool.query('DELETE FROM products WHERE id = $1', [pid], (err, results) => {
-    if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {
-        err: err
-      })
-      res.sendStatus(500)
-    } else {
-      res.sendStatus(200)
-    }
-  })
-}
-
 exports.deleteProduct = async (req, res) => {
   if (!req.params.id || !req.params.pid) {
     res.sendStatus(401);
@@ -290,42 +277,44 @@ exports.deleteProduct = async (req, res) => {
   }
 
   let pid = req.params.pid;
-  let result
+
   try {
-    result = (await pool.query('SELECT p.amzn_prod, p.skill_id FROM products p WHERE p.id = $2 LIMIT 1', [pid])).rows[0]
+    products = (await pool.query(`
+      SELECT pc.amzn_prod_id, pc.creator_id, p.skill_id 
+      FROM products p 
+      INNER JOIN product_creators pc ON pc.product_id = p.id
+      WHERE p.id = $1
+    `, [pid])).rows
 
-    if(!(await checkSkillAccess(result.skill_id, req.user.id))){
-      return res.sendStatus(403)
-    }
+    if(products.length === 0) throw { status: 404 }
+    if(!(await checkSkillAccess(products[0].skill_id, req.user.id))) throw { status: 403 }
 
-    if (!result) return res.sendStatus(412)
+    products.forEach(product => {
+      if(!product.amzn_prod_id) return
+
+      AmazonAccessToken(dev_version.creator_id)
+      .then(token => {
+        if(!token) return
+        axios.request({
+          url: `https://api.amazonalexa.com/v1/inSkillProducts/${product.amzn_prod_id}/stages/development`,
+          method: 'DELETE',
+          headers: {
+            Authorization: token
+          }
+        })
+      })
+    })
+
+    await pool.query('DELETE FROM products WHERE id = $1', [pid])
+    
   } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {
-      err: err
-    });
+    if(!(err && err.status === 404)) writeToLogs('DELETE PRODUCT', err)
+
+    if(err.message || err.status){
+      return res.status(err.status || 400).send(err.message)
+    }
     return res.sendStatus(500)
   }
-
-  if (result.amzn_prod) {
-    for (const creator_id in result.amzn_prod) {
-      if (result.amzn_prod.hasOwnProperty(creator_id)) {  
-        AccessToken(creator_id, token => {
-          if (token === null) return
-          try {
-            axios.request({
-              url: `https://api.amazonalexa.com/v1/inSkillProducts/${result.amzn_prod[creator_id]}/stages/development`,
-              method: 'DELETE',
-              headers: {
-                Authorization: token
-              }
-            })
-          } catch (err) {}
-        })   
-      }
-    }
-  }
-  
-  deleteProductSQL(pid, res)
 }
 
 exports.patchSkill = async (req, res) => {
@@ -792,14 +781,18 @@ exports.buildSkill = async (req, res) => {
 
           // Don't even bother with products if not in US
           if (Array.isArray(r.locales) && r.locales.includes('en-US')) {
-            let products = await pool.query("SELECT * FROM products WHERE skill_id = $1", [r.skill_id]);
+            let products = await pool.query(`
+              SELECT p.*, pc.amzn_prod_id, pc.creator_id AS status
+              FROM products p
+              LEFT JOIN (SELECT * product_creators WHERE creator_id = $2) pc ON p.id = pc.product_id
+              WHERE skill_id = $1
+            `, [r.skill_id, req.user.id]);
 
             if (Array.isArray(products.rows) && products.rows.length !== 0) {
               for (row of products.rows) {
                 let product = row.data
                 let productId = row.id
-                if(!row.amzn_prod) row.amzn_prod = {}
-                let AmazonProductId = row.amzn_prod[req.user_id]
+                let AmazonProductId = row.amzn_prod_id
                 try {
                   // Try to update the product if it exists
                   if (!AmazonProductId) throw null
@@ -830,9 +823,20 @@ exports.buildSkill = async (req, res) => {
                   })
 
                   AmazonProductId = product_response.data.productId
-                  row.amzn_prod[req.user.id] = AmazonProductId
-                  await pool.query("UPDATE products SET amzn_prod = $1 WHERE id = $2", [row.amzn_prod, productId])
 
+                  if(AmazonProductId !== row.amzn_prod_id) {
+                    if(row.status){
+                      await pool.query(
+                        "UPDATE product_creators SET amzn_prod_id = $1 WHERE product_id = $2 AND creator_id = $3", 
+                        [AmazonProductId, pid, req.user.id])
+                    }else{
+                      await pool.query(
+                        "INSERT INTO product_creators (product_id, creator_id, amzn_prod_id) VALUES ($1, $2, $3)", 
+                        [pid, req.user.id, AmazonProductId])
+                    }
+                  }
+
+                  // Insert this Project with the skill
                   await axios.request({
                     url: `https://api.amazonalexa.com/v1/inSkillProducts/${AmazonProductId}/skills/${amzn_id}`,
                     method: 'PUT',

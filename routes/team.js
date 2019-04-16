@@ -865,3 +865,5 @@ exports.webhook = async (req, res) => {
 
 	return res.sendStatus(400)
 }
+
+exports.team_hash = team_hash

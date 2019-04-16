@@ -20,6 +20,16 @@ body {
 .w-90 {
     width: 90% !important;
 }
+
+.projects-list__dragzone {
+    border-radius: 7px;
+    background-color: #fff;
+    background-size: 10%;
+    background-image: url(/empty-state.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 1px solid #eaeff4
+}
 .form-control{
     letter-spacing: 0.1px;
     font-size: 15px;
@@ -69,12 +79,8 @@ body {
 .pt-6 {
     padding-top: 4rem !important;
 }
-
-.variable-box .form-control:focus{
-    border: 1px solid #4666EA !important;
-}
 .form-control:focus{
-    border: 1px solid #5D9DF5;
+    border: 1px solid #5D9DF5 !important;
     box-shadow: rgba(50, 50, 93, 0.03) 0px 2px 3px, rgba(0, 0, 0, 0.03) 0px 1px 3px !important;
     color: #132042;
 }
@@ -609,6 +615,9 @@ hr.full-width {
     justify-content: space-between;
     align-items: center;
 }
+.hidden{
+    display: none !important;
+}
 .close{
     font-weight: normal;
     color: #8da2b570;
@@ -654,13 +663,14 @@ hr.full-width {
     opacity: 1 !important;
     background-repeat: no-repeat;
     background-position: center;
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
     background-image: url(/more-info.svg);
     background-repeat: no-repeat;
     background-size: 16px;
     top: 20px;
     cursor: pointer;
+    margin: .75rem .15rem;
 }
 .more-info:hover {
     background-image: url(/more-info-hover.svg);
@@ -672,13 +682,14 @@ hr.full-width {
     opacity: 1 !important;
     background-repeat: no-repeat;
     background-position: center;
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
     background-image: url(/cog.svg);
     background-repeat: no-repeat;
     background-size: 16px;
     top: 20px;
     cursor: pointer;
+    margin: .75rem .15rem;
 }
 
 .cog:hover {
@@ -1173,11 +1184,10 @@ input, textarea, .text-to-voice, .choice-block,{
 }
 input::placeholder, textarea::placeholder, select:required:invalid, input.form-control::placeholder, textarea.form-control::placeholder,
 .select-box__placeholder {
-    color: #8DA2B5 !important;
+    color: #62778C !important;
     font-weight: 400 !important;
     font-size: 15px;
     font-weight: 500;
-    color: #62778C;
     line-height: 20px;
 }
 .form-title{

@@ -122,7 +122,6 @@ function createLogin(data, analytics_data, cb) {
             first_login: data.first_login,
             verified: data.verified,
 				}
-
 				trackUser(data, analytics_data)
 
         // cache the token
@@ -285,7 +284,8 @@ const putSession = (req, res) => {
 	                		name: row.name,
 	                		admin: row.admin,
                       first_login: false,
-                      verified: row.verified,
+											verified: row.verified,
+											created: row.created
 	                	}, {platform: 'VF', device: req.body.device}, (credentials) => {
 	                		res.status(200).send({
                         		token: credentials.userHash + credentials.token,

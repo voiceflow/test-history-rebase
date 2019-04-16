@@ -26,7 +26,7 @@ import {
 } from "ducks/team";
 import { unnormalize } from "ducks/util"
 
-class DashBoard extends Component {
+export class DashBoard extends Component {
   constructor(props) {
     super(props);
 

@@ -7,7 +7,7 @@ pretty_output () {
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 PROJECT_ROOT=$DIR'/..'
 
-if [ -d "./migrations" ]; then
+if ! [ -d "./migrations" ]; then
   pretty_output 'Cloning Migrations'
   git clone https://github.com/storyflow/migrations.git
 fi

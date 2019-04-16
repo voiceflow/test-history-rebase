@@ -130,7 +130,6 @@ const serializeDiagram = engine => {
         if (!_.isEmpty(node.combines)) {
             let isHome = node.extras.type === 'story'
             if (!isHome) node.extras.nextID = node.combines[0].id
-            _.remove(node.combines, combine => combine === 'temp')
             node.combines = _.map(node.combines, (combine, idx) => {
                 if (combine.parentCombine) {
                     delete combine.parentCombine

@@ -54,7 +54,6 @@ const trackUser = async (data, analytics_data) => {
 	}
 
 	if(process.env.NODE_ENV !== 'test'){
-		console.log(data.created.toISOString())
 		analytics.identify({
 			userId: id,
 			traits: {

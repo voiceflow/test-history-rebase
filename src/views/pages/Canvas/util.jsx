@@ -99,6 +99,7 @@ const convertDiagram = (diagram, diagrams) => {
         if (Array.isArray(node.ports)) {
             node.ports.forEach(port => port_ids.add(port.id))
             if (!_.isEmpty(node.combines)) {
+                _.remove(node.combines, combine => combine === 'temp')
                 _.forEach(node.combines, c => {
                     c.ports.forEach(p => port_ids.add(p.id));
                 })
@@ -129,6 +130,7 @@ const serializeDiagram = engine => {
         if (!_.isEmpty(node.combines)) {
             let isHome = node.extras.type === 'story'
             if (!isHome) node.extras.nextID = node.combines[0].id
+            _.remove(node.combines, combine => combine === 'temp')
             node.combines = _.map(node.combines, (combine, idx) => {
                 if (combine.parentCombine) {
                     delete combine.parentCombine

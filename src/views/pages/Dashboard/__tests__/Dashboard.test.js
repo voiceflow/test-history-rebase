@@ -2,12 +2,30 @@ import React from 'react';
 import { mount, shallow, render } from 'enzyme';
 import { DashBoard } from '../index.jsx';
 import toJson from 'enzyme-to-json';
+import _ from 'lodash'
 
 const clickFn = jest.fn()
 
+const props = {
+  team: {
+    team_id: 1,
+    state: null
+  },
+  teams: {
+    byId: {},
+    allIds: []
+  },
+  projects_array: [],
+  getMembers: () => new Promise(resolve => resolve()),
+  fetchProjects: _.noop,
+  user: {
+    id: 1
+  }
+}
+
 describe('Dashboard', () => {
     it('render dashboard', () => {
-        const component = shallow( <DashBoard / > );
+        const component = shallow( <DashBoard {...props}/> );
         expect(toJson(component)).toMatchSnapshot()
     });
 })
@@ -23,9 +41,8 @@ describe('dashboard create skill', () => {
             name: "Jason Zhao",
             verified: null,
         }
-        const component = shallow(<DashBoard onClick={clickFn} />)
+        const component = shallow(<DashBoard onClick={clickFn} {...props}/>)
         component.find('button.btn').simulate('keydown', {keyCode: 32})
-        expect(component.props().id).toEqual('app')
         component.unmount()
     })
 })

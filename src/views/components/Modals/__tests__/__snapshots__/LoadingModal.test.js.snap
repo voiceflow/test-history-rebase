@@ -26,20 +26,20 @@ exports[`Loading Modal Test render loading modal 1`] = `
   zIndex={1050}
 >
   <ModalBody
-    className="text-center"
+    className="text-center my-4"
     tag="div"
   >
     <div>
-      <h5
-        className="pb-3"
-      >
-        Loading...
-      </h5>
       <h1>
         <span
-          className="loader"
+          className="loader text-lg"
         />
       </h1>
+      <h5
+        className="pt-2 mb-0"
+      >
+        Loading
+      </h5>
     </div>
   </ModalBody>
 </Modal>

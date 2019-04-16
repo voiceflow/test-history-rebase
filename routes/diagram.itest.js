@@ -3,7 +3,7 @@ const request = require('supertest')
 const new_diagram = require('../test/new_diagram.json')
 const { pool, hashids } = require('./../services')
 const axios = require('axios')
-const { team_hash } = require('./team')
+const { team_hash } = require('./team_util')
 
 const TEAM_ID = team_hash.encode(1)
 

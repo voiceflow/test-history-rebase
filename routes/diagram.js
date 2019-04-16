@@ -19,7 +19,7 @@ const generateID = () => {
   })
 }
 
-const { checkSkillAccess } = require("./team")
+const { checkSkillAccess } = require("./team_util")
 
 const checkDiagramAccess = async (diagram_id, user_id) => {
   if(diagram_id) {

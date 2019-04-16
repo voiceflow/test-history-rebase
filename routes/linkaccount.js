@@ -1,5 +1,5 @@
 const { pool, hashids, jwt, writeToLogs } = require('./../services');
-const { checkSkillAccess } = require("./team")
+const { checkSkillAccess } = require("./team_util")
 
 exports.getTemplate = async (req, res) => {
   let skill_id = hashids.decode(req.params.skill_id)[0];

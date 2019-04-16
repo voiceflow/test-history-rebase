@@ -28,7 +28,7 @@ const {
 const {
   pg_num
 } = require('./../util')
-const { checkSkillAccess } = require("./team")
+const { checkSkillAccess } = require("./team_util")
 
 const DialogflowClient = require('../clients/Dialogflow/Dialogflow')
 

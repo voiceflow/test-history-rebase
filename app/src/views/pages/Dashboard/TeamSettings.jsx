@@ -427,6 +427,7 @@ class TeamSettings extends Component {
         <Modal
           isOpen={!!this.props.open}
           toggle={this.props.close}
+          className="upgrade-modal"
         >
           <ModalHeader
             toggle={this.props.close}

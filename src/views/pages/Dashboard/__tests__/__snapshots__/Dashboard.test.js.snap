@@ -121,52 +121,43 @@ exports[`Dashboard render dashboard 1`] = `
       </div>
     </div>
     <div
+      id="loading-diagram"
+    >
+      <div
+        className="text-center"
+      >
+        <h5
+          className="text-muted mb-2"
+        >
+          Loading Projects
+        </h5>
+        <span
+          className="loader"
+        />
+      </div>
+    </div>
+    <div
       className="w-100 h-100"
       onClick={[Function]}
     >
       <div
-        className="h-100 d-flex justify-content-center"
+        className="pb-5 pt-4 container"
       >
-        <div
-          className="align-self-center"
+        <MasonryComponent
+          className="skills-container"
+          disableImagesLoaded={false}
+          elementType="div"
+          enableResizableChildren={false}
+          imagesLoadedOptions={Object {}}
+          onLayoutComplete={[Function]}
+          onRemoveComplete={[Function]}
+          options={Object {}}
+          updateOnEachImageLoad={false}
         >
-          <div
-            className="pl-4"
-          >
-            <img
-              alt="skill-icon"
-              className="mb-3"
-              height="127"
-              src="/create.svg"
-              width="130"
-            />
-          </div>
-          <br />
-          <Link
-            className="no-underline super-center"
-            to="/team/template"
-          >
-            <button
-              className="btn-primary"
-              id="createskill"
-            >
-              New Project
-            </button>
-          </Link>
-          <small>
-            <a
-              className="text-muted super-center mt-3"
-              href="https://intercom.help/vfu"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Voiceflow University
-              <i
-                className="fal fa-long-arrow-right ml-1"
-              />
-            </a>
-          </small>
-        </div>
+          <EmptyCard
+            onClick={[Function]}
+          />
+        </MasonryComponent>
       </div>
     </div>
   </div>

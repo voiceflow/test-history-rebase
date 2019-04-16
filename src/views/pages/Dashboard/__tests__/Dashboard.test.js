@@ -17,7 +17,7 @@ const props = {
   },
   projects_array: [],
   getMembers: () => new Promise(resolve => resolve()),
-  fetchProjects: _.noop,
+  fetchProjects: () => new Promise(resolve => resolve()),
   user: {
     id: 1
   }

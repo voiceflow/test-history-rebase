@@ -3,7 +3,6 @@ import { setError } from 'ducks/modal'
 import NORMALIZE from 'ducks/util'
 
 const initialState = {
-  loading: true,
   byId: {},
   allIds: []
 }
@@ -14,15 +13,13 @@ export default function productReducer(state = initialState, action) {
       return {
         ...state,
         byId: action.payload.byId,
-        allIds: action.payload.allIds,
-        loading: false
+        allIds: action.payload.allIds
       }
     case 'RESET_PROJECTS':
       return {
         ...state,
         byId: {},
-        allIds: [],
-        loading: true
+        allIds: []
       }
     default:
       return state

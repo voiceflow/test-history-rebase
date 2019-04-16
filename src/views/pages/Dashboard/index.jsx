@@ -31,6 +31,7 @@ export class DashBoard extends Component {
     super(props);
 
     this.state = {
+      loading: true,
       filter_text: "",
       loading_modal: false,
       show_updates_modal: false
@@ -101,7 +102,10 @@ export class DashBoard extends Component {
     })
     .catch(() => { throw new Error("Can't Retrieve Members") })
     // ensure team hasn't changed
-    this.props.fetchProjects(this.props.team_id)
+    this.setState({loading: true})
+    this.props.fetchProjects(this.props.team_id).then(() => {
+      this.setState({loading: false})
+    })
   }
 
   componentDidMount() {
@@ -298,7 +302,7 @@ export class DashBoard extends Component {
               />
             </div>
           </div>
-          {this.props.loading && (
+          {this.state.loading && (
             <div id="loading-diagram">
               <div className="text-center">
                 <h5 className="text-muted mb-2">Loading Projects</h5>
@@ -326,7 +330,7 @@ export class DashBoard extends Component {
               }
             }}
           >
-            {!this.props.loading && this.props.projects_array.length === 0 ? (
+            {!this.state.loading && this.props.projects_array.length === 0 ? (
               <div className="h-100 d-flex justify-content-center">
                 <div className="align-self-center">
                   <div className="pl-4">
@@ -376,8 +380,7 @@ export class DashBoard extends Component {
 const mapStateToProps = state => ({
   user: state.account,
   projects_array: unnormalize(state.project),
-  projects: state.project,
-  loading: state.project.loading
+  projects: state.project
 });
 
 const mapDispatchToProps = dispatch => {

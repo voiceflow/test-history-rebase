@@ -20,7 +20,7 @@ const tabs = [
         link: '/publish/:skill_id'
     },
     {
-        display: (key) => <React.Fragment key={key}><i className="fab fa-google mr-2"></i> Google <Badge color="primary" className="ml-2">Beta</Badge></React.Fragment>,
+        display: (key) => <React.Fragment key={key}><i className="fab fa-google mr-2"></i> Google <Badge color="primary" className="beta-badge align-middle ml-1">Beta</Badge></React.Fragment>,
         match: ['google'],
         link: '/publish/:skill_id/google'
     }

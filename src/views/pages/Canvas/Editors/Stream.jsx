@@ -35,10 +35,7 @@ class Stream extends Component {
         let ports = node.getPorts();
 
         if(this.state.node.extras.custom_pause){
-            let bestNode
-            if (node.parentCombine){
-                bestNode = _.findIndex(node.parentCombine.combines, npc => npc.name === node.name)
-            }
+            const idsEqual = npc => npc.id === node.id
             for (let name in ports) {
                 let port = node.getPort(name);
                 if(port.in) continue
@@ -46,31 +43,17 @@ class Stream extends Component {
                 if (port.label === 'pause') {
                     node.removePort(port)
                     if (node.parentCombine) {
-                        if (bestNode !== -1) {
-                            node.parentCombine.combines[bestNode].ports = _.filter(node.parentCombine.combines[bestNode].ports, p => p.id !== port.id)
-                            node.parentCombine.combines[bestNode].extras.custom_pause = !node.parentCombine.combines[bestNode].extras.custom_pause;
-                        }
-                        node.parentCombine.removePort(port);
+                        let bestNode = _.findIndex(node.parentCombine.combines, idsEqual)
+                        node.parentCombine.combines[bestNode] = node
                     }
                 }
             }
         }else{
             this.state.node.addOutPort('pause').setMaximumLinks(1)
             node = this.state.node
-            if (this.state.node.parentCombine) {
-                let isLast = _.last(node.parentCombine.combines).id === node.id
-                let newPort = _.differenceBy(node.getOutPorts(), node.parentCombine.getOutPorts(), 'id');
+            if (node.parentCombine) {
                 let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
-                if (isLast) {
-                    _.forEach(newPort, np => {
-                        np.parent = node.parentCombine
-                        node.parentCombine.ports[np.name] = np
-                    })
-                }
-                if (!_.find(this.props.diagramEngine.getDiagramModel().getNodes(), n => n.id === node.id)) {
-                    node.parentCombine.combines[bestNode] = node
-                    node.parentCombine.combines[bestNode].extras.custom_pause = !node.parentCombine.combines[bestNode].extras.custom_pause;
-                }
+                node.parentCombine.combines[bestNode] = node
             }
         }
         node.extras.custom_pause = !node.extras.custom_pause

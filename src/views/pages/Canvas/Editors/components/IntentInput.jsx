@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react'
 import { Collapse } from 'reactstrap'
 import { MentionsInput, Mention } from 'react-mentions'
@@ -173,8 +174,14 @@ class IntentInput extends Component {
 
         return (
             <div className={"interaction-block"}>
-                <div className={`intent-title ${disabled ? 'faded' : ''}`}>
-                    <span onClick={this.toggleCollapse}><i className={"fas fa-caret-right rotate" + (this.props.intent.open ? " fa-rotate-90" : "")}></i></span>
+                <div className={cn('intent-title', {
+                    faded: disabled
+                })}>
+                    <span onClick={this.toggleCollapse}>
+                        <i className={cn('fas', 'fa-caret-right', 'rotate', {
+                            'fa-rotate-90': this.props.intent.open
+                        })} />
+                    </span>
                     <Tooltip
                         className="flex-hard"
                         theme="warning"
@@ -197,7 +204,7 @@ class IntentInput extends Component {
                 </div>
                 <Collapse isOpen={this.props.intent.open}>
                 {disabled && <div className='unavailable-input'><div><i className="fas fa-frown"></i></div>This Intent is Unavailable on {(this.props.platform === 'google')? 'Google Assistant' : 'Alexa'}</div>}
-                <div className={disabled ? 'disabled faded' : ''}>
+                    <div className={cn({ 'disabled faded': disabled })}>
                     <div>
                         {this.renderUtterances(this.props.intent.inputs)}
                     </div>

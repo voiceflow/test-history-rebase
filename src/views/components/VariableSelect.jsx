@@ -45,8 +45,8 @@ export const variableComponent = props => {
                 <div
                     style={{ display: "inline-block" }}
                     onClick={e => {
-                        e.preventDefault();
                         e.stopPropagation();
+                        e.preventDefault();
                         localStorage.setItem(
                           "tab",
                           "variables"

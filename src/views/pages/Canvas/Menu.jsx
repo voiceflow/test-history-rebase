@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {Tooltip} from 'react-tippy'
@@ -165,7 +166,9 @@ class Menu extends Component {
                         {tabs.top.map((tab, i) => {
                             return (
                                 <Tooltip key={i} title={tab.tip} position='right' disabled={true && tab.tab === this.props.tab && this.props.open}>
-                                    <div className={"tool" + ((tab.tab === this.props.tab && this.props.open) ? ' active' : '')}
+                                    <div className={cn('tool', {
+                                        active: tab.tab === this.props.tab && this.props.open
+                                    })}
                                         onClick={() => this.openTab(tab.tab)}>
                                         {tab.icon}
                                     </div>
@@ -186,7 +189,7 @@ class Menu extends Component {
                         })}
                     </div>
                 </div>
-                <div id="sidebar" className={(this.props.open ? 'open' : '')} ref={ref => this.sidebar = ref}>
+                <div id="sidebar" className={cn({ open: this.props.open })} ref={ref => this.sidebar = ref}>
                  <div className="sidebar-container">
                     {this.props.loading_diagram ?
                         null :

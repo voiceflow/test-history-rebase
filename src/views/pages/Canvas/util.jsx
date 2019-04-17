@@ -99,6 +99,7 @@ const convertDiagram = (diagram, diagrams) => {
         if (Array.isArray(node.ports)) {
             node.ports.forEach(port => port_ids.add(port.id))
             if (!_.isEmpty(node.combines)) {
+                _.remove(node.combines, combine => combine === 'temp')
                 _.forEach(node.combines, c => {
                     c.ports.forEach(p => port_ids.add(p.id));
                 })

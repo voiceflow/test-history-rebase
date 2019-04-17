@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setConfirm, clearModal, setError } from 'ducks/modal'
@@ -155,30 +156,44 @@ class UserSection extends Component {
       />}
       <div className="d-flex flex-column section-title-container" onClick={() => this.props.toggleSection()}>
         <div className='integrations-section-title text-muted'>As user
-          <span onClick={() => this.props.toggleSection()} className={`action-selected ${user && user.user_data && user.user_data.email ? 'action-visible' : ''}`}>{user && user.user_data && user.user_data.email}</span>
+          <span
+            className={cn('action-selected', {
+              'action-visible': user && user.user_data && user.user_data.email
+            })}
+            onClick={() => this.props.toggleSection()}
+          >
+            {user && user.user_data && user.user_data.email}
+          </span>
           {this.state.completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
         </div>
       </div>
       <Collapse isOpen={this.props.open} className='w-100'>
         <div className='d-flex align-items-center flex-column w-100 actions-section'>
           {!this.props.integration_users_loading && users && users.map((e, i) => {
-            return (<div key={i} className={`btn-clear btn-block btn ${user && user.user_id === e.user_id ? 'active' : ''}`} onClick={() => this.selectUser(e)}>
-              <div className='close mt-3' onClick={(ev) => this.deleteUser(ev, e)}></div>
-              <div className='d-flex flex-row'>
-                <div className='flex-row align-self-center'>
+            return (
+              <div key={i}
+                className={cn('btn', 'btn-clear', 'btn-block', {
+                  active: user && user.user_id === e.user_id
+                })}
+                onClick={() => this.selectUser(e)}
+              >
+                <div className='close mt-3' onClick={(ev) => this.deleteUser(ev, e)}></div>
+                <div className='d-flex flex-row'>
+                  <div className='flex-row align-self-center'>
+                  </div>
+                  <div className="text-left">
+                    <b>
+                      {e.user_data && e.user_data.name}
+                    </b>
+                    <br />
+                    <small>
+                      {e.user_data && e.user_data.email}
+                    </small>
+                  </div>
                 </div>
-                <div className="text-left">
-                  <b>
-                    {e.user_data && e.user_data.name}
-                  </b>
-                  <br />
-                  <small>
-                    {e.user_data && e.user_data.email}
-                  </small>
-                </div>
-              </div>
 
-            </div>)
+              </div>
+            )
           })}
           {this.props.integration_users_loading && <div className="text-center my-4"><div className='loader text-lg' /></div>}
           <div className={`btn btn-clear btn-lg btn-block`} onClick={() => this.addUser()}>

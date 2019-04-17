@@ -20,7 +20,6 @@ import SeatsCheckout from "./SeatsCheckout";
 import { setConfirm, setError } from 'ducks/modal'
 import Billing from "./Billing"
 import classNames from 'classnames';
-import { noop } from 'lodash'
 
 // SETTING STATES: MEMBERS, SETTINGS, DELETE
 const STAGES = {

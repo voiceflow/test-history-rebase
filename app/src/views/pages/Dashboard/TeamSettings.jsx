@@ -19,6 +19,8 @@ import update from "immutability-helper";
 import SeatsCheckout from "./SeatsCheckout";
 import { setConfirm, setError } from 'ducks/modal'
 import Billing from "./Billing"
+import classNames from 'classnames';
+import { noop } from 'lodash'
 
 // SETTING STATES: MEMBERS, SETTINGS, DELETE
 const STAGES = {
@@ -27,7 +29,8 @@ const STAGES = {
   UPDATING_MEMBERS: { title: "Manage Members" },
   SETTINGS: { title: "Board Settings" },
   DELETE: { title: "Delete Team" },
-  BILLING: { title: "Billing" }
+  BILLING: { title: "Billing" },
+  SUCCESS: { title: "Update Success" }
 };
 
 const Contact = <Alert className="text-center py-3 mt-2">
@@ -90,7 +93,8 @@ const MemberRow = props => {
           <Input
             className="w-300 form-bg"
             placeholder="Email"
-            value={m.invite}
+            value={m.invite || ''}
+            type="email"
             onChange={e => props.update({ invite: e.target.value })}
           />
         </div>
@@ -141,7 +145,9 @@ class TeamSettings extends Component {
       stage: "MEMBERS",
       input: "",
       name: "",
-      members: []
+      members: [],
+      diff: [],
+      is_diff: false
     };
 
     this.renderBody = this.renderBody.bind(this);
@@ -154,7 +160,7 @@ class TeamSettings extends Component {
     this.leaveTeam = this.leaveTeam.bind(this)
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (
       !prevProps.open &&
       this.props.open &&
@@ -164,8 +170,33 @@ class TeamSettings extends Component {
         name: this.props.team.name,
         stage: this.props.open,
         update_pay: false,
-        members: cloneDeep(this.props.team.members)
+        is_diff: false,
+        members: cloneDeep(this.props.team.members),
+        diff: cloneDeep(this.props.team.members),
       });
+    }
+
+    if(prevState.members !== this.state.members && prevState.diff === this.state.diff){
+      this.checkDiff()
+    }
+  }
+
+  checkDiff() {
+    const {diff, members} = this.state
+    const empty = (m) => !m.creator_id && !m.email
+
+    const empty_diff = diff.filter(empty)
+    const empty_members = members.filter(empty)
+
+    // 3 conditions to check for: total length of members changed, number of invites changed, invites updated
+    if ( 
+      diff.length !== members.length || 
+      empty_diff.length !== empty_members.length ||
+      (empty_members.filter(m => !!m.invite)).length !== 0
+    ) {
+      this.setState({is_diff: true})
+    }else{
+      this.setState({is_diff: false})
     }
   }
 
@@ -195,6 +226,8 @@ class TeamSettings extends Component {
 
   applyChanges(e) {
     e.preventDefault()
+    if (!this.IS_ADMIN) return false
+
     if (this.props.team.status === 0 && this.state.members.length > 2) {
       this.setState({stage: 'CHECKOUT'})
     }else{
@@ -203,13 +236,17 @@ class TeamSettings extends Component {
       .then(this.teamUpdate)
       .catch(this.teamUpdate)
     }
+
+    return false
   }
 
   teamUpdate() {
     this.setState({
       stage: "MEMBERS",
       update_pay: true,
-      members: cloneDeep(this.props.team.members)
+      is_diff: false,
+      members: cloneDeep(this.props.team.members),
+      diff: cloneDeep(this.props.team.members),
     })
   }
 
@@ -222,6 +259,14 @@ class TeamSettings extends Component {
 
   renderBody() {
     switch (this.state.stage) {
+      case "SUCCESS":
+        return <div className="py-5 my-5 text-center">
+          <img src="/images/icons/reciept.svg" alt="reciept" width={80}/><br/><br/>
+          <span className="text-muted">
+            Your subscription has been activated.<br/>
+            Thank you.
+          </span>
+        </div>
       case "CHECKOUT":
         if(!this.IS_ADMIN) return Contact
         return <>
@@ -237,7 +282,7 @@ class TeamSettings extends Component {
             prompt="Upgrade"
             members={this.state.members}
             team={this.props.team}
-            next={this.teamUpdate}
+            next={() => this.setState({stage: "SUCCESS"})}
             user={this.props.user}
             collab={() => this.setState({stage: "MEMBERS"})}
           />
@@ -345,8 +390,9 @@ class TeamSettings extends Component {
         );
       default:
         const UPDATING = this.state.stage === 'UPDATING_MEMBERS'
+        const DISABLED = UPDATING || !this.state.is_diff
         return (
-          <div className={ UPDATING ? "disabled" : ""}>
+          <form onSubmit={ this.applyChanges } className={ UPDATING ? "disabled" : ""}>
             { this.IS_ADMIN && <small className="d-flex text-muted mt-2 mb-2"><span className="badge mr-2">{this.props.team.seats}</span> current seats</small> }
             {this.state.members.map((m, i) => {
               return (
@@ -378,13 +424,17 @@ class TeamSettings extends Component {
                 </div>
               </div>
               <div className="text-center mt-3">
-                <button className="btn btn-primary" onClick={this.applyChanges} disabled={ UPDATING } style={{width: 150}}>
+                <button 
+                  type="submit"
+                  className={classNames("btn btn-primary", {"disabled": DISABLED})} 
+                  disabled={ DISABLED } 
+                  style={{width: 150}}>
                   { UPDATING ? <span className="loader"/> : "Apply Changes"} 
                 </button>
               </div>
               {this.props.team.status === 1 && this.priceEstimate()}
             </div>}
-          </div>
+          </form>
         );
     }
   }

@@ -2,7 +2,8 @@ const _ = require('lodash')
 const {
 	BUILT_IN_INTENTS_ALEXA,
 	DEFAULT_INTENTS,
-	INTERFACE_INTENTS
+	INTERFACE_INTENTS,
+	CATCH_ALL_INTENT
 } = require('./Constants')
 const {
 	getUtterancesWithSlotNames,
@@ -451,6 +452,12 @@ exports.createInteractionModel = (req, locale) => {
 			if (intent.samples.length === 0) delete intent.samples
 		}
 	})
+
+	// Check if there are no custom intents
+	const customIntents = intents_for_amazon.filter(intent => !intent.name.startsWith('AMAZON.'))
+	if (customIntents && customIntents.length === 0) {
+		intents_for_amazon.push(CATCH_ALL_INTENT)
+	}
 
 	const interaction_model = {
 		"interactionModel": {

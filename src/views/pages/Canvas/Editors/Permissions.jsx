@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react';
 import Permission from './components/Permission'
 import { connect } from 'react-redux'
@@ -128,7 +129,7 @@ export class Permissions extends Component {
 
     render() {
         return (
-            <div className={this.props.live_mode ? 'disabled-overlay' : ''}>
+            <div className={cn({ 'disabled-overlay': this.props.live_mode })}>
                 {this.state.node.extras.permissions.map((perm, i) => {
                     return (
                         <Permission

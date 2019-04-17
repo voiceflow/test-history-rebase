@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react'
 import "./onboarding.css"
 import axios from 'axios'
@@ -193,6 +194,10 @@ class Onboarding extends Component{
 	// }
 	
 	renderModalContent(){
+		const classname = cn({
+			'btn-info-onboarding-selected': this.state.purpose === 'EXPLORING' || this.state.purpose === 'BUILDING' || this.state.purpose === 'BUILT',
+			'btn-info-onboarding': !(this.state.purpose === 'EXPLORING' || this.state.purpose === 'BUILDING' || this.state.purpose === 'BUILT')
+		})
 		switch (this.state.stage){
 			case 'calendly':
 				const head = document.querySelector('head')
@@ -218,17 +223,17 @@ class Onboarding extends Component{
 					<StepProgressBar num_stages={6} stage={(this.state.company_size >= SHOW_CALENDLY_NUMBER ? 4: 5)} classes={"onboarding-progress"}/>
 						<p className="modal-bg-txt text-center mb-5 mt-4">What best describes you?</p>
 						<div className="row justify-content-center mb-3">
-							<button className={(this.state.purpose === 'EXPLORING' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'EXPLORING'})}}>
+							<button className={classname} onClick={() => {this.setState({purpose: 'EXPLORING'})}}>
 								My company is exploring voice
 							</button>
 						</div>
 						<div className="row justify-content-center mb-3">
-							<button className={(this.state.purpose === 'BUILDING' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'BUILDING'})}}>
+							<button className={classname} onClick={() => {this.setState({purpose: 'BUILDING'})}}>
 								My company is building a voice app
 							</button>
 						</div>
 						<div className="row justify-content-center mb-5">
-							<button className={(this.state.purpose === 'BUILT' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'BUILT'})}}>
+							<button className={classname} onClick={() => {this.setState({purpose: 'BUILT'})}}>
 								My company has already built voice apps
 							</button>
 						</div>
@@ -237,7 +242,9 @@ class Onboarding extends Component{
 							<Button variant="contained" className="btn-primary" disabled>
 								<p className="loading-btn m-0 p-0">Loading</p>
 							</Button>:
-							<button className={"btn-primary" + (!['EXPLORING', 'BUILDING', 'BUILT'].includes(this.state.purpose) ? ' disabled' : '')} disabled={!['EXPLORING', 'BUILDING', 'BUILT'].includes(this.state.purpose)} onClick={() => {
+							<button className={cn('btn-primary', {
+								disabled: !['EXPLORING', 'BUILDING', 'BUILT'].includes(this.state.purpose)
+							})} disabled={!['EXPLORING', 'BUILDING', 'BUILT'].includes(this.state.purpose)} onClick={() => {
 								if(this.state.company_size >= SHOW_CALENDLY_NUMBER){
 									this.setState({stage: 'calendly'})
 								} else {
@@ -270,7 +277,9 @@ class Onboarding extends Component{
 							<p className="loading-btn m-0 p-0">Loading</p>
 						</Button> :
 					<div className="justify-content-center">
-						<button className={"btn-primary" + (!(['beginner', 'intermediate', 'expert'].includes(this.state.experience)) ? ' disabled': '')} disabled={!(['beginner', 'intermediate', 'expert'].includes(this.state.experience))} onClick={() => {
+							<button className={cn('btn-primary', {
+								disabled: !(['beginner', 'intermediate', 'expert'].includes(this.state.experience))
+							})} disabled={!(['beginner', 'intermediate', 'expert'].includes(this.state.experience))} onClick={() => {
 							if (this.state.type === 'WORK') {
 								this.setState({ stage: 'purpose_stage' })
 							} else {
@@ -300,7 +309,9 @@ class Onboarding extends Component{
 							<p className="loading-btn m-0 p-0">Loading</p>
 						</Button> :
 					<div className="justify-content-center">
-						<button className={"btn-primary" + (!(this.state.design || this.state.build) ? ' disabled' : '')} disabled={!(this.state.design || this.state.build)} onClick={() => {
+							<button className={cn('btn-primary', {
+								disabled: !(this.state.design || this.state.build)
+							})} disabled={!(this.state.design || this.state.build)} onClick={() => {
 							if (this.state.type === 'WORK') {
 								this.setState({ stage: 'purpose_stage' })
 							} else {
@@ -341,7 +352,9 @@ class Onboarding extends Component{
 					</div>
 					<div className="justify-content-center">
 						<button 
-							className={"btn-primary" + (!(!!this.state.company_name && !!this.state.company_role && parseInt(this.state.company_size) > 0) ? ' disabled': '')} 
+							className={cn('btn-primary', {
+								disabled: !(!!this.state.company_name && !!this.state.company_role && parseInt(this.state.company_size) > 0)
+							})} 
 							disabled={!(!!this.state.company_name && !!this.state.company_role && parseInt(this.state.company_size) > 0)} 
 							onClick={() => {this.setState({stage: 'work_plan'})}}>
 							Next Question
@@ -355,15 +368,21 @@ class Onboarding extends Component{
 					<div className="row justify-content-center mb-3">
 						<div className="col-s mr-4">
 							<button className="void-button mb-2" onClick={() => {this.setState({type: "PERSONAL"})}}><img id="design" alt="selected" src={this.state.type === 'PERSONAL' ? "/selected.png" : "/unselected.png"}/></button>
-							<p className={this.state.type === 'PERSONAL' ? "" : "text-muted"}>Personal</p>
+							<p className={cn({
+								'text-muted': this.state.type !== 'PERSONAL'
+							})}>Personal</p>
 						</div>
 						<div className="col-s ml-4">
 							<button className="void-button mb-2" onClick={() => {this.setState({type: "WORK"})}}><img id="design" alt="work" src={this.state.type === 'WORK' ? "/selected-2.png" : "/unselected-2.png"}/></button>
-							<p className={this.state.type === 'WORK' ? "" : "text-muted"}>Work</p>
+							<p className={cn({
+								'text-muted': this.state.type !== 'WORK'
+							})}>Work</p>
 						</div>
 					</div>
 					<div className="justify-content-center">
-						<button className={"btn-primary" + (!['WORK', 'PERSONAL'].includes(this.state.type) ? ' disabled': '')} disabled={!['WORK', 'PERSONAL'].includes(this.state.type)} onClick={() => {
+						<button className={cn('btn-primary', {
+							disabled: !['WORK', 'PERSONAL'].includes(this.state.type)
+						})} disabled={!['WORK', 'PERSONAL'].includes(this.state.type)} onClick={() => {
 							if(this.state.type === 'WORK'){
 								this.setState({stage: 'work_name'})
 							} else if(this.state.type === 'PERSONAL'){

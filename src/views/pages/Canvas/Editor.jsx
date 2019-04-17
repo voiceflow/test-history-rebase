@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import cn from 'classnames'
 import React, { Component } from 'react';
 import Mousetrap from 'mousetrap';
 import { compose } from 'recompose'
@@ -404,17 +405,19 @@ class Editor extends Component {
                 return <div id="label">Add Flow</div>
             default:
               return ( <div id="label-container" className="d-flex mb-3 pl-2">
-                <input id="label" placeholder="Block Label"
-                    type="text"
-                    name="name"
-                    value={this.state.node.name}
-                    onChange={this.handleChange.bind(this)}
-                    onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
-                />
-                <i className="more-info mb-2 mr-1 d-flex align-items-center" onClick={() => this.props.setHelp({ type: this.state.node.extras.type})} />
+                <div className="w-100">
+                    <input id="label" placeholder="Block Label"
+                        type="text"
+                        name="name"
+                        value={this.state.node.name}
+                        onChange={this.handleChange.bind(this)}
+                        onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
+                    />
+                </div>
+                <i className="more-info d-flex align-items-center" onClick={() => this.props.setHelp({ type: this.state.node.extras.type})} />
                 <UncontrolledDropdown nav inNavbar>
                     <DropdownToggle nav tag="div">
-                        <div className="cog mb-2" />
+                        <div className="cog" />
                     </DropdownToggle>
                     <DropdownMenu right className="arrow arrow-right no-select" style={{ right: '-12px', marginTop: '5px' }}>
                         <DropdownItem header>
@@ -506,7 +509,11 @@ class Editor extends Component {
             return null;
         }
         return (
-            <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open' : '')}
+            <div 
+                id="Editor"
+                className={cn({
+                    open: this.props.open && type && !this.state.modal
+                })}
                 onFocus={this.props.unfocus}
                 onClickCapture={this.eventHandler}
                 onKeyDownCapture={this.eventHandler}

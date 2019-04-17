@@ -1,0 +1,21 @@
+export { default as shop } from 'img/big-icons/shop.svg';
+export { default as receipt } from 'img/big-icons/receipt.svg';
+
+export { default as templateShow0 } from 'img/big-icons/visuals-template-0-inactive.svg';
+export { default as templateShow0Selected } from 'img/big-icons/visuals-template-0.svg';
+export { default as templateShow1 } from 'img/big-icons/visuals-template-1-inactive.svg';
+export { default as templateShow1Selected } from 'img/big-icons/visuals-template-1.svg';
+export { default as templateShow2 } from 'img/big-icons/visuals-template-2-inactive.svg';
+export { default as templateShow2Selected } from 'img/big-icons/visuals-template-2.svg';
+export { default as templateShow3 } from 'img/big-icons/visuals-template-3-inactive.svg';
+export { default as templateShow3Selected } from 'img/big-icons/visuals-template-3.svg';
+export { default as templateShow4 } from 'img/big-icons/visuals-template-4-inactive.svg';
+export { default as templateShow4Selected } from 'img/big-icons/visuals-template-4.svg';
+export { default as templateShow5 } from 'img/big-icons/visuals-template-5-inactive.svg';
+export { default as templateShow5Selected } from 'img/big-icons/visuals-template-5.svg';
+export { default as templateShow6 } from 'img/big-icons/visuals-template-6-inactive.svg';
+export { default as templateShow6Selected } from 'img/big-icons/visuals-template-6.svg';
+export { default as templateShow7 } from 'img/big-icons/visuals-template-7-inactive.svg';
+export { default as templateShow7Selected } from 'img/big-icons/visuals-template-7.svg';
+export { default as templateShow9 } from 'img/big-icons/visuals-template-9-inactive.svg';
+export { default as templateShow9Selected } from 'img/big-icons/visuals-template-9.svg';

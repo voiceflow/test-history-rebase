@@ -60,8 +60,12 @@ jobs: # a collection of steps
     steps:
       - checkout # special step to check out source code to working directory
       - run:
+          name: 'Update Dockerfile'
+          command: "sed -i 's/RUN npm run build/REACT_APP_BUILD_ENV=staging npm run build/g' Dockerfile"
+      - run:
           name: 'Update PIP && Install AWS CLI'
           command: |
+            cat Dockerfile
             pip install awsebcli
             eb init --region us-east-1 --platform docker voiceflow-creator
             eb use VoiceflowCreator-staging

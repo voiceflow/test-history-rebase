@@ -1,7 +1,5 @@
 import React, {Component} from 'react'
 import Image from 'views/components/Uploads/Image'
-import {Button} from 'reactstrap'
-
 
 class IconsForm extends Component {
     render() {

@@ -42,7 +42,6 @@ describe('dashboard create skill', () => {
             verified: null,
         }
         const component = shallow(<DashBoard onClick={clickFn} {...props}/>)
-        component.find('button.btn').simulate('keydown', {keyCode: 32})
         component.unmount()
     })
 })

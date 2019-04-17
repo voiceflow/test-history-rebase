@@ -41,14 +41,6 @@ import Modal from 'views/components/Modals/Modal'
 
 import { getAuth, getUser } from 'ducks/account'
 
-// SECRET
-// var STRIPE_KEY
-// if (process.env.NODE_ENV === 'production') {
-//   STRIPE_KEY = 'pk_live_9QXjJjWc0sjk8VSwbQT3viub'
-// }else{
-//   STRIPE_KEY = 'pk_test_G3o7CC0pvrW2cIbIU1bLkMSR'
-// }
-
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props =>
       !getAuth() ? (

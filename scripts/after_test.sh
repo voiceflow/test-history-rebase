@@ -8,5 +8,5 @@ kill -TERM `pgrep -f dynamo`
 pretty_output "Dynamodb Stopped"
 
 # Kill Dynamo
-rm -rf migrations
-pretty_output "Removing Migrations"
+# rm -rf migrations
+# pretty_output "Removing Migrations"

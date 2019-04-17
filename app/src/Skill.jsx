@@ -98,7 +98,7 @@ class Skill extends Component {
         )
         if(this.props.computedMatch && this.props.computedMatch.params && this.props.computedMatch.params.skill_id){
           this.props.getVersion(this.props.computedMatch.params.skill_id, this.props.preview, this.props.computedMatch.params.diagram_id).then(() => {
-            document.title=this.props.skill.name
+            document.title=(this.props.skill.name !== undefined ? this.props.skill.name : 'Voiceflow Creator')
             this.setState({load_skill: false})
             if (!this.props.preview){
               if (this.props.user && (this.props.user.admin > 0) && this.props.skill) {

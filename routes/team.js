@@ -2,11 +2,9 @@
 const { pool, writeToLogs, validateEmail, hashids, decryptJSON } = require("./../services");
 
 const { deleteProjectPromise } = require("./skill_util");
+const { team_hash, createTeam } = require("./team_util")
 
 const { sendTeamInvite } = require("./mail");
-
-const Hashids = require("hashids");
-const team_hash = new Hashids("QsWyflBIuXsD2cBYBg35qq0JcdfQbYHg", 10);
 
 const SECRET_KEY = process.env.STRIPE_SK;
 const stripe = require("stripe")(SECRET_KEY);
@@ -35,23 +33,6 @@ const STATUS_TO_PLAN = {
 const INVALID_STATES = ["incomplete_expired", "incomplete", "unpaid"]
 const INVALID_INVOICE_STATES = ["open", "void", "uncollectible"]
 
-// create a new team
-const createTeam = async (name, image, creator, seats=false) => {
-  let result
-  if(seats) {
-    result = await pool.query(
-      "INSERT INTO teams (name, image, creator_id, seats) VALUES ($1, $2, $3, $4) RETURNING *",
-      [name, image, creator.id, seats]
-    );
-  } else {
-    result = await pool.query(
-      "INSERT INTO teams (name, image, creator_id) VALUES ($1, $2, $3) RETURNING *",
-      [name, image, creator.id]
-    );
-  }
-  return result.rows[0];
-};
-
 exports.verifyTeam = async (req, res, next) => {
   try {
     let team_id = team_hash.decode(req.params.team_id)[0];
@@ -72,23 +53,6 @@ exports.verifyTeam = async (req, res, next) => {
   }
   next();
 };
-
-// Check that this team member can access this skill
-exports.checkSkillAccess = async (skill_id, user_id) => {
-  if(skill_id) {
-    try {
-      const result = await pool.query(`
-        SELECT 1 FROM skills s
-        INNER JOIN projects p ON p.project_id = s.project_id
-        INNER JOIN team_members tm ON tm.team_id = p.team_id
-        WHERE s.skill_id = $1 AND tm.creator_id = $2 LIMIT 1
-      `, [skill_id, user_id])
-      if(result.rowCount !== 0) return true
-    } catch(err) {
-    }
-  }
-  return false
-}
 
 exports.verifyProjectAccess = async (req, res, next) => {
   try {
@@ -214,11 +178,6 @@ exports.addTeam = async (req, res) => {
     return res.sendStatus(400);
   }
 };
-
-exports.createPersonalTeam = async (user) => {
-  const team = await createTeam("Personal", null, user, 1);
-  await populateTeam(team.team_id, user, []);
-}
 
 const initalizeStripe = async (team, user, seats, source_id, options={}) => {
   var customer;
@@ -865,3 +824,5 @@ exports.webhook = async (req, res) => {
 
 	return res.sendStatus(400)
 }
+
+exports.team_hash = team_hash

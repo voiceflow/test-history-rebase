@@ -175,7 +175,7 @@ exports.deleteProjectPromise = (project_id) => {
         // To0 f4st for 4mzn
         setTimeout(() => {
           try{
-            exports.deleteDynamoDiagramPromise(version[i].id)
+            exports.deleteDynamoDiagramPromise(version.id)
           }catch(err){
             writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
           }

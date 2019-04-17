@@ -1,6 +1,6 @@
 const { pool, hashids, writeToLogs } = require('../../services');
 const axios = require('axios');
-const { checkSkillAccess } = require("./../team")
+const { checkSkillAccess } = require("./../team_util")
 
 const checkDisplayAccess = async (display_id, user_id) => {
   if(display_id) {

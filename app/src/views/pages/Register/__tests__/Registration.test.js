@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { mountWrap, shallowWrap } from '../TestHelper/ContextWrapper';
 import { mount, shallow, render } from 'enzyme';
-import Account from '../index';
+import { Account } from '../index';
 import toJson from 'enzyme-to-json';
 
 jest.mock('react-ga');

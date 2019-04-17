@@ -3049,6 +3049,10 @@ button.close:hover{
     font-weight: 600;
 }
 
+.beta-badge {
+    color: #fff;
+}
+
 .choice-title input {
     flex: 1;
     border: none;

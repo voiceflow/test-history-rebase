@@ -19,7 +19,7 @@ const {
 const Mail = require('./mail.js');
 const del = require('del');
 const spawn = require('child_process').spawn
-const { createPersonalTeam } = require('./team')
+const { createPersonalTeam } = require('./team_util')
 
 const mkdirp = require('mkdirp');
 

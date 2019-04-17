@@ -28,7 +28,7 @@ const {
 const {
   pg_num
 } = require('./../util')
-const { checkSkillAccess } = require("./team")
+const { checkSkillAccess } = require("./team_util")
 
 const DialogflowClient = require('../clients/Dialogflow/Dialogflow')
 
@@ -137,12 +137,12 @@ exports.getSkill = async (req, res) => {
   } else {
     sql = `
       SELECT
-        s.*, pm.amzn_id
+        s.*, pm.amzn_id AS amzn_id
       FROM
         skills s
         INNER JOIN projects p ON p.project_id = s.project_id
         INNER JOIN team_members tm ON tm.team_id = p.team_id
-        LEFT JOIN (SELECT * FROM project_members WHERE creator_id = $1) pm ON pm.project_id = p.project_id
+        LEFT JOIN (SELECT * FROM project_members WHERE creator_id = $2) pm ON pm.project_id = p.project_id
         WHERE
           skill_id = $1
           AND tm.creator_id = $2
@@ -270,19 +270,6 @@ exports.setProduct = async (req, res) => {
   }
 }
 
-const deleteProductSQL = async (pid, res) => {
-  pool.query('DELETE FROM products WHERE id = $1', [pid], (err, results) => {
-    if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {
-        err: err
-      })
-      res.sendStatus(500)
-    } else {
-      res.sendStatus(200)
-    }
-  })
-}
-
 exports.deleteProduct = async (req, res) => {
   if (!req.params.id || !req.params.pid) {
     res.sendStatus(401);
@@ -290,42 +277,44 @@ exports.deleteProduct = async (req, res) => {
   }
 
   let pid = req.params.pid;
-  let result
+
   try {
-    result = (await pool.query('SELECT p.amzn_prod, p.skill_id FROM products p WHERE p.id = $2 LIMIT 1', [pid])).rows[0]
+    products = (await pool.query(`
+      SELECT pc.amzn_prod_id, pc.creator_id, p.skill_id 
+      FROM products p 
+      INNER JOIN product_creators pc ON pc.product_id = p.id
+      WHERE p.id = $1
+    `, [pid])).rows
 
-    if(!(await checkSkillAccess(result.skill_id, req.user.id))){
-      return res.sendStatus(403)
-    }
+    if(products.length === 0) throw { status: 404 }
+    if(!(await checkSkillAccess(products[0].skill_id, req.user.id))) throw { status: 403 }
 
-    if (!result) return res.sendStatus(412)
+    products.forEach(product => {
+      if(!product.amzn_prod_id) return
+
+      AmazonAccessToken(dev_version.creator_id)
+      .then(token => {
+        if(!token) return
+        axios.request({
+          url: `https://api.amazonalexa.com/v1/inSkillProducts/${product.amzn_prod_id}/stages/development`,
+          method: 'DELETE',
+          headers: {
+            Authorization: token
+          }
+        })
+      })
+    })
+
+    await pool.query('DELETE FROM products WHERE id = $1', [pid])
+    
   } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {
-      err: err
-    });
+    if(!(err && err.status === 404)) writeToLogs('DELETE PRODUCT', err)
+
+    if(err.message || err.status){
+      return res.status(err.status || 400).send(err.message)
+    }
     return res.sendStatus(500)
   }
-
-  if (result.amzn_prod) {
-    for (const creator_id in result.amzn_prod) {
-      if (result.amzn_prod.hasOwnProperty(creator_id)) {  
-        AccessToken(creator_id, token => {
-          if (token === null) return
-          try {
-            axios.request({
-              url: `https://api.amazonalexa.com/v1/inSkillProducts/${result.amzn_prod[creator_id]}/stages/development`,
-              method: 'DELETE',
-              headers: {
-                Authorization: token
-              }
-            })
-          } catch (err) {}
-        })   
-      }
-    }
-  }
-  
-  deleteProductSQL(pid, res)
 }
 
 exports.patchSkill = async (req, res) => {
@@ -522,25 +511,49 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
       const remove_live = new Set()
       const add_live = new Set()
 
-      for(dev_version of dev_versions){
-        try{
-          const token = await AmazonAccessToken(dev_version.creator_id)
-          if(!token) throw ('No Token Found')
-          // Check if this endpoint is LIVE
-          const response = await axios.request({
-            url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/live/manifest`,
+      for(dev_version of dev_versions){        
+        var token
+
+        try {
+          token = await AmazonAccessToken(dev_version.creator_id)
+          if(!token) throw new Error("Token Not Found")
+          
+          await axios.request({
+            url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/development/manifest`,
             method: 'GET',
             headers: {
               Authorization: token
             }
-          })
+          });
+        } catch(err) {
+          writeToLogs("CHECK MANIFEST NOT FOUND", err)
+          continue
+        }
 
-          // take the endpoint's Version ID
-          const split_uri = response.data.manifest.apis.custom.endpoint.uri.split('/')
-          const live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
-          
-          // find all the live skills for this amzn skill
-          const live_projects = project_versions.filter(v => ((v.amzn_id === dev_version.amzn_id) && v.live)).map(v => v.skill_id)
+        // skills published by this creator have been checked
+        creators.add(dev_version.creator_id)
+
+        // find all the live skills for this amzn skill
+        const live_projects = project_versions.filter(v => ((v.amzn_id === dev_version.amzn_id) && v.live)).map(v => v.skill_id)
+        var live_id
+
+        try {
+          // Check if this endpoint is LIVE
+          // const response = await axios.request({
+          //   url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/live/manifest`,
+          //   method: 'GET',
+          //   headers: {
+          //     Authorization: token
+          //   }
+          // })
+
+          // // take the endpoint's Version ID
+          // const split_uri = response.data.manifest.apis.custom.endpoint.uri.split('/')
+          // live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
+
+          // TEST
+          live_id = 3741
+
           const index = live_projects.indexOf(live_id)
 
           // If it doesn't exist already, update it as live. If it doesn't don't try to remove it
@@ -549,12 +562,16 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
           } else {
             live_projects.splice(index, 1)
           }
-          live_projects.forEach(p => remove_live.add(p))
+        } catch(err) {
+          // If the response failed and it wasn't a 404 Not Found for Live Version
+          if (!(err && err.response && err.response.status === 404 )) {
+            creators.delete(dev_version.creator_id);
+            continue
+          }
+        }
 
-          // skills published by this creator have been checked
-          creators.add(dev_version.creator_id)
-          live_ids.add(live_id)
-        }catch(err){}
+        live_projects.forEach(p => remove_live.add(p))
+        live_ids.add(live_id)
       }
 
       if(remove_live.size > 0) {
@@ -584,7 +601,7 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
 
     // ensure projects have max 10 versions of either google/amazon
     let i = 0
-    let num_versions_to_delete = project_versions.length - 10
+    let num_versions_to_delete = project_versions.length - 5
     let deletion_promises = []
     if (live_ids) {
       num_versions_to_delete -= live_ids.size
@@ -764,14 +781,18 @@ exports.buildSkill = async (req, res) => {
 
           // Don't even bother with products if not in US
           if (Array.isArray(r.locales) && r.locales.includes('en-US')) {
-            let products = await pool.query("SELECT * FROM products WHERE skill_id = $1", [r.skill_id]);
+            let products = await pool.query(`
+              SELECT p.*, pc.amzn_prod_id, pc.creator_id AS status
+              FROM products p
+              LEFT JOIN (SELECT * product_creators WHERE creator_id = $2) pc ON p.id = pc.product_id
+              WHERE skill_id = $1
+            `, [r.skill_id, req.user.id]);
 
             if (Array.isArray(products.rows) && products.rows.length !== 0) {
               for (row of products.rows) {
                 let product = row.data
                 let productId = row.id
-                if(!row.amzn_prod) row.amzn_prod = {}
-                let AmazonProductId = row.amzn_prod[req.user_id]
+                let AmazonProductId = row.amzn_prod_id
                 try {
                   // Try to update the product if it exists
                   if (!AmazonProductId) throw null
@@ -802,9 +823,20 @@ exports.buildSkill = async (req, res) => {
                   })
 
                   AmazonProductId = product_response.data.productId
-                  row.amzn_prod[req.user.id] = AmazonProductId
-                  await pool.query("UPDATE products SET amzn_prod = $1 WHERE id = $2", [row.amzn_prod, productId])
 
+                  if(AmazonProductId !== row.amzn_prod_id) {
+                    if(row.status){
+                      await pool.query(
+                        "UPDATE product_creators SET amzn_prod_id = $1 WHERE product_id = $2 AND creator_id = $3", 
+                        [AmazonProductId, pid, req.user.id])
+                    }else{
+                      await pool.query(
+                        "INSERT INTO product_creators (product_id, creator_id, amzn_prod_id) VALUES ($1, $2, $3)", 
+                        [pid, req.user.id, AmazonProductId])
+                    }
+                  }
+
+                  // Insert this Project with the skill
                   await axios.request({
                     url: `https://api.amazonalexa.com/v1/inSkillProducts/${AmazonProductId}/skills/${amzn_id}`,
                     method: 'PUT',

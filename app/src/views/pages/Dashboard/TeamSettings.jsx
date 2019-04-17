@@ -34,8 +34,8 @@ const STAGES = {
 };
 
 const Contact = <Alert className="text-center py-3 mt-2">
-  <h1><i className="fas fa-comment-plus"/></h1>
-  Contact the administrators of this board to upgrade
+  <img src={'/contact-owner.svg'} width={65}></img>
+  Contact the owner of this board to upgrade
 </Alert>
 
 const MemberRow = props => {

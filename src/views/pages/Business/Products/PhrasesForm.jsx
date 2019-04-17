@@ -42,22 +42,22 @@ class PhrasesForm extends React.Component {
                   );
                 })}
               <div className="text-center">
-                <Button className='btn-tertiary-gray' onClick={this.props.handleAdd}>Add Phrase<i className="far fa-long-arrow-right ml-2"></i></Button>
+                <button className='btn-tertiary-gray' onClick={this.props.handleAdd}>Add Phrase<i className="far fa-long-arrow-right ml-2"></i></button>
               </div>
             </div>
             <div className="product-stage-button">
-              <Button className="btn-tertiary-gray"
+              <button className="btn-tertiary-gray"
                 variant="contained"
                 onClick={() => this.props.updateStage(1)}
               >
                 Previous
-              </Button>
-              <Button className="btn-primary ml-2"
+              </button>
+              <button className="btn-primary ml-2"
                 variant="contained"
               
               >
                 Continue
-              </Button>
+              </button>
             </div>
           </AvForm>
         </div>

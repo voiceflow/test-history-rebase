@@ -180,7 +180,7 @@ textarea::placeholder {
 .product-card>.card {
   overflow: hidden;
   background-image: linear-gradient(180deg, #fff, #fff);
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .1);
+  /* box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .1); */
   cursor: pointer;
 }
 
@@ -445,7 +445,7 @@ textarea::placeholder {
   left: 0px;
   top: 0px;
   width: 25%;
-  padding: 13px;
+  padding: 14px;
 }
 
 .empty-card>div {

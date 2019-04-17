@@ -179,7 +179,7 @@ class App extends Component {
       return (
         <div id="loading-diagram">
           <div className="text-center">
-            <h5 className="text-muted mb-2">Loading Account</h5>
+            <h5 className="text-muted mb-2">Loading Account...</h5>
             <span className="loader" />
           </div>
         </div>

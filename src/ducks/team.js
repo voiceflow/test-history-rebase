@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { setError } from 'ducks/modal'
-import NORMALIZE, { normalize, deleteNormalize } from 'ducks/util'
+import Normalize, { normalize, deleteNormalize } from 'ducks/util'
 
 const INVALID_STATES = ["incomplete_expired", "incomplete", "unpaid"]
 const WARNING_STATES = ["past_due"]
@@ -36,11 +36,11 @@ const updateTeams = ({byId, allIds}) => ({
   payload: { byId, allIds }
 })
 
-const TEAM = NORMALIZE('team_id', 'team', updateTeams)
+const Teams = new Normalize('team_id', 'team', updateTeams)
 
 export const updateTeam = (team_id, data) => {
   return async dispatch => {
-    dispatch(TEAM('update', {id: team_id, data: data}))
+    dispatch(Teams.update({id: team_id, data: data}))
   }
 }
 
@@ -48,7 +48,7 @@ export const getMembers = team_id => {
   return async (dispatch) => {
     try {
       let members = (await axios.get(`/team/${team_id}/members`)).data
-      dispatch(TEAM('update', {id: team_id, data: {members}}))
+      dispatch(Teams.update({id: team_id, data: {members}}))
       Promise.resolve()
     } catch(err) {
       console.error(err)

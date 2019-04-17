@@ -49,47 +49,39 @@ export const unnormalize = (structure) => {
   return structure.allIds.map(i => structure.byId[i])
 }
 
-export default (id_type, reducer, action) => {
-  return (fn, params) => {
-    if(typeof fn === 'string'){
-      switch(fn){
-        case 'create':
-          fn = normalize
-          break
-        case 'add':
-          fn = addNormalize
-          break
-        case 'delete':
-          fn = deleteNormalize
-          break
-        case 'update':
-          fn = updateNormalize
-          break
-        default:
-          return
-      }
+const validState = (state) => (state.byId && Array.isArray(state.allIds))
+export default class Normalize {
+  constructor(id_type, reducer, action) {
+    this.id_type = id_type
+    this.reducer = reducer
+    this.action = action
+  }
+
+  create(params) {
+    return (dispatch) => {
+      const state = normalize(this.id_type, params.data)
+      if(validState(state)) dispatch(this.action(state))
     }
+  }
+
+  add(params) {
     return (dispatch, getState) => {
-      var state
-      switch(fn.name){
-        case 'normalize':
-          state = fn(id_type, params.data)
-          break
-        case 'deleteNormalize':
-          state = fn(params.id, getState()[reducer])
-          break
-        case 'addNormalize':
-          state = fn(id_type, params.data, getState()[reducer])
-          break
-        case 'updateNormalize':
-          state = fn(params.id, params.data, getState()[reducer])
-          break
-        default:
-          return        
-      }
-      if(state.byId && Array.isArray(state.allIds)){
-        dispatch(action(state))
-      }
+      const state = addNormalize(this.id_type, params.data, getState()[this.reducer])
+      if(validState(state)) dispatch(this.action(state))
+    }
+  }
+
+  delete(params) {
+    return (dispatch, getState) => {
+      const state = deleteNormalize(params.id, getState()[this.reducer])
+      if(validState(state)) dispatch(this.action(state))
+    }
+  }
+
+  update(params) {
+    return (dispatch, getState) => {
+      const state = updateNormalize(params.id, params.data, getState()[this.reducer])
+      if(validState(state)) dispatch(this.action(state))
     }
   }
 }

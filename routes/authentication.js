@@ -94,7 +94,8 @@ const trackUser = async (data, analytics_data) => {
         'city': city,
         'country': country,
         'os': analytics_data.device.os,
-        'browser': analytics_data.device.browser
+        'browser': analytics_data.device.browser,
+        'created': data.created.toISOString().substring(0, 10)
       }
     }, () => {
       analytics.track({

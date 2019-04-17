@@ -1,4 +1,5 @@
 import * as React from "react";
+import cn from 'classnames'
 import { findDOMNode } from 'react-dom'
 import * as _ from "lodash";
 //Helpers
@@ -236,6 +237,7 @@ export class BlockNodeWidget extends BaseWidget {
 	}
 
 	render() {
+		const { node, isLast, selected } = this.props
 		if(this.props.node.extras.type === 'comment'){
 			return <div className={`srd-default-node ${this.props.node.extras.type}`}>
         <Textarea value={this.props.node.name} readOnly={this.props.locked} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate()}} onBlur={()=>{
@@ -249,7 +251,15 @@ export class BlockNodeWidget extends BaseWidget {
 		const fade = this.props.node.fade ? " faded-node" : ""
 		const paddingStyle = (this.props.node.extras.type === 'god' && combineAppendValidation(_.last(this.props.node.combines))) ? {padding: '0px 12px 10px 12px'} : {padding: '0px 12px 0px 12px'}
 		return (
-			<div className={`srd-default-node ${this.props.node.extras.type !== 'card' ? this.props.node.extras.type : 'kard'} ${this.props.isLast ? 'last' : ''} ${this.props.selected ? 'selected' : 'no-select'} ${this.props.node.isMoving && this.props.node.parentCombine ? 'moving' : ''} ${fade}`}
+			<div
+				className={cn('srd-default-node', fade, {
+					kard: node.extras.type === 'card',
+					[node.extras.type]: node.extras.type !== 'card',
+					last: isLast,
+					selected: selected,
+					'no-select': !selected,
+					moving: node.isMoving && node.parentCombine
+				})}
 				ref={this.nodeRef}
 				data-nodeid = {
 					this.props.node.id

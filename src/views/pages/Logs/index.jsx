@@ -15,15 +15,6 @@ import IconButton from '@material-ui/core/IconButton'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 
-// var socket_endpoint;
-// if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-//     // dev code
-//     socket_endpoint = 'http://localhost:4000'
-// } else {
-//     // production code
-//     socket_endpoint = 'https://app.getvoiceflow.com'
-// }
-
 const actionsStyles = theme => ({
     root: {
       flexShrink: 0,

@@ -13,11 +13,11 @@ const Invoice = props => {
         {props.invoice.status && <b className="text-danger ml-2">({props.invoice.status})</b>}
       </span>
       <h2 className="my-2">${props.invoice.amount / 100}</h2>
-      <span className="text-muted">
+      <small className="text-muted">
         {props.invoice.items.map((item, i) => (
           <div key={i}>{item}</div>
         ))}
-      </span>
+      </small>
     </div>
   );
 };

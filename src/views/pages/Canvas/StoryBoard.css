@@ -3130,6 +3130,10 @@ button.close:hover{
     /*display: inline-block;*/
 }
 
+.variable-input-field .public-DraftStyleDefault-block > span {
+    padding-top: 2px;
+}
+
 .DraftEditor-editorContainer,
 .DraftEditor-root,
 .public-DraftEditor-content {
@@ -3220,7 +3224,7 @@ button.close:hover{
     display: inline-block;
     margin: 1px 0 1px;
     cursor: default;
-    margin-right: 5px;
+    margin-right: 1px;
     font-size: 14px;
 }
 

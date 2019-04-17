@@ -566,21 +566,22 @@ audio {
     color: #fff !important;
     border-radius: 5px;
     box-shadow: 0 1px 8px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.05);
-    background-color: #ff3562;
-    border: 2px solid #ff3562;
+    background: linear-gradient(to bottom, #f83f5595, #f83f55);
+    letter-spacing: 0.2px;
+    border: none;
     text-transform: none;
     font-size: 16px;
     transition: all .25s ease !important;
+    padding: 10px 22px 10px;
+    border-radius: 50px;
  }
  .btn-warning:hover{
-     background-color: #fb0038;
-     border-color: #fb0038;
-     transform: translateY(-1px);
+     background-color: #f83f55;
      box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08) !important;
  }
  .btn-warning:active{
      background-color: #d80030 !important;
-     border-color: #d80030 !important;
+     box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.18) !important;
  }
 .alert-danger{
     color: #ff3562 !important;

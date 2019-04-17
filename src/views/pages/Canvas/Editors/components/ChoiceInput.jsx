@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component, PureComponent } from 'react'
 import { Tooltip } from 'react-tippy'
 import { sampleUtteranceRegex } from 'services/Regex'
@@ -159,7 +160,9 @@ class ChoiceInput extends Component {
                 onChange={(text) => this.updateSample(text, 0)}/>
               <div className="space-between pointer ml-1 mb-1" onClick={this.toggleOpen}>
                 <div className="section-title">Synonyms ({this.state.samples.length - 1})</div>
-                <i className={"text-muted fas fa-caret-down rotate" + (this.props.choice.open ? "" : " fa-rotate-90")}/>
+                <i className={cn('text-muted', 'fas', 'fa-caret-down', 'rotate', {
+                    'fa-rotate-90': !this.props.choice.open
+                })}/>
               </div>
             </div>}
             <Collapse isOpen={this.props.choice.open || !has_entry}>
@@ -173,7 +176,9 @@ class ChoiceInput extends Component {
                   html={this.state.text_error}
               >
                 <Textarea
-                  className={`form-control ${this.state.samples.length === 1 ?  ' mb-1' : ''}`}
+                  className={cn('form-control', {
+                    'mb-1': this.state.samples.length === 1
+                  })}
                   value={this.state.text}
                   onChange={this.onTextChange}
                   placeholder={this.state.samples.length ? "Enter synonyms of the user reply" : "Enter user reply"}

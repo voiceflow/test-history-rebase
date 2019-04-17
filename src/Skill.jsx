@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import cn from 'classnames'
 import { connect } from 'react-redux';
 import { compose } from 'recompose'
 
@@ -236,7 +237,7 @@ class Skill extends Component {
           {((this.state.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)) ? 
             React.createElement(Spinner,  {name: 'Skill'}) :
             <>
-              <div id="app" className={(!this.props.preview ? "secondary-padding " : "") + this.props.page}>
+              <div id="app" className={cn(this.props.page, { 'secondary-padding': !this.props.preview })}>
                 {this.renderPage()}
               </div>
             </>

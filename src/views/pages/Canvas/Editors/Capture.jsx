@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
@@ -56,7 +57,7 @@ class Capture extends Component {
     render() {
         return (
             <div>
-                {this.props.platform === 'alexa' && <div className={this.props.live_mode ? 'disabled-overlay' : ''}>
+                {this.props.platform === 'alexa' && <div className={cn({ 'disabled-overlay': this.props.live_mode })}>
                     <label>Input Type <small>(required)</small></label>
                     <Select
                         placeholder="Select Slot Type"

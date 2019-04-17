@@ -7,7 +7,7 @@ exports[`Empty Card Test render empty card 1`] = `
   <div>
     <img
       alt="empty card"
-      src="/images/PlusThin.svg"
+      src="/add-step.svg"
       style={
         Object {
           "height": "25px",

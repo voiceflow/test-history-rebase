@@ -10,7 +10,7 @@ import {Link} from 'react-router-dom'
 import queryString from 'query-string'
 import {googleClient, fbId} from './social-id.js';
 
-class Account extends Component {
+export class Account extends Component {
 
   constructor(props) {
     super(props)

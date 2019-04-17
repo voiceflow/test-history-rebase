@@ -39,7 +39,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Tell Alexa what to say, or play audio clips"
@@ -111,7 +110,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Set the value of a variable, or many variables at once"
@@ -213,7 +211,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Select choices and capture slot values from user input"
@@ -360,7 +357,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Tell Alexa to show a card"
@@ -407,10 +403,10 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         <i
           className="fas fa-caret-down mr-1 rotate fa-rotate--90"
         />
-        business
+        user
       </span>
       <span
-        className="title-dot business"
+        className="title-dot user"
       />
     </div>
     <Collapse
@@ -431,32 +427,11 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
       unmountOnExit={false}
     >
       <div
-        className="premium-block"
-      >
-        <div>
-          <span>
-            Upgrade to access these premium features
-          </span>
-          <Link
-            className="btn-primary mt-3 d-block no-underline"
-            replace={false}
-            to="/account/upgrade"
-          >
-            Upgrade
-          </Link>
-        </div>
-      </div>
-      <div
         className="mb-3 section-blocks"
-        style={
-          Object {
-            "opacity": 0.3,
-          }
-        }
       >
         <Connect(MenuItem)
           data-tip="Ask users to enable permissions (User Info, Reminders, etc.)"
-          draggable={false}
+          draggable={true}
           item={
             Object {
               "icon": <i
@@ -471,7 +446,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         />
         <Connect(MenuItem)
           data-tip="Get User Information and check Permissions"
-          draggable={false}
+          draggable={true}
           item={
             Object {
               "icon": <i
@@ -485,23 +460,8 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           key="1"
         />
         <Connect(MenuItem)
-          data-tip="Send Emails via SendGrid"
-          draggable={false}
-          item={
-            Object {
-              "icon": <i
-                className="fas fa-envelope"
-              />,
-              "text": "Mail",
-              "tip": "Send Emails via SendGrid",
-              "type": "mail",
-            }
-          }
-          key="2"
-        />
-        <Connect(MenuItem)
           data-tip="Request payment from user"
-          draggable={false}
+          draggable={true}
           item={
             Object {
               "icon": <i
@@ -512,11 +472,11 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
               "type": "payment",
             }
           }
-          key="3"
+          key="2"
         />
         <Connect(MenuItem)
           data-tip="Refund a purchase or cancel an user's subscription"
-          draggable={false}
+          draggable={true}
           item={
             Object {
               "icon": <i
@@ -527,11 +487,11 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
               "type": "cancel",
             }
           }
-          key="4"
+          key="3"
         />
         <Connect(MenuItem)
           data-tip="Send a remind to the user in a set amount of time"
-          draggable={false}
+          draggable={true}
           item={
             Object {
               "icon": <i
@@ -542,7 +502,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
               "type": "reminder",
             }
           }
-          key="5"
+          key="4"
         />
       </div>
     </Collapse>
@@ -589,7 +549,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Tell Alexa what to say, or play audio clips"
@@ -661,7 +620,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Set the value of a variable, or many variables at once"
@@ -763,7 +721,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Select choices and capture slot values from user input"
@@ -910,7 +867,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Tell Alexa to show a card"
@@ -957,10 +913,10 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         <i
           className="fas fa-caret-down mr-1 rotate fa-rotate--90"
         />
-        business
+        user
       </span>
       <span
-        className="title-dot business"
+        className="title-dot user"
       />
     </div>
     <Collapse
@@ -982,7 +938,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Ask users to enable permissions (User Info, Reminders, etc.)"
@@ -1015,21 +970,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           key="1"
         />
         <Connect(MenuItem)
-          data-tip="Send Emails via SendGrid"
-          draggable={true}
-          item={
-            Object {
-              "icon": <i
-                className="fas fa-envelope"
-              />,
-              "text": "Mail",
-              "tip": "Send Emails via SendGrid",
-              "type": "mail",
-            }
-          }
-          key="2"
-        />
-        <Connect(MenuItem)
           data-tip="Request payment from user"
           draggable={true}
           item={
@@ -1042,7 +982,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
               "type": "payment",
             }
           }
-          key="3"
+          key="2"
         />
         <Connect(MenuItem)
           data-tip="Refund a purchase or cancel an user's subscription"
@@ -1057,7 +997,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
               "type": "cancel",
             }
           }
-          key="4"
+          key="3"
         />
         <Connect(MenuItem)
           data-tip="Send a remind to the user in a set amount of time"
@@ -1072,7 +1012,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
               "type": "reminder",
             }
           }
-          key="5"
+          key="4"
         />
       </div>
     </Collapse>

@@ -102,7 +102,7 @@ class NavBar extends Component {
         <div>
           <Navbar dark expand="md" className={"fixed-top " + page_name} id="navbar">
             <Link to="/dashboard" className="mx-2">
-              <div className="voiceflow-logo" style={{backgroundImage: `url('${image}')`}}/>
+              <div className="mt-1 voiceflow-logo" style={{backgroundImage: `url('${image}')`}}/>
             </Link>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>

@@ -28,18 +28,18 @@ class IconsForm extends Component {
               </div>
           </div>
           <div className="product-stage-button">
-            <Button className='btn-tertiary-gray'
+            <button className='btn-tertiary-gray'
               variant="contained"
               onClick={() => this.props.updateStage(2)}
             >
               Previous
-            </Button>
-            <Button className='btn-primary ml-2'
+            </button>
+            <button className='btn-primary ml-2'
               variant="contained"
               onClick={() => this.props.updateStage(4)}
             >
               Continue
-            </Button>
+            </button>
           </div>
         </div>
       )

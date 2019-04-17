@@ -32,13 +32,12 @@ export class ConfirmModal extends React.Component {
         <ModalBody className="text-center">{this.props.confirm.text}</ModalBody>
         <ModalFooter className="justify-content-center">
           {cancel && (
-            <Button
-              className="btn-tertiary"
-              color="clear"
+            <button
+              className="btn-tertiary-gray"
               onClick={this.props.toggle}
             >
               Cancel
-            </Button>
+            </button>
           )}
           <Button color={this.props.confirm.warning ? "warning" : "primary"} 
             onClick={() => {

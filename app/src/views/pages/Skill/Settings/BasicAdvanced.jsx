@@ -192,7 +192,7 @@ class BasicAdvancedSettings extends Component{
                             This action cannot be undone.
                           </span>
                           <br />
-                          <Button color="danger" onClick={this.confirmOverwrite}>
+                          <Button color="warning" onClick={this.confirmOverwrite}>
                             Overwrite
                           </Button>
                         </Alert>
@@ -208,7 +208,7 @@ class BasicAdvancedSettings extends Component{
                             undone
                           </span>
                           <br />
-                          <Button color="danger" onClick={this.confirmDelete}>
+                          <Button color="warning" onClick={this.confirmDelete}>
                             Delete Project
                           </Button>
                         </Alert>

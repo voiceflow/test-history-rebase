@@ -22,11 +22,12 @@ import CanvasWarning from './components/CanvasWarning'
 //Helpers
 import { combineAppendValidation, appendValidator } from './../../helpers/combineHelper'
 
-import { updateVersion, updateIntents, setCanFulfill } from "./../../../actions/versionActions";
-import { setVariables } from './../../../actions/variableActions'
+import { updateVersion, updateIntents, setCanFulfill } from "actions/versionActions";
+import { setVariables } from 'actions/variableActions'
 import { setCanvasError } from 'actions/userActions'
 import { renameDiagram } from 'actions/diagramActions'
 import { setError, setConfirm } from 'actions/modalActions'
+import { fetchEmails } from "actions/emailActions";
 
 import ActionGroup from './ActionGroup'
 import HelpModal from './HelpModal'
@@ -200,7 +201,15 @@ export class Canvas extends Component {
                 this.props.setError(this.props.integration_users_error)
             }
         })
-    }
+        if (window.user_detail && window.user_detail.admin > 0 && this.props.skill) {
+            // Re-load templates in case of change
+            try {
+                this.props.getEmails(this.props.skill.skill_id)
+            } catch (err) {
+                console.error(err)
+            }
+        }
+}
 
     componentWillUnmount() {
         if(!this.props.preview && this.props.skill && this.props.skill.skill_id && this.props.diagram_id && !window.error){
@@ -1676,7 +1685,8 @@ const mapDispatchToProps = dispatch => {
     setCanvasError: (err) => dispatch(setCanvasError(err)),
     setError: (err) => dispatch(setError(err)),
     setConfirm: (confirm) => dispatch(setConfirm(confirm)),
-    getIntegrationsUsers: () => dispatch(fetchIntegrationUsers())
+    getIntegrationsUsers: () => dispatch(fetchIntegrationUsers()),
+    getEmails: (skill_id) => dispatch(fetchEmails(skill_id))
   }
 }
 

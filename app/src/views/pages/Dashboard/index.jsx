@@ -212,11 +212,10 @@ export class DashBoard extends Component {
           { this.props.projects_array.length >= this.props.team.projects ?
             <div className="empty-card update-card text-center">
               <div onClick={this.newProject} className="d-block pt-4">
-              <img src={'/upgrade-projects.svg'} className="mt-5 mb-2" width="65"></img><br/>
-                <label>
-                  Upgrade board for<br/>
-                  unlimited projects
-                </label>
+              <img src={'/upgrade-projects.svg'} className="mt-4 mb-2" width="65"></img><br/>
+                <label className="dark">
+                  Project Limit Reached</label>
+                  <div className="text-muted">Upgrade to a paid plan <br></br> for unlimited projects</div>
               </div>
             </div> :
             <EmptyCard onClick={this.newProject} />
@@ -334,38 +333,28 @@ export class DashBoard extends Component {
             {!this.state.loading && this.props.projects_array.length === 0 ? (
               <div className="h-100 d-flex justify-content-center">
                 <div className="align-self-center">
-                  <div className="pl-4">
+                  <div className="text-center">
                     <img
                       src="/create.svg"
                       alt="skill-icon"
-                      width="130"
+                      width="100"
                       height="127"
-                      className="mb-3"
+                      className="mb-1"
                     />
                   </div>
-                  <br />
+                  <label className="dark text-center">No Projects Found</label>
+                  <div className="text-muted mt-3 mb-2">This board has no projects yet, create one.</div>
                   <Link
                     to={`/team/template`}
                     className="no-underline super-center"
                   >
                     <button
-                      className="btn-primary"
+                      className="btn-primary mt-3"
                       id="createskill"
                     >
                       New Project
                     </button>
                   </Link>
-                  <small>
-                    <a
-                      href="https://intercom.help/vfu"
-                      className="text-muted super-center mt-3"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Voiceflow University
-                      <i className="fal fa-long-arrow-right ml-1" />
-                    </a>
-                  </small>
                 </div>
               </div>
             ) : (

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { Input, Button } from 'reactstrap';
+import { Input } from 'reactstrap';
 import {Tooltip} from 'react-tippy';
 import { AvForm } from 'availity-reactstrap-validation';
 

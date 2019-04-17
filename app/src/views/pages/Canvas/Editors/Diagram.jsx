@@ -149,7 +149,7 @@ class DiagramBlock extends Component {
                     : 
                     <React.Fragment>
                         <button block className="mt-4 btn-primary btn-block mb-3 btn-lg" onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>
-                          <img src={'/flows-white.svg'} className="mr-2"></img> Enter Flow
+                          <img src={'/flows-white.svg'} className="mr-2" alt="flow"></img> Enter Flow
                         </button>
                         {/* <Select
                             classNamePrefix="select-box"

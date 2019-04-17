@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import LOCALE_MAP from "./../../../services/LocaleMap";
@@ -648,7 +649,9 @@ export class ActionGroup extends PureComponent {
   renderBody(modal) {
     if(this.state.saving){
       return <React.Fragment>
-        <div className={"mb-3 text-center" + (modal ? '' : ' mt-3')}>
+        <div className={cn('mb-3', 'text-center', {
+            'mt-3': !modal
+        })}>
           <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={this.state.percent}/>
         </div>
         {loading('Saving Project')}
@@ -656,7 +659,9 @@ export class ActionGroup extends PureComponent {
     }else if(this.props.platform === 'google'){
       return <React.Fragment>
         {![0].includes(this.state.google_stage) && !ENDING_STAGES.google.includes(this.state.google_stage) && 
-        <div className={"mb-3 text-center" + (modal ? '' : ' mt-3')}>
+        <div className={cn('mb-3', 'text-center', {
+            'mt-3': !modal
+        })}>
           <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={this.state.percent}/>
         </div>}
         {this.renderGoogleBody(modal)}
@@ -664,10 +669,16 @@ export class ActionGroup extends PureComponent {
     }else{
       return <React.Fragment>
         {(STAGE_PERCENTAGES.alexa[this.state.stage] && 
-        <div className={"mb-3 text-center" + (modal ? '' : ' mt-3')}>
+        <div className={cn('mb-3', 'text-center', {
+            'mt-3': !modal
+        })}>
           <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={this.state.percent}/>
         </div>) || 
-        (LOADING_STAGES.alexa.includes(this.state.stage) && <div className={"text-center mb-3" + (modal ? '' : ' mt-3')}><div className="loader text-lg"></div></div>)}
+        (LOADING_STAGES.alexa.includes(this.state.stage) && <div className={cn('mb-3', 'text-center', {
+            'mt-3': !modal
+        })}>
+            <div className="loader text-lg" />
+        </div>)}
         {this.renderAlexaBody(modal)}
       </React.Fragment>
     }

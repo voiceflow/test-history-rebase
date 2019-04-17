@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import _ from 'lodash';
@@ -97,7 +98,7 @@ export class Choice extends Component {
 
     render() {
         return (
-            <div className={this.props.live_mode ? 'disabled-overlay' : null}>
+            <div className={cn({ 'disabled-overlay': this.props.live_mode })}>
                 <ChoiceInputs
                     choices={this.state.node.extras.choices}
                     inputs={this.state.node.extras.inputs}

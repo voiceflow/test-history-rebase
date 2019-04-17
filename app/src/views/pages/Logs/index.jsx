@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 // import io from 'socket.io-client'
@@ -62,28 +63,40 @@ class TablePaginationActions extends React.Component {
                 disabled={page === 0}
                 aria-label="First Page"
             >
-                {theme.direction === 'rtl' ? <i className="fas fa-step-forward"/> : <i className="fas fa-step-backward"/>}
+                <i className={cn('fas', {
+                    'fa-step-forward': theme.direction === 'rtl',
+                    'fa-step-backward': theme.direction !== 'rtl'
+                })}/>
             </IconButton>
             <IconButton
                 onClick={this.handleBackButtonClick}
                 disabled={page === 0}
                 aria-label="Previous Page"
             >
-                {theme.direction === 'rtl' ? <i className="fas fa-chevron-right"/> : <i className="fas fa-chevron-left"/>}
+                <i className={cn('fas', {
+                    'fa-chevron-right': theme.direction === 'rtl',
+                    'fa-chevron-left': theme.direction !== 'rtl'
+                })} />
             </IconButton>
             <IconButton
                 onClick={this.handleNextButtonClick}
                 disabled={page >= Math.ceil(count / rowsPerPage) - 1}
                 aria-label="Next Page"
             >
-                {theme.direction === 'rtl' ? <i className="fas fa-chevron-left"/> : <i className="fas fa-chevron-right"/>}
+                <i className={cn('fas', {
+                    'fa-chevron-right': theme.direction !== 'rtl',
+                    'fa-chevron-left': theme.direction === 'rtl'
+                })} />
             </IconButton>
             <IconButton
                 onClick={this.handleLastPageButtonClick}
                 disabled={page >= Math.ceil(count / rowsPerPage) - 1}
                 aria-label="Last Page"
             >
-                {theme.direction === 'rtl' ? <i className="fas fa-step-backward"/> : <i className="fas fa-step-forward"/>}
+                <i className={cn('fas', {
+                    'fa-step-forward': theme.direction !== 'rtl',
+                    'fa-step-backward': theme.direction === 'rtl'
+                })} />
             </IconButton>
             </div>
         )

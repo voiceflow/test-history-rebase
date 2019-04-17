@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { setError } from 'ducks/modal'
-import NORMALIZE from 'ducks/util'
+import Normalize from 'ducks/util'
 
 const initialState = {
   byId: {},
@@ -31,7 +31,7 @@ const updateProjects = ({byId, allIds}) => ({
   payload: { byId, allIds }
 })
 
-const PROJECT = NORMALIZE('project_id', 'project', updateProjects)
+const Projects = new Normalize('project_id', 'project', updateProjects)
 
 export const resetProjects = () => ({
   type: "RESET_PROJECTS"
@@ -47,7 +47,7 @@ export const fetchProjects = team_id => {
       if(team_id !== -1) url = `/team/${team_id}/projects`
       let projects = (await axios.get(url)).data
       // NORMALIZE
-      dispatch(PROJECT('create', {data: projects}))
+      dispatch(Projects.create({data: projects}))
       return Promise.resolve()
     }catch(err){
       console.error(err)
@@ -65,7 +65,7 @@ export const copyProject = (project_id, team_id) => {
 
       let new_project = (await axios.post(`/version/${project.skill_id}/copy/team/${team_id}`)).data
 
-      dispatch(PROJECT('add', {data: new_project}))
+      dispatch(Projects.add({data: new_project}))
     }catch(err){
       console.error(err)
       dispatch(setError('Unable to copy project'))
@@ -79,7 +79,7 @@ export const deleteProject = project_id => {
   return async (dispatch) => {
     try{
       await axios.delete(`/projects/${project_id}`)
-      dispatch(PROJECT('delete', {id: project_id}))
+      dispatch(Projects.delete({id: project_id}))
     }catch(err){
       dispatch(setError('Problem deleting project'))
       console.error(err)

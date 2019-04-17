@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 import Select from 'react-select';
+import { selectStyles, variableComponent } from 'views/components/VariableSelect'
+import { connect } from 'react-redux'
+import { openTab } from 'actions/userActions'
 
 class VariableMap extends Component {
     constructor(props) {
@@ -40,13 +43,15 @@ class VariableMap extends Component {
                                     </InputGroupAddon>
 
                                     <Select
+                                        styles={selectStyles}
+                                        components={{ Option: variableComponent }}
                                         classNamePrefix="variable-box"
                                         placeholder="Variable"
                                         className="variable-box"
                                         value={this.state.pairs[i] ? {value: this.state.pairs[i], label: this.state.pairs[i]} : null}
                                         onChange={e => this.props.onChange(e.value, i, this.props.type)}
                                         options={Array.isArray(this.state.unused_array) ? this.state.unused_array.map(variable => {
-                                                return {label: variable, value: variable}
+                                                return {label: variable, value: variable, openVar: this.props.openVarTab }
                                             
                                         }) : null}
                                     />
@@ -69,4 +74,10 @@ class VariableMap extends Component {
     }
 }
 
-export default VariableMap;
+const mapDispatchToProps = dispatch => {
+    return {
+        openVarTab: (tab) => dispatch(openTab(tab))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(VariableMap);

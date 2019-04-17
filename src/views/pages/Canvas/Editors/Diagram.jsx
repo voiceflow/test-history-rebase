@@ -3,6 +3,7 @@ import { Alert, Input} from 'reactstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { setConfirm } from 'actions/modalActions'
+import { openTab } from 'actions/userActions'
 
 import { fetchDiagramVariables } from './../../../../actions/diagramVariablesAction';
 import DiagramVariables from './components/DiagramVariables';
@@ -169,6 +170,7 @@ class DiagramBlock extends Component {
                             onAdd={() => this.handleAddMap('inputs')}
                             onRemove={(i) => this.handleRemoveMap('inputs', i)}
                             handleSelection={(i, arg, value) => this.handleSelection('inputs', i, arg, value)}
+                            openVarTab={this.props.openVarTab}
                         /> 
                         <hr className="mb-1"/>
                         <label>Output Variables</label>
@@ -180,6 +182,7 @@ class DiagramBlock extends Component {
                             onAdd={() => this.handleAddMap('outputs')}
                             onRemove={(i) => this.handleRemoveMap('outputs', i)}
                             handleSelection={(i, arg, value) => this.handleSelection('outputs', i, arg, value)}
+                            openVarTab={this.props.openVarTab}
                         />
                     </React.Fragment>
                 }
@@ -198,7 +201,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
     return {
       setConfirm: confirm => dispatch(setConfirm(confirm)),
-      fetchDiagramVariables: diagram_id => dispatch(fetchDiagramVariables(diagram_id))
+      fetchDiagramVariables: diagram_id => dispatch(fetchDiagramVariables(diagram_id)),
+      openVarTab: (tab) => dispatch(openTab(tab))
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DiagramBlock);

@@ -67,7 +67,7 @@ const MemberRow = props => {
     info = (
       <>
         <div className="member-icon lg solid">
-          <img src={'/pending.svg'} width='17' style={{ marginTop: -3 }} alt="pending" />
+          <img src={'/pending.svg'} width='17' style={{ marginTop: -5 }} alt="pending" />
         </div>
         <div className="ml-3">
           <span>{m.email}</span>

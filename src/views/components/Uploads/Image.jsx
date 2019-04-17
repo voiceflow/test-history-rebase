@@ -112,11 +112,11 @@ class Image extends Component {
               <div className="w-100">
                   <div className="drop-child">
                     {this.props.tiny && <>
+                        {/* Drag-n-Drop Image or <span className="btn-link">browse</span><br/> */}
                         {this.props.url && <button className="upload-btn btn btn-default" onClick={(e)=>{
                             e.preventDefault()
                             e.stopPropagation()
                             this.setState({url_open: true})
-                            return false
                         }}>URL</button>}
                       </>
                     }

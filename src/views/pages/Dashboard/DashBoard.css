@@ -27,8 +27,8 @@
 }
 
 .member-icon.lg {
-  height: 50px;
-  width: 50px;
+  height: 48px;
+  width: 48px;
   line-height: 48px;
   font-size: 24px;
 }
@@ -37,9 +37,11 @@
   display: flex;
   align-items: center;
   border-bottom: 1px solid #EAEFF4;
-  height: 80px;
+  height: 90px;
   margin-right: -32px;
-  padding-right: 30px;
+  padding-right: 22px;
+  margin-left: -32px;
+  padding-left: 32px;
 }
 
 .add-skill {

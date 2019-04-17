@@ -164,7 +164,7 @@ export class DashBoard extends Component {
   renderProjects() {
     const filtered_projects = this.state.filter_text.trim()
       ? this.props.projects_array.filter(p =>
-          p.name.toLowerCase().contains(this.state.filter_text.toLowerCase())
+          p.name && p.name.toLowerCase().includes(this.state.filter_text.toLowerCase())
         )
       : this.props.projects_array;
     return (

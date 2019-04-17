@@ -93,7 +93,7 @@ app.use((req, res, next) => {
 
 const ensureLoggedIn = () => {
     return (req, res, next) => {
-        if(req.user || /development/.test(process.env.NODE_ENV)) next();
+        if(req.user) next();
         else res.sendStatus(401);
     }
 }

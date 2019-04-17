@@ -106,6 +106,7 @@ window.CreatorSocket.on("connect_error", socketFail);
 window.CreatorSocket.on("connect_failed", socketFail);
 // to catch connection events
 window.CreatorSocket.on("connect", () => {
+  console.log("CONNECTED")
   window.CreatorSocket.status = "CONNECTED";
   // queued up events after reconnection
   for (var cb in window.CreatorSocket.connectedCB) {

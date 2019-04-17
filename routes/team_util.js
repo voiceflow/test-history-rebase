@@ -1,7 +1,9 @@
 const Hashids = require("hashids");
+const moment = require("moment")
+
 exports.team_hash = new Hashids("QsWyflBIuXsD2cBYBg35qq0JcdfQbYHg", 10);
 
-const { pool } = require('./../services')
+const { pool, validateEmail } = require('./../services')
 
 // Check that this team member can access this skill
 exports.checkSkillAccess = async (skill_id, user_id) => {
@@ -20,8 +22,66 @@ exports.checkSkillAccess = async (skill_id, user_id) => {
   return false
 }
 
+// Add Team Members/Seats to the team
+const populateTeam = async (team_id, creator, members) => {
+  // insert owner first with owner status
+  const now = moment().unix();
+  let query = `INSERT INTO team_members (team_id, creator_id, status, email, created) VALUES ($1, $2, $3, $4, $5)`;
+  const insert = [team_id, creator.id, 100, creator.email, now];
+  const invites = [];
+  const existing_emails = new Set([creator.email])
+  let i = 1;
+  members.forEach(email => {
+    if (validateEmail(email) && !existing_emails.has(email)) {
+      let mod = i * 5;
+      query = query + `, ($${1 + mod}, $${2 + mod}, $${3 + mod}, $${4 + mod}, $${5 + mod})`;
+      insert.push(team_id, null, 0, email, now);
+      invites.push(email);
+      existing_emails.add(email)
+      i++;
+    }
+  });
+
+  await pool.query(query, insert);
+  return { invites, now };
+};
+
+// Add Team Members/Seats to the team, return new members to be invited
+const repopulateTeam = async (team_id, members) => {
+  // insert owner first with owner status
+  const now = moment().unix();
+  let query = `INSERT INTO team_members (team_id, creator_id, status, email, created) VALUES `;
+  const invites = []
+  const insert = []
+  const emails = new Set()
+
+  let i = 0;
+  members.forEach(m => {
+    if(!m.creator_id) {
+      if(!validateEmail(m.email) || emails.has(m.email)) {
+        m.email = undefined
+        return
+      }
+      invites.push(m.email)
+      m.created = now
+      m.status = 0
+    }else if(!m.status){
+      m.status = 1
+    }
+
+    let mod = i * 5;
+    query = query + `($${1 + mod}, $${2 + mod}, $${3 + mod}, $${4 + mod}, $${5 + mod}), `;
+    insert.push(team_id, m.creator_id, m.status, m.email, (m.created || now));
+    emails.add(m.email)
+    i++;
+  });
+
+  await pool.query(query.slice(0,-2), insert);
+  return { invites, now }
+};
+
 // create a new team
-exports.createTeam = async (name, image, creator, seats=false) => {
+const createTeam = async (name, image, creator, seats=false) => {
   let result
   if(seats) {
     result = await pool.query(
@@ -36,6 +96,10 @@ exports.createTeam = async (name, image, creator, seats=false) => {
   }
   return result.rows[0];
 };
+
+exports.createTeam = createTeam
+exports.populateTeam = populateTeam
+exports.repopulateTeam = repopulateTeam
 
 exports.createPersonalTeam = async (user) => {
   const team = await createTeam("Personal", null, user, 1);

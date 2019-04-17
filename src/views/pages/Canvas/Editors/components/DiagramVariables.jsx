@@ -1,8 +1,7 @@
 import cn from 'classnames'
 import React from 'react';
-import { connect } from 'react-redux'
 import Select from 'react-select';
-import { openTab } from 'actions/userActions'
+import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 
 const DiagramVariables = (props) => (
     <>
@@ -14,11 +13,18 @@ const DiagramVariables = (props) => (
                     <Select
                         classNamePrefix="variable-box"
                         className="map-box"
+                        styles={selectStyles}
+                        components={{ Option: variableComponent }}
                         value={argument.arg1 ? {label: '{' + argument.arg1 + '}', variable: argument.arg1} : null}
-                        onChange={(selected)=>props.handleSelection(i, 'arg1', selected.value)}
+                        onChange={(selected) => {
+                            if (selected.value !== 'Create Variable') props.handleSelection(i, 'arg1', selected.value) 
+                        }}
                         placeholder={props.arg1_options.length > 0 ? "Variable" : "No Var.."}
-                        options={Array.isArray(props.arg1_options) ? props.arg1_options.map(variable => {
-                            return {label: '{' + variable + '}', value: variable}
+                        options={Array.isArray(props.arg1_options) ? props.arg1_options.map((variable, idx) => {
+                            if (idx === props.arg1_options.length-1){
+                                return { label: variable, value: variable, openVar: props.openVarTab }
+                            }
+                            return { label: '{' + variable + '}', value: variable }
                         }) : null}
                     />
                     <i className="far fa-arrow-right"/>
@@ -42,11 +48,4 @@ const DiagramVariables = (props) => (
     </>
 )
 
-const mapDispatchToProps = dispatch => {
-    return {
-        openVarTab: (tab) => dispatch(openTab(tab)),
-    }
-}
-
-
-export default connect(null, mapDispatchToProps)(DiagramVariables);
+export default DiagramVariables;

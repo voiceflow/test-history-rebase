@@ -314,7 +314,7 @@ class TeamSettings extends Component {
             />
             <div className="my-3 text-center">
               <button
-                className={"btn btn-danger" + (equal ? "" : " disabled")}
+                className={"btn btn-warning" + (equal ? "" : " disabled")}
                 disabled={!equal}
                 onClick={this.deleteTeam}
               >

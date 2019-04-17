@@ -3,11 +3,8 @@ import { connect } from 'react-redux'
 import Select from 'react-select'
 import { Button, Input, Alert } from 'reactstrap';
 import {Link} from 'react-router-dom'
-
-const validateEmail = (email) => {
-    var re = /^(([^<>()[]\\.,;:\s@"]+(\.[^<>()[]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
+import VariableInput from './components/VariableInput'
+import { ContentState, convertToRaw } from 'draft-js';
 
 export class Mail extends Component {
     constructor(props) {
@@ -19,8 +16,7 @@ export class Mail extends Component {
             if(find){
                 selected = {
                     label: find.title,
-                    value: find.template_id,
-                    invalid: validateEmail(props.node.extras.to)
+                    value: find.template_id
                 }
 
                 if(props.node.extras.to && props.node.extras.to.length !== 0){
@@ -37,6 +33,10 @@ export class Mail extends Component {
             }
         }
 
+        if(props.node.extras.to && typeof props.node.extras.to === 'string') {
+            props.node.extras.to = convertToRaw(ContentState.createFromText(props.node.extras.to))
+        }
+
         this.state = {
             node: props.node,
             selected: selected
@@ -51,17 +51,9 @@ export class Mail extends Component {
         let node = this.state.node;
         node.extras[e.target.name] = e.target.value;
 
-        if(e.target.name === 'to' && !validateEmail(e.target.value)){
-            this.setState({
-                invalid: true,
-                node: node
-            });
-        }else{
-            this.setState({
-                invalid: false,
-                node: node
-            });
-        }
+        this.setState({
+            node: node
+        });
     }
 
     selectVariable(selected, index) {
@@ -144,15 +136,20 @@ export class Mail extends Component {
                 {
                     !user ? 
                     <React.Fragment>
-                        <Input 
-                            className="form-bg"
-                            name='to'
-                            type='email'
-                            value={this.state.node.extras.to} 
-                            onChange={this.onChange}
-                            placeholder="E-mail"
+                        <VariableInput
+                            className="form-control"
+                            raw={this.state.node.extras.to}
+                            placeholder='E-mail Recipient'
+                            variables={this.props.variables}
+                            updateRaw={(raw) => {
+                                let node = this.state.node
+                                node.extras.to = raw
+                        
+                                this.setState({
+                                    node: node
+                                })
+                            }}
                         />
-                        {this.state.invalid && <Alert color="danger" className="py-1 px-2 mt-1">Invalid Email</Alert>}
                     </React.Fragment> :
                     <span className="text-muted font-italic">
                         This Message Will Only Be Sent If the User Consents to Sharing Their Email

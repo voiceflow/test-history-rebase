@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Select from 'react-select'
-import { Button, Input, Alert } from 'reactstrap';
+import { Button } from 'reactstrap';
 import {Link} from 'react-router-dom'
 import VariableInput from './components/VariableInput'
 import { ContentState, convertToRaw } from 'draft-js';
+import { selectStyles, variableComponent } from 'views/components/VariableSelect'
+import { openTab } from 'actions/userActions'
 
 export class Mail extends Component {
     constructor(props) {
@@ -177,13 +179,15 @@ export class Mail extends Component {
                                 {this.state.node.extras.mapping.map((v, i) => {
                                     return <div key={i} className="variable_map mb-2">
                                         <Select
+                                            styles={selectStyles}
+                                            components={{ Option: variableComponent }}
                                             className="map-box"
                                             classNamePrefix="variable-box"
                                             placeholder="Variable"
                                             value={v.val ? { label: '{' + v.val + '}', value: v.val } : null}
                                             onChange={(select) => this.selectVariable(select, i)}
                                             options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                                                return { label: '{' + variable + '}', value: variable }
+                                                return { label: '{' + variable + '}', value: variable, openVar: this.props.openVarTab  }
                                             }) : null}
                                         />
                                         <i className="far fa-arrow-right" />
@@ -201,5 +205,10 @@ const mapStateToProps = state => ({
     skill_id: state.skills.skill.skill_id,
     templates: state.emails.email_templates,
 })
+const mapDispatchToProps = dispatch => {
+    return {
+        openVarTab: (tab) => dispatch(openTab(tab))
+    }
+}
 
-export default connect(mapStateToProps)(Mail);
+export default connect(mapStateToProps, mapDispatchToProps)(Mail);

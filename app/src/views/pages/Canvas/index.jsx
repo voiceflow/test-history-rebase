@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import * as SRD from './../../components/SRD/main.js'
+import cn from 'classnames'
 import Menu from './Menu'
 import Editor from './Editor'
 import axios from 'axios'
@@ -1578,7 +1579,7 @@ export class Canvas extends Component {
               <div
                 key={this.props.diagram_id}
                 id="diagram"
-                className={this.props.preview ? " no-padding" : ""}
+                className={cn({ 'no-padding': this.props.preview })}
                 onDrop={this.onDrop}
                 onDragOver={e => {
                     e.stopPropagation()

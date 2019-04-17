@@ -8,7 +8,9 @@ RUN yarn
 
 RUN cd ./app && yarn
 
-RUN npm run build
+ARG REACT_APP_BUILD_ENV
+
+RUN REACT_APP_BUILD_ENV=$REACT_APP_BUILD_ENV npm run build
 
 RUN npm install -g forever
 

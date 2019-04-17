@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux'
 import {Tooltip} from 'react-tippy';
 import { ALLOWED_GOOGLE_BLOCKS } from 'Constants'

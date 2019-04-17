@@ -33,8 +33,8 @@ const STAGES = {
 };
 
 const Contact = <Alert className="text-center py-3 mt-2">
-  <h1><i className="fas fa-comment-plus"/></h1>
-  Contact the administrators of this board to upgrade
+  <img src={'/contact-owner.svg'} width={65}></img>
+  Contact the owner of this board to upgrade
 </Alert>
 
 const MemberRow = props => {
@@ -314,7 +314,7 @@ class TeamSettings extends Component {
             />
             <div className="my-3 text-center">
               <button
-                className={"btn btn-danger" + (equal ? "" : " disabled")}
+                className={"btn btn-warning" + (equal ? "" : " disabled")}
                 disabled={!equal}
                 onClick={this.deleteTeam}
               >

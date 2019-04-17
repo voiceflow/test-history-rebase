@@ -566,7 +566,7 @@ audio {
     color: #fff !important;
     border-radius: 5px;
     box-shadow: 0 1px 8px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.05);
-    background: linear-gradient(to bottom, #f83f5595, #f83f55);
+    background: linear-gradient(to bottom, #f83f5597, #f83f55) !important;
     letter-spacing: 0.2px;
     border: none;
     text-transform: none;
@@ -576,7 +576,7 @@ audio {
     border-radius: 50px;
  }
  .btn-warning:hover{
-     background-color: #f83f55;
+     background-color: #f83f55 !important;
      box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08) !important;
  }
  .btn-warning:active{

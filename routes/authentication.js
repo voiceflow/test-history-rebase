@@ -64,7 +64,8 @@ const trackUser = async (data, analytics_data) => {
 				'city': city,
 				'country': country,
 				'os': analytics_data.device.os,
-				'browser': analytics_data.device.browser
+				'browser': analytics_data.device.browser,
+				'created': data.created.toISOString()
 			}
 		}, () => {
 			analytics.track({
@@ -121,7 +122,6 @@ function createLogin(data, analytics_data, cb) {
             first_login: data.first_login,
             verified: data.verified,
 				}
-
 				trackUser(data, analytics_data)
 
         // cache the token
@@ -284,7 +284,8 @@ const putSession = (req, res) => {
 	                		name: row.name,
 	                		admin: row.admin,
                       first_login: false,
-                      verified: row.verified,
+											verified: row.verified,
+											created: row.created
 	                	}, {platform: 'VF', device: req.body.device}, (credentials) => {
 	                		res.status(200).send({
                         		token: credentials.userHash + credentials.token,
@@ -327,12 +328,12 @@ const googleLogin = async(req, res) => {
           res.status(400).send("invalid token")
         } else {
           email = email.trim().toLowerCase();
-          pool.query('SELECT 1 FROM creators WHERE email = $1 OR gid = $2 LIMIT 1', [email, gid], (err, result) => {
+          pool.query('SELECT * FROM creators WHERE email = $1 OR gid = $2 LIMIT 1', [email, gid], (err, result) => {
             if(err){
 							writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
               res.status(500).send("Unable to Access Database");
             }else if(result.rows.length !== 0){
-              pool.query('UPDATE creators SET gid = $2 WHERE email = $1 RETURNING *', [email, gid], (err, data) => {
+              pool.query('UPDATE creators SET gid = $2 WHERE email = $1 RETURNING creator_id, verified, created', [email, gid], (err, data) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                   res.status(500).send('Something went wrong with existing email');
@@ -346,7 +347,8 @@ const googleLogin = async(req, res) => {
                     name: row.name,
                     admin: row.admin,
                     first_login: false,
-                    verified: row.verified,
+										verified: row.verified,
+										created: row.created
                   }, {platform: 'Google', device: req.body.device} ,(credentials) => {
 										res.status(200).send({
 											token: credentials.userHash + credentials.token,
@@ -358,7 +360,7 @@ const googleLogin = async(req, res) => {
                 }
               })
             }else{
-              pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id',
+              pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id, verified, created',
                 [name, email, gid], (err, insert_result) => {
 									if (err) {
 											writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
@@ -373,6 +375,7 @@ const googleLogin = async(req, res) => {
 											admin: 0,
 											first_login: true,
 											verified: insert_result.rows[0].verified,
+											created: insert_result.rows[0].created
 										}, {platform: 'Google', device: req.body.device}, async (credentials) => {
 											res.status(200).send({
 												token: credentials.userHash + credentials.token,
@@ -512,6 +515,7 @@ const fbLogin = async(req, res) => {
 										admin: row.admin,
 										first_login: false,
 										verified: row.verified,
+										created: row.created
 									},{platform: 'Facebook', device: req.body.device}, (credentials) => {
 										res.status(200).send({
 											token: credentials.userHash + credentials.token,
@@ -523,7 +527,7 @@ const fbLogin = async(req, res) => {
                 }
               })
             }else{
-              pool.query('INSERT INTO creators (name, email, fid) VALUES ($1, $2, $3) RETURNING creator_id',
+              pool.query('INSERT INTO creators (name, email, fid) VALUES ($1, $2, $3) RETURNING creator_id, verified, created',
                 [name, email, fid], (err, insert_result) => {
                     if (err) {
                         writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
@@ -537,7 +541,8 @@ const fbLogin = async(req, res) => {
                         name: name,
                         admin: 0,
                         first_login: true,
-                        verified: true,
+												verified: true,
+												created: insert_result.rows[0].created
                       }, {platform: 'Facebook', device: req.body.device}, async (credentials) => {
 												res.status(200).send({
 													token: credentials.userHash + credentials.token,
@@ -574,7 +579,7 @@ const putUser = async (req, res) => {
 						writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 						res.status(500).send('Password Error')
 					} else {
-						pool.query('INSERT INTO creators (name, email, password) VALUES ($1, $2, $3) RETURNING creator_id',
+						pool.query('INSERT INTO creators (name, email, password) VALUES ($1, $2, $3) RETURNING creator_id, verified, created',
 							[name, email, hash], (err, insert_result) => {
 								if (err) {
 									writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
@@ -589,6 +594,7 @@ const putUser = async (req, res) => {
 											admin: 0,
 											first_login: true,
 											verified: insert_result.rows[0].verified,
+											created: insert_result.rows[0].created
 										}, {platform: 'VF', device: req.body.device}, async (credentials) => {
 											res.status(200).send({
 											token: credentials.userHash + credentials.token,

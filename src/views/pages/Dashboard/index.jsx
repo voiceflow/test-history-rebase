@@ -164,7 +164,7 @@ export class DashBoard extends Component {
   renderProjects() {
     const filtered_projects = this.state.filter_text.trim()
       ? this.props.projects_array.filter(p =>
-          p.name && p.name.toLowerCase().includes(this.state.filter_text.toLowerCase())
+          p.name.toLowerCase().includes(this.state.filter_text.toLowerCase())
         )
       : this.props.projects_array;
     return (
@@ -212,7 +212,7 @@ export class DashBoard extends Component {
           { this.props.projects_array.length >= this.props.team.projects ?
             <div className="empty-card update-card text-center">
               <div onClick={this.newProject} className="d-block pt-4">
-              <img src={'/upgrade-projects.svg'} className="mt-4 mb-2" width="65"></img><br/>
+              <img src={'/upgrade-projects.svg'} className="mt-4 mb-2" width="65" alt="upgrade"></img><br/>
                 <label className="dark">
                   Project Limit Reached</label>
                   <div className="text-muted">Upgrade to a paid plan <br></br> for unlimited projects</div>

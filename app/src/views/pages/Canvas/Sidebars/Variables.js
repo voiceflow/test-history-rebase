@@ -25,8 +25,6 @@ const defaultVariables = {
 
 const tt = (width, message) => <div style={{ width: width }}>{message}</div>
 
-const TABS = ["global", "local"];
-
 export class Variables extends PureComponent {
   constructor(props) {
     super(props);

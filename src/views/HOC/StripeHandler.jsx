@@ -5,10 +5,7 @@ const MAX_POLL_COUNT = 30;
 const POLL_INTERVAL = 1000;
 
 // SECRET
-const STRIPE_KEY =
-  process.env.NODE_ENV === "production"
-    ? "pk_live_9QXjJjWc0sjk8VSwbQT3viub"
-    : "pk_test_G3o7CC0pvrW2cIbIU1bLkMSR";
+const STRIPE_KEY = "pk_test_G3o7CC0pvrW2cIbIU1bLkMSR";
 
 const StripeHandler = WrappedComponent => {
   WrappedComponent = injectStripe(WrappedComponent)

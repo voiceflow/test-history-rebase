@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import cn from 'classnames'
 import React, { Component } from 'react';
 import Mousetrap from 'mousetrap';
 import { compose } from 'recompose'
@@ -508,7 +509,11 @@ class Editor extends Component {
             return null;
         }
         return (
-            <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open' : '')}
+            <div 
+                id="Editor"
+                className={cn({
+                    open: this.props.open && type && !this.state.modal
+                })}
                 onFocus={this.props.unfocus}
                 onClickCapture={this.eventHandler}
                 onKeyDownCapture={this.eventHandler}

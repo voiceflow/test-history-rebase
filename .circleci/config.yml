@@ -66,6 +66,8 @@ jobs: # a collection of steps
           name: 'Update PIP && Install AWS CLI'
           command: |
             cat Dockerfile
+            git config user.email "build@voiceflow.com"
+            git config user.name "build"
             git add -A
             git commit -m "$CIRCLE_BUILD_NUM BUILD"
             pip install awsebcli

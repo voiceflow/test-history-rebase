@@ -93,7 +93,7 @@ class NavBar extends Component {
   render() {
 
     let page_name = '/' + getPage(this.props.history.location.pathname);
-    let image = "/images/icons/vf_logo.png"
+    let image = "/logo.svg"
     if(this.props.team && this.props.team.status > 0 && this.props.team.image){
       image = this.props.team.image
     }

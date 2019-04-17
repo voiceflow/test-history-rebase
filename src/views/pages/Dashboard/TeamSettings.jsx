@@ -295,9 +295,9 @@ class TeamSettings extends Component {
             <label>Team Icon</label>
             { this.props.team.status === 0 ?
               <div className="mb-3">
-                <img src='/images/icons/vf_logo.png' alt="Voiceflow" width={100} className="py-2 mb-1 no-select"/><br/>
+                <img src='/images/icons/vf_logo.png' alt="Voiceflow" width={80} className="py-2 mb-1 no-select"/><br/>
                 <small className="text-muted">
-                  Update this board under <b>Billing</b> to add custom icons
+                  Upgrade this board under billing to add a custom image
                 </small>
               </div> :
               <Image

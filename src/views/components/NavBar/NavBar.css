@@ -6,12 +6,12 @@
 }
 
 .voiceflow-logo {
-  height: 36px;
-  width: 36px;
+  height: 42px;
+  width: 42px;
   background-size: 100% auto;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 6px;
+  border-radius: 50%;
 }
 
 .nav-item{

@@ -35,10 +35,7 @@ class Stream extends Component {
         let ports = node.getPorts();
 
         if(this.state.node.extras.custom_pause){
-            let bestNode
-            if (node.parentCombine){
-                bestNode = _.findIndex(node.parentCombine.combines, npc => npc.name === node.name)
-            }
+            const idsEqual = npc => npc.id === node.id
             for (let name in ports) {
                 let port = node.getPort(name);
                 if(port.in) continue
@@ -46,7 +43,7 @@ class Stream extends Component {
                 if (port.label === 'pause') {
                     node.removePort(port)
                     if (node.parentCombine) {
-                        let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
+                        let bestNode = _.findIndex(node.parentCombine.combines, idsEqual)
                         node.parentCombine.combines[bestNode] = node
                     }
                 }

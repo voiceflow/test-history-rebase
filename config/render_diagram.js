@@ -786,7 +786,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           let reminder = {}
           reminder.text = draftToMarkdown(node_reminder.text)
           reminder.type = node_reminder.reminder_type
-          reminder.time = node_reminder.time
+          reminder.time = deepDraftToMarkdown(node_reminder.time).result
           if(reminder.type === 'SCHEDULED_ABSOLUTE'){
             reminder.timezone = node_reminder.timezone
             reminder.date = node_reminder.date

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import cn from 'classnames'
 import { Collapse } from 'reactstrap'
 import { Tooltip } from 'react-tippy'
 import update from 'immutability-helper';
@@ -72,14 +73,26 @@ class ActionSection extends Component {
       <>
         <div className="d-flex flex-column section-title-container" onClick={() => this.props.toggleSection()}>
           <div className='integrations-section-title text-muted'>I want to
-            <span onClick={() => this.props.toggleSection()} className={`action-selected ${action ? 'action-visible' : ''}`}>{action}</span>
+            <span
+              onClick={() => this.props.toggleSection()}
+              className={cn('action-selected', {
+                'action-visible': action
+              })}>
+                {action}
+              </span>
             {this.state.completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
           </div>
         </div>
         <Collapse isOpen={this.props.open} className='w-100'>
           <div className='d-flex align-items-center flex-column w-100 actions-section'>
             {Object.keys(this.props.all_actions).map((e, i) => {
-              return <div key={i} className={`btn-clear btn-lg btn-block btn ${action === e ? 'active' : ''}`} onClick={() => this.selectAction(e)} style={{ position: 'relative' }}>
+              return <div
+                key={i}
+                className={cn('btn', 'btn-clear', 'btn-lg', 'btn-block', {
+                  active: action === e
+                })}
+                onClick={() => this.selectAction(e)} style={{ position: 'relative' }}
+              >
                 <Tooltip
                   className="menu-tip actions-tooltip"
                   title={this.props.all_actions[e].tooltip}

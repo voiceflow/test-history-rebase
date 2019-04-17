@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react';
 import { Button, FormGroup, Input, Alert } from 'reactstrap';
 import {Link} from 'react-router-dom'
@@ -90,7 +91,9 @@ class ResetPassword extends Component {
                     <FormGroup>
                       <Input type="password" name="password" onChange={this.handleChange} placeholder="New Password" required minLength="8" className="mb-2"/>
                       <Input type="password" name="confirm" onChange={this.handleChange} placeholder="Confirm Password" required minLength="8"
-                        className={this.state.password !== this.state.confirm ? 'invalid' : ''}
+                        className={cn({
+                          invalid: this.state.password !== this.state.confirm
+                        })}
                       />
                     </FormGroup>
                     <Button block className="login-btn" type="submit">Reset Password</Button>

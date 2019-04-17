@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import cn from 'classnames'
 import * as React from "react";
 import { BaseWidget } from "./../main.js"
 
@@ -22,8 +23,16 @@ export class BlockPortWidget extends BaseWidget {
 	}
 
 	getClassName() {
-		return `port ${this.props.port.in? 'in' : 'out'} ${this.props.isHidden ? 'd-none' : ''} ${(this.props.node.parentCombine && this.props.port.in) ? 'combine-port': ''} ${this.props.isMoving ? 'moving': ''} `
-		+ super.getClassName() + (this.state.selected ? this.bem("--selected") : "" + (this.isUnlinked() ? "unlinked" : "") );
+		const { port, node, isHidden, isMoving } = this.props
+		let className = cn('port', {
+			in: port.in,
+			out: !port.in,
+			moving: isMoving,
+			unlinked: this.isUnlinked(),
+			'd-none': isHidden,
+			'combine-port': node.parentCombine && port.in,
+		})
+		return super.getClassName() + (this.state.selected ? this.bem("--selected ") : " ") + className
 	}
 
 	// componentDidMount() {

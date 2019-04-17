@@ -84,9 +84,9 @@ class NewTeam extends Component {
       this.props.setModal({
         size: 'sm',
         header: true,
-        body: (<div className="text-center mb-5 text-muted">
+        body: (<div className="text-center mb-4 pl-4 pr-4 text-muted">
           <img src="/images/icons/takeoff.svg" height={140} alt="blast off"/><br/><br/>
-          Your board <i><b>{team.name}</b></i> has been
+          Your board <b>{team.name}</b> has been
           successfully created
         </div>)
       })

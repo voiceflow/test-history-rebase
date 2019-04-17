@@ -38,7 +38,7 @@ class Team extends PureComponent {
           this.props.setModal({
             size: 'sm',
             header: true,
-            body: (<div className="text-center py-5 mb-5 text-muted">
+            body: (<div className="text-center py-1 mb-5 text-muted">
               <img src="/images/icons/takeoff.svg" height={140} alt="blast off"/><br/><br/>
               Successfully Accepted Invite<br/>
               Welcome to Voiceflow

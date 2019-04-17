@@ -211,11 +211,12 @@ export class DashBoard extends Component {
           })}
           { this.props.projects_array.length >= this.props.team.projects ?
             <div className="empty-card update-card text-center">
-              <div onClick={this.newProject}>
-                <h5>
-                  Update Board<br/>
-                  For More Projects
-                </h5>
+              <div onClick={this.newProject} className="d-block pt-4">
+              <img src={'/upgrade-projects.svg'} className="mt-5 mb-2" width="65"></img><br/>
+                <label>
+                  Upgrade board for<br/>
+                  unlimited projects
+                </label>
               </div>
             </div> :
             <EmptyCard onClick={this.newProject} />
@@ -281,7 +282,7 @@ export class DashBoard extends Component {
                 </button>
               </Tooltip>
             </form>
-            <button className="btn btn-primary ml-1" onClick={this.newProject}>
+            <button className="btn-primary ml-1" onClick={this.newProject}>
               New Project
             </button>
           </div>
@@ -305,7 +306,7 @@ export class DashBoard extends Component {
           {this.state.loading && (
             <div id="loading-diagram">
               <div className="text-center">
-                <h5 className="text-muted mb-2">Loading Projects</h5>
+                <h5 className="text-muted mb-2">Loading Projects...</h5>
                 <span className="loader" />
               </div>
             </div>

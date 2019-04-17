@@ -6,7 +6,7 @@ const POLL_INTERVAL = 1000;
 
 // SECRET
 const STRIPE_KEY =
-  process.env.NODE_ENV === "production"
+  (process.env.NODE_ENV === "production" && process.env.REACT_APP_BUILD_ENV !== "staging")
     ? "pk_live_9QXjJjWc0sjk8VSwbQT3viub"
     : "pk_test_G3o7CC0pvrW2cIbIU1bLkMSR";
 

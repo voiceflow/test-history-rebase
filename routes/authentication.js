@@ -333,14 +333,14 @@ const googleLogin = async(req, res) => {
 							writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
               res.status(500).send("Unable to Access Database");
             }else if(result.rows.length !== 0){
-              pool.query('UPDATE creators SET gid = $2 WHERE email = $1 RETURNING creator_id, verified, created', [email, gid], (err, data) => {
+              pool.query('UPDATE creators SET gid = $2 WHERE email = $1 RETURNING *', [email, gid], (err, data) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                   res.status(500).send('Something went wrong with existing email');
                 } else if (data.rows.length === 0){
 										return res.sendStatus(404)
 								} else {
-									let row = result.rows[0];
+									let row = data.rows[0];
                   createLogin({
                     id: row.creator_id,
                     email: row.email,

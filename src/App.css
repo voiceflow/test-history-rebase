@@ -1295,6 +1295,11 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
     font-weight: 500;
     line-height: 20px;
 }
+.dropdown-menu-center {
+  width:200px; 
+  left:50%; 
+  margin-left:-100px;
+}
 .form-title{
     font-size: 15px;
     font-weight: 500;

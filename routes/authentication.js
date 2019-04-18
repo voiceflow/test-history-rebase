@@ -403,6 +403,7 @@ const deleteSession = (req, res) => {
   res.sendStatus(200);
 };
 
+<<<<<<< HEAD
 const googleLogin = async (req, res) => {
   let name = req.body.user.name;
   let email = req.body.user.email;
@@ -460,6 +461,28 @@ const googleLogin = async (req, res) => {
             let image = getProfile()
             pool.query('INSERT INTO creators (name, email, gid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id, created',
               [name, email, gid, image], async (err, insert_result) => {
+=======
+const googleLogin = async(req, res) => {
+    let name = req.body.user.name;
+    let email = req.body.user.email;
+    let gid = req.body.user.googleId;
+    let token = req.body.user.token;
+
+    if (!name || !email || !gid || !token) {
+      res.status(400).send("Unable to Authenticate Through Google");
+    } else {
+      googleAuth(token, (payload, user) => {
+        if (payload.payload.email !== email){
+          res.status(400).send("invalid token")
+        } else {
+          email = email.trim().toLowerCase();
+          pool.query('SELECT * FROM creators WHERE email = $1 OR gid = $2 LIMIT 1', [email, gid], (err, result) => {
+            if(err){
+							writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+              res.status(500).send("Unable to Access Database");
+            }else if(result.rows.length !== 0){
+              pool.query('UPDATE creators SET gid = $2 WHERE email = $1 RETURNING *', [email, gid], (err, data) => {
+>>>>>>> master
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {
                     err: err

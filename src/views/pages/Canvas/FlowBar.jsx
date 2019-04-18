@@ -81,7 +81,8 @@ class FlowBar extends Component{
                 </div>
                 {!this.props.preview &&
                     <UncontrolledDropdown direction='up'>
-                        <DropdownToggle className="grey-icon position-absolute right mr-4 mt-1" tag="button">
+                        <DropdownToggle className="dropdown-button position-absolute right mr-4 mt-1" tag="button">
+                        <i class="far fa-ellipsis-h"></i>
                         </DropdownToggle>
                         <DropdownMenu className="no-select">
                             <DropdownItem header>

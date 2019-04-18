@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import _ from 'lodash';
@@ -57,12 +58,6 @@ export class Choice extends Component {
         let test = node.addOutPort(node.extras.inputs.length);
         test.setMaximumLinks(1);
         if (node.parentCombine) {
-            let isLast = _.last(node.parentCombine.combines).id === node.id
-            let newPort = _.differenceBy(node.getOutPorts(), node.parentCombine.getOutPorts(), 'id');
-            if (isLast) {
-                node.parentCombine.ports[newPort[0].name] = newPort[0]
-                node.parentCombine.ports[newPort[0].name].parent = node.parentCombine
-            }
             let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
             node.parentCombine.combines[bestNode] = node
 
@@ -87,11 +82,6 @@ export class Choice extends Component {
 
             if (port.label === node.extras.inputs.length) {
                 node.removePort(port);
-                if (node.parentCombine) {
-                    node.parentCombine.removePort(port);
-                    // eslint-disable-next-line
-                    node.parentCombine.combines[bestNode].ports = _.filter(node.parentCombine.combines[bestNode].ports, p => p.id !== port.id)
-                }
                 break;
             }
         }
@@ -108,7 +98,7 @@ export class Choice extends Component {
 
     render() {
         return (
-            <div className={this.props.live_mode ? 'disabled-overlay' : null}>
+            <div className={cn({ 'disabled-overlay': this.props.live_mode })}>
                 <ChoiceInputs
                     choices={this.state.node.extras.choices}
                     inputs={this.state.node.extras.inputs}

@@ -1,4 +1,5 @@
 import React from 'react'
+import cn from 'classnames'
 import {injectStripe, CardElement} from 'react-stripe-elements'
 import {Button, Input, Alert} from 'reactstrap'
 import axios from 'axios'
@@ -1001,11 +1002,16 @@ class CheckoutForm extends React.Component {
                         value={this.state.promo}
                         placeholder="XXXXXXXXXXXX"
                         maxLength={12}
-                        className={this.state.promo_invalid
-                        ? 'is-invalid'
-                        : ''}/> {!!this.state.promo_invalid && <div className="invalid-feedback">{this.state.promo_invalid === 2
-                            ? 'Checking Promo Code...'
-                            : 'Invalid Promotional Code'}</div>}
+                        className={cn({ 'is-invalid': this.state.promo_invalid})}
+                    />
+                    {!!this.state.promo_invalid &&
+                        <div className="invalid-feedback">
+                            {this.state.promo_invalid === 2
+                                ? 'Checking Promo Code...'
+                                : 'Invalid Promotional Code'
+                            }
+                        </div>
+                    }
                 </React.Fragment>}
                 <label>
                     Billing Information
@@ -1094,7 +1100,7 @@ class CheckoutForm extends React.Component {
         return (
             <div className="payment-form">
                 {this.renderStage()}
-                <div className={this.state.stage === 0 ? '' : 'd-none'}>
+                <div className={cn({ 'd-none': this.state.stage !== 0 })}>
                     {this.renderForm()}
                 </div>
             </div>

@@ -3,12 +3,12 @@ const _ = require('lodash')
 const moment = require('moment')
 
 // MAINTENANCE - TURN OFF WHEN NOT IN USE FOR PERFORMANCE
-const MAINTENANCE = false
+const MAINTENANCE = true
 
 // MAINTENANCE SETTINGS
 
 // ISO standard time in GMT
-const MAINTENANCE_START='2019-03-23T16:00:00Z'
+const MAINTENANCE_START='2019-04-19T00:00:00Z'
 // downtime in minutes
 const MAINTENANCE_TIME=120
 // how many minutes out to do warnings

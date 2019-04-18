@@ -33,7 +33,7 @@ class UpdatesModal extends React.Component {
               return <React.Fragment key={i}>
                 <div align="left" className="pr-4 pl-4">
                   <p className={class_mapping[entry.type].class}>&bull; {class_mapping[entry.type].label}: </p>
-                  <p className="update-modal-txt">{entry.details}</p>
+                  <p className="update-modal-txt" dangerouslySetInnerHTML={{ __html: entry.details }}></p>
                 </div>
                 <hr className="w-100"/> 
               </React.Fragment>

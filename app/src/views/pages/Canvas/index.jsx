@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import * as SRD from './../../components/SRD/main.js'
+import cn from 'classnames'
 import Menu from './Menu'
 import Editor from './Editor'
 import axios from 'axios'
@@ -22,11 +23,12 @@ import CanvasWarning from './components/CanvasWarning'
 //Helpers
 import { combineAppendValidation, appendValidator } from './../../helpers/combineHelper'
 
-import { updateVersion, updateIntents, setCanFulfill } from "./../../../actions/versionActions";
-import { setVariables } from './../../../actions/variableActions'
+import { updateVersion, updateIntents, setCanFulfill } from "actions/versionActions";
+import { setVariables } from 'actions/variableActions'
 import { setCanvasError } from 'actions/userActions'
 import { renameDiagram } from 'actions/diagramActions'
 import { setError, setConfirm } from 'actions/modalActions'
+import { fetchEmails } from "actions/emailActions";
 
 import ActionGroup from './ActionGroup'
 import HelpModal from './HelpModal'
@@ -60,6 +62,7 @@ import { checkBlockDisabledLive } from './Blocks'
 import { Prompt } from 'react-router'
 import moment from 'moment'
 import Upgrade from '../../components/Modals/MultiPlatformModalContent.jsx';
+import { fetchIntegrationUsers } from '../../../actions/integrationUsersActions.js';
 
 const NLC = require('natural-language-commander')
 const _ = require('lodash')
@@ -194,7 +197,20 @@ export class Canvas extends Component {
                 }
             }, 10000)
         }
-    }
+        this.props.getIntegrationsUsers().then(() => {
+            if (this.props.integration_users_error) {
+                this.props.setError(this.props.integration_users_error)
+            }
+        })
+        if (window.user_detail && window.user_detail.admin > 0 && this.props.skill) {
+            // Re-load templates in case of change
+            try {
+                this.props.getEmails(this.props.skill.skill_id)
+            } catch (err) {
+                console.error(err)
+            }
+        }
+}
 
     componentWillUnmount() {
         if(!this.props.preview && this.props.skill && this.props.skill.skill_id && this.props.diagram_id && !window.error){
@@ -421,7 +437,7 @@ export class Canvas extends Component {
         util.createCombineNode(newNode, type, node)
         newNode.extras.type = type;
         if (node.extras.type !== 'god') {
-            var combineNode = new BlockNodeModel('Combine Block', null, toolkit.UID())
+            var combineNode = new BlockNodeModel('New Block', null, toolkit.UID())
             combineNode.extras.type = 'god'
             node.parentCombine = combineNode;
             newNode.parentCombine = combineNode;
@@ -775,7 +791,7 @@ export class Canvas extends Component {
                     global: this.props.skill.global
                 }
                 const s = this.props.skill;
-                
+
                 const save_skill_intents = new Promise((resolve, reject) => {
                     axios.patch('/skill/' + s.skill_id + '?intents=true', {
                         intents: JSON.stringify(s.intents),
@@ -1403,6 +1419,12 @@ export class Canvas extends Component {
         this.unsave()
     }
 
+    updateExtras = (extras, callback) => {
+        const node = this.state.engine.getSuperSelect()
+        node.extras = extras
+        this.forceUpdate(callback)
+    }
+
     render() {
         return (
           <React.Fragment>
@@ -1552,11 +1574,12 @@ export class Canvas extends Component {
                 diagram_level_intents={this.state.diagram_level_intents}
                 setCanvasEvents={this.setMousetrap}
                 updateLinter={this.updateLinter}
+                updateExtras={this.updateExtras}
               />
               <div
                 key={this.props.diagram_id}
                 id="diagram"
-                className={this.props.preview ? " no-padding" : ""}
+                className={cn({ 'no-padding': this.props.preview })}
                 onDrop={this.onDrop}
                 onDragOver={e => {
                     e.stopPropagation()
@@ -1648,7 +1671,8 @@ const mapStateToProps = state => {
     variables: state.variables.localVariables,
     diagram_set: new Set(state.diagrams.diagrams.map(d => d.id)),
     diagram: _.find(state.diagrams.diagrams, d => d.id === state.skills.skill.diagram),
-    canvasError: state.userSetting.canvasError
+    canvasError: state.userSetting.canvasError,
+    integration_users_error: state.integrationUsers.error
   }
 }
 
@@ -1661,7 +1685,9 @@ const mapDispatchToProps = dispatch => {
     renameFlow: (id, name) => dispatch(renameDiagram(id, name)),
     setCanvasError: (err) => dispatch(setCanvasError(err)),
     setError: (err) => dispatch(setError(err)),
-    setConfirm: (confirm) => dispatch(setConfirm(confirm))
+    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
+    getIntegrationsUsers: () => dispatch(fetchIntegrationUsers()),
+    getEmails: (skill_id) => dispatch(fetchEmails(skill_id))
   }
 }
 

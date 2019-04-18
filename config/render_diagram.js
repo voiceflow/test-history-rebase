@@ -3,6 +3,7 @@ const { docClient, pool, hashids, writeToLogs } = require('../services')
 const draftToMarkdown = require('./drafttomarkdown')
 const validUrl = require('valid-url');
 const _ = require('lodash');
+const { deepDraftToMarkdown } = require('../app/src/util')
 
 const _expressionfy = (expression, depth = 0) => {
   if (depth > 8) {
@@ -713,6 +714,28 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
             fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
           }
 
+        } else if (node.extras.type === 'integrations') {
+
+          let action_data, selected_action, selected_integration, user
+          try {
+            const { actions_data } = node.extras.integrations_data[node.extras.selected_integration];
+            ({ selected_action, user } = node.extras.integrations_data[node.extras.selected_integration])
+
+            action_data = actions_data[selected_action]
+            selected_integration = node.extras.selected_integration
+          } catch (e) {}
+
+          action_data = deepDraftToMarkdown(action_data).result
+          if (action_data) action_data.user = user
+
+          story.lines[node.id] = {
+            type: 'integrations',
+            selected_action,
+            action_data,
+            selected_integration,
+            success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),
+            fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
+          }        
         } else if (node.extras.type === 'mail') {
 
           let id = hashids.decode(node.extras.template_id);
@@ -726,9 +749,15 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
               mapping = [];
             }
 
+            let recipient = node.extras.to
+            if (typeof recipient === 'object') {
+              // Draftjs
+              recipient = draftToMarkdown(recipient)
+            }
+
             story.lines[node.id] = {
               template_id: id[0],
-              to: node.extras.to,
+              to: recipient,
               mapping: mapping,
               success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),
               fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
@@ -870,7 +899,11 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
         if(node.extras && node.extras.reprompt){
             let REPROMPT
             if(!node.extras.reprompt.voice || node.extras.reprompt.voice === 'Alexa') {
-              REPROMPT = draftToMarkdown(node.extras.reprompt.content)
+              if (typeof node.extras.reprompt.content === 'string') {
+                REPROMPT = node.extras.reprompt.content
+              } else {
+                REPROMPT = draftToMarkdown(node.extras.reprompt.content)
+              }
             } else if (node.extras.reprompt.voice === 'audio' && typeof node.extras.reprompt.content === 'string') {
               REPROMPT = `<audio src="${node.extras.reprompt.content}"/>`
             } else {

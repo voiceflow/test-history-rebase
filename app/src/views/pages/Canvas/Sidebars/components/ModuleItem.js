@@ -117,7 +117,7 @@ class ModuleItem extends Component {
                     </div>
                 </div>
             </div>
-    );
+        )
     }
 }
 

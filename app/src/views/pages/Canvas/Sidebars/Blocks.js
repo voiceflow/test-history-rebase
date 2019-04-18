@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { PureComponent } from 'react';
 import MenuItem from './components/MenuItem';
 import ModuleItem from './components/ModuleItem';
@@ -99,9 +100,9 @@ export class Blocks extends PureComponent {
         this.forceUpdate()
     }
 
-    componentDidMount(){
-        this.loadUserModules()
-    }
+    // componentDidMount(){
+        // this.loadUserModules()
+    // }
 
     toggleBlockSection(section_title){
         let s = this.state
@@ -122,10 +123,14 @@ export class Blocks extends PureComponent {
                             className="section-title"
                             onClick={() => {this.toggleBlockSection(section.title)}}>
                                 <span>
-                                <i className={"fas fa-caret-down mr-1 rotate" + (this.state.show[section.title] ? "" : " fa-rotate--90")}/>
+                                <i className={cn('fas', 'fa-caret-down', 'mr-1', 'rotate', {
+                                    'fa-rotate--90': !this.state.show[section.title]
+                                })}/>
                                 {section.title}
                                 </span>
-                                <span className={(section.title !== 'favorites' ? "title-dot " + section.title : section.title)}/>
+                                <span className={cn(section.title, {
+                                    'title-dot': section.title !== 'favorites'
+                                })}/>
                         </div>
                         <Collapse isOpen={this.state.show[section.title]}>
                             {(section.title === 'business' && window.user_detail.admin === 0) ?

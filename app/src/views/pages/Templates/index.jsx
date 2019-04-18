@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react'
 import axios from 'axios'
 import TemplateCard from './TemplateCard'
@@ -198,17 +199,39 @@ class Templates extends Component {
                             <div className="px-4 py-2 text-center project-card">
                                 <div className="mb-4 text-muted">Are you building for Alexa, Google, or both?</div>
                                 <div className="mx--1 d-flex justify-content-center">
-                                    <button color="primary" className={`d-flex justify-content-center template-platform-btn ${this.state.alexa ? 'active' : ''}`} onClick={() => { this.setState({ alexa: !this.state.alexa, error: '' }) }}>
-                                        <div className={`platform-checkbox ${this.state.alexa ? 'active' : ''}`}/>
+                                    <button
+                                        color="primary"
+                                        className={cn('d-flex', 'justify-content-center', 'template-platform-btn', {
+                                            active: this.state.alexa
+                                        })}
+                                        onClick={() => { this.setState({ alexa: !this.state.alexa, error: '' }) }}
+                                    >
+                                        <div className={cn('platform-checkbox', {
+                                            active: this.state.alexa
+                                        })}/>
                                         <div className="image-container d-flex flex-column justify-content-between">
-                                            <div className={`platform-label mt-2 ${this.state.alexa ? 'active' : ''}`}>Alexa</div>
+                                            <div className={cn('platform-label', 'mt-2', {
+                                                active: this.state.alexa
+                                            })}>
+                                                Alexa
+                                            </div>
                                             <img className="platform-image alexa" src="/alexa.png" alt="empty" />
                                         </div>
                                     </button>
-                                    <button color="primary" className={`d-flex justify-content-center template-platform-btn ${this.state.google ? 'active' : ''}`} onClick={() => { this.setState({ google: !this.state.google, error: '' }) }}>
-                                        <div className={`platform-checkbox ${this.state.google ? 'active' : ''}`}/>
+                                    <button
+                                        color="primary"
+                                        className={cn('d-flex', 'justify-content-center', 'template-platform-btn', {
+                                            active: this.state.google
+                                        })}
+                                        onClick={() => { this.setState({ google: !this.state.google, error: '' }) }}
+                                    >
+                                        <div className={cn('platform-checkbox', {
+                                            active: this.state.google
+                                        })}/>
                                         <div>
-                                            <div className={`platform-label mt-2 ${this.state.google ? 'active' : ''}`}>Google</div>
+                                            <div className={cn('platform-label', 'mt-2', {
+                                                active: this.state.google
+                                            })}>Google</div>
                                             <img className="platform-image mt-2" src="/google_home.png" alt="empty" />
                                         </div>
                                     </button>
@@ -260,7 +283,7 @@ class Templates extends Component {
         return <div id="template-box-container">
             <div className="card">
                 {[1,2].includes(this.state.stage) &&
-                    <div id="return-template" className="mr-3 btn-icon" onClick={()=>this.goBack()}/>
+                    <div className="mr-3 btn-icon back-btn-large" onClick={()=>this.goBack()}/>
                 }
                 <Link id="exit-template" to='/dashboard' className="btn-icon"></Link>
                 {this.renderBody()}

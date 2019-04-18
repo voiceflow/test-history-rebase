@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { findDOMNode } from 'react-dom'
@@ -61,11 +62,14 @@ class SpeakElement extends Component {
         if (d.audio !== undefined){
             return connectDragSource(
                 connectDropTarget(
-                <div key={d.index} className="multiline mb-2" style={Object.assign({}, style, { opacity })}>
+                <div key={d.index} className="multiline" style={Object.assign({}, style, { opacity })}>
                 <div className="multi-title-block">
                     <div className="multi-title" onClick={() =>this.props.toggleOpen()}>
                         <span className="text-muted">
-                            {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}
+                            <i className={cn('fas', {
+                                'fa-caret-down': d.open,
+                                'fa-caret-right': !d.open
+                            })} />
                             {properties.randomize ? <i className="far fa-random" /> : (i + 1)}
                         </span>
                     </div>
@@ -73,7 +77,7 @@ class SpeakElement extends Component {
                         <img src={'/volume-red.svg'} alt="speak" />&nbsp;&nbsp;&nbsp;
                         {d.audio ? d.audio.split('/').pop() : 'Audio'}
                     </div>
-                    <button className="close mt-4" onClick={() => { this.props.handleRemoveBlock(i) }}>&times;</button>
+                    <button className="close mt-4" onClick={() => { this.props.handleRemoveBlock(i) }}></button>
                 </div>
                 <Collapse isOpen={d.open} className="speak-audio">
                     <div className="pb-2">
@@ -92,11 +96,14 @@ class SpeakElement extends Component {
         } else {
             return connectDragSource(
                 connectDropTarget(
-                    <div key={d.index} className="multiline mb-2" style={Object.assign({}, style, { opacity })}>
+                    <div key={d.index} className="multiline" style={Object.assign({}, style, { opacity })}>
                 <div className="multi-title-block mb-2">
                     <div className="multi-title">
                         <span className="text-muted" onClick={() => this.props.toggleOpen()}>
-                            {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}
+                            <i className={cn('fas', {
+                                'fa-caret-down': d.open,
+                                'fa-caret-right': !d.open
+                            })} />
                             {properties.randomize ? <i className="far fa-random" /> : (i + 1)}
                         </span>
                     </div>
@@ -128,13 +135,13 @@ class SpeakElement extends Component {
                             options={localStorage.getItem('recent_speak') ? [{ label: 'Recent', options: JSON.parse(localStorage.getItem('recent_speak')) }].concat(VOICES) : VOICES}
                         />
                     </div>
-                    <button className="close mt-4" onClick={() => { this.props.handleRemoveBlock(i) }}>&times;</button>
+                    <button className="close mt-4" onClick={() => { this.props.handleRemoveBlock(i) }}></button>
                 </div>
                 <Collapse isOpen={d.open}>
                     <VariableText
                         className="editor form-control auto-height"
                         raw={d.rawContent}
-                        placeholder={<React.Fragment>{`Tell ${d.voice} what to say`}<br />{'Use {variable} to add Variables'}</React.Fragment>}
+                        placeholder={<React.Fragment>{`Tell ${d.voice} what to say`}</React.Fragment>}
                         variables={this.props.variables}
                         updateRaw={(raw) => { d.rawContent = raw; this.props.onUpdate() }}
                     />

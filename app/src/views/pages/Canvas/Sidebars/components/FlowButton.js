@@ -83,13 +83,13 @@ class FlowButton extends Component {
                                     Flow Options
                                 </DropdownItem>
                                 <DropdownItem onClick={()=>this.setState({edit: true, name: this.props.name})} className="pointer">
-                                    <i className="fas fa-edit text-muted"/> Edit Name
+                                     Edit Name
                                 </DropdownItem>
                                 <DropdownItem onClick={this.props.copyFlow} className="pointer">
-                                    <i className="fas fa-clone text-muted"/> Copy
+                                     Copy
                                 </DropdownItem>
                                 <DropdownItem onClick={this.props.deleteFlow} className="pointer">
-                                    <i className="fas fa-times-square text-muted"/> Delete
+                                     Delete
                                 </DropdownItem>
                             </DropdownMenu>
                         </UncontrolledDropdown> 

@@ -96,8 +96,6 @@ class UserSection extends Component {
   }
 
   render() {
-    console.log("integrations", this.props)
-
     const integration = this.props.selected_integration
     const users = this.props.integration_users[integration]
     const user = this.props.integrationsUser

@@ -767,7 +767,6 @@ hr.full-width {
     background-size: 16px;
     top: 20px;
     cursor: pointer;
-    margin: .75rem .15rem;
 }
 .more-info:hover {
     background-image: url(/more-info-hover.svg);

@@ -12,7 +12,7 @@ class GoogleAddUserModal extends Component {
       this.props.onBegin()
       await this.props.addUser({
         user_info: userProfile,
-        creator_id: window.user_detail.id,
+        creator_id: this.props.user.creator_id,
         skill_id: this.props.skill_id
       })
       this.props.onSuccess()
@@ -51,10 +51,14 @@ class GoogleAddUserModal extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  user: state.account
+})
+
 const mapDispatchToProps = dispatch => {
   return {
     addUser: (body) => dispatch(addIntegrationUser(GOOGLE_SHEETS, body))
   }
 }
 
-export default connect(null, mapDispatchToProps)(GoogleAddUserModal)
+export default connect(mapStateToProps, mapDispatchToProps)(GoogleAddUserModal)

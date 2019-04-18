@@ -2,7 +2,7 @@
 
 exports[`Choice render choice block editor 1`] = `
 <div
-  className={null}
+  className=""
 >
   <ChoiceInputs
     choices={Array []}

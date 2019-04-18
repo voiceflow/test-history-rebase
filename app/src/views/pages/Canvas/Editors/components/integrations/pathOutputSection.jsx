@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import cn from 'classnames'
 import { connect } from 'react-redux'
 import { Collapse } from 'reactstrap'
 import _ from 'lodash'
@@ -96,7 +97,16 @@ class PathOutputSection extends Component {
             onChange={this.handleKVMappingChange}
             variables={this.props.variables}
           />}
-          <div className="text-center mt-3"><button onClick={this.props.showNextSection} className={`btn-tertiary-variable ${this.state.completed ? '' : 'disabled'}`}>Next</button></div>
+          <div className="text-center mt-3">
+            <button
+              className={cn('btn-tertiary-variable', {
+                disabled: !this.state.completed
+              })}
+              onClick={this.props.showNextSection}
+            >
+              Next
+            </button>
+          </div>
         </Collapse>
       </>
     )

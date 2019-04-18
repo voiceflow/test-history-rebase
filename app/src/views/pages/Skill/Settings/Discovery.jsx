@@ -70,7 +70,12 @@ class DiscoverySettings extends Component{
                     <hr />
                     {!fullfillment_intent_key && (
                         Object.keys(this.props.skill.fulfillment).length !== 0 ? 
-                            <div className="selected-intent-label">Select an Intent Below to Customize Slot Fulfillment</div> : <Alert className="text-center">To add a CanFulfillIntent Handle, add an Intent Block in your Root Flow and enable the "CanFulfillIntent" toggle</Alert>
+                            <div className="selected-intent-label">
+                                Select an Intent Below to Customize Slot Fulfillment
+                            </div> :
+                            <Alert className="text-center">
+                                To add a CanFulfillIntent Handle, add an Intent Block in your Root Flow and enable the "CanFulfillIntent" toggle
+                            </Alert>
                         )
                     }
                     {!fullfillment_intent_key && this.fulfillmentButtons(intents_sorted)}

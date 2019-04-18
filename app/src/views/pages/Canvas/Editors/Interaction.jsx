@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
@@ -193,7 +194,7 @@ export class Interaction extends Component {
                 <Button outline={this.state.tab !== 'intents'} onClick={() => {this.setState({tab: 'intents'}); this.props.clearEvents()}} disabled={this.state.tab === 'intents'}> Intents </Button>
                 <Button outline={this.state.tab !== 'slots'} onClick={() => {this.setState({tab: 'slots'}); this.props.clearEvents()}} disabled={this.state.tab === 'slots'}> Slots </Button>
             </ButtonGroup>
-            <div className={this.props.live_mode ? 'disabled-overlay' : ''}>
+            <div className={cn({ 'disabled-overlay': this.props.live_mode })}>
                 {this.renderTab()}
             </div>
         </React.Fragment>

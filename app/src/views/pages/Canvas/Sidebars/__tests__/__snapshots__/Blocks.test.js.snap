@@ -17,7 +17,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         basic
       </span>
       <span
-        className="title-dot basic"
+        className="basic title-dot"
       />
     </div>
     <Collapse
@@ -89,7 +89,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         logic
       </span>
       <span
-        className="title-dot logic"
+        className="logic title-dot"
       />
     </div>
     <Collapse
@@ -191,7 +191,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         advanced
       </span>
       <span
-        className="title-dot advanced"
+        className="advanced title-dot"
       />
     </div>
     <Collapse
@@ -338,7 +338,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         visuals
       </span>
       <span
-        className="title-dot visuals"
+        className="visuals title-dot"
       />
     </div>
     <Collapse
@@ -410,7 +410,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         business
       </span>
       <span
-        className="title-dot business"
+        className="business title-dot"
       />
     </div>
     <Collapse
@@ -567,7 +567,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         basic
       </span>
       <span
-        className="title-dot basic"
+        className="basic title-dot"
       />
     </div>
     <Collapse
@@ -639,7 +639,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         logic
       </span>
       <span
-        className="title-dot logic"
+        className="logic title-dot"
       />
     </div>
     <Collapse
@@ -741,7 +741,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         advanced
       </span>
       <span
-        className="title-dot advanced"
+        className="advanced title-dot"
       />
     </div>
     <Collapse
@@ -888,7 +888,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         visuals
       </span>
       <span
-        className="title-dot visuals"
+        className="visuals title-dot"
       />
     </div>
     <Collapse
@@ -960,7 +960,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         business
       </span>
       <span
-        className="title-dot business"
+        className="business title-dot"
       />
     </div>
     <Collapse

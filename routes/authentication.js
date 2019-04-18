@@ -65,7 +65,7 @@ const trackUser = async (data, analytics_data) => {
 				'country': country,
 				'os': analytics_data.device.os,
 				'browser': analytics_data.device.browser,
-				'created': data.created.toISOString()
+				'created': data.created.toISOString().substring(0, 10)
 			}
 		}, () => {
 			analytics.track({
@@ -116,11 +116,11 @@ function createLogin(data, analytics_data, cb) {
 
         let user = {
         	id: data.id,
-            email: data.email,
-            name: data.name,
-            admin: data.admin,
-            first_login: data.first_login,
-            verified: data.verified,
+          email: data.email,
+          name: data.name,
+          admin: data.admin,
+          first_login: data.first_login,
+          verified: data.verified,
 				}
 				trackUser(data, analytics_data)
 
@@ -132,8 +132,8 @@ function createLogin(data, analytics_data, cb) {
 	        } else {
 	          	cb({
 	          		token: token,
-                    userHash: userHash,
-                    user: user
+                userHash: userHash,
+                user: user
 	          	});
 	        }
         });
@@ -340,7 +340,7 @@ const googleLogin = async(req, res) => {
                 } else if (data.rows.length === 0){
 										return res.sendStatus(404)
 								} else {
-									let row = data.rows[0];
+									let row = result.rows[0];
                   createLogin({
                     id: row.creator_id,
                     email: row.email,

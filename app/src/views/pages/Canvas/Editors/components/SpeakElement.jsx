@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { findDOMNode } from 'react-dom'
@@ -65,7 +66,10 @@ class SpeakElement extends Component {
                 <div className="multi-title-block">
                     <div className="multi-title" onClick={() =>this.props.toggleOpen()}>
                         <span className="text-muted">
-                            {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}
+                            <i className={cn('fas', {
+                                'fa-caret-down': d.open,
+                                'fa-caret-right': !d.open
+                            })} />
                             {properties.randomize ? <i className="far fa-random" /> : (i + 1)}
                         </span>
                     </div>
@@ -96,7 +100,10 @@ class SpeakElement extends Component {
                 <div className="multi-title-block mb-2">
                     <div className="multi-title">
                         <span className="text-muted" onClick={() => this.props.toggleOpen()}>
-                            {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}
+                            <i className={cn('fas', {
+                                'fa-caret-down': d.open,
+                                'fa-caret-right': !d.open
+                            })} />
                             {properties.randomize ? <i className="far fa-random" /> : (i + 1)}
                         </span>
                     </div>

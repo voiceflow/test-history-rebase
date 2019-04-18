@@ -1,4 +1,6 @@
 import * as React from "react";
+import cn from 'classnames'
+import { findDOMNode } from 'react-dom'
 import * as _ from "lodash";
 //Helpers
 import { combineValidation, combineAppendValidation, appendValidator } from './../../../helpers/combineHelper'
@@ -33,6 +35,7 @@ export class BlockNodeWidget extends BaseWidget {
 		this.close = this.close.bind(this);
 		this.addCommand = this.addCommand.bind(this)
 		this.inputRef = React.createRef();
+		this.nodeRef = React.createRef();
 	}
 
 	static getDerivedStateFromProps(props){
@@ -82,29 +85,32 @@ export class BlockNodeWidget extends BaseWidget {
 
 	addBlocks = (e) => {
 		const engine = this.props.diagramEngine
+		let getNodeRef = findDOMNode(this.nodeRef.current).getBoundingClientRect()
+		let newX = getNodeRef.width/2 + getNodeRef.x
+
 		this.props.nodeProps.setBlockMenu(
             <React.Fragment>
-              <div style={{top: engine.getDiagramModel().getGridPosition(e.clientY - 90), left: engine.getDiagramModel().getGridPosition(e.clientX - 130), cursor: 'pointer', position: 'absolute', zIndex: 10, width: '300px'}}>
-                  <Select
-					onBlur={this.props.cancel}
-					autoFocus
-					classNamePrefix='searchable__dropdown'
-					onChange={(selected) => {
-						this.props.nodeProps.addCombineNode(this.props.node, selected.value)
-						this.props.nodeProps.setBlockMenu(null)
-					}}
-					options={this.state.blocks.map(block => ({
-						label: block.text,
-						value: block.type
-					}))}
-					maxMenuHeight={124}
-					menuIsOpen
-					value={null}
-					placeholder="Search Block"
-					filterOption={(value, input) => {
-						return value.label.toLowerCase().startsWith(input.toLowerCase().trim())
-					}}
-				/>
+              <div style={{top: engine.getDiagramModel().getGridPosition(e.clientY - 115), left: engine.getDiagramModel().getGridPosition(newX - 115), cursor: 'pointer', position: 'absolute', zIndex: 10, width: '300px'}}>
+                <Select
+                  onBlur={this.props.cancel}
+                  autoFocus
+                  classNamePrefix='searchable__dropdown'
+                  onChange={(selected) => {
+                    this.props.nodeProps.addCombineNode(this.props.node, selected.value)
+                    this.props.nodeProps.setBlockMenu(null)
+                  }}
+                  options={this.state.blocks.map(block => ({
+                    label: block.text,
+                    value: block.type
+                  }))}
+                  maxMenuHeight={124}
+                  menuIsOpen
+                  value={null}
+                  placeholder="Search Block."
+                  filterOption={(value, input) => {
+                    return value.label.toLowerCase().startsWith(input.toLowerCase().trim())
+                  }}
+                />
               </div>
             </React.Fragment>)
 	}
@@ -232,6 +238,7 @@ export class BlockNodeWidget extends BaseWidget {
 	}
 
 	render() {
+		const { node, isLast, selected } = this.props
 		if(this.props.node.extras.type === 'comment'){
 			return <div className={`srd-default-node ${this.props.node.extras.type}`}>
         <Textarea value={this.props.node.name} readOnly={this.props.locked} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate()}} onBlur={()=>{
@@ -245,7 +252,16 @@ export class BlockNodeWidget extends BaseWidget {
 		const fade = this.props.node.fade ? " faded-node" : ""
 		const paddingStyle = (this.props.node.extras.type === 'god' && combineAppendValidation(_.last(this.props.node.combines))) ? {padding: '0px 12px 10px 12px'} : {padding: '0px 12px 0px 12px'}
 		return (
-			<div className={`srd-default-node ${this.props.node.extras.type !== 'card' ? this.props.node.extras.type : 'kard'} ${this.props.isLast ? 'last' : ''} ${this.props.selected ? 'selected' : 'no-select'} ${this.props.node.isMoving && this.props.node.parentCombine ? 'moving' : ''} ${fade}`}
+			<div
+				className={cn('srd-default-node', fade, {
+					kard: node.extras.type === 'card',
+					[node.extras.type]: node.extras.type !== 'card',
+					last: isLast,
+					selected: selected,
+					'no-select': !selected,
+					moving: node.isMoving && node.parentCombine
+				})}
+				ref={this.nodeRef}
 				data-nodeid = {
 					this.props.node.id
 				}

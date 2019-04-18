@@ -9,6 +9,7 @@ import displays from './displayReducer'
 import emails from './emailReducer'
 import userSetting from './userReducer'
 import modal from './modalReducer'
+import integrationUsers from './integrationUsersReducer'
 
 export default (history) => combineReducers({
     router: connectRouter(history),
@@ -20,5 +21,6 @@ export default (history) => combineReducers({
     variables,
     userSetting,
     diagramVariables,
-    modal
+    modal,
+    integrationUsers
 })

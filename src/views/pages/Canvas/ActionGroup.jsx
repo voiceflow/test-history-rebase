@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import LOCALE_MAP from "./../../../services/LocaleMap";
@@ -24,7 +25,7 @@ import InvRegex from 'services/Regex'
 import './ActionGroup.css'
 
 const loading = (message) => {
-    return <div className="super-center mb-2">
+    return <div className="super-center mb-4">
         <div className='text-center'>
             <p className="mb-0">{message}</p>
         </div>
@@ -536,7 +537,7 @@ export class ActionGroup extends PureComponent {
   displayUploadPrompt() {
     if(this.state.show_upload_prompt){
       return  <div className="upload-success-popup">
-        <button className="close close-upload-success-popup" onClick={this.closePrompt}>&times;</button>
+        <button className="close close-upload-success-popup mt-2" onClick={this.closePrompt} />
           {this.renderBody(false)}
       </div>
     } 
@@ -648,7 +649,9 @@ export class ActionGroup extends PureComponent {
   renderBody(modal) {
     if(this.state.saving){
       return <React.Fragment>
-        <div className={"mb-3 text-center" + (modal ? '' : ' mt-3')}>
+        <div className={cn('mb-3', 'text-center', {
+            'mt-3': !modal
+        })}>
           <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={this.state.percent}/>
         </div>
         {loading('Saving Project')}
@@ -656,7 +659,9 @@ export class ActionGroup extends PureComponent {
     }else if(this.props.platform === 'google'){
       return <React.Fragment>
         {![0].includes(this.state.google_stage) && !ENDING_STAGES.google.includes(this.state.google_stage) && 
-        <div className={"mb-3 text-center" + (modal ? '' : ' mt-3')}>
+        <div className={cn('mb-3', 'text-center', {
+            'mt-3': !modal
+        })}>
           <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={this.state.percent}/>
         </div>}
         {this.renderGoogleBody(modal)}
@@ -664,10 +669,16 @@ export class ActionGroup extends PureComponent {
     }else{
       return <React.Fragment>
         {(STAGE_PERCENTAGES.alexa[this.state.stage] && 
-        <div className={"mb-3 text-center" + (modal ? '' : ' mt-3')}>
+        <div className={cn('mb-3', 'text-center', {
+            'mt-3': !modal
+        })}>
           <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={this.state.percent}/>
         </div>) || 
-        (LOADING_STAGES.alexa.includes(this.state.stage) && <div className={"text-center mb-3" + (modal ? '' : ' mt-3')}><div className="loader text-lg"></div></div>)}
+        (LOADING_STAGES.alexa.includes(this.state.stage) && <div className={cn('mb-3', 'text-center', {
+            'mt-3': !modal
+        })}>
+            <div className="loader text-lg" />
+        </div>)}
         {this.renderAlexaBody(modal)}
       </React.Fragment>
     }
@@ -716,7 +727,7 @@ export class ActionGroup extends PureComponent {
                   <span className="fail-icon"/>  Rendering Error
               </Alert>
           case 5:
-              return <div className={"modal-txt flex-fill text-center mb-4" + (modal ? " w-100" : " mt-4") }>
+              return <div className={"modal-txt flex-fill text-center mb-4 mt-3" + (modal ? " w-100" : " mt-4") }>
                   {this.state.amzn_error && <Alert color="danger"><span className="fail-icon"/> Login With Amazon Failed - Try Again</Alert>}
                   Login with Amazon to test your Skill on your own Alexa device, or in the Alexa developer console
                   {modal && Video('https://s3.amazonaws.com/com.getvoiceflow.videos/first.mp4')}
@@ -814,8 +825,8 @@ export class ActionGroup extends PureComponent {
                               </button>
                           })}
                       </div>
-                      <div className="mt-5 mb-3">
-                          <Button varient="contained" className="purple-btn" onClick={(e) => {this.updateAlexa(); this.props.saveSkill()}}>Upload</Button>
+                      <div className="mt-4 mb-5">
+                          <button varient="contained" className="btn-primary" onClick={(e) => {this.updateAlexa(); this.props.saveSkill()}}>Confirm Upload</button>
                       </div>
                   </div>
               }
@@ -906,7 +917,7 @@ export class ActionGroup extends PureComponent {
                   }}/>
               </div>}
               <Modal size={this.state.stage === 0 ? "lg" : undefined} isOpen={this.state.updateModal && this.state.is_first_upload} toggle={()=>this.setState({updateModal: false})} onClosed={this.shouldReset} className="stage_modal">
-                  <ModalHeader toggle={()=>this.setState({updateModal: false})} className="pb-0 mb--4">Upload Project</ModalHeader>
+                  <ModalHeader toggle={()=>this.setState({updateModal: false})} className="pb-0 mb--4" header="Upload Project" />
                   <ModalBody className="modal-info" style={{padding: '0rem 2rem'}}>
                       <div>
                           {this.renderBody(true)}

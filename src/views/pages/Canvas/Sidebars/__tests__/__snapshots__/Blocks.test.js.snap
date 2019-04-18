@@ -17,7 +17,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         basic
       </span>
       <span
-        className="title-dot basic"
+        className="basic title-dot"
       />
     </div>
     <Collapse
@@ -42,7 +42,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         style={null}
       >
         <Connect(MenuItem)
-          data-tip="Tell Alexa to play sounds or talk to the user"
+          data-tip="Tell Alexa what to say, or play audio clips"
           draggable={true}
           item={
             Object {
@@ -50,7 +50,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
                 className="fas fa-comment"
               />,
               "text": "Speak",
-              "tip": "Tell Alexa to play sounds or talk to the user",
+              "tip": "Tell Alexa what to say, or play audio clips",
               "type": "speak",
             }
           }
@@ -89,7 +89,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         logic
       </span>
       <span
-        className="title-dot logic"
+        className="logic title-dot"
       />
     </div>
     <Collapse
@@ -191,7 +191,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         advanced
       </span>
       <span
-        className="title-dot advanced"
+        className="advanced title-dot"
       />
     </div>
     <Collapse
@@ -236,7 +236,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           item={
             Object {
               "icon": <i
-                className="fas fa-step-forward"
+                className="fas fa-arrow-alt-from-left"
               />,
               "text": "Intent",
               "tip": "Handle intents, from within the skill and upon skill launch with CanFulfillIntent",
@@ -338,7 +338,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         visuals
       </span>
       <span
-        className="title-dot visuals"
+        className="visuals title-dot"
       />
     </div>
     <Collapse
@@ -368,7 +368,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           item={
             Object {
               "icon": <i
-                class="fas fa-poll-h"
+                className="fas fa-poll-h"
               />,
               "text": "Card",
               "tip": "Tell Alexa to show a card",
@@ -383,7 +383,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           item={
             Object {
               "icon": <i
-                class="fas fa-image"
+                className="fas fa-image"
               />,
               "text": "Display",
               "tip": "Show a Multimodal Display on the screen using APL",
@@ -410,7 +410,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         business
       </span>
       <span
-        className="title-dot business"
+        className="business title-dot"
       />
     </div>
     <Collapse
@@ -567,7 +567,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         basic
       </span>
       <span
-        className="title-dot basic"
+        className="basic title-dot"
       />
     </div>
     <Collapse
@@ -592,7 +592,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         style={null}
       >
         <Connect(MenuItem)
-          data-tip="Tell Alexa to play sounds or talk to the user"
+          data-tip="Tell Alexa what to say, or play audio clips"
           draggable={true}
           item={
             Object {
@@ -600,7 +600,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
                 className="fas fa-comment"
               />,
               "text": "Speak",
-              "tip": "Tell Alexa to play sounds or talk to the user",
+              "tip": "Tell Alexa what to say, or play audio clips",
               "type": "speak",
             }
           }
@@ -639,7 +639,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         logic
       </span>
       <span
-        className="title-dot logic"
+        className="logic title-dot"
       />
     </div>
     <Collapse
@@ -741,7 +741,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         advanced
       </span>
       <span
-        className="title-dot advanced"
+        className="advanced title-dot"
       />
     </div>
     <Collapse
@@ -786,7 +786,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           item={
             Object {
               "icon": <i
-                className="fas fa-step-forward"
+                className="fas fa-arrow-alt-from-left"
               />,
               "text": "Intent",
               "tip": "Handle intents, from within the skill and upon skill launch with CanFulfillIntent",
@@ -888,7 +888,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         visuals
       </span>
       <span
-        className="title-dot visuals"
+        className="visuals title-dot"
       />
     </div>
     <Collapse
@@ -918,7 +918,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           item={
             Object {
               "icon": <i
-                class="fas fa-poll-h"
+                className="fas fa-poll-h"
               />,
               "text": "Card",
               "tip": "Tell Alexa to show a card",
@@ -933,7 +933,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           item={
             Object {
               "icon": <i
-                class="fas fa-image"
+                className="fas fa-image"
               />,
               "text": "Display",
               "tip": "Show a Multimodal Display on the screen using APL",
@@ -960,7 +960,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         business
       </span>
       <span
-        className="title-dot business"
+        className="business title-dot"
       />
     </div>
     <Collapse

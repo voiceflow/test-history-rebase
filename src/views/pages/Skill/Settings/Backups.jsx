@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import cn from 'classnames'
 import LightCanvas from '../../Canvas/LightCanvas'
 import { connect } from 'react-redux'
 import moment from 'moment'
@@ -149,7 +150,12 @@ class BackupSettings extends Component{
                                     {this.state.versions.map((version, i) => {
                                         return <tr key={i}>
                                             <td >{moment(version.created).fromNow()}</td>
-                                            <td className="text-center">{version.published_platform === 'google' ? <i className="fab fa-google"/> :  <i className="fab fa-amazon"/>}</td>
+                                            <td className="text-center">
+                                                <i className={cn('fab', {
+                                                    'fa-google': version.published_platform === 'google',
+                                                    'fa-amazon': version.published_platform !== 'google',
+                                                })} />
+                                            </td>
                                             <td>
                                                 <button className='btn-tertiary' onClick={() => this.previewBackup(version)}>Preview</button>
                                             </td>

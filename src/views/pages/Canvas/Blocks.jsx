@@ -4,15 +4,16 @@ import cloneDeep from 'lodash/cloneDeep'
 const FAVORITE_SECTION_MAX = 3;
 
 const BLOCK_TYPES = {
-    'speak': { text: 'Speak', type: 'speak', icon: <i className="fas fa-comment"/>, tip: 'Tell Alexa to play sounds or talk to the user' },
+    'speak': { text: 'Speak', type: 'speak', icon: <i className="fas fa-comment"/>, tip: 'Tell Alexa what to say, or play audio clips' },
     'choice': { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  },
     'set': { text: 'Set', type: 'set', icon: <i className="fas fa-code"/>, tip: 'Set the value of a variable, or many variables at once' },
     'if': { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>, tip: 'Set conditions that activate paths only when true' },
     'capture': { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/>, tip: 'Capture what the user says into a variable' },
     'random': { text: 'Random', type: 'random', icon: <i className="fas fa-random"/>, tip: 'Choose randomly from a set number of paths' },
     'interaction': { text: 'Interaction', type: 'interaction', icon: <i className="fas fa-user-alt"/>, tip: 'Select choices and capture slot values from user input' },
-    'intent': { text: 'Intent', type: 'intent', icon: <i className="fas fa-step-forward"/>, tip: 'Handle intents, from within the skill and upon skill launch with CanFulfillIntent'},
+    'intent': { text: 'Intent', type: 'intent', icon: <i className="fas fa-arrow-alt-from-left"/>, tip: 'Handle intents, from within the skill and upon skill launch with CanFulfillIntent)'},
     'stream': { text: 'Stream', type: 'stream', icon: <i className="fas fa-play"/>, tip: 'Stream long audio files & URLs for the user' },
+    // 'integrations': { text: 'Integrations', type: 'integrations', icon: <i className="fas fa-globe"/>, tip: 'Integrate external services into your skill' },
     'api': { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables' },
     'flow': { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},
     'code': { text: 'Code', type: 'code', icon: <i className="fab fa-js-square"/>, tip: 'Modify Variables directly with Code'},

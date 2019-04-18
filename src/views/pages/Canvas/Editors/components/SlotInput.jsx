@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react';
 import { Collapse } from 'reactstrap';
 import Select from 'react-select'
@@ -102,8 +103,14 @@ class SlotInput extends Component {
 
         return (
             <div className={`interaction-block mb-2`}>
-                <div className={`intent-title ${ disabled ? 'faded' : ''}`}>
-                    <span onClick={this.toggleCollapse}><i className={"fas fa-caret-right rotate" + (this.props.slot.open ? " fa-rotate-90" : "")}></i></span>
+                <div className={cn('intent-title', {
+                    faded: disabled
+                })}>
+                    <span onClick={this.toggleCollapse}>
+                        <i className={cn('fas', 'fa-caret-right', 'rotate', {
+                            'fa-rotate-90': this.props.slot.open
+                        })} />
+                    </span>
                     <Tooltip
                         className="flex-hard"
                         theme="warning"

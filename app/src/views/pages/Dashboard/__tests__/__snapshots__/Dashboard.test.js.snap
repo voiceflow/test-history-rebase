@@ -11,6 +11,7 @@ exports[`Dashboard render dashboard 1`] = `
     <div>
       <Link
         className="nav-item"
+        replace={false}
         to="/team/new"
       >
         <img
@@ -26,7 +27,9 @@ exports[`Dashboard render dashboard 1`] = `
     <div
       className="mr-4 super-center"
     >
-      <Members />
+      <Members
+        update={[Function]}
+      />
       <Connect(TeamSettings)
         close={[Function]}
         update={[Function]}
@@ -39,56 +42,91 @@ exports[`Dashboard render dashboard 1`] = `
     <div
       className="subheader-right"
     >
-      <form
-        action="https://forum.getvoiceflow.com"
-      >
-        <Tooltip
-          animateFill={true}
-          animation="shift"
-          arrow={false}
-          arrowSize="regular"
+      <UncontrolledDropdown>
+        <DropdownToggle
+          aria-haspopup={true}
           className="ml-1 mr-4"
-          delay={0}
-          disabled={false}
-          distance={19}
-          duration={375}
-          followCursor={false}
-          hideDelay={0}
-          hideDuration={375}
-          hideOnClick={true}
-          html={null}
-          inertia={false}
-          interactive={false}
-          interactiveBorder={2}
-          multiple={false}
-          offset={0}
-          onHidden={[Function]}
-          onHide={[Function]}
-          onRequestClose={[Function]}
-          onShow={[Function]}
-          onShown={[Function]}
-          popperOptions={Object {}}
-          position="bottom"
-          size="regular"
-          sticky={false}
-          stickyDuration={200}
-          style={Object {}}
-          theme="dark"
-          title="Join the Voiceflow forum for help and updates"
-          touchHold={false}
-          trigger="mouseenter focus"
-          unmountHTMLWhenHide={false}
+          color="secondary"
+          tag="div"
         >
-          <button
-            className="nav-btn"
-            type="submit"
+          <Tooltip
+            animateFill={true}
+            animation="shift"
+            arrow={false}
+            arrowSize="regular"
+            className=""
+            delay={0}
+            disabled={false}
+            distance={19}
+            duration={375}
+            followCursor={false}
+            hideDelay={0}
+            hideDuration={375}
+            hideOnClick={true}
+            html={null}
+            inertia={false}
+            interactive={false}
+            interactiveBorder={2}
+            multiple={false}
+            offset={0}
+            onHidden={[Function]}
+            onHide={[Function]}
+            onRequestClose={[Function]}
+            onShow={[Function]}
+            onShown={[Function]}
+            popperOptions={Object {}}
+            position="bottom"
+            size="regular"
+            sticky={false}
+            stickyDuration={200}
+            style={Object {}}
+            theme="dark"
+            title="Resources"
+            touchHold={false}
+            trigger="mouseenter focus"
+            unmountHTMLWhenHide={false}
           >
-            <i
-              className="fas fa-info-circle"
-            />
-          </button>
-        </Tooltip>
-      </form>
+            <button
+              className="nav-btn"
+              type="submit"
+            >
+              <i
+                className="fas fa-info-circle"
+              />
+            </button>
+          </Tooltip>
+        </DropdownToggle>
+        <DropdownMenu
+          className="mt-2"
+          flip={true}
+          tag="div"
+        >
+          <a
+            href="https://university.getvoiceflow.com/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <DropdownItem
+              tag="button"
+              toggle={true}
+            >
+              Tutorials
+            </DropdownItem>
+          </a>
+          <a
+            href="https://forum.getvoiceflow.com/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <DropdownItem
+              tag="button"
+              toggle={true}
+            >
+              Forums
+            </DropdownItem>
+          </a>
+        </DropdownMenu>
+      </UncontrolledDropdown>
       <button
         className="btn-primary ml-1"
         onClick={[Function]}

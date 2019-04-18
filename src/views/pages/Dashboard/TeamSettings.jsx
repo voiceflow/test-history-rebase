@@ -111,7 +111,7 @@ const MemberRow = props => {
         {IS_ADMIN && props.user !== m.creator_id &&
           <UncontrolledDropdown inNavbar>
             <DropdownToggle tag="div" className="dropdown-button">
-              <i className="far fa-ellipsis-v"/>
+              <i className="far fa-ellipsis-h"/>
             </DropdownToggle>
             <DropdownMenu right className="no-select py-1">
               {type === 'FILLED' && 
@@ -271,7 +271,7 @@ class TeamSettings extends Component {
         if(!this.IS_ADMIN) return Contact
         return <>
           <div className="mt-4">
-            <div className="mb-1"><b>Team Plan</b> Includes:</div>
+            <label className="mb-2">Team Plan Includes:</label>
             <ul>
               <li>Team collaboration</li>
               <li>Unlimited projects</li>
@@ -456,8 +456,8 @@ class TeamSettings extends Component {
     return (
       <>
         <UncontrolledDropdown inNavbar>
-          <DropdownToggle tag="div" className="dropdown-button">
-            <img src={'/cog.svg'} width={17} alt="cog"/>
+          <DropdownToggle tag="div" className="pointer">
+            <img src={'/cog.svg'} className="mr-2 ml-2" width={17} alt="cog"/>
           </DropdownToggle>
           <DropdownMenu right className="no-select">
             <DropdownItem onClick={()=>this.props.update('MEMBERS')}>

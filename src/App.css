@@ -1261,7 +1261,7 @@ input, textarea, .text-to-voice, .choice-block,{
     background-color: #FFF;
     color: #2b3950;
     border: 1px solid #c5d3e0;
-    border-radius: 5px;
+    border-radius: 0px;
 /*    box-shadow: 0 1px 3px 0 rgba(50,50,93,.15), 0 4px 6px 0 rgba(112,157,199,.15);*/
 }
 .solid-border{

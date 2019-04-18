@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react'
 import { Tooltip } from 'react-tippy'
 import _ from 'lodash'
@@ -141,7 +142,10 @@ class Integrations extends Component {
           {Object.keys(INTEGRATIONS).map((k) => {
             const integrationsInfo = INTEGRATIONS[k]
             return <div key={k} className='wrapper'>
-              <div className={`item d-flex flex-column align-items-center ${integrationsInfo.component ? '' : 'faded'}`} onClick={() => {
+              <div className={cn('item', 'd-flex', 'flex-column', 'align-items-center', {
+                faded: !integrationsInfo.component
+              })}
+              onClick={() => {
                 this.integrationSelected(integrationsInfo)
               }}>
                 <img className="integrations-img" src={integrationsInfo.image} alt="empty" />

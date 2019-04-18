@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import cn from 'classnames'
 import React, { Component } from 'react';
 import { Card, CardBody } from 'reactstrap';
 import { Dropdown, DropdownMenu, DropdownToggle, DropdownItem } from 'reactstrap'
@@ -44,7 +45,7 @@ class VoiceCards extends Component {
         }}>
             <div className="product-image" style={this.props.icon ? {backgroundImage: `url(${this.props.icon})`} : {}}>
               <div className="overlay">
-                <div className={"elispie" + (this.state.dropdownOpen ? ' open' : '')} onMouseOver={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+                <div className={cn("elispie", {open: this.state.dropdownOpen})} onMouseOver={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
                   <Dropdown isOpen={this.state.dropdownOpen} direction="down" toggle={()=>this.setState({dropdownOpen: !this.state.dropdownOpen})}>
                     <DropdownToggle tag="div" className="elispie-button">
                       <i className="far fa-ellipsis-h" />

@@ -53,6 +53,9 @@ export class DashBoard extends Component {
   }
 
   copyProject(project_id) {
+    if(this.props.projects_array.length >= this.props.team.projects) {
+      return this.props.setError("Upgrade Plan to Create More Projects")
+    }
     this.setState({ loading_modal: true });
     this.props.copyProject(project_id, this.props.team_id).then(() => {
       this.setState({ loading_modal: false });

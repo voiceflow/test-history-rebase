@@ -784,7 +784,7 @@ exports.buildSkill = async (req, res) => {
             let products = await pool.query(`
               SELECT p.*, pc.amzn_prod_id, pc.creator_id AS status
               FROM products p
-              LEFT JOIN (SELECT * product_creators WHERE creator_id = $2) pc ON p.id = pc.product_id
+              LEFT JOIN (SELECT * FROM product_creators WHERE creator_id = $2) pc ON p.id = pc.product_id
               WHERE skill_id = $1
             `, [r.skill_id, req.user.id]);
 

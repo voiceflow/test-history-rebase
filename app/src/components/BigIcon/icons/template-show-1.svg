@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="43px" viewBox="0 0 64 43" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon/Large/Visuals-Templates/1_unselected</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icon/Large/Visuals-Templates/1_unselected" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <path d="M4,0 L60,0 C62.209139,-4.05812251e-16 64,1.790861 64,4 L64,39 C64,41.209139 62.209139,43 60,43 L4,43 C1.790861,43 2.705415e-16,41.209139 0,39 L0,4 C-2.705415e-16,1.790861 1.790861,4.05812251e-16 4,0 Z M4,1 C2.34314575,1 1,2.34314575 1,4 L1,39 C1,40.6568542 2.34314575,42 4,42 L60,42 C61.6568542,42 63,40.6568542 63,39 L63,4 C63,2.34314575 61.6568542,1 60,1 L4,1 Z" id="Combined-Shape" fill="#7E97B2" fill-rule="nonzero"></path>
+            <path d="M5,3 L59,3 C60.1045695,3 61,3.8954305 61,5 L61,38 C61,39.1045695 60.1045695,40 59,40 L5,40 C3.8954305,40 3,39.1045695 3,38 L3,5 C3,3.8954305 3.8954305,3 5,3 Z M5,4 C4.44771525,4 4,4.44771525 4,5 L4,38 C4,38.5522847 4.44771525,39 5,39 L59,39 C59.5522847,39 60,38.5522847 60,38 L60,5 C60,4.44771525 59.5522847,4 59,4 L5,4 Z" id="Combined-Shape" fill="#7E97B2" fill-rule="nonzero"></path>
+            <rect id="Rectangle-Copy" fill="#EAF3F9" fill-rule="nonzero" x="4" y="4" width="56" height="35" rx="1"></rect>
+            <g id="Group-2" transform="translate(9.000000, 8.000000)">
+                <rect id="Rectangle" fill="#B7CCDB" fill-rule="nonzero" x="0" y="2" width="16" height="1" rx="0.5"></rect>
+                <rect id="Rectangle-Copy-5" fill="#7E97B2" fill-rule="nonzero" x="0" y="12" width="22" height="1" rx="0.5"></rect>
+                <rect id="Rectangle-Copy-10" fill="#CFDEE9" fill-rule="nonzero" x="0" y="20" width="16" height="1" rx="0.5"></rect>
+                <rect id="Rectangle-Copy-14" fill="#CFDEE9" fill-rule="nonzero" x="0" y="24" width="9" height="1" rx="0.5"></rect>
+                <rect id="Rectangle-Copy-16" fill="#CFDEE9" fill-rule="nonzero" x="39" y="24" width="7" height="1" rx="0.5"></rect>
+                <rect id="Rectangle-Copy-15" fill="#CFDEE9" fill-rule="nonzero" x="11" y="24" width="26" height="1" rx="0.5"></rect>
+                <rect id="Rectangle-Copy-11" fill="#CFDEE9" fill-rule="nonzero" x="18" y="20" width="13" height="1" rx="0.5"></rect>
+                <rect id="Rectangle-Copy-12" fill="#CFDEE9" fill-rule="nonzero" x="33" y="20" width="13" height="1" rx="0.5"></rect>
+                <rect id="Rectangle-Copy-7" fill="#7E97B2" fill-rule="nonzero" x="0" y="16" width="12" height="1" rx="0.5"></rect>
+                <rect id="Rectangle-Copy-4" fill="#B7CCDB" fill-rule="nonzero" x="18" y="2" width="8" height="1" rx="0.5"></rect>
+                <rect id="Rectangle-Copy-6" fill="#7E97B2" fill-rule="nonzero" x="25" y="12" width="13" height="1" rx="0.5"></rect>
+                <rect id="Rectangle-Copy-13" fill="#7E97B2" fill-rule="nonzero" x="40" y="12" width="6" height="1" rx="0.5"></rect>
+                <rect id="Rectangle-Copy-8" fill="#7E97B2" fill-rule="nonzero" x="14" y="16" width="6" height="1" rx="0.5"></rect>
+                <rect id="Rectangle-Copy-9" fill="#7E97B2" fill-rule="nonzero" x="22" y="16" width="24" height="1" rx="0.5"></rect>
+                <path d="M46,2.5 C46,3.19975827 45.7168042,3.81678753 45.2677336,4.26606652 C44.8167875,4.7168042 44.1997583,5 43.5002084,5 C42.1167375,5 41,3.88347087 41,2.5 C41,1.11652913 42.1167375,0 43.5002084,0 C44.8836793,0 46,1.11673752 46,2.5 Z" id="Shape" fill="#B7CCDB"></path>
+            </g>
+            <path d="M6,4 C5.44771525,4 5,4.44771525 5,5 L5,38 C5,38.5522847 5.44771525,39 6,39 L5,39 C4.44771525,39 4,38.5522847 4,38 L4,5 C4,4.44771525 4.44771525,4 5,4 L6,4 Z" id="Combined-Shape" fill="#FFFFFF" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>

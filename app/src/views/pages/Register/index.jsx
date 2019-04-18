@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { Component } from 'react'
 import { Form, FormGroup, Input, Alert } from 'reactstrap'
 import GoogleLogin from 'react-google-login';
@@ -171,7 +172,9 @@ export class Account extends Component {
     }
     return (
       <div className="d-flex flex-row align-items-center justify-content-center" id="main">
-        <div className={"login-card " + (this.props.page === 'login' ? null : "open-register")}>
+        <div className={cn('login-card', {
+          'open-register': !this.props.login
+        })}>
             <div id="side-form">
               <Form id="login-form" onSubmit={this.loginSubmit}>
                 <img className="login-logo" src="/logo.svg" alt="logo"/>

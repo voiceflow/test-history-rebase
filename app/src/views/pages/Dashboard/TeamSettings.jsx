@@ -20,7 +20,6 @@ import SeatsCheckout from "./SeatsCheckout";
 import { setConfirm, setError } from 'ducks/modal'
 import Billing from "./Billing"
 import classNames from 'classnames';
-import { noop } from 'lodash'
 
 // SETTING STATES: MEMBERS, SETTINGS, DELETE
 const STAGES = {
@@ -132,6 +131,7 @@ const MemberRow = props => {
             </DropdownMenu>
           </UncontrolledDropdown>
         }
+        { props.member.status === 100 && <span className="text-muted mr-3">OWNER</span>}
       </div>
     </div>
   );

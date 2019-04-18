@@ -13,8 +13,7 @@ const BLOCK_TYPES = {
     'interaction': { text: 'Interaction', type: 'interaction', icon: <i className="fas fa-user-alt"/>, tip: 'Select choices and capture slot values from user input' },
     'intent': { text: 'Intent', type: 'intent', icon: <i className="fas fa-arrow-alt-from-left"/>, tip: 'Handle intents, from within the skill and upon skill launch with CanFulfillIntent)'},
     'stream': { text: 'Stream', type: 'stream', icon: <i className="fas fa-play"/>, tip: 'Stream long audio files & URLs for the user' },
-    // 'integrations': { text: 'Integrations', type: 'integrations', icon: <i className="fas fa-globe"/>, tip: 'Integrate external services into your skill' },
-    'api': { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables' },
+    'integrations': { text: 'Integrations', type: 'integrations', icon: <i className="fas fa-globe"/>, tip: 'Integrate external services into your skill' },
     'flow': { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},
     'code': { text: 'Code', type: 'code', icon: <i className="fab fa-js-square"/>, tip: 'Modify Variables directly with Code'},
     'exit': { text: 'Exit', type: 'exit', icon: <i className="fas fa-sign-out"/>, tip: 'End the skill on the current flow' },
@@ -49,7 +48,7 @@ const SECTIONS = [{
         BLOCK_TYPES.interaction,
         BLOCK_TYPES.intent,
         BLOCK_TYPES.stream,
-        BLOCK_TYPES.api,
+        BLOCK_TYPES.integrations,
         BLOCK_TYPES.flow,
         BLOCK_TYPES.code,
         BLOCK_TYPES.exit

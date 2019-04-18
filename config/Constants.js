@@ -1359,3 +1359,11 @@ exports.DEFAULT_INTENTS = {
     ]
   }
 }
+
+exports.CATCH_ALL_INTENT = {
+  name: 'VoiceFlowIntent',
+  samples: [
+    'voice flow',
+    'voiceflow'
+  ]
+}

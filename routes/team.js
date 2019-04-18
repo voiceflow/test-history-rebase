@@ -1,8 +1,8 @@
 // PRIMARY KEY TEAM_ID IS ALWAYS HASHED
-const { pool, writeToLogs, validateEmail, hashids, decryptJSON } = require("./../services");
+const { pool, writeToLogs, hashids, decryptJSON } = require("./../services");
 
 const { deleteProjectPromise } = require("./skill_util");
-const { team_hash, createTeam } = require("./team_util")
+const { team_hash, createTeam, populateTeam, repopulateTeam } = require("./team_util")
 
 const { sendTeamInvite } = require("./mail");
 
@@ -88,80 +88,21 @@ exports.verifyProjectAccess = async (req, res, next) => {
   next();
 };
 
-// Add Team Members/Seats to the team
-const populateTeam = async (team_id, creator, members) => {
-  // insert owner first with owner status
-  const now = moment().unix();
-  let query = `INSERT INTO team_members (team_id, creator_id, status, email, created) VALUES ($1, $2, $3, $4, $5)`;
-  const insert = [team_id, creator.id, 100, creator.email, now];
-  const invites = [];
-  const existing_emails = new Set([creator.email])
-  let i = 1;
-  members.forEach(email => {
-    if (validateEmail(email) && !existing_emails.has(email)) {
-      let mod = i * 5;
-      query = query + `, ($${1 + mod}, $${2 + mod}, $${3 + mod}, $${4 + mod}, $${5 + mod})`;
-      insert.push(team_id, null, 0, email, now);
-      invites.push(email);
-      existing_emails.add(email)
-      i++;
-    }
-  });
-
-  await pool.query(query, insert);
-  return { invites, now };
-};
-
-// Add Team Members/Seats to the team, return new members to be invited
-const repopulateTeam = async (team_id, members) => {
-  // insert owner first with owner status
-  const now = moment().unix();
-  let query = `INSERT INTO team_members (team_id, creator_id, status, email, created) VALUES `;
-  const invites = []
-  const insert = []
-  const emails = new Set()
-
-  let i = 0;
-  members.forEach(m => {
-    if(!m.creator_id) {
-      if(!validateEmail(m.email) || emails.has(m.email)) {
-        m.email = undefined
-        return
-      }
-      invites.push(m.email)
-      m.created = now
-      m.status = 0
-    }else if(!m.status){
-      m.status = 1
-    }
-
-    let mod = i * 5;
-    query = query + `($${1 + mod}, $${2 + mod}, $${3 + mod}, $${4 + mod}, $${5 + mod}), `;
-    insert.push(team_id, m.creator_id, m.status, m.email, (m.created || now));
-    emails.add(m.email)
-    i++;
-  });
-
-  await pool.query(query.slice(0,-2), insert);
-  return { invites, now }
-};
-
-
 // Creating a free team (under 2 people)
 exports.addTeam = async (req, res) => {
   // INVITES DO NOT INCLUDE CREATOR
-  if (
-    !(
+  try {
+    if (!(
       Array.isArray(req.body.invites) &&
       req.body.invites.length < FREE_SEATS &&
       typeof req.body.name === "string" &&
       req.body.name.length <= MAX_TEAM_NAME_LENGTH
-    )
-  ) {
-    return res.sendStatus(400);
-  }
+    )) throw { status: 400 }
 
-  try {
+    // Ensure you'd not adding a free team if you have 3 already
+    const current = await pool.query("SELECT 1 FROM team_members WHERE creator_id = $1", req.user.id)
+    if(current.rowCount > 3) throw { status: 409, message: '3 Boards Maximum' }
+
     let team = await createTeam(req.body.name, req.body.image, req.user, req.body.invites.length + 1);
     const { invites, now } = await populateTeam(team.team_id, req.user, req.body.invites);
 
@@ -174,8 +115,9 @@ exports.addTeam = async (req, res) => {
     team.team_id = team_hash.encode(team.team_id)
     res.send(team);
   } catch (err) {
-    writeToLogs("CREATE TEAM ERROR", err);
-    return res.sendStatus(400);
+    if(err.status) return res.status(err.status).send(err.message)
+
+    return res.sendStatus(500)
   }
 };
 

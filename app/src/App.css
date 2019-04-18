@@ -79,7 +79,17 @@ ul {
 .mt-6 {
   margin-top: 5rem;
 }
-.form-control {
+
+.projects-list__dragzone {
+    border-radius: 7px;
+    background-color: #fff;
+    background-size: 10%;
+    background-image: url(/empty-state.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 1px solid #eaeff4
+}
+.form-control{
     letter-spacing: 0.1px;
     font-size: 15px;
     display: block;
@@ -680,6 +690,9 @@ hr.full-width {
     justify-content: space-between;
     align-items: center;
 }
+.hidden{
+    display: none !important;
+}
 .close{
     font-weight: normal;
     color: #8da2b570;
@@ -747,13 +760,14 @@ hr.full-width {
     opacity: 1 !important;
     background-repeat: no-repeat;
     background-position: center;
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
     background-image: url(/more-info.svg);
     background-repeat: no-repeat;
     background-size: 16px;
     top: 20px;
     cursor: pointer;
+    margin: .75rem .15rem;
 }
 .more-info:hover {
     background-image: url(/more-info-hover.svg);
@@ -765,13 +779,14 @@ hr.full-width {
     opacity: 1 !important;
     background-repeat: no-repeat;
     background-position: center;
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
     background-image: url(/cog.svg);
     background-repeat: no-repeat;
     background-size: 16px;
     top: 20px;
     cursor: pointer;
+    margin: .75rem .15rem;
 }
 
 .cog:hover {
@@ -846,10 +861,6 @@ hr.full-width {
 }
 .no-padding-row{
     margin: 0px !important;
-}
-.ace_editor{
-    font: 15px/normal 'OpenSans' !important;
-    color: #132144 !important;
 }
 .no-padding-row>div{
     padding: 0 !important;
@@ -1251,13 +1262,20 @@ label {
     /* height: 45px !important; */
     min-height: 45px !important;
 }
+
+.disabled{
+  opacity: 0.5 !important;
+  pointer-events: none;
+}
+
 .disabled-form{
     color: #8da2b590 !important;
 }
-textarea{
-    /* resize: none !important; */
-}
-input, textarea, .text-to-voice, .choice-block,{
+
+/* textarea{
+    resize: none !important;
+} */
+input, textarea, .text-to-voice, .choice-block {
     background-color: #FFF;
     color: #2b3950;
     border: 1px solid #c5d3e0;
@@ -1272,10 +1290,10 @@ input, textarea, .text-to-voice, .choice-block,{
 }
 input::placeholder, textarea::placeholder, select:required:invalid, input.form-control::placeholder, textarea.form-control::placeholder,
 .select-box__placeholder {
+    color: #62778C !important;
     font-weight: 400 !important;
     font-size: 15px;
     font-weight: 500;
-    color: #62778C;
     line-height: 20px;
 }
 .form-title{

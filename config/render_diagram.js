@@ -745,9 +745,15 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
               mapping = [];
             }
 
+            let recipient = node.extras.to
+            if (typeof recipient === 'object') {
+              // Draftjs
+              recipient = draftToMarkdown(recipient)
+            }
+
             story.lines[node.id] = {
               template_id: id[0],
-              to: node.extras.to,
+              to: recipient,
               mapping: mapping,
               success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),
               fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
@@ -889,7 +895,11 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
         if(node.extras && node.extras.reprompt){
             let REPROMPT
             if(!node.extras.reprompt.voice || node.extras.reprompt.voice === 'Alexa') {
-              REPROMPT = draftToMarkdown(node.extras.reprompt.content)
+              if (typeof node.extras.reprompt.content === 'string') {
+                REPROMPT = node.extras.reprompt.content
+              } else {
+                REPROMPT = draftToMarkdown(node.extras.reprompt.content)
+              }
             } else if (node.extras.reprompt.voice === 'audio' && typeof node.extras.reprompt.content === 'string') {
               REPROMPT = `<audio src="${node.extras.reprompt.content}"/>`
             } else {

@@ -6,6 +6,7 @@ import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 
 import 'draft-js-mention-plugin/lib/plugin.css';
+import _ from 'lodash'
 
 class VariableInput extends Component {
 
@@ -14,7 +15,7 @@ class VariableInput extends Component {
 
         this.state = {
             editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty(),
-            suggestions: this.props.variables.map(v => {return {name: v}})
+            suggestions: _.filter(this.props.variables, v => v !== 'Create Variable').map(v => {return {name: v}})
         };
 
         this.mentionPlugin = createMentionPlugin({
@@ -53,7 +54,7 @@ class VariableInput extends Component {
 
     onSearchChange = ({ value }) => {
         this.setState({
-            suggestions: defaultSuggestionsFilter(value, this.props.variables.map(v => {return {name: v}})),
+            suggestions: defaultSuggestionsFilter(value, _.filter(this.props.variables, v=> v !== 'Create Variable').map(v => {return {name: v}})),
         });
     };
 

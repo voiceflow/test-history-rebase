@@ -25,19 +25,29 @@ export class LinkModel extends BaseModel {
 		});
 
 		if (ob.target && this.getParent().getNode(ob.target)) {
-			this.setTargetPort(
-				this.getParent()
-					.getNode(ob.target)
-					.getPortFromID(ob.targetPort)
-			);
+			if (this.getParent().getNode(ob.target).extras.type === 'god') {
+				let combineBlock = this.getParent().getNode(ob.target)
+				this.setTargetPort(_.find(_.head(combineBlock.combines).ports, p => p.id === ob.targetPort))
+			} else {
+				this.setTargetPort(
+					this.getParent()
+						.getNode(ob.target)
+						.getPortFromID(ob.targetPort)
+				);
+			}
 		}
 
 		if (ob.source && this.getParent().getNode(ob.source)) {
-			this.setSourcePort(
-				this.getParent()
-					.getNode(ob.source)
-					.getPortFromID(ob.sourcePort)
-			);
+			if (this.getParent().getNode(ob.source).extras.type === 'god') {
+				let combineBlock = this.getParent().getNode(ob.source)
+				this.setSourcePort(_.find(_.last(combineBlock.combines).ports, p => p.id === ob.sourcePort))
+			} else {
+				this.setSourcePort(
+					this.getParent()
+						.getNode(ob.source)
+						.getPortFromID(ob.sourcePort)
+				);
+			}
 		}
 	}
 

@@ -94,7 +94,8 @@ const trackUser = async (data, analytics_data) => {
         'city': city,
         'country': country,
         'os': analytics_data.device.os,
-        'browser': analytics_data.device.browser
+        'browser': analytics_data.device.browser,
+        'created': data.created.toISOString().substring(0, 10)
       }
     }, () => {
       analytics.track({
@@ -369,7 +370,8 @@ const putSession = (req, res) => {
               admin: row.admin,
               first_login: false,
               verified: row.verified,
-              image: row.image
+              image: row.image,
+              created: row.created
             }, {
               platform: 'VF',
               device: req.body.device
@@ -431,7 +433,7 @@ const googleLogin = async (req, res) => {
               } else if (data.rows.length === 0) {
                 return res.sendStatus(404)
               } else {
-                let row = data.rows[0];
+                let row = result.rows[0];
                 createLogin({
                   id: row.creator_id,
                   email: row.email,
@@ -439,7 +441,8 @@ const googleLogin = async (req, res) => {
                   admin: row.admin,
                   first_login: false,
                   verified: row.verified,
-                  image: row.image
+                  image: row.image,
+                  created: row.created
                 }, {
                   platform: 'Google',
                   device: req.body.device
@@ -455,7 +458,7 @@ const googleLogin = async (req, res) => {
             })
           } else {
             let image = getProfile()
-            pool.query('INSERT INTO creators (name, email, gid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id',
+            pool.query('INSERT INTO creators (name, email, gid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id, created',
               [name, email, gid, image], async (err, insert_result) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {
@@ -475,7 +478,8 @@ const googleLogin = async (req, res) => {
                     admin: 0,
                     first_login: true,
                     verified: true,
-                    image: image
+                    image: image,
+                    created: user.created
                   }, {
                     platform: 'Google',
                     device: req.body.device
@@ -642,7 +646,7 @@ const fbLogin = async (req, res) => {
                 });
                 res.status(500).send('Something went wrong with existing email');
               } else {
-                let row = data.rows[0]
+                let row = result.rows[0]
                 createLogin({
                   id: row.creator_id,
                   email: row.email,
@@ -650,7 +654,8 @@ const fbLogin = async (req, res) => {
                   admin: row.admin,
                   first_login: false,
                   verified: row.verified,
-                  image: row.image
+                  image: row.image,
+                  created: row.created
                 }, {
                   platform: 'Facebook',
                   device: req.body.device
@@ -666,7 +671,7 @@ const fbLogin = async (req, res) => {
             })
           } else {
             let image = getProfile()
-            pool.query('INSERT INTO creators (name, email, fid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id',
+            pool.query('INSERT INTO creators (name, email, fid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id, created',
               [name, email, fid, image], async (err, insert_result) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {
@@ -687,7 +692,8 @@ const fbLogin = async (req, res) => {
                     admin: 0,
                     first_login: true,
                     verified: true,
-                    image: image
+                    image: image,
+                    created: user.created
                   }, {
                     platform: 'Facebook',
                     device: req.body.device
@@ -730,7 +736,7 @@ const putUser = async (req, res) => {
             res.status(500).send('Password Error')
           } else {
             let image = getProfile()
-            pool.query('INSERT INTO creators (name, email, password, image) VALUES ($1, $2, $3, $4) RETURNING creator_id',
+            pool.query('INSERT INTO creators (name, email, password, image) VALUES ($1, $2, $3, $4) RETURNING creator_id, created',
               [name, email, hash, image], async (err, insert_result) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {
@@ -750,7 +756,8 @@ const putUser = async (req, res) => {
                     admin: 0,
                     first_login: true,
                     verified: false,
-                    image: image
+                    image: image,
+                    created: created
                   }, {
                     platform: 'VF',
                     device: req.body.device

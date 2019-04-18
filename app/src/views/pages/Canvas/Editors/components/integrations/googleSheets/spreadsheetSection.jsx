@@ -8,7 +8,7 @@ import memoize from 'memoize-one'
 import { selectStyles } from 'views/components/VariableSelect'
 
 // props
-// action_data, user, skill_id, onError, updateActionData, updateHeaders
+// action_data, integrationsUser, skill_id, onError, updateActionData, updateHeaders
 
 class SpreadsheetSection extends Component {
 
@@ -50,11 +50,11 @@ class SpreadsheetSection extends Component {
   }
 
   promiseOptions(inputValue) {
-    const user = this.props.user
-    if (!user) return Promise.resolve([])
+    const integrationsUser = this.props.integrationsUser
+    if (!integrationsUser) return Promise.resolve([])
 
     if (!inputValue) inputValue = ''
-    return IntegrationsService.googleSheets.getSpreadsheets(inputValue, user)
+    return IntegrationsService.googleSheets.getSpreadsheets(inputValue, integrationsUser)
   }
 
   async updateSheets() {
@@ -70,8 +70,8 @@ class SpreadsheetSection extends Component {
     })
 
     try {
-      const user = this.props.user
-      const sheets = await IntegrationsService.googleSheets.getSpreadsheetSheets(spreadsheet_id, user)
+      const integrationsUser = this.props.integrationsUser
+      const sheets = await IntegrationsService.googleSheets.getSpreadsheetSheets(spreadsheet_id, integrationsUser)
       this.setState({
         sheets_list: sheets
       })
@@ -106,7 +106,7 @@ class SpreadsheetSection extends Component {
             <div className='mr-2 text-muted'>Spreadsheet </div>
             <div className='flex-fill'>
               <AsyncSelect
-                key={JSON.stringify(this.props.user) + JSON.stringify(this.props.user && this.props.user.user_id)+this.props.selected_action}
+                key={JSON.stringify(this.props.integrationsUser) + JSON.stringify(this.props.integrationsUser && this.props.integrationsUser.user_id)+this.props.selected_action}
                 cacheOptions
                 defaultOptions
                 styles={selectStyles}

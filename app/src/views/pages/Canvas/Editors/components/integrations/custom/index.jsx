@@ -120,7 +120,7 @@ class Custom extends IntegrationBase {
     const sections_list = action ? this.integration_info.actions[action].sections : [C.ACTIONS_SECTION, C.REQUEST_PARAMS_SECTION]
 
     const action_data = action && this.props.integration_data.actions_data[action]
-    const user = this.props.integration_data.user
+    const integrationsUser = this.props.integration_data.user
 
     return (
       <div className='w-100'>
@@ -149,7 +149,7 @@ class Custom extends IntegrationBase {
             case C.REQUEST_PARAMS_SECTION:
               component = <RequestParamsSection
                 action_data={action_data}
-                user={user}
+                integrationsUser={integrationsUser}
                 integration_data={this.props.integration_data}
                 selected_action={action}
                 updateActionData={this.updateActionData}

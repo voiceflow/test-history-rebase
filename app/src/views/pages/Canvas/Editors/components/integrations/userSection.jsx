@@ -26,7 +26,7 @@ class UserSection extends Component {
   checkCompletion() {
     let completed = false
 
-    if (this.props.user) {
+    if (this.props.integrationsUser) {
       completed = true
     }
 
@@ -70,18 +70,18 @@ class UserSection extends Component {
         try {
           await this.props.deleteUser(this.props.selected_integration, {
             user: user,
-            creator_id: window.user_detail.id,
+            creator_id: this.props.user.creator_id,
             skill_id: this.props.skill_id
           })
           this.props.setConfirm({
-            text: 'User deleted successfully.', confirm: () => this.props.clearModal()
+            text: 'User deleted successfully.', confirm: () => { this.props.clearModal(); this.forceUpdate() }
           })
           const newIntegrationData = update(this.props.integration_data, {
             user: {
               $set: null
             }
           })
-          this.props.updateIntegrationData(newIntegrationData, this.checkCompletion())
+          this.props.updateIntegrationData(newIntegrationData, () => { this.forceUpdate(); this.checkCompletion() })
         } catch (e) {
           this.props.setError(e)
         }
@@ -96,10 +96,11 @@ class UserSection extends Component {
   }
 
   render() {
+    console.log("integrations", this.props)
 
     const integration = this.props.selected_integration
     const users = this.props.integration_users[integration]
-    const user = this.props.user
+    const user = this.props.integrationsUser
 
     const AddUserModal = this.props.user_modal
 
@@ -210,7 +211,8 @@ const mapStateToProps = state => ({
   integration_users: state.integrationUsers.integration_users,
   integration_users_loading: state.integrationUsers.loading,
   integration_user_error: state.integrationUsers.error,
-  skill_id: state.skills.skill.skill_id
+  skill_id: state.skills.skill.skill_id,
+  user: state.account
 })
 
 const mapDispatchToProps = dispatch => {

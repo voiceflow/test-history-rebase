@@ -1697,7 +1697,9 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
     color: #fff;
     background-color: #007bff !important;
 }
-
+.nav-link {
+    padding: 0.5rem 0.5rem !important;
+}
 #dash-nav .nav-item {
     width: 100%;
 

@@ -279,14 +279,19 @@ export class DashBoard extends Component {
                   title="Resources"
                   position="bottom"
                 >
-                  <button className="nav-btn" type="submit">
-                    <i className="fas fa-info-circle" />
+                  <button className="dropdown-button-border" type="submit">
                   </button>
                 </Tooltip>
               </DropdownToggle>
               <DropdownMenu className="mt-2">
                 <a href="https://university.getvoiceflow.com/" target='_blank' rel='noopener noreferrer'>
-                  <DropdownItem>Tutorials</DropdownItem>
+                  <DropdownItem>University</DropdownItem>
+                </a>
+                <a href="https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ/videos" target='_blank' rel='noopener noreferrer'>
+                  <DropdownItem>Youtube</DropdownItem>
+                </a>
+                <a href="https://www.facebook.com/groups/voiceflowgroup/" target='_blank' rel='noopener noreferrer'>
+                  <DropdownItem>Community</DropdownItem>
                 </a>
                 <a href="https://forum.getvoiceflow.com/" target='_blank' rel='noopener noreferrer'>
                   <DropdownItem>Forums</DropdownItem>

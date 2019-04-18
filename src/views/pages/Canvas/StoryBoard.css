@@ -3518,8 +3518,8 @@ button.close:hover{
 #flow-bar {
     position: fixed;
     bottom: 0px;
-    width: 430px;
-    height: 50px;
+    width: 475px;
+    height: 58px;
     left: 50%;
     margin-left: -215px;
     z-index: 5;

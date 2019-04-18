@@ -1,0 +1,216 @@
+/* eslint-disable */
+
+export const getNodePosition = node => {
+  const box = node.getBoundingClientRect();
+  const body = document.body;
+  const docElem = document.documentElement;
+
+  const scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop;
+  const scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft;
+  const clientTop = docElem.clientTop || body.clientTop || 0;
+  const clientLeft = docElem.clientLeft || body.clientLeft || 0;
+
+  const top = box.top + scrollTop - clientTop;
+  const left = box.left + scrollLeft - clientLeft;
+
+  return {
+    left: Math.round(left),
+    top: Math.round(top),
+  };
+};
+
+export const getCursorPosition = e => {
+  const x = e.pageX,
+    y = e.pageY;
+
+  return [x < 0 ? 0 : x, y < 0 ? 0 : y];
+};
+
+export const getNodeSize = node => {
+  return {
+    height: node.offsetHeight,
+    width: node.offsetWidth,
+  };
+};
+
+/**
+ * Get the width of the browser scrollbar
+ * @return {number}
+ */
+export const getScrollbarWidth = () => {
+  const outer = document.createElement('div');
+  outer.style.visibility = 'hidden';
+  outer.style.width = '100px';
+
+  document.body.appendChild(outer);
+
+  const widthNoScroll = outer.offsetWidth;
+
+  outer.style.overflow = 'scroll';
+
+  const inner = document.createElement('div');
+  inner.style.width = '100%';
+  outer.appendChild(inner);
+
+  const widthWithScroll = inner.offsetWidth;
+
+  outer.parentNode.removeChild(outer);
+
+  return widthNoScroll - widthWithScroll;
+};
+
+/**
+ * Find the closest node which has a scroll (overflow: auto)
+ * @param {node} node
+ * @return {node}
+ */
+const _findScrollableParent = node => {
+  if (node === null || typeof node === 'undefined' || node === '' || node === document.body) {
+    return { node: document.body, axis: 'xy' };
+  }
+
+  const xy = getCSSValue(node, 'overflow');
+  const x = getCSSValue(node, 'overflow-x');
+  const y = getCSSValue(node, 'overflow-y');
+
+  if (xy === 'auto' || xy === 'scroll') {
+    return { node, axis: 'xy' };
+  } else if (x === 'auto' || x === 'scroll') {
+    return { node, axis: 'x' };
+  } else if (y === 'auto' || y === 'scroll') {
+    return { node, axis: 'y' };
+  } else {
+    return _findScrollableParent(node.parentNode);
+  }
+};
+
+export const findScrollableParent = node => {
+  return _findScrollableParent(node).node;
+};
+
+export const findScrollableParents = node => {
+  const first = _findScrollableParent(node);
+  if (first.axis === 'xy') {
+    return [first.node];
+  }
+
+  return [first.node, ...findScrollableParents(first.node.parentNode)];
+};
+
+/**
+ * Find the closest node
+ * @param {node} currentNode
+ * @param {string} name (node localName or class)
+ * @return {node}
+ */
+export const findClosestNode = (currentNode, name) => {
+  if (
+    currentNode === null ||
+    typeof currentNode === 'undefined' ||
+    currentNode === '' ||
+    currentNode === document
+  ) {
+    return false;
+  }
+
+  const { parentNode, classList, localName } = currentNode;
+  if ((classList && classList.contains(name)) || localName === name) {
+    return currentNode;
+  } else {
+    return findClosestNode(parentNode, name);
+  }
+};
+
+/**
+ * Get the CSS Value
+ * @param {node} node
+ * @param {string} property (CSS Property, not Style Object)
+ * @return {string}
+ */
+export const getCSSValue = (node, property) => {
+  if (!node) {
+    return '';
+  }
+
+  return window.getComputedStyle(node).getPropertyValue(property);
+};
+
+/**
+ * Set the offset of the element depending on the width of the scroll
+ * @param {node} scrollableNode
+ * @param {node} offsetNode
+ * @param {string} property (CSS Style Object)
+ * @param {boolean} styleImportant (if style should be !important)
+ * @param {number} initialValue (if the property already has some value)
+ */
+export const setScrollbarOffset = (
+  scrollableNode,
+  offsetNode,
+  property = 'margin-right',
+  styleImportant,
+  initialValue = 0
+) => {
+  const SCROLLBAR_WIDTH = getScrollbarWidth();
+
+  if (scrollableNode && offsetNode && SCROLLBAR_WIDTH) {
+    let offset = initialValue;
+    const important = styleImportant ? 'important' : '';
+
+    const [offsetProp, scrollProp] = property.match(/(margin-right|margin-left)/)
+      ? ['offsetHeight', 'scrollHeight']
+      : ['offsetWidth', 'scrollWidth'];
+
+    if (scrollableNode[offsetProp] < scrollableNode[scrollProp]) {
+      offsetNode.style.removeProperty(property);
+    } else {
+      offset =
+        (!!initialValue && initialValue > SCROLLBAR_WIDTH
+          ? initialValue - SCROLLBAR_WIDTH
+          : SCROLLBAR_WIDTH) + 'px';
+      offsetNode.style.setProperty(property, offset, important);
+    }
+  }
+};
+
+const _getOffsetToNode = (node, body, key) => {
+  let obj = node;
+  let offset = 0;
+
+  if (!obj) {
+    return offset;
+  }
+
+  while (obj !== body) {
+    offset += obj[key];
+    obj = obj.offsetParent;
+  }
+
+  return offset;
+};
+
+export const getOffsetToNode = (node, body) => {
+  return _getOffsetToNode(node, body, 'offsetTop');
+};
+
+export const getOffsetLeftToNode = (node, body) => {
+  return _getOffsetToNode(node, body, 'offsetLeft');
+};
+
+/**
+ * Smart scroll to the node, uses scrollTo method or scrollTop|scrollLeft
+ * @param {node} scrollableNode
+ * @param {options} offsetNode
+ */
+export const scrollTo = (node, { top = 0, left = 0, ...opts } = {}) => {
+  if (node.scrollTo) {
+    node.scrollTo({ top, left, ...opts });
+  } else {
+    if (typeof top === 'number') {
+      node.scrollTop = top;
+    }
+
+    if (typeof left === 'number') {
+      node.scrollLeft = left;
+    }
+  }
+};

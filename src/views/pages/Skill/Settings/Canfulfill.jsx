@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import cn from 'classnames'
 import { Collapse, Alert } from 'reactstrap';
 // import Select from 'react-select'
 import { Tooltip } from 'react-tippy'
@@ -67,7 +68,13 @@ class Canfulfill extends PureComponent {
           {slot_config ? <div className="my-2" key={i}>
             <div className="slot-box">
               <button className="btn btn-clear w-100 d-flex space-between nb" onClick={() => { this.toggleCollapse(i) }}>
-                <span className="slot-fulfillment"><i className={`fas ${this.state.open[i] ? "fa-caret-down" : "fa-caret-right"} mr-2`}></i>{slot.name}</span>
+                <span className="slot-fulfillment">
+                  <i className={cn('fas mr-2', {
+                    'fa-caret-down': this.state.open[i],
+                    'fa-caret-right': !this.state.open[i]
+                  })} />
+                  {slot.name}
+                </span>
                 {slot_config.length === 0 && <Tooltip
                   target="tooltip"
                   theme="menu"

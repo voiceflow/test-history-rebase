@@ -611,9 +611,6 @@ textarea::placeholder {
   font-weight: bold
 }
 
-.disabled {
-  pointer-events: none;
-}
 .faded {
   opacity: 0.55;
 }

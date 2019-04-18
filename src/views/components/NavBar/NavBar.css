@@ -189,6 +189,7 @@ div.nav-item{
 }
 .dropdown-button:hover {
 	box-shadow: 0 0 0 1px rgba(17,49,96,.04), 0 2px 6px 0 rgba(17,49,96,.24);
+	color: #62778C;
 }
 .dropdown.show .dropdown-button {
   border-color: #dce5e8;

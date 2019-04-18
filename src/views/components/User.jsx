@@ -21,13 +21,21 @@ export const User = (props) => {
 }
 
 export const Members = (props) => {
-  if(!props.members || props.members.length === 0){
+  const members = props.members.filter(m => !!m.email)
+  const accepted = members.filter(m => !!m.creator_id)
+  if(!accepted || accepted.length === 0){
     return null
+  }
+
+  if(members.length === 1){
+    return <div style={{color: '#CDAD32'}} className="mr-4 pointer" onClick={() => props.update("MEMBERS")}>
+      <img src="/images/icons/power.svg" alt="power"/>&nbsp;&nbsp;&nbsp;Add Collaborators
+    </div>
   }
 
   return <div className="mr-3 super-center">
     <div className="d-flex flex-row-reverse">
-      {props.members.filter(m => !!m.creator_id).slice(0, 8).map(m => {
+      {accepted.slice(0, 8).map(m => {
         return <Tooltip
           key={m.creator_id}
           title={m.name}
@@ -37,6 +45,6 @@ export const Members = (props) => {
         </Tooltip>
       })}
     </div>
-    {props.members.length > 8 && <div className="ml-3 text-muted">+{props.members.length - 8}</div>}
+    {accepted.length > 8 && <div className="ml-3 text-muted">+{accepted.length - 8}</div>}
   </div>
 }

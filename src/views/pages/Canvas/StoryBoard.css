@@ -498,7 +498,7 @@
 
 .title-group {
     position: fixed;
-    right: 70px;
+    right: 75px;
     top: 0px;
     z-index: 1040;
     display: flex;
@@ -1043,10 +1043,10 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
 
 .Menu #sidebar:after{
     content: " ";
-    background-color: #E2E9EC;
+    background-color: #eaeff3;
     position: absolute;
     right: 0px;
-    width: 2px;
+    width: 1px;
     height: 100%;
     cursor: col-resize !important;
     z-index: 1500;
@@ -1323,7 +1323,7 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
 .home-block .menu-tip-home {
     position:absolute;
     left: 15px;
-    top: 5px;
+    top: 7px;
 }
 
 .edit-name{
@@ -3487,16 +3487,18 @@ button.close:hover{
     cursor: pointer;
     font-size: 15px !important;
     color: #0b1a38 !important;
-    padding: 0.45rem 1.5rem !important;
+    padding: 0.65rem 1.5rem !important;
     transition: all 0.10s ease !important;
 }
+
 .dropdown-item:active{
     cursor: pointer;
     font-size: 15px !important;
     color: #0b1a38 !important;
-    padding: 0.45rem 1.5rem !important;
+    padding: 0.65rem 1.5rem !important;
     background-color: #f1f4f7 !important;
 }
+
 #widget-bar {
     position: absolute;
     bottom: 13px;
@@ -3505,6 +3507,7 @@ button.close:hover{
     display: flex;
     vertical-align: middle;
 }
+
 #home-button {
     position: absolute;
     z-index: 5;

@@ -123,7 +123,7 @@ div.nav-item{
 	height: 50px;
 	display: flex;
 	align-items: center;
-	padding: 0px;
+	padding: 1px !important;
 	border: none !important;
 	cursor: pointer;
 }
@@ -175,7 +175,7 @@ div.nav-item{
 }
 .dropdown-button {
   padding: 11px 11px;
-  border-radius: 50%;
+  border-radius: 50% !important;
   cursor: pointer;
   color: #8da2b5;
   border: 1px solid transparent;
@@ -183,7 +183,7 @@ div.nav-item{
   text-align: center;
   position: relative;
   width: 42px;
-  font-size: 20px;
+  font-size: 20px !important;
   height: 42px;
   transition: all 0.25s ease;
 }

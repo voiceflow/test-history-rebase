@@ -459,6 +459,7 @@
   color: #8da2b5;
   margin-left: 6px;
   padding-bottom: 2px;
+  font-size: 13px;
 }
 
 @media(max-width: 1200px){

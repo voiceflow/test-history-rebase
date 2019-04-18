@@ -12,7 +12,7 @@ import VoiceCards from "views/components/Cards/VoiceCards";
 import EmptyCard from "views/components/Cards/EmptyCard";
 import LoadingModal from "views/components/Modals/LoadingModal";
 import TeamSettings from "./TeamSettings"
-import { Alert, Input } from "reactstrap";
+import { Alert, Input, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import { setConfirm, setError } from 'ducks/modal'
 import { connect } from "react-redux";
 import { Members } from 'views/components/User'
@@ -261,7 +261,7 @@ export class DashBoard extends Component {
           </div>
           <div className="mr-4 super-center">
             {this.props.team && <>
-              <Members members={this.props.team.members}/>
+              <Members members={this.props.team.members} update={(setting) => this.setState({team_settings: setting})}/>
               <TeamSettings
                 open={this.state.team_settings}
                 update={(setting) => this.setState({team_settings: setting})}
@@ -272,18 +272,27 @@ export class DashBoard extends Component {
         </div>
         <div className="title-group no-select pr-2">
           <div className="subheader-right">
-            <form action="https://forum.getvoiceflow.com">
-              <Tooltip
-                distance={19}
-                title="Join the Voiceflow forum for help and updates"
-                position="bottom"
-                className="ml-1 mr-4"
-              >
-                <button className="nav-btn" type="submit">
-                  <i className="fas fa-info-circle" />
-                </button>
-              </Tooltip>
-            </form>
+            <UncontrolledDropdown>
+              <DropdownToggle className="ml-1 mr-4" tag="div">
+                <Tooltip
+                  distance={19}
+                  title="Resources"
+                  position="bottom"
+                >
+                  <button className="nav-btn" type="submit">
+                    <i className="fas fa-info-circle" />
+                  </button>
+                </Tooltip>
+              </DropdownToggle>
+              <DropdownMenu className="mt-2">
+                <a href="https://university.getvoiceflow.com/" target='_blank' rel='noopener noreferrer'>
+                  <DropdownItem>Tutorials</DropdownItem>
+                </a>
+                <a href="https://forum.getvoiceflow.com/" target='_blank' rel='noopener noreferrer'>
+                  <DropdownItem>Forums</DropdownItem>
+                </a>
+              </DropdownMenu>
+            </UncontrolledDropdown>
             <button className="btn-primary ml-1" onClick={this.newProject}>
               New Project
             </button>

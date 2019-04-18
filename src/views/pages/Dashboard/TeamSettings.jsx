@@ -131,7 +131,7 @@ const MemberRow = props => {
             </DropdownMenu>
           </UncontrolledDropdown>
         }
-        { props.member.status === 100 && <span className="text-muted mr-3">OWNER</span>}
+        { props.member.status === 100 && <label className="text-muted mr-1">OWNER</label>}
       </div>
     </div>
   );

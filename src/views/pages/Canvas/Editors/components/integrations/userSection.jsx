@@ -73,15 +73,19 @@ class UserSection extends Component {
             creator_id: this.props.user.creator_id,
             skill_id: this.props.skill_id
           })
-          this.props.setConfirm({
-            text: 'User deleted successfully.', confirm: () => { this.props.clearModal(); this.forceUpdate() }
-          })
-          const newIntegrationData = update(this.props.integration_data, {
-            user: {
-              $set: null
-            }
-          })
-          this.props.updateIntegrationData(newIntegrationData, () => { this.forceUpdate(); this.checkCompletion() })
+          if (this.props.integration_user_error) {
+            this.props.setError(this.props.integration_user_error)
+          } else {
+            this.props.setConfirm({
+              text: 'User deleted successfully.', confirm: () => { this.props.clearModal(); this.forceUpdate() }
+            })
+            const newIntegrationData = update(this.props.integration_data, {
+              user: {
+                $set: null
+              }
+            })
+            this.props.updateIntegrationData(newIntegrationData, () => { this.forceUpdate(); this.checkCompletion() })
+          }
         } catch (e) {
           this.props.setError(e)
         }

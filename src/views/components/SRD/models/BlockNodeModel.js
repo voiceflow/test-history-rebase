@@ -41,12 +41,16 @@ export class BlockNodeModel extends DefaultNodeModel {
 		_.forEach(this.ports, port => {
 			let center = diagramEngine.getPortCenter(port)
 			_.forEach(port.links, link => {
-				if (port.in) {
-					let point = _.last(link.points)
-					point.updateLocation(center)
+				if (!_.isEmpty(link.points) && link.points.length >= 2) {
+					if (port.in) {
+						let point = _.last(link.points)
+						point.updateLocation(center)
+					} else {
+						let point = _.head(link.points)
+						point.updateLocation(center)
+					}
 				} else {
-					let point = _.head(link.points)
-					point.updateLocation(center)
+					link.remove()
 				}
 			})
 		})

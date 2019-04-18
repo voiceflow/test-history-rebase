@@ -19,7 +19,7 @@ export default class SearchableDropdown extends Component {
         return (
             <div className="search__dropdown">
                 <div id="myDropdown" className="search__dropdown_content">
-                    <input type="text" placeholder="Search.." id="myInput" onChange={this.onSearchChange} onKeyUp={e => e.stopPropagation()} />
+                    <input type="text" placeholder="Search..." id="myInput" onChange={this.onSearchChange} onKeyUp={e => e.stopPropagation()} />
                     
                     {this.state.searchFilter !== '' ?
                         _.filter(this.props.options, option => 

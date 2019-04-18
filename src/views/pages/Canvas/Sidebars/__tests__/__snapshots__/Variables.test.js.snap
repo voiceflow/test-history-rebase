@@ -24,17 +24,73 @@ exports[`Sidebar Variables render variable sidebar on global 1`] = `
         }
       >
         Create Variable
+        <Tooltip
+          animateFill={true}
+          animation="shift"
+          arrow={false}
+          arrowSize="regular"
+          className=""
+          delay={0}
+          disabled={false}
+          distance={10}
+          duration={375}
+          followCursor={false}
+          hideDelay={0}
+          hideDuration={375}
+          hideOnClick={true}
+          html={
+            <div
+              style={
+                Object {
+                  "width": 180,
+                }
+              }
+            >
+              Project Variables can be used anywhere in the project and save across sessions
+            </div>
+          }
+          inertia={false}
+          interactive={false}
+          interactiveBorder={2}
+          multiple={false}
+          offset={0}
+          onHidden={[Function]}
+          onHide={[Function]}
+          onRequestClose={[Function]}
+          onShow={[Function]}
+          onShown={[Function]}
+          popperOptions={Object {}}
+          position="bottom"
+          size="regular"
+          sticky={false}
+          stickyDuration={200}
+          style={Object {}}
+          theme="dark"
+          touchHold={false}
+          trigger="mouseenter focus"
+          unmountHTMLWhenHide={false}
+        >
+          <span
+            className="pointer"
+            onClick={[Function]}
+          >
+             (Project)
+          </span>
+        </Tooltip>
       </Label>
-      <Input
-        autoFocus={true}
-        className="variable-box__control"
-        maxLength="16"
-        name="new_global"
-        onChange={[Function]}
-        placeholder="Variable Name"
-        type="text"
-        value=""
-      />
+      <div
+        className="variable-box"
+      >
+        <Input
+          autoFocus={true}
+          maxLength="16"
+          name="new_global"
+          onChange={[Function]}
+          placeholder="Variable Name"
+          type="text"
+          value=""
+        />
+      </div>
     </FormGroup>
   </form>
   <small
@@ -46,8 +102,100 @@ exports[`Sidebar Variables render variable sidebar on global 1`] = `
     </b>
      to add variable
   </small>
+  <hr />
   <div>
-    <hr />
+    <div
+      className="mb-4"
+    >
+      <Label
+        tag="label"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        Flow Variables
+      </Label>
+      <div
+        className="variables"
+      >
+        <div
+          className="variable_tag"
+          key="sessions"
+        >
+          {sessions}
+           
+          <span
+            onClick={[Function]}
+          >
+            <i
+              className="fas fa-times"
+            />
+          </span>
+        </div>
+        <div
+          className="variable_tag"
+          key="user_id"
+        >
+          {user_id}
+           
+          <span
+            onClick={[Function]}
+          >
+            <i
+              className="fas fa-times"
+            />
+          </span>
+        </div>
+        <div
+          className="variable_tag"
+          key="timestamp"
+        >
+          {timestamp}
+           
+          <span
+            onClick={[Function]}
+          >
+            <i
+              className="fas fa-times"
+            />
+          </span>
+        </div>
+        <div
+          className="variable_tag"
+          key="platform"
+        >
+          {platform}
+           
+          <span
+            onClick={[Function]}
+          >
+            <i
+              className="fas fa-times"
+            />
+          </span>
+        </div>
+        <div
+          className="variable_tag"
+          key="locale"
+        >
+          {locale}
+           
+          <span
+            onClick={[Function]}
+          >
+            <i
+              className="fas fa-times"
+            />
+          </span>
+        </div>
+      </div>
+    </div>
     <Label
       tag="label"
       widths={
@@ -60,7 +208,7 @@ exports[`Sidebar Variables render variable sidebar on global 1`] = `
         ]
       }
     >
-      My Variables
+      Project Variables
     </Label>
     <div
       className="variables"
@@ -330,19 +478,6 @@ exports[`Sidebar Variables render variable sidebar on global 1`] = `
           {locale}
         </div>
       </Tooltip>
-      <div
-        className="variable_tag global"
-      >
-        {undefined}
-         
-        <span
-          onClick={[Function]}
-        >
-          <i
-            className="fas fa-times"
-          />
-        </span>
-      </div>
     </div>
   </div>
 </Fragment>

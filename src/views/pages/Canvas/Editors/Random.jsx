@@ -24,12 +24,6 @@ class RandomBlock extends Component {
         path.setMaximumLinks(1);
 
         if (node.parentCombine) {
-            let isLast = _.last(node.parentCombine.combines).id === node.id
-            let newPort = _.differenceBy(node.getOutPorts(), node.parentCombine.getOutPorts(), 'id');
-            if (isLast) {
-                node.parentCombine.ports[newPort[0].name] = newPort[0]
-                node.parentCombine.ports[newPort[0].name].parent = node.parentCombine
-            }
             let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
             node.parentCombine.combines[bestNode] = node
 
@@ -50,25 +44,24 @@ class RandomBlock extends Component {
         }
 
         let ports = node.getPorts();
-
+        let bestNode;
+        if (node.parentCombine) {
+            bestNode = _.findIndex(node.parentCombine.combines, npc => npc.name === node.name)
+        }
         for (let name in ports) {
             let port = node.getPort(name);
             if(port.in) continue;
 
             if (port.label === node.extras.paths) {
                 node.removePort(port);
-                if (node.parentCombine) {
-                    node.parentCombine.removePort(port);
-                    let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.name === node.name)
-                    node.parentCombine.combines[bestNode].ports = _.filter(node.parentCombine.combines[bestNode].ports, p => p.id !== port.id)
-                    node.parentCombine.combines[bestNode].extras.path--;
-                }
                 break;
             }
         }
 
         node.extras.paths--;
-
+        if (node.parentCombine) {
+            node.parentCombine.combines[bestNode] = node;
+        }
 
         this.setState({
             node: node

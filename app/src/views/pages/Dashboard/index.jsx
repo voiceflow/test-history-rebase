@@ -261,7 +261,7 @@ export class DashBoard extends Component {
           </div>
           <div className="mr-4 super-center">
             {this.props.team && <>
-              <Members members={this.props.team.members}/>
+              <Members members={this.props.team.members} update={(setting) => this.setState({team_settings: setting})}/>
               <TeamSettings
                 open={this.state.team_settings}
                 update={(setting) => this.setState({team_settings: setting})}

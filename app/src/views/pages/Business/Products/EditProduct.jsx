@@ -8,7 +8,7 @@ import PhrasesForm from './PhrasesForm';
 import PricingForm from './PricingForm';
 import IconsForm from './IconsForm';
 import { addProduct, updateProduct } from './../../../../actions/productActions'
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 import ProductDetailsForm from './ProductDetailsForm';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';

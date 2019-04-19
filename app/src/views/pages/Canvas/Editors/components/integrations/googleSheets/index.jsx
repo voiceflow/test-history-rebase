@@ -6,7 +6,7 @@ import randomstring from 'randomstring'
 import IntegrationBase from '../integrationBase'
 
 import { connect } from 'react-redux'
-import { setConfirm, clearModal, setError } from '../../../../../../../actions/modalActions'
+import { setConfirm, clearModal, setError } from 'ducks/modal'
 import update from 'immutability-helper'
 
 import RetrieveDataSection from './actions/retrieveDataSection'
@@ -138,9 +138,9 @@ class GoogleSheets extends IntegrationBase {
 
     const spreadsheet_id = action_data.spreadsheet && action_data.spreadsheet.value
     const sheet_id = action_data.sheet && action_data.sheet.value
-    const user = this.props.integration_data.user
+    const integrationsUser = this.props.integration_data.user
 
-    if (_.isNil(spreadsheet_id) || _.isNil(sheet_id) || _.isNil(user)) return
+    if (_.isNil(spreadsheet_id) || _.isNil(sheet_id) || _.isNil(integrationsUser)) return
 
     this.setState({
       headers_loading: true
@@ -150,7 +150,7 @@ class GoogleSheets extends IntegrationBase {
     this.currentUpdateRequest = requestId
 
     try {
-      const headers = await IntegrationsService.googleSheets.getSheetHeaders(spreadsheet_id, sheet_id, user, window.user_detail.id, this.props.skill_id)
+      const headers = await IntegrationsService.googleSheets.getSheetHeaders(spreadsheet_id, sheet_id, integrationsUser, this.props.user.creator_id, this.props.skill_id)
 
       if (this.currentUpdateRequest === requestId) {
         this.setState({
@@ -181,7 +181,7 @@ class GoogleSheets extends IntegrationBase {
     const sections_list = action ? this.integration_info.actions[action].sections : [C.ACTIONS_SECTION, C.USER_SECTION]
 
     const action_data = action && this.props.integration_data.actions_data[action]
-    const user = this.props.integration_data.user
+    const integrationsUser = this.props.integration_data.user
 
     return (
       <div className='w-100'>
@@ -205,7 +205,7 @@ class GoogleSheets extends IntegrationBase {
                 user_modal={GoogleAddUserModal}
                 action_data={action_data}
                 integration_data={this.props.integration_data}
-                user={user}
+                integrationsUser={integrationsUser}
                 selected_integration={this.props.selected_integration}
                 toggleSection={() => this.showSection(section)}
                 userChanged={this.userChanged}
@@ -217,7 +217,7 @@ class GoogleSheets extends IntegrationBase {
             case C.SPREADSHEET_SECTION:
               component = <SpreadsheetSection
                 action_data={action_data}
-                user={user}
+                integrationsUser={integrationsUser}
                 skill_id={this.props.skill_id}
                 onError={this.props.setError}
                 updateActionData={this.updateActionData}
@@ -231,7 +231,7 @@ class GoogleSheets extends IntegrationBase {
             case C.RETRIEVE_OPTIONS_SECTION:
               component = <RetrieveDataSection 
                 action_data={action_data}
-                user={user}
+                integrationsUser={integrationsUser}
                 integration_data={this.props.integration_data}
                 selected_action={action}
                 updateActionData={this.updateActionData}
@@ -318,6 +318,10 @@ class GoogleSheets extends IntegrationBase {
   }
 }
 
+const mapStateToProps = state => ({
+  user: state.account
+})
+
 const mapDispatchToProps = dispatch => {
   return {
     setConfirm: (confirm) => dispatch(setConfirm(confirm)),
@@ -326,6 +330,6 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(GoogleSheets)
+export default connect(mapStateToProps, mapDispatchToProps)(GoogleSheets)
 
 

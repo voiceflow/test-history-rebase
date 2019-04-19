@@ -1,57 +1,77 @@
 const { pool, hashids, writeToLogs } = require('../../services');
-const axios = require('axios')
+const axios = require('axios');
+const { checkSkillAccess } = require("./../team_util")
 
-exports.getDisplay = (req, res) => {
-	let id = hashids.decode(req.params.id)[0];
-	if(!id){
-		res.sendStatus(404);
-	}else{
-		pool.query('SELECT * FROM displays WHERE id = $1 AND creator_id = $2 LIMIT 1', 
-			[id, req.user.id], (err, result) =>{
-			if(err){
-				res.sendStatus(500);
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-			}else if(result.rows.length === 0){
-				res.sendStatus(404);
-			}else{
-				result.rows[0].id = hashids.encode(result.rows[0].id);
-				res.send(result.rows[0]);
-			}
-		})
-	}
+const checkDisplayAccess = async (display_id, user_id) => {
+  if(display_id) {
+    try {
+      const result = await pool.query(`
+        SELECT 1 FROM displays d
+        INNER JOIN skills s ON s.skill_id = d.skill_id
+        INNER JOIN projects p ON p.project_id = s.project_id
+        INNER JOIN team_members tm ON tm.team_id = p.team_id
+        WHERE d.id = $1 AND tm.creator_id = $2 LIMIT 1
+      `, [display_id, user_id])
+      if(result.rowCount !== 0) return true
+    } catch(err) {
+    }
+  }
+  return false
 }
 
-exports.getDisplays = (req, res) => {
-	let skill_id = hashids.decode(req.query.skill_id)[0]
-	if(isNaN(skill_id)){
-		res.sendStatus(400)
-	}else{
-		pool.query('SELECT * FROM displays WHERE creator_id = $1 AND (skill_id = $2 OR skill_id IS NULL)', [req.user.id, skill_id], (err, result)=>{
-			if(err){
-				res.sendStatus(500)
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-			}else{
-				res.send(result.rows.map(row => {
-					row.id = hashids.encode(row.id);
-					return row;
-				}));
-			}
-		})
-	}
+exports.getDisplay = async (req, res) => {
+  let id = hashids.decode(req.params.id)[0];
+  if(!(await checkDisplayAccess(id, req.user.id))){
+    return res.sendStatus(403)
+  }
+
+  pool.query('SELECT * FROM displays WHERE id = $1 LIMIT 1', 
+    [id], (err, result) =>{
+    if(err){
+      res.sendStatus(500);
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+    }else if(result.rows.length === 0){
+      res.sendStatus(404);
+    }else{
+      result.rows[0].id = hashids.encode(result.rows[0].id);
+      res.send(result.rows[0]);
+    }
+  })
 }
 
-exports.setDisplay = (req, res) => {
+exports.getDisplays = async (req, res) => {
+  let skill_id = hashids.decode(req.query.skill_id)[0]
+  if(!(await checkSkillAccess(skill_id, req.user.id))){
+    return res.sendStatus(403)
+  }
+
+  pool.query('SELECT * FROM displays WHERE skill_id = $1', [skill_id], (err, result)=>{
+    if(err){
+      res.sendStatus(500)
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+    }else{
+      res.send(result.rows.map(row => {
+        row.id = hashids.encode(row.id);
+        return row;
+      }));
+    }
+  })
+}
+
+exports.setDisplay = async (req, res) => {
 	let id = hashids.decode(req.params.id)[0];
 
 	let skill_id = hashids.decode(req.query.skill_id)[0]
-	if(isNaN(skill_id)){
-		return res.sendStatus(400)
-	}
+  if(!(await checkSkillAccess(skill_id, req.user.id))){
+    return res.sendStatus(403)
+  }
 
 	if(id){
+    if(!(await checkDisplayAccess(id, req.user.id))) return res.sendStatus(403)
+
 		pool.query(
-		'UPDATE displays SET title = $3, description = $4, document = $5, datasource = $6, skill_id = $7, modified = NOW() WHERE creator_id = $1 AND id = $2',
-		[req.user.id, id, req.body.title, req.body.description, req.body.document, req.body.datasource, skill_id], (err) => {
+		'UPDATE displays SET title = $2, description = $3, document = $4, datasource = $5, skill_id = $6, modified = NOW() WHERE id = $1',
+		[id, req.body.title, req.body.description, req.body.document, req.body.datasource, skill_id], (err) => {
 			if(err){
 				res.sendStatus(500);
 				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -61,8 +81,8 @@ exports.setDisplay = (req, res) => {
 		});
 	}else{
 		pool.query(
-		'INSERT INTO displays (creator_id, title, description, document, datasource, created_at, modified, skill_id) VALUES ($1, $2, $3, $4, $5, NOW(), NOW(), $6) RETURNING id',
-		[req.user.id, req.body.title, req.body.description, req.body.document, req.body.datasource, skill_id], (err, result) => {
+		'INSERT INTO displays (title, description, document, datasource, created_at, modified, skill_id) VALUES ($1, $2, $3, $4, NOW(), NOW(), $5) RETURNING id',
+		[req.body.title, req.body.description, req.body.document, req.body.datasource, skill_id], (err, result) => {
 			if(err){
 				res.sendStatus(500);
 				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -73,26 +93,26 @@ exports.setDisplay = (req, res) => {
 	}	
 }
 
-exports.deleteDisplay = (req, res) => {
-	let id = hashids.decode(req.params.id)[0];
-	if(!id){
-		res.sendStatus(404);
-	}else{
-		pool.query('DELETE FROM displays WHERE id=$1 AND creator_id=$2', [id, req.user.id], err =>{
-			if(err){
-				res.sendStatus(500);
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-			}else{
-				res.sendStatus(200);
-			}
-		})
-	}
+exports.deleteDisplay = async (req, res) => {
+  let id = hashids.decode(req.params.id)[0];
+  if(!(await checkDisplayAccess(id, req.user.id))) return res.sendStatus(403)
+
+  pool.query('DELETE FROM displays WHERE id=$1', [id], err =>{
+    if(err){
+      res.sendStatus(500);
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+    }else{
+      res.sendStatus(200);
+    }
+  })
 }
 
 exports.renderDisplay = async (req, res) => {
   try {
-    const display_id = hashids.decode(req.params.id)[0];
-    const document = (await pool.query('SELECT document FROM displays WHERE id = $1 AND creator_id = $2 LIMIT 1', [display_id, req.user.id])).rows[0].document
+    const id = hashids.decode(req.params.id)[0];
+    if(!(await checkDisplayAccess(id, req.user.id))) return res.sendStatus(403)
+
+    const document = (await pool.query('SELECT document FROM displays WHERE id = $1 LIMIT 1', [id])).rows[0].document
 
     let result = await axios.post('http://18.207.123.181:8080/render', {
       document,
@@ -104,3 +124,4 @@ exports.renderDisplay = async (req, res) => {
     res.sendStatus(500)
   }
 }
+

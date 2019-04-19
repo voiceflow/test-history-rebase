@@ -12,7 +12,7 @@ import axios from 'axios'
 import '../Skill/Skill.css'
 import './PublishMarket.css'
 import types from './../../../services/Types'
-import { setConfirm, clearModal } from 'actions/modalActions'
+import { setConfirm, clearModal } from 'ducks/modal'
 
 class PublishMarket extends Component {
 	constructor(props){

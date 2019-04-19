@@ -19,6 +19,25 @@ const generateID = () => {
   })
 }
 
+const { checkSkillAccess } = require("./team_util")
+
+const checkDiagramAccess = async (diagram_id, user_id) => {
+  if(diagram_id) {
+    try {
+      const result = await pool.query(`
+        SELECT 1 FROM diagrams d
+        INNER JOIN skills s ON s.skill_id = d.skill_id
+        INNER JOIN projects p ON p.project_id = s.project_id
+        INNER JOIN team_members tm ON tm.team_id = p.team_id
+        WHERE d.id = $1 AND tm.creator_id = $2 LIMIT 1
+      `, [diagram_id, user_id])
+      if(result.rowCount !== 0) return true
+    } catch(err) {
+    }
+  }
+  return false
+}
+
 const getVariables = (req, res) => {
   let params = {
     TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
@@ -110,13 +129,9 @@ const setDiagram = async (req, res) => {
   if (!DIAGRAM_ID) return res.status(500).send('Empty Project')
 
   try {
-    let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [diagram.skill])
+    if(!(await checkSkillAccess(diagram.skill, req.user.id))) return res.sendStatus(403)
+    diagram.creator = req.user.id
 
-    if (result.rows.length > 0 && result.rows[0].creator_id !== req.user.id && req.user.admin < 100) {
-      return res.sendStatus(403)
-    } else {
-      diagram.creator = req.user.id
-    }
   } catch (err) {
     writeToLogs('CREATOR_BACKEND_ERRORS', {
       err: err
@@ -173,31 +188,33 @@ const setDiagram = async (req, res) => {
   })
 }
 
-const deleteDiagram = (req, res) => {
+const deleteDiagram = async (req, res) => {
+  
+  if(!(await checkDiagramAccess(req.params.id, req.user.id))) return res.sendStatus(403)
+
   pool.query(`
-            DELETE FROM diagrams d USING skills s
-            WHERE d.skill_id = s.skill_id AND d.id = $1 AND s.creator_id = $2 AND s.diagram != d.id
-        `,
-    [req.params.id, req.user.id], async (err, response) => {
-      if (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {
-          err: err
-        })
+    DELETE FROM diagrams d USING skills s 
+    WHERE d.skill_id = s.skill_id AND d.id = $1 AND s.diagram != d.id
+  `,
+  [req.params.id], async (err, response) => {
+    if (err) {
+      writeToLogs('CREATOR_BACKEND_ERRORS', {
+        err: err
+      })
+      return res.sendStatus(500)
+    }
+    if (response.rowCount !== 0) {
+      try {
+        await deleteDynamoDiagramPromise(req.params.id)
+        return res.sendStatus(200)
+      } catch (err) {
+        console.trace(err)
         return res.sendStatus(500)
       }
-      if (response.rowCount !== 0) {
-        try {
-          await deleteDynamoDiagramPromise(req.params.id)
-          return res.sendStatus(200)
-        } catch (err) {
-          console.trace(err)
-          return res.sendStatus(500)
-        }
-      } else {
-        return res.sendStatus(404)
-      }
+    } else {
+      return res.sendStatus(404)
     }
-  )
+  })
 }
 
 const purgeSubflows = (diagram) => {
@@ -316,9 +333,11 @@ const publishTest = async (req, res) => {
 
 const rerenderDiagram = async (req, res) => {
   let skill_id = hashids.decode(req.params.skill_id)[0]
+  if(!(await checkSkillAccess(skill_id, req.user.id))) return res.sendStatus(403)
+
   let diagram_id = req.params.diagram_id
   try {
-    let skill_data = (await pool.query(`SELECT * FROM skills WHERE skill_id = $1 AND creator_id = $2`, [skill_id, req.user.id])).rows
+    let skill_data = (await pool.query(`SELECT * FROM skills WHERE skill_id = $1`, [skill_id])).rows
     let skill = skill_data[0]
     let intents = {}
     let slots = {}

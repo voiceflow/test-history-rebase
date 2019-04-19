@@ -1,24 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Dashboard render dashboard 1`] = `
-<div
-  id="app"
->
-  <UpdatesModal
-    show_update_modal={false}
-    toggle={[Function]}
+<Fragment>
+  <LoadingModal
+    open={false}
   />
   <div
-    id="navbar-top-left"
+    id="secondary-nav"
   >
+    <div>
+      <Link
+        className="nav-item"
+        to="/team/new"
+      >
+        <img
+          alt="add"
+          className="mr-1 mb-1"
+          height={15}
+          src="/add-board.svg"
+          width={15}
+        />
+         New Board
+      </Link>
+    </div>
     <div
-      className="searchBar ml-4"
+      className="mr-4 super-center"
     >
-      <Input
-        className="search-input form-control-2"
-        onChange={[Function]}
-        placeholder="Search projects"
-        type="text"
+      <Members
+        update={[Function]}
+      />
+      <Connect(TeamSettings)
+        close={[Function]}
+        update={[Function]}
       />
     </div>
   </div>
@@ -28,74 +41,142 @@ exports[`Dashboard render dashboard 1`] = `
     <div
       className="subheader-right"
     >
-      <Tooltip
-        animateFill={true}
-        animation="shift"
-        arrow={false}
-        arrowSize="regular"
-        className="ml-1 mr-4"
-        delay={0}
-        disabled={false}
-        distance={16}
-        duration={375}
-        followCursor={false}
-        hideDelay={0}
-        hideDuration={375}
-        hideOnClick={true}
-        html={null}
-        inertia={false}
-        interactive={false}
-        interactiveBorder={2}
-        multiple={false}
-        offset={0}
-        onHidden={[Function]}
-        onHide={[Function]}
-        onRequestClose={[Function]}
-        onShow={[Function]}
-        onShown={[Function]}
-        popperOptions={Object {}}
-        position="bottom"
-        size="regular"
-        sticky={false}
-        stickyDuration={200}
-        style={Object {}}
-        theme="dark"
-        title="Join the Voiceflow forum for help and updates"
-        touchHold={false}
-        trigger="mouseenter focus"
-        unmountHTMLWhenHide={false}
-      >
-        <form
-          action="https://forum.getvoiceflow.com"
+      <UncontrolledDropdown>
+        <DropdownToggle
+          aria-haspopup={true}
+          className="ml-1 mr-4"
+          color="secondary"
+          tag="div"
         >
-          <button
-            className="nav-btn-border mt-1"
-            id="icon-resources"
-            type="submit"
-          />
-        </form>
-      </Tooltip>
-      <Link
-        className="no-underline ml-1 mt-1"
-        replace={false}
-        to="/templates"
-      >
-        <button
-          className="btn btn-primary"
-          varient="contained"
+          <Tooltip
+            animateFill={true}
+            animation="shift"
+            arrow={false}
+            arrowSize="regular"
+            className=""
+            delay={0}
+            disabled={false}
+            distance={19}
+            duration={375}
+            followCursor={false}
+            hideDelay={0}
+            hideDuration={375}
+            hideOnClick={true}
+            html={null}
+            inertia={false}
+            interactive={false}
+            interactiveBorder={2}
+            multiple={false}
+            offset={0}
+            onHidden={[Function]}
+            onHide={[Function]}
+            onRequestClose={[Function]}
+            onShow={[Function]}
+            onShown={[Function]}
+            popperOptions={Object {}}
+            position="bottom"
+            size="regular"
+            sticky={false}
+            stickyDuration={200}
+            style={Object {}}
+            theme="dark"
+            title="Resources"
+            touchHold={false}
+            trigger="mouseenter focus"
+            unmountHTMLWhenHide={false}
+          >
+            <button
+              className="dropdown-button-border"
+              type="submit"
+            />
+          </Tooltip>
+        </DropdownToggle>
+        <DropdownMenu
+          className="mt-2"
+          flip={true}
+          tag="div"
         >
-          New Project
-        </button>
-      </Link>
+          <a
+            href="https://university.getvoiceflow.com/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <DropdownItem
+              tag="button"
+              toggle={true}
+            >
+              University
+            </DropdownItem>
+          </a>
+          <a
+            href="https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ/videos"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <DropdownItem
+              tag="button"
+              toggle={true}
+            >
+              Youtube
+            </DropdownItem>
+          </a>
+          <a
+            href="https://www.facebook.com/groups/voiceflowgroup/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <DropdownItem
+              tag="button"
+              toggle={true}
+            >
+              Community
+            </DropdownItem>
+          </a>
+          <a
+            href="https://forum.getvoiceflow.com/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <DropdownItem
+              tag="button"
+              toggle={true}
+            >
+              Forums
+            </DropdownItem>
+          </a>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+      <button
+        className="btn-primary ml-1"
+        onClick={[Function]}
+      >
+        New Project
+      </button>
     </div>
   </div>
-  <WarningModal
-    dismiss={[Function]}
-    error={null}
-  />
   <div
-    className="my-5 pt-5 container"
+    className="secondary-padding dashboard"
+    id="app"
   >
+    <UpdatesModal
+      show_update_modal={false}
+      toggle={[Function]}
+    />
+    <div
+      id="navbar-top-left"
+    >
+      <div
+        className="searchBar ml-3"
+      >
+        <Input
+          className="search-input form-control-2"
+          name="filter_text"
+          onChange={[Function]}
+          placeholder="Search Projects"
+          type="text"
+        />
+      </div>
+    </div>
     <div
       id="loading-diagram"
     >
@@ -105,13 +186,37 @@ exports[`Dashboard render dashboard 1`] = `
         <h5
           className="text-muted mb-2"
         >
-          Loading Skills
+          Loading Projects...
         </h5>
         <span
           className="loader"
         />
       </div>
     </div>
+    <div
+      className="w-100 h-100"
+      onClick={[Function]}
+    >
+      <div
+        className="pb-5 pt-4 container"
+      >
+        <MasonryComponent
+          className="skills-container"
+          disableImagesLoaded={false}
+          elementType="div"
+          enableResizableChildren={false}
+          imagesLoadedOptions={Object {}}
+          onLayoutComplete={[Function]}
+          onRemoveComplete={[Function]}
+          options={Object {}}
+          updateOnEachImageLoad={false}
+        >
+          <EmptyCard
+            onClick={[Function]}
+          />
+        </MasonryComponent>
+      </div>
+    </div>
   </div>
-</div>
+</Fragment>
 `;

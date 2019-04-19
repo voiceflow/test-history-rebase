@@ -6,7 +6,7 @@ import ContainedTextarea from './ContainedTextArea'
 import randomstring from 'randomstring'
 import { Badge } from 'reactstrap'
 
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 
 const SlotOption = (props) => {
     const is_alexa = /AMAZON/.test(props.data.value)

@@ -31,7 +31,7 @@
 }
 
 .image-selector{
-  max-height: 100px;
+  height: 70px;
   max-width: 80px;
   margin-bottom: 10px;
 }
@@ -56,10 +56,6 @@
 }
 .void-button:hover{
   cursor: pointer;
-}
-
-.disabled{
-  opacity: 0.3;
 }
 
 .onboarding-profile {

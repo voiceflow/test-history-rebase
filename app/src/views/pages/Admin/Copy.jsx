@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 import { Button } from 'reactstrap';
 import axios from 'axios';
+import { connect } from 'react-redux'
 
 class Copy extends Component {
 
@@ -113,4 +114,8 @@ class Copy extends Component {
     }
 }
 
-export default Copy;
+const mapStateToProps = state => ({
+  user: state.account
+})
+
+export default connect(mapStateToProps)(Copy)

@@ -8,7 +8,7 @@ class ModuleCard extends Component{
 	render(){
 		return (
 			<div className="card-container">
-				<a onClick={() => {this.props.showModuleDetailView(this.props.module)}} href="card" className="card-link">
+				<span onClick={() => {this.props.showModuleDetailView(this.props.module)}} className="card-link">
 					<Card 
 											className="market-card"
 						onMouseEnter={() => {this.setState({hover:true})}}
@@ -25,7 +25,7 @@ class ModuleCard extends Component{
 							</div>
 						</CardBody>
 					</Card>
-				</a>
+				</span>
 			</div>
 		)
 	}

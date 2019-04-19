@@ -646,7 +646,7 @@ const fbLogin = async (req, res) => {
                 });
                 res.status(500).send('Something went wrong with existing email');
               } else {
-                let row = result.rows[0]
+                let row = data.rows[0]
                 createLogin({
                   id: row.creator_id,
                   email: row.email,
@@ -671,7 +671,7 @@ const fbLogin = async (req, res) => {
             })
           } else {
             let image = getProfile()
-            pool.query('INSERT INTO creators (name, email, fid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id, created',
+            pool.query('INSERT INTO creators (name, email, fid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id',
               [name, email, fid, image], async (err, insert_result) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {
@@ -693,7 +693,7 @@ const fbLogin = async (req, res) => {
                     first_login: true,
                     verified: true,
                     image: image,
-                    created: user.created
+                    created: (new Date())
                   }, {
                     platform: 'Facebook',
                     device: req.body.device

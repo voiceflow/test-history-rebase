@@ -458,7 +458,7 @@ const googleLogin = async (req, res) => {
             })
           } else {
             let image = getProfile()
-            pool.query('INSERT INTO creators (name, email, gid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id, created',
+            pool.query('INSERT INTO creators (name, email, gid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id',
               [name, email, gid, image], async (err, insert_result) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {
@@ -479,7 +479,7 @@ const googleLogin = async (req, res) => {
                     first_login: true,
                     verified: true,
                     image: image,
-                    created: user.created
+                    created: (new Date())
                   }, {
                     platform: 'Google',
                     device: req.body.device

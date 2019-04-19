@@ -118,7 +118,11 @@ exports.getSkill = async (req, res) => {
 
   // Sync up with AMAZON
   // Check Current Amazon Status
-  await checkVersions(project_id, 'alexa', {check_only: true})
+  try {
+    await checkVersions(project_id, 'alexa', {check_only: true})
+  } catch (err) {
+    writeToLogs('GET SKILL CHECK VERSIONS', {err});
+  }
 
   if (req.query.preview) {
     // expose as little information as possible if previewing
@@ -526,7 +530,6 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
             }
           });
         } catch(err) {
-          writeToLogs("CHECK MANIFEST NOT FOUND", err)
           continue
         }
 

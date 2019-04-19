@@ -89,8 +89,7 @@ export class Canvas extends Component {
         if (window.Appcues){
             window.Appcues.identify(this.props.user.id, {
                 email: this.props.user.email,
-                name: this.props.user.name,
-                roles: this.props.user.admin
+                name: this.props.user.name
             })
         }
         this.loaded = false

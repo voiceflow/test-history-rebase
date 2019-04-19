@@ -49,6 +49,7 @@ exports.verifyTeam = async (req, res, next) => {
     // _team_id means decoded team_id
     req.params._team_id = team_id;
   } catch (err) {
+    console.log(err)
     return res.sendStatus(401);
   }
   next();

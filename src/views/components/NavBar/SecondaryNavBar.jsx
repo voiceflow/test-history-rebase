@@ -12,7 +12,7 @@ import {
   updateDiagramRoot,
   fetchDiagrams
 } from "./../../../actions/diagramActions";
-const PAGES = ["canvas", "settings", "visuals", "business", "publish"];
+const PAGES = ["canvas", "settings", "visuals", "tools", "publish"];
 
 class SecondaryNavBar extends Component {
   constructor(props) {

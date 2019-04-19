@@ -219,7 +219,7 @@ class EditProduct extends React.Component {
         axios.post('/skill/product?new=1', product)
         .then(res => {
             product.id = res.data.id
-            this.props.history.push(`/business/${this.props.skill_id}/products`)
+            this.props.history.push(`/tools/${this.props.skill_id}/products`)
             this.props.dispatch(addProduct(product))
         })
         .catch(err => {
@@ -234,7 +234,7 @@ class EditProduct extends React.Component {
         axios.post('/skill/product', curr)
         .then(res => {
             this.props.dispatch(updateProduct(curr))
-            this.props.history.push(`/business/${this.props.skill_id}/products`)
+            this.props.history.push(`/tools/${this.props.skill_id}/products`)
         })
         .catch(err => {
             console.log(err.response)
@@ -351,7 +351,7 @@ class EditProduct extends React.Component {
       <MuiThemeProvider theme={stepperTheme}>
       <div className="h-100 w-100">
             <button className="goback-btn position-fixed" onClick={()=>{
-                this.props.history.push(`/business/${this.props.skill_id}/products`)
+                this.props.history.push(`/tools/${this.props.skill_id}/products`)
             }} style={{top: 135, left: 210}}>
             </button>
           <div>

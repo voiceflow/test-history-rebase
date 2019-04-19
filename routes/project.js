@@ -29,6 +29,30 @@ exports.getProjectFromSkill = async (req, res, next) => {
   }
 }
 
+exports.getProjects = async (req, res) => {
+  try {
+    if(!req.query.user) throw { status: 400 }
+
+    const projects = (await pool.query(`
+      SELECT p.name, p.dev_version AS skill_id
+      FROM projects p
+      INNER JOIN team_members tm ON tm.team_id = p.team_id
+      INNER JOIN creators c ON c.creator_id = tm.creator_id
+      WHERE c.creator_id = $1
+    `, [req.query.user]))
+
+    res.send(projects.rows.map(p => ({
+      ...p,
+      skill_id: hashids.encode(p.skill_id)
+    })))
+  } catch (err) {
+    writeToLogs("GET PROJECTS ERROR", err);
+    if(err.status) return res.status(err.status).send(err.message)
+
+    return res.sendStatus(500)
+  }
+}
+
 exports.deleteProject = async (req, res) => {
   if (!req.params._project_id) {
     res.sendStatus(401)

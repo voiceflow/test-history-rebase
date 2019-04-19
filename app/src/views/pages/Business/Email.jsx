@@ -112,7 +112,7 @@ class Template extends Component {
                 // get template id back
                 payload.template_id = res.data
                 this.props.dispatch(addEmail(payload))
-                this.props.history.push(`/business/${this.props.skill_id}/email/${res.data}`);
+                this.props.history.push(`/tools/${this.props.skill_id}/email/${res.data}`);
                 this.setState({
                     template_id: res.data,
                     saved: true,
@@ -154,7 +154,7 @@ class Template extends Component {
                         <h5 className="text-muted mb-0">Email Template</h5>
                         <div className="subheader-right">
                             <button varient="contained" className="btn-tertiary-gray mr-2" onClick={()=>{
-                                this.props.history.push(`/business/${this.props.skill_id}/emails`);
+                                this.props.history.push(`/tools/${this.props.skill_id}/emails`);
                             }}>
                                 <i className="fas fa-arrow-left mr-2"/>{' '}Back
                             </button>

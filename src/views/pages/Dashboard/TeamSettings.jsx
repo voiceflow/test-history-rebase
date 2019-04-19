@@ -33,7 +33,7 @@ const STAGES = {
 };
 
 const Contact = <Alert className="text-center py-3 mt-2">
-  <img src={'/contact-owner.svg'} width={65}></img>
+  <img src={'/contact-owner.svg'} alt="owner" width={65}/>
   Contact the owner of this board to upgrade
 </Alert>
 

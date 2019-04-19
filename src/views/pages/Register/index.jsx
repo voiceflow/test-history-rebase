@@ -173,7 +173,7 @@ export class Account extends Component {
     return (
       <div className="d-flex flex-row align-items-center justify-content-center" id="main">
         <div className={cn('login-card', {
-          'open-register': !this.props.login
+          'open-register': this.props.page !== 'login'
         })}>
             <div id="side-form">
               <Form id="login-form" onSubmit={this.loginSubmit}>

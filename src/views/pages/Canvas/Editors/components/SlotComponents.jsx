@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import Textarea from 'react-textarea-autosize'
 import ContainedTextarea from './ContainedTextArea'
 import randomstring from 'randomstring'
-import { Badge } from 'reactstrap'
 
 import { setError } from 'ducks/modal'
 
@@ -114,9 +113,9 @@ class SlotSynonyms extends Component {
                     {s}
                 </div>
             } else {
-                return <Badge key={i} className='slot-badge'>
+                return <span key={i} className='slot-synonym'>
                     {s}
-                </Badge>
+                </span>
             }
 
         })

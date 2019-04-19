@@ -326,11 +326,9 @@ class NewTeam extends Component {
       <div id="template-box-container">
         <div className="card">
           {["NAME", "INVITE", "CHECKOUT"].includes(this.state.stage) && (
-            <div onClick={this.goBack}>
-              <img src={"/back.svg"} alt="back" className="mr-3 back-arrow" />
-            </div>
+            <div className="mr-3 btn-icon back-btn-large" onClick={this.goBack}/>
           )}
-          <Link id="exit-template" to="/dashboard" className="close"></Link>
+          <Link id="exit-template" to="/dashboard" className="btn-icon"></Link>
           <div className="container">{this.renderBody()}</div>
         </div>
       </div>

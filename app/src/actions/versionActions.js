@@ -3,7 +3,7 @@ import axios from 'axios';
 import {Alert} from 'reactstrap'
 import { getSlotsForKeys } from '../util'
 import { getIntentSlots } from '../Helper'
-import { setError } from './modalActions'
+import { setError } from 'ducks/modal'
 import _ from 'lodash'
 
 export const fetchVersionBegin = () => ({
@@ -67,6 +67,7 @@ export const toggleLive = (skill, diagram_id, live_version, live_mode) => dispat
         type: "TOGGLE_LIVE",
         payload: { skill, diagram_id, live_version, live_mode }
     })
+    return Promise.resolve()
 }
 
 export const removeFulfillment = intent_key => ({
@@ -141,11 +142,11 @@ export const setCanFulfill = (intent_key, new_value) => {
     }
 }
 
-export const fetchVersion = (skill_id, preview, diagram_id) => {
-    return dispatch => {
+export const fetchVersion = (version_id, preview, diagram_id) => {
+    return (dispatch, getState) => {
         dispatch(fetchVersionBegin());
         // TODO UPDATE THIS ROUTE
-        return axios.get(`/skill/${skill_id}?${preview ? 'preview=1' : 'simple=1'}`, {
+        return axios.get(`/skill/${version_id}?${preview ? 'preview=1' : 'simple=1'}`, {
                 headers: {
                     Pragma: 'no-cache'
                 }
@@ -161,7 +162,7 @@ export const fetchVersion = (skill_id, preview, diagram_id) => {
                 let globals = Array.isArray(skill.global) ? skill.global : []
                 // make sure that there are no duplicate variables and that the defaults are included
                 let global_variables = ['sessions', 'user_id', 'timestamp', 'platform', 'locale']
-                if (window.user_detail.admin > 0) {
+                if (getState().account.admin > 0) {
                     global_variables.push('access_token')
                 }
                 if (Array.isArray(globals)) {

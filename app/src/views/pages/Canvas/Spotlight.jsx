@@ -1,15 +1,14 @@
 import React, {Component} from 'react'
-import _ from 'lodash'
 import Select from 'react-select'
 import { getBlocks } from './Blocks'
+import { connect } from 'react-redux'
 
-const premiums = ['permission', 'permissions', 'mail', 'link_account', 'payment', 'cancel', 'reminder'];
 class Spotlight extends Component {
     constructor(props){
         super(props)
 
         this.state = {
-            blocks: window.user_detail.admin > 0 ? getBlocks() : _.filter(getBlocks(), b => !_.includes(premiums, b.type))
+            blocks: getBlocks()
         }
     }
 
@@ -35,4 +34,8 @@ class Spotlight extends Component {
     }
 }
 
-export default Spotlight;
+const mapStateToProps = state => ({
+  user: state.account
+})
+
+export default connect(mapStateToProps)(Spotlight);

@@ -18,47 +18,6 @@
   top: 50%;
 }
 
-.icon-image {
-  width: 200px;
-  height: 200px;
-}
-
-.icon-image>.dropzone {
-  height: 100%;
-  border-radius: 50%;
-}
-
-.icon-image>.image-box {
-  height: 100%;
-  width: 100%;
-  display: block;
-  border-radius: 50%;
-}
-
-.icon-image.small-icon>.image-box {
-  padding: 10px;
-  height: 150px;
-  width: 150px;
-  margin-left: 20px;
-}
-
-.icon-image.large-icon>.image-box {
-  padding: 10px;
-}
-
-.icon-image>.image-box>.image {
-  height: 100%;
-  width: 100%;
-  background-position: center center;
-  background-size: cover;
-  border-radius: 100px;
-  border: 1px solid #c5d6e450;
-}
-
-.disabled-image>.image-box {
-  background-color: #e9ecef;
-}
-
 .multiple .input-group {
   margin: 15px 0;
 }
@@ -221,7 +180,7 @@ textarea::placeholder {
 .product-card>.card {
   overflow: hidden;
   background-image: linear-gradient(180deg, #fff, #fff);
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .1);
+  /* box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .1); */
   cursor: pointer;
 }
 
@@ -486,7 +445,7 @@ textarea::placeholder {
   left: 0px;
   top: 0px;
   width: 25%;
-  padding: 13px;
+  padding: 14px;
 }
 
 .empty-card>div {
@@ -652,22 +611,12 @@ textarea::placeholder {
   font-weight: bold
 }
 
-.disabled {
-  pointer-events: none;
-}
 .faded {
   opacity: 0.55;
 }
 
 .publish-label {
   margin-top: -2px;
-}
-
-@media only screen and (max-width: 1200px) {
-  .icon-image{
-    height: 160px;
-    width: 160px
-  }
 }
 
 .publish-loader > .loader {

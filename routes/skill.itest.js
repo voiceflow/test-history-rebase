@@ -2,12 +2,15 @@ const app = require('../app')
 const request = require('supertest')
 const new_diagram = require('../test/new_diagram.json')
 const { pool, hashids } = require('./../services')
+const { team_hash } = require('./team_util')
 const moxios = require('moxios')
 
 AccessToken = jest.fn().mockImplementation((user_id, cb) => {
   console.log("fhioeshfiohesoi")
   cb('asdfghjkl')
 })
+
+const TEAM_ID = team_hash.encode(1)
 
 jest.setTimeout(10000)
 
@@ -69,7 +72,7 @@ describe('Skill', () => {
 
     it('creates skill', done => {
       request(app)
-        .post(`/marketplace/template/${hashids.encode(module_id)}/copy`)
+        .post(`/team/${TEAM_ID}/copy/module/${hashids.encode(module_id)}`)
         .send({
           name: 'Test',
           locales: ['en-US']
@@ -136,9 +139,9 @@ describe('Skill', () => {
     //     })
     // })
 
-    it('doesn\'t get skills if not authenticated', done => {
+    it('doesn\'t get projects if not authenticated', done => {
       request(app)
-        .get('/skills')
+        .get(`/team/${TEAM_ID}/projects`)
         .expect(401)
         .end((err, res) => {
           if (err) throw err
@@ -597,7 +600,7 @@ describe('Skill', () => {
       request(app)
         .del(`/skill/${skill_id}/product/0`)
         .set('cookie', `auth=${token}`)
-        .expect(412)
+        .expect(404)
         .end((err, res) => {
           if(err) throw err
           done()

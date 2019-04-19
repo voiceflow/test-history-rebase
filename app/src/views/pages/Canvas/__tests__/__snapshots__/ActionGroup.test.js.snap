@@ -378,7 +378,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
           className="nav-btn"
         >
           <i
-            className="far fa-play"
+            className="fas fa-play"
           />
         </button>
       </Tooltip>
@@ -401,7 +401,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
         <div
           style={
             Object {
-              "width": 155,
+              "width": 180,
             }
           }
         >

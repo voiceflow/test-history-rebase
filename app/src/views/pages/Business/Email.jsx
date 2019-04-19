@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
 import axios from 'axios';
-import MUIButton from '@material-ui/core/Button';
 import { Input, Col, Row, FormGroup } from 'reactstrap';
 
 import AceEditor from 'react-ace';
 
 import { addEmail, updateEmail } from './../../../actions/emailActions'
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 import 'brace/mode/html';
 import 'brace/theme/monokai';
 import 'brace/ext/language_tools';
@@ -154,19 +153,19 @@ class Template extends Component {
                     <div className="space-between">
                         <h5 className="text-muted mb-0">Email Template</h5>
                         <div className="subheader-right">
-                            <MUIButton varient="contained" className="btn-tertiary-gray mr-2" onClick={()=>{
+                            <button varient="contained" className="btn-tertiary-gray mr-2" onClick={()=>{
                                 this.props.history.push(`/business/${this.props.skill_id}/emails`);
                             }}>
                                 <i className="fas fa-arrow-left mr-2"/>{' '}Back
-                            </MUIButton>
-                            <MUIButton varient="contained" className="btn-primary" onClick={this.save} style={{width: 100}}>
+                            </button>
+                            <button varient="contained" className="btn-primary" onClick={this.save} style={{width: 100}}>
                                 {this.state.saving ? 
                                     <span className="loader"/> : 
                                     <React.Fragment>
                                         Save{this.state.saved ? '' : '*'}
                                     </React.Fragment>
                                 }
-                            </MUIButton>
+                            </button>
                         </div>
                     </div>
                     <hr/>

@@ -5,7 +5,7 @@ import IntentInput from './IntentInput'
 import './IntentInputs.css'
 import randomstring from 'randomstring'
 import converter from 'number-to-words'
-import { setConfirm } from 'actions/modalActions'
+import { setConfirm } from 'ducks/modal'
 const _getIndex = (index) => {
     return converter.toWords(index).replace(/\s/g, '_').replace(/,/g,'').replace(/-/g,'_')
 }

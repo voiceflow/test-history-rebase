@@ -35,7 +35,7 @@ class Emails extends Component {
                                 <img src='/images/email_2.svg' alt="open safe" width="100"/>
                                 <p className="empty">No Email Templates Exist</p>
                                 <p className="empty-desc">Send users emails from within your project to provide context or deliver relivant content</p>
-                                <Link to={`/business/${this.props.skill_id}/email/new`} className="no-underline">
+                                <Link to={`/tools/${this.props.skill_id}/email/new`} className="no-underline">
                                     <button varient="contained" className="btn-primary">Create a Template</button>
                                 </Link>
                             </div>
@@ -45,7 +45,7 @@ class Emails extends Component {
                             <div className="products-container position-relative">
                                 <div className="space-between w-100 px-3 mb-1">
                                     <h5 className="text-muted mb-0">Email Templates</h5>
-                                    <Link to={`/business/${this.props.skill_id}/email/new`} className="no-underline btn btn-primary">
+                                    <Link to={`/tools/${this.props.skill_id}/email/new`} className="no-underline btn btn-primary">
                                         New Template
                                     </Link>
                                 </div>
@@ -63,12 +63,12 @@ class Emails extends Component {
                                             placeholder={<div className='no-image card-image'><h1>{name}</h1></div>}
                                             onDelete={id => this.props.deleteEmail(id)}
                                             deleteLabel="Delete Template"
-                                            onClick={()=>this.props.history.push(`/business/${this.props.skill_id}/email/${template.template_id}`)}
+                                            onClick={()=>this.props.history.push(`/tools/${this.props.skill_id}/email/${template.template_id}`)}
                                             buttonLabel="Edit Template"
                                             desc={template.subject ? template.subject : <span className="empty-badge">No Subject</span>}
                                         />
                                     })}
-                                    <EmptyCard onClick={()=>this.props.history.push(`/business/${this.props.skill_id}/email/new`)}/>
+                                    <EmptyCard onClick={()=>this.props.history.push(`/tools/${this.props.skill_id}/email/new`)}/>
                                 </Masonry>
                             </div>
                         </div>

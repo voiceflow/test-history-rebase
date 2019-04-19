@@ -76,7 +76,7 @@ class PaymentBlock extends Component {
             return <div className="text-center">
                 <img className="mb-3 mt-5" src={'/images/OpenSafe.svg'} alt="user" width="80"/><br/>
                 <span className="text-muted">You currently have no In Skill Products</span>
-                <Link className="btn btn-secondary mt-3" to={`/business/${this.props.skill_id}/products`}>Add Products</Link> 
+                <Link className="btn btn-secondary mt-3" to={`/tools/${this.props.skill_id}/products`}>Add Products</Link> 
             </div>
         }
 
@@ -104,7 +104,7 @@ class PaymentBlock extends Component {
                         current.data.publishingInformation.pricing['amazon.com'].defaultPriceListing && 
                         current.data.publishingInformation.pricing['amazon.com'].defaultPriceListing.price}</span></span>
                 </label>
-                <Button className="btn-primary btn-block btn-lg" onClick={() => this.props.history.push(`/business/${this.props.skill_id}/product/${current.id}`)}>
+                <Button className="btn-primary btn-block btn-lg" onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/product/${current.id}`)}>
                     Edit Product <i className="fas fa-sign-in"/>
                 </Button>
                 <Button color="clear" block className="btn-lg mt-2" onClick={this.reset}>

@@ -20,7 +20,7 @@ class LinkAccount extends Component {
                   }</div>
                   <Button
                     color="clear"
-                    onClick={() => this.props.history.push(`/business/${this.props.skill.skill_id}/link_account/templates`)}
+                    onClick={() => this.props.history.push(`/tools/${this.props.skill.skill_id}/link_account/templates`)}
                     block
                   >
                   Edit Account Linking

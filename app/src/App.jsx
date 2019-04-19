@@ -202,12 +202,12 @@ class App extends Component {
                 <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas"/>
                 <PrivateRoute path="/canvas/:skill_id" component={Skill} page="canvas"/>
                 {/* Business routes */}
-                <PrivateRoute path="/business/:skill_id/link_account/templates" component={Skill} page='business' secondaryPage="link_account"/>
-                <PrivateRoute path="/business/:skill_id/email/:id" component={Skill} page='business' secondaryPage="email"/>
-                <PrivateRoute path="/business/:skill_id/emails" component={Skill} page='business' secondaryPage="emails"/>
-                <PrivateRoute path="/business/:skill_id/product/:id" component={Skill} page="business" secondaryPage="product"/>
-                <PrivateRoute path="/business/:skill_id/products" component={Skill} page="business" secondaryPage="products"/>
-                <PrivateRoute path="/business/:skill_id" component={Skill} page='business' secondaryPage="home"/>
+                <PrivateRoute path="/tools/:skill_id/link_account/templates" component={Skill} page="tools" secondaryPage="link_account"/>
+                <PrivateRoute path="/tools/:skill_id/email/:id" component={Skill} page="tools" secondaryPage="email"/>
+                <PrivateRoute path="/tools/:skill_id/emails" component={Skill} page="tools" secondaryPage="emails"/>
+                <PrivateRoute path="/tools/:skill_id/product/:id" component={Skill} page="tools" secondaryPage="product"/>
+                <PrivateRoute path="/tools/:skill_id/products" component={Skill} page="tools" secondaryPage="products"/>
+                <PrivateRoute path="/tools/:skill_id" component={Skill} page='tools' secondaryPage="home"/>
                 {/* Settings routes */}
                 <PrivateRoute path="/settings/:skill_id/discovery/canfulfill/:id" component={Skill} page='settings' secondaryPage="discovery"/>
                 <PrivateRoute path="/settings/:skill_id/discovery/" component={Skill} page='settings' secondaryPage="discovery"/>

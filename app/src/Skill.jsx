@@ -167,7 +167,7 @@ class Skill extends Component {
                     linter={this.state.linter}
                     toggleUpgrade={this.toggleUpgrade}
                 />
-            case 'business':
+            case 'tools':
                 return <Business
                   {...this.props}
                   page={this.props.secondaryPage}

@@ -123,7 +123,7 @@ div.nav-item{
 	height: 50px;
 	display: flex;
 	align-items: center;
-	padding: 0px;
+	padding: 1px !important;
 	border: none !important;
 	cursor: pointer;
 }
@@ -175,7 +175,7 @@ div.nav-item{
 }
 .dropdown-button {
   padding: 11px 11px;
-  border-radius: 50%;
+  border-radius: 50% !important;
   cursor: pointer;
   color: #8da2b5;
   border: 1px solid transparent;
@@ -183,7 +183,7 @@ div.nav-item{
   text-align: center;
   position: relative;
   width: 42px;
-  font-size: 20px;
+  font-size: 20px !important;
   height: 42px;
   transition: all 0.25s ease;
 }
@@ -198,6 +198,37 @@ div.nav-item{
   background: linear-gradient(#5D9DF515,#5D9DF530);
   color: #5D9DF5;
 }
+.dropdown-button-border {
+	padding: 11px 11px;
+	border-radius: 50%;
+	cursor: pointer;
+	color: #8da2b5;
+	border: 1px solid #e2e9ec;
+	display: flex;
+	text-align: center;
+	position: relative;
+	width: 44px;
+	font-size: 20px;
+	height: 44px;
+	transition: all 0.25s ease;
+	background: url('/information.svg');
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.dropdown-button-border:hover {
+	color: #62778C;
+	border: 1px solid #e2e9ec;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: #F7F9FB;
+}
+.dropdown.show .dropdown-button-border {
+	background-color: #F7F9FB !important;
+	background: url('/information-active.svg');
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
 .dropdown .dropdown-button .standard, .dropdown.show .dropdown-button .active{
   display: block;
 }

@@ -100,7 +100,7 @@ exports.addTeam = async (req, res) => {
     )) throw { status: 400 }
 
     // Ensure you'd not adding a free team if you have 3 already
-    const current = await pool.query("SELECT 1 FROM team_members WHERE creator_id = $1", req.user.id)
+    const current = await pool.query("SELECT 1 FROM team_members WHERE creator_id = $1", [req.user.id])
     if(current.rowCount > 3) throw { status: 409, message: '3 Boards Maximum' }
 
     let team = await createTeam(req.body.name, req.body.image, req.user, req.body.invites.length + 1);
@@ -115,6 +115,7 @@ exports.addTeam = async (req, res) => {
     team.team_id = team_hash.encode(team.team_id)
     res.send(team);
   } catch (err) {
+    writeToLogs("CREATE TEAM ERROR", err);
     if(err.status) return res.status(err.status).send(err.message)
 
     return res.sendStatus(500)

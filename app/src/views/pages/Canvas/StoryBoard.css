@@ -2628,6 +2628,7 @@ button.close:hover{
     font-size: 15px;
 }
 
+.block.integrations,
 .block.api {
     background-color: #7dbee235;
     color: #7dbee2;

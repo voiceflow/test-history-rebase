@@ -86,13 +86,9 @@ exports[`Dashboard render dashboard 1`] = `
             unmountHTMLWhenHide={false}
           >
             <button
-              className="nav-btn"
+              className="dropdown-button-border"
               type="submit"
-            >
-              <i
-                className="fas fa-info-circle"
-              />
-            </button>
+            />
           </Tooltip>
         </DropdownToggle>
         <DropdownMenu
@@ -109,7 +105,31 @@ exports[`Dashboard render dashboard 1`] = `
               tag="button"
               toggle={true}
             >
-              Tutorials
+              University
+            </DropdownItem>
+          </a>
+          <a
+            href="https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ/videos"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <DropdownItem
+              tag="button"
+              toggle={true}
+            >
+              Youtube
+            </DropdownItem>
+          </a>
+          <a
+            href="https://www.facebook.com/groups/voiceflowgroup/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <DropdownItem
+              tag="button"
+              toggle={true}
+            >
+              Community
             </DropdownItem>
           </a>
           <a

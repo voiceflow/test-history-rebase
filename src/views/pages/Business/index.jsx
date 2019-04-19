@@ -18,22 +18,22 @@ const tabs = [
     {
         display: <React.Fragment><i className="far fa-tachometer-alt mr-2"/> Dashboard</React.Fragment>,
         match: ['home'],
-        link: '/business/:skill_id'
+        link: '/tools/:skill_id'
     },
     {
         display: <React.Fragment><i className="far fa-envelope mr-2"/> Email</React.Fragment>,
         match: ['emails'],
-        link: '/business/:skill_id/emails'
+        link: '/tools/:skill_id/emails'
     },
     {
         display: <React.Fragment><i className="far fa-cube mr-2"/> Products</React.Fragment>,
         match: ['products'],
-        link: '/business/:skill_id/products'
+        link: '/tools/:skill_id/products'
     },
     {
       display: <React.Fragment><i className="far fa-link mr-2"/> Link Account</React.Fragment>,
       match: ['link_account', 'link_template'],
-      link: '/business/:skill_id/link_account/templates'
+      link: '/tools/:skill_id/link_account/templates'
     }
 ]
 

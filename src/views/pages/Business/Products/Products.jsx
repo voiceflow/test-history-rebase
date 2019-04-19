@@ -22,7 +22,7 @@ class Products extends Component {
     }
 
     onProductClick(product_id){
-      this.props.history.push(`/business/${this.props.skill_id}/product/${product_id}`);
+      this.props.history.push(`/tools/${this.props.skill_id}/product/${product_id}`);
     }
 
     render() {
@@ -38,7 +38,7 @@ class Products extends Component {
                             <img src='/images/OpenSafe.svg' alt="open safe" width="100px"/>
                             <p className="empty">No products exists</p>
                             <p className="empty-desc">Monetize your project with in skill purchases such as consumables and subscriptions.</p>
-                            <Link to={`/business/${this.props.skill_id}/product/new`} className="no-underline">
+                            <Link to={`/tools/${this.props.skill_id}/product/new`} className="no-underline">
                                 <button varient="contained" className="btn-primary">Create a product</button>
                             </Link>
                         </div>
@@ -48,7 +48,7 @@ class Products extends Component {
                         <div className="products-container position-relative">
                         <div className="space-between w-100 px-3">
                             <h5 className="text-muted mb-0">Products</h5>
-                            <Link to={`/business/${this.props.skill_id}/product/new`} className="no-underline btn btn-primary">
+                            <Link to={`/tools/${this.props.skill_id}/product/new`} className="no-underline btn btn-primary">
                                 New Product
                             </Link>
                         </div>
@@ -87,7 +87,7 @@ class Products extends Component {
                                         secondaryDesc={`$${product.data.publishingInformation.pricing["amazon.com"].defaultPriceListing.price}`}
                                     />
                                 )})}
-                            <EmptyCard onClick={() => this.props.history.push(`/business/${this.props.skill_id}/product/new`)}/>
+                            <EmptyCard onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/product/new`)}/>
                         </Masonry>
                         </div>
                     </div>

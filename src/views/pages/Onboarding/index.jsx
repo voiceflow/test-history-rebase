@@ -194,10 +194,6 @@ class Onboarding extends Component{
 	// }
 	
 	renderModalContent(){
-		const classname = cn({
-			'btn-info-onboarding-selected': this.state.purpose === 'EXPLORING' || this.state.purpose === 'BUILDING' || this.state.purpose === 'BUILT',
-			'btn-info-onboarding': !(this.state.purpose === 'EXPLORING' || this.state.purpose === 'BUILDING' || this.state.purpose === 'BUILT')
-		})
 		switch (this.state.stage){
 			case 'calendly':
 				const head = document.querySelector('head')
@@ -223,17 +219,24 @@ class Onboarding extends Component{
 					<StepProgressBar num_stages={6} stage={(this.state.company_size >= SHOW_CALENDLY_NUMBER ? 4: 5)} classes={"onboarding-progress"}/>
 						<p className="modal-bg-txt text-center mb-5 mt-4">What best describes you?</p>
 						<div className="row justify-content-center mb-3">
-							<button className={classname} onClick={() => {this.setState({purpose: 'EXPLORING'})}}>
+              <button 
+                className={this.state.purpose === 'EXPLORING' ? 'btn-info-onboarding-selected' : 'btn-info-onboarding'} 
+                onClick={() => {this.setState({purpose: 'EXPLORING'})}}
+              >
 								My company is exploring voice
 							</button>
 						</div>
 						<div className="row justify-content-center mb-3">
-							<button className={classname} onClick={() => {this.setState({purpose: 'BUILDING'})}}>
+              <button 
+                className={this.state.purpose === 'BUILDING' ? 'btn-info-onboarding-selected' : 'btn-info-onboarding'} 
+                onClick={() => {this.setState({purpose: 'BUILDING'})}}>
 								My company is building a voice app
 							</button>
 						</div>
 						<div className="row justify-content-center mb-5">
-							<button className={classname} onClick={() => {this.setState({purpose: 'BUILT'})}}>
+              <button 
+                className={this.state.purpose === 'BUILT' ? 'btn-info-onboarding-selected' : 'btn-info-onboarding'} 
+                onClick={() => {this.setState({purpose: 'BUILT'})}}>
 								My company has already built voice apps
 							</button>
 						</div>

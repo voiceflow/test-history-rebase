@@ -88,7 +88,7 @@ class PermissionCard extends Component {
                     }
                     <Link
                         className="btn btn-clear btn-block"
-                        to={`/business/${this.props.skill_id}/link_account/templates`}
+                        to={`/tools/${this.props.skill_id}/link_account/templates`}
                     >Edit Account Linking</Link>
                     <hr/>
                     <div className="px-4">

@@ -114,10 +114,9 @@ const createSession = (endpoint) => {
         }
     
         if (window.Appcues) {
-          window.Appcues.identify(user.id, {
+          window.Appcues.identify(data.user.creator_id, {
             email: user.email,
-            name: user.name,
-            roles: user.admin
+            name: user.name
           })
         }
 

@@ -20,7 +20,7 @@ class Copy extends Component {
         if (!this.state.creator) {
             return;
         }
-        axios.get('/skills?user='+this.state.creator)
+        axios.get('/projects?user='+this.state.creator)
         .then(res => {
             this.setState({
                 creator_skills: res.data.map(skill => {return {
@@ -38,7 +38,7 @@ class Copy extends Component {
         if (!(this.state.creator && this.state.skill && this.state.target)) {
             return;
         }
-        axios.post('/skill/'+this.state.skill.value+'/'+this.state.target+'/copy')
+        axios.post(`/version/${this.state.skill.value}/copy/team/${this.state.target}`)
         .then(() => {
           this.setState({
               creator: '',
@@ -54,7 +54,10 @@ class Copy extends Component {
         if (!(this.state.creator && this.state.skill)) {
             return;
         }
-        axios.post('/skill/'+this.state.skill.value+'/me/copy')
+        const my_team = this.props.teams.byId[this.props.teams.allIds[0]]
+        if(!my_team) return alert("NO BOARDS FOUND")
+
+        axios.post(`/version/${this.state.skill.value}/copy/team/${my_team.team_id}`)
         .then(() => {
           this.setState({
               creator: '',
@@ -63,7 +66,10 @@ class Copy extends Component {
           });
           alert('Success');
         })
-        .catch(() => alert('Error'));
+        .catch(err => {
+          console.log(err)
+          alert('Error')
+        });
     }
 
     render() {
@@ -99,7 +105,7 @@ class Copy extends Component {
                         onChange={t => this.setState({skill: t})}
                         options={this.state.creator_skills}
                     />
-                    <input placeholder="Enter Target User ID"
+                    <input placeholder="Enter Target Board ID (Board ID NOT USER ID NOW)"
                         type="text"
                         value={this.state.target}
                         onChange={e => this.setState({target: e.target.value})}
@@ -107,7 +113,7 @@ class Copy extends Component {
                         className="form-control mb-2"
                     />
                     <Button color="primary" onClick={this.copy.bind(this)} className="mb-2">Copy</Button>
-                    <Button color="primary" onClick={this.copyToMe.bind(this)} className="mb-2 mx-2">Copy To Me</Button>
+                    <Button color="primary" onClick={this.copyToMe.bind(this)} className="mb-2 mx-2">Copy To My Board</Button>
                 </div>
             </div>
         )
@@ -115,7 +121,8 @@ class Copy extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.account
+  user: state.account,
+  teams: state.team
 })
 
 export default connect(mapStateToProps)(Copy)

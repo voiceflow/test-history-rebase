@@ -64,7 +64,7 @@ class Home extends Component {
   lookupSkill() {
     if(!this.state.skill_id) return
     this.setState({loading: true})
-    axios.get(`/skill/${this.state.skill_id}/info`, {params: {encoded: this.state.encoded ? '1' : undefined}})
+    axios.get(`/version/${this.state.skill_id}/info`, {params: {encoded: this.state.encoded ? '1' : undefined}})
     .then((res) => {
       this.setState({
         loading: false,

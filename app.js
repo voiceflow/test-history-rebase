@@ -189,11 +189,13 @@ app.post('/amazon/:id/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
 app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
 app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);
 app.delete('/skill/:id/product/:pid', ensureLoggedIn(), Skill.deleteProduct);
+// app.get('/version/:version_id/info', ensureAdmin(), Skill.getVersionInfo)
 
 // TEAM RESTful CRUD STUFF
 app.post('/team', ensureLoggedIn(), Team.addTeam)
 app.post('/team/checkout', ensureLoggedIn(), Team.checkout)
 app.get('/teams', ensureLoggedIn(), Team.getTeams)
+app.get('/teams/:creator_id', ensureAdmin(), Team.getTeams)
 app.get('/team/:team_id/invoice', ensureLoggedIn(), Team.getInvoice)
 app.get('/team/:team_id/source', ensureLoggedIn(), Team.getSource)
 app.patch('/team/:team_id/source', ensureLoggedIn(), Team.updateSource)

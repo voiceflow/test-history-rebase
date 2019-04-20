@@ -313,6 +313,18 @@ const createCombineNode = (node, type, parent) => {
             failure_id: '',
             type: 'api'
         }
+    } else if (type === 'integrations') {
+        node.addInPort(' ')
+        node.addOutPort(' ').setMaximumLinks(1)
+        node.addOutPort('fail').setMaximumLinks(1)
+        node.extras = {
+            success_id: '',
+            failure_id: '',
+            selected_integration: '',
+            integrations_data: {},
+            selected_action: '',
+            type: 'integrations'
+        }
     } else if (type === 'payment') {
         node.addInPort(' ')
         node.addOutPort(' ').setMaximumLinks(1)
@@ -533,7 +545,8 @@ const createDropNode = (event, engine, type, name) => {
                 failure_id: '',
                 selected_integration: '',
                 integrations_data: {},
-                selected_action: ''
+                selected_action: '',
+                type: 'integrations'
             }
         } else if (type === 'payment') {
             node.addInPort(' ')

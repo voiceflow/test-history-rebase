@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Button, Modal, ModalBody, Alert } from 'reactstrap';
-import { clearModal } from 'actions/modalActions'
+import { clearModal } from 'ducks/modal'
 
 export class ErrorModal extends Component {
 

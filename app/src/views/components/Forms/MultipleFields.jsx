@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { Input, Button } from 'reactstrap';
+import { Input } from 'reactstrap';
 import {Tooltip} from 'react-tippy';
 import { AvForm } from 'availity-reactstrap-validation';
 
@@ -42,7 +42,7 @@ import { AvForm } from 'availity-reactstrap-validation';
                   );
                 })}
               <div className="text-center">
-                <Button className='btn-tertiary-gray' onClick={() => this.props.handleAdd(this.props.type)}>Add {this.props.label}<i className="far fa-long-arrow-right ml-2"></i></Button>
+                <button className='btn-tertiary-gray' onClick={() => this.props.handleAdd(this.props.type)}>Add {this.props.label}<i className="far fa-long-arrow-right ml-2"></i></button>
               </div>
             </div>
           </AvForm>

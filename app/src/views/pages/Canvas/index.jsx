@@ -27,7 +27,7 @@ import { updateVersion, updateIntents, setCanFulfill } from "actions/versionActi
 import { setVariables } from 'actions/variableActions'
 import { setCanvasError } from 'actions/userActions'
 import { renameDiagram } from 'actions/diagramActions'
-import { setError, setConfirm } from 'actions/modalActions'
+import { setError, setConfirm } from 'ducks/modal'
 import { fetchEmails } from "actions/emailActions";
 
 import ActionGroup from './ActionGroup'
@@ -87,10 +87,9 @@ export class Canvas extends Component {
         let diagram_name = ''
 
         if (window.Appcues){
-            window.Appcues.identify(window.user_detail.id, {
-                email: window.user_detail.email,
-                name: window.user_detail.name,
-                roles: window.user_detail.admin
+            window.Appcues.identify(this.props.user.id, {
+                email: this.props.user.email,
+                name: this.props.user.name
             })
         }
         this.loaded = false
@@ -202,7 +201,7 @@ export class Canvas extends Component {
                 this.props.setError(this.props.integration_users_error)
             }
         })
-        if (window.user_detail && window.user_detail.admin > 0 && this.props.skill) {
+        if (this.props.user && this.props.user.admin > 0 && this.props.skill) {
             // Re-load templates in case of change
             try {
                 this.props.getEmails(this.props.skill.skill_id)
@@ -1662,6 +1661,7 @@ export class Canvas extends Component {
 
 const mapStateToProps = state => {
   return {
+    user: state.account,
     skill: state.skills.skill,
     diagram_id: state.skills.skill.diagram,
     diagrams: state.diagrams.diagrams,

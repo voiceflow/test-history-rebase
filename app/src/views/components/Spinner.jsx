@@ -1,10 +1,10 @@
 import React from 'react'
 
-export const Spinner = ({name}) => {
+export const Spinner = (props) => {
 return (
     <div id="loading-diagram">
         <div className="text-center">
-            <h5 className="text-muted mb-2">{`Loading ${name}`}</h5>
+            <h5 className="text-muted mb-2">{props.message || `Loading ${props.name}`}</h5>
             <span className="loader"/>
         </div>
     </div>

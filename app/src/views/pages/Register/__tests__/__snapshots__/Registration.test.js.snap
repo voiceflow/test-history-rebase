@@ -110,7 +110,6 @@ exports[`Onboarding renders without crashing 1`] = `
             />
           </FormGroup>
           <button
-            block={true}
             className="btn-primary btn-lg btn-block"
             type="submit"
           >
@@ -120,7 +119,6 @@ exports[`Onboarding renders without crashing 1`] = `
             className="text-center small mt-2"
           >
             <Link
-              replace={false}
               style={
                 Object {
                   "color": "#8da2b5",
@@ -258,7 +256,6 @@ exports[`Onboarding renders without crashing 1`] = `
             />
           </FormGroup>
           <button
-            block={true}
             className="btn-primary btn-lg btn-block"
             type="submit"
           >

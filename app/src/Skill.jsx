@@ -22,7 +22,6 @@ import SecondaryNavBar from './views/components/NavBar/SecondaryNavBar'
 import DefaultModal from './views/components/Modals/DefaultModal'
 import { Spinner } from './views/components/Spinner'
 import { Link } from 'react-router-dom';
-import AuthenticationService from './services/Authentication'
 import Marketplace from './views/pages/Marketplace';
 
 const live_modal_content = <div className="text-center">
@@ -62,7 +61,6 @@ class Skill extends Component {
 
         this.renderPage = this.renderPage.bind(this)
         this.componentGracefulUnmount = this.componentGracefulUnmount.bind(this)
-        this.logout = this.logout.bind(this)
 
         this.child_canvas = React.createRef()
         this.trackCanvasTime = this.trackCanvasTime.bind(this)
@@ -100,11 +98,11 @@ class Skill extends Component {
           this.componentGracefulUnmount
         )
         if(this.props.computedMatch && this.props.computedMatch.params && this.props.computedMatch.params.skill_id){
-          this.props.getSkills(this.props.computedMatch.params.skill_id, this.props.preview, this.props.computedMatch.params.diagram_id).then(() => {
-            document.title=this.props.skill.name
+          this.props.getVersion(this.props.computedMatch.params.skill_id, this.props.preview, this.props.computedMatch.params.diagram_id).then(() => {
+            document.title=(this.props.skill.name !== undefined ? this.props.skill.name : 'Voiceflow Creator')
             this.setState({load_skill: false})
             if (!this.props.preview){
-              if (window.user_detail && window.user_detail.admin > 0 && this.props.skill) {
+              if (this.props.user && (this.props.user.admin > 0) && this.props.skill) {
                 // LOAD EMAIL TEMPLATES IF ON PLAN > 1
                 try {
                     this.props.getEmails(this.props.skill.skill_id)
@@ -159,15 +157,6 @@ class Skill extends Component {
         }
     }
 
-    logout(e) {
-        e.preventDefault();
-        AuthenticationService.logout(() => {
-          console.log("logout");
-          this.props.history.push('/login');
-        });
-        return false;
-    }
-
     renderPage(){
         switch(this.props.page){
             case 'canvas':
@@ -178,7 +167,7 @@ class Skill extends Component {
                     linter={this.state.linter}
                     toggleUpgrade={this.toggleUpgrade}
                 />
-            case 'business':
+            case 'tools':
                 return <Business
                   {...this.props}
                   page={this.props.secondaryPage}
@@ -253,12 +242,13 @@ const mapStateToProps = state => ({
     show_live_mode_modal: state.skills.show_live_mode_modal,
     live_mode: state.skills.live_mode,
     dev_skill: state.skills.dev_skill ? state.skills.dev_skill : state.skills.skill,
+    user: state.account
 })
 
 const mapDispatchToProps = dispatch => {
   return {
     getDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id)),
-    getSkills: (skill_id, preview, diagram_id) => dispatch(fetchVersion(skill_id, preview, diagram_id)),
+    getVersion: (version_id, preview, diagram_id) => dispatch(fetchVersion(version_id, preview, diagram_id)),
     setLiveModal: isLive => dispatch(setLiveModeModal(isLive)),
     getProducts: (skill_id) => dispatch(fetchProducts(skill_id)),
     getDisplays: (skill_id) => dispatch(fetchDisplays(skill_id)),

@@ -6,7 +6,7 @@ import {Alert, FormGroup, Label, Button, Input, Collapse} from 'reactstrap'
 import Prompt from 'views/components/Uploads/Prompt'
 import AceEditor from 'react-ace';
 import { updateVersion, updateVersionMerge } from "./../../../../actions/versionActions";
-import { setConfirm, setError } from 'actions/modalActions'
+import { setConfirm, setError } from 'ducks/modal'
 import DefaultModal from './../../../components/Modals/DefaultModal'
 import Toggle from 'react-toggle'
 
@@ -171,15 +171,15 @@ class BasicAdvancedSettings extends Component{
                     </div>
                     <div className="settings-content clearfix">
                       <FormGroup>
-                        {window.user_detail.admin >= 60 && <div className="mt-4">
-                            <Label>
-                              Skill Events (events: {"{object}"}
-                              )
-                            </Label>
-                            <AceEditor name="datasource_editor" className="datasource_editor" mode="json" onChange={value => {
-                                this.props.updateSkill('alexa_events', value)
-                              }} fontSize={14} showPrintMargin={false} showGutter={true} highlightActiveLine={true} value={this.props.skill.alexa_events} editorProps={{ $blockScrolling: true }} setOptions={{ enableBasicAutocompletion: true, enableLiveAutocompletion: false, enableSnippets: false, showLineNumbers: true, tabSize: 2, useWorker: false }} />
-                          </div>}
+                        <div className="mt-4">
+                          <Label>
+                            Skill Events (events: {"{object}"}
+                            )
+                          </Label>
+                          <AceEditor name="datasource_editor" className="datasource_editor" mode="json" onChange={value => {
+                              this.props.updateSkill('alexa_events', value)
+                            }} fontSize={14} showPrintMargin={false} showGutter={true} highlightActiveLine={true} value={this.props.skill.alexa_events} editorProps={{ $blockScrolling: true }} setOptions={{ enableBasicAutocompletion: true, enableLiveAutocompletion: false, enableSnippets: false, showLineNumbers: true, tabSize: 2, useWorker: false }} />
+                        </div>
                       </FormGroup>
                     </div>
                     { this.props.live_mode && 
@@ -192,7 +192,7 @@ class BasicAdvancedSettings extends Component{
                             This action cannot be undone.
                           </span>
                           <br />
-                          <Button color="danger" onClick={this.confirmOverwrite}>
+                          <Button color="warning" onClick={this.confirmOverwrite}>
                             Overwrite
                           </Button>
                         </Alert>
@@ -208,7 +208,7 @@ class BasicAdvancedSettings extends Component{
                             undone
                           </span>
                           <br />
-                          <Button color="danger" onClick={this.confirmDelete}>
+                          <Button color="warning" onClick={this.confirmDelete}>
                             Delete Project
                           </Button>
                         </Alert>
@@ -320,7 +320,8 @@ class BasicAdvancedSettings extends Component{
 }
 
 const mapStateToProps = state => ({
-    skill: state.skills.skill,
+  user: state.account,
+  skill: state.skills.skill,
 })
 
 const mapDispatchToProps = dispatch => {

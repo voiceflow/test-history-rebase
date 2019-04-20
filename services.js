@@ -152,7 +152,7 @@ const verify = (auth, cb) => {
 const cloudWatchLogs = new AWS.CloudWatchLogs();
 const writeToLogs = async (log_group, msg_details) => {
     if(/development/.test(process.env.NODE_ENV)){
-        console.log(msg_details)
+        console.log(log_group, msg_details)
         return
     }
     try {
@@ -263,6 +263,9 @@ const ESoptions = (process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 const ESclient = require('elasticsearch').Client(ESoptions)  
 setupESIndices()
 
+const encryptJSON = data => jwt.sign(data, process.env.JWT_SECRET)
+const decryptJSON = token => jwt.verify(token, process.env.JWT_SECRET)
+
 module.exports = {
     upload: upload,
     docClient: docClient,
@@ -279,7 +282,9 @@ module.exports = {
     verify: verify,
     logAxiosError: logAxiosError,
     writeToLogs: writeToLogs,
-    ESclient: ESclient
+    ESclient: ESclient,
+    encryptJSON: encryptJSON,
+    decryptJSON: decryptJSON
 }
 
 // SECRET

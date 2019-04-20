@@ -8,7 +8,7 @@ import MultipleFields from './../../components/Forms/MultipleFields';
 import axios from 'axios';
 import { Nav, NavItem, NavLink, Input } from 'reactstrap';
 
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 
  const clientAuthScheme = [
   {value: 'HTTP_BASIC', label: 'HTTP Basic(recommended)'},
@@ -88,7 +88,7 @@ import { setError } from 'actions/modalActions'
       this.setState({
           saving: true
       });
-      axios.post(`/link_account/template/?skill_id=${this.props.skill_id}`, this.state.accountLinkingRequest)
+      axios.post(`/link_account/template/${this.props.skill_id}`, this.state.accountLinkingRequest)
       .then(()=>{
           this.setState({
               saving: false

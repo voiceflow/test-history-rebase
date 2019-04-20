@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import LOCALE_MAP from "./../../../services/LocaleMap";
 
 import { updateVersion, updateLocales, updateSkillDB } from './../../../actions/versionActions'
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 import {
     Popover, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, ModalBody, Button
 } from 'reactstrap'
@@ -17,8 +17,7 @@ import Toggle from 'react-toggle'
 import { Progress } from 'react-sweet-progress'
 import "react-sweet-progress/lib/style.css"
 import Confetti from 'react-dom-confetti'
-
-import AuthenticationService from './../../../services/Authentication'
+import { AmazonAccessToken, googleAccessToken } from 'ducks/account'
 import InvRegex from 'services/Regex'
 // import { timingSafeEqual } from 'crypto';
 
@@ -182,16 +181,14 @@ export class ActionGroup extends PureComponent {
     this.renderUploadButton = this.renderUploadButton.bind(this)
     this.isUploadLoading = this.isUploadLoading.bind(this)
     this.displayUploadPrompt = this.displayUploadPrompt.bind(this)
-
-    // localStorage.setItem('is_first_session_' + window.user_detail.id, 'true')
   }
 
   componentDidMount() {
-    AuthenticationService.AmazonAccessToken(token => {
+    AmazonAccessToken().then(token => {
         this.token = token;
         this.reset()
     })
-    AuthenticationService.googleAccessToken(this.props.skill.skill_id).then(token => {
+    googleAccessToken(this.props.skill.skill_id).then(token => {
         this.google_token = token;
         this.reset()
     })
@@ -235,7 +232,7 @@ export class ActionGroup extends PureComponent {
       amzn_error: false,
       stage: this.token ? 0 : 5,
       google_stage: this.google_token ? 2 : 0,
-      is_first_upload: (localStorage.getItem('is_first_session_' + window.user_detail.id) !== 'false'),
+      is_first_upload: (localStorage.getItem('is_first_session_' + this.props.user.id) !== 'false'),
       // // TESTING PURPOSES
       // saving: true,
       // show_upload_prompt: true,
@@ -245,19 +242,19 @@ export class ActionGroup extends PureComponent {
     })
   }
 
-  uploadSuccess(platform='alexa', project_id){
+  uploadSuccess(platform='alexa', google_id){
     // Track upload on first session
     // They completed their first upload successfully
     if(platform === 'google'){
       this.setState({
-          project_id: project_id || this.state.project_id
+          google_id: google_id || this.state.google_id
       })
       this.updateGoogleStage(5)
     }else{
       this.updateAlexaStage(2)
     }
-    if(localStorage.getItem('is_first_session_' + window.user_detail.id) !== 'false'){
-      localStorage.setItem('is_first_session_' + window.user_detail.id, 'false')
+    if(localStorage.getItem('is_first_session_' + this.props.user.id) !== 'false'){
+      localStorage.setItem('is_first_session_' + this.props.user.id, 'false')
       setTimeout(()=>this.setState({should_pop_confetti: true}), 300)
       axios.post('/analytics/track_first_session_upload')
     }
@@ -442,21 +439,21 @@ export class ActionGroup extends PureComponent {
     const s = this.state
     const p = this.props
 
-    if (s.google_stage === 0 || s.google_stage === 1 || !p.skill.google_publish_info || !p.skill.google_publish_info.project_id) {
+    if (s.google_stage === 0 || s.google_stage === 1 || !p.skill.google_publish_info || !p.skill.google_id) {
         p.history.push(`/publish/${p.skill.skill_id}/google`)
         return
     }
 
     this.updateGoogleStage(3)
 
-    axios.post(`/project/${this.props.skill.project_id}/render`, { platform: 'google', project_id: p.skill.google_publish_info.project_id })
+    axios.post(`/project/${this.props.skill.project_id}/render`, { platform: 'google', google_id: p.skill.google_id })
     .then(res => {
       this.updateGoogleStage(4)
       let new_version_data = res.data
       axios.post(`/project/${this.props.skill.project_id}/version/${new_version_data.new_skill.skill_id}/google`)
           .then(res => {
               // They completed their first upload successfully
-              this.uploadSuccess('google', res.data.project_id)
+              this.uploadSuccess('google', res.data.google_id)
           })
           .catch(err => {
               this.setState({
@@ -627,7 +624,7 @@ export class ActionGroup extends PureComponent {
                       </div> </Button>
           } else {
               return <Tooltip
-                  html={<div style={{ width: 155 }}>{(this.props.platform === 'google') ? 'Test your Action on your own Google device, or in the Google Actions console' : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}</div>}
+                  html={<div style={{ width: 180 }}>{(this.props.platform === 'google') ? 'Test your Action on your own Google device, or in the Google Actions console' : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}</div>}
                   position="bottom"
                   distance={16}
               >
@@ -853,7 +850,7 @@ export class ActionGroup extends PureComponent {
               modal_content = <div className="text-center">
                   <div className="d-flex align-items-center justify-content-center upload-prompt-title mb-2"> <span className="pass-icon mr-2"/> Upload Successful </div>
                   <div className="upload-prompt-text">
-                    You may test on the <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.project_id}/simulator`}
+                    You may test on the <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.google_id}/simulator`}
                             target="_blank" rel="noopener noreferrer">
                             Google Actions Simulator
                     </a>. To submit for review, please follow the instructions on the Google Actions Developer Console.
@@ -868,7 +865,7 @@ export class ActionGroup extends PureComponent {
                       You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
               </span>
                   <div className="my-3">
-                      <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.project_id}/simulator`}
+                      <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.google_id}/simulator`}
                           className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
                           Test on Google Actions Simulator
                   </a>
@@ -1008,7 +1005,7 @@ export class ActionGroup extends PureComponent {
                           position="bottom"
                           className="ml-4 mr-4"
                       >
-                          <button className="nav-btn" onClick={this.props.onTest}><i className="far fa-play" /></button>
+                          <button className="nav-btn" onClick={this.props.onTest}><i className="fas fa-play" /></button>
                       </Tooltip>
                   </div>
 
@@ -1021,18 +1018,17 @@ export class ActionGroup extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-    skill: state.skills.skill,
-    platform: state.skills.skill.platform,
-    diagram_id: state.skills.skill.diagram,
-    live_mode: state.skills.live_mode,
+  user: state.account,
+  skill: state.skills.skill,
+  platform: state.skills.skill.platform,
+  diagram_id: state.skills.skill.diagram,
+  live_mode: state.skills.live_mode,
 })
 
-const mapDispatchToProps = dispatch => {
-    return {
-        updateSkill: (type, val) => dispatch(updateVersion(type, val)),
-        setError: err => dispatch(setError(err)),
-        updateSkillLocale: (val) => dispatch(updateLocales(val)),
-        saveSkill: (publish, cb) => dispatch(updateSkillDB(publish, cb))
-    }
-}
+const mapDispatchToProps = dispatch => ({
+  updateSkill: (type, val) => dispatch(updateVersion(type, val)),
+  setError: err => dispatch(setError(err)),
+  updateSkillLocale: (val) => dispatch(updateLocales(val)),
+  saveSkill: (publish, cb) => dispatch(updateSkillDB(publish, cb))
+})
 export default connect(mapStateToProps, mapDispatchToProps)(ActionGroup);

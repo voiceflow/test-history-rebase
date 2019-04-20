@@ -350,7 +350,8 @@ export class Display extends Component {
 }
 
 const mapStateToProps = state => ({
-    skill_id: state.skills.skill_id,
-    displays: state.displays.displays,
+  user: state.account,
+  skill_id: state.skills.skill_id,
+  displays: state.displays.displays,
 })
 export default connect(mapStateToProps)(Display);

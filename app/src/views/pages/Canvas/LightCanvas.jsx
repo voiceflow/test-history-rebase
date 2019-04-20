@@ -9,7 +9,7 @@ import './StoryBoard.css'
 import new_template from './../../../assets/templates/new'
 import { ButtonGroup } from 'reactstrap'
 import {convertDiagram} from './util'
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 
 import { BlockLinkFactory } from './../../components/SRD/factories/BlockLinkFactory'
 import { BlockPortFactory } from './../../components/SRD/factories/BlockPortFactory'

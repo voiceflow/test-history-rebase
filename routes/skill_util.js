@@ -129,54 +129,53 @@ exports.deleteVersionPromise = (creator_id, skill_id, opts) => {
   })
 }
 
-exports.deleteProjectPromise = (creator_id, project_id) => {
+exports.deleteProjectPromise = (project_id) => {
   return new Promise(async (resolve, reject) => {
     let select_query = `
-      SELECT * FROM projects 
-        INNER JOIN project_versions ON projects.project_id = project_versions.project_id 
-        INNER JOIN skills ON project_versions.version_id = skills.skill_id
-        INNER JOIN diagrams ON skills.skill_id = diagrams.skill_id
-      WHERE projects.creator_id = $1 AND projects.project_id = $2
-      `
-    let delete_query = `
-        DELETE FROM skills WHERE creator_id = $1 AND skill_id IN 
-        (SELECT version_id FROM project_versions WHERE project_id = $2)`
+      SELECT * FROM projects p
+        INNER JOIN skills s ON p.project_id = s.project_id
+        INNER JOIN diagrams d ON s.skill_id = d.skill_id
+      WHERE p.project_id = $1`
+
+    let delete_query = `DELETE FROM skills WHERE project_id = $1`
 
     try{
-      let project_data_rows = (await pool.query(select_query, [creator_id, project_id])).rows
+      let project_data_rows = (await pool.query(select_query, [project_id])).rows
       if(project_data_rows.length === 0){
-        console.trace('DELETE SKILL, EMPTY ROWS', select_query, creator_id, project_id)
+        console.trace('DELETE SKILL, EMPTY ROWS', select_query, project_id)
         return resolve()
       }
 
-      // Only if deleting the whole project
-      if(project_data_rows[0] && project_data_rows[0].amzn_id){
-        AccessToken(creator_id, token => {
-          if (token === null) {
-            return;
-          }
-  
-          axios.request({
-              url: `https://api.amazonalexa.com/v1/skills/${project_data_rows[0].amzn_id}`,
-              method: 'DELETE',
-              headers: {
-                Authorization: token
-              }
-            })
-            .catch(err => {
-              logAxiosError(err, 'DELETE SKILL')
-            })
-        })
-      }
+      await pool.query(delete_query, [project_id])
+      await pool.query('DELETE FROM projects WHERE project_id = $1', [project_id])
 
-      await pool.query(delete_query, [creator_id, project_id])
-      await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, project_id])
+      const checked_amzn = new Set()
 
       for(let i=0; i < project_data_rows.length; i++){
+        const version = project_data_rows[i]
+
+        // If versions have an Amazon ID
+        if(version.amzn_id && !checked_amzn.has(version.amzn_id)){
+          AccessToken(version.creator_id, token => {
+            if (token === null) return
+            axios.request({
+                url: `https://api.amazonalexa.com/v1/skills/${version.amzn_id}`,
+                method: 'DELETE',
+                headers: {
+                  Authorization: token
+                }
+              })
+              .catch(err => {
+                logAxiosError(err, 'DELETE AMAZON SKILL')
+              })
+          })
+          checked_amzn.add(version.amzn_id)
+        }
+
         // To0 f4st for 4mzn
         setTimeout(() => {
           try{
-            exports.deleteDynamoDiagramPromise(project_data_rows[i].id)
+            exports.deleteDynamoDiagramPromise(version.id)
           }catch(err){
             writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
           }
@@ -409,30 +408,26 @@ const generateCopySkillQuery = (options) => {
   if (options.complete_copy || options.renderDiagram) {
     copy_query = `
           INSERT INTO skills (
-            name, diagram,creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
+            name, diagram, creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
             purchase, personal, copa, ads, export, instructions, inv_name, stage, review, locales, restart, global,
             privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-            account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info, dialogflow_token
+            account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info, project_id
           )
-          SELECT ` +
-      copy_str + `
-              $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
+          SELECT ${copy_str}, $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
               purchase, personal, copa, ads, export, instructions, inv_name, stage, review, locales, restart, global,
               privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-              account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info, dialogflow_token
+              account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info, project_id
           FROM skills WHERE skill_id = $3 RETURNING *`
   } else {
     copy_query = `
           INSERT INTO skills (
             name, diagram, creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
             personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events, platform, google_publish_info, dialogflow_token
+            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events, platform, google_publish_info
           )
-          SELECT ` +
-      copy_str + `
-            $1 AS diagram, $2 AS creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
+          SELECT ${copy_str}, $1 AS diagram, $2 AS creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
             personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events, platform, google_publish_info, dialogflow_token
+            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events, platform, google_publish_info
           FROM skills WHERE skill_id = $3 RETURNING *`
   }
   return copy_query
@@ -448,15 +443,19 @@ exports.copySkill = async (req, res, options, cb = false) => {
   let remapped_displays = {}
   let diagram_names = {}
   let root_diagram_id = generateID()
-
+  
   // Starts here: verify that the skill is under the current creator
   if (!options.copying_default_template) {
     if (req.user.admin < 100) {
       try {
-        let data = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1', [id])
-        if (data.rows.length === 0 || data.rows[0].creator_id !== req.user.id) {
-          throw new Error('Not your skill')
-        }
+        const CHECK = await pool.query(`
+          SELECT 1 FROM skills s
+          INNER JOIN projects p ON p.project_id = s.project_id
+          INNER JOIN team_members tm ON tm.team_id = p.team_id
+          WHERE tm.creator_id = $1 AND s.skill_id = $2 LIMIT 1
+        `, [req.user.id, id])
+
+        if(CHECK.rowCount === 0) throw new Error('Not your skill')
       } catch (err) {
         // forbidden
         return res.sendStatus(401)
@@ -469,16 +468,17 @@ exports.copySkill = async (req, res, options, cb = false) => {
     let copy_skill
     if(!options.diagrams_only){
       copy_skill = (await pool.query(copy_query, [root_diagram_id, new_creator_id, id])).rows[0]
-    }
-    // Copy products, displays, and email templates on sql and store new ids for remapping
-    if(options.user_copy) {
-      try{
-        remapped_products = await copyProducts(id, copy_skill.skill_id)
-        remapped_emails = await copyEmailTemplates(id, copy_skill.skill_id, new_creator_id)
-        remapped_displays = await copyDisplays(id, copy_skill.skill_id, new_creator_id)
-      } catch (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-        res.sendStatus(500)
+      if(!copy_skill) throw new Error('Unable to Create Version')
+      // Copy products, displays, and email templates on sql and store new ids for remapping
+      if(options.user_copy) {
+        try{
+          remapped_products = await copyProducts(id, copy_skill.skill_id)
+          remapped_emails = await copyEmailTemplates(id, copy_skill.skill_id, new_creator_id)
+          remapped_displays = await copyDisplays(id, copy_skill.skill_id, new_creator_id)
+        } catch (err) {
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+          return res.sendStatus(500)
+        }
       }
     }
 
@@ -507,18 +507,19 @@ exports.copySkill = async (req, res, options, cb = false) => {
         // Add working version to table
         if (options.copying_default_template || options.user_copy) {
           try{
-            if(options.request_cert){ 
-              await pool.query(
-                `INSERT INTO project_versions (project_id, version_id, cert_requested) VALUES ($1, $2, now())`, 
-                [options.project_id, copy_skill.skill_id])
-            } else {
+            if (options.request_cert && copy_skill){ 
+              await pool.query(`UPDATE skills SET project_id = $1, cert_requested = NOW() WHERE skill_id = $2`, [options.project_id, copy_skill.skill_id])
+            } else if (copy_skill) {
+              if(options.append_copy_str) options.name = copy_skill.name
+
               let new_project_data = (await pool.query(`
-                INSERT INTO projects (name, creator_id, dev_version) 
-                VALUES ($1, $2, $3) 
+                INSERT INTO projects (name, creator_id, dev_version, team_id) 
+                VALUES ($1, $2, $3, $4) 
                 RETURNING *`, 
-              [copy_skill.name, copy_skill.creator_id, copy_skill.skill_id])).rows[0]
+              [options.name, copy_skill.creator_id, copy_skill.skill_id, team_id])).rows[0]
               copy_skill.project_id = hashids.encode(new_project_data.project_id)
-              await pool.query(`INSERT INTO project_versions (project_id, version_id) VALUES ($1, $2)`, [new_project_data.project_id, copy_skill.skill_id])
+
+              await pool.query(`UPDATE skills SET project_id = $1 WHERE skill_id = $2`, [new_project_data.project_id, copy_skill.skill_id])
             
               if(process.env.NODE_ENV !== 'test'){
                 analytics.track({
@@ -533,7 +534,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
             } 
           } catch (err) {
             writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-            res.sendStatus(500)
+            return res.sendStatus(500)
           }
         }
 
@@ -546,7 +547,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
         if (cb && cb.name !== 'next') {
           cb(copy_skill)
         } else {
-          res.send(copy_skill)
+          return res.send(copy_skill)
         }
       })
       .catch((err) => {

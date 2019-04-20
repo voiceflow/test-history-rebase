@@ -7,8 +7,10 @@ pretty_output () {
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 PROJECT_ROOT=$DIR'/..'
 
-pretty_output 'Cloning Migrations'
-git clone https://github.com/storyflow/migrations.git
+if ! [ -d "./migrations" ]; then
+  pretty_output 'Cloning Migrations'
+  git clone https://github.com/storyflow/migrations.git
+fi
 
 if [ $CIRCLECI == "TRUE" ]; then
     pretty_output "Perform Migrations"

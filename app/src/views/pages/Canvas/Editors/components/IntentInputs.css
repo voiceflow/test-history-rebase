@@ -180,9 +180,6 @@
   color: #2b3950;
 }
 
-.disabled {
-    pointer-events: none;
-}
 .faded {
     opacity: 0.25;
 }
@@ -242,6 +239,23 @@
     margin-bottom: 4px;
     background-color: #aaa;
     color: #fff;
+}
+
+.slot-synonym {
+  color: #8DA2B5 !important;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.9em;
+  font-weight: 400;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding: 5px 8px;
+  border-radius: 5px;
+  margin-bottom: 4px;
+  background-color: #E2E9EC;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .slot-utterance:last-child {

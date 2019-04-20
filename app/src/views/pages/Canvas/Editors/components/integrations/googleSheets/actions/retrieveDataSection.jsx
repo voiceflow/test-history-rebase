@@ -6,7 +6,7 @@ import { Tooltip } from 'react-tippy'
 import { selectStyles } from 'views/components/VariableSelect'
 
 // props
-// action_data, integration_data, selected_action, updateActionData, user, sheet_headers, headers_loading, updateHeaders, variables, showNextSection, open
+// action_data, integration_data, selected_action, updateActionData, integrationsUser, sheet_headers, headers_loading, updateHeaders, variables, showNextSection, open
 
 class RetrieveData extends Component {
 

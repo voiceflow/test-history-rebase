@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert, Input} from 'reactstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { setConfirm } from 'actions/modalActions'
+import { setConfirm } from 'ducks/modal'
 import { openTab } from 'actions/userActions'
 
 import { fetchDiagramVariables } from './../../../../actions/diagramVariablesAction';
@@ -149,8 +149,8 @@ class DiagramBlock extends Component {
                     </React.Fragment>
                     : 
                     <React.Fragment>
-                        <button block className="btn-primary btn-block mb-3 btn-lg" onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>
-                          <i className="fas fa-clone mr-1"/> Enter Flow
+                        <button block className="mt-4 btn-primary btn-block mb-3 btn-lg" onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>
+                          <img src={'/flows-white.svg'} className="mr-2" alt="flow"></img> Enter Flow
                         </button>
                         {/* <Select
                             classNamePrefix="select-box"

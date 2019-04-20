@@ -3,12 +3,12 @@ import cn from 'classnames'
 import LightCanvas from '../../Canvas/LightCanvas'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import {Link} from 'react-router-dom'
+// import {Link} from 'react-router-dom'
 import axios from 'axios'
 // import _ from 'lodash'
 
 import { Spinner } from 'views/components/Spinner'
-import { setConfirm } from 'actions/modalActions'
+import { setConfirm } from 'ducks/modal'
 import {Modal, ModalFooter, FormGroup, Label, Alert, Table, Button} from 'reactstrap'
 
 class BackupSettings extends Component{
@@ -113,15 +113,10 @@ class BackupSettings extends Component{
                         <Label>
                             Backups
                         </Label>
-                        <div className="helper-text mb-3">Restore your skill to previous versions. A version is saved every time you upload your skill to Alexa{window.user_detail.admin > 0 ? "" : ". Upgrade to access this premium feature"}</div>
+                        <div className="helper-text mb-2">Restore your skill to previous versions. A version is saved every time you upload your skill to Alexa</div>
                         <div id="backup">
-                            {window.user_detail.admin === 0 &&
-                            <div id="backup-overlay" className="d-flex justify-content-center">
-                                <div id="backup-upgrade-btn" className="text-center">
-                                    <Link className="btn-primary" to='/account/upgrade'>
-                                        Upgrade
-                                    </Link>
-                                </div>
+                            <div id="backup-overlay" className="super-center">
+                                <h5 className="text-muted">Backups Temporarily Disabled</h5>
                             </div>}
                             <Table>
                                 <thead>
@@ -174,9 +169,14 @@ class BackupSettings extends Component{
     }
 }
 
+const mapStateToProps = state => ({
+  user: state.account,
+  team: state.team.byId[state.team.team_id]
+})
+
 const mapDispatchToProps = dispatch => {
     return {
         setConfirm: (confirm) => dispatch(setConfirm(confirm))
     }
 }
-export default connect(null, mapDispatchToProps)(BackupSettings)
+export default connect(mapStateToProps, mapDispatchToProps)(BackupSettings)

@@ -1,4 +1,3 @@
-import cn from 'classnames'
 import React, { Component } from 'react'
 import axios from 'axios'
 import TemplateCard from './TemplateCard'
@@ -10,6 +9,7 @@ import './Template.css'
 import LightCanvas from './../Canvas/LightCanvas'
 import MUIButton from '@material-ui/core/Button';
 import { Spinner } from 'views/components/Spinner'
+import { connect } from 'react-redux'
 
 class Templates extends Component {
     constructor(props) {
@@ -28,7 +28,7 @@ class Templates extends Component {
             alexa: false
         }
 
-        this.createSkill = this.createSkill.bind(this)
+        this.createProject = this.createProject.bind(this)
         this.previewTemplate = this.previewTemplate.bind(this)
         this.renderBody = this.renderBody.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -59,40 +59,25 @@ class Templates extends Component {
 
     saveSettings() {
         switch (this.state.stage) {
-            case 0:
-                if (this.state.name.trim() && Array.isArray(this.state.locales) && this.state.locales.length !== 0) {
-                    const stage = window.user_detail.admin === -1 ? 1 : 2 // Multiplatform paywall soft-disable
-                    this.setState({ stage: stage, error: '' })
-                } else {
-                    this.setState({ error: 'Please Complete All Fields' })
-                }
-                break
-            case 1:
-                if (this.state.google || this.state.alexa) {
-                    if (this.state.google && this.state.alexa && window.user_detail.admin === -1) { // Multiplatform paywall soft-disable
-                        // Modal
-                    } else {
-                        this.setState({ stage: 2, error: '' })
-                    }
-                } else {
-                    this.setState({ error: 'Must select at least one platform' })
-                }
-                break
-            default:
-                break
+          case 0:
+              if (this.state.name.trim() && Array.isArray(this.state.locales) && this.state.locales.length !== 0) {
+                  this.setState({ stage: 2, error: '' })
+              } else {
+                  this.setState({ error: 'Please Complete All Fields' })
+              }
+              break
+          default:
+              break
         }
     }
 
     goBack() {
         switch (this.state.stage) {
-            case 1:
-                this.setState({ stage: 0 })
-                break
-            case 2:
-                this.setState({ stage: window.user_detail.admin === -1 ? 1 : 0 }) // Multiplatform paywall soft-disable
-                break
-            default:
-                break
+          case 2:
+              this.setState({ stage: 0 })
+              break
+          default:
+              break
         }
 
     }
@@ -101,7 +86,7 @@ class Templates extends Component {
         this.loadDefaultTemplates()
     }
 
-    createSkill(module_id) {
+    createProject(module_id) {
         this.setState({ loading: true })
 
         if(localStorage.getItem('is_first_session') === 'true'){
@@ -110,10 +95,11 @@ class Templates extends Component {
                 console.error(err)
             })
         }
-        axios.post(`/marketplace/template/${module_id}/copy`, {
-            name: this.state.name,
-            locales: this.state.locales,
-            platform: this.state.google ? 'google' : 'alexa'
+
+        axios.post(`/team/${this.props.team_id}/copy/module/${module_id}`, {
+          name: this.state.name,
+          locales: this.state.locales,
+          platform: this.state.google ? 'google' : 'alexa'
         })
             .then(res => {
                 if (res.data.skill_id && res.data.diagram) {
@@ -162,16 +148,9 @@ class Templates extends Component {
     }
 
     renderContinueButton() {
-        if (this.state.alexa && this.state.google && window.user_detail.admin === -1) { // Multiplatform paywall soft-disable
-            return (<div className="mt-1">
-                <div className="mb-4 text-muted">Building for both platforms simultaneously is a premium feature.<br />Please upgrade to continue</div>
-                <MUIButton varient="contained" className="btn-primary" onClick={() => this.props.history.push('/account/upgrade')}>Upgrade</MUIButton>
-            </div>)
-        } else {
-            return (<div className="mt-1">
-                <MUIButton varient="contained" className="btn-primary" onClick={this.saveSettings}>Continue</MUIButton>
-            </div>)
-        }
+      return (<div className="mt-1">
+          <MUIButton varient="contained" className="btn-primary" onClick={this.saveSettings}>Continue</MUIButton>
+      </div>)
     }
 
     renderBody() {
@@ -185,61 +164,9 @@ class Templates extends Component {
                                 <TemplateCard
                                     key={template.module_id}
                                     template={template}
-                                    createSkill={this.createSkill}
+                                    createProject={this.createProject}
                                     previewTemplate={this.previewTemplate}
                                 />)}
-                        </div>
-                    </div>
-                </div>
-            case 1:
-                return <div className="container text-center d-flex flex-fill flex-column">
-                    <h5 className="text-dark mb-5">Select Your Platforms</h5>
-                    <div className="d-flex flex-fill flex-column justify-content-center">
-                        <div className="pb-5 mb-5 align-self-center">
-                            <div className="px-4 py-2 text-center project-card">
-                                <div className="mb-4 text-muted">Are you building for Alexa, Google, or both?</div>
-                                <div className="mx--1 d-flex justify-content-center">
-                                    <button
-                                        color="primary"
-                                        className={cn('d-flex', 'justify-content-center', 'template-platform-btn', {
-                                            active: this.state.alexa
-                                        })}
-                                        onClick={() => { this.setState({ alexa: !this.state.alexa, error: '' }) }}
-                                    >
-                                        <div className={cn('platform-checkbox', {
-                                            active: this.state.alexa
-                                        })}/>
-                                        <div className="image-container d-flex flex-column justify-content-between">
-                                            <div className={cn('platform-label', 'mt-2', {
-                                                active: this.state.alexa
-                                            })}>
-                                                Alexa
-                                            </div>
-                                            <img className="platform-image alexa" src="/alexa.png" alt="empty" />
-                                        </div>
-                                    </button>
-                                    <button
-                                        color="primary"
-                                        className={cn('d-flex', 'justify-content-center', 'template-platform-btn', {
-                                            active: this.state.google
-                                        })}
-                                        onClick={() => { this.setState({ google: !this.state.google, error: '' }) }}
-                                    >
-                                        <div className={cn('platform-checkbox', {
-                                            active: this.state.google
-                                        })}/>
-                                        <div>
-                                            <div className={cn('platform-label', 'mt-2', {
-                                                active: this.state.google
-                                            })}>Google</div>
-                                            <img className="platform-image mt-2" src="/google_home.png" alt="empty" />
-                                        </div>
-                                    </button>
-                                </div>
-                                {this.state.error && <Alert color='danger' style={{ visibility: this.state.error ? 'visible' : 'hidden' }} className="my-4 d-inline-block fadeIn">&nbsp;{this.state.error}&nbsp;</Alert>}
-                                <br />
-                            </div>
-                            {this.renderContinueButton()}
                         </div>
                     </div>
                 </div>
@@ -277,12 +204,12 @@ class Templates extends Component {
 
     render() {
         if (this.state.loading) {
-            return React.createElement(Spinner, {name: 'Templates'})
+            return React.createElement(Spinner, {name: 'Template'})
         }
 
         return <div id="template-box-container">
             <div className="card">
-                {[1,2].includes(this.state.stage) &&
+                {[2].includes(this.state.stage) &&
                     <div className="mr-3 btn-icon back-btn-large" onClick={()=>this.goBack()}/>
                 }
                 <Link id="exit-template" to='/dashboard' className="btn-icon"></Link>
@@ -304,4 +231,8 @@ class Templates extends Component {
     }
 }
 
-export default Templates
+const mapStateToProps = state => ({
+  user: state.account
+})
+
+export default connect(mapStateToProps)(Templates)

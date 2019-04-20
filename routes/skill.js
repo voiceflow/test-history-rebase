@@ -1425,7 +1425,7 @@ exports.getVersionInfo = async (req, res) => {
     version.encoded = req.params.version_id
   }else{
     version.encoded = hashids.encode(req.params.version_id)
-    version.version_id = req.params.id
+    version.version_id = req.params.version_id
   }
 
   try {

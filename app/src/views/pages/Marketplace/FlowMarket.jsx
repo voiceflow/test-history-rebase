@@ -129,7 +129,7 @@ class FlowMarket extends Component {
   }
 
   render() {
-    if(window.user_detail.admin === 7){
+    if(this.props.user.admin === 7){
       return (
         <div className="marketplace-window justify-content-center">
           <ModuleModal
@@ -213,7 +213,8 @@ class FlowMarket extends Component {
 
 const mapStateToProps = state => ({
   project_id: state.skills.skill.project_id,
-  user_modules: state.skills.user_modules
+  user_modules: state.skills.user_modules,
+  user: state.account
 })
 
 const mapDispatchToProps = dispatch => {

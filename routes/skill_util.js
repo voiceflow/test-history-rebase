@@ -403,7 +403,7 @@ const renderSkill = async (skill, user) => {
 }
 
 const generateCopySkillQuery = (options) => {
-  let copy_str = (options.append_copy_str ? `coalesce(name, '') || ' Copy' AS name, ` : 'name, ')
+  let copy_str = (options.append_copy_str ? `coalesce(name, '') || ' Copy' AS name` : 'name')
   let copy_query
   if (options.complete_copy || options.renderDiagram) {
     copy_query = `
@@ -435,8 +435,9 @@ const generateCopySkillQuery = (options) => {
 
 exports.copySkill = async (req, res, options, cb = false) => {
 
-  let id = hashids.decode(req.params.id)[0]
-  let new_creator_id = (req.params.target_creator === 'me' ? req.user.id : req.params.target_creator)
+  let id = req.params._version_id ? req.params._version_id : hashids.decode(req.params.version_id)[0]
+  let new_creator_id = options.creator_id || req.user.id
+  let team_id = req.params._team_id
   let diagram_mapping = {}
   let remapped_products = {}
   let remapped_emails = {}
@@ -463,7 +464,6 @@ exports.copySkill = async (req, res, options, cb = false) => {
     }
   }
   let copy_query = generateCopySkillQuery(options)
-
   try {
     let copy_skill
     if(!options.diagrams_only){
@@ -481,7 +481,6 @@ exports.copySkill = async (req, res, options, cb = false) => {
         }
       }
     }
-
     let diagram_data = await pool.query('SELECT id, diagrams.name, intents, slots FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1', [id])
     let remap_and_copy_promises = []
     for (let i = 0; i < diagram_data.rows.length; i++) {
@@ -577,7 +576,6 @@ exports.copyDiagramsFromSkill = async (origin_skill_id, dest_skill_id, new_creat
 
       let dest_diagram_names = (await pool.query(`SELECT diagrams.name FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1`, [dest_skill_id])).rows
       dest_diagram_names = new Set(dest_diagram_names.map((row) => {return row.name}))
-      
       let platform = (await pool.query(`SELECT platform FROM skills WHERE skill_id = $1`, [origin_skill_id])).rows[0].platform
       let diagram_data = await pool.query('SELECT id, diagrams.name, intents, slots FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1', [origin_skill_id])
       let remap_and_copy_promises = []

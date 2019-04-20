@@ -287,14 +287,13 @@ const checkConflicts = async (req, res) => {
 			FROM projects
 			INNER JOIN modules ON projects.project_id = modules.module_project_id
 			INNER JOIN skills ON skills.skill_id = 
-				(SELECT max(version_id) 
-				FROM project_versions 
-				INNER JOIN modules ON project_versions.project_id = modules.module_project_id
-				WHERE project_versions.cert_approved IS NOT NULL
+				(SELECT max(skills.skill_id) 
+				FROM skills
+				INNER JOIN modules ON skills.project_id = modules.module_project_id
+				WHERE skills.cert_approved IS NOT NULL
 				AND module_id = $1)
 			WHERE module_id = $1
 		`, [module_id])).rows[0]
-
 
 		let globals_intersect = setIntersect(current_dev_data.global, module_data.global, DEFAULT_VARIABLES)
 
@@ -326,15 +325,15 @@ const giveAccess = async (req, res) => {
 	try{
 		let dest_skill_id = (await pool.query(`SELECT dev_version FROM projects WHERE project_id = $1`, [project_id])).rows[0].dev_version
 		let origin_skill = (await pool.query(`
-			SELECT project_versions.version_id, modules.title 
+			SELECT skills.skill_id, modules.title 
 			FROM modules 
 			INNER JOIN projects ON modules.module_project_id = projects.project_id
-			INNER JOIN project_versions ON modules.module_project_id = project_versions.project_id
+			INNER JOIN skills ON modules.module_project_id = skills.project_id
 			WHERE module_id = $1 AND cert_approved IS NOT NULL
 			ORDER BY cert_approved DESC
 			LIMIT 1
 		`, [module_id])).rows[0]
-		let {new_diagrams, new_globals} = await copyDiagramsFromSkill(origin_skill.version_id, dest_skill_id, creator_id, origin_skill.title, module_id)
+		let {new_diagrams, new_globals} = await copyDiagramsFromSkill(origin_skill.skill_id, dest_skill_id, creator_id, origin_skill.title, module_id)
 		//Increment # of downloads and update ES index
 		await pool.query(`UPDATE modules SET downloads = downloads + 1 WHERE module_id = $1`, [module_id])
 		let module_data = (await pool.query(`
@@ -647,10 +646,9 @@ const getModuleDiagram = async (req, res) => {
 		let project_id = (await pool.query(`SELECT module_project_id FROM modules WHERE module_id = $1`, [module_id])).rows[0].module_project_id
 		let latest_version_data = (await pool.query(`
 			SELECT *
-			FROM project_versions
-			INNER JOIN skills ON project_versions.version_id = skills.skill_id
-			WHERE project_versions.cert_approved = (SELECT max(cert_approved) FROM project_versions WHERE project_id = $1)
-				AND project_id = $1
+			FROM skills
+			WHERE skills.cert_approved = (SELECT max(cert_approved) FROM skills WHERE project_id = $1)
+			AND project_id = $1
 		`, [project_id])).rows[0]
 		res.send({diagram_id: latest_version_data.diagram})
 	} catch (err) {

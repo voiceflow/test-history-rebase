@@ -23,7 +23,7 @@ class ModuleCard extends Component{
 							</div>
 						</CardBody>
 					</Card>
-				</span>
+				</a>
 			</div>
 		)
 	}

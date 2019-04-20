@@ -1268,7 +1268,7 @@ exports.buildGoogleSkill = async (req, res) => {
 
     let dialogflow_creds
     try {
-      dialogflow_creds = JSON.parse(version.dialogflow_token)
+      dialogflow_creds = version.dialogflow_token
     } catch (e) {
       throw ('Credentials not found')
     }
@@ -1354,7 +1354,7 @@ exports.getGoogleSkill = async (req, res) => {
       let defaultLanguageCode, supportedLanguageCodes
       if (data.rows[0].dialogflow_token) {
         try {
-          let dialogflow_token = JSON.parse(data.rows[0].dialogflow_token)
+          let dialogflow_token = data.rows[0].dialogflow_token
           google_id = dialogflow_token.project_id
           private_key = dialogflow_token.private_key
           client_email = dialogflow_token.client_email
@@ -1416,29 +1416,47 @@ exports.getGoogleSkill = async (req, res) => {
   });
 }
 
-// exports.getVersionInfo = async (req, res) => {
-//   let skill = {}
-//   if(req.query.encoded){
-//     skill.id = hashids.decode(req.params.version_id)[0]
-//     skill.encoded = req.params.id
-//   }else{
-//     skill.encoded = hashids.encode(req.params.version_id)
-//     skill.id = req.params.id
-//   }
+const { getLogsProject } = require('./logs')
 
-//   try {
-//     const project = (await pool.query('SELECT'))
-//     let find = await pool.query(`SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1 LIMIT 1`, [skill.id])
-//     if(find.rows.length === 0){
-//       res.sendStatus(404)
-//       return
-//     }
-//     skill.canonical_skill_id = find.rows[0].canonical_skill_id
-//     skill.skills = (await pool.query(`SELECT * FROM skills s INNER JOIN skill_versions sv ON sv.skill_id = s.skill_id WHERE sv.canonical_skill_id = $1`, [skill.canonical_skill_id])).rows
-//     skill.skill = _.find(skill.skills, s => s.skill_id = skill.id)
-//     res.send(skill)
-//   }catch(e){
-//     console.error(e)
-//     res.status(500).send(e)
-//   }
-// } 	} 
+exports.getVersionInfo = async (req, res) => {
+  let version = {}
+  if(req.query.encoded){
+    version.version_id = hashids.decode(req.params.version_id)[0]
+    version.encoded = req.params.version_id
+  }else{
+    version.encoded = hashids.encode(req.params.version_id)
+    version.version_id = req.params.version_id
+  }
+
+  try {
+    version.project = (await pool.query(`
+      SELECT p.* FROM projects p
+      INNER JOIN skills s ON s.project_id = p.project_id
+      WHERE s.skill_id = $1 LIMIT 1
+    `, [version.version_id])).rows[0]
+
+    version.versions = (await pool.query(`
+      SELECT * FROM skills s
+      LEFT JOIN project_members pm ON pm.project_id = s.project_id AND pm.creator_id = s.creator_id
+      WHERE s.project_id = $1
+    `, [version.project.project_id])).rows
+
+    try{
+      version.logs = await getLogsProject(version.project.project_id)
+    }catch(err) {
+      version.logs = []
+    }
+
+    version.versions = version.versions.map(v => {
+      v.version_id = v.skill_id
+      v.encoded = hashids.encode(v.version_id)
+      delete v.skill_id
+      return v
+    })
+
+    res.send(version)
+  }catch(e){
+    console.error(e)
+    res.status(500).send(e)
+  }
+}

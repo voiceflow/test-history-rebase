@@ -16,7 +16,7 @@ if(process.NODE_ENV === 'development'){
 } else {
   ESURL = 'http://localhost:8080/elasticsearch'
 }
-console.log(process.NODE_ENV)
+console.log({process, ESURL})
 class FlowMarket extends Component {
   constructor(props){
     super(props)

@@ -1268,7 +1268,7 @@ exports.buildGoogleSkill = async (req, res) => {
 
     let dialogflow_creds
     try {
-      dialogflow_creds = JSON.parse(version.dialogflow_token)
+      dialogflow_creds = version.dialogflow_token
     } catch (e) {
       throw ('Credentials not found')
     }
@@ -1354,7 +1354,7 @@ exports.getGoogleSkill = async (req, res) => {
       let defaultLanguageCode, supportedLanguageCodes
       if (data.rows[0].dialogflow_token) {
         try {
-          let dialogflow_token = JSON.parse(data.rows[0].dialogflow_token)
+          let dialogflow_token = data.rows[0].dialogflow_token
           google_id = dialogflow_token.project_id
           private_key = dialogflow_token.private_key
           client_email = dialogflow_token.client_email

@@ -5,12 +5,18 @@ import axios from 'axios'
 import ReactTable from 'react-table'
 import moment from 'moment'
 import { connect } from 'react-redux'
+import { LogTable } from './../Logs'
 
 const COLUMNS = [
   {
     Header: 'ID',
-    accessor: 'skill_id',
+    accessor: 'version_id',
     width: 60
+  },
+  {
+    Header: 'Encoded',
+    accessor: 'encoded',
+    width: 110
   },
   {
     Header: 'Name',
@@ -21,16 +27,20 @@ const COLUMNS = [
     Header: 'Made',
     accessor: 'created',
     width: 100,
-    Cell: props => <span>{moment(props.value).format('YYYY/MM/DD')}</span>
+    Cell: props => <span>{moment(props.value).format('YYYY/MM/DD h:mm:ss a')}</span>
   },
   {
     Header: 'Amazon ID',
     accessor: 'amzn_id'
   },
   {
-    Header: 'Vers.',
-    accessor: 'version',
-    width: 50
+    Header: 'Google ID',
+    accessor: 'google_id'
+  },
+  {
+    Header: 'Creator',
+    accessor: 'creator_id',
+    width: 80
   },
   {
     Header: 'Live',
@@ -48,7 +58,7 @@ class Home extends Component {
       skill_id: '',
       encoded: true,
       loading: false,
-      skill_info: null
+      version_info: null
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -66,9 +76,11 @@ class Home extends Component {
     this.setState({loading: true})
     axios.get(`/version/${this.state.skill_id}/info`, {params: {encoded: this.state.encoded ? '1' : undefined}})
     .then((res) => {
+      const v = res.data
+      v.dev_version = v.versions.find(vers => vers.version_id === v.project.dev_version)
       this.setState({
         loading: false,
-        skill_info: res.data
+        version_info: v
       })
     })
     .catch((e) => {
@@ -79,7 +91,7 @@ class Home extends Component {
   }
 
   render() {
-    let s = this.state.skill_info
+    let v = this.state.version_info
     return (
       <div className="admin-page-inner">
         <div className="subheader">
@@ -96,11 +108,13 @@ class Home extends Component {
           </div>
         </div>
         <div className="p-5">
-          <h1>Tyler's Skill Lookup Emporium</h1>
+          <h1>Tyler's Lookup Emporium</h1>
+          <hr/>
+          <h5>Projects/Versions</h5>
           {this.state.loading ? 
             <div className="text-center py-3"><div className="loader text-lg"/></div> : 
             <div className="">
-              <label className="d-flex align-items-center">Skill Id | Encoded &nbsp;&nbsp;
+              <label className="d-flex align-items-center">Version Id | Encoded &nbsp;&nbsp;
                 <Toggle
                   checked={this.state.encoded}
                   onChange={() => {
@@ -108,30 +122,37 @@ class Home extends Component {
                   }}
                 />
               </label>
-              <Input name="skill_id" value={this.state.skill_id} onChange={this.handleChange} placeholder={this.state.encoded ? 'JROxR54aK8' : '38728' }></Input>
+              <Input name="skill_id" value={this.state.skill_id} onChange={this.handleChange} placeholder={this.state.encoded ? '86d84lrdAB' : '38728' }></Input>
               <Button color="primary" className="w-100 mt-3" size="lg" onClick={this.lookupSkill}>Search</Button>
             </div>
           }
           <hr/>
-          {s && <div>
+          {v && <div>
             <label>General Info</label>
-            <div><b>Skill ID:</b> {s.id} | <b>Encoded ID:</b> {s.encoded} | <b>Canonical:</b> {s.canonical_skill_id} | <b>Creator ID:</b> {s.skill.creator_id}</div>
+            <div><b>Version ID:</b> {v.version_id} | <b>Encoded ID:</b> {v.encoded} | <b>Dev Version:</b> {v.project.dev_version} | <b>Project Creator ID:</b> {v.project.creator_id} | <b>Project ID:</b> {v.project.project_id} </div>
             <hr/>
-            <label>Skill</label>
-            <ReactTable
-              columns={COLUMNS}
-              data={[s.skill]}
-              defaultPageSize={1}
-              showPagination={false}
-              showPageSizeOptions={false}
-            />
-            <hr/>
+            {v.dev_version && <>
+              <label>Dev Version</label>
+              <ReactTable
+                columns={COLUMNS}
+                data={[v.dev_version]}
+                defaultPageSize={1}
+                showPagination={false}
+                showPageSizeOptions={false}
+              />
+              <hr/>
+            </>}
             <label>All Versions</label>
             <ReactTable
               defaultPageSize={5}
               columns={COLUMNS}
-              data={s.skills}
+              data={v.versions}
             />
+            <hr/>
+            {v.logs.length !== 0 && <>
+              <label>Errors</label>
+              <LogTable logs={v.logs}/>
+            </>}
           </div>}
         </div>
       </div>

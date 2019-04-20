@@ -121,8 +121,6 @@ class GooglePublish extends Component {
 
       this.setState({ stage: 2 });
 
-      console.log("state", s)
-
       axios.post(`/project/${this.props.project_id}/render`, { platform: 'google', google_id: s.google_id })
         .then(res => {
           this.setState({ stage: 3 });

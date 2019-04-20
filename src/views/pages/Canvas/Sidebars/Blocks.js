@@ -113,8 +113,7 @@ export class Blocks extends PureComponent {
     }
 
     render() {
-        let block_content;
-        if (!window.user_detail) return null;
+        let block_content
         if(this.state.tab === 'blocks'){
             block_content =
                 this.state.sections.map((section, i) => {

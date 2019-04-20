@@ -5,6 +5,7 @@ import axios from 'axios'
 import StepProgressBar from './../../components/StepProgressBar'
 import { Form, FormGroup, Input, Button} from 'reactstrap'
 import Select from 'react-select'
+import { connect } from "react-redux";
 
 const PROG_XP = (xp) => {
 	switch(xp){
@@ -68,87 +69,88 @@ class Onboarding extends Component{
 	}
 
 	handleChange(event){
-        this.setState({
-            saved: false,
-            [event.target.name]: event.target.value
-        });
-    }
+    this.setState({
+        saved: false,
+        [event.target.name]: event.target.value
+    });
+  }
 
 	createSkill = () => {
-		axios.post(`/marketplace/template/${this.state.templates[0].module_id}/copy`, {
+    const module_id = this.state.templates[0].module_id
+		axios.post(`/team/${this.props.team_id}/copy/module/${module_id}`, {
 			name: 'My First Project',
 			locales: ['en-US'],
 			platform: 'alexa'
 		})
-			.then(res => {
-				if (res.data.skill_id && res.data.diagram) {
-					setTimeout(() => {
-						this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
-					}, 3000)
-				} else {
-					throw new Error('Invalid Response Format')
-				}
-			})
-			.catch(err => {
-				console.error(err)
-				alert('unable to create skill')
-			})
+    .then(res => {
+      if (res.data.skill_id && res.data.diagram) {
+        setTimeout(() => {
+          this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+        }, 3000)
+      } else {
+        throw new Error('Invalid Response Format')
+      }
+    })
+    .catch(err => {
+      console.error(err)
+      alert('unable to create skill')
+    })
 	}
 
 	loadDefaultTemplates = () => {
 		axios.get('/marketplace/initial_template')
-			.then(res => {
-				if (Array.isArray(res.data)) {
-					this.setState({
-						templates: res.data
-					})
-					// preload images for performance
-					this.images = []
-					res.data.forEach((template, i) => {
-						this.images[i] = new Image()
-						this.images[i].src = template.module_icon
-					})
-				} else {
-					throw new Error('Malformed Response')
-				}
-			})
-			.catch(err => {
-				console.log(err.response)
-				alert('Unable to Retrieve Templates')
-			})
+    .then(res => {
+      if (Array.isArray(res.data)) {
+        this.setState({
+          templates: res.data
+        })
+        // preload images for performance
+        this.images = []
+        res.data.forEach((template, i) => {
+          this.images[i] = new Image()
+          this.images[i].src = template.module_icon
+        })
+      } else {
+        throw new Error('Malformed Response')
+      }
+    })
+    .catch(err => {
+      console.log(err.response)
+      alert('Unable to Retrieve Templates')
+    })
 	}
 
-    submitSurvey(prog_xp){
-			var s = this.state;
-			this.setState({
-				loading: true
-			})
-			axios.post('/onboard', {
-				usage_type: s.type,
-				programming: s.experience,
-				company_name: s.company_name,
-				company_role: s.company_role,
-				company_size: s.company_size,
-				new_company_role: s.new_company_role,
-				purpose: s.purpose,
-				design: s.design,
-				build: s.build
-			})
-			.then(res => {
-				localStorage.setItem('onboarding', PROG_XP(s.experience))
-				this.createSkill()
-			})
-			.catch(err => {
-				localStorage.setItem('onboarding', PROG_XP(s.experience))
-				this.createSkill()
-			})
-    }
+  submitSurvey(prog_xp){
+    var s = this.state;
+    this.setState({
+      loading: true
+    })
+    axios.post('/onboard', {
+      usage_type: s.type,
+      programming: s.experience,
+      company_name: s.company_name,
+      company_role: s.company_role,
+      company_size: s.company_size,
+      new_company_role: s.new_company_role,
+      purpose: s.purpose,
+      design: s.design,
+      build: s.build
+    })
+    .then(res => {
+      localStorage.setItem('onboarding', PROG_XP(s.experience))
+      this.createSkill()
+    })
+    .catch(err => {
+      localStorage.setItem('onboarding', PROG_XP(s.experience))
+      this.createSkill()
+    })
+  }
 
-    handleSizeSelection(value) {
+  handleSizeSelection(value) {
 		this.setState({
-            saved: false,
-           	company_size: value
-        });
+      saved: false,
+      company_size: value
+    });
 	}
 
 	handleIndustrySelection(value) {
@@ -192,10 +194,6 @@ class Onboarding extends Component{
 	// }
 	
 	renderModalContent(){
-		const classname = cn({
-			'btn-info-onboarding-selected': this.state.purpose === 'EXPLORING' || this.state.purpose === 'BUILDING' || this.state.purpose === 'BUILT',
-			'btn-info-onboarding': !(this.state.purpose === 'EXPLORING' || this.state.purpose === 'BUILDING' || this.state.purpose === 'BUILT')
-		})
 		switch (this.state.stage){
 			case 'calendly':
 				const head = document.querySelector('head')
@@ -221,17 +219,24 @@ class Onboarding extends Component{
 					<StepProgressBar num_stages={6} stage={(this.state.company_size >= SHOW_CALENDLY_NUMBER ? 4: 5)} classes={"onboarding-progress"}/>
 						<p className="modal-bg-txt text-center mb-5 mt-4">What best describes you?</p>
 						<div className="row justify-content-center mb-3">
-							<button className={classname} onClick={() => {this.setState({purpose: 'EXPLORING'})}}>
+              <button 
+                className={this.state.purpose === 'EXPLORING' ? 'btn-info-onboarding-selected' : 'btn-info-onboarding'} 
+                onClick={() => {this.setState({purpose: 'EXPLORING'})}}
+              >
 								My company is exploring voice
 							</button>
 						</div>
 						<div className="row justify-content-center mb-3">
-							<button className={classname} onClick={() => {this.setState({purpose: 'BUILDING'})}}>
+              <button 
+                className={this.state.purpose === 'BUILDING' ? 'btn-info-onboarding-selected' : 'btn-info-onboarding'} 
+                onClick={() => {this.setState({purpose: 'BUILDING'})}}>
 								My company is building a voice app
 							</button>
 						</div>
 						<div className="row justify-content-center mb-5">
-							<button className={classname} onClick={() => {this.setState({purpose: 'BUILT'})}}>
+              <button 
+                className={this.state.purpose === 'BUILT' ? 'btn-info-onboarding-selected' : 'btn-info-onboarding'} 
+                onClick={() => {this.setState({purpose: 'BUILT'})}}>
 								My company has already built voice apps
 							</button>
 						</div>
@@ -271,7 +276,7 @@ class Onboarding extends Component{
 						</div>
 					</div>
 					{this.state.loading ? 
-						<Button variant="contained" width={200} className="purple-btn" disabled>
+						<Button variant="contained" width={200} className="btn-primary" disabled>
 							<p className="loading-btn m-0 p-0">Loading</p>
 						</Button> :
 					<div className="justify-content-center">
@@ -303,7 +308,7 @@ class Onboarding extends Component{
 						</div>
 					</div>
 					{this.state.loading ?
-						<Button variant="contained" width={200} className="purple-btn" disabled>
+						<Button variant="contained" width={200} className="btn-primary" disabled>
 							<p className="loading-btn m-0 p-0">Loading</p>
 						</Button> :
 					<div className="justify-content-center">
@@ -386,7 +391,7 @@ class Onboarding extends Component{
 							} else if(this.state.type === 'PERSONAL'){
 								this.setState({stage: 'work_plan'})
 							}	
-						}}>Next Question</button>
+						}}>Continue</button>
 					</div>
 				</React.Fragment>
 			default:
@@ -422,4 +427,8 @@ class Onboarding extends Component{
 	}	
 }
 
-export default Onboarding;
+const mapStateToProps = state => ({
+  user: state.account
+})
+
+export default connect(mapStateToProps)(Onboarding);

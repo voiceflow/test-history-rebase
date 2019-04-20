@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
 import { addDisplay, updateDisplay } from './../../../actions/displayActions'
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 
 import { Spinner } from 'views/components/Spinner'
 import axios from 'axios';

@@ -11,7 +11,7 @@ import C from './constants'
 import { deepDraftToMarkdown, deepVariableSubstitution } from '../../../../../../util'
 
 import { connect } from 'react-redux'
-import { setConfirm, setError } from 'actions/modalActions'
+import { setConfirm, setError } from 'ducks/modal'
 
 const SERVICES_MAP = {
   [C.GS.GOOGLE_SHEETS]: {

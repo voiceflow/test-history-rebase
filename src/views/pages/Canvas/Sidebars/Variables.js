@@ -1,18 +1,11 @@
-import React, { PureComponent } from "react";
-import { connect } from "react-redux";
-import {
-  pushVariable,
-  setVariables
-} from "./../../../../actions/variableActions";
-import { updateVersion } from "./../../../../actions/versionActions";
-import { setError } from "actions/modalActions";
-import {
-  Input,
-  FormGroup,
-  Label
-} from "reactstrap";
-import { Tooltip } from "react-tippy";
-import isVarName from "is-var-name";
+import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
+import { pushVariable, setVariables } from './../../../../actions/variableActions'
+import { updateVersion } from './../../../../actions/versionActions'
+import { setError } from 'ducks/modal'
+import { Input, FormGroup, Label } from 'reactstrap';
+import {Tooltip} from 'react-tippy'
+import isVarName from 'is-var-name'
 
 const defaultVariables = {
   sessions: "The Number of times a particular user has opened the app",

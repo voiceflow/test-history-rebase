@@ -3,7 +3,7 @@ import { Collapse, Alert } from 'reactstrap'
 import Select, { components } from 'react-select'
 import { connect } from 'react-redux'
 import SlotMappings from '../../Editors/components/SlotMappings' 
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 
 const _ = require('lodash')
 

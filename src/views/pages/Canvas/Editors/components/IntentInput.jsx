@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { Tooltip } from 'react-tippy'
 import { sampleUtteranceRegex } from 'services/Regex'
 import { getUtterancesWithSlotNames } from '../../../../../util'
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 
 class IntentInput extends Component {
     constructor(props) {

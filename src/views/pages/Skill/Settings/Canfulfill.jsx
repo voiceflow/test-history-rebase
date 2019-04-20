@@ -25,7 +25,7 @@ class Canfulfill extends PureComponent {
   componentDidMount() {
     const intent_slots = getIntentSlots(this.props.selected_intent, this.props.slots)
 
-    intent_slots.forEach((slot, i) => {
+    intent_slots.forEach(slot => {
       let slot_config = this.props.fulfillment[this.props.selected_intent.key].slot_config[slot.key]
       if (!slot_config) {
         this.props.updateFulfillment(this.props.selected_intent.key, update(this.props.fulfillment[this.props.selected_intent.key].slot_config, {

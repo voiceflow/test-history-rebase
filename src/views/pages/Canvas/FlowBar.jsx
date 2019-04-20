@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import { ListGroup, ListGroupItem } from "reactstrap";
-import { setConfirm } from 'actions/modalActions'
+import { setConfirm } from 'ducks/modal'
 import { renameDiagram } from "actions/diagramActions";
 
 import {UncontrolledDropdown, DropdownToggle, DropdownItem, DropdownMenu} from 'reactstrap'
@@ -81,7 +81,8 @@ class FlowBar extends Component{
                 </div>
                 {!this.props.preview &&
                     <UncontrolledDropdown direction='up'>
-                        <DropdownToggle className="grey-icon position-absolute right mr-4 mt-1" tag="button">
+                        <DropdownToggle className="dropdown-button position-absolute right mr-4 mt-1" tag="button">
+                        <i class="far fa-ellipsis-h"></i>
                         </DropdownToggle>
                         <DropdownMenu className="no-select">
                             <DropdownItem header>

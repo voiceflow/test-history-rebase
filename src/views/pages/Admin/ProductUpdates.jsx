@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Input, Label } from 'reactstrap';
 import axios from 'axios';
+import { connect } from 'react-redux'
 
 class ProductUpdates extends Component {
 
@@ -89,4 +90,8 @@ class ProductUpdates extends Component {
   }
 }
 
-export default ProductUpdates;
+const mapStateToProps = state => ({
+  user: state.account
+})
+
+export default connect(mapStateToProps)(ProductUpdates)

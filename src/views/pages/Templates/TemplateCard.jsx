@@ -16,7 +16,7 @@ class TemplateCard extends Component {
                     <div className="overlay">
                         <div className="overlay-content">
                             <div>
-                                <div className="edit-button" style={{color: '#fff'}} onClick={()=>this.props.createSkill(t.module_id)}>Start</div>
+                                <div className="edit-button" style={{color: '#fff'}} onClick={()=>this.props.createProject(t.module_id)}>Start</div>
                             </div>
                         </div>
                     </div>

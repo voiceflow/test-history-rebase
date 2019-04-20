@@ -9,7 +9,7 @@ import Custom from './components/integrations/custom'
 import GoogleSheets from './components/integrations/googleSheets'
 
 import { connect } from 'react-redux'
-import { setConfirm, clearModal, setError } from '../../../../actions/modalActions'
+import { setConfirm, clearModal, setError } from 'ducks/modal'
 import update from 'immutability-helper';
 
 const GOOGLE_SHEETS = 'Google Sheets'

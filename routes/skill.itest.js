@@ -5,11 +5,6 @@ const { pool, hashids } = require('./../services')
 const { team_hash } = require('./team_util')
 const moxios = require('moxios')
 
-AccessToken = jest.fn().mockImplementation((user_id, cb) => {
-  console.log("fhioeshfiohesoi")
-  cb('asdfghjkl')
-})
-
 const TEAM_ID = team_hash.encode(1)
 
 jest.setTimeout(10000)

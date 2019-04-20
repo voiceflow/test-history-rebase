@@ -1,7 +1,8 @@
 const app = require('../app')
 const request = require('supertest')
 const { pool, hashids } = require('./../services')
-
+const { team_hash } = require('./team_util')
+const TEAM_ID = team_hash.encode(1)
 const getTemplate = new Promise(async (resolve, reject) => {
   try{
     let rows = (await pool.query(`SELECT module_id FROM modules WHERE type = 'TEMPLATES' ORDER BY template_index DESC LIMIT 1`)).rows
@@ -22,6 +23,8 @@ describe('Marketplace', () => {
   let decoded_project_id
   let skill_id
   let decoded_skill_id
+  let module_project_id
+  let decoded_module_project_id
 
   beforeAll(async () => {
     try{
@@ -43,7 +46,7 @@ describe('Marketplace', () => {
       token = res.body.token
       // Create a new project
       await request(app)
-      .post(`/marketplace/template/${hashids.encode(module_id)}/copy`)
+      .post(`/team/${TEAM_ID}/copy/module/${hashids.encode(module_id)}`)
       .send({
         name: 'Marketplace Test',
         locales: ['en-US']
@@ -76,7 +79,15 @@ describe('Marketplace', () => {
         })
         .set('cookie', `auth=${token}`)
         .expect(200)
-        .then(res => {
+        .then(async res => {
+          // Retrieve module_project_id for future use
+          try{
+            let module_data = (await pool.query(`SELECT * FROM modules WHERE project_id = $1`, [decoded_project_id])).rows
+            module_project_id = module_data[0].project_id
+            decoded_module_project_id = hashids.decode(module_project_id)[0]
+          } catch (err) {
+            console.log(err)
+          }
         })      
       })
     })
@@ -102,9 +113,9 @@ describe('Marketplace', () => {
         let request_data = (await pool.query(`
           SELECT * 
           FROM modules
-          INNER JOIN project_versions ON modules.module_project_id = project_versions.project_id
-          INNER JOIN skills ON project_versions.version_id = skills.skill_id
+          INNER JOIN skills ON modules.module_project_id = skills.project_id
           WHERE modules.project_id = $1
+          ORDER BY skills.skill_id DESC
         `, [decoded_project_id])).rows
         expect(request_data[0].cert_requested).not.toBe(null)
         expect(request_data[0].cert_approved).toEqual(null)

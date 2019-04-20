@@ -189,7 +189,7 @@ app.post('/amazon/:id/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
 app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
 app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);
 app.delete('/skill/:id/product/:pid', ensureLoggedIn(), Skill.deleteProduct);
-// app.get('/version/:version_id/info', ensureAdmin(), Skill.getVersionInfo)
+app.get('/version/:version_id/info', ensureAdmin(), Skill.getVersionInfo)
 
 // TEAM RESTful CRUD STUFF
 app.post('/team', ensureLoggedIn(), Team.addTeam)
@@ -294,7 +294,7 @@ app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);
 app.get('/product_updates/:ts', ensureLoggedIn(), ProductUpdates.getUpdates)
 app.post('/product_updates', ensureLoggedIn(), ProductUpdates.createUpdate)
 
-app.get('/logs/:skill_id', ensureLoggedIn(), Logs.getLogs)
+app.get('/logs/:skill_id', ensureLoggedIn(), Logs.getLogsUser)
 
 app.get('/admin', ensureAdmin());
 app.get('/admin/*', ensureAdmin());

@@ -57,7 +57,7 @@ export class Blocks extends PureComponent {
 
     loadUserModules(props){
         // MARKETPLACE BETA
-        if(window.user_detail.admin !== 7){
+        if(this.props.user.admin !== 7){
             return
         }
 
@@ -132,7 +132,7 @@ export class Blocks extends PureComponent {
                                 })}/>
                         </div>
                         <Collapse isOpen={this.state.show[section.title]}>
-                            {(section.title === 'business' && window.user_detail.admin === 0) ?
+                            {(section.title === 'business' && this.props.user.admin === 0) ?
                                 <div className="premium-block">
                                     <div>
                                         <span>Upgrade to access these premium features</span>
@@ -142,7 +142,7 @@ export class Blocks extends PureComponent {
                                     </div>
                                 </div>
                             : null}
-                            <div className="mb-3 section-blocks" style={(section.title === 'business' && window.user_detail.admin === 0) ? {opacity: 0.3} : null}>
+                            <div className="mb-3 section-blocks" style={(section.title === 'business' && this.props.user.admin === 0) ? {opacity: 0.3} : null}>
                                 {section.items.map((item, i) => {
                                         if(item.type === 'marketplace_link'){
                                             return <div className="wrap" key={i}>
@@ -161,7 +161,7 @@ export class Blocks extends PureComponent {
                                             item={item} 
                                             key={i} 
                                             data-tip={item.tip}
-                                            draggable={((section.title === 'business' && window.user_detail.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}/>
+                                            draggable={((section.title === 'business' && this.props.user.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}/>
                                         }
                                         return null
                                     })}
@@ -192,6 +192,7 @@ const mapStateToProps = state => ({
     diagrams: state.diagrams.diagrams,
     skill_id: state.skills.skill.skill_id,
     project_id: state.skills.skill.project_id,
-    user_modules: state.skills.user_modules
+    user_modules: state.skills.user_modules,
+    user: state.account
 })
 export default connect(mapStateToProps)(Blocks);

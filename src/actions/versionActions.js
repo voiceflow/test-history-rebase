@@ -157,7 +157,7 @@ export const fetchVersion = (version_id, preview, diagram_id) => {
         // TODO UPDATE THIS ROUTE
         return new Promise(async (resolve, reject) => {
             try{
-                let res = await axios.get(`/skill/${skill_id}?${preview ? 'preview=1' : 'simple=1'}&user_modules=1`)
+                let res = await axios.get(`/skill/${version_id}?${preview ? 'preview=1' : 'simple=1'}&user_modules=1`)
 
                 let skill = res.data
                 if (preview && !skill.preview) {

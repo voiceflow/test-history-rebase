@@ -5,7 +5,7 @@ import Select from 'react-select'
 import {Tooltip} from 'react-tippy'
 import { connect } from 'react-redux'
 import SlotSynonyms, { SingleValueOption, SlotOption, SlotDiabled } from './SlotComponents'
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 
 class SlotInput extends Component {
     constructor(props) {

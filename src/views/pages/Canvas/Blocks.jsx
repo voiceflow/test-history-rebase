@@ -13,8 +13,7 @@ const BLOCK_TYPES = {
     'interaction': { text: 'Interaction', type: 'interaction', icon: <i className="fas fa-user-alt"/>, tip: 'Select choices and capture slot values from user input' },
     'intent': { text: 'Intent', type: 'intent', icon: <i className="fas fa-arrow-alt-from-left"/>, tip: 'Handle intents, from within the skill and upon skill launch with CanFulfillIntent)'},
     'stream': { text: 'Stream', type: 'stream', icon: <i className="fas fa-play"/>, tip: 'Stream long audio files & URLs for the user' },
-    // 'integrations': { text: 'Integrations', type: 'integrations', icon: <i className="fas fa-globe"/>, tip: 'Integrate external services into your skill' },
-    'api': { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables' },
+    'integrations': { text: 'Integrations', type: 'integrations', icon: <i className="fas fa-globe"/>, tip: 'Integrate external services into your skill' },
     'flow': { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},
     'code': { text: 'Code', type: 'code', icon: <i className="fab fa-js-square"/>, tip: 'Modify Variables directly with Code'},
     'exit': { text: 'Exit', type: 'exit', icon: <i className="fas fa-sign-out"/>, tip: 'End the skill on the current flow' },
@@ -24,7 +23,6 @@ const BLOCK_TYPES = {
     'display': { text: 'Display', type: 'display', icon: <i className="fas fa-image"></i>, tip: 'Show a Multimodal Display on the screen using APL' },
     'permission': { text: 'Permission', type: 'permission', icon: <i className="fas fa-lock"></i>, tip: 'Ask users to enable permissions (User Info, Reminders, etc.)' },
     'permissions': { text: 'User Info', type: 'permissions', icon: <i className="fas fa-user"></i>, tip: 'Get User Information and check Permissions' },
-    'mail': { text: 'Mail', type: 'mail', icon: <i className="fas fa-envelope"></i>, tip: 'Send Emails via SendGrid' },
     'payment': { text: 'Payment', type: 'payment', icon: <i className="fas fa-dollar-sign" />, tip: 'Request payment from user' },
     'cancel': { text: 'Cancel Payment', type: 'cancel', icon: <i className="fas fa-user-minus" />, tip: 'Refund a purchase or cancel an user\'s subscription' },
     'reminder': { text: 'Reminder', type: 'reminder', icon: <i className="fas fa-bell" />, tip: 'Send a remind to the user in a set amount of time' }
@@ -50,7 +48,7 @@ const SECTIONS = [{
         BLOCK_TYPES.interaction,
         BLOCK_TYPES.intent,
         BLOCK_TYPES.stream,
-        BLOCK_TYPES.api,
+        BLOCK_TYPES.integrations,
         BLOCK_TYPES.flow,
         BLOCK_TYPES.code,
         BLOCK_TYPES.exit
@@ -62,11 +60,10 @@ const SECTIONS = [{
         BLOCK_TYPES.display
     ]
 },{
-    title: 'business',
+    title: 'user',
     items: [
         BLOCK_TYPES.permission,
         BLOCK_TYPES.permissions,
-        BLOCK_TYPES.mail,
         BLOCK_TYPES.payment,
         BLOCK_TYPES.cancel,
         BLOCK_TYPES.reminder

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+import { fetchTeams } from "ducks/team";
+
 import './Admin.css';
 import Home from './Home';
 import Copy from './Copy';
@@ -27,6 +30,13 @@ const tabs = [
 ]
 
 class Admin extends Component {
+
+    componentDidMount() {
+      if(this.props.teams.allIds.length === 0) {
+        console.log("fetching teams")
+        this.props.fetchTeams()
+      }
+    }
 
     render() {
         let page;
@@ -69,4 +79,12 @@ class Admin extends Component {
     }
 }
 
-export default Admin;
+const mapStateToProps = state => ({
+  teams: state.team
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchTeams: () => dispatch(fetchTeams())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Admin)

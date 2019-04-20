@@ -8,7 +8,7 @@ import SlotMappings from './components/SlotMappings'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import { PLATFORMS } from '../../../../Constants'
 import { updateIntents, setCanFulfill } from "./../../../../actions/versionActions";
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 
 const _ = require('lodash')
 

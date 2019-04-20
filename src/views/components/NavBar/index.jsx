@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import {
   Collapse,
   Navbar,
@@ -11,10 +12,11 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { logout } from 'ducks/account'
+import { User } from 'views/components/User'
 
 import './NavBar.css';
-import AuthenticationService from './../../../services/Authentication';
 import Intercom from 'react-intercom';
 
 const NUM_TO_PLAN = (plan) => {
@@ -38,28 +40,14 @@ const getPage = (path) => {
 class NavBar extends Component {
 
   constructor(props) {
-    super(props);
-
+    super(props)
     this.toggle = this.toggle.bind(this);
     this.logout = this.logout.bind(this);
     this.intercom_user = {}
 
     let tabs = []
-    //   {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
-    //   {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
-    //   // {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
-    // ]
-
-    let user = window.user_detail
-
+    let user = props.user
     if(user.id !== null){
-      // if(user.admin > 0){
-      //   tabs.push({link: '/business', 'text': <React.Fragment>Business</React.Fragment>})
-      // }
-      // if(user.admin >= 100) {
-      //   tabs.push({link: '/admin', text: <React.Fragment>Admin</React.Fragment>});
-      //   //tabs.push({link: '/analytics', text: <React.Fragment>Analytics</React.Fragment>});
-      // }
       this.intercom_user = {
         user_id: user.id,
         name: user.name,
@@ -90,10 +78,10 @@ class NavBar extends Component {
   }
 
   logout(e) {
-    e.preventDefault();
-    AuthenticationService.logout(() => {
-      this.props.history.push('/login');
-    });
+    e.preventDefault()
+    this.props.logout().then(() => {
+      this.props.history.push('/login')
+    })
     return false;
   }
 
@@ -104,15 +92,17 @@ class NavBar extends Component {
 
   render() {
 
-    let page_name = '/' + getPage(this.props.location.pathname);
+    let page_name = '/' + getPage(this.props.history.location.pathname);
+    let image = "/logo.svg"
+    if(this.props.team && this.props.team.status > 0 && this.props.team.image){
+      image = this.props.team.image
+    }
 
     return (
         <div>
           <Navbar dark expand="md" className={"fixed-top " + page_name} id="navbar">
             <Link to="/dashboard" className="mx-2">
-              <img className='voiceflow-logo' src={'/favicon.png'} alt='logo' 
-                height="30" width="40"
-              />
+              <div className="mt-1 voiceflow-logo" style={{backgroundImage: `url('${image}')`}}/>
             </Link>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
@@ -137,19 +127,19 @@ class NavBar extends Component {
                 })}
               </Nav>
               <Nav className="ml-auto" navbar>
-                <UncontrolledDropdown nav inNavbar className="account-dropdown">
-                  <DropdownToggle className="account" nav tag="div">
-                    <img src={'/user.svg'} alt="user" width="23"/>
+                <UncontrolledDropdown nav inNavbar className="account-dropdown mt-1">
+                  <DropdownToggle className="account hover" nav tag="div">
+                    <User user={this.props.user} className="pointer"/>
                   </DropdownToggle>
                   <DropdownMenu right className="arrow arrow-right no-select">
                     <DropdownItem header>
-                      {window.user_detail.email}
+                      {this.props.user.email}
                     </DropdownItem>
                     <DropdownItem divider />
                     <Link className="dropdown-item" to="/account">
                       Account
                     </Link>
-                    { window.user_detail.admin >= 100 &&
+                    { this.props.user.admin >= 100 &&
                         <Link className="dropdown-item" to="/admin">
                           Admin
                         </Link>
@@ -169,4 +159,14 @@ class NavBar extends Component {
   }
 }
 
-export default NavBar;
+const mapStateToProps = state => ({
+  user: state.account,
+  team: state.team.byId[state.team.team_id]
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(logout())
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

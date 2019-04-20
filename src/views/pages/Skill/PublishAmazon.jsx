@@ -19,13 +19,13 @@ import AmazonLogin from '../../components/Forms/AmazonLogin'
 import Select from 'react-select'
 import './Skill.css'
 import {Link} from 'react-router-dom'
-import AuthenticationService from '../../../services/Authentication'
 import LOCALE_MAP from '../../../services/LocaleMap'
 
 import { AMAZON_CATEGORIES } from '../../../services/Categories'
 
 import { updateVersion, updateEntireVersion, updateSkillDB } from "./../../../actions/versionActions"
-import { setConfirm, setError } from 'actions/modalActions'
+import { setConfirm, setError } from 'ducks/modal'
+import { AmazonAccessToken } from 'ducks/account'
 
 const _ = require('lodash');
 
@@ -80,11 +80,11 @@ class Skill extends Component {
     }
 
     componentDidMount() {
-        AuthenticationService.AmazonAccessToken(token => {
+        AmazonAccessToken().then(token => {
             this.setState({
                 stage: token ? 2 : 0
             });
-        });
+        })
 
         axios.get('/skill/' + this.props.skill_id + '?verbose=1')
         .then(res => {
@@ -219,7 +219,6 @@ class Skill extends Component {
 
     onPublish() {
         this.save(true, () => {
-
             let s = this.state;
             let category = (s.category && s.category.value ? s.category.value : null);
             // let fields = ['name', 'inv_name', 'summary', 'description', 'invocations', 'small_icon', 'large_icon', 'category']
@@ -243,9 +242,9 @@ class Skill extends Component {
                 }
             })
             invalid_fields = _.values(invalid_fields)
-
             if (invalid_fields.length > 0) {
                 this.setState({
+                    stage: 2,
                     stage_error: {
                         stage: 2,
                         message: `Please fill all required fields before publishing. Missing fields: ${invalid_fields.join(', ')}`
@@ -256,6 +255,7 @@ class Skill extends Component {
             }
             if (!s.export) {
                 this.setState({
+                    stage: 2,
                     stage_error: {
                         stage: 2,
                         message: 'Please Certify Alexa Skill Import/Export in Privacy/Complicance'
@@ -266,6 +266,7 @@ class Skill extends Component {
             }
             if (!s.instructions) {
                 this.setState({
+                    stage: 2,
                     stage_error: {
                         stage: 2,
                         message: 'Please Provide Testing Instructions'
@@ -274,10 +275,8 @@ class Skill extends Component {
                 this.scrollToTop();
                 return;
             }
-        })
-        this.setState({ stage: 3 });
 
-        axios.post(`/project/${this.props.project_id}/render`, { platform: 'alexa' })
+            axios.post(`/project/${this.props.project_id}/render`, { platform: 'alexa' })
             .then(res => {
                 this.setState({ stage: 4 });
                 let new_version_data = res.data
@@ -302,6 +301,10 @@ class Skill extends Component {
             .catch(err => {
                 this.handleError(err, 'Rendering Error');
             })
+        })
+        this.setState({ stage: 3 });
+
+        
     }
 
     checkVendor(){
@@ -338,6 +341,7 @@ class Skill extends Component {
         this.setState({publish: true})
       }
     }
+
     save(publish=false, cb){
         const s = this.state;
         const category = (s.category && s.category.value ? s.category.value : null)
@@ -778,7 +782,7 @@ class Skill extends Component {
                                             <Image
                                                 className='icon-image large-icon text-center mr-xl-5 mr-4'
                                                 isDisabled={disabled_stages.has(this.state.stage)}
-                                                path='/large_icon'
+                                                path='/image/large_icon'
                                                 image={this.state.large_icon}
                                                 update={(url) => this.setState({large_icon: url})}
                                                 title='Large Icon *'/>
@@ -787,7 +791,7 @@ class Skill extends Component {
                                             <Image
                                                 className='icon-image small-icon text-center'
                                                 isDisabled={disabled_stages.has(this.state.stage)}
-                                                path='/small_icon'
+                                                path='/image/small_icon'
                                                 image={this.state.small_icon}
                                                 update={(url) => this.setState({small_icon: url})}
                                                 title='Small Icon *'/>

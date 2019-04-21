@@ -75,7 +75,8 @@ class Account extends Component {
   }
 
   componentDidMount() {
-    AmazonAccessToken().then(data => {
+    AmazonAccessToken()
+    .then(data => {
       if(data){
         this.setState({
             amzn: !!data.token ? LINKED : UNLINKED,
@@ -83,10 +84,13 @@ class Account extends Component {
             profile: data.profile
         })
       } else {
-        this.setState({
-          amzn: UNLINKED,
-        })
+        throw new Error()
       }
+    })
+    .catch(() => {
+      this.setState({
+        amzn: UNLINKED,
+      })
     })
 
     googleAccessToken().then(g_token => {
@@ -113,9 +117,9 @@ class Account extends Component {
   renderButton(stage, action){
     switch(stage){
       case LOADING:
-        return <button color="clear" className="btn-primary"><span className="loader"/></button>
+        return <button className="btn-primary disabled"><span className="loader"/></button>
       case UNLINKED:
-        return <button color="clear" className="btn-primary" disabled>Unlinked</button>
+        return <button className="btn-primary disabled" disabled>Unlinked</button>
       default:
         return <button onClick={action} className="btn-primary">Reset</button>
     }

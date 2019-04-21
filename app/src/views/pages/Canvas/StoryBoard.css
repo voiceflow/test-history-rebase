@@ -1256,6 +1256,10 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
     border: 1px solid #e2e9ec;
 }
 
+.toggle-group .disabled {
+  opacity: 1 !important;
+}
+
 .toggle-group-2 {
     width: 50% !important;
     margin-left: auto;
@@ -1705,7 +1709,8 @@ textarea.blank {
     border: none;
     font-size: 15px;
     padding-left: 13px;
-    padding-top: 8px !important;
+    padding-top: 9px !important;
+    padding-bottom: 9px !important;
     min-height: 40px;
 }
 
@@ -1725,7 +1730,6 @@ textarea.blank::placeholder {
 
 .speak-box {
     flex: 1;
-    margin-left: 8px;
 }
 
 .select-box>div {
@@ -3078,26 +3082,24 @@ button.close:hover{
 }
 
 .multi-title-block {
-    display: flex;
-    font-size: 15px;
+  display: flex;
+  align-items: center;
+  min-height: 58px;
+  font-size: 15px;
 }
 
 .multi-title-block>button.close {
     margin-left: 10px
 }
 
-.multi-title-block>div>span {
-    margin-right: 25px;
-}
-
 .multi-title-block>div>span>i {
-    width: 10px;
+    width: 12px;
 }
 
 .multi-title {
     /* font-weight: bold; */
     cursor: pointer;
-    padding: 18px 0;
+    margin-right: 8px;
     min-width: 30px;
     /*    white-space: nowrap;
     overflow: hidden;

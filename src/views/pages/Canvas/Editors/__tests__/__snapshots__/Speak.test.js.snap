@@ -1,13 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SpeakEditor render speak block editor 1`] = `
-<div
-  style={
-    Object {
-      "marginTop": -6,
-    }
-  }
->
+<div>
   <DropTarget(DragSource(SpeakElement))
     d={
       Object {
@@ -40,7 +34,7 @@ exports[`SpeakEditor render speak block editor 1`] = `
     toggleOpen={[Function]}
   />
   <div
-    className="d-flex my-3"
+    className="d-flex mt-4"
   >
     <button
       className="btn btn-secondary mr-3"
@@ -68,7 +62,7 @@ exports[`SpeakEditor render speak block editor 1`] = `
     </button>
   </div>
   <InputGroup
-    className="my-2"
+    className="my-3"
     tag="div"
   >
     <label

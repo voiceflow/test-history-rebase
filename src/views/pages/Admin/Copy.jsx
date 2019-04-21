@@ -24,7 +24,7 @@ class Copy extends Component {
       if (isNaN(this.state.creator)) {
           return;
       }
-      axios.get('/projects?user='+this.state.creator)
+      axios.get(`/user/${this.state.creator}/projects`)
       .then(res => {
           this.setState({
               creator_skills: res.data.map(skill => ({

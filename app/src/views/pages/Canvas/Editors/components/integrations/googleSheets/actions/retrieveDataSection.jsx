@@ -51,9 +51,7 @@ class RetrieveData extends Component {
         </div>
         <Collapse isOpen={this.props.open} className='w-100'>
           <div className='d-flex align-items-center mb-4'>
-            <div style={{
-              width: '47%'
-            }}>
+            <div className="flex-1">
               <Select
                 styles={selectStyles}
                 classNamePrefix="google-sheets-dropdown select-box"

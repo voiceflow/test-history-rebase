@@ -81,8 +81,8 @@ exports.setDisplay = async (req, res) => {
 		});
 	}else{
 		pool.query(
-		'INSERT INTO displays (title, description, document, datasource, created_at, modified, skill_id) VALUES ($1, $2, $3, $4, NOW(), NOW(), $5) RETURNING id',
-		[req.body.title, req.body.description, req.body.document, req.body.datasource, skill_id], (err, result) => {
+		'INSERT INTO displays (title, description, document, datasource, created_at, modified, skill_id, creator_id) VALUES ($1, $2, $3, $4, NOW(), NOW(), $5, $6) RETURNING id',
+		[req.body.title, req.body.description, req.body.document, req.body.datasource, skill_id, req.user.id], (err, result) => {
 			if(err){
 				res.sendStatus(500);
 				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})

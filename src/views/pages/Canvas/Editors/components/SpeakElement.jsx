@@ -73,11 +73,11 @@ class SpeakElement extends Component {
                             {properties.randomize ? <i className="far fa-random" /> : (i + 1)}
                         </span>
                     </div>
-                    <div className="d-flex align-items-center flex-hard">
-                        <img src={'/volume-red.svg'} alt="speak" />&nbsp;&nbsp;&nbsp;
-                        {d.audio ? d.audio.split('/').pop() : 'Audio'}
+                    <div className="overflow-ellipsis flex-1 mr-2">
+                      <img src={'/volume-red.svg'} alt="speak" className="mr-3"/>
+                      {d.audio ? d.audio.split('/').pop() : 'Audio'}
                     </div>
-                    <button className="close mt-4" onClick={() => { this.props.handleRemoveBlock(i) }}></button>
+                    <button className="close" onClick={() => { this.props.handleRemoveBlock(i) }}></button>
                 </div>
                 <Collapse isOpen={d.open} className="speak-audio">
                     <div className="pb-2">
@@ -107,10 +107,10 @@ class SpeakElement extends Component {
                             {properties.randomize ? <i className="far fa-random" /> : (i + 1)}
                         </span>
                     </div>
-                    <div className="super-center flex-hard mr-4">
-                    <img src={'/comment-blue.svg'} alt="comment" />&nbsp;&nbsp; Speaking as &nbsp;
+                    <div className="super-center flex-hard mr-2">
+                    <img src={'/comment-blue.svg'} alt="comment" /><div className="mx-3">Speaking as</div>
                                     <Select
-                            className="speak-box ml-2"
+                            className="speak-box"
                             classNamePrefix="select-box"
                             value={{ label: d.voice, value: d.voice }}
                             onChange={(selected) => {
@@ -135,7 +135,7 @@ class SpeakElement extends Component {
                             options={localStorage.getItem('recent_speak') ? [{ label: 'Recent', options: JSON.parse(localStorage.getItem('recent_speak')) }].concat(VOICES) : VOICES}
                         />
                     </div>
-                    <button className="close mt-4" onClick={() => { this.props.handleRemoveBlock(i) }}></button>
+                    <button className="close" onClick={() => { this.props.handleRemoveBlock(i) }}></button>
                 </div>
                 <Collapse isOpen={d.open}>
                     <VariableText

@@ -89,7 +89,7 @@ class Prompt extends PureComponent {
                     <div className="super-center flex-hard">
                         Speak As
                         <Select
-                            className="speak-box"
+                            className="speak-box ml-3"
                             classNamePrefix="select-box"
                             value={{label: this.props.voice, value: this.props.voice}}
                             onChange={this.selectVoice}

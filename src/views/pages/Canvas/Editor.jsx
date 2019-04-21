@@ -629,7 +629,7 @@ class Editor extends Component {
 
   render() {
     let type = this.state.node ? this.state.node.extras.type : null;
-    if (type === "god") {
+    if (type === "god" || type === "story") {
       return null;
     }
     return (

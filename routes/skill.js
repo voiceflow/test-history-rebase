@@ -782,13 +782,19 @@ exports.buildSkill = async (req, res) => {
           // Update the AMZN ID of the current version (manifest updated)
           await pool.query('UPDATE skills SET amzn_id = $1 WHERE skill_id = $2', [amzn_id, id])
 
+          const product_map = {}
           // Don't even bother with products if not in US
           if (Array.isArray(r.locales) && r.locales.includes('en-US')) {
             let products = await pool.query(`
               SELECT p.*, pc.amzn_prod_id, pc.creator_id AS status
               FROM products p
               LEFT JOIN (SELECT * FROM product_creators WHERE creator_id = $2) pc ON p.id = pc.product_id
-              WHERE skill_id = $1
+              WHERE skill_id = ( 
+                SELECT p.dev_version 
+                FROM projects p 
+                INNER JOIN skills s ON s.project_id = p.project_id 
+                WHERE skill_id = $1 LIMIT 1
+              )
             `, [r.skill_id, req.user.id]);
 
             if (Array.isArray(products.rows) && products.rows.length !== 0) {
@@ -796,6 +802,7 @@ exports.buildSkill = async (req, res) => {
                 let product = row.data
                 let productId = row.id
                 let AmazonProductId = row.amzn_prod_id
+
                 try {
                   // Try to update the product if it exists
                   if (!AmazonProductId) throw null
@@ -831,11 +838,11 @@ exports.buildSkill = async (req, res) => {
                     if(row.status){
                       await pool.query(
                         "UPDATE product_creators SET amzn_prod_id = $1 WHERE product_id = $2 AND creator_id = $3", 
-                        [AmazonProductId, pid, req.user.id])
+                        [AmazonProductId, productId, req.user.id])
                     }else{
                       await pool.query(
                         "INSERT INTO product_creators (product_id, creator_id, amzn_prod_id) VALUES ($1, $2, $3)", 
-                        [pid, req.user.id, AmazonProductId])
+                        [productId, req.user.id, AmazonProductId])
                     }
                   }
 
@@ -848,6 +855,8 @@ exports.buildSkill = async (req, res) => {
                     }
                   })
                 }
+
+                product_map[productId] = AmazonProductId
               }
             }
           }
@@ -872,9 +881,9 @@ exports.buildSkill = async (req, res) => {
 
                     models[lang] = model
                     // ruh-oh time to do a secondary pass on the entire project's diagram ripperionis
-                    if(samples && !secondary) {
+                    if((samples || !_.isEmpty(product_map)) && !secondary) {
                       secondary = true
-                      secondPass(r.diagram, samples)
+                      secondPass(r.diagram, {samples, product_map})
                     }
                   }
                   

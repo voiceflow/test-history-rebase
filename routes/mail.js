@@ -14,7 +14,7 @@ exports.sendOnboarding = (email, name, cb) => {
   let data = {
     'template_id': 'd-9ba04cdf70894f489147057e71d2c5c9',
     'from': {
-      'email': 'braden@getvoiceflow.com',
+      'email': 'braden@voiceflow.com',
       'name': 'Braden from Voiceflow'
     },
     'personalizations': [{
@@ -27,7 +27,7 @@ exports.sendOnboarding = (email, name, cb) => {
       }
     }],
     'reply_to': {
-      'email': 'braden@getvoiceflow.com',
+      'email': 'braden@voiceflow.com',
       'name': 'Braden from Voiceflow'
     }
   };
@@ -47,7 +47,7 @@ exports.sendResetEmail = async (name, user_id, random, email) => {
   let data = {
     'template_id': 'd-cf3cc12b32b64519a7c2a55568957c3b',
     'from': {
-      'email': 'service@getvoiceflow.com',
+      'email': 'service@voiceflow.com',
       'name': 'Voiceflow Team'
     },
     'personalizations': [{
@@ -72,7 +72,7 @@ exports.sendVerificationEmail = async (name, user_id, random, email) => {
   let data = {
     'template_id': 'd-a0722d2554164efbaa6aed6075834048',
     'from': {
-      'email': 'service@getvoiceflow.com',
+      'email': 'service@voiceflow.com',
       'name': 'Voiceflow Team'
     },
     'personalizations': [{
@@ -100,7 +100,7 @@ exports.sendTeamInvite = async (inviter, team_name, team_id, email, time) => {
   let data = {
     'template_id': 'd-bc046346f2be4b37af218810f72abd90',
     'from': {
-      'email': 'service@getvoiceflow.com',
+      'email': 'service@voiceflow.com',
       'name': 'Voiceflow Team'
     },
     'personalizations': [{

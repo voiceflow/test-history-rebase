@@ -764,7 +764,7 @@ class Skill extends Component {
                                 <FormGroup>
                                     <div className="row">
                                         <div className="col-3 publish-info">
-                                            <p className="mb-0 helper-text"><b>Display Name</b> is what we display for your Skill on VoiceFlow/Amazon</p>
+                                            <p className="mb-0 helper-text"><b>Display Name</b> is what we display for your Skill on Voiceflow/Amazon</p>
                                         </div>
                                         <div className="col-9 mb-4">
                                             <Label className="publish-label">Display Name *</Label>

@@ -11,7 +11,7 @@ import Masonry from 'react-masonry-component'
 let ESURL
 if(process.NODE_ENV === 'development'){
   ESURL = 'https://creator.getvoiceflow.com/elasticsearch'
-} else if (process.NODE_ENV === 'staging' || process.NODE_ENV === undefined){
+} else if (process.NODE_ENV === 'staging'){
   ESURL = 'https://staging.getvoiceflow.com/elasticsearch'
 } else {
   ESURL = 'http://localhost:8080/elasticsearch'

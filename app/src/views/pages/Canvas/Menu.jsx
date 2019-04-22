@@ -213,9 +213,6 @@ class Menu extends Component {
                 </div>
             </div>
         );
-        // <a className="tool no-underline" href="/market" rel="noopener noreferrer">
-        //     <i className="fas fa-store-alt"/>
-        // </a>
     }
 }
 

@@ -5,9 +5,7 @@ import ModuleItem from './components/ModuleItem';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button, Collapse } from 'reactstrap';
-// import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import {getSections, checkBlockDisabledLive} from './../Blocks'
-import ModuleIcon from './../../Marketplace/ModuleIcon'
 
 export class Blocks extends PureComponent {
     constructor(props) {
@@ -36,73 +34,20 @@ export class Blocks extends PureComponent {
         this.state = {
             tab: tab,
             show: show,
-            sections: getSections(this.props.type_counter)
+            sections: getSections(this.props.type_counter, this.props)
         }
 
         this.toggleBlockSection = this.toggleBlockSection.bind(this)
-        this.loadUserModules = this.loadUserModules.bind(this)
     }
 
     componentWillReceiveProps(props){
-        if(props.type_counter !== this.props.type_counter){
-            let sections = getSections(props.type_counter)
+        if(props.type_counter !== this.props.type_counter || props.user_modules !== this.props.user_modules){
+            let sections = getSections(props.type_counter, props)
             this.setState({
                 sections: sections
             })
-            this.loadUserModules()
-        } else if(props.user_modules !== this.props.user_modules){
-            this.loadUserModules(props)
         }
     }
-
-    loadUserModules(props){
-        // MARKETPLACE BETA
-        if(this.props.user.admin !== 7){
-            return
-        }
-
-        if(props === undefined){
-            props = this.props
-        }
-        let module_array = []
-        let module_keys = Object.keys(props.user_modules)
-        let module_section = {title: 'flows', items: module_array}
-
-        if(module_keys.length > 0){
-            for(let key of module_keys){
-                let module = props.user_modules[key]
-                let icon = <ModuleIcon module={module}/>
-                let diagram = this.props.diagrams.filter(diagram => diagram.name === module.title)[0]
-                if(diagram !== undefined){
-                    module_array.push({
-                        text: module.title,
-                        type: 'flow',
-                        icon: icon,
-                        tip: module.descr,
-                        diagram_id: diagram.id,
-                        module_id: module.module_id
-                    })
-                }
-                
-            }
-        }
-
-        module_array.push({type: 'marketplace_link'})
-        let current_sections = this.state.sections
-        if(current_sections[current_sections.length - 1].title === 'flows'){
-            current_sections[current_sections.length - 1] = module_section
-        } else {
-            current_sections.push(module_section)
-        }
-        this.setState({
-            sections: current_sections
-        })
-        this.forceUpdate()
-    }
-
-    // componentDidMount(){
-        // this.loadUserModules()
-    // }
 
     toggleBlockSection(section_title){
         let s = this.state

@@ -49,26 +49,26 @@ exports[`ReminderEditor render reminder block editor 1`] = `
       Seconds
     </div>
     <div>
-      <Input
-        onChange={[Function]}
+      <VariableInput
+        className="form-control"
         placeholder="0"
-        type="text"
+        updateRaw={[Function]}
       />
     </div>
     <div
       className="px-1"
     >
-      <Input
-        onChange={[Function]}
+      <VariableInput
+        className="form-control"
         placeholder="0"
-        type="text"
+        updateRaw={[Function]}
       />
     </div>
     <div>
-      <Input
-        onChange={[Function]}
+      <VariableInput
+        className="form-control"
         placeholder="0"
-        type="text"
+        updateRaw={[Function]}
       />
     </div>
   </div>

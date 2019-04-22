@@ -227,7 +227,7 @@ class GooglePublish extends Component {
     const s = this.state;
 
     const publish_info = {
-      google_publish_info : {
+      google_publish_info: {
         locales: s.locales,
         main_locale: s.main_locale,
         uploaded: s.uploaded,
@@ -269,7 +269,7 @@ class GooglePublish extends Component {
         this.props.setConfirm({
           warning: false,
           text: <Alert color="success" className="mb-0">Success! Your project is now ready for upload.</Alert>,
-          confirm: () => {}
+          confirm: () => { }
         })
       }
     } catch (e) {
@@ -296,7 +296,7 @@ class GooglePublish extends Component {
     })
 
     try {
-      await axios.delete('/session/google/dialogflow_access_token', { 
+      await axios.delete('/session/google/dialogflow_access_token', {
         data: {
           project_id: this.props.project_id
         }
@@ -386,7 +386,7 @@ class GooglePublish extends Component {
     if (this.state.stage !== 0 && this.state.stage !== 1) {
       return null
     } else {
-      return <GoogleAuth onVerify={this.verifyGoogleToken} token={this.state.google_token} onChange={this.handleChange} loading={this.state.stage === 1}/>
+      return <GoogleAuth onVerify={this.verifyGoogleToken} token={this.state.google_token} onChange={this.handleChange} loading={this.state.stage === 1} />
     }
   }
 
@@ -454,12 +454,12 @@ class GooglePublish extends Component {
           centered
           size={[0, 1].includes(this.state.stage) ? "md" : "lg"}
           onClosed={this.closePublish}
-          >
+        >
           <ModalHeader toggle={this.togglePublish} className="w-100" header={<div className="d-flex justify-content-between" ref={this.privacyTop}>
             <div>{GOOGLE_PUBLISH_STAGES[this.state.stage]}</div>
           </div>} />
           <ModalBody className="p-0">
-            <div className="modal-info" style={{padding: '0 2rem 1rem 2rem'}}>
+            <div className="modal-info" style={{ padding: '0 2rem 1rem 2rem' }}>
               {modal_content}
             </div>
           </ModalBody>
@@ -578,8 +578,8 @@ class GooglePublish extends Component {
                             >
                               <div>
                                 {!this.state.credentials && !this.state.loading_creds && <div className="drop-child">
-                                  Drag and Drop your file here<br/>
-                                  <small className="d-inline-block mt-2">OR</small><br/>
+                                  Drag and Drop your file here<br />
+                                  <small className="d-inline-block mt-2">OR</small><br />
                                   <div>
                                     <div className="btn-primary-small mt-2">
                                       Add File

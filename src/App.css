@@ -1785,12 +1785,11 @@ body.modal-open {
   font-weight: 500;
   border: 1px solid transparent;
   text-align: center;
-  font-family: Roboto, sans-serif;
   height: 50px;
   cursor: pointer;
   transition: transform 0.25s ease;
   border-radius: 5px !important;
-  font-family: OpenSans !important;
+  font-family: 'Open Sans' !important;
 }
 
 .social-button:hover {

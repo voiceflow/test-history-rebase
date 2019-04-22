@@ -542,20 +542,17 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
 
         try {
           // Check if this endpoint is LIVE
-          // const response = await axios.request({
-          //   url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/live/manifest`,
-          //   method: 'GET',
-          //   headers: {
-          //     Authorization: token
-          //   }
-          // })
+          const response = await axios.request({
+            url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/live/manifest`,
+            method: 'GET',
+            headers: {
+              Authorization: token
+            }
+          })
 
-          // // take the endpoint's Version ID
-          // const split_uri = response.data.manifest.apis.custom.endpoint.uri.split('/')
-          // live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
-
-          // TEST
-          live_id = 3741
+          // take the endpoint's Version ID
+          const split_uri = response.data.manifest.apis.custom.endpoint.uri.split('/')
+          live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
 
           const index = live_projects.indexOf(live_id)
 

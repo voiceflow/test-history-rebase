@@ -19,7 +19,10 @@ class ModuleCard extends Component{
 							<hr className="m-0"/>
 							<div className="row w-100 justify-content-between mr-0 ml-0 p-3">
 								<span className="align-middle text-secondary">{this.props.module.author}</span> 
-								<div><span className="align-middle text-secondary mr-2">{this.props.module.downloads}</span><img src={'/downloads.svg'} width="16" alt="download-icon"></img></div>
+								<div>
+									<span className="align-middle text-secondary mr-2">{(this.props.module !== undefined && this.props.module.downloads ? this.props.module.downloads : '0')}</span>
+									<img src={'/downloads.svg'} width="16" alt="download-icon"></img>
+								</div>
 							</div>
 						</CardBody>
 					</Card>

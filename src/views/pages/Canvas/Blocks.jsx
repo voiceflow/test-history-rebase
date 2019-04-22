@@ -1,6 +1,5 @@
 import React from 'react'
 import cloneDeep from 'lodash/cloneDeep'
-import { isBuffer } from 'util';
 import ModuleIcon from './../Marketplace/ModuleIcon'
 
 const FAVORITE_SECTION_MAX = 3;

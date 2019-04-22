@@ -213,7 +213,7 @@ ul {
     display: grid;
 }
 .grid-col-3{
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
 }
 .grid-col-2{
     grid-template-columns: 1fr 1fr;

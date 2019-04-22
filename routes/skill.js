@@ -910,7 +910,7 @@ exports.buildSkill = async (req, res) => {
                   account_linking.domains = _.flattenDeep(account_linking.domains)
                   account_linking.scopes = _.flattenDeep(account_linking.scopes)
                   if(account_linking.clientSecret) {
-                    account_linking.clientSecret = jwt.verify(account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE)
+                    account_linking.clientSecret = jwt.verify(account_linking.clientSecret, process.env.JWT_SECRET)
                   }
                   try {
                     await axios.request({

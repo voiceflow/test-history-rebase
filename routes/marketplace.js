@@ -18,6 +18,17 @@ const setIntersect = (array_1, array_2, defaults) => {
 	return new Set([...array_2].filter(x => set_1.has(x) && defaults.indexOf(x) < 0))
 }
 
+const getTeamId = (project_id) => {
+	return new Promise(async (resolve) => {
+		try{
+			resolve((await pool.query(`SELECT team_id FROM projects WHERE project_id = $1 LIMIT 1`, [project_id])).rows[0].team_id)
+		} catch (err) {
+			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+			resolve(undefined)
+		}
+	})
+}
+
 const MODULE_COLOURS = [
 	'F86683|FEF2F4',
 	'5891FB|EFF5FF',
@@ -37,7 +48,6 @@ const hashIds = (rows) => {
 		rows[i].skill_id = hashids.encode(rows[i].skill_id)
 		rows[i].project_id = hashids.encode(rows[i].project_id)
 		rows[i].module_id = hashids.encode(rows[i].module_id)
-		rows[i].creator_id = hashids.encode(rows[i].creator_id)
 	}
 }
 
@@ -76,6 +86,7 @@ const updateModuleInES = (module_data) => {
 const getModules = async (req, res) => {
 	let project_id = hashids.decode(req.params.project_id)[0]
 	try{
+		let team_id = await getTeamId(project_id)
 		let module_data = (await pool.query(`
 			SELECT * 
 			FROM modules 
@@ -84,9 +95,9 @@ const getModules = async (req, res) => {
 			INNER JOIN creators 
 				ON creators.creator_id = modules.creator_id
 			WHERE modules.module_id NOT IN (
-				SELECT module_id FROM user_modules WHERE user_modules.project_id = $2 AND user_modules.creator_id = $3
+				SELECT module_id FROM team_modules WHERE team_modules.project_id = $2 AND team_modules.team_id = $3
 			) AND modules.template_index = 0 LIMIT $1
-		`, [MODULE_LIMIT, project_id, req.user.id])).rows
+		`, [MODULE_LIMIT, project_id, team_id])).rows
 		hashIds(module_data)
 		res.send(module_data)
 	} catch (err) {
@@ -260,10 +271,10 @@ const certStatus = (req, res) => {
 const removeAccess = async (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0]
 	let project_id = hashids.decode(req.params.project_id)[0]
-	let user_id = req.user.id
+	let team_id = await getTeamId(project_id)
 
 	try{
-		await pool.query(`DELETE FROM user_modules WHERE creator_id = $1 AND module_id = $2 AND project_id = $3`, [user_id, module_id, project_id])
+		await pool.query(`DELETE FROM team_modules WHERE team_id = $1 AND module_id = $2 AND project_id = $3`, [team_id, module_id, project_id])
 		res.sendStatus(200)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -308,15 +319,16 @@ const checkConflicts = async (req, res) => {
 const giveAccess = async (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0]
 	let project_id = hashids.decode(req.params.project_id)[0]
+	let team_id = await getTeamId(project_id)
 	let creator_id = req.user.id
 	let user_module_data
 
 	try{
-		user_module_data = (await pool.query(`SELECT * FROM user_modules WHERE module_id = $1 AND creator_id = $2 AND project_id = $3`, [module_id, creator_id, project_id])).rows
+		user_module_data = (await pool.query(`SELECT * FROM team_modules WHERE module_id = $1 AND team_id = $2 AND project_id = $3`, [module_id, team_id, project_id])).rows
 		if(user_module_data.length > 0){
 			res.sendStatus(400)
 		}
-		await pool.query(`INSERT INTO user_modules (creator_id, module_id, project_id) VALUES ($1, $2, $3)`, [creator_id, module_id, project_id])
+		await pool.query(`INSERT INTO team_modules (team_id, module_id, project_id) VALUES ($1, $2, $3)`, [team_id, module_id, project_id])
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 		res.sendStatus(500)
@@ -353,7 +365,7 @@ const giveAccess = async (req, res) => {
 		module_data.module_id = hashids.encode(module_data.module_id)
 		res.send({new_module: module_data, globals: new_globals, new_diagrams: new_diagrams})
 	} catch (err) {
-		await pool.query(`DELETE FROM user_modules WHERE creator_id = $1 AND module_id = $2 AND project_id = $3`, [creator_id, module_id, project_id])
+		await pool.query(`DELETE FROM team_modules WHERE team_id = $1 AND module_id = $2 AND project_id = $3`, [team_id, module_id, project_id])
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 		res.sendStatus(500)
 	}
@@ -434,15 +446,15 @@ const getCertModule = (req, res) => {
 }
 
 const getUserModules = async (req, res) => {
-	let user_id = req.user.id
 	let project_id = hashids.decode(req.params.project_id)[0]
+	let team_id = await getTeamId(project_id)
 	try{
 		let user_modules = (await pool.query(`
 			SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, modules.color
 			FROM modules 
-			INNER JOIN user_modules ON modules.module_id = user_modules.module_id
-			WHERE user_modules.creator_id = $1 AND user_modules.project_id = $2
-		`, [user_id, project_id])).rows
+			INNER JOIN team_modules ON modules.module_id = team_modules.module_id
+			WHERE team_modules.team_id = $1 AND team_modules.project_id = $2
+		`, [team_id, project_id])).rows
 		hashIds(user_modules)
 		res.send(user_modules)
 	} catch (err) {

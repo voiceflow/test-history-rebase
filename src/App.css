@@ -2542,3 +2542,9 @@ kbd {
     width: 160px
   }
 }
+
+.module-card-exit {
+    position: relative;
+    top: 5px;
+    right: 5px;
+}

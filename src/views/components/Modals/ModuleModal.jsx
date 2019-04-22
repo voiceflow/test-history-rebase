@@ -143,6 +143,7 @@ class ModuleModal extends React.Component {
           <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
         </Modal>
 
+        <div className="close" onClick={this.props.toggle}/>
         <div className="text-center pt-5">
           <div className="module-modal-icon">{this.props.module && <div className="module-card-icon"><ModuleIcon module={this.props.module}/></div>}</div>
           <div className="module-modal-author text-secondary">

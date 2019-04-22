@@ -181,6 +181,7 @@ export class ActionGroup extends PureComponent {
     this.renderUploadButton = this.renderUploadButton.bind(this)
     this.isUploadLoading = this.isUploadLoading.bind(this)
     this.displayUploadPrompt = this.displayUploadPrompt.bind(this)
+    this.updateInvName = this.updateInvName.bind(this)
   }
 
   componentDidMount() {
@@ -351,7 +352,6 @@ export class ActionGroup extends PureComponent {
         setTimeout(() => {
           axios.get(`/interaction_model/${this.props.skill.amzn_id}/status`)
             .then(res => {
-              // console.log(res.data)
               if (res.data && res.data.interactionModel) {
                 for (let key in res.data.interactionModel) {
                   let locale = res.data.interactionModel[key]
@@ -373,6 +373,17 @@ export class ActionGroup extends PureComponent {
     iterate(0)
   }
 
+  async updateInvName(){
+    let inv_name = this.state.inv_name ? this.state.inv_name : this.props.skill.inv_name
+    try {
+      await axios.patch(`/skill/${this.props.skill.skill_id}?inv_name=1`, { inv_name: inv_name })
+      this.props.updateSkill('inv_name', inv_name)
+    } catch (err) {
+      this.updateAlexaStage(9, undefined, { upload_error: 'Unable to save Invocation Name' })
+      return
+    }
+  }
+
   async updateAlexa() {
     let inv_name = this.state.inv_name ? this.state.inv_name : this.props.skill.inv_name
     let error = invNameError(inv_name, this.props.skill.locales)
@@ -386,13 +397,7 @@ export class ActionGroup extends PureComponent {
     this.updateAlexaStage(1)
     if (this.state.stage === 14) {
       this.updateAlexaStage(1)
-      try {
-        await axios.patch(`/skill/${this.props.skill.skill_id}?inv_name=1`, { inv_name: this.state.inv_name })
-        this.props.updateSkill('inv_name', this.state.inv_name)
-      } catch (err) {
-        this.updateAlexaStage(9, undefined, { upload_error: 'Unable to save Invocation Name' })
-        return
-      }
+      this.updateInvName()
     }
     axios.post(`/project/${this.props.skill.project_id}/render`, { platform: 'alexa' })
       .then(res => {
@@ -823,7 +828,7 @@ export class ActionGroup extends PureComponent {
               })}
             </div>
             <div className="mt-4 mb-5">
-              <button varient="contained" className="btn-primary" onClick={(e) => { this.updateAlexa(); this.props.saveSkill() }}>Confirm Upload</button>
+              <button varient="contained" className="btn-primary" onClick={(e) => { this.updateInvName(); this.updateAlexa(); this.props.saveSkill() }}>Confirm Upload</button>
             </div>
           </div>
         }

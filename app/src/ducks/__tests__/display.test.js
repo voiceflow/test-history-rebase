@@ -1,5 +1,4 @@
-import diagramReducer from './../diagram'
-import * as actions from './../diagram'
+import diagramReducer, * as actions from './../diagram'
 
 describe('Test Diagram Reducer', () => {
     it('render initial diagramstate', () => {

@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
-import {Button, ButtonGroup, Alert, Input} from 'reactstrap'
+import {Button, ButtonGroup, Alert } from 'reactstrap'
 import VariableText from './components/VariableText'
+import VariableInput from './components/VariableInput'
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import Select from 'react-select';
 import {
     formatDate,
     parseDate,
 } from 'react-day-picker/moment';
+import { ContentState, convertToRaw } from 'draft-js';
 
 const FORMAT = 'DD/MM/YYYY'
 
@@ -18,7 +20,7 @@ class ReminderBlock extends Component {
         super(props)
         let default_state = {
             reminder_type: 'SCHEDULED_RELATIVE',
-            time: {h:'', m:'', s:''},
+            time: {h: null, m: null, s: null},
             date: '',
             timezone: 'User Timezone',
             freq: null,
@@ -28,6 +30,14 @@ class ReminderBlock extends Component {
         }
 
         this.state = {...default_state, ...props.node.extras.reminder}
+
+        if (this.state.time) {
+            Object.keys(this.state.time).forEach((k) => {
+                if(this.state.time[k] && typeof this.state.time[k] === 'string') {
+                    this.state.time[k] = convertToRaw(ContentState.createFromText(this.state.time[k]))
+                }
+            })
+        }
 
         // check if default variables are initalized
         if(!this.state.time) this.state.time = default_state.time
@@ -77,13 +87,13 @@ class ReminderBlock extends Component {
                 <div className='px-1'>Minutes</div>
                 <div>Seconds</div>
                 <div>
-                    <Input placeholder='0' value={this.state.time.h} onChange={(e)=>this.updateContent('time', e.target.value, 'h')}/>
+                    <VariableInput className="form-control" placeholder='0' raw={this.state.time.h} updateRaw={(raw) => this.updateContent('time', raw, 'h')} variables={this.props.variables}/>
                 </div>
                 <div className='px-1'>
-                    <Input placeholder='0' value={this.state.time.m} onChange={(e)=>this.updateContent('time', e.target.value, 'm')}/>
+                    <VariableInput className="form-control" placeholder='0' raw={this.state.time.m} updateRaw={(raw) => this.updateContent('time', raw, 'm')} variables={this.props.variables}/>
                 </div>
                 <div>
-                    <Input placeholder='0' value={this.state.time.s} onChange={(e)=>this.updateContent('time', e.target.value, 's')}/>
+                    <VariableInput className="form-control" placeholder='0' raw={this.state.time.s} updateRaw={(raw) => this.updateContent('time', raw, 's')} variables={this.props.variables}/>
                 </div>
             </div>
             {type === 'SCHEDULED_ABSOLUTE' && <React.Fragment>

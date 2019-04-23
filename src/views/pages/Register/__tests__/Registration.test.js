@@ -6,8 +6,14 @@ import { mountWrap, shallowWrap } from '../TestHelper/ContextWrapper';
 import { mount, shallow, render } from 'enzyme';
 import { Account } from '../index';
 import toJson from 'enzyme-to-json';
+import axios from 'axios'
+import { googleLogin, fbLogin } from 'ducks/account'
 
 jest.mock('react-ga');
+jest.mock('axios')
+jest.mock('universal-cookie')
+const mockDispatch = jest.fn()
+const mockGetState = jest.fn(() => ({ router: { location: "test location" }}))
 
 /*beforeAll(() => {
   pool.query('DELETE FROM creators WHERE email = \'tests@getvoiceflow.com\'',
@@ -17,6 +23,10 @@ jest.mock('react-ga');
     }
   });
 });*/
+
+afterEach(() => {
+  jest.clearAllMocks()
+})
 
 describe('Onboarding', () => {
   let location = {
@@ -84,4 +94,18 @@ describe('Onboarding', () => {
       expect(app.exists('.Window')).toBe(true);
     }, 500);
   });
+  it('tests the google login functionality', async () => {
+    axios.put.mockResolvedValue({data: { user: { id: "test id"}}})
+    await googleLogin()(mockDispatch, mockGetState)
+    expect(axios.put.mock.calls.length).toBe(1)
+    expect(mockGetState.mock.calls.length).toBe(1)
+    expect(mockDispatch.mock.calls.length).toBe(2)
+  })
+  it('tests the facebook login functionality', async () => {
+    axios.put.mockResolvedValue({data: { user: { id: "test id"}}})
+    await fbLogin()(mockDispatch, mockGetState)
+    expect(axios.put.mock.calls.length).toBe(1)
+    expect(mockGetState.mock.calls.length).toBe(1)
+    expect(mockDispatch.mock.calls.length).toBe(2)
+  })
 });

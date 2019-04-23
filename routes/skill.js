@@ -326,14 +326,12 @@ exports.patchSkill = async (req, res) => {
     res.sendStatus(401)
     return
   }
-
   let id = hashids.decode(req.params.id)[0]
   if(!(await checkSkillAccess(id, req.user.id))){
     return res.sendStatus(403)
   }
 
   let b = req.body
-
   if (!b.locales) {
     b.locales = '["en-US"]';
   } else if (Array.isArray(b.locales)) {
@@ -342,13 +340,17 @@ exports.patchSkill = async (req, res) => {
 
   if (!b.fulfillment) b.fulfillment = '{}'
   if (!b.name) b.name = 'UNTITLED PROJECT'
-
   try {
     if (req.query.fulfillment) {
       // UPDATE FULFILLMENT COLUMN
       await pool.query(`UPDATE skills SET fulfillment = $2 WHERE skill_id = $1`, [id, b.fulfillment])
     } else if (req.query.inv_name) {
-      await pool.query(`UPDATE skills SET inv_name = $2 WHERE skill_id = $1`, [id, b.inv_name])
+      // Replace old inv name with new ones
+      let old_inv_data = (await pool.query(`SELECT inv_name, invocations FROM skills WHERE skill_id = $1`, [id])).rows[0]
+      let old_inv_name = old_inv_data.inv_name
+      let old_invocations = JSON.stringify(old_inv_data.invocations)
+      let new_invocations = old_invocations.replace(new RegExp(old_inv_name, 'g'), b.inv_name)
+      await pool.query(`UPDATE skills SET inv_name = $2, invocations = $3 WHERE skill_id = $1`, [id, b.inv_name, JSON.parse(new_invocations)])
     } else if (req.query.settings) {
       if (typeof b.repeat !== 'number') {
         b.repeat = 100
@@ -542,20 +544,17 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
 
         try {
           // Check if this endpoint is LIVE
-          // const response = await axios.request({
-          //   url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/live/manifest`,
-          //   method: 'GET',
-          //   headers: {
-          //     Authorization: token
-          //   }
-          // })
+          const response = await axios.request({
+            url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/live/manifest`,
+            method: 'GET',
+            headers: {
+              Authorization: token
+            }
+          })
 
-          // // take the endpoint's Version ID
-          // const split_uri = response.data.manifest.apis.custom.endpoint.uri.split('/')
-          // live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
-
-          // TEST
-          live_id = 3741
+          // take the endpoint's Version ID
+          const split_uri = response.data.manifest.apis.custom.endpoint.uri.split('/')
+          live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
 
           const index = live_projects.indexOf(live_id)
 
@@ -782,13 +781,19 @@ exports.buildSkill = async (req, res) => {
           // Update the AMZN ID of the current version (manifest updated)
           await pool.query('UPDATE skills SET amzn_id = $1 WHERE skill_id = $2', [amzn_id, id])
 
+          const product_map = {}
           // Don't even bother with products if not in US
           if (Array.isArray(r.locales) && r.locales.includes('en-US')) {
             let products = await pool.query(`
               SELECT p.*, pc.amzn_prod_id, pc.creator_id AS status
               FROM products p
               LEFT JOIN (SELECT * FROM product_creators WHERE creator_id = $2) pc ON p.id = pc.product_id
-              WHERE skill_id = $1
+              WHERE skill_id = ( 
+                SELECT p.dev_version 
+                FROM projects p 
+                INNER JOIN skills s ON s.project_id = p.project_id 
+                WHERE skill_id = $1 LIMIT 1
+              )
             `, [r.skill_id, req.user.id]);
 
             if (Array.isArray(products.rows) && products.rows.length !== 0) {
@@ -796,6 +801,7 @@ exports.buildSkill = async (req, res) => {
                 let product = row.data
                 let productId = row.id
                 let AmazonProductId = row.amzn_prod_id
+
                 try {
                   // Try to update the product if it exists
                   if (!AmazonProductId) throw null
@@ -831,11 +837,11 @@ exports.buildSkill = async (req, res) => {
                     if(row.status){
                       await pool.query(
                         "UPDATE product_creators SET amzn_prod_id = $1 WHERE product_id = $2 AND creator_id = $3", 
-                        [AmazonProductId, pid, req.user.id])
+                        [AmazonProductId, productId, req.user.id])
                     }else{
                       await pool.query(
                         "INSERT INTO product_creators (product_id, creator_id, amzn_prod_id) VALUES ($1, $2, $3)", 
-                        [pid, req.user.id, AmazonProductId])
+                        [productId, req.user.id, AmazonProductId])
                     }
                   }
 
@@ -848,6 +854,8 @@ exports.buildSkill = async (req, res) => {
                     }
                   })
                 }
+
+                product_map[productId] = AmazonProductId
               }
             }
           }
@@ -872,9 +880,9 @@ exports.buildSkill = async (req, res) => {
 
                     models[lang] = model
                     // ruh-oh time to do a secondary pass on the entire project's diagram ripperionis
-                    if(samples && !secondary) {
+                    if((samples || !_.isEmpty(product_map)) && !secondary) {
                       secondary = true
-                      secondPass(r.diagram, samples)
+                      secondPass(r.diagram, {samples, product_map})
                     }
                   }
                   
@@ -910,7 +918,7 @@ exports.buildSkill = async (req, res) => {
                   account_linking.domains = _.flattenDeep(account_linking.domains)
                   account_linking.scopes = _.flattenDeep(account_linking.scopes)
                   if(account_linking.clientSecret) {
-                    account_linking.clientSecret = jwt.verify(account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE)
+                    account_linking.clientSecret = jwt.verify(account_linking.clientSecret, process.env.JWT_SECRET)
                   }
                   try {
                     await axios.request({

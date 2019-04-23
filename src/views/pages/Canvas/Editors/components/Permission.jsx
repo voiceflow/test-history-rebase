@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Select from 'react-select';
 import { openTab } from "ducks/user";
 import { selectStyles, variableComponent } from 'views/components/VariableSelect'
-const _ = require('lodash')
+import _ from 'lodash'
 
 const PERMISSIONS_WITH_VARIABLE_MAPS = ['User Phone Number', 'User Email', 'User Name', 'Account Linking']
 

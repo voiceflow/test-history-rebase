@@ -1,5 +1,4 @@
-import productReducer from './../product'
-import * as actions from './../product'
+import productReducer, * as actions from './../product'
 
 describe('Test Product Reducer', () => {
     it('render initial product state', () => {

@@ -7,7 +7,7 @@ import { Button, Collapse } from 'reactstrap';
 // import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import {getSections, checkBlockDisabledLive} from './../Blocks'
 import axios from 'axios';
-import withRenderModuleIcon from './../../../HOC/ModuleIcon'
+import withRenderModuleIcon from 'hocs/withModuleIcon'
 // const TABS = ['blocks', 'modules']
 
 export class Blocks extends PureComponent {

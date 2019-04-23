@@ -7,7 +7,7 @@ import ProductDescriptionForm from './ProductDescriptionForm';
 import PhrasesForm from './PhrasesForm';
 import PricingForm from './PricingForm';
 import IconsForm from './IconsForm';
-import { addProduct, updateProduct } from './../../../../actions/productActions'
+import { addProduct, updateProduct } from 'ducks/product'
 import { setError } from 'ducks/modal'
 import ProductDetailsForm from './ProductDetailsForm';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';

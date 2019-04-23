@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Dropdown, Input, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import { connect } from "react-redux";
 import Select from 'react-select';
-import { openTab } from 'actions/userActions'
+import { openTab } from 'ducks/user'
 import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 import './Expression.css'
 

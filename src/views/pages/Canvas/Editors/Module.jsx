@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Select from 'react-select'
 import { Label } from 'reactstrap';
 import { connect } from 'react-redux'
-import { openTab } from 'actions/userActions'
+import { openTab } from 'ducks/user'
 import { selectStyles, variableComponent} from 'views/components/VariableSelect'
 
 class Module extends Component {

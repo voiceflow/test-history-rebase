@@ -473,9 +473,9 @@ exports.createInteractionModel = (req, locale) => {
 	}
 
 	// console.log("PERFORMANCE END. ms:", Date.now() - time)
-	// pass the samples back to do the secondary pass because I REALLY want garbage collection to destroy this shitty function
+  // pass the samples back to do the secondary pass because I REALLY want garbage collection to destroy this shitty function
 	return {
 		model: interaction_model,
-		samples: (choice_count === 0) ? undefined : samples
+		samples
 	}
 }

@@ -1,5 +1,5 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
-import withRenderModuleIcon from '../../HOC/ModuleIcon'
+import withRenderModuleIcon from 'hocs/withModuleIcon'
 import React from 'react'
 import { Modal, ModalBody } from 'reactstrap'
 import axios from 'axios'

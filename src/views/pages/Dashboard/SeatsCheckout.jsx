@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import StripeHandler from "views/HOC/StripeHandler";
+import StripeHandler from "hocs/withStripeHandler";
 import { CardElement } from "react-stripe-elements";
 import { Collapse, Input } from "reactstrap";
 import { connect } from 'react-redux';

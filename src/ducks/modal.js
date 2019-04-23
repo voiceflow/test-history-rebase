@@ -1,7 +1,7 @@
-const SET_CONFIRM = 'SET_CONFIRM'
-const SET_ERROR = 'SET_ERROR'
-const SET_MODAL = 'SET_MODAL'
-const CLEAR_MODAL = 'CLEAR_MODAL'
+export const SET_CONFIRM = 'SET_CONFIRM'
+export const SET_ERROR = 'SET_ERROR'
+export const SET_MODAL = 'SET_MODAL'
+export const CLEAR_MODAL = 'CLEAR_MODAL'
 
 const initialState = {
   confirmModal: null,

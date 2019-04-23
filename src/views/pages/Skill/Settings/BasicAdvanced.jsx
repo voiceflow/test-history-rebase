@@ -5,7 +5,7 @@ import axios from 'axios'
 import {Alert, FormGroup, Label, Button, Input, Collapse} from 'reactstrap'
 import Prompt from 'views/components/Uploads/Prompt'
 import AceEditor from 'react-ace';
-import { updateVersion, updateVersionMerge } from "./../../../../actions/versionActions";
+import { updateVersion, updateVersionMerge } from 'ducks/version'
 import { setConfirm, setError } from 'ducks/modal'
 import DefaultModal from './../../../components/Modals/DefaultModal'
 import Toggle from 'react-toggle'

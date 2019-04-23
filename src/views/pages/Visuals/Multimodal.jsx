@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { deleteDisplay } from './../../../actions/displayActions'
+import { deleteDisplay } from "ducks/display"
 import { setConfirm } from 'ducks/modal'
 
 import { Alert } from 'reactstrap'

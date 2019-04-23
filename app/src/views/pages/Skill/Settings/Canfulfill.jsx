@@ -5,7 +5,7 @@ import { Collapse, Alert } from 'reactstrap';
 import { Tooltip } from 'react-tippy'
 import { getIntentSlots } from 'Helper'
 import FulfillInput from './FulfillInput'
-import { updateFulfillment } from './../../../../actions/versionActions'
+import { updateFulfillment } from 'ducks/version'
 import update from 'immutability-helper';
 import { connect } from 'react-redux'
 

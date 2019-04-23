@@ -3,9 +3,9 @@ import { Alert, Input} from 'reactstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { setConfirm } from 'ducks/modal'
-import { openTab } from 'actions/userActions'
+import { openTab } from 'ducks/user'
 
-import { fetchDiagramVariables } from './../../../../actions/diagramVariablesAction';
+import { fetchDiagramVariables } from 'ducks/diagram_variable';
 import DiagramVariables from './components/DiagramVariables';
 // import Expressionfy from './components/Expressionfy';
 

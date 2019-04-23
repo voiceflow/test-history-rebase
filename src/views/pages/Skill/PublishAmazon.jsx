@@ -24,7 +24,7 @@ import LOCALE_MAP from '../../../services/LocaleMap'
 
 import { AMAZON_CATEGORIES } from '../../../services/Categories'
 
-import { updateVersion, updateEntireVersion, updateSkillDB } from "./../../../actions/versionActions"
+import { updateVersion, updateEntireVersion, updateSkillDB } from 'ducks/version'
 import { setConfirm, setError } from 'ducks/modal'
 import { AmazonAccessToken } from 'ducks/account'
 

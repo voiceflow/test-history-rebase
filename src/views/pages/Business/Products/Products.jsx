@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 import Masonry from 'react-masonry-component';
 
-import { copyProduct, deleteProduct } from './../../../../actions/productActions'
+import { copyProduct, deleteProduct } from 'ducks/product'
 
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'

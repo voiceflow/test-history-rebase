@@ -23,12 +23,12 @@ import CanvasWarning from './components/CanvasWarning'
 //Helpers
 import { combineAppendValidation, appendValidator } from './../../helpers/combineHelper'
 
-import { updateVersion, updateIntents, setCanFulfill } from "actions/versionActions";
-import { setVariables } from 'actions/variableActions'
-import { setCanvasError } from 'actions/userActions'
-import { renameDiagram } from 'actions/diagramActions'
+import { updateVersion, updateIntents, setCanFulfill } from 'ducks/version'
+import { setVariables } from 'ducks/variable'
+import { setCanvasError } from 'ducks/user'
+import { renameDiagram } from 'ducks/diagram'
 import { setError, setConfirm } from 'ducks/modal'
-import { fetchEmails } from "actions/emailActions";
+import { fetchEmails } from 'ducks/email'
 
 import ActionGroup from './ActionGroup'
 import HelpModal from './HelpModal'
@@ -62,7 +62,7 @@ import { checkBlockDisabledLive } from './Blocks'
 import { Prompt } from 'react-router'
 import moment from 'moment'
 import Upgrade from '../../components/Modals/MultiPlatformModalContent.jsx';
-import { fetchIntegrationUsers } from '../../../actions/integrationUsersActions.js';
+import { fetchIntegrationUsers } from 'ducks/integration';
 
 const NLC = require('natural-language-commander')
 const _ = require('lodash')

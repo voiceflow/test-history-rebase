@@ -10,7 +10,7 @@ import './Intent.css'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import Toggle from 'react-toggle'
 
-import { updateIntents, setCanFulfill } from './../../../../actions/versionActions'
+import { updateIntents, setCanFulfill } from 'ducks/version'
 import { setConfirm, setError } from 'ducks/modal'
 
 const _ = require('lodash')

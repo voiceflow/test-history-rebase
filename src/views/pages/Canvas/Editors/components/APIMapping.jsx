@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 import Select from 'react-select';
 import VariableInput from './VariableInput';
-import { openTab } from 'actions/userActions'
+import { openTab } from 'ducks/user'
 import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 
 class APIMapping extends Component {

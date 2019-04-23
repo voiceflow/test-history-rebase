@@ -44,12 +44,7 @@ export default function skillReducer(state = initialState, action) {
         skill: action.payload.skills
       };
     case RESET_VERSION:
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        skill: {}
-      }
+      return initialState
     case FETCH_LIVE_VERSION_SUCCESS:
       return {
         ...state,

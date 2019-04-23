@@ -14,9 +14,9 @@ import './../../components/SRD/sass/main.css';
 import './StoryBoard.css'
 
 //HOCs
-import {undo, redo} from './../../HOC/UndoRedo';
-import { open, blockMenu } from './../../HOC/canvasHelper';
-import { keyboardModal } from './../../HOC/ModalHandlers'
+import {undo, redo} from 'hocs/withUndoRedo';
+import { open, blockMenu } from 'hocs/withCanvasHelper';
+import { keyboardModal } from 'hocs/withModalHandlers'
 
 import { WidgetBar } from './components/WidgetBar'
 import CanvasWarning from './components/CanvasWarning'

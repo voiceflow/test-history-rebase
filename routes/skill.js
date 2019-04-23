@@ -326,14 +326,12 @@ exports.patchSkill = async (req, res) => {
     res.sendStatus(401)
     return
   }
-
   let id = hashids.decode(req.params.id)[0]
   if(!(await checkSkillAccess(id, req.user.id))){
     return res.sendStatus(403)
   }
 
   let b = req.body
-
   if (!b.locales) {
     b.locales = '["en-US"]';
   } else if (Array.isArray(b.locales)) {
@@ -342,13 +340,17 @@ exports.patchSkill = async (req, res) => {
 
   if (!b.fulfillment) b.fulfillment = '{}'
   if (!b.name) b.name = 'UNTITLED PROJECT'
-
   try {
     if (req.query.fulfillment) {
       // UPDATE FULFILLMENT COLUMN
       await pool.query(`UPDATE skills SET fulfillment = $2 WHERE skill_id = $1`, [id, b.fulfillment])
     } else if (req.query.inv_name) {
-      await pool.query(`UPDATE skills SET inv_name = $2 WHERE skill_id = $1`, [id, b.inv_name])
+      // Replace old inv name with new ones
+      let old_inv_data = (await pool.query(`SELECT inv_name, invocations FROM skills WHERE skill_id = $1`, [id])).rows[0]
+      let old_inv_name = old_inv_data.inv_name
+      let old_invocations = JSON.stringify(old_inv_data.invocations)
+      let new_invocations = old_invocations.replace(new RegExp(old_inv_name, 'g'), b.inv_name)
+      await pool.query(`UPDATE skills SET inv_name = $2, invocations = $3 WHERE skill_id = $1`, [id, b.inv_name, JSON.parse(new_invocations)])
     } else if (req.query.settings) {
       if (typeof b.repeat !== 'number') {
         b.repeat = 100

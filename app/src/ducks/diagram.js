@@ -1,28 +1,79 @@
+import update from 'immutability-helper'
 import axios from 'axios';
 import _ from 'lodash';
 import { setConfirm } from 'ducks/modal'
 
+export const FETCH_DIAGRAMS_BEGIN = 'FETCH_DIAGRAMS_BEGIN'
+export const FETCH_DIAGRAMS_SUCCESS = 'FETCH_DIAGRAMS_SUCCESS'
+export const FETCH_DIAGRAMS_FAILURE = 'FETCH_DIAGRAMS_FAILURE'
+// const FETCH_DIAGRAM = 'FETCH_DIAGRAM'
+export const ON_FLOW_RENAME = 'ON_FLOW_RENAME'
+export const UPDATE_DIAGRAM_ROOT = 'UPDATE_DIAGRAM_ROOT'
+
+const initialState = {
+  diagrams: [],
+  loading: false,
+  error: null
+};
+
+export default function diagramReducer(state = initialState, action) {
+  switch(action.type) {
+    case UPDATE_DIAGRAM_ROOT:
+      return {
+        ...state,
+        root_id: action.payload.root_id
+      }
+    case FETCH_DIAGRAMS_BEGIN:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
+    case FETCH_DIAGRAMS_SUCCESS:
+      return {
+        ...state,
+        diagrams: action.payload.diagrams,
+        loading: false,
+      };
+    case FETCH_DIAGRAMS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+        diagrams: [],
+      };
+    case ON_FLOW_RENAME:
+      let idx = state.diagrams.findIndex(d => d.id === action.payload.flow_id)
+      return {
+        ...state,
+        diagrams: update(state.diagrams, {[idx]: {name: {$set: action.payload.name}}})
+      }
+    default:
+      return state;
+  }
+}
+
 export const fetchDiagramsBegin = () => ({
-  type: "FETCH_DIAGRAMS_BEGIN"
+  type: FETCH_DIAGRAMS_BEGIN
 });
 
 export const fetchDiagramsSuccess = diagrams => ({
-  type: "FETCH_DIAGRAMS_SUCCESS",
+  type: FETCH_DIAGRAMS_SUCCESS,
   payload: { diagrams }
 });
 
 export const fetchDiagramsFailure = error => ({
-  type: "FETCH_DIAGRAMS_FAILURE",
+  type: FETCH_DIAGRAMS_FAILURE,
   payload: { error }
 });
 
 export const onFlowRename = (flow_id, name)=> ({
-    type: "ON_FLOW_RENAME",
+    type: ON_FLOW_RENAME,
     payload: {flow_id, name}
 })
 
 export const updateDiagramRoot = (root_id)=> ({
-  type: "UPDATE_DIAGRAM_ROOT",
+  type: UPDATE_DIAGRAM_ROOT,
   payload: {root_id}
 })
 
@@ -90,10 +141,3 @@ export const renameDiagram = (flow_id, name) => {
         }
     }
 }
-
-export const FETCH_DIAGRAMS_BEGIN = 'FETCH_DIAGRAMS_BEGIN'
-export const FETCH_DIAGRAMS_SUCCESS = 'FETCH_DIAGRAMS_SUCCESS'
-export const FETCH_DIAGRAMS_FAILURE = 'FETCH_DIAGRAMS_FAILURE'
-export const FETCH_DIAGRAM = 'FETCH_DIAGRAM'
-export const ON_FLOW_RENAME = 'ON_FLOW_RENAME'
-export const UPDATE_DIAGRAM_ROOT = 'UPDATE_DIAGRAM_ROOT'

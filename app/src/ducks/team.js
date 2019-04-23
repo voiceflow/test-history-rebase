@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { setError } from 'ducks/modal'
-import Normalize, { normalize, deleteNormalize } from 'ducks/util'
+import Normalize, { normalize, deleteNormalize } from 'ducks/_normalize'
 
-const INVALID_STATES = ["incomplete_expired", "incomplete", "unpaid"]
-const WARNING_STATES = ["past_due"]
+export const INVALID_STATES = ["incomplete_expired", "incomplete", "unpaid"]
+export const WARNING_STATES = ["past_due"]
 
 const initialState = {
   team_id: localStorage.getItem('team'),

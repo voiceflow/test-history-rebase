@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Select from 'react-select';
-import { openTab } from "actions/userActions";
+import { openTab } from "ducks/user";
 import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 const _ = require('lodash')
 

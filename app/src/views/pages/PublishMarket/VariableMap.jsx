@@ -3,7 +3,7 @@ import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 import Select from 'react-select';
 import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 import { connect } from 'react-redux'
-import { openTab } from 'actions/userActions'
+import { openTab } from 'ducks/user'
 
 class VariableMap extends Component {
     constructor(props) {

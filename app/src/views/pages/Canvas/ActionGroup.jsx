@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import LOCALE_MAP from "./../../../services/LocaleMap";
 
-import { updateVersion, updateLocales, updateSkillDB } from './../../../actions/versionActions'
+import { updateVersion, updateLocales, updateSkillDB } from 'ducks/version'
 import { setError } from 'ducks/modal'
 import {
   Popover, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, ModalBody, Button

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
-import { addDisplay, updateDisplay } from './../../../actions/displayActions'
+import { addDisplay, updateDisplay } from "ducks/display"
 import { setError } from 'ducks/modal'
 
 import { Spinner } from 'views/components/Spinner'

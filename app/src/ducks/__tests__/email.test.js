@@ -1,5 +1,5 @@
-import emailReducer from '../emailReducer'
-import * as actions from '../../actions/emailActions'
+import emailReducer from './../email'
+import * as actions from './../email'
 
 describe('Test Email Reducer', () => {
     it('render initial email state', () => {

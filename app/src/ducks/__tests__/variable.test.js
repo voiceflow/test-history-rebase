@@ -1,5 +1,5 @@
-import variableReducer from '../variableReducer'
-import * as actions from '../../actions/variableActions'
+import variableReducer from './../variable'
+import * as actions from './../variable'
 
 describe('Test Variables Reducer', () => {
     it('render initial variable state', () => {

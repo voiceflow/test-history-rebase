@@ -19,11 +19,7 @@ export default function productReducer(state = initialState, action) {
         allIds: action.payload.allIds
       }
     case RESET_PROJECTS:
-      return {
-        ...state,
-        byId: {},
-        allIds: []
-      }
+      return initialState
     default:
       return state
   }

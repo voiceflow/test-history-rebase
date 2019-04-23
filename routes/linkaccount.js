@@ -42,12 +42,15 @@ exports.setTemplate = async (req, res) => {
 
   try {
     let account_linking = req.body;
+    if(!account_linking) throw { status: 400 }
+
     if (account_linking.clientSecret) {
       account_linking.clientSecret = jwt.sign(
         account_linking.clientSecret,
         process.env.JWT_SECRET
       );
     }
+    
     const skill = await pool.query(
       "UPDATE skills SET account_linking = $1 WHERE skill_id = $2 RETURNING *",
       [account_linking, skill_id]
@@ -59,6 +62,8 @@ exports.setTemplate = async (req, res) => {
     res.send(skill.rows[0]);
   } catch (err) {
     writeToLogs("SET ACCOUNT LINK ERROR", { err: err });
+
+    if (err && err.status) return res.status(status).send(message)
     res.sendStatus(500);
     console.trace();
   }

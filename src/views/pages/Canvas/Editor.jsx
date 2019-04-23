@@ -6,7 +6,7 @@ import { compose } from "recompose";
 import { connect } from "react-redux";
 
 // HOCs
-import { undo, redo } from "./../../HOC/UndoRedo";
+import { undo, redo } from "hocs/withUndoRedo";
 
 import Line from "./Editors/Line";
 import Choice from "./Editors/Choice";

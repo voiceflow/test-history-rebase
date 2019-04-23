@@ -1,7 +1,7 @@
 import GoogleLogin from 'react-google-login';
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { addIntegrationUser } from 'actions/integrationUsersActions'
+import { addIntegrationUser } from 'ducks/integration'
 
 import { GOOGLE_SHEETS } from './constants'
 

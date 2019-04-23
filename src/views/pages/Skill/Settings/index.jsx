@@ -3,8 +3,8 @@ import _ from 'lodash'
 import axios from 'axios'
 import { ButtonGroup, Button } from 'reactstrap'
 import { connect } from 'react-redux'
-import { updateVersion } from './../../../../actions/versionActions'
-import { updateDiagramRoot } from './../../../../actions/diagramActions' 
+import { updateVersion } from 'ducks/version'
+import { updateDiagramRoot } from 'ducks/diagram'
 
 // SETTING PAGES
 import BasicAdvancedSettings from './BasicAdvanced'

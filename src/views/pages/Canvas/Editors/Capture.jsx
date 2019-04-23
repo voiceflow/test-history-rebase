@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
 import SlotSynonyms, { SingleValueOption, SlotOption } from './components/SlotComponents'
-import { openTab } from 'actions/userActions'
+import { openTab } from 'ducks/user'
 import { selectStyles, variableComponent} from 'views/components/VariableSelect'
 
 class Capture extends Component {

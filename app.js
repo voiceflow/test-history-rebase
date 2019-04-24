@@ -160,6 +160,7 @@ app.get('/multimodal/display/:id', ensureLoggedIn(), Multimodal.getDisplay);
 app.post('/multimodal/display', ensureLoggedIn(), Multimodal.setDisplay);
 app.patch('/multimodal/display/:id', ensureLoggedIn(), Multimodal.setDisplay);
 app.delete('/multimodal/display/:id', ensureLoggedIn(), Multimodal.deleteDisplay);
+app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDisplay);
 
 app.get('/project/:project_id/version/:version_id', ensureLoggedIn(), Skill.getSkill)
 app.delete('/projects/:project_id', ensureLoggedIn(), Team.verifyProjectAccess, Project.deleteProject)

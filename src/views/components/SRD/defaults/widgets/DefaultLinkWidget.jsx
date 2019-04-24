@@ -7,6 +7,7 @@ import { Toolkit } from "../../Toolkit.jsx";
 import { DefaultLinkModel } from "../models/DefaultLinkModel";
 import PathFinding from "../../routing/PathFinding";
 import { BaseWidget, BaseWidgetProps } from "../../widgets/BaseWidget";
+import cn from 'classnames'
 
 const toolkit = new Toolkit()
 
@@ -180,8 +181,12 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 			let lengths = _.last(this.refPaths).getTotalLength();
 			svgPosition = _.last(this.refPaths).getPointAtLength(lengths/2)
 		}
+
+		const styleObj = {}
+		if (this.props.link.hidden) styleObj.visibility = 'hidden'
+
 		return (
-			<g key={"link-" + id}>
+			<g key={"link-" + id} style={styleObj}>
 				{Bottom}
 				{Top}
 				{svgPosition && this.state.selected && !this.props.preview ? (

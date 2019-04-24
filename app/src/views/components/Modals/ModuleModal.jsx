@@ -4,8 +4,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Modal, ModalBody } from 'reactstrap'
 import axios from 'axios'
-import { updateVersion, updateUserModules } from './../../../actions/versionActions'
-import { appendDiagrams } from './../../../actions/diagramActions'
+import { updateVersion, updateUserModules } from './../../../ducks/version'
+import { appendDiagrams } from './../../../ducks/diagram'
 import LightCanvas from './../../pages/Canvas/LightCanvas'
 
 class ModuleModal extends React.Component {

@@ -1,60 +1,67 @@
 import React, { useState, useEffect } from 'react'
 import { Form, FormGroup, Input } from 'reactstrap'
+import { signup } from 'ducks/account'
 import { Link } from 'react-router-dom'
+import queryString from 'query-string'
 import SocialLogin from './SocialLogin'
 import ErrorWidget from './ErrorWidget';
-import queryString from 'query-string'
-import { login } from 'ducks/account'
 import { connect } from 'react-redux'
 
-const LoginForm = ({login, history, location}) => {
+const SignupForm = ({signup, history, location}) => {
   let query = queryString.parse(location.search)
-  const [loginError, setLoginError] = useState(null)
+  const [signupError, setSignupError] = useState(null)
   const [email, setEmail] = useState(query.email ? query.email : "")
   const [password, setPassword] = useState("")
-  const [unverified, setUnverified] = useState(false)
-  const [errorColor, setErrorColor] = useState("danger")
+  const [name, setName] = useState("")
   let timeout
 
-  const openRegister = e => {
+  const openLogin = e => {
     e.preventDefault()
-    history.push('/signup' + location.search);
+    history.push('/login' + location.search);
     return false;
   }
 
-  const loginSubmit = (e) => {
+  const signupSubmit = e => {
     e.preventDefault();
-    login({
+    signup({
+      name,
       email,
       password,
     })
     .catch(err => {
-        const errText = (err && err.response && err.response.data) ||
-                        (unverified ? "Please verify your email to use Facebook login" : false)
-        const errColor = unverified ? "success" : "danger"
-        setLoginError(errText)
-        setErrorColor(errColor)
+      setSignupError(err.response.data)
     })
     return false;
   }
 
   useEffect(() => {
     timeout = setTimeout(() => {
-      setLoginError(false)
+      setSignupError(false)
     }, 5000)
 
     return () => clearTimeout(timeout)
   })
 
+
   return (
-  <Form id="login-form" onSubmit={loginSubmit}>
+  <Form id="signup-form" onSubmit={signupSubmit}>
     <img className="login-logo" src="/logo.svg" alt="logo"/>
     <div className="px-5 pb-5 pt-4">
       <div className="text-center">
-        <h4 className="mb-4">Login</h4>
+        <h4 className="mb-4">Sign Up</h4>
       </div>
-      <SocialLogin entryText={"Login"} />
-      <ErrorWidget color={errorColor} error={loginError} />
+      <SocialLogin entryText={"Sign up"} />
+      <ErrorWidget color={"danger"} error={signupError} />
+      <FormGroup>
+        <Input 
+          className="form-bg" 
+          type="text" 
+          name="name" 
+          onChange={e => setName(e.target.value)} 
+          placeholder="Full Name" 
+          required minLength="3" 
+          value={name}/>
+      </FormGroup>
       <FormGroup>
         <Input 
           className="form-bg" 
@@ -68,8 +75,8 @@ const LoginForm = ({login, history, location}) => {
       <FormGroup>
         <Input 
           className="form-bg" 
-          type="password" 
-          name="password" 
+          type="password"
+          name="password"
           onChange={e => setPassword(e.target.value)} 
           placeholder="Password" 
           required minLength="8" 
@@ -78,7 +85,7 @@ const LoginForm = ({login, history, location}) => {
       <button 
         className="btn-primary btn-lg btn-block" 
         type="submit">
-          Login
+          Create Account
         </button>
       <div className="text-center small mt-2">
         <Link style={{color:'#8da2b5'}}to='/reset'>
@@ -87,7 +94,7 @@ const LoginForm = ({login, history, location}) => {
       </div>
       <hr/>
       <div className="text-center">Dont have an account?  
-      <a href="/signup" onClick={openRegister}> Sign Up</a>
+      <a href="/signup" onClick={openLogin}>  Login</a>
       </div>
     </div>
   </Form>
@@ -95,7 +102,8 @@ const LoginForm = ({login, history, location}) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  login: (user) => dispatch(login(user)),
+  signup: (user) => dispatch(signup(user)),
 })
 
-export default connect(null, mapDispatchToProps)(LoginForm)
+export default connect(null, mapDispatchToProps)(SignupForm)
+

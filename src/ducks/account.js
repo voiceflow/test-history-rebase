@@ -87,6 +87,7 @@ const createSession = (endpoint) => {
   return (user) => {
     return async (dispatch, getState) => {
       try {
+        console.log(user)
         let data = (await axios.put(endpoint, {user: user, device: getDevice()})).data
         if(data.user.id){
           data.user.creator_id = data.user.id

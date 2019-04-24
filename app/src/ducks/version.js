@@ -1,3 +1,4 @@
+import update from 'immutability-helper';
 import React from 'react'
 import axios from 'axios';
 import {Alert} from 'reactstrap'
@@ -6,77 +7,180 @@ import { getIntentSlots } from '../Helper'
 import { setError } from 'ducks/modal'
 import _ from 'lodash'
 
+export const FETCH_VERSION_BEGIN = 'FETCH_VERSION_BEGIN';
+export const FETCH_VERSION_SUCCESS = 'FETCH_VERSION_SUCCESS';
+export const FETCH_LIVE_VERSION_SUCCESS = 'FETCH_LIVE_VERSION_SUCCESS'
+export const FETCH_DEV_VERSION_SUCCESS = 'FETCH_DEV_VERSION_SUCCESS'
+export const FETCH_VERSION_FAILURE = 'FETCH_VERSION_FAILURE';
+export const FETCH_VERSION_BLOCKED = 'FETCH_VERSION_BLOCKED';
+export const TOGGLE_LIVE = 'TOGGLE_LIVE'
+export const UPDATE_VERSION = 'UPDATE_VERSION'
+export const UPDATE_ENTIRE_VERSION = 'UPDATE_ENTIRE_VERSION'
+export const UPDATE_VERSION_MERGE = 'UPDATE_VERSION_MERGE'
+export const SET_LIVE_MODE_MODAL = 'SET_LIVE_MODE_MODAL';
+export const REMOVE_FULFILLMENT = 'REMOVE_FULFILLMENT'
+export const UPDATE_FULFILLMENT = 'UPDATE_FULFILLMENT'
+export const RESET_VERSION = 'RESET_VERSION'
+
+const initialState = {
+  skill: {},
+  loading: false,
+  error: null
+};
+
+export default function skillReducer(state = initialState, action) {
+  switch(action.type) {
+    case FETCH_VERSION_BEGIN:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
+
+    case FETCH_VERSION_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        skill: action.payload.skills
+      };
+    case RESET_VERSION:
+      return initialState
+    case FETCH_LIVE_VERSION_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        live_version: action.payload.live,
+        live_mode: action.payload.show,
+        show_live_mode_modal: action.payload.show
+      }
+    case FETCH_DEV_VERSION_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        dev_skill: action.payload.dev_skill
+      }
+    case FETCH_VERSION_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+        skill: {},
+      };
+    case TOGGLE_LIVE: 
+      return {
+        ...state,
+        skill: action.payload.skill,
+        diagram_id: action.payload.skill_id,
+        live_version: action.payload.live_version,
+        live_mode: action.payload.live_mode
+      }
+    case UPDATE_VERSION:
+      return {
+        ...state,
+        skill: update(state.skill, { [action.payload.type]: {$set: action.payload.val }})
+      }
+    case UPDATE_FULFILLMENT:
+      return {
+        ...state,
+        skill: update(state.skill, { fulfillment: {[action.payload.intent_key]: {$set: {slot_config : action.payload.slot_config}}}})
+      }
+
+    case REMOVE_FULFILLMENT:
+      return {
+        ...state,
+        skill: update(state.skill, { fulfillment: {$unset: [action.payload.intent_key]}})
+      }
+    case UPDATE_ENTIRE_VERSION:
+      return {
+        ...state,
+        skill: update(state.skill, {$merge: action.payload.skill })
+      }
+    case UPDATE_VERSION_MERGE:
+      return {
+        ...state,
+        skill: update(state.skill, { [action.payload.type]: {$merge: action.payload.val }})
+      }
+    case SET_LIVE_MODE_MODAL:
+      return {
+        ...state,
+        show_live_mode_modal: action.payload.isLive
+      }
+    default:
+      return state;
+  }
+}
+
 export const fetchVersionBegin = () => ({
-  type: "FETCH_VERSION_BEGIN"
+  type: FETCH_VERSION_BEGIN
 });
 
 export const fetchVersionSuccess = (skills, user_modules) => ({
-  type: "FETCH_VERSION_SUCCESS",
+  type: FETCH_VERSION_SUCCESS,
   payload: { skills, user_modules }
 });
 
 export const fetchVersionBlocked = message => ({
-    type: "FETCH_VERSION_BLOCKED",
+    type: FETCH_VERSION_BLOCKED,
     payload: { message }
 })
 
 export const resetVersion = () => ({
-    type: "RESET_VERSION",
+    type: RESET_VERSION,
 })
 
 export const fetchVersionFailure = error => ({
-  type: "FETCH_VERSION_FAILURE",
+  type: FETCH_VERSION_FAILURE,
   payload: { error }
 });
 
 export const fetchLiveVersionSuccess = (live, show) => ({
-    type: "FETCH_LIVE_VERSION_SUCCESS",
+    type: FETCH_LIVE_VERSION_SUCCESS,
     payload: { live, show }
 })
 
 export const fetchDevVersionSuccess = (dev_skill) => ({
-    type: "FETCH_DEV_VERSION_SUCCESS",
+    type: FETCH_DEV_VERSION_SUCCESS,
     payload: { dev_skill }
 })
 
 export const setLiveModeModal = isLive => ({
-    type: "SET_LIVE_MODE_MODAL",
+    type: SET_LIVE_MODE_MODAL,
     payload: { isLive }
 })
 
 export const updateVersion = (type, val) => dispatch => {
     dispatch({
-        type: "UPDATE_VERSION",
+        type: UPDATE_VERSION,
         payload: { type, val }
     })
     return Promise.resolve()
 }
 
 export const updateEntireVersion = (skill) => ({
-    type: "UPDATE_ENTIRE_VERSION",
+    type: UPDATE_ENTIRE_VERSION,
     payload: { skill }
 })
 
 export const updateVersionMerge = (type, val) => ({
-    type: "UPDATE_VERSION_MERGE",
+    type: UPDATE_VERSION_MERGE,
     payload: { type, val }
 })
 
 export const toggleLive = (skill, diagram_id, live_version, live_mode) => dispatch => {
     dispatch({
-        type: "TOGGLE_LIVE",
+        type: TOGGLE_LIVE,
         payload: { skill, diagram_id, live_version, live_mode }
     })
     return Promise.resolve()
 }
 
 export const removeFulfillment = intent_key => ({
-    type: "REMOVE_FULFILLMENT",
+    type: REMOVE_FULFILLMENT,
     payload: { intent_key }
 })
 
 export const updateFulfillment = ( intent_key, slot_config ) => ({
-    type: "UPDATE_FULFILLMENT",
+    type: UPDATE_FULFILLMENT,
     payload: { intent_key, slot_config }
 })
 
@@ -296,20 +400,3 @@ export const updateSkillDB = (publish = false, cb) => {
             })
     }
 }
-
-export const FETCH_VERSION_BEGIN = 'FETCH_VERSION_BEGIN';
-export const FETCH_VERSION_SUCCESS = 'FETCH_VERSION_SUCCESS';
-export const FETCH_LIVE_VERSION_SUCCESS = 'FETCH_LIVE_VERSION_SUCCESS'
-export const FETCH_DEV_VERSION_SUCCESS = 'FETCH_DEV_VERSION_SUCCESS'
-export const FETCH_VERSION_FAILURE = 'FETCH_VERSION_FAILURE';
-export const FETCH_VERSION = 'FETCH_VERSION';
-export const TOGGLE_LIVE = 'TOGGLE_LIVE'
-export const UPDATE_VERSION = 'UPDATE_VERSION'
-export const UPDATE_ENTIRE_VERSION = 'UPDATE_ENTIRE_VERSION'
-export const UPDATE_VERSION_MERGE = 'UPDATE_VERSION_MERGE'
-export const SET_LIVE_MODE_MODAL = 'SET_LIVE_MODE_MODAL';
-export const REMOVE_FULFILLMENT = 'REMOVE_FULFILLMENT'
-export const UPDATE_FULFILLMENT = 'UPDATE_FULFILLMENT'
-export const RESET_VERSION = 'RESET_VERSION'
-export const UPDATE_USER_MODULES = 'UPDATE_USER_MODULES'
-export const REMOVE_USER_MODULES = 'REMOVE_USER_MODULES'

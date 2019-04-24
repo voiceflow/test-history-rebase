@@ -29,17 +29,15 @@ exports.getProjectFromSkill = async (req, res, next) => {
   }
 }
 
-exports.getProjects = async (req, res) => {
+exports.getUserProjects = async (req, res) => {
   try {
-    if(!req.query.user) throw { status: 400 }
-
     const projects = (await pool.query(`
-      SELECT p.name, p.dev_version AS skill_id
+      SELECT s.name, p.dev_version AS skill_id
       FROM projects p
       INNER JOIN team_members tm ON tm.team_id = p.team_id
-      INNER JOIN creators c ON c.creator_id = tm.creator_id
-      WHERE c.creator_id = $1
-    `, [req.query.user]))
+      INNER JOIN skills s ON s.skill_id = p.dev_version
+      WHERE tm.creator_id = $1
+    `, [req.params.creator_id]))
 
     res.send(projects.rows.map(p => ({
       ...p,

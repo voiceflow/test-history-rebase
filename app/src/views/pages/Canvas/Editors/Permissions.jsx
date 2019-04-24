@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Permission from './components/Permission'
 import { connect } from 'react-redux'
 import {Alert} from 'reactstrap'
-import { openTab } from "actions/userActions";
+import { openTab } from "ducks/user";
 const _ = require('lodash')
 
 const permission_options = [

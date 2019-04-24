@@ -1,6 +1,9 @@
 import axios from 'axios'
 import { setError } from 'ducks/modal'
-import Normalize from 'ducks/util'
+import Normalize from 'ducks/_normalize'
+
+export const UPDATE_PROJECTS = 'UPDATE_PROJECTS'
+export const RESET_PROJECTS = 'RESET_PROJECTS'
 
 const initialState = {
   byId: {},
@@ -9,32 +12,28 @@ const initialState = {
 
 export default function productReducer(state = initialState, action) {
   switch (action.type) {
-    case 'UPDATE_PROJECTS':
+    case UPDATE_PROJECTS:
       return {
         ...state,
         byId: action.payload.byId,
         allIds: action.payload.allIds
       }
-    case 'RESET_PROJECTS':
-      return {
-        ...state,
-        byId: {},
-        allIds: []
-      }
+    case RESET_PROJECTS:
+      return initialState
     default:
       return state
   }
 }
 
 const updateProjects = ({byId, allIds}) => ({
-  type: 'UPDATE_PROJECTS',
+  type: UPDATE_PROJECTS,
   payload: { byId, allIds }
 })
 
 const Projects = new Normalize('project_id', 'project', updateProjects)
 
 export const resetProjects = () => ({
-  type: "RESET_PROJECTS"
+  type: RESET_PROJECTS
 })
 
 export const fetchProjects = team_id => {

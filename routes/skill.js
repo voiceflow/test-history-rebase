@@ -331,14 +331,12 @@ exports.patchSkill = async (req, res) => {
     res.sendStatus(401)
     return
   }
-
   let id = hashids.decode(req.params.id)[0]
   if(!(await checkSkillAccess(id, req.user.id))){
     return res.sendStatus(403)
   }
 
   let b = req.body
-
   if (!b.locales) {
     b.locales = '["en-US"]';
   } else if (Array.isArray(b.locales)) {
@@ -347,13 +345,17 @@ exports.patchSkill = async (req, res) => {
 
   if (!b.fulfillment) b.fulfillment = '{}'
   if (!b.name) b.name = 'UNTITLED PROJECT'
-
   try {
     if (req.query.fulfillment) {
       // UPDATE FULFILLMENT COLUMN
       await pool.query(`UPDATE skills SET fulfillment = $2 WHERE skill_id = $1`, [id, b.fulfillment])
     } else if (req.query.inv_name) {
-      await pool.query(`UPDATE skills SET inv_name = $2 WHERE skill_id = $1`, [id, b.inv_name])
+      // Replace old inv name with new ones
+      let old_inv_data = (await pool.query(`SELECT inv_name, invocations FROM skills WHERE skill_id = $1`, [id])).rows[0]
+      let old_inv_name = old_inv_data.inv_name
+      let old_invocations = JSON.stringify(old_inv_data.invocations)
+      let new_invocations = old_invocations.replace(new RegExp(old_inv_name, 'g'), b.inv_name)
+      await pool.query(`UPDATE skills SET inv_name = $2, invocations = $3 WHERE skill_id = $1`, [id, b.inv_name, JSON.parse(new_invocations)])
     } else if (req.query.settings) {
       if (typeof b.repeat !== 'number') {
         b.repeat = 100
@@ -363,6 +365,7 @@ exports.patchSkill = async (req, res) => {
       await pool.query(`UPDATE skills SET name=$2, restart=$3, resume_prompt=$4, error_prompt=$5, alexa_events=$6, repeat=$7  WHERE skill_id = $1`,
         [id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.alexa_events, b.repeat])
     } else if (req.query.intents) {
+      if(!b.account_linking) b.account_linking = undefined
       // UPDATE INTENTS COLUMN
       await pool.query(`UPDATE skills SET intents=$2, slots=$3, fulfillment=$4, account_linking=$5, platform=$6 WHERE skill_id = $1`,
         [id, b.intents, b.slots, b.fulfillment, b.account_linking, b.platform])
@@ -547,20 +550,17 @@ const checkVersions = (project_id, platform, options={}) => new Promise(async re
 
         try {
           // Check if this endpoint is LIVE
-          // const response = await axios.request({
-          //   url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/live/manifest`,
-          //   method: 'GET',
-          //   headers: {
-          //     Authorization: token
-          //   }
-          // })
+          const response = await axios.request({
+            url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version.amzn_id)}/stages/live/manifest`,
+            method: 'GET',
+            headers: {
+              Authorization: token
+            }
+          })
 
-          // // take the endpoint's Version ID
-          // const split_uri = response.data.manifest.apis.custom.endpoint.uri.split('/')
-          // live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
-
-          // TEST
-          live_id = 3741
+          // take the endpoint's Version ID
+          const split_uri = response.data.manifest.apis.custom.endpoint.uri.split('/')
+          live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
 
           const index = live_projects.indexOf(live_id)
 
@@ -787,13 +787,19 @@ exports.buildSkill = async (req, res) => {
           // Update the AMZN ID of the current version (manifest updated)
           await pool.query('UPDATE skills SET amzn_id = $1 WHERE skill_id = $2', [amzn_id, id])
 
+          const product_map = {}
           // Don't even bother with products if not in US
           if (Array.isArray(r.locales) && r.locales.includes('en-US')) {
             let products = await pool.query(`
               SELECT p.*, pc.amzn_prod_id, pc.creator_id AS status
               FROM products p
               LEFT JOIN (SELECT * FROM product_creators WHERE creator_id = $2) pc ON p.id = pc.product_id
-              WHERE skill_id = $1
+              WHERE skill_id = ( 
+                SELECT p.dev_version 
+                FROM projects p 
+                INNER JOIN skills s ON s.project_id = p.project_id 
+                WHERE skill_id = $1 LIMIT 1
+              )
             `, [r.skill_id, req.user.id]);
 
             if (Array.isArray(products.rows) && products.rows.length !== 0) {
@@ -801,6 +807,7 @@ exports.buildSkill = async (req, res) => {
                 let product = row.data
                 let productId = row.id
                 let AmazonProductId = row.amzn_prod_id
+
                 try {
                   // Try to update the product if it exists
                   if (!AmazonProductId) throw null
@@ -836,11 +843,11 @@ exports.buildSkill = async (req, res) => {
                     if(row.status){
                       await pool.query(
                         "UPDATE product_creators SET amzn_prod_id = $1 WHERE product_id = $2 AND creator_id = $3", 
-                        [AmazonProductId, pid, req.user.id])
+                        [AmazonProductId, productId, req.user.id])
                     }else{
                       await pool.query(
                         "INSERT INTO product_creators (product_id, creator_id, amzn_prod_id) VALUES ($1, $2, $3)", 
-                        [pid, req.user.id, AmazonProductId])
+                        [productId, req.user.id, AmazonProductId])
                     }
                   }
 
@@ -853,6 +860,8 @@ exports.buildSkill = async (req, res) => {
                     }
                   })
                 }
+
+                product_map[productId] = AmazonProductId
               }
             }
           }
@@ -877,9 +886,9 @@ exports.buildSkill = async (req, res) => {
 
                     models[lang] = model
                     // ruh-oh time to do a secondary pass on the entire project's diagram ripperionis
-                    if(samples && !secondary) {
+                    if((samples || !_.isEmpty(product_map)) && !secondary) {
                       secondary = true
-                      secondPass(r.diagram, samples)
+                      secondPass(r.diagram, {samples, product_map})
                     }
                   }
                   
@@ -915,7 +924,7 @@ exports.buildSkill = async (req, res) => {
                   account_linking.domains = _.flattenDeep(account_linking.domains)
                   account_linking.scopes = _.flattenDeep(account_linking.scopes)
                   if(account_linking.clientSecret) {
-                    account_linking.clientSecret = jwt.verify(account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE)
+                    account_linking.clientSecret = jwt.verify(account_linking.clientSecret, process.env.JWT_SECRET)
                   }
                   try {
                     await axios.request({
@@ -1273,7 +1282,7 @@ exports.buildGoogleSkill = async (req, res) => {
 
     let dialogflow_creds
     try {
-      dialogflow_creds = JSON.parse(version.dialogflow_token)
+      dialogflow_creds = version.dialogflow_token
     } catch (e) {
       throw ('Credentials not found')
     }
@@ -1359,7 +1368,7 @@ exports.getGoogleSkill = async (req, res) => {
       let defaultLanguageCode, supportedLanguageCodes
       if (data.rows[0].dialogflow_token) {
         try {
-          let dialogflow_token = JSON.parse(data.rows[0].dialogflow_token)
+          let dialogflow_token = data.rows[0].dialogflow_token
           google_id = dialogflow_token.project_id
           private_key = dialogflow_token.private_key
           client_email = dialogflow_token.client_email
@@ -1419,4 +1428,49 @@ exports.getGoogleSkill = async (req, res) => {
       }
     }
   });
+}
+
+const { getLogsProject } = require('./logs')
+
+exports.getVersionInfo = async (req, res) => {
+  let version = {}
+  if(req.query.encoded){
+    version.version_id = hashids.decode(req.params.version_id)[0]
+    version.encoded = req.params.version_id
+  }else{
+    version.encoded = hashids.encode(req.params.version_id)
+    version.version_id = req.params.version_id
+  }
+
+  try {
+    version.project = (await pool.query(`
+      SELECT p.* FROM projects p
+      INNER JOIN skills s ON s.project_id = p.project_id
+      WHERE s.skill_id = $1 LIMIT 1
+    `, [version.version_id])).rows[0]
+
+    version.versions = (await pool.query(`
+      SELECT * FROM skills s
+      LEFT JOIN project_members pm ON pm.project_id = s.project_id AND pm.creator_id = s.creator_id
+      WHERE s.project_id = $1
+    `, [version.project.project_id])).rows
+
+    try{
+      version.logs = await getLogsProject(version.project.project_id)
+    }catch(err) {
+      version.logs = []
+    }
+
+    version.versions = version.versions.map(v => {
+      v.version_id = v.skill_id
+      v.encoded = hashids.encode(v.version_id)
+      delete v.skill_id
+      return v
+    })
+
+    res.send(version)
+  }catch(e){
+    console.error(e)
+    res.status(500).send(e)
+  }
 }

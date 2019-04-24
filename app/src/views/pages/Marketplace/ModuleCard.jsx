@@ -29,7 +29,7 @@ class ModuleCard extends Component{
 				</a>
 			</div>
 		)
-	}
+	} 
 
 
 }

@@ -236,10 +236,12 @@ exports.checkout = async (req, res) => {
 };
 
 exports.getTeams = async (req, res) => {
+  const user = req.params.creator_id || req.user.id
+
   try {
     let teams = (await pool.query(
       "SELECT t.*, MAX(tm.status) FROM teams t INNER JOIN team_members tm ON t.team_id = tm.team_id WHERE tm.creator_id = $1 GROUP BY t.team_id",
-      [req.user.id]
+      [user]
     )).rows;
     res.send(
       teams.map(t => {

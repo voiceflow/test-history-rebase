@@ -109,6 +109,25 @@ const incrementTimesPublishedSuccessfulIntercom = (id) => {
   })
 }
 
+const checkSkillInReview = (id) => {
+  return new Promise(async (resolve) => {
+    try{
+      let review_statuses = (await pool.query(`
+        SELECT s.review 
+        FROM skills s
+        WHERE s.project_id = (
+          SELECT project_id 
+          FROM skills 
+          WHERE skill_id = $1
+        )
+          AND review = true`, [id])).rows
+      resolve(review_statuses.length > 0)
+    } catch (err) {
+      writeToLogs('CHECK SKILL IN REVIEW', {err})
+    }
+  })
+}
+
 exports.getSkill = async (req, res) => {
 
   let project_id = hashids.decode(req.params.project_id)[0]
@@ -159,6 +178,7 @@ exports.getSkill = async (req, res) => {
     if(skill_data === undefined){
       res.sendStatus(404)
     } else {
+      skill_data.review = await checkSkillInReview(id)
       delete skill_data.dialogflow_token
         // Don't expose these on front end
 

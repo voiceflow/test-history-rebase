@@ -165,7 +165,7 @@ class API extends Component {
         const { body, headers, params, bodyInputType, content, mapping } = this.props.node.extras
         const replacer = (match, inner, variables_map, url=false) => {
             if(inner in variables_map){
-                return url ?  encodeURIComponent(variables_map[inner]) : variables_map[inner];
+                return url ?  encodeURI(variables_map[inner]) : variables_map[inner];
             }else{
                 return match;
             }

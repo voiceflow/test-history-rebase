@@ -5,6 +5,9 @@ import {push} from 'connected-react-router'
 import queryString from 'query-string'
 // import { setError } from 'ducks/modal'
 
+export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT'
+export const RESET_ACCOUNT = 'RESET_ACCOUNT'
+
 const cookies = new Cookies()
 const initialState = {
   loading: false,
@@ -18,12 +21,12 @@ const initialState = {
 // REDUCER
 export default function accountReducer(state = initialState, action) {
   switch (action.type) {
-    case 'UPDATE_ACCOUNT':
+    case UPDATE_ACCOUNT:
       return {
         ...state,
         ...action.payload
       }
-    case 'RESET_ACCOUNT':
+    case RESET_ACCOUNT:
       return initialState
     default:
       return state
@@ -32,11 +35,11 @@ export default function accountReducer(state = initialState, action) {
 
 // ACTIONS
 const resetAccount = () => ({
-  type: 'RESET_ACCOUNT'
+  type: RESET_ACCOUNT
 }) 
 
 export const updateAccount = (payload) => ({
-  type: 'UPDATE_ACCOUNT',
+  type: UPDATE_ACCOUNT,
   payload: payload
 })
 

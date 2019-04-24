@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { pushVariable, setVariables } from './../../../../actions/variableActions'
-import { updateVersion } from './../../../../actions/versionActions'
+import { pushVariable, setVariables } from 'ducks/variable'
+import { updateVersion } from 'ducks/version'
 import { setError } from 'ducks/modal'
 import { Input, FormGroup, Label } from 'reactstrap';
 import {Tooltip} from 'react-tippy'

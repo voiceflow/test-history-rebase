@@ -147,6 +147,11 @@ ul {
 .pt-6 {
     padding-top: 4rem !important;
 }
+
+.flex-1 {
+  flex: 1;
+}
+
 .form-control:focus, .input-wrap:focus-within, .StripeElement--focus{
   border: 1px solid #5D9DF5 !important;
   box-shadow: rgba(50, 50, 93, 0.03) 0px 2px 3px, rgba(0, 0, 0, 0.03) 0px 1px 3px !important;
@@ -208,7 +213,7 @@ ul {
     display: grid;
 }
 .grid-col-3{
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
 }
 .grid-col-2{
     grid-template-columns: 1fr 1fr;
@@ -277,9 +282,8 @@ ul {
     background-image: url('/user.svg') !important;
     background-size: auto 17px !important;
     background-repeat: no-repeat !important;
-    background-position: 12px 12px !important;
+    background-position: 12px 11px !important;
     padding-left: 40px !important;
-    padding-top: 9px;
 }
 .dollar-input{
     background-image: url('/dollar.svg') !important;
@@ -815,7 +819,7 @@ hr.full-width {
 .btn-default.exit>i {
     margin-right: 4px;
 }
-.text-max {
+.text-max, .overflow-ellipsis {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1791,12 +1795,11 @@ body.modal-open {
   font-weight: 500;
   border: 1px solid transparent;
   text-align: center;
-  font-family: Roboto, sans-serif;
   height: 50px;
   cursor: pointer;
   transition: transform 0.25s ease;
   border-radius: 5px !important;
-  font-family: OpenSans !important;
+  font-family: 'Open Sans' !important;
 }
 
 .social-button:hover {

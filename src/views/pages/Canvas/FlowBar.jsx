@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import { ListGroup, ListGroupItem } from "reactstrap";
 import { setConfirm } from 'ducks/modal'
-import { renameDiagram } from "actions/diagramActions";
+import { renameDiagram } from 'ducks/diagram';
 
 import {UncontrolledDropdown, DropdownToggle, DropdownItem, DropdownMenu} from 'reactstrap'
 class FlowBar extends Component{

@@ -3,13 +3,13 @@ import cn from 'classnames'
 import { connect } from 'react-redux';
 import { compose } from 'recompose'
 
-import { loadSession, errorScreen, socketCheck } from './views/HOC/socketCheck'
+import { loadSession, errorScreen, socketCheck } from 'hocs/withSocketCheck'
 
-import { fetchVersion, setLiveModeModal, updateVersion, resetVersion } from './actions/versionActions'
-import { fetchDiagrams } from './actions/diagramActions'
-import { fetchProducts } from "./actions/productActions";
-import { fetchDisplays } from "./actions/displayActions";
-import { fetchEmails } from "./actions/emailActions";
+import { fetchVersion, setLiveModeModal, updateVersion, resetVersion } from 'ducks/version'
+import { fetchDiagrams } from 'ducks/diagram'
+import { fetchProducts } from 'ducks/product'
+import { fetchDisplays } from "ducks/display";
+import { fetchEmails } from 'ducks/email';
 
 import Canvas from './views/pages/Canvas'
 import Visuals from './views/pages/Visuals'

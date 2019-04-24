@@ -3,7 +3,7 @@ import Select from 'react-select';
 import { connect } from "react-redux";
 import Expression from './components/Expression'
 import Expressionfy from './components/Expressionfy';
-import { openTab } from "actions/userActions";
+import { openTab } from "ducks/user";
 import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 
 class SetBlock extends Component {

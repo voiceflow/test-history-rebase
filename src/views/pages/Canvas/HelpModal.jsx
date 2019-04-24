@@ -14,7 +14,7 @@ const blocks = [
   },
   {
     type: "audio",
-    info: "Audio blocks let you add music, sound effects, or voice acting to your skill. Drag-n-drop or upload mp3 audio files to the audio block. You can also use text-to-speech to generate character voices for your skill. Lastly, you can combine multiple different sounds/music/voices together by adding another audio component within your audio block, and VoiceFlow will automatically combine all the audio files together.",
+    info: "Audio blocks let you add music, sound effects, or voice acting to your skill. Drag-n-drop or upload mp3 audio files to the audio block. You can also use text-to-speech to generate character voices for your skill. Lastly, you can combine multiple different sounds/music/voices together by adding another audio component within your audio block, and Voiceflow will automatically combine all the audio files together.",
     icon: <i className="fas fa-volume-up"/>,
     video: "https://youtu.be/embed/f-orXO8hCPg"
   },

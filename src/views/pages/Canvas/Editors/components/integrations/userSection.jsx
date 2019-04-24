@@ -6,7 +6,7 @@ import { Collapse } from 'reactstrap'
 import update from 'immutability-helper';
 
 import DefaultModal from 'views/components/Modals/DefaultModal'
-import { deleteIntegrationUser } from 'actions/integrationUsersActions'
+import { deleteIntegrationUser } from 'ducks/integration'
 
 // props
 // selected_integration, user, integration_data, updateIntegrationData, showNextSection, user_modal, action_data, toggleSection, open

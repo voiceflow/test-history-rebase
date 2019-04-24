@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { deleteEmail } from './../../../actions/emailActions';
+import { deleteEmail } from 'ducks/email'
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
 import Masonry from 'react-masonry-component';

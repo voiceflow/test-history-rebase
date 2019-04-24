@@ -87,7 +87,7 @@ export class Speak extends Component {
         let properties = this.state.node.extras
 
         return (
-            <div style={{marginTop: -6}}>
+            <div>
                 {properties.dialogs.map((d, i) => 
                     <SpeakElement
                         d={d}
@@ -104,7 +104,7 @@ export class Speak extends Component {
                 )}
                 { properties.dialogs.length < BLOCK_LIMIT ?
                     <React.Fragment>
-                        <div className="d-flex my-3">
+                        <div className="d-flex mt-4">
                             <button className="btn btn-secondary mr-3" onClick={() => this.handleAddBlock(false)}>
                                 <img src={'/comment.svg'} alt="comment" className="mr-3 mb-1" width='17px'/>
                                 Add Speech
@@ -114,7 +114,7 @@ export class Speak extends Component {
                                 Add Audio
                             </button>
                         </div>
-                        <InputGroup className="my-2">
+                        <InputGroup className="my-3">
                             <label className="input-group-text w-100 text-left">
                                 <Input addon type="checkbox" checked={!!properties.randomize} onChange={()=>{properties.randomize = !properties.randomize; this.forceUpdate()}}/>
                                 <span className="ml-2">Output Random Entry</span>

@@ -13,7 +13,7 @@ import {
     DropdownItem 
 } from 'reactstrap'
 
-import { renameDiagram } from "./../../../../../actions/diagramActions";
+import { renameDiagram } from 'ducks/diagram'
 
 class FlowButton extends Component {
 

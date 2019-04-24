@@ -24,7 +24,7 @@ import {
 import {
   getMembers,
 } from "ducks/team";
-import { unnormalize } from "ducks/util"
+import { unnormalize } from "ducks/_normalize"
 
 export class DashBoard extends Component {
   constructor(props) {

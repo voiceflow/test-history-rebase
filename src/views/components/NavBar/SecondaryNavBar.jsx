@@ -7,11 +7,11 @@ import Toggle from "react-toggle";
 import {
   toggleLive,
   setLiveModeModal
-} from "./../../../actions/versionActions";
+} from 'ducks/version'
 import {
   updateDiagramRoot,
   fetchDiagrams
-} from "./../../../actions/diagramActions";
+} from 'ducks/diagram';
 const PAGES = ["canvas", "settings", "visuals", "tools", "publish"];
 
 class SecondaryNavBar extends Component {

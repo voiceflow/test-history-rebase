@@ -1,6 +1,5 @@
-import skillReducer from '../versionReducer'
-import * as actions from '../../actions/versionActions'
-import { testSkill } from '../../views/pages/Canvas/__mock__/MockSkill'
+import skillReducer, * as actions from './../version'
+import { testSkill } from './../../views/pages/Canvas/__mock__/MockSkill'
 
 const initialState = {
     skill: {},

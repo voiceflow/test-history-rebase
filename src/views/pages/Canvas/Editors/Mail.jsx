@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom'
 import VariableInput from './components/VariableInput'
 import { ContentState, convertToRaw } from 'draft-js';
 import { selectStyles, variableComponent } from 'views/components/VariableSelect'
-import { openTab } from 'actions/userActions'
+import { openTab } from 'ducks/user'
 
 export class Mail extends Component {
     constructor(props) {

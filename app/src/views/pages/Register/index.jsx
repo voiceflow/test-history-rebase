@@ -94,6 +94,7 @@ export class Account extends Component {
       password: this.state.password,
     })
     .catch(err => {
+      console.log(err.response)
       this.setState({
         login_error: err && err.response && err.response.data
       });

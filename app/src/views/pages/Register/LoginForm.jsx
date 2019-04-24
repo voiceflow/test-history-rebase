@@ -1,24 +1,60 @@
-import React, { Component, useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, FormGroup, Input, Alert } from 'reactstrap'
 import { Link } from 'react-router-dom'
-import GoogleLogin from 'react-google-login';
-import FacebookLogin from 'react-facebook-login'
-
+import SocialLogin from './SocialLogin'
+import ErrorWidget from './ErrorWidget';
+import { login } from 'ducks/account'
+import { connect } from 'react-redux'
 
 const LoginForm = props => {
-  const [authError, setAuthError] = useState(null)
   const [loginError, setLoginError] = useState(null)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [unverified, setUnverified] = useState(false)
+  const [errorColor, setErrorColor] = useState("danger")
+  let timeout
+
+  const openRegister = e => {
+    e.preventDefault()
+    props.history.push('/signup' + props.location.search);
+    return false;
+  }
+
+  const loginSubmit = (e) => {
+    e.preventDefault();
+    props.login({
+      email,
+      password,
+    })
+    .catch(err => {
+      console.log(err.response)
+        const errText = (err && err.response && err.response.data) ||
+                        (unverified ? "Please verify your email to use Facebook login" : false)
+        const errColor = unverified ? "success" : "danger"
+        setLoginError(errText)
+        setErrorColor(errColor)
+    })
+    return false;
+  }
+
+  useEffect(() => {
+    timeout = setTimeout(() => {
+      setLoginError(false)
+    }, 5000)
+
+    return () => clearTimeout(timeout)
+  })
+
+
   return (
-  <Form id="login-form" onSubmit={this.loginSubmit}>
+  <Form id="login-form" onSubmit={loginSubmit}>
     <img className="login-logo" src="/logo.svg" alt="logo"/>
     <div className="px-5 pb-5 pt-4">
       <div className="text-center">
         <h4 className="mb-4">Login</h4>
       </div>
-
-      {loginError}
+      <SocialLogin entryText={"login"} />
+      <ErrorWidget color={errorColor} error={loginError} />
       <FormGroup>
         <Input 
           className="form-bg" 
@@ -38,13 +74,27 @@ const LoginForm = props => {
           placeholder="Password" required minLength="8" 
           value={password}/>
       </FormGroup>
-      <button className="btn-primary btn-lg btn-block" type="submit">Login</button>
-      <div className="text-center small mt-2"><Link style={{color:'#8da2b5'}}to='/reset'>Forgot your password?</Link></div>
+      <button 
+        className="btn-primary btn-lg btn-block" 
+        type="submit">
+          Login
+        </button>
+      <div className="text-center small mt-2">
+        <Link style={{color:'#8da2b5'}}to='/reset'>
+          Forgot your password?
+        </Link>
+      </div>
       <hr/>
-      <div className="text-center">Dont have an account? <a href="/signup" onClick={this.openRegister}>Sign Up</a></div>
+      <div className="text-center">Dont have an account?  
+      <a href="/signup" onClick={openRegister}> Sign Up</a>
+      </div>
     </div>
   </Form>
 )
 }
 
-export default LoginForm
+const mapDispatchToProps = dispatch => ({
+  login: (user) => dispatch(login(user)),
+})
+
+export default connect(null, mapDispatchToProps)(LoginForm)

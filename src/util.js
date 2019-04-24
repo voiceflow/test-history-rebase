@@ -234,7 +234,7 @@ const deepDraftToMarkdown = (object) => {
 const deepVariableSubstitution = (object, variableMap) => {
   const replacer = (match, inner, variables_map, uriEncode = false) => {
     if(inner in variables_map){
-        return uriEncode ? encodeURIComponent(variables_map[inner]) : variables_map[inner]
+        return uriEncode ? encodeURI(variables_map[inner]) : variables_map[inner]
     }else{
         return match
     }

@@ -2943,7 +2943,8 @@ const ALLOWED_GOOGLE_BLOCKS = [
   'command',
   'code',
   'god',
-  'integrations'
+  'integrations',
+  'stream'
 ]
 
 // const BUILT_IN_INTENTS_GOOGLE = [{

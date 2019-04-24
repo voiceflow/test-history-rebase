@@ -12,6 +12,7 @@ export class LinkModel extends BaseModel {
 		this.sourcePort = null;
 		this.targetPort = null;
 		this.labels = [];
+		this.hidden = false;
 	}
 
 	deSerialize(ob, engine) {
@@ -49,18 +50,22 @@ export class LinkModel extends BaseModel {
 				);
 			}
 		}
+
+		if(ob.hidden) this.hidden = ob.hidden
 	}
 
 	serialize() {
-		return _.merge(super.serialize(), {
+		const serialized = {
 			source: this.sourcePort ? this.sourcePort.getParent().id : null,
 			sourcePort: this.sourcePort ? this.sourcePort.id : null,
 			target: this.targetPort ? this.targetPort.getParent().id : null,
 			targetPort: this.targetPort ? this.targetPort.id : null,
 			points: _.map(this.points, point => {
 				return point.serialize();
-			})
-		});
+			}),
+		}
+		if (this.hidden) serialized.hidden = this.hidden
+		return _.merge(super.serialize(), serialized);
 	}
 
 	doClone(lookupTable = {}, clone) {
@@ -217,5 +222,13 @@ export class LinkModel extends BaseModel {
 
 	generatePoint(x = 0, y = 0) {
 		return new PointModel(this, { x: x, y: y }, toolkit.UID());
+	}
+
+	checkHidden() {
+		if (this.sourcePort.hidden || this.targetPort.hidden) {
+			this.hidden = true
+		} else {
+			this.hidden = false
+		}
 	}
 }

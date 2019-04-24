@@ -445,6 +445,7 @@ class Editor extends Component {
             diagramEngine={this.props.diagramEngine}
             forceRepaint={this.props.forceRepaint}
             repaint={this.props.repaint}
+            platform={this.props.platform}
           />
         );
       case "permissions":

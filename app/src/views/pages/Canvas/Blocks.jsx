@@ -73,7 +73,7 @@ const SECTIONS = [{
 
 const getFlows = (props) => {
     // MARKETPLACE BETA
-    if(props === undefined || props.user.admin !== 7){
+    if(props === undefined || props.user === undefined || props.user.admin !== 7){
         return undefined
     }
 

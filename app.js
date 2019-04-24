@@ -300,6 +300,7 @@ app.post('/analytics/track_active_canvas', ensureLoggedIn(), Track.trackCanvasTi
 app.post('/analytics/track_first_session_upload', ensureLoggedIn(), Track.trackFirstSessionUpload)
 app.post('/analytics/track_first_project', ensureLoggedIn(), Track.trackFirstProject)
 app.post('/analytics/track_dev_account', ensureLoggedIn(), Track.trackDevAccount)
+app.post('/analytics/track_flow_used', ensureLoggedIn(), Track.trackFlowUsed)
 
 app.post('/integrations/get_users', ensureLoggedIn(), Integrations.getAllUsers)
 app.post('/integrations/add_user', ensureLoggedIn(), Integrations.addUser)

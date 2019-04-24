@@ -520,16 +520,14 @@ exports.copySkill = async (req, res, options, cb = false) => {
 
               await pool.query(`UPDATE skills SET project_id = $1 WHERE skill_id = $2`, [new_project_data.project_id, copy_skill.skill_id])
             
-              if(process.env.NODE_ENV !== 'test'){
-                analytics.track({
-                  userId: req.user.id,
-                  event: 'Project Created',
-                  properties: {
-                    skill_id: copy_skill.skill_id,
-                    original_skill_id: id
-                  }
-                })
-              }
+              analytics.track({
+                userId: req.user.id,
+                event: 'Project Created',
+                properties: {
+                  skill_id: copy_skill.skill_id,
+                  original_skill_id: id
+                }
+              })
             } 
           } catch (err) {
             writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})

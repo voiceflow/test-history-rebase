@@ -1,4 +1,4 @@
-const { pool, hashids, docClient, writeToLogs, ESclient } = require('./../services')
+const { pool, hashids, docClient, writeToLogs, ESclient, analytics } = require('./../services')
 const { copySkill, deleteVersionPromise, copyDiagramsFromSkill } = require('./skill_util')
 const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
 
@@ -237,6 +237,11 @@ const requestCertification = async (req, res) => {
 		req.params.id = req.params.skill_id
 		req.params.target_creator = ADMIN_MARKETPLACE_ACC
 		copySkill(req, res, {user_copy: true, request_cert: true, project_id: module_project_id}, () => {
+			analytics.track({
+				userId: req.user.id,
+				event: 'Flow Created',
+				properties: module_data
+			})
 			res.sendStatus(200)	
 		})
 	} catch (err) {
@@ -363,6 +368,11 @@ const giveAccess = async (req, res) => {
 			}
 		})
 		module_data.module_id = hashids.encode(module_data.module_id)
+		analytics.track({
+			userId: req.user.id,
+			event: 'Flow Added',
+			properties: module_data
+		})
 		res.send({new_module: module_data, globals: new_globals, new_diagrams: new_diagrams})
 	} catch (err) {
 		await pool.query(`DELETE FROM team_modules WHERE team_id = $1 AND module_id = $2 AND project_id = $3`, [team_id, module_id, project_id])

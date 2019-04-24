@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Card, CardBody } from 'reactstrap'
 import './Marketplace.css'
-import withRenderModuleIcon from '../../HOC/ModuleIcon'
+import withRenderModuleIcon from 'hocs/withModuleIcon'
 
 class ModuleCard extends Component{
 
@@ -28,7 +28,7 @@ class ModuleCard extends Component{
 				</span>
 			</div>
 		)
-	}
+	} 
 
 
 }

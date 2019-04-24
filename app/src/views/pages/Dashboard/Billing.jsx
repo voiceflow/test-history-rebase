@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import moment from "moment";
-import StripeHandler from "views/HOC/StripeHandler";
+import StripeHandler from "hocs/withStripeHandler";
 import { CardElement } from "react-stripe-elements";
 
 const Invoice = props => {

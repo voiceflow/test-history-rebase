@@ -360,6 +360,7 @@ exports.patchSkill = async (req, res) => {
       await pool.query(`UPDATE skills SET name=$2, restart=$3, resume_prompt=$4, error_prompt=$5, alexa_events=$6, repeat=$7  WHERE skill_id = $1`,
         [id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.alexa_events, b.repeat])
     } else if (req.query.intents) {
+      if(!b.account_linking) b.account_linking = undefined
       // UPDATE INTENTS COLUMN
       await pool.query(`UPDATE skills SET intents=$2, slots=$3, fulfillment=$4, account_linking=$5, platform=$6 WHERE skill_id = $1`,
         [id, b.intents, b.slots, b.fulfillment, b.account_linking, b.platform])

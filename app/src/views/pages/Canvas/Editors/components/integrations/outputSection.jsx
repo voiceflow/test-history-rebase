@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Collapse } from 'reactstrap'
 import _ from 'lodash'
 import OutputMapping from './outputMapping'
-import { openTab } from 'actions/userActions'
+import { openTab } from 'ducks/user'
 import update from 'immutability-helper'
 
 // props

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import axios from 'axios'
-import { removeUserModules } from './../../../../../actions/versionActions'
-import { replaceDiagrams } from './../../../../../actions/diagramActions'
+import { removeUserModules } from './../../../../../ducks/version'
+import { replaceDiagrams } from './../../../../../ducks/diagram'
 
 class ModuleItem extends Component {
     constructor(props){

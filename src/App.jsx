@@ -40,6 +40,8 @@ import ErrorModal from './views/components/Modals/ErrorModal'
 import Modal from 'views/components/Modals/Modal'
 
 import { getAuth, getUser } from 'ducks/account'
+import LoginForm from "./views/pages/Register/LoginForm";
+import SocialLogin from "./views/pages/Register/SocialLogin";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props =>
@@ -187,6 +189,7 @@ class App extends Component {
             {(this.state.session && history.location.pathname !== '/onboarding') && <NavBar history={history}/>}
               <Switch>
                 {/* User routes */}
+                <Route exact path="/loginform" component={SocialLogin} />
                 <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
                 <PublicRoute exact path="/reset" name="Reset" component={Reset} />
                 <PublicRoute exact path="/login" name="Login" page="login" component={Register} />

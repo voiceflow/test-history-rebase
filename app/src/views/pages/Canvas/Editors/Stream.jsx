@@ -66,6 +66,7 @@ class Stream extends Component {
     }
 
     render() {
+        const isAlexa = this.props.platform === 'alexa'
         return (
             <div>
                 <label>Stream File (AAC/MP4, MP3, HLS)</label>
@@ -78,7 +79,7 @@ class Stream extends Component {
                     }}
                     stream
                 />
-                <div className="space-between mt-3">
+                {isAlexa && <div className="space-between mt-3">
                     <label>Custom Pause</label>
                     <Toggle
                         icons={false}
@@ -86,8 +87,8 @@ class Stream extends Component {
                         onChange={this.togglePause}
                         className="fulfill-switch"
                     />
-                </div>
-                <div className="space-between">
+                </div>}
+                {isAlexa && <div className="space-between">
                     <label>Loop Audio</label>
                     <Toggle
                         icons={false}
@@ -95,7 +96,7 @@ class Stream extends Component {
                         onChange={this.toggleLoop}
                         className="fulfill-switch"
                     />
-                </div>
+                </div>}
             </div>
         );
     }

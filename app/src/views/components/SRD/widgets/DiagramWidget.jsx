@@ -75,11 +75,54 @@ export class DiagramWidget extends BaseWidget {
 		}
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(prevProps, prevState) {
 		if (!this.state.renderedNodes) {
 			this.setState({
 				renderedNodes: true
 			});
+		}
+
+		if (prevProps.platform !== this.props.platform) {
+			// const diagramModel = this.props.diagramEngine.getDiagramModel()
+			// _.forEach(diagramModel.getNodes(), node => {
+			// 	console.log("NODE", node)
+			// 	_.forEach(node.getPorts(), port => {
+			// 		_.forEach(port.getLinks(), link => {
+			// 			if (link.id === '86bd2576-74cf-487e-bf11-901164a6be0b') console.log("LINK POINTS", link)
+			// 			_.forEach(link.getPoints(), point => {
+			// 				if (_.last(point.parent.points).id === point.id){
+			// 					let target = this.props.diagramEngine.getPortCenter(port)
+			// 					point.updateLocation(target)
+			// 				} else if (_.head(point.parent.points)) {
+			// 					let source = this.props.diagramEngine.getPortCenter(port)
+			// 					point.updateLocation(source)
+			// 				}
+			// 			})
+			// 		})
+			// 	})
+			// })
+			const diagramModel = this.props.diagramEngine.getDiagramModel()
+			_.forEach(diagramModel.getNodes(), node => {
+				// console.log("CENTERING LINK", node.id)
+				node.centerLinks(this.props.diagramEngine)
+			// _.forEach(this.ports, port => {
+			// 	let center = diagramEngine.getPortCenter(port)
+			// 	_.forEach(port.links, link => {
+			// 		if (!_.isEmpty(link.points) && link.points.length >= 2) {
+			// 			if (port.in) {
+			// 				let point = _.last(link.points)
+			// 				point.updateLocation(center)
+			// 			} else {
+			// 				let point = _.head(link.points)
+			// 				point.updateLocation(center)
+			// 			}
+			// 		} else {
+			// 			link.remove()
+			// 		}
+			// 	})
+			// })
+			})
+			this.props.diagramEngine.repaintCanvas()
 		}
 	}
 
@@ -423,10 +466,10 @@ export class DiagramWidget extends BaseWidget {
 				} else if (model.model instanceof PointModel) {
 					// we want points that are connected to ports, to not necessarily snap to grid
 					// this stuff needs to be pixel perfect, dont touch it
-					if (_.last(model.model.parent.points).id === model.model.id){
+					if (!model.model.parent.hidden && _.last(model.model.parent.points).id === model.model.id){
 						let target = this.props.diagramEngine.getPortCenter(model.model.parent.targetPort)
 						model.model.updateLocation(target)
-					} else if (_.head(model.model.parent.points)) {
+					} else if (!model.model.parent.hidden && _.head(model.model.parent.points)) {
 						let source = this.props.diagramEngine.getPortCenter(model.model.parent.sourcePort)
 						model.model.updateLocation(source)
 					} else {
@@ -597,10 +640,10 @@ export class DiagramWidget extends BaseWidget {
 					delete this.props.diagramEngine.linksThatHaveInitiallyRendered[link.getID()];
 				}
 				if (model.model instanceof PointModel && model.model.parent.sourcePort && model.model.parent.targetPort) {
-					if (_.last(model.model.parent.points).id === model.model.id) {
+					if (!model.model.parent.hidden && _.last(model.model.parent.points).id === model.model.id) {
 						let target = this.props.diagramEngine.getPortCenter(model.model.parent.targetPort)
 						model.model.updateLocation(target)
-					} else if (_.head(model.model.parent.points).id === model.model.id) {
+					} else if (!model.model.parent.hidden && _.head(model.model.parent.points).id === model.model.id) {
 						let source = this.props.diagramEngine.getPortCenter(model.model.parent.sourcePort)
 						model.model.updateLocation(source)
 					} 

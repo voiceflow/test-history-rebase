@@ -8,20 +8,24 @@ export class PortModel extends BaseModel{
 		this.name = name;
 		this.links = {};
 		this.maximumLinks = maximumLinks;
+		this.hidden = false;
 	}
 
 	deSerialize(ob, engine: DiagramEngine) {
 		super.deSerialize(ob, engine);
 		this.name = ob.name;
 		this.maximumLinks = ob.in ? null : 1;
+		if(ob.hidden) this.hidden = ob.hidden
 	}
 
 	serialize() {
-		return _.merge(super.serialize(), {
+		const serialized = {
 			name: this.name,
 			parentNode: this.parent.id,
-			links: _.map(this.links, link => link.id)
-		});
+			links: _.map(this.links, link => link.id),
+		}
+		if (this.hidden) serialized.hidden = this.hidden
+		return _.merge(super.serialize(), serialized);
 	}
 
 	doClone(lookupTable = {}, clone) {
@@ -82,5 +86,12 @@ export class PortModel extends BaseModel{
 
 	isLocked() {
 		return super.isLocked() || this.getParent().isLocked();
+	}
+
+	setHidden(hidden) {
+		this.hidden = hidden
+		_.forOwn(this.links, link => {
+			link.checkHidden()
+		})
 	}
 }

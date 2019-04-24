@@ -21,9 +21,12 @@ export const SET_LIVE_MODE_MODAL = 'SET_LIVE_MODE_MODAL';
 export const REMOVE_FULFILLMENT = 'REMOVE_FULFILLMENT'
 export const UPDATE_FULFILLMENT = 'UPDATE_FULFILLMENT'
 export const RESET_VERSION = 'RESET_VERSION'
+export const UPDATE_USER_MODULES = 'UPDATE_USER_MODULES'
+export const REMOVE_USER_MODULES = 'REMOVE_USER_MODULES'
 
 const initialState = {
   skill: {},
+  user_modules: {},
   loading: false,
   error: null
 };
@@ -41,7 +44,8 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        skill: action.payload.skills
+        skill: action.payload.skills,
+        user_modules: action.payload.user_modules
       };
     case RESET_VERSION:
       return initialState
@@ -94,6 +98,16 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         skill: update(state.skill, {$merge: action.payload.skill })
+      }
+    case UPDATE_USER_MODULES:
+      return {
+        ...state,
+        user_modules: update(state.user_modules, {[action.payload.module.module_id]: {$set: action.payload.module}})
+      }
+    case REMOVE_USER_MODULES:
+      return {
+        ...state,
+        user_modules: update(state.user_modules, {$unset: [action.payload.module_id]})
       }
     case UPDATE_VERSION_MERGE:
       return {
@@ -185,12 +199,12 @@ export const updateFulfillment = ( intent_key, slot_config ) => ({
 })
 
 export const updateUserModules = module => ({
-    type: "UPDATE_USER_MODULES",
+    type: UPDATE_USER_MODULES,
     payload: { module }
 })
 
 export const removeUserModules = module_id => ({
-    type: "REMOVE_USER_MODULES",
+    type: REMOVE_USER_MODULES,
     payload: { module_id }
 })
 export const updateLocales = (locale) => {

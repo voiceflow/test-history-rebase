@@ -78,7 +78,7 @@ const getFlows = (props) => {
     }
 
     let module_array = []
-    let module_keys = Object.keys(props.user_modules)
+    let module_keys = props.user_modules ? Object.keys(props.user_modules) : []
     let module_section = {title: 'flows', items: module_array}
 
     if(module_keys.length > 0){

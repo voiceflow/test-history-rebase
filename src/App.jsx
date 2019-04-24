@@ -189,7 +189,7 @@ class App extends Component {
             {(this.state.session && history.location.pathname !== '/onboarding') && <NavBar history={history}/>}
               <Switch>
                 {/* User routes */}
-                <Route exact path="/loginform" component={SocialLogin} />
+                <Route exact path="/loginform" component={LoginForm} />
                 <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
                 <PublicRoute exact path="/reset" name="Reset" component={Reset} />
                 <PublicRoute exact path="/login" name="Login" page="login" component={Register} />

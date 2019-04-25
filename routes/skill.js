@@ -128,12 +128,13 @@ const checkSkillInReview = (amzn_id, creator_id) => {
       if(!token) return
       try{
         let res = await axios.request({
-          url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/certifications/~mostRecent`,
+          url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/certifications`,
           method: 'get',
           headers: {
             Authorization: token
           }
         })
+        // TODO: check for any in progress
         await setReviewStatus(amzn_id, true)
         resolve(true)
       } catch (err) {

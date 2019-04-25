@@ -6,8 +6,8 @@ jobs: # a collection of steps
       - image: circleci/node:10 # ...with this image as the primary container; this is where all `steps` will run
       - image: circleci/postgres:10 # and this image as the secondary service container
         environment:
-          POSTGRES_USER: voiceflowtest
-          POSTGRES_DB: voiceflowtest
+          POSTGRES_USER: voiceflow
+          POSTGRES_DB: voiceflow.test
       - image: circleci/dynamodb:13-oracle
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
@@ -15,7 +15,6 @@ jobs: # a collection of steps
           name: update npm version
           command: 'sudo npm install -g npm@latest'
       - restore_cache: # special step to restore the dependency cache
-          Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           key: react-cache-{{ checksum "app/package.json" }}
       - run:
           name: npm install react packages
@@ -46,9 +45,15 @@ jobs: # a collection of steps
       - run:
           name: Wait for Postgres & Dynamo Docker Images
           command: dockerize -wait tcp://localhost:5432 -timeout 1m && dockerize -wait tcp://localhost:8000 -timeout 1m
+      - restore_cache: # special step to restore the dependency cache
+          key: database-{{ checksum "database/.git/FETCH_HEAD" }}
       - run: # run tests
           name: Before Tests
           command: CIRCLECI=TRUE ./scripts/before_test.sh
+      - save_cache: # special step to save the dependency cache
+          key: database-{{ checksum "database/.git/FETCH_HEAD" }}
+          paths:
+            - ./database
       - run: # run coverage report
           name: (Integration Tests)
           command: npm run integration_tests

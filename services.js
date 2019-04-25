@@ -17,6 +17,7 @@ const hashids = new Hashids(process.env.CONFIG_ID_HASH, 10);
 const MB = 1024 * 1024;
 
 const AWS = require("aws-sdk");
+
 AWS.config = new AWS.Config({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -25,7 +26,8 @@ AWS.config = new AWS.Config({
 });
 
 const docClient = new AWS.DynamoDB.DocumentClient({
-  convertEmptyValues: true
+  convertEmptyValues: true,
+  endpoint: process.env.DYNAMO_ENDPOINT
 });
 
 var types = pg.types;

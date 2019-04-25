@@ -476,3 +476,9 @@
 .upgrade-modal .modal-content {
   overflow: hidden !important;
 }
+
+.updates-popover-container{
+  min-width: 400px !important;
+  max-height: 300px !important;
+  overflow: auto;
+}

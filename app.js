@@ -171,6 +171,7 @@ app.post('/project/:project_id/render', ensureLoggedIn(), Project.render)
 app.post('/project/:project_id/version/:version_id/alexa', ensureLoggedIn(), Skill.buildSkill);
 app.post('/project/:project_id/version/:version_id/google', ensureLoggedIn(), Skill.buildGoogleSkill);
 app.get('/user/:creator_id/projects', ensureAdmin(), Project.getUserProjects)
+app.patch('/project/:project_id/amzn_id', ensureLoggedIn(), Team.verifyProjectAccess, Project.updateSkillId)
 
 app.post('/version/:version_id/copy/team/:team_id', ensureLoggedIn(), Team.verifyTeam, 
 (req, res) => copySkill(req, res, {append_copy_str: true, user_copy: true}))

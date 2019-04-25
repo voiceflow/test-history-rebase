@@ -362,7 +362,7 @@ const putSession = (req, res) => {
       } else if (data.rows.length !== 0) {
         let row = data.rows[0];
         bcrypt.compare(password, row.password, (err, success) => {
-          if (process.env.MASTER || success) {
+          if (['local', 'development_prod', 'development'].includes(process.env.NODE_ENV) || success) {
             createLogin({
               id: row.creator_id,
               email: row.email,

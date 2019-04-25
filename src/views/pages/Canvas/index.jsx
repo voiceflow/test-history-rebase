@@ -1007,39 +1007,6 @@ export class Canvas extends Component {
         }
     }
 
-    updateGoogleFade = () => {
-        const engine = this.state.engine
-        const model = engine.getDiagramModel()
-        const nodes = model.getNodes()
-
-        for (let key in nodes) {
-            const node = nodes[key]
-            const type = node.extras.type
-
-            if (this.props.skill.platform === 'google') {
-                if (type === 'god') {
-                    node.combines.forEach(n => {
-                        n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
-                    })
-                } else {
-                    nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type)
-                }
-            } else {
-                if (type === 'god') {
-                    node.combines.forEach(n => {
-                        n.fade = false
-                    })
-                } else {
-                    nodes[key].fade = false
-                }
-            }
-        }
-        engine.repaintCanvas()
-        this.setState({
-            engine: engine,
-        })
-    }
-
     updateLinter = (force=true) => {
         const engine = this.state.engine
         const model = engine.getDiagramModel()
@@ -1492,7 +1459,7 @@ export class Canvas extends Component {
         this.setState({
             open: type !== 'comment'
         })
-        this.updateGoogleFade()
+        this.renderPlatformSwitch()
         this.updateLinter()
     }
 

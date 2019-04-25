@@ -426,19 +426,6 @@ export class DiagramWidget extends BaseWidget {
 					if (this.props.diagramEngine.isSmartRoutingEnabled()) {
 						this.props.diagramEngine.calculateRoutingMatrix();
 					}
-				} else if (model.model instanceof PointModel) {
-					// we want points that are connected to ports, to not necessarily snap to grid
-					// this stuff needs to be pixel perfect, dont touch it
-					if (!model.model.parent.hidden && _.last(model.model.parent.points).id === model.model.id){
-						let target = this.props.diagramEngine.getPortCenter(model.model.parent.targetPort)
-						model.model.updateLocation(target)
-					} else if (!model.model.parent.hidden && _.head(model.model.parent.points)) {
-						let source = this.props.diagramEngine.getPortCenter(model.model.parent.sourcePort)
-						model.model.updateLocation(source)
-					} else {
-						model.model.x = model.initialX + diagramModel.getGridPosition(amountX / amountZoom);
-						model.model.y = model.initialY + diagramModel.getGridPosition(amountY / amountZoom);
-					}
 				}
 			});
 
@@ -609,7 +596,7 @@ export class DiagramWidget extends BaseWidget {
 					} else if (!model.model.parent.hidden && _.head(model.model.parent.points).id === model.model.id) {
 						let source = this.props.diagramEngine.getPortCenter(model.model.parent.sourcePort)
 						model.model.updateLocation(source)
-					} 
+					}
 				}
 			});
 			//check for / remove any loose links in any models which have been moved

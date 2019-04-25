@@ -1083,58 +1083,75 @@ export class Canvas extends Component {
 
     renderPlatformSwitch = () => {
 
-      const updateGoogleFade = (type, key, node, nodes) => {
-        if (this.props.skill.platform === 'google') {
-            if (type === 'god') {
-                node.combines.forEach(n => {
-                    n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
-                })
+        const updateGoogleFade = (type, key, node, nodes) => {
+            if (this.props.skill.platform === 'google') {
+                if (type === 'god') {
+                    node.combines.forEach(n => {
+                        n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
+                    })
+                } else {
+                    nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type)
+                }
             } else {
-                nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type)
-            }
-        } else {
-            if (type === 'god') {
-                node.combines.forEach(n => {
-                    n.fade = false
-                })
-            } else {
-                nodes[key].fade = false
-            }
-          }
-      }
-
-      const updatePortsAndLinks = (type, key, node, nodes) => {
-        let ports = node.getPorts()
-
-        for (let name in ports) {
-            let port = node.getPort(name);
-            if(port.in) continue
-
-            if (port.label === 'pause') {
-                port.setHidden(this.props.skill.platform === 'google')
-            }
-
-            if (port.label === 'previous') {
-                port.setHidden(this.props.skill.platform === 'google')
+                if (type === 'god') {
+                    node.combines.forEach(n => {
+                        n.fade = false
+                    })
+                } else {
+                    nodes[key].fade = false
+                }
             }
         }
-      }
 
-      const engine = this.state.engine
-      const model = engine.getDiagramModel()
-      const nodes = model.getNodes()
+        const updatePortsAndLinks = (type, key, node, nodes) => {
+            let ports = node.getPorts()
 
-      for (let key in nodes) {
-          const node = nodes[key]
-          const type = node.extras.type
+            if (type === 'stream') {
+                for (let name in ports) {
+                    let port = node.getPort(name);
+                    if(port.in) continue
+    
+                    if (port.label === 'pause') {
+                        port.setHidden(this.props.skill.platform === 'google')
+                    }
+    
+                    if (port.label === 'previous') {
+                        port.setHidden(this.props.skill.platform === 'google')
+                    }
 
-          updateGoogleFade(type, key, node, nodes)
-          updatePortsAndLinks(type, key, node, nodes)
-      }
-      engine.repaintCanvas()
-      this.setState({
-          engine: engine,
-      })
+                    if (port.label === 'next') {
+                        port.setHidden(this.props.skill.platform === 'google')
+                    }
+                    if (port.label.trim() === '') {
+                        port.setHidden(this.props.skill.platform !== 'google')
+                    }
+                }
+            }
+        }
+
+        const engine = this.state.engine
+        const model = engine.getDiagramModel()
+        const nodes = model.getNodes()
+
+        for (let key in nodes) {
+            const node = nodes[key]
+            const type = node.extras.type
+
+            // Combine block
+            if (Array.isArray(node.combines) && node.combines.length !== 0) {
+                node.combines.forEach((n, i) => {
+                    updateGoogleFade(n.extras.type, i, n, node.combines)
+                    updatePortsAndLinks(n.extras.type, i, n, node.combines)
+                })
+            } else {
+                updateGoogleFade(type, key, node, nodes)
+                updatePortsAndLinks(type, key, node, nodes)
+            }
+        }
+        engine.repaintCanvas()
+        this.setState({
+            engine: engine,
+        })
     }
 
     onLoadId = (diagram_id) => {

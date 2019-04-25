@@ -60,44 +60,49 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 		const source = this.props.link.sourcePort
 		const target = this.props.link.targetPort
 
-		const prevSource = prevProps.link.sourcePort
-		const prevTarget = prevProps.link.targetPort
+		if (source) {
+			let center
+			try {
+				center = this.props.diagramEngine.getPortCenter(source)
+			} catch (e) {}
+			if (center) {
+				_.forEach(source.links, link => {
+					if (!_.isEmpty(link.points) && link.points.length >= 2) {
+						if (source.in) {
+							let point = _.last(link.points)
+							point.updateLocation(center)
+						} else {
+							let point = _.head(link.points)
+							point.updateLocation(center)
+						}
+					} else {
+						link.remove()
+					}
+				})
+			}
+		}
 
-		// if (prevSource)
-
-		// if (source && !source.hidden) {
-		// 	const center = this.props.diagramEngine.getPortCenter(source)
-		// 	_.forEach(source.links, link => {
-		// 		if (!_.isEmpty(link.points) && link.points.length >= 2) {
-		// 			if (source.in) {
-		// 				let point = _.last(link.points)
-		// 				point.updateLocation(center)
-		// 			} else {
-		// 				let point = _.head(link.points)
-		// 				point.updateLocation(center)
-		// 			}
-		// 		} else {
-		// 			link.remove()
-		// 		}
-		// 	})
-		// }
-
-		// if (target && !target.hidden) {
-		// 	const center = this.props.diagramEngine.getPortCenter(target)
-		// 	_.forEach(target.links, link => {
-		// 		if (!_.isEmpty(link.points) && link.points.length >= 2) {
-		// 			if (target.in) {
-		// 				let point = _.last(link.points)
-		// 				point.updateLocation(center)
-		// 			} else {
-		// 				let point = _.head(link.points)
-		// 				point.updateLocation(center)
-		// 			}
-		// 		} else {
-		// 			link.remove()
-		// 		}
-		// 	})
-		// }
+		if (target) {
+			let center
+			try {
+				center = this.props.diagramEngine.getPortCenter(target)
+			} catch (e) {}
+			if (center) {
+				_.forEach(target.links, link => {
+					if (!_.isEmpty(link.points) && link.points.length >= 2) {
+						if (target.in) {
+							let point = _.last(link.points)
+							point.updateLocation(center)
+						} else {
+							let point = _.head(link.points)
+							point.updateLocation(center)
+						}
+					} else {
+						link.remove()
+					}
+				})
+			}
+		}
 	}
 
 	componentDidMount() {

@@ -37,6 +37,12 @@ export class PortModel extends BaseModel{
 	doClone(lookupTable = {}, clone) {
 		clone.links = {};
 		clone.parentNode = this.getParent().clone(lookupTable);
+
+		if (this.hidden) {
+			clone.hidden = this.hidden
+			clone.x = this.x
+			clone.y = this.y
+		}
 	}
 
 	getNode() {

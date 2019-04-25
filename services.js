@@ -21,8 +21,8 @@ const AWS = require("aws-sdk");
 AWS.config = new AWS.Config({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION,
-  endpoint: process.env.AWS_ENDPOINT
+  endpoint: process.env.AWS_ENDPOINT,
+  region: process.env.AWS_REGION
 });
 
 const docClient = new AWS.DynamoDB.DocumentClient({
@@ -169,7 +169,7 @@ const verify = (auth, cb) => {
 
 const cloudWatchLogs = new AWS.CloudWatchLogs();
 const writeToLogs = async (log_group, msg_details) => {
-  if (/development/.test(process.env.NODE_ENV)) {
+  if (/development/.test(process.env.NODE_ENV) || process.env.NODE_ENV === 'test') {
     console.log(log_group, msg_details);
     return;
   }

@@ -1,14 +1,8 @@
 const { pool, writeToLogs } = require('./../services')
 
-const milliToUnix = (milli) => {
-  return parseInt(parseInt(milli) / 1000)
-}
-
 exports.getUpdates = async (req, res) => {
-  let ts = milliToUnix(req.params.ts)
-
   try{
-    let update_data = (await pool.query('SELECT * FROM product_updates WHERE created > to_timestamp($1) AND created < NOW()', [ts])).rows
+    let update_data = (await pool.query('SELECT * FROM product_updates ORDER BY created DESC LIMIT 10')).rows
     res.status(200).send(update_data)
   } catch (err) {
     res.sendStatus(500)

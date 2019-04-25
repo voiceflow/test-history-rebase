@@ -7,12 +7,12 @@ import Masonry from "react-masonry-component";
 import { Tooltip } from "react-tippy";
 import "./DashBoard.css";
 import axios from "axios";
-import UpdatesModal from "./../../components/Modals/UpdatesModal";
 import VoiceCards from "views/components/Cards/VoiceCards";
 import EmptyCard from "views/components/Cards/EmptyCard";
 import LoadingModal from "views/components/Modals/LoadingModal";
 import TeamSettings from "./TeamSettings"
-import { Alert, Input, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import UpdatesPopover from "./UpdatesPopover"
+import { Alert, Input, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Popover, PopoverBody } from "reactstrap";
 import { setConfirm, setError } from 'ducks/modal'
 import { connect } from "react-redux";
 import { Members } from 'views/components/User'
@@ -34,7 +34,8 @@ export class DashBoard extends Component {
       loading: true,
       filter_text: "",
       loading_modal: false,
-      show_updates_modal: false
+      show_updates_modal: false,
+      updates_open: false
     };
 
     this.openProject = this.openProject.bind(this);
@@ -114,18 +115,8 @@ export class DashBoard extends Component {
   componentDidMount() {
     this.updateTeam()
 
-    let last_update_seen = localStorage.getItem(
-      "last_update_seen_" + this.props.user.id
-    )
-
-    if (!last_update_seen) {
-      last_update_seen = Date.now();
-    } else {
-      last_update_seen = parseInt(last_update_seen);
-    }
-
     axios
-      .get(`/product_updates/${last_update_seen}`)
+      .get(`/product_updates`)
       .then(res => {
         if (res.data.length > 0) {
           this.setState({
@@ -133,11 +124,6 @@ export class DashBoard extends Component {
             product_updates: res.data
           });
         }
-        last_update_seen = Date.now();
-        localStorage.setItem(
-          "last_update_seen_" + this.props.user.id,
-          last_update_seen
-        );
       })
       .catch(err => {
         console.error(err);
@@ -272,6 +258,16 @@ export class DashBoard extends Component {
         </div>
         <div className="title-group no-select pr-2">
           <div className="subheader-right">
+            <div>
+              <button className="dropdown-button-border" id="update-popup" type="button" onClick={() => {this.setState(prev => ({updates_open: !prev.updates_open}))}}>
+                <i className="fas fa-bell"></i>
+              </button>
+              <Popover placement="bottom" isOpen={this.state.updates_open} target="update-popup" toggle={() => {console.log('yeet') ;this.setState(prev => ({updates_open: !prev.updates_open}))}}>
+                <PopoverBody>
+                  <UpdatesPopover product_updates={this.state.product_updates}/>
+                </PopoverBody>
+              </Popover>
+            </div>
             <UncontrolledDropdown>
               <DropdownToggle className="ml-1 mr-4" tag="div">
                 <Tooltip
@@ -279,7 +275,7 @@ export class DashBoard extends Component {
                   title="Resources"
                   position="bottom"
                 >
-                  <button className="dropdown-button-border" type="submit">
+                  <button className="dropdown-button-border information-icon" type="submit">
                   </button>
                 </Tooltip>
               </DropdownToggle>
@@ -304,11 +300,6 @@ export class DashBoard extends Component {
           </div>
         </div>
         <div id="app" className="secondary-padding dashboard">
-          <UpdatesModal
-            show_update_modal={this.state.show_updates_modal}
-            toggle={this.toggleUpdatesModal}
-            product_updates={this.state.product_updates}
-          />
           <div id="navbar-top-left">
             <div className="searchBar ml-3">
               <Input

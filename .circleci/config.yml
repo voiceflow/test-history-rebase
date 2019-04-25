@@ -46,12 +46,12 @@ jobs: # a collection of steps
           name: Wait for Postgres & Dynamo Docker Images
           command: dockerize -wait tcp://localhost:5432 -timeout 1m && dockerize -wait tcp://localhost:8000 -timeout 1m
       - restore_cache: # special step to restore the dependency cache
-          key: database-{{ checksum "database/.git/FETCH_HEAD" }}
+          key: database
       - run: # run tests
           name: Before Tests
           command: CIRCLECI=TRUE ./scripts/before_test.sh
       - save_cache: # special step to save the dependency cache
-          key: database-{{ checksum "database/.git/FETCH_HEAD" }}
+          key: database
           paths:
             - ./database
       - run: # run coverage report

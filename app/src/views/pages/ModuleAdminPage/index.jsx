@@ -55,10 +55,6 @@ class ModuleAdminPage extends Component {
     }
 
     render() {
-        // let styles = {
-        //     width: '60px',
-        //     height: '60px',
-        // }
 
         let content = null
         if(this.state.approved){
@@ -76,7 +72,6 @@ class ModuleAdminPage extends Component {
                 </div>
             }
         }
-        console.log(this.state.modules)
         return(
             <div className='Window'>
                 {content}

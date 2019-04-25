@@ -478,7 +478,8 @@
 }
 
 .updates-popover-container{
-  width: 400px !important;
+  min-width: 300px !important;
+  max-width: 300px !important;
   max-height: 300px !important;
   overflow: auto;
 }

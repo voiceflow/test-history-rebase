@@ -314,4 +314,11 @@ if (process.env.NODE_ENV !== "test") {
   module.exports.analytics = new (require("analytics-node"))(
     process.env.SEGMENT_WRITE_KEY
   );
+} else {
+  const testTrack = () => {
+    //
+  }
+  module.exports.analytics = {
+    track: testTrack
+  }
 }

@@ -30,39 +30,39 @@ class BackupSettings extends Component{
     }
 
     componentDidMount(){
-        axios.get(`/project/${this.props.skill.project_id}/live_version`)
-        .then(res => {
-            let live_version = res.data.live_version
-            axios.get(`/project/${this.props.skill.project_id}/versions`)
-            .then(res => {
-                let versions = []
-                for(let i=0;i<res.data.length;i++){
-                    if(res.data[i].skill_id !== live_version){
-                        versions.push(res.data[i])
-                    } else {
-                        live_version = res.data[i]
-                    }
-                }
+        try{
+            let load_promises = []
+
+            load_promises.push(axios.get(`/project/${this.props.skill.project_id}/live_version`))
+            load_promises.push(axios.get(`/project/${this.props.skill.project_id}/versions`))
+            
+            Promise.all(load_promises)
+            .then((res) => {
+                let live_version = res[0].data
+                let versions = res[1].data.filter((version) => {
+                    return version.skill_id !== live_version.skill_id // Check both just in case
+                })
 
                 this.setState({
                     loading: false,
                     versions: versions,
                     live_version: live_version
                 })
+
+                console.log(this.state)
             })
-            .catch(err => {
+            .catch((err) => {
                 this.setState({
                     loading: false,
                     error: 'Unable to load versions'
                 })
             })
-        })
-        .catch(err => {
+        } catch (err) {
             this.setState({
                 loading: false,
                 error: 'Unable to load versions'
             })
-        })
+        }
     }
 
     previewBackup(version){
@@ -72,7 +72,7 @@ class BackupSettings extends Component{
         })
     }
 
-    confirmRestore(skill_id, canonical_skill_id, skill) {
+    confirmRestore(skill_id) {
         this.props.setConfirm({
             warning: true,
             text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, will delete all your current work since your last backup, and will not change your skill's Amazon endpoint. </Alert>,
@@ -102,7 +102,7 @@ class BackupSettings extends Component{
                 <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
                 
                 <ModalFooter>
-                    <button className="btn-primary ml-auto mr-auto" onClick={() => this.confirmRestore(this.state.curr_preview.skill_id, this.state.curr_preview.canonical_skill_id, this.state.curr_preview)}>Restore</button>
+                    <button className="btn-primary ml-auto mr-auto" onClick={() => this.confirmRestore(this.state.curr_preview.skill_id)}>Restore</button>
                 </ModalFooter>
             </Modal>
 
@@ -115,9 +115,6 @@ class BackupSettings extends Component{
                         </Label>
                         <div className="helper-text mb-2">Restore your skill to previous versions. A version is saved every time you upload your skill to Alexa</div>
                         <div id="backup">
-                            <div id="backup-overlay" className="super-center">
-                                <h5 className="text-muted">Backups Temporarily Disabled</h5>
-                            </div>}
                             <Table>
                                 <thead>
                                     <tr>
@@ -132,11 +129,17 @@ class BackupSettings extends Component{
                                         this.state.live_version ? 
                                         <tr className="table-primary">
                                             <td>{moment(this.state.live_version.created).fromNow()} <br/> (Current live version) </td>
+                                            <td className="text-center">
+                                                <i className={cn('fab', {
+                                                    'fa-google': this.state.live_version.published_platform === 'google',
+                                                    'fa-amazon': this.state.live_version.published_platform !== 'google',
+                                                })} />
+                                            </td>
                                             <td>
                                                 <Button className='btn-primary' onClick={() => this.previewBackup(this.state.live_version)}>Preview</Button>
                                             </td>
                                             <td>
-                                                <Button className='btn-primary' onClick={() => this.confirmRestore(this.state.live_version.skill_id, this.state.live_version.canonical_skill_id, this.state.live_version)}>Restore</Button>
+                                                <Button className='btn-primary' onClick={() => this.confirmRestore(this.state.live_version.skill_id)}>Restore</Button>
                                             </td>
                                         </tr>
                                         :
@@ -155,7 +158,7 @@ class BackupSettings extends Component{
                                                 <button className='btn-tertiary' onClick={() => this.previewBackup(version)}>Preview</button>
                                             </td>
                                             <td>
-                                                <button className='btn-primary-small' onClick={() => this.confirmRestore(version.skill_id, version.canonical_skill_id, version)}>Restore</button>
+                                                <button className='btn-primary-small' onClick={() => this.confirmRestore(version.skill_id)}>Restore</button>
                                             </td>
                                         </tr>
                                     })}

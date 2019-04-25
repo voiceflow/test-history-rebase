@@ -7,7 +7,7 @@ jobs: # a collection of steps
       - image: circleci/postgres:10 # and this image as the secondary service container
         environment:
           POSTGRES_USER: voiceflow
-          POSTGRES_DB: voiceflow.test
+          POSTGRES_DB: voiceflow_test
       - image: circleci/dynamodb:13-oracle
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory

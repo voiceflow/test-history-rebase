@@ -57,9 +57,6 @@ jobs: # a collection of steps
       - run: # run coverage report
           name: (Integration Tests)
           command: npm run integration_tests
-      - run:
-          name: After Tests
-          command: ./scripts/after_test.sh
   deploy-staging:
     machine: true
     steps:

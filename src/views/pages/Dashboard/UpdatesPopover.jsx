@@ -1,5 +1,6 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react'
+import moment from 'moment'
 
 const class_mapping = {
   FEATURE: {
@@ -19,40 +20,20 @@ const class_mapping = {
 class UpdatesPopover extends React.Component {
 
   render() {
+    console.log(this.props.product_updates)
     return (
-      <div>
+      <div className="text-center pt-2 pb-2">
         {Array.isArray(this.props.product_updates) && this.props.product_updates.map((entry, i) => {
           return <React.Fragment key={i}>
-            <div align="left" className="pr-4 pl-4">
-              <p className={class_mapping[entry.type].class}>&bull; {class_mapping[entry.type].label}: </p>
-              <p className="update-modal-txt" dangerouslySetInnerHTML={{ __html: entry.details }}></p>
+            <div align="left" className="pr-2 pl-2">
+              <p className={"d-inline-block mb-0 " + class_mapping[entry.type].class}>&bull; {class_mapping[entry.type].label}: </p>
+              <p className="d-inline-block mb-1" dangerouslySetInnerHTML={{ __html: entry.details }}></p>
+              <p className="text-secondary">{moment(entry.created).fromNow()}</p>
             </div>
-            <hr className="w-100"/> 
+            {i !== this.props.product_updates.length - 1 && <hr className="w-100"/>}
           </React.Fragment>
         })}
       </div>
-      // <Modal isOpen={this.props.show_update_modal} toggle={this.props.toggle} centered>
-      //   <div className="pt-3 mb-0 text-center">
-      //     <p className="mb-0" id="update-modal-header-title">Since you've been gone <span role="img" aria-label="jsx-a11y/accessible-emoji">✨</span></p>
-      //   </div>
-      //   <ModalBody className="text-center pl-0 pr-0">
-      //     <hr className="mt-0 w-100"/>
-      //     <div className="update-modal-body mb-4">
-      //       {Array.isArray(this.props.product_updates) && this.props.product_updates.map((entry, i) => {
-      //         return <React.Fragment key={i}>
-      //           <div align="left" className="pr-4 pl-4">
-      //             <p className={class_mapping[entry.type].class}>&bull; {class_mapping[entry.type].label}: </p>
-      //             <p className="update-modal-txt" dangerouslySetInnerHTML={{ __html: entry.details }}></p>
-      //           </div>
-      //           <hr className="w-100"/> 
-      //         </React.Fragment>
-      //       })}
-      //     </div>
-      //     <div>
-      //       <button className="btn btn-clear" onClick={this.props.toggle}>Got it!</button>
-      //     </div>
-      //   </ModalBody>
-      // </Modal>
     )
   }
 }

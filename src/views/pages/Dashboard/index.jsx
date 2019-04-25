@@ -262,7 +262,7 @@ export class DashBoard extends Component {
               <button className="dropdown-button-border" id="update-popup" type="button" onClick={() => {this.setState(prev => ({updates_open: !prev.updates_open}))}}>
                 <i className="fas fa-bell"></i>
               </button>
-              <Popover placement="bottom" isOpen={this.state.updates_open} target="update-popup" toggle={() => {console.log('yeet') ;this.setState(prev => ({updates_open: !prev.updates_open}))}}>
+              <Popover className="updates-popover-container" placement="bottom" isOpen={this.state.updates_open} target="update-popup" toggle={() => {console.log('yeet') ;this.setState(prev => ({updates_open: !prev.updates_open}))}}>
                 <PopoverBody>
                   <UpdatesPopover product_updates={this.state.product_updates}/>
                 </PopoverBody>

@@ -3,7 +3,7 @@
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 PROJECT_ROOT=$DIR'/..'
 
-. $PROJECT_ROOT/util.sh
+. $DIR/util.sh
 
 # Update Migrations Folder
 if ! [ -d "./database" ]; then

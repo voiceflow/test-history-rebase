@@ -25,9 +25,14 @@ AWS.config = new AWS.Config({
   region: process.env.AWS_REGION
 });
 
-const docClient = new AWS.DynamoDB.DocumentClient({
+// AWS does some hasOwnProperty check so only define endpoint if set
+const docClient = process.env.DYNAMO_ENDPOINT ? 
+new AWS.DynamoDB.DocumentClient({
   convertEmptyValues: true,
   endpoint: process.env.DYNAMO_ENDPOINT
+}) : 
+new AWS.DynamoDB.DocumentClient({
+  convertEmptyValues: true
 });
 
 var types = pg.types;

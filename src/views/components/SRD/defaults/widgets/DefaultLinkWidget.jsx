@@ -51,10 +51,53 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 		});
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(prevProps, prevState) {
 		if (this.props.link.labels.length > 0) {
 			window.requestAnimationFrame(this.calculateAllLabelPosition.bind(this));
 		}
+		// console.log("update", this.props.link.sourcePort, this.props.link.targetPort)
+
+		const source = this.props.link.sourcePort
+		const target = this.props.link.targetPort
+
+		const prevSource = prevProps.link.sourcePort
+		const prevTarget = prevProps.link.targetPort
+
+		// if (prevSource)
+
+		// if (source && !source.hidden) {
+		// 	const center = this.props.diagramEngine.getPortCenter(source)
+		// 	_.forEach(source.links, link => {
+		// 		if (!_.isEmpty(link.points) && link.points.length >= 2) {
+		// 			if (source.in) {
+		// 				let point = _.last(link.points)
+		// 				point.updateLocation(center)
+		// 			} else {
+		// 				let point = _.head(link.points)
+		// 				point.updateLocation(center)
+		// 			}
+		// 		} else {
+		// 			link.remove()
+		// 		}
+		// 	})
+		// }
+
+		// if (target && !target.hidden) {
+		// 	const center = this.props.diagramEngine.getPortCenter(target)
+		// 	_.forEach(target.links, link => {
+		// 		if (!_.isEmpty(link.points) && link.points.length >= 2) {
+		// 			if (target.in) {
+		// 				let point = _.last(link.points)
+		// 				point.updateLocation(center)
+		// 			} else {
+		// 				let point = _.head(link.points)
+		// 				point.updateLocation(center)
+		// 			}
+		// 		} else {
+		// 			link.remove()
+		// 		}
+		// 	})
+		// }
 	}
 
 	componentDidMount() {

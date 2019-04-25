@@ -16,6 +16,8 @@ export class PortModel extends BaseModel{
 		this.name = ob.name;
 		this.maximumLinks = ob.in ? null : 1;
 		if(ob.hidden) this.hidden = ob.hidden
+		if (!_.isNil(ob.x)) this.x = ob.x
+		if (!_.isNil(ob.y)) this.y = ob.y
 	}
 
 	serialize() {
@@ -24,7 +26,11 @@ export class PortModel extends BaseModel{
 			parentNode: this.parent.id,
 			links: _.map(this.links, link => link.id),
 		}
-		if (this.hidden) serialized.hidden = this.hidden
+		if (this.hidden) {
+			serialized.hidden = this.hidden
+			serialized.x = this.x
+			serialized.y = this.y
+		}
 		return _.merge(super.serialize(), serialized);
 	}
 
@@ -86,12 +92,5 @@ export class PortModel extends BaseModel{
 
 	isLocked() {
 		return super.isLocked() || this.getParent().isLocked();
-	}
-
-	setHidden(hidden) {
-		this.hidden = hidden
-		_.forOwn(this.links, link => {
-			link.checkHidden()
-		})
 	}
 }

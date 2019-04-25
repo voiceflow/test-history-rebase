@@ -373,6 +373,7 @@ const createCombineNode = (node, type, parent) => {
         node.addInPort(' ')
         node.addOutPort('next').setMaximumLinks(1)
         node.addOutPort('previous').setMaximumLinks(1)
+        node.addOutPort(' ').setMaximumLinks(1)
         node.extras = {
             alexa: {
                 audio: ''
@@ -607,6 +608,7 @@ const createDropNode = (event, engine, type, name) => {
             node.addInPort(' ')
             node.addOutPort('next').setMaximumLinks(1)
             node.addOutPort('previous').setMaximumLinks(1)
+            node.addOutPort(' ').setMaximumLinks(1)
             node.extras = {
                 alexa: {
                     audio: ''

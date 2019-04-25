@@ -30,7 +30,7 @@ export class RenderLinks extends BaseWidget {
 					this.props.diagramEngine.nodesRendered &&
 					!this.props.diagramEngine.linksThatHaveInitiallyRendered[link.id]
 				) {
-					if (link.sourcePort !== null) {
+					if (link.sourcePort !== null && !link.sourcePort.hidden) {
 						try {
 							const portCenter = this.props.diagramEngine.getPortCenter(link.sourcePort);
 							link.points[0].updateLocation(portCenter);
@@ -43,7 +43,7 @@ export class RenderLinks extends BaseWidget {
 							/*noop*/
 						}
 					}
-					if (link.targetPort !== null) {
+					if (link.targetPort !== null && !link.targetPort.hidden) {
 						try {
 							const portCenter = this.props.diagramEngine.getPortCenter(link.targetPort);
 							_.last(link.points).updateLocation(portCenter);

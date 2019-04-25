@@ -75,55 +75,17 @@ export class DiagramWidget extends BaseWidget {
 		}
 	}
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate() {
 		if (!this.state.renderedNodes) {
 			this.setState({
 				renderedNodes: true
 			});
 		}
 
-		if (prevProps.platform !== this.props.platform) {
-			// const diagramModel = this.props.diagramEngine.getDiagramModel()
-			// _.forEach(diagramModel.getNodes(), node => {
-			// 	console.log("NODE", node)
-			// 	_.forEach(node.getPorts(), port => {
-			// 		_.forEach(port.getLinks(), link => {
-			// 			if (link.id === '86bd2576-74cf-487e-bf11-901164a6be0b') console.log("LINK POINTS", link)
-			// 			_.forEach(link.getPoints(), point => {
-			// 				if (_.last(point.parent.points).id === point.id){
-			// 					let target = this.props.diagramEngine.getPortCenter(port)
-			// 					point.updateLocation(target)
-			// 				} else if (_.head(point.parent.points)) {
-			// 					let source = this.props.diagramEngine.getPortCenter(port)
-			// 					point.updateLocation(source)
-			// 				}
-			// 			})
-			// 		})
-			// 	})
-			// })
-			const diagramModel = this.props.diagramEngine.getDiagramModel()
-			_.forEach(diagramModel.getNodes(), node => {
-				// console.log("CENTERING LINK", node.id)
-				node.centerLinks(this.props.diagramEngine)
-			// _.forEach(this.ports, port => {
-			// 	let center = diagramEngine.getPortCenter(port)
-			// 	_.forEach(port.links, link => {
-			// 		if (!_.isEmpty(link.points) && link.points.length >= 2) {
-			// 			if (port.in) {
-			// 				let point = _.last(link.points)
-			// 				point.updateLocation(center)
-			// 			} else {
-			// 				let point = _.head(link.points)
-			// 				point.updateLocation(center)
-			// 			}
-			// 		} else {
-			// 			link.remove()
-			// 		}
-			// 	})
-			// })
-			})
-			this.props.diagramEngine.repaintCanvas()
-		}
+		const nodes = this.props.diagramEngine.getDiagramModel().getNodes()
+		_.forEach(nodes, node => {
+			node.centerLinks(this.props.diagramEngine)
+		})
 	}
 
 	componentDidMount() {
@@ -373,6 +335,8 @@ export class DiagramWidget extends BaseWidget {
 							})
 							current.isMoveInside = true;
 							this.props.diagramEngine.getDiagramModel().addNode(current);
+							this.props.diagramEngine.enableRepaintEntities([current]);
+							this.props.diagramEngine.repaintCanvas(false)
 							let overlapX = (current.x >= target_node.x && current.x <= (target_node.x + target_node.width / amountZoom)) || (current.x + 220 >= target_node.x && current.x + 220 <= target_node.x + (target_node.width / amountZoom));
 							let overlapY = (current.y >= target_node.y && current.y <= target_node.y + target_node.height / amountZoom) || (current.y + 35 >= target_node.y && current.y + 35 <= target_node.y + target_node.height / amountZoom);
 							if (!overlapX || !overlapY) {
@@ -387,7 +351,6 @@ export class DiagramWidget extends BaseWidget {
 										}
 									});
 									if (nodeCount === 1) {
-										// console.log(target_node.combines[firstNode])
 										let removed = target_node.combines[firstNode];
 										this.props.diagramEngine.getDiagramModel().addNode(removed)
 										removed.parentCombine = null;
@@ -402,32 +365,32 @@ export class DiagramWidget extends BaseWidget {
 										return true;
 									}
 								})
-								if (tempIdx === current.parentCombine.combines.length) {
-									_.forEach(current.parentCombine.ports, cp => {
-										if (cp && !cp.in) {
-											current.parentCombine.removePort(current.parentCombine.ports[cp.name]);
-										}
-									})
-									_.forEach(current.ports, cp => cp.parent = current);
-									let lastNode = _.last(current.parentCombine.combines)
-									lastNode = new BlockNodeModel().deSerialize(lastNode, this.props.diagramEngine, null, false, [], true);
-									_.forEach(lastNode.ports, lp => {
-										if (!lp.in) {
-											lp.parent = current.parentCombine
-											current.parentCombine.ports[lp.name] = lp;
-										}
-									})
-								} else {
-									_.map(current.parentCombine.getOutPorts(), port => {
-										if (!_.isEmpty(port.links) && port instanceof PortModel) {
-											let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
-											let point = _.first(_.values(port.links)).points[pointIdx]
-											if (point instanceof PointModel && current.parentCombine.ports[port.name]) {
-												current.parentCombine.ports[port.name].links[point.parent.id].points[pointIdx].updateLocation({ x: point.x, y: point.y - 40 });
-											}
-										}
-									})
-								}
+								// if (tempIdx === current.parentCombine.combines.length) {
+								// 	_.forEach(current.parentCombine.ports, cp => {
+								// 		if (cp && !cp.in) {
+								// 			current.parentCombine.removePort(current.parentCombine.ports[cp.name]);
+								// 		}
+								// 	})
+								// 	_.forEach(current.ports, cp => cp.parent = current);
+								// 	let lastNode = _.last(current.parentCombine.combines)
+								// 	lastNode = new BlockNodeModel().deSerialize(lastNode, this.props.diagramEngine, null, false, [], true);
+								// 	_.forEach(lastNode.ports, lp => {
+								// 		if (!lp.in) {
+								// 			lp.parent = current.parentCombine
+								// 			current.parentCombine.ports[lp.name] = lp;
+								// 		}
+								// 	})
+								// } else {
+								// 	_.map(current.parentCombine.getOutPorts(), port => {
+								// 		if (!_.isEmpty(port.links) && port instanceof PortModel) {
+								// 			let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
+								// 			let point = _.first(_.values(port.links)).points[pointIdx]
+								// 			if (point instanceof PointModel && current.parentCombine.ports[port.name]) {
+								// 				current.parentCombine.ports[port.name].links[point.parent.id].points[pointIdx].updateLocation({ x: point.x, y: point.y - 40 });
+								// 			}
+								// 		}
+								// 	})
+								// }
 								current.parentCombine = null;
 								current.extras.nextID = null;
 								this.props.diagramEngine.getDiagramModel().clearSelection()

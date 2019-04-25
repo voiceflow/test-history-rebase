@@ -211,10 +211,8 @@ div.nav-item{
 	font-size: 20px;
 	height: 44px;
 	transition: all 0.25s ease;
-	background: url('/information.svg');
-	background-position: center;
-	background-repeat: no-repeat;
 }
+
 .dropdown-button-border:hover {
 	color: #62778C;
 	border: 1px solid #e2e9ec;
@@ -224,6 +222,14 @@ div.nav-item{
 }
 .dropdown.show .dropdown-button-border {
 	background-color: #F7F9FB !important;
+}
+
+.information-icon {
+	background: url('/information.svg');
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.dropdown.show .information-icon {
 	background: url('/information-active.svg');
 	background-position: center;
 	background-repeat: no-repeat;

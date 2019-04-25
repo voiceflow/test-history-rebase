@@ -5,7 +5,8 @@ const {
 } = require('./../services')
 
 const {
-  _getGoogleAccessToken
+  _getGoogleAccessToken,
+  AmazonAccessToken
 } = require('./../routes/authentication')
 
 const {
@@ -16,6 +17,8 @@ const {
 const {
   checkGactionsVersionChanged
 } = require('./../config/ga_actions')
+
+const axios = require('axios')
 
 exports.getProjectFromSkill = async (req, res, next) => {
   try {
@@ -95,23 +98,58 @@ exports.getLiveVersion = async (req, res) => {
   let project_id = hashids.decode(req.params.project_id)[0]
   try {
     let live_version_data = await pool.query(`
-      SELECT skill_id AS sid, diagram AS sdia
+      SELECT *
       FROM skills
       WHERE project_id = $1 AND creator_id = $2 AND live = TRUE
       LIMIT 1
     `, [project_id, req.user.id])
 
-    let live_version = null
     if (live_version_data.rows.length > 0) {
-      live_version = hashids.encode(live_version_data.rows[0].sid)
+      live_version_data.rows[0].skill_id = hashids.encode(live_version_data.rows[0].skill_id)
     }
-    res.send({
-      live_version: live_version
-    })
+    res.send(live_version_data.rows[0])
 
   } catch (err) {
     console.trace(err)
     res.sendStatus(500)
+  }
+}
+
+exports.updateSkillId = async (req, res) => {
+  try {
+    if(!req.body.id || typeof req.body.id !== 'string' || !req.body.id.trim()) throw { status: 400, message: "No New Amazon ID provided"}
+    const amzn_id = req.body.id
+
+    token = await AmazonAccessToken(req.user.id)
+    if(!token) throw { status: 401, message: "No Amazon Login Credentials"}
+
+    // Verify that this skill does exist
+    try {
+      await axios.request({
+        url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
+        method: 'GET',
+        headers: {
+          Authorization: token
+        }
+      });
+    } catch(err) {
+      if(err && err.response && err.response.status === 404) throw { status: 404, message: "Skill does not exist on Amazon Developer Account"}
+      writeToLogs("MIGRATION", err)
+      throw { status: 404, message: "Unable to Retrieve Existing Skill" }
+    }
+
+    // Update Project Member for this user
+    const update = await pool.query("UPDATE project_members SET amzn_id = $1 WHERE project_id = $2 AND creator_id = $3", [amzn_id, req.params._project_id, req.user.id])
+
+    if(update.rowCount === 0){
+      await pool.query("INSERT INTO project_members (project_id, creator_id, amzn_id) VALUES ($1, $2, $3)", [req.params._project_id, req.user.id, amzn_id])
+    }
+
+    res.send(amzn_id)
+  } catch(err) {
+    if(err.status) return res.status(err.status).send(err.message)
+
+    res.status(500).send("Something Went Wrong")
   }
 }
 
@@ -120,7 +158,7 @@ exports.getDevVersion = async (req, res) => {
   try {
     // TODO ENFORCE THIS TEAM/CREATOR
     let dev_version_data = await pool.query(`
-      SELECT s.* FROM skills s INNER JOIN projects p ON p.dev_version = s.skill_id WHERE project_id = $1 LIMIT 1
+      SELECT s.* FROM skills s INNER JOIN projects p ON p.dev_version = s.skill_id WHERE s.project_id = $1 LIMIT 1
     `, [project_id])
     if (dev_version_data.rows.length > 0) {
       dev_version_data.rows[0].skill_id = hashids.encode(dev_version_data.rows[0].skill_id)

@@ -160,6 +160,7 @@ app.get('/multimodal/display/:id', ensureLoggedIn(), Multimodal.getDisplay);
 app.post('/multimodal/display', ensureLoggedIn(), Multimodal.setDisplay);
 app.patch('/multimodal/display/:id', ensureLoggedIn(), Multimodal.setDisplay);
 app.delete('/multimodal/display/:id', ensureLoggedIn(), Multimodal.deleteDisplay);
+app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDisplay);
 
 app.get('/project/:project_id/version/:version_id', ensureLoggedIn(), Skill.getSkill)
 app.delete('/projects/:project_id', ensureLoggedIn(), Team.verifyProjectAccess, Project.deleteProject)
@@ -170,6 +171,7 @@ app.post('/project/:project_id/render', ensureLoggedIn(), Project.render)
 app.post('/project/:project_id/version/:version_id/alexa', ensureLoggedIn(), Skill.buildSkill);
 app.post('/project/:project_id/version/:version_id/google', ensureLoggedIn(), Skill.buildGoogleSkill);
 app.get('/user/:creator_id/projects', ensureAdmin(), Project.getUserProjects)
+app.patch('/project/:project_id/amzn_id', ensureLoggedIn(), Team.verifyProjectAccess, Project.updateSkillId)
 
 app.post('/version/:version_id/copy/team/:team_id', ensureLoggedIn(), Team.verifyTeam, 
 (req, res) => copySkill(req, res, {append_copy_str: true, user_copy: true}))

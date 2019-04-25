@@ -224,11 +224,7 @@ export class LinkModel extends BaseModel {
 		return new PointModel(this, { x: x, y: y }, toolkit.UID());
 	}
 
-	checkHidden() {
-		if (this.sourcePort.hidden || this.targetPort.hidden) {
-			this.hidden = true
-		} else {
-			this.hidden = false
-		}
+	checkHidden(hidden) {
+		this.hidden = hidden
 	}
 }

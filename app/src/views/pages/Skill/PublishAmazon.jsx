@@ -87,7 +87,7 @@ class Skill extends Component {
       });
     })
 
-    axios.get('/skill/' + this.props.skill_id + '?verbose=1&review_check')
+    axios.get('/skill/' + this.props.skill_id + '?verbose=1&review_check=1')
       .then(res => {
         if (res.data.category) {
           for (let option of AMAZON_CATEGORIES) {

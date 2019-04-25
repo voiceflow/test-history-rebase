@@ -12,7 +12,6 @@ class ProductUpdates extends Component {
           type: 'FEATURE'
       }
 
-      this.placehold = parseInt(Date.now()/1000).toString()
       this.handleChange = this.handleChange.bind(this)
       this.createNewUpdate = this.createNewUpdate.bind(this)
   }
@@ -24,14 +23,8 @@ class ProductUpdates extends Component {
 	}
 
   createNewUpdate() {
-      // if(this.state.ts === undefined){
-      //     this.state.ts = new Date().getTime()
-      // }
-
       axios.post('/product_updates', {
           type: this.state.type,
-          // ts: this.state.ts / 1000,
-          ts: isNaN(this.state.time) ? null : parseInt(this.state.time),
           details: this.state.details
       })
       .then(() => {
@@ -61,10 +54,6 @@ class ProductUpdates extends Component {
               <div className="content">
                   <h5>Create a new update</h5>
                   <Form>
-                      {/* <FormGroup>
-                          <Label for="timestamp">Timestamp (When do you want it to be visible)</Label>
-                          <Input type="number" name="timestamp" id="timestamp" onChange={this.handleChange} placeholder="Defaults to current time"></Input>
-                      </FormGroup> */}
                       <FormGroup>
                           <Label for="type">What type of update is it</Label>
                           <Input type="select" name="type" id="type" onChange={this.handleChange}>
@@ -76,10 +65,6 @@ class ProductUpdates extends Component {
                       <FormGroup>
                           <Label for="details">Enter your update here</Label>
                           <Input type="textarea" name="details" id="details" onChange={this.handleChange}></Input>
-                      </FormGroup>
-                      <FormGroup>
-                          <Label for="details">Release Time - UNIX seconds (Optional)</Label>
-                          <Input type="number" name="time" onChange={this.handleChange} placeholder={this.placehold}></Input>
                       </FormGroup>
                   </Form>
 

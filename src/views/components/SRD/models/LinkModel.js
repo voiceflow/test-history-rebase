@@ -19,6 +19,7 @@ export class LinkModel extends BaseModel {
 		super.deSerialize(ob, engine);
 		this.extras = {};
 		this.labels = [];
+		if(ob.hidden) this.hidden = ob.hidden
 		this.points = _.map(ob.points || [], (point) => {
 			var p = new PointModel(this, { x: point.x, y: point.y });
 			p.deSerialize(point, engine);
@@ -50,8 +51,6 @@ export class LinkModel extends BaseModel {
 				);
 			}
 		}
-
-		if(ob.hidden) this.hidden = ob.hidden
 	}
 
 	serialize() {
@@ -80,6 +79,7 @@ export class LinkModel extends BaseModel {
 		if (this.targetPort) {
 			clone.setTargetPort(this.targetPort.clone(lookupTable));
 		}
+		if (this.hidden) clone.hidden = this.hidden
 	}
 
 	remove() {

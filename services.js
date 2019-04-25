@@ -18,14 +18,21 @@ const hashids = new Hashids(process.env.CONFIG_ID_HASH, 10);
 const MB = 1024 * 1024;
 
 const AWS = require("aws-sdk");
+
 AWS.config = new AWS.Config({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION,
-  endpoint: process.env.AWS_ENDPOINT
+  endpoint: process.env.AWS_ENDPOINT,
+  region: process.env.AWS_REGION
 });
 
-const docClient = new AWS.DynamoDB.DocumentClient({
+// AWS does some hasOwnProperty check so only define endpoint if set
+const docClient = process.env.DYNAMO_ENDPOINT ? 
+new AWS.DynamoDB.DocumentClient({
+  convertEmptyValues: true,
+  endpoint: process.env.DYNAMO_ENDPOINT
+}) : 
+new AWS.DynamoDB.DocumentClient({
   convertEmptyValues: true
 });
 
@@ -168,7 +175,7 @@ const verify = (auth, cb) => {
 
 const cloudWatchLogs = new AWS.CloudWatchLogs();
 const writeToLogs = async (log_group, msg_details) => {
-  if (/development/.test(process.env.NODE_ENV)) {
+  if (/development/.test(process.env.NODE_ENV) || process.env.NODE_ENV === 'test') {
     console.log(log_group, msg_details);
     return;
   }

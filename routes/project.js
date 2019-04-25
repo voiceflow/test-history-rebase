@@ -95,19 +95,16 @@ exports.getLiveVersion = async (req, res) => {
   let project_id = hashids.decode(req.params.project_id)[0]
   try {
     let live_version_data = await pool.query(`
-      SELECT skill_id AS sid, diagram AS sdia
+      SELECT *
       FROM skills
       WHERE project_id = $1 AND creator_id = $2 AND live = TRUE
       LIMIT 1
     `, [project_id, req.user.id])
 
-    let live_version = null
     if (live_version_data.rows.length > 0) {
-      live_version = hashids.encode(live_version_data.rows[0].sid)
+      live_version_data.rows[0].skill_id = hashids.encode(live_version_data.rows[0].skill_id)
     }
-    res.send({
-      live_version: live_version
-    })
+    res.send(live_version_data.rows[0])
 
   } catch (err) {
     console.trace(err)
@@ -120,7 +117,7 @@ exports.getDevVersion = async (req, res) => {
   try {
     // TODO ENFORCE THIS TEAM/CREATOR
     let dev_version_data = await pool.query(`
-      SELECT s.* FROM skills s INNER JOIN projects p ON p.dev_version = s.skill_id WHERE project_id = $1 LIMIT 1
+      SELECT s.* FROM skills s INNER JOIN projects p ON p.dev_version = s.skill_id WHERE s.project_id = $1 LIMIT 1
     `, [project_id])
     if (dev_version_data.rows.length > 0) {
       dev_version_data.rows[0].skill_id = hashids.encode(dev_version_data.rows[0].skill_id)

@@ -655,7 +655,7 @@ const copyDefaultTemplate = (req, res) => {
           req.params._team_id = team_id
 					copySkill(req, res, {copying_default_template: true, name}, updateSkill)
 				} else {
-					res.sendStatus(500)
+					res.sendStatus(404)
 				}
 			}
 		}

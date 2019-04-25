@@ -23,6 +23,7 @@ import DefaultModal from './views/components/Modals/DefaultModal'
 import { Spinner } from './views/components/Spinner'
 import { Link } from 'react-router-dom';
 import Marketplace from './views/pages/Marketplace';
+import Migrate from 'views/pages/Skill/Migrate'
 
 const live_modal_content = <div className="text-center">
     <img className="modal-img-small mb-4 mt-3" src="/warning.svg" alt="Upload"/>
@@ -198,6 +199,10 @@ class Skill extends Component {
                   {...this.props}
                   page={this.props.secondaryPage}
                 />
+            case 'migrate':
+              return <Migrate
+                {...this.props}
+              />
             default:
                 return null
         }

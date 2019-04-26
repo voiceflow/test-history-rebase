@@ -10,31 +10,38 @@ exports[`StreamEditor render stream block editor 1`] = `
     stream={true}
     update={[Function]}
   />
-  <div
-    className="space-between mt-3"
-  >
-    <label>
-      Custom Pause
-    </label>
-    <Toggle
-      checked={false}
-      className="fulfill-switch"
-      icons={false}
-      onChange={[Function]}
-    />
-  </div>
-  <div
-    className="space-between"
-  >
-    <label>
-      Loop Audio
-    </label>
-    <Toggle
-      checked={false}
-      className="fulfill-switch"
-      icons={false}
-      onChange={[Function]}
-    />
-  </div>
+  <label>
+    Title
+  </label>
+  <VariableInput
+    className="form-control"
+    placeholder="Insert audio stream title"
+    updateRaw={[Function]}
+  />
+  <label>
+    Description
+  </label>
+  <VariableInput
+    className="form-control"
+    placeholder="Insert audio stream description"
+    updateRaw={[Function]}
+  />
+  <label>
+    Icon
+  </label>
+  <Image
+    max_size={5242880}
+    update={[Function]}
+    url={true}
+  />
+  <label>
+    Background Image
+  </label>
+  <Image
+    margin={true}
+    max_size={83886080}
+    update={[Function]}
+    url={true}
+  />
 </div>
 `;

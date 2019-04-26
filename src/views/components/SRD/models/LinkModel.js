@@ -12,12 +12,14 @@ export class LinkModel extends BaseModel {
 		this.sourcePort = null;
 		this.targetPort = null;
 		this.labels = [];
+		this.hidden = false;
 	}
 
 	deSerialize(ob, engine) {
 		super.deSerialize(ob, engine);
 		this.extras = {};
 		this.labels = [];
+		if(ob.hidden) this.hidden = ob.hidden
 		this.points = _.map(ob.points || [], (point) => {
 			var p = new PointModel(this, { x: point.x, y: point.y });
 			p.deSerialize(point, engine);
@@ -52,15 +54,17 @@ export class LinkModel extends BaseModel {
 	}
 
 	serialize() {
-		return _.merge(super.serialize(), {
+		const serialized = {
 			source: this.sourcePort ? this.sourcePort.getParent().id : null,
 			sourcePort: this.sourcePort ? this.sourcePort.id : null,
 			target: this.targetPort ? this.targetPort.getParent().id : null,
 			targetPort: this.targetPort ? this.targetPort.id : null,
 			points: _.map(this.points, point => {
 				return point.serialize();
-			})
-		});
+			}),
+		}
+		if (this.hidden) serialized.hidden = this.hidden
+		return _.merge(super.serialize(), serialized);
 	}
 
 	doClone(lookupTable = {}, clone) {
@@ -75,6 +79,7 @@ export class LinkModel extends BaseModel {
 		if (this.targetPort) {
 			clone.setTargetPort(this.targetPort.clone(lookupTable));
 		}
+		if (this.hidden) clone.hidden = this.hidden
 	}
 
 	remove() {
@@ -217,5 +222,9 @@ export class LinkModel extends BaseModel {
 
 	generatePoint(x = 0, y = 0) {
 		return new PointModel(this, { x: x, y: y }, toolkit.UID());
+	}
+
+	checkHidden(hidden) {
+		this.hidden = hidden
 	}
 }

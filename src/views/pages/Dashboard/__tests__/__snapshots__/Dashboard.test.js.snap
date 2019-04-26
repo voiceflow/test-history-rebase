@@ -41,6 +41,39 @@ exports[`Dashboard render dashboard 1`] = `
     <div
       className="subheader-right"
     >
+      <div>
+        <button
+          className="dropdown-button-border"
+          id="update-popup"
+          onClick={[Function]}
+          type="button"
+        >
+          <i
+            className="fas fa-bell"
+          />
+        </button>
+        <Popover
+          className="updates-popover-container"
+          delay={
+            Object {
+              "hide": 0,
+              "show": 0,
+            }
+          }
+          hideArrow={false}
+          isOpen={false}
+          placement="bottom"
+          placementPrefix="bs-popover"
+          target="update-popup"
+          toggle={[Function]}
+        >
+          <PopoverBody
+            tag="div"
+          >
+            <UpdatesPopover />
+          </PopoverBody>
+        </Popover>
+      </div>
       <UncontrolledDropdown>
         <DropdownToggle
           aria-haspopup={true}
@@ -86,7 +119,7 @@ exports[`Dashboard render dashboard 1`] = `
             unmountHTMLWhenHide={false}
           >
             <button
-              className="dropdown-button-border"
+              className="dropdown-button-border information-icon"
               type="submit"
             />
           </Tooltip>
@@ -158,10 +191,6 @@ exports[`Dashboard render dashboard 1`] = `
     className="secondary-padding dashboard"
     id="app"
   >
-    <UpdatesModal
-      show_update_modal={false}
-      toggle={[Function]}
-    />
     <div
       id="navbar-top-left"
     >

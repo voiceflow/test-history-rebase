@@ -69,4 +69,11 @@ export class BlockPortModel extends PortModel {
 
 		return link
 	}
+	
+	setHidden(hidden) {
+		this.hidden = hidden
+		_.forOwn(this.links, link => {
+			link.checkHidden(hidden)
+		})
+	}
 }

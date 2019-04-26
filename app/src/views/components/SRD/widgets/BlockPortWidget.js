@@ -2,6 +2,7 @@ import _ from 'lodash';
 import cn from 'classnames'
 import * as React from "react";
 import { BaseWidget } from "./../main.js"
+import { connect } from 'react-redux';
 
 /**
  * @author Dylan Vorster
@@ -19,7 +20,7 @@ export class BlockPortWidget extends BaseWidget {
 		if (!this.props.node.ports[this.props.name]){
 			return false;
 		}
-		return _.isEmpty(this.props.node.ports[this.props.name].links);
+		return this.props.node.ports[this.props.name].links && _.isEmpty(_.filter(this.props.node.ports[this.props.name].links, link => !link.hidden ));
 	}
 
 	getClassName() {
@@ -34,10 +35,6 @@ export class BlockPortWidget extends BaseWidget {
 		})
 		return super.getClassName() + (this.state.selected ? this.bem("--selected ") : " ") + className
 	}
-
-	// componentDidMount() {
-	// 	this.props.node.centerLinks(this.props.diagramEngine)
-	// }
 
 	componentDidUpdate() {
 		this.props.node.centerLinks(this.props.diagramEngine)
@@ -83,3 +80,10 @@ export class BlockPortWidget extends BaseWidget {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	platform: state.skills.skill.platform
+})
+
+export default connect(mapStateToProps)(BlockPortWidget)
+

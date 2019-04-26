@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { mountWrap, shallowWrap } from '../TestHelper/ContextWrapper';
 import { mount, shallow, render } from 'enzyme';
-import { Account } from '../index';
+import Account from '../index';
+import { SignupForm } from '../SignupForm'
+import { LoginForm } from '../LoginForm'
 import toJson from 'enzyme-to-json';
 import axios from 'axios'
 import { googleLogin, fbLogin } from 'ducks/account'
@@ -39,17 +41,17 @@ describe('Onboarding', () => {
     const component = shallow(<Account location={location} />);
     expect(toJson(component)).toMatchSnapshot()
   });
-  it('redirects to login if unauthenticated', () => {
+  it('redirects to signup if unauthenticated', () => {
     const app = shallow(<Account location={location} />);
-    expect(app.exists('#signup-form')).toBe(true);
+    expect(app.exists('.open-register')).toBe(true);
   });
   it('creates accounts on signup', () => {
-    const app = mountWrap(<Router><Account location={location} /></Router>);
-    app.find('#signup-form input[name="r_name"]')
+    const app = shallow(<SignupForm location={location} />);
+    app.find('#signup-form Input[name="name"]')
       .simulate('change', {target: {value:'Voiceflow Tester'}});
-    app.find('#signup-form input[name="r_email"]')
+    app.find('#signup-form Input[name="email"]')
       .simulate('change', {target: {value:'tests@getvoiceflow.com'}});
-    app.find('#signup-form input[name="r_password"]')
+    app.find('#signup-form Input[name="password"]')
       .simulate('change', {target: {value:'password'}});
     app.find('#signup-form button[type="submit"]')
       .simulate('click');
@@ -58,12 +60,12 @@ describe('Onboarding', () => {
     }, 500);
   });
   it('disallows duplicate accounts', () => {
-    const app = mountWrap(<Router><Account location={location} /></Router>);
-    app.find('#signup-form input[name="r_name"]')
+    const app = shallow(<SignupForm location={location} />);
+    app.find('#signup-form Input[name="name"]')
       .simulate('change', {target: {value:'Voiceflow Tester'}});
-    app.find('#signup-form input[name="r_email"]')
+    app.find('#signup-form Input[name="email"]')
       .simulate('change', {target: {value:'tests@getvoiceflow.com'}});
-    app.find('#signup-form input[name="r_password"]')
+    app.find('#signup-form Input[name="password"]')
       .simulate('change', {target: {value:'password'}});
     app.find('#signup-form button[type="submit"]')
       .simulate('click');
@@ -72,10 +74,10 @@ describe('Onboarding', () => {
     }, 500);
   });
   it('onboards on first login', () => {
-    const app = mountWrap(<Router><Account location={location} /></Router>);
-    app.find('#login-form input[name="email"]')
+    const app = shallow(<LoginForm location={location} />);
+    app.find('#login-form Input[name="email"]')
       .simulate('change', {target: {value:'tests@getvoiceflow.com'}});
-    app.find('#login-form input[name="password"]')
+    app.find('#login-form Input[name="password"]')
       .simulate('change', {target: {value:'password'}});
     app.find('#login-form button[type="submit"]')
       .simulate('click');

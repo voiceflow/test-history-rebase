@@ -7,7 +7,7 @@ import SocialLogin from './SocialLogin'
 import ErrorWidget from './ErrorWidget';
 import { connect } from 'react-redux'
 
-const SignupForm = ({signup, history, location}) => {
+export const SignupForm = ({signup, history, location}) => {
   let query = queryString.parse(location.search)
   const [signupError, setSignupError] = useState(null)
   const [email, setEmail] = useState(query.email ? query.email : "")

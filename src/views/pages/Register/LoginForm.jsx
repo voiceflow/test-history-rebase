@@ -7,7 +7,7 @@ import queryString from 'query-string'
 import { login } from 'ducks/account'
 import { connect } from 'react-redux'
 
-const LoginForm = ({login, history, location}) => {
+export const LoginForm = ({login, history, location}) => {
   let query = queryString.parse(location.search)
   const [loginError, setLoginError] = useState(null)
   const [email, setEmail] = useState(query.email ? query.email : "")

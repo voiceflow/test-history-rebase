@@ -1,5 +1,6 @@
 import React from 'react'
 import cloneDeep from 'lodash/cloneDeep'
+import ModuleIcon from './../Marketplace/ModuleIcon'
 
 const FAVORITE_SECTION_MAX = 3;
 
@@ -70,7 +71,39 @@ const SECTIONS = [{
     ]
 }]
 
-const getSections = (type_counter) => {
+const getFlows = (props) => {
+    // MARKETPLACE BETA
+    if(props === undefined || props.user === undefined || props.user.admin !== 7){
+        return undefined
+    }
+
+    let module_array = []
+    let module_keys = props.user_modules ? Object.keys(props.user_modules) : []
+    let module_section = {title: 'flows', items: module_array}
+
+    if(module_keys.length > 0){
+        for(let key of module_keys){
+            let module = props.user_modules[key]
+            let icon = <ModuleIcon module={module}/>
+            let diagram = props.diagrams.filter(diagram => diagram.name === module.title)[0]
+            if(diagram !== undefined){
+                module_array.push({
+                    text: module.title,
+                    type: 'flow',
+                    icon: icon,
+                    tip: module.descr,
+                    diagram_id: diagram.id,
+                    module_id: module.module_id
+                })
+            }
+            
+        }
+    }
+    module_array.push({type: 'marketplace_link'})
+    return module_section
+}
+
+const getSections = (type_counter, props) => {
     let sections = cloneDeep(SECTIONS)
 
     // Check whether we want a favourites section
@@ -97,6 +130,11 @@ const getSections = (type_counter) => {
         }
 
         sections.unshift(favorite_section)
+    }
+
+    let module_section = getFlows(props)
+    if(module_section !== undefined){
+        sections.push(module_section)
     }
 
     return sections

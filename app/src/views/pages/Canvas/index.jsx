@@ -928,6 +928,30 @@ export class Canvas extends Component {
                 }
             }
 
+            const addMissingPorts = (type, node) => {
+                if (type === 'stream') {
+                    try {
+                        let hasGooglePort = false
+                        let ports = node.getPorts()
+                        for (let name in ports) {
+                            let port = node.getPort(name)
+                            if (!port.in && port.label && port.label.trim() === '') {
+                                hasGooglePort = true
+                            }
+                        }
+                        if (!hasGooglePort) {
+                            node.addOutPort(' ').setMaximumLinks(1)
+                        }
+                        if (node.parentCombine) {
+                            let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
+                            node.parentCombine.combines[bestNode] = node
+                        }
+                    } catch (e) {
+                        // no op
+                    }
+                }
+            }
+
             var nodes = model.getNodes()
             for (let key in nodes) {
                 const node = nodes[key]
@@ -955,6 +979,7 @@ export class Canvas extends Component {
                             n.fade = false
                         }
                         makeNodeMultiPlatform(n.extras.type, n)
+                        addMissingPorts(n.extras.type, n)
                     })
                 } else {
                     if (this.props.skill.platform === 'google') {
@@ -963,6 +988,7 @@ export class Canvas extends Component {
                         nodes[key].fade = false
                     }
                     makeNodeMultiPlatform(type, node)
+                    addMissingPorts(type, node)
                 }
             }
 

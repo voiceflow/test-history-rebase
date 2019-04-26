@@ -107,7 +107,7 @@ exports.getLiveVersion = async (req, res) => {
     if (live_version_data.rows.length > 0) {
       live_version_data.rows[0].skill_id = hashids.encode(live_version_data.rows[0].skill_id)
     }
-    res.send(live_version_data.rows[0])
+    res.send({live_version: live_version_data.rows[0].skill_id, live_skill: live_version_data.rows[0]})
 
   } catch (err) {
     console.trace(err)

@@ -125,8 +125,8 @@ class DiagramBlock extends Component {
                         }}>
                           <img src={"/flows.svg"} alt="back" className="mr-2" /> Create New Flow
                         </button>
-                        <div className="break">
-                        <span className="or">OR</span>
+                        <div class="break">
+                        <span class="or">OR</span>
                         </div>
                         {this.props.diagrams && this.props.diagrams.length > 0 ? 
                             <React.Fragment>

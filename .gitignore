@@ -6,6 +6,7 @@ src/app/components/.DS_Store
 .idea
 node_modules
 .vscode
+.eslintrc.json
 /app/build/*
 dump.rdb
 routes/tmp/*

@@ -83,6 +83,9 @@ jobs: # a collection of steps
     steps:
       - checkout # special step to check out source code to working directory
       - run:
+          name: 'Update Dockerfile Staging'
+          command: "sed -i 's/RUN npm run build/RUN REACT_APP_BUILD_ENV=production npm run build/g' Dockerfile"
+      - run:
           name: 'Update PIP && Install AWS CLI'
           command: |
             pip install awsebcli

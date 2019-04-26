@@ -1131,7 +1131,7 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
     background-color: #fa7891;
 }
 
-.Menu #sidebar .section-title .title-dot.visual {
+.Menu #sidebar .section-title .title-dot.visuals {
     background-color: #F6C16B;
 }
 
@@ -1190,7 +1190,10 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
     height: 41px;
     /* align-items: center; */
 }
-
+.dashed {
+    border: 1px dashed #b6cad4 !important;
+    background-color: #fff !important;
+}
 #sidebar .wrap {
     width: 100%;
     margin-bottom: 8px;
@@ -1362,6 +1365,7 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
 
 .menu-tip:hover {
     color: #8da2b5 !important;
+    background-image: url('/info-hover.svg');
 }
 
 .btn-info {
@@ -1512,7 +1516,6 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
     border-color: #FFAB91 !important;
     border-width: 3px !important;
 }
-
 .App.review #diagram {
     /*border: 10px solid #D84315;*/
 }
@@ -3793,3 +3796,25 @@ button.close:hover{
 .create-variable{
     border-top: 5px solid red;
 }
+
+.delete-flow-icon {
+    float:right;
+    display: inline-block;
+    position: absolute;
+    top: 12px;
+    right: 7px;
+    background-image: url("/remove.svg");
+    width: 16px;
+    height: 16px;
+}
+
+.delete-flow-icon:hover{
+    display: inline-block;
+    background-image: url("/remove-hover.svg");
+    transition: all 0.15s ease;
+    width: 16px;
+    height: 16px;
+}
+.disabled{
+    opacity: 0.3;
+  }

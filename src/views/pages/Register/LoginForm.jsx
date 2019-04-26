@@ -12,7 +12,7 @@ export const LoginForm = ({login, history, location}) => {
   const [loginError, setLoginError] = useState(null)
   const [email, setEmail] = useState(query.email ? query.email : "")
   const [password, setPassword] = useState("")
-  const [unverified, setUnverified] = useState(false)
+  const [unverified] = useState(false)
   const [errorColor, setErrorColor] = useState("danger")
   let timeout
 

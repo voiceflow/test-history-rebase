@@ -51,8 +51,8 @@ const convertDiagram = (diagram, diagrams) => {
             } else if (node.extras.type === 'stream') {
                 node.ports.forEach(port => (port.label === 'stop/pause' && (port.label = 'pause')))
 
-                if ((node.extras.player !== undefined) || (node.extras.alexa && node.extras.alexa.player !== undefined)) {
-                    if ((node.extras.player === false) || (node.extras.alexa && node.extras.alexa.player === false)) {
+                if (node.extras.player !== undefined) {
+                    if (node.extras.player === false) {
                         if (node.ports.length === 2) {
                             const outputs = ['previous', 'next']
                             outputs.forEach(out => {
@@ -71,13 +71,12 @@ const convertDiagram = (diagram, diagrams) => {
                             })
                         }
                         node.ports = node.ports.reverse()
-                    } else if ((node.extras.player === true) || (node.extras.alexa && node.extras.alexa.player === true)) {
+                    } else if ((node.extras.player === true) || (node.extras && node.extras.player === true)) {
                         node.ports = [node.ports[0], node.ports[2], node.ports[3], node.ports[1]]
                     }
 
                     node.extras.custom_pause = true
                     delete node.extras.player
-                    if (node.extras.alexa) delete node.extras.alexa.player
                 }
             }
 
@@ -375,12 +374,7 @@ const createCombineNode = (node, type, parent) => {
         node.addOutPort('previous').setMaximumLinks(1)
         node.addOutPort(' ').setMaximumLinks(1)
         node.extras = {
-            alexa: {
-                audio: ''
-            },
-            google: {
-                audio: ''
-            }
+            audio: ''
         }
     } else if (type === 'permission') {
         node.addInPort(' ')
@@ -610,12 +604,7 @@ const createDropNode = (event, engine, type, name) => {
             node.addOutPort('previous').setMaximumLinks(1)
             node.addOutPort(' ').setMaximumLinks(1)
             node.extras = {
-                alexa: {
-                    audio: ''
-                },
-                google: {
-                    audio: ''
-                }
+                audio: ''
             }
         } else if (type === 'permission') {
             node.addInPort(' ')

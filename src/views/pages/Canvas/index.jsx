@@ -925,15 +925,6 @@ export class Canvas extends Component {
                             }
                         }
                     }
-                } else if (type === 'stream') {
-                    if (!node.extras.google && !node.extras.alexa) {
-                        const alexaExtras = _.cloneDeep(node.extras)
-                        node.extras = {}
-                        node.extras.alexa = alexaExtras
-                        node.extras.google = {
-                            audio: ''
-                        }
-                    }
                 }
             }
 

@@ -365,32 +365,32 @@ export class DiagramWidget extends BaseWidget {
 										return true;
 									}
 								})
-								// if (tempIdx === current.parentCombine.combines.length) {
-								// 	_.forEach(current.parentCombine.ports, cp => {
-								// 		if (cp && !cp.in) {
-								// 			current.parentCombine.removePort(current.parentCombine.ports[cp.name]);
-								// 		}
-								// 	})
-								// 	_.forEach(current.ports, cp => cp.parent = current);
-								// 	let lastNode = _.last(current.parentCombine.combines)
-								// 	lastNode = new BlockNodeModel().deSerialize(lastNode, this.props.diagramEngine, null, false, [], true);
-								// 	_.forEach(lastNode.ports, lp => {
-								// 		if (!lp.in) {
-								// 			lp.parent = current.parentCombine
-								// 			current.parentCombine.ports[lp.name] = lp;
-								// 		}
-								// 	})
-								// } else {
-								// 	_.map(current.parentCombine.getOutPorts(), port => {
-								// 		if (!_.isEmpty(port.links) && port instanceof PortModel) {
-								// 			let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
-								// 			let point = _.first(_.values(port.links)).points[pointIdx]
-								// 			if (point instanceof PointModel && current.parentCombine.ports[port.name]) {
-								// 				current.parentCombine.ports[port.name].links[point.parent.id].points[pointIdx].updateLocation({ x: point.x, y: point.y - 40 });
-								// 			}
-								// 		}
-								// 	})
-								// }
+								if (tempIdx === current.parentCombine.combines.length) {
+									_.forEach(current.parentCombine.ports, cp => {
+										if (cp && !cp.in) {
+											current.parentCombine.removePort(current.parentCombine.ports[cp.name]);
+										}
+									})
+									_.forEach(current.ports, cp => cp.parent = current);
+									let lastNode = _.last(current.parentCombine.combines)
+									lastNode = new BlockNodeModel().deSerialize(lastNode, this.props.diagramEngine, null, false, [], true);
+									_.forEach(lastNode.ports, lp => {
+										if (!lp.in) {
+											lp.parent = current.parentCombine
+											current.parentCombine.ports[lp.name] = lp;
+										}
+									})
+								} else {
+									_.map(current.parentCombine.getOutPorts(), port => {
+										if (!_.isEmpty(port.links) && port instanceof PortModel) {
+											let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
+											let point = _.first(_.values(port.links)).points[pointIdx]
+											if (point instanceof PointModel && current.parentCombine.ports[port.name]) {
+												current.parentCombine.ports[port.name].links[point.parent.id].points[pointIdx].updateLocation({ x: point.x, y: point.y - 40 });
+											}
+										}
+									})
+								}
 								current.parentCombine = null;
 								current.extras.nextID = null;
 								this.props.diagramEngine.getDiagramModel().clearSelection()
@@ -596,7 +596,7 @@ export class DiagramWidget extends BaseWidget {
 					} else if (!model.model.parent.hidden && _.head(model.model.parent.points).id === model.model.id) {
 						let source = this.props.diagramEngine.getPortCenter(model.model.parent.sourcePort)
 						model.model.updateLocation(source)
-					}
+					} 
 				}
 			});
 			//check for / remove any loose links in any models which have been moved

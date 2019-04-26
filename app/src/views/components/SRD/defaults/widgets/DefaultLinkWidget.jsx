@@ -7,7 +7,6 @@ import { Toolkit } from "../../Toolkit.jsx";
 import { DefaultLinkModel } from "../models/DefaultLinkModel";
 import PathFinding from "../../routing/PathFinding";
 import { BaseWidget, BaseWidgetProps } from "../../widgets/BaseWidget";
-import cn from 'classnames'
 
 const toolkit = new Toolkit()
 

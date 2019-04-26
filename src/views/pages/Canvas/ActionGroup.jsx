@@ -571,7 +571,7 @@ export class ActionGroup extends PureComponent {
   toggleGoogle() {
     let platform = this.props.platform === 'google' ? 'alexa' : 'google'
     this.props.updateSkill('platform', platform).then(() => {
-      this.props.updateGoogleFade();
+      this.props.renderPlatformSwitch()
       this.props.updateLinter()
     })
   }

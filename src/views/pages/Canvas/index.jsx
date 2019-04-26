@@ -998,39 +998,6 @@ export class Canvas extends Component {
         }
     }
 
-    updateGoogleFade = () => {
-        const engine = this.state.engine
-        const model = engine.getDiagramModel()
-        const nodes = model.getNodes()
-
-        for (let key in nodes) {
-            const node = nodes[key]
-            const type = node.extras.type
-
-            if (this.props.skill.platform === 'google') {
-                if (type === 'god') {
-                    node.combines.forEach(n => {
-                        n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
-                    })
-                } else {
-                    nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type)
-                }
-            } else {
-                if (type === 'god') {
-                    node.combines.forEach(n => {
-                        n.fade = false
-                    })
-                } else {
-                    nodes[key].fade = false
-                }
-            }
-        }
-        engine.repaintCanvas()
-        this.setState({
-            engine: engine,
-        })
-    }
-
     updateLinter = (force=true) => {
         const engine = this.state.engine
         const model = engine.getDiagramModel()
@@ -1071,6 +1038,80 @@ export class Canvas extends Component {
             this.forceRepaint()
         }
     }
+
+    renderPlatformSwitch = () => {
+
+        const updateGoogleFade = (type, key, node, nodes) => {
+            if (this.props.skill.platform === 'google') {
+                if (type === 'god') {
+                    node.combines.forEach(n => {
+                        n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
+                    })
+                } else {
+                    nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type)
+                }
+            } else {
+                if (type === 'god') {
+                    node.combines.forEach(n => {
+                        n.fade = false
+                    })
+                } else {
+                    nodes[key].fade = false
+                }
+            }
+        }
+
+        const updatePortsAndLinks = (type, key, node, nodes) => {
+            let ports = node.getPorts()
+
+            if (type === 'stream') {
+                for (let name in ports) {
+                    let port = node.getPort(name);
+                    if(port.in) continue
+    
+                    if (port.label === 'pause') {
+                        port.setHidden(this.props.skill.platform === 'google')
+                    }
+    
+                    if (port.label === 'previous') {
+                        port.setHidden(this.props.skill.platform === 'google')
+                    }
+
+                    if (port.label === 'next') {
+                        port.setHidden(this.props.skill.platform === 'google')
+                    }
+                    if (port.label.trim() === '') {
+                        port.setHidden(this.props.skill.platform !== 'google')
+                    }
+                }
+            }
+        }
+
+        const engine = this.state.engine
+        const model = engine.getDiagramModel()
+        const nodes = model.getNodes()
+
+        for (let key in nodes) {
+            const node = nodes[key]
+            const type = node.extras.type
+
+            // Combine block
+            if (Array.isArray(node.combines) && node.combines.length !== 0) {
+                node.combines.forEach((n, i) => {
+                    updateGoogleFade(n.extras.type, i, n, node.combines)
+                    updatePortsAndLinks(n.extras.type, i, n, node.combines)
+                })
+            } else {
+                updateGoogleFade(type, key, node, nodes)
+                updatePortsAndLinks(type, key, node, nodes)
+            }
+        }
+        engine.repaintCanvas()
+        this.setState({
+            engine: engine,
+        })
+    }
+
     onLoadId = (diagram_id) => {
         axios.get('/diagram/'+ diagram_id)
         .then(res => {
@@ -1418,7 +1459,7 @@ export class Canvas extends Component {
         this.setState({
             open: type !== 'comment'
         })
-        this.updateGoogleFade()
+        this.renderPlatformSwitch()
         this.updateLinter()
     }
 
@@ -1496,8 +1537,8 @@ export class Canvas extends Component {
                 saving={this.state.saving}
                 saved={this.state.saved}
                 onTest={this.onTest}
-                updateGoogleFade={this.updateGoogleFade}
                 updateLinter={this.updateLinter}
+                renderPlatformSwitch={this.renderPlatformSwitch}
                 history={this.props.history}
               />
             :
@@ -1660,6 +1701,7 @@ export class Canvas extends Component {
                   editorOpen={this.props.open}
                   setBlockMenu={this.props.setBlockMenu}
                   setOpen={this.props.setOpen}
+                  platform={this.props.skill.platform}
                 />
               </div>
             </div>

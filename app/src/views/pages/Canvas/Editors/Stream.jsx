@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import AudioDrop from '../../../components/Uploads/AudioDrop'
 import Toggle from 'react-toggle'
 import _ from 'lodash'
-
+import VariableInput from './components/VariableInput'
+import Image from './../../../components/Uploads/Image'
 class Stream extends Component {
     constructor(props) {
         super(props)
@@ -65,7 +66,16 @@ class Stream extends Component {
         this.forceUpdate()
     }
 
+    updateContent = (name, content) => {
+        const node = this.state.node
+        node.extras[name] = content
+        this.setState({
+            node: node
+        })
+    }
+
     render() {
+        const isAlexa = this.props.platform === 'alexa'
         return (
             <div>
                 <label>Stream File (AAC/MP4, MP3, HLS)</label>
@@ -78,7 +88,43 @@ class Stream extends Component {
                     }}
                     stream
                 />
-                <div className="space-between mt-3">
+                <label>Title</label>
+                <VariableInput
+                    className="form-control"
+                    raw={this.state.node.extras.title}
+                    placeholder='Insert audio stream title'
+                    variables={this.props.variables}
+                    updateRaw={(raw) => this.updateContent('title', raw)}
+                />
+
+                <label>Description</label>
+                <VariableInput
+                    className="form-control"
+                    raw={this.state.node.extras.description}
+                    placeholder='Insert audio stream description'
+                    variables={this.props.variables}
+                    updateRaw={(raw) => this.updateContent('description', raw)}
+                />
+
+                <label>Icon</label>
+                <Image 
+                    url
+                    max_size={5*1024*1024}
+                    image={this.state.node.extras.icon_img} 
+                    update={(url) => this.updateContent('icon_img', url)}
+                    // className='image-upload-icon'
+                />
+
+                <label>Background Image</label>
+                <Image 
+                    url
+                    max_size={5*4096*4096}
+                    image={this.state.node.extras.background_img} 
+                    update={(url) => this.updateContent('background_img', url)}
+                    // className='image-upload-icon'
+                    margin
+                />
+                {isAlexa && <div className="space-between mt-3">
                     <label>Custom Pause</label>
                     <Toggle
                         icons={false}
@@ -86,8 +132,8 @@ class Stream extends Component {
                         onChange={this.togglePause}
                         className="fulfill-switch"
                     />
-                </div>
-                <div className="space-between">
+                </div>}
+                {isAlexa && <div className="space-between">
                     <label>Loop Audio</label>
                     <Toggle
                         icons={false}
@@ -95,7 +141,7 @@ class Stream extends Component {
                         onChange={this.toggleLoop}
                         className="fulfill-switch"
                     />
-                </div>
+                </div>}
             </div>
         );
     }

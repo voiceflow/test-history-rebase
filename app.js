@@ -254,7 +254,6 @@ app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
     COMMENT OUT ACTUAL MARKETPLACE ROUTES FOR MASTER
 */
 // app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
-// app.get('/marketplace/:project_id', ensureLoggedIn(), Marketplace.getModules)
 // app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)
 // app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules)
 // app.get('/marketplace/user_module/:project_id', ensureLoggedIn(), Marketplace.getUserModules)
@@ -272,11 +271,11 @@ app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
 // app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate)
 // app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
 // app.get('/marketplace/initial_template', ensureLoggedIn(), Marketplace.getInitialTemplate)
+// app.get('/marketplace/:project_id', ensureLoggedIn(), Marketplace.getModules)
 // app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
 // app.get('/marketplace/diagram/:module_id', ensureLoggedIn(), Marketplace.getModuleDiagram)
 
 app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
-app.get('/marketplace/:project_id', ensureBeta(), Marketplace.getModules)
 app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)
 app.get('/marketplace/featured', ensureBeta(), Marketplace.getFeaturedModules)
 app.get('/marketplace/user_module/:project_id', ensureLoggedIn(), Marketplace.getUserModules)
@@ -293,6 +292,7 @@ app.delete('/marketplace/user_module/:project_id/:module_id', ensureBeta(), Mark
 app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate)
 app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
 app.get('/marketplace/initial_template', ensureLoggedIn(), Marketplace.getInitialTemplate)
+app.get('/marketplace/:project_id', ensureBeta(), Marketplace.getModules)
 app.get('/marketplace/:module_id', ensureBeta(), Marketplace.getModule)
 app.get('/marketplace/diagram/:module_id', ensureBeta(), Marketplace.getModuleDiagram)
 

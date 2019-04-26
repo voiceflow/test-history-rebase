@@ -40,16 +40,14 @@ class BackupSettings extends Component{
             .then((res) => {
                 let live_version = res[0].data
                 let versions = res[1].data.filter((version) => {
-                    return version.skill_id !== live_version.skill_id // Check both just in case
+                    return version.skill_id !== live_version.live_version
                 })
 
                 this.setState({
                     loading: false,
                     versions: versions,
-                    live_version: live_version
+                    live_version: live_version.live_skill
                 })
-
-                console.log(this.state)
             })
             .catch((err) => {
                 this.setState({

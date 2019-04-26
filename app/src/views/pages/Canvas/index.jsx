@@ -1381,7 +1381,7 @@ export class Canvas extends Component {
 
     onDrop = (event) => {
         if (this.props.preview) return;
-        var type, name
+        var type, name, diagram_id
         if (typeof event === 'string') {
             type = event
             event = {
@@ -1395,9 +1395,18 @@ export class Canvas extends Component {
             try {
                 type = event.dataTransfer.getData('node')
                 name = event.dataTransfer.getData('name')
+                diagram_id = event.dataTransfer.getData('diagram_id')
             } catch (e) {
                 return
             }
+        }
+
+        if(diagram_id){
+            // Track which flow was used
+            let module = this.props.diagrams.find((diagram) => {return diagram.id === diagram_id})
+            axios.post('/analytics/track_flow_used', {
+                module_id: module.module_id
+            })
         }
 
         if (!name) {

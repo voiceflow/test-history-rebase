@@ -865,6 +865,10 @@ hr.full-width {
 .no-padding-row{
     margin: 0px !important;
 }
+.ace_editor{
+    font: 15px/normal 'OpenSans' !important;
+    color: #132144 !important;
+}
 .no-padding-row>div{
     padding: 0 !important;
 }
@@ -1303,6 +1307,12 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
   width:200px; 
   left:50%; 
   margin-left:-100px;
+}
+.form-title{
+    font-size: 15px;
+    font-weight: 500;
+    color: #62778C;
+    line-height: 20px;
 }
 .form-title{
     font-size: 15px;
@@ -2489,10 +2499,12 @@ kbd {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    width: 100%;
+    height: 70px;
+    width: 70px;
     border-radius: 50%;
     border: 2px solid white;
+    box-shadow: 0 1px 2px 1px rgba(17,49,96,.10);
+    margin-top: -1px;
 }
 
 .module-image h1{
@@ -2500,13 +2512,18 @@ kbd {
     margin-bottom: 0px;
 }
 
+.MenuItem .module-image {
+    width: 30px;
+    height: 30px;
+}
+
 .MenuItem .module-icon{
     padding-top:0px;
 }
 
 .module-card-icon {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 40px;
@@ -2518,8 +2535,8 @@ kbd {
 }
 
 .module-card-icon .module-image {
-    -webkit-box-shadow: 0 0 5px 0 rgba(17,49,96,.3);
-    box-shadow: 0 0 5px 0 rgba(17,49,96,.3);
+    -webkit-box-shadow: 0 2px 3px 0 rgba(14, 30, 37, 0.10);
+    box-shadow: 0 2px 3px 0 rgba(14, 30, 37, 0.14);
 }
 
 @media only screen and (max-width: 1200px) {
@@ -2527,4 +2544,10 @@ kbd {
     height: 160px;
     width: 160px
   }
+}
+
+.module-card-exit {
+    position: relative;
+    top: 5px;
+    right: 5px;
 }

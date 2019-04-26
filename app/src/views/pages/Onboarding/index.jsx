@@ -76,6 +76,11 @@ class Onboarding extends Component{
   }
 
 	createSkill = () => {
+    // Onboarding Failsafe
+    if(!Array.isArray(this.state.templates) || !this.state.templates[0] || !this.state.templates[0].module_id){
+      return this.props.history.push('/dashboard')
+    }
+
     const module_id = this.state.templates[0].module_id
 		axios.post(`/team/${this.props.team_id}/copy/module/${module_id}`, {
 			name: 'My First Project',

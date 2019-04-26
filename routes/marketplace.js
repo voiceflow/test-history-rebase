@@ -1,32 +1,11 @@
-const { pool, hashids, docClient, writeToLogs, ESclient, analytics } = require('./../services')
-const { copySkill, deleteVersionPromise, copyDiagramsFromSkill } = require('./skill_util')
+const { pool, hashids, docClient, writeToLogs } = require('./../services')
+const { copySkill, deleteVersionPromise } = require('./skill_util')
 const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
 
-const DEFAULT_VARIABLES = ['sessions', 'user_id', 'timestamp', 'platform', 'locale', 'access_token']
-
-if(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'development_prod' || process.env.NODE_ENV === 'test'){
-	ADMIN_MARKETPLACE_ACC = 2125
-} else {
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 	ADMIN_MARKETPLACE_ACC = 19
-}
-
-const setIntersect = (array_1, array_2, defaults) => {
-	if(defaults === undefined){
-		defaults = []
-	}
-	let set_1 = new Set(array_1)
-	return new Set([...array_2].filter(x => set_1.has(x) && defaults.indexOf(x) < 0))
-}
-
-const getTeamId = (project_id) => {
-	return new Promise(async (resolve) => {
-		try{
-			resolve((await pool.query(`SELECT team_id FROM projects WHERE project_id = $1 LIMIT 1`, [project_id])).rows[0].team_id)
-		} catch (err) {
-			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-			resolve(undefined)
-		}
-	})
+}else{
+	ADMIN_MARKETPLACE_ACC = 2125
 }
 
 const MODULE_COLOURS = [
@@ -42,12 +21,13 @@ const MODULE_COLOURS = [
 	'697986|EEF0F1'
 ]
 
-const MODULE_LIMIT = 20;
+const module_limit = 10;
 const hashIds = (rows) => {
 	for(var i=0;i<rows.length;i++){
 		rows[i].skill_id = hashids.encode(rows[i].skill_id)
 		rows[i].project_id = hashids.encode(rows[i].project_id)
 		rows[i].module_id = hashids.encode(rows[i].module_id)
+		rows[i].creator_id = hashids.encode(rows[i].creator_id)
 	}
 }
 
@@ -55,49 +35,16 @@ const getModuleColour = () => {
 	return MODULE_COLOURS[Math.floor(Math.random() * MODULE_COLOURS.length)]
 }
 
-const updateModuleInES = (module_data) => {
-	return new Promise(async (resolve, reject) => {
-		let index_options = {
-			index: 'marketplace',
-			type: 'flows',
-			id: hashids.encode(module_data.module_id),
-			body: {
-				'title': module_data.title,
-				'descr': module_data.descr,
-				'created': module_data.created,
-				'overview': module_data.overview,
-				'module_icon': module_data.module_icon,
-				'color': module_data.color,
-				'downloads': module_data.downloads,
-				'author': module_data.name,
-				'tag': (typeof module_data.tags === 'string'? JSON.parse(module_data.tags) : '')
-			}
-		}
-		
-		try{
-			await ESclient.index(index_options)
-			resolve()
-		} catch (err) {
-			reject(err)
-		}
-	})
-}
-
 const getModules = async (req, res) => {
-	let project_id = hashids.decode(req.params.project_id)[0]
 	try{
-		let team_id = await getTeamId(project_id)
 		let module_data = (await pool.query(`
 			SELECT * 
 			FROM modules 
 			INNER JOIN (SELECT DISTINCT project_id FROM skills WHERE cert_approved IS NOT NULL) AS distinct_versions 
 				ON modules.module_project_id = distinct_versions.project_id 
 			INNER JOIN creators 
-				ON creators.creator_id = modules.creator_id
-			WHERE modules.module_id NOT IN (
-				SELECT module_id FROM team_modules WHERE team_modules.project_id = $2 AND team_modules.team_id = $3
-			) AND modules.template_index = 0 LIMIT $1
-		`, [MODULE_LIMIT, project_id, team_id])).rows
+				ON creators.creator_id = modules.creator_id LIMIT $1
+		`, [module_limit])).rows
 		hashIds(module_data)
 		res.send(module_data)
 	} catch (err) {
@@ -155,6 +102,7 @@ const saveCertification = async (req, res) => {
 
 		// Randomly choose module colour
 		let colour = getModuleColour()
+
 		try{
 			let new_module_data = (await pool.query(`INSERT INTO projects (name, creator_id) VALUES ($1, $2) RETURNING *`, [req.body.title, ADMIN_MARKETPLACE_ACC])).rows[0]
 			await pool.query(
@@ -162,7 +110,7 @@ const saveCertification = async (req, res) => {
 				(title, descr, creator_id, tags, type, overview, module_icon, color, input, output, module_project_id, project_id) 
 			VALUES 
 				($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`, 
-			[req.body.title, req.body.descr, req.user.id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, 
+			[req.body.title, req.body.descr, req.body.creator_id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, 
 			 colour, req.body.input, req.body.output, new_module_data.project_id, project_id])
 			res.sendStatus(200)
 		} catch (err) {
@@ -174,6 +122,7 @@ const saveCertification = async (req, res) => {
 	const updateModule = async (module_id) => {
 		// Leaving module icon in for now, but not using it anymore
 		req.body.module_icon = null
+
 		try{
 			await pool.query(
 				`UPDATE modules SET title = $1, descr = $2, tags = $3, type = $4, overview = $5, module_icon = $6, color = $7, input = $8, output = $9 WHERE module_id = $10`, 
@@ -198,8 +147,10 @@ const saveCertification = async (req, res) => {
 	}
 }
 
+
+
 const giveCertification = async (req, res) => {
-	let project_id = hashids.decode(req.params.project_id)[0]
+	let project_id = hashids.decode(req.params.project_id)[0];
 
 	try{
 		await pool.query(`
@@ -209,14 +160,6 @@ const giveCertification = async (req, res) => {
 				AND cert_approved IS NULL 
 				AND cert_requested IS NOT NULL`,
 			[project_id])
-
-		let module_data = (await pool.query(`
-			SELECT * 
-			FROM modules 
-			INNER JOIN creators ON modules.creator_id = creators.creator_id
-			WHERE modules.project_id = $1`, [project_id])).rows[0]
-		await updateModuleInES(module_data)
-
 		res.sendStatus(200)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -227,21 +170,17 @@ const giveCertification = async (req, res) => {
 const requestCertification = async (req, res) => {
 	let project_id = hashids.decode(req.params.project_id)[0]
 	let module_project_id
+
 	try{
 		let module_data = (await pool.query(`
 			SELECT * 
 			FROM modules
 			WHERE project_id = $1`, [project_id])).rows
 		module_project_id = module_data[0].module_project_id
-		// Creates a new version of the skill at this pt
-		req.params.id = req.params.skill_id
+	
+    // TODO FIX THIS TO CENTRAL TEAM
 		req.params.target_creator = ADMIN_MARKETPLACE_ACC
 		copySkill(req, res, {user_copy: true, request_cert: true, project_id: module_project_id}, () => {
-			analytics.track({
-				userId: req.user.id,
-				event: 'Flow Created',
-				properties: module_data
-			})
 			res.sendStatus(200)	
 		})
 	} catch (err) {
@@ -275,11 +214,10 @@ const certStatus = (req, res) => {
 
 const removeAccess = async (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0]
-	let project_id = hashids.decode(req.params.project_id)[0]
-	let team_id = await getTeamId(project_id)
+	let user_id = req.user.id
 
 	try{
-		await pool.query(`DELETE FROM team_modules WHERE team_id = $1 AND module_id = $2 AND project_id = $3`, [team_id, module_id, project_id])
+		await pool.query(`DELETE FROM user_modules WHERE creator_id = $1 AND module_id = $2`, [user_id, module_id])
 		res.sendStatus(200)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -287,34 +225,16 @@ const removeAccess = async (req, res) => {
 	}
 }
 
-const checkConflicts = async (req, res) => {
-	let project_id = hashids.decode(req.params.project_id)[0]
+const hasAccess = async (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0]
-	try {
-		let current_dev_data = (await pool.query(`
-			SELECT * 
-			FROM projects 
-			INNER JOIN skills ON projects.dev_version = skills.skill_id
-			WHERE projects.project_id = $1
-		`, [project_id])).rows[0]
-
-		let module_data = (await pool.query(`
-			SELECT * 
-			FROM projects
-			INNER JOIN modules ON projects.project_id = modules.module_project_id
-			INNER JOIN skills ON skills.skill_id = 
-				(SELECT max(skills.skill_id) 
-				FROM skills
-				INNER JOIN modules ON skills.project_id = modules.module_project_id
-				WHERE skills.cert_approved IS NOT NULL
-				AND module_id = $1)
-			WHERE module_id = $1
-		`, [module_id])).rows[0]
-
-		let globals_intersect = setIntersect(current_dev_data.global, module_data.global, DEFAULT_VARIABLES)
-
-		// TODO: intents intersect
-		res.send({globals_intersect: Array.from(globals_intersect)})
+	let user_id = req.user.id
+	
+	try{
+		let user_module_data = (await pool.query(`SELCT * FROM user_modules WHERE creator_id = $1 AND module_id = $2`, [user_id, module_id])).rows
+		if(user_module_data.length > 0){
+			res.send(true)
+		}
+		res.send(false)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 		res.sendStatus(500)
@@ -323,59 +243,16 @@ const checkConflicts = async (req, res) => {
 
 const giveAccess = async (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0]
-	let project_id = hashids.decode(req.params.project_id)[0]
-	let team_id = await getTeamId(project_id)
 	let creator_id = req.user.id
-	let user_module_data
-
+	
 	try{
-		user_module_data = (await pool.query(`SELECT * FROM team_modules WHERE module_id = $1 AND team_id = $2 AND project_id = $3`, [module_id, team_id, project_id])).rows
+		let user_module_data = (await pool.query(`SELECT * FROM user_modules WHERE module_id = $1 AND creator_id = $2`, [module_id, creator_id])).rows
 		if(user_module_data.length > 0){
 			res.sendStatus(400)
 		}
-		await pool.query(`INSERT INTO team_modules (team_id, module_id, project_id) VALUES ($1, $2, $3)`, [team_id, module_id, project_id])
+		await pool.query(`INSERT INTO user_modules (creator_id, module_id) VALUES ($1, $2)`, [creator_id, module_id])
+		res.sendStatus(200)
 	} catch (err) {
-		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-		res.sendStatus(500)
-	}
-
-	try{
-		let dest_skill_id = (await pool.query(`SELECT dev_version FROM projects WHERE project_id = $1`, [project_id])).rows[0].dev_version
-		let origin_skill = (await pool.query(`
-			SELECT skills.skill_id, modules.title 
-			FROM modules 
-			INNER JOIN projects ON modules.module_project_id = projects.project_id
-			INNER JOIN skills ON modules.module_project_id = skills.project_id
-			WHERE module_id = $1 AND cert_approved IS NOT NULL
-			ORDER BY cert_approved DESC
-			LIMIT 1
-		`, [module_id])).rows[0]
-		let {new_diagrams, new_globals} = await copyDiagramsFromSkill(origin_skill.skill_id, dest_skill_id, creator_id, origin_skill.title, module_id)
-		//Increment # of downloads and update ES index
-		await pool.query(`UPDATE modules SET downloads = downloads + 1 WHERE module_id = $1`, [module_id])
-		let module_data = (await pool.query(`
-			SELECT *
-			FROM modules
-			INNER JOIN creators ON modules.creator_id = creators.creator_id
-			WHERE modules.module_id = $1
-		`, [module_id])).rows[0]
-		await updateModuleInES(module_data)
-
-		new_diagrams.map((diagram) => {
-			diagram.skill_id = hashids.encode(diagram.skill_id)
-			if(diagram.module_id !== null){
-				diagram.module_id = hashids.encode(diagram.module_id)
-			}
-		})
-		module_data.module_id = hashids.encode(module_data.module_id)
-		analytics.track({
-			userId: req.user.id,
-			event: 'Flow Added',
-			properties: module_data
-		})
-		res.send({new_module: module_data, globals: new_globals, new_diagrams: new_diagrams})
-	} catch (err) {
-		await pool.query(`DELETE FROM team_modules WHERE team_id = $1 AND module_id = $2 AND project_id = $3`, [team_id, module_id, project_id])
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 		res.sendStatus(500)
 	}
@@ -456,16 +333,15 @@ const getCertModule = (req, res) => {
 }
 
 const getUserModules = async (req, res) => {
-	let project_id = hashids.decode(req.params.project_id)[0]
-	let team_id = await getTeamId(project_id)
+	let user_id = req.user.id;
+
 	try{
 		let user_modules = (await pool.query(`
 			SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, modules.color
 			FROM modules 
-			INNER JOIN team_modules ON modules.module_id = team_modules.module_id
-			WHERE team_modules.team_id = $1 AND team_modules.project_id = $2
-		`, [team_id, project_id])).rows
-		hashIds(user_modules)
+			INNER JOIN user_modules ON modules.module_id = user_modules.module_id
+			WHERE user_modules.creator_id = $1
+		`, [user_id])).rows
 		res.send(user_modules)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -662,23 +538,6 @@ const copyDefaultTemplate = (req, res) => {
 	)
 }
 
-const getModuleDiagram = async (req, res) => {
-	let module_id = hashids.decode(req.params.module_id)[0]
-	try{
-		let project_id = (await pool.query(`SELECT module_project_id FROM modules WHERE module_id = $1`, [module_id])).rows[0].module_project_id
-		let latest_version_data = (await pool.query(`
-			SELECT *
-			FROM skills
-			WHERE skills.cert_approved = (SELECT max(cert_approved) FROM skills WHERE project_id = $1)
-			AND project_id = $1
-		`, [project_id])).rows[0]
-		res.send({diagram_id: latest_version_data.diagram})
-	} catch (err) {
-		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-		res.sendStatus(500)
-	}
-}
-
 module.exports = {
 	getModules: getModules,
 	getModule: getModule,
@@ -688,7 +547,7 @@ module.exports = {
 	saveCertification: saveCertification,
 	certStatus: certStatus,
 	giveAccess: giveAccess,
-	// hasAccess: hasAccess,
+	hasAccess: hasAccess,
 	removeAccess: removeAccess,
 	giveCertification: giveCertification,
 	getCertModule: getCertModule,
@@ -696,8 +555,6 @@ module.exports = {
 	retrieveTemplate: retrieveTemplate,
 	getPendingModules: getPendingModules,
 	getDefaultTemplates: getDefaultTemplates,
-	copyDefaultTemplate: copyDefaultTemplate,
-	checkConflicts: checkConflicts,
 	getInitialTemplate: getInitialTemplate,
-	getModuleDiagram: getModuleDiagram
+	copyDefaultTemplate: copyDefaultTemplate
 }

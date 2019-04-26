@@ -9,8 +9,6 @@ export const FETCH_DIAGRAMS_FAILURE = 'FETCH_DIAGRAMS_FAILURE'
 // const FETCH_DIAGRAM = 'FETCH_DIAGRAM'
 export const ON_FLOW_RENAME = 'ON_FLOW_RENAME'
 export const UPDATE_DIAGRAM_ROOT = 'UPDATE_DIAGRAM_ROOT'
-export const APPEND_DIAGRAMS = 'APPEND_DIAGRAMS'
-export const REPLACE_DIAGRAMS = 'REPLACE_DIAGRAMS'
 
 const initialState = {
   diagrams: [],
@@ -24,16 +22,6 @@ export default function diagramReducer(state = initialState, action) {
       return {
         ...state,
         root_id: action.payload.root_id
-      }
-    case APPEND_DIAGRAMS:
-      return {
-        ...state,
-        diagrams: update(state.diagrams, {$push: action.payload.diagrams})
-      }
-    case REPLACE_DIAGRAMS:
-      return {
-        ...state,
-        diagrams: update(state.diagrams, {$set: action.payload.diagrams})
       }
     case FETCH_DIAGRAMS_BEGIN:
       return {
@@ -89,16 +77,6 @@ export const updateDiagramRoot = (root_id)=> ({
   payload: {root_id}
 })
 
-export const appendDiagrams = diagrams => ({
-  type: APPEND_DIAGRAMS,
-  payload: {diagrams}
-})
-
-export const replaceDiagrams = diagrams => ({
-  type: REPLACE_DIAGRAMS,
-  payload: {diagrams}
-})
-
 export const fetchDiagrams = skill_id => {
     return dispatch => {
       dispatch(fetchDiagramsBegin());
@@ -109,8 +87,7 @@ export const fetchDiagrams = skill_id => {
                   return {
                       id: flow.id,
                       name: flow.name,
-                      sub_diagrams: JSON.parse(flow.sub_diagrams),
-                      module_id: flow.module_id
+                      sub_diagrams: JSON.parse(flow.sub_diagrams)
                   }
               } catch (err) {
                   return {

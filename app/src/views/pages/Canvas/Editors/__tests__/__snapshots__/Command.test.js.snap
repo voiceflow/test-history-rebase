@@ -114,10 +114,10 @@ exports[`CommandEditor render command block editor 1`] = `
          Create New Flow
       </button>
       <div
-        className="break"
+        class="break"
       >
         <span
-          className="or"
+          class="or"
         >
           OR
         </span>

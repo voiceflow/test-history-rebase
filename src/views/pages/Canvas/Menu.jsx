@@ -150,7 +150,7 @@ class Menu extends Component {
                     history={this.props.history}
                 />
             default:
-                return <Blocks user_modules={this.props.user_modules} user={this.props.user} toggleUpgrade={this.props.toggleUpgrade} type_counter={this.props.type_counter} history={this.props.history}/>
+                return <Blocks user_modules={this.props.user_modules} user={this.props.user} toggleUpgrade={this.props.toggleUpgrade} type_counter={this.props.type_counter}/>
         }
     }
 
@@ -213,6 +213,9 @@ class Menu extends Component {
                 </div>
             </div>
         );
+        // <a className="tool no-underline" href="/market" rel="noopener noreferrer">
+        //     <i className="fas fa-store-alt"/>
+        // </a>
     }
 }
 

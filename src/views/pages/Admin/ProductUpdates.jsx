@@ -64,7 +64,7 @@ class ProductUpdates extends Component {
                       </FormGroup>
                       <FormGroup>
                           <Label for="details">Enter your update here</Label>
-                          <Input type="textarea" name="details" id="details" onChange={this.handleChange}></Input>
+                          <Input type="textarea" name="details" id="details" onChange={this.handleChange} maxLength={150}></Input>
                       </FormGroup>
                   </Form>
 

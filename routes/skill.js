@@ -180,7 +180,7 @@ exports.getDiagrams = (req, res) => {
     return;
   }
 
-  let sql = `SELECT d.id, d.name, d.sub_diagrams FROM diagrams d
+  let sql = `SELECT d.id, d.name, d.sub_diagrams, d.module_id FROM diagrams d
         INNER JOIN skills s ON s.skill_id = d.skill_id WHERE d.skill_id = $1`
 
   let id = hashids.decode(req.params.id)[0];
@@ -192,6 +192,11 @@ exports.getDiagrams = (req, res) => {
       });
       res.sendStatus(500);
     } else {
+      for(let row of data.rows){
+        if(typeof row.module_id === 'number'){
+          row.module_id = hashids.encode(row.module_id)
+        }
+      }
       res.send(data.rows);
     }
   });

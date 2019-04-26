@@ -21,9 +21,12 @@ export const SET_LIVE_MODE_MODAL = 'SET_LIVE_MODE_MODAL';
 export const REMOVE_FULFILLMENT = 'REMOVE_FULFILLMENT'
 export const UPDATE_FULFILLMENT = 'UPDATE_FULFILLMENT'
 export const RESET_VERSION = 'RESET_VERSION'
+export const UPDATE_USER_MODULES = 'UPDATE_USER_MODULES'
+export const REMOVE_USER_MODULES = 'REMOVE_USER_MODULES'
 
 const initialState = {
   skill: {},
+  user_modules: {},
   loading: false,
   error: null
 };
@@ -41,7 +44,8 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        skill: action.payload.skills
+        skill: action.payload.skills,
+        user_modules: action.payload.user_modules
       };
     case RESET_VERSION:
       return initialState
@@ -95,6 +99,16 @@ export default function skillReducer(state = initialState, action) {
         ...state,
         skill: update(state.skill, {$merge: action.payload.skill })
       }
+    case UPDATE_USER_MODULES:
+      return {
+        ...state,
+        user_modules: update(state.user_modules, {[action.payload.module.module_id]: {$set: action.payload.module}})
+      }
+    case REMOVE_USER_MODULES:
+      return {
+        ...state,
+        user_modules: update(state.user_modules, {$unset: [action.payload.module_id]})
+      }
     case UPDATE_VERSION_MERGE:
       return {
         ...state,
@@ -114,9 +128,9 @@ export const fetchVersionBegin = () => ({
   type: FETCH_VERSION_BEGIN
 });
 
-export const fetchVersionSuccess = skills => ({
+export const fetchVersionSuccess = (skills, user_modules) => ({
   type: FETCH_VERSION_SUCCESS,
-  payload: { skills }
+  payload: { skills, user_modules }
 });
 
 export const fetchVersionBlocked = message => ({
@@ -184,6 +198,15 @@ export const updateFulfillment = ( intent_key, slot_config ) => ({
     payload: { intent_key, slot_config }
 })
 
+export const updateUserModules = module => ({
+    type: UPDATE_USER_MODULES,
+    payload: { module }
+})
+
+export const removeUserModules = module_id => ({
+    type: REMOVE_USER_MODULES,
+    payload: { module_id }
+})
 export const updateLocales = (locale) => {
     return (dispatch, getState) => {
         let locales = getState().skills.skill.locales;
@@ -250,12 +273,10 @@ export const fetchVersion = (version_id, preview, diagram_id) => {
     return (dispatch, getState) => {
         dispatch(fetchVersionBegin());
         // TODO UPDATE THIS ROUTE
-        return axios.get(`/skill/${version_id}?${preview ? 'preview=1' : 'simple=1'}`, {
-                headers: {
-                    Pragma: 'no-cache'
-                }
-            })
-            .then(res => {
+        return new Promise(async (resolve, reject) => {
+            try{
+                let res = await axios.get(`/skill/${version_id}?${preview ? 'preview=1' : 'simple=1'}&user_modules=1`)
+
                 let skill = res.data
                 if (preview && !skill.preview) {
                     dispatch(fetchVersionBlocked(<Alert color="danger">Preview not enabled for this skill</Alert>))
@@ -288,16 +309,24 @@ export const fetchVersion = (version_id, preview, diagram_id) => {
                     skill.diagram = diagram_id
                 }
 
+                let user_modules = {}
+                let module_data = (await axios.get(`/marketplace/user_module/${skill.project_id}`)).data
+                for(let row of module_data){
+                    user_modules[row.module_id] = row
+                }
+
                 if(!preview){
-                  dispatch(fetchDevVersionSuccess(skill))
-                  dispatch(fetchLiveVersion(skill.project_id))
+                    dispatch(fetchDevVersionSuccess(skill))
+                    dispatch(fetchLiveVersion(skill.project_id))
                 }
                 
-                dispatch(fetchVersionSuccess(skill))
-            })
-            .catch(err => {
+                dispatch(fetchVersionSuccess(skill, user_modules))
+                resolve()
+            } catch (err) {
                 dispatch(fetchVersionFailure('Unable to load project'))
-            })
+                reject(err)
+            }
+        })
     }
 }
 

@@ -5,7 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const {upload, uploadResize, redisClient, jwt, config, verify} = require('./services');
+const {upload, uploadResize, ESclient, verify} = require('./services');
 const {policy, terms} = require('./policy');
 const AWS = require('aws-sdk')
 const { request_logger } = require('./logger.js')
@@ -112,6 +112,34 @@ const ensureLoggedOut = () => {
         else next();
     }
 }
+// MARKETPLACE BETA
+const ensureBeta = ()=> {
+    return (req, res, next) => {
+        if(req.user && req.user.admin === 7) next();
+        else res.sendStatus(401);
+    }
+}
+
+// Route for Elasticsearch
+app.use(bodyParser.text({ type: 'application/x-ndjson' }))
+
+app.post('/elasticsearch/*', (req, res) => {
+    req.body = req.body.substring(24, req.body.length + 1)
+    req.body = JSON.parse(req.body)
+    let ESparams = req.params[0].split('/')
+    ESoptions = {
+        index: ESparams[0],
+        type: ESparams[1],
+        body: req.body,
+    }
+    ESclient.search(ESoptions)
+    .then((data) => {
+        res.send({responses: [data]})
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+})
 
 app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.getAccessToken);
 app.get('/session/amazon/:code', ensureLoggedIn(), Authentication.getAmazonCode);
@@ -225,42 +253,48 @@ app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
 /*
     COMMENT OUT ACTUAL MARKETPLACE ROUTES FOR MASTER
 */
-app.get('/marketplace', ensureLoggedIn(), Marketplace.getModules)
-app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules)
-app.get('/marketplace/user_module', ensureLoggedIn(), Marketplace.getUserModules)
+// app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
+// app.get('/marketplace/:project_id', ensureLoggedIn(), Marketplace.getModules)
+// app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)
+// app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules)
+// app.get('/marketplace/user_module/:project_id', ensureLoggedIn(), Marketplace.getUserModules)
+// app.get('/marketplace/cert/pending', ensureAdmin(), Marketplace.getPendingModules)
+// app.get('/marketplace/cert/status/:project_id', ensureLoggedIn(), Marketplace.certStatus)
+// app.get('/marketplace/cert/:project_id', ensureLoggedIn(), Marketplace.getCertModule)
+// app.post('/marketplace/cert/:skill_id/:project_id', ensureLoggedIn(), Marketplace.requestCertification)
+// app.put('/marketplace/cert/:project_id', ensureAdmin(), Marketplace.giveCertification)
+// // It doesn't appear that this route needs the version_id param
+// app.delete('/marketplace/cert/:skill_id/:project_id', ensureLoggedIn(), Marketplace.cancelCertification)
+// app.patch('/marketplace/cert/:project_id', ensureLoggedIn(), Marketplace.saveCertification)
+// app.post('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.giveAccess)
+// app.get('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.checkConflicts)
+// app.delete('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.removeAccess)
+// app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate)
+// app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
+// app.get('/marketplace/initial_template', ensureLoggedIn(), Marketplace.getInitialTemplate)
+// app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
+// app.get('/marketplace/diagram/:module_id', ensureLoggedIn(), Marketplace.getModuleDiagram)
+
+app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
+app.get('/marketplace/:project_id', ensureBeta(), Marketplace.getModules)
+app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)
+app.get('/marketplace/featured', ensureBeta(), Marketplace.getFeaturedModules)
+app.get('/marketplace/user_module/:project_id', ensureLoggedIn(), Marketplace.getUserModules)
 app.get('/marketplace/cert/pending', ensureAdmin(), Marketplace.getPendingModules)
-app.get('/marketplace/cert/status/:project_id', ensureLoggedIn(), Marketplace.certStatus)
-app.get('/marketplace/cert/:project_id', ensureLoggedIn(), Marketplace.getCertModule)
-app.post('/marketplace/cert/:version_id/:project_id', ensureLoggedIn(), Marketplace.requestCertification)
+app.get('/marketplace/cert/status/:project_id', ensureBeta(), Marketplace.certStatus)
+app.get('/marketplace/cert/:project_id', ensureBeta(), Marketplace.getCertModule)
+app.post('/marketplace/cert/:skill_id/:project_id', ensureBeta(), Marketplace.requestCertification)
 app.put('/marketplace/cert/:project_id', ensureAdmin(), Marketplace.giveCertification)
-// It doesn't appear that this route needs the version_id param
-app.delete('/marketplace/cert/:version_id/:project_id', ensureLoggedIn(), Marketplace.cancelCertification)
-app.patch('/marketplace/cert/:project_id', ensureLoggedIn(), Marketplace.saveCertification)
-app.post('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.giveAccess)
-app.get('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.hasAccess)
-app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess)
+app.delete('/marketplace/cert/:skill_id/:project_id', ensureBeta(), Marketplace.cancelCertification)
+app.patch('/marketplace/cert/:project_id', ensureBeta(), Marketplace.saveCertification)
+app.post('/marketplace/user_module/:project_id/:module_id', ensureBeta(), Marketplace.giveAccess)
+app.get('/marketplace/user_module/:project_id/:module_id', ensureBeta(), Marketplace.checkConflicts)
+app.delete('/marketplace/user_module/:project_id/:module_id', ensureBeta(), Marketplace.removeAccess)
 app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate)
 app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
 app.get('/marketplace/initial_template', ensureLoggedIn(), Marketplace.getInitialTemplate)
-app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
-
-// app.get('/marketplace', ensureAdmin(), Marketplace.getModules)
-// app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)
-// app.get('/marketplace/featured', ensureAdmin(), Marketplace.getFeaturedModules)
-// app.get('/marketplace/user_module', ensureAdmin(), Marketplace.getUserModules)
-// app.get('/marketplace/cert/pending', ensureAdmin(), Marketplace.getPendingModules)
-// app.get('/marketplace/cert/status/:skill_id', ensureAdmin(), Marketplace.certStatus)
-// app.get('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.getCertModule)
-// app.post('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.requestCertification)
-// app.put('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.giveCertification)
-// app.delete('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.cancelCertification)
-// app.patch('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.saveCertification)
-// app.post('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.giveAccess)
-// app.get('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.hasAccess)
-// app.delete('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.removeAccess)
-// app.get('/marketplace/template/:module_id', ensureAdmin(), Marketplace.retrieveTemplate)
-// app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
-// app.get('/marketplace/:module_id', ensureAdmin(), Marketplace.getModule)
+app.get('/marketplace/:module_id', ensureBeta(), Marketplace.getModule)
+app.get('/marketplace/diagram/:module_id', ensureBeta(), Marketplace.getModuleDiagram)
 
 app.post('/analytics/track_onboarding', ensureLoggedIn(), Track.trackOnboarding)
 app.post('/analytics/track_session_time', ensureLoggedIn(), Track.trackSessionTime)
@@ -268,6 +302,7 @@ app.post('/analytics/track_active_canvas', ensureLoggedIn(), Track.trackCanvasTi
 app.post('/analytics/track_first_session_upload', ensureLoggedIn(), Track.trackFirstSessionUpload)
 app.post('/analytics/track_first_project', ensureLoggedIn(), Track.trackFirstProject)
 app.post('/analytics/track_dev_account', ensureLoggedIn(), Track.trackDevAccount)
+app.post('/analytics/track_flow_used', ensureLoggedIn(), Track.trackFlowUsed)
 
 app.post('/integrations/get_users', ensureLoggedIn(), Integrations.getAllUsers)
 app.post('/integrations/add_user', ensureLoggedIn(), Integrations.addUser)

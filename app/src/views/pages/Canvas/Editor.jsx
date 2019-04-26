@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import Mousetrap from "mousetrap";
 import { compose } from "recompose";
 import { connect } from "react-redux";
+import CreatableSelect from 'react-select/lib/Creatable';
 
 // HOCs
 import { undo, redo } from "./../../HOC/UndoRedo";
@@ -96,7 +97,8 @@ class Editor extends Component {
       modal: false,
       expanded: false,
       error: null,
-      confirm: null
+      confirm: null,
+      chipsInput: ''
     };
 
     this.eventHandler = this.eventHandler.bind(this);
@@ -530,6 +532,14 @@ class Editor extends Component {
                   Reprompt
                 </DropdownItem>
               )}
+            {["interaction", "choice", "capture", "stream"].includes(
+              this.state.node.extras.type
+            ) && this.props.platform === "google" &&
+              !this.state.node.extras.chips && (
+                <DropdownItem onClick={this.toggleChips}>
+                  Chips
+                </DropdownItem>
+              )}
             <DropdownItem
               onClick={() =>
                 this.setState({
@@ -577,8 +587,7 @@ class Editor extends Component {
   toggleReprompt() {
     let node = this.state.node;
     if (node.extras.reprompt) {
-      node.extras.reprompt = null;
-      delete node.extras.reprompt;
+      delete node.extras.reprompt
     } else {
       node.extras.reprompt = {
         voice: "Alexa",
@@ -587,6 +596,38 @@ class Editor extends Component {
     }
     this.setState({ node: node });
   }
+
+  toggleChips = () => {
+    const node = this.state.node
+    if (node.extras.chips) {
+      delete node.extras.chips
+    } else {
+      node.extras.chips = []
+    }
+    this.setState({ node: node, chipsInput: '' })
+  }
+
+  handleChipsInputKeyDown = (event) => {
+    const { chipsInput } = this.state;
+    if (!chipsInput || !chipsInput.trim()) return
+    switch (event.key) {
+      case 'Enter':
+      case 'Tab':
+        let node = this.state.node
+        node.extras.chips = [...node.extras.chips, {
+          label: chipsInput,
+          value: chipsInput
+        }]
+        this.setState({
+          chipsInput: '',
+          node: node
+        })
+        event.preventDefault()
+        break
+      default:
+        break
+    }
+  };
 
   EditorRender() {
     let variables = this.props.global_variables.concat(this.props.variables);
@@ -622,6 +663,37 @@ class Editor extends Component {
                 }
               }}
             />
+          </React.Fragment>
+        )}
+        {this.state.node.extras.chips && this.props.platform === 'google' && (
+          <React.Fragment>
+            <hr />
+            <div className="space-between">
+              <label>Suggestion Chips</label>
+              <button className="close" onClick={this.toggleChips} />
+            </div>
+            <CreatableSelect
+              components={{
+                DropdownIndicator: null
+              }}
+              inputValue={this.state.chipsInput}
+              isClearable
+              isMulti
+              menuIsOpen={false}
+              onChange={v => {
+                let node = this.state.node
+                node.extras.chips = v
+                this.setState({node})
+              }}
+              onInputChange={v => {
+                this.setState({
+                  chipsInput: v
+                })
+              }}
+              onKeyDown={this.handleChipsInputKeyDown}
+              placeholder='Enter suggestion and press enter'
+              value={this.state.node.extras.chips}
+            />          
           </React.Fragment>
         )}
       </React.Fragment>

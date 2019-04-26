@@ -373,7 +373,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           let NEXT = node.ports.find(a => a.label === 'next')
           let PREVIOUS = node.ports.find(a => a.label === 'previous')
           let PAUSE = node.extras.custom_pause && node.ports.find(a => (a.label === 'stop/pause' || a.label === 'pause'))
-          let gNEXT = node.ports.find(a => a.label.trim() === '')
+          let gNEXT = node.ports.find(a => a.label.trim() === '' && !a.in)
 
           story.lines[node.id] = {
             loop: node.extras.loop,
@@ -912,6 +912,9 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
               REPROMPT = `<voice name="${node.extras.reprompt.voice}">${draftToMarkdown(node.extras.reprompt.content)}</voice>`
             }
             if(REPROMPT) story.lines[node.id].reprompt = REPROMPT
+        }
+        if (node.extras && node.extras.chips) {
+          story.lines[node.id].chips = node.extras.chips.map(chip => chip.label)
         }
       }
       let render_type

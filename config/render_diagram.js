@@ -382,12 +382,13 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
             PAUSE_ID: node.id,
             NEXT: NEXT ? getLink(NEXT.links[0]) : null,
             PREVIOUS: PREVIOUS ? getLink(PREVIOUS.links[0]) : null,
-            gNextId: gNEXT ? getLink(gNEXT.links[0]) : null,
-            title: draftToMarkdown(node.extras.title),
-            description: draftToMarkdown(node.extras.description),
+            gNextId: gNEXT ? getLink(gNEXT.links[0]) : undefined,
             icon_img: node.extras.icon_img,
             background_img: node.extras.background_img
           }
+          if (node.extras.title) story.lines[node.id].title = draftToMarkdown(node.extras.title)
+          if (node.extras.description) story.lines[node.id].description = draftToMarkdown(node.extras.description)
+
         } else if (node.extras.type === 'multiline' || node.extras.type === 'line' || node.extras.type === 'audio' || node.extras.type === 'combine') {
           let nextLink;
           for (var j = 0; j < node.ports.length; j++) {

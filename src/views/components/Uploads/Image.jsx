@@ -100,7 +100,7 @@ class Image extends Component {
             </div>
         }else{
           render = <Dropzone
-            className="dropzone"
+            className="dropzone image-upload-icon"
             activeClassName="active"
             rejectClassName="reject"
             multiple={false}

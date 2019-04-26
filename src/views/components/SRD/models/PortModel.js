@@ -8,25 +8,41 @@ export class PortModel extends BaseModel{
 		this.name = name;
 		this.links = {};
 		this.maximumLinks = maximumLinks;
+		this.hidden = false;
 	}
 
 	deSerialize(ob, engine: DiagramEngine) {
 		super.deSerialize(ob, engine);
 		this.name = ob.name;
 		this.maximumLinks = ob.in ? null : 1;
+		if(ob.hidden) this.hidden = ob.hidden
+		if (!_.isNil(ob.x)) this.x = ob.x
+		if (!_.isNil(ob.y)) this.y = ob.y
 	}
 
 	serialize() {
-		return _.merge(super.serialize(), {
+		const serialized = {
 			name: this.name,
 			parentNode: this.parent.id,
-			links: _.map(this.links, link => link.id)
-		});
+			links: _.map(this.links, link => link.id),
+		}
+		if (this.hidden) {
+			serialized.hidden = this.hidden
+			serialized.x = this.x
+			serialized.y = this.y
+		}
+		return _.merge(super.serialize(), serialized);
 	}
 
 	doClone(lookupTable = {}, clone) {
 		clone.links = {};
 		clone.parentNode = this.getParent().clone(lookupTable);
+
+		if (this.hidden) {
+			clone.hidden = this.hidden
+			clone.x = this.x
+			clone.y = this.y
+		}
 	}
 
 	getNode() {

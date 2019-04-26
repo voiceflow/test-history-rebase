@@ -12,7 +12,7 @@ exports.getUpdates = async (req, res) => {
 
 exports.createUpdate = async (req, res) => {
   try{
-    await pool.query('INSERT INTO product_updates (type, details, created) VALUES ($1, $2, NOW())', [req.body.type, req.body.details])
+    await pool.query('INSERT INTO product_updates (type, details) VALUES ($1, $2)', [req.body.type, req.body.details])
     res.sendStatus(200)
   } catch (err){
     res.sendStatus(500)

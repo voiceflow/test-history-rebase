@@ -18,6 +18,8 @@ const geKey = (lang, separator = '_') => {
       return `es${separator}ES`;
     case 'italian':
       return `it${separator}IT`;
+    case 'portuguese':
+      return `pt${separator}BR`
     default:
       return `en${separator}US`;
   }
@@ -34,6 +36,7 @@ export const LANGUAGES = {
   italian: 'Italian',
   japanese: 'Japanese',
   spanish: 'Spanish (ES)',
+  portuguese: 'Portuguese (BR)'
 };
 
 export const LANGUAGES_SHORT = {
@@ -47,6 +50,7 @@ export const LANGUAGES_SHORT = {
   italian: 'Italian',
   japanese: 'Japanese',
   spanish: 'Spanish (ES)',
+  portuguese: 'Portuguese (BR)'
 };
 
 export const LANGUAGES_OPTIONS = Object.keys(LANGUAGES).reduce(

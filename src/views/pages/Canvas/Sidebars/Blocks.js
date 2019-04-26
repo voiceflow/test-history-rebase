@@ -89,13 +89,13 @@ export class Blocks extends PureComponent {
                             : null}
                             <div className="mb-3 section-blocks" style={(section.title === 'business' && this.props.user.admin === 0) ? {opacity: 0.3} : null}>
                                 {section.items.map((item, i) => {
-                                        if(item.type === 'marketplace_link'){
+                                        if(item && item.type === 'marketplace_link'){
                                             return <div className="wrap" key={i}>
                                                 <div className='MenuItem dashed text-center pt-2' onClick={() => {this.props.history.push(`/market/${this.props.skill_id}`)}}>
                                                     <span className="text-secondary">Add Flows</span>
                                                 </div>
                                             </div>
-                                        } else if(item.module_id){
+                                        } else if(item && item.module_id){
                                             return <ModuleItem
                                             item={item}
                                             key={i}

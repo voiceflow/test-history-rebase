@@ -852,6 +852,7 @@ hr.full-width {
     border: 1px solid #eaeff3 !important;
     box-shadow: none;
 }
+
 .ace_gutter{
     background: #fff !important;
 }
@@ -866,7 +867,6 @@ hr.full-width {
     margin: 0px !important;
 }
 .ace_editor{
-    font: 15px/normal 'OpenSans' !important;
     color: #132144 !important;
 }
 .no-padding-row>div{
@@ -1661,6 +1661,10 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
 
 .capitalize {
     text-transform: capitalize;
+}
+
+.text-dull {
+  color: #8da2b5 !important;
 }
 
 .text-muted {

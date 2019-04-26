@@ -290,8 +290,8 @@ exports.deleteProduct = async (req, res) => {
   try {
     products = (await pool.query(`
       SELECT pc.amzn_prod_id, pc.creator_id, p.skill_id 
-      FROM products p 
-      INNER JOIN product_creators pc ON pc.product_id = p.id
+      FROM products p
+      LEFT JOIN product_creators pc ON pc.product_id = p.id
       WHERE p.id = $1
     `, [pid])).rows
 
@@ -315,6 +315,7 @@ exports.deleteProduct = async (req, res) => {
     })
 
     await pool.query('DELETE FROM products WHERE id = $1', [pid])
+    res.sendStatus(200)
     
   } catch (err) {
     if(!(err && err.status === 404)) writeToLogs('DELETE PRODUCT', err)

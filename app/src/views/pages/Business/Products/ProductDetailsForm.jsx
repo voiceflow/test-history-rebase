@@ -14,12 +14,11 @@ class ProductDetailsForm extends React.Component {
               &nbsp;
               <Tooltip
                 target="tooltip"
-                className="menu-tip"
                 theme="menu"
                 position="bottom"
-                content={"ENTER HERE"}
+                title="Keywords to identify this product in searches"
               >
-                <i className="fas fa-question-circle mr-1" id="tooltip"/>
+                <i className="fas fa-question-circle text-dull mr-1"/>
               </Tooltip>
             </label>
             <Input
@@ -32,12 +31,11 @@ class ProductDetailsForm extends React.Component {
               &nbsp;
               <Tooltip
                 target="tooltip"
-                className="menu-tip"
                 theme="menu"
                 position="bottom"
-                content={"ENTER HERE"}
+                title="This product description will show up on the user's Alexa App on their phone"
               >
-                <i className="fas fa-question-circle mr-1" id="tooltip"/>
+                <i className="fas fa-question-circle text-dull mr-1"/>
               </Tooltip>
             </label>
             <AvInput
@@ -53,12 +51,11 @@ class ProductDetailsForm extends React.Component {
               &nbsp;
               <Tooltip
                 target="tooltip"
-                className="menu-tip"
                 theme="menu"
                 position="bottom"
-                content={"ENTER HERE"}
+                title="What Alexa will say to prompt the user"
               >
-                <i className="fas fa-question-circle mr-1" id="tooltip"/>
+                <i className="fas fa-question-circle text-dull mr-1"/>
               </Tooltip>
             </label>
             <AvInput
@@ -74,12 +71,11 @@ class ProductDetailsForm extends React.Component {
               &nbsp;
               <Tooltip
                 target="tooltip"
-                className="menu-tip"
                 theme="menu"
                 position="bottom"
-                content={"ENTER HERE"}
+                title="What Alexa will say after the user buys the product"
               >
-                <i className="fas fa-question-circle mr-1" id="tooltip"/>
+                <i className="fas fa-question-circle text-dull mr-1"/>
               </Tooltip>
             </label>
             <AvInput
@@ -92,16 +88,6 @@ class ProductDetailsForm extends React.Component {
           <AvFeedback>Buy description is required</AvFeedback>
             <label className="label-margin-top">
               Privacy Policy URL
-              &nbsp;
-              <Tooltip
-                target="tooltip"
-                className="menu-tip"
-                theme="menu"
-                position="bottom"
-                content={"ENTER HERE"}
-              >
-                <i className="fas fa-question-circle mr-1" id="tooltip"/>
-              </Tooltip>
             </label>
             <AvInput
               name="policy"
@@ -116,12 +102,11 @@ class ProductDetailsForm extends React.Component {
               &nbsp;
               <Tooltip
                 target="tooltip"
-                className="menu-tip"
                 theme="menu"
                 position="bottom"
-                content={"ENTER HERE"}
+                title="Testing instructions for Amazon Skill Reviewers buying the product"
               >
-                <i className="fas fa-question-circle mr-1" id="tooltip"/>
+                <i className="fas fa-question-circle text-dull mr-1"/>
               </Tooltip>
             </label>
             <Input

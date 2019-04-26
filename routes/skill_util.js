@@ -274,135 +274,163 @@ copyDisplays = (old_skill_id, new_skill_id, new_creator_id) => new Promise(async
   }
 })
 
-const uploadCopiedDiagram = (data, new_skill_id, new_creator_id, diagram_names, module_id) => new Promise(async (resolve, reject) => {
-  let params = {
-    TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
-    Item: {
-      id: data.diagram.id,
-      variables: data.diagram.variables,
-      data: data.diagram.data,
-      skill: new_skill_id,
-      creator: new_creator_id
-    }
-  }
+exports.copySkill = async (req, res, options, cb = false) => {
 
-  try {
-    if(module_id === undefined){
-      module_id = null
-    }
-    let new_diagram_data = (await pool.query(
-      `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, used_intents, module_id) (SELECT $1, $2, $3, $4, used_intents, $5 FROM diagrams WHERE id = $6) RETURNING *`,
-      [data.diagram.id, diagram_names[data.old_diagram_id], new_skill_id, JSON.stringify(data.sub_diagrams), module_id, data.old_diagram_id])).rows[0]
-    await docClient.put(params).promise()
-    resolve(new_diagram_data)
-  } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-    reject()
-  }
-})
+  if(!options) options = {}
 
-const remapDiagramIds = async (diagram, new_skill_id, new_creator_id, mappings, platform, module_id) => {
-  let sub_diagrams = new Set()
-  let old_diagram_id = diagram.id
+  let id = req.params._version_id ? req.params._version_id : hashids.decode(req.params.version_id)[0]
+  let new_creator_id = options.creator_id || req.user.id
+  let team_id = req.params._team_id
+  let diagram_mapping = {}
+  let remapped_products = {}
+  let remapped_emails = {}
+  let remapped_displays = {}
+  let diagram_names = {}
+  let root_diagram_id = generateID()
 
-  diagram.id = mappings.diagram[diagram.id]
-  diagram.skill = new_skill_id
-  let JSON_diagram_data = JSON.parse(diagram.data)
-  let nodes = JSON_diagram_data.nodes
-  if (!!nodes) {
-    for (var i = 0; i < nodes.length; i++) {
-      let node = nodes[i]
-      if (node.extras.diagram_id && node.extras.diagram_id !== null) {
-        node.extras.diagram_id = mappings.diagram[node.extras.diagram_id]
-        sub_diagrams.add(node.extras.diagram_id)
-      } else if (node.extras[platform] && node.extras[platform].diagram_id && node.extras[platform].diagram_id !== null) {
-
-        PLATFORMS.forEach(p => {
-          node.extras[p].diagram_id = mappings.diagram[node.extras[p].diagram_id]
-        })
-
-        sub_diagrams.add(node.extras[platform].diagram_id)
-      } else if (node.extras.display_id && node.extras.display_id !== null && mappings.display[node.extras.display_id]){
-        node.extras.display_id = mappings.display[node.extras.display_id]
-      } else if (node.extras.template_id && node.extras.template_id !== null && mappings.email[node.extras.template_id]){
-        node.extras.template_id = mappings.email[node.extras.template_id]
-      } else if (node.extras.product_id && node.extras.product_id !== null && mappings.product[node.extras.product_id]){
-        node.extras.product_id = mappings.product[node.extras.product_id]
-      } else if (Array.isArray(node.combines) && node.combines.length !== 0){
-        for(var j = 0; j < node.combines.length; j++){
-          PLATFORMS.forEach(p => {
-            try{
-              if(node.combines[j].extras[p] && node.combines[j].extras[p].diagram_id){
-                node.combines[j].extras[p].diagram_id = mappings.diagram[node.combines[j].extras[p].diagram_id]
-                sub_diagrams.add(node.combines[j].extras[p].diagram_id)
-              }
-            }catch(e){}
-          })  
+  const retrieveDiagram = (diagram_id, new_skill_id, platform) => {
+    const uploadNewDiagram = (data) => new Promise(async (resolve, reject)=>{
+      let params = {
+        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        Item: {
+          id: data.diagram.id,
+          variables: data.diagram.variables,
+          data: data.diagram.data,
+          skill: new_skill_id,
+          creator: new_creator_id
         }
       }
-    } 
-  }
 
-  diagram.data = JSON.stringify(JSON_diagram_data)
-  let result = await uploadCopiedDiagram({
-    diagram: diagram,
-    sub_diagrams: [...sub_diagrams],
-    old_diagram_id: old_diagram_id
-  }, new_skill_id, new_creator_id, mappings.names, module_id)
-  return result
-}
-
-const remapAndCopyDiagram = (diagram_id, new_skill_id, platform, new_creator_id, mappings, module_id) => {
-  return new Promise((resolve, reject) => {
-    let get_params = {
-      TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
-      Key: {
-        'id': diagram_id
-      }
-    }
-
-    docClient.get(get_params, async (err, data) => {
-      if (err) {
+      try {
+        await pool.query(
+          `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, used_intents) (SELECT $1, $2, $3, $4, used_intents FROM diagrams WHERE id = $5)`,
+          [data.diagram.id, diagram_names[data.old_diagram_id], new_skill_id, JSON.stringify(data.sub_diagrams), data.old_diagram_id])
+        await docClient.put(params).promise()
+        resolve()
+      } catch (err) {
         writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-        reject(err)
-      } else if (data.Item) {
-        let result = await remapDiagramIds(data.Item, new_skill_id, new_creator_id, mappings, platform, module_id)
-        if (typeof result === 'Error') {
-          reject(result)
-        } else {
-          resolve(result)
-        }
+        reject()
       }
     })
-  })
-}
 
-const renderSkill = async (skill, user) => {
-  let intents = {}
-  let slots = {}
-  // CONVERT ARRAY TO OBJECTS
-  let used_intents = new Set(), used_choices = [], permissions = new Set(), interfaces = new Set()
-  if (Array.isArray(skill.intents)) {
-    skill.intents.forEach(intent => {
-      if (intent.key) intents[intent.key] = intent.name
+    const remapDiagramIds = async (diagram) => {
+      let sub_diagrams = new Set()
+      let old_diagram_id = diagram.id
+      diagram.id = diagram_mapping[diagram.id]
+      diagram.skill = new_skill_id
+      let JSON_diagram_data = JSON.parse(diagram.data)
+      let nodes = JSON_diagram_data.nodes
+      if (!!nodes) {
+        for (var i = 0; i < nodes.length; i++) {
+          let node = nodes[i]
+          if (node.extras.diagram_id && node.extras.diagram_id !== null) {
+            node.extras.diagram_id = diagram_mapping[node.extras.diagram_id]
+            sub_diagrams.add(node.extras.diagram_id)
+          } else if (node.extras[platform] && node.extras[platform].diagram_id && node.extras[platform].diagram_id !== null) {
+
+            PLATFORMS.forEach(p => {
+              node.extras[p].diagram_id = diagram_mapping[node.extras[p].diagram_id]
+            })
+
+            sub_diagrams.add(node.extras[platform].diagram_id)
+          } else if (node.extras.display_id && node.extras.display_id !== null && remapped_displays[node.extras.display_id]){
+            node.extras.display_id = remapped_displays[node.extras.display_id]
+          } else if (node.extras.template_id && node.extras.template_id !== null && remapped_emails[node.extras.template_id]){
+            node.extras.template_id = remapped_emails[node.extras.template_id]
+          } else if (node.extras.product_id && node.extras.product_id !== null && remapped_products[node.extras.product_id]){
+            node.extras.product_id = remapped_products[node.extras.product_id]
+          } else if (Array.isArray(node.combines) && node.combines.length !== 0){
+            for(var j = 0; j < node.combines.length; j++){
+              PLATFORMS.forEach(p => {
+                try{
+                  if(node.combines[j].extras[p] && node.combines[j].extras[p].diagram_id){
+                    node.combines[j].extras[p].diagram_id = diagram_mapping[node.combines[j].extras[p].diagram_id]
+                    sub_diagrams.add(node.combines[j].extras[p].diagram_id)
+                  }
+                }catch(e){}
+              })  
+            }
+          }
+        } 
+      }
+
+      diagram.data = JSON.stringify(JSON_diagram_data)
+      let result = await uploadNewDiagram({
+        diagram: diagram,
+        sub_diagrams: [...sub_diagrams],
+        old_diagram_id: old_diagram_id
+      })
+      return result
+    }
+
+    // retrieveDiagramIds returns this promise
+    return new Promise((resolve, reject) => {
+      let get_params = {
+        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        Key: {
+          'id': diagram_id
+        }
+      }
+
+      docClient.get(get_params, async (err, data) => {
+        if (err) {
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+          reject(err)
+        } else if (data.Item) {
+          let result = await remapDiagramIds(data.Item)
+          if (typeof result === 'Error') {
+            reject(result)
+          } else {
+            resolve(result)
+          }
+        }
+      })
     })
   }
-  if (Array.isArray(skill.slots)) {
-    skill.slots.forEach(slot => {
-      if (slot.key) slots[slot.key] = slot.name
-    })
-  }
-  try{
-    await renderDiagram(user, skill.diagram, skill.skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots}, undefined, skill.platform)
-    // UPDATE SKILL 
-    await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1', 
-    [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify(used_choices), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
-  }catch(err){
-    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-  }
-}
 
-const generateCopySkillQuery = (options) => {
+  const renderSkill = async (skill) => {
+    let intents = {}
+    let slots = {}
+    // CONVERT ARRAY TO OBJECTS
+    let used_intents = new Set(), used_choices = [], permissions = new Set(), interfaces = new Set()
+    if (Array.isArray(skill.intents)) {
+      skill.intents.forEach(intent => {
+        if (intent.key) intents[intent.key] = intent.name
+      })
+    }
+    if (Array.isArray(skill.slots)) {
+      skill.slots.forEach(slot => {
+        if (slot.key) slots[slot.key] = slot.name
+      })
+    }
+    try{
+      await renderDiagram(req.user, skill.diagram, skill.skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots}, undefined, skill.platform)
+      // UPDATE SKILL 
+      await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1', 
+      [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify(used_choices), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
+    }catch(err){
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+    }
+  }
+
+  // Starts here: verify that the skill is under the current BOARD
+  if (!options.copying_default_template && req.user.admin < 100) {
+    try {
+      const CHECK = await pool.query(`
+        SELECT 1 FROM skills s
+        INNER JOIN projects p ON p.project_id = s.project_id
+        INNER JOIN team_members tm ON tm.team_id = p.team_id
+        WHERE tm.creator_id = $1 AND s.skill_id = $2 LIMIT 1
+      `, [req.user.id, id])
+
+      if(CHECK.rowCount === 0) throw new Error('Not your skill')
+    } catch (err) {
+      // forbidden
+      console.log(err)
+      return res.sendStatus(401)
+    }
+  }
+
   let copy_str = (options.append_copy_str ? `coalesce(name, '') || ' Copy' AS name` : 'name')
   let copy_query
   if (options.complete_copy || options.renderDiagram) {
@@ -430,40 +458,7 @@ const generateCopySkillQuery = (options) => {
             intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events, platform, google_publish_info
           FROM skills WHERE skill_id = $3 RETURNING *`
   }
-  return copy_query
-}
 
-exports.copySkill = async (req, res, options, cb = false) => {
-
-  let id = req.params._version_id ? req.params._version_id : hashids.decode(req.params.version_id)[0]
-  let new_creator_id = options.creator_id || req.user.id
-  let team_id = req.params._team_id
-  let diagram_mapping = {}
-  let remapped_products = {}
-  let remapped_emails = {}
-  let remapped_displays = {}
-  let diagram_names = {}
-  let root_diagram_id = generateID()
-  
-  // Starts here: verify that the skill is under the current creator
-  if (!options.copying_default_template) {
-    if (req.user.admin < 100) {
-      try {
-        const CHECK = await pool.query(`
-          SELECT 1 FROM skills s
-          INNER JOIN projects p ON p.project_id = s.project_id
-          INNER JOIN team_members tm ON tm.team_id = p.team_id
-          WHERE tm.creator_id = $1 AND s.skill_id = $2 LIMIT 1
-        `, [req.user.id, id])
-
-        if(CHECK.rowCount === 0) throw new Error('Not your skill')
-      } catch (err) {
-        // forbidden
-        return res.sendStatus(401)
-      }
-    }
-  }
-  let copy_query = generateCopySkillQuery(options)
   try {
     let copy_skill
     if(!options.diagrams_only){
@@ -481,8 +476,10 @@ exports.copySkill = async (req, res, options, cb = false) => {
         }
       }
     }
+
     let diagram_data = await pool.query('SELECT id, diagrams.name, intents, slots FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1', [id])
-    let remap_and_copy_promises = []
+    let retrieve_promises = []
+
     for (let i = 0; i < diagram_data.rows.length; i++) {
       diagram_names[diagram_data.rows[i].id] = diagram_data.rows[i].name
       if (diagram_data.rows[i].name === 'ROOT') {
@@ -490,19 +487,13 @@ exports.copySkill = async (req, res, options, cb = false) => {
       } else {
         diagram_mapping[diagram_data.rows[i].id] = generateID()
       }
-      remap_and_copy_promises.push(
-        remapAndCopyDiagram(diagram_data.rows[i].id, copy_skill.skill_id, copy_skill.platform, new_creator_id, {
-          diagram: diagram_mapping,
-          display: remapped_displays,
-          product: remapped_products,
-          email: remapped_emails,
-          names: diagram_names
-        })
+      retrieve_promises.push(
+        retrieveDiagram(diagram_data.rows[i].id, copy_skill.skill_id, copy_skill.platform)
       )
     }
 
-    Promise.all(remap_and_copy_promises)
-      .then(async (values) => {
+    Promise.all(retrieve_promises)
+      .then(async () => {
         // Add working version to table
         if (options.copying_default_template || options.user_copy) {
           try{
@@ -520,14 +511,16 @@ exports.copySkill = async (req, res, options, cb = false) => {
 
               await pool.query(`UPDATE skills SET project_id = $1 WHERE skill_id = $2`, [new_project_data.project_id, copy_skill.skill_id])
             
-              analytics.track({
-                userId: req.user.id,
-                event: 'Project Created',
-                properties: {
-                  skill_id: copy_skill.skill_id,
-                  original_skill_id: id
-                }
-              })
+              if(process.env.NODE_ENV !== 'test'){
+                analytics.track({
+                  userId: req.user.id,
+                  event: 'Project Created',
+                  properties: {
+                    skill_id: copy_skill.skill_id,
+                    original_skill_id: id
+                  }
+                })
+              }
             } 
           } catch (err) {
             writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -536,7 +529,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
         }
 
         if(options.renderDiagram){
-          await renderSkill(copy_skill, req.user)
+          await renderSkill(copy_skill)
         }
 
         // Default name of cb when no callback provided is 'next'
@@ -555,74 +548,4 @@ exports.copySkill = async (req, res, options, cb = false) => {
     writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
     res.sendStatus(500)
   }
-}
-
-// Expect origin_skill_id and dest_skill_id to be decoded
-exports.copyDiagramsFromSkill = async (origin_skill_id, dest_skill_id, new_creator_id, new_flow_name, module_id) => {
-  return new Promise(async (resolve, reject) => {
-    let diagram_names = {}
-    let diagram_mapping = {}
-    let remapped_products
-    let remapped_emails
-    let remapped_displays
-    let root_diagram_id = generateID()
-
-    try{
-      remapped_products = await copyProducts(origin_skill_id, dest_skill_id)
-      remapped_emails = await copyEmailTemplates(origin_skill_id, dest_skill_id, new_creator_id)
-      remapped_displays = await copyDisplays(origin_skill_id, dest_skill_id, new_creator_id)
-
-      let dest_diagram_names = (await pool.query(`SELECT diagrams.name FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1`, [dest_skill_id])).rows
-      dest_diagram_names = new Set(dest_diagram_names.map((row) => {return row.name}))
-      let platform = (await pool.query(`SELECT platform FROM skills WHERE skill_id = $1`, [origin_skill_id])).rows[0].platform
-      let diagram_data = await pool.query('SELECT id, diagrams.name, intents, slots FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1', [origin_skill_id])
-      let remap_and_copy_promises = []
-      for (let i = 0; i < diagram_data.rows.length; i++) {
-        if(dest_diagram_names.has(diagram_data.rows[i].name)){
-          diagram_names[diagram_data.rows[i].id] = `${diagram_data.rows[i].name} (${new_flow_name})`
-        } else {
-          diagram_names[diagram_data.rows[i].id] = diagram_data.rows[i].name
-        }
-        
-        if (diagram_data.rows[i].name === 'ROOT') {
-          diagram_names[diagram_data.rows[i].id] = new_flow_name
-          diagram_mapping[diagram_data.rows[i].id] = root_diagram_id
-        } else {
-          diagram_mapping[diagram_data.rows[i].id] = generateID()
-        }
-
-        remap_and_copy_promises.push(
-          remapAndCopyDiagram(diagram_data.rows[i].id, dest_skill_id, platform, new_creator_id, {
-            diagram: diagram_mapping,
-            display: remapped_displays,
-            product: remapped_products,
-            email: remapped_emails,
-            names: diagram_names
-          }, module_id)
-        )
-      }
-
-      // Update global variables for new skill
-      let origin_globals = new Set((await pool.query(`SELECT global FROM skills WHERE skill_id = $1`, [origin_skill_id])).rows[0].global)
-      let dest_globals = new Set((await pool.query(`SELECT global FROM skills WHERE skill_id = $1`, [dest_skill_id])).rows[0].global)
-      
-      for(let elem of origin_globals){
-        dest_globals.add(elem)
-      }
-      let total_globals = JSON.stringify(Array.from(dest_globals))
-      await pool.query(`UPDATE skills SET global = $1 WHERE skill_id = $2`, [total_globals, dest_skill_id])
-
-      Promise.all(remap_and_copy_promises)
-      .then((values) => {
-        resolve({new_diagrams: values, new_globals: total_globals})
-      })
-      .catch(err => {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-        reject(err)
-      })
-    } catch (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-      reject(err)
-    }
-  })
 }

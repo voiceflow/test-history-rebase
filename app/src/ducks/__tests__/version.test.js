@@ -4,8 +4,7 @@ import { testSkill } from './../../views/pages/Canvas/__mock__/MockSkill'
 const initialState = {
     skill: {},
     loading: false,
-    error: null,
-    user_modules: {}
+    error: null
 };
 
 const skill = testSkill 
@@ -21,8 +20,7 @@ describe('Test Skill Reducer', () => {
         expect(skillReducer(initialState, startFetch)).toEqual({
             loading: true,
             error: null,
-            skill: {},
-            user_modules: {}
+            skill: {}
         })
     });
 
@@ -70,7 +68,7 @@ describe('Test Skill Reducer', () => {
             type: actions.FETCH_VERSION_FAILURE,
             payload: {error: true}
         }
-        expect(skillReducer(initialState, fetchSkillFail)).toEqual({loading: false, error: true, skill: {}, user_modules: {}})
+        expect(skillReducer(initialState, fetchSkillFail)).toEqual({loading: false, error: true, skill: {}})
     })
 
     it('should handle TOGGLE_LIVE', () => {
@@ -90,8 +88,7 @@ describe('Test Skill Reducer', () => {
             error: null,
             loading: false,
             live_version: testSkill,
-            live_mode: false,
-            user_modules: {}
+            live_mode: false
         })
     })
 
@@ -107,8 +104,7 @@ describe('Test Skill Reducer', () => {
         expect(skillReducer(initial, updateSkill)).toEqual({
             error: null,
             loading: false,
-            skill: newSkill,
-            user_modules: {}
+            skill: newSkill
         })
     })
 

@@ -39,7 +39,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Tell Alexa what to say, or play audio clips"
@@ -111,7 +110,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Set the value of a variable, or many variables at once"
@@ -213,7 +211,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Select choices and capture slot values from user input"
@@ -360,7 +357,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Tell Alexa to show a card"
@@ -432,7 +428,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Ask users to enable permissions (User Info, Reminders, etc.)"
@@ -554,7 +549,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Tell Alexa what to say, or play audio clips"
@@ -626,7 +620,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Set the value of a variable, or many variables at once"
@@ -728,7 +721,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Select choices and capture slot values from user input"
@@ -875,7 +867,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Tell Alexa to show a card"
@@ -947,7 +938,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
     >
       <div
         className="mb-3 section-blocks"
-        style={null}
       >
         <Connect(MenuItem)
           data-tip="Ask users to enable permissions (User Info, Reminders, etc.)"

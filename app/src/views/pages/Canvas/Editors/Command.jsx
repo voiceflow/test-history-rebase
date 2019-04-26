@@ -246,8 +246,8 @@ export class Command extends Component {
                         <button className="btn-clear btn-block btn-lg" block onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'), null, true)}>
                         <img className="mr-2" src={'/flows.svg'} height={15} width={15} alt="home"/> Create New Flow
                         </button>
-                        <div className="break">
-                        <span className="or">OR</span>
+                        <div class="break">
+                        <span class="or">OR</span>
                         </div>
                         {this.props.diagrams && this.props.diagrams.length > 0 ?
                             <React.Fragment>

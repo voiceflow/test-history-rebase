@@ -327,6 +327,7 @@ exports.createInteractionModel = (req, locale) => {
 	// Add all the slots to the interaction model
 	slots.forEach(slot => {
 		if (Array.isArray(slot.inputs) && slot.inputs.length !== 0){
+      console.log("SLOT", slot)
       const slot_name = (!slot.type.value || slot.type.value.toLowerCase() === 'custom') ? slot.name : findSlot(slot.type.value, 'alexa')
 
 			// Don't add the slot if it ain't used

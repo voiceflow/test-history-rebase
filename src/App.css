@@ -866,9 +866,6 @@ hr.full-width {
 .no-padding-row{
     margin: 0px !important;
 }
-.ace_editor{
-    color: #132144 !important;
-}
 .no-padding-row>div{
     padding: 0 !important;
 }

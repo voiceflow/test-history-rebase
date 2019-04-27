@@ -796,7 +796,6 @@ export class Canvas extends Component {
                         intents: JSON.stringify(s.intents),
                         slots: JSON.stringify(s.slots),
                         fulfillment: JSON.stringify(s.fulfillment),
-                        account_linking: JSON.stringify(s.account_linking),
                         platform: s.platform
                     })
                     .then(res => {

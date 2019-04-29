@@ -327,6 +327,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
               Allow preview sharing
             </label>
             <Toggle
+              checked={false}
               icons={false}
               onChange={[Function]}
             />

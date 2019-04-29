@@ -1,5 +1,13 @@
 {
   "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "voiceflow/creator:VERSION",
+    "Update": "true"
+  },
+  "Authentication": {
+    "Bucket": "com.getvoiceflow.docker-config",
+    "Key": ".dockercfg"
+  },
   "Ports": [
     {
       "ContainerPort": 8080,

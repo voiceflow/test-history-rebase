@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY ./ ./
 
-RUN yarn
+RUN npm install --production
 
 RUN cd ./app && yarn
 

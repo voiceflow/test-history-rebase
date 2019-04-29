@@ -53,37 +53,37 @@ export const SignupForm = ({signup, history, location}) => {
       <SocialLogin entryText={"Sign up"} />
       <ErrorWidget color={"danger"} error={signupError} />
       <FormGroup>
-        <Input 
-          className="form-bg" 
-          type="text" 
-          name="name" 
-          onChange={e => setName(e.target.value)} 
-          placeholder="Full Name" 
-          required minLength="3" 
+        <Input
+          className="form-bg"
+          type="text"
+          name="name"
+          onChange={e => setName(e.target.value)}
+          placeholder="Full Name"
+          required minLength="3"
           value={name}/>
       </FormGroup>
       <FormGroup>
-        <Input 
-          className="form-bg" 
+        <Input
+          className="form-bg"
           type="email"
           name="email"
-          onChange={e => setEmail(e.target.value)} 
-          placeholder="Email" 
-          required minLength="6" 
+          onChange={e => setEmail(e.target.value)}
+          placeholder="Email"
+          required minLength="6"
           value={email}/>
       </FormGroup>
       <FormGroup>
-        <Input 
-          className="form-bg" 
+        <Input
+          className="form-bg"
           type="password"
           name="password"
-          onChange={e => setPassword(e.target.value)} 
-          placeholder="Password" 
-          required minLength="8" 
+          onChange={e => setPassword(e.target.value)}
+          placeholder="Password"
+          required minLength="8"
           value={password}/>
       </FormGroup>
-      <button 
-        className="btn-primary btn-lg btn-block" 
+      <button
+        className="btn-primary btn-lg btn-block"
         type="submit">
           Create Account
         </button>
@@ -93,7 +93,7 @@ export const SignupForm = ({signup, history, location}) => {
         </Link>
       </div>
       <hr/>
-      <div className="text-center">Dont have an account?  
+      <div className="text-center">Already have an account?
       <a href="/signup" onClick={openLogin}>  Login</a>
       </div>
     </div>

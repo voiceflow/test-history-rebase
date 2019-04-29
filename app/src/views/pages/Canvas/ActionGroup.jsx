@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import LOCALE_MAP from "./../../../services/LocaleMap";
 
-import { updateVersion, updateLocales, updateSkillDB } from 'ducks/version'
+import { updateVersion, updateLocales, updateSkillDB, togglePreview } from 'ducks/version'
 import { setError } from 'ducks/modal'
 import {
   Popover, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, ModalBody, Button
@@ -498,23 +498,10 @@ export class ActionGroup extends PureComponent {
     if (this.state.togglingPreview) return
 
     this.setState({
-      allowPreview: !this.state.allowPreview,
       togglingPreview: true
-    }, () => {
-      axios.patch('/skill/' + this.props.skill.skill_id + '?preview=true', {
-        isPreview: !!this.state.allowPreview,
-      })
-        .then(() => {
-          this.setState({ togglingPreview: false })
-        })
-        .catch(err => {
-          this.setState({
-            allowPreview: !this.state.allowPreview,
-            togglingPreview: false
-          })
-          this.props.setError('Unable to toggle preview')
-        })
     })
+
+    this.props.togglePreview(!this.props.skill.preview).then(() => this.setState({togglingPreview: false}))
   }
 
   toggleShare() {
@@ -979,13 +966,13 @@ export class ActionGroup extends PureComponent {
                 <div className="space-between">
                   <label>Allow preview sharing</label>
                   <Toggle
-                    checked={this.state.allowPreview}
+                    checked={this.props.skill.preview}
                     disabled={this.state.togglingPreview}
                     icons={false}
                     onChange={this.togglePreview}
                   />
                 </div>
-                {this.state.allowPreview &&
+                {this.props.skill.preview &&
                   <InputGroup className="mb-3">
                     <InputGroupAddon addonType="prepend">
                       <ClipBoard
@@ -1034,6 +1021,7 @@ const mapDispatchToProps = dispatch => ({
   updateSkill: (type, val) => dispatch(updateVersion(type, val)),
   setError: err => dispatch(setError(err)),
   updateSkillLocale: (val) => dispatch(updateLocales(val)),
+  togglePreview: preview => dispatch(togglePreview(preview)),
   saveSkill: (publish, cb) => dispatch(updateSkillDB(publish, cb))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(ActionGroup);

@@ -25,6 +25,8 @@ import { Link } from 'react-router-dom';
 import Marketplace from './views/pages/Marketplace';
 import Migrate from 'views/pages/Skill/Migrate'
 
+import { Alert } from 'reactstrap';
+
 const live_modal_content = <div className="text-center">
     <img className="modal-img-small mb-4 mt-3" src="/warning.svg" alt="Upload"/>
     <div className="modal-bg-txt mt-2">Entering Live Editing</div>
@@ -217,6 +219,12 @@ class Skill extends Component {
             </div>
         }
 
+        if(this.props.skill_error){
+          return <div className="super-center w-100 h-100">
+            <Alert color="danger">{this.props.skill_error}</Alert>
+          </div>
+        }
+
         return <React.Fragment>
           {!this.props.preview && <SecondaryNavBar page={this.props.page} history={this.props.history}/>}
           <DefaultModal open={this.props.show_live_mode_modal} toggle={()=>{this.props.setLiveModal(false)}} content={live_modal_content} header="Live Mode Disclaimer" close_button_text="Confirm"></DefaultModal>
@@ -242,6 +250,7 @@ class Skill extends Component {
 
 const mapStateToProps = state => ({
     skill: state.skills.skill,
+    skill_error: state.skills.error,
     load_diagram: state.diagrams.loading,
     error: state.skills.error,
     show_live_mode_modal: state.skills.show_live_mode_modal,

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 export const combineAppendValidation = current => {
-    if (current === 'temp' || !current.extras) {
+    if (!current || current === 'temp' || !current.extras) {
         return false;
     }
     switch(current.extras.type){

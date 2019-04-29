@@ -279,7 +279,7 @@ class AccountLinkTemplate extends Component {
                   this.state.accountLinkingRequest
                     .defaultTokenExpirationInSeconds || ""
                 }
-                placeholder="Access Token URL"
+                placeholder="3600"
                 onChange={e => {
                   let accountLinkingRequest = this.state.accountLinkingRequest;
                   accountLinkingRequest.defaultTokenExpirationInSeconds =

@@ -1,7 +1,5 @@
 import update from "immutability-helper";
-import React from "react";
 import axios from "axios";
-import { Alert } from "reactstrap";
 import { getSlotsForKeys } from "../util";
 import { getIntentSlots } from "../Helper";
 import { setError } from "ducks/modal";
@@ -147,11 +145,6 @@ export const fetchVersionBegin = () => ({
 export const fetchVersionSuccess = (skills, user_modules) => ({
   type: FETCH_VERSION_SUCCESS,
   payload: { skills, user_modules }
-});
-
-export const fetchVersionBlocked = message => ({
-  type: FETCH_VERSION_BLOCKED,
-  payload: { message }
 });
 
 export const resetVersion = () => ({
@@ -309,11 +302,7 @@ export const fetchVersion = (version_id, preview, diagram_id) => {
 
         let skill = res.data;
         if (preview && !skill.preview) {
-          dispatch(
-            fetchVersionBlocked(
-              <Alert color="danger">Preview not enabled for this skill</Alert>
-            )
-          );
+          dispatch(fetchVersionFailure("Preview not enabled for this skill"));
           return;
         }
 
@@ -393,6 +382,20 @@ export const fetchLiveVersion = project_id => {
       });
   };
 };
+
+export const togglePreview = preview => {
+  return async (dispatch, getState) => {
+    try {
+      await axios.patch('/skill/' + getState().skills.skill.skill_id + '?preview=true', {
+        isPreview: preview,
+      })
+      dispatch(updateVersion('preview', preview))
+    } catch(err) {
+      dispatch(setError("Unable to toggle preview"))
+    }
+    return Promise.resolve()
+  }
+}
 
 export const fetchDevVersion = project_id => {
   return dispatch => {

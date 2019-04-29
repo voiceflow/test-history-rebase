@@ -153,7 +153,8 @@ export class ActionGroup extends PureComponent {
       show_upload_prompt: false,
       is_error: false,
       should_pop_confetti: false,
-      percentage: 0
+      percentage: 0,
+      allowPreview: !!this.props.skill.preview
     }
 
     this.toggle = this.toggle.bind(this)

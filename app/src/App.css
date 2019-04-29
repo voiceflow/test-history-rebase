@@ -866,9 +866,6 @@ hr.full-width {
 .no-padding-row{
     margin: 0px !important;
 }
-.ace_editor{
-    color: #132144 !important;
-}
 .no-padding-row>div{
     padding: 0 !important;
 }
@@ -1297,7 +1294,7 @@ input, textarea, .text-to-voice, .choice-block {
 }
 input::placeholder, textarea::placeholder, select:required:invalid, input.form-control::placeholder, textarea.form-control::placeholder,
 .select-box__placeholder {
-    color: #62778C !important;
+    color: #8DA2B5 !important;
     font-weight: 400 !important;
     font-size: 15px;
     font-weight: 500;

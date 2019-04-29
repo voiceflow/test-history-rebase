@@ -1,5 +1,7 @@
 const { pool, hashids, jwt, writeToLogs } = require("./../services");
 const { checkSkillAccess } = require("./team_util");
+const randomstring = require("randomstring");
+const _ = require('lodash')
 
 exports.getTemplate = async (req, res) => {
   let skill_id = hashids.decode(req.params.skill_id)[0];
@@ -9,7 +11,7 @@ exports.getTemplate = async (req, res) => {
 
   try {
     const result = await pool.query(
-      "SELECT * FROM skills WHERE skill_id = $1 LIMIT 1",
+      "SELECT account_linking, skill_id FROM skills WHERE skill_id = $1 LIMIT 1",
       [skill_id]
     );
     if (result.rows.length === 0) return res.sendStatus(404);
@@ -17,10 +19,14 @@ exports.getTemplate = async (req, res) => {
     if (result.rows[0].account_linking) {
       try {
         if (!result.rows[0].account_linking.clientSecret) throw new Error();
-        result.rows[0].account_linking.clientSecret = jwt.verify(
+        const clientSecret = jwt.verify(
           result.rows[0].account_linking.clientSecret,
           process.env.JWT_SECRET
         );
+
+        // give back a dummy string of the same length (dangerous to pass back raw strings)
+        result.rows[0].account_linking.clientSecret = randomstring.generate(clientSecret.length)
+        
       } catch (err) {
         result.rows[0].account_linking.clientSecret = "";
       }
@@ -41,8 +47,21 @@ exports.setTemplate = async (req, res) => {
   }
 
   try {
-    let account_linking = req.body;
-    if(!account_linking) throw { status: 400 }
+    const payload = req.body;
+    if(!payload || _.isEmpty(payload)) throw { status: 400 }
+
+    const account_linking = {
+      skipOnEnablement: payload.skipOnEnablement || false,
+      type: payload.type || "AUTH_CODE",
+      authorizationUrl: payload.authorizationUrl || "",
+      domains: payload.domains || [],
+      clientId: payload.clientId || "",
+      scopes: payload.scopes || [],
+      accessTokenUrl: payload.accessTokenUrl || "",
+      clientSecret: payload.clientSecret || "",
+      accessTokenScheme: payload.accessTokenScheme || "HTTP_BASIC",
+      defaultTokenExpirationInSeconds: payload.defaultTokenExpirationInSeconds || 3600
+    }
 
     if (account_linking.clientSecret) {
       account_linking.clientSecret = jwt.sign(
@@ -63,7 +82,7 @@ exports.setTemplate = async (req, res) => {
   } catch (err) {
     writeToLogs("SET ACCOUNT LINK ERROR", { err: err });
 
-    if (err && err.status) return res.status(status).send(message)
+    if (err && err.status) return res.status(err.status).send(message)
     res.sendStatus(500);
     console.trace();
   }

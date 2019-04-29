@@ -116,14 +116,6 @@ exports.getSkill = async (req, res) => {
   let sql
   let params
 
-  // Sync up with AMAZON
-  // Check Current Amazon Status
-  try {
-    await checkVersions(project_id, 'alexa', {check_only: true})
-  } catch (err) {
-    writeToLogs('GET SKILL CHECK VERSIONS', {err});
-  }
-
   if (req.query.preview) {
     // expose as little information as possible if previewing
     sql = `
@@ -139,6 +131,14 @@ exports.getSkill = async (req, res) => {
         skill_id = $1 LIMIT 1`;
     params = [id];
   } else {
+    // Sync up with AMAZON
+    // Check Current Amazon Status
+    try {
+      await checkVersions(project_id, 'alexa', {check_only: true})
+    } catch (err) {
+      writeToLogs('GET SKILL CHECK VERSIONS', {err});
+    }
+    
     sql = `
       SELECT
         s.*, pm.amzn_id AS amzn_id

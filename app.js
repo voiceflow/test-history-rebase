@@ -208,7 +208,7 @@ app.post('/version/:version_id/copy/team/:team_id', ensureLoggedIn(), Team.verif
 app.get('/skill/:skill_id', ensureLoggedIn(), Project.getProjectFromSkill, Skill.getSkill);
 app.get('/skill/google/:id', ensureLoggedIn(), Skill.getGoogleSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
-app.post('/skill/:restore_id/restore', ensurePlan(1), Skill.restoreSkillVersion)
+app.post('/skill/:restore_id/restore', ensureLoggedIn(), Skill.restoreSkillVersion)
 app.get('/interaction_model/:amzn_id/status', ensureLoggedIn(), Skill.checkInterationModel)
 app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkill)
 app.post('/skill/:id/:pid/:target_creator/copy', ensureLoggedIn(), Skill.copyProduct)

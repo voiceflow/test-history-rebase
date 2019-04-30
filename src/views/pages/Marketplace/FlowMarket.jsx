@@ -16,6 +16,7 @@ if(process.env.REACT_APP_BUILD_ENV === 'production'){
 } else {
   ESURL = 'http://localhost:8080/elasticsearch'
 }
+console.log(ESURL)
 class FlowMarket extends Component {
   constructor(props){
     super(props)

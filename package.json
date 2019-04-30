@@ -70,6 +70,8 @@
     "cz-conventional-changelog": "^2.1.0",
     "dynamodb-migrations": "0.0.10",
     "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-mocha": "^5.2.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-jsx-a11y": "^6.2.1",
@@ -107,6 +109,7 @@
     "url": "https://github.com/storyflow/storyflow-creator"
   },
   "scripts": {
+    "lint": "eslint \"**/*.js\" --fix",
     "build": "cd app && npm run build",
     "client": "cd app && npm run start",
     "commit": "git-cz",

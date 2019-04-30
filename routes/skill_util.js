@@ -446,7 +446,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
   let root_diagram_id = generateID()
   
   // Starts here: verify that the skill is under the current creator
-  if (!options.copying_default_template) {
+  if (!options.copying_default_template && !options.request_cert) {
     if (req.user.admin < 100) {
       try {
         const CHECK = await pool.query(`

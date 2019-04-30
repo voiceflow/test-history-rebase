@@ -57,6 +57,7 @@ const getModuleColour = () => {
 
 const updateModuleInES = (module_data) => {
 	return new Promise(async (resolve, reject) => {
+		let downloads = module_data.downloads === null ? 0 : module_data.downloads
 		let index_options = {
 			index: 'marketplace',
 			type: 'flows',
@@ -68,7 +69,7 @@ const updateModuleInES = (module_data) => {
 				'overview': module_data.overview,
 				'module_icon': module_data.module_icon,
 				'color': module_data.color,
-				'downloads': module_data.downloads,
+				'downloads': downloads,
 				'author': module_data.name,
 				'tag': (typeof module_data.tags === 'string'? JSON.parse(module_data.tags) : '')
 			}
@@ -234,7 +235,7 @@ const requestCertification = async (req, res) => {
 			WHERE project_id = $1`, [project_id])).rows
 		module_project_id = module_data[0].module_project_id
 		// Creates a new version of the skill at this pt
-		req.params.id = req.params.skill_id
+		req.params.version_id = req.params.skill_id
 		req.params.target_creator = ADMIN_MARKETPLACE_ACC
 		copySkill(req, res, {user_copy: true, request_cert: true, project_id: module_project_id}, () => {
 			analytics.track({

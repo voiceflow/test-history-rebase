@@ -20,7 +20,6 @@ const class_mapping = {
 class UpdatesPopover extends React.Component {
 
   render() {
-    console.log(this.props.product_updates)
     return (
       <div className="text-center pt-1 pb-1">
         {Array.isArray(this.props.product_updates) && this.props.product_updates.map((entry, i) => {

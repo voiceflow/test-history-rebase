@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { setConfirm, setError } from 'ducks/modal'
 import { AmazonAccessToken, googleAccessToken, updateAccount } from 'ducks/account'
@@ -7,6 +8,7 @@ import moment from 'moment'
 import axios from 'axios'
 import './Account.css'
 import Image from 'views/components/Uploads/Image'
+import Header from 'components/Header'
 
 const UNLINKED = 0
 const LOADING = 1
@@ -130,66 +132,75 @@ class Account extends Component {
   }
 
   render() {
-    return <div id="app" className="pt-6">
-              <div className="container my-5 pt-4">
-                <h5 className="ml-3">Profile</h5>
-                <div className="mb-5 card d-flex flex-row p-4">
-                  <Image
-                    className='icon-image large-icon mr-4'
-                    path='/user/profile/picture'
-                    image={this.props.user.image}
-                    update={this.uploadProfile}
-                    replace
-                  />
-                  <div className="helper-text super-center border-left pl-4">
-                    <div className="col-0">
-                      Name:<br/>
-                      Email:<br/>
-                      Joined:<br/>
-                    </div>
-                    <div className="col-sm">
-                      {this.props.user.name}<br/>
-                      {this.props.user.email}<br/>
-                      {moment(this.props.user.created).format('MMMM Do, YYYY')}<br/>
-                    </div>
-                  </div>
-                </div>
-                <h5 className="ml-3">Developer Integration</h5>
-                <div className="card mb-5">
-                  <div className={!!this.state.profile ? "pl-4 pr-4 pt-4 space-between" : "p-4 space-between"}>
-                    <h4 className="mb-0 text-muted">Amazon</h4>
-                    <div className="super-center">
-                      {this.renderButton(this.state.amzn, this.resetAmazon)}
-                    </div>
-                  </div>
-                  {this.state.profile &&
-                    <React.Fragment>
-                      <hr/>
-                      <div className="pl-4 pb-4 pr-4 space-between helper-text">
-                        <div className="col-0">
-                          Name:<br/>
-                          Email:<br/>
-                          User Id:<br/>
-                        </div>
-                        <div className="col-sm">
-                          {this.state.profile.name}<br/>
-                          {this.state.profile.email}<br/>
-                          {this.state.profile.user_id}<br/>
-                        </div>
-                      </div>
-                    </React.Fragment>
-                  }
-                </div>
-                <div className="card mb-5">
-                  <div className="p-4 space-between">
-                    <h4 className="mb-0 text-muted">Google</h4>
-                    <div className="super-center">
-                      {this.renderButton(this.state.google, this.resetGoogle)}
-                    </div>
-                  </div>
-                </div>
+    return <>
+      <Header leftRenderer={() => (
+        <Link to="/dashboard" className="mx-2">
+          <img className='voiceflow-logo mt-1' src={'/favicon.png'} alt='logo'
+            height="30" width="40"
+          />
+        </Link>
+      )}/>
+      <div id="app" className="pt-6">
+        <div className="container my-5 pt-4">
+          <h5 className="ml-3">Profile</h5>
+          <div className="mb-5 card d-flex flex-row p-4">
+            <Image
+              className='icon-image large-icon mr-4'
+              path='/user/profile/picture'
+              image={this.props.user.image}
+              update={this.uploadProfile}
+              replace
+            />
+            <div className="helper-text super-center border-left pl-4">
+              <div className="col-0">
+                Name:<br/>
+                Email:<br/>
+                Joined:<br/>
               </div>
+              <div className="col-sm">
+                {this.props.user.name}<br/>
+                {this.props.user.email}<br/>
+                {moment(this.props.user.created).format('MMMM Do, YYYY')}<br/>
+              </div>
+            </div>
           </div>
+          <h5 className="ml-3">Developer Integration</h5>
+          <div className="card mb-5">
+            <div className={!!this.state.profile ? "pl-4 pr-4 pt-4 space-between" : "p-4 space-between"}>
+              <h4 className="mb-0 text-muted">Amazon</h4>
+              <div className="super-center">
+                {this.renderButton(this.state.amzn, this.resetAmazon)}
+              </div>
+            </div>
+            {this.state.profile &&
+              <React.Fragment>
+                <hr/>
+                <div className="pl-4 pb-4 pr-4 space-between helper-text">
+                  <div className="col-0">
+                    Name:<br/>
+                    Email:<br/>
+                    User Id:<br/>
+                  </div>
+                  <div className="col-sm">
+                    {this.state.profile.name}<br/>
+                    {this.state.profile.email}<br/>
+                    {this.state.profile.user_id}<br/>
+                  </div>
+                </div>
+              </React.Fragment>
+            }
+          </div>
+          <div className="card mb-5">
+            <div className="p-4 space-between">
+              <h4 className="mb-0 text-muted">Google</h4>
+              <div className="super-center">
+                {this.renderButton(this.state.google, this.resetGoogle)}
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    </>
   }
 }
 

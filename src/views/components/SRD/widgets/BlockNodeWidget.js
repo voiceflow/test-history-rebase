@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { findDOMNode } from 'react-dom'
 import * as _ from "lodash";
 //Helpers
-import { combineValidation, combineAppendValidation, appendValidator } from './../../../helpers/combineHelper'
+import { combineValidation, combineAppendValidation, appendValidator } from 'utils/combineHelper'
 import {Toolkit}from './../Toolkit'
 import { BlockNodeModel } from "./../models/BlockNodeModel";
 import { BlockPortLabel } from "./BlockPortLabelWidget";

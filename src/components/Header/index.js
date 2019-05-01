@@ -1,10 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import cn from 'classnames';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
+import './Header.css'
+import {
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from 'reactstrap';
 
-export default function Header(props) {
+import { logout } from 'ducks/account'
+import { User } from 'views/components/User'
+
+const Header = (props) => {
   const {
+    user,
     title,
+    logout,
+    history,
     className,
     leftRenderer,
     rightRenderer,
@@ -15,23 +30,50 @@ export default function Header(props) {
     subHeaderRenderer,
   } = props;
 
+  const userLogout = e => {
+    e.preventDefault()
+    logout().then(() => {
+      history.push('/login')
+    })
+    return false;
+  }
   return (
     <div className={cn('header', className)}>
       <div className="header-inner">
-        <div className={cn('header-grid', gridClassName)}>
-          {(leftRenderer || !!title) && (
-            <div className={cn('header-grid__left', leftClassName)}>
-              {leftRenderer && leftRenderer()}
-
+        <div className={cn('header-grid __with-center', gridClassName)}>
+            {leftRenderer && <div className={cn('header-grid__left', leftClassName)}>
+              {leftRenderer()}
               {!!title && <div className="header__title">{title}</div>}
             </div>
-          )}
+            }
 
           {centerRenderer && <div className="header-grid__center">{centerRenderer()}</div>}
 
-          {rightRenderer && (
-            <div className={cn('header-grid__right', rightClassName)}>{rightRenderer()}</div>
-          )}
+          <div className={cn('header-grid__right', rightClassName)}>
+            {rightRenderer && rightRenderer()}
+            <UncontrolledDropdown className="account-dropdown">
+                  <DropdownToggle className="account hover" nav tag="div">
+                    <User user={user} className="pointer"/>
+                  </DropdownToggle>
+                  <DropdownMenu right className="arrow arrow-right no-select">
+                    <DropdownItem header>
+                      {user.email}
+                    </DropdownItem>
+                    <DropdownItem divider />
+                    <Link className="dropdown-item" to="/account">
+                      Account
+                    </Link>
+                    { user.admin >= 100 &&
+                        <Link className="dropdown-item" to="/admin">
+                          Admin
+                        </Link>
+                    }
+                    <DropdownItem onClick={userLogout} tag="a" href="#">
+                      Logout
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+          </div>
         </div>
       </div>
 
@@ -51,3 +93,15 @@ Header.propTypes = {
   centerRenderer: PropTypes.func,
   subHeaderRenderer: PropTypes.func,
 };
+
+const mapStateToProps = state => ({
+  user: state.account,
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(logout())
+  }
+}
+
+export default connect (mapStateToProps, mapDispatchToProps)(Header)

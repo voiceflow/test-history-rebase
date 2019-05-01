@@ -10,7 +10,7 @@ exports[`Dashboard render dashboard 1`] = `
     id="app"
   >
     <UpdatesModal
-      product_updates={null}
+      product_updates={Array []}
       show_update_modal={false}
       toggle={[Function]}
     />
@@ -112,8 +112,6 @@ exports[`Dashboard render dashboard 1`] = `
                   >
                     <button
                       className="nav-btn-border mt-1 add-button"
-                      isIcon={true}
-                      isNav={true}
                       onClick={[Function]}
                     />
                   </Tooltip>

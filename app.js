@@ -330,7 +330,7 @@ app.get('/analytics/:project_id', ensureLoggedIn(), Analytics.getStats)
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
 app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);
 
-app.get('/product_updates/:ts', ensureLoggedIn(), ProductUpdates.getUpdates)
+app.get('/product_updates', ensureLoggedIn(), ProductUpdates.getUpdates)
 app.post('/product_updates', ensureLoggedIn(), ProductUpdates.createUpdate)
 
 app.get('/logs/:skill_id', ensureLoggedIn(), Logs.getLogsUser)

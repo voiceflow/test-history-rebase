@@ -265,7 +265,7 @@ export default withDraggable({
 List.propTypes = {
   id: PropTypes.number,
   name: PropTypes.string,
-  projects: PropTypes.object,
+  projects: PropTypes.array,
   createSkill: PropTypes.func,
   listType: PropTypes.oneOf(['projects', 'flash_briefings']),
   onRename: PropTypes.func,

@@ -12,7 +12,8 @@ import axios from "axios";
 import UpdatesModal from "./../../components/Modals/UpdatesModal";
 import LoadingModal from "views/components/Modals/LoadingModal";
 import TeamSettings from "./TeamSettings"
-import { Alert, Input } from "reactstrap";
+import UpdatesPopover from './UpdatesPopover'
+import { Alert, Input, Popover, PopoverBody } from "reactstrap";
 import { setConfirm, setError } from 'ducks/modal'
 import { connect } from "react-redux";
 import { Members } from 'views/components/User'
@@ -43,8 +44,9 @@ export const DashBoard = props => {
   const [loading_modal, toggleLoadingModal] = useState(false)
   const [show_updates_modal, toggleShowUpdatesModal] = useState(false)
   const [team_setting, setTeamSetting] = useState(null)
-  const [product_updates, setProductUpdates] = useState(null)
+  const [product_updates, setProductUpdates] = useState([])
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
+  const [updates_open, toggleUpdatesOpen] = useState(false)
 
   const copyProject = (project_id, board_id=null) => {
     if(props.projects_array.length >= props.team.projects) {
@@ -112,38 +114,20 @@ export const DashBoard = props => {
   useEffect(() => {
       updateTeam()
 
-      let last_update_seen = localStorage.getItem(
-          "last_update_seen_" + props.user.id
-      )
-
-      if (!last_update_seen) {
-          last_update_seen = Date.now();
-      } else {
-          last_update_seen = parseInt(last_update_seen);
-      }
-
-      axios
-          .get(`/product_updates/${last_update_seen}`)
-          .then(res => {
-              if (res.data.length > 0) {
-                  toggleShowUpdatesModal(true)
-                  setProductUpdates(res.data)
-              }
-              last_update_seen = Date.now();
-              localStorage.setItem(
-                  "last_update_seen_" + props.user.id,
-                  last_update_seen
-              );
-          })
-          .catch(err => {
-              console.error(err);
-          });
+    axios
+      .get(`/product_updates`)
+      .then(res => {
+        if (res.data.length > 0) {
+          setProductUpdates(res.data)
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }, [])
 
   useEffect(() => {
-      console.log(props)
         return () => {
-            console.log(props)
             props.updateLists(props.team_id)
         }
     }, [])
@@ -228,7 +212,22 @@ export const DashBoard = props => {
             )}
             rightRenderer={() => (
                 <div className="title-group no-select pr-2">
-                    <div className="subheader-right">
+                    <div className="subheader-right mr-2">
+                      <button className="dropdown-button-border" id="update-popup" type="button" onClick={() => toggleUpdatesOpen(!updates_open)}>
+                        <i className="fas fa-bell"></i>
+                      </button>
+                      <Popover 
+                        className="updates-popover-container" 
+                        placement="bottom" 
+                        isOpen={updates_open} 
+                        target="update-popup" 
+                        toggle={() => toggleUpdatesOpen(!updates_open)}>
+                        <PopoverBody>
+                          <UpdatesPopover product_updates={product_updates}/>
+                        </PopoverBody>
+                      </Popover>
+                    </div>
+                    <div className="subheader-right ml-2">
                         <Tooltip
                             distance={16}
                             title="Join the Voiceflow forum for help and updates"
@@ -379,8 +378,6 @@ export const DashBoard = props => {
                                         className="ml-1 mr-4"
                                     >
                                         <button
-                                            isIcon
-                                            isNav
                                             onClick={() => {
                                                 props.addBoard(props.team_id)
                                             }}

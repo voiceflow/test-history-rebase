@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import LOCALE_MAP from "./../../../services/LocaleMap";
 
-import { updateVersion, updateLocales, updateSkillDB } from 'ducks/version'
+import { updateVersion, updateLocales, updateSkillDB, togglePreview } from 'ducks/version'
 import { setError } from 'ducks/modal'
 import {
   Popover, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, ModalBody, Button
@@ -115,12 +115,13 @@ const invNameError = (name, locales) => {
 
   let validRegex = `[^${characters}.' ]+`
   let match = name.match(validRegex)
+  let split_name = name.split(' ').map(splits => {return splits.toLowerCase()})
   if (match) {
     return inv_name_error + ` - Invalid Characters: "${match.join()}"`
-  } else if (WAKE_WORDS.some(l => name.toLowerCase().includes(l.toLowerCase()))) {
-    return 'Invocation name can not contain Alexa keywords e.g. ' + WAKE_WORDS.join(', ')
-  } else if (LAUNCH_PHRASES.some(l => name.toLowerCase().includes(l.toLowerCase()))) {
-    return 'Invocation name can not contain Launch Phrases e.g. ' + LAUNCH_PHRASES.join(', ')
+  } else if (WAKE_WORDS.some(l => split_name.find(split => {return split === l.toLowerCase()}))) {
+    return 'Invocation name cannot contain Alexa keywords e.g. ' + WAKE_WORDS.join(', ')
+  } else if (LAUNCH_PHRASES.some(l => split_name.find(split => {return split === l.toLowerCase()}))) {
+    return 'Invocation name cannot contain Launch Phrases e.g. ' + LAUNCH_PHRASES.join(', ')
   } else {
     return null
   }
@@ -498,23 +499,10 @@ export class ActionGroup extends PureComponent {
     if (this.state.togglingPreview) return
 
     this.setState({
-      allowPreview: !this.state.allowPreview,
       togglingPreview: true
-    }, () => {
-      axios.patch('/skill/' + this.props.skill.skill_id + '?preview=true', {
-        isPreview: !!this.state.allowPreview,
-      })
-        .then(() => {
-          this.setState({ togglingPreview: false })
-        })
-        .catch(err => {
-          this.setState({
-            allowPreview: !this.state.allowPreview,
-            togglingPreview: false
-          })
-          this.props.setError('Unable to toggle preview')
-        })
     })
+
+    this.props.togglePreview(!this.props.skill.preview).then(() => this.setState({togglingPreview: false}))
   }
 
   toggleShare() {
@@ -557,21 +545,23 @@ export class ActionGroup extends PureComponent {
 
   updateLiveVersion() {
     this.setState({ live_update_stage: 1 })
-    axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/rerender`)
-      .then(() => {
-        this.setState({
-          live_update_stage: 2
+    this.props.saveSkill(true, () => {
+      axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/rerender`)
+        .then(() => {
+          this.setState({
+            live_update_stage: 2
+          })
         })
-      })
-      .catch(err => {
-        this.props.setError('Error updating live version')
-      })
+        .catch(err => {
+          this.props.setError('Error updating live version')
+        })
+    })
   }
 
   toggleGoogle() {
     let platform = this.props.platform === 'google' ? 'alexa' : 'google'
     this.props.updateSkill('platform', platform).then(() => {
-      this.props.updateGoogleFade();
+      this.props.renderPlatformSwitch()
       this.props.updateLinter()
     })
   }
@@ -594,7 +584,7 @@ export class ActionGroup extends PureComponent {
       return <React.Fragment>
         <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live.svg" alt="Upload" />
         <div className="modal-bg-txt text-center mt-2"> Confirm Live Update</div>
-        <div className="modal-txt text-center mt-2 mb-3">This update will effect the live version of your project. Please be sure you wish to do this.</div>
+        <div className="modal-txt text-center mt-2 mb-3">This update will affect the live version of your project. Please be sure you wish to do this.</div>
         <button className="btn-primary mb-3" onClick={this.updateLiveVersion}>Confirm Update</button>
       </React.Fragment>
     }
@@ -979,13 +969,13 @@ export class ActionGroup extends PureComponent {
                 <div className="space-between">
                   <label>Allow preview sharing</label>
                   <Toggle
-                    checked={this.state.allowPreview}
+                    checked={this.props.skill.preview}
                     disabled={this.state.togglingPreview}
                     icons={false}
                     onChange={this.togglePreview}
                   />
                 </div>
-                {this.state.allowPreview &&
+                {this.props.skill.preview &&
                   <InputGroup className="mb-3">
                     <InputGroupAddon addonType="prepend">
                       <ClipBoard
@@ -1034,6 +1024,7 @@ const mapDispatchToProps = dispatch => ({
   updateSkill: (type, val) => dispatch(updateVersion(type, val)),
   setError: err => dispatch(setError(err)),
   updateSkillLocale: (val) => dispatch(updateLocales(val)),
+  togglePreview: preview => dispatch(togglePreview(preview)),
   saveSkill: (publish, cb) => dispatch(updateSkillDB(publish, cb))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(ActionGroup);

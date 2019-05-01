@@ -6,13 +6,14 @@ src/app/components/.DS_Store
 .idea
 node_modules
 .vscode
+.eslintrc.json
 /app/build/*
 dump.rdb
 routes/tmp/*
 !routes/tmp/.gitkeep
 
-# */package-lock.json
-# package-lock.json
+*/package-lock.json
+package-lock.json
 
 */yarn.lock
 yarn-lock.json

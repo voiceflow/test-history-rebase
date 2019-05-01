@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
-import { Link } from 'reactstrap'
+// import { Link } from 'reactstrap'
 import { connect } from 'react-redux'
 import FlowMarket from './FlowMarket'
 
-const updateLink = (link, skill_id) => {
-  console.log(skill_id)
-  return link.replace(':skill_id', skill_id)
-}
+// const updateLink = (link, skill_id) => {
+//   console.log(skill_id)
+//   return link.replace(':skill_id', skill_id)
+// }
 
-const TABS = [
-  {
-      display: <React.Fragment><i className="far fa-tachometer-alt mr-2"/> Flows</React.Fragment>,
-      match: ['flows'],
-      link: '/market/:skill_id/flows'
-  },
-]
+// const TABS = [
+//   {
+//       display: <React.Fragment><i className="far fa-tachometer-alt mr-2"/> Flows</React.Fragment>,
+//       match: ['flows'],
+//       link: '/market/:skill_id/flows'
+//   },
+// ]
 
 class Marketplace extends Component {
   constructor(props) {
@@ -40,7 +40,7 @@ class Marketplace extends Component {
   render() {
     return (
       <div id="business">
-        <div md="3" className="sidebar-nav">
+        {/* <div md="3" className="sidebar-nav">
           {TABS.map((tab, i) => {
             if(tab.match.includes(this.props.page)){
               return <div key={i} className="nav-item active">
@@ -52,7 +52,7 @@ class Marketplace extends Component {
               </Link>
             }
           })}
-        </div>
+        </div> */}
         <div md="9" className="business-page">
           {this.renderPage()}
         </div>

@@ -50,9 +50,57 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 		});
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(prevProps, prevState) {
 		if (this.props.link.labels.length > 0) {
 			window.requestAnimationFrame(this.calculateAllLabelPosition.bind(this));
+		}
+		// console.log("update", this.props.link.sourcePort, this.props.link.targetPort)
+
+		const source = this.props.link.sourcePort
+		const target = this.props.link.targetPort
+
+		if (source) {
+			let center
+			try {
+				center = this.props.diagramEngine.getPortCenter(source)
+			} catch (e) {}
+			if (center) {
+				_.forEach(source.links, link => {
+					if (!_.isEmpty(link.points) && link.points.length >= 2) {
+						if (source.in) {
+							let point = _.last(link.points)
+							point.updateLocation(center)
+						} else {
+							let point = _.head(link.points)
+							point.updateLocation(center)
+						}
+					} else {
+						link.remove()
+					}
+				})
+			}
+		}
+
+		if (target) {
+			let center
+			try {
+				center = this.props.diagramEngine.getPortCenter(target)
+			} catch (e) {}
+			if (center) {
+				_.forEach(target.links, link => {
+					if (!_.isEmpty(link.points) && link.points.length >= 2) {
+						if (target.in) {
+							let point = _.last(link.points)
+							point.updateLocation(center)
+						} else {
+							let point = _.head(link.points)
+							point.updateLocation(center)
+						}
+					} else {
+						link.remove()
+					}
+				})
+			}
 		}
 	}
 
@@ -180,8 +228,12 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 			let lengths = _.last(this.refPaths).getTotalLength();
 			svgPosition = _.last(this.refPaths).getPointAtLength(lengths/2)
 		}
+
+		const styleObj = {}
+		if (this.props.link.hidden) styleObj.visibility = 'hidden'
+
 		return (
-			<g key={"link-" + id}>
+			<g key={"link-" + id} style={styleObj}>
 				{Bottom}
 				{Top}
 				{svgPosition && this.state.selected && !this.props.preview ? (

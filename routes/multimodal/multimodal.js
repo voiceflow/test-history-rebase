@@ -114,7 +114,7 @@ exports.renderDisplay = async (req, res) => {
 
     const document = (await pool.query('SELECT document FROM displays WHERE id = $1 LIMIT 1', [id])).rows[0].document
 
-    let result = await axios.post('http://18.207.123.181:8080/render', {
+    let result = await axios.post('http://ip-10-0-1-195.ec2.internal:8080/render', {
       document,
       datasource: req.body.datasource
     })

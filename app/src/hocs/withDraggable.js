@@ -1,10 +1,16 @@
-import React, { Component } from 'react';
-import { findDOMNode } from 'react-dom';
+import React, {
+  Component
+} from 'react';
+import _ from 'lodash'
+import {
+  findDOMNode
+} from 'react-dom';
 import compose from 'recompose/compose';
-import throttle from 'lodash/throttle';
 import wrapDisplayName from 'recompose/wrapDisplayName';
-import { getEmptyImage } from 'react-dnd-html5-backend';
-import { DragSource, DropTarget } from 'react-dnd';
+import {
+  DragSource,
+  DropTarget
+} from 'react-dnd';
 
 export default ({
   name,
@@ -19,14 +25,11 @@ export default ({
   class WithDraggable extends Component {
     static displayName = wrapDisplayName(Wrapper, 'WithDraggable');
 
-    componentDidMount() {
-      const { connectDragPreview } = this.props;
-
-      connectDragPreview && connectDragPreview(getEmptyImage(), { captureDraggingState: true });
-    }
-
     render() {
-      return <Wrapper {...this.props} />;
+      return <Wrapper {
+        ...this.props
+      }
+      />;
     }
   }
 
@@ -34,14 +37,24 @@ export default ({
     canDrag,
     endDrag(props, monitor) {
       const item = monitor.getItem();
-      const { [onDropKey]: onDrop, onToggleDragging } = props;
+      const {
+        [onDropKey]: onDrop, onToggleDragging
+      } = props;
 
-      onDrop && onDrop({ toListId: item.listId, fromListId: item._initialListId });
+      onDrop && onDrop({
+        toListId: item.listId,
+        fromListId: item._initialListId
+      });
       onToggleDragging && onToggleDragging(false);
     },
     beginDrag(props, _, component) {
-      const { onToggleDragging } = props;
-      const { clientWidth, clientHeight } = findDOMNode(component);
+      const {
+        onToggleDragging
+      } = props;
+      const {
+        clientWidth,
+        clientHeight
+      } = findDOMNode(component);
 
       onToggleDragging && onToggleDragging(true);
 
@@ -63,41 +76,30 @@ export default ({
   };
 
   const panelTarget = {
-    hover: throttle((props, monitor, component) => {
+    hover(props, monitor, component) {
       const dragItem = monitor.getItem();
-
-      if (!component || !dragItem || (canDrop && !canDrop(props))) {
+      if (!component) {
         return null;
       }
 
-      const { index: dragIndex, id: dragId } = dragItem;
-      const { index: hoverIndex, id: hoverId } = props;
+      const {
+        index: dragIndex,
+        project_id: dragId
+      } = dragItem;
+      const {
+        index: hoverIndex,
+        project_id: hoverId
+      } = props;
 
-      if (dragId === hoverId) {
+      if (dragIndex === hoverIndex) {
         return;
       }
 
-      const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
-      const clientOffset = monitor.getClientOffset();
-
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return;
-      }
-
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return;
-      }
-
-      props[onMoveKey] && props[onMoveKey](dragItem, props);
-
-      const item = monitor.getItem();
-
-      item.index = hoverIndex;
-      item.listId = props.listId;
-    }, 150),
+        const item = monitor.getItem();
+        item.index = hoverIndex;
+        item.listId = props.listId;
+        _.isNumber(hoverIndex) && _.isNumber(dragIndex) && props.reorder && props.reorder(dragIndex, hoverIndex, dragId, hoverId);
+    }
   };
 
   return compose(

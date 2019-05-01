@@ -20,7 +20,8 @@ export class PointModel extends BaseModel {
 	}
 
 	isConnectedToPort() {
-		return this.parent.getPortForPoint(this) !== null;
+		const port = this.parent.getPortForPoint(this)
+		return port !== null && !port.hidden;
 	}
 
 	getLink() {

@@ -1,9 +1,6 @@
 .publish-tag {
-    background-color: red;
+    background-color: #f7f9fb !important;
     border-radius: 5px;
+    border: 1px solid rgba(141, 162, 181, .28);
     padding: 5px;
-}
-
-.publish-tag :hover{
-    cursor: pointer;
 }

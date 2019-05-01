@@ -120,7 +120,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
         <div
           className="modal-txt text-center mt-2 mb-3"
         >
-          This update will effect the live version of your project. Please be sure you wish to do this.
+          This update will affect the live version of your project. Please be sure you wish to do this.
         </div>
         <button
           className="btn-primary mb-3"
@@ -327,6 +327,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
               Allow preview sharing
             </label>
             <Toggle
+              checked={false}
               icons={false}
               onChange={[Function]}
             />

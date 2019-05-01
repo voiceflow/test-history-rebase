@@ -52,7 +52,7 @@ const MenuItem = (props) => (
 )
 
 const mapStateToProps = state => ({
-    platform: state.skills.skill.platform
+    platform: state.skills.skill.platform,
+    project_id: state.skills.skill.project_id
 })
-
 export default connect(mapStateToProps)(MenuItem);

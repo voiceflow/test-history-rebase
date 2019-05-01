@@ -1,6 +1,9 @@
 {
   "name": "storyflow-creator",
+  "description": "Voiceflow UI and API for UI",
   "version": "1.0.0",
+  "author": "Voiceflow",
+  "bugs": "https://voiceflow.atlassian.net/projects/CORE/issues/",
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
@@ -78,6 +81,7 @@
     "semantic-release": "^15.13.3",
     "supertest": "^3.3.0"
   },
+  "homepage": "https://creator.getvoiceflow.com",
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
@@ -89,11 +93,15 @@
       "./scripts/setupFile.js"
     ]
   },
+  "keywords": [
+    "api",
+    "ui"
+  ],
   "license": "ISC",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git@api.getstoryflow.com:storyflow-creator"
+    "url": "https://github.com/storyflow/storyflow-creator"
   },
   "scripts": {
     "build": "cd app && npm run build",

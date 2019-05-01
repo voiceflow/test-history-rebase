@@ -123,13 +123,13 @@ export default withDraggable({
 })(Item);
 
 Item.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
   isOver: PropTypes.bool,
   onRename: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
-  language: PropTypes.string.isRequired,
+  language: PropTypes.array.isRequired,
   uploaded: PropTypes.bool,
   avatarUrl: PropTypes.string,
   isDragging: PropTypes.bool,

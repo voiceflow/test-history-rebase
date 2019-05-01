@@ -139,6 +139,7 @@ const cancelCertification = async (req, res) => {
 				AND cert_requested IS NOT NULL
 				AND cert_approved IS NULL
 		`, [project_id])).rows[0].skill_id
+		console.log(skill_id)
 		await deleteVersionPromise(ADMIN_MARKETPLACE_ACC, skill_id, {delete_diagrams: true})
 		res.sendStatus(200)
 	} catch (err) {
@@ -236,8 +237,7 @@ const requestCertification = async (req, res) => {
 		module_project_id = module_data[0].module_project_id
 		// Creates a new version of the skill at this pt
 		req.params.version_id = req.params.skill_id
-		req.params.target_creator = ADMIN_MARKETPLACE_ACC
-		copySkill(req, res, {user_copy: true, request_cert: true, project_id: module_project_id}, () => {
+		copySkill(req, res, {user_copy: true, request_cert: true, project_id: module_project_id, creator_id: ADMIN_MARKETPLACE_ACC}, () => {
 			analytics.track({
 				userId: req.user.id,
 				event: 'Flow Created',

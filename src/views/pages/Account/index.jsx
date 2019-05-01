@@ -19,8 +19,7 @@ class Account extends Component {
 
     this.state = {
       amzn: LOADING,
-      google: LOADING,
-      expiry: null,
+      google: LOADING
     };
 
     this.handleChange = this.handleChange.bind(this)
@@ -28,8 +27,6 @@ class Account extends Component {
     this.toggle = this.toggle.bind(this)
     this.resetAmazon = this.resetAmazon.bind(this)
     this.resetGoogle = this.resetGoogle.bind(this)
-
-    if(props.user.expiry) this.expiry = moment.unix(props.user.expiry).fromNow()
   }
 
   resetAmazon() {

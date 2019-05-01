@@ -124,7 +124,16 @@ export const fetchTeams = () => {
       // NORMALIZE TEAMS
       const state = normalize('team_id', res.data.map(t => {
         t.members = [];
-        t.state = (INVALID_STATES.includes(t.stripe_status) && "LOCKED") || (WARNING_STATES.includes(t.stripe_status) && "WARNING");
+        
+        if(t.expiry) t.expiry = new Date(t.expiry)
+
+        if (INVALID_STATES.includes(t.stripe_status)) {
+          t.state = "LOCKED"
+        } else if (WARNING_STATES.includes(t.stripe_status)) {
+          t.state = "WARNING"
+        } else if (t.expiry && Date.now() > t.expiry.getTime()) {
+          t.state = "EXPIRED"
+        }
         return t
       }))
 

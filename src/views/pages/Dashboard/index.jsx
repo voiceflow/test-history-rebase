@@ -16,6 +16,8 @@ import { Alert, Input, UncontrolledDropdown, DropdownToggle, DropdownMenu, Dropd
 import { setConfirm, setError } from 'ducks/modal'
 import { connect } from "react-redux";
 import { Members } from 'views/components/User'
+import ExpiryButton from './ExpiryButton'
+
 import {
   fetchProjects,
   deleteProject,
@@ -24,6 +26,7 @@ import {
 import {
   getMembers,
 } from "ducks/team";
+import cn from 'classnames'
 import { unnormalize } from "ducks/_normalize"
 
 export class DashBoard extends Component {
@@ -230,9 +233,11 @@ export class DashBoard extends Component {
 
   render() {
     const LOCKED = (this.props.team.state === "LOCKED")
+    const EXPIRED = (this.props.team.state === "EXPIRED")
 
     return (
       <>
+        <ExpiryButton team={this.props.team} upgrade={()=>this.setState({team_settings: 'CHECKOUT'})}/>
         <LoadingModal open={this.state.loading_modal} />
         <div id="secondary-nav">
           <div>
@@ -327,7 +332,7 @@ export class DashBoard extends Component {
               </div>
             </div>
           )}
-          { LOCKED && <div className="w-100 h-100 super-center position-absolute z-hard">
+          { LOCKED && <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
             <Alert 
               color="danger" 
               onClick={() => this.setState({team_settings: "BILLING"})} 
@@ -337,12 +342,20 @@ export class DashBoard extends Component {
               Please update your payment to continue
             </Alert>
           </div> }
+          { EXPIRED && <div className="w-100 h-100 super-center text-center position-absolute z-hard pb-5">
+            <div>
+              <h3>Your free trial has expired</h3>
+              <div className="text-dull mt-3 mb-4">Please Upgrade to continue using Voiceflow</div>
+              <button className="btn-primary mb-5" onClick={()=>this.setState({team_settings: 'CHECKOUT'})}>Upgrade Plan</button>
+            </div>
+          </div>}
           <div 
-            className={ "w-100 h-100"  + (LOCKED ? " disabled" : "")}
-            onClick={(e) => {
+            className={cn("w-100 h-100", {"thanos-ed": (LOCKED || EXPIRED)})}
+            onClickCapture={(e) => {
               // prevent all click events
-              if(LOCKED){
+              if(LOCKED || EXPIRED){
                 e.preventDefault()
+                e.stopPropagation()
                 return false
               }
             }}

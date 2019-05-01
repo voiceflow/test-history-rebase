@@ -12,7 +12,8 @@ import axios from "axios";
 import UpdatesModal from "./../../components/Modals/UpdatesModal";
 import LoadingModal from "views/components/Modals/LoadingModal";
 import TeamSettings from "./TeamSettings"
-import { Alert, Input, Popover, PopoverBody, UpdatesPopover } from "reactstrap";
+import UpdatesPopover from './UpdatesPopover'
+import { Alert, Input, Popover, PopoverBody } from "reactstrap";
 import { setConfirm, setError } from 'ducks/modal'
 import { connect } from "react-redux";
 import { Members } from 'views/components/User'
@@ -116,7 +117,6 @@ export const DashBoard = props => {
     axios
       .get(`/product_updates`)
       .then(res => {
-        console.log(res.data)
         if (res.data.length > 0) {
           setProductUpdates(res.data)
         }
@@ -212,7 +212,7 @@ export const DashBoard = props => {
             )}
             rightRenderer={() => (
                 <div className="title-group no-select pr-2">
-                    <div className="subheader-right">
+                    <div className="subheader-right mr-2">
                       <button className="dropdown-button-border" id="update-popup" type="button" onClick={() => toggleUpdatesOpen(!updates_open)}>
                         <i className="fas fa-bell"></i>
                       </button>
@@ -227,7 +227,7 @@ export const DashBoard = props => {
                         </PopoverBody>
                       </Popover>
                     </div>
-                    <div className="subheader-right">
+                    <div className="subheader-right ml-2">
                         <Tooltip
                             distance={16}
                             title="Join the Voiceflow forum for help and updates"
@@ -378,8 +378,6 @@ export const DashBoard = props => {
                                         className="ml-1 mr-4"
                                     >
                                         <button
-                                            isIcon
-                                            isNav
                                             onClick={() => {
                                                 props.addBoard(props.team_id)
                                             }}

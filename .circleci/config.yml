@@ -88,11 +88,18 @@ jobs: # a collection of steps
             eb use VoiceflowCreator-staging
       - run:
           name: Push to Elastic Beanstalk
-          command: eb deploy VoiceflowCreator-staging -l $CIRCLE_BUILD_NUM --timeout 30
+          command: eb deploy VoiceflowCreator-staging -l $CIRCLE_BUILD_NUM --timeout 45
   deploy-production:
     machine: true
     steps:
       - checkout # special step to check out source code to working directory
+      - run:
+          name: Install dependencies
+          command: |
+            wget -qO- https://deb.nodesource.com/setup_10.x | sudo -E bash && \
+            sudo apt-get install -y nodejs && \
+            node -v && \
+            npm i
       - run:
           name: 'Update Dockerfile Production'
           command: "sed -i 's/RUN npm run build/RUN REACT_APP_BUILD_ENV=production npm run build/g' Dockerfile"
@@ -120,7 +127,7 @@ jobs: # a collection of steps
             eb use VoiceflowCreator-env
       - run:
           name: Push to Elastic Beanstalk
-          command: eb deploy VoiceflowCreator-env -l $CIRCLE_BUILD_NUM --timeout 30
+          command: eb deploy VoiceflowCreator-env -l $CIRCLE_BUILD_NUM --timeout 45
       - run:
           name: 'Create release'
           command: npx semantic-release

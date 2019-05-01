@@ -96,10 +96,10 @@ jobs: # a collection of steps
       - run:
           name: Install dependencies
           command: |
-            wget -qO- https://deb.nodesource.com/setup_10.x | sudo -E bash && \
-            sudo apt-get install -y nodejs && \
-            node -v && \
-            npm i
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            nvm install 10 && nvm use 10 && nvm alias default 10
+            node -v && npm i
       - run:
           name: 'Update Dockerfile Production'
           command: "sed -i 's/RUN npm run build/RUN REACT_APP_BUILD_ENV=production npm run build/g' Dockerfile"
@@ -130,7 +130,10 @@ jobs: # a collection of steps
           command: eb deploy VoiceflowCreator-env -l $CIRCLE_BUILD_NUM --timeout 45
       - run:
           name: 'Create release'
-          command: npx semantic-release
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            npx semantic-release
 workflows:
   version: 2
   build-deploy:

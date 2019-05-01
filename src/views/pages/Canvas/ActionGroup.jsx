@@ -544,15 +544,17 @@ export class ActionGroup extends PureComponent {
 
   updateLiveVersion() {
     this.setState({ live_update_stage: 1 })
-    axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/rerender`)
-      .then(() => {
-        this.setState({
-          live_update_stage: 2
+    this.props.saveSkill(true, () => {
+      axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/rerender`)
+        .then(() => {
+          this.setState({
+            live_update_stage: 2
+          })
         })
-      })
-      .catch(err => {
-        this.props.setError('Error updating live version')
-      })
+        .catch(err => {
+          this.props.setError('Error updating live version')
+        })
+    })
   }
 
   toggleGoogle() {

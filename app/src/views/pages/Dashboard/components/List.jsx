@@ -75,7 +75,7 @@ export function List(props) {
   const listRef = useRef(null);
 
   const [isTitleEditable, toggleTitleEditable] = useToggle(isCreated);
-  const [isCreatingSkill, toggleCreatingSkill] = useToggle(false);
+  const [isCreatingSkill] = useToggle(false);
 
     handleDuplicateSkill = onDuplicateSkill;
 
@@ -202,7 +202,6 @@ export function List(props) {
                               listId={id}
                               onDrop={onDropSkill}
                               onMove={onMoveSkill}
-                              uploaded={project.firstDeploymentDone}
                               language={project.locales}
                               onRename={() =>
                                 onRenameSkill(project.project_id)

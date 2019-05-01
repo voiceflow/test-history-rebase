@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="28px" height="20px" viewBox="0 0 28 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="25px" height="21px" viewBox="0 0 25 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
-    <title>BR</title>
+    <title>Artboard</title>
     <desc>Created with Sketch.</desc>
     <defs>
-        <rect id="path-1" x="0" y="0" width="28" height="20" rx="2"></rect>
-        <circle id="path-3" cx="4.66666667" cy="4.66666667" r="4.66666667"></circle>
+        <filter x="-57.1%" y="-75.0%" width="214.3%" height="250.0%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.168627451   0 0 0 0 0.223529412   0 0 0 0 0.31372549  0 0 0 0.103091033 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <ellipse id="path-2" cx="3.23333333" cy="3.26666667" rx="3.23333333" ry="3.26666667"></ellipse>
     </defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Flags" transform="translate(-604.000000, -76.000000)">
-            <g id="BR" transform="translate(604.000000, 76.000000)">
-                <mask id="mask-2" fill="white">
-                    <use xlink:href="#path-1"></use>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="BR" filter="url(#filter-1)" transform="translate(2.000000, 2.000000)">
+            <rect id="Mask-Copy" fill="#05AB41" x="0" y="0" width="21" height="16" rx="3"></rect>
+            <path d="M3.32957619,8.37042628 C3.02270501,8.16584549 3.02224624,7.83446035 3.32957619,7.62957372 L9.94436059,3.21971746 C10.2512318,3.01513667 10.7483095,3.01483083 11.0556394,3.21971746 L17.6704238,7.62957372 C17.977295,7.83415451 17.9777538,8.16553965 17.6704238,8.37042628 L11.0556394,12.7802825 C10.7487682,12.9848633 10.2516905,12.9851692 9.94436059,12.7802825 L3.32957619,8.37042628 Z" id="Rectangle-60" fill="#FDD216"></path>
+            <g id="Oval-2" transform="translate(7.000000, 5.000000)">
+                <mask id="mask-3" fill="white">
+                    <use xlink:href="#path-2"></use>
                 </mask>
-                <use id="Mask" fill="#FFFFFF" xlink:href="#path-1"></use>
-                <rect id="Mask-Copy" fill="#05AB41" mask="url(#mask-2)" x="0" y="0" width="28" height="20"></rect>
-                <path d="M3.22868843,10.3636611 C2.91829238,10.1628166 2.92467316,9.83305462 3.22868843,9.63633886 L13.4379782,3.03032781 C13.7483743,2.82948331 14.2580065,2.83361204 14.5620218,3.03032781 L24.7713116,9.63633886 C25.0817076,9.83718336 25.0753268,10.1669454 24.7713116,10.3636611 L14.5620218,16.9696722 C14.2516257,17.1705167 13.7419935,17.166388 13.4379782,16.9696722 L3.22868843,10.3636611 Z" id="Rectangle-60" fill="#FDD216" mask="url(#mask-2)"></path>
-                <g id="Oval-2" mask="url(#mask-2)">
-                    <g transform="translate(9.333333, 5.333333)">
-                        <mask id="mask-4" fill="white">
-                            <use xlink:href="#path-3"></use>
-                        </mask>
-                        <use id="Mask" stroke="none" fill="#053087" fill-rule="evenodd" xlink:href="#path-3"></use>
-                        <path d="M-0.666666667,4 C3.83026943e-14,3.33333336 2.41015625,3.64518235 4.66666667,4.00000001 C6.92317708,4.35481767 9.34145555,5.34145565 10,6" id="Line" stroke="#FFFFFF" stroke-width="1.33333333" fill="none" stroke-linecap="square" mask="url(#mask-4)" transform="translate(4.666667, 4.804198) rotate(6.000000) translate(-4.666667, -4.804198) "></path>
-                    </g>
-                </g>
+                <use id="Mask" fill="#053087" xlink:href="#path-2"></use>
+                <path d="M-0.974903455,3.28084488 C-0.435368145,2.80651943 1.48688162,3.00009947 3.28593591,3.22540177 C5.08499019,3.45070407 7.00671403,4.11728926 7.5259841,4.57214389" id="Line" stroke="#FFFFFF" stroke-width="1.33333333" stroke-linecap="square" mask="url(#mask-3)" transform="translate(3.275540, 3.780211) rotate(6.000000) translate(-3.275540, -3.780211) "></path>
             </g>
         </g>
     </g>

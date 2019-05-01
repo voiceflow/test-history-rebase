@@ -89,6 +89,14 @@ jobs: # a collection of steps
       - run:
           name: Push to Elastic Beanstalk
           command: eb deploy VoiceflowCreator-staging -l $CIRCLE_BUILD_NUM --nohang
+      - run:
+          name: 'Create release'
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            nvm install 10 && nvm use 10 && nvm alias default 10
+            node -v
+            npx semantic-release
   deploy-production:
     machine: true
     steps:

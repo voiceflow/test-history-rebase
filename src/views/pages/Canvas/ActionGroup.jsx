@@ -115,12 +115,13 @@ const invNameError = (name, locales) => {
 
   let validRegex = `[^${characters}.' ]+`
   let match = name.match(validRegex)
+  let split_name = name.split(' ').map(splits => {return splits.toLowerCase()})
   if (match) {
     return inv_name_error + ` - Invalid Characters: "${match.join()}"`
-  } else if (WAKE_WORDS.some(l => name.toLowerCase().includes(l.toLowerCase()))) {
-    return 'Invocation name can not contain Alexa keywords e.g. ' + WAKE_WORDS.join(', ')
-  } else if (LAUNCH_PHRASES.some(l => name.toLowerCase().includes(l.toLowerCase()))) {
-    return 'Invocation name can not contain Launch Phrases e.g. ' + LAUNCH_PHRASES.join(', ')
+  } else if (WAKE_WORDS.some(l => split_name.find(split => {return split === l.toLowerCase()}))) {
+    return 'Invocation name cannot contain Alexa keywords e.g. ' + WAKE_WORDS.join(', ')
+  } else if (LAUNCH_PHRASES.some(l => split_name.find(split => {return split === l.toLowerCase()}))) {
+    return 'Invocation name cannot contain Launch Phrases e.g. ' + LAUNCH_PHRASES.join(', ')
   } else {
     return null
   }
@@ -583,7 +584,7 @@ export class ActionGroup extends PureComponent {
       return <React.Fragment>
         <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live.svg" alt="Upload" />
         <div className="modal-bg-txt text-center mt-2"> Confirm Live Update</div>
-        <div className="modal-txt text-center mt-2 mb-3">This update will effect the live version of your project. Please be sure you wish to do this.</div>
+        <div className="modal-txt text-center mt-2 mb-3">This update will affect the live version of your project. Please be sure you wish to do this.</div>
         <button className="btn-primary mb-3" onClick={this.updateLiveVersion}>Confirm Update</button>
       </React.Fragment>
     }

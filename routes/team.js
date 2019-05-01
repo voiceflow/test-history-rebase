@@ -27,7 +27,8 @@ Date.prototype.isValid = function () {
 
 const STATUS_TO_PLAN = {
   0: "FREE",
-  1: "STANDARD_SEAT_MO"
+  1: "STANDARD_SEAT_MO",
+  2: "BUSINESS_SEAT_MO"
 }
 
 const INVALID_STATES = ["incomplete_expired", "incomplete", "unpaid"]
@@ -126,7 +127,7 @@ exports.addTeam = async (req, res) => {
 const initalizeStripe = async (team, user, seats, source_id, options={}) => {
   var customer;
   var subscription;
-  if(!options.plan) options.plan = 1
+  if(!options.plan || !(options.plan in STATUS_TO_PLAN)) options.plan = 1
 
   try {
     // check that source is chargable
@@ -154,16 +155,16 @@ const initalizeStripe = async (team, user, seats, source_id, options={}) => {
       }
     }
 
-    if(options.trial_days) subscription_data.trial_period_days = options.trial_days
+    // if(options.trial_days) subscription_data.trial_period_days = options.trial_days
     // subscription_data.trial_end = (Math.floor((Date.now()/1000)) + 10)
     subscription = await stripe.subscriptions.create(subscription_data)
 
     return (await pool.query(`
       UPDATE teams 
-      SET stripe_id = $1, stripe_sub_id = $2, seats = $3, status = 1, projects = 1000 
-      WHERE team_id = $4
+      SET stripe_id = $1, stripe_sub_id = $2, seats = $3, status = $4, projects = 1000, expiry = NULL 
+      WHERE team_id = $5
       RETURNING *`,
-      [customer.id, subscription.id, seats, team.team_id]
+      [customer.id, subscription.id, seats, options.plan, team.team_id]
     )).rows[0];
   } catch (err) {
     // clean up and delete the customer since the subscription failed
@@ -175,7 +176,7 @@ const initalizeStripe = async (team, user, seats, source_id, options={}) => {
   }
 }
 
-const updateSubscription = async (team, seats) => {
+const updateSubscription = async (team, seats, status) => {
   if(!team.stripe_sub_id) throw "No Existing Subscription"
 
   try {
@@ -189,9 +190,11 @@ const updateSubscription = async (team, seats) => {
     throw ((err && err.message) || err)
   }
 
+  if(!status) status = team.status
+
   return (await pool.query(
-    "UPDATE teams SET seats = $1, status = 1, projects = 1000 WHERE team_id = $2 RETURNING *",
-    [seats, team.team_id]
+    "UPDATE teams SET seats = $1, status = $2, projects = 1000 WHERE team_id = $3 RETURNING *",
+    [seats, status, team.team_id]
   )).rows[0];
 }
 
@@ -212,7 +215,7 @@ exports.checkout = async (req, res) => {
   try {
     const seats = req.body.invites.length + 1;
     var team = await createTeam(req.body.name, req.body.image, req.user);
-    team = await initalizeStripe(team, req.user, seats, req.body.source.id, {trial_days: 14})
+    team = await initalizeStripe(team, req.user, seats, req.body.source.id, {plan: req.body.plan})
 
     const { invites, now } = await populateTeam(team.team_id, req.user, req.body.invites);
 
@@ -353,7 +356,7 @@ exports.updateMembers = async (req, res) => {
       if(team.status !== 0 && team.stripe_id && team.stripe_sub_id) {
         team = await updateSubscription(team, new_members.length)
       } else if(req.body.source) {
-        team = await initalizeStripe(team, req.user, new_members.length, req.body.source.id)
+        team = await initalizeStripe(team, req.user, new_members.length, req.body.source.id, {plan: req.body.plan})
       } else if (team.status === 0 && team.seats <= FREE_SEATS) {
         await pool.query(
           'UPDATE teams SET seats = $1 WHERE team_id = $2', 

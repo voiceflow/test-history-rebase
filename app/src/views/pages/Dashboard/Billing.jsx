@@ -41,7 +41,7 @@ class Billing extends Component {
     try {
       const response = await axios.get(`/team/${this.props.team.team_id}/invoice`)
       if(response.status === 204){
-        this.props.update("CHECKOUT")
+        setTimeout(() => this.props.update("CHECKOUT"), 500)
         return
       }
 

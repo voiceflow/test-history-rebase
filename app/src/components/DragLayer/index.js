@@ -8,14 +8,12 @@ function CustomDragLayer(props) {
   const { _diff, _item, _offset, children, _initSourceClientOffset, ...ownProps } = props;
 
   const child = useMemo(() => (_item ? children(_item, ownProps) : null), [_item]);
-
   if (!_item) {
     return null;
   }
 
   const x = _item._allowXTransform ? _offset.x - _diff.x : _initSourceClientOffset.x;
   const y = _item._allowYTransform ? _offset.y - _diff.y : _initSourceClientOffset.y;
-
   return (
     <div
       style={{

@@ -1,4 +1,5 @@
 // PRIMARY KEY TEAM_ID IS ALWAYS HASHED
+const _ = require('lodash')
 const { pool, writeToLogs, hashids, decryptJSON } = require("./../services");
 
 const { deleteProjectPromise } = require("./skill_util");
@@ -444,6 +445,46 @@ exports.deleteTeam = async (req, res) => {
   }
 };
 
+exports.getBoards = async (req, res) => {
+  try {
+    let team_id = team_hash.decode(req.params.team_id)[0];
+
+    if (!team_id) return res.sendStatus(404);
+
+    let boards = (await pool.query(
+      `
+      SELECT t.boards FROM teams t
+      WHERE t.team_id = $1 AND t.creator_id = $2
+      `,
+      [team_id, req.user.id]
+    )).rows[0];
+
+    res.send(boards)
+  } catch (err) {
+    writeToLogs("GET TEAM BOARDS", err);
+    res.sendStatus(500);
+  }
+}
+
+exports.updateBoard = async (req, res) => {
+  try {
+    let team_id = team_hash.decode(req.params.team_id)[0];
+
+    if (!team_id) return res.sendStatus(404);
+
+    let boards = JSON.stringify(req.body.boards);
+    await pool.query("UPDATE teams SET boards = $1 WHERE team_id = $2", [
+      boards,
+      team_id,
+    ]);
+    res.sendStatus(200);
+  } catch (err) {
+    writeToLogs("UPDATE BOARDS", err);
+    res.sendStatus(500);
+  }
+};
+
+
 exports.getProjects = async (req, res) => {
   try {
     let team_id = team_hash.decode(req.params.team_id)[0];
@@ -461,13 +502,21 @@ exports.getProjects = async (req, res) => {
       [team_id, req.user.id]
     )).rows;
 
-    res.send(
-      projects.map(project => {
-        project.skill_id = hashids.encode(project.skill_id);
-        project.project_id = hashids.encode(project.project_id);
-        return project;
-      })
-    );
+    let formatted_projects = []
+    for(let project of projects){
+      let formatted_project = project
+      formatted_project.isLive = (await pool.query(`
+        SELECT *
+        FROM skills
+        WHERE project_id = $1 AND creator_id = $2 AND live = TRUE
+        LIMIT 1
+      `, [project.project_id, req.user.id])).rows.length > 0
+      formatted_project.skill_id = hashids.encode(project.skill_id)
+      formatted_project.project_id = hashids.encode(project.project_id)
+      formatted_projects.push(formatted_project)
+    }
+
+    res.send(formatted_projects)
   } catch (err) {
     writeToLogs("GET TEAM SKILLS", err);
     res.sendStatus(500);

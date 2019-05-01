@@ -88,7 +88,7 @@ jobs: # a collection of steps
             eb use VoiceflowCreator-staging
       - run:
           name: Push to Elastic Beanstalk
-          command: eb deploy VoiceflowCreator-staging -l $CIRCLE_BUILD_NUM --timeout 45
+          command: eb deploy VoiceflowCreator-staging -l $CIRCLE_BUILD_NUM --nohang
   deploy-production:
     machine: true
     steps:
@@ -127,7 +127,7 @@ jobs: # a collection of steps
             eb use VoiceflowCreator-env
       - run:
           name: Push to Elastic Beanstalk
-          command: eb deploy VoiceflowCreator-env -l $CIRCLE_BUILD_NUM --timeout 45
+          command: eb deploy VoiceflowCreator-env -l $CIRCLE_BUILD_NUM --nohang
       - run:
           name: 'Create release'
           command: |

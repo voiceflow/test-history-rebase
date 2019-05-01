@@ -6,177 +6,19 @@ exports[`Dashboard render dashboard 1`] = `
     open={false}
   />
   <div
-    id="secondary-nav"
-  >
-    <div>
-      <Link
-        className="nav-item"
-        to="/team/new"
-      >
-        <img
-          alt="add"
-          className="mr-1 mb-1"
-          height={15}
-          src="/add-board.svg"
-          width={15}
-        />
-         New Board
-      </Link>
-    </div>
-    <div
-      className="mr-4 super-center"
-    >
-      <Members
-        update={[Function]}
-      />
-      <Connect(TeamSettings)
-        close={[Function]}
-        update={[Function]}
-      />
-    </div>
-  </div>
-  <div
-    className="title-group no-select pr-2"
-  >
-    <div
-      className="subheader-right"
-    >
-      <UncontrolledDropdown>
-        <DropdownToggle
-          aria-haspopup={true}
-          className="ml-1 mr-4"
-          color="secondary"
-          tag="div"
-        >
-          <Tooltip
-            animateFill={true}
-            animation="shift"
-            arrow={false}
-            arrowSize="regular"
-            className=""
-            delay={0}
-            disabled={false}
-            distance={19}
-            duration={375}
-            followCursor={false}
-            hideDelay={0}
-            hideDuration={375}
-            hideOnClick={true}
-            html={null}
-            inertia={false}
-            interactive={false}
-            interactiveBorder={2}
-            multiple={false}
-            offset={0}
-            onHidden={[Function]}
-            onHide={[Function]}
-            onRequestClose={[Function]}
-            onShow={[Function]}
-            onShown={[Function]}
-            popperOptions={Object {}}
-            position="bottom"
-            size="regular"
-            sticky={false}
-            stickyDuration={200}
-            style={Object {}}
-            theme="dark"
-            title="Resources"
-            touchHold={false}
-            trigger="mouseenter focus"
-            unmountHTMLWhenHide={false}
-          >
-            <button
-              className="dropdown-button-border"
-              type="submit"
-            />
-          </Tooltip>
-        </DropdownToggle>
-        <DropdownMenu
-          className="mt-2"
-          flip={true}
-          tag="div"
-        >
-          <a
-            href="https://university.getvoiceflow.com/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <DropdownItem
-              tag="button"
-              toggle={true}
-            >
-              University
-            </DropdownItem>
-          </a>
-          <a
-            href="https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ/videos"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <DropdownItem
-              tag="button"
-              toggle={true}
-            >
-              Youtube
-            </DropdownItem>
-          </a>
-          <a
-            href="https://www.facebook.com/groups/voiceflowgroup/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <DropdownItem
-              tag="button"
-              toggle={true}
-            >
-              Community
-            </DropdownItem>
-          </a>
-          <a
-            href="https://forum.getvoiceflow.com/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <DropdownItem
-              tag="button"
-              toggle={true}
-            >
-              Forums
-            </DropdownItem>
-          </a>
-        </DropdownMenu>
-      </UncontrolledDropdown>
-      <button
-        className="btn-primary ml-1"
-        onClick={[Function]}
-      >
-        New Project
-      </button>
-    </div>
-  </div>
-  <div
-    className="secondary-padding dashboard"
+    className="dashboard"
     id="app"
   >
     <UpdatesModal
+      product_updates={null}
       show_update_modal={false}
       toggle={[Function]}
     />
-    <div
-      id="navbar-top-left"
-    >
-      <div
-        className="searchBar ml-3"
-      >
-        <Input
-          className="search-input form-control-2"
-          name="filter_text"
-          onChange={[Function]}
-          placeholder="Search Projects"
-          type="text"
-        />
-      </div>
-    </div>
+    <Connect(Header)
+      leftRenderer={[Function]}
+      rightRenderer={[Function]}
+      subHeaderRenderer={[Function]}
+    />
     <div
       id="loading-diagram"
     >
@@ -198,23 +40,88 @@ exports[`Dashboard render dashboard 1`] = `
       onClick={[Function]}
     >
       <div
-        className="pb-5 pt-4 container"
+        className="board-container-body"
       >
-        <MasonryComponent
-          className="skills-container"
-          disableImagesLoaded={false}
-          elementType="div"
-          enableResizableChildren={false}
-          imagesLoadedOptions={Object {}}
-          onLayoutComplete={[Function]}
-          onRemoveComplete={[Function]}
-          options={Object {}}
-          updateOnEachImageLoad={false}
+        <div
+          className="board-container-body-inner"
         >
-          <EmptyCard
-            onClick={[Function]}
-          />
-        </MasonryComponent>
+          <ContextProvider
+            value={
+              Object {
+                "scrollHorizontalToNode": [Function],
+                "scrollToNode": [Function],
+                "setScrollBarOffset": [Function],
+              }
+            }
+          >
+            <div
+              className="main-lists"
+            >
+              <div
+                className="main-lists-inner"
+              >
+                <DropTarget(DragSource(WithDraggable(List)))
+                  createSkill={[Function]}
+                  disableDragging={true}
+                  itemReorder={[Function]}
+                  name="Default List"
+                  onDuplicateSkill={[Function]}
+                  onRemoveSkill={[Function]}
+                  onRenameSkill={[Function]}
+                  projects={Array []}
+                />
+                <div
+                  className="main-list-add"
+                >
+                  <Tooltip
+                    animateFill={true}
+                    animation="shift"
+                    arrow={false}
+                    arrowSize="regular"
+                    className="ml-1 mr-4"
+                    delay={0}
+                    disabled={false}
+                    distance={16}
+                    duration={375}
+                    followCursor={false}
+                    hideDelay={0}
+                    hideDuration={375}
+                    hideOnClick={true}
+                    html={null}
+                    inertia={false}
+                    interactive={false}
+                    interactiveBorder={2}
+                    multiple={false}
+                    offset={0}
+                    onHidden={[Function]}
+                    onHide={[Function]}
+                    onRequestClose={[Function]}
+                    onShow={[Function]}
+                    onShown={[Function]}
+                    popperOptions={Object {}}
+                    position="bottom"
+                    size="regular"
+                    sticky={false}
+                    stickyDuration={200}
+                    style={Object {}}
+                    theme="dark"
+                    title="Add new list"
+                    touchHold={false}
+                    trigger="mouseenter focus"
+                    unmountHTMLWhenHide={false}
+                  >
+                    <button
+                      className="nav-btn-border mt-1 add-button"
+                      isIcon={true}
+                      isNav={true}
+                      onClick={[Function]}
+                    />
+                  </Tooltip>
+                </div>
+              </div>
+            </div>
+          </ContextProvider>
+        </div>
       </div>
     </div>
   </div>

@@ -1,0 +1,141 @@
+import React from 'react';
+import cn from 'classnames';
+import upperCase from 'lodash/upperCase';
+import map from 'lodash/map'
+import PropTypes from 'prop-types';
+import { Tooltip } from "react-tippy";
+
+import withDraggable from 'hocs/withDraggable';
+
+import { getHumanLanguageName } from 'utils/languages';
+
+import { useToggle } from 'hooks/toggle';
+
+import Link from 'components/Link';
+import Dropdown from 'components/Dropdown';
+
+const DROPDOWN_OPTIONS = [
+    {
+        id: 'duplicate',
+        label: 'Copy Project'
+    },
+    {
+        id: 'remove',
+        label: 'Remove Project',
+    },
+];
+
+const DROPDOWN_BUTTON_PROPS = {
+    isDropdown: true,
+};
+
+export function Item(props) {
+  const {
+    id,
+    name,
+    color,
+    diagram,
+    language,
+    uploaded,
+    onRename,
+    onRemove,
+    avatarUrl,
+    isDragging,
+    onDuplicate,
+    connectDragSource,
+    connectDropTarget,
+    isDraggingPreview,
+  } = props;
+
+  const [isDropdownOpened, toggleDropdownOpened] = useToggle();
+  const pathTo = `/canvas/${id}/${diagram}`;
+
+  const item = (
+    <div>
+      <Link
+        to={pathTo}
+        className={cn("projects-list__item", {
+          hidden: isDragging,
+          "__is-active __is-hovered": isDropdownOpened,
+          "__is-draggable __is-dragging": isDraggingPreview
+        })}
+      >
+        <div
+          style={{
+            backgroundImage: avatarUrl ? `url(${avatarUrl})` : undefined
+          }}
+          className={`projects-list__item-image cap-${color}`}
+        >
+          {!avatarUrl && upperCase(name).charAt(0)}
+        </div>
+
+        <div className="projects-list__item-actions">
+          <Dropdown
+            options={DROPDOWN_OPTIONS}
+            onRename={onRename}
+            onRemove={onRemove}
+            onDuplicate={onDuplicate}
+            buttonProps={DROPDOWN_BUTTON_PROPS}
+            popoverProps={{
+              onShow: toggleDropdownOpened,
+              onHide: toggleDropdownOpened,
+              stopPropagation: true
+            }}
+            label={<i className="far fa-ellipsis-h" />}
+          />
+        </div>
+
+        <div className="projects-list__item-details">
+          <div className="projects-list__item-title">{name}</div>
+          <div className="projects-list__item-caption">
+            {map(language, l => getHumanLanguageName(l)).join(", ")}
+          </div>
+        </div>
+
+        <Tooltip
+          position="top"
+          title={uploaded ? "Live" : "Local"}
+          className="projects-list__item-status"
+          distance={10}
+        >
+          <i
+            className={`status-indicator status-indicator-${
+              uploaded ? "success" : "info"
+            }`}
+          />
+        </Tooltip>
+      </Link>
+
+      {isDragging && <div className="projects-list__dragzone" />}
+    </div>
+  );
+
+  return connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(item)) : item;
+}
+
+export default withDraggable({
+  name: props => `dashboard-item-${props.listId}`,
+  canDrag: props => !props.disableDragging,
+  canDrop: () => true,
+  onDropKey: 'onDrop',
+  onMoveKey: 'onMove',
+  allowXTransform: true,
+})(Item);
+
+Item.propTypes = {
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
+  isOver: PropTypes.bool,
+  onRename: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired,
+  language: PropTypes.string.isRequired,
+  uploaded: PropTypes.bool,
+  avatarUrl: PropTypes.string,
+  isDragging: PropTypes.bool,
+  isDragLayer: PropTypes.bool,
+  onDuplicate: PropTypes.func.isRequired,
+  connectDragSource: PropTypes.func,
+  connectDropTarget: PropTypes.func,
+  isDraggingPreview: PropTypes.bool,
+};

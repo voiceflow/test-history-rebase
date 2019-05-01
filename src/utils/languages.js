@@ -26,17 +26,29 @@ const geKey = (lang, separator = '_') => {
 };
 
 export const LANGUAGES = {
-  english: 'English (USA)',
-  english_gb: 'English (UK)',
-  english_ca: 'English (Canada)',
-  english_au: 'English (Australia)',
-  english_in: 'English (India)',
-  french: 'French',
-  german: 'German',
-  italian: 'Italian',
-  japanese: 'Japanese',
-  spanish: 'Spanish (ES)',
-  portuguese: 'Portuguese (BR)'
+  'de-DE': "German (DE)",
+  'en-AU': "English (AU)",
+  'en-CA': "English (CA)",
+  'en-GB': "English (UK)",
+  'en-IN': "English (IN)",
+  'en-US': "English (US)",
+  'es-ES': "Spanish (ES)",
+  'es-MX': "Spanish (MX)",
+  'fr-CA': "French (CA)",
+  'fr-FR': "French (FR)",
+  'it-IT': "Italian (IT)",
+  'ja-JP': "Japanese (JP)",
+  'pt-BR': 'Portugese (BR)',
+  // english: 'English (USA)',
+  // english_gb: 'English (UK)',
+  // english_ca: 'English (Canada)',
+  // english_au: 'English (Australia)',
+  // english_in: 'English (India)',
+  // french: 'French',
+  // german: 'German',
+  // italian: 'Italian',
+  // japanese: 'Japanese',
+  // spanish: 'Spanish (ES)',
 };
 
 export const LANGUAGES_SHORT = {

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { setError } from 'ducks/modal'
 import Normalize from 'ducks/_normalize'
+import { addProjectToList } from './board'
 
 export const UPDATE_PROJECTS = 'UPDATE_PROJECTS'
 export const RESET_PROJECTS = 'RESET_PROJECTS'
@@ -25,7 +26,7 @@ export default function productReducer(state = initialState, action) {
   }
 }
 
-const updateProjects = ({byId, allIds}) => ({
+export const updateProjects = ({byId, allIds}) => ({
   type: UPDATE_PROJECTS,
   payload: { byId, allIds }
 })
@@ -55,7 +56,7 @@ export const fetchProjects = team_id => {
   }
 }
 
-export const copyProject = (project_id, team_id) => {
+export const copyProject = (project_id, team_id, board_id) => {
   return async (dispatch, getState) => {
     try{
       const projects = getState().project
@@ -63,7 +64,7 @@ export const copyProject = (project_id, team_id) => {
       if(!project) throw new Error()
 
       let new_project = (await axios.post(`/version/${project.skill_id}/copy/team/${team_id}`)).data
-
+      if (board_id) dispatch(addProjectToList(board_id, new_project.project_id))
       dispatch(Projects.add({data: new_project}))
     }catch(err){
       console.error(err)
@@ -85,3 +86,22 @@ export const deleteProject = project_id => {
     }
   }
 }
+
+// export const reorderProjects = (dragIndex, hoverIndex) => {
+//   return async (dispatch, getState) => {
+//     try{
+//       const projects = getState().project.allIds
+//       const drag = projects[dragIndex]
+
+//       projects.splice(dragIndex, 1)
+//       projects.splice(hoverIndex, 0, drag)
+
+//       dispatch(updateProjects(projects))
+//     } catch(err){
+//       console.error(err)
+//       dispatch(setError('Unable to reorder pojects'))
+//       return Promise.reject()
+//     }
+//     return Promise.resolve()
+//   }
+// }

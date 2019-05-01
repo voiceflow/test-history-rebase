@@ -63,7 +63,9 @@ export default class Button extends Component {
   render() {
     const {
       icon,
+      isBtn,
       onRef,
+      isNav,
       isFlat,
       isIcon,
       isText,
@@ -100,17 +102,19 @@ export default class Button extends Component {
 
     const buttonProps = {
       ref: props.to ? undefined : onRef,
-      className: cn('btn', className, {
-        'btn-flat': isFlat,
+      className: cn(className, {
+        'btn': isBtn,
+        'nav-btn-border': isNav,
+        'btn-tertiary': isFlat,
         'btn-text': isText,
         'btn-icon': isIcon,
         'btn-action': isAction,
         'btn-simple': isSimple,
         'btn-primary': isPrimary,
-        '__is-active': isActive,
+        'show': isActive,
         'btn-visuals': isVisuals,
         '__with-icon': withIcon || withLoader,
-        'btn-dropdown': isDropdown,
+        'dropdown-button': isDropdown,
         'btn-secondary': isSecondary,
         'btn-icon-flat': isIconFlat,
         '__with-counter': withCounter,

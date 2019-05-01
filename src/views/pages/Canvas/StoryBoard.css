@@ -2132,7 +2132,7 @@ label {
     background-image: url('/add-step-hover.svg');
     transform: scale(1.05);
 }
-.add-button: :active {
+.add-button:active {
     box-shadow: 0 0 0 1px rgba(17,49,96,.04), 0 2px 8px 0 rgba(17,49,96,.30) !important;
 }
 

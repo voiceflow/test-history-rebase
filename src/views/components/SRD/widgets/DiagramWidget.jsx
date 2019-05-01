@@ -81,6 +81,11 @@ export class DiagramWidget extends BaseWidget {
 				renderedNodes: true
 			});
 		}
+
+		const nodes = this.props.diagramEngine.getDiagramModel().getNodes()
+		_.forEach(nodes, node => {
+			node.centerLinks(this.props.diagramEngine)
+		})
 	}
 
 	componentDidMount() {
@@ -330,6 +335,8 @@ export class DiagramWidget extends BaseWidget {
 							})
 							current.isMoveInside = true;
 							this.props.diagramEngine.getDiagramModel().addNode(current);
+							this.props.diagramEngine.enableRepaintEntities([current]);
+							this.props.diagramEngine.repaintCanvas(false)
 							let overlapX = (current.x >= target_node.x && current.x <= (target_node.x + target_node.width / amountZoom)) || (current.x + 220 >= target_node.x && current.x + 220 <= target_node.x + (target_node.width / amountZoom));
 							let overlapY = (current.y >= target_node.y && current.y <= target_node.y + target_node.height / amountZoom) || (current.y + 35 >= target_node.y && current.y + 35 <= target_node.y + target_node.height / amountZoom);
 							if (!overlapX || !overlapY) {
@@ -344,7 +351,6 @@ export class DiagramWidget extends BaseWidget {
 										}
 									});
 									if (nodeCount === 1) {
-										// console.log(target_node.combines[firstNode])
 										let removed = target_node.combines[firstNode];
 										this.props.diagramEngine.getDiagramModel().addNode(removed)
 										removed.parentCombine = null;
@@ -419,19 +425,6 @@ export class DiagramWidget extends BaseWidget {
 
 					if (this.props.diagramEngine.isSmartRoutingEnabled()) {
 						this.props.diagramEngine.calculateRoutingMatrix();
-					}
-				} else if (model.model instanceof PointModel) {
-					// we want points that are connected to ports, to not necessarily snap to grid
-					// this stuff needs to be pixel perfect, dont touch it
-					if (_.last(model.model.parent.points).id === model.model.id){
-						let target = this.props.diagramEngine.getPortCenter(model.model.parent.targetPort)
-						model.model.updateLocation(target)
-					} else if (_.head(model.model.parent.points)) {
-						let source = this.props.diagramEngine.getPortCenter(model.model.parent.sourcePort)
-						model.model.updateLocation(source)
-					} else {
-						model.model.x = model.initialX + diagramModel.getGridPosition(amountX / amountZoom);
-						model.model.y = model.initialY + diagramModel.getGridPosition(amountY / amountZoom);
 					}
 				}
 			});
@@ -597,10 +590,10 @@ export class DiagramWidget extends BaseWidget {
 					delete this.props.diagramEngine.linksThatHaveInitiallyRendered[link.getID()];
 				}
 				if (model.model instanceof PointModel && model.model.parent.sourcePort && model.model.parent.targetPort) {
-					if (_.last(model.model.parent.points).id === model.model.id) {
+					if (!model.model.parent.hidden && _.last(model.model.parent.points).id === model.model.id) {
 						let target = this.props.diagramEngine.getPortCenter(model.model.parent.targetPort)
 						model.model.updateLocation(target)
-					} else if (_.head(model.model.parent.points).id === model.model.id) {
+					} else if (!model.model.parent.hidden && _.head(model.model.parent.points).id === model.model.id) {
 						let source = this.props.diagramEngine.getPortCenter(model.model.parent.sourcePort)
 						model.model.updateLocation(source)
 					} 

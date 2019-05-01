@@ -13,6 +13,7 @@ const LOCALES = {
   JP: "ja-JP",
   ES: "es-ES",
   MX: "es-MX",
+  BR: "pt-BR"
 }
 
 const GOOGLE_LOCALES = {
@@ -1151,7 +1152,7 @@ const SLOT_TYPES = [{
       google: null
     },
     locales: {
-      alexa: [L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
+      alexa: [L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX, L.BR],
       google: null
     }
   },
@@ -1162,7 +1163,7 @@ const SLOT_TYPES = [{
       google: null
     },
     locales: {
-      alexa: [L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
+      alexa: [L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX, L.BR],
       google: null
     }
   },
@@ -1173,7 +1174,7 @@ const SLOT_TYPES = [{
       google: null
     },
     locales: {
-      alexa: [L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
+      alexa: [L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX, L.BR],
       google: null
     }
   },
@@ -2920,6 +2921,18 @@ const VOICES = [{
         label: 'Mathieu'
       },
     ]
+  },
+  {
+    label: 'Portuguese BR',
+    options: [{
+        value: 'Vitoria',
+        label: 'Vitoria'
+      },
+      {
+        value: 'Ricardo',
+        label: 'Ricardo'
+      },
+    ]
   }
 ]
 
@@ -2943,7 +2956,8 @@ const ALLOWED_GOOGLE_BLOCKS = [
   'command',
   'code',
   'god',
-  'integrations'
+  'integrations',
+  'stream'
 ]
 
 // const BUILT_IN_INTENTS_GOOGLE = [{

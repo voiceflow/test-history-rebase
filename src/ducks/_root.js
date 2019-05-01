@@ -12,6 +12,7 @@ import project from "ducks/project";
 import modal from "ducks/modal";
 import team from "ducks/team";
 import account from "ducks/account";
+import board from "ducks/board"
 import integrationUsers from "ducks/integration";
 
 export default history =>
@@ -21,6 +22,7 @@ export default history =>
     products,
     displays,
     emails,
+    board,
     diagrams,
     variables,
     userSetting,

@@ -177,7 +177,6 @@ export default class Popover extends Component {
           <Transition
             name="fade-up-small"
             delay={150}
-            className="popover-body"
             wrapperProps={{ onClick }}
           >
             <div className="popover-body-inner">{renderBody({ onHide })}</div>

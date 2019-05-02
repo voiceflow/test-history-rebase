@@ -61,7 +61,7 @@ export const DashBoard = props => {
 
   const copyProject = (project_id, board_id=null) => {
     if(props.projects_array.length >= props.team.projects) {
-      return props.setError("Upgrade Plan to Create More Projects")
+      return setTeamSetting("CHECKOUT:PROJECTS")
     }
     toggleLoadingModal(true)
     props.copyProject(project_id, props.team_id, board_id).then(() => {
@@ -145,9 +145,9 @@ export const DashBoard = props => {
 
   const newProject = (id) => {
     if(props.projects_array.length >= props.team.projects) {
-      setTeamSetting("CHECKOUT")
+      setTeamSetting("CHECKOUT:PROJECTS")
     } else { 
-        props.history.push(id ? `/team/template/${id}` : '/team/template')
+      props.history.push(id ? `/team/template/${id}` : '/team/template')
     }
   }
 

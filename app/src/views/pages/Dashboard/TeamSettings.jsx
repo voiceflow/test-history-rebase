@@ -33,6 +33,7 @@ import PricingCard from "./PricingCard";
 const STAGES = {
   PLAN: { title: "Board Plans", fullscreen: true },
   CHECKOUT: { title: "Upgrade Board", fullscreen: true },
+  "CHECKOUT:PROJECTS": { title: "Upgrade Board", fullscreen: true },
   MEMBERS: { title: "Manage Members" },
   UPDATING_MEMBERS: { title: "Manage Members" },
   SETTINGS: { title: "Board Settings" },
@@ -300,7 +301,7 @@ class TeamSettings extends Component {
       case "PLAN":
         if (!this.IS_ADMIN) return Contact;
         return (
-          <div className="d-flex justify-content-center mx--2 mt-5">
+          <div className="d-flex align-items-start justify-content-center mx--2 mt-5">
             <PricingCard plan="HOBBY" delay={300} team={this.props.team} />
             <PricingCard
               plan="PROFESSIONAL"
@@ -329,6 +330,7 @@ class TeamSettings extends Component {
             </span>
           </div>
         );
+      case "CHECKOUT:PROJECTS":
       case "CHECKOUT":
         if (!this.IS_ADMIN) return Contact;
         let plan;
@@ -339,7 +341,12 @@ class TeamSettings extends Component {
         }
         return (
           <div className="my-5 pt-4 pb-5 text-center">
-            <span className="uppercase text-muted">Upgrade Board</span>
+            {this.state.stage.endsWith("PROJECTS") && (
+              <Alert color="danger" className="absolute-top">
+                Project Limit Reached, upgrade to create more projects
+              </Alert>
+            )}
+            <div className="uppercase text-muted">Upgrade Board</div>
             <div className="super-center mt-4">
               <SeatsCheckout
                 prompt="Upgrade"
@@ -562,13 +569,14 @@ class TeamSettings extends Component {
     if (!this.props.team) return null;
     this.IS_ADMIN = this.props.user.creator_id === this.props.team.creator_id;
 
-    const fullscreen = (( this.state.stage in STAGES ) && STAGES[this.state.stage].fullscreen)
+    const fullscreen =
+      this.state.stage in STAGES && STAGES[this.state.stage].fullscreen;
 
     return (
       <>
         <UncontrolledDropdown inNavbar>
           <DropdownToggle tag="div" className="pointer">
-            <img src={'/cog.svg'} className="mr-3 ml-3" width={17} alt="cog"/>
+            <img src={"/cog.svg"} className="mr-3 ml-3" width={17} alt="cog" />
           </DropdownToggle>
           <DropdownMenu right className="no-select">
             <DropdownItem onClick={() => this.props.update("MEMBERS")}>
@@ -598,8 +606,7 @@ class TeamSettings extends Component {
           isOpen={!!this.props.open}
           toggle={this.props.close}
           className={cn("upgrade-modal", {
-            "modal-fullscreen": fullscreen,
-            "fadein": fullscreen
+            "modal-fullscreen": fullscreen
           })}
         >
           <ModalHeader

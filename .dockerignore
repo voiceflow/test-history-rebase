@@ -2,3 +2,6 @@
 .elasticbeanstalk/*
 .git
 .gitignore
+
+node_modules
+app/node_modules

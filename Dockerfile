@@ -10,9 +10,11 @@ RUN rm -rf node_modules/ && \
 
 RUN npm install --production
 
-RUN cd ./app && yarn
+RUN cd ./app && npm install
 
 RUN npm run build
+
+RUN mv ./app/build ./build && rm -rf ./app && mkdir app && mv ./build ./app/build
 
 RUN npm install -g forever
 

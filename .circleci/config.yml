@@ -111,10 +111,6 @@ jobs: # a collection of steps
           name: 'Update PIP && Install AWS CLI'
           command: |
             rm Dockerfile
-            git config user.email "build@voiceflow.com"
-            git config user.name "build"
-            git add -A
-            git commit -m "$CIRCLE_BUILD_NUM BUILD"
             pip install awsebcli
             eb init --region us-east-1 --platform docker voiceflow-creator
             eb use VoiceflowCreator-staging

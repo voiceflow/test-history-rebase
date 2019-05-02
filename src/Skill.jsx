@@ -323,7 +323,7 @@ class Skill extends Component {
             React.createElement(Spinner,  {name: 'Skill'}) :
             <>
               <div id="app" className={this.props.page}>
-                <div className="main-container-header">
+                {this.props.page !== 'canvas' && <div className="main-container-header">
                     <Header
                         // title={this.props.skill.name}
                         history={this.props.history}
@@ -337,95 +337,12 @@ class Skill extends Component {
                                 }
                             </div>
                         )}
-                        // centerRenderer={() => (
-                        //     <div className="d-flex">
-                        //         <Tooltip
-                        //             distance={16}
-                        //             title={(platform === 'google') ? "Switch to Amazon View" : "Switch to Google View"}
-                        //             position="bottom"
-                        //             className="switch switch-blue mr-4"
-                        //             tag='div'
-                        //         >
-                        //             <input onClick={() => { if (platform !== 'alexa') this.toggleGoogle() }} type="radio" className={`switch-input ${platform === 'alexa' ? 'checked' : ''}`} value="alexa_toggle" id="alexa_toggle" />
-                        //             <label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">Alexa</label>
-                        //             <input onClick={() => { if (platform !== 'google') this.toggleGoogle() }} type="radio" className={`switch-input ${platform === 'google' ? 'checked' : ''}`} value="google_toggle" id="google_toggle" />
-                        //             <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">Google</label>
-                        //             <span className="switch-selection"></span>
-                        //         </Tooltip>
-                        //     </div>
-                        // )}
-                        // rightRenderer={() => (
-                        //     <div className="title-group no-select">
-                        //         <div className="align-icon">
-                        //             <Tooltip
-                        //                 distance={16}
-                        //                 title={this.props.lastSave}
-                        //                 position="bottom"
-                        //                 className="mr-4"
-                        //             >
-                        //                 <button id="icon-save" className={`${this.props.saved ? 'btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''}`} onClick={this.props.onSave}>
-                        //                     {this.props.saving && <span className="save-loader" />}
-                        //                 </button>
-                        //             </Tooltip>
-                        //         </div>
-                        //         <div className="title-group-sub">
-                        //             <Tooltip
-                        //                 className="top-nav-icon"
-                        //                 title="Share"
-                        //                 position="bottom"
-                        //                 distance={16}
-                        //             >
-                        //                 <button id="icon-share" className="nav-btn-border fas fa-share" onClick={this.toggleShare}></button>
-                        //             </Tooltip>
-                        //             <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
-                        //                 <PopoverBody style={{ minWidth: '260px' }}>
-                        //                     <div className="space-between">
-                        //                         <label>Allow preview sharing</label>
-                        //                         <Toggle
-                        //                             checked={this.state.allowPreview}
-                        //                             disabled={this.state.togglingPreview}
-                        //                             icons={false}
-                        //                             onChange={this.togglePreview}
-                        //                         />
-                        //                     </div>
-                        //                     {this.state.allowPreview &&
-                        //                         <InputGroup className="mb-3">
-                        //                             <InputGroupAddon addonType="prepend">
-                        //                                 <ClipBoard
-                        //                                     component="button"
-                        //                                     className="btn btn-clear copy-link"
-                        //                                     value={link}
-                        //                                     id="shareLink"
-                        //                                 >
-                        //                                     <i className="fas fa-copy" />
-                        //                                 </ClipBoard>
-                        //                             </InputGroupAddon>
-                        //                             <Input readOnly value={link} className="form-control-border right" />
-                        //                         </InputGroup>
-                        //                     }
-                        //                 </PopoverBody>
-                        //             </Popover>
-                        //         </div>
-                        //         <div className="align-icon">
-                        //             <Tooltip
-                        //                 distance={16}
-                        //                 title="Test"
-                        //                 position="bottom"
-                        //                 className="ml-4 mr-4"
-                        //             >
-                        //                 <button className="nav-btn" onClick={this.props.onTest}><i className="far fa-play" /></button>
-                        //             </Tooltip>
-                        //         </div>
-
-                        //         {this.renderUploadButton()}
-                        //         {this.displayUploadPrompt()}
-                        //     </div>
-                        // )}
                         subHeaderRenderer={() => (
                             !this.props.preview && <SecondaryNavBar page={this.props.page} history={this.props.history} />
                         )}
                     />
                 </div>
+                }
                 {this.renderPage()}
               </div>
             </>

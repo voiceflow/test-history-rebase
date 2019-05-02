@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchTeams } from "ducks/team";
 
+import Header from 'components/Header'
 import './Admin.css';
 import Home from './Home';
 import Copy from './Copy';
@@ -52,6 +53,8 @@ class Admin extends Component {
         }
 
         return (
+        <>
+            <Header withLogo />
             <div className="admin Window">
                 <div md="3" className="sidebar">
                     <div className="title">
@@ -75,6 +78,7 @@ class Admin extends Component {
                     {page}
                 </div>
             </div>
+            </>
         )
     }
 }

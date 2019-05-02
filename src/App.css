@@ -744,6 +744,11 @@ audio {
    margin-left: -1px;
    margin-top: -5px;
 }
+.borderless-input {
+    background: none;
+    border: none;
+    outline: none;
+}
 .plain-input{
     background: none;
     border: none;
@@ -1197,6 +1202,7 @@ border-radius: 0px 5px 5px 0px !important;
 }
 .publish-btn{
     font-family: 'Open Sans', sans-serif !important;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1799,7 +1805,6 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
 .Window {
     width: 100%;
     min-height: 100%;
-    padding-top: 58px;
 }
 
 .modal-header {

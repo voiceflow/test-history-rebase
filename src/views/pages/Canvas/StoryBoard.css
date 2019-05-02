@@ -484,12 +484,9 @@
     color: #8da2b5 !important;
 }
 #middle-group {
-    position: fixed;
     z-index: 1040;
     display: flex;
-    top: 0px;
     width: 200px;
-    left: 50%;
     margin-left: -100px;
     height: 65px;
     align-items: center;
@@ -502,10 +499,7 @@
     height: 65px;
     border-left: 1px solid #E2E9EC;
     padding-left: 1.5rem;
-    position: absolute;
-    top: 0;
-    right: 85px;
-    z-index: 1040;
+    margin-right: 10px;
 }
 
 .modal-img {
@@ -3511,7 +3505,6 @@ button.close:hover{
     color: #0b1a38 !important;
     padding: 0.65rem 1.5rem !important;
     transition: all 0.10s ease !important;
-    font-family: OpenSans !important;
 }
 
 .dropdown-item:active{

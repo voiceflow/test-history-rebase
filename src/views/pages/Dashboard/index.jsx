@@ -13,7 +13,16 @@ import UpdatesModal from "./../../components/Modals/UpdatesModal";
 import LoadingModal from "views/components/Modals/LoadingModal";
 import TeamSettings from "./TeamSettings"
 import UpdatesPopover from './UpdatesPopover'
-import { Alert, Input, Popover, PopoverBody } from "reactstrap";
+import {
+    Alert,
+    Input,
+    Popover,
+    PopoverBody,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
+} from "reactstrap";
 import { setConfirm, setError } from 'ducks/modal'
 import { connect } from "react-redux";
 import { Members } from 'views/components/User'
@@ -79,7 +88,7 @@ export const DashBoard = props => {
           text: (
             <Alert color="danger" className="mb-0">
             WARNING: This action can not be undone, <i>{board.name}</i> and
-            all {board.projects.length} projects can not be recovered
+            all {!!board.projects && board.projects.length} projects can not be recovered
             </Alert>
         ),
         warning: true,
@@ -182,6 +191,7 @@ export const DashBoard = props => {
       const default_projects = _.filter(filtered_projects, project => {
           return !_.includes(board_projects, project.project_id)
       })
+    const defaultBoard = _.find(props.boards_array, b => b.board_id === 'initial')
     return (
       <>
         <LoadingModal open={loading_modal} />
@@ -192,23 +202,17 @@ export const DashBoard = props => {
             product_updates={product_updates}
           />
           <Header
+            withLogo
             history={props.history}
             leftRenderer={() => (
-                <>
-                    <Link to="/dashboard" className="mx-2">
-                        <img className='voiceflow-logo mt-1' src={'/favicon.png'} alt='logo'
-                            height="30" width="40"
-                        />
-                    </Link>
-                    <div className="searchBar ml-3">
-                        <Input
-                            name="filter_text"
-                            className="search-input form-control-2"
-                            placeholder="Search Projects"
-                            onChange={e => handleFilterText(e.target.value)}
-                        />
-                    </div>
-                </>
+                <div className="searchBar ml-3">
+                    <Input
+                        name="filter_text"
+                        className="search-input form-control-2"
+                        placeholder="Search Projects"
+                        onChange={e => handleFilterText(e.target.value)}
+                    />
+                </div>
             )}
             rightRenderer={() => (
                 <div className="title-group no-select pr-2">
@@ -228,16 +232,31 @@ export const DashBoard = props => {
                       </Popover>
                     </div>
                     <div className="subheader-right ml-2">
-                        <Tooltip
-                            distance={16}
-                            title="Join the Voiceflow forum for help and updates"
-                            position="bottom"
-                            className="ml-1 mr-4"
-                        >
-                            <form action="https://forum.getvoiceflow.com">
-                                <button id="icon-resources" className="nav-btn-border mt-1" type="submit"></button>
-                            </form>
-                        </Tooltip>
+                        <UncontrolledDropdown>
+                            <DropdownToggle className="ml-1" tag="div">
+                                <Tooltip
+                                    distance={19}
+                                    title="Resources"
+                                    position="bottom"
+                                >
+                                    <button className="dropdown-button-border info" type="submit" />
+                                </Tooltip>
+                            </DropdownToggle>
+                            <DropdownMenu className="mt-2">
+                                <a href="https://university.getvoiceflow.com/" target='_blank' rel='noopener noreferrer'>
+                                    <DropdownItem>University</DropdownItem>
+                                </a>
+                                <a href="https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ/videos" target='_blank' rel='noopener noreferrer'>
+                                    <DropdownItem>Youtube</DropdownItem>
+                                </a>
+                                <a href="https://www.facebook.com/groups/voiceflowgroup/" target='_blank' rel='noopener noreferrer'>
+                                    <DropdownItem>Community</DropdownItem>
+                                </a>
+                                <a href="https://forum.getvoiceflow.com/" target='_blank' rel='noopener noreferrer'>
+                                    <DropdownItem>Forums</DropdownItem>
+                                </a>
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
                     </div>
                 </div>
             )}
@@ -343,16 +362,17 @@ export const DashBoard = props => {
                             <div ref={innerRef} className="main-lists-inner">
                                 <List
                                     disableDragging
-                                    name="Default List"
+                                    name={defaultBoard ? defaultBoard.name : 'Default List'}
                                     projects={default_projects}
                                     onDuplicateSkill={copyProject}
                                     onRemoveSkill={deleteProject}
+                                    onRename={props.renameBoard}
                                     onRenameSkill={() => { }}
                                     createSkill={newProject}
                                     itemReorder={reorder}
                                 />
                                 {_.map(props.boards_array, (board, idx) => {
-                                    return (
+                                    if (board.board_id !== 'initial') return (
                                         <List
                                             id={board.board_id}
                                             key={board.board_id}

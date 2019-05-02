@@ -219,6 +219,11 @@ div.nav-item{
 	transition: all 0.25s ease;
 }
 
+.dropdown-button-border.info {
+	background: url(/information.svg);
+	background-position: 50%;
+	background-repeat: no-repeat;
+}
 .dropdown-button-border:hover {
 	color: #62778C;
 	border: 1px solid #e2e9ec;

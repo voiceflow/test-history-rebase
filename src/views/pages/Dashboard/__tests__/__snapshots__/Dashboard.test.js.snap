@@ -18,6 +18,7 @@ exports[`Dashboard render dashboard 1`] = `
       leftRenderer={[Function]}
       rightRenderer={[Function]}
       subHeaderRenderer={[Function]}
+      withLogo={true}
     />
     <div
       id="loading-diagram"

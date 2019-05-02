@@ -310,7 +310,8 @@ export const DashBoard = props => {
             </div>
           </div>}
           <div 
-            className={cn("w-100 h-100", {"thanos-ed": (LOCKED || EXPIRED)})}
+            id="dashboard"
+            className={cn({"thanos-ed": (LOCKED || EXPIRED)})}
             onClickCapture={(e) => {
               // prevent all click events
               if(LOCKED || EXPIRED){

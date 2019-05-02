@@ -134,7 +134,7 @@ class SeatsCheckout extends Component {
 
   render() {
     if(this.state.stage === 'PLAN'){
-      return <div className="d-flex justify-content-center mb-4 mx--2 w-100">
+      return <div className="d-flex align-items-start justify-content-center mb-4 mx--2 w-100">
         <PricingCard plan="PROFESSIONAL" upgrade={(plan) => this.setState({plan, stage: 'CHECKOUT'})} delay={300}/>
         <PricingCard plan="BUSINESS" upgrade={(plan) => this.setState({plan, stage: 'CHECKOUT'})} delay={600}/>
       </div>

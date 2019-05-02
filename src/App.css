@@ -93,6 +93,17 @@ ul {
   margin-top: 6rem;
 }
 
+.mt--5 {
+  margin-top: -2.5rem;
+}
+
+.absolute-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
 .projects-list__dragzone {
     border-radius: 7px;
     background-color: #fff;

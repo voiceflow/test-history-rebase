@@ -378,17 +378,10 @@ export class Canvas extends Component {
                     let port = ports[name]
                     port.in ? newCombineNode.addInPort(port.label): newCombineNode.addOutPort(port.label).setMaximumLinks(1)
                 }
-                _.map(newCombineNode.ports, p => p.parent = node);
-                lastPorts = newCombineNode.getOutPorts()
                 newCombines.push(newCombineNode)
                 newCombines[idx].parentCombine = node;
-                if (idx === 0) {
-                    inPorts = newCombineNode.getInPorts()
-                }
             })
             node.combines = newCombines
-            _.last(node.combines).isLast = true
-            node.ports = _.concat(lastPorts, inPorts);
         }
             let ports = selected.getPorts()
             if (node.extras.type !== 'god'){

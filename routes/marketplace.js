@@ -139,7 +139,6 @@ const cancelCertification = async (req, res) => {
 				AND cert_requested IS NOT NULL
 				AND cert_approved IS NULL
 		`, [project_id])).rows[0].skill_id
-		console.log(skill_id)
 		await deleteVersionPromise(ADMIN_MARKETPLACE_ACC, skill_id, {delete_diagrams: true})
 		res.sendStatus(200)
 	} catch (err) {

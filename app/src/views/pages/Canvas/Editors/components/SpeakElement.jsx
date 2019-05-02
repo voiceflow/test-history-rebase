@@ -41,6 +41,8 @@ const target = {
         const clientOffset = monitor.getClientOffset()
 
         const hoverClientY = clientOffset.y - hoverBoundingRect.top
+        console.log(hoverMiddleY);
+        console.log(hoverClientY);
         if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
         if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
         props.reorder(dragIndex, hoverIndex)

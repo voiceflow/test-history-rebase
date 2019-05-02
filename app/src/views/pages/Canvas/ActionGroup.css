@@ -10,7 +10,7 @@
 
 .switch {
     position: relative;
-    margin: 20px auto;
+    /* margin: 20px auto; */
     height: 42px;
     width: 167px;
     background: #f7f9fb;

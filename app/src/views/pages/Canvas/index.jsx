@@ -21,7 +21,7 @@ import { keyboardModal } from 'hocs/withModalHandlers'
 import { WidgetBar } from './components/WidgetBar'
 import CanvasWarning from './components/CanvasWarning'
 //Helpers
-import { combineAppendValidation, appendValidator } from './../../helpers/combineHelper'
+import { combineAppendValidation, appendValidator } from 'utils/combineHelper'
 
 import { updateVersion, updateIntents, setCanFulfill } from 'ducks/version'
 import { setVariables } from 'ducks/variable'

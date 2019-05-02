@@ -33,7 +33,7 @@ storiesOf('components/Autocompletable', module)
           renderBody={() => (
             <ul className="popover-list">
               <li className="popover-list__list-item">
-                <div className="popover-list__item">
+                <div className="dropdown-item">
                   <div className="text-truncate">
                     show: {JSON.stringify(show)}
                     <br />

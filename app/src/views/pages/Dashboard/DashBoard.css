@@ -56,6 +56,496 @@
 .add-skill h2{
   font-weight: lighter;
 }
+
+.board-container-body {
+  overflow: hidden;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.board-container-body-inner {
+  display: flex;
+  padding: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.main-lists {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  min-width: 0;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+.main-lists::-webkit-scrollbar,
+.main-lists ::-webkit-scrollbar {
+  height: 8px;
+}
+
+.main-lists::-webkit-scrollbar {
+  height: 40px;
+  background-color: #fff;
+  border-top: 1px solid #dfe3ed;
+}
+
+.main-lists::-webkit-scrollbar-thumb {
+  background-color: #d7dee5;
+  border-top: 16px solid transparent;
+  border-bottom: 16px solid transparent;
+  background-clip: padding-box;
+}
+
+.main-lists::-webkit-scrollbar-thumb:hover {
+  background-color: #c8d1db;
+}
+
+.main-lists ::-webkit-scrollbar-thumb {
+  border-right: 8px solid transparent;
+  background-clip: padding-box;
+  background-color: #eaeef3;
+}
+
+.main-lists ::-webkit-scrollbar-thumb:hover {
+  background-color: #dae1ea;
+}
+
+.main-lists::-webkit-scrollbar-button {
+  display: block;
+  background: none;
+  border-width: 0;
+  width: 16px;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.main-lists-inner {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  min-width: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+::-webkit-scrollbar,
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar {
+  height: 40px;
+  background-color: #fff;
+  border-top: 1px solid #dfe3ed;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d7dee5;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover{
+  background-color: darken(#d7dee5, 5);
+}
+
+.main-list-add {
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  min-width: 0;
+  margin: 13px 27px;
+}
+
+.main-lists-inner {
+  flex: 0 0 auto;
+  min-width: 0;
+  display: flex;
+  position: relative;
+}
+
+.main-list {
+  width: 384px;
+  background-color: #fff;
+  border-right: 1px solid #dfe3ed;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  max-height: 100%;
+  overflow: hidden;
+  min-height: 118px;
+}
+
+.main-list,
+.main-lists-inner {
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  min-width: 0;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.main-list-header {
+  flex: 0 0 auto;
+  padding: 17px 19px 13px 32px;
+  display: flex;
+  min-width: 0;
+  position: relative;
+  z-index: 2;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.main-list-header__main {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.main-list-header__title {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.main-list-header__aside {
+  flex: 0 0 auto;
+  min-width: 0;
+  margin-left: 18px
+}
+
+.main-list-header.__scrolling {
+  box-shadow: 0 0 1px 1px rgba(17, 49, 96, .08), 0 1px 3px 0 rgba(17, 49, 96, .08);
+}
+  .main-list-body {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 72vh;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .main-list-body:first-child {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+  }
+
+  .main-list-body:last-child {
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+
+  .main-list-body:last-child .main-list-body-inner {
+    padding-bottom: 24px;
+  }
+
+  .main-list-body-inner {
+    padding: 2px 32px 4px;
+    width: 384px;
+  }
+.main-list-header+.main-list-footer{
+  padding-top: 18px;
+}
+
+ .main-list-footer {
+   padding: 23px 32px;
+   -webkit-box-flex: 0;
+   -webkit-flex: 0 0 auto;
+   -ms-flex: 0 0 auto;
+   flex: 0 0 auto;
+   min-width: 0;
+   min-height: 0;
+   display: -webkit-box;
+   display: -webkit-flex;
+   display: -ms-flexbox;
+   display: flex;
+   -webkit-box-pack: end;
+   -webkit-justify-content: flex-end;
+   -ms-flex-pack: end;
+   justify-content: flex-end;
+   position: relative;
+   z-index: 2;
+   -webkit-transition: -webkit-box-shadow .12s linear;
+   transition: -webkit-box-shadow .12s linear;
+   -o-transition: box-shadow .12s linear;
+   transition: box-shadow .12s linear;
+   transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+   border-bottom-right-radius: 5px;
+   border-bottom-left-radius: 5px;
+ }
+
+ .main-list-footer.__scrolling {
+   -webkit-box-shadow: 0 -1px 0 0 #eaeff4;
+   box-shadow: 0 -1px 0 0 #eaeff4;
+ }
+
+ .main-list-footer-left {
+   -webkit-box-flex: 1;
+   -webkit-flex: 1 1 auto;
+   -ms-flex: 1 1 auto;
+   flex: 1 1 auto;
+   min-width: 0;
+ }
+
+ .main-list-footer-center {
+   -webkit-box-flex: 1;
+   -webkit-flex: 1 1 auto;
+   -ms-flex: 1 1 auto;
+   flex: 1 1 auto;
+   min-width: 0;
+   text-align: center;
+ }
+
+ .main-list-footer-right {
+   -webkit-box-flex: 0;
+   -webkit-flex: 0 0 auto;
+   -ms-flex: 0 0 auto;
+   flex: 0 0 auto;
+   min-width: 0;
+ }
+
+.projects-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.projects-list__list-item{
+  margin-bottom: 12px;
+  border-radius: 8px;
+  background-color: #fff;
+}
+.projects-list__item:active{
+  margin-bottom: 12px;
+  border-radius: 8px;
+  background: linear-gradient(-180deg,rgba(238,244,246,.3),rgba(238,244,246,.45));
+  box-shadow: none !important;
+  border: 1px solid #eaeff4 !important;
+}
+.projects-list__item {
+  border: 1px solid #eaeff4;
+  border-radius: 7px;
+  display: -ms-flexbox;
+  display: flex;
+  min-width: 0;
+  padding: 15px 23px;
+  cursor: pointer;
+  transition: background-color .12s linear, box-shadow .12s linear, border-color .12s linear;
+  position: relative;
+}
+
+.main-list-body-inner {
+  padding: 2px 32px 4px;
+  width: 384px;
+}
+
+.btn-icon .sl-icon {
+  opacity: .8;
+  transition: opacity .12s linear;
+}
+
+.sl-icon-play-system, .sl-icon-plus {
+    background-image: linear-gradient(-180deg,rgba(110,132,154,.85),#6e849a);
+}
+
+.sl-icon {
+  display: inline-block;
+  vertical-align: top;
+  font-family: storyline-icons !important;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  padding: 1px;
+  margin: -1px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-feature-settings: "liga";
+  font-feature-settings: "liga";
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.sl-icon-more,
+.sl-icon-music,
+.sl-icon-news,
+.sl-icon-notifications {
+  background-image: linear-gradient(-180deg, rgba(110, 132, 154, .85), #6e849a);
+}
+
+
+.projects-list__item-image {
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  min-width: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  margin-right: 16px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, .16);
+  text-align: center;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1;
+  padding-top: 12px;
+  padding-bottom: 11px;
+}
+
+.projects-list__item-actions {
+  display: none;
+  margin-right: 16px;
+}
+
+.projects-list__item:hover,
+.projects-list__item.__is-hovered {
+  background-color: #fff;
+  border-color: transparent;
+  -webkit-box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.06), 0 2px 4px 0 rgba(17, 49, 96, 0.12);
+  box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.06), 0 2px 4px 0 rgba(17, 49, 96, 0.12);
+}
+
+.projects-list__item:hover .projects-list__item-image,
+.projects-list__item.__is-hovered .projects-list__item-image {
+  display: none;
+}
+
+.projects-list__item:hover .projects-list__item-actions,
+.projects-list__item.__is-hovered .projects-list__item-actions {
+  display: block;
+}
+
+.projects-list__item-caption,
+.projects-list__item-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 2px;
+}
+.projects-list__item-details {
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-top: -1px;
+  margin-bottom: -1px;
+}
+
+.projects-list__dragzone {
+  height: 74px;
+  border-radius: 7px;
+  background-color: #fff;
+  background-size: 10%;
+  background-image: url(/empty-state.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: 1px solid #eaeff4
+}
+.status-indicator {
+  display: inline-block;
+  vertical-align: top;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #fff, 0 1px 2px 2px rgba(17, 49, 96, .16);
+  position: relative;
+}
+
+.status-indicator-success {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(67, 160, 71, 0.85)), to(#43a047));
+  background-image: -webkit-linear-gradient(top, rgba(67, 160, 71, 0.85) 0%, #43a047 98%);
+  background-image: -o-linear-gradient(top, rgba(67, 160, 71, 0.85) 0%, #43a047 98%);
+  background-image: linear-gradient(-180deg, rgba(67, 160, 71, 0.85) 0%, #43a047 98%);
+}
+
+.status-indicator-danger {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(233, 30, 99, 0.85)), to(#e91e63));
+  background-image: -webkit-linear-gradient(top, rgba(233, 30, 99, 0.85) 0%, #e91e63 100%);
+  background-image: -o-linear-gradient(top, rgba(233, 30, 99, 0.85) 0%, #e91e63 100%);
+  background-image: linear-gradient(-180deg, rgba(233, 30, 99, 0.85) 0%, #e91e63 100%);
+}
+
+.status-indicator-alert {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(230, 193, 69, 0.85)), to(#e6c145));
+  background-image: -webkit-linear-gradient(top, rgba(230, 193, 69, 0.85) 0%, #e6c145 100%);
+  background-image: -o-linear-gradient(top, rgba(230, 193, 69, 0.85) 0%, #e6c145 100%);
+  background-image: linear-gradient(-180deg, rgba(230, 193, 69, 0.85) 0%, #e6c145 100%);
+}
+
+.status-indicator-info {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(5, 159, 228, 0.85)), color-stop(98%, #059fe4));
+  background-image: -webkit-linear-gradient(top, rgba(5, 159, 228, 0.85) 0%, #059fe4 98%);
+  background-image: -o-linear-gradient(top, rgba(5, 159, 228, 0.85) 0%, #059fe4 98%);
+  background-image: linear-gradient(-180deg, rgba(5, 159, 228, 0.85) 0%, #059fe4 98%);
+}
+
+
+.projects-list__item-status {
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  min-width: 0;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin-left: 16px;
+  line-height: 1;
+}
+
+.projects-list__item-status .status-indicator {
+  display: block;
+}
+
+.status-indicator:before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  background-color: #fff;
+  border-radius: 50%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1px;
+  background-clip: content-box;
+}
+
+.status-indicator-info {
+  background-image: linear-gradient(-180deg, rgba(5, 159, 228, .85), #059fe4 98%);
+}
+
+.projects-list__item-caption {
+  font-size: 13px;
+  line-height: 1.5384615385;
+  color: #8DA2B5;
+  font-weight: 300;
+}
 .card-dropdown .dropdown-item {
   cursor: pointer;
 }
@@ -161,6 +651,318 @@
   background: -o-linear-gradient(45deg,  #cedce7 0%,#596a72 100%);
   background: linear-gradient(45deg,  #cedce7 0%,#596a72 100%);
   /*background-image: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);*/
+}
+
+.cap-red {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(248, 102, 131, 0.08)), color-stop(97%, rgba(248, 102, 131, 0.12)));
+  background-image: -webkit-linear-gradient(top, rgba(248, 102, 131, 0.08) 0%, rgba(248, 102, 131, 0.12) 97%);
+  background-image: -o-linear-gradient(top, rgba(248, 102, 131, 0.08) 0%, rgba(248, 102, 131, 0.12) 97%);
+  background-image: linear-gradient(-180deg, rgba(248, 102, 131, 0.08) 0%, rgba(248, 102, 131, 0.12) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #f86683;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-red-dark {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(248, 102, 131, 0.24)), color-stop(97%, rgba(248, 102, 131, 0.32)));
+  background-image: -webkit-linear-gradient(top, rgba(248, 102, 131, 0.24) 0%, rgba(248, 102, 131, 0.32) 97%);
+  background-image: -o-linear-gradient(top, rgba(248, 102, 131, 0.24) 0%, rgba(248, 102, 131, 0.32) 97%);
+  background-image: linear-gradient(-180deg, rgba(248, 102, 131, 0.24) 0%, rgba(248, 102, 131, 0.32) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #f86683;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-blue {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(88, 145, 251, 0.08)), color-stop(97%, rgba(88, 145, 251, 0.12)));
+  background-image: -webkit-linear-gradient(top, rgba(88, 145, 251, 0.08) 0%, rgba(88, 145, 251, 0.12) 97%);
+  background-image: -o-linear-gradient(top, rgba(88, 145, 251, 0.08) 0%, rgba(88, 145, 251, 0.12) 97%);
+  background-image: linear-gradient(-180deg, rgba(88, 145, 251, 0.08) 0%, rgba(88, 145, 251, 0.12) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #5891fb;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-blue-dark {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(88, 145, 251, 0.24)), color-stop(97%, rgba(88, 145, 251, 0.32)));
+  background-image: -webkit-linear-gradient(top, rgba(88, 145, 251, 0.24) 0%, rgba(88, 145, 251, 0.32) 97%);
+  background-image: -o-linear-gradient(top, rgba(88, 145, 251, 0.24) 0%, rgba(88, 145, 251, 0.32) 97%);
+  background-image: linear-gradient(-180deg, rgba(88, 145, 251, 0.24) 0%, rgba(88, 145, 251, 0.32) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #5891fb;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-orange {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(226, 156, 66, 0.08)), color-stop(97%, rgba(226, 156, 66, 0.12)));
+  background-image: -webkit-linear-gradient(top, rgba(226, 156, 66, 0.08) 0%, rgba(226, 156, 66, 0.12) 97%);
+  background-image: -o-linear-gradient(top, rgba(226, 156, 66, 0.08) 0%, rgba(226, 156, 66, 0.12) 97%);
+  background-image: linear-gradient(-180deg, rgba(226, 156, 66, 0.08) 0%, rgba(226, 156, 66, 0.12) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #e29c42;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-orange-dark {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(226, 156, 66, 0.24)), color-stop(97%, rgba(226, 156, 66, 0.32)));
+  background-image: -webkit-linear-gradient(top, rgba(226, 156, 66, 0.24) 0%, rgba(226, 156, 66, 0.32) 97%);
+  background-image: -o-linear-gradient(top, rgba(226, 156, 66, 0.24) 0%, rgba(226, 156, 66, 0.32) 97%);
+  background-image: linear-gradient(-180deg, rgba(226, 156, 66, 0.24) 0%, rgba(226, 156, 66, 0.32) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #e29c42;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-cyan {
+  background-color: #fff;
+  background-image: linear-gradient(-180deg, rgba(54, 180, 210, .08), rgba(54, 180, 210, .12) 97%);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, .16);
+  color: #36b4d2;
+  transition: box-shadow .12s linear;
+}
+
+.cap-cyan-dark {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(54, 180, 210, 0.24)), color-stop(97%, rgba(54, 180, 210, 0.32)));
+  background-image: -webkit-linear-gradient(top, rgba(54, 180, 210, 0.24) 0%, rgba(54, 180, 210, 0.32) 97%);
+  background-image: -o-linear-gradient(top, rgba(54, 180, 210, 0.24) 0%, rgba(54, 180, 210, 0.32) 97%);
+  background-image: linear-gradient(-180deg, rgba(54, 180, 210, 0.24) 0%, rgba(54, 180, 210, 0.32) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #36b4d2;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-green {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(66, 183, 97, 0.08)), color-stop(97%, rgba(66, 183, 97, 0.12)));
+  background-image: -webkit-linear-gradient(top, rgba(66, 183, 97, 0.08) 0%, rgba(66, 183, 97, 0.12) 97%);
+  background-image: -o-linear-gradient(top, rgba(66, 183, 97, 0.08) 0%, rgba(66, 183, 97, 0.12) 97%);
+  background-image: linear-gradient(-180deg, rgba(66, 183, 97, 0.08) 0%, rgba(66, 183, 97, 0.12) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #42b761;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-green-dark {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(66, 183, 97, 0.24)), color-stop(97%, rgba(66, 183, 97, 0.32)));
+  background-image: -webkit-linear-gradient(top, rgba(66, 183, 97, 0.24) 0%, rgba(66, 183, 97, 0.32) 97%);
+  background-image: -o-linear-gradient(top, rgba(66, 183, 97, 0.24) 0%, rgba(66, 183, 97, 0.32) 97%);
+  background-image: linear-gradient(-180deg, rgba(66, 183, 97, 0.24) 0%, rgba(66, 183, 97, 0.32) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #42b761;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-pink {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(231, 96, 212, 0.08)), color-stop(97%, rgba(231, 96, 212, 0.12)));
+  background-image: -webkit-linear-gradient(top, rgba(231, 96, 212, 0.08) 0%, rgba(231, 96, 212, 0.12) 97%);
+  background-image: -o-linear-gradient(top, rgba(231, 96, 212, 0.08) 0%, rgba(231, 96, 212, 0.12) 97%);
+  background-image: linear-gradient(-180deg, rgba(231, 96, 212, 0.08) 0%, rgba(231, 96, 212, 0.12) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #e760d4;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-pink-dark {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(231, 96, 212, 0.24)), color-stop(97%, rgba(231, 96, 212, 0.32)));
+  background-image: -webkit-linear-gradient(top, rgba(231, 96, 212, 0.24) 0%, rgba(231, 96, 212, 0.32) 97%);
+  background-image: -o-linear-gradient(top, rgba(231, 96, 212, 0.24) 0%, rgba(231, 96, 212, 0.32) 97%);
+  background-image: linear-gradient(-180deg, rgba(231, 96, 212, 0.24) 0%, rgba(231, 96, 212, 0.32) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #e760d4;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-keppel {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(38, 166, 154, 0.08)), color-stop(97%, rgba(38, 166, 154, 0.12)));
+  background-image: -webkit-linear-gradient(top, rgba(38, 166, 154, 0.08) 0%, rgba(38, 166, 154, 0.12) 97%);
+  background-image: -o-linear-gradient(top, rgba(38, 166, 154, 0.08) 0%, rgba(38, 166, 154, 0.12) 97%);
+  background-image: linear-gradient(-180deg, rgba(38, 166, 154, 0.08) 0%, rgba(38, 166, 154, 0.12) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #26a69a;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-keppel-dark {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(38, 166, 154, 0.24)), color-stop(97%, rgba(38, 166, 154, 0.32)));
+  background-image: -webkit-linear-gradient(top, rgba(38, 166, 154, 0.24) 0%, rgba(38, 166, 154, 0.32) 97%);
+  background-image: -o-linear-gradient(top, rgba(38, 166, 154, 0.24) 0%, rgba(38, 166, 154, 0.32) 97%);
+  background-image: linear-gradient(-180deg, rgba(38, 166, 154, 0.24) 0%, rgba(38, 166, 154, 0.32) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #26a69a;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-silver {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(141, 162, 181, 0.08)), color-stop(97%, rgba(141, 162, 181, 0.12)));
+  background-image: -webkit-linear-gradient(top, rgba(141, 162, 181, 0.08) 0%, rgba(141, 162, 181, 0.12) 97%);
+  background-image: -o-linear-gradient(top, rgba(141, 162, 181, 0.08) 0%, rgba(141, 162, 181, 0.12) 97%);
+  background-image: linear-gradient(-180deg, rgba(141, 162, 181, 0.08) 0%, rgba(141, 162, 181, 0.12) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #8da2b5;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-silver-dark {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(141, 162, 181, 0.24)), color-stop(97%, rgba(141, 162, 181, 0.32)));
+  background-image: -webkit-linear-gradient(top, rgba(141, 162, 181, 0.24) 0%, rgba(141, 162, 181, 0.32) 97%);
+  background-image: -o-linear-gradient(top, rgba(141, 162, 181, 0.24) 0%, rgba(141, 162, 181, 0.32) 97%);
+  background-image: linear-gradient(-180deg, rgba(141, 162, 181, 0.24) 0%, rgba(141, 162, 181, 0.32) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #8da2b5;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-red-orange {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(213, 139, 95, 0.08)), color-stop(97%, rgba(213, 139, 95, 0.12)));
+  background-image: -webkit-linear-gradient(top, rgba(213, 139, 95, 0.08) 0%, rgba(213, 139, 95, 0.12) 97%);
+  background-image: -o-linear-gradient(top, rgba(213, 139, 95, 0.08) 0%, rgba(213, 139, 95, 0.12) 97%);
+  background-image: linear-gradient(-180deg, rgba(213, 139, 95, 0.08) 0%, rgba(213, 139, 95, 0.12) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #d58b5f;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-red-orange-dark {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(213, 139, 95, 0.24)), color-stop(97%, rgba(213, 139, 95, 0.32)));
+  background-image: -webkit-linear-gradient(top, rgba(213, 139, 95, 0.24) 0%, rgba(213, 139, 95, 0.32) 97%);
+  background-image: -o-linear-gradient(top, rgba(213, 139, 95, 0.24) 0%, rgba(213, 139, 95, 0.32) 97%);
+  background-image: linear-gradient(-180deg, rgba(213, 139, 95, 0.24) 0%, rgba(213, 139, 95, 0.32) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #d58b5f;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-gray {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(105, 121, 134, 0.08)), color-stop(97%, rgba(105, 121, 134, 0.12)));
+  background-image: -webkit-linear-gradient(top, rgba(105, 121, 134, 0.08) 0%, rgba(105, 121, 134, 0.12) 97%);
+  background-image: -o-linear-gradient(top, rgba(105, 121, 134, 0.08) 0%, rgba(105, 121, 134, 0.12) 97%);
+  background-image: linear-gradient(-180deg, rgba(105, 121, 134, 0.08) 0%, rgba(105, 121, 134, 0.12) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #697986;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
+}
+
+.cap-gray-dark {
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(105, 121, 134, 0.24)), color-stop(97%, rgba(105, 121, 134, 0.32)));
+  background-image: -webkit-linear-gradient(top, rgba(105, 121, 134, 0.24) 0%, rgba(105, 121, 134, 0.32) 97%);
+  background-image: -o-linear-gradient(top, rgba(105, 121, 134, 0.24) 0%, rgba(105, 121, 134, 0.32) 97%);
+  background-image: linear-gradient(-180deg, rgba(105, 121, 134, 0.24) 0%, rgba(105, 121, 134, 0.32) 97%);
+  -webkit-box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: #697986;
+  -webkit-transition: -webkit-box-shadow .12s linear;
+  transition: -webkit-box-shadow .12s linear;
+  -o-transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear;
+  transition: box-shadow .12s linear, -webkit-box-shadow .12s linear;
 }
 
 .rotate .front {
@@ -475,4 +1277,11 @@
 
 .upgrade-modal .modal-content {
   overflow: hidden !important;
+}
+
+.updates-popover-container{
+  min-width: 300px !important;
+  max-width: 300px !important;
+  max-height: 300px !important;
+  overflow: auto;
 }

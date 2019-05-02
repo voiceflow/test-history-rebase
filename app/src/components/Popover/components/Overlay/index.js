@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
-import RootCloseWrapper from 'react-overlays/lib/RootCloseWrapper';
+import { RootCloseWrapper } from 'react-overlays';
 import { findDOMNode, createPortal } from 'react-dom';
 
 import { findClosestNode } from 'utils/dom';

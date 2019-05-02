@@ -230,6 +230,8 @@ app.get('/team/:team_id/invoice', ensureLoggedIn(), Team.getInvoice)
 app.get('/team/:team_id/source', ensureLoggedIn(), Team.getSource)
 app.patch('/team/:team_id/source', ensureLoggedIn(), Team.updateSource)
 app.post('/team/invite/:invite_code', ensureLoggedIn(), Team.checkInvite)
+app.get('/team/:team_id/boards', ensureLoggedIn(), Team.getBoards)
+app.patch('/team/:team_id/update_board', ensureLoggedIn(), Team.updateBoard)
 app.get('/team/:team_id/projects', ensureLoggedIn(), Team.getProjects)
 app.get('/team/:team_id/members', ensureLoggedIn(), Team.getMembers)
 app.patch('/team/:team_id/members', ensureLoggedIn(), Team.updateMembers)
@@ -328,7 +330,7 @@ app.get('/analytics/:project_id', ensureLoggedIn(), Analytics.getStats)
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
 app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);
 
-app.get('/product_updates/:ts', ensureLoggedIn(), ProductUpdates.getUpdates)
+app.get('/product_updates', ensureLoggedIn(), ProductUpdates.getUpdates)
 app.post('/product_updates', ensureLoggedIn(), ProductUpdates.createUpdate)
 
 app.get('/logs/:skill_id', ensureLoggedIn(), Logs.getLogsUser)

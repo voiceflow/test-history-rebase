@@ -507,7 +507,7 @@ audio {
     color: #5D9DF5 !important;
     font-size: 15px;
     letter-spacing: 0.2px;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
     border-radius: 50px;
     padding: 10px 22px 10px;
     border: none;
@@ -551,7 +551,7 @@ audio {
     transition: all ease 0.2s;
 }
 .btn-tertiary-variable:hover{
-    background-color: #4e6ff918;  
+    background-color: #4e6ff918 !important;  
 }
 .btn-tertiary-variable:active{
     background-color: #4e6ff925;

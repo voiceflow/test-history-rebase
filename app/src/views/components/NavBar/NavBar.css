@@ -95,6 +95,11 @@ div.nav-item{
 	z-index: 10;
 }
 
+#update-popup{
+	background: url(/Notifications.svg);
+	background-position: 50%;
+	background-repeat: no-repeat;
+}
 /*#navbar.storyboard {
 	background-color: #5a5bff;
 }
@@ -232,6 +237,10 @@ div.nav-item{
 	background-color: #F7F9FB;
 }
 .dropdown.show .dropdown-button-border {
+	background-color: #F7F9FB !important;
+}
+
+.dropdown-button-border.active{
 	background-color: #F7F9FB !important;
 }
 

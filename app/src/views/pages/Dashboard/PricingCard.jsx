@@ -15,15 +15,15 @@ export default ({ plan, upgrade, delay, team }) => {
       })}
       style={{ animationDelay: delay ? `${delay}ms` : undefined }}
     >
-      <img src={pricing.image} width="60" height="45" alt={pricing.name} />
-      <div className="font-weight-bold mt-3">{pricing.name}</div>
+      <img src={pricing.image} width="70" height="70" alt={pricing.name} />
+      <div className="card-title mt-3 mb-3">{pricing.name}</div>
       <div className="d-flex justify-content-center my-2">
         <div className="upgrade-plan-price-sum__symbol">$</div>
         <div className="upgrade-plan-price-sum__cost">{pricing.rate}</div>
         <div className="upgrade-plan-price-sum__period">/ mo</div>
       </div>
       <small className="text-dull">PER SEAT</small>
-      <div className="my-4 small">
+      <div className="my-4">
         {pricing.features.map((f, i) => {
           return (
             <div key={i} className="my-3">
@@ -37,8 +37,8 @@ export default ({ plan, upgrade, delay, team }) => {
           <button className="btn-primary disabled" disabled>Current Plan</button>
         ) : (
           upgrade && (
-            <button className="btn-primary" onClick={() => upgrade(pricing)}>
-              Upgrade
+            <button className="btn-primary mt-2" onClick={() => upgrade(pricing)}>
+              Upgrade Plan
             </button>
           )
         )}

@@ -2,6 +2,15 @@
 
 exports[`Dashboard render dashboard 1`] = `
 <Fragment>
+  <_default
+    team={
+      Object {
+        "state": null,
+        "team_id": 1,
+      }
+    }
+    upgrade={[Function]}
+  />
   <LoadingModal
     open={false}
   />
@@ -37,8 +46,9 @@ exports[`Dashboard render dashboard 1`] = `
       </div>
     </div>
     <div
-      className="w-100 h-100"
-      onClick={[Function]}
+      className=""
+      id="dashboard"
+      onClickCapture={[Function]}
     >
       <div
         className="board-container-body"

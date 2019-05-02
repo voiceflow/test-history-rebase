@@ -14,6 +14,8 @@ RUN cd ./app && yarn
 
 RUN npm run build
 
+RUN rm -rf ./app/node_modules && rm -rf ./app/public
+
 RUN npm install -g forever
 
 EXPOSE 8080

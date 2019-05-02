@@ -27,6 +27,7 @@ import {
 import { setConfirm, setError } from 'ducks/modal'
 import { connect } from "react-redux";
 import { Members } from 'views/components/User'
+import ExpiryButton from './ExpiryButton'
 import List from './components/List'
 
 import {
@@ -60,7 +61,7 @@ export const DashBoard = props => {
 
   const copyProject = (project_id, board_id=null) => {
     if(props.projects_array.length >= props.team.projects) {
-      return props.setError("Upgrade Plan to Create More Projects")
+      return setTeamSetting("CHECKOUT:PROJECTS")
     }
     toggleLoadingModal(true)
     props.copyProject(project_id, props.team_id, board_id).then(() => {
@@ -145,9 +146,9 @@ export const DashBoard = props => {
 
   const newProject = (id) => {
     if(props.projects_array.length >= props.team.projects) {
-      setTeamSetting("BILLING")
+      setTeamSetting("CHECKOUT:PROJECTS")
     } else { 
-        props.history.push(id ? `/team/template/${id}` : '/team/template')
+      props.history.push(id ? `/team/template/${id}` : '/team/template')
     }
   }
 
@@ -181,6 +182,7 @@ export const DashBoard = props => {
     }
 
     const LOCKED = (props.team.state === "LOCKED")
+    const EXPIRED = (props.team.state === "EXPIRED")
       const filtered_projects = filter_text.trim()
           ? props.projects_array.filter(p =>
               p.name.toLowerCase().includes(filter_text.toLowerCase())
@@ -196,6 +198,7 @@ export const DashBoard = props => {
     const defaultBoard = _.find(props.boards_array, b => b.board_id === 'initial')
     return (
       <>
+        <ExpiryButton team={props.team} upgrade={()=>setTeamSetting('CHECKOUT')}/>
         <LoadingModal open={loading_modal} />
         <div id="app" className="dashboard">
           <UpdatesModal
@@ -308,7 +311,7 @@ export const DashBoard = props => {
               </div>
             </div>
           )}
-          { LOCKED && <div className="w-100 h-100 super-center position-absolute z-hard">
+          { LOCKED && <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
             <Alert 
               color="danger" 
               onClick={() => setTeamSetting("BILLING")} 
@@ -318,12 +321,21 @@ export const DashBoard = props => {
               Please update your payment to continue
             </Alert>
           </div> }
+          { EXPIRED && <div className="w-100 h-100 super-center text-center position-absolute z-hard pb-5">
+            <div>
+              <h3>Your free trial has expired</h3>
+              <div className="text-dull mt-3 mb-4">Please Upgrade to continue using Voiceflow</div>
+              <button className="btn-primary mb-5" onClick={()=>this.setState({team_settings: 'CHECKOUT'})}>Upgrade Plan</button>
+            </div>
+          </div>}
           <div 
-            className={ "w-100 h-100"  + (LOCKED ? " disabled" : "")}
-            onClick={(e) => {
+            id="dashboard"
+            className={cn({"thanos-ed": (LOCKED || EXPIRED)})}
+            onClickCapture={(e) => {
               // prevent all click events
-              if(LOCKED){
+              if(LOCKED || EXPIRED){
                 e.preventDefault()
+                e.stopPropagation()
                 return false
               }
             }}

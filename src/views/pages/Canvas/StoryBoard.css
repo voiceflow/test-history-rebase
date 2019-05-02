@@ -484,12 +484,9 @@
     color: #8da2b5 !important;
 }
 #middle-group {
-    position: fixed;
     z-index: 1040;
     display: flex;
-    top: 0px;
     width: 200px;
-    left: 50%;
     margin-left: -100px;
     height: 65px;
     align-items: center;
@@ -502,10 +499,7 @@
     height: 65px;
     border-left: 1px solid #E2E9EC;
     padding-left: 1.5rem;
-    position: absolute;
-    top: 0;
-    right: 85px;
-    z-index: 1040;
+    margin-right: 10px;
 }
 
 .modal-img {
@@ -794,7 +788,6 @@
 
 .toolbar {
     position: absolute;
-    z-index: 10;
     display: flex;
     height: 100%;
     flex-direction: column;
@@ -2132,7 +2125,7 @@ label {
     background-image: url('/add-step-hover.svg');
     transform: scale(1.05);
 }
-.add-button: :active {
+.add-button:active {
     box-shadow: 0 0 0 1px rgba(17,49,96,.04), 0 2px 8px 0 rgba(17,49,96,.30) !important;
 }
 
@@ -3511,7 +3504,6 @@ button.close:hover{
     color: #0b1a38 !important;
     padding: 0.65rem 1.5rem !important;
     transition: all 0.10s ease !important;
-    font-family: OpenSans !important;
 }
 
 .dropdown-item:active{

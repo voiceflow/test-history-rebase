@@ -20,6 +20,7 @@ const Header = (props) => {
     title,
     logout,
     history,
+    withLogo,
     className,
     leftRenderer,
     rightRenderer,
@@ -41,8 +42,14 @@ const Header = (props) => {
     <div className={cn('header', className)}>
       <div className="header-inner">
         <div className={cn('header-grid __with-center', gridClassName)}>
-            {leftRenderer && <div className={cn('header-grid__left', leftClassName)}>
-              {leftRenderer()}
+            {(leftRenderer || withLogo) && <div className={cn('header-grid__left', leftClassName)}>
+              {withLogo &&
+              <Link to="/dashboard" className="mx-2">
+                  <img className='voiceflow-logo mt-1' src={'/favicon.png'} alt='logo'
+                      height="30" width="40"
+                  />
+              </Link>}
+              {leftRenderer && leftRenderer()}
               {!!title && <div className="header__title">{title}</div>}
             </div>
             }

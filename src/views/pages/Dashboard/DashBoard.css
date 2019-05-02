@@ -102,10 +102,6 @@
   border-top: 1px solid #dfe3ed;
 }
 
-.main-lists ::-webkit-scrollbar:vertical {
-  width: 12px;
-}
-
 .main-lists::-webkit-scrollbar-thumb {
   background-color: #d7dee5;
   border-top: 16px solid transparent;
@@ -117,10 +113,6 @@
   background-color: #c8d1db;
 }
 
-.main-lists::-webkit-scrollbar-thumb:window-inactive {
-  background-color: #e6ebef;
-}
-
 .main-lists ::-webkit-scrollbar-thumb {
   border-right: 8px solid transparent;
   background-clip: padding-box;
@@ -129,10 +121,6 @@
 
 .main-lists ::-webkit-scrollbar-thumb:hover {
   background-color: #dae1ea;
-}
-
-.main-lists ::-webkit-scrollbar-thumb:window-inactive {
-  background-color: #fafbfc;
 }
 
 .main-lists::-webkit-scrollbar-button {
@@ -176,11 +164,6 @@
 ::-webkit-scrollbar-thumb:hover{
   background-color: darken(#d7dee5, 5);
 }
-
-::-webkit-scrollbar-thumb:window-inactive {
-  background-color: lighten(#d7dee5, 5);
-}
-
 
 .main-list-add {
   -ms-flex-item-align: start;
@@ -1294,4 +1277,11 @@
 
 .upgrade-modal .modal-content {
   overflow: hidden !important;
+}
+
+.updates-popover-container{
+  min-width: 300px !important;
+  max-width: 300px !important;
+  max-height: 300px !important;
+  overflow: auto;
 }

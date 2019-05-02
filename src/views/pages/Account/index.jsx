@@ -133,13 +133,7 @@ class Account extends Component {
 
   render() {
     return <>
-      <Header leftRenderer={() => (
-        <Link to="/dashboard" className="mx-2">
-          <img className='voiceflow-logo mt-1' src={'/favicon.png'} alt='logo'
-            height="30" width="40"
-          />
-        </Link>
-      )}/>
+      <Header withLogo />
       <div id="app" className="pt-6">
         <div className="container my-5 pt-4">
           <h5 className="ml-3">Profile</h5>

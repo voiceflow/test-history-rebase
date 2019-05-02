@@ -22,24 +22,4 @@ describe('ActionGroup', () => {
     });
 })
 
-describe('Buttons test', () => {
-    it ('user can upload to alexa', () => {
-        let skill = testSkill
-        const spy = jest.spyOn(ActionGroup.prototype, "openUpdate")
-        const component = shallow(<ActionGroup onClick={clickFn} skill={skill} user={account} setCB={() => {}} onSave={() => {}} platform="alexa"/>)
-        component.find('.publish-btn').simulate('click')
-        expect(spy).toHaveBeenCalled()
-    });
-    it ('user can upload to alexa', () => {
-        let skill = testSkill
-        const component = shallow(<ActionGroup onSave={clickFn} skill={skill} user={account} platform="alexa" />)
-        component.find('#icon-save').simulate('click')
-
-        expect(clickFn).toHaveBeenCalled()
-        setTimeout(() => {
-            expect(component.exists('.modal')).toBe(true);
-            component.find('.modal .modal-body button.btn-primary').simulate('click')
-        }, 500);
-    });
-})
 

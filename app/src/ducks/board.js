@@ -111,8 +111,7 @@ export const renameList = (board_id, new_name) => {
                 dispatch(Boards.update({id: board_id, data: board}))
             } else {
                 let data = {board_id: 'initial'};
-                data = update(data, {name: {$set: new_name}})
-                console.log(data)                             
+                data = update(data, {name: {$set: new_name}})                         
                 dispatch(Boards.add({data: data}))
             }
             if (team_id) dispatch(updateLists(team_id))
@@ -127,7 +126,6 @@ export const updateLists = (team_id) => {
     return async (dispatch, getState) => {
         try {
             const boards = getState().board
-            console.log(boards)
             await axios.patch(`/team/${team_id}/update_board`, {
                 boards: unnormalize(boards)
             })

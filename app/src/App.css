@@ -221,13 +221,16 @@ ul {
     width: 100%;
     padding-bottom: 120px;
 }
-#app>#canvas {
+#app>#canvas, #app>#dashboard{
     position: absolute;
     top: 115px;
     right: 0;
     left: 0;
     bottom: 0;
-    overflow-x: hidden;
+}
+
+#app>#canvas {
+  overflow-x: hidden;
 }
 
 .main-container-header {

@@ -166,7 +166,7 @@ class SeatsCheckout extends Component {
                   this.setState({ coupon_toggle: !this.state.coupon_toggle })
                 }
               >
-                {this.state.coupon_toggle ? "Cancel Coupon" : "I Have Coupon"}
+                {this.state.coupon_toggle ? "Cancel Coupon" : "I Have a Coupon"}
               </small>
             </div>
             <div style={{height: 40}}>

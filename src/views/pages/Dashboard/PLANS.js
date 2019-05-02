@@ -5,9 +5,8 @@ const PLANS = {
     rate: 0,
     image: "/images/icons/collaborate-selected.svg",
     features: [
-      "Community Support",
       "3 projects",
-      "2 collaborators"
+      "Community support"
     ]
   },
   "PROFESSIONAL": {
@@ -18,7 +17,7 @@ const PLANS = {
     features: [
       "Intercom support",
       "Unlimited projects",
-      "Up to 3 collaborators"
+      "3 collaborators"
     ]
   },
   "BUSINESS": {
@@ -27,7 +26,7 @@ const PLANS = {
     rate: 99,
     image: '/images/icons/briefcase.svg',
     features: [
-      "Priority Support",
+      "Priority support",
       "All Professional features",
       "Unlimited collaborators",
       "Account linking"

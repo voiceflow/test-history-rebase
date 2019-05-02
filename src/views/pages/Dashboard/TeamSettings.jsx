@@ -326,7 +326,7 @@ class TeamSettings extends Component {
         }
         return (
           <div className="my-5 pt-4 pb-5 text-center">
-            <span className="uppercase text-muted">Confirm Board Plan</span>
+            <span className="uppercase text-muted">Upgrade Board</span>
             <div className="super-center mt-4">
               <SeatsCheckout
                 prompt="Upgrade"

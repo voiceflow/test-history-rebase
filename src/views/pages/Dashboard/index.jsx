@@ -161,7 +161,7 @@ export class DashBoard extends Component {
 
   newProject() {
     if(this.props.projects_array.length >= this.props.team.projects) {
-      this.setState({team_settings: "BILLING"})
+      this.setState({team_settings: "CHECKOUT"})
     } else { 
       this.props.history.push(`/team/template`)
     }

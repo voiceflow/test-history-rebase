@@ -507,7 +507,7 @@ audio {
     color: #5D9DF5 !important;
     font-size: 15px;
     letter-spacing: 0.2px;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
     border-radius: 50px;
     padding: 10px 22px 10px;
     border: none;
@@ -551,7 +551,7 @@ audio {
     transition: all ease 0.2s;
 }
 .btn-tertiary-variable:hover{
-    background-color: #4e6ff918;  
+    background-color: #4e6ff918 !important;  
 }
 .btn-tertiary-variable:active{
     background-color: #4e6ff925;
@@ -743,6 +743,11 @@ audio {
    outline: none;
    margin-left: -1px;
    margin-top: -5px;
+}
+.borderless-input {
+    background: none;
+    border: none;
+    outline: none;
 }
 .plain-input{
     background: none;
@@ -1197,6 +1202,7 @@ border-radius: 0px 5px 5px 0px !important;
 }
 .publish-btn{
     font-family: 'Open Sans', sans-serif !important;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1799,7 +1805,6 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
 .Window {
     width: 100%;
     min-height: 100%;
-    padding-top: 58px;
 }
 
 .modal-header {

@@ -1,6 +1,7 @@
 import _ from "lodash";
 import React, { useState, useEffect } from "react";
 import { ScrollContextProvider } from "contexts";
+import cn from 'classnames';
 // import moment from 'moment'
 import { useScrollHelpers } from 'hooks/scroll';
 // import 'react-table/react-table.css'
@@ -12,7 +13,17 @@ import axios from "axios";
 import UpdatesModal from "./../../components/Modals/UpdatesModal";
 import LoadingModal from "views/components/Modals/LoadingModal";
 import TeamSettings from "./TeamSettings"
-import { Alert, Input } from "reactstrap";
+import UpdatesPopover from './UpdatesPopover'
+import {
+    Alert,
+    Input,
+    Popover,
+    PopoverBody,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
+} from "reactstrap";
 import { setConfirm, setError } from 'ducks/modal'
 import { connect } from "react-redux";
 import { Members } from 'views/components/User'
@@ -43,8 +54,9 @@ export const DashBoard = props => {
   const [loading_modal, toggleLoadingModal] = useState(false)
   const [show_updates_modal, toggleShowUpdatesModal] = useState(false)
   const [team_setting, setTeamSetting] = useState(null)
-  const [product_updates, setProductUpdates] = useState(null)
+  const [product_updates, setProductUpdates] = useState([])
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
+  const [updates_open, toggleUpdatesOpen] = useState(false)
 
   const copyProject = (project_id, board_id=null) => {
     if(props.projects_array.length >= props.team.projects) {
@@ -77,7 +89,7 @@ export const DashBoard = props => {
           text: (
             <Alert color="danger" className="mb-0">
             WARNING: This action can not be undone, <i>{board.name}</i> and
-            all {board.projects.length} projects can not be recovered
+            all {!!board.projects && board.projects.length} projects can not be recovered
             </Alert>
         ),
         warning: true,
@@ -112,38 +124,20 @@ export const DashBoard = props => {
   useEffect(() => {
       updateTeam()
 
-      let last_update_seen = localStorage.getItem(
-          "last_update_seen_" + props.user.id
-      )
-
-      if (!last_update_seen) {
-          last_update_seen = Date.now();
-      } else {
-          last_update_seen = parseInt(last_update_seen);
-      }
-
-      axios
-          .get(`/product_updates/${last_update_seen}`)
-          .then(res => {
-              if (res.data.length > 0) {
-                  toggleShowUpdatesModal(true)
-                  setProductUpdates(res.data)
-              }
-              last_update_seen = Date.now();
-              localStorage.setItem(
-                  "last_update_seen_" + props.user.id,
-                  last_update_seen
-              );
-          })
-          .catch(err => {
-              console.error(err);
-          });
+    axios
+      .get(`/product_updates`)
+      .then(res => {
+        if (res.data.length > 0) {
+          setProductUpdates(res.data)
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }, [])
 
   useEffect(() => {
-      console.log(props)
         return () => {
-            console.log(props)
             props.updateLists(props.team_id)
         }
     }, [])
@@ -198,6 +192,7 @@ export const DashBoard = props => {
       const default_projects = _.filter(filtered_projects, project => {
           return !_.includes(board_projects, project.project_id)
       })
+    const defaultBoard = _.find(props.boards_array, b => b.board_id === 'initial')
     return (
       <>
         <LoadingModal open={loading_modal} />
@@ -208,37 +203,59 @@ export const DashBoard = props => {
             product_updates={product_updates}
           />
           <Header
+            withLogo
             history={props.history}
             leftRenderer={() => (
-                <>
-                    <Link to="/dashboard" className="mx-2">
-                        <img className='voiceflow-logo mt-1' src={'/favicon.png'} alt='logo'
-                            height="30" width="40"
-                        />
-                    </Link>
-                    <div className="searchBar ml-3">
-                        <Input
-                            name="filter_text"
-                            className="search-input form-control-2"
-                            placeholder="Search Projects"
-                            onChange={e => handleFilterText(e.target.value)}
-                        />
-                    </div>
-                </>
+                <div className="searchBar ml-3">
+                    <Input
+                        name="filter_text"
+                        className="search-input form-control-2"
+                        placeholder="Search Projects"
+                        onChange={e => handleFilterText(e.target.value)}
+                    />
+                </div>
             )}
             rightRenderer={() => (
                 <div className="title-group no-select pr-2">
-                    <div className="subheader-right">
-                        <Tooltip
-                            distance={16}
-                            title="Join the Voiceflow forum for help and updates"
-                            position="bottom"
-                            className="ml-1 mr-4"
-                        >
-                            <form action="https://forum.getvoiceflow.com">
-                                <button id="icon-resources" className="nav-btn-border mt-1" type="submit"></button>
-                            </form>
-                        </Tooltip>
+                    <div className="subheader-right mr-2">
+                      <button className={cn("dropdown-button-border", {active: updates_open})} id="update-popup" type="button" onClick={() => toggleUpdatesOpen(!updates_open)} />
+                      <Popover 
+                        className="updates-popover-container" 
+                        placement="bottom" 
+                        isOpen={updates_open} 
+                        target="update-popup" 
+                        toggle={() => toggleUpdatesOpen(!updates_open)}>
+                        <PopoverBody>
+                          <UpdatesPopover product_updates={product_updates}/>
+                        </PopoverBody>
+                      </Popover>
+                    </div>
+                    <div className="subheader-right ml-2">
+                        <UncontrolledDropdown>
+                            <DropdownToggle className="ml-1" tag="div">
+                                <Tooltip
+                                    distance={19}
+                                    title="Resources"
+                                    position="bottom"
+                                >
+                                    <button className="dropdown-button-border info" type="submit" />
+                                </Tooltip>
+                            </DropdownToggle>
+                            <DropdownMenu className="mt-2">
+                                <a href="https://university.getvoiceflow.com/" target='_blank' rel='noopener noreferrer'>
+                                    <DropdownItem>University</DropdownItem>
+                                </a>
+                                <a href="https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ/videos" target='_blank' rel='noopener noreferrer'>
+                                    <DropdownItem>Youtube</DropdownItem>
+                                </a>
+                                <a href="https://www.facebook.com/groups/voiceflowgroup/" target='_blank' rel='noopener noreferrer'>
+                                    <DropdownItem>Community</DropdownItem>
+                                </a>
+                                <a href="https://forum.getvoiceflow.com/" target='_blank' rel='noopener noreferrer'>
+                                    <DropdownItem>Forums</DropdownItem>
+                                </a>
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
                     </div>
                 </div>
             )}
@@ -344,16 +361,17 @@ export const DashBoard = props => {
                             <div ref={innerRef} className="main-lists-inner">
                                 <List
                                     disableDragging
-                                    name="Default List"
+                                    name={defaultBoard ? defaultBoard.name : 'Default List'}
                                     projects={default_projects}
                                     onDuplicateSkill={copyProject}
                                     onRemoveSkill={deleteProject}
+                                    onRename={props.renameBoard}
                                     onRenameSkill={() => { }}
                                     createSkill={newProject}
                                     itemReorder={reorder}
                                 />
                                 {_.map(props.boards_array, (board, idx) => {
-                                    return (
+                                    if (board.board_id !== 'initial') return (
                                         <List
                                             id={board.board_id}
                                             key={board.board_id}
@@ -379,8 +397,6 @@ export const DashBoard = props => {
                                         className="ml-1 mr-4"
                                     >
                                         <button
-                                            isIcon
-                                            isNav
                                             onClick={() => {
                                                 props.addBoard(props.team_id)
                                             }}

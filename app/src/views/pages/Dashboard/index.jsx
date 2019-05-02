@@ -83,7 +83,7 @@ export const DashBoard = props => {
       }
     });
   }
-
+  let fetchBoards;
   const deleteBoard = (board_id) => {
       let board = props.boards.byId[board_id]
       props.setConfirm({
@@ -116,8 +116,9 @@ export const DashBoard = props => {
     // ensure team hasn't changed
     toggleLoading(true)
     props.fetchProjects(props.team_id).then(() => {
-      props.fetchBoards(props.team_id).then(() => {
+      fetchBoards = props.fetchBoards(props.team_id).then(() => {
           toggleLoading(false)
+          fetchBoards = null;
       })
     })
   }
@@ -277,6 +278,7 @@ export const DashBoard = props => {
                             key={team.team_id}
                             className="nav-item"
                             to={`/team/${team.team_id}`}
+                            onClick={() => fetchBoards && fetchBoards.abort()}
                             >
                             {team.name}
                             </Link>

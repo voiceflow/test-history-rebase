@@ -14,7 +14,7 @@ RUN cd ./app && yarn
 
 RUN npm run build
 
-RUN mv ./app/build ./build && rm -rf ./app && mkdir app && mv ./build ./app/build
+RUN rm -rf ./app/node_modules && rm -rf ./app/public
 
 RUN npm install -g forever
 

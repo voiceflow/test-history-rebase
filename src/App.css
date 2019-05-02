@@ -2633,6 +2633,15 @@ kbd {
     margin-bottom: 0px;
 }
 
+.Menu{
+    position: absolute;
+    display: -webkit-flex;
+    display: flex;
+    height: 100%;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    z-index: 5;
+}
 .MenuItem .module-image {
     width: 30px;
     height: 30px;

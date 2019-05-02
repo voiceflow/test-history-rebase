@@ -568,7 +568,7 @@ class TeamSettings extends Component {
       <>
         <UncontrolledDropdown inNavbar>
           <DropdownToggle tag="div" className="pointer">
-            <img src={"/cog.svg"} className="mr-2 ml-2" width={17} alt="cog" />
+            <img src={'/cog.svg'} className="mr-3 ml-3" width={17} alt="cog"/>
           </DropdownToggle>
           <DropdownMenu right className="no-select">
             <DropdownItem onClick={() => this.props.update("MEMBERS")}>

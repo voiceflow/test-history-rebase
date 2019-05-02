@@ -3,10 +3,28 @@ body {
   padding: 0;
 }
 html, body, #root, #body{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
   height: 100%;
+  min-width: 0;
+  min-height: 0;
   overflow: hidden;
 }
 
+.header {
+  flex: 0 0 auto;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  width: 100%;
+}
 .border-none {
 	border: none !important;
 }

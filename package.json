@@ -1,43 +1,18 @@
 {
-  "name": "storyflow-creator",
-  "jest": {
-    "setupFiles": [
-      "./scripts/setupFile.js"
-    ]
+  "name": "@voiceflow/creator",
+  "description": "Voiceflow UI and API for UI",
+  "version": "1.0.1",
+  "author": "Voiceflow",
+  "bugs": "https://voiceflow.atlassian.net/projects/CORE/issues/",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "tests": "./scripts/test.sh",
-    "integration_tests": "NODE_ENV=test ./node_modules/.bin/jest --testPathIgnorePatterns=/app/ --detectOpenHandles --runInBand --forceExit --testMatch=\"**/(*.)+(itest).js?(x)\"",
-    "unit_tests": "NODE_ENV=test ./node_modules/.bin/jest --testPathIgnorePatterns=/app/ --detectOpenHandles --testMatch=\"**/(*.)+(test).js?(x)\"",
-    "build": "cd app && npm run build",
-    "start": "NODE_ENV=production node index.js",
-    "prod": "NODE_ENV=development_prod node index.js",
-    "prod_test": "NODE_ENV=development_prod_test node index.js",
-    "local": "NODE_ENV=local node index.js",
-    "debug": "node --inspect-brk index.js",
-    "unsecure": "node index.js",
-    "staging": "NODE_ENV=staging node index.js",
-    "client": "cd app && npm run start",
-    "redis": "redis-server",
-    "elasticsearch": "elasticsearch",
-    "update": "npm install && cd app && npm install",
-    "dev": "concurrently --kill-others-on-fail \"npm run local\" \"npm run client\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@api.getstoryflow.com:storyflow-creator"
-  },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.16",
-    "@sendgrid/client": "^6.3.0",
     "@sendgrid/mail": "^6.3.1",
     "adm-zip": "^0.4.13",
-    "amazon-mws-node": "^1.1.0",
     "analytics-node": "^3.3.0",
     "aws-sdk": "^2.339.0",
     "axios": "^0.18.0",
@@ -49,7 +24,7 @@
     "cors": "^2.8.4",
     "del": "^3.0.0",
     "dialogflow": "^0.8.0",
-    "dotenv": "^6.2.0",
+    "dotenv": "^7.0.0",
     "elasticsearch": "^15.4.1",
     "express": "^4.16.4",
     "fluent-ffmpeg": "^2.1.2",
@@ -58,13 +33,10 @@
     "helmet": "^3.14.0",
     "history": "^4.7.2",
     "http-aws-es": "^6.0.0",
-    "http-proxy": "^1.17.0",
-    "http-proxy-middleware": "^0.19.1",
     "intercom-client": "^2.10.4",
     "is-var-name": "^2.0.0",
     "jsonwebtoken": "^8.3.0",
-    "knex": "^0.16.3",
-    "kuroshiro": "^1.1.2",
+    "lodash": "^4.17.11",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
@@ -75,13 +47,11 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pg": "^7.5.0",
-    "puppeteer": "^1.11.0",
     "randomstring": "^1.1.5",
     "redis": "^2.8.0",
     "rotating-file-stream": "^1.4.0",
     "s3-upload-stream": "^1.0.7",
     "safe-json-stringify": "^1.2.0",
-    "sendgrid": "^5.2.3",
     "sharp": "^0.21.0",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
@@ -89,20 +59,70 @@
     "stacktrace-js": "^2.0.0",
     "string-similarity": "^3.0.0",
     "stripe": "^6.17.0",
-    "unique-names-generator": "^1.0.14",
     "uuid": "^3.3.2",
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
     "@babel/core": "^7.3.3",
+    "@commitlint/cli": "^7.5.2",
+    "@commitlint/config-conventional": "^7.5.0",
+    "commitizen": "^3.1.1",
+    "cz-conventional-changelog": "^2.1.0",
     "dynamodb-migrations": "0.0.10",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
+    "fixpack": "^2.3.1",
+    "husky": "^2.1.0",
     "jest": "^23.6.0",
     "redis-mock": "^0.43.0",
+    "semantic-release": "^15.13.3",
     "supertest": "^3.3.0"
+  },
+  "homepage": "https://creator.getvoiceflow.com",
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "fixpack"
+    }
+  },
+  "jest": {
+    "setupFiles": [
+      "./scripts/setupFile.js"
+    ]
+  },
+  "keywords": [
+    "api",
+    "ui"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "release": {
+    "branch": "production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storyflow/storyflow-creator"
+  },
+  "scripts": {
+    "build": "cd app && npm run build",
+    "client": "cd app && npm run start",
+    "commit": "git-cz",
+    "debug": "node --inspect-brk index.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run local\" \"npm run client\"",
+    "elasticsearch": "elasticsearch",
+    "integration_tests": "NODE_ENV=test ./node_modules/.bin/jest --testPathIgnorePatterns=/app/ --detectOpenHandles --runInBand --forceExit --testMatch=\"**/(*.)+(itest).js?(x)\"",
+    "local": "NODE_ENV=local node index.js",
+    "prod": "NODE_ENV=development_prod node index.js",
+    "prod_test": "NODE_ENV=development_prod_test node index.js",
+    "redis": "redis-server",
+    "staging": "NODE_ENV=staging node index.js",
+    "start": "NODE_ENV=production node index.js",
+    "tests": "./scripts/test.sh",
+    "unit_tests": "NODE_ENV=test ./node_modules/.bin/jest --testPathIgnorePatterns=/app/ --detectOpenHandles --testMatch=\"**/(*.)+(test).js?(x)\"",
+    "unsecure": "node index.js",
+    "update": "npm install && cd app && npm install"
   }
 }

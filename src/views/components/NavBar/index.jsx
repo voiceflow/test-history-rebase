@@ -17,6 +17,7 @@ import { logout } from 'ducks/account'
 import { User } from 'views/components/User'
 
 import './NavBar.css';
+
 import Intercom from 'react-intercom';
 
 const NUM_TO_PLAN = (plan) => {
@@ -99,7 +100,7 @@ class NavBar extends Component {
     }
 
     return (
-        <div>
+        <div className="header">
           <Navbar dark expand="md" className={"fixed-top " + page_name} id="navbar">
             <Link to="/dashboard" className="mx-2">
               <div className="mt-1 voiceflow-logo" style={{backgroundImage: `url('${image}')`}}/>
@@ -154,6 +155,7 @@ class NavBar extends Component {
           </Navbar>
           {!!this.props.padding && <div className="padding"></div>}
           <Intercom appID="vw911b0m" {...this.intercom_user}/>
+        {(!this.props.preview && getPage(this.props.location.pathname) !== 'dashboard') && <SecondaryNavBar page={this.props.page} history={this.props.history} />}
         </div>
     );
   }

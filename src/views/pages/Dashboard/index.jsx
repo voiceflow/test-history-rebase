@@ -1,6 +1,7 @@
 import _ from "lodash";
 import React, { useState, useEffect } from "react";
 import { ScrollContextProvider } from "contexts";
+import cn from 'classnames';
 // import moment from 'moment'
 import { useScrollHelpers } from 'hooks/scroll';
 // import 'react-table/react-table.css'
@@ -217,9 +218,7 @@ export const DashBoard = props => {
             rightRenderer={() => (
                 <div className="title-group no-select pr-2">
                     <div className="subheader-right mr-2">
-                      <button className="dropdown-button-border" id="update-popup" type="button" onClick={() => toggleUpdatesOpen(!updates_open)}>
-                        <i className="fas fa-bell"></i>
-                      </button>
+                      <button className={cn("dropdown-button-border", {active: updates_open})} id="update-popup" type="button" onClick={() => toggleUpdatesOpen(!updates_open)} />
                       <Popover 
                         className="updates-popover-container" 
                         placement="bottom" 

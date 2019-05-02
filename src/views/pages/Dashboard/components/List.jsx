@@ -143,6 +143,7 @@ export function List(props) {
                         onChange={({ target }) =>
                           handleChange("name", target.value)
                         }
+                        onKeyPress={({ charCode }) => (charCode === 13) && onInputNameBlur()}
                         autoFocus
                         placeholder="Enter list name"
                         // onEnterPress={onInputNameBlur}
@@ -223,7 +224,6 @@ export function List(props) {
                                   project.name
                                 )
                               }
-                              avatarUrl={project.avatarUrl}
                               onDuplicate={() =>
                                 handleDuplicateSkill(
                                   project.project_id,

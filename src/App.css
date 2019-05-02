@@ -894,10 +894,6 @@ hr.full-width {
     text-align: center;
 }
 
-.btn:hover{
-    background-color: #5D9DF530;
-    color: #3B8CFE;
-}
 .btn-flat {
     color: #3B8CFE;
 }

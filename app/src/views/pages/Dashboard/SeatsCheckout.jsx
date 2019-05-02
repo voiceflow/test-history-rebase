@@ -7,30 +7,58 @@ import { setError } from 'ducks/modal'
 import { updateMembers, createTeam } from 'ducks/team';
 import PricingCard from "./PricingCard"
 import { PLANS_ID } from "./PLANS"
+import axios from "axios"
+import _ from "lodash"
 
 const STAGES = {
   "CHECKOUT": {},
   "SOURCE": { loader: 'Verifying Card'},
-  "CREATE": { loader: 'Creating Subscription'}
+  "CREATE": { loader: 'Creating Subscription'},
+  "CHECK": { loader: 'Checking Source'}
 }
 
 class SeatsCheckout extends Component {
   constructor(props) {
     super(props);
 
-    const plan = PLANS_ID[props.plan] ? PLANS_ID[props.plan] : undefined;
+    let plan = PLANS_ID[props.plan] ? PLANS_ID[props.plan] : undefined;
+    let stage = !!plan ? "CHECKOUT" : "PLAN"
+
+    this.calculatePrice = this.calculatePrice.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.checkout = this.checkout.bind(this);
+    this.checkSource = this.checkSource.bind(this);
+
+    if(props.team && props.team.status > 0 && props.team.stripe_id) {
+      stage = "CHECK"
+      this.checkSource(props.team)
+    }
 
     this.state = {
       coupon: "",
       coupon_toggle: false,
       loading: true,
       plan,
-      stage: !!plan ? "CHECKOUT" : "PLAN"
+      stage
     };
+  }
 
-    this.calculatePrice = this.calculatePrice.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.checkout = this.checkout.bind(this);
+  async checkSource(team) {
+    try {
+      const source = (await axios.get(`/team/${team.team_id}/source`)).data
+      if(_.isEmpty(source)) throw new Error()
+
+      this.setState({
+        loading: false,
+        source: source,
+        stage: "CHECKOUT" 
+      })
+    } catch(err) {
+      this.props.setError("Unable to retrieve card info")
+      this.setState({
+        stage: "CHECKOUT"
+      })
+    }
   }
 
   handleChange(event) {
@@ -40,7 +68,7 @@ class SeatsCheckout extends Component {
   }
 
   calculatePrice() {
-    const base = this.state.plan.rate
+    const base = this.state.plan ? this.state.plan.rate : null
     let price = 0;
     let members = 0;
     if (Array.isArray(this.props.invites)) {
@@ -54,6 +82,14 @@ class SeatsCheckout extends Component {
   }
 
   async checkout(e) {
+    // A source already exists
+    if(this.state.source) {
+      this.setState({stage: "CREATE"})
+      await this.props.updateMembers(this.props.members, {plan: this.state.plan.id})
+      this.props.next()
+      return;
+    }
+
     try {
       this.setState({ stage: "SOURCE" });
 
@@ -158,20 +194,38 @@ class SeatsCheckout extends Component {
                 placeholder="Coupon Code"
               />
             </Collapse>
-            <div className="space-between">
-              <label>Payment Details</label>
-              <small
-                className="btn-link"
-                onClick={() =>
-                  this.setState({ coupon_toggle: !this.state.coupon_toggle })
-                }
-              >
-                {this.state.coupon_toggle ? "Cancel Coupon" : "I Have Coupon"}
-              </small>
-            </div>
-            <div style={{height: 40}}>
-              <CardElement onReady={() => this.setState({ loading: false })} />
-            </div>
+            { this.state.source ? <>
+              <div className="space-between">
+                <label>Payment Details</label>
+                <small
+                  className="btn-link"
+                  onClick={this.props.modify}
+                >
+                  Modify
+                </small>
+              </div>
+              <input
+                value={`[${this.state.source.brand}] XXXX-XXXX-XXXX-${this.state.source.last4}`}
+                className="disabled form-control"
+                style={{ height: 40 }}
+                disabled
+              />
+            </> : <>
+              <div className="space-between">
+                <label>Payment Details</label>
+                <small
+                  className="btn-link"
+                  onClick={() =>
+                    this.setState({ coupon_toggle: !this.state.coupon_toggle })
+                  }
+                >
+                  {this.state.coupon_toggle ? "Cancel Coupon" : "I Have Coupon"}
+                </small>
+              </div>
+              <div style={{height: 40}}>
+                <CardElement onReady={() => this.setState({ loading: false })} />
+              </div>
+            </> }
           </>}
           <div className="super-center">
             <button

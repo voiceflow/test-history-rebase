@@ -27,11 +27,12 @@ import Billing from "./Billing";
 import cn from "classnames";
 import { PLANS_ID } from "./PLANS";
 import CheckMark from "components/CheckMark";
-import PricingCard from "./PricingCard"
+import PricingCard from "./PricingCard";
 
 // SETTING STATES: MEMBERS, SETTINGS, DELETE
 const STAGES = {
-  CHECKOUT: { title: "Upgrade Board" },
+  PLAN: { title: "Board Plans", fullscreen: true },
+  CHECKOUT: { title: "Upgrade Board", fullscreen: true },
   MEMBERS: { title: "Manage Members" },
   UPDATING_MEMBERS: { title: "Manage Members" },
   SETTINGS: { title: "Board Settings" },
@@ -179,7 +180,7 @@ class TeamSettings extends Component {
     this.applyChanges = this.applyChanges.bind(this);
     this.teamUpdate = this.teamUpdate.bind(this);
     this.leaveTeam = this.leaveTeam.bind(this);
-    this.upgrade = this.upgrade.bind(this)
+    this.upgrade = this.upgrade.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -279,12 +280,12 @@ class TeamSettings extends Component {
   }
 
   upgrade(plan) {
-    if(plan <= this.props.team.status) return null
+    if (plan <= this.props.team.status) return null;
 
     return () => {
-      this.checkout_plan = plan
-      this.setState({stage: "CHECKOUT"})
-    }
+      this.checkout_plan = plan;
+      this.setState({ stage: "CHECKOUT" });
+    };
   }
 
   leaveTeam() {
@@ -298,11 +299,23 @@ class TeamSettings extends Component {
     switch (this.state.stage) {
       case "PLAN":
         if (!this.IS_ADMIN) return Contact;
-        return <div className="d-flex justify-content-center mx--2 mt-5">
-          <PricingCard plan="HOBBY" delay={300} team={this.props.team}/>
-          <PricingCard plan="PROFESSIONAL" delay={600} team={this.props.team} upgrade={this.upgrade(1)}/>
-          <PricingCard plan="BUSINESS" delay={900} team={this.props.team} upgrade={this.upgrade(2)}/>
-        </div>
+        return (
+          <div className="d-flex justify-content-center mx--2 mt-5">
+            <PricingCard plan="HOBBY" delay={300} team={this.props.team} />
+            <PricingCard
+              plan="PROFESSIONAL"
+              delay={600}
+              team={this.props.team}
+              upgrade={this.upgrade(1)}
+            />
+            <PricingCard
+              plan="BUSINESS"
+              delay={900}
+              team={this.props.team}
+              upgrade={this.upgrade(2)}
+            />
+          </div>
+        );
       case "SUCCESS":
         return (
           <div className="py-5 my-5 text-center">
@@ -318,11 +331,11 @@ class TeamSettings extends Component {
         );
       case "CHECKOUT":
         if (!this.IS_ADMIN) return Contact;
-        let plan
+        let plan;
         // reset the checkout plan when consumed
         if (this.checkout_plan) {
-          plan = this.checkout_plan
-          this.checkout_plan = undefined
+          plan = this.checkout_plan;
+          this.checkout_plan = undefined;
         }
         return (
           <div className="my-5 pt-4 pb-5 text-center">
@@ -336,6 +349,7 @@ class TeamSettings extends Component {
                 user={this.props.user}
                 plan={plan}
                 collab={() => this.setState({ stage: "MEMBERS" })}
+                modify={() => this.setState({ stage: "BILLING" })}
                 width={400}
               />
             </div>
@@ -548,6 +562,8 @@ class TeamSettings extends Component {
     if (!this.props.team) return null;
     this.IS_ADMIN = this.props.user.creator_id === this.props.team.creator_id;
 
+    const fullscreen = (( this.state.stage in STAGES ) && STAGES[this.state.stage].fullscreen)
+
     return (
       <>
         <UncontrolledDropdown inNavbar>
@@ -564,12 +580,16 @@ class TeamSettings extends Component {
                   Board Settings
                 </DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem onClick={() => this.props.update("PLAN")}>Board Plan</DropdownItem>
+                <DropdownItem onClick={() => this.props.update("PLAN")}>
+                  Board Plan
+                </DropdownItem>
               </>
             ) : (
               <>
                 <DropdownItem divider />
-                <DropdownItem onClick={this.leaveTeam}>Leave Board</DropdownItem>
+                <DropdownItem onClick={this.leaveTeam}>
+                  Leave Board
+                </DropdownItem>
               </>
             )}
           </DropdownMenu>
@@ -578,7 +598,8 @@ class TeamSettings extends Component {
           isOpen={!!this.props.open}
           toggle={this.props.close}
           className={cn("upgrade-modal", {
-            "modal-fullscreen": ["CHECKOUT", "PLAN"].includes(this.state.stage)
+            "modal-fullscreen": fullscreen,
+            "fadein": fullscreen
           })}
         >
           <ModalHeader

@@ -183,14 +183,24 @@ const updateSubscription = async (team, seats, status) => {
     const subscription = await stripe.subscriptions.retrieve(team.stripe_sub_id)
     const subscriptionItem = subscription.items.data[0]
 
-    await stripe.subscriptionItems.update(subscriptionItem.id, {
-      quantity: seats
-    })
+    if(!status) {
+      status = team.status
+    }
+    
+    // upgrade the plan
+    if (status !== team.status && status in STATUS_TO_PLAN) {
+      await stripe.subscriptionItems.update(subscriptionItem.id, {
+        plan: STATUS_TO_PLAN[status],
+        quantity: seats
+      })
+    } else {
+      await stripe.subscriptionItems.update(subscriptionItem.id, {
+        quantity: seats
+      })
+    }
   } catch (err) {
     throw ((err && err.message) || err)
   }
-
-  if(!status) status = team.status
 
   return (await pool.query(
     "UPDATE teams SET seats = $1, status = $2, projects = 1000 WHERE team_id = $3 RETURNING *",
@@ -352,9 +362,9 @@ exports.updateMembers = async (req, res) => {
     }
 
     // no seats time to charge on stripe
-    if(new_members.length !== team.seats || req.body.source) {
+    if(new_members.length !== team.seats || req.body.source || req.body.plan) {
       if(team.status !== 0 && team.stripe_id && team.stripe_sub_id) {
-        team = await updateSubscription(team, new_members.length)
+        team = await updateSubscription(team, new_members.length, req.body.plan)
       } else if(req.body.source) {
         team = await initalizeStripe(team, req.user, new_members.length, req.body.source.id, {plan: req.body.plan})
       } else if (team.status === 0 && team.seats <= FREE_SEATS) {

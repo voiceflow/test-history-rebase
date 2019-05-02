@@ -482,7 +482,7 @@
 
 .upgrade-plan-price-sum__symbol {
   min-width: 0;
-  font-size: 13px;
+  font-size: 18px;
   color: #62778c;
   margin-right: 4px;
   padding-top: 0;
@@ -490,7 +490,7 @@
 
 .upgrade-plan-price-sum__cost {
   min-width: 0;
-  font-size: 40px;
+  font-size: 50px;
   line-height: 1;
   font-weight: 600;
   color: rgba(19,33,68,.65);
@@ -502,7 +502,7 @@
   color: #8da2b5;
   margin-left: 6px;
   padding-bottom: 2px;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 @media(max-width: 1200px){

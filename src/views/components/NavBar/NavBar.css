@@ -21,7 +21,7 @@
 	justify-content: space-between;
 	top: 65px;
 	z-index: 999;
-	padding: 0 0 0 40px;
+	padding: 0 10px 0 40px;
 	background-color: #F7F9FB;
 	/* box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .06); */
 	/* border-bottom: 1px solid #dce5e8; */
@@ -95,6 +95,11 @@ div.nav-item{
 	z-index: 10;
 }
 
+#update-popup{
+	background: url(/Notifications.svg);
+	background-position: 50%;
+	background-repeat: no-repeat;
+}
 /*#navbar.storyboard {
 	background-color: #5a5bff;
 }
@@ -217,8 +222,11 @@ div.nav-item{
 	font-size: 20px;
 	height: 44px;
 	transition: all 0.25s ease;
-	background: url('/information.svg');
-	background-position: center;
+}
+
+.dropdown-button-border.info {
+	background: url(/information.svg);
+	background-position: 50%;
 	background-repeat: no-repeat;
 }
 .dropdown-button-border:hover {
@@ -230,6 +238,18 @@ div.nav-item{
 }
 .dropdown.show .dropdown-button-border {
 	background-color: #F7F9FB !important;
+}
+
+.dropdown-button-border.active{
+	background-color: #F7F9FB !important;
+}
+
+.information-icon {
+	background: url('/information.svg');
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.dropdown.show .information-icon {
 	background: url('/information-active.svg');
 	background-position: center;
 	background-repeat: no-repeat;

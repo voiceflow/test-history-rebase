@@ -100,11 +100,20 @@ export const renameList = (board_id, new_name) => {
         try {
             const boards = getState().board
             const team_id = getState().team.team_id
-            let board = boards.byId[board_id]
-            if (!board) throw new Error()
 
-            board = update(board, {name: {$set: new_name}})
-            dispatch(Boards.update({id: board_id, data: board}))
+            let board
+            if (!board_id){
+                board_id = 'initial';
+            }
+            board = boards.byId[board_id]
+            if (board){
+                board = update(board, {name: {$set: new_name}})
+                dispatch(Boards.update({id: board_id, data: board}))
+            } else {
+                let data = {board_id: 'initial'};
+                data = update(data, {name: {$set: new_name}})                         
+                dispatch(Boards.add({data: data}))
+            }
             if (team_id) dispatch(updateLists(team_id))
         } catch(err) {
             console.error(err)

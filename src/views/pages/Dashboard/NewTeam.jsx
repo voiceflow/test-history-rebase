@@ -169,7 +169,7 @@ class NewTeam extends Component {
           <div className="text-center">
             <h5 className="uppercase-header">{name}</h5>
             <div className="my-5 pt-4 pb-5">
-              <span className="uppercase text-muted">Confirm Board Plan</span>
+              <span className="uppercase text-muted">Upgrade Board</span>
               <div className="super-center mt-4">
                 <SeatsCheckout
                   prompt="Start Free Trial"

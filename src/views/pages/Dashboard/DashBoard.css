@@ -130,50 +130,7 @@
   flex: 1 1 auto;
   overflow-x: auto;
   overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
   position: relative;
-}
-
-.main-lists::-webkit-scrollbar,
-.main-lists ::-webkit-scrollbar {
-  height: 8px;
-}
-
-.main-lists::-webkit-scrollbar {
-  height: 40px;
-  background-color: #fff;
-  border-top: 1px solid #dfe3ed;
-}
-
-.main-lists::-webkit-scrollbar-thumb {
-  background-color: #d7dee5;
-  border-top: 16px solid transparent;
-  border-bottom: 16px solid transparent;
-  background-clip: padding-box;
-}
-
-.main-lists::-webkit-scrollbar-thumb:hover {
-  background-color: #c8d1db;
-}
-
-.main-lists ::-webkit-scrollbar-thumb {
-  border-right: 8px solid transparent;
-  background-clip: padding-box;
-  background-color: #eaeef3;
-}
-
-.main-lists ::-webkit-scrollbar-thumb:hover {
-  background-color: #dae1ea;
-}
-
-.main-lists::-webkit-scrollbar-button {
-  display: block;
-  background: none;
-  border-width: 0;
-  width: 16px;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
 }
 
 .main-lists-inner {
@@ -187,25 +144,6 @@
   display: -ms-flexbox;
   display: flex;
   position: relative;
-}
-
-::-webkit-scrollbar,
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar {
-  height: 40px;
-  background-color: #fff;
-  border-top: 1px solid #dfe3ed;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #d7dee5;
-  background-clip: padding-box;
-}
-::-webkit-scrollbar-thumb:hover{
-  background-color: darken(#d7dee5, 5);
 }
 
 .main-list-add {

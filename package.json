@@ -1,7 +1,7 @@
 {
   "name": "@voiceflow/creator",
   "description": "Voiceflow UI and API for UI",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Voiceflow",
   "bugs": "https://voiceflow.atlassian.net/projects/CORE/issues/",
   "config": {
@@ -99,6 +99,9 @@
   ],
   "license": "ISC",
   "main": "index.js",
+  "release": {
+    "branch": "production"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/storyflow/storyflow-creator"

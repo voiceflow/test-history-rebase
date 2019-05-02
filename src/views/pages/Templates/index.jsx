@@ -11,6 +11,14 @@ import MUIButton from '@material-ui/core/Button';
 import { Spinner } from 'views/components/Spinner'
 import { connect } from 'react-redux'
 
+import {
+    addProjectToList
+} from 'ducks/board'
+
+const getBoardFromURL = (computedMatch) => {
+    return computedMatch && computedMatch.params && computedMatch.params.board_id
+}
+
 class Templates extends Component {
     constructor(props) {
         super(props)
@@ -103,6 +111,10 @@ class Templates extends Component {
         })
             .then(res => {
                 if (res.data.skill_id && res.data.diagram) {
+                    const board_id = getBoardFromURL(this.props.computedMatch)
+                    if (board_id) {
+                        this.props.addProjectToList(board_id, res.data.project_id);
+                    }
                     setTimeout(() => {
                         this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
                     }, 3000)
@@ -235,4 +247,9 @@ const mapStateToProps = state => ({
   user: state.account
 })
 
-export default connect(mapStateToProps)(Templates)
+const mapDispatchToProps = dispatch => {
+    return {
+        addProjectToList: (board_id, project_id) => dispatch(addProjectToList(board_id, project_id))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Templates)

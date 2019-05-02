@@ -93,6 +93,7 @@
     "react-json-view": "github:groovy-tunes/react-json-view",
     "react-masonry-component": "^6.2.1",
     "react-mentions": "^2.4.1",
+    "react-overlays": "^1.2.0",
     "react-redux": "^6.0.1",
     "react-router-dom": "^5.0.0",
     "react-scrollspy": "^3.3.5",

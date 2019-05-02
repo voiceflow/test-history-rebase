@@ -10,7 +10,7 @@ RUN rm -rf node_modules/ && \
 
 RUN npm install --production
 
-RUN cd ./app && npm install
+RUN cd ./app && yarn
 
 RUN npm run build
 

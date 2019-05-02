@@ -47,7 +47,6 @@ import {
 import {
   getMembers,
 } from "ducks/team";
-import cn from 'classnames'
 import { unnormalize } from "ducks/_normalize"
 
 export const DashBoard = props => {

@@ -12,7 +12,6 @@ import withDraggable from 'hocs/withDraggable';
 import { colors } from 'utils/colors';
 
 import Form from 'components/Form';
-import Input from 'components/Input';
 import Button from 'components/Button';
 import Dropdown from 'components/Dropdown';
 
@@ -60,7 +59,6 @@ export function List(props) {
     onDropSkill,
     onRenameSkill,
     onRemoveSkill,
-    disableDragging,
     onDuplicateSkill,
     connectDragSource,
     isDraggingPreview,

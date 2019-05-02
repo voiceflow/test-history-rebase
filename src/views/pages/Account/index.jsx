@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { setConfirm, setError } from 'ducks/modal'
 import { AmazonAccessToken, googleAccessToken, updateAccount } from 'ducks/account'

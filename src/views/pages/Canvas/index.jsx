@@ -365,8 +365,6 @@ export class Canvas extends Component {
         node.extras = cloneDeep(selected.extras)
         if (selected.extras.type === 'god') {
             let newCombines = []
-            let lastPorts;
-            let inPorts;
             _.map(selected.combines, (combineNode, idx) => {
                 let newCombineNode = new BlockNodeModel(combineNode.name, null, toolkit.UID())
                 newCombineNode.extras = cloneDeep(combineNode.extras);

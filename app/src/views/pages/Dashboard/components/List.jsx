@@ -135,7 +135,8 @@ export function List(props) {
                 <div className="main-list-header__main">
                   {isTitleEditable ? (
                     <div className="main-list-header__input">
-                      <Input
+                      <input
+                        className="borderless-input"
                         value={values.name}
                         onBlur={onInputNameBlur}
                         selected
@@ -144,14 +145,14 @@ export function List(props) {
                         }
                         autoFocus
                         placeholder="Enter list name"
-                        onEnterPress={onInputNameBlur}
-                        onEscapePress={toggleTitleEditable}
+                        // onEnterPress={onInputNameBlur}
+                        // onEscapePress={toggleTitleEditable}
                       />
                     </div>
                   ) : (
                     <div
                       onClick={(e) => {
-                        if (!disableDragging) toggleTitleEditable(e)
+                        toggleTitleEditable(e)
                       }}
                       className="main-list-header__title"
                     >
@@ -185,6 +186,14 @@ export function List(props) {
                   >
                     <ul className="projects-list">
                       {projects.map((project, i) => {
+                        let icon;
+                        let smallIcon = project.small_icon;
+                        let largeIcon = project.large_icon;
+                        if (!!largeIcon) {
+                          icon = largeIcon;
+                        } else if (!!smallIcon) {
+                          icon = smallIcon;
+                        }
                         return !project ? null : (
                           <li
                             key={project.project_id}
@@ -194,6 +203,7 @@ export function List(props) {
                               id={project.skill_id}
                               project_id={project.project_id}
                               isFB={false}
+                              avatarUrl={icon}
                               name={project.name}
                               diagram={project.diagram}
                               reorder={itemReorder}

@@ -94,7 +94,7 @@ export function Item(props) {
 
         <Tooltip
           position="top"
-          title={uploaded ? "Live" : "Local"}
+          title={uploaded ? "Live" : "Development"}
           className="projects-list__item-status"
           distance={10}
         >

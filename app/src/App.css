@@ -89,6 +89,21 @@ ul {
   margin-top: 5rem;
 }
 
+.mt-7 {
+  margin-top: 6rem;
+}
+
+.mt--5 {
+  margin-top: -2.5rem;
+}
+
+.absolute-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
 .projects-list__dragzone {
     border-radius: 7px;
     background-color: #fff;
@@ -176,6 +191,10 @@ ul {
     padding-top: 4rem !important;
 }
 
+.pt-7 {
+  padding-top: 5rem !important;
+}
+
 .flex-1 {
   flex: 1;
 }
@@ -213,13 +232,16 @@ ul {
     width: 100%;
     padding-bottom: 120px;
 }
-#app>#canvas {
+#app>#canvas, #app>#dashboard{
     position: absolute;
     top: 115px;
     right: 0;
     left: 0;
     bottom: 0;
-    overflow-x: hidden;
+}
+
+#app>#canvas {
+  overflow-x: hidden;
 }
 
 .main-container-header {
@@ -283,6 +305,10 @@ ul {
 .mx--1{
     margin-left: -0.25rem;
     margin-right: -0.25rem;
+}
+.mx--2{
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
 }
 .mx--4{
     margin-left: -1.5rem!important;
@@ -894,10 +920,6 @@ hr.full-width {
     text-align: center;
 }
 
-.btn:hover{
-    background-color: #5D9DF530;
-    color: #3B8CFE;
-}
 .btn-flat {
     color: #3B8CFE;
 }
@@ -1311,8 +1333,25 @@ border-radius: 0px 5px 5px 0px !important;
 .project-card .card, .container .card {
     box-shadow: 0 2px 4px 0 rgba(14, 30, 37, .12);
 }
-
-.transalte-x-left{
+.pricing-card {
+  max-width: 290px;
+  flex: 1;
+  border-radius: 6px;
+  box-shadow: 0px 1px 3px 0px rgba(19,33,68,0.25);
+  margin: 1.2rem;
+}
+.pricing-card-small {
+  max-width: 290px;
+  flex: 1;
+  border-radius: 6px;
+  box-shadow: 0px 1px 3px 0px rgba(19,33,68,0.25);
+  margin: 1.2rem;
+  height: 465px;
+}
+.pricing-card.selected {
+  border: 1px solid #5D9DF5;
+}
+.translate-x-left{
     transform: translateX(0);
     transition: all 0.25s ease;
 }
@@ -2680,4 +2719,32 @@ kbd {
     position: relative;
     top: 5px;
     right: 5px;
+}
+
+.thanos-ed {
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.fadein {
+  animation: fadein 1s ease both, movein 1s ease both;
+}
+
+.fadeout {
+  animation: fadeout 1s cubic-bezier(0.77, 0, 0.175, 1) both !important;
+}
+
+@keyframes fadeout {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes movein {
+  from { transform: translateY(-20px); }
+  to   { transform: translateY(0); }
 }

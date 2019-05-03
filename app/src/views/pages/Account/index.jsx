@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { setConfirm, setError } from 'ducks/modal'
 import { AmazonAccessToken, googleAccessToken, updateAccount } from 'ducks/account'
@@ -21,8 +20,7 @@ class Account extends Component {
 
     this.state = {
       amzn: LOADING,
-      google: LOADING,
-      expiry: null,
+      google: LOADING
     };
 
     this.handleChange = this.handleChange.bind(this)
@@ -30,8 +28,6 @@ class Account extends Component {
     this.toggle = this.toggle.bind(this)
     this.resetAmazon = this.resetAmazon.bind(this)
     this.resetGoogle = this.resetGoogle.bind(this)
-
-    if(props.user.expiry) this.expiry = moment.unix(props.user.expiry).fromNow()
   }
 
   resetAmazon() {
@@ -133,7 +129,7 @@ class Account extends Component {
 
   render() {
     return <>
-      <Header withLogo />
+      <Header withLogo history={this.props.history} />
       <div id="app" className="pt-6">
         <div className="container my-5 pt-4">
           <h5 className="ml-3">Profile</h5>

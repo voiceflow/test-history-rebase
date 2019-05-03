@@ -10,7 +10,7 @@ const STRIPE_KEY =
     ? "pk_live_9QXjJjWc0sjk8VSwbQT3viub"
     : "pk_test_G3o7CC0pvrW2cIbIU1bLkMSR";
 
-const StripeHandler = WrappedComponent => {
+const StripeHandler = (WrappedComponent) => {
   WrappedComponent = injectStripe(WrappedComponent)
 
   return class extends Component {

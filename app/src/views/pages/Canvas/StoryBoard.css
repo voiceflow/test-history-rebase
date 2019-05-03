@@ -176,6 +176,10 @@
     z-index: 6;
 }
 
+#loading-diagram.transparent {
+  background-color: transparent;
+}
+
 #TitleBar, #PreviewBar {
     width: 100%;
     position: absolute;

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import Intercom from 'react-intercom';
 import './Header.css'
 import {
   UncontrolledDropdown,
@@ -13,6 +14,19 @@ import {
 
 import { logout } from 'ducks/account'
 import { User } from 'views/components/User'
+
+const NUM_TO_PLAN = (plan) => {
+  switch (plan) {
+    case 0:
+      return 'COMMUNITY'
+    case 1:
+      return 'BASIC'
+    case 10:
+      return 'ADMIN'
+    default:
+      return 'UNKNOWN'
+  }
+}
 
 const Header = (props) => {
   const {
@@ -31,6 +45,12 @@ const Header = (props) => {
     subHeaderRenderer,
   } = props;
 
+  const intercom_user = (user.id !== null) ? {
+    user_id: user.id,
+    name: user.name,
+    email: user.email,
+    plan: NUM_TO_PLAN(user.admin)
+  } : {}
   const userLogout = e => {
     e.preventDefault()
     logout().then(() => {
@@ -85,6 +105,10 @@ const Header = (props) => {
       </div>
 
       {subHeaderRenderer && subHeaderRenderer()}
+      <Intercom appID = "vw911b0m" {
+        ...intercom_user
+      }
+      />
     </div>
   );
 }

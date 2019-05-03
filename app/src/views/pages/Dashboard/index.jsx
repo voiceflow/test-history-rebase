@@ -139,10 +139,10 @@ export const DashBoard = props => {
   }, [])
 
   useEffect(() => {
-        return () => {
-            props.updateLists(props.team_id)
-        }
-    }, [])
+    return () => {
+        props.updateLists(props.team_id)
+    }
+  }, [])
 
   const newProject = (id) => {
     if(props.projects_array.length >= props.team.projects) {

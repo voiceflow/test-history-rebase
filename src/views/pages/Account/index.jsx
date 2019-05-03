@@ -129,7 +129,7 @@ class Account extends Component {
 
   render() {
     return <>
-      <Header withLogo />
+      <Header withLogo history={this.props.history} />
       <div id="app" className="pt-6">
         <div className="container my-5 pt-4">
           <h5 className="ml-3">Profile</h5>

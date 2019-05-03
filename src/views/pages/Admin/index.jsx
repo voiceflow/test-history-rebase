@@ -54,7 +54,7 @@ class Admin extends Component {
 
         return (
         <>
-            <Header withLogo />
+            <Header withLogo history={this.props.history}/>
             <div className="admin Window">
                 <div md="3" className="sidebar">
                     <div className="title">

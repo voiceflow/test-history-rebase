@@ -930,6 +930,7 @@ export class ActionGroup extends PureComponent {
           </ModalBody>
         </Modal>
         <Header
+          history={this.props.history}
           leftRenderer={() => (
             <div onDoubleClick={() => this.setState({ editName: true })}>
               <Link to="/" className="mx-3">

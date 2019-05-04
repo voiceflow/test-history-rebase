@@ -164,6 +164,10 @@ class PublishMarket extends Component {
         }
     })
 
+    componentWillUnmount(){
+        this.save()
+    }
+
     publish = async () => {
         await this.save()
         let s = this.state

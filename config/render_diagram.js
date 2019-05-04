@@ -193,7 +193,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
             }
           }
 
-          let nextId = getLink(nextLink)
+          let nextId = getLink(nextLink) || node.extras.nextID
           let extras = node.extras[platform]
 
           if (extras) { // Default stop and helps don't have platform-specific extras

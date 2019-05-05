@@ -109,6 +109,7 @@ class Editor extends Component {
     this.undo = this.undo.bind(this);
     this.redo = this.redo.bind(this);
     this.EditorRender = this.EditorRender.bind(this);
+    this.updateExtras = this.updateExtras.bind(this);
   }
 
   componentDidMount() {
@@ -629,6 +630,13 @@ class Editor extends Component {
     }
   };
 
+
+  updateExtras(extras, callback){
+    const node = this.state.node
+    node.extras = extras
+    this.forceUpdate(callback)
+  }
+
   EditorRender() {
     let variables = this.props.global_variables.concat(this.props.variables);
     variables = variables.concat(["Create Variable"]);
@@ -642,7 +650,7 @@ class Editor extends Component {
             updateEvents: this.props.addUndo,
             clearRedo: this.props.clearRedo,
             variables: variables,
-            updateExtras: this.props.updateExtras
+            updateExtras: this.updateExtras
           })}
         {this.state.node.extras.reprompt && (
           <React.Fragment>

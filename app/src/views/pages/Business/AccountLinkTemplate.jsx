@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import update from "immutability-helper";
 import Select from "react-select";
 import { Spinner } from 'views/components/Spinner'
+import { updateVersion } from 'ducks/version'
 
 import MultipleFields from "./../../components/Forms/MultipleFields";
 import axios from "axios";
@@ -59,7 +60,6 @@ class AccountLinkTemplate extends Component {
         ) {
           const account_linking = res.data.account_linking
           this.snapshot = JSON.stringify(account_linking)
-          console.log("RETURN", account_linking)
           this.setState({
             accountLinkingRequest: account_linking,
             loading: false
@@ -88,6 +88,7 @@ class AccountLinkTemplate extends Component {
         this.state.accountLinkingRequest
       )
       .then(() => {
+        this.props.updateVersion('account_linking', this.state.accountLinkingRequest)
         this.setState({
           saving: false
         });
@@ -318,7 +319,8 @@ class AccountLinkTemplate extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setError: err => dispatch(setError(err))
+    setError: err => dispatch(setError(err)),
+    updateVersion: (type, payload) => dispatch(updateVersion(type, payload))
   };
 };
 export default connect(

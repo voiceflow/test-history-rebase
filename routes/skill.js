@@ -126,7 +126,7 @@ const checkSkillInReview = (amzn_id, creator_id, skill_id) => {
     }
   }
 
-  return new Promise(async (resolve) => {\
+  return new Promise(async (resolve) => {
     AmazonAccessToken(creator_id)
     .then(async token => {
       if(!token) return

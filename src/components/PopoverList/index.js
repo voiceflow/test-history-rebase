@@ -67,7 +67,7 @@ export default class PopoverList extends Component {
                   backgroundImage: 'none',
                   backgroundColor: 'transparent',
                 }}
-                className={cn('popover-list__item text-muted', { 'text-nowrap': noWrap })}
+                className={cn('dropdown-item text-muted', { 'text-nowrap': noWrap })}
               >
                 No results found
               </p>
@@ -117,7 +117,7 @@ export default class PopoverList extends Component {
                 renderListItem(item, childProps)
               ) : (
                 <div
-                  className={cn('popover-list__item', { '__is-active': !hovered && isActive })}
+                  className={cn('dropdown-item', { '__is-active': !hovered && isActive })}
                   onMouseEnter={() => !isActive && this.onMouseEnter()}
                   {...childProps}
                 />

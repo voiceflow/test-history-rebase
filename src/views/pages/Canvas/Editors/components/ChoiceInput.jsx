@@ -52,7 +52,7 @@ class ChoiceInput extends Component {
     }
 
     shouldComponentUpdate(props, state) {
-      if(this.sample_length !== state.samples.length){
+      if(this.sample_length !== state.samples.length || this.props.index !== props.index){
         this.sample_length = state.samples.length
         return true
       }else if(this.state.text !== state.text){

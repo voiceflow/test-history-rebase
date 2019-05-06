@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { findDOMNode } from 'react-dom'
 import * as _ from "lodash";
 //Helpers
-import { combineValidation, combineAppendValidation, appendValidator } from './../../../helpers/combineHelper'
+import { combineValidation, combineAppendValidation, appendValidator } from 'utils/combineHelper'
 import {Toolkit}from './../Toolkit'
 import { BlockNodeModel } from "./../models/BlockNodeModel";
 import { BlockPortLabel } from "./BlockPortLabelWidget";
@@ -457,7 +457,6 @@ export class BlockNodeWidget extends BaseWidget {
 						>
 							{_.map(this.props.node.combines,(node, idx) => {
 										if (!(node instanceof String) && node.id){
-											// node.parentCombine = this.props.node
 											let keepLink = false
 											if (this.props.node.extras.type === 'god') keepLink = true
 											return React.createElement(
@@ -470,7 +469,8 @@ export class BlockNodeWidget extends BaseWidget {
 														node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter, keepLink),
 														nodeProps: this.props.nodeProps,
 														onClick: () => {
-															this.props.diagramEngine.setSuperSelect(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter, keepLink))
+                              node.parentCombine = this.props.node
+															this.props.diagramEngine.setSuperSelect(node)
 														},
 													},
 													this.props.diagramEngine.generateWidgetForNode(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter, keepLink))

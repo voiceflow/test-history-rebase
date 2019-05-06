@@ -10,5 +10,6 @@ export default [
     { value: "fr-CA", name: "French (CA)" },
     { value: "fr-FR", name: "French (FR)" },
     { value: "it-IT", name: "Italian (IT)" },
-    { value: "ja-JP", name: "Japanese (JP)" }
+    { value: "ja-JP", name: "Japanese (JP)" },
+    { value: "pt-BR", name: "Portuguese (BR)" }
 ]

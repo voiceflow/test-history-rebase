@@ -113,7 +113,8 @@ class EditProduct extends React.Component {
                   price: data.publishingInformation ? data.publishingInformation.pricing["amazon.com"].defaultPriceListing.price :"",
                   distCountries: "US",
                   taxCategory: data.publishingInformation ? data.publishingInformation.taxInformation.category.toLowerCase().replace(/_/g, ' ') :TAX_CATEGORY[0],
-                  phrases: data.publishingInformation ? data.publishingInformation.locales["en-US"].examplePhrases :[''],
+                  phrases: ((data.publishingInformation && data.publishingInformation.locales["en-US"].examplePhrases.length > 0 ) ? 
+                              data.publishingInformation.locales["en-US"].examplePhrases :['']),
                   small_icon: data.publishingInformation ? data.publishingInformation.locales["en-US"].smallIconUri :null,
                   large_icon: data.publishingInformation ? data.publishingInformation.locales["en-US"].largeIconUri :null,
                   keywords: data.publishingInformation ? data.publishingInformation.locales["en-US"].keywords.toString() :[],
@@ -175,10 +176,12 @@ class EditProduct extends React.Component {
     this.setState({ phrases: newPhrases})
   }
 
-  handlePhraseAdd = () => {
+  handlePhraseAdd = (e) => {
+    e.preventDefault()
     this.setState({
       phrases: this.state.phrases.concat([''])
     });
+    return false
   }
 
   handlePhraseRemove = idx => () => {
@@ -223,7 +226,6 @@ class EditProduct extends React.Component {
             this.props.dispatch(addProduct(product))
         })
         .catch(err => {
-            console.log(err.response)
             this.setState({saving: false})
             this.props.setError('Unable to create new Product')
         })
@@ -231,6 +233,7 @@ class EditProduct extends React.Component {
         let curr = this.state.data;
         curr.data = data
         curr.name = data.publishingInformation.locales["en-US"].name
+        curr.skill = this.props.skill_id;
         axios.post('/skill/product', curr)
         .then(res => {
             this.props.dispatch(updateProduct(curr))
@@ -255,7 +258,7 @@ class EditProduct extends React.Component {
     locales["summary"] = this.state.summary;
     locales["description"] = this.state.description;
     locales["examplePhrases"] = !_.isNull(this.state.phrases.name) ? this.state.phrases.filter(phrase => phrase.trim()) : [];
-    locales["keywords"] = this.state.keywords ? this.state.keywords.split(',') : [];
+    locales["keywords"] = typeof this.state.keywords === 'string' ? this.state.keywords.split(',') : [];
     info.pricing["amazon.com"].defaultPriceListing.price = this.state.price;
     info.pricing["amazon.com"].releaseDate = moment().format("YYYY-MM-DD");
     prompts["boughtCardDescription"] = this.state.buyDescription;
@@ -340,10 +343,10 @@ class EditProduct extends React.Component {
   render() {
     if(this.state.loading){
       return <div id="loading-diagram">
-          <div className="text-center">
-              <h5 className="text-muted mb-2">Loading Products</h5>
-              <span className="loader"/>
-          </div>
+        <div className="text-center">
+          <h5 className="text-muted mb-2">Loading Products</h5>
+          <span className="loader"/>
+        </div>
       </div>
     }
 
@@ -360,8 +363,8 @@ class EditProduct extends React.Component {
                     <Stepper className="stepper" activeStep={this.state.stage} alternativeLabel>
                       {
                         _.map(STAGES, (stage, idx) => { return(
-                            <Step key={idx} className="step" color='#42a5ff'>
-                              <StepLabel color='#42a5ff'>{stage}</StepLabel>
+                            <Step key={idx} className="step" color='#42a5ff' onClick={()=>this.updateStage(idx)}>
+                              <StepLabel color='#42a5ff' className="pointer">{stage}</StepLabel>
                             </Step>
                         )})
                       }

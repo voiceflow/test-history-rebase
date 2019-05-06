@@ -59,7 +59,7 @@ export class BlockLinkModel extends LinkModel {
 			}
 			this.sourcePort.removeLink(this);
 		}
-		if (port !== null) {
+		if (!!port) {
 			port.addLink(this);
 		}
 		this.sourcePort = port;

@@ -23,7 +23,7 @@ const session_warning_content = (target) => <div style={{ maxWidth: 600 }} class
 </div>
 
 const connection_error = <Alert color="danger" className="text-center p-4">
-    <i class="fas fa-wifi-slash text-lg" /><br /><br />
+    <i className="fas fa-wifi-slash text-lg" /><br /><br />
     <b>Unable to Connect to Voiceflow</b><br />
     Refresh your page or try again later
 </Alert>

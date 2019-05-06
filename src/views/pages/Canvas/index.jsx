@@ -1550,6 +1550,7 @@ export class Canvas extends Component {
                 updateLinter={this.updateLinter}
                 renderPlatformSwitch={this.renderPlatformSwitch}
                 history={this.props.history}
+                preview={this.props.preview}
               />
             :
               <div className="title-group no-select">

@@ -4,6 +4,7 @@ import { setError } from "ducks/modal";
 import Normalize, { unnormalize } from "ducks/_normalize";
 import { deleteProject } from "./project";
 import update from "immutability-helper";
+import randomstring from 'randomstring';
 
 const initialState = {
   byId: {},
@@ -60,14 +61,12 @@ export const fetchBoards = team_id => {
 };
 
 export const addBoard = team_id => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
-      const boards = getState().board;
-      const max = _.max(boards.allIds);
-      const current_id = _.isUndefined(max) ? 1 : max + 1;
+      const current_id = randomstring.generate(10)
       let empty_board = {
         board_id: current_id,
-        name: `New List ${current_id}`,
+        name: `New List`,
         projects: []
       };
       dispatch(Boards.add({ data: empty_board }));
@@ -103,22 +102,15 @@ export const renameList = (board_id, new_name) => {
   return async (dispatch, getState) => {
     try {
       const boards = getState().board;
-      const team_id = getState().team.team_id;
 
-      let board;
-      if (!board_id) {
-        board_id = "initial";
-      }
-      board = boards.byId[board_id];
+      let board = boards.byId[board_id];
       if (board) {
         board = update(board, { name: { $set: new_name } });
         dispatch(Boards.update({ id: board_id, data: board }));
-      } else {
-        let data = { board_id: "initial" };
-        data = update(data, { name: { $set: new_name } });
-        dispatch(Boards.add({ data: data }));
+
+        const team_id = getState().team.team_id;
+        if (team_id) dispatch(updateLists(team_id));
       }
-      if (team_id) dispatch(updateLists(team_id));
     } catch (err) {
       console.error(err);
       dispatch(setError("Error renaming list"));

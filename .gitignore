@@ -11,8 +11,8 @@ dump.rdb
 routes/tmp/*
 !routes/tmp/.gitkeep
 
-# */package-lock.json
-# package-lock.json
+*/package-lock.json
+package-lock.json
 
 */yarn.lock
 yarn-lock.json
@@ -25,6 +25,7 @@ log/
 !/.env.example
 !/.env.test
 
+/database
 /migrations
 # Local DynamoDB
 shared-local-instance.db

@@ -74,3 +74,22 @@ exports.trackDevAccount = (req, res) => {
     })
     res.sendStatus(200)
 }
+
+exports.trackFlowUsed = async (req, res) => {
+    try{
+        let module_data = (await pool.query(`
+            SELECT *
+            FROM modules
+            INNER JOIN creators ON modules.creator_id = creators.creator_id
+            WHERE modules.module_id = $1`
+        , [hashids.decode(req.body.module_id)[0]])).rows[0]
+        analytics.track({
+            userId: req.user.id,
+            event: 'Flow Used',
+            properties: module_data
+        })
+    } catch (err){
+        console.log(err)
+    }
+    res.sendStatus(200)
+}

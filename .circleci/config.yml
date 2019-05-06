@@ -6,8 +6,8 @@ jobs: # a collection of steps
       - image: circleci/node:10 # ...with this image as the primary container; this is where all `steps` will run
       - image: circleci/postgres:10 # and this image as the secondary service container
         environment:
-          POSTGRES_USER: voiceflowtest
-          POSTGRES_DB: voiceflowtest
+          POSTGRES_USER: voiceflow
+          POSTGRES_DB: voiceflow_test
       - image: circleci/dynamodb:13-oracle
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
@@ -15,7 +15,6 @@ jobs: # a collection of steps
           name: update npm version
           command: 'sudo npm install -g npm@latest'
       - restore_cache: # special step to restore the dependency cache
-          Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           key: react-cache-{{ checksum "app/package.json" }}
       - run:
           name: npm install react packages
@@ -46,15 +45,50 @@ jobs: # a collection of steps
       - run:
           name: Wait for Postgres & Dynamo Docker Images
           command: dockerize -wait tcp://localhost:5432 -timeout 1m && dockerize -wait tcp://localhost:8000 -timeout 1m
+      - restore_cache: # special step to restore the dependency cache
+          key: database
       - run: # run tests
           name: Before Tests
           command: CIRCLECI=TRUE ./scripts/before_test.sh
+      - save_cache: # special step to save the dependency cache
+          key: database
+          paths:
+            - ./database
       - run: # run coverage report
           name: (Integration Tests)
           command: npm run integration_tests
+  deploy-master:
+    machine: true
+    steps:
+      - checkout # special step to check out source code to working directory
       - run:
-          name: After Tests
-          command: ./scripts/after_test.sh
+          name: 'Update Dockerfile Staging'
+          command: "sed -i 's/RUN npm run build/RUN REACT_APP_BUILD_ENV=staging npm run build/g' Dockerfile"
+      - run:
+          name: 'Update Dockerrunfile'
+          command: 'sed -i".json" "s/VERSION/$CIRCLE_BUILD_NUM/g" Dockerrun.aws.json'
+      - run:
+          name: 'Build docker image'
+          command: docker build -t voiceflow/creator:$CIRCLE_BUILD_NUM .
+      - run:
+          name: 'Push docker image'
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push voiceflow/creator:$CIRCLE_BUILD_NUM
+      - run:
+          name: 'Update PIP && Install AWS CLI'
+          command: |
+            rm Dockerfile
+            git config user.email "build@voiceflow.com"
+            git config user.name "build"
+            git add -A
+            git commit -m "$CIRCLE_BUILD_NUM BUILD"
+            pip install awsebcli
+            eb init --region us-east-1 --platform docker voiceflow-creator
+            eb use VoiceflowCreator-master
+      - run:
+          name: Push to Elastic Beanstalk
+          command: eb deploy VoiceflowCreator-master -l $CIRCLE_BUILD_NUM --nohang
   deploy-staging:
     machine: true
     steps:
@@ -63,37 +97,81 @@ jobs: # a collection of steps
           name: 'Update Dockerfile Staging'
           command: "sed -i 's/RUN npm run build/RUN REACT_APP_BUILD_ENV=staging npm run build/g' Dockerfile"
       - run:
+          name: 'Update Dockerrunfile'
+          command: 'sed -i".json" "s/VERSION/$CIRCLE_BUILD_NUM/g" Dockerrun.aws.json'
+      - run:
+          name: 'Build docker image'
+          command: docker build -t voiceflow/creator:$CIRCLE_BUILD_NUM .
+      - run:
+          name: 'Push docker image'
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push voiceflow/creator:$CIRCLE_BUILD_NUM
+      - run:
           name: 'Update PIP && Install AWS CLI'
           command: |
-            cat Dockerfile
+            rm Dockerfile
             git config user.email "build@voiceflow.com"
             git config user.name "build"
             git add -A
-            git commit -m "$CIRCLE_BUILD_NUM BUILD"
+            git commit -m "BUILD $CIRCLE_BUILD_NUM BUILD"
             pip install awsebcli
             eb init --region us-east-1 --platform docker voiceflow-creator
             eb use VoiceflowCreator-staging
       - run:
           name: Push to Elastic Beanstalk
-          command: eb deploy VoiceflowCreator-staging -l $CIRCLE_BUILD_NUM --timeout 4
+          command: eb deploy VoiceflowCreator-staging -l $CIRCLE_BUILD_NUM --nohang
   deploy-production:
     machine: true
     steps:
       - checkout # special step to check out source code to working directory
       - run:
+          name: 'Update Dockerfile Production'
+          command: "sed -i 's/RUN npm run build/RUN REACT_APP_BUILD_ENV=production npm run build/g' Dockerfile"
+      - run:
+          name: 'Update Dockerrunfile'
+          command: 'sed -i".json" "s/VERSION/$CIRCLE_BUILD_NUM/g" Dockerrun.aws.json'
+      - run:
+          name: 'Build docker image'
+          command: docker build -t voiceflow/creator:$CIRCLE_BUILD_NUM .
+      - run:
+          name: 'Push docker image'
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push voiceflow/creator:$CIRCLE_BUILD_NUM
+      - run:
           name: 'Update PIP && Install AWS CLI'
           command: |
+            rm Dockerfile
+            git config user.email "build@voiceflow.com"
+            git config user.name "build"
+            git add -A
+            git commit -m "BUILD $CIRCLE_BUILD_NUM BUILD"
             pip install awsebcli
             eb init --region us-east-1 --platform docker voiceflow-creator
             eb use VoiceflowCreator-env
       - run:
           name: Push to Elastic Beanstalk
-          command: eb deploy VoiceflowCreator-env -l $CIRCLE_BUILD_NUM --timeout 4
+          command: eb deploy VoiceflowCreator-env -l $CIRCLE_BUILD_NUM --nohang
+      - run:
+          name: 'Create release'
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            nvm install 10 && nvm use 10 && nvm alias default 10
+            node -v
+            npx semantic-release
 workflows:
   version: 2
   build-deploy:
     jobs:
       - test
+      - deploy-master:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
       - deploy-staging:
           requires:
             - test

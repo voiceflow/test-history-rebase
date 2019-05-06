@@ -9,22 +9,30 @@ const sharp = require("sharp");
 const Hashids = require("hashids");
 const Intercom = require("intercom-client");
 
-const moment = require("moment");
-const _ = require("lodash");
-const StackTrace = require("stacktrace-js");
+
+const moment = require('moment')
+const _ = require('lodash')
+const StackTrace = require('stacktrace-js')
 
 const hashids = new Hashids(process.env.CONFIG_ID_HASH, 10);
 const MB = 1024 * 1024;
 
 const AWS = require("aws-sdk");
+
 AWS.config = new AWS.Config({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION,
-  endpoint: process.env.AWS_ENDPOINT
+  endpoint: process.env.AWS_ENDPOINT,
+  region: process.env.AWS_REGION
 });
 
-const docClient = new AWS.DynamoDB.DocumentClient({
+// AWS does some hasOwnProperty check so only define endpoint if set
+const docClient = process.env.DYNAMO_ENDPOINT ? 
+new AWS.DynamoDB.DocumentClient({
+  convertEmptyValues: true,
+  endpoint: process.env.DYNAMO_ENDPOINT
+}) : 
+new AWS.DynamoDB.DocumentClient({
   convertEmptyValues: true
 });
 
@@ -167,7 +175,7 @@ const verify = (auth, cb) => {
 
 const cloudWatchLogs = new AWS.CloudWatchLogs();
 const writeToLogs = async (log_group, msg_details) => {
-  if (/development/.test(process.env.NODE_ENV)) {
+  if (/development/.test(process.env.NODE_ENV) || process.env.NODE_ENV === 'test') {
     console.log(log_group, msg_details);
     return;
   }
@@ -257,28 +265,53 @@ const logAxiosError = (err, context = "", data = null) => {
   writeToLogs("CREATOR_BACKEND_ERRORS", msg);
 };
 
-const encryptJSON = data => jwt.sign(data, process.env.JWT_SECRET);
-const decryptJSON = token => jwt.verify(token, process.env.JWT_SECRET);
+const setupESIndices = async() => {
+    try{
+      let res = await ESclient.indices.create({
+        index: 'marketplace'
+      })
+      console.log('marketplace index', res)
+    } catch (err) {
+      console.log('marketplace index already exists')
+    }
+}
+
+const ESoptions = (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') ?
+    {
+        hosts: [process.env['ELASTIC_SEARCH_HOST']],
+        connectionClass: require('http-aws-es'),
+        awsConfig: AWS.config
+    }:
+    {
+        host: 'localhost:9200'
+    }
+
+const ESclient = require('elasticsearch').Client(ESoptions)  
+setupESIndices()
+
+const encryptJSON = data => jwt.sign(data, process.env.JWT_SECRET)
+const decryptJSON = token => jwt.verify(token, process.env.JWT_SECRET)
 
 module.exports = {
-  upload: upload,
-  docClient: docClient,
-  pool: pool,
-  redisClient: redisClient,
-  jwt: jwt,
-  config: config,
-  s3: s3,
-  s3Stream: s3Stream,
-  uploadResize: uploadResize,
-  hashids: hashids,
-  validateEmail: validateEmail,
-  logging_pool: logging_pool,
-  verify: verify,
-  logAxiosError: logAxiosError,
-  writeToLogs: writeToLogs,
-  encryptJSON: encryptJSON,
-  decryptJSON: decryptJSON
-};
+    upload: upload,
+    docClient: docClient,
+    pool: pool,
+    redisClient: redisClient,
+    jwt: jwt,
+    config: config,
+    s3: s3,
+    s3Stream: s3Stream,
+    uploadResize: uploadResize,
+    hashids: hashids,
+    validateEmail: validateEmail,
+    logging_pool: logging_pool,
+    verify: verify,
+    logAxiosError: logAxiosError,
+    writeToLogs: writeToLogs,
+    ESclient: ESclient,
+    encryptJSON: encryptJSON,
+    decryptJSON: decryptJSON
+}
 
 // SECRET
 if (process.env.NODE_ENV !== "test") {
@@ -288,4 +321,11 @@ if (process.env.NODE_ENV !== "test") {
   module.exports.analytics = new (require("analytics-node"))(
     process.env.SEGMENT_WRITE_KEY
   );
+} else {
+  const testTrack = () => {
+    //
+  }
+  module.exports.analytics = {
+    track: testTrack
+  }
 }

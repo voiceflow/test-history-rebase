@@ -39,7 +39,7 @@ const convertToOld = (xp) => {
 	}
 }
 
-const submitOnboardSurvey = (req, res) => {
+const submitOnboardSurvey = async (req, res) => {
 	if(!req.body.usage_type){
 		req.body.usage_type = 'PERSONAL'
 	}
@@ -67,34 +67,42 @@ const submitOnboardSurvey = (req, res) => {
 				qualified: req.body.company_role !== 'others',
 			},
 		})
-	})
+  })
+  
+  try {
+    await pool.query("INSERT INTO user_info (creator_id, usage_type, company_name, xp, design, build, company_size, role, purpose) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+      [req.user.id, req.body.usage_type, req.body.company_name, convertToOld(req.body.programming), req.body.design, req.body.build, req.body.company_size, req.body.company_role, req.body.purpose]
+    )
 
-	pool.query(
-		"INSERT INTO user_info (creator_id, usage_type, company_name, xp, design, build, company_size, role, purpose) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
-		[req.user.id, req.body.usage_type, req.body.company_name, convertToOld(req.body.programming), req.body.design, req.body.build, req.body.company_size, req.body.company_role, req.body.purpose],
-		(err, data) => {
-			if(err){
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-				res.sendStatus(500)
-			} else {
-				res.sendStatus(200)
-				intercom.users.create({
-					user_id: req.user.id,
-					email: req.user.email,
-					name: req.user.name,
-					custom_attributes: {
-						usage: req.body.usage_type,
-						company: req.body.company_name,
-						company_size: req.body.company_size,
-						design: req.body.design,
-						build: req.body.build,
-						purpose: req.body.purpose,
-						programming_experience: PROG_XP(req.body.programming)
-					}
-				})
-			}
-		}
-	);
+    // Business users get a trial
+    if(req.body.usage_type === 'WORK' && req.body.company_name){
+
+      // set expiry date 14 days ahead
+      const expiry = new Date();
+      expiry.setDate(expiry.getDate()+14)
+
+      await pool.query("UPDATE teams SET expiry=$1, name=$2 WHERE creator_id=$3", [expiry, req.body.company_name, req.user.id])
+    }
+
+    res.sendStatus(200)
+    intercom.users.create({
+      user_id: req.user.id,
+      email: req.user.email,
+      name: req.user.name,
+      custom_attributes: {
+        usage: req.body.usage_type,
+        company: req.body.company_name,
+        company_size: req.body.company_size,
+        design: req.body.design,
+        build: req.body.build,
+        purpose: req.body.purpose,
+        programming_experience: PROG_XP(req.body.programming)
+      }
+    })
+  } catch(err) {
+    writeToLogs('ONBOARDING ERROR', {err: err})
+    res.sendStatus(500)
+  }
 }
 
 module.exports = {

@@ -21,7 +21,7 @@ import { keyboardModal } from 'hocs/withModalHandlers'
 import { WidgetBar } from './components/WidgetBar'
 import CanvasWarning from './components/CanvasWarning'
 //Helpers
-import { combineAppendValidation, appendValidator } from './../../helpers/combineHelper'
+import { combineAppendValidation, appendValidator } from 'utils/combineHelper'
 
 import { updateVersion, updateIntents, setCanFulfill } from 'ducks/version'
 import { setVariables } from 'ducks/variable'
@@ -365,8 +365,6 @@ export class Canvas extends Component {
         node.extras = cloneDeep(selected.extras)
         if (selected.extras.type === 'god') {
             let newCombines = []
-            let lastPorts;
-            let inPorts;
             _.map(selected.combines, (combineNode, idx) => {
                 let newCombineNode = new BlockNodeModel(combineNode.name, null, toolkit.UID())
                 newCombineNode.extras = cloneDeep(combineNode.extras);
@@ -378,17 +376,10 @@ export class Canvas extends Component {
                     let port = ports[name]
                     port.in ? newCombineNode.addInPort(port.label): newCombineNode.addOutPort(port.label).setMaximumLinks(1)
                 }
-                _.map(newCombineNode.ports, p => p.parent = node);
-                lastPorts = newCombineNode.getOutPorts()
                 newCombines.push(newCombineNode)
                 newCombines[idx].parentCombine = node;
-                if (idx === 0) {
-                    inPorts = newCombineNode.getInPorts()
-                }
             })
             node.combines = newCombines
-            _.last(node.combines).isLast = true
-            node.ports = _.concat(lastPorts, inPorts);
         }
             let ports = selected.getPorts()
             if (node.extras.type !== 'god'){
@@ -796,7 +787,6 @@ export class Canvas extends Component {
                         intents: JSON.stringify(s.intents),
                         slots: JSON.stringify(s.slots),
                         fulfillment: JSON.stringify(s.fulfillment),
-                        account_linking: JSON.stringify(s.account_linking),
                         platform: s.platform
                     })
                     .then(res => {
@@ -928,6 +918,30 @@ export class Canvas extends Component {
                 }
             }
 
+            const addMissingPorts = (type, node) => {
+                if (type === 'stream') {
+                    try {
+                        let hasGooglePort = false
+                        let ports = node.getPorts()
+                        for (let name in ports) {
+                            let port = node.getPort(name)
+                            if (!port.in && port.label && port.label.trim() === '') {
+                                hasGooglePort = true
+                            }
+                        }
+                        if (!hasGooglePort) {
+                            node.addOutPort(' ').setMaximumLinks(1)
+                        }
+                        if (node.parentCombine) {
+                            let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
+                            node.parentCombine.combines[bestNode] = node
+                        }
+                    } catch (e) {
+                        // no op
+                    }
+                }
+            }
+
             var nodes = model.getNodes()
             for (let key in nodes) {
                 const node = nodes[key]
@@ -955,6 +969,7 @@ export class Canvas extends Component {
                             n.fade = false
                         }
                         makeNodeMultiPlatform(n.extras.type, n)
+                        addMissingPorts(n.extras.type, n)
                     })
                 } else {
                     if (this.props.skill.platform === 'google') {
@@ -963,6 +978,7 @@ export class Canvas extends Component {
                         nodes[key].fade = false
                     }
                     makeNodeMultiPlatform(type, node)
+                    addMissingPorts(type, node)
                 }
             }
 
@@ -996,39 +1012,6 @@ export class Canvas extends Component {
             })
             this.props.setError('Could Not Open Project - Corrupted File')
         }
-    }
-
-    updateGoogleFade = () => {
-        const engine = this.state.engine
-        const model = engine.getDiagramModel()
-        const nodes = model.getNodes()
-
-        for (let key in nodes) {
-            const node = nodes[key]
-            const type = node.extras.type
-
-            if (this.props.skill.platform === 'google') {
-                if (type === 'god') {
-                    node.combines.forEach(n => {
-                        n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
-                    })
-                } else {
-                    nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type)
-                }
-            } else {
-                if (type === 'god') {
-                    node.combines.forEach(n => {
-                        n.fade = false
-                    })
-                } else {
-                    nodes[key].fade = false
-                }
-            }
-        }
-        engine.repaintCanvas()
-        this.setState({
-            engine: engine,
-        })
     }
 
     updateLinter = (force=true) => {
@@ -1071,6 +1054,80 @@ export class Canvas extends Component {
             this.forceRepaint()
         }
     }
+
+    renderPlatformSwitch = () => {
+
+        const updateGoogleFade = (type, key, node, nodes) => {
+            if (this.props.skill.platform === 'google') {
+                if (type === 'god') {
+                    node.combines.forEach(n => {
+                        n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
+                    })
+                } else {
+                    nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type)
+                }
+            } else {
+                if (type === 'god') {
+                    node.combines.forEach(n => {
+                        n.fade = false
+                    })
+                } else {
+                    nodes[key].fade = false
+                }
+            }
+        }
+
+        const updatePortsAndLinks = (type, key, node, nodes) => {
+            let ports = node.getPorts()
+
+            if (type === 'stream') {
+                for (let name in ports) {
+                    let port = node.getPort(name);
+                    if(port.in) continue
+    
+                    if (port.label === 'pause') {
+                        port.setHidden(this.props.skill.platform === 'google')
+                    }
+    
+                    if (port.label === 'previous') {
+                        port.setHidden(this.props.skill.platform === 'google')
+                    }
+
+                    if (port.label === 'next') {
+                        port.setHidden(this.props.skill.platform === 'google')
+                    }
+                    if (port.label.trim() === '') {
+                        port.setHidden(this.props.skill.platform !== 'google')
+                    }
+                }
+            }
+        }
+
+        const engine = this.state.engine
+        const model = engine.getDiagramModel()
+        const nodes = model.getNodes()
+
+        for (let key in nodes) {
+            const node = nodes[key]
+            const type = node.extras.type
+
+            // Combine block
+            if (Array.isArray(node.combines) && node.combines.length !== 0) {
+                node.combines.forEach((n, i) => {
+                    updateGoogleFade(n.extras.type, i, n, node.combines)
+                    updatePortsAndLinks(n.extras.type, i, n, node.combines)
+                })
+            } else {
+                updateGoogleFade(type, key, node, nodes)
+                updatePortsAndLinks(type, key, node, nodes)
+            }
+        }
+        engine.repaintCanvas()
+        this.setState({
+            engine: engine,
+        })
+    }
+
     onLoadId = (diagram_id) => {
         axios.get('/diagram/'+ diagram_id)
         .then(res => {
@@ -1381,7 +1438,7 @@ export class Canvas extends Component {
 
     onDrop = (event) => {
         if (this.props.preview) return;
-        var type, name
+        var type, name, diagram_id
         if (typeof event === 'string') {
             type = event
             event = {
@@ -1395,9 +1452,18 @@ export class Canvas extends Component {
             try {
                 type = event.dataTransfer.getData('node')
                 name = event.dataTransfer.getData('name')
+                diagram_id = event.dataTransfer.getData('diagram_id')
             } catch (e) {
                 return
             }
+        }
+
+        if(diagram_id){
+            // Track which flow was used
+            let module = this.props.diagrams.find((diagram) => {return diagram.id === diagram_id})
+            axios.post('/analytics/track_flow_used', {
+                module_id: module.module_id
+            })
         }
 
         if (!name) {
@@ -1409,19 +1475,13 @@ export class Canvas extends Component {
         this.setState({
             open: type !== 'comment'
         })
-        this.updateGoogleFade()
+        this.renderPlatformSwitch()
         this.updateLinter()
     }
 
     onUpdate = () => {
         this.updateLinter()
         this.unsave()
-    }
-
-    updateExtras = (extras, callback) => {
-        const node = this.state.engine.getSuperSelect()
-        node.extras = extras
-        this.forceUpdate(callback)
     }
 
     render() {
@@ -1487,9 +1547,10 @@ export class Canvas extends Component {
                 saving={this.state.saving}
                 saved={this.state.saved}
                 onTest={this.onTest}
-                updateGoogleFade={this.updateGoogleFade}
                 updateLinter={this.updateLinter}
+                renderPlatformSwitch={this.renderPlatformSwitch}
                 history={this.props.history}
+                preview={this.props.preview}
               />
             :
               <div className="title-group no-select">
@@ -1573,7 +1634,6 @@ export class Canvas extends Component {
                 diagram_level_intents={this.state.diagram_level_intents}
                 setCanvasEvents={this.setMousetrap}
                 updateLinter={this.updateLinter}
-                updateExtras={this.updateExtras}
               />
               <div
                 key={this.props.diagram_id}
@@ -1651,6 +1711,7 @@ export class Canvas extends Component {
                   editorOpen={this.props.open}
                   setBlockMenu={this.props.setBlockMenu}
                   setOpen={this.props.setOpen}
+                  platform={this.props.skill.platform}
                 />
               </div>
             </div>

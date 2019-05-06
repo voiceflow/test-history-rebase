@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
-import cn from 'classnames'
 import { connect } from 'react-redux';
 import { compose } from 'recompose'
+import { Tooltip } from "react-tippy";
+import {
+  Alert,
+  Button
+} from "reactstrap";
 
-import { loadSession, errorScreen, socketCheck } from 'hocs/withSocketCheck'
+import { loadSession, errorScreen, socketCheck } from 'hocs/socketCheck'
+
+import { unnormalize } from "ducks/_normalize";
 
 import { fetchVersion, setLiveModeModal, updateVersion, resetVersion } from 'ducks/version'
 import { fetchDiagrams } from 'ducks/diagram'
@@ -11,6 +17,7 @@ import { fetchProducts } from 'ducks/product'
 import { fetchDisplays } from "ducks/display";
 import { fetchEmails } from 'ducks/email';
 
+import Header from 'components/Header';
 import Canvas from './views/pages/Canvas'
 import Visuals from './views/pages/Visuals'
 import Business from './views/pages/Business'
@@ -23,11 +30,12 @@ import DefaultModal from './views/components/Modals/DefaultModal'
 import { Spinner } from './views/components/Spinner'
 import { Link } from 'react-router-dom';
 import Marketplace from './views/pages/Marketplace';
+import Migrate from 'views/pages/Skill/Migrate'
 
 const live_modal_content = <div className="text-center">
     <img className="modal-img-small mb-4 mt-3" src="/warning.svg" alt="Upload"/>
     <div className="modal-bg-txt mt-2">Entering Live Editing</div>
-    <div className="modal-txt mt-2 mb-3"> Updating your skill in live mode will not effect the live version of the skill until you hit the upload button.</div>
+    <div className="modal-txt mt-2 mb-3"> Updating your skill in live mode will not affect the live version of the skill until you hit the upload button.</div>
 </div>
 
 
@@ -43,6 +51,11 @@ if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and 
 } else if (typeof document.webkitHidden !== 'undefined') {
     hidden = 'webkitHidden';
     visibilityChange = 'webkitvisibilitychange';
+}
+
+const ENDING_STAGES = {
+    alexa: [2, 4, 9, 10],
+    google: [2, 5]
 }
 
 class Skill extends Component {
@@ -157,6 +170,14 @@ class Skill extends Component {
         }
     }
 
+    toggleGoogle = () => {
+        let platform = this.props.skill.platform === 'google' ? 'alexa' : 'google'
+        this.props.updateSkill('platform', platform).then(() => {
+            // this.props.updateGoogleFade();
+            // this.props.updateLinter()
+        })
+    }
+
     renderPage(){
         switch(this.props.page){
             case 'canvas':
@@ -198,11 +219,81 @@ class Skill extends Component {
                   {...this.props}
                   page={this.props.secondaryPage}
                 />
+            case 'migrate':
+              return <Migrate
+                {...this.props}
+              />
             default:
                 return null
         }
     }
 
+    isUploadLoading = () => {
+        if (this.state.saving) return true
+        if (this.props.platform === 'alexa') {
+            return !ENDING_STAGES[this.props.platform].includes(this.state.stage) && ![0, 5, 6, 8].includes(this.state.stage)
+        } else {
+            return !ENDING_STAGES[this.props.platform].includes(this.state.google_stage) && ![0, 5, 6, 8].includes(this.state.google_stage)
+        }
+    }
+
+    displayUploadPrompt = () => {
+        if (this.state.show_upload_prompt) {
+            return <div className="upload-success-popup">
+                <button className="close close-upload-success-popup mt-2" onClick={this.closePrompt} />
+                {this.renderBody(false)}
+            </div>
+        }
+        return
+    }
+
+    renderUploadButton = () => {
+      if(this.props.live_mode){
+          return <Tooltip
+              html={<div style={{ width: 155 }}>Update your live version with your local changes</div>}
+              position="bottom"
+              distance={16}
+          >
+              <Button variant="contained" className="publish-btn" onClick={this.openUpdateLive}>
+                  Update Live <div className="launch">
+                      <div className="first">
+                          <img src={'/up.svg'} alt="upload" width="16" height="16" />
+                      </div>
+                      <div className="second">
+                          <img src={'/rocket.svg'} alt="check" width="16" height="16" />
+                      </div>
+                  </div>
+              </Button>
+          </Tooltip>
+      } else {
+          if(this.isUploadLoading()){
+              return <Button variant="contained" className="publish-btn publish-btn-disabled" onClick={()=>this.setState({show_upload_prompt: !this.state.show_upload_prompt})}>
+                      <p className="loading-btn m-0 p-0">Uploading</p>
+                      <div className="launch">
+                          <div className="load-spinner pt-1">
+                              <span className="save-loader-white"/>
+                          </div>
+                      </div> </Button>
+          } else {
+              return <Tooltip
+                  html={<div style={{ width: 155 }}>{(this.props.platform === 'google') ? 'Test your Action on your own Google device, or in the Google Actions console' : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}</div>}
+                  position="bottom"
+                  distance={16}
+              >
+                  <Button variant="contained" className="publish-btn" onClick={this.openUpdate}>
+                      {(this.props.platform === 'google') ? 'Upload to Google' : 'Upload to Alexa'}<div className="launch">
+                          <div className="first">
+                              <img src={'/up.svg'} alt="upload" width="15" height="15" />
+                          </div>
+                          <div className="second">
+                              <img src={'/check-white.svg'} alt="check" width="15" height="15" />
+                          </div>
+                      </div>
+                  </Button>
+              </Tooltip>
+          }
+      }
+  }
     render(){
         if(!this.state.mounted) return null
 
@@ -212,21 +303,46 @@ class Skill extends Component {
             </div>
         }
 
+        if(this.props.skill_error){
+          return <div className="super-center w-100 h-100">
+            <Alert color="danger">{this.props.skill_error}</Alert>
+          </div>
+        }
+
         return <React.Fragment>
-          {!this.props.preview && <SecondaryNavBar page={this.props.page} history={this.props.history}/>}
           <DefaultModal open={this.props.show_live_mode_modal} toggle={()=>{this.props.setLiveModal(false)}} content={live_modal_content} header="Live Mode Disclaimer" close_button_text="Confirm"></DefaultModal>
-            <div className="skill-name-top-left fixed-top" onDoubleClick={() => this.setState({ editName: true })}>
+            {/* <div className="skill-name-top-left fixed-top" onDoubleClick={() => this.setState({ editName: true })}>
             <Link to="/" className="mx-3">
                 <img src={"/back.svg"} alt="back" className="mr-3" />
             </Link>
                 {this.state.editName ? <input autoFocus className="edit-input" value={this.props.skill.name} onChange={e => { this.props.updateSkill('name', e.target.value); this.props.updateSkill('inv_name', e.target.value) }} onBlur={() => this.setState({ editName: false })} /> :
             this.props.skill && this.props.skill.name ? this.props.skill.name : "Loading Skill"
             }
-          </div>
+          </div> */}
           {((this.state.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)) ? 
             React.createElement(Spinner,  {name: 'Skill'}) :
             <>
-              <div id="app" className={cn(this.props.page, { 'secondary-padding': !this.props.preview })}>
+              <div id="app" className={this.props.page}>
+                {this.props.page !== 'canvas' && <div className="main-container-header">
+                    <Header
+                        // title={this.props.skill.name}
+                        history={this.props.history}
+                        leftRenderer={() => (
+                            <div onDoubleClick={() => this.setState({ editName: true })}>
+                                <Link to="/" className="mx-3">
+                                    <img src={"/back.svg"} alt="back" className="mr-3" />
+                                </Link>
+                                {this.state.editName ? <input autoFocus className="edit-input" value={this.props.skill.name} onChange={e => { this.props.updateSkill('name', e.target.value); this.props.updateSkill('inv_name', e.target.value) }} onBlur={() => this.setState({ editName: false })} /> :
+                                    this.props.skill && this.props.skill.name ? this.props.skill.name : "Loading Skill"
+                                }
+                            </div>
+                        )}
+                        subHeaderRenderer={() => (
+                            !this.props.preview && <SecondaryNavBar page={this.props.page} history={this.props.history} />
+                        )}
+                    />
+                </div>
+                }
                 {this.renderPage()}
               </div>
             </>
@@ -237,12 +353,17 @@ class Skill extends Component {
 
 const mapStateToProps = state => ({
     skill: state.skills.skill,
+    platform: state.skills.skill.platform,
+    diagram_id: state.skills.skill.diagram,
+    skill_error: state.skills.error,
     load_diagram: state.diagrams.loading,
     error: state.skills.error,
     show_live_mode_modal: state.skills.show_live_mode_modal,
     live_mode: state.skills.live_mode,
     dev_skill: state.skills.dev_skill ? state.skills.dev_skill : state.skills.skill,
-    user: state.account
+    user: state.account,
+    boards_array: unnormalize(state.board),
+    team_id: state.team.team_id
 })
 
 const mapDispatchToProps = dispatch => {

@@ -1357,7 +1357,39 @@ exports.DEFAULT_INTENTS = {
         "samples": ["repeat", "wiederholen", "wiedergeben", "repetieren", "weitersagen"]
       }
     ]
-  }
+  },
+    // Portuguese (PT)
+    "pt": {
+      "defaults": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": ["cancelar", "anular", "suspender"]
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": ["ajudar", "socorrer", "auxiliar"]
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": ["parar", "terminar", "impedir", "fazer parar"]
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": ["yes", "sim", "o sim", "dizer sim"],
+          "keep": ["sim"]
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": ["no", "não", "negativa"],
+        }
+      ],
+      "built_ins": [
+        {
+          "name": "AMAZON.RepeatIntent",
+          "samples": ["repeat", "repetir", "reiterar", "refazer", "amiudar", "recitar de cor"]
+        }
+      ]
+    }
 }
 
 exports.CATCH_ALL_INTENT = {

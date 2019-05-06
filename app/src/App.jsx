@@ -23,7 +23,6 @@ import Admin from './views/pages/Admin';
 import Register from './views/pages/Register';
 import Reset from './views/pages/Register/reset';
 import ResetPassword from './views/pages/Register/resetPassword';
-import NavBar from './views/components/NavBar';
 // import Marketplace from './views/pages/Marketplace';
 // import ModulePage from './views/pages/Marketplace/ModulePage';
 import Page404 from 'views/pages/404'
@@ -184,7 +183,6 @@ class App extends Component {
           <ConfirmModal/>
           <ErrorModal />
           <Modal />
-            {(this.state.session && history.location.pathname !== '/onboarding') && <NavBar history={history}/>}
               <Switch>
                 {/* User routes */}
                 <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
@@ -194,6 +192,7 @@ class App extends Component {
                 {/* Team routes */}
                 <PrivateRoute path="/dashboard" name="Dashboard" component={Team}/>
                 <PrivateRoute exact path="/team/new" component={NewTeam}/>
+                <PrivateRoute exact path="/team/template/:board_id" component={Team} page="template"/>
                 <PrivateRoute exact path="/team/template" component={Team} page="template"/>
                 <PrivateRoute exact path="/team/:team_id" component={Team}/>
                 <PrivateRoute exact path="/onboarding" component={Team} page="onboarding"/>
@@ -214,6 +213,7 @@ class App extends Component {
                 <PrivateRoute path="/settings/:skill_id/basic/" component={Skill} page='settings' secondaryPage="basic"/>
                 <PrivateRoute path="/settings/:skill_id/advanced/" component={Skill} page='settings' secondaryPage="advanced"/>
                 <PrivateRoute path="/settings/:skill_id/backups/" component={Skill} page='settings' secondaryPage="backups"/>
+                <PrivateRoute path="/migrate/:skill_id" component={Skill} page='migrate'/>
                 {/* Admin routes */}
                 <PrivateRoute path="/visuals/:skill_id/display/:id" component={Skill} page='visuals' secondaryPage="display"/>
                 <PrivateRoute path="/visuals/:skill_id" component={Skill} page='visuals' secondaryPage="displays"/>

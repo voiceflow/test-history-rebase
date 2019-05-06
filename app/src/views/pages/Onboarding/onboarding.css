@@ -79,6 +79,13 @@
   height:580px;
 }
 
+#calendly .calendly-inline-widget iframe {
+  position: absolute;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+
 #submit-calendly {
   position: absolute;
   top: 50px;
@@ -128,20 +135,10 @@ box-shadow: none;
   right: 55px;
 }
 
-.onboarding-title {
-  position: absolute;
-  top: 60px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  color: #8da2b5;
-}
-
 .calendly-outer {
   width: 800px;
-  border: 1px solid #dce5e8!important;
   border-radius: 5px!important;
-  padding: 2px;
+  border: 1px solid #dce5e8!important;
 }
 
 .btn-info-onboarding {

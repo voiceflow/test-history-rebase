@@ -60,7 +60,7 @@ export class NodeModel extends BaseModel{
 		this.extras = ob.extras;
 
 		//deserialize ports
-		_.forEach(ob.ports, (port: any) => {
+		_.forEach(ob.ports, (port) => {
 			let portOb = engine.getPortFactory(port.type).getNewInstance();
 			if (keepLink && ob instanceof NodeModel) {
 				portOb.links = port.links

@@ -1,14 +1,11 @@
 import cn from 'classnames'
 import React, { PureComponent } from 'react';
 import MenuItem from './components/MenuItem';
-import { connect } from 'react-redux'
 import ModuleItem from './components/ModuleItem';
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { Button, Collapse } from 'reactstrap';
-// import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import {getSections, checkBlockDisabledLive} from './../Blocks'
-import axios from 'axios';
-import withRenderModuleIcon from 'hocs/withModuleIcon'
-// const TABS = ['blocks', 'modules']
 
 export class Blocks extends PureComponent {
     constructor(props) {
@@ -24,7 +21,8 @@ export class Blocks extends PureComponent {
                 advanced: false,
                 functional: false,
                 business: false,
-                symbols: false
+                symbols: false,
+                flows: false
             }
         } else {
             show = JSON.parse(show)
@@ -36,66 +34,20 @@ export class Blocks extends PureComponent {
         this.state = {
             tab: tab,
             show: show,
-            sections: getSections(this.props.type_counter)
+            sections: getSections(this.props.type_counter, this.props)
         }
 
         this.toggleBlockSection = this.toggleBlockSection.bind(this)
-        this.loadUserModules = this.loadUserModules.bind(this)
     }
 
     componentWillReceiveProps(props){
-        if(props.type_counter !== this.props.type_counter){
-            let sections = getSections(props.type_counter)
-            if(this.state.module_section){
-                sections.push(this.state.module_section)
-            }
+        if(props.type_counter !== this.props.type_counter || props.user_modules !== this.props.user_modules){
+            let sections = getSections(props.type_counter, props)
             this.setState({
                 sections: sections
             })
         }
     }
-
-    loadUserModules(){
-        axios.get(`/marketplace/user_module`)
-        .then(res => {
-            let module_section = res.data.map(module => {
-                let name = module.title.match(/\b(\w)/g)
-                if(name) { name = name.join('') }
-                else { name = module.title }
-                name = name.substring(0,3)
-                
-                let module_colors = module.color.split('|')
-                if(module_colors.length === 1){
-                    module_colors = ['F86683', 'FEF2F4']
-                }
-
-                let icon_style = {
-                    backgroundColor: `#${module_colors[1]}`,
-                    color: `#${module_colors[0]}`
-                }
-                
-                let icon = <div className="no-image module-image" style={icon_style}><h1>{name}</h1></div>
-
-                return {
-                    text: module.title,
-                    type: 'symbol',
-                    icon: icon,
-                    tip: module.descr
-                }
-            })
-
-            this.setState({
-                module_section: {title: 'Flows', items: module_section}
-            })
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    }
-
-    // componentDidMount(){
-        // this.loadUserModules()
-    // }
 
     toggleBlockSection(section_title){
         let s = this.state
@@ -125,14 +77,39 @@ export class Blocks extends PureComponent {
                                 })}/>
                         </div>
                         <Collapse isOpen={this.state.show[section.title]}>
-                            <div className="mb-3 section-blocks">
-                                {section.items.map((item, i) => 
-                                    item && <MenuItem 
+                            {(section.title === 'business' && this.props.user.admin === 0) ?
+                                <div className="premium-block">
+                                    <div>
+                                        <span>Upgrade to access these premium features</span>
+                                        <Link className="btn-primary mt-3 d-block no-underline" to='/account/upgrade'>
+                                            Upgrade
+                                        </Link>
+                                    </div>
+                                </div>
+                            : null}
+                            <div className="mb-3 section-blocks" style={(section.title === 'business' && this.props.user.admin === 0) ? {opacity: 0.3} : null}>
+                                {section.items.map((item, i) => {
+                                        if(item && item.type === 'marketplace_link'){
+                                            return <div className="wrap" key={i}>
+                                                <div className='MenuItem dashed text-center pt-2' onClick={() => {this.props.history.push(`/market/${this.props.skill_id}`)}}>
+                                                    <span className="text-secondary">Add Flows</span>
+                                                </div>
+                                            </div>
+                                        } else if(item && item.module_id){
+                                            return <ModuleItem
+                                            item={item}
+                                            key={i}
+                                            data-tip={item.tip}
+                                            draggable={true}/>
+                                        } else if(item){ 
+                                            return <MenuItem 
                                             item={item} 
                                             key={i} 
-                                            data-tip={item.tip} 
-                                            draggable={!checkBlockDisabledLive(this.props.live_mode, item.type)}/>
-                                )}
+                                            data-tip={item.tip}
+                                            draggable={((section.title === 'business' && this.props.user.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}/>
+                                        }
+                                        return null
+                                    })}
                             </div>
                         </Collapse>
                     </div>
@@ -156,7 +133,11 @@ export class Blocks extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-  user: state.account,
-  live_mode: state.skills.live_mode
+    live_mode: state.skills.live_mode,
+    diagrams: state.diagrams.diagrams,
+    skill_id: state.skills.skill.skill_id,
+    project_id: state.skills.skill.project_id,
+    user_modules: state.skills.user_modules,
+    user: state.account
 })
-export default connect(mapStateToProps)(withRenderModuleIcon(Blocks));
+export default connect(mapStateToProps)(Blocks);

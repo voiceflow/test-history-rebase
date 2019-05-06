@@ -1,14 +1,18 @@
 import cn from 'classnames'
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
+import { Link } from "react-router-dom";
+
 import LOCALE_MAP from "./../../../services/LocaleMap";
 
-import { updateVersion, updateLocales, updateSkillDB } from 'ducks/version'
+import { updateVersion, updateLocales, updateSkillDB, togglePreview } from 'ducks/version'
 import { setError } from 'ducks/modal'
 import {
   Popover, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, ModalBody, Button
 } from 'reactstrap'
 import { ModalHeader } from 'views/components/Modals/ModalHeader'
+import Header from 'components/Header'
+import SecondaryNavBar from "views/components/NavBar/SecondaryNavBar";
 import ClipBoard from './../../components/ClipBoard'
 import AmazonLogin from './../../components/Forms/AmazonLogin'
 import axios from 'axios'
@@ -115,12 +119,13 @@ const invNameError = (name, locales) => {
 
   let validRegex = `[^${characters}.' ]+`
   let match = name.match(validRegex)
+  let split_name = name.split(' ').map(splits => {return splits.toLowerCase()})
   if (match) {
     return inv_name_error + ` - Invalid Characters: "${match.join()}"`
-  } else if (WAKE_WORDS.some(l => name.toLowerCase().includes(l.toLowerCase()))) {
-    return 'Invocation name can not contain Alexa keywords e.g. ' + WAKE_WORDS.join(', ')
-  } else if (LAUNCH_PHRASES.some(l => name.toLowerCase().includes(l.toLowerCase()))) {
-    return 'Invocation name can not contain Launch Phrases e.g. ' + LAUNCH_PHRASES.join(', ')
+  } else if (WAKE_WORDS.some(l => split_name.find(split => {return split === l.toLowerCase()}))) {
+    return 'Invocation name cannot contain Alexa keywords e.g. ' + WAKE_WORDS.join(', ')
+  } else if (LAUNCH_PHRASES.some(l => split_name.find(split => {return split === l.toLowerCase()}))) {
+    return 'Invocation name cannot contain Launch Phrases e.g. ' + LAUNCH_PHRASES.join(', ')
   } else {
     return null
   }
@@ -498,23 +503,10 @@ export class ActionGroup extends PureComponent {
     if (this.state.togglingPreview) return
 
     this.setState({
-      allowPreview: !this.state.allowPreview,
       togglingPreview: true
-    }, () => {
-      axios.patch('/skill/' + this.props.skill.skill_id + '?preview=true', {
-        isPreview: !!this.state.allowPreview,
-      })
-        .then(() => {
-          this.setState({ togglingPreview: false })
-        })
-        .catch(err => {
-          this.setState({
-            allowPreview: !this.state.allowPreview,
-            togglingPreview: false
-          })
-          this.props.setError('Unable to toggle preview')
-        })
     })
+
+    this.props.togglePreview(!this.props.skill.preview).then(() => this.setState({togglingPreview: false}))
   }
 
   toggleShare() {
@@ -557,21 +549,23 @@ export class ActionGroup extends PureComponent {
 
   updateLiveVersion() {
     this.setState({ live_update_stage: 1 })
-    axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/rerender`)
-      .then(() => {
-        this.setState({
-          live_update_stage: 2
+    this.props.saveSkill(true, () => {
+      axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/rerender`)
+        .then(() => {
+          this.setState({
+            live_update_stage: 2
+          })
         })
-      })
-      .catch(err => {
-        this.props.setError('Error updating live version')
-      })
+        .catch(err => {
+          this.props.setError('Error updating live version')
+        })
+    })
   }
 
   toggleGoogle() {
     let platform = this.props.platform === 'google' ? 'alexa' : 'google'
     this.props.updateSkill('platform', platform).then(() => {
-      this.props.updateGoogleFade();
+      this.props.renderPlatformSwitch()
       this.props.updateLinter()
     })
   }
@@ -594,7 +588,7 @@ export class ActionGroup extends PureComponent {
       return <React.Fragment>
         <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live.svg" alt="Upload" />
         <div className="modal-bg-txt text-center mt-2"> Confirm Live Update</div>
-        <div className="modal-txt text-center mt-2 mb-3">This update will effect the live version of your project. Please be sure you wish to do this.</div>
+        <div className="modal-txt text-center mt-2 mb-3">This update will affect the live version of your project. Please be sure you wish to do this.</div>
         <button className="btn-primary mb-3" onClick={this.updateLiveVersion}>Confirm Update</button>
       </React.Fragment>
     }
@@ -935,88 +929,106 @@ export class ActionGroup extends PureComponent {
             </div>
           </ModalBody>
         </Modal>
-
-        <div id="middle-group">
-          <Tooltip
-            distance={16}
-            title={(this.props.platform === 'google') ? "Switch to Amazon View" : "Switch to Google View"}
-            position="bottom"
-            className="switch switch-blue mr-4"
-            tag='div'
-          >
-            <input onClick={() => { if (this.props.platform !== 'alexa') this.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} value="alexa_toggle" id="alexa_toggle" />
-            <label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">Alexa</label>
-            <input onClick={() => { if (this.props.platform !== 'google') this.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} value="google_toggle" id="google_toggle" />
-            <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">Google</label>
-            <span className="switch-selection"></span>
-          </Tooltip>
-        </div>
-
-        <div className="title-group no-select">
-          <div className="align-icon">
+        <Header
+          history={this.props.history}
+          leftRenderer={() => (
+            <div onDoubleClick={() => this.setState({ editName: true })}>
+              <Link to="/" className="mx-3">
+                <img src={"/back.svg"} alt="back" className="mr-3" />
+              </Link>
+              {this.state.editName ? <input autoFocus className="edit-input" value={this.props.skill.name} onChange={e => { this.props.updateSkill('name', e.target.value); this.props.updateSkill('inv_name', e.target.value) }} onBlur={() => this.setState({ editName: false })} /> :
+                this.props.skill && this.props.skill.name ? this.props.skill.name : "Loading Skill"
+              }
+            </div>
+          )}
+        centerRenderer={() => (
+          <div id="middle-group">
             <Tooltip
               distance={16}
-              title={this.props.lastSave}
+              title={(this.props.platform === 'google') ? "Switch to Amazon View" : "Switch to Google View"}
               position="bottom"
-              className="mr-4"
+              className="switch switch-blue"
+              tag='div'
             >
-              <button id="icon-save" className={`${this.props.saved ? 'btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''}`} onClick={this.props.onSave}>
-                {this.props.saving && <span className="save-loader" />}
-              </button>
+              <input onClick={() => { if (this.props.platform !== 'alexa') this.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} value="alexa_toggle" id="alexa_toggle" />
+              <label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">Alexa</label>
+              <input onClick={() => { if (this.props.platform !== 'google') this.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} value="google_toggle" id="google_toggle" />
+              <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">Google</label>
+              <span className="switch-selection"></span>
             </Tooltip>
           </div>
-          <div className="title-group-sub">
-            <Tooltip
-              className="top-nav-icon"
-              title="Share"
-              position="bottom"
-              distance={16}
-            >
-              <button id="icon-share" className="nav-btn-border fas fa-share" onClick={this.toggleShare}></button>
-            </Tooltip>
-            <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
-              <PopoverBody style={{ minWidth: '260px' }}>
-                <div className="space-between">
-                  <label>Allow preview sharing</label>
-                  <Toggle
-                    checked={this.state.allowPreview}
-                    disabled={this.state.togglingPreview}
-                    icons={false}
-                    onChange={this.togglePreview}
-                  />
-                </div>
-                {this.state.allowPreview &&
-                  <InputGroup className="mb-3">
-                    <InputGroupAddon addonType="prepend">
-                      <ClipBoard
-                        component="button"
-                        className="btn btn-clear copy-link"
-                        value={link}
-                        id="shareLink"
-                      >
-                        <i className="fas fa-copy" />
-                      </ClipBoard>
-                    </InputGroupAddon>
-                    <Input readOnly value={link} className="form-control-border right" />
-                  </InputGroup>
-                }
-              </PopoverBody>
-            </Popover>
-          </div>
-          <div className="align-icon">
-            <Tooltip
-              distance={16}
-              title="Test"
-              position="bottom"
-              className="ml-4 mr-4"
-            >
-              <button className="nav-btn" onClick={this.props.onTest}><i className="fas fa-play" /></button>
-            </Tooltip>
-          </div>
+          )}
+        rightRenderer={() => (
+          <div className="title-group no-select">
+            <div className="align-icon">
+              <Tooltip
+                distance={16}
+                title={this.props.lastSave}
+                position="bottom"
+                className="mr-4"
+              >
+                <button id="icon-save" className={`${this.props.saved ? 'btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''}`} onClick={this.props.onSave}>
+                  {this.props.saving && <span className="save-loader" />}
+                </button>
+              </Tooltip>
+            </div>
+            <div className="title-group-sub">
+              <Tooltip
+                className="top-nav-icon"
+                title="Share"
+                position="bottom"
+                distance={16}
+              >
+                <button id="icon-share" className="nav-btn-border fas fa-share" onClick={this.toggleShare}></button>
+              </Tooltip>
+              <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
+                <PopoverBody style={{ minWidth: '260px' }}>
+                  <div className="space-between">
+                    <label>Allow preview sharing</label>
+                    <Toggle
+                      checked={this.props.skill.preview}
+                      disabled={this.state.togglingPreview}
+                      icons={false}
+                      onChange={this.togglePreview}
+                    />
+                  </div>
+                  {this.props.skill.preview &&
+                    <InputGroup className="mb-3">
+                      <InputGroupAddon addonType="prepend">
+                        <ClipBoard
+                          component="button"
+                          className="btn btn-clear copy-link"
+                          value={link}
+                          id="shareLink"
+                        >
+                          <i className="fas fa-copy" />
+                        </ClipBoard>
+                      </InputGroupAddon>
+                      <Input readOnly value={link} className="form-control-border right" />
+                    </InputGroup>
+                  }
+                </PopoverBody>
+              </Popover>
+            </div>
+            <div className="align-icon">
+              <Tooltip
+                distance={16}
+                title="Test"
+                position="bottom"
+                className="ml-4 mr-4"
+              >
+                <button className="nav-btn" onClick={this.props.onTest}><i className="fas fa-play" /></button>
+              </Tooltip>
+            </div>
 
-          {this.renderUploadButton()}
-          {this.displayUploadPrompt()}
-        </div>
+            {this.renderUploadButton()}
+            {this.displayUploadPrompt()}
+          </div>
+          )}
+          subHeaderRenderer={() => (
+            !this.props.preview && <SecondaryNavBar page='canvas' history={this.props.history} />
+          )}
+        />
       </React.Fragment>
     );
   }
@@ -1034,6 +1046,7 @@ const mapDispatchToProps = dispatch => ({
   updateSkill: (type, val) => dispatch(updateVersion(type, val)),
   setError: err => dispatch(setError(err)),
   updateSkillLocale: (val) => dispatch(updateLocales(val)),
+  togglePreview: preview => dispatch(togglePreview(preview)),
   saveSkill: (publish, cb) => dispatch(updateSkillDB(publish, cb))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(ActionGroup);

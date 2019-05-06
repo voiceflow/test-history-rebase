@@ -71,7 +71,7 @@ const convertDiagram = (diagram, diagrams) => {
                             })
                         }
                         node.ports = node.ports.reverse()
-                    } else if (node.extras.player === true) {
+                    } else if ((node.extras.player === true) || (node.extras && node.extras.player === true)) {
                         node.ports = [node.ports[0], node.ports[2], node.ports[3], node.ports[1]]
                     }
 
@@ -372,6 +372,7 @@ const createCombineNode = (node, type, parent) => {
         node.addInPort(' ')
         node.addOutPort('next').setMaximumLinks(1)
         node.addOutPort('previous').setMaximumLinks(1)
+        node.addOutPort(' ').setMaximumLinks(1)
         node.extras = {
             audio: ''
         }
@@ -460,10 +461,11 @@ const createDropNode = (event, engine, type, name) => {
                 reminder: null
             }
         } else if (type === 'flow') {
+            let diagram_id = event.dataTransfer.getData('diagram_id')
             node.addInPort(' ')
             node.addOutPort(' ').setMaximumLinks(1)
             node.extras = {
-                diagram_id: null,
+                diagram_id: diagram_id,
                 inputs: [],
                 outputs: []
             }
@@ -601,6 +603,7 @@ const createDropNode = (event, engine, type, name) => {
             node.addInPort(' ')
             node.addOutPort('next').setMaximumLinks(1)
             node.addOutPort('previous').setMaximumLinks(1)
+            node.addOutPort(' ').setMaximumLinks(1)
             node.extras = {
                 audio: ''
             }

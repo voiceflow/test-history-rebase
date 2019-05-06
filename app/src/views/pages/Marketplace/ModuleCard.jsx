@@ -1,31 +1,32 @@
 import React, { Component } from 'react'
 import { Card, CardBody } from 'reactstrap'
 import './Marketplace.css'
-import withRenderModuleIcon from 'hocs/withModuleIcon'
+import ModuleIcon from './ModuleIcon'
 
 class ModuleCard extends Component{
 
 	render(){
 		return (
-			<div className="card-container">
-				<span onClick={() => {this.props.showModuleDetailView(this.props.module)}} className="card-link">
+			<div className="module-card-container">
+				<a href="/#" onClick={(e) => {e.preventDefault(); this.props.showModuleDetailView(this.props.module)}} className="card-link">
 					<Card 
-											className="market-card"
-						onMouseEnter={() => {this.setState({hover:true})}}
-						onMouseLeave={() => {this.setState({hover:false})}}
+						className="market-card"
 					>
 						<CardBody className="text-center pb-0">
-							{this.props.renderIcon(this.props.module)}
-							<h5 onClick={this.props.onClick}>{this.props.module.title}</h5>
-							<p className="text-secondary module-card-text">{this.props.module.descr}</p>
+							<div className="module-card-icon"><ModuleIcon module={this.props.module}/></div>
+							<div className="lg-header pl-2 pr-2">{this.props.module.title}</div>
+							<p className="pl-2 pr-2 text-secondary module-card-text">{this.props.module.descr}</p>
 							<hr className="m-0"/>
 							<div className="row w-100 justify-content-between mr-0 ml-0 p-3">
-								<span className="align-middle text-secondary">{this.props.module.name}</span> 
-								<span className="align-middle text-secondary">{this.props.module.votes} <i className="fas fa-long-arrow-alt-up"></i></span> 
+								<span className="align-middle text-secondary">{this.props.module.author}</span> 
+								<div>
+									<span className="align-middle text-secondary mr-2">{(this.props.module !== undefined && this.props.module.downloads ? this.props.module.downloads : '0')}</span>
+									<img src={'/downloads.svg'} width="16" alt="download-icon"></img>
+								</div>
 							</div>
 						</CardBody>
 					</Card>
-				</span>
+				</a>
 			</div>
 		)
 	} 
@@ -33,4 +34,4 @@ class ModuleCard extends Component{
 
 }
 
-export default withRenderModuleIcon(ModuleCard)
+export default ModuleCard

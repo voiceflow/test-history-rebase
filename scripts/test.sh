@@ -7,5 +7,3 @@ npm run unit_tests
 
 echo "INTEGRATION TESTS"
 npm run integration_tests
-
-./scripts/after_test.sh

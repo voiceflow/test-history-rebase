@@ -32,10 +32,10 @@ exports[`Canvas render canvas 1`] = `
     lastSave="Save"
     onSave={[Function]}
     onTest={[Function]}
+    renderPlatformSwitch={[Function]}
     saved={true}
     saving={false}
     setCB={[Function]}
-    updateGoogleFade={[Function]}
     updateLinter={[Function]}
   />
   <div
@@ -86,6 +86,7 @@ exports[`Canvas render canvas 1`] = `
             "default": BlockLinkFactory {
               "color": null,
               "extras": Object {},
+              "hidden": false,
               "id": undefined,
               "labels": Array [],
               "listeners": Object {},
@@ -137,7 +138,6 @@ exports[`Canvas render canvas 1`] = `
       setCanvasEvents={[Function]}
       setHelp={[Function]}
       unfocus={[Function]}
-      updateExtras={[Function]}
       updateLinter={[Function]}
     />
     <div
@@ -187,6 +187,7 @@ exports[`Canvas render canvas 1`] = `
               "default": BlockLinkFactory {
                 "color": null,
                 "extras": Object {},
+                "hidden": false,
                 "id": undefined,
                 "labels": Array [],
                 "listeners": Object {},
@@ -260,6 +261,7 @@ exports[`Canvas render canvas 1`] = `
               "default": BlockLinkFactory {
                 "color": null,
                 "extras": Object {},
+                "hidden": false,
                 "id": undefined,
                 "labels": Array [],
                 "listeners": Object {},
@@ -313,6 +315,7 @@ exports[`Canvas render canvas 1`] = `
           }
         }
         onDeleteIntentNode={[Function]}
+        platform="alexa"
         removeHandler={[Function]}
         smartRouting={false}
       />

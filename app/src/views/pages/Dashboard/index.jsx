@@ -374,6 +374,7 @@ export const DashBoard = props => {
                         <div ref={bodyRef} className="main-lists">
                             <div ref={innerRef} className="main-lists-inner">
                                 <List
+                                    id='initial'
                                     disableDragging
                                     name={defaultBoard ? defaultBoard.name : 'Default List'}
                                     projects={default_projects}

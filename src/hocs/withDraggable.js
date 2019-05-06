@@ -80,6 +80,8 @@ export default ({
       const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
       const clientOffset = monitor.getClientOffset();
 
+      if(!clientOffset) return
+
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 

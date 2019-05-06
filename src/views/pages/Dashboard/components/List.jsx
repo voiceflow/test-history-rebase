@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -8,8 +8,6 @@ import { useToggle } from 'hooks/toggle';
 import { useScrollShadows, useScrollHelpers, useHorizontalScrollToNode } from 'hooks/scroll';
 
 import withDraggable from 'hocs/withDraggable';
-
-import { colors } from 'utils/colors';
 
 import Form from 'components/Form';
 import Button from 'components/Button';
@@ -55,8 +53,6 @@ export function List(props) {
     projectIds,
     isDragging,
     itemReorder,
-    onMoveSkill,
-    onDropSkill,
     onRenameSkill,
     onRemoveSkill,
     onDuplicateSkill,
@@ -84,6 +80,8 @@ export function List(props) {
   const [onScroll, isHeaderShadowShown, isFooterShadowShown] = useScrollShadows(bodyRef, [
     projectIds,
   ]);
+
+  const [moving, setMoving] = useState(false)
 
   const list = (
     <div
@@ -124,7 +122,6 @@ export function List(props) {
                 id={projectIds[0] || 0}
                 index={0}
                 listId={id}
-                onMove={onMoveSkill}
                 className={cn("main-list-header", {
                   "h-o-0": isDragging,
                   __scrolling: isHeaderShadowShown
@@ -175,7 +172,8 @@ export function List(props) {
                   ref={bodyRef}
                   onScroll={onScroll}
                   className={cn("main-list-body", {
-                    "h-o-0": isDragging
+                    "h-o-0": isDragging,
+                    "still": !moving
                   })}
                 >
                   <div
@@ -200,16 +198,15 @@ export function List(props) {
                             <Item
                               id={project.skill_id}
                               project_id={project.project_id}
+                              created={project.created}
                               isFB={false}
                               avatarUrl={icon}
                               name={project.name}
                               diagram={project.diagram}
                               reorder={itemReorder}
                               index={i}
-                              color={colors[i % colors.length]}
                               listId={id}
-                              onDrop={onDropSkill}
-                              onMove={onMoveSkill}
+                              onToggleDragging={setMoving}
                               language={project.locales}
                               onRename={() =>
                                 onRenameSkill(project.project_id)
@@ -280,8 +277,6 @@ List.propTypes = {
   isCreated: PropTypes.bool,
   isDragging: PropTypes.bool,
   projectIds: PropTypes.arrayOf(PropTypes.number),
-  onDropSkill: PropTypes.func,
-  onMoveSkill: PropTypes.func,
   onRenameSkill: PropTypes.func,
   onRemoveSkill: PropTypes.func,
   onCancelCreate: PropTypes.func,

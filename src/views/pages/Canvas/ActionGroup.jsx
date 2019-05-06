@@ -1026,7 +1026,7 @@ export class ActionGroup extends PureComponent {
           </div>
           )}
           subHeaderRenderer={() => (
-            !this.props.skill.preview && <SecondaryNavBar page='canvas' history={this.props.history} />
+            !this.props.preview && <SecondaryNavBar page='canvas' history={this.props.history} />
           )}
         />
       </React.Fragment>

@@ -174,6 +174,7 @@ export class Canvas extends Component {
                 e.stopPropagation()
             }
         })
+        Mousetrap.bind('enter', (e) => e.target.click())
     }
 
     componentDidMount() {

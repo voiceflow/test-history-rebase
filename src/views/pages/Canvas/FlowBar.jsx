@@ -43,7 +43,6 @@ class FlowBar extends Component{
     }
 
     render(){
-        console.log(this.props.childDiagrams.length === 0)
         return <React.Fragment>
             <button id="home-button" className="btn-home pl-3" onClick={()=>this.props.enterFlow(this.props.root_id)}>
                 <span>Home</span>
@@ -88,7 +87,7 @@ class FlowBar extends Component{
                     <DropdownMenu className="no-select">
                         {this.props.parentDiagrams.map(({id, name}) => (
                             <DropdownItem onClick={() => this.props.enterFlow(id)} className="pointer" key={v4()}>
-                                {name}
+                                {name === 'ROOT' ? 'Home' : name}
                             </DropdownItem>
                         ))}
                     </DropdownMenu>

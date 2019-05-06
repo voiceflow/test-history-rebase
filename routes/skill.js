@@ -109,20 +109,24 @@ const incrementTimesPublishedSuccessfulIntercom = (id) => {
   })
 }
 
-const checkSkillInReview = (amzn_id, creator_id) => {
-  const setReviewStatus = async (amzn_id, in_review) => {
+const checkSkillInReview = (amzn_id, creator_id, skill_id) => {
+  const setReviewStatus = async (in_review) => {
     try {
       await pool.query(`
         UPDATE skills
         SET review = $1
-        WHERE amzn_id = $2`,
-        [in_review, amzn_id])
+        WHERE project_id = (
+          SELECT s.project_id
+          FROM skills s
+          WHERE s.skill_id = $2
+        )`,
+        [in_review, skill_id])
     } catch (err) {
       writeToLogs('CHECK SKILL IN REVIEW', {err: err})
     }
   }
 
-  return new Promise(async (resolve) => {
+  return new Promise(async (resolve) => {\
     AmazonAccessToken(creator_id)
     .then(async token => {
       if(!token) return
@@ -135,15 +139,19 @@ const checkSkillInReview = (amzn_id, creator_id) => {
           }
         })
         // TODO: check for any in progress
-        await setReviewStatus(amzn_id, true)
-        resolve(true)
+        if(res.data.items.find((item) => {return item.status === 'IN_PROGRESS'}) !== undefined){
+          await setReviewStatus(true)
+          resolve(true)
+        } else {
+          await setReviewStatus(false)
+          resolve(false)
+        }
       } catch (err) {
         // Doesn't have a cert 👌
-        await setReviewStatus(amzn_id, false)
+        await setReviewStatus(false)
         resolve(false)
       }
     })
-    resolve(false)
   })
 }
 
@@ -197,10 +205,11 @@ exports.getSkill = async (req, res) => {
     if(skill_data === undefined){
       res.sendStatus(404)
     } else {
-      if(req.query.review_check) skill_data.review = await checkSkillInReview(skill_data.amzn_id, req.user.id)
+      if(req.query.review_check){
+        skill_data.review = await checkSkillInReview(skill_data.amzn_id, req.user.id, id)
+      }
       delete skill_data.dialogflow_token
         // Don't expose these on front end
-
       skill_data.skill_id = req.params.skill_id
       skill_data.project_id = hashids.encode(skill_data.project_id)
       res.send(skill_data)

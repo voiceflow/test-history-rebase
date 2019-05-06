@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
+import mousetrap from 'mousetrap'
 
 export default class SearchableDropdown extends Component {
     constructor(props) {
@@ -19,7 +20,7 @@ export default class SearchableDropdown extends Component {
         return (
             <div className="search__dropdown">
                 <div id="myDropdown" className="search__dropdown_content">
-                    <input type="text" placeholder="Search..." id="myInput" onChange={this.onSearchChange} onKeyUp={e => e.stopPropagation()} />
+                    <input type="text" placeholder="Search..." id="myInput" onChange={this.onSearchChange} onKeyUp={e => e.stopPropagation()} autoFocus/>
                     
                     {this.state.searchFilter !== '' ?
                         _.filter(this.props.options, option => 

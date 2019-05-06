@@ -4,6 +4,7 @@ import _ from 'lodash'
 import { ListGroup, ListGroupItem } from "reactstrap";
 import { setConfirm } from 'ducks/modal'
 import { renameDiagram } from 'ducks/diagram';
+import { v4 } from 'uuid'
 
 import {UncontrolledDropdown, DropdownToggle, DropdownItem, DropdownMenu} from 'reactstrap'
 class FlowBar extends Component{
@@ -42,6 +43,7 @@ class FlowBar extends Component{
     }
 
     render(){
+        console.log(this.props.childDiagrams.length === 0)
         return <React.Fragment>
             <button id="home-button" className="btn-home pl-3" onClick={()=>this.props.enterFlow(this.props.root_id)}>
                 <span>Home</span>
@@ -79,24 +81,30 @@ class FlowBar extends Component{
                         }
                     </div>
                 </div>
-                {!this.props.preview &&
-                    <UncontrolledDropdown direction='up'>
-                        <DropdownToggle className="dropdown-button position-absolute right mr-4 mt-1" tag="button">
-                        <i className="far fa-ellipsis-h"></i>
-                        </DropdownToggle>
-                        <DropdownMenu className="no-select">
-                            <DropdownItem header>
-                                Flow Options
+                <UncontrolledDropdown direction='up'>
+                    <DropdownToggle className="dropdown-button position-absolute left mr-4 mt-1" tag="button" disabled={this.props.parentDiagrams.length === 0}>
+                    <img src="/arrow-right.svg" alt="arrow" />
+                    </DropdownToggle>
+                    <DropdownMenu className="no-select">
+                        {this.props.parentDiagrams.map(({id, name}) => (
+                            <DropdownItem onClick={() => this.props.enterFlow(id)} className="pointer" key={v4()}>
+                                {name}
                             </DropdownItem>
-                            <DropdownItem onClick={() => this.props.copyFlow(this.props.diagram)} className="pointer">
-                            Copy
+                        ))}
+                    </DropdownMenu>
+                </UncontrolledDropdown>
+                <UncontrolledDropdown direction='up'>
+                    <DropdownToggle className="dropdown-button position-absolute right mr-4 mt-1" tag="button" disabled={this.props.childDiagrams.length === 0}>
+                    <img src="/arrow-right.svg" alt="arrow" />
+                    </DropdownToggle>
+                    <DropdownMenu className="no-select">
+                        {this.props.childDiagrams.map(({id, name}) => (
+                            <DropdownItem onClick={() => this.props.enterFlow(id)} className="pointer" key={v4()}>
+                                {name}
                             </DropdownItem>
-                            <DropdownItem onClick={() => this.props.deleteFlow(this.props.diagram)} className="pointer">
-                            Delete
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
-                }
+                        ))}
+                    </DropdownMenu>
+                </UncontrolledDropdown>
             </div>
         </React.Fragment>
     }

@@ -132,9 +132,8 @@ export function List(props) {
               >
                 <div className="main-list-header__main">
                   {isTitleEditable ? (
-                    <div className="main-list-header__input">
                       <input
-                        className="borderless-input"
+                        className="borderless-input main-list-header__title"
                         value={values.name}
                         onBlur={onInputNameBlur}
                         selected
@@ -147,10 +146,10 @@ export function List(props) {
                         // onEnterPress={onInputNameBlur}
                         // onEscapePress={toggleTitleEditable}
                       />
-                    </div>
                   ) : (
                     <div
                       onClick={(e) => {
+                        handleChange("name", name)
                         toggleTitleEditable(e)
                       }}
                       className="main-list-header__title"
@@ -271,7 +270,7 @@ export default withDraggable({
 })(List);
 
 List.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
   name: PropTypes.string,
   projects: PropTypes.array,
   createSkill: PropTypes.func,

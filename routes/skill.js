@@ -109,6 +109,52 @@ const incrementTimesPublishedSuccessfulIntercom = (id) => {
   })
 }
 
+const checkSkillInReview = (amzn_id, creator_id, skill_id) => {
+  const setReviewStatus = async (in_review) => {
+    try {
+      await pool.query(`
+        UPDATE skills
+        SET review = $1
+        WHERE project_id = (
+          SELECT s.project_id
+          FROM skills s
+          WHERE s.skill_id = $2
+        )`,
+        [in_review, skill_id])
+    } catch (err) {
+      writeToLogs('CHECK SKILL IN REVIEW', {err: err})
+    }
+  }
+
+  return new Promise(async (resolve) => {
+    AmazonAccessToken(creator_id)
+    .then(async token => {
+      if(!token) return
+      try{
+        let res = await axios.request({
+          url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/certifications`,
+          method: 'get',
+          headers: {
+            Authorization: token
+          }
+        })
+        // TODO: check for any in progress
+        if(res.data.items.find((item) => {return item.status === 'IN_PROGRESS'}) !== undefined){
+          await setReviewStatus(true)
+          resolve(true)
+        } else {
+          await setReviewStatus(false)
+          resolve(false)
+        }
+      } catch (err) {
+        // Doesn't have a cert 👌
+        await setReviewStatus(false)
+        resolve(false)
+      }
+    })
+  })
+}
+
 exports.getSkill = async (req, res) => {
 
   let project_id = hashids.decode(req.params.project_id)[0]
@@ -159,9 +205,11 @@ exports.getSkill = async (req, res) => {
     if(skill_data === undefined){
       res.sendStatus(404)
     } else {
+      if(req.query.review_check){
+        skill_data.review = await checkSkillInReview(skill_data.amzn_id, req.user.id, id)
+      }
       delete skill_data.dialogflow_token
         // Don't expose these on front end
-
       skill_data.skill_id = req.params.skill_id
       skill_data.project_id = hashids.encode(skill_data.project_id)
       res.send(skill_data)

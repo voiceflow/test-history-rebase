@@ -104,7 +104,9 @@ class Team extends PureComponent {
             incredible voice experiences
           </span><br/>
           <Link to={`/team/new`} className="no-underline">
-            <button className="btn-primary mt-4">
+            <button className="btn-primary mt-4" onClick={() => {
+              
+            }}>
               New Board
             </button>
           </Link>

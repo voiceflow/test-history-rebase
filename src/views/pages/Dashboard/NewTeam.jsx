@@ -163,14 +163,14 @@ class NewTeam extends Component {
 
     switch (this.state.stage) {
       case "CREATING":
-        return React.createElement(Spinner, { message: "Creating Team" });
+        return React.createElement(Spinner, { message: "Creating Board" });
       case "CHECKOUT":
         return (
           <div className="text-center">
             <h5 className="uppercase-header">{name}</h5>
             <div className="my-5 pt-4 pb-5">
-              <span className="uppercase text-muted">Confirm Team Plan</span>
-              <div className="mx-auto max-w-400 mt-4">
+              <span className="uppercase text-muted">Upgrade Board</span>
+              <div className="super-center mt-4">
                 <SeatsCheckout
                   prompt="Start Free Trial"
                   invites={this.state.invites}
@@ -180,7 +180,7 @@ class NewTeam extends Component {
                   }}
                   next={this.nextStep}
                   user={this.props.user}
-                  trial
+                  width={400}
                 />
               </div>
             </div>

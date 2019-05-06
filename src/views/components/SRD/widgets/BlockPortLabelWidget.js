@@ -2,6 +2,7 @@ import * as React from "react";
 import _ from 'lodash';
 import { BlockPortWidget } from "./BlockPortWidget";
 import { BaseWidget } from "./../main.js";
+import update from 'immutability-helper'
 
 /**
  * @author Dylan Vorster
@@ -35,9 +36,24 @@ export class BlockPortLabel extends BaseWidget {
 		if (!((node.parentCombine && (!this.props.isLast || node.isLast)) || (!_.isEmpty(node.combines)) || this.props.isMoving)){
 			if(this.props.model.label.toString().trim()) label = <div className="name">{this.props.model.label}</div>
 		}
+		let labelProps = this.getProps()
+		if (this.props.model.hidden) {
+			if (!labelProps.style) labelProps = update(labelProps, {
+				style: {
+					$set: {}
+				}
+			})
+			labelProps = update(labelProps, {
+				style: {
+					$merge: {
+						display: 'none'
+					}
+				}
+			})
+		}
 
 		return (
-			<div {...this.getProps()}>
+			<div {...labelProps}>
 				{this.props.model.in || (node.parentCombine && !this.props.isLast) ? port : label}
 				{this.props.model.in || (node.parentCombine && !this.props.isLast) ? label : port}
 			</div>

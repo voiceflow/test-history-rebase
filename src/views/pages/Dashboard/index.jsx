@@ -1,69 +1,76 @@
 import _ from "lodash";
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import { ScrollContextProvider } from "contexts";
+import cn from 'classnames';
 // import moment from 'moment'
+import { useScrollHelpers } from 'hooks/scroll';
 // import 'react-table/react-table.css'
+import Header from "components/Header";
 import { Link } from "react-router-dom";
-import Masonry from "react-masonry-component";
 import { Tooltip } from "react-tippy";
 import "./DashBoard.css";
 import axios from "axios";
 import UpdatesModal from "./../../components/Modals/UpdatesModal";
-import VoiceCards from "views/components/Cards/VoiceCards";
-import EmptyCard from "views/components/Cards/EmptyCard";
 import LoadingModal from "views/components/Modals/LoadingModal";
 import TeamSettings from "./TeamSettings"
-import { Alert, Input, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import UpdatesPopover from './UpdatesPopover'
+import {
+    Alert,
+    Input,
+    Popover,
+    PopoverBody,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
+} from "reactstrap";
 import { setConfirm, setError } from 'ducks/modal'
 import { connect } from "react-redux";
 import { Members } from 'views/components/User'
+import ExpiryButton from './ExpiryButton'
+import List from './components/List'
+
 import {
   fetchProjects,
   deleteProject,
   copyProject,
+  updateProjects
 } from "ducks/project";
+import {
+    fetchBoards,
+    addBoard,
+    updateBoards,
+    updateLists,
+    deleteBoard,
+    renameList,
+} from 'ducks/board';
 import {
   getMembers,
 } from "ducks/team";
 import { unnormalize } from "ducks/_normalize"
 
-export class DashBoard extends Component {
-  constructor(props) {
-    super(props);
+export const DashBoard = props => {
+  const [loading, toggleLoading]  = useState(true)
+  const [filter_text, handleFilterText] = useState("")
+  const [loading_modal, toggleLoadingModal] = useState(false)
+  const [show_updates_modal, toggleShowUpdatesModal] = useState(false)
+  const [team_setting, setTeamSetting] = useState(null)
+  const [product_updates, setProductUpdates] = useState([])
+  const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
+  const [updates_open, toggleUpdatesOpen] = useState(false)
 
-    this.state = {
-      loading: true,
-      filter_text: "",
-      loading_modal: false,
-      show_updates_modal: false
-    };
-
-    this.openProject = this.openProject.bind(this);
-    this.deleteProject = this.deleteProject.bind(this);
-    this.toggleUpdatesModal = this.toggleUpdatesModal.bind(this);
-    this.renderProjects = this.renderProjects.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.copyProject = this.copyProject.bind(this);
-    this.newProject = this.newProject.bind(this)
-  }
-
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  }
-
-  copyProject(project_id) {
-    if(this.props.projects_array.length >= this.props.team.projects) {
-      return this.props.setError("Upgrade Plan to Create More Projects")
+  const copyProject = (project_id, board_id=null) => {
+    if(props.projects_array.length >= props.team.projects) {
+      return setTeamSetting("CHECKOUT:PROJECTS")
     }
-    this.setState({ loading_modal: true });
-    this.props.copyProject(project_id, this.props.team_id).then(() => {
-      this.setState({ loading_modal: false });
+    toggleLoadingModal(true)
+    props.copyProject(project_id, props.team_id, board_id).then(() => {
+      toggleLoadingModal(false)
     });
   }
 
-  deleteProject(project_id, project_name) {
-    this.props.setConfirm({
+  const deleteProject = (project_id, project_name) => {
+    props.setConfirm({
       text: (
         <Alert color="danger" className="mb-0">
           WARNING: This action can not be undone, <i>{project_name}</i> and
@@ -72,254 +79,231 @@ export class DashBoard extends Component {
       ),
       warning: true,
       confirm: () => {
-        this.props.deleteProject(project_id);
-        this.setState({ confirm: null });
+        props.deleteProject(project_id);
       }
     });
   }
-
-  openProject(project_id, diagram) {
-    let project = this.props.projects.byId[project_id]
-    if(!project) return
-
-    let skill_id = project.skill_id
-    setTimeout(() => {
-      this.props.history.push(`/canvas/${skill_id}/${diagram}`);
-    }, 100);
+  let fetchBoards;
+  const deleteBoard = (board_id) => {
+      let board = props.boards.byId[board_id]
+      props.setConfirm({
+          text: (
+            <Alert color="danger" className="mb-0">
+            WARNING: This action can not be undone, <i>{board.name}</i> and
+            all {!!board.projects && board.projects.length} projects can not be recovered
+            </Alert>
+        ),
+        warning: true,
+        confirm: () => {
+            props.removeBoard(board_id);
+        }
+      })
   }
+  useEffect(() => {
+      updateTeam()
+  }, [props.team_id])
 
-  componentDidUpdate(prevProps) {
-    if(prevProps.team_id !== this.props.team_id){
-      this.updateTeam()
-    }
-  }
-
-  updateTeam() {
-    this.props.getMembers(this.props.team_id)
+  const updateTeam = () => {
+    props.getMembers(props.team_id)
     .then(() => {
-      if(["LOCKED", "WARNING"].includes(this.props.team.state)){
-        this.setState({team_settings: "BILLING"})
+      if(["LOCKED", "WARNING"].includes(props.team.state)){
+        setTeamSetting("BILLING")
       } else {
-        this.setState({team_settings: false})
+        setTeamSetting(false)
       }
     })
     .catch(() => { throw new Error("Can't Retrieve Members") })
     // ensure team hasn't changed
-    this.setState({loading: true})
-    this.props.fetchProjects(this.props.team_id).then(() => {
-      this.setState({loading: false})
+    toggleLoading(true)
+    props.fetchProjects(props.team_id).then(() => {
+      fetchBoards = props.fetchBoards(props.team_id).then(() => {
+          toggleLoading(false)
+          fetchBoards = null;
+      })
     })
   }
 
-  componentDidMount() {
-    this.updateTeam()
-
-    let last_update_seen = localStorage.getItem(
-      "last_update_seen_" + this.props.user.id
-    )
-
-    if (!last_update_seen) {
-      last_update_seen = Date.now();
-    } else {
-      last_update_seen = parseInt(last_update_seen);
-    }
+  useEffect(() => {
+      updateTeam()
 
     axios
-      .get(`/product_updates/${last_update_seen}`)
+      .get(`/product_updates`)
       .then(res => {
         if (res.data.length > 0) {
-          this.setState({
-            show_updates_modal: true,
-            product_updates: res.data
-          });
+          setProductUpdates(res.data)
         }
-        last_update_seen = Date.now();
-        localStorage.setItem(
-          "last_update_seen_" + this.props.user.id,
-          last_update_seen
-        );
       })
       .catch(err => {
         console.error(err);
       });
-  }
+  }, [])
 
-  toggleEnv() {
-    this.setState({
-      openEnv: !this.state.openEnv
-    });
-  }
+  useEffect(() => {
+    return () => {
+        props.updateLists(props.team_id)
+    }
+  }, [])
 
-  toggleUpdatesModal() {
-    this.setState(prev_state => ({
-      show_updates_modal: !prev_state.show_updates_modal
-    }));
-  }
-
-  newProject() {
-    if(this.props.projects_array.length >= this.props.team.projects) {
-      this.setState({team_settings: "BILLING"})
+  const newProject = (id) => {
+    if(props.projects_array.length >= props.team.projects) {
+      setTeamSetting("CHECKOUT:PROJECTS")
     } else { 
-      this.props.history.push(`/team/template`)
+      props.history.push(id ? `/team/template/${id}` : '/team/template')
     }
   }
 
-  renderProjects() {
-    const filtered_projects = this.state.filter_text.trim()
-      ? this.props.projects_array.filter(p =>
-          p.name.toLowerCase().includes(this.state.filter_text.toLowerCase())
-        )
-      : this.props.projects_array;
-    return (
-      <React.Fragment>
-        <Masonry elementType="div" className="skills-container">
-          {filtered_projects.map((project, i) => {
-            let icon;
-            let smallIcon = project.small_icon;
-            let largeIcon = project.large_icon;
-            if (!_.isNull(largeIcon)) {
-              icon = largeIcon;
-            } else if (!_.isNull(smallIcon)) {
-              icon = smallIcon;
-            }
+  const reorder = (dragIndex, hoverIndex, dragId, hoverId) => {
+      if (dragId && hoverId) {
+          const projects = props.projects.allIds;
+          const dragIdx = _.findIndex(projects, p => p === dragId)
+          const hoverIdx = _.findIndex(projects, p => p === hoverId)
+          const drag = projects[dragIdx]
+          projects.splice(dragIdx, 1);
+          projects.splice(hoverIdx, 0, drag);
+          props.updateProjects(props.projects);
+      } else {
+          const projects = props.projects.allIds
+          const drag = projects[dragIndex]
 
-            let name = project.name.match(/\b(\w)/g);
-            if (name) {
-              name = name.join("");
-            } else {
-              name = project.name;
-            }
-            name = name.substring(0, 3);
+          projects.splice(dragIndex, 1)
+          projects.splice(hoverIndex, 0, drag)
+          props.updateProjects(props.projects);
+      }
+    }
 
-            return (
-              <VoiceCards
-                key={i}
-                id={project.project_id}
-                icon={icon}
-                name={project.name}
-                placeholder={
-                  <div className="no-image card-image">
-                    <h1>{name}</h1>
-                  </div>
-                }
-                onDelete={this.deleteProject}
-                onCopy={this.copyProject}
-                deleteLabel="Delete Project"
-                copyLabel="Copy Project"
-                onClick={this.openProject}
-                extension={project.diagram}
-                buttonLabel="Edit Project"
-              />
-            );
-          })}
-          { this.props.projects_array.length >= this.props.team.projects ?
-            <div className="empty-card update-card text-center">
-              <div onClick={this.newProject} className="d-block pt-4">
-              <img src={'/upgrade-projects.svg'} className="mt-4 mb-2" width="65" alt="upgrade"></img><br/>
-                <label className="dark">
-                  Project Limit Reached</label>
-                  <div className="text-muted">Upgrade to a paid plan <br></br> for unlimited projects</div>
-              </div>
-            </div> :
-            <EmptyCard onClick={this.newProject} />
-          }
-        </Masonry>
-      </React.Fragment>
-    );
-  }
+    const reorderList = (dragIndex, hoverIndex) => {
+        const lists = props.boards.allIds
+        const drag = lists[dragIndex]
 
-  render() {
-    const LOCKED = (this.props.team.state === "LOCKED")
+        lists.splice(dragIndex, 1)
+        lists.splice(hoverIndex, 0, drag);
+        props.updateBoards(props.boards)
+        props.updateLists(props.team_id);
+    }
 
+    const LOCKED = (props.team.state === "LOCKED")
+    const EXPIRED = (props.team.state === "EXPIRED")
+      const filtered_projects = filter_text.trim()
+          ? props.projects_array.filter(p =>
+              p.name.toLowerCase().includes(filter_text.toLowerCase())
+          )
+          : props.projects_array;
+      let board_projects = [];
+      _.forEach(props.boards_array, board => {
+          board_projects = board_projects.concat(board.projects)
+      })
+      const default_projects = _.filter(filtered_projects, project => {
+          return !_.includes(board_projects, project.project_id)
+      })
+    const defaultBoard = _.find(props.boards_array, b => b.board_id === 'initial')
     return (
       <>
-        <LoadingModal open={this.state.loading_modal} />
-        <div id="secondary-nav">
-          <div>
-            {this.props.teams.allIds.map(team_id => {
-              const team = this.props.teams.byId[team_id]
-              if(team.team_id === this.props.team_id){
-                return <div key={team.team_id} className="nav-item active">
-                  {team.name}
-                </div>
-              }
-              return (
-                <Link
-                  key={team.team_id}
-                  className="nav-item"
-                  to={`/team/${team.team_id}`}
-                >
-                  {team.name}
-                </Link>
-              );
-            })}
-            {this.props.teams.allIds.length < 3 && (
-              <Link className="nav-item" to="/team/new">
-                <img src={'/add-board.svg'} className="mr-1 mb-1" height={15} width={15} alt="add"/> New Board
-              </Link>
-            )}
-          </div>
-          <div className="mr-4 super-center">
-            {this.props.team && <>
-              <Members members={this.props.team.members} update={(setting) => this.setState({team_settings: setting})}/>
-              <TeamSettings
-                open={this.state.team_settings}
-                update={(setting) => this.setState({team_settings: setting})}
-                close={() => this.setState({team_settings: false})}
-              />
-            </>}
-          </div>
-        </div>
-        <div className="title-group no-select pr-2">
-          <div className="subheader-right">
-            <UncontrolledDropdown>
-              <DropdownToggle className="ml-1 mr-4" tag="div">
-                <Tooltip
-                  distance={19}
-                  title="Resources"
-                  position="bottom"
-                >
-                  <button className="dropdown-button-border" type="submit">
-                  </button>
-                </Tooltip>
-              </DropdownToggle>
-              <DropdownMenu className="mt-2">
-                <a href="https://university.getvoiceflow.com/" target='_blank' rel='noopener noreferrer'>
-                  <DropdownItem>University</DropdownItem>
-                </a>
-                <a href="https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ/videos" target='_blank' rel='noopener noreferrer'>
-                  <DropdownItem>Youtube</DropdownItem>
-                </a>
-                <a href="https://www.facebook.com/groups/voiceflowgroup/" target='_blank' rel='noopener noreferrer'>
-                  <DropdownItem>Community</DropdownItem>
-                </a>
-                <a href="https://forum.getvoiceflow.com/" target='_blank' rel='noopener noreferrer'>
-                  <DropdownItem>Forums</DropdownItem>
-                </a>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            <button className="btn-primary ml-1" onClick={this.newProject}>
-              New Project
-            </button>
-          </div>
-        </div>
-        <div id="app" className="secondary-padding dashboard">
+        <ExpiryButton team={props.team} upgrade={()=>setTeamSetting('CHECKOUT')}/>
+        <LoadingModal open={loading_modal} />
+        <div id="app" className="dashboard">
           <UpdatesModal
-            show_update_modal={this.state.show_updates_modal}
-            toggle={this.toggleUpdatesModal}
-            product_updates={this.state.product_updates}
+            show_update_modal={show_updates_modal}
+            toggle={() => toggleShowUpdatesModal(!props.show_updates_modl)}
+            product_updates={product_updates}
           />
-          <div id="navbar-top-left">
-            <div className="searchBar ml-3">
-              <Input
-                name="filter_text"
-                className="search-input form-control-2"
-                placeholder="Search Projects"
-                onChange={this.handleChange}
-              />
-            </div>
-          </div>
-          {this.state.loading && (
+          <Header
+            withLogo
+            history={props.history}
+            leftRenderer={() => (
+                <div className="searchBar ml-3">
+                    <Input
+                        name="filter_text"
+                        className="search-input form-control-2"
+                        placeholder="Search Projects"
+                        onChange={e => handleFilterText(e.target.value)}
+                    />
+                </div>
+            )}
+            rightRenderer={() => (
+                <div className="title-group no-select pr-2">
+                    <div className="subheader-right mr-2">
+                      <button className={cn("dropdown-button-border", {active: updates_open})} id="update-popup" type="button" onClick={() => toggleUpdatesOpen(!updates_open)} />
+                      <Popover 
+                        className="updates-popover-container" 
+                        placement="bottom" 
+                        isOpen={updates_open} 
+                        target="update-popup" 
+                        toggle={() => toggleUpdatesOpen(!updates_open)}>
+                        <PopoverBody>
+                          <UpdatesPopover product_updates={product_updates}/>
+                        </PopoverBody>
+                      </Popover>
+                    </div>
+                    <div className="subheader-right ml-2">
+                        <UncontrolledDropdown>
+                            <DropdownToggle className="ml-1" tag="div">
+                                <Tooltip
+                                    distance={19}
+                                    title="Resources"
+                                    position="bottom"
+                                >
+                                    <button className="dropdown-button-border info" type="submit" />
+                                </Tooltip>
+                            </DropdownToggle>
+                            <DropdownMenu className="mt-2">
+                                <a href="https://university.getvoiceflow.com/" target='_blank' rel='noopener noreferrer'>
+                                    <DropdownItem>University</DropdownItem>
+                                </a>
+                                <a href="https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ/videos" target='_blank' rel='noopener noreferrer'>
+                                    <DropdownItem>Youtube</DropdownItem>
+                                </a>
+                                <a href="https://www.facebook.com/groups/voiceflowgroup/" target='_blank' rel='noopener noreferrer'>
+                                    <DropdownItem>Community</DropdownItem>
+                                </a>
+                                <a href="https://forum.getvoiceflow.com/" target='_blank' rel='noopener noreferrer'>
+                                    <DropdownItem>Forums</DropdownItem>
+                                </a>
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
+                    </div>
+                </div>
+            )}
+            subHeaderRenderer={() => (
+                <div id="secondary-nav">
+                    <div>
+                        {props.teams.allIds.map(team_id => {
+                        const team = props.teams.byId[team_id]
+                        if(team.team_id === props.team_id){
+                            return <div key={team.team_id} className="nav-item active">
+                            {team.name}
+                            </div>
+                        }
+                        return (
+                            <Link
+                            key={team.team_id}
+                            className="nav-item"
+                            to={`/team/${team.team_id}`}
+                            onClick={() => fetchBoards && fetchBoards.abort()}
+                            >
+                            {team.name}
+                            </Link>
+                        );
+                        })}
+                        {props.teams.allIds.length < 3 && (
+                        <Link className="nav-item" to="/team/new">
+                            <img src={'/add-board.svg'} className="mr-1 mb-1" height={15} width={15} alt="add"/> New Board
+                        </Link>
+                        )}
+                    </div>
+                    <div className="mr-4 super-center">
+                        {props.team && <>
+                        <Members members={props.team.members} update={(setting) => setTeamSetting(setting)}/>
+                        <TeamSettings
+                            open={team_setting}
+                            update={(setting) => setTeamSetting(setting)}
+                            close={() => setTeamSetting(false)}
+                        />
+                        </>}
+                    </div>
+                </div>
+            )}
+        />
+          {loading && (
             <div id="loading-diagram">
               <div className="text-center">
                 <h5 className="text-muted mb-2">Loading Projects...</h5>
@@ -327,27 +311,36 @@ export class DashBoard extends Component {
               </div>
             </div>
           )}
-          { LOCKED && <div className="w-100 h-100 super-center position-absolute z-hard">
+          { LOCKED && <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
             <Alert 
               color="danger" 
-              onClick={() => this.setState({team_settings: "BILLING"})} 
+              onClick={() => setTeamSetting("BILLING")} 
               className="pointer text-center py-3">
               <h1><i className="far fa-ban"/></h1>
               Your subscription has failed<br/>
               Please update your payment to continue
             </Alert>
           </div> }
+          { EXPIRED && <div className="w-100 h-100 super-center text-center position-absolute z-hard pb-5">
+            <div>
+              <h3>Your free trial has expired</h3>
+              <div className="text-dull mt-3 mb-4">Please Upgrade to continue using Voiceflow</div>
+              <button className="btn-primary mb-5" onClick={()=>this.setState({team_settings: 'CHECKOUT'})}>Upgrade Plan</button>
+            </div>
+          </div>}
           <div 
-            className={ "w-100 h-100"  + (LOCKED ? " disabled" : "")}
-            onClick={(e) => {
+            id="dashboard"
+            className={cn({"thanos-ed": (LOCKED || EXPIRED)})}
+            onClickCapture={(e) => {
               // prevent all click events
-              if(LOCKED){
+              if(LOCKED || EXPIRED){
                 e.preventDefault()
+                e.stopPropagation()
                 return false
               }
             }}
           >
-            {!this.state.loading && this.props.projects_array.length === 0 ? (
+            {!loading && props.projects_array.length === 0 ? (
               <div className="h-100 d-flex justify-content-center">
                 <div className="align-self-center">
                   <div className="text-center">
@@ -375,29 +368,92 @@ export class DashBoard extends Component {
                 </div>
               </div>
             ) : (
-              <div className="pb-5 pt-4 container">{this.renderProjects()}</div>
+              <div className="board-container-body">
+                    <div className="board-container-body-inner">
+                    <ScrollContextProvider value={scrollHelpers}>
+                        <div ref={bodyRef} className="main-lists">
+                            <div ref={innerRef} className="main-lists-inner">
+                                <List
+                                    id='initial'
+                                    disableDragging
+                                    name={defaultBoard ? defaultBoard.name : 'Default List'}
+                                    projects={default_projects}
+                                    onDuplicateSkill={copyProject}
+                                    onRemoveSkill={deleteProject}
+                                    onRename={props.renameBoard}
+                                    onRenameSkill={() => { }}
+                                    createSkill={newProject}
+                                    itemReorder={reorder}
+                                />
+                                {_.map(props.boards_array, (board, idx) => {
+                                    if (board.board_id !== 'initial') return (
+                                        <List
+                                            id={board.board_id}
+                                            key={board.board_id}
+                                            index={idx}
+                                            name={board.name}
+                                            onRename={props.renameBoard}
+                                            onRemove={() => deleteBoard(board.board_id)}
+                                            projects={_.filter(filtered_projects, p => _.includes(board.projects, p.project_id))}
+                                            onDuplicateSkill={copyProject}
+                                            onRemoveSkill={deleteProject}
+                                            onRenameSkill={() => {}}
+                                            createSkill={newProject}
+                                            reorder={reorderList}
+                                            itemReorder={reorder}
+                                        />
+                                    );
+                                })}
+                                <div className="main-list-add">
+                                    <Tooltip
+                                        distance={16}
+                                        title="Add new list"
+                                        position="bottom"
+                                        className="ml-1 mr-4"
+                                    >
+                                        <button
+                                            onClick={() => {
+                                                props.addBoard(props.team_id)
+                                            }}
+                                            className="nav-btn-border mt-1 add-button"
+                                        />
+                                    </Tooltip>
+                                </div>
+                            </div>
+                        </div>
+                    </ScrollContextProvider>
+                    </div>
+                </div>
             )}
           </div>
         </div>
       </>
     );
-  }
 }
 
 const mapStateToProps = state => ({
   user: state.account,
   projects_array: unnormalize(state.project),
-  projects: state.project
+  projects: state.project,
+  boards: state.board,
+  boards_array: unnormalize(state.board),
 });
 
 const mapDispatchToProps = dispatch => {
   return {
     fetchProjects: team_id => dispatch(fetchProjects(team_id)),
+    fetchBoards: team_id => dispatch(fetchBoards(team_id)),
+    addBoard: team_id => dispatch(addBoard(team_id)),
     deleteProject: project_id => dispatch(deleteProject(project_id)),
-    copyProject: (project_id, team_id) => dispatch(copyProject(project_id, team_id)),
+    copyProject: (project_id, team_id, board_id) => dispatch(copyProject(project_id, team_id, board_id)),
     setConfirm: confirm => dispatch(setConfirm(confirm)),
     getMembers: team_id => dispatch(getMembers(team_id)),
-    setError: err => dispatch(setError(err))
+    setError: err => dispatch(setError(err)),
+    updateLists: (team_id) => dispatch(updateLists(team_id)),
+    removeBoard: (board_id) => dispatch(deleteBoard(board_id)),
+    renameBoard: (board_id, new_name) => dispatch(renameList(board_id, new_name)),
+    updateBoards: (boards) => dispatch(updateBoards(boards)),
+    updateProjects: projects => dispatch(updateProjects(projects))
   };
 };
 

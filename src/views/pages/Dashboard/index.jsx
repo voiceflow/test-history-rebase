@@ -28,7 +28,9 @@ import { setConfirm, setError } from 'ducks/modal'
 import { connect } from "react-redux";
 import { Members } from 'views/components/User'
 import ExpiryButton from './ExpiryButton'
-import List from './components/List'
+import { Item as ListItem } from './components/Item';
+import List, { List as SimpleList } from './components/List';
+import DragLayer from 'components/DragLayer';
 
 import {
   fetchProjects,
@@ -419,6 +421,14 @@ export const DashBoard = props => {
                                         />
                                     </Tooltip>
                                 </div>
+                                <DragLayer withMemo>
+                                  {item => {
+                                    if (item.dragType === 'dashboard-list') {
+                                      return <SimpleList {...item} />;
+                                    }
+                                    return <ListItem {...item} />;
+                                  }}
+                                </DragLayer>
                             </div>
                         </div>
                     </ScrollContextProvider>

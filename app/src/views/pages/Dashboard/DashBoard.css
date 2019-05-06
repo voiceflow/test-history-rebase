@@ -328,6 +328,7 @@
   border: 1px solid #eaeff4 !important;
 }
 .projects-list__item {
+  background-color: #fff;
   border: 1px solid #eaeff4;
   border-radius: 7px;
   display: -ms-flexbox;
@@ -439,7 +440,7 @@
 }
 
 .projects-list__dragzone {
-  height: 74px;
+  height: 76px;
   border-radius: 7px;
   background-color: #fff;
   background-size: 10%;

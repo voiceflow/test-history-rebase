@@ -33,7 +33,6 @@ import List, { List as SimpleList } from './components/List';
 import DragLayer from 'components/DragLayer';
 
 import {
-  fetchProjects,
   deleteProject,
   copyProject,
   updateProjects
@@ -45,11 +44,22 @@ import {
     updateLists,
     deleteBoard,
     renameList,
+    changeProjectPosition,
 } from 'ducks/board';
 import {
   getMembers,
 } from "ducks/team";
 import { unnormalize } from "ducks/_normalize"
+
+const filter_projects = (projects, filter) => {
+  const filtered = {}
+  projects.allIds.forEach(p => {
+    if(projects.byId[p].name.toLowerCase().includes(filter)){
+      filtered[p] = projects.byId[p]
+    }
+  })
+  return filtered
+}
 
 export const DashBoard = props => {
   const [loading, toggleLoading]  = useState(true)
@@ -62,7 +72,7 @@ export const DashBoard = props => {
   const [updates_open, toggleUpdatesOpen] = useState(false)
 
   const copyProject = (project_id, board_id=null) => {
-    if(props.projects_array.length >= props.team.projects) {
+    if(props.projects.allIds.length >= props.team.projects) {
       return setTeamSetting("CHECKOUT:PROJECTS")
     }
     toggleLoadingModal(true)
@@ -117,17 +127,13 @@ export const DashBoard = props => {
     .catch(() => { throw new Error("Can't Retrieve Members") })
     // ensure team hasn't changed
     toggleLoading(true)
-    props.fetchProjects(props.team_id).then(() => {
-      fetchBoards = props.fetchBoards(props.team_id).then(() => {
-          toggleLoading(false)
-          fetchBoards = null;
-      })
+    fetchBoards = props.fetchBoards(props.team_id).then(() => {
+        toggleLoading(false)
+        fetchBoards = null;
     })
   }
 
   useEffect(() => {
-      updateTeam()
-
     axios
       .get(`/product_updates`)
       .then(res => {
@@ -140,64 +146,25 @@ export const DashBoard = props => {
       });
   }, [])
 
-  useEffect(() => {
-    return () => {
-        props.updateLists(props.team_id)
-    }
-  }, [])
-
   const newProject = (id) => {
-    if(props.projects_array.length >= props.team.projects) {
+    if(props.projects.allIds.length >= props.team.projects) {
       setTeamSetting("CHECKOUT:PROJECTS")
     } else { 
       props.history.push(id ? `/team/template/${id}` : '/team/template')
     }
   }
 
-  const reorder = (dragIndex, hoverIndex, dragId, hoverId) => {
-      if (dragId && hoverId) {
-          const projects = props.projects.allIds;
-          const dragIdx = _.findIndex(projects, p => p === dragId)
-          const hoverIdx = _.findIndex(projects, p => p === hoverId)
-          const drag = projects[dragIdx]
-          projects.splice(dragIdx, 1);
-          projects.splice(hoverIdx, 0, drag);
-          props.updateProjects(props.projects);
-      } else {
-          const projects = props.projects.allIds
-          const drag = projects[dragIndex]
-
-          projects.splice(dragIndex, 1)
-          projects.splice(hoverIndex, 0, drag)
-          props.updateProjects(props.projects);
-      }
-    }
-
-    const reorderList = (dragIndex, hoverIndex) => {
-        const lists = props.boards.allIds
-        const drag = lists[dragIndex]
-
-        lists.splice(dragIndex, 1)
-        lists.splice(hoverIndex, 0, drag);
-        props.updateBoards(props.boards)
-        props.updateLists(props.team_id);
-    }
-
     const LOCKED = (props.team.state === "LOCKED")
     const EXPIRED = (props.team.state === "EXPIRED")
-      const filtered_projects = filter_text.trim()
-          ? props.projects_array.filter(p =>
-              p.name.toLowerCase().includes(filter_text.toLowerCase())
-          )
-          : props.projects_array;
-      let board_projects = [];
-      _.forEach(props.boards_array, board => {
-          board_projects = board_projects.concat(board.projects)
-      })
-      const default_projects = _.filter(filtered_projects, project => {
-          return !_.includes(board_projects, project.project_id)
-      })
-    const defaultBoard = _.find(props.boards_array, b => b.board_id === 'initial')
+
+    const filter = filter_text.trim().toLowerCase()
+
+    const filtered_projects = filter
+        ? filter_projects(props.projects, filter)
+        : props.projects.byId;
+
+    const saveList = () => props.updateLists(props.team_id)
+
     return (
       <>
         <ExpiryButton team={props.team} upgrade={()=>setTeamSetting('CHECKOUT')}/>
@@ -342,7 +309,7 @@ export const DashBoard = props => {
               }
             }}
           >
-            {!loading && props.projects_array.length === 0 ? (
+            {!loading && props.projects.allIds.length === 0 ? (
               <div className="h-100 d-flex justify-content-center">
                 <div className="align-self-center">
                   <div className="text-center">
@@ -375,37 +342,32 @@ export const DashBoard = props => {
                     <ScrollContextProvider value={scrollHelpers}>
                         <div ref={bodyRef} className="main-lists">
                             <div ref={innerRef} className="main-lists-inner">
-                                <List
-                                    id='initial'
-                                    disableDragging
-                                    name={defaultBoard ? defaultBoard.name : 'Default List'}
-                                    projects={default_projects}
+                                {_.map(props.boards_array, (board, idx) => (
+                                  <List
+                                    id={board.board_id}
+                                    key={board.board_id}
+                                    index={idx}
+                                    name={board.name}
+                                    onRename={props.renameBoard}
+                                    onRemove={() => deleteBoard(board.board_id)}
+                                    projects={board.projects.map(p => filtered_projects[p])}
                                     onDuplicateSkill={copyProject}
                                     onRemoveSkill={deleteProject}
-                                    onRename={props.renameBoard}
-                                    onRenameSkill={() => { }}
                                     createSkill={newProject}
-                                    itemReorder={reorder}
-                                />
-                                {_.map(props.boards_array, (board, idx) => {
-                                    if (board.board_id !== 'initial') return (
-                                        <List
-                                            id={board.board_id}
-                                            key={board.board_id}
-                                            index={idx}
-                                            name={board.name}
-                                            onRename={props.renameBoard}
-                                            onRemove={() => deleteBoard(board.board_id)}
-                                            projects={_.filter(filtered_projects, p => _.includes(board.projects, p.project_id))}
-                                            onDuplicateSkill={copyProject}
-                                            onRemoveSkill={deleteProject}
-                                            onRenameSkill={() => {}}
-                                            createSkill={newProject}
-                                            reorder={reorderList}
-                                            itemReorder={reorder}
-                                        />
-                                    );
-                                })}
+                                    onDrop={saveList}
+                                    onMoveProject={props.changeProjectPosition}
+                                    onDropProject={saveList}
+                                    disableDragging={!!filter}
+                                  />
+                                ))}
+                                <DragLayer withMemo>
+                                  {item => {
+                                    if (item.dragType === 'dashboard-list') {
+                                      return <SimpleList {...item} />;
+                                    }
+                                    return <ListItem {...item} />;
+                                  }}
+                                </DragLayer>
                                 <div className="main-list-add">
                                     <Tooltip
                                         distance={16}
@@ -421,14 +383,6 @@ export const DashBoard = props => {
                                         />
                                     </Tooltip>
                                 </div>
-                                <DragLayer withMemo>
-                                  {item => {
-                                    if (item.dragType === 'dashboard-list') {
-                                      return <SimpleList {...item} />;
-                                    }
-                                    return <ListItem {...item} />;
-                                  }}
-                                </DragLayer>
                             </div>
                         </div>
                     </ScrollContextProvider>
@@ -443,7 +397,6 @@ export const DashBoard = props => {
 
 const mapStateToProps = state => ({
   user: state.account,
-  projects_array: unnormalize(state.project),
   projects: state.project,
   boards: state.board,
   boards_array: unnormalize(state.board),
@@ -451,7 +404,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchProjects: team_id => dispatch(fetchProjects(team_id)),
     fetchBoards: team_id => dispatch(fetchBoards(team_id)),
     addBoard: team_id => dispatch(addBoard(team_id)),
     deleteProject: project_id => dispatch(deleteProject(project_id)),
@@ -463,7 +415,8 @@ const mapDispatchToProps = dispatch => {
     removeBoard: (board_id) => dispatch(deleteBoard(board_id)),
     renameBoard: (board_id, new_name) => dispatch(renameList(board_id, new_name)),
     updateBoards: (boards) => dispatch(updateBoards(boards)),
-    updateProjects: projects => dispatch(updateProjects(projects))
+    updateProjects: projects => dispatch(updateProjects(projects)),
+    changeProjectPosition: (drag, hover) => dispatch(changeProjectPosition(drag, hover))
   };
 };
 

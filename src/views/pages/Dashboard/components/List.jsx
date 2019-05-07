@@ -50,11 +50,11 @@ export function List(props) {
     onRename,
     onRemove,
     isCreated,
-    projectIds,
     isDragging,
-    itemReorder,
     onRenameSkill,
     onRemoveSkill,
+    onMoveProject,
+    onDropProject,
     onDuplicateSkill,
     connectDragSource,
     isDraggingPreview,
@@ -78,7 +78,7 @@ export function List(props) {
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
 
   const [onScroll, isHeaderShadowShown, isFooterShadowShown] = useScrollShadows(bodyRef, [
-    projectIds,
+    projects,
   ]);
 
   const [moving, setMoving] = useState(false)
@@ -119,9 +119,10 @@ export function List(props) {
               )}
 
               <DropContainer
-                id={projectIds[0] || 0}
+                id={0}
                 index={0}
                 listId={id}
+                onMove={onMoveProject}
                 className={cn("main-list-header", {
                   "h-o-0": isDragging,
                   __scrolling: isHeaderShadowShown
@@ -140,8 +141,6 @@ export function List(props) {
                         onKeyPress={({ charCode }) => (charCode === 13) && onInputNameBlur()}
                         autoFocus
                         placeholder="Enter list name"
-                        // onEnterPress={onInputNameBlur}
-                        // onEscapePress={toggleTitleEditable}
                       />
                   ) : (
                     <div
@@ -196,16 +195,17 @@ export function List(props) {
                             className="projects-list__list-item"
                           >
                             <Item
+                              index={i}
                               id={project.skill_id}
+                              listId={id}
                               project_id={project.project_id}
                               created={project.created}
                               isFB={false}
                               avatarUrl={icon}
                               name={project.name}
                               diagram={project.diagram}
-                              reorder={itemReorder}
-                              index={i}
-                              listId={id}
+                              onDrop={onDropProject}
+                              onMove={onMoveProject}
                               onToggleDragging={setMoving}
                               language={project.locales}
                               onRename={() =>

@@ -4,11 +4,13 @@ import { setError } from "ducks/modal";
 import Normalize, { unnormalize } from "ducks/_normalize";
 import { deleteProject } from "./project";
 import update from "immutability-helper";
-import randomstring from 'randomstring';
+import randomstring from "randomstring";
+import { fetchProjects } from 'ducks/project'
 
 const initialState = {
   byId: {},
-  allIds: []
+  allIds: [],
+  save: ''
 };
 
 export default function boardReducer(state = initialState, action) {
@@ -25,6 +27,11 @@ export default function boardReducer(state = initialState, action) {
         byId: {},
         allIds: []
       };
+    case "UPDATE_BOARD_SAVE":
+      return {
+        ...state,
+        save: action.payload
+      }
     default:
       return state;
   }
@@ -42,7 +49,7 @@ export const resetBoards = () => ({
 });
 
 export const fetchBoards = team_id => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch(resetBoards());
     if (!team_id) return;
 
@@ -50,8 +57,35 @@ export const fetchBoards = team_id => {
       let url = `/boards`;
       if (team_id !== -1) url = `/team/${team_id}/boards`;
       let boards = (await axios.get(url)).data.boards;
+
+      // get the projects on this board
+      await dispatch(fetchProjects(team_id))
+
+      // determine if there are any projects not on a board
+      let board_projects = [];
+      _.forEach(boards, board => {
+        board_projects.push(...board.projects)
+      })
+      board_projects = new Set(board_projects)
+      const projects = getState().project.allIds
+      const unsorted_projects = projects.filter(p => !board_projects.has(p))
+
+      if(unsorted_projects.length > 0) {
+        boards.push({
+          board_id: randomstring.generate(10),
+          name: 'Default List',
+          projects: unsorted_projects
+        })
+      }
+
       // NORMALIZE
       dispatch(Boards.create({ data: boards }));
+
+      dispatch({
+        type: 'UPDATE_BOARD_SAVE',
+        payload: JSON.stringify(unnormalize(getState().board))
+      })
+
       return Promise.resolve();
     } catch (err) {
       console.error(err);
@@ -61,9 +95,9 @@ export const fetchBoards = team_id => {
 };
 
 export const addBoard = team_id => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
-      const current_id = randomstring.generate(10)
+      const current_id = randomstring.generate(10);
       let empty_board = {
         board_id: current_id,
         name: `New List`,
@@ -122,9 +156,19 @@ export const updateLists = team_id => {
   return async (dispatch, getState) => {
     try {
       const boards = getState().board;
+      const boards_array = unnormalize(boards)
+
+      if(boards.save === JSON.stringify(boards_array)) return
+
       await axios.patch(`/team/${team_id}/update_board`, {
-        boards: unnormalize(boards)
+        boards: boards_array
       });
+
+      dispatch({
+        type: 'UPDATE_BOARD_SAVE',
+        payload: JSON.stringify(boards_array)
+      })
+
     } catch (err) {
       console.error(err);
       // dispatch(setError("Unable to update lists"));
@@ -147,4 +191,43 @@ export const deleteBoard = board_id => {
       console.error(err);
     }
   };
+};
+
+export const changeProjectPosition = (drag, hover) => (
+  dispatch,
+  getState
+) => {
+  try {
+    const {id: hId, listId: hListId} = hover
+    const {id: dId, listId: dListId} = drag
+    if(hId === dId && hListId === dListId) return
+
+    const state = getState()
+    const { projects: dProjectIds } = state.board.byId[dListId];
+    const { projects: hProjectIds } = state.board.byId[hListId];
+
+    const dIndex = dProjectIds.indexOf(dId);
+    const hIndex = hProjectIds.indexOf(hId);
+
+    if (dIndex === -1) return
+
+    const newDProjectIds = [...dProjectIds];
+
+    if (hListId === dListId) {
+      newDProjectIds.splice(dIndex, 1);
+      newDProjectIds.splice(hIndex, 0, dProjectIds[dIndex]);
+      dispatch(Boards.update({ id: dListId, data: {projects: newDProjectIds} }))
+      return
+    }
+
+    const newHProjectIds = [...hProjectIds];
+
+    newDProjectIds.splice(dIndex, 1);
+    newHProjectIds.splice(hIndex, 0, dProjectIds[dIndex]);
+
+    dispatch(Boards.update({ id: dListId, data: {projects: newDProjectIds} }))
+    dispatch(Boards.update({ id: hListId, data: {projects: newHProjectIds} }))
+  }catch(err){
+    console.error(err)
+  }
 };

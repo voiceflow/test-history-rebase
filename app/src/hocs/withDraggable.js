@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import compose from 'recompose/compose';
+import throttle from 'lodash/throttle';
 import wrapDisplayName from 'recompose/wrapDisplayName';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { DragSource, DropTarget } from 'react-dnd';
@@ -62,7 +63,7 @@ export default ({
   };
 
   const panelTarget = {
-    hover: (props, monitor, component) => {
+    hover: throttle((props, monitor, component) => {
       const dragItem = monitor.getItem();
 
       if (!component || !dragItem || (canDrop && !canDrop(props))) {
@@ -78,6 +79,8 @@ export default ({
 
       const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
       const clientOffset = monitor.getClientOffset();
+
+      if(!clientOffset) return
 
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
@@ -96,7 +99,7 @@ export default ({
 
       item.index = hoverIndex;
       item.listId = props.listId;
-    },
+    }, 150),
   };
 
   return compose(

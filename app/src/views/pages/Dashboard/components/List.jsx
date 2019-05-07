@@ -196,9 +196,8 @@ export function List(props) {
                           >
                             <Item
                               index={i}
-                              id={project.skill_id}
+                              id={project.project_id}
                               listId={id}
-                              project_id={project.project_id}
                               created={project.created}
                               isFB={false}
                               avatarUrl={icon}

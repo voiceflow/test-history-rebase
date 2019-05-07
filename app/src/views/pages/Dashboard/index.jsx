@@ -45,6 +45,7 @@ import {
     deleteBoard,
     renameList,
     changeProjectPosition,
+    changeListPosition
 } from 'ducks/board';
 import {
   getMembers,
@@ -354,6 +355,7 @@ export const DashBoard = props => {
                                     onDuplicateSkill={copyProject}
                                     onRemoveSkill={deleteProject}
                                     createSkill={newProject}
+                                    onMove={props.changeListPosition}
                                     onDrop={saveList}
                                     onMoveProject={props.changeProjectPosition}
                                     onDropProject={saveList}
@@ -416,7 +418,8 @@ const mapDispatchToProps = dispatch => {
     renameBoard: (board_id, new_name) => dispatch(renameList(board_id, new_name)),
     updateBoards: (boards) => dispatch(updateBoards(boards)),
     updateProjects: projects => dispatch(updateProjects(projects)),
-    changeProjectPosition: (drag, hover) => dispatch(changeProjectPosition(drag, hover))
+    changeProjectPosition: (drag, hover) => dispatch(changeProjectPosition(drag, hover)),
+    changeListPosition: (drag, hover) => dispatch(changeListPosition(drag, hover))
   };
 };
 

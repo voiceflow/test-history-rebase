@@ -90,12 +90,6 @@ export function List(props) {
         '__is-draggable __is-dragging': isDraggingPreview,
       })}
     >
-      <DropContainer
-        id={0}
-        index={0}
-        listId={id}
-        onMove={onMoveProject}
-      >
       <Form
         onRef={node => (listRef.current = node)}
         style={{ height: isDraggingPreview || isDragging ? '100%' : null }}
@@ -123,7 +117,12 @@ export function List(props) {
                   className="h-pos-a main-list-dropzone"
                 />
               )}
-              <div
+
+              <DropContainer
+                id={0}
+                index={0}
+                listId={id}
+                onMove={onMoveProject}
                 className={cn("main-list-header", {
                   "h-o-0": isDragging,
                   __scrolling: isHeaderShadowShown
@@ -165,7 +164,7 @@ export function List(props) {
                     label={<i className="far fa-ellipsis-h" />}
                   />
                 </div>
-              </div>
+              </DropContainer>
 
               {!isEmpty && (
                 <div
@@ -249,7 +248,6 @@ export function List(props) {
           );
         }}
       </Form>
-      </DropContainer>
       {isDragging && <div className="main-list__dragzone" />}
     </div>
   );

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import compose from 'recompose/compose';
-import _ from 'lodash';
 import wrapDisplayName from 'recompose/wrapDisplayName';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { DragSource, DropTarget } from 'react-dnd';
@@ -63,29 +62,40 @@ export default ({
   };
 
   const panelTarget = {
-    hover(props, monitor, component) {
+    hover: (props, monitor, component) => {
       const dragItem = monitor.getItem();
-      if (!component) {
+
+      if (!component || !dragItem || (canDrop && !canDrop(props))) {
         return null;
       }
 
-      const {
-        index: dragIndex,
-        project_id: dragId
-      } = dragItem;
-      const {
-        index: hoverIndex,
-        project_id: hoverId
-      } = props;
+      const { index: dragIndex, id: dragId } = dragItem;
+      const { index: hoverIndex, id: hoverId } = props;
 
-      if (dragIndex === hoverIndex) {
+      if (dragId === hoverId) {
         return;
       }
 
-        const item = monitor.getItem();
-        item.index = hoverIndex;
-        item.listId = props.listId;
-        _.isNumber(hoverIndex) && _.isNumber(dragIndex) && props.reorder && props.reorder(dragIndex, hoverIndex, dragId, hoverId);
+      const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+      const clientOffset = monitor.getClientOffset();
+
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+
+      props[onMoveKey] && props[onMoveKey](dragItem, props);
+
+      const item = monitor.getItem();
+
+      item.index = hoverIndex;
+      item.listId = props.listId;
     },
   };
 

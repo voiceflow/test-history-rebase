@@ -74,6 +74,7 @@ exports[`Dashboard render dashboard 1`] = `
                 <DropTarget(DragSource(WithDraggable(List)))
                   createSkill={[Function]}
                   disableDragging={true}
+                  id="initial"
                   itemReorder={[Function]}
                   name="Default List"
                   onDuplicateSkill={[Function]}

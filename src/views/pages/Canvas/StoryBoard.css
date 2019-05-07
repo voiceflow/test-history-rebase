@@ -1358,11 +1358,12 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
 .menu-tip {
     color: #8da2b5 !important;
     transition: all 0.15s ease;
+    padding: 0 6px;
+    border-radius: 100%;
 }
 
 .menu-tip:hover {
-    color: #8da2b5 !important;
-    background-image: url('/info-hover.svg');
+    background-color: #e9eff5;
 }
 
 .btn-info {

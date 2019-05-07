@@ -26,7 +26,7 @@ import { combineAppendValidation, appendValidator } from 'utils/combineHelper'
 import { updateVersion, updateIntents, setCanFulfill } from 'ducks/version'
 import { setVariables } from 'ducks/variable'
 import { setCanvasError } from 'ducks/user'
-import { renameDiagram } from 'ducks/diagram'
+import { renameDiagram, appendDiagrams } from 'ducks/diagram'
 import { setError, setConfirm } from 'ducks/modal'
 import { fetchEmails } from 'ducks/email'
 
@@ -1392,10 +1392,7 @@ export class Canvas extends Component {
         } else {
           node.extras.diagram_id = id
         }
-        this.props.diagrams.push({
-            name: new_flow_name,
-            id: id
-        })
+        this.props.appendDiagrams(new_flow_name, id)
         this.enterFlow(id)
       })
       .catch(err => {
@@ -1769,7 +1766,8 @@ const mapDispatchToProps = dispatch => {
     setError: (err) => dispatch(setError(err)),
     setConfirm: (confirm) => dispatch(setConfirm(confirm)),
     getIntegrationsUsers: () => dispatch(fetchIntegrationUsers()),
-    getEmails: (skill_id) => dispatch(fetchEmails(skill_id))
+    getEmails: (skill_id) => dispatch(fetchEmails(skill_id)),
+    appendDiagrams: (name, id) => dispatch(appendDiagrams({name, id, sub_diagrams: []}))
   }
 }
 

@@ -52,17 +52,15 @@ export function List(props) {
     isCreated,
     isDragging,
     onRenameSkill,
-    onRemoveSkill,
+    onDeleteProject,
     onMoveProject,
     onDropProject,
-    onDuplicateSkill,
+    onCopyProject,
     connectDragSource,
     isDraggingPreview,
     connectDropTarget,
     createSkill,
   } = props;
-
-  let handleDuplicateSkill;
 
   const isEmpty = !projects || !projects.length;
 
@@ -70,8 +68,6 @@ export function List(props) {
 
   const [isTitleEditable, toggleTitleEditable] = useToggle(isCreated);
   const [isCreatingSkill] = useToggle(false);
-
-    handleDuplicateSkill = onDuplicateSkill;
 
   useHorizontalScrollToNode(listRef, isCreated, [id, isCreated]);
 
@@ -181,7 +177,7 @@ export function List(props) {
                   >
                     <ul className="projects-list">
                       {projects.map((project, i) => {
-                        if (!project) return;
+                        if (!project) return null;
                         let icon;
                         let smallIcon = project.small_icon;
                         let largeIcon = project.large_icon;
@@ -213,13 +209,10 @@ export function List(props) {
                               }
                               uploaded={project.isLive}
                               onRemove={() =>
-                                onRemoveSkill(
-                                  project.project_id,
-                                  project.name
-                                )
+                                onDeleteProject(project.project_id)
                               }
                               onDuplicate={() =>
-                                handleDuplicateSkill(
+                                onCopyProject(
                                   project.project_id,
                                   id
                                 )
@@ -271,17 +264,15 @@ List.propTypes = {
   name: PropTypes.string,
   projects: PropTypes.array,
   createSkill: PropTypes.func,
-  listType: PropTypes.oneOf(['projects', 'flash_briefings']),
   onRename: PropTypes.func,
   onRemove: PropTypes.func,
   isCreated: PropTypes.bool,
   isDragging: PropTypes.bool,
   projectIds: PropTypes.arrayOf(PropTypes.number),
-  onRenameSkill: PropTypes.func,
-  onRemoveSkill: PropTypes.func,
+  onDeleteProject: PropTypes.func,
   onCancelCreate: PropTypes.func,
   disableDragging: PropTypes.bool,
-  onDuplicateSkill: PropTypes.func,
+  onCopyProject: PropTypes.func,
   connectDragSource: PropTypes.func,
   connectDropTarget: PropTypes.func,
   isDraggingPreview: PropTypes.bool,

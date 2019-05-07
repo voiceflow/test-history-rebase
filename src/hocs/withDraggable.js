@@ -70,7 +70,7 @@ export default ({
         return null;
       }
 
-      const { index: dragIndex, id: dragId } = dragItem;
+      const { id: dragId } = dragItem;
       const { index: hoverIndex, id: hoverId } = props;
 
       if (dragId === hoverId) {

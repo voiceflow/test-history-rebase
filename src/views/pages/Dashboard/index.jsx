@@ -352,8 +352,8 @@ export const DashBoard = props => {
                                     onRename={props.renameBoard}
                                     onRemove={() => deleteBoard(board.board_id)}
                                     projects={board.projects.map(p => filtered_projects[p])}
-                                    onDuplicateSkill={copyProject}
-                                    onRemoveSkill={deleteProject}
+                                    onCopyProject={copyProject}
+                                    onDeleteProject={deleteProject}
                                     createSkill={newProject}
                                     onMove={props.changeListPosition}
                                     onDrop={saveList}

@@ -181,6 +181,7 @@ export function List(props) {
                   >
                     <ul className="projects-list">
                       {projects.map((project, i) => {
+                        if (!project) return;
                         let icon;
                         let smallIcon = project.small_icon;
                         let largeIcon = project.large_icon;

@@ -77,22 +77,6 @@ export default ({
         return;
       }
 
-      const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
-      const clientOffset = monitor.getClientOffset();
-
-      if(!clientOffset) return
-
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return;
-      }
-
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return;
-      }
-
       props[onMoveKey] && props[onMoveKey](dragItem, props);
 
       const item = monitor.getItem();

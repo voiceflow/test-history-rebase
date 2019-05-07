@@ -110,6 +110,7 @@
     "url": "https://github.com/storyflow/storyflow-creator"
   },
   "scripts": {
+    "lint": "eslint \"**/*.js\" --fix",
     "build": "cd app && npm run build",
     "client": "cd app && npm run start",
     "commit": "git-cz",

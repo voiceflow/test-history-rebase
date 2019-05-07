@@ -110,7 +110,6 @@
     "url": "https://github.com/storyflow/storyflow-creator"
   },
   "scripts": {
-    "lint": "eslint \"**/*.js\" --fix",
     "build": "cd app && npm run build",
     "client": "cd app && npm run start",
     "commit": "git-cz",
@@ -118,6 +117,7 @@
     "dev": "concurrently --kill-others-on-fail \"npm run local\" \"npm run client\"",
     "elasticsearch": "elasticsearch",
     "integration_tests": "NODE_ENV=test ./node_modules/.bin/jest --testPathIgnorePatterns=/app/ --detectOpenHandles --runInBand --forceExit --testMatch=\"**/(*.)+(itest).js?(x)\"",
+    "lint": "eslint \"**/*.js\" --fix",
     "local": "NODE_ENV=local node index.js",
     "prod": "NODE_ENV=development_prod node index.js",
     "prod_test": "NODE_ENV=development_prod_test node index.js",

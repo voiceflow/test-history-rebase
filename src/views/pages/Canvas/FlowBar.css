@@ -1,0 +1,11 @@
+button.previous {
+    right: 383px;
+}
+
+#flow-bar > .dropup.dropdown > button {
+    margin-left: -42px;
+}
+
+button:disabled {
+    pointer-events: none;
+}

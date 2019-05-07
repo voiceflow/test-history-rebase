@@ -33,16 +33,15 @@ const DROPDOWN_BUTTON_PROPS = {
 
 export function Item(props) {
   const {
-    id,
     name,
     created,
     diagram,
     language,
     uploaded,
-    onRename,
     onRemove,
     avatarUrl,
     isDragging,
+    version_id,
     onDuplicate,
     connectDragSource,
     connectDropTarget,
@@ -50,7 +49,7 @@ export function Item(props) {
   } = props;
 
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
-  const pathTo = `/canvas/${id}/${diagram}`;
+  const pathTo = `/canvas/${version_id}/${diagram}`;
 
   const color = colors[(new Date(created)).getTime() % colors.length]
 
@@ -76,7 +75,6 @@ export function Item(props) {
         <div className="projects-list__item-actions">
           <Dropdown
             options={DROPDOWN_OPTIONS}
-            onRename={onRename}
             onRemove={onRemove}
             onDuplicate={onDuplicate}
             buttonProps={DROPDOWN_BUTTON_PROPS}
@@ -131,13 +129,13 @@ Item.propTypes = {
   name: PropTypes.string.isRequired,
   created: PropTypes.string.isRequired,
   isOver: PropTypes.bool,
-  onRename: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
   language: PropTypes.array.isRequired,
   uploaded: PropTypes.bool,
   avatarUrl: PropTypes.string,
   isDragging: PropTypes.bool,
   isDragLayer: PropTypes.bool,
+  version_id: PropTypes.string.isRequired,
   onDuplicate: PropTypes.func.isRequired,
   connectDragSource: PropTypes.func,
   connectDropTarget: PropTypes.func,

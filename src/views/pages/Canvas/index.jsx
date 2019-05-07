@@ -1505,12 +1505,6 @@ export class Canvas extends Component {
         this.unsave()
     }
 
-    updateExtras = (extras, callback) => {
-        const node = this.state.engine.getSuperSelect()
-        node.extras = extras
-        this.forceUpdate(callback)
-    }
-
     render() {
         return (
           <React.Fragment>
@@ -1577,6 +1571,7 @@ export class Canvas extends Component {
                 updateLinter={this.updateLinter}
                 renderPlatformSwitch={this.renderPlatformSwitch}
                 history={this.props.history}
+                preview={this.props.preview}
               />
             :
               <div className="title-group no-select">
@@ -1660,7 +1655,6 @@ export class Canvas extends Component {
                 diagram_level_intents={this.state.diagram_level_intents}
                 setCanvasEvents={this.setMousetrap}
                 updateLinter={this.updateLinter}
-                updateExtras={this.updateExtras}
               />
               <div
                 key={this.props.diagram_id}

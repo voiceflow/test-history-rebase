@@ -14,6 +14,8 @@ import { useToggle } from 'hooks/toggle';
 import Link from 'components/Link';
 import Dropdown from 'components/Dropdown';
 
+import { colors } from 'utils/colors';
+
 const DROPDOWN_OPTIONS = [
     {
         id: 'duplicate',
@@ -33,7 +35,7 @@ export function Item(props) {
   const {
     id,
     name,
-    color,
+    created,
     diagram,
     language,
     uploaded,
@@ -49,6 +51,8 @@ export function Item(props) {
 
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
   const pathTo = `/canvas/${id}/${diagram}`;
+
+  const color = colors[(new Date(created)).getTime() % colors.length]
 
   const item = (
     <div>
@@ -94,7 +98,7 @@ export function Item(props) {
 
         <Tooltip
           position="top"
-          title={uploaded ? "Live" : "Local"}
+          title={uploaded ? "Live" : "Development"}
           className="projects-list__item-status"
           distance={10}
         >
@@ -120,12 +124,12 @@ export default withDraggable({
   onDropKey: 'onDrop',
   onMoveKey: 'onMove',
   allowXTransform: true,
-})(Item);
+})(React.memo(Item));
 
 Item.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
+  created: PropTypes.string.isRequired,
   isOver: PropTypes.bool,
   onRename: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,

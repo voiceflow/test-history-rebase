@@ -1,5 +1,12 @@
 version: 2 # use CircleCI 2.0
 jobs: # a collection of steps
+  release:
+    docker:
+      - image: node:11
+    steps:
+      - checkout
+      - run: npm i -g semantic-release
+      - run: semantic-release
   test: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/storyflow-server # directory where steps will run
     docker: # run the steps with Docker
@@ -153,14 +160,6 @@ jobs: # a collection of steps
       - run:
           name: Push to Elastic Beanstalk
           command: eb deploy VoiceflowCreator-env -l $CIRCLE_BUILD_NUM --nohang
-      - run:
-          name: 'Create release'
-          command: |
-            export NVM_DIR="/opt/circleci/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-            nvm install 10 && nvm use 10 && nvm alias default 10
-            node -v
-            npx semantic-release
 workflows:
   version: 2
   build-deploy:
@@ -181,6 +180,13 @@ workflows:
       - deploy-production:
           requires:
             - test
+          filters:
+            branches:
+              only: production
+      - release:
+          requires:
+            - test
+            - deploy-production
           filters:
             branches:
               only: production

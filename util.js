@@ -1,14 +1,16 @@
-exports.delay = (ms) => new Promise(resolve => {
-    setTimeout(resolve, ms)
-})
+'use strict';
+
+exports.delay = (ms) => new Promise((resolve) => {
+  setTimeout(resolve, ms);
+});
 
 exports.pg_num = (length) => {
-  var nums = ''
-  for(var i = 1; i <= length; i++) {
-    nums += ('$' + i)
-    if(i !== length) {
-      nums += ','
+  let nums = '';
+  for (let i = 1; i <= length; i++) {
+    nums += (`$${i}`);
+    if (i !== length) {
+      nums += ',';
     }
   }
-  return nums
-}
+  return nums;
+};

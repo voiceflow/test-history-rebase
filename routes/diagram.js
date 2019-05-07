@@ -2,27 +2,25 @@ const {
   docClient,
   pool,
   hashids,
-  writeToLogs
+  writeToLogs,
 } = require('./../services');
 const {
-  deleteDynamoDiagramPromise
-} = require('./skill_util')
+  deleteDynamoDiagramPromise,
+} = require('./skill_util');
 const {
-  renderDiagram
-} = require('./../config/render_diagram.js')
+  renderDiagram,
+} = require('./../config/render_diagram.js');
 
-const generateID = () => {
-  return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
-    const r = (Math.random() * 16) | 0
-    const v = c === "x" ? r : (r & 0x3) | 0x8
-    return v.toString(16)
-  })
-}
+const generateID = () => 'xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+  const r = (Math.random() * 16) | 0;
+  const v = c === 'x' ? r : (r & 0x3) | 0x8;
+  return v.toString(16);
+});
 
-const { checkSkillAccess } = require("./team_util")
+const { checkSkillAccess } = require('./team_util');
 
 const checkDiagramAccess = async (diagram_id, user_id) => {
-  if(diagram_id) {
+  if (diagram_id) {
     try {
       const result = await pool.query(`
         SELECT 1 FROM diagrams d
@@ -30,36 +28,36 @@ const checkDiagramAccess = async (diagram_id, user_id) => {
         INNER JOIN projects p ON p.project_id = s.project_id
         INNER JOIN team_members tm ON tm.team_id = p.team_id
         WHERE d.id = $1 AND tm.creator_id = $2 LIMIT 1
-      `, [diagram_id, user_id])
-      if(result.rowCount !== 0) return true
-    } catch(err) {
+      `, [diagram_id, user_id]);
+      if (result.rowCount !== 0) return true;
+    } catch (err) {
     }
   }
-  return false
-}
+  return false;
+};
 
 const getVariables = (req, res) => {
-  let params = {
+  const params = {
     TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
     Key: {
-      'id': req.params.id
+      id: req.params.id,
     },
-    ProjectionExpression: 'variables'
-  }
+    ProjectionExpression: 'variables',
+  };
 
   docClient.get(params, (err, data) => {
     if (err) {
       writeToLogs('CREATOR_BACKEND_ERRORS', {
-        err: err
-      })
+        err,
+      });
       res.sendStatus(err.statusCode);
     } else if (data.Item) {
       res.send(data.Item.variables);
     } else {
       res.sendStatus(404);
     }
-  })
-}
+  });
+};
 
 const getDiagram = (req, res) => {
   if (!req.user) {
@@ -68,30 +66,30 @@ const getDiagram = (req, res) => {
     return;
   }
 
-  let params = {
+  const params = {
     TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
     Key: {
-      'id': req.params.id
-    }
+      id: req.params.id,
+    },
   };
   docClient.get(params, (err, data) => {
     if (err) {
       writeToLogs('CREATOR_BACKEND_ERRORS', {
-        err: err
-      })
+        err,
+      });
       res.sendStatus(err.statusCode);
     } else if (data.Item) {
       if (data.Item.preview === false) {
-        res.sendStatus(403)
+        res.sendStatus(403);
         return;
       }
 
-      res.send(data.Item)
+      res.send(data.Item);
     } else {
-      res.sendStatus(404)
+      res.sendStatus(404);
     }
-  })
-}
+  });
+};
 
 const updateName = async (req, res) => {
   if (!req.body || !req.body.name) {
@@ -107,90 +105,88 @@ const updateName = async (req, res) => {
         res.sendStatus(200);
       }
     });
-}
+};
 
 const setDiagram = async (req, res) => {
-  let diagram = req.body
-  diagram.skill = hashids.decode(diagram.skill)[0]
+  const diagram = req.body;
+  diagram.skill = hashids.decode(diagram.skill)[0];
 
   // TODO: find underlying issue
   // check to make sure not to to overwrite projects with empty
-  let data
+  let data;
   try {
-    data = JSON.parse(diagram.data)
+    data = JSON.parse(diagram.data);
   } catch (err) {
-    return res.status(500).send('Invalid Project Format')
+    return res.status(500).send('Invalid Project Format');
   }
   if (!data || !data.nodes || data.nodes.length === 0) {
-    return res.status(500).send('Empty Project')
+    return res.status(500).send('Empty Project');
   }
 
-  let DIAGRAM_ID = diagram.id || data.id
-  if (!DIAGRAM_ID) return res.status(500).send('Empty Project')
+  const DIAGRAM_ID = diagram.id || data.id;
+  if (!DIAGRAM_ID) return res.status(500).send('Empty Project');
 
   try {
-    if(!(await checkSkillAccess(diagram.skill, req.user.id))) return res.sendStatus(403)
-    diagram.creator = req.user.id
-
+    if (!(await checkSkillAccess(diagram.skill, req.user.id))) return res.sendStatus(403);
+    diagram.creator = req.user.id;
   } catch (err) {
     writeToLogs('CREATOR_BACKEND_ERRORS', {
-      err: err
-    })
-    return res.sendStatus(500)
+      err,
+    });
+    return res.sendStatus(500);
   }
 
-  let params = {
+  const params = {
     TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
     Item: {
       id: DIAGRAM_ID,
       variables: diagram.variables,
       data: diagram.data,
       skill: diagram.skill,
-      creator: diagram.creator
-    }
-  }
+      creator: diagram.creator,
+    },
+  };
 
-  let global_string
+  let global_string;
   // Make sure that the JSON validly parses
   try {
-    global_string = diagram.global ? JSON.stringify(diagram.global) : '[]'
+    global_string = diagram.global ? JSON.stringify(diagram.global) : '[]';
   } catch (err) {
-    global_string = '[]'
+    global_string = '[]';
   }
 
   docClient.put(params, async (err) => {
     if (err) {
       writeToLogs('CREATOR_BACKEND_ERRORS', {
-        err: err
+        err,
       });
       res.sendStatus(err.statusCode);
     } else {
       try {
         if (req.query.new) {
           if (!diagram.title) {
-            diagram.title = "New Flow";
+            diagram.title = 'New Flow';
           }
           // If it is a new diagram insert (assume it has no blocks)
           await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [DIAGRAM_ID, diagram.title, diagram.skill]);
         } else {
           // otherwise update
-          await pool.query(`UPDATE diagrams SET sub_diagrams = $1, modified = NOW() WHERE id = $2`, [diagram.sub_diagrams, DIAGRAM_ID]);
-          await pool.query(`UPDATE skills SET global = $1 WHERE skill_id = $2`, [global_string, diagram.skill])
+          await pool.query('UPDATE diagrams SET sub_diagrams = $1, modified = NOW() WHERE id = $2', [diagram.sub_diagrams, DIAGRAM_ID]);
+          await pool.query('UPDATE skills SET global = $1 WHERE skill_id = $2', [global_string, diagram.skill]);
         }
         res.sendStatus(200);
       } catch (e) {
         writeToLogs('CREATOR_BACKEND_ERRORS', {
-          err: e
-        })
+          err: e,
+        });
         res.sendStatus(500);
       }
     }
-  })
-}
+  });
+};
 
 const deleteDiagram = async (req, res) => {
-  
-  if(!(await checkDiagramAccess(req.params.id, req.user.id))) return res.sendStatus(403)
+  if (!(await checkDiagramAccess(req.params.id, req.user.id))) return res.sendStatus(403);
 
   pool.query(`
     DELETE FROM diagrams d USING skills s 
@@ -199,162 +195,162 @@ const deleteDiagram = async (req, res) => {
   [req.params.id], async (err, response) => {
     if (err) {
       writeToLogs('CREATOR_BACKEND_ERRORS', {
-        err: err
-      })
-      return res.sendStatus(500)
+        err,
+      });
+      return res.sendStatus(500);
     }
     if (response.rowCount !== 0) {
       try {
-        await deleteDynamoDiagramPromise(req.params.id)
-        return res.sendStatus(200)
+        await deleteDynamoDiagramPromise(req.params.id);
+        return res.sendStatus(200);
       } catch (err) {
-        console.trace(err)
-        return res.sendStatus(500)
+        console.trace(err);
+        return res.sendStatus(500);
       }
     } else {
-      return res.sendStatus(404)
+      return res.sendStatus(404);
     }
-  })
-}
+  });
+};
 
 const purgeSubflows = (diagram) => {
-  diagram.nodes.forEach(node => {
+  diagram.nodes.forEach((node) => {
     if (node.extras.diagram_id && node.extras.diagram_id !== null) {
       node.extras.diagram_id = null;
       if (node.extras.type === 'flow') {
-        node.name = 'Flow'
+        node.name = 'Flow';
       }
     }
-  })
-  return diagram
-}
+  });
+  return diagram;
+};
 
 const copyDiagram = async (req, res) => {
   try {
-    let old_diagram_id = req.params.diagram_id
-    let get_params = {
+    const old_diagram_id = req.params.diagram_id;
+    const get_params = {
       TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
       Key: {
-        'id': old_diagram_id
-      }
-    }
-    let get_diagram_promise = docClient.get(get_params).promise()
-    let data = await get_diagram_promise
+        id: old_diagram_id,
+      },
+    };
+    const get_diagram_promise = docClient.get(get_params).promise();
+    const data = await get_diagram_promise;
 
     if (data.Item) {
-      let purged_diagram = purgeSubflows(JSON.parse(data.Item.data))
-      let new_diagram_id = generateID()
-      let diagram_name = 'Diagram Copy'
+      const purged_diagram = purgeSubflows(JSON.parse(data.Item.data));
+      const new_diagram_id = generateID();
+      let diagram_name = 'Diagram Copy';
       if (req.query && req.query.name && req.query.name.length < 80) {
-        diagram_name = req.query.name
+        diagram_name = req.query.name;
       }
 
-      let put_params = {
+      const put_params = {
         TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
         Item: {
           id: new_diagram_id,
           variables: data.Item.variables,
           data: JSON.stringify(purged_diagram),
           skill: data.Item.skill,
-          creator: data.Item.creator
-        }
-      }
+          creator: data.Item.creator,
+        },
+      };
 
-      let put_diagram_promise = docClient.put(put_params).promise()
-      await put_diagram_promise
+      const put_diagram_promise = docClient.put(put_params).promise();
+      await put_diagram_promise;
 
       try {
         await pool.query(`INSERT INTO diagrams (id, name, skill_id, used_intents) 
-          (SELECT $1, $2, skill_id, used_intents FROM diagrams WHERE id = $3)`, [new_diagram_id, diagram_name, old_diagram_id])
-        res.send(new_diagram_id)
+          (SELECT $1, $2, skill_id, used_intents FROM diagrams WHERE id = $3)`, [new_diagram_id, diagram_name, old_diagram_id]);
+        res.send(new_diagram_id);
       } catch (err) {
         // SQL insert failed so delete the diagram from dynamo
-        let delete_params = {
+        const delete_params = {
           TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
           Key: {
-            'id': new_diagram_id
-          }
-        }
+            id: new_diagram_id,
+          },
+        };
 
         try {
-          await docClient.delete(delete_params).promise()
-          res.sendStatus(500)
+          await docClient.delete(delete_params).promise();
+          res.sendStatus(500);
         } catch (err) {
           writeToLogs('CREATOR_BACKEND_ERRORS', {
-            err: err
-          })
-          res.sendStatus(500)
+            err,
+          });
+          res.sendStatus(500);
         }
       }
     } else {
-      res.sendStatus(404)
+      res.sendStatus(404);
     }
   } catch (err) {
     writeToLogs('CREATOR_BACKEND_ERRORS', {
-      err: err
-    })
-    res.sendStatus(500)
+      err,
+    });
+    res.sendStatus(500);
   }
-}
+};
 
 const publishTest = async (req, res) => {
   if (!req.user || !req.params.diagram_id) {
-    return res.sendStatus(401)
+    return res.sendStatus(401);
   }
 
-  let intents = {}
-  let slots = {}
+  const intents = {};
+  const slots = {};
   if (Array.isArray(req.body.intents)) {
-    req.body.intents.forEach(intent => {
+    req.body.intents.forEach((intent) => {
       if (intent.key && intent.inputs && intent.inputs.length !== 0) {
-        intents[intent.key] = intent.name
+        intents[intent.key] = intent.name;
       }
-    })
+    });
   }
   if (Array.isArray(req.body.slots)) {
-    req.body.slots.forEach(slot => {
+    req.body.slots.forEach((slot) => {
       if (slot.key) {
-        slots[slot.key] = slot.name
+        slots[slot.key] = slot.name;
       }
-    })
+    });
   }
 
-  let used_intents = new Set()
-  let used_choices = []
-  let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST', {
+  const used_intents = new Set();
+  const used_choices = [];
+  const status = await renderDiagram(req.user, req.params.diagram_id, 'TEST', {
     used_intents,
     used_choices,
     intents,
-    slots
-  }, undefined, req.body.platform)
+    slots,
+  }, undefined, req.body.platform);
 
-  res.sendStatus(status)
-}
+  res.sendStatus(status);
+};
 
 const rerenderDiagram = async (req, res) => {
-  let skill_id = hashids.decode(req.params.skill_id)[0]
-  if(!(await checkSkillAccess(skill_id, req.user.id))) return res.sendStatus(403)
+  const skill_id = hashids.decode(req.params.skill_id)[0];
+  if (!(await checkSkillAccess(skill_id, req.user.id))) return res.sendStatus(403);
 
-  let diagram_id = req.params.diagram_id
+  const { diagram_id } = req.params;
   try {
-    let skill_data = (await pool.query(`SELECT * FROM skills WHERE skill_id = $1`, [skill_id])).rows
-    let skill = skill_data[0]
-    let intents = {}
-    let slots = {}
+    const skill_data = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [skill_id])).rows;
+    const skill = skill_data[0];
+    const intents = {};
+    const slots = {};
     // CONVERT ARRAY TO OBJECTS
-    let used_intents = new Set(),
-      used_choices = [],
-      permissions = new Set(),
-      interfaces = new Set()
+    const used_intents = new Set();
+    const used_choices = [];
+    const permissions = new Set();
+    const interfaces = new Set();
     if (Array.isArray(skill.intents)) {
-      skill.intents.forEach(intent => {
-        if (intent.key) intents[intent.key] = intent.name
-      })
+      skill.intents.forEach((intent) => {
+        if (intent.key) intents[intent.key] = intent.name;
+      });
     }
     if (Array.isArray(skill.slots)) {
-      skill.slots.forEach(slot => {
-        if (slot.key) slots[slot.key] = slot.name
-      })
+      skill.slots.forEach((slot) => {
+        if (slot.key) slots[slot.key] = slot.name;
+      });
     }
 
     await renderDiagram(req.user, diagram_id, skill_id, {
@@ -363,22 +359,22 @@ const rerenderDiagram = async (req, res) => {
       used_intents,
       used_choices,
       intents,
-      slots
-    })
-    res.sendStatus(200)
+      slots,
+    });
+    res.sendStatus(200);
   } catch (err) {
-    console.trace(err)
-    res.sendStatus(500)
+    console.trace(err);
+    res.sendStatus(500);
   }
-}
+};
 
 module.exports = {
-  updateName: updateName,
-  getVariables: getVariables,
-  getDiagram: getDiagram,
-  deleteDiagram: deleteDiagram,
-  setDiagram: setDiagram,
-  publishTest: publishTest,
-  copyDiagram: copyDiagram,
-  rerenderDiagram: rerenderDiagram
-}
+  updateName,
+  getVariables,
+  getDiagram,
+  deleteDiagram,
+  setDiagram,
+  publishTest,
+  copyDiagram,
+  rerenderDiagram,
+};

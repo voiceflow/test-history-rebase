@@ -1,6 +1,10 @@
 /*@import url('https://fonts.googleapis.com/css?family=Lato');*/
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
 
+* {
+  box-sizing: border-box;   
+}
+
 body {
     /*font-family: 'Lato', sans-serif;*/
     font-family: 'Open Sans', sans-serif !important;
@@ -774,6 +778,8 @@ audio {
     background: none;
     border: none;
     outline: none;
+    padding: 0px;
+    letter-spacing: inherit;
 }
 .plain-input{
     background: none;
@@ -2618,13 +2624,12 @@ kbd {
   .upload-success-popup {
     position: absolute;
     top: 75px;
-    right: -80px;
+    right: -15px;
     max-width: 350px;
     min-width: 350px;
     border-radius: 5px;
     border: solid 1px;
     padding: 20px;
-    margin-right: 20px;
     background-color: #fff;
 	box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06);
 	border: 1px solid rgba(141, 162, 181, .28);

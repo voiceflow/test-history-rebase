@@ -1,76 +1,70 @@
-const { redisClient, verify, writeToLogs } = require("./services");
+'use strict';
 
-module.exports = io => {
-  const join = (socket_id, room) =>
-    new Promise((resolve, reject) =>
-      io.of("/").adapter.remoteJoin(socket_id, room, err => {
-        err ? reject(err) : resolve();
-      })
-    );
+const { redisClient, verify, writeToLogs } = require('./services');
 
-  const leave = (socket_id, room) =>
-    new Promise((resolve, reject) =>
-      io.of("/").adapter.remoteLeave(socket_id, room, err => {
-        err ? reject(err) : resolve();
-      })
-    );
+module.exports = (io) => {
+  const join = (socket_id, room) => new Promise((resolve, reject) => io.of('/').adapter.remoteJoin(socket_id, room, (err) => {
+    err ? reject(err) : resolve();
+  }));
 
-  io.on("connection", socket => {
-    socket._ip = socket.client.request.headers["cf-connecting-ip"];
+  const leave = (socket_id, room) => new Promise((resolve, reject) => io.of('/').adapter.remoteLeave(socket_id, room, (err) => {
+    err ? reject(err) : resolve();
+  }));
 
-    const fail = () => socket.emit("fail");
+  io.on('connection', (socket) => {
+    socket._ip = socket.client.request.headers['cf-connecting-ip'];
 
-    socket.on("project", data => {
+    const fail = () => socket.emit('fail');
+
+    socket.on('project', (data) => {
       if (!(data.skill_id && data.auth && data.device)) return fail();
       socket.device = data.device;
 
       // verify the user's login token
-      verify(data.auth, async user => {
+      verify(data.auth, async (user) => {
         if (!user) return fail();
-        socket.user = user.user
+        socket.user = user.user;
 
         io.in(data.skill_id).clients((err, clients) => {
           if (err || clients.length === 0) {
-            if (err) writeToLogs("SOCKET ROOM CHECK", err)
+            if (err) writeToLogs('SOCKET ROOM CHECK', err);
             socket.skill_id = data.skill_id;
             join(socket.id, data.skill_id);
-            socket.emit("joined", data.skill_id);
+            socket.emit('joined', data.skill_id);
+          } else if (data.reconnect) {
+            socket.skill_id = data.skill_id;
+            join(socket.id, data.skill_id);
+            socket.emit('conflict');
           } else {
-            if (data.reconnect) {
-              socket.skill_id = data.skill_id;
-              join(socket.id, data.skill_id);
-              socket.emit("conflict");
+            const client = io.sockets.connected[clients[0]];
+            if (client) {
+              socket.emit('occupied', {
+                name: client.user.name,
+                email: client.user.email,
+                device: client.device,
+                ip: client._ip,
+              });
             } else {
-              const client = io.sockets.connected[clients[0]]
-              if(client) {
-                socket.emit("occupied", {
-                  name: client.user.name,
-                  email: client.user.email,
-                  device: client.device,
-                  ip: client._ip
-                });
-              } else {
-                socket.emit("occupied");
-              }
+              socket.emit('occupied');
             }
           }
         });
       });
     });
 
-    socket.on("leave", () => {
+    socket.on('leave', () => {
       // leave all rooms the socket is connected to
       if (socket.skill_id) leave(socket.id, socket.skill_id);
 
-      io.of("/").adapter.clientRooms(socket.id, (err, rooms) => {
+      io.of('/').adapter.clientRooms(socket.id, (err, rooms) => {
         if (!err) {
-          for (var room of rooms) leave(socket.id, room);
+          for (const room of rooms) leave(socket.id, room);
           socket.skill_id = null;
         }
       });
     });
 
-    socket.on("disconnect", () => {
+    socket.on('disconnect', () => {
       // DEPRECATE (this is to flush out the redis server)
       if (socket.account) {
         redisClient.get(`s_${socket.account.id}`, (err, session) => {

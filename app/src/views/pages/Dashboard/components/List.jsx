@@ -27,10 +27,6 @@ const DropContainer = withDraggable({
 
 const DROPDOWN_OPTIONS = [
   {
-    id: "rename",
-    label: "Edit Name"
-  },
-  {
     id: "remove",
     label: "Remove List"
   }
@@ -51,7 +47,6 @@ export function List(props) {
     onRemove,
     isCreated,
     isDragging,
-    onRenameSkill,
     onDeleteProject,
     onMoveProject,
     onDropProject,
@@ -66,7 +61,6 @@ export function List(props) {
 
   const listRef = useRef(null);
 
-  const [isTitleEditable, toggleTitleEditable] = useToggle(isCreated);
   const [isCreatingSkill] = useToggle(false);
 
   useHorizontalScrollToNode(listRef, isCreated, [id, isCreated]);
@@ -100,8 +94,6 @@ export function List(props) {
         {({ values, handleBlur, handleChange }) => {
           const onInputNameBlur = () => {
             handleBlur('name');
-            toggleTitleEditable();
-
             values.name && onRename && values.name !== name && onRename(id, values.name);
           };
 
@@ -125,37 +117,24 @@ export function List(props) {
                 })}
               >
                 <div className="main-list-header__main">
-                  {isTitleEditable ? (
-                      <input
-                        className="borderless-input main-list-header__title"
-                        value={values.name}
-                        onBlur={onInputNameBlur}
-                        selected
-                        onChange={({ target }) =>
-                          handleChange("name", target.value)
-                        }
-                        onKeyPress={({ charCode }) => (charCode === 13) && onInputNameBlur()}
-                        autoFocus
-                        placeholder="Enter list name"
-                      />
-                  ) : (
-                    <div
-                      onClick={(e) => {
-                        handleChange("name", name)
-                        toggleTitleEditable(e)
-                      }}
-                      className="main-list-header__title"
-                    >
-                      {name}
-                    </div>
-                  )}
+                  <input
+                    className="borderless-input main-list-header__title"
+                    value={values.name}
+                    onBlur={onInputNameBlur}
+                    selected
+                    onChange={({ target }) =>
+                      handleChange("name", target.value)
+                    }
+                    onKeyPress={({ charCode }) => (charCode === 13) && onInputNameBlur()}
+                    maxLength={32}
+                    placeholder="Enter list name"
+                  />
                 </div>
 
                 <div className="main-list-header__aside">
                   <Dropdown
                     options={DROPDOWN_OPTIONS}
                     onRemove={onRemove}
-                    onRename={toggleTitleEditable}
                     buttonProps={DROPDOWN_BUTTON_PROPS}
                     label={<i className="far fa-ellipsis-h" />}
                   />
@@ -194,6 +173,7 @@ export function List(props) {
                             <Item
                               index={i}
                               id={project.project_id}
+                              version_id={project.skill_id}
                               listId={id}
                               created={project.created}
                               isFB={false}
@@ -204,9 +184,6 @@ export function List(props) {
                               onMove={onMoveProject}
                               onToggleDragging={setMoving}
                               language={project.locales}
-                              onRename={() =>
-                                onRenameSkill(project.project_id)
-                              }
                               uploaded={project.isLive}
                               onRemove={() =>
                                 onDeleteProject(project.project_id)

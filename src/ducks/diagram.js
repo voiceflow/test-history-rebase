@@ -26,9 +26,13 @@ export default function diagramReducer(state = initialState, action) {
         root_id: action.payload.root_id
       }
     case APPEND_DIAGRAMS:
+      console.log("2")
       return {
         ...state,
-        diagrams: update(state.diagrams, {$push: action.payload.diagrams})
+        diagrams: [
+          ...state.diagrams, 
+          action.payload.diagrams,
+        ]
       }
     case REPLACE_DIAGRAMS:
       return {

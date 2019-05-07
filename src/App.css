@@ -785,6 +785,7 @@ audio {
   z-index: 100;
   position: absolute;
   pointer-events: none;
+  background-color: #fff;
 }
 .plain-input{
     background: none;

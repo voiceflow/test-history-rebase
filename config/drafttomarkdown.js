@@ -1,4 +1,4 @@
-const TRAILING_WHITESPACE = /[ \u0020\t]*$/
+const TRAILING_WHITESPACE = /[ \u0020\t]*$/;
 
 // This escapes some markdown but there's a few cases that are TODO -
 // - List items
@@ -19,32 +19,32 @@ const TRAILING_WHITESPACE = /[ \u0020\t]*$/
 // 3. Item three
 // And so on.
 
-var orderedListNumber = {},
-    previousOrderedListDepth = 0;
+let orderedListNumber = {};
+let previousOrderedListDepth = 0;
 
 const _escape = function (word) {
-    if (typeof(word) === "string") {
-        word = word.replace(/"/g, '\"')
-        .replace(/'/g, '\'')
-        .replace(/[\u2018\u2019]/g, "'")
-        .replace(/[\u201C\u201D]/g, '"')
-        .replace(/&/g, 'ampersand')
-        .replace(/[\x00-\x1F\x7F-\x9F]/g, "")
-        return word;
-    }
-    if (typeof(word) === "number") {
-        return word;
-    }
-    if (typeof(word) === "boolean") {
-        return word;
-    }
-    throw new Error('received invalid type ' + typeof(word));
+  if (typeof (word) === 'string') {
+    word = word.replace(/"/g, '\"')
+      .replace(/'/g, '\'')
+      .replace(/[\u2018\u2019]/g, '\'')
+      .replace(/[\u201C\u201D]/g, '"')
+      .replace(/&/g, 'ampersand')
+      .replace(/[\x00-\x1F\x7F-\x9F]/g, '');
+    return word;
+  }
+  if (typeof (word) === 'number') {
+    return word;
+  }
+  if (typeof (word) === 'boolean') {
+    return word;
+  }
+  throw new Error(`received invalid type ${typeof (word)}`);
 };
 
 // A map of draftjs block types -> markdown open and close characters
 // Both the open and close methods must exist, even if they simply return an empty string.
 // They should always return a string.
-const StyleItems = {}
+const StyleItems = {};
 
 // A map of draftjs entity types -> markdown open and close characters
 // entities are different from block types because they have additional data attached to them.
@@ -52,13 +52,13 @@ const StyleItems = {}
 //
 // Both the open and close methods must exist, even if they simply return an empty string.
 // They should always return a string.
-const EntityItems = {}
+const EntityItems = {};
 
 // Bit of a hack - we normally want a double newline after a block,
 // but for list items we just want one (unless it's the _last_ list item in a group.)
 const SingleNewlineAfterBlock = [
   'unordered-list-item',
-  'ordered-list-item'
+  'ordered-list-item',
 ];
 
 function isEmptyBlock(block) {
@@ -76,15 +76,15 @@ function isEmptyBlock(block) {
  * @param {Object} options - additional options passed in by the user calling this method.
  *
  * @return {String} markdown string
-**/
+* */
 function renderBlock(block, index, rawDraftObject, options) {
-  var openInlineStyles = [],
-      markdownToAdd = [];
-  var markdownString = '',
-      customStyleItems = options.styleItems || {},
-      customEntityItems = options.entityItems || {};
+  const openInlineStyles = [];
+  let markdownToAdd = [];
+  let markdownString = '';
+  const customStyleItems = options.styleItems || {};
+  const customEntityItems = options.entityItems || {};
 
-  var type = block.type;
+  let { type } = block;
 
   // draft-js emits empty blocks that have type set… don’t style them unless the user wants to preserve new lines
   // (if newlines are preserved each empty line should be "styled" eg in case of blockquote we want to see a blockquote.)
@@ -119,13 +119,13 @@ function renderBlock(block, index, rawDraftObject, options) {
   }
 
   // Render text within content, along with any inline styles/entities
-  Array.from(block.text).some(function (character, characterIndex) {
+  Array.from(block.text).some((character, characterIndex) => {
     // Close any entity tags that need closing
-    block.entityRanges.forEach(function (range, rangeIndex) {
+    block.entityRanges.forEach((range, rangeIndex) => {
       if (range.offset + range.length === characterIndex) {
-        var entity = rawDraftObject.entityMap[range.key];
+        const entity = rawDraftObject.entityMap[range.key];
         if (customEntityItems[entity.type] || EntityItems[entity.type]) {
-          if(entity.type==='{mention'){
+          if (entity.type === '{mention') {
             markdownString = markdownString.slice(0, -1);
           }
           markdownString += (customEntityItems[entity.type] || EntityItems[entity.type]).close(entity);
@@ -134,7 +134,7 @@ function renderBlock(block, index, rawDraftObject, options) {
     });
 
     // Close any inline tags that need closing
-    openInlineStyles.forEach(function (style, styleIndex) {
+    openInlineStyles.forEach((style, styleIndex) => {
       if (style.offset + style.length === characterIndex) {
         if ((customStyleItems[style.style] || StyleItems[style.style])) {
           var styleIndex = openInlineStyles.indexOf(style);
@@ -177,14 +177,14 @@ function renderBlock(block, index, rawDraftObject, options) {
     });
 
     // Open any inline tags that need opening
-    block.inlineStyleRanges.forEach(function (style, styleIndex) {
+    block.inlineStyleRanges.forEach((style, styleIndex) => {
       if (style.offset === characterIndex) {
         if ((customStyleItems[style.style] || StyleItems[style.style])) {
-          var styleToAdd = (customStyleItems[style.style] || StyleItems[style.style]).open();
+          const styleToAdd = (customStyleItems[style.style] || StyleItems[style.style]).open();
           markdownToAdd.push({
             type: 'style',
-            style: style,
-            value: styleToAdd
+            style,
+            value: styleToAdd,
           });
         }
       }
@@ -193,17 +193,17 @@ function renderBlock(block, index, rawDraftObject, options) {
     let skip = false;
 
     // Open any entity tags that need opening
-    block.entityRanges.forEach(function (range, rangeIndex) {
+    block.entityRanges.forEach((range, rangeIndex) => {
       if (range.offset === characterIndex) {
-        var entity = rawDraftObject.entityMap[range.key];
+        const entity = rawDraftObject.entityMap[range.key];
         if (customEntityItems[entity.type] || EntityItems[entity.type]) {
-          if(entity.type==='{mention'){
+          if (entity.type === '{mention') {
             skip = true;
           }
-          var entityToAdd = (customEntityItems[entity.type] || EntityItems[entity.type]).open(entity);
+          const entityToAdd = (customEntityItems[entity.type] || EntityItems[entity.type]).open(entity);
           markdownToAdd.push({
             type: 'entity',
-            value: entityToAdd
+            value: entityToAdd,
           });
         }
       }
@@ -213,11 +213,9 @@ function renderBlock(block, index, rawDraftObject, options) {
     // we store in an array and add here because if the character is WS character, we want to hang onto it and not apply it until the next non-whitespace
     // character before adding the markdown, since markdown doesn’t play nice with leading whitespace (eg '** bold**' is no  good, whereas ' **bold**' is good.)
     if (character !== ' ' && markdownToAdd.length) {
-      markdownString += markdownToAdd.map(function (item) {
-        return item.value;
-      }).join('');
+      markdownString += markdownToAdd.map((item) => item.value).join('');
 
-      markdownToAdd.forEach(function (item) {
+      markdownToAdd.forEach((item) => {
         if (item.type === 'style') {
           // We hang on to this because we may need to close it early and then re-open if there are nested styles being opened and closed.
           openInlineStyles.push(item.style);
@@ -228,7 +226,7 @@ function renderBlock(block, index, rawDraftObject, options) {
     }
 
     if (block.type !== 'code-block') {
-      let insideInlineCodeStyle = openInlineStyles.find((style) => style.style === 'CODE');
+      const insideInlineCodeStyle = openInlineStyles.find((style) => style.style === 'CODE');
 
       if (insideInlineCodeStyle) {
         // Todo - The syntax to escape backtics when inside backtic code already is to use MORE backtics wrapping.
@@ -252,17 +250,17 @@ function renderBlock(block, index, rawDraftObject, options) {
         // }
       }
     }
-    if(!skip) {
+    if (!skip) {
       markdownString += character;
     }
   });
 
   // Close any remaining entity tags
-  block.entityRanges.forEach(function (range, rangeIndex) {
+  block.entityRanges.forEach((range, rangeIndex) => {
     if (range.offset + range.length === block.text.length) {
-      var entity = rawDraftObject.entityMap[range.key];
+      const entity = rawDraftObject.entityMap[range.key];
       if (customEntityItems[entity.type] || EntityItems[entity.type]) {
-        if(entity.type==='{mention'){
+        if (entity.type === '{mention') {
           markdownString = markdownString.slice(0, -1);
         }
         markdownString += (customEntityItems[entity.type] || EntityItems[entity.type]).close(entity);
@@ -271,8 +269,8 @@ function renderBlock(block, index, rawDraftObject, options) {
   });
 
   // Close any remaining inline tags (if an inline tag ends at the very last char, we won't catch it inside the loop)
-  openInlineStyles.reverse().forEach(function (style) {
-    var trailingWhitespace = TRAILING_WHITESPACE.exec(markdownString);
+  openInlineStyles.reverse().forEach((style) => {
+    const trailingWhitespace = TRAILING_WHITESPACE.exec(markdownString);
     markdownString = markdownString.slice(0, markdownString.length - trailingWhitespace[0].length);
     markdownString += (customStyleItems[style.style] || StyleItems[style.style]).close();
     markdownString += trailingWhitespace[0];
@@ -295,23 +293,23 @@ function renderBlock(block, index, rawDraftObject, options) {
  * @param {Object} options - optional additional data, see readme for what options can be passed in.
  *
  * @return {String} markdown string
-**/
+* */
 
 // TYLER - I JUST COPY AND PASTED THIS ENTIRE LIBRARY
 function draftToMarkdown(rawDraftObject, options) {
   options = options || {};
-  var markdownString = '';
-  if(typeof rawDraftObject === 'object'){
-    rawDraftObject.blocks.forEach(function (block, index) {
-      markdownString += renderBlock(block, index, rawDraftObject, options)
-      if(options.newline && (index < rawDraftObject.blocks.length - 1)){
-        markdownString += '\n'
+  let markdownString = '';
+  if (typeof rawDraftObject === 'object') {
+    rawDraftObject.blocks.forEach((block, index) => {
+      markdownString += renderBlock(block, index, rawDraftObject, options);
+      if (options.newline && (index < rawDraftObject.blocks.length - 1)) {
+        markdownString += '\n';
       }
-    })
+    });
   }
 
-  orderedListNumber = {} // See variable definitions at the top of the page to see why we have to do this sad hack.
-  return markdownString
+  orderedListNumber = {}; // See variable definitions at the top of the page to see why we have to do this sad hack.
+  return markdownString;
 }
 
 module.exports = draftToMarkdown;

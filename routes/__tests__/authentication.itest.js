@@ -1,5 +1,5 @@
-const app = require('../../app')
-const request = require('supertest')
+const request = require('supertest');
+const app = require('../../app');
 
 describe('Authentication', () => {
   describe('Login', () => {
@@ -7,10 +7,10 @@ describe('Authentication', () => {
       await request(app)
         .put('/session')
         .send({
-          user: {}
+          user: {},
         })
-        .expect(400)
-    })
+        .expect(400);
+    });
 
     it('doesn\'t accept wrong email', async () => {
       await request(app)
@@ -18,11 +18,11 @@ describe('Authentication', () => {
         .send({
           user: {
             email: 'wrongemail@getvoiceflow.com',
-            password: 'password'
-          }
+            password: 'password',
+          },
         })
-        .expect(400)
-    })
+        .expect(400);
+    });
 
     it('doesn\'t accept wrong password', async () => {
       await request(app)
@@ -30,11 +30,11 @@ describe('Authentication', () => {
         .send({
           user: {
             email: 'tests@getvoiceflow.com',
-            password: 'wrongpassword'
-          }
+            password: 'wrongpassword',
+          },
         })
-        .expect(400)
-    })
+        .expect(400);
+    });
 
     it('authenticates', async () => {
       await request(app)
@@ -42,25 +42,24 @@ describe('Authentication', () => {
         .send({
           user: {
             email: 'tests@getvoiceflow.com',
-            password: 'password'
-          }
+            password: 'password',
+          },
         })
         .expect(200)
-        .then(res => {
-          if (!('token' in res.body)) throw new Error('missing token')
-        })
-    })
-  })
+        .then((res) => {
+          if (!('token' in res.body)) throw new Error('missing token');
+        });
+    });
+  });
 
   it('unauthentication does nothing if not authenticated', async () => {
     await request(app)
       .delete('/session')
-      .expect(200)
-  })
+      .expect(200);
+  });
 
   describe('Logout', () => {
-    
-    var token = ''
+    let token = '';
 
     beforeAll(async () => {
       await request(app)
@@ -68,25 +67,25 @@ describe('Authentication', () => {
         .send({
           user: {
             email: 'tests@getvoiceflow.com',
-            password: 'password'
-          }
+            password: 'password',
+          },
         })
         .expect(200)
-        .then(res => {
-          if (!('token' in res.body)) throw new Error('missing token')
-          token = res.body.token
-        })
-    })
+        .then((res) => {
+          if (!('token' in res.body)) throw new Error('missing token');
+          token = res.body.token;
+        });
+    });
 
-    it('unauthenticates', done => {
+    it('unauthenticates', (done) => {
       request(app)
         .delete('/session')
-        .set('cookie', 'auth='+token)
+        .set('cookie', `auth=${token}`)
         .expect(200)
         .end((err, res) => {
-          if (err) throw err
-          done()
-        })
-    })
-  })
-})
+          if (err) throw err;
+          done();
+        });
+    });
+  });
+});

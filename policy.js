@@ -1,6 +1,8 @@
+'use strict';
+
 exports.policy = (req, res) => {
-  let developer_name = req.query.name ? req.query.name : 'John Doe'
-  let skill_name = req.query.skill ? req.query.skill : 'Skill'
+  const developer_name = req.query.name ? req.query.name : 'John Doe';
+  const skill_name = req.query.skill ? req.query.skill : 'Skill';
   res.send(`
     <p>
         ${developer_name} Privacy Policy
@@ -190,7 +192,7 @@ exports.policy = (req, res) => {
         needs of the society and the law. We will notify you about significant
         changes in the way we treat personal information by amending this Privacy
         Policy on the website.
-    </p>`)
-}
+    </p>`);
+};
 
-exports.terms = exports.policy
+exports.terms = exports.policy;

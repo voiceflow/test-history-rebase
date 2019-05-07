@@ -231,3 +231,30 @@ export const changeProjectPosition = (drag, hover) => (
     console.error(err)
   }
 };
+
+export const changeListPosition = (drag, hover) => (
+  dispatch,
+  getState
+) => {
+  try {
+    const {id: hId} = hover
+    const {id: dId} = drag
+    if(hId === dId) return
+
+    const state = getState()
+    const { allIds, byId } = state.board
+
+    const dIndex = allIds.indexOf(dId);
+    const hIndex = allIds.indexOf(hId);
+
+    if (dIndex === -1) return
+    const newAllIds = [...allIds];
+
+    newAllIds.splice(dIndex, 1);
+    newAllIds.splice(hIndex, 0, allIds[dIndex]);
+
+    dispatch(updateBoards({ byId, allIds: newAllIds}))
+  }catch(err){
+    console.error(err)
+  }
+};

@@ -148,7 +148,7 @@ export const DashBoard = props => {
     if(props.projects_array.length >= props.team.projects) {
       setTeamSetting("CHECKOUT:PROJECTS")
     } else { 
-      props.history.push(id ? `/team/template/${id}` : '/team/template')
+      props.history.push(id !== 'initial' ? `/team/template/${id}` : '/team/template')
     }
   }
 

@@ -58,7 +58,7 @@
     "socket.io-redis": "^5.2.0",
     "stacktrace-js": "^2.0.0",
     "string-similarity": "^3.0.0",
-    "stripe": "^6.17.0",
+    "stripe": "6.32.0",
     "uuid": "^3.3.2",
     "valid-url": "^1.0.9"
   },

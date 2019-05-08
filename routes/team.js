@@ -463,7 +463,8 @@ exports.getBoards = async (req, res) => {
     const boards = (await pool.query(
       `
       SELECT t.boards FROM teams t
-      WHERE t.team_id = $1 AND t.creator_id = $2
+      INNER JOIN team_members tm ON tm.team_id = t.team_id
+      WHERE tm.team_id = $1 AND tm.creator_id = $2
       `,
       [team_id, req.user.id],
     )).rows[0];

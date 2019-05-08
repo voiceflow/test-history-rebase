@@ -27,10 +27,6 @@ const DropContainer = withDraggable({
 
 const DROPDOWN_OPTIONS = [
   {
-    id: "rename",
-    label: "Edit Name"
-  },
-  {
     id: "remove",
     label: "Remove List"
   }
@@ -50,35 +46,29 @@ export function List(props) {
     onRename,
     onRemove,
     isCreated,
-    projectIds,
     isDragging,
-    itemReorder,
-    onRenameSkill,
-    onRemoveSkill,
-    onDuplicateSkill,
+    onDeleteProject,
+    onMoveProject,
+    onDropProject,
+    onCopyProject,
     connectDragSource,
     isDraggingPreview,
     connectDropTarget,
     createSkill,
   } = props;
 
-  let handleDuplicateSkill;
-
   const isEmpty = !projects || !projects.length;
 
   const listRef = useRef(null);
 
-  const [isTitleEditable, toggleTitleEditable] = useToggle(isCreated);
   const [isCreatingSkill] = useToggle(false);
-
-    handleDuplicateSkill = onDuplicateSkill;
 
   useHorizontalScrollToNode(listRef, isCreated, [id, isCreated]);
 
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
 
   const [onScroll, isHeaderShadowShown, isFooterShadowShown] = useScrollShadows(bodyRef, [
-    projectIds,
+    projects,
   ]);
 
   const [moving, setMoving] = useState(false)
@@ -104,8 +94,6 @@ export function List(props) {
         {({ values, handleBlur, handleChange }) => {
           const onInputNameBlur = () => {
             handleBlur('name');
-            toggleTitleEditable();
-
             values.name && onRename && values.name !== name && onRename(id, values.name);
           };
 
@@ -119,48 +107,34 @@ export function List(props) {
               )}
 
               <DropContainer
-                id={projectIds[0] || 0}
+                id={0}
                 index={0}
                 listId={id}
+                onMove={onMoveProject}
                 className={cn("main-list-header", {
                   "h-o-0": isDragging,
                   __scrolling: isHeaderShadowShown
                 })}
               >
                 <div className="main-list-header__main">
-                  {isTitleEditable ? (
-                      <input
-                        className="borderless-input main-list-header__title"
-                        value={values.name}
-                        onBlur={onInputNameBlur}
-                        selected
-                        onChange={({ target }) =>
-                          handleChange("name", target.value)
-                        }
-                        onKeyPress={({ charCode }) => (charCode === 13) && onInputNameBlur()}
-                        autoFocus
-                        placeholder="Enter list name"
-                        // onEnterPress={onInputNameBlur}
-                        // onEscapePress={toggleTitleEditable}
-                      />
-                  ) : (
-                    <div
-                      onClick={(e) => {
-                        handleChange("name", name)
-                        toggleTitleEditable(e)
-                      }}
-                      className="main-list-header__title"
-                    >
-                      {name}
-                    </div>
-                  )}
+                  <input
+                    className="borderless-input main-list-header__title"
+                    value={values.name}
+                    onBlur={onInputNameBlur}
+                    selected
+                    onChange={({ target }) =>
+                      handleChange("name", target.value)
+                    }
+                    onKeyPress={({ charCode }) => (charCode === 13) && onInputNameBlur()}
+                    maxLength={32}
+                    placeholder="Enter list name"
+                  />
                 </div>
 
                 <div className="main-list-header__aside">
                   <Dropdown
                     options={DROPDOWN_OPTIONS}
                     onRemove={onRemove}
-                    onRename={toggleTitleEditable}
                     buttonProps={DROPDOWN_BUTTON_PROPS}
                     label={<i className="far fa-ellipsis-h" />}
                   />
@@ -182,6 +156,7 @@ export function List(props) {
                   >
                     <ul className="projects-list">
                       {projects.map((project, i) => {
+                        if (!project) return null;
                         let icon;
                         let smallIcon = project.small_icon;
                         let largeIcon = project.large_icon;
@@ -196,30 +171,25 @@ export function List(props) {
                             className="projects-list__list-item"
                           >
                             <Item
-                              id={project.skill_id}
-                              project_id={project.project_id}
+                              index={i}
+                              id={project.project_id}
+                              version_id={project.skill_id}
+                              listId={id}
                               created={project.created}
                               isFB={false}
                               avatarUrl={icon}
                               name={project.name}
                               diagram={project.diagram}
-                              reorder={itemReorder}
-                              index={i}
-                              listId={id}
+                              onDrop={onDropProject}
+                              onMove={onMoveProject}
                               onToggleDragging={setMoving}
                               language={project.locales}
-                              onRename={() =>
-                                onRenameSkill(project.project_id)
-                              }
                               uploaded={project.isLive}
                               onRemove={() =>
-                                onRemoveSkill(
-                                  project.project_id,
-                                  project.name
-                                )
+                                onDeleteProject(project.project_id)
                               }
                               onDuplicate={() =>
-                                handleDuplicateSkill(
+                                onCopyProject(
                                   project.project_id,
                                   id
                                 )
@@ -271,17 +241,15 @@ List.propTypes = {
   name: PropTypes.string,
   projects: PropTypes.array,
   createSkill: PropTypes.func,
-  listType: PropTypes.oneOf(['projects', 'flash_briefings']),
   onRename: PropTypes.func,
   onRemove: PropTypes.func,
   isCreated: PropTypes.bool,
   isDragging: PropTypes.bool,
   projectIds: PropTypes.arrayOf(PropTypes.number),
-  onRenameSkill: PropTypes.func,
-  onRemoveSkill: PropTypes.func,
+  onDeleteProject: PropTypes.func,
   onCancelCreate: PropTypes.func,
   disableDragging: PropTypes.bool,
-  onDuplicateSkill: PropTypes.func,
+  onCopyProject: PropTypes.func,
   connectDragSource: PropTypes.func,
   connectDropTarget: PropTypes.func,
   isDraggingPreview: PropTypes.bool,

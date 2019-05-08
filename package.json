@@ -19,6 +19,8 @@
     "babel-core": "7.0.0-bridge.0",
     "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
+    "bunyan": "^1.8.12",
+    "bunyan-prettystream": "^0.1.3",
     "concurrently": "^4.0.1",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
@@ -110,7 +112,6 @@
     "url": "https://github.com/storyflow/storyflow-creator"
   },
   "scripts": {
-    "lint": "eslint \"**/*.js\" --fix",
     "build": "cd app && npm run build",
     "client": "cd app && npm run start",
     "commit": "git-cz",

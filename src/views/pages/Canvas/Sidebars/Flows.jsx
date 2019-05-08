@@ -3,9 +3,7 @@ import { connect } from 'react-redux'
 import FlowButton from './components/FlowButton'
 import { Button, ButtonGroup, Input } from 'reactstrap'
 
-const TABS = ['structure', 'flows']
-
-export class Project extends PureComponent {
+export class Flows extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -25,8 +23,11 @@ export class Project extends PureComponent {
     render() {
         return (
             <React.Fragment>
-                <label className='section-title mt-3'>All Flows</label>
-                <Input placeholder="Search Flows" name="filter" value={this.state.filter} onChange={this.handleChange} className="form-control-border mb-3 search-input"/>
+                <div className="search-section">
+                    <label className='section-title mt-3'>All Flows</label>
+                    <Input placeholder="Search Flows" name="filter" value={this.state.filter} onChange={this.handleChange} className="form-control-border mb-3 search-input"/>
+                </div>
+                <div className="flows-list">
                 {this.props.diagrams.map(diagram => {
                     if(this.state.filter && !diagram.name.toLowerCase().includes(this.state.filter.toLowerCase())) return null
                     return <FlowButton
@@ -37,6 +38,7 @@ export class Project extends PureComponent {
                         deleteFlow={()=>this.props.deleteFlow(diagram.id)}
                     />
                 })}
+                </div>
             </React.Fragment>
         )
     }
@@ -45,4 +47,4 @@ export class Project extends PureComponent {
 const mapStateToProps = state => ({
     diagrams: state.diagrams.diagrams
 })
-export default connect(mapStateToProps)(Project);
+export default connect(mapStateToProps)(Flows);

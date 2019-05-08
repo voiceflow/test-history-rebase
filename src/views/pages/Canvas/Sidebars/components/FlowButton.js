@@ -12,8 +12,8 @@ import {
     DropdownMenu,
     DropdownItem 
 } from 'reactstrap'
-
 import { renameDiagram } from 'ducks/diagram'
+import cn from 'classnames'
 
 class FlowButton extends Component {
 
@@ -45,30 +45,30 @@ class FlowButton extends Component {
     }
 
     render() {
-
         let active = this.props.active === this.props.flow.id;
         return (
             this.state.edit ? 
                 <InputGroup className="diagram-block">
+                    <i className="flow-icon mr-3 ">&nbsp;&nbsp;&nbsp;&nbsp;</i>
                     <Input 
                         name="name"
                         value={this.state.name}
                         onChange={this.handleChange}
+                        onKeyPress={target => target.charCode == 13 ? this.close() : null}
+                        onBlur={this.close}
                         autoFocus
                     />
-                    <InputGroupAddon addonType="append">
-                        <Button className="diagram-edit" 
-                                onClick={this.close}>
-                            <i className="fas fa-edit"/>
-                        </Button> 
+                    <InputGroupAddon className="diagram-edit" addonType="append">
+                        <i className="fas fa-edit"/>
                     </InputGroupAddon>
                 </InputGroup>
                 :
-                <ButtonGroup className="diagram-block">
-                    <button disabled={active}
+                <ButtonGroup className={cn("diagram-block", {"active" : active})} >
+                    <button
                       className="diagram-button"
                       onClick={active ? null : ()=>this.props.enterFlow(this.props.flow.id)}
                     >
+                        <i className="flow-icon mr-3 ">&nbsp;&nbsp;&nbsp;&nbsp;</i>
                         < span className = "diagram-text" > {
                             this.props.flow.name === 'ROOT' ? 'HOME' : _.trim(this.props.name) ?
                                 (this.props.name.length > 15 ? `${this.props.name.substring(0,15)}...` : this.props.name) : 'Flow'

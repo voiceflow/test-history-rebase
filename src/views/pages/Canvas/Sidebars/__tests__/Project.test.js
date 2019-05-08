@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
-import { Project } from '../Project';
+import { Flows } from '../Flows';
 import toJson from 'enzyme-to-json';
 
 const diagrams1 = [
@@ -26,13 +26,13 @@ const diagrams2 = [
 
 const visited = new Set()
 describe('SideBar Project', () => {
-    it('render project sidebar with root', () => {
-        const component = shallow(<Project diagrams={diagrams1} visited={visited} />);
+    it('render flows sidebar with root', () => {
+        const component = shallow(<Flows diagrams={diagrams1} visited={visited} />);
         expect(toJson(component)).toMatchSnapshot()
         component.unmount()
     });
-    it('render project with sub diagrams', () => {
-        const component = shallow(<Project diagrams={diagrams2} visited={visited} />)
+    it('render flows with sub diagrams', () => {
+        const component = shallow(<Flows diagrams={diagrams2} visited={visited} />)
         expect(toJson(component)).toMatchSnapshot()
         component.unmount()
     })

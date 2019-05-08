@@ -213,3 +213,19 @@ export const teamInvite = (invite) => {
     return Promise.resolve(team_id)
   }
 }
+
+export const teamInvite = (invite) => {
+  return async (dispatch) => {
+    let team_id
+    try {
+      team_id = (await axios.post(`/team/invite/${invite}`)).data
+      dispatch({
+        type: "UPDATE_CURRENT_TEAM",
+        payload: team_id
+      })
+    }catch(err){
+      dispatch(setError((err && err.response && err.response.data) || (err && JSON.stringify(err)) || 'Invite Invalid'))
+    }
+    return Promise.resolve(team_id)
+  }
+}

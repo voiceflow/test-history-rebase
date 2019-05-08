@@ -1,7 +1,13 @@
 const request = require('supertest');
-const app = require('../../app');
 
-describe('Authentication', () => {
+const Server = require('../../server');
+const { ServiceManager } = require('../../backend');
+
+describe.only('Authentication', async () => {
+  const server = new Server(new ServiceManager());
+  await server.start();
+  const { app } = server;
+
   describe('Login', () => {
     it('doesn\'t accept empty credentials', async () => {
       await request(app)

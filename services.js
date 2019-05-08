@@ -17,7 +17,7 @@ const _ = require('lodash');
 const StackTrace = require('stacktrace-js');
 const s3UploadStream = require('s3-upload-stream');
 const httpAwsEs = require('http-aws-es');
-const analytics = require('analytics-node');
+const Analytics = require('analytics-node');
 
 const config = require('./config/config');
 
@@ -317,7 +317,7 @@ if (process.env.NODE_ENV !== 'test') {
   module.exports.intercom = new Intercom.Client({
     token: process.env.INTERCOM_TOKEN,
   });
-  module.exports.analytics = new (analytics)(
+  module.exports.analytics = new Analytics(
     process.env.SEGMENT_WRITE_KEY,
   );
 } else {

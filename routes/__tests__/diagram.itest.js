@@ -1,13 +1,15 @@
 const request = require('supertest');
-const app = require('../../app');
 const new_diagram = require('./data/new_diagram.json');
 const { pool, hashids } = require('../../services');
 // const moxios = require('moxios')
 const { team_hash } = require('../team_util');
 
+const Server = require('../../server');
+const { ServiceManager } = require('../../backend');
+
 const TEAM_ID = team_hash.encode(1);
 
-jest.setTimeout(10000);
+// jest.setTimeout(10000);
 
 const generateID = () => 'xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
   const r = (Math.random() * 16) | 0;
@@ -28,13 +30,20 @@ const getTemplate = new Promise(async (resolve, reject) => {
   }
 });
 
-describe('Diagram', () => {
+describe('Diagram', function() {
+  this.timeout(10000);
+
   let token = '';
   const diagram_id = generateID();
   let module_id;
   let skill_id;
+  let app;
 
-  beforeAll(async () => {
+  before(async () => {
+    const server = new Server(new ServiceManager());
+    await server.start();
+    ({ app } = server);
+
     // Get auth token
     await request(app)
       .put('/session')
@@ -65,7 +74,7 @@ describe('Diagram', () => {
       });
   });
 
-  afterAll(async () => {
+  after(async () => {
     try {
       await request(app).delete(`/skill/${skill_id}`);
     } catch (err) {

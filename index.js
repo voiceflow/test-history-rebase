@@ -4,10 +4,15 @@ require('./envSetup')
 
 const socketIO = require('socket.io');
 const redisAdapter = require('socket.io-redis');
+
+const npmPackage = require('./package.json');
 const sockets = require('./sockets');
 
-const app = require('./app');
-const npmPackage = require('./package.json');
+const express = require('express');
+const server = require('./backend');
+
+const serviceManager = new server.ServiceManager();
+const app = server.ExpressMiddleware.attach(express(), serviceManager.middleware, serviceManager.controllers);
 
 const name = `${npmPackage.name} v${npmPackage.version}`;
 const port = process.env.PORT || 8080;

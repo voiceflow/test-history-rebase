@@ -2,16 +2,13 @@
 
 const compression = require('compression');
 const bodyParser = require('body-parser');
-const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const helmet = require('helmet');
 const expressLogger = require('@xtrctio/express-bunyan-logger');
 const PrettyStream = require('bunyan-prettystream');
 const HttpStatus = require('http-status');
 const _ = require('lodash');
-
-const XError = require('@xtrctio/xerror');
-const { ExceptionHandler, ResponseBuilder } = require('@xtrctio/common').middleware;
 
 const api = require('./api');
 const pjson = require('../package.json');
@@ -26,9 +23,6 @@ const ERROR_RESPONSE_MS = 10000;
 const WARN_RESPONSE_MS = 5000;
 
 
-const responseBuilder = new ResponseBuilder();
-const exceptionHandler = new ExceptionHandler(responseBuilder);
-
 /**
  * @class
  */
@@ -42,20 +36,39 @@ class ExpressMiddleware {
    */
   static attach(app, middleware, controllers) {
     if (!_.isObject(app) || !_.isObject(middleware) || !_.isObject(controllers)) {
-      throw new XError('must have app, middleware, and controllers');
+      throw new Error('must have app, middleware, and controllers');
     }
 
-    const defaultContentTypeMiddleware = (req, res, next) => {
-      req.headers['content-type'] = 'application/json';
-      next();
+    app.use(cors());
+    app.use(helmet());
+
+    const rawBodyPaths = ['/customer/webhook'];
+    const getRawBody = () => (req, res, next) => {
+      if (rawBodyPaths.includes(req.path)) {
+        return bodyParser.json({
+          verify(_req, _res, buf) {
+            _req.rawBody = buf;
+          },
+        })(req, res, next);
+      }
+      return next();
     };
-    app.use(defaultContentTypeMiddleware);
+
+    app.use(getRawBody());
+
+    // const defaultContentTypeMiddleware = (req, res, next) => {
+    //   req.headers['content-type'] = 'application/json';
+    //   next();
+    // };
+    // app.use(defaultContentTypeMiddleware);
 
     app.use(compression());
     app.use(bodyParser.json({ limit: '50mb' }));
-    app.use(methodOverride());
+    app.use(bodyParser.urlencoded({
+      limit: '50mb',
+      extended: true,
+    }));
     app.use(cookieParser());
-    app.use(cors());
     app.enable('trust proxy');
     app.disable('x-powered-by');
 
@@ -92,10 +105,10 @@ class ExpressMiddleware {
     app.use(api(middleware, controllers));
 
     // Handle errors that are otherwise unhandled for some reason
-    app.use(async (err, req, res, next) => exceptionHandler.handleError(err, req, res, next));
-
-    // Everything else is a 404
-    app.use(async (req, res) => exceptionHandler.handleNotFound(req, res));
+    // app.use(async (err, req, res, next) => exceptionHandler.handleError(err, req, res, next));
+    //
+    // // Everything else is a 404
+    // app.use(async (req, res) => exceptionHandler.handleNotFound(req, res));
   }
 }
 

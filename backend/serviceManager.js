@@ -7,7 +7,7 @@ const {
   upload, uploadResize, ESclient, verify,
 } = require('../services');
 const { policy, terms } = require('../policy');
-const { underMaintenance } = require('../app/src/MAINTENANCE.js');
+
 
 // IMPORT ROUTES
 const Diagram = require('../routes/diagram.js');
@@ -46,7 +46,6 @@ class ServiceManager {
    * @param {Config} config service configuration
    */
   constructor(config) {
-
     // Clients
     const clients = ServiceManager.buildClients(config);
 
@@ -69,12 +68,9 @@ class ServiceManager {
 
   /**
    * Build all controllers
-   * @param {object} services
-   * @returns {{search: *, extract: *, projects: *, plans: *, schedules: *, jobs: *, batches: *,
-   * health: *, domains: *, tokens: *, proxies: *, workers: *, usageTracker: *}}
+   * @returns {*}
    */
-  static buildControllers(services) {
-
+  static buildControllers() {
     return {
       Authentication,
       policy,
@@ -83,6 +79,7 @@ class ServiceManager {
       LinkAccount,
       Email,
       Multimodal,
+      Decode,
       Skill,
       Project,
       copySkill,
@@ -101,7 +98,7 @@ class ServiceManager {
       Problem,
       Audio,
 
-      // Probably can eventually remove
+      // Probably can eventually remove these and replace with actual controllers
       upload,
       uploadResize,
       ESclient,
@@ -111,40 +108,16 @@ class ServiceManager {
 
   /**
    * Build all middleware
-   * @returns {{apiRateLimiter: *, auth: *, usage: *, project: *, extractRateLimiter: *}}
+   * @returns {*}
    */
   static buildMiddleware() {
-    const ensureLoggedIn = () => (req, res, next) => {
-      if (req.user) {
-        next();
-      } else {
-        res.sendStatus(401);
-      }
-    };
-    const ensurePlan = (plan) => (req, res, next) => {
-      if (req.user && req.user.admin >= plan) {
-        next();
-      } else {
-        res.sendStatus(401);
-      }
-    };
+    const ensureLoggedIn = () => (req, res, next) => (req.user ? next() : res.sendStatus(401));
+    const ensurePlan = (plan) => (req, res, next) => ((req.user && req.user.admin >= plan) ? next() : res.sendStatus(401));
     const ensureAdmin = () => ensurePlan(100);
-    const ensureLoggedOut = () => (req, res, next) => {
-      if (req.user) {
-        res.redirect('/');
-      } else {
-        next();
-      }
-    };
+    const ensureLoggedOut = () => (req, res, next) => (req.user ? res.redirect('/') : next());
 
     // MARKETPLACE BETA
-    const ensureBeta = () => (req, res, next) => {
-      if (req.user && req.user.admin === 7) {
-        next();
-      } else {
-        res.sendStatus(401);
-      }
-    };
+    const ensureBeta = () => (req, res, next) => ((req.user && req.user.admin === 7) ? next() : res.sendStatus(401));
 
     return {
       ensureLoggedIn,
@@ -157,12 +130,14 @@ class ServiceManager {
 
   /**
    * Build all services
+   * @returns {*}
    */
   static buildServices() {
   }
 
   /**
    * Build all clients
+   * @returns {*}
    */
   static buildClients() {
     AWS.config = new AWS.Config({

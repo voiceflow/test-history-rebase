@@ -1,9 +1,12 @@
 const request = require('supertest');
-const app = require('../../app');
 const new_diagram = require('./data/new_diagram.json');
 const { pool, hashids } = require('../../services');
 const { team_hash } = require('../team_util');
 const moxios = require('moxios');
+
+const Server = require('../../server');
+const { ServiceManager } = require('../../backend');
+const app = new Server(new ServiceManager());
 
 const TEAM_ID = team_hash.encode(1);
 

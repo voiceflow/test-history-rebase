@@ -1309,6 +1309,79 @@ border-radius: 0px 5px 5px 0px !important;
     border: none !important;
     background: linear-gradient(0deg, #3087FE, #3087FE) !important;
 }
+
+.upload-button-placeholder {
+    width: 207px;
+}
+
+.multi-vendor {
+    padding-right: 42px;
+    position: relative;
+}
+
+.multi-vendor-tooltip {
+    width: 165px;
+}
+
+.publish-btn.multi-vendor-btn {
+    width: 165px;
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+}
+
+.vendor-dropdown {
+    position: absolute;
+    width: 40px;
+    height: 100%;
+    top: 0;
+    right: 0;
+    background-color: red;
+    cursor: pointer;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.vendor-dropdown:hover {
+    background-color: blue;
+}
+
+.vendors-select-list {
+    position: absolute;
+    width: 100%;
+    background-color: #fff;
+    right: 0;
+    top: 48px;
+    max-height: 150px;
+    overflow: scroll;
+    z-index: 1;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06);
+    border: 1px solid rgba(141, 162, 181, .28);
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.vendors-select-list>div {
+    padding: 0.5em;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+.vendors-select-list>div:hover {
+    background-color: #fafafa;
+}
+
+.vendors-select-list>div:active {
+    background-color: #eee;
+}
+
+.upload-btn-container {
+    width: 207px;
+}
+
 .account-dropdown .account{
    color: #8DA2B5 !important;
 }

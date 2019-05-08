@@ -132,6 +132,10 @@ textarea::placeholder {
   margin: 5px 0px !important;
 }
 
+.settings {
+  overflow: auto;
+}
+
 .stage_modal .modal-info>.MUIform>.btn {
   margin-top: 10px !important;
 }

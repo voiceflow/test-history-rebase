@@ -83,6 +83,7 @@
     "react-day-picker": "^7.2.4",
     "react-dev-utils": "^7.0.1",
     "react-dnd": "^7.3.2",
+    "react-dnd-html5-backend": "^7.4.4",
     "react-dom": "^16.8.6",
     "react-dom-confetti": "^0.1.0",
     "react-dropzone": "^6.2.4",

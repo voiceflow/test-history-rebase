@@ -12,6 +12,7 @@ import {
 } from 'reactstrap'
 import { ModalHeader } from 'views/components/Modals/ModalHeader'
 import Header from 'components/Header'
+import VendorSelectList from './components/VendorSelectList'
 import SecondaryNavBar from "views/components/NavBar/SecondaryNavBar";
 import ClipBoard from './../../components/ClipBoard'
 import AmazonLogin from './../../components/Forms/AmazonLogin'
@@ -21,7 +22,7 @@ import Toggle from 'react-toggle'
 import { Progress } from 'react-sweet-progress'
 import "react-sweet-progress/lib/style.css"
 import Confetti from 'react-dom-confetti'
-import { AmazonAccessToken, googleAccessToken } from 'ducks/account'
+import { AmazonAccessToken, googleAccessToken, getVendors } from 'ducks/account'
 import InvRegex from 'services/Regex'
 // import { timingSafeEqual } from 'crypto';
 
@@ -119,12 +120,12 @@ const invNameError = (name, locales) => {
 
   let validRegex = `[^${characters}.' ]+`
   let match = name.match(validRegex)
-  let split_name = name.split(' ').map(splits => {return splits.toLowerCase()})
+  let split_name = name.split(' ').map(splits => { return splits.toLowerCase() })
   if (match) {
     return inv_name_error + ` - Invalid Characters: "${match.join()}"`
-  } else if (WAKE_WORDS.some(l => split_name.find(split => {return split === l.toLowerCase()}))) {
+  } else if (WAKE_WORDS.some(l => split_name.find(split => { return split === l.toLowerCase() }))) {
     return 'Invocation name cannot contain Alexa keywords e.g. ' + WAKE_WORDS.join(', ')
-  } else if (LAUNCH_PHRASES.some(l => split_name.find(split => {return split === l.toLowerCase()}))) {
+  } else if (LAUNCH_PHRASES.some(l => split_name.find(split => { return split === l.toLowerCase() }))) {
     return 'Invocation name cannot contain Launch Phrases e.g. ' + LAUNCH_PHRASES.join(', ')
   } else {
     return null
@@ -158,7 +159,8 @@ export class ActionGroup extends PureComponent {
       show_upload_prompt: false,
       is_error: false,
       should_pop_confetti: false,
-      percentage: 0
+      percentage: 0,
+      upload_button_loading: true
     }
 
     this.toggle = this.toggle.bind(this)
@@ -198,12 +200,20 @@ export class ActionGroup extends PureComponent {
       this.google_token = token;
       this.reset()
     })
+    getVendors().then(vendors => {
+      this.setState({ vendors, upload_button_loading: false })
+    })
+    document.addEventListener('mousedown', this.handleClickEvent);
   }
 
   shouldReset() {
     if (ENDING_STAGES[this.props.platform].includes((this.props.platform === 'alexa' ? this.state.stage : this.state.google_stage))) {
       this.reset()
     }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickEvent);
   }
 
   openUpdate() {
@@ -378,7 +388,7 @@ export class ActionGroup extends PureComponent {
     iterate(0)
   }
 
-  async updateInvName(){
+  async updateInvName() {
     let inv_name = this.state.inv_name ? this.state.inv_name : this.props.skill.inv_name
     try {
       await axios.patch(`/skill/${this.props.skill.skill_id}?inv_name=1`, { inv_name: inv_name })
@@ -506,12 +516,24 @@ export class ActionGroup extends PureComponent {
       togglingPreview: true
     })
 
-    this.props.togglePreview(!this.props.skill.preview).then(() => this.setState({togglingPreview: false}))
+    this.props.togglePreview(!this.props.skill.preview).then(() => this.setState({ togglingPreview: false }))
   }
 
   toggleShare() {
     this.setState({
       share: !this.state.share
+    })
+  }
+
+  toggleVendors = () => {
+    this.setState({ vendors_open: !this.state.vendors_open })
+  }
+
+  selectVendor = (vendor) => {
+    // save to database
+    console.log("SELECT VENDOR", vendor)
+    this.setState({
+      vendors_open: false
     })
   }
 
@@ -570,6 +592,12 @@ export class ActionGroup extends PureComponent {
     })
   }
 
+  handleClickEvent = (e) => {
+    if (this.vendorDropdownRef && !this.vendorDropdownRef.contains(e.target)) {
+      this.toggleVendors()
+    }
+  }
+
   renderLiveStage() {
     if (this.state.live_update_stage === 2) {
       return <React.Fragment>
@@ -595,6 +623,13 @@ export class ActionGroup extends PureComponent {
   }
 
   renderUploadButton() {
+
+    if (this.state.upload_button_loading) {
+      return <div className='upload-button-placeholder'>
+        Loading
+      </div>
+    }
+
     if (this.props.live_mode) {
       return <Tooltip
         html={<div style={{ width: 155 }}>Update your live version with your local changes</div>}
@@ -622,22 +657,35 @@ export class ActionGroup extends PureComponent {
             </div>
           </div> </Button>
       } else {
-        return <Tooltip
-          html={<div style={{ width: 180 }}>{(this.props.platform === 'google') ? 'Test your Action on your own Google device, or in the Google Actions console' : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}</div>}
-          position="bottom"
-          distance={16}
-        >
-          <Button variant="contained" className="publish-btn" onClick={this.openUpdate}>
-            {(this.props.platform === 'google') ? 'Upload to Google' : 'Upload to Alexa'}<div className="launch">
-              <div className="first">
-                <img src={'/up.svg'} alt="upload" width="15" height="15" />
-              </div>
-              <div className="second">
-                <img src={'/check-white.svg'} alt="check" width="15" height="15" />
-              </div>
-            </div>
-          </Button>
-        </Tooltip>
+        const multiVendor = this.props.platform === 'alexa' && this.state.vendors && this.state.vendors.length > 1
+        return <div className={cn('upload-btn-container', { 'multi-vendor': multiVendor })}>
+          <Tooltip
+            html={<div style={{ width: 180 }}>{(this.props.platform === 'google') ? 'Test your Action on your own Google device, or in the Google Actions console' : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}</div>}
+            position="bottom"
+            distance={16}
+            className={cn({ 'multi-vendor-tooltip': multiVendor })}
+            disabled={this.state.vendors_open}
+          >
+            {multiVendor ?
+              <Button variant="contained" className="publish-btn multi-vendor-btn" onClick={this.openUpdate}>
+                {(this.props.platform === 'google') ? 'Upload to Google' : 'Upload to Alexa'}
+              </Button>
+              :
+              <Button variant="contained" className="publish-btn" onClick={this.openUpdate}>
+                {(this.props.platform === 'google') ? 'Upload to Google' : 'Upload to Alexa'}<div className="launch">
+                  <div className="first">
+                    <img src={'/up.svg'} alt="upload" width="15" height="15" />
+                  </div>
+                  <div className="second">
+                    <img src={'/check-white.svg'} alt="check" width="15" height="15" />
+                  </div>
+                </div>
+              </Button>
+            }
+          </Tooltip>
+          {multiVendor && <div className="vendor-dropdown" onClick={this.toggleVendors}></div>}
+          {this.state.vendors_open && <VendorSelectList vendors={this.state.vendors} onBlur={this.toggleVendors} onSelect={this.selectVendor}/>}
+        </div>
       }
     }
   }
@@ -941,89 +989,89 @@ export class ActionGroup extends PureComponent {
               }
             </div>
           )}
-        centerRenderer={() => (
-          <div id="middle-group">
-            <Tooltip
-              distance={16}
-              title={(this.props.platform === 'google') ? "Switch to Amazon View" : "Switch to Google View"}
-              position="bottom"
-              className="switch switch-blue"
-              tag='div'
-            >
-              <input onClick={() => { if (this.props.platform !== 'alexa') this.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} value="alexa_toggle" id="alexa_toggle" />
-              <label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">Alexa</label>
-              <input onClick={() => { if (this.props.platform !== 'google') this.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} value="google_toggle" id="google_toggle" />
-              <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">Google</label>
-              <span className="switch-selection"></span>
-            </Tooltip>
-          </div>
+          centerRenderer={() => (
+            <div id="middle-group">
+              <Tooltip
+                distance={16}
+                title={(this.props.platform === 'google') ? "Switch to Amazon View" : "Switch to Google View"}
+                position="bottom"
+                className="switch switch-blue"
+                tag='div'
+              >
+                <input onClick={() => { if (this.props.platform !== 'alexa') this.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} value="alexa_toggle" id="alexa_toggle" />
+                <label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">Alexa</label>
+                <input onClick={() => { if (this.props.platform !== 'google') this.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} value="google_toggle" id="google_toggle" />
+                <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">Google</label>
+                <span className="switch-selection"></span>
+              </Tooltip>
+            </div>
           )}
-        rightRenderer={() => (
-          <div className="title-group no-select">
-            <div className="align-icon">
-              <Tooltip
-                distance={16}
-                title={this.props.lastSave}
-                position="bottom"
-                className="mr-4"
-              >
-                <button id="icon-save" className={`${this.props.saved ? 'btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''}`} onClick={this.props.onSave}>
-                  {this.props.saving && <span className="save-loader" />}
-                </button>
-              </Tooltip>
-            </div>
-            <div className="title-group-sub">
-              <Tooltip
-                className="top-nav-icon"
-                title="Share"
-                position="bottom"
-                distance={16}
-              >
-                <button id="icon-share" className="nav-btn-border fas fa-share" onClick={this.toggleShare}></button>
-              </Tooltip>
-              <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
-                <PopoverBody style={{ minWidth: '260px' }}>
-                  <div className="space-between">
-                    <label>Allow preview sharing</label>
-                    <Toggle
-                      checked={this.props.skill.preview}
-                      disabled={this.state.togglingPreview}
-                      icons={false}
-                      onChange={this.togglePreview}
-                    />
-                  </div>
-                  {this.props.skill.preview &&
-                    <InputGroup className="mb-3">
-                      <InputGroupAddon addonType="prepend">
-                        <ClipBoard
-                          component="button"
-                          className="btn btn-clear copy-link"
-                          value={link}
-                          id="shareLink"
-                        >
-                          <i className="fas fa-copy" />
-                        </ClipBoard>
-                      </InputGroupAddon>
-                      <Input readOnly value={link} className="form-control-border right" />
-                    </InputGroup>
-                  }
-                </PopoverBody>
-              </Popover>
-            </div>
-            <div className="align-icon">
-              <Tooltip
-                distance={16}
-                title="Test"
-                position="bottom"
-                className="ml-4 mr-4"
-              >
-                <button className="nav-btn" onClick={this.props.onTest}><i className="fas fa-play" /></button>
-              </Tooltip>
-            </div>
+          rightRenderer={() => (
+            <div className="title-group no-select">
+              <div className="align-icon">
+                <Tooltip
+                  distance={16}
+                  title={this.props.lastSave}
+                  position="bottom"
+                  className="mr-4"
+                >
+                  <button id="icon-save" className={`${this.props.saved ? 'btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''}`} onClick={this.props.onSave}>
+                    {this.props.saving && <span className="save-loader" />}
+                  </button>
+                </Tooltip>
+              </div>
+              <div className="title-group-sub">
+                <Tooltip
+                  className="top-nav-icon"
+                  title="Share"
+                  position="bottom"
+                  distance={16}
+                >
+                  <button id="icon-share" className="nav-btn-border fas fa-share" onClick={this.toggleShare}></button>
+                </Tooltip>
+                <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
+                  <PopoverBody style={{ minWidth: '260px' }}>
+                    <div className="space-between">
+                      <label>Allow preview sharing</label>
+                      <Toggle
+                        checked={this.props.skill.preview}
+                        disabled={this.state.togglingPreview}
+                        icons={false}
+                        onChange={this.togglePreview}
+                      />
+                    </div>
+                    {this.props.skill.preview &&
+                      <InputGroup className="mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <ClipBoard
+                            component="button"
+                            className="btn btn-clear copy-link"
+                            value={link}
+                            id="shareLink"
+                          >
+                            <i className="fas fa-copy" />
+                          </ClipBoard>
+                        </InputGroupAddon>
+                        <Input readOnly value={link} className="form-control-border right" />
+                      </InputGroup>
+                    }
+                  </PopoverBody>
+                </Popover>
+              </div>
+              <div className="align-icon">
+                <Tooltip
+                  distance={16}
+                  title="Test"
+                  position="bottom"
+                  className="ml-4 mr-4"
+                >
+                  <button className="nav-btn" onClick={this.props.onTest}><i className="fas fa-play" /></button>
+                </Tooltip>
+              </div>
 
-            {this.renderUploadButton()}
-            {this.displayUploadPrompt()}
-          </div>
+              {this.renderUploadButton()}
+              {this.displayUploadPrompt()}
+            </div>
           )}
           subHeaderRenderer={() => (
             !this.props.preview && <SecondaryNavBar page='canvas' history={this.props.history} />

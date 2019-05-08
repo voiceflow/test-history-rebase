@@ -793,7 +793,7 @@ const getVendor = async (req, res) => {
           const { vendors } = vendor_request.data;
 
           if (Array.isArray(vendors) && vendors.length !== 0) {
-            res.send(vendors[0].id);
+            res.send(req.query.all ? vendors : vendors[0].id);
           } else {
             res.sendStatus(404);
           }

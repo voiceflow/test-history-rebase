@@ -1075,6 +1075,10 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
     color: #8da2b5;
 }
 
+.search-section {
+    padding: 0px 15px;
+}
+
 .section-title {
     text-transform: capitalize;
     font-size: 13px !important;
@@ -1099,7 +1103,10 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
     overflow-y: scroll;
     overflow-x: hidden;
     height: 100%;
-    padding: 0px 15px 120px 15px;
+}
+
+.Menu #sidebar .sidebar-header {
+    padding: 0px 15px;
 }
 
 .Menu #sidebar .section-title .title-dot {
@@ -1354,6 +1361,7 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
     background-size: 16px;
     background-repeat: no-repeat;
     background-position: center;
+    opacity: 0.4;
 }
 .menu-tip {
     color: #8da2b5 !important;
@@ -2827,6 +2835,11 @@ button.close:hover{
     z-index: unset !important;
 }
 
+.flows-list {
+    display: flex;
+    flex-flow: row wrap;
+}
+
 .diagram-block .btn-secondary {
     background-color: #f0f3f7;
     border: #f0f3f7 1px solid !important;
@@ -2885,6 +2898,8 @@ button.close:hover{
 }
 
 .diagram-block .diagram-edit {
+    display: flex;
+    align-items: center;
     padding: 0px;
     margin-left: 0px !important;
     font-size: 12px !important;
@@ -2893,6 +2908,8 @@ button.close:hover{
     border: none !important;
     padding-top: 1px;
     background-color: transparent !important;
+    opacity: 0;
+    transition: 0.3s;
 }
 .diagram-block .diagram-edit:hover{
     background-color: transparent !important;
@@ -2922,10 +2939,37 @@ button.close:hover{
     /*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);*/
 }
 
+.diagram-block.input-group {
+    padding-left: 12px;
+}
+
 .diagram-block {
     width: 100%;
     height: 35px;
     max-width: 300px;
+    padding: 0px 5px;
+}
+
+.diagram-block:hover {
+    background-color: #f8f9fa;
+}
+
+.diagram-block:hover > .dropdown > .diagram-edit {
+    opacity: 1;
+}
+
+.diagram-block.active {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e0e3e5;
+    border-bottom: 1px solid #e0e3e5;
+}
+
+.diagram-block.active > .diagram-button {
+    color: #62778c;
+}
+
+.diagram-block.active > .diagram-button > .flow-icon {
+    opacity: 1;
 }
 
 .diagram-block>button {
@@ -2937,17 +2981,19 @@ button.close:hover{
     cursor: pointer;
     border-radius: 5px;
     transition: all 0.15s ease;
-    color: #8DA2B5 !important;
+    color: #8DA2B5;
 }
-.diagram-block>button:hover{
-    background-color: transparent !important;
-    color: #62778c !important;
 
-}
 .diagram-block>input {
-    padding: 0px 6px;
+    padding-left: 0;
     height: 28px;
     font-size: 12px !important;
+    background: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    font-weight: 600;
 }
 
 .choice-block {

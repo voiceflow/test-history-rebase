@@ -6,12 +6,12 @@ import { openTab, closeTab } from 'ducks/user'
 import FlowButton from './Sidebars/components/FlowButton'
 import Blocks from './Sidebars/Blocks'
 import Variables from './Sidebars/Variables'
-import Project from './Sidebars/Project'
+import Flows from './Sidebars/Flows'
 
 const tabs = {
     top: [
         {tab: "blocks", icon: <i className="blocks-icon pl-3 pr-3 pt-3 pb-3 mt-2"></i>, tip: 'Blocks'},
-        {tab: "project", icon: <i className="flows-icon pl-3 pr-3 pt-3 pb-3 mt-2"/>, tip: 'Project'},
+        {tab: "flows", icon: <i className="flows-icon pl-3 pr-3 pt-3 pb-3 mt-2"/>, tip: 'Flows'},
         {tab: "variables", icon: <i className="var-icon pl-3 pr-3 pt-3 pb-3 mt-2"/>, tip: 'Variables'},
     ],
     bottom: [
@@ -139,15 +139,11 @@ class Menu extends Component {
                 return <Variables
                     locked={this.props.preview}
                 />
-            case 'project':
-                return <Project
-                    tree={this.state.tree}
-                    visited={this.visited}
+            case 'flows':
+                return <Flows
                     enterFlow={this.props.enterFlow}
                     copyFlow={this.props.copyFlow}
                     deleteFlow={this.props.deleteFlow}
-                    updateTree={this.updateTree}
-                    history={this.props.history}
                 />
             default:
                 return <Blocks user_modules={this.props.user_modules} user={this.props.user} toggleUpgrade={this.props.toggleUpgrade} type_counter={this.props.type_counter} history={this.props.history}/>
@@ -194,7 +190,7 @@ class Menu extends Component {
                     {this.props.loading_diagram ?
                         null :
                         <React.Fragment>
-                            <div>
+                            <div className="sidebar-header">
                                 <div className='block-title no-select mb-3' onClick={() => {
                                     this.props.closeTab()
                                     localStorage.setItem('sideWidth', this.sidebar.style.width)

@@ -7,7 +7,6 @@ const Promise = require('bluebird');
 const log = require('./logger');
 const { ExpressMiddleware } = require('./backend/');
 
-const port = process.env.PORT || 8080;
 const { name } = require('./package.json');
 
 /**
@@ -25,6 +24,7 @@ class Server {
     this.serviceManager = serviceManager;
 
     this.server = null;
+    this.port = process.env.PORT || 8080;
   }
 
   /**
@@ -59,8 +59,8 @@ class Server {
       }
     });
 
-    await Promise.fromCallback((cb) => this.server.listen(port, cb));
-    log.info(`${name} listening on port ${port}`);
+    await Promise.fromCallback((cb) => this.server.listen(this.port, cb));
+    log.info(`${name} listening on port ${this.port}`);
   }
 
   /**

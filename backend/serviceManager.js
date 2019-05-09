@@ -7,7 +7,9 @@ const {
   upload, uploadResize, ESclient, verify,
 } = require('../services');
 const { policy, terms } = require('../policy');
+const path = require('path');
 
+const { underMaintenance } = require('../app/src/MAINTENANCE.js');
 
 // IMPORT ROUTES
 const Diagram = require('../routes/diagram.js');
@@ -71,6 +73,36 @@ class ServiceManager {
    * @returns {*}
    */
   static buildControllers() {
+    const utilities = {
+      policy,
+      terms,
+      teamCopySkill: (req, res) => copySkill(req, res, {
+        append_copy_str: true,
+        user_copy: true,
+      }),
+      s3Audio: (req, res) => res.send(`https://s3.amazonaws.com/com.getstoryflow.audio.production/${req.file.key}`),
+      uploadTransformImage: (req, res) => res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${req.file.transforms[0].key}`),
+      uploadImage: (req, res) => res.send(`https://s3.amazonaws.com/com.getstoryflow.audio.production/${req.files[0].key}`),
+      readBuildFiles: (req, res) => res.sendFile(path.join(__dirname, '../', 'app', 'build', 'index.html')),
+      elasticsearch: async (req, res) => {
+        req.body = req.body.substring(24, req.body.length + 1);
+        req.body = JSON.parse(req.body);
+        const ESparams = req.params[0].split('/');
+        const ESoptions = {
+          index: ESparams[0],
+          type: ESparams[1],
+          body: req.body,
+        };
+        await ESclient.search(ESoptions)
+          .then((data) => {
+            res.send({ responses: [data] });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      },
+    };
+
     return {
       Authentication,
       policy,
@@ -99,10 +131,7 @@ class ServiceManager {
       Audio,
 
       // Probably can eventually remove these and replace with actual controllers
-      upload,
-      uploadResize,
-      ESclient,
-      verify,
+      utilities,
     };
   }
 
@@ -111,13 +140,13 @@ class ServiceManager {
    * @returns {*}
    */
   static buildMiddleware() {
-    const ensureLoggedIn = () => (req, res, next) => (req.user ? next() : res.sendStatus(401));
+    const ensureLoggedIn = (req, res, next) => (req.user ? next() : res.sendStatus(401));
     const ensurePlan = (plan) => (req, res, next) => ((req.user && req.user.admin >= plan) ? next() : res.sendStatus(401));
-    const ensureAdmin = () => ensurePlan(100);
-    const ensureLoggedOut = () => (req, res, next) => (req.user ? res.redirect('/') : next());
+    const ensureAdmin = ensurePlan(100);
+    const ensureLoggedOut = (req, res, next) => (req.user ? res.redirect('/') : next());
 
     // MARKETPLACE BETA
-    const ensureBeta = () => (req, res, next) => ((req.user && req.user.admin === 7) ? next() : res.sendStatus(401));
+    const ensureBeta = (req, res, next) => ((req.user && req.user.admin === 7) ? next() : res.sendStatus(401));
 
     return {
       ensureLoggedIn,
@@ -125,6 +154,28 @@ class ServiceManager {
       ensureAdmin,
       ensureLoggedOut,
       ensureBeta,
+      uploadAudio: upload.single('audio'),
+      uploadResize512: uploadResize(512, 512).single('image'),
+      uploadResize108: uploadResize(108, 108).single('image'),
+      uploadResize40: uploadResize(40, 40).single('image'),
+      getProjectFromSkill: Project.getProjectFromSkill,
+      uploadAny: upload.any,
+      verify: (req, res, next) => {
+        if (underMaintenance()) {
+          return res.redirect('https://getvoiceflow.com/maintenance');
+        }
+
+        return verify(req.cookies.auth, (data) => {
+          if (data) {
+            req.user = data.user;
+            req.secret = data.secret;
+            req.userHash = data.userHash;
+          }
+          next();
+        });
+      },
+      verifyProjectAccess: Team.verifyProjectAccess,
+      verifyTeam: Team.verifyTeam,
     };
   }
 

@@ -3,8 +3,7 @@ const request = require('supertest');
 const { pool, hashids } = require('./../services');
 const { team_hash } = require('./team_util');
 
-const Server = require('../server');
-const { ServiceManager } = require('../backend');
+const GetApp = require('../tests/getAppForTest');
 
 const TEAM_ID = team_hash.encode(1);
 const getTemplate = new Promise(async (resolve, reject) => {
@@ -30,7 +29,12 @@ describe.skip('Marketplace', () => {
   let module_project_id;
   let decoded_module_project_id;
 
+  let app;
+  let server;
+
   beforeAll(async () => {
+    ({ app } = await GetApp());
+
     try {
       module_id = await getTemplate;
     } catch (e) {
@@ -105,6 +109,8 @@ describe.skip('Marketplace', () => {
       .delete('/session')
       .set('cookie', `auth=${token}`)
       .expect(200);
+
+    if (server) server.close();
   });
 
   describe('Certification', () => {

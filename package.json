@@ -90,6 +90,7 @@
     "mocha": "^6.1.4",
     "redis-mock": "^0.43.0",
     "semantic-release": "^15.13.3",
+    "sinon": "^7.3.2",
     "supertest": "^3.3.0"
   },
   "homepage": "https://creator.getvoiceflow.com",

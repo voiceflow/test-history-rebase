@@ -1,12 +1,23 @@
+'use strict';
+
 const request = require('supertest');
 
-const Server = require('../../server');
-const { ServiceManager } = require('../../backend');
+const GetApp = require('../../tests/getAppForTest');
 
-describe.only('Authentication', async () => {
-  const server = new Server(new ServiceManager());
-  await server.start();
-  const { app } = server;
+describe('Authentication', async () => {
+  let app;
+  let server;
+
+  beforeAll(async () => {
+    ({
+      app,
+      server,
+    } = await GetApp());
+  });
+
+  afterAll(async () => {
+    if (server) server.close();
+  });
 
   describe('Login', () => {
     it('doesn\'t accept empty credentials', async () => {

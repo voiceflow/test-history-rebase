@@ -326,10 +326,12 @@ div.nav-item{
 .flow-arrow {
 	opacity: 0.45;
 	transition: 0.3s;
+	width: 16px;
 }
 
 .flow-arrow.active {
 	filter: invert(58%) sepia(19%) saturate(1464%) hue-rotate(177deg) brightness(99%) contrast(94%);
+	opacity: 1;
 }
 
 @media(min-width: 845px){

@@ -83,7 +83,7 @@ class FlowBar extends Component{
                 </div>
                 <UncontrolledDropdown direction='up'>
                     <DropdownToggle className="dropdown-button mt-1 previous" tag="button" disabled={this.props.parentDiagrams.length === 0}>
-                    <img src="/arrow-right.svg" alt="arrow" />
+                    
                     </DropdownToggle>
                     <DropdownMenu className="no-select">
                         {this.props.parentDiagrams.map(({id, name}) => (

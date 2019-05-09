@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 import Select from 'react-select';
+
+import Button from 'components/Button'
 import VariableInput from './VariableInput';
-import { openTab } from 'ducks/user'
 import { selectStyles, variableComponent } from 'views/components/VariableSelect'
+
+import { openTab } from 'ducks/user'
+
 
 class APIMapping extends Component {
 
@@ -12,9 +16,9 @@ class APIMapping extends Component {
         return (
             <React.Fragment>
                 <div>
-                    {this.props.addButtonOrientation === 'top' && <button className="btn btn-clear btn-block btn-bg mb-2" onClick={this.props.onAdd}>
+                    {this.props.addButtonOrientation === 'top' && <Button isBtn isClear isBlock isLarge className="mb-2" onClick={this.props.onAdd}>
                         <i className="far fa-plus mr-2"></i> Add Output Mapping
-                    </button>}
+                    </Button>}
                     {Array.isArray(this.props.pairs) ? this.props.pairs.map((choice, i) => {
                         return (
                             <div key={choice.index} className="mb-2">
@@ -37,13 +41,13 @@ class APIMapping extends Component {
                                             return { label: variable, value: variable, openVar: this.props.openVarTab }
                                         }) : null}
                                     />
-                                    <button className="close-small ml-2" onClick={e => this.props.onRemove(e, i)}></button>
+                                    <Button className="close-small ml-2" onClick={e => this.props.onRemove(e, i)} />
                                 </InputGroup>
                             </div>)
                     }) : null}
-                    {this.props.addButtonOrientation !== 'top' && <button className="btn btn-clear btn-block btn-lg" onClick={this.props.onAdd}>
+                    {this.props.addButtonOrientation !== 'top' && <Button isBtn isClear isBlock isLarge onClick={this.props.onAdd}>
                         <i className="far fa-plus mr-2"></i> Add Output Mapping
-                    </button>}
+                    </Button>}
                 </div>
 
             </React.Fragment>

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
-import { Button } from 'reactstrap';
 import axios from 'axios';
 import { connect } from 'react-redux'
+
+import Button from "components/Button";
 
 class Copy extends Component {
 
@@ -108,9 +109,9 @@ class Copy extends Component {
                     <hr/>
                     <label>TO</label>
                     <div className="super-center mb-2">
-                      <button className="btn-secondary mr-3" onClick={()=>{
+                      <Button isSecondary className="mr-3" onClick={()=>{
                         this.setState({target_user: this.props.user.creator_id}, this.onUserInput);
-                      }}>Myself</button>
+                      }}>Myself</Button>
                       <input placeholder="Enter Target User ID"
                           type="text"
                           value={this.state.target_user}
@@ -129,7 +130,7 @@ class Copy extends Component {
                         options={this.state.boards}
                     />
                     <hr/>
-                    <Button color="primary" onClick={this.copy.bind(this)} className="mb-2">Copy!</Button>
+                    <Button isPrimary onClick={this.copy.bind(this)} className="mb-2">Copy!</Button>
                 </div>
             </div>
         )

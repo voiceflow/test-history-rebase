@@ -1,6 +1,8 @@
 import cn from 'classnames'
 import React from 'react';
 import Select from 'react-select';
+
+import Button from 'components/Button'
 import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 
 const DiagramVariables = (props) => (
@@ -39,12 +41,12 @@ const DiagramVariables = (props) => (
                         }) : null}
                     />
                 </div>
-                <button className="btn-float" onClick={e => props.onRemove(i)}>&times;</button>
+                <Button isFloat onClick={e => props.onRemove(i)}>&times;</Button>
             </div>)
         })}
-        <button className="btn btn-clear btn-lg btn-block" onClick={props.onAdd}>
+        <Button isBtn isClear isLarge isBlock onClick={props.onAdd}>
             <i className="far fa-plus mr-1"></i> Add Variable Map
-        </button>
+        </Button>
     </>
 )
 

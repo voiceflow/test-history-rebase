@@ -3,6 +3,8 @@ import { Form, FormGroup, Input, Label } from 'reactstrap';
 import axios from 'axios';
 import { connect } from 'react-redux'
 
+import Button from 'components/Button'
+
 class ProductUpdates extends Component {
 
   constructor(props) {
@@ -68,7 +70,7 @@ class ProductUpdates extends Component {
                       </FormGroup>
                   </Form>
 
-                  <button className="btn btn-primary" onClick={this.createNewUpdate}>Create New Update</button>
+                  <Button isBtn isPrimary onClick={this.createNewUpdate}>Create New Update</Button>
               </div>
           </div>
       )

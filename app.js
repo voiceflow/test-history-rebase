@@ -115,24 +115,6 @@ const ensureBeta = () => (req, res, next) => {
 // Route for Elasticsearch
 app.use(bodyParser.text({ type: 'application/x-ndjson' }));
 
-app.post('/elasticsearch/*', (req, res) => {
-  req.body = req.body.substring(24, req.body.length + 1);
-  req.body = JSON.parse(req.body);
-  const ESparams = req.params[0].split('/');
-  const ESoptions = {
-    index: ESparams[0],
-    type: ESparams[1],
-    body: req.body,
-  };
-  ESclient.search(ESoptions)
-    .then((data) => {
-      res.send({ responses: [data] });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
 app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.getAccessToken);
 app.get('/session/amazon/:code', ensureLoggedIn(), Authentication.getAmazonCode);
 app.delete('/session/amazon', ensureLoggedIn(), Authentication.deleteAmazon);
@@ -289,6 +271,7 @@ app.get('/marketplace/initial_template', ensureLoggedIn(), Marketplace.getInitia
 app.get('/marketplace/:project_id', ensureBeta(), Marketplace.getModules);
 app.get('/marketplace/:module_id', ensureBeta(), Marketplace.getModule);
 app.get('/marketplace/diagram/:module_id', ensureBeta(), Marketplace.getModuleDiagram);
+app.post('/marketplace/flows/_msearch?', Marketplace.flowsSearch);
 
 app.post('/analytics/track_onboarding', ensureLoggedIn(), Track.trackOnboarding);
 app.post('/analytics/track_session_time', ensureLoggedIn(), Track.trackSessionTime);

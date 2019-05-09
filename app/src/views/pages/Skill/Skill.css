@@ -235,6 +235,9 @@ textarea::placeholder {
   color: #fff;
 }
 
+.settings {
+  overflow: auto;
+}
 .card .overlay .elispie .elispie-button {
   padding: 0px 12px;
   border-radius: 5px;

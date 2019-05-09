@@ -64,6 +64,7 @@ export const fetchBoards = team_id => {
       // determine if there are any projects not on a board
       let board_projects = [];
       _.forEach(boards, board => {
+        if(!Array.isArray(board.projects)) return (board.projects = [])
         board_projects.push(...board.projects)
       })
       board_projects = new Set(board_projects)

@@ -76,9 +76,10 @@
 
  /* Secondary Button */
  .btn-secondary {
-     background-color: #fff !important;
-     border: 1px solid #E2E9EC !important;
-     color: #8da2b5 !important;
+     background-color: #fff;
+     border: 1px solid #E2E9EC;
+     color: #8da2b5;
+     background-color: #42A5FF;
      border-radius: 90px;
      cursor: pointer;
      padding: 11px 22px 10px;
@@ -86,21 +87,29 @@
      font-size: 15px;
      line-height: 20px;
      height: 45px;
-     font-weight: 500 !important;
+     font-weight: 500;
  }
 
  .btn-secondary:hover {
-     border: 1px solid #E2E9EC !important;
-     color: #132144 !important;
-     background-color: #f7f9fb !important;
+     border: 1px solid #E2E9EC;
+     color: #132144;
+     background-color: #f7f9fb;
  }
 
  .btn-secondary:active {
-     border: 1px solid #E2E9EC !important;
-     background-color: #EFF3F6 !important;
-     /*    border: 1px solid transparent !important;*/
+     border: 1px solid #E2E9EC;
+     background-color: #EFF3F6;
  }
 
+ .btn-secondary.disabled {
+     color: #fff;
+     opacity: 1;
+ }
+
+ .btn-secondary.disabled:hover {
+     border-color: #42A5FF;
+     background-color: #42A5FF;
+ }
  /* Float Button */
  .btn-float {
      height: 45px;
@@ -120,7 +129,19 @@
      transform: scale(1.05);
  }
 
- /* LinkButton */
+ /* Back Button */
+ .back-btn-large {
+     background-image: url('/back-light.svg');
+     background-position: center;
+     position: absolute;
+     top: 20px;
+     left: 32px;
+ }
+ .back-btn-large:hover {
+     background-image: url('/back.svg');
+ }
+ 
+ /* Link Button */
  .btn-link {
      color: #5D9DF5;
      background-color: none;
@@ -192,16 +213,32 @@
 
 /* Icon Button */
 .btn-icon {
-    width: 42px;
-    height: 42px;
+    width: 50px;
+    height: 50px;
+    font-weight: normal;
     color: rgba(110, 132, 154, .8);
     background-color: #fff;
+    border-radius: 50%;
     padding: 12px 11px;
+    transition: all ease 0.25s;
     text-align: center;
     box-shadow: 0 0 0 1px rgba(17, 49, 96, .04), 0 2px 4px 0 rgba(17, 49, 96, .16);
     position: relative;
     cursor: pointer;
     z-index: 1;
+    opacity: 1 !important;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: center;
+}
+
+.btn-icon:hover {
+    color: #8da2b5 !important;
+    background-color: #F7F9FB;
+}
+
+.btn-icon:active {
+    background-color: #EFF3F6;
 }
 
 .btn-icon:before {
@@ -301,6 +338,69 @@
     box-shadow: 0px 0px 0px 1px rgba(184, 218, 255, 1);
 }
 
+/* Goback Button */
+.goback-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    background-color: #fff !important;
+    border: none;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06) !important;
+    background-image: url(/back.svg) !important;
+    display: inline-block;
+    background-size: 30%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    transition: all 0.15s;
+    cursor: pointer;
+
+}
+
+.goback-btn:hover {
+    background-position: 45% center;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
+}
+
+.goback-btn:active {
+    background-color: #f9f9f9 !important;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
+}
+
+.goback-btn:focus {
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
+}
+
+.goforward-btn {
+    transform: scaleX(-1)
+}
+
+/* Close Button */
+.close {
+    font-weight: normal;
+    color: #8da2b570;
+    transition: all ease 0.25s;
+    opacity: 1 !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 14px;
+    height: 14px;
+    background-image: url(/close.svg);
+    background-repeat: no-repeat;
+    background-size: 13px;
+    ursor: pointer;
+    top: 20px;
+}
+
+.close:hover {
+    background-image: url(/close-dark.svg);
+    color: #8da2b5 !important;
+}
+
+.close.small{
+    width: 11px !important;
+    height: 11px !important;
+    background-size: 11px !important;
+}
 /* Nav Button Border */
 .nav-btn.border {
     padding: 0;
@@ -383,16 +483,6 @@
 .btn-tertiary.gray:active {
     background-color: #8da2b526;
 }
-/* Purple Tertiary */
-.btn-tertiary.purple {
-    color: #4e6ff9 !important;
-}
-.btn-tertiary.purple:hover {
-    background-color: #4e6ff918 !important;
-}
-.btn-tertiary.purple:active {
-    background-color: #4e6ff925;
-}
 
 /* Transparent Button */
 .btn-transparent {
@@ -440,6 +530,34 @@
     background-color: #ffd4d2 !important;
     color: #ff7170 !important;
     border: 1px solid #ffb9b9 !important;
+}
+
+/* Info Button */
+.btn-info {
+    background-color: transparent;
+    border: 1px solid #8da2b555;
+    font-size: 17px;
+    color: #8da2b5;
+    border-radius: 5px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    width: 130px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-info:hover {
+    color: #42A5FF;
+    background-color: #cce5ff70;
+    border-color: #b8daff;
+    /*    transform: scale(1.04);*/
+}
+
+.btn-info:focus {
+    box-shadow: none;
+    cursor: pointer;
 }
 
 /* Warning Button */

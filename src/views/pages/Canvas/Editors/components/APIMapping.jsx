@@ -41,7 +41,7 @@ class APIMapping extends Component {
                                             return { label: variable, value: variable, openVar: this.props.openVarTab }
                                         }) : null}
                                     />
-                                    <Button className="close-small ml-2" onClick={e => this.props.onRemove(e, i)} />
+                                    <Button isCloseSmall className="ml-2" onClick={e => this.props.onRemove(e, i)} />
                                 </InputGroup>
                             </div>)
                     }) : null}

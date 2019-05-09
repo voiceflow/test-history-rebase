@@ -39,12 +39,15 @@ exports[`Default Modal Test render default modal 1`] = `
     className="super-center"
     tag="div"
   >
-    <button
-      className="btn-clear"
+    <Button
+      iconPosition="right"
+      isClear={true}
+      onRef={[Function]}
+      trackEvent="Button Click"
       type="button"
     >
       Close
-    </button>
+    </Button>
   </ModalFooter>
 </Modal>
 `;

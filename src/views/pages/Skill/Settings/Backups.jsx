@@ -1,15 +1,15 @@
 import React, {Component} from 'react'
 import cn from 'classnames'
-import LightCanvas from '../../Canvas/LightCanvas'
 import { connect } from 'react-redux'
 import moment from 'moment'
-// import {Link} from 'react-router-dom'
 import axios from 'axios'
-// import _ from 'lodash'
+import {Modal, ModalFooter, FormGroup, Label, Alert, Table} from 'reactstrap'
 
+import Button from 'components/Button'
 import { Spinner } from 'views/components/Spinner'
+import LightCanvas from '../../Canvas/LightCanvas'
+
 import { setConfirm } from 'ducks/modal'
-import {Modal, ModalFooter, FormGroup, Label, Alert, Table, Button} from 'reactstrap'
 
 class BackupSettings extends Component{
     constructor(props){
@@ -97,10 +97,10 @@ class BackupSettings extends Component{
                     </div>
                     <LightCanvas diagram_id={this.state.curr_preview.diagram}/>
                 </div>
-                <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
+                <Button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
                 
                 <ModalFooter>
-                    <button className="btn-primary ml-auto mr-auto" onClick={() => this.confirmRestore(this.state.curr_preview.skill_id)}>Restore</button>
+                    <Button isPrimary className="ml-auto mr-auto" onClick={() => this.confirmRestore(this.state.curr_preview.skill_id)}>Restore</Button>
                 </ModalFooter>
             </Modal>
 
@@ -134,10 +134,10 @@ class BackupSettings extends Component{
                                                 })} />
                                             </td>
                                             <td>
-                                                <Button className='btn-primary' onClick={() => this.previewBackup(this.state.live_version)}>Preview</Button>
+                                                <Button isPrimary onClick={() => this.previewBackup(this.state.live_version)}>Preview</Button>
                                             </td>
                                             <td>
-                                                <Button className='btn-primary' onClick={() => this.confirmRestore(this.state.live_version.skill_id)}>Restore</Button>
+                                                <Button isPrimary onClick={() => this.confirmRestore(this.state.live_version.skill_id)}>Restore</Button>
                                             </td>
                                         </tr>
                                         :
@@ -153,10 +153,10 @@ class BackupSettings extends Component{
                                                 })} />
                                             </td>
                                             <td>
-                                                <button className='btn-tertiary' onClick={() => this.previewBackup(version)}>Preview</button>
+                                                <Button isFlat onClick={() => this.previewBackup(version)}>Preview</Button>
                                             </td>
                                             <td>
-                                                <button className='btn-primary-small' onClick={() => this.confirmRestore(version.skill_id)}>Restore</button>
+                                                <Button isPrimarySmall onClick={() => this.confirmRestore(version.skill_id)}>Restore</Button>
                                             </td>
                                         </tr>
                                     })}

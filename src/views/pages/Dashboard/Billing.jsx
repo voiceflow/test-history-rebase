@@ -4,6 +4,8 @@ import moment from "moment";
 import StripeHandler from "hocs/withStripeHandler";
 import { CardElement } from "react-stripe-elements";
 
+import Button from 'components/Button'
+
 const Invoice = props => {
   if (!props.invoice) return null;
   return (
@@ -122,7 +124,7 @@ class Billing extends Component {
                       disabled
                     />
                     <div className="mt-2 px-1 space-between">
-                      <button className="btn btn-link" onClick={() => this.setState({stage: "STRIPE"})}>Update</button>
+                      <Button isBtn isLink onClick={() => this.setState({stage: "STRIPE"})}>Update</Button>
                     </div>
                   </div>
                 }
@@ -136,10 +138,10 @@ class Billing extends Component {
                     <CardElement/>
                   </div>
                   <div className="space-between mt-2 px-1">
-                    <button className="btn btn-link" onClick={() => this.setState({stage: "INVOICE"})}>Cancel</button>
-                    <button className="btn btn-link" onClick={this.updateSource}>
+                    <Button isBtn isLink onClick={() => this.setState({stage: "INVOICE"})}>Cancel</Button>
+                    <Button isBtn isLink onClick={this.updateSource}>
                       Save
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

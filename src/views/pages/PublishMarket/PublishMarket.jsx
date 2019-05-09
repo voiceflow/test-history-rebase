@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 import { connect } from 'react-redux'
 import { FormGroup, Label, Input, Form } from 'reactstrap'
-import MUIButton from '@material-ui/core/Button'
+import Select from 'react-select'
 import Textarea from 'react-textarea-autosize'
 
-import axios from 'axios'
+import types from './../../../services/Types'
+import { TAGS } from './../Marketplace/tags.js'
+
+import Button from 'components/Button'
+
+import { setConfirm, clearModal } from 'ducks/modal'
+
 import '../Skill/Skill.css'
 import './PublishMarket.css'
-import types from './../../../services/Types'
-import { setConfirm, clearModal } from 'ducks/modal'
-import Select from 'react-select'
-import { TAGS } from './../Marketplace/tags.js'
 
 class PublishMarket extends Component {
 	constructor(props){
@@ -320,7 +323,7 @@ class PublishMarket extends Component {
                                     <div className="d-flex justify-content-between align-items-center">
                                         <span>This skill is currently being reviewed for the Marketplace.</span>
                                         <div>
-                                            <MUIButton variant="contained" className="btn-primary ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Submission</MUIButton>
+                                            <Button isPrimary variant="contained" className="ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Submission</Button>
                                         </div>
                                     </div>
                                 </div>
@@ -431,9 +434,9 @@ class PublishMarket extends Component {
                             </Form>
                             {!this.state.in_review &&
                             <div className="text-center">
-                                <button variant="contained" className="btn-primary" onClick={this.toggleConfirmSubmission}>
+                                <Button isPrimary variant="contained" onClick={this.toggleConfirmSubmission}>
                                     Submit Flow
-                                </button>
+                                </Button>
                             </div>
                             }
                         </div>

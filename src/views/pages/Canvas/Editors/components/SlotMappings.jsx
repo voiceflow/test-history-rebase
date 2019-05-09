@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import _ from 'lodash'
 import Select from 'react-select';
 import { connect } from 'react-redux'
-import { openTab } from 'ducks/user'
-import { selectStyles, variableComponent} from 'views/components/VariableSelect'
 
-const _ = require('lodash')
+import { openTab } from 'ducks/user'
+
+import Button from 'components/Button'
+import { selectStyles, variableComponent} from 'views/components/VariableSelect'
 
 class SlotMappings extends Component {
 
@@ -117,9 +119,9 @@ class SlotMappings extends Component {
                         <div className="close-small ml-2" onClick={() => this.handleRemoveMap(i)}></div>
                     </div>)
                 })}
-                <button className="btn btn-clear btn-block mb-2" onClick={this.handleAddMap}>
+                <Button isBtn isClear isBlock className="mb-2" onClick={this.handleAddMap}>
                     <i className="far fa-plus"></i> Add Variable Map
-                </button>
+                </Button>
             </React.Fragment>
         );
     }

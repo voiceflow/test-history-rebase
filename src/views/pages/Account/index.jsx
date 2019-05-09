@@ -6,6 +6,8 @@ import { Alert } from 'reactstrap'
 import moment from 'moment'
 import axios from 'axios'
 import './Account.css'
+
+import Button from 'components/Button'
 import Image from 'views/components/Uploads/Image'
 import Header from 'components/Header'
 
@@ -115,11 +117,11 @@ class Account extends Component {
   renderButton(stage, action){
     switch(stage){
       case LOADING:
-        return <button className="btn-primary disabled"><span className="loader"/></button>
+        return <Button isPrimary disabled><span className="loader"/></Button>
       case UNLINKED:
-        return <button className="btn-primary disabled" disabled>Unlinked</button>
+        return <Button isPrimary disabled>Unlinked</Button>
       default:
-        return <button onClick={action} className="btn-primary">Reset</button>
+        return <Button isPrimary onClick={action}>Reset</Button>
     }
   }
 

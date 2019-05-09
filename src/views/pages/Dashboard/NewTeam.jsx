@@ -1,15 +1,19 @@
 import React, { Component } from "react";
-import { Alert, Button } from "reactstrap";
-import { Link } from "react-router-dom";
 import _ from "lodash";
-import Image from "views/components/Uploads/Image";
 import update from "immutability-helper";
-import { Spinner } from "views/components/Spinner";
 import { compose } from "recompose";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { Alert } from "reactstrap";
+
+import Image from "views/components/Uploads/Image";
+import { Spinner } from "views/components/Spinner";
+import SeatsCheckout from "./SeatsCheckout";
+
 import { setError, setModal } from "ducks/modal";
 import { createTeam } from "ducks/team"
-import SeatsCheckout from "./SeatsCheckout";
+
+import Button from 'components/Button'
 import ImageOptions from 'views/components/Forms/ImageOptions'
 
 const TYPE_OPTIONS = [{
@@ -240,8 +244,9 @@ class NewTeam extends Component {
                   ))}
                   <Button
                     onClick={this.addInvite}
-                    color="clear"
-                    className="btn-lg mt-3"
+                    isClear
+                    isLarge
+                    className="mt-3"
                     style={{ fontWeight: 400 }}
                     block
                   >
@@ -250,9 +255,9 @@ class NewTeam extends Component {
                 </div>
               </div>
               <div className="mt-5">
-                <button className="btn-primary" onClick={this.confirmInvite}>
+                <Button isPrimary onClick={this.confirmInvite}>
                   Continue
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -295,9 +300,9 @@ class NewTeam extends Component {
               </div> 
             }
             <div className="mt-5">
-              <button className="btn-primary" onClick={this.saveTeam}>
+              <Button isPrimary onClick={this.saveTeam}>
                 Continue
-              </button>
+              </Button>
             </div>
           </div>
         );

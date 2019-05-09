@@ -48,6 +48,7 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
+import Button from 'components/Button'
 import { ModalHeader } from "views/components/Modals/ModalHeader";
 
 import {
@@ -657,7 +658,7 @@ class Editor extends Component {
             <hr />
             <div className="space-between">
               <label>Custom Reprompt</label>
-              <button className="close" onClick={this.toggleReprompt} />
+              <Button className="close" onClick={this.toggleReprompt} />
             </div>
             <Prompt
               placeholder="Sorry I didn't get that! Do you like this or that?"
@@ -678,7 +679,7 @@ class Editor extends Component {
             <hr />
             <div className="space-between">
               <label>Suggestion Chips</label>
-              <button className="close" onClick={this.toggleChips} />
+              <Button className="close" onClick={this.toggleChips} />
             </div>
             <CreatableSelect
               components={{

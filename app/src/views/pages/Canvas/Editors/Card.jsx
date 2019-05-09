@@ -5,6 +5,8 @@ import VariableInput from './components/VariableInput'
 import Image from './../../../components/Uploads/Image'
 import {Tooltip} from 'react-tippy'
 
+import DefaultButton from 'components/Button'
+
 class Card extends Component {
     constructor(props) {
         super(props);
@@ -70,13 +72,13 @@ class Card extends Component {
                             />
                         </div>}
                         <div className="my-2 text-center">
-                                <button className="btn-tertiary" block onClick={()=>this.updateContent('small_img', (this.state.node.extras.small_img === undefined ? null : undefined))}>
+                                <DefaultButton isFlat block onClick={()=>this.updateContent('small_img', (this.state.node.extras.small_img === undefined ? null : undefined))}>
                                     {this.state.node.extras.small_img === undefined ? <Tooltip position="bottom" html={<div style={{ width: 165 }}>Small screens use the normal image by default</div>}>
                                     Add Small Screen Image
                                     </Tooltip> : <React.Fragment>
                                     Remove Small Image
                                     </React.Fragment>}
-                                </button>
+                                </DefaultButton>
                         </div>
                     </React.Fragment>
                 }

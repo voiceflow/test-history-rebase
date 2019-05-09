@@ -1,6 +1,8 @@
 import React from 'react';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
+import Button from 'components/Button'
+
 class ProductDescriptionForm extends React.Component {
 
   render() {
@@ -28,12 +30,13 @@ class ProductDescriptionForm extends React.Component {
         <AvFeedback>Description is required</AvFeedback>
         </AvGroup>
         <div className="product-stage-button">
-          <button className='btn-primary'
+          <Button
+            isPrimary
             variant="contained"
             color="publish"
           >
             Continue
-          </button>
+          </Button>
           </div>
       </AvForm>
       </div>

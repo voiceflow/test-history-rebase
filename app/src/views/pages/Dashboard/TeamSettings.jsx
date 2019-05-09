@@ -1,11 +1,8 @@
 import React, { Component } from "react";
+import cn from "classnames";
 import { connect } from "react-redux";
-import {
-  updateMembers,
-  deleteTeam,
-  leaveTeam,
-  updateCurrentTeamItem
-} from "ducks/team";
+import { cloneDeep } from "lodash";
+import update from "immutability-helper";
 import {
   Modal,
   ModalBody,
@@ -16,18 +13,24 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
+
+import Button from 'components/Button'
 import { ModalHeader } from "views/components/Modals/ModalHeader";
 import { User } from "views/components/User";
 import Image from "views/components/Uploads/Image";
-import { cloneDeep } from "lodash";
-import update from "immutability-helper";
 import SeatsCheckout from "./SeatsCheckout";
-import { setConfirm, setError } from "ducks/modal";
 import Billing from "./Billing";
-import cn from "classnames";
 import { PLANS_ID } from "./PLANS";
 import CheckMark from "components/CheckMark";
 import PricingCard from "./PricingCard";
+
+import {
+  updateMembers,
+  deleteTeam,
+  leaveTeam,
+  updateCurrentTeamItem
+} from "ducks/team";
+import { setConfirm, setError } from "ducks/modal";
 
 // SETTING STATES: MEMBERS, SETTINGS, DELETE
 const STAGES = {
@@ -390,13 +393,14 @@ class TeamSettings extends Component {
               placeholder="Board Name"
             />
             <div className="my-3 text-center">
-              <button
-                className={"btn btn-warning" + (equal ? "" : " disabled")}
+              <Button
+                isBtn
+                isWarning
                 disabled={!equal}
                 onClick={this.deleteTeam}
               >
                 Delete Board
-              </button>
+              </Button>
             </div>
           </div>
         );
@@ -450,24 +454,26 @@ class TeamSettings extends Component {
             />
             <hr />
             <label>Billing</label>
-            <button
-              className="btn btn-link-lg"
+            <Button
+              isBtn
+              isLinkLarge
               onClick={() => this.setState({ stage: "BILLING" })}
             >
               Invoices
-            </button>
+            </Button>
             <br />
             <small className="text-muted">
               View invoices, update your payment options
             </small>
             <hr />
             <label>Privacy</label>
-            <button
-              className="btn btn-link-lg"
+            <Button
+              isBtn
+              isLinkLarge
               onClick={() => this.setState({ stage: "DELETE", input: "" })}
             >
               Delete Board
-            </button>
+            </Button>
             <br />
             <small className="text-muted">
               This action is irreversible. All team and project data will be
@@ -525,14 +531,15 @@ class TeamSettings extends Component {
                   </div>
                 </div>
                 <div className="text-center mt-3 position-relative">
-                  <button
+                  <Button
+                    isBtn
+                    isPrimary
                     type="submit"
-                    className={cn("btn btn-primary", { disabled: DISABLED })}
                     disabled={DISABLED}
                     style={{ width: 150 }}
                   >
                     {UPDATING ? <span className="loader" /> : "Apply Changes"}
-                  </button>
+                  </Button>
                   <div style={{ position: "absolute", top: 0, left: "69%" }}>
                     <CheckMark
                       show={show => (this.check = show)}

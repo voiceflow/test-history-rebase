@@ -11,6 +11,7 @@ import { addProduct, updateProduct } from 'ducks/product'
 import { setError } from 'ducks/modal'
 import ProductDetailsForm from './ProductDetailsForm';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import Button from 'components/Button'
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -353,10 +354,10 @@ class EditProduct extends React.Component {
     return (
       <MuiThemeProvider theme={stepperTheme}>
       <div className="h-100 w-100">
-            <button className="goback-btn position-fixed" onClick={()=>{
+            <Button className="goback-btn position-fixed" onClick={()=>{
                 this.props.history.push(`/tools/${this.props.skill_id}/products`)
             }} style={{top: 135, left: 210}}>
-            </button>
+            </Button>
           <div>
               <div className="product-editor pt-2">
                   <div className="stepper">

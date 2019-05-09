@@ -1,14 +1,18 @@
 import React, { Component } from "react";
-import StripeHandler from "hocs/withStripeHandler";
+import axios from "axios"
+import _ from "lodash"
 import { CardElement } from "react-stripe-elements";
 import { Collapse, Input } from "reactstrap";
 import { connect } from 'react-redux';
+
+import StripeHandler from "hocs/withStripeHandler";
+
 import { setError } from 'ducks/modal'
 import { updateMembers, createTeam } from 'ducks/team';
+
+import Button from 'components/Button'
 import PricingCard from "./PricingCard"
 import { PLANS_ID } from "./PLANS"
-import axios from "axios"
-import _ from "lodash"
 
 const STAGES = {
   "CHECKOUT": {},
@@ -228,12 +232,14 @@ class SeatsCheckout extends Component {
             </> }
           </>}
           <div className="super-center">
-            <button
-              className="btn btn-primary mt-4 mb-4"
+            <Button
+              isBtn
+              isPrimary
+              className="mt-4 mb-4"
               onClick={(e) => {e.preventDefault(); this.checkout()}}
             >
               {this.props.prompt || "Start Free Trial"}
-            </button>
+            </Button>
           </div>
         </div>
       </div>

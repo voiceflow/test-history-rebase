@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import SpeakElement from './components/SpeakElement'
 import randomstring from 'randomstring';
 import { Input, InputGroup} from 'reactstrap';
-// import HTML5Backend from 'react-dnd-html5-backend'
-// import { DragDropContext } from 'react-dnd'
+
+import Button from 'components/Button'
+import SpeakElement from './components/SpeakElement'
 
 const BLOCK_LIMIT = 50
 
@@ -105,14 +105,14 @@ export class Speak extends Component {
                 { properties.dialogs.length < BLOCK_LIMIT ?
                     <React.Fragment>
                         <div className="d-flex mt-4">
-                            <button className="btn btn-secondary mr-3" onClick={() => this.handleAddBlock(false)}>
+                            <Button isBtn isSecondary className="mr-3" onClick={() => this.handleAddBlock(false)}>
                                 <img src={'/comment.svg'} alt="comment" className="mr-3 mb-1" width='17px'/>
                                 Add Speech
-                            </button>
-                            <button className="btn btn-secondary" onClick={() => this.handleAddBlock(true)}>
+                            </Button>
+                            <Button isBtn isSecondary onClick={() => this.handleAddBlock(true)}>
                             <img src={'/volume.svg'} alt="volume" className="mr-3 mb-1" width='16px'/>
                                 Add Audio
-                            </button>
+                            </Button>
                         </div>
                         <InputGroup className="my-3">
                             <label className="input-group-text w-100 text-left">

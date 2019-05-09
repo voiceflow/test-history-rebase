@@ -62,12 +62,15 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
           <div
             className="super-center mb-3 mt-3"
           >
-            <button
-              className="btn-primary"
+            <Button
+              iconPosition="right"
+              isPrimary={true}
               onClick={[Function]}
+              onRef={[Function]}
+              trackEvent="Button Click"
             >
               Continue
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -122,12 +125,16 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
         >
           This update will affect the live version of your project. Please be sure you wish to do this.
         </div>
-        <button
-          className="btn-primary mb-3"
+        <Button
+          className="mb-3"
+          iconPosition="right"
+          isPrimary={true}
           onClick={[Function]}
+          onRef={[Function]}
+          trackEvent="Button Click"
         >
           Confirm Update
-        </button>
+        </Button>
       </div>
     </ModalBody>
   </Modal>

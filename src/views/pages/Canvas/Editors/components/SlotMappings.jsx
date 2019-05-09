@@ -116,7 +116,7 @@ class SlotMappings extends Component {
                                 }) : null}
                             />
                         </div>
-                        <div className="close-small ml-2" onClick={() => this.handleRemoveMap(i)}></div>
+                        <Button isCloseSmall className="ml-2" onClick={() => this.handleRemoveMap(i)}></Button>
                     </div>)
                 })}
                 <Button isBtn isClear isBlock className="mb-2" onClick={this.handleAddMap}>

@@ -567,44 +567,6 @@ hr.full-width {
 .hidden{
     display: none !important;
 }
-.close{
-    font-weight: normal;
-    color: #8da2b570;
-    transition: all ease 0.25s;
-    opacity: 1 !important;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 14px;
-    height: 14px;
-    background-image: url(/close.svg);
-    background-repeat: no-repeat;
-    background-size: 13px;
-    top: 20px;
-}
-.close:hover{
-    background-image: url(/close-dark.svg);
-    color: #8da2b5 !important;
-}
-.close-small{
-    font-weight: normal;
-    color: #8da2b570;
-    transition: all ease 0.25s;
-    opacity: 1 !important;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 11px;
-    height: 11px;
-    background-image: url(/close.svg);
-    background-repeat: no-repeat;
-    background-size: 11px;
-    top: 20px;
-    border: none !important;
-    cursor: pointer;
-}
-.close-small:hover{
-    background-image: url(/close-dark.svg);
-    color: #8da2b5 !important;
-}
 
 .remove {
     font-weight: normal;

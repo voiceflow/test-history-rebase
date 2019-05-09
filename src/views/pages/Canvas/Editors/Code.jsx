@@ -20,7 +20,10 @@ class Code extends Component {
     const that = this;
     this.refs.aceEditor.editor.completers.push({
       getCompletions: function(editor, session, pos, prefix, callback) {
-        var wordList = that.props.variables;
+        var wordList = [...that.props.variables]
+
+        wordList.push(...["voiceflow", "_system"])
+
         callback(
           null,
           wordList.map(function(word) {

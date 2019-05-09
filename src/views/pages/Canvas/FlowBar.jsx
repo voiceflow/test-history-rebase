@@ -6,6 +6,7 @@ import { setConfirm } from 'ducks/modal'
 import { renameDiagram } from 'ducks/diagram';
 import { v4 } from 'uuid'
 import './FlowBar.css'
+import cn from 'classnames'
 
 import {UncontrolledDropdown, DropdownToggle, DropdownItem, DropdownMenu} from 'reactstrap'
 class FlowBar extends Component{
@@ -15,12 +16,26 @@ class FlowBar extends Component{
             name: this.props.name? this.props.name : "Flow",
             edit: false,
             newFlowName: this.props.name ? this.props.name : "Flow",
+            leftActive: false,
+            rightActive: false
         };
     }
     static getDerivedStateFromProps(props){
         return {
             name: props.name ? props.name: "Flow"
         };
+    }
+
+    setActive = side => {
+        if (side === "left")
+            this.setState({
+                leftActive: !this.state.leftActive
+            })
+        else {
+            this.setState({
+                rightActive: !this.state.rightActive
+            })
+        }
     }
 
     generateFlowMenu = e => {
@@ -81,9 +96,13 @@ class FlowBar extends Component{
                         }
                     </div>
                 </div>
-                <UncontrolledDropdown direction='up'>
-                    <DropdownToggle className="dropdown-button mt-1 previous" tag="button" disabled={this.props.parentDiagrams.length === 0}>
-                    <img src="/arrow-right.svg" alt="arrow" />
+                <UncontrolledDropdown direction='up' active>
+                    <DropdownToggle 
+                        className="dropdown-button mt-1 pl-3 previous" 
+                        tag="button" 
+                        disabled={this.props.parentDiagrams.length === 0}
+                        onClick={() => this.setActive("left")}>
+                    <img src="/arrow-left-hover.svg" alt="arrow" className={cn("flow-arrow", {"active": this.state.leftActive})} />
                     </DropdownToggle>
                     <DropdownMenu className="no-select">
                         {this.props.parentDiagrams.map(({id, name}) => (
@@ -94,8 +113,12 @@ class FlowBar extends Component{
                     </DropdownMenu>
                 </UncontrolledDropdown>
                 <UncontrolledDropdown direction='up'>
-                    <DropdownToggle className="dropdown-button mr-4 mt-1" tag="button" disabled={this.props.childDiagrams.length === 0}>
-                    <img src="/arrow-right.svg" alt="arrow" />
+                    <DropdownToggle 
+                        className="dropdown-button mr-4 pl-3 mt-1" 
+                        tag="button" 
+                        disabled={this.props.childDiagrams.length === 0}
+                        onClick={() => this.setActive("right")}>
+                    <img src="/arrow-right-hover.svg" alt="arrow" className={cn("flow-arrow", {"active": this.state.rightActive})}/>
                     </DropdownToggle>
                     <DropdownMenu className="no-select">
                         {this.props.childDiagrams.map(({id, name}) => (

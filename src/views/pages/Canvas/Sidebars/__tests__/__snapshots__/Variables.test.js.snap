@@ -82,7 +82,6 @@ exports[`Sidebar Variables render variable sidebar on global 1`] = `
         className="variable-box"
       >
         <Input
-          autoFocus={true}
           maxLength="16"
           name="new_global"
           onChange={[Function]}

@@ -49,7 +49,7 @@ class Admin extends Component {
                 page = <Copy {...this.props}/>
                 break;
             default:
-                page = <Home user={this.props.user}/>
+                page = <Home {...this.props}/>
         }
 
         return (

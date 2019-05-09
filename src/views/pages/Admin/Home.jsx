@@ -55,7 +55,7 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      skill_id: '',
+      skill_id: (props && props.match && props.match.params && props.match.params.version_id) || '',
       encoded: true,
       loading: false,
       version_info: null
@@ -63,6 +63,10 @@ class Home extends Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.lookupSkill = this.lookupSkill.bind(this)
+  }
+
+  componentDidMount() {
+    if(this.state.skill_id) this.lookupSkill()
   }
 
   handleChange = event => {

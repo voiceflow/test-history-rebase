@@ -186,7 +186,7 @@ class Menu extends Component {
                     </div>
                 </div>
                 <div id="sidebar" className={cn({ open: this.props.open })} ref={ref => this.sidebar = ref}>
-                 <div className="sidebar-container">
+                 <div className={cn("sidebar-container", this.props.tab)} >
                     {this.props.loading_diagram ?
                         null :
                         <React.Fragment>

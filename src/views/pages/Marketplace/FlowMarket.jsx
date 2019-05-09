@@ -10,11 +10,11 @@ import Masonry from 'react-masonry-component'
 
 let ESURL
 if(process.env.REACT_APP_BUILD_ENV === 'production'){
-  ESURL = 'https://creator.getvoiceflow.com/elasticsearch'
+  ESURL = 'https://creator.getvoiceflow.com'
 } else if (process.env.REACT_APP_BUILD_ENV === 'staging'){
-  ESURL = 'https://staging.getvoiceflow.com/elasticsearch'
+  ESURL = 'https://staging.getvoiceflow.com'
 } else {
-  ESURL = 'http://localhost:8080/elasticsearch'
+  ESURL = 'http://localhost:8080'
 }
 class FlowMarket extends Component {
   constructor(props){
@@ -143,7 +143,10 @@ class FlowMarket extends Component {
               app="marketplace"
               url={ESURL}
               type="flows"
-              // transformRequest={(req) => {console.log(req)}}
+              headers={{
+                creator_id: this.props.user.creator_id,
+                password: this.props.user.password
+              }}
             >
               <div className="row">
                 <div className="col-3">

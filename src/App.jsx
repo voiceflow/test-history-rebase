@@ -219,6 +219,7 @@ class App extends Component {
                 <PrivateRoute path="/visuals/:skill_id" component={Skill} page='visuals' secondaryPage="displays"/>
                 <PrivateRoute path="/admin/updates" name="Admin" component={Admin} page='updates'/>
                 <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
+                <PrivateRoute path="/admin/version/:version_id" name="Admin" component={Admin} page='default'/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
                 <PrivateRoute path="/publish/:skill_id/google" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="google"/>
                 <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="alexa"/>

@@ -41,7 +41,7 @@ const OutputMapping = (props) => (
                         }) : null}
                     />
                 </div>
-                <Button className="ml-2 close-small" onClick={e => props.onRemove(i)} />
+                <Button isCloseSmall className="ml-2" onClick={e => props.onRemove(i)} />
             </div>)
         })}
         <Button isBtn isClear isLarge isBlock onClick={props.onAdd}>

@@ -131,6 +131,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   position: relative;
+  height: 100%;
 }
 
 .main-lists-inner {
@@ -328,6 +329,7 @@
   border: 1px solid #eaeff4 !important;
 }
 .projects-list__item {
+  background-color: #fff;
   border: 1px solid #eaeff4;
   border-radius: 7px;
   display: -ms-flexbox;
@@ -439,7 +441,7 @@
 }
 
 .projects-list__dragzone {
-  height: 74px;
+  height: 76px;
   border-radius: 7px;
   background-color: #fff;
   background-size: 10%;

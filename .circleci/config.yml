@@ -1,10 +1,11 @@
 version: 2 # use CircleCI 2.0
-jobs: # a collection of steps
+jobs:
   release:
     docker:
       - image: node:11
     steps:
       - checkout
+      - run: git tag --merged production
       - run: npm i -g semantic-release@15
       - run: semantic-release
   test: # runs not using Workflows must have a `build` job as entry point

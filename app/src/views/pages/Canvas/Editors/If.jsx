@@ -3,6 +3,8 @@ import _ from 'lodash';
 import Expression from './components/Expression';
 import Expressionfy from './components/Expressionfy';
 
+import Button from 'components/Button'
+
 const BLOCK_LIMIT = 50
 
 class IfBlock extends Component {
@@ -123,9 +125,12 @@ class IfBlock extends Component {
                 })}
 
                 { this.state.node.extras.expressions.length < BLOCK_LIMIT ?
-                    <div className="text-center"><button className="btn-tertiary-variable mt-1" onClick={this.handleAddBlock}>
-                    Add If Statement
-                    </button></div> : null
+                    <div className="text-center">
+                        <Button isFlatVariable className="mt-1" onClick={this.handleAddBlock}>
+                            Add If Statement
+                        </Button>
+                    </div> :
+                    null
                 }
             </div>
         );

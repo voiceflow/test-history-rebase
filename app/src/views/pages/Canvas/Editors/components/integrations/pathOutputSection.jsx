@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
+import update from 'immutability-helper'
 import cn from 'classnames'
+import _ from 'lodash'
+import randomstring from 'randomstring'
 import { connect } from 'react-redux'
 import { Collapse } from 'reactstrap'
-import _ from 'lodash'
-import APIMapping from '../APIMapping'
+
 import { openTab } from 'ducks/user'
-import update from 'immutability-helper'
-import randomstring from 'randomstring'
+
+import APIMapping from "../APIMapping";
 import { draftIsEmpty } from './util'
+
+import Button from 'components/Button'
 
 // props
 // action_data, mapping_options, loading, variables, toggleSection, open, showNextSection
@@ -98,14 +102,13 @@ class PathOutputSection extends Component {
             variables={this.props.variables}
           />}
           <div className="text-center mt-3">
-            <button
-              className={cn('btn-tertiary-variable', {
-                disabled: !this.state.completed
-              })}
+            <Button
+              isFlatVariable
+              disabled={!this.state.completed}
               onClick={this.props.showNextSection}
             >
               Next
-            </button>
+            </Button>
           </div>
         </Collapse>
       </>

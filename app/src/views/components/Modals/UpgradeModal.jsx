@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import {Button, Modal, ModalBody, Row, Col} from 'reactstrap'
+import {Modal, ModalBody, Row, Col} from 'reactstrap'
 import { ModalHeader } from 'views/components/Modals/ModalHeader'
 import {Elements} from 'react-stripe-elements';
+import Button from 'components/Button'
 import CheckoutForm from './../../pages/Account/CheckoutForm'
 import "./../../pages/Account/Account.css";
 
@@ -85,8 +86,8 @@ class UpgradeModal extends Component {
                     <span className="text-muted">Plan</span>
                     {options.map((option, i) => {
                     return <Button key={i}
+                        isClear={this.state.selected_plan !== option.plan}
                         disabled={this.state.selected_plan === option.plan}
-                        color={this.state.selected_plan === option.plan ? undefined : "clear"}
                         onClick={()=>{this.switchPlan(option.plan)}}
                         block
                         className="mt-2">

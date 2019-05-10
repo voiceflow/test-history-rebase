@@ -116,9 +116,13 @@ exports[`Dashboard render dashboard 1`] = `
                     trigger="mouseenter focus"
                     unmountHTMLWhenHide={false}
                   >
-                    <button
-                      className="nav-btn-border mt-1 add-button"
+                    <Button
+                      className="mt-1 add-button"
+                      iconPosition="right"
+                      isNavBordered={true}
                       onClick={[Function]}
+                      onRef={[Function]}
+                      trackEvent="Button Click"
                     />
                   </Tooltip>
                 </div>

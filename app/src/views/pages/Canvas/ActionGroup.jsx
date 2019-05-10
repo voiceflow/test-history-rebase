@@ -127,12 +127,12 @@ const invNameError = (name, locales) => {
 
   let validRegex = `[^${characters}.' ]+`
   let match = name.match(validRegex)
-  let split_name = name.split(' ').map(splits => {return splits.toLowerCase()})
+  let split_name = name.split(' ').map(splits => { return splits.toLowerCase() })
   if (match) {
     return inv_name_error + ` - Invalid Characters: "${match.join()}"`
-  } else if (WAKE_WORDS.some(l => split_name.find(split => {return split === l.toLowerCase()}))) {
+  } else if (WAKE_WORDS.some(l => split_name.find(split => { return split === l.toLowerCase() }))) {
     return 'Invocation name cannot contain Alexa keywords e.g. ' + WAKE_WORDS.join(', ')
-  } else if (LAUNCH_PHRASES.some(l => split_name.find(split => {return split === l.toLowerCase()}))) {
+  } else if (LAUNCH_PHRASES.some(l => split_name.find(split => { return split === l.toLowerCase() }))) {
     return 'Invocation name cannot contain Launch Phrases e.g. ' + LAUNCH_PHRASES.join(', ')
   } else {
     return null
@@ -386,7 +386,7 @@ export class ActionGroup extends PureComponent {
     iterate(0)
   }
 
-  async updateInvName(){
+  async updateInvName() {
     let inv_name = this.state.inv_name ? this.state.inv_name : this.props.skill.inv_name
     try {
       await axios.patch(`/skill/${this.props.skill.skill_id}?inv_name=1`, { inv_name: inv_name })
@@ -514,7 +514,7 @@ export class ActionGroup extends PureComponent {
       togglingPreview: true
     })
 
-    this.props.togglePreview(!this.props.skill.preview).then(() => this.setState({togglingPreview: false}))
+    this.props.togglePreview(!this.props.skill.preview).then(() => this.setState({ togglingPreview: false }))
   }
 
   toggleShare() {
@@ -950,97 +950,97 @@ export class ActionGroup extends PureComponent {
               }
             </div>
           )}
-        centerRenderer={() => (
-          <div id="middle-group">
-            <Tooltip
-              distance={16}
-              title={(this.props.platform === 'google') ? "Switch to Amazon View" : "Switch to Google View"}
-              position="bottom"
-              className="switch switch-blue"
-              tag='div'
-            >
-              <input onClick={() => { if (this.props.platform !== 'alexa') this.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} value="alexa_toggle" id="alexa_toggle" />
-              <label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">Alexa</label>
-              <input onClick={() => { if (this.props.platform !== 'google') this.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} value="google_toggle" id="google_toggle" />
-              <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">Google</label>
-              <span className="switch-selection"></span>
-            </Tooltip>
-          </div>
+          centerRenderer={() => (
+            <div id="middle-group">
+              <Tooltip
+                distance={16}
+                title={(this.props.platform === 'google') ? "Switch to Amazon View" : "Switch to Google View"}
+                position="bottom"
+                className="switch switch-blue"
+                tag='div'
+              >
+                <input onClick={() => { if (this.props.platform !== 'alexa') this.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} value="alexa_toggle" id="alexa_toggle" />
+                <label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">Alexa</label>
+                <input onClick={() => { if (this.props.platform !== 'google') this.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} value="google_toggle" id="google_toggle" />
+                <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">Google</label>
+                <span className="switch-selection"></span>
+              </Tooltip>
+            </div>
           )}
-        rightRenderer={() => (
-          <div className="title-group no-select">
-            <div className="align-icon">
-              <Tooltip
-                distance={16}
-                title={this.props.lastSave}
-                position="bottom"
-                className="mr-4"
-              >
-                <Button
-                  id="icon-save"
-                  isNav
-                  className={cn({
-                    'btn-successful': this.props.saved,
-                    'unsaved': !this.props.saved,
-                    'saving': this.props.saving
-                  })}
-                  onClick={this.props.onSave}>
-                  {this.props.saving && <span className="save-loader" />}
-                </Button>
-              </Tooltip>
-            </div>
-            <div className="title-group-sub">
-              <Tooltip
-                className="top-nav-icon"
-                title="Share"
-                position="bottom"
-                distance={16}
-              >
-                <Button isNavBordered id="icon-share" className="fas fa-share" onClick={this.toggleShare} />
-              </Tooltip>
-              <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
-                <PopoverBody style={{ minWidth: '260px' }}>
-                  <div className="space-between">
-                    <label>Allow preview sharing</label>
-                    <Toggle
-                      checked={this.props.skill.preview}
-                      disabled={this.state.togglingPreview}
-                      icons={false}
-                      onChange={this.togglePreview}
-                    />
-                  </div>
-                  {this.props.skill.preview &&
-                    <InputGroup className="mb-3">
-                      <InputGroupAddon addonType="prepend">
-                        <ClipBoard
-                          component="button"
-                          className="btn btn-clear copy-link"
-                          value={link}
-                          id="shareLink"
-                        >
-                          <i className="fas fa-copy" />
-                        </ClipBoard>
-                      </InputGroupAddon>
-                      <Input readOnly value={link} className="form-control-border right" />
-                    </InputGroup>
-                  }
-                </PopoverBody>
-              </Popover>
-            </div>
-            <div className="align-icon">
-              <Tooltip
-                distance={16}
-                title="Test"
-                position="bottom"
-                className="ml-4 mr-4"
-              >
-                <Button isNav onClick={this.props.onTest}><i className="fas fa-play" /></Button>
-              </Tooltip>
-            </div>
+          rightRenderer={() => (
+            <div className="title-group no-select">
+              <div className="align-icon">
+                <Tooltip
+                  distance={16}
+                  title={this.props.lastSave}
+                  position="bottom"
+                  className="mr-4"
+                >
+                  <Button
+                    id="icon-save"
+                    isNav
+                    className={cn({
+                      'btn-successful': this.props.saved,
+                      'unsaved': !this.props.saved,
+                      'saving': this.props.saving
+                    })}
+                    onClick={this.props.onSave}>
+                    {this.props.saving && <span className="save-loader" />}
+                  </Button>
+                </Tooltip>
+              </div>
+              <div className="title-group-sub">
+                <Tooltip
+                  className="top-nav-icon"
+                  title="Share"
+                  position="bottom"
+                  distance={16}
+                >
+                  <Button isNavBordered id="icon-share" className="fas fa-share" onClick={this.toggleShare} />
+                </Tooltip>
+                <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
+                  <PopoverBody style={{ minWidth: '260px' }}>
+                    <div className="space-between">
+                      <label>Allow preview sharing</label>
+                      <Toggle
+                        checked={this.props.skill.preview}
+                        disabled={this.state.togglingPreview}
+                        icons={false}
+                        onChange={this.togglePreview}
+                      />
+                    </div>
+                    {this.props.skill.preview &&
+                      <InputGroup className="mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <ClipBoard
+                            component="button"
+                            className="btn btn-clear copy-link"
+                            value={link}
+                            id="shareLink"
+                          >
+                            <i className="fas fa-copy" />
+                          </ClipBoard>
+                        </InputGroupAddon>
+                        <Input readOnly value={link} className="form-control-border right" />
+                      </InputGroup>
+                    }
+                  </PopoverBody>
+                </Popover>
+              </div>
+              <div className="align-icon">
+                <Tooltip
+                  distance={16}
+                  title="Test"
+                  position="bottom"
+                  className="ml-4 mr-4"
+                >
+                  <Button isNav onClick={this.props.onTest}><i className="fas fa-play" /></Button>
+                </Tooltip>
+              </div>
 
-            {this.renderUploadButton()}
-            {this.displayUploadPrompt()}
-          </div>
+              {this.renderUploadButton()}
+              {this.displayUploadPrompt()}
+            </div>
           )}
           subHeaderRenderer={() => (
             !this.props.preview && <SecondaryNavBar page='canvas' history={this.props.history} />

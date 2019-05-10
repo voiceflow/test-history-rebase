@@ -168,6 +168,7 @@ module.exports = (middleware, controllers) => {
   router.get('/marketplace/:project_id', middleware.ensureBeta, controllers.Marketplace.getModules);
   router.get('/marketplace/:module_id', middleware.ensureBeta, controllers.Marketplace.getModule);
   router.get('/marketplace/diagram/:module_id', middleware.ensureBeta, controllers.Marketplace.getModuleDiagram);
+  router.post('/marketplace/flows/_msearch?', controllers.Marketplace.flowsSearch);
 
   router.post('/analytics/track_onboarding', middleware.ensureLoggedIn, controllers.Track.trackOnboarding);
   router.post('/analytics/track_session_time', middleware.ensureLoggedIn, controllers.Track.trackSessionTime);

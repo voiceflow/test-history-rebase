@@ -78,8 +78,6 @@ export class Canvas extends Component {
         this.createDiagram = this.createDiagram.bind(this);
         this.enterFlow = this.enterFlow.bind(this);
         this.deleteFlow = this.deleteFlow.bind(this);
-        this.getChildDiagramsWithNames = this.getChildDiagramsWithNames.bind(this)
-        this.getParentDiagramsWithNames = this.getParentDiagramsWithNames.bind(this)
         var engine = new SRD.DiagramEngine()
         engine.registerLabelFactory(new SRD.DefaultLabelFactory())
         engine.registerNodeFactory(new BlockNodeFactory())
@@ -127,23 +125,6 @@ export class Canvas extends Component {
       
         // SKILL IS LOADED HERE
         this.onLoadId(props.diagram_id)
-    }
-
-    getChildDiagramsWithNames = () => {
-        return this.props.diagram.sub_diagrams.reduce((acc, diagram_id) => {
-            const [{name, id}] = this.props.diagrams.filter(({id}) => id === diagram_id)
-            return [...acc, {name, id}]
-        }, [])
-    }
-
-    getParentDiagramsWithNames = () => {
-        return this.props.diagrams.reduce((acc, {sub_diagrams, name, id}) => {
-            if (sub_diagrams.includes(this.props.diagram.id)) {
-                return [...acc, {name, id}]
-            }
-
-            return acc
-        }, [])
     }
 
     setMousetrap = () => {
@@ -1687,12 +1668,9 @@ export class Canvas extends Component {
                   <FlowBar
                     enterFlow={this.enterFlow}
                     preview={this.props.preview}
-                    diagram={this.props.diagram}
                     root_id={this.props.root_id}
                     setBlockMenu={this.props.setBlockMenu}
                     engine={this.state.engine}
-                    childDiagrams={this.getChildDiagramsWithNames()}
-                    parentDiagrams={this.getParentDiagramsWithNames()}
                   />
                 )}
                 {this.props.blockMenu}

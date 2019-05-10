@@ -1,9 +1,12 @@
+'use strict';
+
 const request = require('supertest');
-const app = require('../../app');
 const new_diagram = require('./data/new_diagram.json');
 const { pool, hashids } = require('../../services');
 // const moxios = require('moxios')
 const { team_hash } = require('../team_util');
+
+const GetApp = require('../../tests/getAppForTest');
 
 const TEAM_ID = team_hash.encode(1);
 
@@ -28,13 +31,20 @@ const getTemplate = new Promise(async (resolve, reject) => {
   }
 });
 
-describe('Diagram', () => {
+describe('Diagram', function () {
+  // this.timeout(10000);
+
   let token = '';
   const diagram_id = generateID();
   let module_id;
   let skill_id;
 
+  let app;
+  let server;
+
   beforeAll(async () => {
+    ({ app } = await GetApp());
+
     // Get auth token
     await request(app)
       .put('/session')
@@ -47,6 +57,7 @@ describe('Diagram', () => {
       .expect(200)
       .then(async (res) => {
         token = res.body.token;
+
         try {
           module_id = await getTemplate;
           await request(app)
@@ -67,7 +78,8 @@ describe('Diagram', () => {
 
   afterAll(async () => {
     try {
-      await request(app).delete(`/skill/${skill_id}`);
+      await request(app).delete(`/skill/${skill_id}`).then();
+      if (server) server.close();
     } catch (err) {
       throw err;
     }

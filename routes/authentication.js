@@ -350,6 +350,8 @@ const getSession = (req, res) => {
 };
 
 const putSession = (req, res) => {
+  console.log('Put session');
+
   if (!req.body.user.email || !req.body.user.password) {
     res.status(400).send('Invalid Form');
   } else {
@@ -357,6 +359,7 @@ const putSession = (req, res) => {
     const { password } = req.body.user;
     pool.query('SELECT * FROM creators WHERE email = $1 LIMIT 1', [email], (err, data) => {
       if (err) {
+        console.log('Error', err);
         res.status(500).send('Something Went Wrong');
       } else if (data.rows.length !== 0) {
         const row = data.rows[0];

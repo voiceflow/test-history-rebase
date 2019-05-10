@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import cn from 'classnames'
 
 export default class VendorSelectList extends Component {
   componentDidMount = () => {
@@ -23,7 +24,7 @@ export default class VendorSelectList extends Component {
 
     return <div className='vendors-select-list' ref={this.setWrapperRef}>
       {this.props.vendors.map(vendor => {
-        return <div onClick={() => this.props.onSelect(vendor)}>
+        return <div key={vendor.id} onClick={() => this.props.onSelect(vendor)} className={cn({selected: this.props.selectedVendor === vendor.id})}>
           {vendor.name}
         </div>
       })}

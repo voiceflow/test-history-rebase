@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import Masonry from 'react-masonry-component';
-import { Card, Button } from 'reactstrap';
+import { Card } from 'reactstrap';
+
+import Button from 'components/Button'
 
 class ModuleAdminPage extends Component {
     constructor(props){

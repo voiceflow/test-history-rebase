@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import VariableInput from '../../../VariableInput'
-import { draftIsEmpty } from '../../util'
 import update from 'immutability-helper'
-import { Collapse, Nav, NavItem, NavLink } from 'reactstrap';
-import APIInputs from '../../../APIInputs'
 import AceEditor from 'react-ace'
 import randomstring from 'randomstring'
-import C from '../constants'
+import { Collapse, Nav, NavItem, NavLink } from "reactstrap";
 
+import Button from 'components/Button'
+import VariableInput from '../../../VariableInput'
+import APIInputs from '../../../APIInputs'
+
+import C from '../constants'
+import { draftIsEmpty } from '../../util'
 // props
 // action_data, open, toggleSection, variables, showNextSection
 
@@ -189,7 +191,11 @@ class GetRequestSection extends Component {
                     tabSize: 2
                   }} /> : pairContent}
             </React.Fragment> : pairContent}
-            <div className="text-center my-3"><button onClick={this.props.showNextSection} className={`btn-tertiary ${this.state.completed ? '' : 'disabled'}`}>Next</button></div>
+            <div className="text-center my-3">
+              <Button isFlat disabled={!this.state.completed} onClick={this.props.showNextSection}>
+                Next
+              </Button>
+            </div>
           </div>
         </Collapse>
       </>

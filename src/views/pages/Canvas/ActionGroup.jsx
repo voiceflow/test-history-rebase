@@ -1,33 +1,41 @@
 import cn from 'classnames'
+import axios from "axios";
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Link } from "react-router-dom";
+import { Tooltip } from "react-tippy";
+import Confetti from "react-dom-confetti";
+import Toggle from "react-toggle";
+import { Progress } from "react-sweet-progress";
+import {
+  Popover,
+  PopoverBody,
+  InputGroup,
+  InputGroupAddon,
+  Input,
+  Alert,
+  Modal,
+  ModalBody
+} from "reactstrap";
 
+import InvRegex from "services/Regex";
 import LOCALE_MAP from "./../../../services/LocaleMap";
 
 import { updateVersion, updateLocales, updateSkillDB, togglePreview } from 'ducks/version'
 import { setError } from 'ducks/modal'
-import {
-  Popover, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, ModalBody, Button
-} from 'reactstrap'
+import { AmazonAccessToken, googleAccessToken, getVendors } from 'ducks/account'
+import { updateVendorId } from 'ducks/project'
+
+import Button from 'components/Button'
 import { ModalHeader } from 'views/components/Modals/ModalHeader'
 import Header from 'components/Header'
 import VendorSelectList from './components/VendorSelectList'
 import SecondaryNavBar from "views/components/NavBar/SecondaryNavBar";
 import ClipBoard from './../../components/ClipBoard'
 import AmazonLogin from './../../components/Forms/AmazonLogin'
-import axios from 'axios'
-import { Tooltip } from 'react-tippy'
-import Toggle from 'react-toggle'
-import { Progress } from 'react-sweet-progress'
-import "react-sweet-progress/lib/style.css"
-import Confetti from 'react-dom-confetti'
-import { AmazonAccessToken, googleAccessToken, getVendors } from 'ducks/account'
-import { updateVendorId } from 'ducks/project'
-import InvRegex from 'services/Regex'
-// import { timingSafeEqual } from 'crypto';
 
 import './ActionGroup.css'
+import "react-sweet-progress/lib/style.css";
 
 const loading = (message) => {
   return <div className="super-center mb-4">
@@ -555,7 +563,7 @@ export class ActionGroup extends PureComponent {
   displayUploadPrompt() {
     if (this.state.show_upload_prompt) {
       return <div className="upload-success-popup">
-        <button className="close close-upload-success-popup mt-2" onClick={this.closePrompt} />
+        <Button className="close close-upload-success-popup mt-2" onClick={this.closePrompt} />
         {this.renderBody(false)}
       </div>
     }
@@ -613,7 +621,7 @@ export class ActionGroup extends PureComponent {
         <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live.svg" alt="Upload" />
         <div className="modal-bg-txt text-center mt-2"> Confirm Live Update</div>
         <div className="modal-txt text-center mt-2 mb-3">This update will affect the live version of your project. Please be sure you wish to do this.</div>
-        <button className="btn-primary mb-3" onClick={this.updateLiveVersion}>Confirm Update</button>
+        <Button isPrimary className="mb-3" onClick={this.updateLiveVersion}>Confirm Update</Button>
       </React.Fragment>
     }
   }
@@ -645,13 +653,14 @@ export class ActionGroup extends PureComponent {
       </Tooltip>
     } else {
       if (this.isUploadLoading()) {
-        return <Button variant="contained" className="publish-btn publish-btn-disabled" onClick={() => this.setState({ show_upload_prompt: !this.state.show_upload_prompt })}>
+        return <Button isDisabled variant="contained" className="publish-btn" onClick={() => this.setState({ show_upload_prompt: !this.state.show_upload_prompt })}>
           <p className="loading-btn m-0 p-0">Uploading</p>
           <div className="launch">
             <div className="load-spinner pt-1">
               <span className="save-loader-white" />
             </div>
-          </div> </Button>
+          </div>
+        </Button>
       } else {
         const multiVendor = this.props.platform === 'alexa' && this.state.vendors && this.state.vendors.length > 1
         return <div className={cn('upload-btn-container', { 'multi-vendor': multiVendor })}>
@@ -796,9 +805,9 @@ export class ActionGroup extends PureComponent {
             <a href="https://developer.amazon.com/login.html" className="btn-primary mr-3 no-underline d-inline-block mb-2" target="_blank" rel="noopener noreferrer">
               Developer Sign Up
                       </a>
-            <Button color="clear" className="faux-btn-primary d-inline-block mb-2" onClick={this.checkVendor}>
+            <Button isFaux color="clear" className="d-inline-block mb-2" onClick={this.checkVendor}>
               <i className="fas fa-sync-alt" /> Check Again
-                      </Button>
+            </Button>
           </div>
         </div>
       case 7:
@@ -833,7 +842,7 @@ export class ActionGroup extends PureComponent {
           <input className="form-control" value={this.state.inv_name} placeholder='Invocation Name' onChange={(e) => this.setState({ inv_name: e.target.value, inv_name_error: invNameError(e.target.value, this.props.skill.locales) })} />
           <small className={"text-blue" + (this.state.flash ? ' blink' : '')}>{this.state.inv_name_error}</small>
           <div className="super-center mt-3 mb-2">
-            <button className="btn-primary" onClick={this.updateAlexa}>Continue</button>
+            <Button isPrimary onClick={this.updateAlexa}>Continue</Button>
           </div>
         </div>
       default:
@@ -860,13 +869,13 @@ export class ActionGroup extends PureComponent {
             <div className="grid-col-3 mx--1">
               {LOCALE_MAP.map((locale, i) => {
                 const active = this.props.skill.locales.includes(locale.value) ? "active" : "";
-                return <button className={`country-checkbox btn-darken ${active}`} key={i} onClick={() => { this.props.updateSkillLocale(locale.value) }}>
+                return <Button className={`country-checkbox btn-darken ${active}`} key={i} onClick={() => { this.props.updateSkillLocale(locale.value) }}>
                   <span>{locale.name}</span><img src={`/images/icons/countries/${locale.value}.svg`} alt={locale.name}></img>
-                </button>
+                </Button>
               })}
             </div>
             <div className="mt-4 mb-5">
-              <button varient="contained" className="btn-primary" onClick={(e) => { this.updateInvName(); this.updateAlexa(); this.props.saveSkill() }}>Confirm Upload</button>
+              <Button isPrimary varient="contained" onClick={(e) => { this.updateInvName(); this.updateAlexa(); this.props.saveSkill() }}>Confirm Upload</Button>
             </div>
           </div>
         }
@@ -875,7 +884,7 @@ export class ActionGroup extends PureComponent {
           <div className="modal-bg-txt text-center mt-2"> Upload your Skill for testing</div>
           <div className="modal-txt text-center mt-2"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console</div>
           <div className="super-center mb-3 mt-3">
-            <button className="btn-primary" onClick={this.updateAlexa}>Continue</button>
+            <Button isPrimary onClick={this.updateAlexa}>Continue</Button>
           </div>
         </div>
     }
@@ -933,7 +942,7 @@ export class ActionGroup extends PureComponent {
         </div>
 
         <div className="super-center mb-3 mt-3">
-          <button className="btn-primary" onClick={this.updateGoogle}>Confirm Upload</button>
+          <Button isPrimary onClick={this.updateGoogle}>Confirm Upload</Button>
         </div>
       </div>
     }
@@ -1011,9 +1020,17 @@ export class ActionGroup extends PureComponent {
                   position="bottom"
                   className="mr-4"
                 >
-                  <button id="icon-save" className={`${this.props.saved ? 'btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''}`} onClick={this.props.onSave}>
+                  <Button
+                    id="icon-save"
+                    isNav
+                    className={cn({
+                      'btn-successful': this.props.saved,
+                      'unsaved': !this.props.saved,
+                      'saving': this.props.saving
+                    })}
+                    onClick={this.props.onSave}>
                     {this.props.saving && <span className="save-loader" />}
-                  </button>
+                  </Button>
                 </Tooltip>
               </div>
               <div className="title-group-sub">
@@ -1023,7 +1040,7 @@ export class ActionGroup extends PureComponent {
                   position="bottom"
                   distance={16}
                 >
-                  <button id="icon-share" className="nav-btn-border fas fa-share" onClick={this.toggleShare}></button>
+                  <Button isNavBordered id="icon-share" className="fas fa-share" onClick={this.toggleShare} />
                 </Tooltip>
                 <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
                   <PopoverBody style={{ minWidth: '260px' }}>
@@ -1061,7 +1078,7 @@ export class ActionGroup extends PureComponent {
                   position="bottom"
                   className="ml-4 mr-4"
                 >
-                  <button className="nav-btn" onClick={this.props.onTest}><i className="fas fa-play" /></button>
+                  <Button isNav onClick={this.props.onTest}><i className="fas fa-play" /></Button>
                 </Tooltip>
               </div>
 

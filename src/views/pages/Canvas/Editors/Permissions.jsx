@@ -1,10 +1,13 @@
 import cn from 'classnames'
 import React, { Component } from 'react';
-import Permission from './components/Permission'
+import _ from 'lodash'
 import { connect } from 'react-redux'
 import {Alert} from 'reactstrap'
+
+import Button from 'components/Button'
+import Permission from './components/Permission'
+
 import { openTab } from "ducks/user";
-const _ = require('lodash')
 
 const permission_options = [
     { name: 'User Email', value: 'alexa::profile:email:read' },
@@ -149,9 +152,9 @@ export class Permissions extends Component {
                     )
                 })}
                 { this.state.node.extras.permissions.length < this.state.permission_options.length ?
-                    <button className="btn btn-clear btn-lg btn-block" onClick={this.handleAddBlock}>
+                    <Button isBtn isClear isLarge isBlock onClick={this.handleAddBlock}>
                         <i className="far fa-plus"></i> Add Permission Request
-                    </button> : null
+                    </Button> : null
                 }
                 <Alert className="mt-3">If failing, try prompting the user with the <b>Permission</b> block and a message</Alert>
             </div>

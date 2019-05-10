@@ -64,8 +64,10 @@ exports[`Error Modal Test render error modal 1`] = `
     />
     <hr />
     <Button
-      color="primary"
-      tag="button"
+      iconPosition="right"
+      isPrimary={true}
+      onRef={[Function]}
+      trackEvent="Button Click"
     >
       Return 
       <i

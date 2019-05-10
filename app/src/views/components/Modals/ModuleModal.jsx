@@ -43,6 +43,8 @@ class ModuleModal extends React.Component {
         this.props.appendDiagrams(res.data.new_diagrams)
         this.props.updateUserModules(res.data.new_module)
         this.props.updateVersion('global', JSON.parse(res.data.globals))
+        this.props.updateVersion('intents', res.data.new_intents)
+        this.props.updateVersion('slots', res.data.new_slots)
         this.setState({
           loading: false
         })

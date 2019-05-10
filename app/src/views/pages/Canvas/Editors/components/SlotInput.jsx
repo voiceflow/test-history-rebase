@@ -4,11 +4,15 @@ import { Collapse } from "reactstrap";
 import Select from "react-select";
 import { Tooltip } from "react-tippy";
 import { connect } from "react-redux";
+
+import Button from 'components/Button'
+
 import SlotSynonyms, {
   SingleValueOption,
   SlotOption,
   SlotDiabled
 } from "./SlotComponents";
+
 import { setError } from "ducks/modal";
 
 class SlotInput extends Component {
@@ -142,8 +146,9 @@ class SlotInput extends Component {
               className="interaction-name-input"
             />
           </Tooltip>
-          <button
-            className="close mt-1"
+          <Button
+            isClose
+            className="mt-1"
             onClick={() => this.props.removeSlot(this.props.slot.key)}
             disabled={this.props.live_mode}
           />

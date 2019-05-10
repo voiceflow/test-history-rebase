@@ -68,6 +68,10 @@
     transition: 0.15s ease-out;
 }
 
+.btn-successful {
+    background-image: url("/saved.svg"), linear-gradient(-180deg, rgba(62, 207, 142, .09), rgba(62, 207, 142, .25) 98%) !important;
+}
+
 .switch-input.checked+.switch-label-on~.switch-selection {
     /* Note: right: 50% doesn't transition in WebKit */
     right: 80px;

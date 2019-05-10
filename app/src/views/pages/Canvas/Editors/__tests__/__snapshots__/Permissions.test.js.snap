@@ -4,15 +4,21 @@ exports[`PermissionsEditor render permissions block editor 1`] = `
 <div
   className=""
 >
-  <button
-    className="btn btn-clear btn-lg btn-block"
+  <Button
+    iconPosition="right"
+    isBlock={true}
+    isBtn={true}
+    isClear={true}
+    isLarge={true}
     onClick={[Function]}
+    onRef={[Function]}
+    trackEvent="Button Click"
   >
     <i
       className="far fa-plus"
     />
      Add Permission Request
-  </button>
+  </Button>
   <Alert
     className="mt-3"
     closeAriaLabel="Close"

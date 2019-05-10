@@ -1,6 +1,9 @@
 import React from "react";
-import PLANS from "./PLANS";
 import cn from "classnames";
+
+import PLANS from "./PLANS";
+
+import Button from 'components/Button'
 
 export default ({ plan, upgrade, delay, team }) => {
   if (!(plan in PLANS)) return null;
@@ -34,12 +37,12 @@ export default ({ plan, upgrade, delay, team }) => {
       </div>
       <div className="mb-2">
         {current ? (
-          <button className="btn-primary disabled" disabled>Current Plan</button>
+          <Button isPrimary disabled>Current Plan</Button>
         ) : (
           upgrade && (
-            <button className="btn-primary mt-2" onClick={() => upgrade(pricing)}>
+            <Button isPrimary className="mt-2" onClick={() => upgrade(pricing)}>
               Upgrade Plan
-            </button>
+            </Button>
           )
         )}
       </div>

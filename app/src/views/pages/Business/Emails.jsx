@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+import Button from 'components/Button'
+
 import { deleteEmail } from 'ducks/email'
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
@@ -36,7 +38,7 @@ class Emails extends Component {
                                 <p className="empty">No Email Templates Exist</p>
                                 <p className="empty-desc">Send users emails from within your project to provide context or deliver relivant content</p>
                                 <Link to={`/tools/${this.props.skill_id}/email/new`} className="no-underline">
-                                    <button varient="contained" className="btn-primary">Create a Template</button>
+                                    <Button isPrimary varient="contained">Create a Template</Button>
                                 </Link>
                             </div>
                         </div>

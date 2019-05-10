@@ -6,6 +6,7 @@ import { deleteDisplay } from "ducks/display"
 import { setConfirm } from 'ducks/modal'
 
 import { Alert } from 'reactstrap'
+import Button from 'components/Button'
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
 import { Spinner } from 'views/components/Spinner'
@@ -46,7 +47,7 @@ class Multimodal extends Component {
                             <p className="empty">No Visual Templates Exist</p>
                             <p className="empty-desc">Add viduals to your project and create stunning visuals with Alexa Presentation Language</p>
                             <Link to={`/visuals/${this.props.skill_id}/display/new`} className="no-underline">
-                                <button varient="contained" className="btn-primary">New Display</button>
+                                <Button isPrimary varient="contained">New Display</Button>
                             </Link>
                         </div>
                         </div>

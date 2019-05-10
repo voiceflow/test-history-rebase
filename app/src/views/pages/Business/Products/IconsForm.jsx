@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+
+import Button from 'components/Button'
 import Image from 'views/components/Uploads/Image'
 
 class IconsForm extends Component {
@@ -26,18 +28,21 @@ class IconsForm extends Component {
               </div>
           </div>
           <div className="product-stage-button">
-            <button className='btn-tertiary-gray'
+            <Button
+              isFlatGray
               variant="contained"
               onClick={() => this.props.updateStage(2)}
             >
               Previous
-            </button>
-            <button className='btn-primary ml-2'
+            </Button>
+            <Button
+              isPrimary
+              className='ml-2'
               variant="contained"
               onClick={() => this.props.updateStage(4)}
             >
               Continue
-            </button>
+            </Button>
           </div>
         </div>
       )

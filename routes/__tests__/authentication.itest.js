@@ -1,7 +1,24 @@
-const request = require('supertest');
-const app = require('../../app');
+'use strict';
 
-describe('Authentication', () => {
+const request = require('supertest');
+
+const GetApp = require('../../tests/getAppForTest');
+
+describe('Authentication', async () => {
+  let app;
+  let server;
+
+  beforeAll(async () => {
+    ({
+      app,
+      server,
+    } = await GetApp());
+  });
+
+  afterAll(async () => {
+    if (server) server.close();
+  });
+
   describe('Login', () => {
     it('doesn\'t accept empty credentials', async () => {
       await request(app)

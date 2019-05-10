@@ -36,9 +36,14 @@ exports[`SpeakEditor render speak block editor 1`] = `
   <div
     className="d-flex mt-4"
   >
-    <button
-      className="btn btn-secondary mr-3"
+    <Button
+      className="mr-3"
+      iconPosition="right"
+      isBtn={true}
+      isSecondary={true}
       onClick={[Function]}
+      onRef={[Function]}
+      trackEvent="Button Click"
     >
       <img
         alt="comment"
@@ -47,10 +52,14 @@ exports[`SpeakEditor render speak block editor 1`] = `
         width="17px"
       />
       Add Speech
-    </button>
-    <button
-      className="btn btn-secondary"
+    </Button>
+    <Button
+      iconPosition="right"
+      isBtn={true}
+      isSecondary={true}
       onClick={[Function]}
+      onRef={[Function]}
+      trackEvent="Button Click"
     >
       <img
         alt="volume"
@@ -59,7 +68,7 @@ exports[`SpeakEditor render speak block editor 1`] = `
         width="16px"
       />
       Add Audio
-    </button>
+    </Button>
   </div>
   <InputGroup
     className="my-3"

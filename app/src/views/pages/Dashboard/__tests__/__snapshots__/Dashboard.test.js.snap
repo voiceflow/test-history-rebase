@@ -71,17 +71,11 @@ exports[`Dashboard render dashboard 1`] = `
               <div
                 className="main-lists-inner"
               >
-                <DropTarget(DragSource(WithDraggable(List)))
-                  createSkill={[Function]}
-                  disableDragging={true}
-                  id="initial"
-                  itemReorder={[Function]}
-                  name="Default List"
-                  onDuplicateSkill={[Function]}
-                  onRemoveSkill={[Function]}
-                  onRenameSkill={[Function]}
-                  projects={Array []}
-                />
+                <WithRootPortal(DragLayer(CustomDragLayer))
+                  withMemo={true}
+                >
+                  <Component />
+                </WithRootPortal(DragLayer(CustomDragLayer))>
                 <div
                   className="main-list-add"
                 >
@@ -122,9 +116,13 @@ exports[`Dashboard render dashboard 1`] = `
                     trigger="mouseenter focus"
                     unmountHTMLWhenHide={false}
                   >
-                    <button
-                      className="nav-btn-border mt-1 add-button"
+                    <Button
+                      className="mt-1 add-button"
+                      iconPosition="right"
+                      isNavBordered={true}
                       onClick={[Function]}
+                      onRef={[Function]}
+                      trackEvent="Button Click"
                     />
                   </Tooltip>
                 </div>

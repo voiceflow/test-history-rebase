@@ -15,7 +15,10 @@ const props = {
     byId: {},
     allIds: []
   },
-  projects_array: [],
+  projects: {
+    byId: {},
+    allIds: []
+  },
   getMembers: () => new Promise(resolve => resolve()),
   fetchProjects: () => new Promise(resolve => resolve()),
   user: {

@@ -15,6 +15,8 @@ const createFixture = () => {
   const fixture = {
     start: () => {
     },
+    stop: () => {
+    },
     middleware: Object.keys(middleware).reduce((result, key) => {
       result[key] = sinon.stub().callsArg(2);
       return result;

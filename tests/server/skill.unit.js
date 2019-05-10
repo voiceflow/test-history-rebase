@@ -269,14 +269,18 @@ const tests = [
 
 describe('skill route unit tests', () => {
   let app;
+  let server;
 
-  afterEach(() => sinon.restore());
+  afterEach(async () => {
+    sinon.restore();
+    await server.stop();
+  });
 
   tests.forEach((test) => {
     it(`${test.method} ${test.namedPath || test.calledPath}`, async () => {
       const fixture = createFixture();
 
-      ({ app } = await GetApp(fixture));
+      ({ app, server } = await GetApp(fixture));
 
       const response = await request(app)[test.method](test.calledPath);
 

@@ -350,8 +350,6 @@ const getSession = (req, res) => {
 };
 
 const putSession = (req, res) => {
-  console.log('Put session');
-
   if (!req.body.user.email || !req.body.user.password) {
     res.status(400).send('Invalid Form');
   } else {

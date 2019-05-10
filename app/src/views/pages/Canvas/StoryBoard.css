@@ -2590,7 +2590,6 @@ button.close:hover{
 }
 
 .btn-outline-secondary:hover {
-    /*box-shadow:  inset 0 0 0 1px rgba(144,164,174,.5) !important;*/
     background-color: #fff;
     color: #3d96f0 !important;
 }

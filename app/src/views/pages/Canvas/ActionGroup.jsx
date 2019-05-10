@@ -23,6 +23,7 @@ import { Progress } from 'react-sweet-progress'
 import "react-sweet-progress/lib/style.css"
 import Confetti from 'react-dom-confetti'
 import { AmazonAccessToken, googleAccessToken, getVendors } from 'ducks/account'
+import { updateVendorId } from 'ducks/project'
 import InvRegex from 'services/Regex'
 // import { timingSafeEqual } from 'crypto';
 
@@ -160,8 +161,11 @@ export class ActionGroup extends PureComponent {
       is_error: false,
       should_pop_confetti: false,
       percentage: 0,
-      upload_button_loading: true
+      upload_button_loading: true,
+      selected_vendor: props.vendor_id
     }
+
+    console.log()
 
     this.toggle = this.toggle.bind(this)
     this.toggleShare = this.toggleShare.bind(this)
@@ -203,17 +207,12 @@ export class ActionGroup extends PureComponent {
     getVendors().then(vendors => {
       this.setState({ vendors, upload_button_loading: false })
     })
-    document.addEventListener('mousedown', this.handleClickEvent);
   }
 
   shouldReset() {
     if (ENDING_STAGES[this.props.platform].includes((this.props.platform === 'alexa' ? this.state.stage : this.state.google_stage))) {
       this.reset()
     }
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickEvent);
   }
 
   openUpdate() {
@@ -530,10 +529,13 @@ export class ActionGroup extends PureComponent {
   }
 
   selectVendor = (vendor) => {
+    if (!(vendor && vendor.id)) return
     // save to database
-    console.log("SELECT VENDOR", vendor)
+    this.props.updateVendorId(this.props.skill.project_id, vendor.id)
+
     this.setState({
-      vendors_open: false
+      vendors_open: false,
+      selected_vendor: vendor.id
     })
   }
 
@@ -590,12 +592,6 @@ export class ActionGroup extends PureComponent {
       this.props.renderPlatformSwitch()
       this.props.updateLinter()
     })
-  }
-
-  handleClickEvent = (e) => {
-    if (this.vendorDropdownRef && !this.vendorDropdownRef.contains(e.target)) {
-      this.toggleVendors()
-    }
   }
 
   renderLiveStage() {
@@ -684,7 +680,7 @@ export class ActionGroup extends PureComponent {
             }
           </Tooltip>
           {multiVendor && <div className="vendor-dropdown" onClick={this.toggleVendors}></div>}
-          {this.state.vendors_open && <VendorSelectList vendors={this.state.vendors} onBlur={this.toggleVendors} onSelect={this.selectVendor}/>}
+          {this.state.vendors_open && <VendorSelectList vendors={this.state.vendors} onBlur={this.toggleVendors} onSelect={this.selectVendor} selectedVendor={this.state.selected_vendor} />}
         </div>
       }
     }
@@ -1088,6 +1084,7 @@ const mapStateToProps = state => ({
   platform: state.skills.skill.platform,
   diagram_id: state.skills.skill.diagram,
   live_mode: state.skills.live_mode,
+  vendor_id: state.skills.skill.vendor_id
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -1095,6 +1092,7 @@ const mapDispatchToProps = dispatch => ({
   setError: err => dispatch(setError(err)),
   updateSkillLocale: (val) => dispatch(updateLocales(val)),
   togglePreview: preview => dispatch(togglePreview(preview)),
-  saveSkill: (publish, cb) => dispatch(updateSkillDB(publish, cb))
+  saveSkill: (publish, cb) => dispatch(updateSkillDB(publish, cb)),
+  updateVendorId: (projectId, vendorId) => dispatch(updateVendorId(projectId, vendorId))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(ActionGroup);

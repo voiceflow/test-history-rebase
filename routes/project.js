@@ -18,6 +18,8 @@ const {
   checkGactionsVersionChanged,
 } = require('./../config/ga_actions');
 
+const _ = require('lodash')
+
 const axios = require('axios');
 
 exports.getProjectFromSkill = async (req, res, next) => {
@@ -239,4 +241,26 @@ exports.render = async (req, res) => {
     const new_skill_id_decoded = hashids.decode(new_skill_row.skill_id)[0];
     updateVersion(new_skill_id_decoded, skill_id, new_skill_row);
   });
+};
+
+exports.updateVendorId = async (req, res) => {
+  const creator_id = req.user.id;
+  const { vendor_id } = req.body;
+  const project_id = hashids.decode(req.params.project_id)[0];
+  if (_.isNil(creator_id)) {
+    res.status(400).send('Creator ID Missing');
+    return;
+  }
+  if (_.isNil(project_id)) {
+    res.status(400).send('Project ID Missing');
+    return;
+  }
+
+  try {
+    await pool.query('UPDATE project_members SET selected_vendor = $3 WHERE creator_id = $1 AND project_id = $2', [creator_id, project_id, vendor_id]);
+    res.sendStatus(200);
+  } catch (e) {
+    console.error(e);
+    res.status(500).send(e);
+  }
 };

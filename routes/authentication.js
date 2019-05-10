@@ -1080,5 +1080,5 @@ module.exports = {
   verifyDialogflowToken,
   _getGoogleAccessToken,
   deleteGoogleAccessToken,
-  deleteDialogflowToken,
+  deleteDialogflowToken
 };

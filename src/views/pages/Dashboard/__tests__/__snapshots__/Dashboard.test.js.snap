@@ -71,17 +71,11 @@ exports[`Dashboard render dashboard 1`] = `
               <div
                 className="main-lists-inner"
               >
-                <DropTarget(DragSource(WithDraggable(List)))
-                  createSkill={[Function]}
-                  disableDragging={true}
-                  id="initial"
-                  itemReorder={[Function]}
-                  name="Default List"
-                  onDuplicateSkill={[Function]}
-                  onRemoveSkill={[Function]}
-                  onRenameSkill={[Function]}
-                  projects={Array []}
-                />
+                <WithRootPortal(DragLayer(CustomDragLayer))
+                  withMemo={true}
+                >
+                  <Component />
+                </WithRootPortal(DragLayer(CustomDragLayer))>
                 <div
                   className="main-list-add"
                 >

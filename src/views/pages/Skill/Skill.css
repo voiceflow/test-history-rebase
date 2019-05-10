@@ -132,6 +132,10 @@ textarea::placeholder {
   margin: 5px 0px !important;
 }
 
+.settings {
+  overflow: auto;
+}
+
 .stage_modal .modal-info>.MUIform>.btn {
   margin-top: 10px !important;
 }
@@ -231,6 +235,9 @@ textarea::placeholder {
   color: #fff;
 }
 
+.settings {
+  overflow: auto;
+}
 .card .overlay .elispie .elispie-button {
   padding: 0px 12px;
   border-radius: 5px;

@@ -238,7 +238,7 @@ ul {
 }
 #app>#canvas, #app>#dashboard{
     position: absolute;
-    top: 115px;
+    top: 116px;
     right: 0;
     left: 0;
     bottom: 0;
@@ -525,6 +525,12 @@ audio {
     outline: none;
     padding: 0px;
     letter-spacing: inherit;
+}
+.dnd-drag-layer {
+  z-index: 100;
+  position: absolute;
+  pointer-events: none;
+  background-color: #fff;
 }
 .plain-input{
     background: none;

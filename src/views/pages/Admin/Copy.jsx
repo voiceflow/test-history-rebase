@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 import axios from 'axios';
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import Button from "components/Button";
 
@@ -106,6 +107,10 @@ class Copy extends Component {
                         onChange={t => this.setState({skill: t})}
                         options={this.state.creator_skills}
                     />
+                    {this.state.skill && <>
+                      <i className="far fa-search text-dull mr-1"/>
+                      <Link to={`/admin/version/${this.state.skill.value}`}>{this.state.skill.value}</Link>
+                    </>}
                     <hr/>
                     <label>TO</label>
                     <div className="super-center mb-2">

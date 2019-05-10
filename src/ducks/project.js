@@ -87,6 +87,17 @@ export const deleteProject = project_id => {
   }
 }
 
+export const updateVendorId = (project_id, vendor_id) => {
+  return async (dispatch) => {
+    try {
+      await axios.post(`/project/${project_id}/vendor_id`, {vendor_id})
+    } catch (err) {
+      dispatch(setError('Unable to update Vendor Id'))
+      console.error(err)
+    }
+  }
+}
+
 // export const reorderProjects = (dragIndex, hoverIndex) => {
 //   return async (dispatch, getState) => {
 //     try{

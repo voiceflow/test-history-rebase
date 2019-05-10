@@ -4,7 +4,7 @@ const _ = require('lodash');
 const Server = require('../server');
 const { ServiceManager } = require('../backend');
 
-let lastPort = 10000;
+let lastPort = _.random(10000, 60000);
 
 module.exports = async (serviceManager = new ServiceManager()) => {
   const server = new Server(serviceManager);

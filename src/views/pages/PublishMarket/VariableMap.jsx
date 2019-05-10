@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 import Select from 'react-select';
-import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 import { connect } from 'react-redux'
+
+import Button from 'components/Button'
+import { selectStyles, variableComponent } from 'views/components/VariableSelect'
+
 import { openTab } from 'ducks/user'
 
 class VariableMap extends Component {
@@ -58,15 +61,15 @@ class VariableMap extends Component {
 
                                     <InputGroupAddon addonType="append">
                                         <InputGroupText>
-                                            <button className="close" onClick={e => this.props.onRemove(e, i, this.props.type)}></button>
+                                            <Button isClose onClick={e => this.props.onRemove(e, i, this.props.type)} />
                                         </InputGroupText>
                                     </InputGroupAddon>
                                 </InputGroup>
                             </div> )
                     }) : null}
-                    <button className="btn btn-default btn-block" onClick={e => this.props.onAdd(this.props.type)}>
+                    <Button isBtn isDefault isBlock onClick={e => this.props.onAdd(this.props.type)}>
                         <i className="far fa-plus"></i> Add Variable
-                    </button>
+                    </Button>
                 </div>
 
             </React.Fragment>

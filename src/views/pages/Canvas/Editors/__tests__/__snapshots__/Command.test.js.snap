@@ -99,10 +99,15 @@ exports[`CommandEditor render command block editor 1`] = `
       <label>
         Link Command Flow
       </label>
-      <button
+      <Button
         block={true}
-        className="btn-clear btn-block btn-lg"
+        iconPosition="right"
+        isBlock={true}
+        isClear={true}
+        isLarge={true}
         onClick={[Function]}
+        onRef={[Function]}
+        trackEvent="Button Click"
       >
         <img
           alt="home"
@@ -112,7 +117,7 @@ exports[`CommandEditor render command block editor 1`] = `
           width={15}
         />
          Create New Flow
-      </button>
+      </Button>
       <div
         className="break"
       >

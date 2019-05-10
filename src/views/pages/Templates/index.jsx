@@ -1,15 +1,18 @@
 import React, { Component } from 'react'
+import _ from "lodash";
 import axios from 'axios'
-import TemplateCard from './TemplateCard'
-import LOCALE_MAP from './../../../services/LocaleMap'
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import { Modal, Alert } from 'reactstrap'
-import { Link } from 'react-router-dom'
-import _ from 'lodash'
-import './Template.css'
+
+import Button from 'components/Button'
+import TemplateCard from './TemplateCard'
 import LightCanvas from './../Canvas/LightCanvas'
-import MUIButton from '@material-ui/core/Button';
 import { Spinner } from 'views/components/Spinner'
-import { connect } from 'react-redux'
+
+import LOCALE_MAP from './../../../services/LocaleMap'
+
+import './Template.css'
 
 import {
     addProjectToList
@@ -161,7 +164,7 @@ class Templates extends Component {
 
     renderContinueButton() {
       return (<div className="mt-1">
-          <MUIButton varient="contained" className="btn-primary" onClick={this.saveSettings}>Continue</MUIButton>
+          <Button isPrimary varient="contained" onClick={this.saveSettings}>Continue</Button>
       </div>)
     }
 
@@ -201,14 +204,13 @@ class Templates extends Component {
                     <label className="mt-4 mb-3 form-title">Select Regions</label>
                     <div className="grid-col-3 mx--1">
                         {LOCALE_MAP.map((locale, i) => {
-                            const active = this.state.locales.includes(locale.value) ? "active" : "";
-                            return <button className={`country-checkbox btn-darken ${active}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value) }}>
+                            return <Button isActive={this.state.locales.includes(locale.value) } className='country-checkbox' key={i} onClick={() => { this.onLocaleBtnClick(locale.value) }}>
                                 <span>{locale.name}</span><img src={`/images/icons/countries/${locale.value}.svg`} alt={locale.name}></img>
-                            </button>
+                            </Button>
                         })}
                     </div>
                     <div className="mt-5">
-                        <button varient="contained" className="btn-primary" onClick={this.saveSettings}>Continue</button>
+                        <Button isPrimary varient="contained" onClick={this.saveSettings}>Continue</Button>
                     </div>
                 </div>
         }
@@ -236,7 +238,7 @@ class Templates extends Component {
                 </div>
                 <button className="goback-btn position-absolute" onClick={() => this.setState({ preview: false })} style={{ top: 320, left: -90 }} />
                 <div className="position-absolute" style={{ bottom: -75, left: '50%', marginLeft: -73 }}>
-                    <MUIButton varient="contained" className="btn-primary" onClick={() => this.createSkill(this.state.template.module_id)}>Select Template</MUIButton>
+                    <Button isPrimary varient="contained" onClick={() => this.createSkill(this.state.template.module_id)}>Select Template</Button>
                 </div>
             </Modal>
         </div>

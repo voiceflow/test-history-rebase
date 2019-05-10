@@ -6,7 +6,7 @@ import { store, history } from "./containers/store";
 import { Alert } from "reactstrap";
 import { ConnectedRouter } from 'connected-react-router'
 import { DragDropContext } from "react-dnd";
-import DragDropBackend from "./services/DragDropBackend";
+import HTML5Backend from 'react-dnd-html5-backend';
 
 // Import Dependent CSS
 import "react-tippy/dist/tippy.css";
@@ -219,6 +219,7 @@ class App extends Component {
                 <PrivateRoute path="/visuals/:skill_id" component={Skill} page='visuals' secondaryPage="displays"/>
                 <PrivateRoute path="/admin/updates" name="Admin" component={Admin} page='updates'/>
                 <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
+                <PrivateRoute path="/admin/version/:version_id" name="Admin" component={Admin} page='default'/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
                 <PrivateRoute path="/publish/:skill_id/google" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="google"/>
                 <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="alexa"/>
@@ -255,4 +256,7 @@ class App extends Component {
   }
 }
 
-export default DragDropContext(DragDropBackend)(App);
+// Hack until this ticket is fixed https://github.com/react-dnd/react-dnd/issues/894
+global.__isReactDndBackendSetUp = false;
+
+export default DragDropContext(HTML5Backend)(App);

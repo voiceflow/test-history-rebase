@@ -1,34 +1,36 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import validUrl from 'valid-url'
-
+import Select from 'react-select'
 import {
-  Button, ButtonGroup, Form,
+  ButtonGroup, Form,
   FormGroup, Label, Input, Modal,
-  ModalBody, Alert, Collapse
+  ModalBody, Alert, Collapse, Button
 } from 'reactstrap'
-import MUIButton from '@material-ui/core/Button'
+import { Link } from "react-router-dom";
+
+//TODO DEPRECATE MUI
 import Checkbox from '@material-ui/core/Checkbox'
 import MUFormGroup from '@material-ui/core/FormGroup'
 import Paper from '@material-ui/core/Paper'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+
+import DefaultButton from 'components/Button'
 import Textarea from 'react-textarea-autosize'
 import Image from '../../components/Uploads/Image'
 import Multiple from '../../components/Forms/Multiple'
 import AmazonLogin from '../../components/Forms/AmazonLogin'
-import Select from 'react-select'
-import './Skill.css'
-import { Link } from 'react-router-dom'
-import LOCALE_MAP from '../../../services/LocaleMap'
 
+import LOCALE_MAP from '../../../services/LocaleMap'
 import { AMAZON_CATEGORIES } from '../../../services/Categories'
 
 import { updateVersion, updateEntireVersion, updateSkillDB } from 'ducks/version'
 import { setConfirm, setError } from 'ducks/modal'
 import { AmazonAccessToken } from 'ducks/account'
 
-const _ = require('lodash');
+import "./Skill.css";
 
 const stage_title = {
   "-1": "Login Failed",
@@ -457,8 +459,10 @@ class Skill extends Component {
             <p className="text-muted">
               Your skill has been successfully submitted for review to the Amazon Skill store. You will be updated on the status of your skill via email.
                         </p>
-            <Link to="/dashboard"><MUIButton variant="contained" className="btn-primary">Dashboard</MUIButton></Link>
-            <MUIButton variant="contained" className="white-btn ml-3" onClick={() => this.setState({ stage: 2 })}>Return to Project</MUIButton>
+            <Link to="/dashboard">
+              <DefaultButton isPrimary variant="contained">Dashboard</DefaultButton>
+            </Link>
+            <DefaultButton isWhite variant="contained" className="ml-3" onClick={() => this.setState({ stage: 2 })}>Return to Project</DefaultButton>
           </div>
           <img src="/images/success.svg" alt="success" />
         </div>
@@ -554,7 +558,7 @@ class Skill extends Component {
             placeholder="Any Particular Testing Instructions for Amazon Approval Process"
           />
         </Paper>
-        <button className="btn-primary btn" onClick={this.onPublish}>Submit to Alexa</button>
+        <DefaultButton isBtn isPrimary onClick={this.onPublish}>Submit to Alexa</DefaultButton>
       </div>
     } else if (this.state.stage === 5 || this.state.stage === 6) {
       content = <div>
@@ -567,9 +571,9 @@ class Skill extends Component {
           <a href="https://developer.amazon.com/login.html" className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
             Developer Sign Up
                     </a>
-          <Button color="clear" onClick={this.checkVendor}>
+          <DefaultButton isClear onClick={this.checkVendor}>
             <i className="fas fa-sync-alt" /> Check Again
-                    </Button>
+          </DefaultButton>
         </div>
       </div>
     } else if (this.state.stage === 8) {
@@ -585,9 +589,9 @@ class Skill extends Component {
             className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
             Test on Alexa Simulator
                     </a>
-          <Button color="clear" onClick={this.onCertify}>
+          <DefaultButton isClear onClick={this.onCertify}>
             Submit for Review
-                    </Button>
+          </DefaultButton>
         </div>
       </div>
     }
@@ -610,7 +614,8 @@ class Skill extends Component {
           onClosed={this.closePublish}>
           <ModalBody>
             <div className="d-flex justify-content-between" ref={this.privacyTop}>
-              <b>{stage_title[this.state.stage]}</b> <button type="button" className="close" onClick={this.togglePublish}></button>
+              <b>{stage_title[this.state.stage]}</b>
+              <DefaultButton isClose type="button" onClick={this.togglePublish} />
             </div>
             <div className="modal-info">
               {content}
@@ -745,13 +750,15 @@ class Skill extends Component {
                   <div className="d-flex justify-content-between align-items-center">
                     <h5 className="mb-0">This skill is currently in review so you cannot edit it.</h5>
                     <div>
-                      <MUIButton variant="contained" className="white-btn" href={alexaDashboardUrl} target="_blank">Visit Dashboard</MUIButton>
-                      <MUIButton variant="contained" className="btn-primary ml-3" onClick={() => {
+                      <DefaultButton isWhite variant="contained" href={alexaDashboardUrl} target="_blank">Visit Dashboard</DefaultButton>
+                      <DefaultButton isPrimary variant="contained" className="ml-3" onClick={() => {
                         this.props.onConfirm({
                           text: "Are you sure you want to withdraw this Skill?",
                           confirm: this.onWithdraw
                         })
-                      }}>Withdraw Skill</MUIButton>
+                      }}>
+                        Withdraw Skill
+                      </DefaultButton>
                     </div>
                   </div>
                 </div>
@@ -932,7 +939,21 @@ class Skill extends Component {
                           <ButtonGroup className="locale-button-group">
                             {LOCALE_MAP.map((locale, i) => {
                               const active = this.state.locales.includes(locale.value) ? "active" : "";
-                              return <Button outline color="primary" className={`locale-button ${active}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value) }}>{locale.name}</Button>
+                              return (
+                                <Button
+                                  outline
+                                  color="primary"
+                                  className={`locale-button ${active}`}
+                                  key={i}
+                                  onClick={() => {
+                                    this.onLocaleBtnClick(
+                                      locale.value
+                                    );
+                                  }}
+                                >
+                                  {locale.name}
+                                </Button>
+                              );
                             })}
                           </ButtonGroup>
                         </div>
@@ -977,16 +998,16 @@ class Skill extends Component {
               <div className="text-center">
                 {disabled_stages.has(this.state.stage) ?
                   null :
-                  <button
+                  <Button
+                    isPrimary
                     variant="contained"
-                    className="btn-primary"
                     onClick={() => {
                       this.validateForm()
                     }}
                   >
                     Publish Skill
                                     <i className="fab fa-amazon ml-2" />
-                  </button>
+                  </Button>
                 }
               </div>
             </div>

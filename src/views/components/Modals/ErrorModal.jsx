@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { Button, Modal, ModalBody, Alert } from 'reactstrap';
+import { Modal, ModalBody, Alert } from 'reactstrap';
+import Button from 'components/Button'
 import { clearModal } from 'ducks/modal'
 
 export class ErrorModal extends Component {
@@ -29,7 +30,7 @@ export class ErrorModal extends Component {
               </Alert>
             }
             <hr/>
-            <Button color="primary" onClick={this.props.dismiss}>Return <i className="fas fa-undo"></i></Button>
+            <Button isPrimary onClick={this.props.dismiss}>Return <i className="fas fa-undo"></i></Button>
           </ModalBody>
         </Modal>
     );

@@ -6,6 +6,8 @@ import Textarea from 'react-textarea-autosize'
 import { Collapse } from 'reactstrap'
 import randomstring from 'randomstring'
 
+import Button from 'components/Button'
+
 // so we don't need to rerender the entire choiceinput component
 class ContainedTextarea extends PureComponent {
   constructor(props) {
@@ -150,7 +152,7 @@ class ChoiceInput extends Component {
           <div className="interaction-block">
             <div className="choice-title">
               <span>{this.props.index+1}</span>
-              <button className="close" onClick={()=>this.props.remove()} disabled={this.props.live_mode}></button>
+              <Button className="close" onClick={()=>this.props.remove()} disabled={this.props.live_mode} />
             </div>
             {has_entry && <div>
               <ContainedTextarea

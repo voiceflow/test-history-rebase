@@ -30,18 +30,11 @@ class Migrate extends Component {
 
   componentDidMount() {
     AmazonAccessToken()
-    .then(data => {
-      if(data){
-        this.setState({
-          stage: 1
-        })
-      } else {
-        this.setState({
-          stage: -1,
-          error: 'No Amazon Login'
-        })
-      }
-    })
+    .then(() => this.setState({stage: 1}))
+    .catch(() => this.setState({
+      stage: -1,
+      error: 'No Amazon Login'
+    }))
   }
 
   updateSkill() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
-import { FlowBar } from '../FlowBar';
+import FlowBar from '../FlowBar';
 import toJson from 'enzyme-to-json';
 
 const clickFn = jest.fn()
@@ -26,11 +26,7 @@ const diagrams = [
 ]
 describe('FlowBar', () => {
     it('render flow bar', () => {
-        const component = shallow(<FlowBar diagram={diagram} diagrams={diagrams} />);
+        const component = shallow(<FlowBar />);
         expect(toJson(component)).toMatchSnapshot()
     });
-    it('renders with the correct childDiagrams', () => {
-        const component = mount(<FlowBar diagram={diagram} diagrams={diagrams} />);
-        console.log(component.debug())
-    })
 })

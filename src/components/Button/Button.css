@@ -1,8 +1,16 @@
+button {
+    background-color: white;
+}
+
 .btn {
     text-align: center;
     cursor: pointer;
 }
 
+.btn:focus {
+    outline: 0;
+    box-shadow: none !important;
+}
 /* Default Button */
 .btn-default {
     color: #8da2b5 !important;
@@ -79,7 +87,6 @@
      background-color: #fff;
      border: 1px solid #E2E9EC;
      color: #8da2b5;
-     background-color: #42A5FF;
      border-radius: 90px;
      cursor: pointer;
      padding: 11px 22px 10px;
@@ -110,6 +117,20 @@
      border-color: #42A5FF;
      background-color: #42A5FF;
  }
+
+ .toggle-group .btn.btn-secondary {
+     background-color: #fff !important;
+     line-height: 15px !important;
+     color: #132144 !important;
+     border-radius: 4px !important;
+     box-shadow: 0 2px 3px 0 rgba(14, 30, 37, .1);
+     padding-left: 12px;
+     padding-right: 12px;
+     padding-top: 9px;
+     border: none !important;
+     height: 37px;
+ }
+
  /* Float Button */
  .btn-float {
      height: 45px;
@@ -140,7 +161,7 @@
  .back-btn-large:hover {
      background-image: url('/back.svg');
  }
- 
+
  /* Link Button */
  .btn-link {
      color: #5D9DF5;
@@ -508,6 +529,42 @@
     border: 1px solid #5D9DF5 !important;
 }
 
+/* Secondary Outline */
+
+.btn-outline-secondary {
+    color: #8da2b5 ;
+    font-weight: 600 ;
+    border-radius: 5px;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #fff;
+    color: #3d96f0;
+}
+
+.btn-outline-secondary:active {
+    background-color: #fafafa ;
+}
+
+.toggle-group .btn.btn-outline-secondary {
+    font-weight: 400 !important;
+    color: #8da2b5 !important;
+    line-height: 15px !important;
+    border: none !important;
+    border-radius: 5px !important;
+    font-size: 15px !important;
+}
+
+.toggle-group .btn.btn-outline-secondary:hover {
+    color: #132144 !important;
+    background-color: #F7F9FB !important;
+}
+
+.toggle-group .btn.btn-outline-secondary:active {
+    font-weight: 400 !important;
+    color: #132144 !important;
+    font-size: 15px !important;
+}
 /* Danger Button */
 .btn-danger {
     background-color: #ff3562;
@@ -596,7 +653,7 @@
     border: 1px solid #E2E9EC;
     font-size: 10px;
     height: 24px;
-    padding: 3px 10px 2px 10px;
+    padding: 0 10px;
 }
 
 .btn-black:hover {

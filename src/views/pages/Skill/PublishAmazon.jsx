@@ -83,11 +83,9 @@ class Skill extends Component {
   }
 
   componentDidMount() {
-    AmazonAccessToken().then(token => {
-      this.setState({
-        stage: token ? 2 : 0
-      });
-    })
+    AmazonAccessToken()
+    .then(() => this.setState({stage: 2}))
+    .catch(() => this.setState({stage: 0}))
 
     axios.get('/skill/' + this.props.skill_id + '?verbose=1&review_check=1')
       .then(res => {
@@ -472,7 +470,7 @@ class Skill extends Component {
     let content;
     let alexaDashboardUrl = `https://developer.amazon.com/alexa/console/ask/build/custom/${this.state.amzn_id}/development/en_US/dashboard`;
     if (this.state.stage === 0 || this.state.stage === -1) {
-      content = <div>
+      content = <div className="my-5">
         {this.state.stage === -1 ?
           <Alert color="danger">Login With Amazon Failed - Try Again.</Alert> : null
         }
@@ -998,16 +996,15 @@ class Skill extends Component {
               <div className="text-center">
                 {disabled_stages.has(this.state.stage) ?
                   null :
-                  <Button
-                    isPrimary
-                    variant="contained"
+                  <button
+                    className="btn btn-primary"
                     onClick={() => {
                       this.validateForm()
                     }}
                   >
                     Publish Skill
-                                    <i className="fab fa-amazon ml-2" />
-                  </Button>
+                    <i className="fab fa-amazon ml-2" />
+                  </button>
                 }
               </div>
             </div>

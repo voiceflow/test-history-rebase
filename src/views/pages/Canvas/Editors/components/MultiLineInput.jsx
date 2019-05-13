@@ -4,7 +4,7 @@ import Select from 'react-select';
 import { Collapse } from 'reactstrap';
 
 import Button from 'components/Button'
-import AudioDrop from './../../../../components/Uploads/AudioDrop'
+import AudioDrop from 'components/Uploads/AudioDrop'
 
 class MultiLineInput extends Component {
     constructor(props) {
@@ -66,7 +66,7 @@ class MultiLineInput extends Component {
             <div className="multiline">
                 <div className="multi-title-block" >
                     <div className="multi-title" onClick={()=>{this.toggleCollapse('collapse')}}>
-                        <span className="text-muted">{this.state.line.collapse ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} {this.state.index + 1}</span> {this.state.line.title} 
+                        <span className="text-muted">{this.state.line.collapse ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} {this.state.index + 1}</span> {this.state.line.title}
                     </div>
                     <Button isClose onClick={() => {this.props.onRemove(this.state.index)}} />
                 </div>

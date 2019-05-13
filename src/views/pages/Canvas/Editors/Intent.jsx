@@ -7,7 +7,7 @@ import { Tooltip } from 'react-tippy'
 import Select, { components } from 'react-select'
 import SlotMappings from './components/SlotMappings'
 import './Intent.css'
-import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
+import PlatformTooltip from 'components/Tooltips/PlatformTooltip';
 import Toggle from 'react-toggle'
 
 import { updateIntents, setCanFulfill } from 'ducks/version'
@@ -316,7 +316,7 @@ export class Intent extends Component {
                 <div className={this.props.live_mode ? 'disabled-overlay' : null}>
                     {this.renderTab()}
                     {!(this.props.platform === 'google') && this.state.isRoot && intent && this.state.tab === 'Select' && <hr />}
-                    {!(this.props.platform === 'google') && this.state.isRoot && intent && this.state.tab === 'Select' && 
+                    {!(this.props.platform === 'google') && this.state.isRoot && intent && this.state.tab === 'Select' &&
                         <div>
                             <div className="mb-2 d-flex">
                                 <Toggle

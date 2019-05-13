@@ -9,7 +9,7 @@ import { addDisplay, updateDisplay } from "ducks/display"
 import { setError } from 'ducks/modal'
 
 import Button from 'components/Button'
-import { Spinner } from 'views/components/Spinner'
+import { Spinner } from 'components/Spinner/Spinner'
 
 import 'brace/mode/json';
 import 'brace/theme/monokai';
@@ -196,7 +196,7 @@ class Display extends Component {
 
         return (
             <div className="business-page-inner">
-                { this.state.loading ? 
+                { this.state.loading ?
                     React.createElement(Spinner, {name: 'Displays'}) :
                     <Dropzone
                         id="page-drop"
@@ -217,7 +217,7 @@ class Display extends Component {
                                     </h1>
                                     <p>Drag and Drop APL JSON Files</p>
                                 </div>
-                                
+
                             </div>
                             <div className="drop-overlay reject">
                                 <div>
@@ -237,8 +237,8 @@ class Display extends Component {
                                         {' '}Back
                                     </Button>
                                     <Button isPrimary varient="contained" onClick={this.save} style={{width: 100}}>
-                                        {this.state.saving ? 
-                                            <span className="loader"/> : 
+                                        {this.state.saving ?
+                                            <span className="loader"/> :
                                             <React.Fragment>
                                                 Save{this.state.saved ? '' : '*'}
                                             </React.Fragment>
@@ -249,7 +249,7 @@ class Display extends Component {
                             <hr/>
                             <FormGroup className="mt-0">
                                 <label>Display Name</label>
-                                <Input 
+                                <Input
                                     name="title"
                                     placeholder="Name of Display"
                                     value={this.state.title}
@@ -258,7 +258,7 @@ class Display extends Component {
                             </FormGroup>
                             <FormGroup>
                                 <label>Description</label>
-                                <Input 
+                                <Input
                                     name="description"
                                     placeholder="Description of Display"
                                     value={this.state.description}

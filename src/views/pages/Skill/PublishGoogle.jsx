@@ -5,9 +5,9 @@ import './Skill.css'
 import axios from 'axios'
 
 import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Button, ButtonGroup, Alert } from 'reactstrap'
-import { ModalHeader } from 'views/components/Modals/ModalHeader'
+import { ModalHeader } from 'components/Modals/ModalHeader'
 import DefaultButton from 'components/Button'
-import GoogleAuth from '../../components/Modals/GoogleAuthenticationModalContent'
+import GoogleAuth from 'components/Modals/GoogleAuthenticationModalContent'
 import Dropzone from 'react-dropzone'
 import { GOOGLE_LOCALES } from 'Constants'
 import { Tooltip } from 'react-tippy';

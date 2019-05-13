@@ -26,11 +26,11 @@ import { setError } from 'ducks/modal'
 import { AmazonAccessToken, googleAccessToken } from "ducks/account";
 
 import Button from 'components/Button'
-import { ModalHeader } from 'views/components/Modals/ModalHeader'
+import { ModalHeader } from 'components/Modals/ModalHeader'
 import Header from 'components/Header'
-import SecondaryNavBar from "views/components/NavBar/SecondaryNavBar";
-import ClipBoard from './../../components/ClipBoard'
-import AmazonLogin from './../../components/Forms/AmazonLogin'
+import SecondaryNavBar from "components/NavBar/SecondaryNavBar";
+import ClipBoard from 'components/ClipBoard/ClipBoard'
+import AmazonLogin from 'components/Forms/AmazonLogin'
 
 import './ActionGroup.css'
 import "react-sweet-progress/lib/style.css";

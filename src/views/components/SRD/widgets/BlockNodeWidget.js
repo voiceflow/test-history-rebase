@@ -38,12 +38,6 @@ export class BlockNodeWidget extends BaseWidget {
 		this.nodeRef = React.createRef();
 	}
 
-	static getDerivedStateFromProps(props){
-		if (_.includes(props.diagramEngine.getDiagramModel().nodes, c => c.id === props.node.id)) {
-			props.node.updateDimensions(props.diagramEngine.getNodeDimensions(props.node))
-		}
-		return null;
-	}
 	componentDidMount(){
 		if (_.includes(this.props.diagramEngine.getDiagramModel().nodes, c => c.id === this.props.node.id)) {
 			this.props.node.updateDimensions(this.props.diagramEngine.getNodeDimensions(this.props.node))

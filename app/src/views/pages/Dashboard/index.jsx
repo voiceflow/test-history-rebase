@@ -22,9 +22,9 @@ import { useScrollHelpers } from 'hooks/scroll';
 import Header from "components/Header";
 import List, { List as SimpleList } from "./components/List";
 import { Item as ListItem } from "./components/Item";
-import { Members } from 'views/components/User'
-import UpdatesModal from "./../../components/Modals/UpdatesModal";
-import LoadingModal from "views/components/Modals/LoadingModal";
+import { Members } from 'components/User/User'
+import UpdatesModal from "components/Modals/UpdatesModal";
+import LoadingModal from "components/Modals/LoadingModal";
 import Button from 'components/Button'
 import DragLayer from 'components/DragLayer';
 import ExpiryButton from './ExpiryButton'
@@ -152,7 +152,7 @@ export const DashBoard = props => {
   const newProject = (id) => {
     if(props.projects.allIds.length >= props.team.projects) {
       setTeamSetting("CHECKOUT:PROJECTS")
-    } else { 
+    } else {
       props.history.push(id !== 'initial' ? `/team/template/${id}` : '/team/template')
     }
   }
@@ -195,11 +195,11 @@ export const DashBoard = props => {
                 <div className="title-group no-select pr-2">
                     <div className="subheader-right mr-2">
                       <Button className={cn("dropdown-button-border", {active: updates_open})} id="update-popup" type="button" onClick={() => toggleUpdatesOpen(!updates_open)} />
-                      <Popover 
-                        className="updates-popover-container" 
-                        placement="bottom" 
-                        isOpen={updates_open} 
-                        target="update-popup" 
+                      <Popover
+                        className="updates-popover-container"
+                        placement="bottom"
+                        isOpen={updates_open}
+                        target="update-popup"
                         toggle={() => toggleUpdatesOpen(!updates_open)}>
                         <PopoverBody>
                           <UpdatesPopover product_updates={product_updates}/>
@@ -284,9 +284,9 @@ export const DashBoard = props => {
             </div>
           )}
           { LOCKED && <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
-            <Alert 
-              color="danger" 
-              onClick={() => setTeamSetting("BILLING")} 
+            <Alert
+              color="danger"
+              onClick={() => setTeamSetting("BILLING")}
               className="pointer text-center py-3">
               <h1><i className="far fa-ban"/></h1>
               Your subscription has failed<br/>
@@ -300,7 +300,7 @@ export const DashBoard = props => {
               <Button isPrimary className="mb-5" onClick={()=>this.setState({team_settings: 'CHECKOUT'})}>Upgrade Plan</Button>
             </div>
           </div>}
-          <div 
+          <div
             id="dashboard"
             className={cn({"thanos-ed": (LOCKED || EXPIRED)})}
             onClickCapture={(e) => {

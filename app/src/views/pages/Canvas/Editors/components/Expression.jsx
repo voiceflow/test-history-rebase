@@ -3,7 +3,7 @@ import {Dropdown, Input, DropdownToggle, DropdownMenu, DropdownItem} from 'react
 import { connect } from "react-redux";
 import Select from 'react-select';
 import { openTab } from 'ducks/user'
-import { selectStyles, variableComponent } from 'views/components/VariableSelect'
+import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect'
 import './Expression.css'
 
 import { symbols, groups } from './Expression.config'
@@ -149,11 +149,11 @@ class Expression extends Component {
 
         let type = this.state.expression.type;
 
-        let dropdown = this.state.expression.depth < 8 ? 
+        let dropdown = this.state.expression.depth < 8 ?
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropDown}>
             <DropdownToggle className="type-button">
                 <i className="fas fa-code"/>
-            </DropdownToggle>      
+            </DropdownToggle>
             <DropdownMenu>
                 {groups.map((group, i) => {
                     return <div key={i}> {
@@ -168,7 +168,7 @@ class Expression extends Component {
 
         switch(type){
             case 'variable':
-                render = 
+                render =
                     <div className="d-flex">
                         <Select
                             classNamePrefix="variable-box"
@@ -190,21 +190,21 @@ class Expression extends Component {
                 break;
 
             case 'value':
-                render = 
+                render =
                     <div className="d-flex">
                         <Input placeholder="value" value={this.state.expression.value} onChange={this.handleValue}/>
                         {dropdown}
                     </div>
                 break;
             case 'not':
-                render = 
+                render =
                 <div className={'expression-block ' + type}>
                     <div className="operator">{symbols[type]}{dropdown}</div>
                     <Expression expression={this.state.expression.value} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
                 </div>
                 break;
             default:
-                render = 
+                render =
                     <div className={'expression-block ' + type}>
                         <Expression expression={this.state.expression.value[0]} openVarTab={this.props.openVarTab} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
                         <div className="operator">{symbols[type]}{dropdown}</div>

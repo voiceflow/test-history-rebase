@@ -5,7 +5,7 @@ import { Tooltip } from "react-tippy";
 
 import Button from 'components/Button'
 import VariableInput from '../../../VariableInput'
-import { selectStyles } from 'views/components/VariableSelect'
+import { selectStyles } from 'components/VariableSelect/VariableSelect'
 
 // props
 // action_data, integration_data, selected_action, updateActionData, integrationsUser, sheet_headers, headers_loading, updateHeaders, variables, showNextSection, open

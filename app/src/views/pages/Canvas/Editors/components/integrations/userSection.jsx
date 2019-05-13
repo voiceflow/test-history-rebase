@@ -5,7 +5,7 @@ import { setConfirm, clearModal, setError } from 'ducks/modal'
 import { Collapse } from 'reactstrap'
 import update from 'immutability-helper';
 
-import DefaultModal from 'views/components/Modals/DefaultModal'
+import DefaultModal from 'components/Modals/DefaultModal'
 import { deleteIntegrationUser } from 'ducks/integration'
 
 // props

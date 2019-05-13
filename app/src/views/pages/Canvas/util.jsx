@@ -1,7 +1,7 @@
 // Convert older deprecated blocks to newer ones
 import _ from 'lodash'
-import { BlockNodeModel } from './../../components/SRD/models/BlockNodeModel'
-import { Toolkit } from "./../../components/SRD/Toolkit";
+import { BlockNodeModel } from 'components/SRD/models/BlockNodeModel'
+import { Toolkit } from "components/SRD/Toolkit";
 import randomstring from "randomstring";
 
 const toolkit = new Toolkit()

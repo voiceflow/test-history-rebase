@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Expression from './components/Expression'
 import Expressionfy from './components/Expressionfy';
 import { openTab } from "ducks/user";
-import { selectStyles, variableComponent } from 'views/components/VariableSelect'
+import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect'
 
 class SetBlock extends Component {
     constructor(props) {

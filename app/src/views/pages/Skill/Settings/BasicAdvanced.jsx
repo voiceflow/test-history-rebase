@@ -7,8 +7,8 @@ import AceEditor from 'react-ace';
 import Toggle from 'react-toggle'
 
 import Button from 'components/Button'
-import Prompt from "views/components/Uploads/Prompt";
-import DefaultModal from './../../../components/Modals/DefaultModal'
+import Prompt from "components/Uploads/Prompt";
+import DefaultModal from 'components/Modals/DefaultModal'
 
 import { updateVersion, updateVersionMerge } from 'ducks/version'
 import { setConfirm, setError } from 'ducks/modal'
@@ -91,7 +91,7 @@ class BasicAdvancedSettings extends Component{
                 this.props.setError('Error Deleting Skill')
             })
     }
-    
+
     toggleSwitch(e) {
         this.props.updateSkill(e.target.name, !this.props.skill[e.target.name])
     }
@@ -157,9 +157,9 @@ class BasicAdvancedSettings extends Component{
                 // ADVANCED SETTINGS
                 return <React.Fragment>
                     <DefaultModal
-                        open={this.state.show_overwrite_modal} 
-                        toggle={()=>{this.setState({show_overwrite_modal: false})}} 
-                        content={this.state.overwrite_status} 
+                        open={this.state.show_overwrite_modal}
+                        toggle={()=>{this.setState({show_overwrite_modal: false})}}
+                        content={this.state.overwrite_status}
                         header="Overwrite Status"
                     />
                     <div className="settings-content clearfix mt-4">
@@ -185,13 +185,13 @@ class BasicAdvancedSettings extends Component{
                         </div>
                       </FormGroup>
                     </div>
-                    { this.props.live_mode && 
+                    { this.props.live_mode &&
                     <div className="settings-content clearfix">
                       <FormGroup>
                         <Label>Overwrite Development Version with Live Version</Label>
                         <Alert color="danger between">
                           <span>
-                          
+
                             This action cannot be undone.
                           </span>
                           <br />
@@ -239,10 +239,10 @@ class BasicAdvancedSettings extends Component{
                                 </div>
                           </div>
                         </div>
-                        
+
                         {this.props.skill.repeat > 0 && <React.Fragment>
                             <Label className="mb-1">Complete Repeat</Label>
-                            <div className="row">    
+                            <div className="row">
                                 <div className="helper-text col-10">
                                 {this.props.skill.repeat > 1
                                     ? "When the user asks to repeat, everything after the last choice/interaction block will repeat"
@@ -286,21 +286,21 @@ class BasicAdvancedSettings extends Component{
                                 </div>
                             </div>
                             {!this.state.hide_resume && <React.Fragment>
-                                <Prompt 
+                                <Prompt
                                     placeholder="Would you like to resume your current story, yes or no?"
-                                    voice={this.props.skill.resume_prompt.voice} 
-                                    content={this.props.skill.resume_prompt.content} 
-                                    updatePrompt={prompt => this.props.updateSkillMerge('resume_prompt', prompt)} 
+                                    voice={this.props.skill.resume_prompt.voice}
+                                    content={this.props.skill.resume_prompt.content}
+                                    updatePrompt={prompt => this.props.updateSkillMerge('resume_prompt', prompt)}
                                 />
                                 <Collapse isOpen={this.state.resume_collapse} className="pt-3">
                                     <Label>Resume Follow Up</Label>
                                     <div className="helper-text mb-2">Add a response when the user wants to resume</div>
-                                    <Prompt 
+                                    <Prompt
                                         placeholder="Would you like to resume your current story, yes or no?"
                                         voice_id="follow_voice"
                                         content_id="follow_content"
-                                        voice={this.props.skill.resume_prompt.follow_voice} 
-                                        content={this.props.skill.resume_prompt.follow_content} 
+                                        voice={this.props.skill.resume_prompt.follow_voice}
+                                        content={this.props.skill.resume_prompt.follow_content}
                                         updatePrompt={prompt => this.props.updateSkillMerge('resume_prompt', prompt)}
                                     />
                                 </Collapse>

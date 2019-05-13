@@ -3,7 +3,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalBody, ModalFooter } from "reactstrap";
-import { ModalHeader } from 'views/components/Modals/ModalHeader'
+import { ModalHeader } from 'components/Modals/ModalHeader'
 import Button from 'components/Button'
 
 import { clearModal } from "ducks/modal";

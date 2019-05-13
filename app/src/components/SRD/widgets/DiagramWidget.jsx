@@ -12,7 +12,7 @@ import { BlockNodeModel } from '../models/BlockNodeModel';
 import { PointModel } from "../models/PointModel";
 import { PortModel } from "../models/PortModel";
 import { BaseWidget } from "./BaseWidget";
-import { checkBlockDisabledLive } from "./../../../pages/Canvas/Blocks"
+import { checkBlockDisabledLive } from "views/pages/Canvas/Blocks"
 
 const toolkit = new Toolkit();
 
@@ -260,7 +260,7 @@ export class DiagramWidget extends BaseWidget {
 			}
 		}
 		// this.props.setBlockMenu(null)
-	} 
+	}
 
 	onMouseMove(event) {
 		var diagramModel = this.props.diagramEngine.getDiagramModel();
@@ -596,7 +596,7 @@ export class DiagramWidget extends BaseWidget {
 					} else if (!model.model.parent.hidden && _.head(model.model.parent.points).id === model.model.id) {
 						let source = this.props.diagramEngine.getPortCenter(model.model.parent.sourcePort)
 						model.model.updateLocation(source)
-					} 
+					}
 				}
 			});
 			//check for / remove any loose links in any models which have been moved

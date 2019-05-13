@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {ButtonGroup, Button} from 'reactstrap'
 import VariableText from './components/VariableText'
 import VariableInput from './components/VariableInput'
-import Image from './../../../components/Uploads/Image'
+import Image from 'components/Uploads/Image'
 import {Tooltip} from 'react-tippy'
 
 import DefaultButton from 'components/Button'
@@ -52,21 +52,21 @@ class Card extends Component {
                     variables={this.props.variables}
                     updateRaw={(raw) => this.updateContent('title', raw)}
                 />
-                {type === 'Standard' && 
+                {type === 'Standard' &&
                     <React.Fragment>
                         <label className="space-between">Image <span className="section-title">OPTIONAL</span></label>
-                        <Image 
+                        <Image
                             url
                             max_size={5*1024*1024}
-                            image={this.state.node.extras.large_img} 
+                            image={this.state.node.extras.large_img}
                             update={(url) => this.updateContent('large_img', url)}
                         />
                         {this.state.node.extras.small_img !== undefined && <div className="mb-2">
                             <label>Small Screen Image</label>
-                            <Image 
+                            <Image
                                 url
                                 max_size={5*1024*1024}
-                                image={this.state.node.extras.small_img} 
+                                image={this.state.node.extras.small_img}
                                 update={(url) => this.updateContent('small_img', url)}
                                 margin
                             />

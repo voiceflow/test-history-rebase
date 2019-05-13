@@ -19,9 +19,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 import DefaultButton from 'components/Button'
 import Textarea from 'react-textarea-autosize'
-import Image from '../../components/Uploads/Image'
-import Multiple from '../../components/Forms/Multiple'
-import AmazonLogin from '../../components/Forms/AmazonLogin'
+import Image from 'components/Uploads/Image'
+import Multiple from 'components/Forms/Multiple'
+import AmazonLogin from 'components/Forms/AmazonLogin'
 
 import LOCALE_MAP from '../../../services/LocaleMap'
 import { AMAZON_CATEGORIES } from '../../../services/Categories'
@@ -290,7 +290,7 @@ class Skill extends Component {
             })
             .catch(err => {
               if (err.status === 403 || err.response.status === 403) {
-                // No Vendor ID/Amazon Developer Account	
+                // No Vendor ID/Amazon Developer Account
                 this.setState({
                   stage: 5
                 });

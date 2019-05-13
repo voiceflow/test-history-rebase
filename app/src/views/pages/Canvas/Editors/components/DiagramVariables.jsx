@@ -3,7 +3,7 @@ import React from 'react';
 import Select from 'react-select';
 
 import Button from 'components/Button'
-import { selectStyles, variableComponent } from 'views/components/VariableSelect'
+import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect'
 
 const DiagramVariables = (props) => (
     <>
@@ -19,7 +19,7 @@ const DiagramVariables = (props) => (
                         components={{ Option: variableComponent }}
                         value={argument.arg1 ? {label: '{' + argument.arg1 + '}', variable: argument.arg1} : null}
                         onChange={(selected) => {
-                            if (selected.value !== 'Create Variable') props.handleSelection(i, 'arg1', selected.value) 
+                            if (selected.value !== 'Create Variable') props.handleSelection(i, 'arg1', selected.value)
                         }}
                         placeholder={props.arg1_options.length > 0 ? "Variable" : "No Var.."}
                         options={Array.isArray(props.arg1_options) ? props.arg1_options.map((variable, idx) => {

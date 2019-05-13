@@ -7,7 +7,7 @@ import axios from 'axios';
 import isVarName from 'is-var-name';
 import ReactJson from 'react-json-view';
 import { Button, ButtonGroup, Modal, ModalBody, Nav, NavItem, NavLink, InputGroupAddon, Input, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup } from 'reactstrap';
-import { ModalHeader } from 'views/components/Modals/ModalHeader'
+import { ModalHeader } from 'components/Modals/ModalHeader'
 import APIInputs from './components/APIInputs';
 import APIMapping from './components/APIMapping';
 import VariableInput from './components/VariableInput';
@@ -345,7 +345,7 @@ class API extends Component {
                     <ReactJson src={this.state.modalContent} displayDataTypes={false} name='response' enableClipboard={this.copyJSONPath}/>
                 </div>
             }
-            {this.state.activeTab === TABS[2] && 
+            {this.state.activeTab === TABS[2] &&
                 <div className="mt-3">
                     {_.map(this.state.testVariablesMapping, (val, key) => {
                         let path = _.find(this.props.node.extras.mapping, {'var': key}).path;

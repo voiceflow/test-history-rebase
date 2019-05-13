@@ -8,7 +8,7 @@ import { Modal, Alert } from 'reactstrap'
 import Button from 'components/Button'
 import TemplateCard from './TemplateCard'
 import LightCanvas from './../Canvas/LightCanvas'
-import { Spinner } from 'views/components/Spinner'
+import { Spinner } from 'components/Spinner/Spinner'
 
 import LOCALE_MAP from './../../../services/LocaleMap'
 

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Expression from './Expression';
 import Expressionfy from './Expressionfy';
 import { openTab } from 'ducks/user'
-import { selectStyles, variableComponent } from 'views/components/VariableSelect'
+import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect'
 
 class SetExpression extends Component {
     render() {

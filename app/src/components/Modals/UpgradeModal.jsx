@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Modal, ModalBody, Row, Col} from 'reactstrap'
-import { ModalHeader } from 'views/components/Modals/ModalHeader'
+import { ModalHeader } from 'components/Modals/ModalHeader'
 import {Elements} from 'react-stripe-elements';
 import Button from 'components/Button'
 import CheckoutForm from './../../pages/Account/CheckoutForm'

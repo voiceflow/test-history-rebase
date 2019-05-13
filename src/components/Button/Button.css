@@ -1,3 +1,7 @@
+button {
+    background-color: white;
+}
+
 .btn {
     text-align: center;
     cursor: pointer;
@@ -157,7 +161,7 @@
  .back-btn-large:hover {
      background-image: url('/back.svg');
  }
- 
+
  /* Link Button */
  .btn-link {
      color: #5D9DF5;

@@ -356,7 +356,6 @@ export class Canvas extends Component {
     // copy individual node
     copyNode = (newNode = null, pos = null) => {
         let selected = newNode ? newNode : this.state.engine.getSuperSelect()
-        let amountZoom = this.state.engine.getDiagramModel().getZoomLevel() / 100;
         if(selected.extras.type !== 'story'){
             let engine = this.state.engine
             engine.stopMove()
@@ -371,10 +370,13 @@ export class Canvas extends Component {
                 newCombineNode.x = combineNode.x + 30;
                 newCombineNode.y = combineNode.y + 30;
                 let ports = combineNode.ports
-
+                let newPort;
                 for (var name in ports) {
                     let port = ports[name]
-                    port.in ? newCombineNode.addInPort(port.label): newCombineNode.addOutPort(port.label).setMaximumLinks(1)
+                    port.in ? newPort = newCombineNode.addInPort(port.label): newPort = newCombineNode.addOutPort(port.label)
+                    if (port.hidden) {
+                        newPort.setHidden(port.hidden)
+                    }
                 }
                 newCombines.push(newCombineNode)
                 newCombines[idx].parentCombine = node;
@@ -382,10 +384,14 @@ export class Canvas extends Component {
             node.combines = newCombines
         }
             let ports = selected.getPorts()
+            let newPort;
             if (node.extras.type !== 'god'){
                 for (var name in ports) {
                     let port = ports[name]
-                    port.in ? node.addInPort(port.label) : node.addOutPort(port.label).setMaximumLinks(1)
+                    port.in ? newPort = node.addInPort(port.label) : newPort = node.addOutPort(port.label)
+                    if (port.hidden) {
+                        newPort.setHidden(port.hidden)
+                    }
                 }
             }
 
@@ -397,11 +403,13 @@ export class Canvas extends Component {
 					if (!(c instanceof String) && c.id !== node.id) {
 						c.x = node.x + 10;
 						c.y = node.y + totalHeight;
-						if (c.height) {
-							totalHeight = totalHeight + c.height /amountZoom
-						} else {
-							totalHeight = totalHeight + 40
-						}
+                        if (c.height) {
+                            totalHeight = totalHeight + c.height
+                        } else {
+                            const dimensions = this.state.engine.getNodeDimensions(c);
+                            c.updateDimensions(dimensions)
+                            totalHeight = totalHeight + dimensions.height
+                        }
 					}
 				});
             }
@@ -460,7 +468,6 @@ export class Canvas extends Component {
 
     appendCombineNode = (node) => {
         let idx = _.findIndex(node.parentCombine.combines, c => c.id === node.id);
-        let amountZoom = this.state.engine.getDiagramModel().getZoomLevel() / 100;
         let engine = this.state.engine;
         if (idx !== -1 && combineAppendValidation(node)){
             engine.stopMove()
@@ -503,9 +510,11 @@ export class Canvas extends Component {
                     c.x = node.parentCombine.x + 25;
                     c.y = node.parentCombine.y + totalHeight;
                     if (c.height) {
-                        totalHeight = totalHeight + c.height / amountZoom
+                        totalHeight = totalHeight + c.height
                     } else {
-                        totalHeight = totalHeight + 40
+                        const dimensions = this.state.engine.getNodeDimensions(c);
+                        c.updateDimensions(dimensions)
+                        totalHeight = totalHeight + dimensions.height
                     }
                 }
             });
@@ -517,7 +526,6 @@ export class Canvas extends Component {
     removeCombineNode = (node) => {   
         const removeNode = () => {
             let diagramEngine = this.state.engine
-            let amountZoom = diagramEngine.getDiagramModel().getZoomLevel() / 100;
             let combineBlock = node.parentCombine
             _.remove(combineBlock.combines, (c, idx) => {
                 if (c.id === node.id) {
@@ -542,9 +550,11 @@ export class Canvas extends Component {
                     c.x = node.parentCombine.x + 25;
                     c.y = node.parentCombine.y + totalHeight;
                     if (c.height) {
-                        totalHeight = totalHeight + c.height / amountZoom
+                        totalHeight = totalHeight + c.height
                     } else {
-                        totalHeight = totalHeight + 40
+                        const dimensions = this.state.engine.getNodeDimensions(c);
+                        c.updateDimensions(dimensions)
+                        totalHeight = totalHeight + dimensions.height
                     }
                 }
             });
@@ -616,10 +626,12 @@ export class Canvas extends Component {
                     if (!(c instanceof String) && c.id !== parent.id) {
                         c.x = parent.x + 25;
                         c.y = parent.y + totalHeight;
-                        if (c.height) {
+                        if (c.height && current.id !== c.id) {
                             totalHeight = totalHeight + c.height
                         } else {
-                            totalHeight = totalHeight + 40
+                            const dimensions = this.state.engine.getNodeDimensions(c);
+                            c.updateDimensions(dimensions)
+                            totalHeight = totalHeight + dimensions.height
                         }
                     }
                 });

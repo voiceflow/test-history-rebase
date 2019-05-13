@@ -12,13 +12,6 @@ export class NodeWidget extends BaseWidget {
 		this.selected = true;
 	}
 
-	static getDerivedStateFromProps(props) {
-		if (_.includes(props.diagramEngine.getDiagramModel().nodes, c => c.id === props.node.id)) {
-			props.node.updateDimensions(props.diagramEngine.getNodeDimensions(props.node))
-		}
-		return null;
-	}
-
 	componentDidMount(){
 		this.props.node.updateDimensions(this.props.diagramEngine.getNodeDimensions(this.props.node));
 	}

@@ -1443,7 +1443,8 @@ export class Canvas extends Component {
             type = event
             event = {
                 clientX: this.mouseX,
-                clientY: this.mouseY
+                clientY: this.mouseY,
+                diagram_id: this.props.diagram_id
             }
             if (this.state.spotlight) {
                 this.setState({ spotlight: false })

@@ -1976,9 +1976,6 @@ label {
     padding-left: 23px !important;
     transition: 0.15s ease-out all !important;
 }
-.srd-default-node.flow.extraFlowPadding {
-    margin-bottom: 28px;
-}
 .combine-node .srd-default-node.flow:hover {
     background: url('/flows.svg') 85% 11px no-repeat, url('/grid.svg') 95% 10px no-repeat !important;
     background-size: 13px !important;
@@ -2236,12 +2233,12 @@ combine-node .srd-default-node.interaction:hover{
 }
 
 .srd-default-node__name > span {
-    max-width: 115px;
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 13px !important;
+  max-width: 100%;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px !important;
 }
 
 .home-title {

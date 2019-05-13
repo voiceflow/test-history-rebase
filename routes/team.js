@@ -435,7 +435,7 @@ exports.deleteTeam = async (req, res) => {
     if (projects.rows.length === 0) return res.sendStatus(404);
 
     // Delete all the projects
-    for (project of projects.rows) {
+    for (let project of projects.rows) {
       if (project.project_id) await deleteProjectPromise(project.project_id);
     }
 
@@ -782,7 +782,7 @@ exports.updateSource = async (req, res) => {
           customer: team.stripe_id,
           items: [{
             plan: STATUS_TO_PLAN[team.status],
-            quantity: seats,
+            quantity: subscription.quantity,
           }],
           metadata: {
             team_id: team.team_id,

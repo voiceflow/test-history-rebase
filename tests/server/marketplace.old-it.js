@@ -1,9 +1,14 @@
 /* Uncomment out without beta */
-const request = require('supertest');
-const { pool, hashids } = require('./../services');
-const { team_hash } = require('./team_util');
 
-const GetApp = require('../tests/getAppForTest');
+require('dotenv').config({ path: './.env.test' });
+
+const { expect } = require('chai');
+
+const request = require('supertest');
+const { pool, hashids } = require('./../../services');
+const { team_hash } = require('../../routes/team_util');
+
+const GetApp = require('../getAppForTest');
 
 const TEAM_ID = team_hash.encode(1);
 const getTemplate = new Promise(async (resolve, reject) => {
@@ -32,7 +37,7 @@ describe.skip('Marketplace', () => {
   let app;
   let server;
 
-  beforeAll(async () => {
+  before(async () => {
     ({ app } = await GetApp());
 
     try {
@@ -104,7 +109,7 @@ describe.skip('Marketplace', () => {
       });
   });
 
-  afterAll(async () => {
+  after(async () => {
     await request(app)
       .delete('/session')
       .set('cookie', `auth=${token}`)
@@ -133,7 +138,7 @@ describe.skip('Marketplace', () => {
     //       ORDER BY skills.skill_id DESC
     //     `, [decoded_project_id])).rows
     //     expect(request_data[0].cert_requested).not.toBe(null)
-    //     expect(request_data[0].cert_approved).toEqual(null)
+    //     expect(request_data[0].cert_approved).to.eql(null)
     //     done()
     //   })
     // })
@@ -161,7 +166,7 @@ describe.skip('Marketplace', () => {
     //         FROM modules
     //         WHERE project_id = $1
     //       `, [decoded_project_id])).rows[0]
-    //       expect(update_data).toEqual({
+    //       expect(update_data).to.eql({
     //         title: 'Awaken',
     //         descr: 'Bwam',
     //         creator_id: 1,

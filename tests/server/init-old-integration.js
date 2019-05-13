@@ -1,0 +1,1 @@
+require('@voiceflow/database/initializeTest')();

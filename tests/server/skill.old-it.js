@@ -1,16 +1,20 @@
 'use strict';
 
+require('dotenv').config({ path: './.env.test' });
+
+const { expect } = require('chai');
+
 const request = require('supertest');
-const new_diagram = require('./data/new_diagram.json');
+const new_diagram = require('../resources/new_diagram.json');
 const { pool, hashids } = require('../../services');
-const { team_hash } = require('../team_util');
+const { team_hash } = require('../../routes/team_util');
 const moxios = require('moxios');
 
 const GetApp = require('../../tests/getAppForTest');
 
 const TEAM_ID = team_hash.encode(1);
 
-jest.setTimeout(10000);
+// jest.setTimeout(100000);
 
 const generateID = () => 'xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
   const r = (Math.random() * 16) | 0;
@@ -31,7 +35,9 @@ const getTemplate = new Promise(async (resolve, reject) => {
   }
 });
 
-describe('Skill', () => {
+describe('Skill', function () {
+  this.timeout(10000);
+
   let token = '';
   const diagram_id = generateID();
   let skill_id;
@@ -43,7 +49,7 @@ describe('Skill', () => {
   let app;
   let server;
 
-  beforeAll(async () => {
+  before(async () => {
     ({ app } = await GetApp());
 
     // Get Authentication Token
@@ -64,7 +70,7 @@ describe('Skill', () => {
   describe('Creation', () => {
     let module_id;
 
-    beforeAll(async () => {
+    before(async () => {
       try {
         module_id = await getTemplate;
       } catch (e) {
@@ -111,9 +117,9 @@ describe('Skill', () => {
     //             delete skill_data[i][field]
     //           }
     //         }
-    //         expect(version_data[0]).toEqual({version: null, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id, google_versions: null, published_platform: 'alexa'})
-    //         expect(version_data[1]).toEqual({version: 1, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id + 1, google_versions: null, published_platform: 'alexa'})
-    //         expect(skill_data[0]).toEqual(skill_data[1])
+    //         expect(version_data[0]).to.eql({version: null, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id, google_versions: null, published_platform: 'alexa'})
+    //         expect(version_data[1]).to.eql({version: 1, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id + 1, google_versions: null, published_platform: 'alexa'})
+    //         expect(skill_data[0]).to.eql(skill_data[1])
     //       } catch (err) {
     //         if(err) throw err
     //       }
@@ -133,7 +139,7 @@ describe('Skill', () => {
     //     .expect(200)
     //     .expect(res => {
     //       // One for default template, one for new skill made
-    //       expect(res.body.length).toEqual(1)
+    //       expect(res.body.length).to.eql(1)
     //     })
     //     .end((err, res) => {
     //       if (err) throw err
@@ -208,7 +214,7 @@ describe('Skill', () => {
           try {
             const diagram_data = (await pool.query(`SELECT d.id, d.name, d.sub_diagrams, d.module_id FROM diagrams d
                                                   INNER JOIN skills s ON s.skill_id = d.skill_id WHERE d.skill_id = $1`, [hashids.decode(skill_id)[0]])).rows;
-            expect(diagram_data).toEqual(res.body);
+            expect(diagram_data).to.eql(res.body);
           } catch (err) {
             throw err;
           }
@@ -278,9 +284,9 @@ describe('Skill', () => {
           try {
             const skill_data = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
             const r = skill_data[0];
-            expect(r.locales).toEqual(['en-US']);
-            expect(r.fulfillment).toEqual({});
-            expect(r.name).toEqual('UNTITLED PROJECT');
+            expect(r.locales).to.eql(['en-US']);
+            expect(r.fulfillment).to.eql({});
+            expect(r.name).to.eql('UNTITLED PROJECT');
           } catch (err) {
             if (err) throw err;
             done();
@@ -305,8 +311,8 @@ describe('Skill', () => {
           try {
             const skill_data = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
             const r = skill_data[0];
-            expect(r.fulfillment).toEqual({ G4cjZLQZaAEn: { slot_config: { '9N4Xdah9UShx': ['level one', 'level 1'] } }, Q5pVbSymoAjz: { slot_config: { j0Hqhna45404: ['level two', 'level 2', 'open level two'] } }, uDk5iYNOCm8W: { slot_config: { hjNq9UjHOVI9: [] } } });
-            expect(r.name).toEqual('UNTITLED PROJECT'); // shouldn't update name
+            expect(r.fulfillment).to.eql({ G4cjZLQZaAEn: { slot_config: { '9N4Xdah9UShx': ['level one', 'level 1'] } }, Q5pVbSymoAjz: { slot_config: { j0Hqhna45404: ['level two', 'level 2', 'open level two'] } }, uDk5iYNOCm8W: { slot_config: { hjNq9UjHOVI9: [] } } });
+            expect(r.name).to.eql('UNTITLED PROJECT'); // shouldn't update name
           } catch (err) {
             if (err) throw err;
             done();
@@ -333,7 +339,7 @@ describe('Skill', () => {
           try {
             const skill_data = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
             const r = skill_data[0];
-            expect(r.intents).toEqual([{
+            expect(r.intents).to.eql([{
               name: 'intent_one', inputs: [{ slots: ['rhuwpeOxWqnw'], text: 'I think it is {{[slot_one].rhuwpeOxWqnw}}' }, { slots: ['rhuwpeOxWqnw'], text: '{{[slot_one].rhuwpeOxWqnw}}' }, { slots: ['rhuwpeOxWqnw'], text: 'the answer is {{[slot_one].rhuwpeOxWqnw}}' }, { slots: ['rhuwpeOxWqnw'], text: 'answer is {{[slot_one].rhuwpeOxWqnw}}' }, { slots: ['rhuwpeOxWqnw'], text: '{{[slot_one].rhuwpeOxWqnw}} is the answer' }], key: 'c2u2h6a0qfZg', open: true, _platform: null,
             }, {
               name: 'intent_two', inputs: [{ slots: ['Of0UMzUuNKVz'], text: '{{[slot_two].Of0UMzUuNKVz}}' }], key: 'cyLDdu9cvygL', open: true, _platform: 'alexa',
@@ -348,7 +354,7 @@ describe('Skill', () => {
             }, {
               name: 'refund', inputs: [{ slots: [], text: 'refund' }, { slots: [], text: 'refund payment' }, { slots: [], text: 'return payment' }, { slots: [], text: 'get a refund' }, { slots: [], text: 'return premium content' }], key: 'WYPBdRB4zctc', open: true, _platform: null,
             }]);
-            expect(r.slots).toEqual([{
+            expect(r.slots).to.eql([{
               name: 'slot_one', inputs: ['dinosaur', 'one', 'two', 'three', 'velociraptor', 't-rex', '1993', '1997', '1995', '2001', '2018', '2015'], type: { label: 'CUSTOM', value: 'CUSTOM' }, key: 'rhuwpeOxWqnw', open: true,
             }, {
               name: 'slot_two', inputs: [], type: { label: 'AMAZON.NUMBER', value: 'AMAZON.NUMBER' }, key: 'Of0UMzUuNKVz', open: true,
@@ -361,7 +367,7 @@ describe('Skill', () => {
             }, {
               name: 'payment_slot', inputs: ['premium content', 'premium', 'purchase', 'upgrade', 'upgrade game', 'purchase upgrade'], type: { label: 'CUSTOM', value: 'CUSTOM' }, key: 'afh8RUpdYt3e', open: true,
             }]);
-            expect(r.name).toEqual('UNTITLED PROJECT'); // shouldn't update name
+            expect(r.name).to.eql('UNTITLED PROJECT'); // shouldn't update name
           } catch (err) {
             if (err) throw err;
             done();
@@ -385,7 +391,7 @@ describe('Skill', () => {
           try {
             const skill_data = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
             const r = skill_data[0];
-            expect(r.inv_name).toEqual('Vegas');
+            expect(r.inv_name).to.eql('Vegas');
           } catch (err) {
             if (err) throw err;
             done();
@@ -412,10 +418,10 @@ describe('Skill', () => {
           try {
             const skill_data = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
             const r = skill_data[0];
-            expect(r.name).toEqual('pikachu');
-            expect(r.resume_prompt).toEqual({ voice: 'Alexa', content: '' });
-            expect(r.error_prompt).toEqual({ voice: 'Alexa', content: '' });
-            expect(r.restart).toEqual(true);
+            expect(r.name).to.eql('pikachu');
+            expect(r.resume_prompt).to.eql({ voice: 'Alexa', content: '' });
+            expect(r.error_prompt).to.eql({ voice: 'Alexa', content: '' });
+            expect(r.restart).to.eql(true);
           } catch (err) {
             if (err) throw err;
             done();
@@ -439,7 +445,7 @@ describe('Skill', () => {
           try {
             const skill_data = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
             const r = skill_data[0];
-            expect(r.preview).toEqual(true);
+            expect(r.preview).to.eql(true);
           } catch (err) {
             if (err) throw err;
             done();
@@ -465,7 +471,7 @@ describe('Skill', () => {
           try {
             const skill_data = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
             const r = skill_data[0];
-            expect(r.google_publish_info).toEqual({
+            expect(r.google_publish_info).to.eql({
               project_id: 'triad-stepping-exercise-6ace1', locales: [], main_locale: 'en', uploaded: true, google_link_user: '0',
             });
           } catch (err) {
@@ -494,10 +500,10 @@ describe('Skill', () => {
           try {
             const skill_data = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
             const r = skill_data[0];
-            expect(r.name).toEqual('Tetsuo');
-            expect(r.inv_name).toEqual('Kaneda');
-            expect(r.summary).toEqual('Post apocalyptic battle');
-            expect(r.description).toEqual('Really sugoi');
+            expect(r.name).to.eql('Tetsuo');
+            expect(r.inv_name).to.eql('Kaneda');
+            expect(r.summary).to.eql('Post apocalyptic battle');
+            expect(r.description).to.eql('Really sugoi');
           } catch (err) {
             if (err) throw err;
             done();
@@ -535,7 +541,7 @@ describe('Skill', () => {
         .expect(async (res) => {
           try {
             const product_data = (await pool.query('SELECT * FROM products WHERE skill_id = $1 AND name=\'A Long Way From Home\'', [hashids.decode(skill_id)[0]])).rows;
-            expect(product_data.length).toEqual(1);
+            expect(product_data.length).to.eql(1);
           } catch (err) {
             throw err;
           }
@@ -554,7 +560,7 @@ describe('Skill', () => {
         .expect(async (res) => {
           try {
             const product_data = (await pool.query('SELECT id, name, data FROM products WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
-            expect(product_data).toEqual(res.body);
+            expect(product_data).to.eql(res.body);
           } catch (err) {
             throw err;
           }
@@ -573,7 +579,7 @@ describe('Skill', () => {
         .expect(async (res) => {
           try {
             const product_data = (await pool.query('SELECT id, name, data FROM products WHERE skill_id = $1 AND id = $2', [hashids.decode(skill_id)[0], 1])).rows;
-            expect(product_data).toEqual(res.body);
+            expect(product_data).to.eql(res.body);
           } catch (err) {
             throw err;
           }
@@ -598,7 +604,7 @@ describe('Skill', () => {
         .expect(async (res) => {
           try {
             const product_data = (await pool.query('SELECT * FROM products WHERE id = 1')).rows;
-            expect(product_data[0].name).toEqual('Red Rocks');
+            expect(product_data[0].name).to.eql('Red Rocks');
           } catch (err) {
             throw err;
           }
@@ -617,7 +623,7 @@ describe('Skill', () => {
     //     .expect(async res => {
     //       try{
     //         let product_data = (await pool.query(`SELECT * FROM products WHERE skill_id = $1 AND name='A Long Way From Home'`, [hashids.decode(skill_id)[0]])).rows
-    //         expect(product_data.length).toEqual(0)
+    //         expect(product_data.length).to.eql(0)
     //       } catch (err) {
     //         throw err
     //       }
@@ -669,7 +675,7 @@ describe('Skill', () => {
     // })
   });
 
-  afterAll(async () => {
+  after(async () => {
     await request(app)
       .delete('/session')
       .set('cookie', `auth=${token}`)

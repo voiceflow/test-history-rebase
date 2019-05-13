@@ -1,16 +1,20 @@
 'use strict';
 
+require('dotenv').config({ path: './.env.test' });
+
+const { expect } = require('chai');
 const request = require('supertest');
-const new_diagram = require('./data/new_diagram.json');
+
+const new_diagram = require('../resources/new_diagram.json');
 const { pool, hashids } = require('../../services');
 // const moxios = require('moxios')
-const { team_hash } = require('../team_util');
+const { team_hash } = require('../../routes/team_util');
 
 const GetApp = require('../../tests/getAppForTest');
 
 const TEAM_ID = team_hash.encode(1);
 
-jest.setTimeout(10000);
+// jest.setTimeout(10000);
 
 const generateID = () => 'xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
   const r = (Math.random() * 16) | 0;
@@ -32,7 +36,7 @@ const getTemplate = new Promise(async (resolve, reject) => {
 });
 
 describe('Diagram', function () {
-  // this.timeout(10000);
+  this.timeout(10000);
 
   let token = '';
   const diagram_id = generateID();
@@ -42,7 +46,7 @@ describe('Diagram', function () {
   let app;
   let server;
 
-  beforeAll(async () => {
+  before(async () => {
     ({ app } = await GetApp());
 
     // Get auth token
@@ -76,7 +80,7 @@ describe('Diagram', function () {
       });
   });
 
-  afterAll(async () => {
+  after(async () => {
     try {
       await request(app).delete(`/skill/${skill_id}`).then();
       if (server) server.close();
@@ -111,7 +115,7 @@ describe('Diagram', function () {
         .end(async (err, res) => {
           if (err) throw err;
           const diagram_data = (await pool.query('SELECT * FROM diagrams WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
-          expect(diagram_data.length).toEqual(3);
+          expect(diagram_data.length).to.eql(3);
           done();
         });
     });
@@ -149,7 +153,7 @@ describe('Diagram', function () {
         .set('cookie', `auth=${token}`)
         .expect(200)
         .expect((res) => {
-          expect(res.body).toEqual(['path_selector', 'technic_angel']);
+          expect(res.body).to.eql(['path_selector', 'technic_angel']);
         })
         .end((err, res) => {
           if (err) throw err;
@@ -178,7 +182,7 @@ describe('Diagram', function () {
         .expect(async (res) => {
           try {
             const diagram_data = (await pool.query('SELECT * FROM diagrams WHERE id = $1', [diagram_id])).rows;
-            expect(diagram_data[0].name).toEqual('virtual_self');
+            expect(diagram_data[0].name).to.eql('virtual_self');
           } catch (err) {
             if (err) throw err;
           }
@@ -274,7 +278,7 @@ describe('Diagram', function () {
         .expect(async (res) => {
           try {
             const diagram_data = (await pool.query('SELECT * FROM diagrams WHERE id = $1', [diagram_id])).rows;
-            expect(diagram_data.length).toEqual(0);
+            expect(diagram_data.length).to.eql(0);
           } catch (err) {
             if (err) throw err;
           }

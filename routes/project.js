@@ -121,7 +121,7 @@ exports.updateSkillId = async (req, res) => {
     if (!req.body.id || typeof req.body.id !== 'string' || !req.body.id.trim()) throw { status: 400, message: 'No New Amazon ID provided' };
     const amzn_id = req.body.id;
 
-    token = await AmazonAccessToken(req.user.id);
+    const token = await AmazonAccessToken(req.user.id);
     if (!token) throw { status: 401, message: 'No Amazon Login Credentials' };
 
     // Verify that this skill does exist
@@ -176,8 +176,10 @@ exports.getDevVersion = async (req, res) => {
 exports.render = async (req, res) => {
   // check that the owner actually owns this project
   const project_id = hashids.decode(req.params.project_id)[0];
+
+  let skill_id;
   try {
-    project_query = (await pool.query('SELECT project_id, dev_version FROM projects WHERE project_id = $1 LIMIT 1', [project_id]));
+    const project_query = (await pool.query('SELECT project_id, dev_version FROM projects WHERE project_id = $1 LIMIT 1', [project_id]));
     if (project_query.rows.length === 0) throw new Error('Invalid Project');
 
     skill_id = project_query.rows[0].dev_version;

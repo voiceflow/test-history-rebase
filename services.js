@@ -142,7 +142,6 @@ const logging_pool = new pg.Pool({
 });
 
 const verify = (auth, cb) => {
-  console.log('auth', auth)
   if (typeof auth !== 'string') {
     cb();
   } else {

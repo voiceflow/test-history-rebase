@@ -155,6 +155,42 @@ const checkSkillInReview = (amzn_id, creator_id, skill_id) => {
   });
 };
 
+const makeVendorEntryForExistingSkill = async (creator_id, project_id, amzn_id) => {
+  if (_.isNil(creator_id)) {
+    throw new Error('Missing creator id')
+  }
+  if (_.isNil(project_id)) {
+    throw new Error('Missing project id')
+  }
+  if (_.isNil(amzn_id)) {
+    throw new Error('Missing amzn id')
+  }
+
+  await new Promise((resolve, reject) => {
+    AccessToken(creator_id, async (token) => {
+      if (token === null) {
+        reject(new Error('Missing Amazon Token'))
+      }
+
+      const request = await axios.request({
+        url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
+        method: 'GET',
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      if (request.data.manifest
+        && request.data.manifest.lastUpdateRequest
+        && request.data.manifest.lastUpdateRequest.status === 'FAILED') {
+        amzn_id = null;
+      }
+
+      resolve()
+    })
+  })
+}
+
 exports.getSkill = async (req, res) => {
   const project_id = hashids.decode(req.params.project_id)[0];
   const id = hashids.decode(req.params.skill_id)[0];
@@ -186,12 +222,13 @@ exports.getSkill = async (req, res) => {
 
     sql = `
       SELECT
-        s.*, pm.amzn_id AS amzn_id, pm.selected_vendor as vendor_id
+        s.*, vd.amzn_id AS amzn_id, pm.amzn_id as deprecated_amzn_id, pm.selected_vendor as vendor_id
       FROM
         skills s
         INNER JOIN projects p ON p.project_id = s.project_id
         INNER JOIN team_members tm ON tm.team_id = p.team_id
         LEFT JOIN (SELECT * FROM project_members WHERE creator_id = $2) pm ON pm.project_id = p.project_id
+        LEFT JOIN vendors vd ON pm.selected_vendor = vd.vendor_id
         WHERE
           skill_id = $1
           AND tm.creator_id = $2
@@ -201,6 +238,12 @@ exports.getSkill = async (req, res) => {
 
   try {
     const skill_data = (await pool.query(sql, params)).rows[0];
+
+    if (!_.isNil(skill_data.deprecated_amzn_id) && _.isNil(skill_data.amzn_id)) {
+      // Move amzn id from project_members to vendors table to support multiple members
+      await makeVendorEntryForExistingSkill(req.user.id, project_id, skill_data.deprecated_amzn_id)
+    }
+
     if (skill_data === undefined) {
       res.sendStatus(404);
     } else {
@@ -702,7 +745,7 @@ exports.buildSkill = async (req, res) => {
     checkVersions(project_id, 'alexa');
 
     pool.query(`
-      SELECT s.*, pm.amzn_id AS amzn_id, pm.creator_id AS status, pm.selected_vendor as vendor_id
+      SELECT s.*, pm.amzn_id AS deprecated_amzn_id, pm.creator_id AS status, pm.selected_vendor as vendor_id
       FROM skills s
       LEFT JOIN (SELECT * FROM project_members WHERE creator_id = $2) pm ON pm.project_id = s.project_id
       WHERE s.skill_id = $1 LIMIT 1
@@ -714,15 +757,15 @@ exports.buildSkill = async (req, res) => {
         res.sendStatus(500);
       } else {
         const r = data.rows[0];
-        const { project_id } = r;
-        let { amzn_id, vendor_id } = r;
+        const { project_id, deprecated_amzn_id } = r; // The amzn_id field has been moved to the vendors table
+        let { vendor_id } = r;
         const manifest = createManifest(r, original_id);
 
         analytics.track({
           userId: req.user.id,
           event: 'Publish Attempt',
           properties: {
-            amzn_id,
+            vendor_id,
             skill_id: id,
           },
         });
@@ -775,7 +818,6 @@ exports.buildSkill = async (req, res) => {
             const vendors = vendor_request ? vendor_request.data.vendors : null;
 
             if (Array.isArray(vendors) && vendors.length !== 0) {
-              console.log("SETTING VENDOR ID", vendors)
               vendor_id = vendors[0].id;
             } else {
               throw ({

@@ -93,6 +93,8 @@ class PricingForm extends React.Component {
         <label>Product Type</label>
         <ButtonGroup className="mb-3 toggle-group">
             <Button
+              isBtn
+              isSecondary
               className="mr-2"
               outline={this.props.purchaseType !== 'ENTITLEMENT'}
               onClick={this.props.handleChange('purchaseType', 'ENTITLEMENT')}
@@ -101,6 +103,8 @@ class PricingForm extends React.Component {
               One-Time
             </Button>
             <Button
+              isBtn
+              isSecondary
               className="mr-2"
               outline={this.props.purchaseType !== 'SUBSCRIPTION'}
               onClick={this.props.handleChange('purchaseType', 'SUBSCRIPTION')}
@@ -109,6 +113,8 @@ class PricingForm extends React.Component {
               Subscription
             </Button>
             <Button
+              isBtn
+              isSecondary
               className="mr-2"
               outline={this.props.purchaseType !== 'CONSUMABLE'}
               onClick={this.props.handleChange('purchaseType', 'CONSUMABLE')}

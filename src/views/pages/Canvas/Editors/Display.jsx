@@ -3,7 +3,7 @@ import Select from 'react-select'
 import axios from 'axios';
 import { connect } from 'react-redux'
 import { Button, InputGroup, Input, Modal, ModalBody, InputGroupAddon } from 'reactstrap'
-import { ModalHeader } from 'views/components/Modals/ModalHeader'
+import { ModalHeader } from 'components/Modals/ModalHeader'
 import {Tooltip} from 'react-tippy'
 import {Link} from 'react-router-dom'
 
@@ -83,11 +83,11 @@ export class Display extends Component {
         node.extras.update_on_change = !node.extras.update_on_change
         this.setState({
             node: node
-        }, () => this.props.onUpdate())    
+        }, () => this.props.onUpdate())
     }
 
     selectDisplay(selected) {
-        
+
         if(selected.value === this.state.node.extras.display_id) return;
 
         let find = this.props.displays.find(t => t.display_id === selected.value);
@@ -150,7 +150,7 @@ export class Display extends Component {
                 this.setState({
                     modalContent: err,
                     current_request: false
-                })    
+                })
             })
         }
     }
@@ -166,7 +166,7 @@ export class Display extends Component {
             return
         }
 
-        this.setState({ 
+        this.setState({
             modal: true,
             modalContent: null,
             variables: variables,
@@ -218,7 +218,7 @@ export class Display extends Component {
                         </Tooltip>
                     </span>
                 </div>}
-                
+
                 {this.state.modalContent && <img className='test-image' alt='content' src={`data:image/png;base64,${this.state.modalContent}`} />}
             </div>
         )
@@ -229,7 +229,7 @@ export class Display extends Component {
             return <div className="text-center">
                 <img className="mb-3 mt-5" src={'/images/desktop.svg'} alt="user" width="80"/><br/>
                 <span className="text-muted">You currently have no Multimodal Displays</span>
-                <Link className="btn btn-secondary mt-3" to={`/visuals/${this.props.skill_id}`}>Add Displays</Link> 
+                <Link className="btn btn-secondary mt-3" to={`/visuals/${this.props.skill_id}`}>Add Displays</Link>
             </div>
         }
 

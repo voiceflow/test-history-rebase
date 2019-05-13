@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
-import { ModalHeader } from 'views/components/Modals/ModalHeader'
+import { ModalHeader } from 'components/Modals/ModalHeader'
 
 class Loader extends Component {
     render() {

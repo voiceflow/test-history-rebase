@@ -8,7 +8,7 @@ import axios from 'axios'
 import './Account.css'
 
 import Button from 'components/Button'
-import Image from 'views/components/Uploads/Image'
+import Image from 'components/Uploads/Image'
 import Header from 'components/Header'
 
 const UNLINKED = 0

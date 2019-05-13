@@ -34,19 +34,19 @@ import NewTeam from './views/pages/Dashboard/NewTeam'
 
 // GLOBAL MODALS
 import { setConfirm } from 'ducks/modal'
-import ConfirmModal from "./views/components/Modals/ConfirmModal"
-import ErrorModal from './views/components/Modals/ErrorModal'
-import Modal from 'views/components/Modals/Modal'
+import ConfirmModal from "components/Modals/ConfirmModal"
+import ErrorModal from 'components/Modals/ErrorModal'
+import Modal from 'components/Modals/Modal'
 
 import { getAuth, getUser } from 'ducks/account'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props =>
       !getAuth() ? (
-        <Redirect to={{ 
+        <Redirect to={{
           pathname: "/login",
           search: props.location.search,
-          state: { from: props.location } 
+          state: { from: props.location }
         }}/>
       ) : (
         <ErrorBoundary>
@@ -65,10 +65,10 @@ class PublicComponent extends Component {
   render() {
     const props = this.props
     return (getAuth() ? (
-      <Redirect to={{ 
-        pathname: "/dashboard", 
+      <Redirect to={{
+        pathname: "/dashboard",
         search: props.location.search,
-        state: { from: props.location } 
+        state: { from: props.location }
       }}/>
     ) : (
       <props.component {...props} />
@@ -188,7 +188,7 @@ class App extends Component {
                 <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
                 <PublicRoute exact path="/reset" name="Reset" component={Reset} />
                 <PublicRoute exact path="/login" name="Login" page="login" component={Register} />
-                <PublicRoute exact path="/signup" name="SignUp" page="signup" component={Register} />                
+                <PublicRoute exact path="/signup" name="SignUp" page="signup" component={Register} />
                 {/* Team routes */}
                 <PrivateRoute path="/dashboard" name="Dashboard" component={Team}/>
                 <PrivateRoute exact path="/team/new" component={NewTeam}/>
@@ -236,8 +236,8 @@ class App extends Component {
                 <Route exact path="/invite/:invite_code" render={props => {
                   const code = props.match.params.invite_code
                   return (
-                    getAuth() ? 
-                      <Redirect to={`/dashboard?invite=${code}`}/> : 
+                    getAuth() ?
+                      <Redirect to={`/dashboard?invite=${code}`}/> :
                       <Redirect to={`/signup?invite=${code}${props.location.search}`}/>
                   )}}
                 />

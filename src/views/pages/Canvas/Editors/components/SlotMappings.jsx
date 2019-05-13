@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { openTab } from 'ducks/user'
 
 import Button from 'components/Button'
-import { selectStyles, variableComponent} from 'views/components/VariableSelect'
+import { selectStyles, variableComponent} from 'components/VariableSelect/VariableSelect'
 
 class SlotMappings extends Component {
 

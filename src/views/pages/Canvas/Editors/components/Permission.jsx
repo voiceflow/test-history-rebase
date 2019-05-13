@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Select from 'react-select';
 import { openTab } from "ducks/user";
-import { selectStyles, variableComponent } from 'views/components/VariableSelect'
+import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect'
 import _ from 'lodash'
 
 const PERMISSIONS_WITH_VARIABLE_MAPS = ['User Phone Number', 'User Email', 'User Name', 'Account Linking']
@@ -105,7 +105,7 @@ class Permission extends Component {
                     placeholder='Select User Permission'
                     options={this.props.permissions.map(e => {
                         return {
-                            value: e.value, 
+                            value: e.value,
                             label: e.name
                         }
                     })}

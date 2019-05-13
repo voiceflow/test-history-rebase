@@ -6,8 +6,8 @@ import { Form, FormGroup, Input } from 'reactstrap'
 import Select from 'react-select'
 
 import Button from 'components/Button'
-import StepProgressBar from './../../components/StepProgressBar'
-import { Spinner } from 'views/components/Spinner'
+import StepProgressBar from 'components/StepProgressBar/StepProgressBar'
+import { Spinner } from 'components/Spinner/Spinner'
 
 import "./onboarding.css"
 
@@ -173,8 +173,8 @@ class Onboarding extends Component{
 	componentDidMount() {
     // preload images
     let pictures = [
-      '/beginner-unselected.png', 
-      '/little-unselected.png', 
+      '/beginner-unselected.png',
+      '/little-unselected.png',
       '/alot-unselected.png',
       '/design-unselected.png',
       '/publish-unselected.png',
@@ -196,7 +196,7 @@ class Onboarding extends Component{
 			calendly_script.parentNode.removeChild(calendly_script)
 		}
 	}
-	
+
 	renderModalContent(){
     if(this.state.loading) {
       return <Spinner message="Creating Project" transparent/>
@@ -321,9 +321,9 @@ class Onboarding extends Component{
 							</FormGroup>
 						</Form>
 					</div>
-					<Button 
+					<Button
 						isPrimary
-            disabled={!(!!this.state.company_name && !!this.state.company_role && parseInt(this.state.company_size) > 0)} 
+            disabled={!(!!this.state.company_name && !!this.state.company_role && parseInt(this.state.company_size) > 0)}
             onClick={() => {
               if(this.state.company_size >= SHOW_CALENDLY_NUMBER){
                 this.setState({stage: 'calendly'})
@@ -372,13 +372,13 @@ class Onboarding extends Component{
                 this.setState({stage: 'work_name'})
               } else if(this.state.type === 'PERSONAL'){
                 this.setState({stage: 'work_plan'})
-              }	
+              }
             	}}>Continue</Button>
 				</div>
 			default:
 				return <div key={this.state.stage} className="pb-5 mb-5">
           <div className="text-center">
-            <img className='logo mb-3' src={process.env.PUBLIC_URL+'/logo.svg'} alt='logo' 
+            <img className='logo mb-3' src={process.env.PUBLIC_URL+'/logo.svg'} alt='logo'
               height="25"
             />
             <p className="modal-bg-txt text-center mb-3">Hi, {this.props.user.name}</p>
@@ -402,7 +402,7 @@ class Onboarding extends Component{
 			</div>
 
 		)
-	}	
+	}
 }
 
 const mapStateToProps = state => ({

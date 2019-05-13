@@ -151,12 +151,21 @@ class GetRequestSection extends Component {
                 <Nav tabs className="mb-3">
                   <NavItem onClick={() => {
                     this.props.updateActionData({
-                      bodyInputType: 'keyValue'
+                      bodyInputType: 'formData'
                     })
                   }}>
-                    <NavLink href="#" active={this.props.action_data.bodyInputType === 'keyValue'}>
-                      Key Value Input
-                </NavLink>
+                    <NavLink href="#" active={this.props.action_data.bodyInputType === 'formData'}>
+                      Form Data
+                    </NavLink>
+                  </NavItem>
+                  <NavItem onClick={() => {
+                    this.props.updateActionData({
+                      bodyInputType: 'urlEncoded'
+                    })
+                  }}>
+                    <NavLink href="#" active={this.props.action_data.bodyInputType === 'urlEncoded'}>
+                      Form Url-Encoded
+                    </NavLink>
                   </NavItem>
                   <NavItem onClick={() => {
                     this.props.updateActionData({

@@ -2,18 +2,9 @@ import _ from "lodash";
 import React, { useState, useEffect } from "react";
 import { ScrollContextProvider } from "contexts";
 import cn from 'classnames';
-// import moment from 'moment'
-import { useScrollHelpers } from 'hooks/scroll';
-// import 'react-table/react-table.css'
-import Header from "components/Header";
 import { Link } from "react-router-dom";
 import { Tooltip } from "react-tippy";
-import "./DashBoard.css";
 import axios from "axios";
-import UpdatesModal from "./../../components/Modals/UpdatesModal";
-import LoadingModal from "views/components/Modals/LoadingModal";
-import TeamSettings from "./TeamSettings"
-import UpdatesPopover from './UpdatesPopover'
 import {
     Alert,
     Input,
@@ -24,13 +15,22 @@ import {
     DropdownMenu,
     DropdownItem
 } from "reactstrap";
-import { setConfirm, setError } from 'ducks/modal'
 import { connect } from "react-redux";
+
+import { useScrollHelpers } from 'hooks/scroll';
+
+import Header from "components/Header";
+import List, { List as SimpleList } from "./components/List";
+import { Item as ListItem } from "./components/Item";
 import { Members } from 'views/components/User'
-import ExpiryButton from './ExpiryButton'
-import { Item as ListItem } from './components/Item';
-import List, { List as SimpleList } from './components/List';
+import UpdatesModal from "./../../components/Modals/UpdatesModal";
+import LoadingModal from "views/components/Modals/LoadingModal";
+import Button from 'components/Button'
 import DragLayer from 'components/DragLayer';
+import ExpiryButton from './ExpiryButton'
+
+import TeamSettings from "./TeamSettings"
+import UpdatesPopover from './UpdatesPopover'
 
 import {
   deleteProject,
@@ -50,8 +50,10 @@ import {
 import {
   getMembers,
 } from "ducks/team";
+import { setConfirm, setError } from 'ducks/modal'
 import { unnormalize } from "ducks/_normalize"
 
+import "./DashBoard.css";
 const filter_projects = (projects, filter) => {
   const filtered = {}
   projects.allIds.forEach(p => {
@@ -192,7 +194,7 @@ export const DashBoard = props => {
             rightRenderer={() => (
                 <div className="title-group no-select pr-2">
                     <div className="subheader-right mr-2">
-                      <button className={cn("dropdown-button-border", {active: updates_open})} id="update-popup" type="button" onClick={() => toggleUpdatesOpen(!updates_open)} />
+                      <Button className={cn("dropdown-button-border", {active: updates_open})} id="update-popup" type="button" onClick={() => toggleUpdatesOpen(!updates_open)} />
                       <Popover 
                         className="updates-popover-container" 
                         placement="bottom" 
@@ -212,7 +214,7 @@ export const DashBoard = props => {
                                     title="Resources"
                                     position="bottom"
                                 >
-                                    <button className="dropdown-button-border info" type="submit" />
+                                    <Button className="dropdown-button-border info" type="submit" />
                                 </Tooltip>
                             </DropdownToggle>
                             <DropdownMenu className="mt-2">
@@ -295,7 +297,7 @@ export const DashBoard = props => {
             <div>
               <h3>Your free trial has expired</h3>
               <div className="text-dull mt-3 mb-4">Please Upgrade to continue using Voiceflow</div>
-              <button className="btn-primary mb-5" onClick={()=>this.setState({team_settings: 'CHECKOUT'})}>Upgrade Plan</button>
+              <Button isPrimary className="mb-5" onClick={()=>this.setState({team_settings: 'CHECKOUT'})}>Upgrade Plan</Button>
             </div>
           </div>}
           <div 
@@ -328,12 +330,13 @@ export const DashBoard = props => {
                     to={`/team/template`}
                     className="no-underline super-center"
                   >
-                    <button
-                      className="btn-primary mt-3"
+                    <Button
+                      isPrimary
+                      className="mt-3"
                       id="createskill"
                     >
                       New Project
-                    </button>
+                    </Button>
                   </Link>
                 </div>
               </div>
@@ -377,11 +380,12 @@ export const DashBoard = props => {
                                         position="bottom"
                                         className="ml-1 mr-4"
                                     >
-                                        <button
+                                        <Button
                                             onClick={() => {
                                                 props.addBoard(props.team_id)
                                             }}
-                                            className="nav-btn-border mt-1 add-button"
+                                            isNavBordered
+                                            className="mt-1 add-button"
                                         />
                                     </Tooltip>
                                 </div>

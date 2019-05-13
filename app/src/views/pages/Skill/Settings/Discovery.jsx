@@ -1,13 +1,16 @@
 import React, {Component} from 'react'
 import _ from 'lodash'
+import axios from "axios";
 import { connect } from 'react-redux'
+import { FormGroup, Label, Alert } from "reactstrap";
+
 import CanFulfill from './Canfulfill'
 import { BUILT_IN_INTENTS_ALEXA } from 'Constants'
-// import { Discovery } from 'aws-sdk';
 import { intentHasSlots } from 'Helper'
-import { FormGroup, Label, Alert } from 'reactstrap'
+
 import { setError } from 'ducks/modal'
-import axios from 'axios'
+
+import Button from 'components/Button'
 
 const BUILT_INS = BUILT_IN_INTENTS_ALEXA.map(intent => {
     return {
@@ -46,11 +49,11 @@ class DiscoverySettings extends Component{
     fulfillmentButtons(intents_sorted) {
         return intents_sorted.map((intent, i) => {
             if (this.props.skill.fulfillment[intent.key]) {
-                return <button className="btn btn-clear btn-shadow w-100 my-2 d-flex space-between" key={i} onClick={() => {
+                return <Button isBtn isClear className="w-100 my-2 d-flex space-between" key={i} onClick={() => {
                     this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery/canfulfill/${intent.key}`)
                 }} disabled={!intentHasSlots(intent)}>
                     <span className="slot-fulfillment"><i className="fas fa-comment-alt-check mr-2"></i>{intent.name}</span>
-                </button>
+                </Button>
             }
             return null
         })
@@ -90,10 +93,10 @@ class DiscoverySettings extends Component{
                         />}
                 </FormGroup>
                 <div className="super-center">
-                    {fullfillment_intent_key && <button className="btn btn-clear exit btn-thicc" onClick={() => {
+                    {fullfillment_intent_key && <Button isBtn isClear className="exit btn-thicc" onClick={() => {
                         this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery`)
                     }}><i className="far fa-chevron-left"/> Back
-                    </button>}
+                    </Button>}
                 </div>
             </div>
         </React.Fragment>

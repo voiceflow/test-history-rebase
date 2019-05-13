@@ -1,13 +1,19 @@
 #!/usr/bin/env node
 /* eslint-disable strict */
-require('./envSetup')
+require('./envSetup');
 
 const socketIO = require('socket.io');
 const redisAdapter = require('socket.io-redis');
+const express = require('express');
+
+const npmPackage = require('./package.json');
 const sockets = require('./sockets');
 
-const app = require('./app');
-const npmPackage = require('./package.json');
+const { ExpressMiddleware, ServiceManager } = require('./backend');
+const app = express();
+
+const serviceManager = new ServiceManager();
+ExpressMiddleware.attach(app, serviceManager.middleware, serviceManager.controllers);
 
 const name = `${npmPackage.name} v${npmPackage.version}`;
 const port = process.env.PORT || 8080;
@@ -21,6 +27,9 @@ if (process.env.NODE_ENV === 'test') {
     pingInterval: 5000,
     pingTimeout: 10000,
   });
-  io.adapter(redisAdapter({ host: process.env.REDIS_CLUSTER_HOST, port: process.env.REDIS_CLUSTER_PORT }));
+  io.adapter(redisAdapter({
+    host: process.env.REDIS_CLUSTER_HOST,
+    port: process.env.REDIS_CLUSTER_PORT,
+  }));
   sockets(io);
 }

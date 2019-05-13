@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-
+import AceEditor from "react-ace";
 import axios from 'axios';
 import { Input, Col, Row, FormGroup } from 'reactstrap';
 
-import AceEditor from 'react-ace';
+import Button from 'components/Button'
 
 import { addEmail, updateEmail } from 'ducks/email'
 import { setError } from 'ducks/modal'
@@ -153,19 +153,19 @@ class Template extends Component {
                     <div className="space-between">
                         <h5 className="text-muted mb-0">Email Template</h5>
                         <div className="subheader-right">
-                            <button varient="contained" className="btn-tertiary-gray mr-2" onClick={()=>{
+                            <Button isFlatGray varient="contained" className="mr-2" onClick={()=>{
                                 this.props.history.push(`/tools/${this.props.skill_id}/emails`);
                             }}>
                                 <i className="fas fa-arrow-left mr-2"/>{' '}Back
-                            </button>
-                            <button varient="contained" className="btn-primary" onClick={this.save} style={{width: 100}}>
+                            </Button>
+                            <Button isPrimary varient="contained" onClick={this.save} style={{width: 100}}>
                                 {this.state.saving ? 
                                     <span className="loader"/> : 
                                     <React.Fragment>
                                         Save{this.state.saved ? '' : '*'}
                                     </React.Fragment>
                                 }
-                            </button>
+                            </Button>
                         </div>
                     </div>
                     <hr/>

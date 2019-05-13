@@ -4,6 +4,8 @@ import { Input } from 'reactstrap';
 import {Tooltip} from 'react-tippy';
 import { AvForm } from 'availity-reactstrap-validation';
 
+import Button from 'components/Button'
+
 class PhrasesForm extends React.Component {
   render() {
       return (
@@ -31,33 +33,35 @@ class PhrasesForm extends React.Component {
                         value={phrase}
                         onChange={this.props.handleChange(idx)}
                       />
-                      <button
-                        type="button"
+                      <Button
+                        isFloat
                         onClick={this.props.handleRemove(idx)}
-                        className="btn-float mb-2 ml-2" style={{fontSize: '16px'}}
+                        className="mb-2 ml-2" style={{fontSize: '16px'}}
                       >
-                      <i className="fal fa-times"></i>
-                      </button>
+                        <i className="fal fa-times"></i>
+                      </Button>
                     </div>
                   );
                 })}
               <div className="text-center">
-                <button className='btn-tertiary-gray' onClick={this.props.handleAdd}>Add Phrase<i className="far fa-long-arrow-right ml-2"></i></button>
+                <Button isFlatGray onClick={this.props.handleAdd}>Add Phrase<i className="far fa-long-arrow-right ml-2"></i></Button>
               </div>
             </div>
             <div className="product-stage-button">
-              <button className="btn-tertiary-gray"
+              <Button
+                isFlatGray
                 variant="contained"
                 onClick={() => this.props.updateStage(1)}
               >
                 Previous
-              </button>
-              <button className="btn-primary ml-2"
+              </Button>
+              <Button
+                isPrimary
+                className="ml-2"
                 variant="contained"
-              
               >
                 Continue
-              </button>
+              </Button>
             </div>
           </AvForm>
         </div>

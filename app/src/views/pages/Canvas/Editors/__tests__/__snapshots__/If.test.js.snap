@@ -39,12 +39,16 @@ exports[`IfEditor render if block editor 1`] = `
   <div
     className="text-center"
   >
-    <button
-      className="btn-tertiary-variable mt-1"
+    <Button
+      className="mt-1"
+      iconPosition="right"
+      isFlatVariable={true}
       onClick={[Function]}
+      onRef={[Function]}
+      trackEvent="Button Click"
     >
       Add If Statement
-    </button>
+    </Button>
   </div>
 </div>
 `;

@@ -21,7 +21,7 @@ describe('Multiple Form Test', () => {
         const addField = jest.spyOn(Multiple.prototype, "add");
         const removeField = jest.spyOn(Multiple.prototype, "delete");
         const component = mount(<Multiple update={() => {}} list={list} />)
-        component.find('.dash-button').first().simulate('click');
+        component.find('Button').first().simulate('click');
         expect(addField).toBeCalled()
         component.find('button.close').last().simulate('click');
         expect(removeField).toBeCalled()

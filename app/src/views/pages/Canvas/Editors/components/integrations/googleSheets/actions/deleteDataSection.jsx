@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
-import { Button, Collapse } from 'reactstrap'
+import { Collapse } from 'reactstrap'
+
 import VariableInput from '../../../VariableInput';
+import Button from 'components/Button'
+
 import { draftIsEmpty } from '../../util'
 
 // props
@@ -72,7 +75,11 @@ class CreateDataSection extends Component {
               </div>
             </div>
           </div>
-          <div className="text-center my-3"><Button onClick={this.props.showNextSection} className={`btn-primary ${this.state.completed ? '' : 'disabled'}`}>Next</Button></div>
+          <div className="text-center my-3">
+            <Button isPrimary disabled={!this.state.completed} onClick={this.props.showNextSection}>
+              Next
+            </Button>
+          </div>
         </Collapse>
       </>
     )

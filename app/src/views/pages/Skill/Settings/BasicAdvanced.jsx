@@ -2,13 +2,16 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import axios from 'axios'
-import {Alert, FormGroup, Label, Button, Input, Collapse} from 'reactstrap'
-import Prompt from 'views/components/Uploads/Prompt'
+import {Alert, FormGroup, Label, Input, Collapse} from 'reactstrap'
 import AceEditor from 'react-ace';
+import Toggle from 'react-toggle'
+
+import Button from 'components/Button'
+import Prompt from "views/components/Uploads/Prompt";
+import DefaultModal from './../../../components/Modals/DefaultModal'
+
 import { updateVersion, updateVersionMerge } from 'ducks/version'
 import { setConfirm, setError } from 'ducks/modal'
-import DefaultModal from './../../../components/Modals/DefaultModal'
-import Toggle from 'react-toggle'
 
 import 'brace/mode/json';
 import 'brace/ext/language_tools'
@@ -192,7 +195,7 @@ class BasicAdvancedSettings extends Component{
                             This action cannot be undone.
                           </span>
                           <br />
-                          <Button color="warning" onClick={this.confirmOverwrite}>
+                          <Button isWarning onClick={this.confirmOverwrite}>
                             Overwrite
                           </Button>
                         </Alert>
@@ -208,7 +211,7 @@ class BasicAdvancedSettings extends Component{
                             undone
                           </span>
                           <br />
-                          <Button color="warning" onClick={this.confirmDelete}>
+                          <Button isWarning onClick={this.confirmDelete}>
                             Delete Project
                           </Button>
                         </Alert>
@@ -301,7 +304,7 @@ class BasicAdvancedSettings extends Component{
                                         updatePrompt={prompt => this.props.updateSkillMerge('resume_prompt', prompt)}
                                     />
                                 </Collapse>
-                                <Button color='clear' className="mt-3" onClick={this.toggleResumeFollowUp}>
+                                <Button isClear className="mt-3" onClick={this.toggleResumeFollowUp}>
                                     {this.state.resume_collapse ? 'Cancel Follow Up' : 'Resume Follow Up'}
                                 </Button>
                             </React.Fragment>}

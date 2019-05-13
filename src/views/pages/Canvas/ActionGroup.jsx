@@ -214,6 +214,8 @@ export class ActionGroup extends PureComponent {
     })
     getVendors().then(vendors => {
       this.setState({ vendors, upload_button_loading: false })
+    }).catch(err => {
+      this.setState({ vendors: [], upload_button_loading: false })
     })
   }
 
@@ -343,13 +345,26 @@ export class ActionGroup extends PureComponent {
   checkVendor() {
     this.updateAlexaStage(7)
 
-    axios.get('/session/vendor')
+    if (!this.state.vendors || this.state.vendors.length === 0) {
+      axios.get('/session/vendor?all=true')
+      .then(({data}) => {
+        this.setState({
+          vendors: data
+        })
+        this.updateAlexaStage(0)
+      })
+      .catch(err => {
+        this.updateAlexaStage(6)
+      });
+    } else {
+      axios.get('/session/vendor')
       .then(() => {
         this.updateAlexaStage(0)
       })
       .catch(err => {
         this.updateAlexaStage(6)
       });
+    }
   }
 
   async enableSkill(locale) {

@@ -461,7 +461,7 @@ const createDropNode = (event, engine, type, name) => {
                 reminder: null
             }
         } else if (type === 'flow') {
-            let diagram_id = event.diagram_id ? event.diagram_id : event.dataTransfer.getData('diagram_id')
+            let diagram_id = event.dataTransfer && event.dataTransfer.getData('diagram_id')
             node.addInPort(' ')
             node.addOutPort(' ').setMaximumLinks(1)
             node.extras = {

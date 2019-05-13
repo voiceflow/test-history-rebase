@@ -1159,6 +1159,14 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
 .image-standard .image-box{
     padding: 0px !important;
 }
+.image-standard .image-box .close {
+  top: 2px;
+  right: 2px;
+  background-color: #fff !important;
+  padding: 10px !important;
+  background-size: 10px !important;
+  border-radius: 100%;
+}
 .image-standard .image{
     height: 100%;
     width: 100%;

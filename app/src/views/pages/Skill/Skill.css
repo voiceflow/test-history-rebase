@@ -588,10 +588,19 @@ textarea::placeholder {
   margin-top: 10px;
   margin-bottom: 5px;
   font-size: 10px !important;
-
 }
-.combinie-node .srd-default-node .srd-default-node__title .srd-default-node__name{
-  font-size: 10px !important;
+
+.combine-node .flow.srd-default-node.extraFlowPadding {
+  height: auto !important;
+}
+
+.combine-node .flow.srd-default-node .srd-default-node__ports .btn-black {
+  margin-left: -86px !important;
+  margin-top: 7px !important;
+}
+
+.srd-default-node.flow.moving .btn-black {
+  display: none !important;
 }
 
 .srd-default-node.moving{

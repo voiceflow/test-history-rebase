@@ -5,7 +5,7 @@ import { Collapse } from 'reactstrap'
 import IntegrationsService from 'services/Integrations'
 import _ from 'lodash'
 import memoize from 'memoize-one'
-import { selectStyles } from 'views/components/VariableSelect'
+import { selectStyles } from 'components/VariableSelect/VariableSelect'
 
 // props
 // action_data, integrationsUser, skill_id, onError, updateActionData, updateHeaders

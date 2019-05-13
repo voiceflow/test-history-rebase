@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 import Button from 'components/Button'
 
 import { deleteEmail } from 'ducks/email'
-import VoiceCards from 'views/components/Cards/VoiceCards'
-import EmptyCard from 'views/components/Cards/EmptyCard'
+import VoiceCards from 'components/Cards/VoiceCards'
+import EmptyCard from 'components/Cards/EmptyCard'
 import Masonry from 'react-masonry-component';
 
 class Emails extends Component {

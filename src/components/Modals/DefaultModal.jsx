@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
-import { ModalHeader } from 'views/components/Modals/ModalHeader'
+import { ModalHeader } from 'components/Modals/ModalHeader'
 import Button from 'components/Button'
 
 class DefaultModal extends React.Component {
@@ -15,7 +15,7 @@ class DefaultModal extends React.Component {
           {this.props.content}
         </ModalBody>
         {!this.props.hideFooter && <ModalFooter className="super-center">
-          {this.props.close_button_text ? 
+          {this.props.close_button_text ?
             <Button isPrimary type="button" onClick={this.props.toggle}>{this.props.close_button_text}</Button>
             : <Button isClear type="button" onClick={this.props.toggle}>Close</Button>
           }

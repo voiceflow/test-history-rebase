@@ -12,7 +12,7 @@ import Textarea from 'react-textarea-autosize';
 import AnimateHeight from 'react-animate-height'
 import { Tooltip } from 'react-tippy'
 // import Select from 'react-select'
-import Select from 'views/components/Dropdowns/Searchable'
+import Select from 'components/Dropdowns/Searchable'
 import { getBlocks } from 'views/pages/Canvas/Blocks'
 import Button from 'components/Button'
 
@@ -395,7 +395,7 @@ export class BlockNodeWidget extends BaseWidget {
 							}} />
 							</Tooltip>
 						}
-							{this.props.node.edit || this.state.edit ? 
+							{this.props.node.edit || this.state.edit ?
 									<input
 										name="name"
 										value={this.state.name}
@@ -416,7 +416,7 @@ export class BlockNodeWidget extends BaseWidget {
 								_.startCase(this.props.node.extras.type === 'god' ? 'New Block' : this.props.node.extras.type)
 							} </span>}
 							{
-								this.props.node.extras.type ==='command' && !!this.props.node.parentCombine 
+								this.props.node.extras.type ==='command' && !!this.props.node.parentCombine
 								&& this.props.node.parentCombine.extras.type ==='story' && this.props.node.extras['alexa'] &&
 								this.props.nodeProps.hasFlow(this.props.node.extras['alexa'].diagram_id) &&
 								<div className="command-right">

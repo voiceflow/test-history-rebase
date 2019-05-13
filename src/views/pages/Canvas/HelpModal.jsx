@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
-import { ModalHeader } from 'views/components/Modals/ModalHeader'
+import { ModalHeader } from 'components/Modals/ModalHeader'
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 
@@ -153,17 +153,17 @@ class HelpModal extends React.Component {
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
         <ModalHeader header={this.props.help && this.props.help.type ? this.props.help.type : 'Blocks'} toggle={this.props.toggle} />
         <ModalBody>
-          {this.props.help && this.props.help.type ? 
+          {this.props.help && this.props.help.type ?
             <React.Fragment>
               <div className="text-muted pl-3 pr-3 pb-3 pt-0">
                 {result ? <React.Fragment>
                   <p className="mb-4">{result.info}</p>
-                  {result.video && 
+                  {result.video &&
                     <div className="embed-responsive box-shadow embed-responsive-16by9 rounded">
                       <iframe src={result.video} allowFullScreen title="intro"></iframe>
                     </div>
                   }
-                </React.Fragment> : 
+                </React.Fragment> :
                 "Information for this block doesn't exist yet. Check back again later"}
               </div>
             </React.Fragment> :

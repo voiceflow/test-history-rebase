@@ -7,7 +7,7 @@ import DefaultButton from 'components/Button'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
 import SlotMappings from './components/SlotMappings'
-import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
+import PlatformTooltip from 'components/Tooltips/PlatformTooltip';
 import { PLATFORMS } from '../../../../Constants'
 
 import { updateIntents, setCanFulfill } from 'ducks/version'
@@ -234,12 +234,12 @@ export class Command extends Component {
                                 <i className="fas fa-exclamation-triangle fa-2x mb-2" /><br />
                                 Unable to Retrieve Flow - This Flow may be broken or deleted
                         </Alert>}
-                        <DefaultButton isFlat isLarge isBtn block className="mt-3 btn-block" onClick={() => { 
-                                let node = this.state.node; 
-                                let extras = node.extras[this.props.platform]; extras.diagram_id = null; 
+                        <DefaultButton isFlat isLarge isBtn block className="mt-3 btn-block" onClick={() => {
+                                let node = this.state.node;
+                                let extras = node.extras[this.props.platform]; extras.diagram_id = null;
                                 this.setState({ node: node })
                                 this.props.repaint()
-                            }} 
+                            }}
                             color="clear">
                             Unlink Flow
                         </DefaultButton>

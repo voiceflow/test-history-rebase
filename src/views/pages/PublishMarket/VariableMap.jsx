@@ -4,7 +4,7 @@ import Select from 'react-select';
 import { connect } from 'react-redux'
 
 import Button from 'components/Button'
-import { selectStyles, variableComponent } from 'views/components/VariableSelect'
+import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect'
 
 import { openTab } from 'ducks/user'
 
@@ -55,7 +55,7 @@ class VariableMap extends Component {
                                         onChange={e => this.props.onChange(e.value, i, this.props.type)}
                                         options={Array.isArray(this.state.unused_array) ? this.state.unused_array.map(variable => {
                                                 return {label: variable, value: variable, openVar: this.props.openVarTab }
-                                            
+
                                         }) : null}
                                     />
 

@@ -532,9 +532,7 @@ export class DiagramWidget extends BaseWidget {
 
 	onMouseUp(event) {
 		var diagramEngine = this.props.diagramEngine;
-		var diagramModel = diagramEngine.getDiagramModel();
 		diagramEngine.stopMove();
-		let amountZoom = diagramModel.getZoomLevel() / 100;
 		//are we going to connect a link to something?
 		if (this.state.action instanceof MoveItemsAction) {
 			var element = this.getMouseElement(event);
@@ -553,9 +551,11 @@ export class DiagramWidget extends BaseWidget {
 								c.x = model.model.x + 10;
 								c.y = model.model.y + totalHeight;
 								if (c.height) {
-									totalHeight = totalHeight + c.height / amountZoom
+									totalHeight = totalHeight + c.height
 								} else {
-									totalHeight = totalHeight + 40
+									const dimensions = diagramEngine.getNodeDimensions(c);
+									c.updateDimensions(dimensions)
+									totalHeight = totalHeight + dimensions.height
 								}
 							}
 						});

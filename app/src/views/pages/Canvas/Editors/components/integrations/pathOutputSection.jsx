@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import update from 'immutability-helper'
-import cn from 'classnames'
 import _ from 'lodash'
 import randomstring from 'randomstring'
 import { connect } from 'react-redux'

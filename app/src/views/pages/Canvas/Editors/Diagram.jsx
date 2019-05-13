@@ -7,7 +7,7 @@ import { openTab } from 'ducks/user'
 
 import { fetchDiagramVariables } from 'ducks/diagram_variable';
 import DiagramVariables from './components/DiagramVariables';
-// import Expressionfy from './components/Expressionfy';
+import { Tooltip } from 'react-tippy';
 
 class DiagramBlock extends Component {
     constructor(props) {
@@ -36,7 +36,7 @@ class DiagramBlock extends Component {
         // diagram_id = '5f33383b-a9a8-4a85-9fa5-16bdad17b37f';
 
         if(diagram_id){
-            this.props.fetchDiagramVariables(diagram_id)
+            this.props.fetchDiagramVariables(diagram_id);
         }
     }
 
@@ -47,8 +47,7 @@ class DiagramBlock extends Component {
     }
 
     handleAddMap(io) {
-        // console.log(this.state.node.extras.choices);
-        var node = this.state.node;
+        let node = this.state.node;
         node.extras[io].push({
             arg1: null,
             arg2: null
@@ -81,20 +80,130 @@ class DiagramBlock extends Component {
         }
     }
 
-    render() {
+    renderOptionsForNewFlow() {
         let options = this.props.diagrams
-            .filter(diagram => diagram.name !== 'ROOT' && (!this.state.node.extras.diagram_id || this.state.node.extras.diagram_id !== diagram.id))
-            .map(diagram => {
-                return {
-                    value: diagram.id + "::" + diagram.name,
-                    label: <><img src={'/flows.svg'} alt="flows" width="15"/>&nbsp;&nbsp; {diagram.name}</>
-                }
-            })
+          .filter(diagram => diagram.name !== 'ROOT' && (!this.state.node.extras.diagram_id || this.state.node.extras.diagram_id !== diagram.id))
+          .map(diagram => {
+              return {
+                  value: diagram.id + "::" + diagram.name,
+                  label: <><img src={'/flows.svg'} alt="flows" width="15"/>&nbsp;&nbsp; {diagram.name}</>
+              }
+          });
 
-        // let block
-        // if(this.state.node.extras.diagram_id){
-        //     block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id)
-        // }
+        if (this.props.diagrams && this.props.diagrams.length > 0) {
+            return (<React.Fragment>
+                <label>Select Existing Flow</label>
+                <Select
+                  placeholder={<><img src={'/flows.svg'} alt="flows" width="15"/>&nbsp;&nbsp; Select Flow</>}
+                  classNamePrefix="select-box"
+                  onChange={(selected) => {
+                      let node = this.state.node
+                      node.extras.diagram_id = selected.value.substring(0, selected.value.indexOf("::"))
+                      this.setState({
+                          node: node
+                      }, this.props.onUpdate)
+                      this.props.enterFlow(node.extras.diagram_id);
+                  }}
+                  options={options}
+                />
+            </React.Fragment>)
+        } else {
+            return null;
+        }
+    }
+
+    renderNewDiagram() {
+        return (<>
+            <label>Create a New Flow</label>
+            <button className="btn-clear btn-block btn-lg" onClick={() => {
+                this.props.setConfirm({
+                    text: <>
+                        <label className="mb-2">Name New Flow</label>
+                        <Input className="mb-1"
+                               placeholder={`Enter flow name`}
+                               value={this.state.newFlowName}
+                               onChange={e => this.setState({
+                                   newFlowName: e.target.value
+                               })}
+                        />
+                    </>,
+                    confirm: () => this.props.createDiagram(this.state.node, this.state.newFlowName)
+                })
+            }}>
+                <img src={"/flows.svg"} alt="back" className="mr-2" /> Create New Flow
+            </button>
+            <div className="break">
+                <span className="or">OR</span>
+            </div>
+            {this.renderOptionsForNewFlow()}
+        </>)
+    };
+
+    renderExistingDiagram() {
+        return (<React.Fragment>
+            <button className="mt-4 btn-primary btn-block mb-3 btn-lg" onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>
+                <img src={'/flows-white.svg'} className="mr-2" alt="flow" /> Enter Flow
+            </button>
+            {/* <Select
+                classNamePrefix="select-box"
+                onChange={(selected) => {
+                    let node = this.state.node;
+                    node.extras.diagram_id = selected.value;
+                    this.props.enterFlow(selected.value);
+                }}
+                options={options}
+                placeholder="Change subflow"
+            /> */}
+            <label>
+                Input Variables
+                &nbsp;
+                <Tooltip
+                  target="tooltip"
+                  theme="menu"
+                  position="bottom"
+                  title="Pass in variables that will be used exclusively for this flow."
+                >
+                    <i className="fas fa-question-circle text-dull mr-1"/>
+                </Tooltip>
+            </label>
+            <DiagramVariables
+              arg1_options={this.props.variables}
+              arg2_options={this.props.diagramVariables}
+              arguments={this.state.node.extras.inputs}
+              onAdd={() => this.handleAddMap('inputs')}
+              onRemove={(i) => this.handleRemoveMap('inputs', i)}
+              handleSelection={(i, arg, value) => this.handleSelection('inputs', i, arg, value)}
+              openVarTab={this.props.openVarTab}
+            />
+            <hr className="mb-1"/>
+            <label>
+                Output Variables
+                &nbsp;
+                <Tooltip
+                  target="tooltip"
+                  theme="menu"
+                  position="bottom"
+                  title="Retrieve variables that are used in this flow."
+                >
+                    <i className="fas fa-question-circle text-dull mr-1"/>
+                </Tooltip>
+            </label>
+            <DiagramVariables
+              reverse
+              arg1_options={this.props.variables}
+              arg2_options={this.props.diagramVariables}
+              arguments={this.state.node.extras.outputs}
+              onAdd={() => this.handleAddMap('outputs')}
+              onRemove={(i) => this.handleRemoveMap('outputs', i)}
+              handleSelection={(i, arg, value) => this.handleSelection('outputs', i, arg, value)}
+              openVarTab={this.props.openVarTab}
+            />
+        </React.Fragment>)
+    }
+
+    render() {
+
+
         if(this.props.broken){
             return <Alert color="danger" className="text-center">
                 <i className="fas fa-exclamation-triangle fa-2x mb-2"/><br/>
@@ -104,90 +213,11 @@ class DiagramBlock extends Component {
         }
 
         return (
-            <div>
-                {!this.state.node.extras.diagram_id ? 
-                    <React.Fragment>
-                        <label>Create a New Flow</label>
-                        <button block className="btn-clear btn-block btn-lg" onClick={() => {
-                            this.props.setConfirm({
-                                text: <>
-                                    <label className="mb-2">Name New Flow</label>
-                                    <Input className="mb-1"
-                                        placeholder={`Enter flow name`}
-                                        value={this.state.newFlowName}
-                                        onChange={e => this.setState({
-                                            newFlowName: e.target.value
-                                        })}
-                                    />
-                                </>,
-                                confirm: () => this.props.createDiagram(this.state.node, this.state.newFlowName)
-                            })
-                        }}>
-                          <img src={"/flows.svg"} alt="back" className="mr-2" /> Create New Flow
-                        </button>
-                        <div className="break">
-                        <span className="or">OR</span>
-                        </div>
-                        {this.props.diagrams && this.props.diagrams.length > 0 ? 
-                            <React.Fragment>
-                                <label>Select Existing Flow</label>
-                                <Select
-                                    placeholder={<><img src={'/flows.svg'} alt="flows" width="15"/>&nbsp;&nbsp; Select Flow</>}
-                                    classNamePrefix="select-box"
-                                    onChange={(selected) => {
-                                        let node = this.state.node
-                                        node.extras.diagram_id = selected.value.substring(0, selected.value.indexOf("::"))
-                                        this.setState({
-                                            node: node
-                                        }, this.props.onUpdate)
-                                        this.props.enterFlow(node.extras.diagram_id);
-                                    }}
-                                    options={options}
-                                />
-                                </React.Fragment>
-                        : null}
-                    </React.Fragment>
-                    : 
-                    <React.Fragment>
-                        <button block className="mt-4 btn-primary btn-block mb-3 btn-lg" onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>
-                          <img src={'/flows-white.svg'} className="mr-2" alt="flow"></img> Enter Flow
-                        </button>
-                        {/* <Select
-                            classNamePrefix="select-box"
-                            onChange={(selected) => {
-                                let node = this.state.node;
-                                node.extras.diagram_id = selected.value;
-                                this.props.enterFlow(selected.value);
-                            }}
-                            options={options}
-                            placeholder="Change subflow"
-                        /> */}
-                        <label>Input Variables</label>
-                        <DiagramVariables
-                            arg1_options={this.props.variables}
-                            arg2_options={this.props.diagramVariables}
-                            arguments={this.state.node.extras.inputs}
-                            onAdd={() => this.handleAddMap('inputs')}
-                            onRemove={(i) => this.handleRemoveMap('inputs', i)}
-                            handleSelection={(i, arg, value) => this.handleSelection('inputs', i, arg, value)}
-                            openVarTab={this.props.openVarTab}
-                        /> 
-                        <hr className="mb-1"/>
-                        <label>Output Variables</label>
-                        <DiagramVariables
-                            reverse
-                            arg1_options={this.props.variables}
-                            arg2_options={this.props.diagramVariables}
-                            arguments={this.state.node.extras.outputs}
-                            onAdd={() => this.handleAddMap('outputs')}
-                            onRemove={(i) => this.handleRemoveMap('outputs', i)}
-                            handleSelection={(i, arg, value) => this.handleSelection('outputs', i, arg, value)}
-                            openVarTab={this.props.openVarTab}
-                        />
-                    </React.Fragment>
-                }
-            </div>
+          <div>
+              { !this.state.node.extras.diagram_id ? this.renderNewDiagram() : this.renderExistingDiagram() }
+          </div>
         );
+
     }
 }
 
@@ -196,13 +226,13 @@ const mapStateToProps = state => ({
     load_diagram: state.diagrams.loading,
     broken: state.diagrams.error,
     diagramVariables: state.diagramVariables.diagramVariables
-})
+});
 
 const mapDispatchToProps = dispatch => {
     return {
-      setConfirm: confirm => dispatch(setConfirm(confirm)),
-      fetchDiagramVariables: diagram_id => dispatch(fetchDiagramVariables(diagram_id)),
-      openVarTab: (tab) => dispatch(openTab(tab))
+        setConfirm: confirm => dispatch(setConfirm(confirm)),
+        fetchDiagramVariables: diagram_id => dispatch(fetchDiagramVariables(diagram_id)),
+        openVarTab: (tab) => dispatch(openTab(tab))
     };
-}
+};
 export default connect(mapStateToProps, mapDispatchToProps)(DiagramBlock);

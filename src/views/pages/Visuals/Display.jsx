@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
+import axios from "axios";
 import { connect } from 'react-redux'
+import { Input, Row, Col, FormGroup} from 'reactstrap';
+import Dropzone from 'react-dropzone';
+import AceEditor from 'react-ace';
 
 import { addDisplay, updateDisplay } from "ducks/display"
 import { setError } from 'ducks/modal'
 
+import Button from 'components/Button'
 import { Spinner } from 'views/components/Spinner'
-import axios from 'axios';
-import { Input, Row, Col, FormGroup, Button } from 'reactstrap';
-import Dropzone from 'react-dropzone';
-
-import AceEditor from 'react-ace';
 
 import 'brace/mode/json';
 import 'brace/theme/monokai';
@@ -231,19 +231,19 @@ class Display extends Component {
                             <div className="space-between">
                                 <div className="text-muted"><h5 className="mb-0">APL Template</h5> <small><i className="far fa-link"/> ( <a href="https://developer.amazon.com/alexa/console/ask/displays" target="_blank" rel="noopener noreferrer">Authoring Tool</a> )</small></div>
                                 <div className="subheader-right">
-                                    <button varient="contained" className="btn-tertiary mr-2" onClick={()=>{
+                                    <Button isFlat varient="contained" className="mr-2" onClick={()=>{
                                         this.props.history.push(`/visuals/${this.props.skill_id}`);
                                     }}>
                                         {' '}Back
-                                    </button>
-                                    <button varient="contained" className="btn-primary" onClick={this.save} style={{width: 100}}>
+                                    </Button>
+                                    <Button isPrimary varient="contained" onClick={this.save} style={{width: 100}}>
                                         {this.state.saving ? 
                                             <span className="loader"/> : 
                                             <React.Fragment>
                                                 Save{this.state.saved ? '' : '*'}
                                             </React.Fragment>
                                         }
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                             <hr/>
@@ -266,7 +266,9 @@ class Display extends Component {
                                 />
                             </FormGroup>
                             <hr/>
-                            <Button color="clear" block onClick={() => open()} className="mb-4"><i className="fas fa-file-code mr-1"/> Upload JSON File</Button>
+                            <Button isClear block onClick={() => open()} className="mb-4 w-100">
+                                <i className="fas fa-file-code mr-1"/> Upload JSON File
+                            </Button>
                             <FormGroup>
                                 <Row className="no-padding-row">
                                     <Col md="6">

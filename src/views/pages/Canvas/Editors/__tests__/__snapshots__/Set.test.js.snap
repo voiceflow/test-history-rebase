@@ -16,11 +16,16 @@ exports[`SetEditor render set block editor 1`] = `
     onSelection={[Function]}
     onUpdate={[Function]}
   />
-  <button
-    className="btn btn-tertiary-variable mt-1"
+  <Button
+    className="mt-1"
+    iconPosition="right"
+    isBtn={true}
+    isFlatVariable={true}
     onClick={[Function]}
+    onRef={[Function]}
+    trackEvent="Button Click"
   >
     Add Variable Set
-  </button>
+  </Button>
 </div>
 `;

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
 import Select from 'react-select';
-import AudioDrop from './../../../../components/Uploads/AudioDrop'
 import { Collapse } from 'reactstrap';
+
+import Button from 'components/Button'
+import AudioDrop from './../../../../components/Uploads/AudioDrop'
 
 class MultiLineInput extends Component {
     constructor(props) {
@@ -66,7 +68,7 @@ class MultiLineInput extends Component {
                     <div className="multi-title" onClick={()=>{this.toggleCollapse('collapse')}}>
                         <span className="text-muted">{this.state.line.collapse ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} {this.state.index + 1}</span> {this.state.line.title} 
                     </div>
-                    <button className="close" onClick={() => {this.props.onRemove(this.state.index)}}></button>
+                    <Button isClose onClick={() => {this.props.onRemove(this.state.index)}} />
                 </div>
                 <Collapse isOpen={this.state.line.collapse}>
                     <AudioDrop
@@ -100,9 +102,9 @@ class MultiLineInput extends Component {
                                                 return {label: voice.Name, value: voice.Id, target: "voice"}
                                             }) : null}
                                         />
-                                        <button className="btn btn-primary" onClick={() => this.onGenerate('text', 'voice')}>
+                                        <Button isBtn isPrimary onClick={() => this.onGenerate('text', 'voice')}>
                                             Generate
-                                        </button>
+                                        </Button>
                                     </div>
                                 </div>
                             </Collapse>

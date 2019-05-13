@@ -3,6 +3,8 @@ import Dropzone from 'react-dropzone'
 import {Input} from 'reactstrap'
 import axios from 'axios'
 
+import Button from 'components/Button'
+
 const MAX_SIZE = 10*1024*1024
 
 class AudioDrop extends Component {
@@ -75,14 +77,14 @@ class AudioDrop extends Component {
             return <div className="dropzone reject enter-url">
                 <div className="text-center text-danger">
                     {this.state.error}
-                    <button onClick={()=>this.setState({error: false})} className="upload-btn btn btn-primary-small exit">
+                    <Button isBtn onClick={()=>this.setState({error: false})} className="upload-btn exit">
                         <i className="far fa-chevron-left"/>Back
-                    </button>
+                    </Button>
                 </div>
             </div>
         } else if(this.props.audio && typeof this.props.audio === 'string'){
             return <div className="audio-box">
-                <button className="btn btn-danger" onClick={this.onClear}>&times;</button>
+                <Button isBtn withDangerIndicator onClick={this.onClear}>&times;</Button>
                 <div>{this.props.audio.split('/').pop().split('-').pop()}</div>
                 <audio key={this.props.audio.split('/').pop()} controls>
                     <source src={this.props.audio} type="audio/mpeg" />
@@ -93,8 +95,8 @@ class AudioDrop extends Component {
                 <div className="text-center w-100">
                     <label className="text-muted mb-3">Enter Audio URL</label>
                     <Input className="mb-3" placeholder="URL Link" value={this.state.url} onChange={this.handleChange} name="url"/>
-                    <button onClick={()=>this.setState({url_open: false})} className="btn-tertiary mr-1">Back</button>
-                    <button onClick={()=>this.props.update(this.state.url)} className="btn-primary ml-1">Confirm</button>
+                    <Button isFlat onClick={()=>this.setState({url_open: false})} className="mr-1">Back</Button>
+                    <Button isPrimary onClick={()=>this.props.update(this.state.url)} className="ml-1">Confirm</Button>
                 </div>
             </div>
         }else{

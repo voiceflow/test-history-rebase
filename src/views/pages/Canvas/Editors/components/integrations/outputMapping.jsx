@@ -2,7 +2,10 @@ import React from 'react';
 import cn from 'classnames'
 import { connect } from 'react-redux'
 import Select from 'react-select';
+
 import { openTab } from 'ducks/user'
+
+import Button from 'components/Button'
 import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 
 const OutputMapping = (props) => (
@@ -38,12 +41,12 @@ const OutputMapping = (props) => (
                         }) : null}
                     />
                 </div>
-                <button className="ml-2 close-small" onClick={e => props.onRemove(i)}></button>
+                <Button isCloseSmall className="ml-2" onClick={e => props.onRemove(i)} />
             </div>)
         })}
-        <button className="btn btn-clear btn-lg btn-block" onClick={props.onAdd}>
+        <Button isBtn isClear isLarge isBlock onClick={props.onAdd}>
             <i className="far fa-plus mr-2"></i> Add Mapping
-        </button>
+        </Button>
     </>
 )
 

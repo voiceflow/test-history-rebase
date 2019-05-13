@@ -3,12 +3,15 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { findDOMNode } from 'react-dom'
 import { DragSource, DropTarget } from 'react-dnd'
-import VariableText from './VariableText';
 import Select from 'react-select';
 import {Collapse} from 'reactstrap';
-import AudioDrop from '../../../../components/Uploads/AudioDrop'
-import { VOICES } from 'Constants'
 import memoizeOne from 'memoize-one'
+
+import { VOICES } from 'Constants'
+
+import Button from 'components/Button'
+import VariableText from './VariableText';
+import AudioDrop from '../../../../components/Uploads/AudioDrop'
 
 const getBoundingRect = component => memoizeOne(findDOMNode(component).getBoundingClientRect())
 
@@ -79,7 +82,7 @@ class SpeakElement extends Component {
                       <img src={'/volume-red.svg'} alt="speak" className="mr-3"/>
                       {d.audio ? d.audio.split('/').pop() : 'Audio'}
                     </div>
-                    <button className="close" onClick={() => { this.props.handleRemoveBlock(i) }}></button>
+                    <Button isClose onClick={() => { this.props.handleRemoveBlock(i) }} />
                 </div>
                 <Collapse isOpen={d.open} className="speak-audio">
                     <div className="pb-2">
@@ -137,7 +140,7 @@ class SpeakElement extends Component {
                             options={localStorage.getItem('recent_speak') ? [{ label: 'Recent', options: JSON.parse(localStorage.getItem('recent_speak')) }].concat(VOICES) : VOICES}
                         />
                     </div>
-                    <button className="close" onClick={() => { this.props.handleRemoveBlock(i) }}></button>
+                    <Button isClose onClick={() => { this.props.handleRemoveBlock(i) }} />
                 </div>
                 <Collapse isOpen={d.open}>
                     <VariableText

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+
+import Button from 'components/Button'
 import VariableInput from './VariableInput';
 
 class APIInputs extends Component {
@@ -32,13 +34,13 @@ class APIInputs extends Component {
                                     </InputGroupAddon>
                                     <VariableInput className="form-control form-control-border no-radius" placeholder="key" updateRaw={e => this.props.onChange(e, i, 'key')} variables={this.props.variables} raw={pair.key}/>
                                     <VariableInput className="form-control form-control-border right" placeholder="value" updateRaw={e => this.props.onChange(e, i, 'val')} variables={this.props.variables} raw={pair.val}/>
-                                            <button className="btn-float" onClick={e => this.props.onRemove(e, i)}>&times;</button>
+                                            <Button isFloat onClick={e => this.props.onRemove(e, i)}>&times;</Button>
                                 </InputGroup>
                             </div> )
                     }) : null}
-                    <button className="btn btn-lg btn-clear btn-block" onClick={this.props.onAdd}>
+                    <Button isBtn isLarge isClear onClick={this.props.onAdd}>
                         <i className="far fa-plus mr-2"></i> Add Pair
-                    </button>
+                    </Button>
                 </div>
 
             </React.Fragment>

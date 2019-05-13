@@ -29,8 +29,4 @@ describe('FlowBar', () => {
         const component = shallow(<FlowBar diagram={diagram} diagrams={diagrams} />);
         expect(toJson(component)).toMatchSnapshot()
     });
-    it('renders with the correct childDiagrams', () => {
-        const component = mount(<FlowBar diagram={diagram} diagrams={diagrams} />);
-        console.log(component.debug())
-    })
 })

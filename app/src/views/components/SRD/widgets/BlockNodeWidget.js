@@ -14,6 +14,7 @@ import { Tooltip } from 'react-tippy'
 // import Select from 'react-select'
 import Select from 'views/components/Dropdowns/Searchable'
 import { getBlocks } from 'views/pages/Canvas/Blocks'
+import Button from 'components/Button'
 
 const toolkit = new Toolkit()
 export class BlockNodeWidget extends BaseWidget {
@@ -37,12 +38,6 @@ export class BlockNodeWidget extends BaseWidget {
 		this.nodeRef = React.createRef();
 	}
 
-	static getDerivedStateFromProps(props){
-		if (_.includes(props.diagramEngine.getDiagramModel().nodes, c => c.id === props.node.id)) {
-			props.node.updateDimensions(props.diagramEngine.getNodeDimensions(props.node))
-		}
-		return null;
-	}
 	componentDidMount(){
 		if (_.includes(this.props.diagramEngine.getDiagramModel().nodes, c => c.id === this.props.node.id)) {
 			this.props.node.updateDimensions(this.props.diagramEngine.getNodeDimensions(this.props.node))
@@ -237,19 +232,20 @@ export class BlockNodeWidget extends BaseWidget {
 	}
 
 	render() {
-		const { node, isLast, selected } = this.props
+		const { node, isLast, selected } = this.props;
 		if(this.props.node.extras.type === 'comment'){
 			return <div className={`srd-default-node ${this.props.node.extras.type}`}>
         <Textarea value={this.props.node.name} readOnly={this.props.locked} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate()}} onBlur={()=>{
           if(!this.props.node.name.trim()){
-            this.props.diagramEngine.getDiagramModel().removeNode(this.props.node)
+            this.props.diagramEngine.getDiagramModel().removeNode(this.props.node);
             this.forceUpdate()
           }
         }}/>
 			</div>
 		}
-		const fade = this.props.node.fade ? " faded-node" : ""
-		const paddingStyle = (this.props.node.extras.type === 'god' && combineAppendValidation(_.last(this.props.node.combines))) ? {padding: '0px 12px 10px 12px'} : {padding: '0px 12px 0px 12px'}
+		const fade = this.props.node.fade ? " faded-node" : "";
+		const paddingStyle = (this.props.node.extras.type === 'god' && combineAppendValidation(_.last(this.props.node.combines))) ? {padding: '0px 12px 10px 12px'} : {padding: '0px 12px 0px 12px'};
+		const extraPadding = this.props.node.extras.type === 'flow' && this.props.nodeProps.hasFlow(this.props.node.extras.diagram_id);
 		return (
 			<div
 				className={cn('srd-default-node', fade, {
@@ -258,7 +254,8 @@ export class BlockNodeWidget extends BaseWidget {
 					last: isLast,
 					selected: selected,
 					'no-select': !selected,
-					moving: node.isMoving && node.parentCombine
+					moving: node.isMoving && node.parentCombine,
+					extraFlowPadding: extraPadding
 				})}
 				ref={this.nodeRef}
 				data-nodeid = {
@@ -394,7 +391,7 @@ export class BlockNodeWidget extends BaseWidget {
 							}} />
 							</Tooltip>
 						}
-							{this.props.node.edit || this.state.edit ? 
+							{this.props.node.edit || this.state.edit ?
 									<input
 										name="name"
 										value={this.state.name}
@@ -415,16 +412,19 @@ export class BlockNodeWidget extends BaseWidget {
 								_.startCase(this.props.node.extras.type === 'god' ? 'New Block' : this.props.node.extras.type)
 							} </span>}
 							{
-								this.props.node.extras.type ==='command' && !!this.props.node.parentCombine 
+								this.props.node.extras.type ==='command' && !!this.props.node.parentCombine
 								&& this.props.node.parentCombine.extras.type ==='story' && this.props.node.extras['alexa'] &&
 								this.props.nodeProps.hasFlow(this.props.node.extras['alexa'].diagram_id) &&
 								<div className="command-right">
-									<button
+									<Button
+										isBtn
+										isBlack
+										isSmall
 										className="btn btn-black btn-sm"
 										onMouseDown={(e) => e.stopPropagation()}
 										onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras['alexa'].diagram_id)}>
 										<img src={"/flows.svg"} alt="flows" className="mr-2" width="10" />Enter Flow
-									</button>
+									</Button>
 								</div>
 							}
 					</div>}
@@ -495,12 +495,16 @@ export class BlockNodeWidget extends BaseWidget {
 								<h5 className="ml-1">(Vers. {this.props.node.extras.version_id})</h5>
 							</React.Fragment>
 					}
-					{ this.props.node.extras.type === 'flow' && this.props.nodeProps.hasFlow(this.props.node.extras.diagram_id) && <button
-						className="btn btn-black btn-sm mt-1 mx-2"
+					{ this.props.node.extras.type === 'flow' && this.props.nodeProps.hasFlow(this.props.node.extras.diagram_id) &&
+					<Button
+						isBtn
+						isBlack
+						isSmall
+						className="mt-1 mx-2"
 						onMouseDown={(e) => e.stopPropagation()}
 						onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras.diagram_id)}>
-						<img src={"/flows.svg"} alt="flows" className="mr-2" width="10" />Enter Flow
-					</button>}
+						<img src={"/flows.svg"} alt="flows" style={{marginTop: -1, marginRight: 5}} width="10" />Enter Flow
+					</Button>}
 					<div className={`${this.bem("__out")} ${this.props.node.extras.type !== 'card' && this.props.node.extras.type}`}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}
 					</div>
@@ -513,7 +517,7 @@ export class BlockNodeWidget extends BaseWidget {
 							title={this.props.node.extras.type === 'story' ? "Add Command" : 'Add Step'}
 							distance={18}
 						>
-							<button className="round-btn"></button>
+							<Button isRound />
 						</Tooltip>
 					</div>
 				}

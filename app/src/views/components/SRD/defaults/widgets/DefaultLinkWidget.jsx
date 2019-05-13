@@ -1,6 +1,8 @@
 import React from "react";
 import _ from "lodash";
 
+import Button from 'components/Button'
+
 import { DiagramEngine } from "../../DiagramEngine";
 import { PointModel } from "../../models/PointModel";
 import { Toolkit } from "../../Toolkit.jsx";
@@ -258,7 +260,7 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 					this.setState({ selected: true });
 					}}
 				>
-					<button id="trash" className="btn-action ml-1"></button>
+					<Button isAction id="trash" className="ml-1"></Button>
 				</foreignObject>
 				) : null}
 			</g>

@@ -3,6 +3,7 @@ import React from 'react';
 import { Input } from 'reactstrap';
 import {Tooltip} from 'react-tippy';
 import { AvForm } from 'availity-reactstrap-validation';
+import Button from 'components/Button'
 
  class MultipleFields extends React.Component {
   render() {
@@ -31,18 +32,18 @@ import { AvForm } from 'availity-reactstrap-validation';
                         value={field}
                         onChange={(e) => this.props.handleChange(idx, e, this.props.type, this.props.fields)}
                       />
-                      <button
-                        type="button"
+                      <Button
+                        isFloat
                         onClick={() => this.props.handleRemove(idx, this.props.type)}
-                        className="btn-float mb-2 ml-2" style={{fontSize: '16px'}}
+                        className="mb-2 ml-2" style={{fontSize: '16px'}}
                       >
-                      <i className="fal fa-times"></i>
-                      </button>
+                        <i className="fal fa-times"></i>
+                      </Button>
                     </div>
                   );
                 })}
               <div className="text-center">
-                <button className='btn-tertiary-gray' onClick={() => this.props.handleAdd(this.props.type)}>Add {this.props.label}<i className="far fa-long-arrow-right ml-2"></i></button>
+                <Button isFlatGray onClick={() => this.props.handleAdd(this.props.type)}>Add {this.props.label}<i className="far fa-long-arrow-right ml-2"></i></Button>
               </div>
             </div>
           </AvForm>

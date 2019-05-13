@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+
+import Button from 'components/Button'
 import SetExpression from './components/SetExpression';
 
 class SetBlock extends Component {
@@ -96,9 +98,9 @@ class SetBlock extends Component {
 	                )
             	})}
                 { this.state.node.extras.sets.length < 20 ?
-                    <button className="btn btn-tertiary-variable mt-1" onClick={this.handleAddBlock}>
+                    <Button isBtn isFlatVariable className="mt-1" onClick={this.handleAddBlock}>
                     Add Variable Set
-                    </button> : null
+                    </Button> : null
                 }
             </div>
         );

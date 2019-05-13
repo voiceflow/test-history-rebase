@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { Modal, ModalBody } from 'reactstrap'
+import Button from 'components/Button'
 
 const class_mapping = {
   FEATURE: {
@@ -40,7 +41,7 @@ class UpdatesModal extends React.Component {
             })}
           </div>
           <div>
-            <button className="btn btn-clear" onClick={this.props.toggle}>Got it!</button>
+            <Button isBtn isClear onClick={this.props.toggle}>Got it!</Button>
           </div>
         </ModalBody>
       </Modal>

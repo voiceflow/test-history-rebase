@@ -159,7 +159,7 @@ class ServiceManager {
       uploadResize108: uploadResize(108, 108).single('image'),
       uploadResize40: uploadResize(40, 40).single('image'),
       getProjectFromSkill: Project.getProjectFromSkill,
-      uploadAny: upload.any,
+      uploadAny: upload.any(),
       verify: (req, res, next) => {
         if (underMaintenance()) {
           return res.redirect('https://getvoiceflow.com/maintenance');

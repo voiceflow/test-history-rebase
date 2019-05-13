@@ -3,6 +3,8 @@ import { AmazonAccessToken } from 'ducks/account'
 import { Alert } from 'reactstrap'
 import axios from 'axios'
 
+import Button from 'components/Button'
+
 class Migrate extends Component {
   constructor(props){
     super(props)
@@ -28,18 +30,11 @@ class Migrate extends Component {
 
   componentDidMount() {
     AmazonAccessToken()
-    .then(data => {
-      if(data){
-        this.setState({
-          stage: 1
-        })
-      } else {
-        this.setState({
-          stage: -1,
-          error: 'No Amazon Login'
-        })
-      }
-    })
+    .then(() => this.setState({stage: 1}))
+    .catch(() => this.setState({
+      stage: -1,
+      error: 'No Amazon Login'
+    }))
   }
 
   updateSkill() {
@@ -66,14 +61,14 @@ class Migrate extends Component {
       case -1:
         return <>
           <Alert color="danger">{this.state.error}</Alert>
-          <button className="btn-primary" onClick={() => this.setState({stage: 1})}>Reset</button>
+          <Button isPrimary onClick={() => this.setState({stage: 1})}>Reset</Button>
         </>
       case 1:
         return <>
           {this.props.skill && this.props.skill.amzn_id && <Alert>Current Skill ID: <b>{this.props.skill.amzn_id}</b></Alert>}
           <Alert color="danger">Updating the Skill ID will cause Voiceflow to overwrite any existing content on the development version of the Skill on Alexa Developer Console</Alert>
           <input className="form-control my-3" name="amzn_id" value={this.state.amzn_id} onChange={this.handleChange} placeholder="Existing Skill ID"/>
-          <button className="btn-primary" onClick={this.updateSkill}>Update Skill Id</button>
+          <Button isPrimary onClick={this.updateSkill}>Update Skill Id</Button>
         </>
       case 2:
         return <Alert>Your Project Has Been Successfully Updated</Alert>

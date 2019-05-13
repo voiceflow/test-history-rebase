@@ -1,9 +1,12 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import ModuleIcon from '../../pages/Marketplace/ModuleIcon'
+import cn from 'classnames'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Modal, ModalBody } from 'reactstrap'
 import axios from 'axios'
+
+import Button from 'components/Button'
 import { updateVersion, updateUserModules } from './../../../ducks/version'
 import { appendDiagrams } from './../../../ducks/diagram'
 import LightCanvas from './../../pages/Canvas/LightCanvas'
@@ -120,12 +123,13 @@ class ModuleModal extends React.Component {
         <p className="font-weight-bold">{conflict_string}</p>
         <p>If these are fine, hit confirm to add the flow to your project or cancel to not.</p>
         <div className="row justify-content-center mt-4">
-          <button className="white-btn mr-2" onClick={this.cancelAddFlow} disabled={this.state.loading}>Cancel</button>
-          <button className="purple-btn ml-2" onClick={this.addFlow} disabled={this.state.loading}>
+          <Button isWhite className="mr-2" onClick={this.cancelAddFlow} disabled={this.state.loading}>Cancel</Button>
+          <Button isPurple className="ml-2" onClick={this.addFlow} disabled={this.state.loading}>
               {this.state.loading?
               <span className="loader"/>
               :
-              "Confirm"}</button>
+              "Confirm"}
+          </Button>
         </div>
       </div>
     )
@@ -142,7 +146,7 @@ class ModuleModal extends React.Component {
             </div>
             {!!this.state.module_diagram && <LightCanvas diagram_id={this.state.module_diagram}/>}
           </div>
-          <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
+          <Button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
         </Modal>
 
         <div className="close" onClick={this.props.toggle}/>
@@ -155,13 +159,13 @@ class ModuleModal extends React.Component {
           <div className="lg-header">{this.props.module.title}</div>
           <p className="text-secondary">{this.props.module.descr}</p>
           <div className="row justify-content-center mb-3">
-            <button className={"white-btn mr-2" + (this.state.loading ? " disabled" : "")} onClick={()=>{this.setState({preview: true})}} disabled={this.state.loading}>Preview</button>
-            <button className={"btn-primary ml-2" + (this.state.loading ? " disabled" : "")} onClick={this.checkFlowConflicts} disabled={this.state.loading}>{
+            <Button isWhite className={cn("mr-2", {disabled: this.state.loading})} onClick={()=>{this.setState({preview: true})}} disabled={this.state.loading}>Preview</Button>
+            <Button isPrimary className={cn("ml-2", { disabled: this.state.loading })} onClick={this.checkFlowConflicts} disabled={this.state.loading}>{
               this.state.loading?
               <span className="loader"/>
               :
               "Add Flow"
-            }</button>
+            }</Button>
           </div>
           <p>{this.props.module.overview}</p>
         </div>

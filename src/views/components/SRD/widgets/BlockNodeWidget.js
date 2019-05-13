@@ -509,7 +509,7 @@ export class BlockNodeWidget extends BaseWidget {
 						className="mt-1 mx-2"
 						onMouseDown={(e) => e.stopPropagation()}
 						onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras.diagram_id)}>
-						<img src={"/flows.svg"} alt="flows" className="mr-2" width="10" />Enter Flow
+						<img src={"/flows.svg"} alt="flows" style={{marginTop: -1, marginRight: 5}} width="10" />Enter Flow
 					</Button>}
 					<div className={`${this.bem("__out")} ${this.props.node.extras.type !== 'card' && this.props.node.extras.type}`}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}

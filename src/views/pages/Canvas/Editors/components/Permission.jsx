@@ -72,6 +72,9 @@ class Permission extends Component {
                             return {label: p.name, value: p.id}
                         }) : null}
                     />
+                    {this.props.kids && <>
+                      <label>(Kids Product) Map Purchase Status To</label>
+                    </>}
                     {consumable && <React.Fragment>
                         <label>Map Purchase Quantity To</label>
                         <Select
@@ -123,7 +126,8 @@ class Permission extends Component {
 }
 
 const mapStateToProps = state => ({
-    products: state.products.products
+  products: state.products.products,
+  kids: state.skills.skill && state.skills.skill.copa
 })
 
 const mapDispatchToProps = dispatch => {

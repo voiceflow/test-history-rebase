@@ -3,12 +3,19 @@
 exports[`RandomEditor render random block editor 1`] = `
 <div>
   <div>
-    <button
-      className="btn btn-clear btn-lg btn-block mt-2"
+    <Button
+      className="mt-2"
+      iconPosition="right"
+      isBlock={true}
+      isBtn={true}
+      isClear={true}
+      isLarge={true}
       onClick={[Function]}
+      onRef={[Function]}
+      trackEvent="Button Click"
     >
       Add Path
-    </button>
+    </Button>
   </div>
   <InputGroup
     className="my-3"

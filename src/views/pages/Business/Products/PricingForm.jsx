@@ -1,10 +1,12 @@
 import _ from 'lodash';
 import React from 'react';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
-import { InputGroup, InputGroupAddon, Button, ButtonDropdown,
+import { InputGroup, InputGroupAddon, ButtonDropdown,
   ButtonGroup, Input, DropdownMenu, DropdownItem, DropdownToggle, Dropdown
 } from 'reactstrap';
 import { TAX_CATEGORY } from './Constants.js';
+
+import Button from 'components/Button'
 
 class PricingForm extends React.Component {
   constructor(props) {
@@ -168,18 +170,22 @@ class PricingForm extends React.Component {
         </Dropdown>
       </AvGroup>
       <div className="product-stage-button">
-          <button className="btn-tertiary-gray"
+          <Button
+            isFlatGray
             variant="contained"
             onClick={() => this.props.updateStage(0)}
           >
             Previous
-          </button>
-          <button className="btn-primary ml-2" style={{fontSize: '15px'}}
+          </Button>
+          <Button
+            isPrimary
+            className="ml-2"
+            style={{fontSize: '15px'}}
             variant="contained"
             color="primary"
           >
             Continue
-          </button>
+          </Button>
         </div>
       </AvForm>
       </div>

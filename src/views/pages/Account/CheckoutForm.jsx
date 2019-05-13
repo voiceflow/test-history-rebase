@@ -976,9 +976,9 @@ class CheckoutForm extends React.Component {
                 return <React.Fragment>
                     {price}
                     <hr/>
-                    <button color="primary" block onClick={()=>this.handlePayment()}>
+                    <Button color="primary" block onClick={()=>this.handlePayment()}>
                         Upgrade Plan
-                    </button>
+                    </Button>
                 </React.Fragment>
             }else{
                 return <div className="pt-2 text-center">

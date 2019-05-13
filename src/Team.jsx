@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { fetchTeams, updateCurrentTeam, teamInvite } from "ducks/team";
 import { setConfirm, setError, setModal } from 'ducks/modal'
 
+import Button from 'components/Button'
+
 import Onboarding from 'views/pages/Onboarding'
 import Templates from 'views/pages/Templates'
 import Dashboard from 'views/pages/Dashboard'
@@ -104,11 +106,9 @@ class Team extends PureComponent {
             incredible voice experiences
           </span><br/>
           <Link to={`/team/new`} className="no-underline">
-            <button className="btn-primary mt-4" onClick={() => {
-              
-            }}>
+            <Button isPrimary className="mt-4">
               New Board
-            </button>
+            </Button>
           </Link>
         </div>
       </div>

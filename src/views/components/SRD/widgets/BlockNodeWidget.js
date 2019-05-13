@@ -14,6 +14,7 @@ import { Tooltip } from 'react-tippy'
 // import Select from 'react-select'
 import Select from 'views/components/Dropdowns/Searchable'
 import { getBlocks } from 'views/pages/Canvas/Blocks'
+import Button from 'components/Button'
 
 const toolkit = new Toolkit()
 export class BlockNodeWidget extends BaseWidget {
@@ -419,12 +420,15 @@ export class BlockNodeWidget extends BaseWidget {
 								&& this.props.node.parentCombine.extras.type ==='story' && this.props.node.extras['alexa'] &&
 								this.props.nodeProps.hasFlow(this.props.node.extras['alexa'].diagram_id) &&
 								<div className="command-right">
-									<button
+									<Button
+										isBtn
+										isBlack
+										isSmall
 										className="btn btn-black btn-sm"
 										onMouseDown={(e) => e.stopPropagation()}
 										onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras['alexa'].diagram_id)}>
 										<img src={"/flows.svg"} alt="flows" className="mr-2" width="10" />Enter Flow
-									</button>
+									</Button>
 								</div>
 							}
 					</div>}
@@ -495,12 +499,16 @@ export class BlockNodeWidget extends BaseWidget {
 								<h5 className="ml-1">(Vers. {this.props.node.extras.version_id})</h5>
 							</React.Fragment>
 					}
-					{ this.props.node.extras.type === 'flow' && this.props.nodeProps.hasFlow(this.props.node.extras.diagram_id) && <button
-						className="btn btn-black btn-sm mt-1 mx-2"
+					{ this.props.node.extras.type === 'flow' && this.props.nodeProps.hasFlow(this.props.node.extras.diagram_id) &&
+					<Button
+						isBtn
+						isBlack
+						isSmall
+						className="mt-1 mx-2"
 						onMouseDown={(e) => e.stopPropagation()}
 						onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras.diagram_id)}>
 						<img src={"/flows.svg"} alt="flows" className="mr-2" width="10" />Enter Flow
-					</button>}
+					</Button>}
 					<div className={`${this.bem("__out")} ${this.props.node.extras.type !== 'card' && this.props.node.extras.type}`}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}
 					</div>
@@ -513,7 +521,7 @@ export class BlockNodeWidget extends BaseWidget {
 							title={this.props.node.extras.type === 'story' ? "Add Command" : 'Add Step'}
 							distance={18}
 						>
-							<button className="round-btn"></button>
+							<Button isRound />
 						</Tooltip>
 					</div>
 				}

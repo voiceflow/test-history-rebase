@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
+import { Collapse } from "reactstrap";
+import { Tooltip } from "react-tippy";
+
+import Button from 'components/Button'
 import VariableInput from '../../../VariableInput'
-import { Collapse } from 'reactstrap'
-import { Tooltip } from 'react-tippy'
 import { selectStyles } from 'views/components/VariableSelect'
 
 // props
@@ -94,32 +96,11 @@ class RetrieveData extends Component {
               ?
               </Tooltip></div>
           </div>
-          {/* <div className='d-flex align-items-center my-4'>
-            <div className='mr-1 text-muted' style={{ whiteSpace: "nowrap" }}>Column Value </div>
-            <div><Tooltip
-              className="menu-tip mr-1"
-              title="The value to match in the selected column. Leaving this blank will select a random row in the spreadsheet"
-              position="bottom"
-              theme="block"
-            >
-              ?
-              </Tooltip></div>
-            <div className='w-100' style={{ overflow: "auto" }}>
-              <VariableInput
-                key={JSON.stringify(!!this.props.action_data.match_value)}
-                className='form-control google-sheets-input'
-                raw={this.props.action_data.match_value || null}
-                variables={this.props.variables}
-                updateRaw={(raw) => {
-                  this.props.updateActionData({
-                    match_value: raw
-                  })
-                }}
-                placeholder="Value to Match"
-              />
-            </div>
-          </div> */}
-          <div className="text-center my-3"><button onClick={this.props.showNextSection} className={`btn-tertiary ${this.state.completed ? '' : 'disabled'}`}>Next</button></div>
+          <div className="text-center my-3">
+            <Button isFlat disabled={!this.state.completed} onClick={this.props.showNextSection}>
+              Next
+            </Button>
+          </div>
         </Collapse>
       </div>
     )

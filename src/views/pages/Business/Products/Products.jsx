@@ -6,6 +6,7 @@ import Masonry from 'react-masonry-component';
 
 import { copyProduct, deleteProduct } from 'ducks/product'
 
+import Button from 'components/Button'
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
 import { Spinner } from 'views/components/Spinner'
@@ -39,7 +40,7 @@ class Products extends Component {
                             <p className="empty">No products exists</p>
                             <p className="empty-desc">Monetize your project with in skill purchases such as consumables and subscriptions.</p>
                             <Link to={`/tools/${this.props.skill_id}/product/new`} className="no-underline">
-                                <button varient="contained" className="btn-primary">Create a product</button>
+                                <Button isPrimary varient="contained">Create a product</Button>
                             </Link>
                         </div>
                         </div>

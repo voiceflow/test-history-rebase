@@ -67,15 +67,18 @@ exports[`Multiple Field Test multiple fields 1`] = `
       <div
         className="text-center"
       >
-        <button
-          className="btn-tertiary-gray"
+        <Button
+          iconPosition="right"
+          isFlatGray={true}
           onClick={[Function]}
+          onRef={[Function]}
+          trackEvent="Button Click"
         >
           Add 
           <i
             className="far fa-long-arrow-right ml-2"
           />
-        </button>
+        </Button>
       </div>
     </div>
   </AvForm>

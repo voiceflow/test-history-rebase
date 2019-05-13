@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import * as SRD from './../../components/SRD/main.js'
+import * as SRD from 'components/SRD/main.js'
 import axios from 'axios'
 import { ButtonGroup } from 'reactstrap'
 
@@ -11,12 +11,12 @@ import { setError } from 'ducks/modal'
 import new_template from "./../../../assets/templates/new";
 
 import Button from 'components/Button'
-import { BlockLinkFactory } from './../../components/SRD/factories/BlockLinkFactory'
-import { BlockPortFactory } from './../../components/SRD/factories/BlockPortFactory'
-import { BlockNodeFactory } from './../../components/SRD/factories/BlockNodeFactory'
+import { BlockLinkFactory } from 'components/SRD/factories/BlockLinkFactory'
+import { BlockPortFactory } from 'components/SRD/factories/BlockPortFactory'
+import { BlockNodeFactory } from 'components/SRD/factories/BlockNodeFactory'
 
 import 'draft-js/dist/Draft.css'
-import './../../components/SRD/sass/main.css'
+import 'components/SRD/sass/main.css'
 import './StoryBoard.css'
 
 const line_color = '#D1D8E2'

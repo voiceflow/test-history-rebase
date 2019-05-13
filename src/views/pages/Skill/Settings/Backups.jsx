@@ -6,7 +6,7 @@ import axios from 'axios'
 import {Modal, ModalFooter, FormGroup, Label, Alert, Table} from 'reactstrap'
 
 import Button from 'components/Button'
-import { Spinner } from 'views/components/Spinner'
+import { Spinner } from 'components/Spinner/Spinner'
 import LightCanvas from '../../Canvas/LightCanvas'
 
 import { setConfirm } from 'ducks/modal'
@@ -35,7 +35,7 @@ class BackupSettings extends Component{
 
             load_promises.push(axios.get(`/project/${this.props.skill.project_id}/live_version`))
             load_promises.push(axios.get(`/project/${this.props.skill.project_id}/versions`))
-            
+
             Promise.all(load_promises)
             .then((res) => {
                 let live_version = res[0].data
@@ -98,7 +98,7 @@ class BackupSettings extends Component{
                     <LightCanvas diagram_id={this.state.curr_preview.diagram}/>
                 </div>
                 <Button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
-                
+
                 <ModalFooter>
                     <Button isPrimary className="ml-auto mr-auto" onClick={() => this.confirmRestore(this.state.curr_preview.skill_id)}>Restore</Button>
                 </ModalFooter>
@@ -107,7 +107,7 @@ class BackupSettings extends Component{
             <React.Fragment>
                 <div className="settings-content clearfix">
                     <FormGroup>
-                        
+
                         <Label>
                             Backups
                         </Label>
@@ -124,7 +124,7 @@ class BackupSettings extends Component{
                                 </thead>
                                 <tbody>
                                     {
-                                        this.state.live_version ? 
+                                        this.state.live_version ?
                                         <tr className="table-primary">
                                             <td>{moment(this.state.live_version.created).fromNow()} <br/> (Current live version) </td>
                                             <td className="text-center">

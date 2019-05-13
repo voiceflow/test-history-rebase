@@ -13,7 +13,7 @@ import {
 } from 'reactstrap';
 
 import { logout } from 'ducks/account'
-import { User } from 'views/components/User'
+import { User } from 'components/User/User'
 
 const NUM_TO_PLAN = (plan) => {
   switch (plan) {

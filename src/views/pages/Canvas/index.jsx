@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import * as SRD from './../../components/SRD/main.js'
+import * as SRD from 'components/SRD/main.js'
 import cn from 'classnames'
 import Menu from './Menu'
 import Editor from './Editor'
@@ -10,7 +10,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 // import Loader from './Loader'
 import 'draft-js/dist/Draft.css'
-import './../../components/SRD/sass/main.css';
+import 'components/SRD/sass/main.css';
 import './StoryBoard.css'
 
 //HOCs
@@ -39,18 +39,18 @@ import { Alert, ListGroup, ListGroupItem } from 'reactstrap'
 import cloneDeep from 'lodash/cloneDeep'
 import * as util from './util'
 import Spotlight from './Spotlight'
-import { Toolkit } from './../../components/SRD/Toolkit'
+import { Toolkit } from 'components/SRD/Toolkit'
 import FlowBar from './FlowBar'
-import DefaultModal from 'views/components/Modals/DefaultModal'
-import ShortCuts from 'views/components/ShortCuts'
+import DefaultModal from 'components/Modals/DefaultModal'
+import ShortCuts from 'components/ShortCuts/ShortCuts'
 import Mousetrap from 'mousetrap'
 
-import { BlockNodeModel } from './../../components/SRD/models/BlockNodeModel'
-import { PointModel } from './../../components/SRD/models/PointModel'
-import { BlockLinkFactory } from './../../components/SRD/factories/BlockLinkFactory'
-import { BlockPortFactory } from './../../components/SRD/factories/BlockPortFactory'
-import { BlockNodeFactory } from './../../components/SRD/factories/BlockNodeFactory'
-import { Spinner } from './../../components/Spinner'
+import { BlockNodeModel } from 'components/SRD/models/BlockNodeModel'
+import { PointModel } from 'components/SRD/models/PointModel'
+import { BlockLinkFactory } from 'components/SRD/factories/BlockLinkFactory'
+import { BlockPortFactory } from 'components/SRD/factories/BlockPortFactory'
+import { BlockNodeFactory } from 'components/SRD/factories/BlockNodeFactory'
+import { Spinner } from 'components/Spinner/Spinner'
 
 import { SLOT_TYPES, ALLOWED_GOOGLE_BLOCKS } from 'Constants'
 
@@ -61,7 +61,7 @@ import { checkBlockDisabledLive } from './Blocks'
 
 import { Prompt } from 'react-router'
 import moment from 'moment'
-import Upgrade from '../../components/Modals/MultiPlatformModalContent.jsx';
+import Upgrade from 'components/Modals/MultiPlatformModalContent.jsx';
 import { fetchIntegrationUsers } from 'ducks/integration';
 
 const NLC = require('natural-language-commander')
@@ -122,7 +122,7 @@ export class Canvas extends Component {
             this.trackCanvasTime();
           }
         }
-      
+
         // SKILL IS LOADED HERE
         this.onLoadId(props.diagram_id)
     }
@@ -330,7 +330,7 @@ export class Canvas extends Component {
         e.preventDefault()
         this.onDrop('comment')
     }
-            
+
     removeNode = (selectedNode = null) => {
         let selected = selectedNode ? selectedNode : this.state.engine.getSuperSelect()
         if(!checkBlockDisabledLive(this.props.live_mode, selected.extras.type)){
@@ -514,7 +514,7 @@ export class Canvas extends Component {
         }
     }
 
-    removeCombineNode = (node) => {   
+    removeCombineNode = (node) => {
         const removeNode = () => {
             let diagramEngine = this.state.engine
             let amountZoom = diagramEngine.getDiagramModel().getZoomLevel() / 100;
@@ -526,7 +526,7 @@ export class Canvas extends Component {
                     return true;
                 }
             })
-            
+
             if(combineBlock.extras.type !== 'god') return this.forceRepaint()
             let lastNode = _.last(combineBlock.combines);
             if (combineBlock.combines.length === 1) {
@@ -634,7 +634,7 @@ export class Canvas extends Component {
         }
       })
     }
-    
+
     copyFlow = (flow_id) => {
         let flow = this.props.diagrams.find(d => d.id === flow_id)
         if (!flow) {
@@ -683,7 +683,7 @@ export class Canvas extends Component {
             copy(true)
         }
     }
-    
+
     deleteFlow(flow_id) {
         this.props.setConfirm({
             warning: true,
@@ -798,7 +798,7 @@ export class Canvas extends Component {
                 })
 
                 const save_diagram = axios.post(`/diagram`, diagram)
-                
+
                 Promise.all([save_skill_intents, save_diagram]).then(res => {
                     this.saving = false
                     this.lastModel = data
@@ -872,7 +872,7 @@ export class Canvas extends Component {
                 alexa: new Set(),
                 google: new Set()
             }
-            
+
             const makeNodeMultiPlatform = (type, node) => {
                 if (type === 'intent' || type === 'jump' || type === 'interaction' || type === 'command') {
                     if (!node.extras.google && !node.extras.alexa) {
@@ -947,7 +947,7 @@ export class Canvas extends Component {
                 const node = nodes[key]
                 const type = node.extras.type
                 if(type_counter[type] === undefined){
-                    type_counter[type] = 1 
+                    type_counter[type] = 1
                 } else {
                     type_counter[type] += 1
                 }
@@ -958,7 +958,7 @@ export class Canvas extends Component {
                         if (typeof n !== 'object') return
 
                         if(type_counter[n.extras.type] === undefined){
-                            type_counter[n.extras.type] = 1 
+                            type_counter[n.extras.type] = 1
                         } else {
                             type_counter[n.extras.type] += 1
                         }
@@ -1027,7 +1027,7 @@ export class Canvas extends Component {
             if (Linter[n.extras.type] && n.linter) {
                 const res = Linter[n.extras.type](n, this.props.skill.platform)
                 if (res) update = true
-            }                
+            }
         }
         for (let key in nodes) {
             const node = nodes[key]
@@ -1045,7 +1045,7 @@ export class Canvas extends Component {
                 }
             }
         }
-        
+
         if (force || update) {
             this.setState({
                 engine: engine,
@@ -1084,11 +1084,11 @@ export class Canvas extends Component {
                 for (let name in ports) {
                     let port = node.getPort(name);
                     if(port.in) continue
-    
+
                     if (port.label === 'pause') {
                         port.setHidden(this.props.skill.platform === 'google')
                     }
-    
+
                     if (port.label === 'previous') {
                         port.setHidden(this.props.skill.platform === 'google')
                     }
@@ -1271,7 +1271,7 @@ export class Canvas extends Component {
             this.onSave()
         }
     }
-    
+
     generateBlockMenu = (e, combineNode = null) => {
       if(this.props.preview){
         this.props.setBlockMenu(null)
@@ -1289,7 +1289,7 @@ export class Canvas extends Component {
             <React.Fragment>
                 <div style={{top: engine.getDiagramModel().getGridPosition(e.clientY - 100), left: engine.getDiagramModel().getGridPosition(e.clientX), cursor: 'pointer', position: 'absolute', zIndex: 10}}>
                     <ListGroup>
-                        {!combineNode && 
+                        {!combineNode &&
                             <ListGroupItem onClick={(e) => {
                                 node.setLocked(true);
                                 node.selected = true;

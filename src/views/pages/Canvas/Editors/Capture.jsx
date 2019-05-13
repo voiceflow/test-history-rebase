@@ -4,12 +4,12 @@ import Select from 'react-select'
 import { connect } from 'react-redux'
 import SlotSynonyms, { SingleValueOption, SlotOption } from './components/SlotComponents'
 import { openTab } from 'ducks/user'
-import { selectStyles, variableComponent} from 'views/components/VariableSelect'
+import { selectStyles, variableComponent} from 'components/VariableSelect/VariableSelect'
 
 class Capture extends Component {
     constructor(props) {
         super(props);
-        
+
         let node = this.props.node
         if(!Array.isArray(node.extras.slot_inputs)){
             node.extras.slot_inputs = []

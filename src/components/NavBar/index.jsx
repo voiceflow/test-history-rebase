@@ -14,7 +14,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { logout } from 'ducks/account'
-import { User } from 'views/components/User'
+import { User } from 'components/User/User'
 
 import './NavBar.css';
 

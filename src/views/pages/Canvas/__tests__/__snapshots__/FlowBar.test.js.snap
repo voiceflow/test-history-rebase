@@ -1,7 +1,121 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FlowBar render flow bar 1`] = `
-<ContextConsumer>
-  <Component />
-</ContextConsumer>
+<Fragment>
+  <button
+    className="btn-home pl-3"
+    id="home-button"
+    onClick={[Function]}
+  >
+    <span>
+      Home
+    </span>
+  </button>
+  <div
+    className="text-center"
+    id="flow-bar"
+    onContextMenu={[Function]}
+  >
+    <div
+      className="super-center px-5 w-100 no-select"
+    >
+      <div
+        className="text-muted text-max w-100 px-5 mt-1"
+      >
+        <i
+          className="flow-icon mr-3"
+        >
+              
+        </i>
+        Flow
+      </div>
+    </div>
+    <Dropdown
+      active={false}
+      addonType={false}
+      direction="up"
+      inNavbar={false}
+      isOpen={false}
+      nav={false}
+      setActiveFromChild={false}
+      toggle={[Function]}
+    >
+      <DropdownToggle
+        aria-haspopup={true}
+        className="dropdown-button mt-1 pl-3 previous"
+        color="secondary"
+        disabled={true}
+        tag="button"
+      >
+        <img
+          alt="arrow"
+          className="flow-arrow"
+          src="/arrow-left-hover.svg"
+        />
+      </DropdownToggle>
+      <DropdownMenu
+        className="no-select"
+        flip={true}
+        tag="div"
+      />
+    </Dropdown>
+    <Dropdown
+      active={false}
+      addonType={false}
+      direction="up"
+      inNavbar={false}
+      isOpen={false}
+      nav={false}
+      setActiveFromChild={false}
+      toggle={[Function]}
+    >
+      <DropdownToggle
+        aria-haspopup={true}
+        className="dropdown-button mr-4 pl-3 mt-1"
+        color="secondary"
+        disabled={false}
+        tag="button"
+      >
+        <img
+          alt="arrow"
+          className="flow-arrow"
+          src="/arrow-right-hover.svg"
+        />
+      </DropdownToggle>
+      <DropdownMenu
+        className="no-select"
+        flip={true}
+        tag="div"
+      >
+        <DropdownItem
+          className="pointer"
+          key="3c23f902-3aab-4d19-8098-1ea87b93826b"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+        >
+          diagram_1
+        </DropdownItem>
+        <DropdownItem
+          className="pointer"
+          key="87a1a91d-0341-4515-bc76-12629b1b070d"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+        >
+          diagram_2
+        </DropdownItem>
+        <DropdownItem
+          className="pointer"
+          key="0dd7b549-f790-4af3-90bc-60cb267986a0"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+        >
+          diagram_3
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  </div>
+</Fragment>
 `;

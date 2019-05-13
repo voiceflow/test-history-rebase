@@ -168,7 +168,6 @@ export default {
     postRequest: async (params) => {
       return new Promise(async (resolve, reject) => {
         try {
-          console.log("PARA", JSON.stringify(JSON.stringify(params)))
           const resp = await axios.post('/integrations/custom/make_test_api_call', params)
           resolve(resp.data)
         } catch (e) {

@@ -6,7 +6,7 @@ import Select from 'react-select';
 import { openTab } from 'ducks/user'
 
 import Button from 'components/Button'
-import { selectStyles, variableComponent } from 'views/components/VariableSelect'
+import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect'
 
 const OutputMapping = (props) => (
     <>

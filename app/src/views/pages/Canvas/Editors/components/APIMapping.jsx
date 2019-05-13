@@ -5,7 +5,7 @@ import Select from 'react-select';
 
 import Button from 'components/Button'
 import VariableInput from './VariableInput';
-import { selectStyles, variableComponent } from 'views/components/VariableSelect'
+import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect'
 
 import { openTab } from 'ducks/user'
 

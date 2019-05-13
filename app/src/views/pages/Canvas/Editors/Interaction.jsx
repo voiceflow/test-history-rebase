@@ -7,7 +7,7 @@ import SlotInputs from './components/SlotInputs'
 import { Button, ButtonGroup } from 'reactstrap'
 import ChoiceDropdownInputs from './components/ChoiceDropdownInputs'
 import randomstring from 'randomstring'
-import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
+import PlatformTooltip from 'components/Tooltips/PlatformTooltip';
 import { updateIntents, setCanFulfill } from 'ducks/version'
 
 export class Interaction extends Component {

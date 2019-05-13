@@ -15,9 +15,9 @@ import {
 } from "reactstrap";
 
 import Button from 'components/Button'
-import { ModalHeader } from "views/components/Modals/ModalHeader";
-import { User } from "views/components/User";
-import Image from "views/components/Uploads/Image";
+import { ModalHeader } from "components/Modals/ModalHeader";
+import { User } from "components/User/User";
+import Image from "components/Uploads/Image";
 import SeatsCheckout from "./SeatsCheckout";
 import Billing from "./Billing";
 import { PLANS_ID } from "./PLANS";

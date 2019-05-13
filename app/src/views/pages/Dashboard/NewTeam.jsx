@@ -6,15 +6,15 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Alert } from "reactstrap";
 
-import Image from "views/components/Uploads/Image";
-import { Spinner } from "views/components/Spinner";
+import Image from "components/Uploads/Image";
+import { Spinner } from "components/Spinner/Spinner";
 import SeatsCheckout from "./SeatsCheckout";
 
 import { setError, setModal } from "ducks/modal";
 import { createTeam } from "ducks/team"
 
 import Button from 'components/Button'
-import ImageOptions from 'views/components/Forms/ImageOptions'
+import ImageOptions from 'components/Forms/ImageOptions'
 
 const TYPE_OPTIONS = [{
   type: 'SOLO',
@@ -285,7 +285,7 @@ class NewTeam extends Component {
                 required
               />
             </div>
-            { this.state.type !== 'SOLO' && 
+            { this.state.type !== 'SOLO' &&
               <div className="super-center mt-5">
                 <div className="text-center">
                   <Image
@@ -297,7 +297,7 @@ class NewTeam extends Component {
                   />
                  <div className="text-muted mt-4">Drop team icon here <br></br> or browse</div>
                 </div>
-              </div> 
+              </div>
             }
             <div className="mt-5">
               <Button isPrimary onClick={this.saveTeam}>

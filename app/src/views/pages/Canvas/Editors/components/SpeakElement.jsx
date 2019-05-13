@@ -11,7 +11,7 @@ import { VOICES } from 'Constants'
 
 import Button from 'components/Button'
 import VariableText from './VariableText';
-import AudioDrop from '../../../../components/Uploads/AudioDrop'
+import AudioDrop from 'components/Uploads/AudioDrop'
 
 const getBoundingRect = component => memoizeOne(findDOMNode(component).getBoundingClientRect())
 
@@ -37,7 +37,7 @@ const target = {
         const dragIndex = monitor.getItem().index
         const hoverIndex = props.index
         if (dragIndex === hoverIndex) return;
-        
+
         const hoverBoundingRect = getBoundingRect(component)
         const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
 

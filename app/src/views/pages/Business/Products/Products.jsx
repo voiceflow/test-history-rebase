@@ -7,9 +7,9 @@ import Masonry from 'react-masonry-component';
 import { copyProduct, deleteProduct } from 'ducks/product'
 
 import Button from 'components/Button'
-import VoiceCards from 'views/components/Cards/VoiceCards'
-import EmptyCard from 'views/components/Cards/EmptyCard'
-import { Spinner } from 'views/components/Spinner'
+import VoiceCards from 'components/Cards/VoiceCards'
+import EmptyCard from 'components/Cards/EmptyCard'
+import { Spinner } from 'components/Spinner/Spinner'
 
 class Products extends Component {
     constructor(props) {

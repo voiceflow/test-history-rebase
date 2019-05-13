@@ -1104,38 +1104,6 @@
     margin-right: auto;
 }
 
-.toggle-group .btn.btn-secondary {
-    background-color: #fff !important;
-    line-height: 15px !important;
-    color: #132144 !important;
-    border-radius: 4px !important;
-    box-shadow: 0 2px 3px 0 rgba(14,30,37,.1);
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 9px;
-    border: none !important;
-    height: 37px;
-}
-
-.toggle-group .btn.btn-outline-secondary {
-    font-weight: 400 !important;
-    color: #8da2b5 !important;
-    line-height: 15px !important;
-    border: none !important;
-    border-radius: 5px !important;
-    font-size: 15px !important;
-}
-
-.toggle-group .btn.btn-outline-secondary:hover {
-    color: #132144 !important;
-    background-color: #F7F9FB !important;
-}
-
-.toggle-group .btn.btn-outline-secondary:active {
-    font-weight: 400 !important;
-    color: #132144 !important;
-    font-size: 15px !important;
-}
 .MenuItem .menu-tip {
     padding: 0px 4px 0px 8px !important;
     color: #fff;
@@ -2587,20 +2555,6 @@ button.close:hover{
     font-size: 15px;
 }
 
-.btn-outline-secondary {
-    color: #8da2b5 !important;
-    font-weight: 600 !important;
-    border-radius: 5px;
-}
-
-.btn-outline-secondary:hover {
-    background-color: #fff;
-    color: #3d96f0 !important;
-}
-
-.btn-outline-secondary:active {
-    background-color: #fafafa !important;
-}
 
 .btn-group-vertical>.btn, .btn-group>.btn {
   position: relative;

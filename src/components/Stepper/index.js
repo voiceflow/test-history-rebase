@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Panel from '../Panel';
 import Transition from '../Transition';
 
+import './Stepper.css'
 export default class Stepper extends Component {
   static propTypes = {
     steps: PropTypes.arrayOf(
@@ -113,6 +114,7 @@ export default class Stepper extends Component {
           return (
             <li
               key={id}
+              onClick={() => this.onChangeStep(id)}
               className={cn('steps-list__list-item', {
                 '__is-active': isActive,
                 '__is-filled': isFilled,
@@ -120,7 +122,7 @@ export default class Stepper extends Component {
               })}
             >
               {!isActive && (isFilled || isPrevStepFilled) ? (
-                <a onClick={() => this.onChangeStep(id)} className="steps-list__title">
+                <a className="steps-list__title">
                   {label}
                 </a>
               ) : (
@@ -139,13 +141,6 @@ export default class Stepper extends Component {
                   component="div"
                   className="steps-list-content"
                 >
-                  <Panel
-                    footerRenderer={() => panelFooterRenderer && panelFooterRenderer(rendererProps)}
-                  >
-                    {panelBodyContentRenderer(rendererProps)}
-                  </Panel>
-
-                  {detailsRenderer && detailsRenderer(rendererProps)}
                 </Transition>
               )}
             </li>

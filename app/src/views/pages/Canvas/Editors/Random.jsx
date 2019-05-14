@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import _ from 'lodash'
 import { InputGroup, Input } from 'reactstrap';
 
+import Button from 'components/Button'
+
 class RandomBlock extends Component {
     constructor(props) {
         super(props);
@@ -87,8 +89,19 @@ class RandomBlock extends Component {
     render() {
         return (
             <div>
-                <div><button className="btn btn-clear btn-lg btn-block mt-2" onClick={this.handleAddPath}>Add Path</button></div>
-                {this.state.node.extras.paths > 1 ? <div className="mt-2"><button className="btn btn-tertiary btn-lg btn-block" onClick={this.handleRemovePath}>Remove Path</button></div> : null }
+                <div>
+                    <Button isBtn isClear isLarge isBlock className="mt-2" onClick={this.handleAddPath}>
+                        Add Path
+                    </Button>
+                </div>
+                {this.state.node.extras.paths > 1 ?
+                    <div className="mt-2">
+                        <Button isBtn isFlat isLarge isBlock onClick={this.handleRemovePath}>
+                            Remove Path
+                        </Button>
+                    </div> :
+                    null
+                }
                 <InputGroup className="my-3">
                     <label className="input-group-text w-100 m-0 text-left">
                         <Input addon type="checkbox" checked={!!this.state.node.extras.smart} onChange={this.handleInputChange}/>

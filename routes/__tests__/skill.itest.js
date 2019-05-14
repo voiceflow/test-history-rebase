@@ -1,9 +1,12 @@
+'use strict';
+
 const request = require('supertest');
-const app = require('../../app');
 const new_diagram = require('./data/new_diagram.json');
 const { pool, hashids } = require('../../services');
 const { team_hash } = require('../team_util');
 const moxios = require('moxios');
+
+const GetApp = require('../../tests/getAppForTest');
 
 const TEAM_ID = team_hash.encode(1);
 
@@ -37,7 +40,12 @@ describe('Skill', () => {
 
   let accessMock;
 
+  let app;
+  let server;
+
   beforeAll(async () => {
+    ({ app } = await GetApp());
+
     // Get Authentication Token
     await request(app)
       .put('/session')
@@ -666,5 +674,7 @@ describe('Skill', () => {
       .delete('/session')
       .set('cookie', `auth=${token}`)
       .expect(200);
+
+    if (server) server.close();
   });
 });

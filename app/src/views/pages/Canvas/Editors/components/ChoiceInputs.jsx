@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import ChoiceInput from './ChoiceInput'
 
+import Button from 'components/Button'
+
 class ChoiceInputs extends Component {
     constructor(props){
         super(props)
@@ -33,9 +35,9 @@ class ChoiceInputs extends Component {
                     />)
                 }) : null}
                 <div className="text-center">
-                    <button className="btn-tertiary mt-2" onClick={this.props.onAdd} disabled={this.props.live_mode}>
+                    <Button isFlat className="mt-2" onClick={this.props.onAdd} disabled={this.props.live_mode}>
                         Add Choice
-                    </button>
+                    </Button>
                 </div>
             </div>
         );

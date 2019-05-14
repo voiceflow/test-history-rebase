@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, Input, Alert } from 'reactstrap';
+import { FormGroup, Input, Alert } from 'reactstrap';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
+
+import Button from 'components/Button'
 
 class Reset extends Component {
 

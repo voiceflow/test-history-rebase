@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
-import cn from 'classnames'
+import _ from 'lodash'
+import update from 'immutability-helper'
 import { connect } from 'react-redux'
 import { Collapse } from 'reactstrap'
-import _ from 'lodash'
+
+import Button from 'components/Button'
+
 import OutputMapping from './outputMapping'
+
 import { openTab } from 'ducks/user'
-import update from 'immutability-helper'
 
 // props
 // action_data, mapping_options, loading, variables, toggleSection, open, showNextSection
@@ -108,14 +111,13 @@ class OutputSection extends Component {
           />}
           {this.props.loading && <div className="text-center my-4"><div className='loader text-lg' /></div>}
           <div className="text-center mt-3">
-            <button
-              className={cn('btn-tertiary-variable', {
-                disabled: !this.state.completed
-              })}
+            <Button
+              isFlatVariable
+              disabled={!this.state.completed}
               onClick={this.props.showNextSection}
             >
               Next
-            </button>
+            </Button>
           </div>
         </Collapse>
       </>

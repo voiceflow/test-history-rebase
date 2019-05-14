@@ -154,37 +154,6 @@
     font-size: 13px;
 }
 
-.template-platform-btn {
-    /* width: 20vw; */
-    width: 16vw;
-    height: 16vw;
-    margin: 0 1em 0 1em;
-    background-color: transparent;
-    overflow: hidden;
-    text-align: center;
-    border: 1px solid #EAEFF4;
-    position: relative;
-    border-radius: 0.5em;
-    cursor: pointer;
-}
-
-.template-platform-btn:hover {
-    /* width: 20vw; */
-    color: #000000;
-    background-color: transparent;
-}
-
-.template-platform-btn.active {
-    /* background: linear-gradient(to bottom,#49A4FF,#0F88FF) !important; */
-    background-color: transparent !important;
-    border-color: #42A5FF !important;
-}
-
-.template-platform-btn:active {
-    /* background: linear-gradient(to bottom,#49A4FF,#0F88FF) !important; */
-    background-color: transparent !important;
-    border-color: #42A5FF !important;
-}
 
 .platform-image {
     width: 14em;

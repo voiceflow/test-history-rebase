@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import { Collapse, Alert } from 'reactstrap'
 import Select, { components } from 'react-select'
 import { connect } from 'react-redux'
+
 import SlotMappings from '../../Editors/components/SlotMappings' 
+
 import { setError } from 'ducks/modal'
 
-const _ = require('lodash')
+import Button from 'components/Button'
 
 class ChoiceDropdownInputs extends Component {
     constructor(props) {
@@ -165,7 +168,7 @@ class ChoiceDropdownInputs extends Component {
                         <div className="interaction-block mb-3" key={choice.key}>
                             <div className="interaction-title">
                                 <span onClick={() => {this.toggleCollapse(i)}}>{choice.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
-                                <button className="close mt-1" onClick={() => this.props.onRemove(i)} disabled={this.props.live_mode}></button>
+                                <Button className="close mt-1" onClick={() => this.props.onRemove(i)} disabled={this.props.live_mode} />
                             </div>
                             {!!choice.invalid && <Alert color="danger" className="mt-2 mb-1 py-1 text-center"><i className="fas fa-exclamation-square"/> This intent doesn't exist</Alert>}
                             <Collapse isOpen={choice.open}>
@@ -199,7 +202,18 @@ class ChoiceDropdownInputs extends Component {
                             </Collapse>
                         </div> )
                 }) : null}
-                <div><button className="btn btn-clear btn-lg btn-block" onClick={this.props.onAdd} disabled={this.props.live_mode}><i className="far fa-plus mr-2"></i> Add Choice</button></div>
+                <div>
+                    <Button
+                        isBtn
+                        isClear
+                        isLarge
+                        isBlock
+                        onClick={this.props.onAdd}
+                        disabled={this.props.live_mode}
+                    >
+                        <i className="far fa-plus mr-2"></i> Add Choice
+                    </Button>
+                </div>
             </div>
         );
     }

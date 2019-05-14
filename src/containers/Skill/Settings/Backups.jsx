@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import cn from 'classnames'
 import { connect } from 'react-redux'
-import moment from 'moment/moment'
-import axios from 'axios/index'
+import moment from 'moment'
+import axios from 'axios'
 import {Modal, ModalFooter, FormGroup, Label, Alert, Table} from 'reactstrap'
 
 import Button from 'components/Button'

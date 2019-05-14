@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { AmazonAccessToken } from 'ducks/account'
 import { Alert } from 'reactstrap'
-import axios from 'axios/index'
+import axios from 'axios'
 
 import Button from 'components/Button'
 

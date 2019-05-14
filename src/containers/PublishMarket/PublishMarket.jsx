@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios/index'
+import axios from 'axios'
 import { connect } from 'react-redux'
 import { FormGroup, Label, Input, Form } from 'reactstrap'
 import Select from 'react-select'

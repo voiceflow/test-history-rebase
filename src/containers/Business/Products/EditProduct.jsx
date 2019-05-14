@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import moment from 'moment/moment';
+import moment from 'moment';
 import React from 'react';
-import axios from 'axios/index';
+import axios from 'axios';
 import { connect } from 'react-redux'
 import ProductDescriptionForm from './ProductDescriptionForm';
 import PhrasesForm from './PhrasesForm';
@@ -10,11 +10,11 @@ import IconsForm from './IconsForm';
 import { addProduct, updateProduct } from 'ducks/product'
 import { setError } from 'ducks/modal'
 import ProductDetailsForm from './ProductDetailsForm';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles/index';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Button from 'components/Button'
-import Stepper from '@material-ui/core/Stepper/index';
-import Step from '@material-ui/core/Step/index';
-import StepLabel from '@material-ui/core/StepLabel/index';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
 import {TAX_CATEGORY} from './Constants.js';
 import subSchema from './Schemas/subSchema.json';
 import entitlementSchema from './Schemas/entitlementSchema.json';

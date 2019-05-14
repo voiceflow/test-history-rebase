@@ -3,7 +3,7 @@ import * as SRD from 'components/SRD/main.js'
 import cn from 'classnames'
 import Menu from './Menu'
 import Editor from './Editor'
-import axios from 'axios/index'
+import axios from 'axios'
 import { compose } from 'recompose'
 import { connect } from "react-redux";
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';

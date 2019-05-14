@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import _ from "lodash";
-import axios from 'axios/index'
+import axios from 'axios'
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Modal, Alert } from 'reactstrap'

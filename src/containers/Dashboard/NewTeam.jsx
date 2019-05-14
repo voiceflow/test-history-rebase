@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import _ from "lodash";
-import update from "immutability-helper/index";
+import update from "immutability-helper";
 import { compose } from "recompose";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";

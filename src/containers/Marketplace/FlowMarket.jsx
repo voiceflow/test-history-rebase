@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios/index'
+import axios from 'axios'
 import './Marketplace.css'
 import { connect } from 'react-redux'
 import ModuleModal from 'components/Modals/ModuleModal'

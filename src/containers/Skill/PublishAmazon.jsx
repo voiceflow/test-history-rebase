@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import axios from 'axios/index'
+import axios from 'axios'
 import { connect } from 'react-redux'
 import validUrl from 'valid-url'
 import Select from 'react-select'
@@ -12,10 +12,10 @@ import {
 import { Link } from "react-router-dom";
 
 //TODO DEPRECATE MUI
-import Checkbox from '@material-ui/core/Checkbox/index'
-import MUFormGroup from '@material-ui/core/FormGroup/index'
-import Paper from '@material-ui/core/Paper/index'
-import FormControlLabel from '@material-ui/core/FormControlLabel/index'
+import Checkbox from '@material-ui/core/Checkbox'
+import MUFormGroup from '@material-ui/core/FormGroup'
+import Paper from '@material-ui/core/Paper'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 import DefaultButton from 'components/Button'
 import Textarea from 'react-textarea-autosize'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tooltip } from "react-tippy";
-import moment from 'moment/moment'
+import moment from 'moment'
 
 export default ({team, upgrade}) => {
   if(!team.expiry || team.state === 'EXPIRED') return null

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import axios from 'axios/index'
+import axios from 'axios'
 import {Alert, FormGroup, Label, Input, Collapse} from 'reactstrap'
 import AceEditor from 'react-ace';
 import Toggle from 'react-toggle'

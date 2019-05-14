@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import axios from 'axios/index'
+import axios from 'axios'
 import { removeUserModules } from '../../../../ducks/version'
 import { replaceDiagrams } from '../../../../ducks/diagram'
 

@@ -3,8 +3,8 @@
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 import { ModalHeader } from 'components/Modals/ModalHeader'
-import Card from '@material-ui/core/Card/index';
-import CardActionArea from '@material-ui/core/CardActionArea/index';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
 
 const blocks = [
   {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import AceEditor from "react-ace";
-import axios from 'axios/index';
+import axios from 'axios';
 import { Input, Col, Row, FormGroup } from 'reactstrap';
 
 import Button from 'components/Button'

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios/index'
+import axios from 'axios'
 import { Collapse } from 'reactstrap'
 
 import Button from 'components/Button'

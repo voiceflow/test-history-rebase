@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import _ from 'lodash'
-import axios from "axios/index";
+import axios from "axios";
 import { connect } from 'react-redux'
 import { FormGroup, Label, Alert } from "reactstrap";
 

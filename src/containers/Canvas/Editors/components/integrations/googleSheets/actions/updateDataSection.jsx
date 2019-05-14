@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import update from 'immutability-helper/index'
+import update from 'immutability-helper'
 import { Collapse } from 'reactstrap'
 
 import Button from 'components/Button'

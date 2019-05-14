@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import axios from "axios/index";
+import axios from "axios";
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Link } from "react-router-dom";

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactJson from 'react-json-view'
 import _ from 'lodash'
 import DefaultModal from 'components/Modals/DefaultModal'
-import update from 'immutability-helper/index'
+import update from 'immutability-helper'
 import { Button, Collapse, InputGroupAddon, Input, InputGroup, Alert } from 'reactstrap';
 
 import IntegrationsService from 'services/Integrations'

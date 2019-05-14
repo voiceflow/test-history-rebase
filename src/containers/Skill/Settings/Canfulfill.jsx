@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import cn from 'classnames'
-import update from 'immutability-helper/index';
+import update from 'immutability-helper';
 import { connect } from "react-redux";
 import { Collapse, Alert } from 'reactstrap';
 import { Tooltip } from "react-tippy";

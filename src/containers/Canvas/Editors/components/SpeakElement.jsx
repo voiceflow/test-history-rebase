@@ -2,7 +2,7 @@ import cn from 'classnames'
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { findDOMNode } from 'react-dom'
-import { DragSource, DropTarget } from 'react-dnd/lib/cjs/index'
+import { DragSource, DropTarget } from 'react-dnd/lib/cjs'
 import Select from 'react-select';
 import {Collapse} from 'reactstrap';
 import memoizeOne from 'memoize-one'

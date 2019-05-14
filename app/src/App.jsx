@@ -7,7 +7,7 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import Socket from './Socket';
+import './Socket';
 
 // Import Dependent CSS
 import 'react-tippy/dist/tippy.css';
@@ -89,7 +89,6 @@ class App extends Component {
 		}
 		return (
 			<div id="body">
-				<Socket />
 				<ConnectedRouter history={history}>
 						<ConfirmModal/>
 						<ErrorModal/>

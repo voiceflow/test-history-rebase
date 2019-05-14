@@ -12,7 +12,6 @@ import {
   PopoverBody,
   InputGroup,
   InputGroupAddon,
-  Input,
   Alert,
   Modal,
   ModalBody
@@ -26,6 +25,7 @@ import { setError } from 'ducks/modal'
 import { AmazonAccessToken, googleAccessToken } from "ducks/account";
 
 import Button from 'components/Button'
+import Input from 'components/Input'
 import { ModalHeader } from 'views/components/Modals/ModalHeader'
 import Header from 'components/Header'
 import SecondaryNavBar from "views/components/NavBar/SecondaryNavBar";
@@ -795,7 +795,7 @@ export class ActionGroup extends PureComponent {
               <i className="fal fa-question-circle" />
             </Tooltip>
           </div>
-          <input className="form-control" value={this.state.inv_name} placeholder='Invocation Name' onChange={(e) => this.setState({ inv_name: e.target.value, inv_name_error: invNameError(e.target.value, this.props.skill.locales) })} />
+          <Input isForm value={this.state.inv_name} placeholder='Invocation Name' onChange={(e) => this.setState({ inv_name: e.target.value, inv_name_error: invNameError(e.target.value, this.props.skill.locales) })} />
           <small className={"text-blue" + (this.state.flash ? ' blink' : '')}>{this.state.inv_name_error}</small>
           <div className="super-center mt-3 mb-2">
             <Button isPrimary onClick={this.updateAlexa}>Continue</Button>
@@ -809,9 +809,9 @@ export class ActionGroup extends PureComponent {
             })
           return <div id="name-box" className="text-center">
             <div className="mb-5 mt-3">
-              <input
+              <Input
+                isUnderline
                 id="skill-name"
-                className="input-underline"
                 type="text"
                 name="name"
                 value={this.props.skill.name}

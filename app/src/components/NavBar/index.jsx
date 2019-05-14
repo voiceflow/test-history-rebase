@@ -13,12 +13,14 @@ import {
   DropdownItem
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+
+// Actions
 import { logout } from 'ducks/account'
+
+// Components
 import { User } from 'components/User/User'
 
 import './NavBar.css';
-
-import Intercom from 'react-intercom';
 
 const NUM_TO_PLAN = (plan) => {
   switch(plan){

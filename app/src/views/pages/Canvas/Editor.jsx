@@ -37,7 +37,7 @@ import Permissions from "./Editors/Permissions";
 import Reminder from "./Editors/Reminder";
 import Code from "./Editors/Code";
 import PermissionCard from "./Editors/PermissionCard";
-import Prompt from "views/components/Uploads/Prompt";
+import Prompt from "components/Uploads/Prompt";
 
 import {
   Alert,
@@ -49,7 +49,7 @@ import {
   DropdownItem
 } from "reactstrap";
 import Button from 'components/Button'
-import { ModalHeader } from "views/components/Modals/ModalHeader";
+import { ModalHeader } from "components/Modals/ModalHeader";
 
 import {
   SLOT_TYPES,
@@ -702,7 +702,7 @@ class Editor extends Component {
               onKeyDown={this.handleChipsInputKeyDown}
               placeholder='Enter suggestion and press enter'
               value={this.state.node.extras.chips}
-            />          
+            />
           </React.Fragment>
         )}
       </React.Fragment>

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import AudioDrop from '../../../components/Uploads/AudioDrop'
+import AudioDrop from 'components/Uploads/AudioDrop'
 import Toggle from 'react-toggle'
 import _ from 'lodash'
 import VariableInput from './components/VariableInput'
-import Image from './../../../components/Uploads/Image'
+import Image from 'components/Uploads/Image'
 class Stream extends Component {
     constructor(props) {
         super(props)
@@ -107,19 +107,19 @@ class Stream extends Component {
                 />
 
                 <label>Icon</label>
-                <Image 
+                <Image
                     url
                     max_size={5*1024*1024}
-                    image={this.state.node.extras.icon_img} 
+                    image={this.state.node.extras.icon_img}
                     update={(url) => this.updateContent('icon_img', url)}
                     // className='image-upload-icon'
                 />
 
                 <label>Background Image</label>
-                <Image 
+                <Image
                     url
                     max_size={5*4096*4096}
-                    image={this.state.node.extras.background_img} 
+                    image={this.state.node.extras.background_img}
                     update={(url) => this.updateContent('background_img', url)}
                     // className='image-upload-icon'
                     margin

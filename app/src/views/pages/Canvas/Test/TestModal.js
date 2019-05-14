@@ -24,10 +24,11 @@ import {
   ListGroupItem
 } from 'reactstrap'
 
+// Components
 import DefaultButton from 'components/Button'
 import {
   ModalHeader
-} from 'views/components/Modals/ModalHeader'
+} from 'components/Modals/ModalHeader'
 
 
 import './TestModal.css'
@@ -72,12 +73,12 @@ const recurse = (tag, index=0) => {
           return return_string;
         }else if(tag.name === 'voice'){
           return <React.Fragment key={index}><span className="text-muted">{tag.attrs.name}:</span>
-            <br/> 
+            <br/>
             {return_string}
           </React.Fragment>
         }else{
           return <span key={index} className="tag-wrap"><span className="tag-span">{tag.name}</span> {return_string}</span>
-        }  
+        }
       }else{
         return <span key={index} className="tag-wrap tag-span">({tag.name})</span>
       }
@@ -290,7 +291,7 @@ class TestModal extends React.Component {
       let inputs = this.state.inputs;
 
       let text = block.children && block.children[0] && block.children[0].content ? block.children[0].content : '';
-      
+
       inputs.push({
         debug: block.attrs.type,
         text: text,
@@ -302,7 +303,7 @@ class TestModal extends React.Component {
 
   async updateState(start=false){
     let data = this.story_state
-    
+
     if (!data.slots) {
       data.slots = this.props.slots
     }
@@ -407,7 +408,7 @@ class TestModal extends React.Component {
 
         let dom = parse('<speak>' + res.output + '</speak>')
 
-        if(dom && dom.length > 0 && dom[0].type === 'tag' && 
+        if(dom && dom.length > 0 && dom[0].type === 'tag' &&
           dom[0].name === 'speak' && dom[0].children){
           if(!this.pause) this.removeAudio();
           this.recursivePlay(0, dom[0].children, res.ending);
@@ -417,7 +418,7 @@ class TestModal extends React.Component {
 
         // if (dom) {
         //   dom.forEach((element) => {
-        //     if(element.type === 'tag' && 
+        //     if(element.type === 'tag' &&
         //       element.name === 'speak' && element.children){
         //       this.removeAudio();
         //       this.recursivePlay(0, element.children, res.ending);
@@ -428,7 +429,7 @@ class TestModal extends React.Component {
         //     }
         //   })
         // }
-        
+
       }else if(res.ending){
         this.handleEnd();
       }
@@ -469,7 +470,7 @@ class TestModal extends React.Component {
       }
 
       this.setState({
-        input: "", 
+        input: "",
         intent: "",
         inputs: inputs
       }, this.updateState);
@@ -487,7 +488,7 @@ class TestModal extends React.Component {
 
   handleLineSelection(selectedOption){
     this.setState({
-      selected_line: selectedOption 
+      selected_line: selectedOption
     });
   }
 
@@ -535,7 +536,7 @@ class TestModal extends React.Component {
             })
         }
       }
-      
+
       return (<React.Fragment>
         <label>Local Variables</label>
         <Table className="var-table">
@@ -567,11 +568,11 @@ class TestModal extends React.Component {
       <Modal isOpen={this.props.open} size='lg'>
         <ModalHeader toggle={this.props.toggle} header="Project Testing" />
         <ModalBody className="text-center env-modal test-modal">
-          { this.props.testing_info !== false ? 
+          { this.props.testing_info !== false ?
             <React.Fragment>
               <div className="row">
                 <div className="col-sm-8 p-0 test-main">
-                  { this.state.started ? 
+                  { this.state.started ?
                     <React.Fragment>
                       <div className="chatbox px-3">
                         <div className="chats">
@@ -617,7 +618,7 @@ class TestModal extends React.Component {
                           })}
                         </div>
                       </div>
-                      {this.state.ended ? 
+                      {this.state.ended ?
                         <Alert onClick={this.handleRestart} color="warning" className="m-3">Flow Ended - Reset <i className="far fa-sync-alt"/></Alert> :
                         <React.Fragment>
                           {this.state.audioplayer ?
@@ -628,7 +629,7 @@ class TestModal extends React.Component {
                               }
                               <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.NextIntent'}, this.inputSubmit)}>Next</Button>
                               <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.PreviousIntent'}, this.inputSubmit)}>Previous</Button>
-                            </div> 
+                            </div>
                             :
                             <Form onSubmit={this.inputSubmit} className="px-3 mb-3">
                               <InputGroup>
@@ -651,7 +652,7 @@ class TestModal extends React.Component {
                       <h6 className="mt-4 mb-3">Start from a specific point in the project</h6>
                       <Select
                         classNamePrefix="select-box"
-                        className="text-left mb-3 w-75 ml-5 pl-4" 
+                        className="text-left mb-3 w-75 ml-5 pl-4"
                         value={this.state.selected_line}
                         onChange={this.handleLineSelection}
                         options={this.state.nodes} />

@@ -5,7 +5,7 @@ import { Button } from 'reactstrap';
 import {Link} from 'react-router-dom'
 import VariableInput from './components/VariableInput'
 import { ContentState, convertToRaw } from 'draft-js';
-import { selectStyles, variableComponent } from 'views/components/VariableSelect'
+import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect'
 import { openTab } from 'ducks/user'
 
 export class Mail extends Component {
@@ -149,7 +149,7 @@ export class Mail extends Component {
                     }}>Defined</Button>
                 </div>
                 {
-                    !user ? 
+                    !user ?
                     <React.Fragment>
                         <VariableInput
                             className="form-control"
@@ -159,7 +159,7 @@ export class Mail extends Component {
                             updateRaw={(raw) => {
                                 let node = this.state.node
                                 node.extras.to = raw
-                        
+
                                 this.setState({
                                     node: node
                                 })

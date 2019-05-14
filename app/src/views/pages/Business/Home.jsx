@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import TimeInterval from '../../components/TimeInterval'
+import TimeInterval from 'components/TimeInterval/TimeInterval'
 import axios from 'axios'
-import LineBar from '../../components/LineBar'
+import LineBar from 'components/LineBar/LineBar'
 import moment from 'moment'
 import ReactTable from 'react-table'
 import './react-table.css'
@@ -94,7 +94,7 @@ class Home extends Component {
       .then(res => {
         let dau = []
         let dates = []
-        let date_range 
+        let date_range
         let dau_index = 0
 
         // Generate range of times for the period
@@ -253,7 +253,7 @@ class Home extends Component {
                     <tr>
                       <td>{this.state.stats_loading ?
                            <span className="loader" />
-                           : 
+                           :
                            this.state.users}</td>
                       <td>{this.state.stats_loading ?
                            <span className="loader" />

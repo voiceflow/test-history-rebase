@@ -3,10 +3,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import update from "immutability-helper";
 import Select from "react-select";
-import { Spinner } from 'views/components/Spinner'
+import { Spinner } from 'components/Spinner/Spinner'
 import { updateVersion } from 'ducks/version'
 
-import MultipleFields from "./../../components/Forms/MultipleFields";
+import MultipleFields from "components/Forms/MultipleFields";
 import axios from "axios";
 import { Nav, NavItem, NavLink, Input } from "reactstrap";
 

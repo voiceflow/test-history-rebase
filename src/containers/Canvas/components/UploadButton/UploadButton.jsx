@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Tooltip } from 'react-tippy';
 import cn from 'classnames';
 import VendorSelectList from '../VendorSelectList/VendorSelectList';
+import { Spinner } from 'components/Spinner/Spinner'
 
 import Button from 'components/Button';
 
@@ -11,7 +12,8 @@ class UploadButton extends Component {
 
 		if (this.props.upload_button_loading) {
 			return <div className='upload-button-placeholder'>
-				Loading
+				<Spinner name='Vendors'/>
+				Hello
 			</div>;
 		}
 
@@ -76,7 +78,7 @@ class UploadButton extends Component {
 						active: this.props.vendors_open
 					})} onClick={this.props.toggleVendors}> </div>}
 					{this.props.vendors_open &&
-					<VendorSelectList vendors={this.props.vendors} onBlur={this.props.toggleVendors} />}
+					<VendorSelectList vendors={this.props.vendors} onBlur={this.props.toggleVendors} project_id={this.props.project_id} />}
 				</div>;
 			}
 		}

@@ -183,8 +183,6 @@ export class ActionGroup extends PureComponent {
 		};
 
 		this.token = null;
-
-		console.log(this.props.skill.amzn_id, this.props.skill.live_version);
 	}
 
 	componentDidMount() {
@@ -569,7 +567,6 @@ export class ActionGroup extends PureComponent {
 				vendors_open: false,
 			});
 		}
-		console.log(this.props.skill.amzn_id, this.props.skill.live_version);
 	};
 
 	showUploadPrompt = () => {
@@ -1089,6 +1086,7 @@ export class ActionGroup extends PureComponent {
 								vendors={this.state.vendors}
 								platform={this.props.platform}
 								vendors_open={this.state.vendors_open}
+								project_id={this.props.skill.project_id}
 								openUpdateLive={() => this.openUpdateLive()}
 								toggle_upload_prompt={() => this.setState({ show_upload_prompt: !this.props.show_upload_prompt})}
 								isUploadLoading={() => this.isUploadLoading()}

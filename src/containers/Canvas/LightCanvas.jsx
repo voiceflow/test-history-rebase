@@ -1,0 +1,299 @@
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import * as SRD from 'components/SRD/main.js'
+import axios from 'axios/index'
+import { ButtonGroup } from 'reactstrap'
+
+import {convertDiagram} from './util'
+
+import { setError } from 'ducks/modal'
+
+import new_template from "../../assets/templates/new";
+
+import Button from 'components/Button'
+import { BlockLinkFactory } from 'components/SRD/factories/BlockLinkFactory'
+import { BlockPortFactory } from 'components/SRD/factories/BlockPortFactory'
+import { BlockNodeFactory } from 'components/SRD/factories/BlockNodeFactory'
+
+import 'draft-js/dist/Draft.css'
+import 'components/SRD/sass/main.css'
+import './StoryBoard.css'
+
+const line_color = '#D1D8E2'
+const line_width = 2.5
+
+const _ = require('lodash')
+
+class LightCanvas extends Component {
+    constructor(props) {
+        super(props)
+
+        this.repaint = this.repaint.bind(this)
+        this.loadDiagram = this.loadDiagram.bind(this)
+        this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this)
+        this.zoom = this.zoom.bind(this)
+        // build diagram tree function from child
+        this.buildDiagrams = null
+        // preview mode
+        this.preview = !!this.props.preview
+
+        var engine = new SRD.DiagramEngine()
+        engine.registerLabelFactory(new SRD.DefaultLabelFactory())
+        engine.registerNodeFactory(new BlockNodeFactory())
+        engine.registerLinkFactory(new BlockLinkFactory(line_color, line_width))
+        engine.registerPortFactory(new BlockPortFactory())
+
+        let diagram_name = ''
+
+        // ONBOARDING
+        this.onboarding = localStorage.getItem('onboarding')
+        this.loaded = false
+
+        this.state = {
+            engine: engine,
+            diagram_name: diagram_name,
+            diagrams: [],
+            products: [],
+            error: null,
+            loading_diagram: true,
+            saving: false,
+            saved: true,
+            testing_modal: false,
+            testing_info: false,
+            variables: [],
+            help: null,
+            helpOpen: false,
+            currentProduct: null,
+            user_modules: null,
+            user_templates: [],
+            email_templates: [],
+            display_templates: [],
+            default_templates: []
+        }
+
+
+    }
+
+    componentWillMount() {
+        this.onLoadId(this.props.diagram_id)
+    }
+
+    componentWillUnmount() {
+    }
+
+    zoom(delta){
+        let engine = this.state.engine
+        let diagramModel = engine.getDiagramModel()
+        const oldZoomFactor = diagramModel.getZoomLevel() / 100
+        let scrollDelta = delta / 60
+
+        if(scrollDelta < 0){
+            if (diagramModel.getZoomLevel() + scrollDelta > 10) {
+                diagramModel.setZoomLevel(diagramModel.getZoomLevel() + scrollDelta)
+            }else{
+                diagramModel.setZoomLevel(10)
+            }
+        }else{
+            if (diagramModel.getZoomLevel() + scrollDelta < 150) {
+                diagramModel.setZoomLevel(diagramModel.getZoomLevel() + scrollDelta)
+            }else{
+                diagramModel.setZoomLevel(150)
+            }
+        }
+
+        const zoomFactor = diagramModel.getZoomLevel() / 100
+
+        const boundingRect = engine.canvas.getBoundingClientRect()
+        const clientWidth = boundingRect.width
+        const clientHeight = boundingRect.height
+        // compute difference between rect before and after scroll
+        const widthDiff = clientWidth * zoomFactor - clientWidth * oldZoomFactor
+        const heightDiff = clientHeight * zoomFactor - clientHeight * oldZoomFactor
+        // compute mouse coords relative to canvas
+        const clientX = clientWidth/2 - boundingRect.left
+        const clientY = clientHeight/2 - boundingRect.top
+
+        // compute width and height increment factor
+        const xFactor = (clientX - diagramModel.getOffsetX()) / oldZoomFactor / clientWidth
+        const yFactor = (clientY - diagramModel.getOffsetY()) / oldZoomFactor / clientHeight
+
+        diagramModel.setOffset(
+            diagramModel.getOffsetX() - widthDiff * xFactor,
+            diagramModel.getOffsetY() - heightDiff * yFactor
+        )
+
+        this.setState({
+            engine: engine
+        })
+    }
+
+    onDiagramUnfocus() {
+        this.state.engine.getDiagramModel().clearSelection()
+    }
+
+    repaint() {
+        this.state.engine.repaintCanvas()
+    }
+
+    loadDiagram(diagram) {
+        var engine = this.state.engine
+        var model = new SRD.DiagramModel()
+        model.setLocked(true)
+
+        let diagram_json = false
+        try {
+            diagram_json = JSON.parse(diagram.data)
+        } catch (e) {
+            console.log(e)
+        }
+        if (this.props.preview){
+          model.setLocked(true);
+        }
+        if (diagram_json) {
+            // CONVERT DEPRECATED BLOCKS
+            diagram_json = convertDiagram(diagram_json, this.state.diagrams)
+
+            // This should not happen
+            if(diagram_json.nodes.length === 0){
+                diagram_json = new_template
+            }
+            engine.setSuperSelect(null)
+            model.deSerializeDiagram(diagram_json, engine)
+            model.addListener({ nodesUpdated: this.unsave })
+            model.addListener({ linksUpdated: this.unsave })
+            var nodes = model.getNodes()
+            for (let key in nodes) {
+                if (nodes[key].extras.type === 'story' || nodes[key].extras.type === 'comment') {
+                    nodes[key].clearListeners()
+                    nodes[key].addListener({ entityRemoved: e => e.stopPropagation() })
+                }
+            }
+            var links = model.getLinks()
+            for (let key in links) {
+                links[key].setColor(line_color)
+                links[key].setWidth(line_width)
+            }
+
+            engine.stopMove()
+            engine.setDiagramModel(model)
+            // make sure variables are unique and don't overlap with global variables
+            let variables = []
+            if (Array.isArray(diagram.variables)) {
+                diagram.variables.forEach(v => {
+                    if(!variables.includes(v) && !this.state.global_variables.includes(v)){
+                        variables.push(v)
+                    }
+                })
+            }
+
+            this.setState({
+                open: false,
+                engine: engine,
+                diagram_name: diagram.title ? diagram.title : 'New Flow',
+                loading_diagram: false,
+                variables: variables
+            })
+
+            this.setState({ saved: true })
+        } else {
+            this.props.setError('Could Not Open Project - Corrupted File')
+        }
+    }
+
+    onLoadDiagrams(){
+        axios.get('/skill/'+this.state.skill.skill_id+'/diagrams', {
+            headers: { Pragma: 'no-cache' }
+        })
+        .then(res => {
+            this.setState({
+                diagrams: res.data.map(flow => {
+                    try {
+                        return {
+                            id: flow.id,
+                            name: flow.name,
+                            sub_diagrams: JSON.parse(flow.sub_diagrams)
+                        }
+                    } catch(err) {
+                        return {
+                            id: flow.id,
+                            name: flow.name
+                        }
+                    }
+                })
+            }, () => {
+                this.onLoadId(this.props.diagram_id)
+            })
+        })
+        .catch(err => {
+            console.error(err.response)
+            this.props.setError('Could Not Retrieve Project Diagrams')
+        })
+    }
+
+    onLoadId(diagram_id) {
+        axios.get('/diagram/'+ diagram_id, {
+            headers: { Pragma: 'no-cache' }
+        })
+        .then(res => {
+            this.loadDiagram(res.data)
+            if(this.buildDiagrams !== null){
+                this.buildDiagrams(diagram_id)
+            }
+        })
+        .catch(err => {
+            console.error(err)
+        })
+    }
+
+    render() {
+        const diagram = _.find(this.state.diagrams, d => d.id === this.props.diagram_id)
+        return (
+            <React.Fragment>
+                <div id="lightcanvas">
+                    {this.state.loading_diagram && <div id="loading-diagram">
+                        <div className="text-center">
+                            <h5 className="text-muted mb-2">Loading Preview</h5>
+                            <span className="loader"/>
+                        </div>
+                    </div>}
+                    <div
+                        key={this.props.diagram_id}
+                        id="diagram"
+                        onDrop={this.onDrop}
+                        onDragOver={e => e.preventDefault()}
+                        onClick={this.clickDiagram}
+                    >
+                        <div id="widget-bar">
+                            <ButtonGroup>
+                                <Button isWhiteCirc onClick={()=>this.zoom(1000)} className="round-left"><i className="far fa-plus"/></Button>
+                                <Button isWhiteCirc onClick={()=>this.zoom(-1000)} className="round-right"><i className="far fa-minus"/></Button>
+                            </ButtonGroup>
+                        </div>
+                        <SRD.DiagramWidget
+                            nodeProps={{
+                                hasFlow: _.noop,
+                                enterFlow: _.noop,
+                                removeNode: _.noop,
+                                diagram: diagram,
+                                removeCombineNode: _.noop,
+                                addRemoveListener: _.noop,
+                                disabled: true
+                            }}
+                            diagramEngine={this.state.engine}
+                            clickDiagram={_.noop}
+                            allowLooseLinks={false}
+                            locked={true}
+                        />
+                    </div>
+                </div>
+            </React.Fragment>
+        )
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setError: err => dispatch(setError(err))
+    }
+}
+export default connect(null, mapDispatchToProps)(LightCanvas)

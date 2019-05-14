@@ -12,9 +12,9 @@ import Button from 'components/Button'
 import { Spinner } from 'components/Spinner/Spinner'
 
 // Views
-import Onboarding from 'views/pages/Onboarding'
-import Templates from 'views/pages/Templates'
-import Dashboard from 'views/pages/Dashboard'
+import Onboarding from 'containers/Onboarding'
+import Templates from 'containers/Templates'
+import Dashboard from 'containers/Dashboard'
 
 const getTeamFromURL = (computedMatch) => {
   return computedMatch && computedMatch.params && computedMatch.params.team_id

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { DefaultNodeModel,Toolkit } from './../main.js'
 import { BlockPortModel } from './BlockPortModel';
 import memoizeOne from 'memoize-one'
-import isEqual from 'views/helpers/react-fast-compare';
+import isEqual from 'utils/react-fast-compare';
 
 const toolkit = new Toolkit();
 
@@ -79,7 +79,7 @@ export class BlockNodeModel extends DefaultNodeModel {
 	isLocked(){
 		return this.locked;
 	}
-	
+
 	serialize() {
 		return _.merge(super.serialize(), {
 			combines: !_.isEmpty(this.combines) ? this.combines : null

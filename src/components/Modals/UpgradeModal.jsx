@@ -3,8 +3,8 @@ import {Modal, ModalBody, Row, Col} from 'reactstrap'
 import { ModalHeader } from 'components/Modals/ModalHeader'
 import {Elements} from 'react-stripe-elements';
 import Button from 'components/Button'
-import CheckoutForm from './../../pages/Account/CheckoutForm'
-import "./../../pages/Account/Account.css";
+import CheckoutForm from 'containers/Account/CheckoutForm'
+import "containers/Account/Account.css";
 
 
 const STATUS = {

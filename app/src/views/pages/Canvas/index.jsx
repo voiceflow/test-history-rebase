@@ -390,7 +390,7 @@ export class Canvas extends Component {
                     let port = ports[name]
                     port.in ? newPort = node.addInPort(port.label) : newPort = node.addOutPort(port.label)
                     if (port.hidden) {
-                        newPort.setHidden(port.hidden)
+                      newPort.setHidden(port.hidden);
                     }
                 }
             }
@@ -406,9 +406,7 @@ export class Canvas extends Component {
                         if (c.height) {
                             totalHeight = totalHeight + c.height
                         } else {
-                            const dimensions = this.state.engine.getNodeDimensions(c);
-                            c.updateDimensions(dimensions)
-                            totalHeight = totalHeight + dimensions.height
+                            totalHeight = totalHeight + selected.combines[idx].height
                         }
 					}
 				});

@@ -22,10 +22,17 @@ export default class VendorSelectList extends Component {
 
   render() {
 
-    return <div className='vendors-select-list' ref={this.setWrapperRef}>
+    return <div className={cn('vendors-select-list', {
+
+    })} ref={this.setWrapperRef}>
       {this.props.vendors.map(vendor => {
-        return <div key={vendor.id} onClick={() => this.props.onSelect(vendor)} className={cn({selected: this.props.selectedVendor === vendor.id})}>
-          {vendor.name}
+        const selected = this.props.selectedVendor === vendor.id
+        return <div key={vendor.id} onClick={() => this.props.onSelect(vendor)} className={cn(
+          'd-flex'
+        )}>
+          <div className={cn('platform-checkbox', {
+            active: selected
+          })}></div><div>{vendor.name}</div>
         </div>
       })}
     </div>

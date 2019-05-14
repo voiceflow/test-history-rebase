@@ -493,7 +493,7 @@ class Skill extends Component {
         <p className="loading">{stage_title[this.state.stage]}</p>
       </div>
     } else if (this.state.stage === 2) {
-      content = <div className="MUIform">
+      content = <div className="form">
         {this.state.stage_error && this.state.stage_error.stage === 2 ?
           <Alert color="danger">{this.state.stage_error.message}</Alert> : null
         }

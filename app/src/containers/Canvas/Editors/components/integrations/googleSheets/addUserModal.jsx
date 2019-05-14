@@ -1,0 +1,64 @@
+import GoogleLogin from 'react-google-login';
+import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { addIntegrationUser } from 'ducks/integration'
+
+import { GOOGLE_SHEETS } from './constants'
+
+class GoogleAddUserModal extends Component {
+
+  googleLogin = async (userProfile) => {
+    try {
+      this.props.onBegin()
+      await this.props.addUser({
+        user_info: userProfile,
+        creator_id: this.props.user.creator_id,
+        skill_id: this.props.skill_id
+      })
+      this.props.onSuccess()
+    } catch (e) {
+      let error = e
+      if (e.response && typeof e.response.data === 'string') {
+        error = e.response.data
+      } else if (typeof e === 'string') {
+        error = e
+      } else if (e.response) {
+        error = `Error occured: ${JSON.stringify(e.response.data)}`
+      }
+      this.props.onError(error)
+    }
+  }
+
+  render() {
+    return (
+      <div className="d-flex flex-column">
+        <div className='text-center mt-3'><img className='add-user-image' src='/google-sheets.svg' alt="empty" /></div>
+        <div className="d-flex justify-content-center">
+          <div className="text-muted text-center mt-4 mb-2 mx-5">Log in to connect your account</div>
+        </div>
+        <div className="d-flex justify-content-center mx-5 my-3">
+          <GoogleLogin
+            clientId={'792099969137-uf81ar579b5ea2ll96a37r3ruucfbrmv.apps.googleusercontent.com'}
+            className="social-button class-ggl mb-4"
+            buttonText="Login with Google"
+            onSuccess={this.googleLogin}
+            responseType={'code'}
+            scope={`profile email https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets`}
+          />
+        </div>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  user: state.account
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addUser: (body) => dispatch(addIntegrationUser(GOOGLE_SHEETS, body))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GoogleAddUserModal)

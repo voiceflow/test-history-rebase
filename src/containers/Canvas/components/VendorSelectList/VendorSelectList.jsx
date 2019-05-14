@@ -30,9 +30,12 @@ class VendorSelectList extends Component {
 			return (
 				<Button
 					isActive={this.props.vendor_id === vendor.id}
-					className='country-checkbox'
+					className={cn('country-checkbox', 'vendor-button')}
 					key={vendor.id}
-					onClick={() => this.props.updateVendorId(vendor.id)}>
+					onClick={() => {
+						this.props.updateVendorId(this.props.project_id, vendor.id)
+						this.props.onBlur()
+						}}>
 					<span>{vendor.name}</span>
 				</Button>
 			);

@@ -2138,13 +2138,29 @@ kbd {
     background-color: #fff;
     right: 0;
     top: 48px;
-    max-height: 150px;
+    max-height: 165px;
     overflow: scroll;
     z-index: 1;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06);
     border: 1px solid rgba(141, 162, 181, .28);
-    cursor: pointer;
     border-radius: 5px;
+}
+
+.vendor-button {
+    cursor: pointer;
+    width: 100%;
+    margin: 0 !important;
+    border-radius: 0 !important;
+}
+
+.vendor-button>span{
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.vendor-button:hover {
+    background-color: #ECECEC;
 }
 
 .upload-btn-container {

@@ -7,8 +7,9 @@
     color: #8DA2B5;
     text-transform: uppercase;
     font-weight: 600;
+    font-size: 0.9em;
 }
 
 .vendors-select-list {
-    padding: 10px 0 10px 0;
+    padding: 10px 0 0 0;
 }

@@ -2,8 +2,9 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
+import { Modal, ModalBody, ModalFooter } from "reactstrap";
 import { ModalHeader } from 'views/components/Modals/ModalHeader'
+import Button from 'components/Button'
 
 import { clearModal } from "ducks/modal";
 
@@ -29,17 +30,18 @@ export class ConfirmModal extends React.Component {
             {this.props.confirm.header}
           </ModalHeader>
         )}
-        <ModalBody className="text-center">{this.props.confirm.text}</ModalBody>
+        <ModalBody className="text-center">
+          {this.props.confirm.text}
+        </ModalBody>
         <ModalFooter className="justify-content-center">
           {cancel && (
-            <button
-              className="btn-tertiary-gray"
-              onClick={this.props.toggle}
-            >
+            <Button isFlatGray onClick={this.props.toggle}>
               Cancel
-            </button>
+            </Button>
           )}
-          <Button color={this.props.confirm.warning ? "warning" : "primary"} 
+          <Button
+            isWarning={this.props.confirm.warning}
+            isPrimary={!this.props.confirm.warning}
             onClick={() => {
               if (typeof this.props.confirm.confirm !== "function")
                 return this.props.toggle();

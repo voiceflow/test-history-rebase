@@ -1,7 +1,8 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
 import React from 'react';
-import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
+import {Modal, ModalBody, ModalFooter } from 'reactstrap';
+import Button from 'components/Button'
 
 class TemplateConfirmModal extends React.Component {
 
@@ -12,9 +13,9 @@ class TemplateConfirmModal extends React.Component {
           {this.props.confirm.text}
         </ModalBody>
         <ModalFooter className="justify-content-center">
-          <Button color="primary" onClick={this.props.confirm.replaceWithTemplate}>Replace</Button>{' '}
-          <Button color="primary" onClick={this.props.confirm.createFlow}>Create New Flow</Button>{' '}
-          <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+          <Button isPrimary onClick={this.props.confirm.replaceWithTemplate}>Replace</Button>{' '}
+          <Button isPrimary onClick={this.props.confirm.createFlow}>Create New Flow</Button>{' '}
+          <Button isSecondary onClick={this.props.toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
     );

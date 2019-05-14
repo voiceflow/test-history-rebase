@@ -4,7 +4,6 @@ import { compose } from 'recompose'
 import { Tooltip } from "react-tippy";
 import {
   Alert,
-  Button
 } from "reactstrap";
 
 import { loadSession, errorScreen, socketCheck } from 'hocs/socketCheck'
@@ -18,6 +17,7 @@ import { fetchDisplays } from "ducks/display";
 import { fetchEmails } from 'ducks/email';
 
 import Header from 'components/Header';
+import Button from 'components/Button'
 import Canvas from './views/pages/Canvas'
 import Visuals from './views/pages/Visuals'
 import Business from './views/pages/Business'
@@ -240,7 +240,7 @@ class Skill extends Component {
     displayUploadPrompt = () => {
         if (this.state.show_upload_prompt) {
             return <div className="upload-success-popup">
-                <button className="close close-upload-success-popup mt-2" onClick={this.closePrompt} />
+                <Button className="close close-upload-success-popup mt-2" onClick={this.closePrompt} />
                 {this.renderBody(false)}
             </div>
         }
@@ -267,7 +267,7 @@ class Skill extends Component {
           </Tooltip>
       } else {
           if(this.isUploadLoading()){
-              return <Button variant="contained" className="publish-btn publish-btn-disabled" onClick={()=>this.setState({show_upload_prompt: !this.state.show_upload_prompt})}>
+              return <Button isPublish disabled variant="contained" onClick={()=>this.setState({show_upload_prompt: !this.state.show_upload_prompt})}>
                       <p className="loading-btn m-0 p-0">Uploading</p>
                       <div className="launch">
                           <div className="load-spinner pt-1">
@@ -280,7 +280,7 @@ class Skill extends Component {
                   position="bottom"
                   distance={16}
               >
-                  <Button variant="contained" className="publish-btn" onClick={this.openUpdate}>
+                  <Button isPublish variant="contained" onClick={this.openUpdate}>
                       {(this.props.platform === 'google') ? 'Upload to Google' : 'Upload to Alexa'}<div className="launch">
                           <div className="first">
                               <img src={'/up.svg'} alt="upload" width="15" height="15" />

@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import MultiLineInput from './components/MultiLineInput'
 import axios from 'axios'
 import { Collapse } from 'reactstrap'
+
+import Button from 'components/Button'
+import MultiLineInput from './components/MultiLineInput'
 
 class Line extends Component {
     constructor(props) {
@@ -128,7 +130,11 @@ class Line extends Component {
                         newAudio={this.handleNewAudio}
                     />
                 })}
-                <div className="mt-3"><button className="btn btn-clear btn-lg btn-block" onClick={this.handleAddLine}>Add Line Audio <i className="fas fa-plus-circle ml-1"></i></button></div>
+                <div className="mt-3">
+                    <Button isBtn isClear isLarge isBlock onClick={this.handleAddLine}>
+                        Add Line Audio <i className="fas fa-plus-circle ml-1"></i>
+                    </Button>
+                </div>
             </div>
         );
     }

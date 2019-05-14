@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import IntentInputs from './components/IntentInputs'
-import SlotInputs from './components/SlotInputs'
 import { Button, ButtonGroup, Alert } from 'reactstrap'
 import Select, { components } from 'react-select'
+
+import DefaultButton from 'components/Button'
+import IntentInputs from './components/IntentInputs'
+import SlotInputs from './components/SlotInputs'
 import SlotMappings from './components/SlotMappings'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import { PLATFORMS } from '../../../../Constants'
+
 import { updateIntents, setCanFulfill } from 'ducks/version'
 import { setError } from 'ducks/modal'
 
@@ -224,14 +227,14 @@ export class Command extends Component {
                 {extras.diagram_id ?
                     <React.Fragment>
                         {diagram_name ? <React.Fragment>
-                            <button block className="btn-primary btn-block btn-lg" onClick={() => this.props.enterFlow(extras.diagram_id)}>
-                            <img src={"/flows-white.svg"} alt="flows" className="mr-2" /> Enter {diagram_name} Flow
-                            </button>
+                            <DefaultButton isPrimary isLarge block isBlock onClick={() => this.props.enterFlow(extras.diagram_id)}>
+                                <img src={"/flows-white.svg"} alt="flows" className="mr-2" /> Enter {diagram_name} Flow
+                            </DefaultButton>
                         </React.Fragment> : <Alert color="danger" className="text-center">
                                 <i className="fas fa-exclamation-triangle fa-2x mb-2" /><br />
                                 Unable to Retrieve Flow - This Flow may be broken or deleted
                         </Alert>}
-                        <button block className="mt-3 btn-tertiary btn-lg btn-block btn" onClick={() => { 
+                        <DefaultButton isFlat isLarge isBtn block className="mt-3 btn-block" onClick={() => { 
                                 let node = this.state.node; 
                                 let extras = node.extras[this.props.platform]; extras.diagram_id = null; 
                                 this.setState({ node: node })
@@ -239,13 +242,13 @@ export class Command extends Component {
                             }} 
                             color="clear">
                             Unlink Flow
-                        </button>
+                        </DefaultButton>
                     </React.Fragment> :
                     <React.Fragment>
                         <label>Link Command Flow</label>
-                        <button className="btn-clear btn-block btn-lg" block onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'), null, true)}>
-                        <img className="mr-2" src={'/flows.svg'} height={15} width={15} alt="home"/> Create New Flow
-                        </button>
+                        <DefaultButton isClear isLarge isBlock block onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'), null, true)}>
+                            <img className="mr-2" src={'/flows.svg'} height={15} width={15} alt="home"/> Create New Flow
+                        </DefaultButton>
                         <div className="break">
                         <span className="or">OR</span>
                         </div>

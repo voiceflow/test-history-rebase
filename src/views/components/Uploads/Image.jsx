@@ -3,6 +3,8 @@ import Dropzone from 'react-dropzone';
 import axios from 'axios';
 import {Input} from 'reactstrap'
 
+import Button from 'components/Button'
+
 const MAX_SIZE = 5*1024*1024
 
 class Image extends Component {
@@ -65,9 +67,9 @@ class Image extends Component {
             render = <div className="dropzone reject enter-url">
                 <div className="text-center text-danger">
                     {this.state.error}
-                    <button onClick={()=>this.setState({error: false})} className="upload-btn btn btn-primary-small exit">
+                    <Button isBtn onClick={()=>this.setState({error: false})} className="upload-btn exit">
                         <i className="far fa-chevron-left"/>Back
-                    </button>
+                    </Button>
                 </div>
             </div>
         } else if(this.props.image && this.props.replace) {
@@ -87,15 +89,15 @@ class Image extends Component {
         } else if(this.props.image) {
             render = <div className="image-box">
                 <div className="image" style={{backgroundImage: `url(${this.props.image})`}}></div>
-                <button className="close" disabled={this.props.isDisabled} onClick={() => this.props.update(null)}></button>
+                <Button className="close" disabled={this.props.isDisabled} onClick={() => this.props.update(null)} />
             </div>
         }else if(this.state.url_open){
             render = <div className="dropzone">
                 <div className="text-center w-100">
                     <label>Enter Image URL</label>
                     <Input placeholder="URL Link" value={this.state.url} onChange={this.handleChange} name="url"/>
-                    <button onClick={()=>this.setState({url_open: false})} className="btn-tertiary mt-3 mr-1">Back</button>
-                    <button onClick={()=>this.props.update(this.state.url)} className="btn btn-primary mr-1">Confirm</button>
+                    <Button isFlat onClick={()=>this.setState({url_open: false})} className="mt-3 mr-1">Back</Button>
+                    <Button isBtn isPrimary onClick={()=>this.props.update(this.state.url)} className="mr-1">Confirm</Button>
                 </div>
             </div>
         }else{
@@ -113,11 +115,11 @@ class Image extends Component {
                   <div className="drop-child">
                     {this.props.tiny && <>
                         {/* Drag-n-Drop Image or <span className="btn-link">browse</span><br/> */}
-                        {this.props.url && <button className="upload-btn btn btn-default" onClick={(e)=>{
+                        {this.props.url && <Button isBtn isDefault className="upload-btn" onClick={(e)=>{
                             e.preventDefault()
                             e.stopPropagation()
                             this.setState({url_open: true})
-                        }}>URL</button>}
+                        }}>URL</Button>}
                       </>
                     }
                   </div>

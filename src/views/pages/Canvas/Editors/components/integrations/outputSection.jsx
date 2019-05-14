@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import cn from 'classnames'
 import update from 'immutability-helper'
 import { connect } from 'react-redux'
 import { Collapse } from 'reactstrap'

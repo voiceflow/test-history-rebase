@@ -20,7 +20,9 @@ export class BlockNodeModel extends DefaultNodeModel {
 	}
 
 	addOutPort(label){
-		return this.addPort(new BlockPortModel(false, toolkit.UID(), label, toolkit.UID()));
+		let port = this.addPort(new BlockPortModel(false, toolkit.UID(), label, toolkit.UID()));
+		port.setMaximumLinks(1)
+		return port
 	}
 
 	deSerialize(object, engine, parentCombine=null, fade=false, linter=[], keepLink=false) {

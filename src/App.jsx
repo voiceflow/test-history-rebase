@@ -7,6 +7,7 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
+import Socket from './Socket';
 
 // Import Dependent CSS
 import 'react-tippy/dist/tippy.css';
@@ -15,7 +16,6 @@ import './assets/fontawesome/css/all.min.css';
 import './App.css';
 import 'react-day-picker/lib/style.css';
 
-import socket from 'socket.io-client';
 import { evaluateMaintenance } from './MAINTENANCE';
 
 // GLOBAL MODALS
@@ -26,47 +26,6 @@ import Modal from 'components/Modals/Modal';
 
 import { getAuth, getUser } from 'ducks/account';
 import allRoutes from './Routes/allRoutes';
-
-
-const getEndpoint = () => {
-	let port = '';
-	let protocol = 'https';
-	if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-		port = ':8080';
-		protocol = 'http';
-	}
-	return `${protocol}://${window.location.hostname}${port}`;
-};
-
-const socketFail = () => {
-	window.CreatorSocket.status = 'FAIL';
-};
-
-window.CreatorSocket = socket(getEndpoint());
-window.CreatorSocket.connectedCB = {};
-// catch error events
-window.CreatorSocket.on('fail', socketFail);
-window.CreatorSocket.on('error', socketFail);
-// to catch if the server is offline
-window.CreatorSocket.on('connect_error', socketFail);
-// catch failed connection attempts
-window.CreatorSocket.on('connect_failed', socketFail);
-// to catch connection events
-window.CreatorSocket.on('connect', () => {
-	window.CreatorSocket.status = 'CONNECTED';
-	// queued up events after reconnection
-	for (var cb in window.CreatorSocket.connectedCB) {
-		if (typeof window.CreatorSocket.connectedCB[cb] === 'function') {
-			window.CreatorSocket.connectedCB[cb]();
-		}
-	}
-});
-
-window.addEventListener('beforeunload', function () {
-	if (window.CreatorSocket && window.CreatorSocket.disconnect) {
-		window.CreatorSocket.disconnect();
-	}
-});
 
 ReactGA.initialize('UA-124745244-3');
 
@@ -130,6 +89,7 @@ class App extends Component {
 		}
 		return (
 			<div id="body">
+				<Socket />
 				<ConnectedRouter history={history}>
 						<ConfirmModal/>
 						<ErrorModal/>
@@ -146,7 +106,6 @@ global.__isReactDndBackendSetUp = false;
 
 export default compose(
 	connect(null, {
-		getAuth,
 		getUser
 	}),
 	DragDropContext(HTML5Backend)

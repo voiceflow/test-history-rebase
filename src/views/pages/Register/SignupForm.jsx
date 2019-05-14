@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import queryString from "query-string";
 import { Form, FormGroup, Input } from 'reactstrap'
-import { signup } from 'ducks/account'
 import { Link } from 'react-router-dom'
-import queryString from 'query-string'
+
+import Button from 'components/Button'
 import SocialLogin from './SocialLogin'
 import ErrorWidget from './ErrorWidget';
-import { connect } from 'react-redux'
+
+import { signup } from 'ducks/account'
 
 export const SignupForm = ({signup, history, location}) => {
   let query = queryString.parse(location.search)
@@ -82,11 +85,13 @@ export const SignupForm = ({signup, history, location}) => {
           required minLength="8"
           value={password}/>
       </FormGroup>
-      <button
-        className="btn-primary btn-lg btn-block"
+      <Button
+        isPrimary
+        isLarge
+        isBlock
         type="submit">
           Create Account
-        </button>
+        </Button>
       <div className="text-center small mt-2">
         <Link style={{color:'#8da2b5'}}to='/reset'>
           Forgot your password?

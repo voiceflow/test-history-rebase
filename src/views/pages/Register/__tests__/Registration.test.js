@@ -53,7 +53,7 @@ describe('Onboarding', () => {
       .simulate('change', {target: {value:'tests@getvoiceflow.com'}});
     app.find('#signup-form Input[name="password"]')
       .simulate('change', {target: {value:'password'}});
-    app.find('#signup-form button[type="submit"]')
+    app.find('#signup-form Button[type="submit"]')
       .simulate('click');
     setTimeout(() => {
       expect(app.exists('.onboarding-survey')).toBe(true);
@@ -67,7 +67,7 @@ describe('Onboarding', () => {
       .simulate('change', {target: {value:'tests@getvoiceflow.com'}});
     app.find('#signup-form Input[name="password"]')
       .simulate('change', {target: {value:'password'}});
-    app.find('#signup-form button[type="submit"]')
+    app.find('#signup-form Button[type="submit"]')
       .simulate('click');
     setTimeout(() => {
       expect(app.exists('#signup-form .alert-danger')).toBe(true);
@@ -79,7 +79,7 @@ describe('Onboarding', () => {
       .simulate('change', {target: {value:'tests@getvoiceflow.com'}});
     app.find('#login-form Input[name="password"]')
       .simulate('change', {target: {value:'password'}});
-    app.find('#login-form button[type="submit"]')
+    app.find('#login-form Button[type="submit"]')
       .simulate('click');
     setTimeout(() => {
       expect(app.exists('.onboarding-survey')).toBe(true);

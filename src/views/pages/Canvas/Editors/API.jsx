@@ -564,11 +564,20 @@ class API extends Component {
                     <Nav tabs className="mb-3">
                         <NavItem onClick={() => {
                                 const node = this.state.node;
-                                node.extras.bodyInputType = 'keyValue';
+                                node.extras.bodyInputType = 'formData';
                                 this.setState({ node: node })
                                 }}>
-                            <NavLink href="#" active={this.state.node.extras.bodyInputType === 'keyValue'}>
-                                Key Value Input
+                            <NavLink href="#" active={this.state.node.extras.bodyInputType === 'formData'}>
+                                Form Data
+                            </NavLink>
+                        </NavItem>
+                        <NavItem onClick={() => {
+                                const node = this.state.node;
+                                node.extras.bodyInputType = 'urlEncoded';
+                                this.setState({ node: node })
+                                }}>
+                            <NavLink href="#" active={this.state.node.extras.bodyInputType === 'urlEncoded'}>
+                                Form Url-Encoded
                             </NavLink>
                         </NavItem>
                         <NavItem onClick={() => {

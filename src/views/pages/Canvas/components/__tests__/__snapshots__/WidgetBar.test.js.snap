@@ -8,38 +8,54 @@ exports[`Widget Bar render canvas widget bar 1`] = `
     role="group"
     tag="div"
   >
-    <button
-      className="white-circ round-left"
+    <Button
+      className="round-left"
+      iconPosition="right"
+      isWhiteCirc={true}
       onClick={[Function]}
+      onRef={[Function]}
+      trackEvent="Button Click"
     >
       <i
         className="far fa-plus"
       />
-    </button>
-    <button
-      className="white-circ round-right"
+    </Button>
+    <Button
+      className="round-right"
+      iconPosition="right"
+      isWhiteCirc={true}
       onClick={[Function]}
+      onRef={[Function]}
+      trackEvent="Button Click"
     >
       <i
         className="far fa-minus"
       />
-    </button>
+    </Button>
   </ButtonGroup>
-  <button
-    className="white-circ ml-2"
+  <Button
+    className="ml-2"
+    iconPosition="right"
+    isWhiteCirc={true}
     onClick={[Function]}
+    onRef={[Function]}
+    trackEvent="Button Click"
   >
     <i
       className="fas fa-map-marker-alt"
     />
-  </button>
-  <button
-    className="white-circ ml-2"
+  </Button>
+  <Button
+    className="ml-2"
+    iconPosition="right"
+    isWhiteCirc={true}
     onClick={[Function]}
+    onRef={[Function]}
+    trackEvent="Button Click"
   >
     <i
       className="fas fa-keyboard"
     />
-  </button>
+  </Button>
 </div>
 `;

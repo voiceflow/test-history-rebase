@@ -6,7 +6,7 @@ import axios from 'axios'
 
 import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Button, ButtonGroup, Alert } from 'reactstrap'
 import { ModalHeader } from 'views/components/Modals/ModalHeader'
-import MUIButton from '@material-ui/core/Button'
+import DefaultButton from 'components/Button'
 import GoogleAuth from '../../components/Modals/GoogleAuthenticationModalContent'
 import Dropzone from 'react-dropzone'
 import { GOOGLE_LOCALES } from 'Constants'
@@ -547,8 +547,8 @@ class GooglePublish extends Component {
                   <div className="d-flex justify-content-between align-items-center">
                     <h5 className="mb-0">This Action is currently in review so you cannot edit it.</h5>
                     <div>
-                      <MUIButton variant="contained" className="white-btn" href={googleConsoleUrl} target="_blank">Visit Dashboard</MUIButton>
-                      <MUIButton variant="contained" className="btn-primary ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Skill</MUIButton>
+                      <DefaultButton isWhite variant="contained" href={googleConsoleUrl} target="_blank">Visit Dashboard</DefaultButton>
+                      <DefaultButton isPrimary variant="contained" className="ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Skill</DefaultButton>
                     </div>
                   </div>
                 </div>

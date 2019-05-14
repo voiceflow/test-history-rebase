@@ -3,6 +3,8 @@ import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-valida
 import { Input } from 'reactstrap';
 import {Tooltip} from 'react-tippy';
 
+import Button from 'components/Button'
+
 class ProductDetailsForm extends React.Component {
   render() {
     return(
@@ -116,17 +118,20 @@ class ProductDetailsForm extends React.Component {
             />
           </AvGroup>
           <div className="product-stage-button">
-            <button className="btn-tertiary-gray mr-2"
+            <Button
+              isFlatGray
+              className="mr-2"
               variant="contained"
               onClick={() => this.props.updateStage(3)}
             >
               Previous
-            </button>
-            <button className="btn-primary"
+            </Button>
+            <Button
+              isPrimary
               variant="contained"
             >
               Submit
-            </button>
+            </Button>
           </div>
         </AvForm>
       </div>

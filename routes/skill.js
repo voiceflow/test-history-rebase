@@ -129,7 +129,7 @@ const checkSkillInReview = (amzn_id, creator_id, skill_id) => {
   return new Promise(async (resolve) => {
     AmazonAccessToken(creator_id)
       .then(async (token) => {
-        if (!token) return;
+        if (!token) resolve(false);
         try {
           const res = await axios.request({
             url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/certifications`,

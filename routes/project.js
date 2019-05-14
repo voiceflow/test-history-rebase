@@ -97,13 +97,28 @@ exports.getProjectVersions = (req, res) => {
 
 exports.getLiveVersion = async (req, res) => {
   const project_id = hashids.decode(req.params.project_id)[0];
-  try {
-    const live_version_data = await pool.query(`
+  const amzn_id = req.query.amzn_id
+
+  let q, p
+  if (amzn_id) {
+    q = `
+      SELECT *
+      FROM skills
+      WHERE project_id = $1 AND creator_id = $2 AND amzn_id = $3 AND live = TRUE
+      LIMIT 1
+    `
+    p = [project_id, req.user.id, amzn_id]
+  } else {
+    q = `
       SELECT *
       FROM skills
       WHERE project_id = $1 AND creator_id = $2 AND live = TRUE
       LIMIT 1
-    `, [project_id, req.user.id]);
+    `
+    p = [project_id, req.user.id]
+  }
+  try {
+    const live_version_data = await pool.query(q, p);
 
     let live_version = null;
     let live_skill = null;
@@ -258,7 +273,12 @@ exports.updateVendorId = async (req, res) => {
 
   try {
     await pool.query('UPDATE project_members SET selected_vendor = $3 WHERE creator_id = $1 AND project_id = $2', [creator_id, project_id, vendor_id]);
-    res.sendStatus(200);
+    const q = await pool.query('SELECT amzn_id FROM vendors WHERE project_id = $1 AND creator_id = $2 AND vendor_id = $3', [creator_id, project_id, vendor_id])
+    let amzn_id
+    if (q.rows.length > 0) {
+      amzn_id = q.rows[0].amzn_id
+    }
+    res.send(amzn_id);
   } catch (e) {
     console.error(e);
     res.status(500).send(e);

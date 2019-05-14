@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { setError } from 'ducks/modal'
+import { fetchLiveVersion, updateVersion } from 'ducks/version'
 import Normalize from 'ducks/_normalize'
 import { addProjectToList } from './board'
 
@@ -90,7 +91,10 @@ export const deleteProject = project_id => {
 export const updateVendorId = (project_id, vendor_id) => {
   return async (dispatch) => {
     try {
-      await axios.post(`/project/${project_id}/vendor_id`, {vendor_id})
+      const amzn_id = (await axios.post(`/project/${project_id}/vendor_id`, {vendor_id})).data
+      await dispatch(updateVersion('amzn_id', amzn_id || null))
+      await dispatch(updateVersion('vendor_id', vendor_id))
+      await dispatch(fetchLiveVersion(project_id, amzn_id))
     } catch (err) {
       dispatch(setError('Unable to update Vendor Id'))
       console.error(err)

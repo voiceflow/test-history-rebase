@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setConfirm, clearModal, setError } from 'ducks/modal'
 import { Collapse } from 'reactstrap'
-import update from 'immutability-helper/index';
+import update from 'immutability-helper';
 
 import DefaultModal from 'components/Modals/DefaultModal'
 import { deleteIntegrationUser } from 'ducks/integration'

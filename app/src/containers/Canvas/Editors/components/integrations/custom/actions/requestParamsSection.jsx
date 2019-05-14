@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import update from 'immutability-helper/index'
+import update from 'immutability-helper'
 import AceEditor from 'react-ace'
 import randomstring from 'randomstring'
 import { Collapse, Nav, NavItem, NavLink } from "reactstrap";

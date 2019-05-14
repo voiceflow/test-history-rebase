@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import TimeInterval from 'components/TimeInterval/TimeInterval'
-import axios from 'axios/index'
+import axios from 'axios'
 import LineBar from 'components/LineBar/LineBar'
-import moment from 'moment/moment'
+import moment from 'moment'
 import ReactTable from 'react-table'
 import './react-table.css'
 import { Table } from 'reactstrap'

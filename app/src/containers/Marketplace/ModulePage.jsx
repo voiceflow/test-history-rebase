@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios/index';
-import MUIButton from '@material-ui/core/Button/index';
+import axios from 'axios';
+import MUIButton from '@material-ui/core/Button';
 import './Marketplace.css';
 
 import { AMAZON_CATEGORIES } from './../../../services/Categories';

@@ -2,8 +2,8 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import axios from 'axios/index'
-import moment from 'moment/moment'
+import axios from 'axios'
+import moment from 'moment'
 import Select from 'react-select'
 import {
   parse

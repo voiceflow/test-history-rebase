@@ -4,7 +4,7 @@ import { ScrollContextProvider } from "contexts";
 import cn from 'classnames';
 import { Link } from "react-router-dom";
 import { Tooltip } from "react-tippy";
-import axios from "axios/index";
+import axios from "axios";
 import {
     Alert,
     Input,

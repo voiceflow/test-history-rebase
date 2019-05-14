@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import axios from "axios/index";
-import moment from "moment/moment";
+import axios from "axios";
+import moment from "moment";
 import StripeHandler from "hocs/withStripeHandler";
 import { CardElement } from "react-stripe-elements";
 

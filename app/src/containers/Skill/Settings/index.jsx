@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import axios from 'axios/index'
+import axios from 'axios'
 import { ButtonGroup, Button } from 'reactstrap'
 import { connect } from 'react-redux'
 import { updateVersion } from 'ducks/version'

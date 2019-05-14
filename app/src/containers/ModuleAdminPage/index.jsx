@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios/index';
+import axios from 'axios';
 import Masonry from 'react-masonry-component';
 import { Card } from 'reactstrap';
 

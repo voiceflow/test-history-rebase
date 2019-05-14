@@ -1,6 +1,6 @@
 import cn from 'classnames'
 import React, { Component } from 'react'
-import axios from 'axios/index'
+import axios from 'axios'
 import { connect } from "react-redux";
 import { Form, FormGroup, Input } from 'reactstrap'
 import Select from 'react-select'

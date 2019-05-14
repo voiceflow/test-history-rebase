@@ -5,7 +5,7 @@ import IntegrationBase from '../integrationBase'
 
 import { connect } from 'react-redux'
 import { setConfirm, clearModal, setError } from 'ducks/modal'
-import update from 'immutability-helper/index'
+import update from 'immutability-helper'
 
 import RequestParamsSection from './actions/requestParamsSection'
 import PathOutputSection from '../pathOutputSection'

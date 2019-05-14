@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import update from 'immutability-helper/index';
+import update from 'immutability-helper';
 import serializeError from 'serialize-error';
 import pretty from 'prettysize';
 import * as _ from 'lodash';
-import axios from 'axios/index';
+import axios from 'axios';
 import isVarName from 'is-var-name';
 import ReactJson from 'react-json-view';
 import { Button, ButtonGroup, Modal, ModalBody, Nav, NavItem, NavLink, InputGroupAddon, Input, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup } from 'reactstrap';

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios/index"
+import axios from "axios"
 import _ from "lodash"
 import { CardElement } from "react-stripe-elements";
 import { Collapse, Input } from "reactstrap";

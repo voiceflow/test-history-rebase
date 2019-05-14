@@ -4,11 +4,11 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { mountWrap, shallowWrap } from '../TestHelper/ContextWrapper';
 import { mount, shallow, render } from 'enzyme/build';
-import Account from '../index';
+import Account from '..';
 import { SignupForm } from '../SignupForm'
 import { LoginForm } from '../LoginForm'
 import toJson from 'enzyme-to-json';
-import axios from 'axios/index'
+import axios from 'axios'
 import { googleLogin, fbLogin } from 'ducks/account'
 
 jest.mock('react-ga');

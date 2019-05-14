@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import cn from "classnames";
 import { connect } from "react-redux";
 import { cloneDeep } from "lodash";
-import update from "immutability-helper/index";
+import update from "immutability-helper";
 import {
   Modal,
   ModalBody,

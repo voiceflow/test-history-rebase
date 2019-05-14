@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as SRD from 'components/SRD/main.js'
-import axios from 'axios/index'
+import axios from 'axios'
 import { ButtonGroup } from 'reactstrap'
 
 import {convertDiagram} from './util'

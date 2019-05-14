@@ -1,34 +1,38 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
+import axios from 'axios'
 import { compose } from 'recompose'
 import { Tooltip } from "react-tippy";
 import {
   Alert,
 } from "reactstrap";
+import { Link } from 'react-router-dom';
 
+// HOCs
 import { loadSession, errorScreen, socketCheck } from 'hocs/socketCheck'
 
+// Ducks
 import { unnormalize } from "ducks/_normalize";
-
 import { fetchVersion, setLiveModeModal, updateVersion, resetVersion } from 'ducks/version'
 import { fetchDiagrams } from 'ducks/diagram'
 import { fetchProducts } from 'ducks/product'
 import { fetchDisplays } from "ducks/display";
 import { fetchEmails } from 'ducks/email';
 
+// Components
 import Header from 'components/Header';
 import Button from 'components/Button'
+import SecondaryNavBar from 'components/NavBar/SecondaryNavBar'
+import DefaultModal from 'components/Modals/DefaultModal'
+import { Spinner } from 'components/Spinner/Spinner'
+
+// Views
 import Canvas from './views/pages/Canvas'
 import Visuals from './views/pages/Visuals'
 import Business from './views/pages/Business'
 import Settings from './views/pages/Skill/Settings'
 import Publish from './views/pages/Skill/Publish'
 import Logs from './views/pages/Logs'
-import axios from 'axios'
-import SecondaryNavBar from 'components/NavBar/SecondaryNavBar'
-import DefaultModal from 'components/Modals/DefaultModal'
-import { Spinner } from 'components/Spinner/Spinner'
-import { Link } from 'react-router-dom';
 import Marketplace from './views/pages/Marketplace';
 import Migrate from 'views/pages/Skill/Migrate'
 

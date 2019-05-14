@@ -3,9 +3,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalBody, ModalFooter } from "reactstrap";
+
+// Components
 import { ModalHeader } from 'components/Modals/ModalHeader'
 import Button from 'components/Button'
 
+// Actions
 import { clearModal } from "ducks/modal";
 
 export class ConfirmModal extends React.Component {

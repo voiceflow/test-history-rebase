@@ -114,6 +114,7 @@ export default class Button extends Component {
       isNavBordered,
       isActionSuccess,
       withDangerIndicator,
+      outline,
       ...props
     } = this.props;
 
@@ -130,6 +131,7 @@ export default class Button extends Component {
         'close': isClose,
         'close small': isCloseSmall,
         'nav-btn border': isNavBordered,
+        'btn-outline-secondary': outline,
         'btn-action': isAction,
         'btn-simple': isSimple,
         'btn-primary': isPrimary,
@@ -149,7 +151,7 @@ export default class Button extends Component {
         'active': isActive,
         'btn-block': isBlock,
         'dropdown-button': isDropdown,
-        'btn-secondary': isSecondary,
+        'btn-secondary': isSecondary && !outline,
         'btn-transparent': isTransparent,
         'btn-icon-flat': isIconFlat,
         'btn-warning': isWarning,

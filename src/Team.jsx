@@ -1,18 +1,20 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom'
+import queryString from 'query-string'
+
+// Actions
 import { fetchTeams, updateCurrentTeam, teamInvite } from "ducks/team";
 import { setConfirm, setError, setModal } from 'ducks/modal'
 
+// Components
 import Button from 'components/Button'
+import { Spinner } from 'components/Spinner/Spinner'
 
+// Views
 import Onboarding from 'views/pages/Onboarding'
 import Templates from 'views/pages/Templates'
 import Dashboard from 'views/pages/Dashboard'
-
-import { Spinner } from 'components/Spinner/Spinner'
-import { Link } from 'react-router-dom'
-
-import queryString from 'query-string'
 
 const getTeamFromURL = (computedMatch) => {
   return computedMatch && computedMatch.params && computedMatch.params.team_id

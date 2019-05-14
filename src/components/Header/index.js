@@ -4,7 +4,6 @@ import cn from 'classnames';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import Intercom from 'react-intercom';
-import './Header.css'
 import {
   UncontrolledDropdown,
   DropdownToggle,
@@ -12,8 +11,13 @@ import {
   DropdownItem
 } from 'reactstrap';
 
+// Actions
 import { logout } from 'ducks/account'
+
+// Components
 import { User } from 'components/User/User'
+
+import './Header.css'
 
 const NUM_TO_PLAN = (plan) => {
   switch (plan) {

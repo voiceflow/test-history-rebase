@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { Provider } from "react-redux";
 import ReactGA from "react-ga";
 import { store, history } from "./containers/store";
 import { Alert } from "reactstrap";
 import { ConnectedRouter } from 'connected-react-router'
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from 'react-dnd-html5-backend';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 
 // Import Dependent CSS
 import "react-tippy/dist/tippy.css";
@@ -177,7 +178,6 @@ class App extends Component {
       );
     }
     return (
-      <Provider store={store}>
         <ConnectedRouter history={history}>
         <div id="body">
           <ConfirmModal/>
@@ -251,7 +251,6 @@ class App extends Component {
             </Switch>
           </div>
         </ConnectedRouter>
-      </Provider>
     );
   }
 }
@@ -259,4 +258,7 @@ class App extends Component {
 // Hack until this ticket is fixed https://github.com/react-dnd/react-dnd/issues/894
 global.__isReactDndBackendSetUp = false;
 
-export default DragDropContext(HTML5Backend)(App);
+export default compose(
+	connect(null, { getAuth, getUser }),
+	DragDropContext(HTML5Backend)
+)(App);

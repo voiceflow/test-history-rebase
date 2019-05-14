@@ -2,8 +2,8 @@ import cn from "classnames";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 // import io from 'socket.io-client'
-import axios from "axios/index";
-import moment from "moment/moment";
+import axios from "axios";
+import moment from "moment";
 import ReactJson from "react-json-view";
 import Table from "@material-ui/core/Table/index";
 import TableBody from "@material-ui/core/TableBody/index";

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FormGroup, Input, Alert } from 'reactstrap';
 import {Link} from 'react-router-dom'
-import axios from 'axios/index';
+import axios from 'axios';
 
 import Button from 'components/Button'
 

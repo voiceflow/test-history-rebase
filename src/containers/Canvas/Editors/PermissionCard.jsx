@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {Alert, Button, ButtonGroup} from 'reactstrap'
-import Switch from '@material-ui/core/Switch/index'
+import Switch from '@material-ui/core/Switch'
 import {Link} from 'react-router-dom'
 
 const PERMISSIONS = [

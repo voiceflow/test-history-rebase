@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import update from 'immutability-helper/index'
+import update from 'immutability-helper'
 import _ from 'lodash'
 import randomstring from 'randomstring'
 import { connect } from 'react-redux'

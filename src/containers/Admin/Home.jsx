@@ -3,7 +3,7 @@ import { Input, Button } from 'reactstrap'
 import Toggle from 'react-toggle'
 import axios from 'axios'
 import ReactTable from 'react-table'
-import moment from 'moment/moment'
+import moment from 'moment'
 import { connect } from 'react-redux'
 import { LogTable } from '../Logs'
 

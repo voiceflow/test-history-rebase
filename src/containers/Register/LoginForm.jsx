@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Form, FormGroup, Input } from 'reactstrap'
 import { Link } from 'react-router-dom'
-import queryString from 'query-string/index'
+import queryString from 'query-string'
 import { connect } from 'react-redux'
 
 import Button from 'components/Button'

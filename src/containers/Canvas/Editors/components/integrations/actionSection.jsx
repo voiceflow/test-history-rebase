@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import cn from 'classnames'
 import { Collapse } from 'reactstrap'
 import { Tooltip } from 'react-tippy'
-import update from 'immutability-helper/index';
+import update from 'immutability-helper';
 
 
 // props

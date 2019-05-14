@@ -13,7 +13,7 @@ import AnimateHeight from 'react-animate-height'
 import { Tooltip } from 'react-tippy'
 // import Select from 'react-select'
 import Select from 'components/Dropdowns/Searchable'
-import { getBlocks } from 'views/pages/Canvas/Blocks'
+import { getBlocks } from 'containers/Canvas/Blocks'
 import Button from 'components/Button'
 
 const toolkit = new Toolkit()

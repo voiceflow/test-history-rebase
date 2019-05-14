@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
-import { store, history } from './containers/store';
+import { store, history } from 'store/store';
 import { Alert } from 'reactstrap';
 import { ConnectedRouter } from 'connected-react-router';
 import { DragDropContext } from 'react-dnd';

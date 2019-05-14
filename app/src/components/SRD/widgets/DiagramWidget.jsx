@@ -12,7 +12,7 @@ import { BlockNodeModel } from '../models/BlockNodeModel';
 import { PointModel } from "../models/PointModel";
 import { PortModel } from "../models/PortModel";
 import { BaseWidget } from "./BaseWidget";
-import { checkBlockDisabledLive } from "views/pages/Canvas/Blocks"
+import { checkBlockDisabledLive } from "containers/Canvas/Blocks"
 
 const toolkit = new Toolkit();
 

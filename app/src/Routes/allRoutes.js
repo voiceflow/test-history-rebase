@@ -1,17 +1,17 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
-import ResetPassword from '../views/pages/Register/resetPassword';
-import Reset from '../views/pages/Register/reset';
-import Register from '../views/pages/Register';
+import ResetPassword from 'containers/Register/resetPassword';
+import Reset from 'containers/Register/reset';
+import Register from 'containers/Register';
 import Team from '../Team';
-import NewTeam from '../views/pages/Dashboard/NewTeam';
+import NewTeam from 'containers/Dashboard/NewTeam';
 import Skill from '../Skill';
-import Admin from '../views/pages/Admin';
-import ModuleAdminPage from '../views/pages/ModuleAdminPage';
-import Account from '../views/pages/Account';
+import Admin from 'containers/Admin';
+import ModuleAdminPage from 'containers/ModuleAdminPage';
+import Account from 'containers/Account';
 import { getAuth } from '../ducks/account';
-import Page404 from '../views/pages/404';
+import Page404 from 'components/404';
 
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';

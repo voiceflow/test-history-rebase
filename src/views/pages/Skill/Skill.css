@@ -127,7 +127,7 @@ textarea::placeholder {
   margin-bottom: 10px;
 }
 
-.stage_modal .modal-info>.MUIform>div {
+.stage_modal .modal-info>.form>div {
   width: 100%;
   margin: 5px 0px !important;
 }
@@ -136,7 +136,7 @@ textarea::placeholder {
   overflow: auto;
 }
 
-.stage_modal .modal-info>.MUIform>.btn {
+.stage_modal .modal-info>.form>.btn {
   margin-top: 10px !important;
 }
 
@@ -356,10 +356,6 @@ textarea::placeholder {
   background: #fff;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06);
   left: 0;
-}
-
-.stepper {
-  background: #F7F9FB !important;
 }
 
 .product-form {

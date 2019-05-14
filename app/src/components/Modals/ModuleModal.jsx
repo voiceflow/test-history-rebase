@@ -1,5 +1,5 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
-import ModuleIcon from 'views/pages/Marketplace/ModuleIcon';
+import ModuleIcon from 'containers/Marketplace/ModuleIcon';
 import cn from 'classnames';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ import axios from 'axios';
 import Button from 'components/Button';
 import { updateVersion, updateUserModules } from 'ducks/version';
 import { appendDiagrams } from 'ducks/diagram';
-import LightCanvas from 'views/pages/Canvas/LightCanvas';
+import LightCanvas from 'containers/Canvas/LightCanvas';
 
 class ModuleModal extends React.Component {
 	constructor(props) {

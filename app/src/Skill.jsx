@@ -27,14 +27,14 @@ import DefaultModal from 'components/Modals/DefaultModal'
 import { Spinner } from 'components/Spinner/Spinner'
 
 // Views
-import Canvas from './views/pages/Canvas'
-import Visuals from './views/pages/Visuals'
-import Business from './views/pages/Business'
-import Settings from './views/pages/Skill/Settings'
-import Publish from './views/pages/Skill/Publish'
-import Logs from './views/pages/Logs'
-import Marketplace from './views/pages/Marketplace';
-import Migrate from 'views/pages/Skill/Migrate'
+import Canvas from './containers/Canvas'
+import Visuals from './containers/Visuals'
+import Business from './containers/Business'
+import Settings from './containers/Skill/Settings'
+import Publish from './containers/Skill/Publish'
+import Logs from './containers/Logs'
+import Marketplace from './containers/Marketplace';
+import Migrate from 'containers/Skill/Migrate'
 
 const live_modal_content = <div className="text-center">
     <img className="modal-img-small mb-4 mt-3" src="/warning.svg" alt="Upload"/>

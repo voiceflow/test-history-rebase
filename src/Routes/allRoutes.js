@@ -1,0 +1,89 @@
+import React from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
+
+import ResetPassword from '../views/pages/Register/resetPassword';
+import Reset from '../views/pages/Register/reset';
+import Register from '../views/pages/Register';
+import Team from '../Team';
+import NewTeam from '../views/pages/Dashboard/NewTeam';
+import Skill from '../Skill';
+import Admin from '../views/pages/Admin';
+import ModuleAdminPage from '../views/pages/ModuleAdminPage';
+import Account from '../views/pages/Account';
+import { getAuth } from '../ducks/account';
+import Page404 from '../views/pages/404';
+
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
+
+const allRoutes = (
+	<Switch>
+		{/* User routes */}
+		<PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword}/>
+		<PublicRoute exact path="/reset" name="Reset" component={Reset}/>
+		<PublicRoute exact path="/login" name="Login" page="login" component={Register}/>
+		<PublicRoute exact path="/signup" name="SignUp" page="signup" component={Register}/>
+		{/* Team routes */}
+		<PrivateRoute path="/dashboard" name="Dashboard" component={Team}/>
+		<PrivateRoute exact path="/team/new" component={NewTeam}/>
+		<PrivateRoute exact path="/team/template/:board_id" component={Team} page="template"/>
+		<PrivateRoute exact path="/team/template" component={Team} page="template"/>
+		<PrivateRoute exact path="/team/:team_id" component={Team}/>
+		<PrivateRoute exact path="/onboarding" component={Team} page="onboarding"/>
+		{/* Canvas Routes */}
+		<PrivateRoute path="/preview/:skill_id/:diagram_id" component={Skill} page="canvas" preview/>
+		<PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas"/>
+		<PrivateRoute path="/canvas/:skill_id" component={Skill} page="canvas"/>
+		{/* Business routes */}
+		<PrivateRoute path="/tools/:skill_id/link_account/templates" component={Skill} page="tools" secondaryPage="link_account"/>
+		<PrivateRoute path="/tools/:skill_id/email/:id" component={Skill} page="tools" secondaryPage="email"/>
+		<PrivateRoute path="/tools/:skill_id/emails" component={Skill} page="tools" secondaryPage="emails"/>
+		<PrivateRoute path="/tools/:skill_id/product/:id" component={Skill} page="tools" secondaryPage="product"/>
+		<PrivateRoute path="/tools/:skill_id/products" component={Skill} page="tools" secondaryPage="products"/>
+		<PrivateRoute path="/tools/:skill_id" component={Skill} page='tools' secondaryPage="home"/>
+		{/* Settings routes */}
+		<PrivateRoute path="/settings/:skill_id/discovery/canfulfill/:id" component={Skill} page='settings' secondaryPage="discovery"/>
+		<PrivateRoute path="/settings/:skill_id/discovery/" component={Skill} page='settings' secondaryPage="discovery"/>
+		<PrivateRoute path="/settings/:skill_id/basic/" component={Skill} page='settings' secondaryPage="basic"/>
+		<PrivateRoute path="/settings/:skill_id/advanced/" component={Skill} page='settings' secondaryPage="advanced"/>
+		<PrivateRoute path="/settings/:skill_id/backups/" component={Skill} page='settings' secondaryPage="backups"/>
+		<PrivateRoute path="/migrate/:skill_id" component={Skill} page='migrate'/>
+		{/* Admin routes */}
+		<PrivateRoute path="/visuals/:skill_id/display/:id" component={Skill} page='visuals' secondaryPage="display"/>
+		<PrivateRoute path="/visuals/:skill_id" component={Skill} page='visuals' secondaryPage="displays"/>
+		<PrivateRoute path="/admin/updates" name="Admin" component={Admin} page='updates'/>
+		<PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
+		<PrivateRoute path="/admin/version/:version_id" name="Admin" component={Admin} page='default'/>
+		<PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
+		<PrivateRoute path="/publish/:skill_id/google" component={Skill} page="publish" secondaryPage="google"/>
+		<PrivateRoute path="/publish/:skill_id/alexa" component={Skill} page="publish" secondaryPage="alexa"/>
+		<PrivateRoute path="/publish/:skill_id/market" component={Skill} page="publish" secondaryPage="market"/>
+		<PrivateRoute path="/publish/:skill_id" component={Skill} page="publish" secondaryPage="alexa"/>
+		{/* <PrivateRoute path="/market/:skill_id/:module_id" component={Skill} secondary={ModulePage} /> */}
+		<PrivateRoute path="/market/:skill_id/flows" name="Market" component={Skill} page="market" secondaryPage="flows"/>
+		<PrivateRoute path="/market/:skill_id/templates" name="Market" component={Skill} page="market" secondaryPage="templates"/>
+		<PrivateRoute path="/market/:skill_id" name="Market" component={Skill} page="market" secondaryPage="flows"/>
+		<PrivateRoute path="/stuff" name="Certification" component={ModuleAdminPage}/>
+		<PrivateRoute path="/account/upgrade" name="Account" component={Account} upgrade/>
+		<PrivateRoute path="/account" name="Account" component={Account}/>\
+		<PrivateRoute path="/creator_logs/:skill_id" component={Skill} page="logs"/>
+		<Route exact path="/invite/:invite_code" render={props => {
+			const code = props.match.params.invite_code;
+			return (
+				getAuth() ?
+					<Redirect to={`/dashboard?invite=${code}`}/> :
+					<Redirect to={`/signup?invite=${code}${props.location.search}`}/>
+			);
+		}}
+		/>
+		<Route exact path="/" render={() => (
+			getAuth() ?
+				<Redirect to="/dashboard"/> :
+				<Redirect to="/signup"/>
+		)}/>
+		{/* Warning Routes */}
+		<Route component={Page404}/>
+	</Switch>
+);
+
+export default allRoutes;

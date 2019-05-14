@@ -1,5 +1,5 @@
 import skillReducer, * as actions from './../version'
-import { testSkill } from './../../views/pages/Canvas/__mock__/MockSkill'
+import { testSkill } from '../../containers/Canvas/__mock__/MockSkill'
 
 const initialState = {
     skill: {},
@@ -8,7 +8,7 @@ const initialState = {
     user_modules: {}
 };
 
-const skill = testSkill 
+const skill = testSkill
 describe('Test Skill Reducer', () => {
     it('render initial skill state', () => {
         expect(skillReducer(undefined, {})).toEqual(initialState);

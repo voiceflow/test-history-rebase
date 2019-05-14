@@ -173,8 +173,6 @@ export class ActionGroup extends PureComponent {
       selected_vendor: props.vendor_id
     }
 
-    console.log()
-
     this.toggle = this.toggle.bind(this)
     this.toggleShare = this.toggleShare.bind(this)
     this.togglePreview = this.togglePreview.bind(this)
@@ -201,6 +199,8 @@ export class ActionGroup extends PureComponent {
     this.isUploadLoading = this.isUploadLoading.bind(this)
     this.displayUploadPrompt = this.displayUploadPrompt.bind(this)
     this.updateInvName = this.updateInvName.bind(this)
+
+    console.log(this.props.skill.amzn_id, this.props.skill.live_version)
   }
 
   componentDidMount() {
@@ -551,15 +551,23 @@ export class ActionGroup extends PureComponent {
     this.setState({ vendors_open: !this.state.vendors_open })
   }
 
-  selectVendor = (vendor) => {
+  selectVendor = async (vendor) => {
     if (!(vendor && vendor.id)) return
     // save to database
-    this.props.updateVendorId(this.props.skill.project_id, vendor.id)
 
-    this.setState({
-      vendors_open: false,
-      selected_vendor: vendor.id
-    })
+    try {
+      await this.props.updateVendorId(this.props.skill.project_id, vendor.id)
+
+      this.setState({
+        vendors_open: false,
+        selected_vendor: vendor.id
+      })
+    } catch (e) {
+      this.setState({
+        vendors_open: false,
+      })
+    }
+    console.log(this.props.skill.amzn_id, this.props.skill.live_version)
   }
 
   showUploadPrompt() {
@@ -668,7 +676,7 @@ export class ActionGroup extends PureComponent {
       </Tooltip>
     } else {
       if (this.isUploadLoading()) {
-        return <Button isDisabled variant="contained" className="publish-btn" onClick={() => this.setState({ show_upload_prompt: !this.state.show_upload_prompt })}>
+        return <Button variant="contained" className="publish-btn" onClick={() => this.setState({ show_upload_prompt: !this.state.show_upload_prompt })}>
           <p className="loading-btn m-0 p-0">Uploading</p>
           <div className="launch">
             <div className="load-spinner pt-1">

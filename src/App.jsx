@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { Provider } from "react-redux";
 import ReactGA from "react-ga";
-import { store, history } from "./containers/store";
+import { store, history } from "./store/store";
 import { Alert } from "reactstrap";
 import { ConnectedRouter } from 'connected-react-router'
 import { DragDropContext } from "react-dnd";
@@ -18,19 +18,19 @@ import "react-day-picker/lib/style.css";
 // Pages
 import Skill from './Skill'
 import Team from './Team'
-import Account from './views/pages/Account';
-import Admin from './views/pages/Admin';
-import Register from './views/pages/Register';
-import Reset from './views/pages/Register/reset';
-import ResetPassword from './views/pages/Register/resetPassword';
-// import Marketplace from './views/pages/Marketplace';
-// import ModulePage from './views/pages/Marketplace/ModulePage';
-import Page404 from 'views/pages/404'
-import ModuleAdminPage from './views/pages/ModuleAdminPage';
+import Account from 'containers/Account';
+import Admin from './containers/Admin';
+import Register from './containers/Register';
+import Reset from './containers/Register/reset';
+import ResetPassword from './containers/Register/resetPassword';
+// import Marketplace from './containers/Marketplace';
+// import ModulePage from './containers/Marketplace/ModulePage';
+import Page404 from 'components/404'
+import ModuleAdminPage from './containers/ModuleAdminPage';
 import ErrorBoundary from './ErrorBoundary';
 import socket from 'socket.io-client'
 import {evaluateMaintenance} from './MAINTENANCE'
-import NewTeam from './views/pages/Dashboard/NewTeam'
+import NewTeam from './containers/Dashboard/NewTeam'
 
 // GLOBAL MODALS
 import { setConfirm } from 'ducks/modal'

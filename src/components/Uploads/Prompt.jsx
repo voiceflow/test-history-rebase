@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { VOICES } from 'Constants'
-import VariableText from 'views/pages/Canvas/Editors/components/VariableText'
+import VariableText from 'containers/Canvas/Editors/components/VariableText'
 import AudioDrop from 'components/Uploads/AudioDrop'
 import Textarea from 'react-textarea-autosize'
 import Select from 'react-select'

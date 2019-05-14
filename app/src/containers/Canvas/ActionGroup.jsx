@@ -711,7 +711,9 @@ export class ActionGroup extends PureComponent {
               </Button>
             }
           </Tooltip>
-          {multiVendor && <div className="vendor-dropdown" onClick={this.toggleVendors}></div>}
+          {multiVendor && <div className={cn('vendor-dropdown', {
+            active: this.state.vendors_open
+          })} onClick={this.toggleVendors}></div>}
           {this.state.vendors_open && <VendorSelectList vendors={this.state.vendors} onBlur={this.toggleVendors} onSelect={this.selectVendor} selectedVendor={this.state.selected_vendor} />}
         </div>
       }

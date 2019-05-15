@@ -1,20 +1,14 @@
 import cn from "classnames";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Table } from 'reactstrap'
 // import io from 'socket.io-client'
 import axios from "axios";
 import moment from "moment";
 import ReactJson from "react-json-view";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableFooter from "@material-ui/core/TableFooter";
-import TableRow from "@material-ui/core/TableRow";
-import TablePagination from "@material-ui/core/TablePagination";
-import IconButton from "@material-ui/core/IconButton";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+
+import Button from 'components/Button'
 
 const actionsStyles = theme => ({
   root: {
@@ -24,7 +18,7 @@ const actionsStyles = theme => ({
   }
 });
 
-class TablePaginationActions extends React.Component {
+class TablePagination extends React.Component {
   handleFirstPageButtonClick = event => {
     this.props.onChangePage(event, 0);
   };
@@ -49,7 +43,9 @@ class TablePaginationActions extends React.Component {
 
     return (
       <div className={classes.root}>
-        <IconButton
+        <Button
+          isBtn
+          isClear
           onClick={this.handleFirstPageButtonClick}
           disabled={page === 0}
           aria-label="First Page"
@@ -60,8 +56,10 @@ class TablePaginationActions extends React.Component {
               "fa-step-backward": theme.direction !== "rtl"
             })}
           />
-        </IconButton>
-        <IconButton
+        </Button>
+        <Button
+          isBtn
+          isClear
           onClick={this.handleBackButtonClick}
           disabled={page === 0}
           aria-label="Previous Page"
@@ -72,8 +70,10 @@ class TablePaginationActions extends React.Component {
               "fa-chevron-left": theme.direction !== "rtl"
             })}
           />
-        </IconButton>
-        <IconButton
+        </Button>
+        <Button
+          isBtn
+          isClear
           onClick={this.handleNextButtonClick}
           disabled={page >= Math.ceil(count / rowsPerPage) - 1}
           aria-label="Next Page"
@@ -84,8 +84,10 @@ class TablePaginationActions extends React.Component {
               "fa-chevron-left": theme.direction === "rtl"
             })}
           />
-        </IconButton>
-        <IconButton
+        </Button>
+        <Button
+          isBtn
+          isClear
           onClick={this.handleLastPageButtonClick}
           disabled={page >= Math.ceil(count / rowsPerPage) - 1}
           aria-label="Last Page"
@@ -96,13 +98,13 @@ class TablePaginationActions extends React.Component {
               "fa-step-backward": theme.direction === "rtl"
             })}
           />
-        </IconButton>
+        </Button>
       </div>
     );
   }
 }
 
-TablePaginationActions.propTypes = {
+TablePagination.propTypes = {
   classes: PropTypes.object.isRequired,
   count: PropTypes.number.isRequired,
   onChangePage: PropTypes.func.isRequired,
@@ -110,10 +112,6 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
   theme: PropTypes.object.isRequired
 };
-
-const TablePaginationActionsWrapped = withStyles(actionsStyles, {
-  withTheme: true
-})(TablePaginationActions);
 
 export class LogTable extends Component {
   constructor(props) {
@@ -142,18 +140,18 @@ export class LogTable extends Component {
 
     return (
       <React.Fragment>
-        <TableCell>
+        <td>
           <p className="mb-0 text-danger">{request.error.type}</p>
           <p className="mt-0">{request.error.message}</p>
-        </TableCell>
-        <TableCell>
+        </td>
+        <td>
           <ReactJson
             collapsed
             src={request}
             enableClipboard={false}
             collapseStringsAfterLength={40}
           />
-        </TableCell>
+        </td>
       </React.Fragment>
     );
   }
@@ -171,15 +169,15 @@ export class LogTable extends Component {
           <col style={{ width: "40%" }} />
           <col style={{ width: "40%" }} />
         </colgroup>
-        <TableHead>
-          <TableRow>
-            <TableCell>Timestamp</TableCell>
-            <TableCell>User</TableCell>
-            <TableCell>Errors</TableCell>
-            <TableCell>Request</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>User</th>
+            <th>Errors</th>
+            <th>Request</th>
+          </tr>
+        </thead>
+        <tbody>
           {this.props.logs
             .slice(
               this.state.page * this.state.rows_per_page,
@@ -187,20 +185,20 @@ export class LogTable extends Component {
                 this.state.rows_per_page
             )
             .map((log, i) => (
-              <TableRow key={i + this.state.page * this.state.rows_per_page}>
-                <TableCell>{moment(log.timestamp).format("LTS")}</TableCell>
-                <TableCell>{log.user_id.slice(0, 11)}</TableCell>
+              <tr key={i + this.state.page * this.state.rows_per_page}>
+                <td>{moment(log.timestamp).format("LTS")}</td>
+                <td>{log.user_id.slice(0, 11)}</td>
                 {this.parseRequest(log.request)}
-              </TableRow>
+              </tr>
             ))}
           {empty_rows > 0 && (
-            <TableRow style={{ height: 48 * empty_rows }}>
-              <TableCell colSpan={6} />
-            </TableRow>
+            <tr style={{ height: 48 * empty_rows }}>
+              <td colSpan={6} />
+            </tr>
           )}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
+        </tbody>
+        <tfoot>
+          <tr>
             <TablePagination
               rowsPerPageOptions={[5, 10, 15]}
               count={this.props.logs.length}
@@ -209,10 +207,9 @@ export class LogTable extends Component {
               page={this.state.page}
               onChangePage={this.handleChangePage}
               onChangeRowsPerPage={this.handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActionsWrapped}
             />
-          </TableRow>
-        </TableFooter>
+          </tr>
+        </tfoot>
       </Table>
     );
   }

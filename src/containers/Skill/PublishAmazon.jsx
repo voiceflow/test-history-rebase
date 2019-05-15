@@ -981,7 +981,7 @@ class Skill extends Component {
               <div className="text-center">
                 {disabled_stages.has(this.state.stage) ?
                   null :
-                  <Button
+                  <DefaultButton
                     isPrimary
                     variant="contained"
                     onClick={() => {
@@ -989,8 +989,8 @@ class Skill extends Component {
                     }}
                   >
                     Publish Skill
-                                    <i className="fab fa-amazon ml-2" />
-                  </Button>
+                      <i className="fab fa-amazon ml-2" />
+                  </DefaultButton>
                 }
               </div>
             </div>

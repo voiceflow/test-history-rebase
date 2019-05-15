@@ -114,15 +114,6 @@ export default class Stepper extends Component {
                   {pluralize('Issue', errorsCount, true)}
                 </div>
               )}
-{/* 
-              {isActive && (
-                <Transition
-                  name={prevStepIndex !== -1 && i > prevStepIndex ? 'fade-down' : 'fade-up'}
-                  component="div"
-                  className="steps-list-content"
-                >
-                </Transition>
-              )} */}
             </li>
           );
         })}

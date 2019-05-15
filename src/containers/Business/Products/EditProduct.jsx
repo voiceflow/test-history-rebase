@@ -328,13 +328,13 @@ class EditProduct extends React.Component {
 
     return (
       <div className="h-100 w-100">
-            <Button className="goback-btn position-fixed" onClick={()=>{
+            <Button className="goback-btn position-fixed" onClick={() => {
                 this.props.history.push(`/tools/${this.props.skill_id}/products`)
             }} style={{top: 135, left: 210}}>
             </Button>
           <div>
               <div className="product-editor pt-2">
-                  <div className="stepper">
+                  <div className="stepper mt-4">
                     <Stepper
                       steps={STAGES}
                       activeStepId={this.state.stage}

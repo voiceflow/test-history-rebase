@@ -43,6 +43,7 @@
     "is-var-name": "^2.0.0",
     "jsonwebtoken": "^8.3.0",
     "lodash": "^4.17.11",
+    "logdna-bunyan": "^1.1.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
@@ -135,7 +136,7 @@
     "staging": "NODE_ENV=staging node index.js",
     "start": "NODE_ENV=production node index.js",
     "tests": "./scripts/test.sh",
-    "unit_tests": "NODE_ENV=test ./node_modules/.bin/jest --testPathIgnorePatterns=/app/ --detectOpenHandles --runInBand --testMatch=\"**/(*.)+(test|unit).js?(x)\"",
+    "unit_tests": "NODE_ENV=test ./node_modules/.bin/jest --testPathIgnorePatterns=/app/ --detectOpenHandles --runInBand --testMatch=\"**/(*.)+(test).js?(x)\"",
     "unsecure": "node index.js",
     "update": "npm install && cd app && npm install"
   }

@@ -472,41 +472,6 @@ textarea::placeholder {
   background-color: rgba(0, 0, 0, .03);
 }
 
-/* Line class */
-.MuiStepConnector-line {
-  border-color: #cdd7e0 !important;
-}
-
-/* Inactive Step */
-.MuiStepIcon-root {
-  color: #cdd7e0 !important;
-}
-
-/* Completed Step */
-.MuiStepIcon-completed {
-  color: #42a5ff !important;
-  border-radius: 50% !important;
-}
-
-/* Current Step */
-.MuiStepIcon-active {
-  color: #42a5ff !important;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .10);
-  border-radius: 50% !important;
-  margin: 0px !important;
-  transform: scale(1.35) !important;
-  transition: all 0.25s !important;
-  border: 1px solid #fff !important;
-}
-
-.MuiStepLabel-label {
-  color: #b6c2cc !important;
-}
-
-.MuiStepLabel-label-40.MuiStepLabel-active-41 {
-  color: #2b3950 !important;
-}
-
 .label-margin-top {
   margin-top: 1em !important;
 }

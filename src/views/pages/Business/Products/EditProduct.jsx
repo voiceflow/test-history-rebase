@@ -37,45 +37,6 @@ const STAGES = [{
   id: 4, label: "Details"
 }];
 
-// const stepperTheme = createMuiTheme({
-//   typography: {
-//     useNextVariants: true,
-//   },
-//   overrides: {
-//     MuiStepConnector: {
-//       line: {
-//         borderColor: '#cdd7e0 !important',
-//       }
-//     },
-//     MuiStepIcon: {
-//       root:{
-//         color: '#cdd7e0 !important',
-//       },
-//       completed: {
-//         color: '#42a5ff !important',
-//         borderRadius: '50%',
-//       },
-//       active: {
-//         color: '#42a5ff !important',
-//         boxShadow: '0 2px 5px 0 rgba(0, 0, 0, .10) !important',
-//         borderRadius: '50%',
-//         margin: '0px !important',
-//         transform: 'scale(1.35)',
-//         transition: 'all 0.25s',
-//         border: '1px solid #fff',
-//       }
-//     },
-//     MuiStepLabel:{
-//       label: {
-//         color:'#b6c2cc !important',
-//       },
-//       active: {
-//         color: '#2b3950 !important',
-//       }
-//     }
-//   }
-// })
-
 class EditProduct extends React.Component {
   constructor(props) {
     super(props);
@@ -366,7 +327,6 @@ class EditProduct extends React.Component {
     }
 
     return (
-      // <MuiThemeProvider theme={stepperTheme}>
       <div className="h-100 w-100">
             <Button className="goback-btn position-fixed" onClick={()=>{
                 this.props.history.push(`/tools/${this.props.skill_id}/products`)
@@ -389,7 +349,6 @@ class EditProduct extends React.Component {
               </div>
         </div>
     </div>
-    // </MuiThemeProvider>
     );
   }
 }

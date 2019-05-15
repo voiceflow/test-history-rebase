@@ -135,7 +135,7 @@ class Templates extends Component {
         this.setState({
             preview: true,
             template: template,
-            diagram_id: template.diagram_id
+            diagram_id: template.diagram
         })
     }
 

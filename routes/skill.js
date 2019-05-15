@@ -212,6 +212,7 @@ const makeVendorEntryForExistingSkill = async (creator_id, project_id, amzn_id) 
 
   if (ownerVendor) {
     await pool.query('INSERT INTO vendors (project_id, creator_id, vendor_id, amzn_id) VALUES ($1, $2, $3, $4)', [project_id, creator_id, ownerVendor, amzn_id])
+    await pool.query('UPDATE project_members SET selected_vendor = $1 WHERE creator_id = $2 AND project_id = $3', [amzn_id, creator_id, project_id])
   }
 }
 
@@ -263,26 +264,27 @@ exports.getSkill = async (req, res) => {
   try {
     const skill_data = (await pool.query(sql, params)).rows[0];
 
+    if (skill_data === undefined) {
+      return res.sendStatus(404);
+    }
+
     if (!_.isNil(skill_data.deprecated_amzn_id) && _.isNil(skill_data.amzn_id)) {
       // Move amzn id from project_members to vendors table to support multiple members
       const rows = await pool.query('SELECT * FROM vendors WHERE creator_id = $1 AND project_id = $2 AND amzn_id = $3', [req.user.id, project_id, skill_data.deprecated_amzn_id])
       if (rows.rowCount === 0) {
         await makeVendorEntryForExistingSkill(req.user.id, project_id, skill_data.deprecated_amzn_id)
       }
+      skill_data.amzn_id = skill_data.deprecated_amzn_id
     }
 
-    if (skill_data === undefined) {
-      res.sendStatus(404);
-    } else {
-      if (req.query.review_check) {
-        skill_data.review = await checkSkillInReview(skill_data.amzn_id, req.user.id, id);
-      }
-      delete skill_data.dialogflow_token;
-      // Don't expose these on front end
-      skill_data.skill_id = req.params.skill_id;
-      skill_data.project_id = hashids.encode(skill_data.project_id);
-      res.send(skill_data);
+    if (req.query.review_check) {
+      skill_data.review = await checkSkillInReview(skill_data.amzn_id, req.user.id, id);
     }
+    delete skill_data.dialogflow_token;
+    // Don't expose these on front end
+    skill_data.skill_id = req.params.skill_id;
+    skill_data.project_id = hashids.encode(skill_data.project_id);
+    res.send(skill_data);
   } catch (err) {
     writeToLogs('CREATOR_BACKEND_ERRORS', {
       err,

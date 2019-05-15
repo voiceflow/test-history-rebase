@@ -52,7 +52,7 @@ class AudioDrop extends Component {
                     <br/>
                     consider hosting on
                     <div className="seperated-links my-2">
-                        <a href="https://www.google.com/drive/" target='_blank' rel="noopener noreferrer"><i className="fab fa-google"/> Drive</a>| 
+                        <a href="https://www.google.com/drive/" target='_blank' rel="noopener noreferrer"><i className="fab fa-google"/> Drive</a>|
                         <a href="https://www.digitalocean.com/products/spaces/" target='_blank' rel="noopener noreferrer"><i className="fab fa-digital-ocean"/> Spaces</a>|
                         <a href="https://aws.amazon.com/s3/" target='_blank' rel="noopener noreferrer"><i className="fab fa-aws"/> S3</a>|
                         <a href="https://www.dropbox.com" target='_blank' rel="noopener noreferrer"><i className="fab fa-dropbox"/> Dropbox</a>
@@ -65,7 +65,17 @@ class AudioDrop extends Component {
     onClear() {
         this.props.update('');
     }
-
+	submit(){
+		if(this.state.url.startsWith("https://")){
+			this.setState({
+					url_error: false
+			}, ()=>this.props.update(this.state.url));
+		}else{
+			this.setState({
+					url_error: true
+			})
+		}
+	}
 	render() {
         if(this.state.loading){
             return <div className="audio-box">
@@ -94,9 +104,10 @@ class AudioDrop extends Component {
             return <div className="dropzone">
                 <div className="text-center w-100">
                     <label className="text-muted mb-3">Enter Audio URL</label>
+										{this.state.url_error && <span className="text-danger d-block">URL must be HTTPS</span>}
                     <Input className="mb-3" placeholder="URL Link" value={this.state.url} onChange={this.handleChange} name="url"/>
                     <Button isFlat onClick={()=>this.setState({url_open: false})} className="mr-1">Back</Button>
-                    <Button isPrimary onClick={()=>this.props.update(this.state.url)} className="ml-1">Confirm</Button>
+                    <Button isPrimary onClick={()=>this.submit()} className="ml-1">Confirm</Button>
                 </div>
             </div>
         }else{

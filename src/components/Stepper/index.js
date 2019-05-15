@@ -3,9 +3,6 @@ import cn from 'classnames';
 import pluralize from 'pluralize';
 import PropTypes from 'prop-types';
 
-import Panel from '../Panel';
-import Transition from '../Transition';
-
 import './Stepper.css'
 export default class Stepper extends Component {
   static propTypes = {
@@ -19,11 +16,8 @@ export default class Stepper extends Component {
     isFilledAll: PropTypes.bool,
     activeStepId: PropTypes.string,
     onChangeStep: PropTypes.func,
-    detailsRenderer: PropTypes.func,
     showErrorsCount: PropTypes.bool,
     lastStepIsFilled: PropTypes.bool,
-    panelFooterRenderer: PropTypes.func,
-    panelBodyContentRenderer: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -67,19 +61,15 @@ export default class Stepper extends Component {
   };
 
   render() {
-    const { prevStepId, filledSteps, activeStepId } = this.state;
+    const { filledSteps, activeStepId } = this.state;
     const {
       steps,
       isFilledAll,
       showErrorsCount,
-      detailsRenderer,
       lastStepIsFilled,
-      panelFooterRenderer,
-      panelBodyContentRenderer,
     } = this.props;
 
     const lastStepId = steps[steps.length - 1].id;
-    const prevStepIndex = steps.findIndex(({ id }) => id === prevStepId);
 
     return (
       <ul className="steps-list">
@@ -101,16 +91,6 @@ export default class Stepper extends Component {
             : true;
           const isNextStepHasIssue = nextStep ? nextStep.errorsCount : false;
 
-          const rendererProps = {
-            step,
-            steps,
-            nextStep,
-            changeStep: this.onChangeStep,
-            goToNextStep: nextStep ? () => this.onNextStep(nextStep.id) : null,
-            activeStepId,
-            isNextStepHasIssue,
-          };
-
           return (
             <li
               key={id}
@@ -122,7 +102,7 @@ export default class Stepper extends Component {
               })}
             >
               {!isActive && (isFilled || isPrevStepFilled) ? (
-                <a className="steps-list__title">
+                <a className="steps-list__title" href="title">
                   {label}
                 </a>
               ) : (
@@ -134,7 +114,7 @@ export default class Stepper extends Component {
                   {pluralize('Issue', errorsCount, true)}
                 </div>
               )}
-
+{/* 
               {isActive && (
                 <Transition
                   name={prevStepIndex !== -1 && i > prevStepIndex ? 'fade-down' : 'fade-up'}
@@ -142,7 +122,7 @@ export default class Stepper extends Component {
                   className="steps-list-content"
                 >
                 </Transition>
-              )}
+              )} */}
             </li>
           );
         })}

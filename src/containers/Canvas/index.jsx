@@ -29,6 +29,7 @@ import { setCanvasError } from 'ducks/user'
 import { renameDiagram, appendDiagrams, updateDiagrams } from 'ducks/diagram'
 import { setError, setConfirm } from 'ducks/modal'
 import { fetchEmails } from 'ducks/email'
+import { openTab, closeTab } from 'ducks/user'
 
 import ActionGroup from './ActionGroup'
 import HelpModal from './HelpModal'
@@ -79,6 +80,7 @@ export class Canvas extends Component {
         this.createDiagram = this.createDiagram.bind(this);
         this.enterFlow = this.enterFlow.bind(this);
         this.deleteFlow = this.deleteFlow.bind(this);
+        this.openTab = this.openTab.bind(this)
         var engine = new SRD.DiagramEngine()
         engine.registerLabelFactory(new SRD.DefaultLabelFactory())
         engine.registerNodeFactory(new BlockNodeFactory())
@@ -157,6 +159,19 @@ export class Canvas extends Component {
             }
         })
         Mousetrap.bind('enter', (e) => e.target.click())
+        Mousetrap.bind(["shift+1"], e => {
+            console.log("entered the bind")
+            e.preventDefault()
+            this.openTab("blocks")
+        })
+        Mousetrap.bind(["shift+2"], e => {
+            e.preventDefault()
+            this.openTab("project")
+        })
+        Mousetrap.bind(["shift+3"], e => {
+            e.preventDefault()
+            this.openTab("variables")
+        })
     }
 
     componentDidMount() {
@@ -226,6 +241,13 @@ export class Canvas extends Component {
           this.trackCanvasTime();
         }
         localStorage.setItem('is_first_session', 'false')
+    }
+
+    openTab(tab) {
+        if(tab !== this.props.tab || !this.props.tabOpen){
+            localStorage.setItem('tab', tab)
+            this.props.setTab(tab)
+        }
     }
 
     clearTimeoutFunc = () => {
@@ -1604,6 +1626,10 @@ export class Canvas extends Component {
                 preview={this.props.preview}
                 toggleUpgrade={this.props.toggleUpgrade}
                 type_counter={this.state.type_counter}
+                openTab={this.openTab}
+                closeTab={this.props.closeTab}
+                tab={this.props.tab}
+                open={this.props.tabOpen}
               />
               {this.state.load_diagram &&
                 React.createElement(Spinner, { name: "Flow" })}
@@ -1730,6 +1756,7 @@ export class Canvas extends Component {
 }
 
 const mapStateToProps = state => {
+  let tab = localStorage.getItem('tab')
   return {
     user: state.account,
     skill: state.skills.skill,
@@ -1742,7 +1769,9 @@ const mapStateToProps = state => {
     diagram_set: new Set(state.diagrams.diagrams.map(d => d.id)),
     diagram: _.find(state.diagrams.diagrams, d => d.id === state.skills.skill.diagram),
     canvasError: state.userSetting.canvasError,
-    integration_users_error: state.integrationUsers.error
+    integration_users_error: state.integrationUsers.error,
+    tab: tab ? tab : state.userSetting.tab,
+    tabOpen: state.userSetting.menuOpen,
   }
 }
 
@@ -1759,7 +1788,9 @@ const mapDispatchToProps = dispatch => {
     getIntegrationsUsers: () => dispatch(fetchIntegrationUsers()),
     getEmails: (skill_id) => dispatch(fetchEmails(skill_id)),
     appendDiagrams: (name, id, sub_diagrams) => dispatch(appendDiagrams({name, id, sub_diagrams})),
-    updateDiagrams: (diagrams) => dispatch(updateDiagrams(diagrams))
+    updateDiagrams: (diagrams) => dispatch(updateDiagrams(diagrams)),
+    setTab: (tab) => dispatch(openTab(tab)),
+    closeTab: () => dispatch(closeTab())
   }
 }
 

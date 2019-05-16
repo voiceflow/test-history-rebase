@@ -132,7 +132,6 @@ export class Variables extends PureComponent {
               </Label>
               <div className="variable-box">
                 <Input
-                  autoFocus
                   readOnly={this.props.locked}
                   name="new_global"
                   value={this.state.new_global}

@@ -160,7 +160,6 @@ export class Canvas extends Component {
         })
         Mousetrap.bind('enter', (e) => e.target.click())
         Mousetrap.bind(["shift+1"], e => {
-            console.log("entered the bind")
             e.preventDefault()
             this.openTab("blocks")
         })
@@ -685,14 +684,14 @@ export class Canvas extends Component {
 
             axios.get(`/diagram/copy/${flowId}?name=${encodeURI(newFlowName)}`)
                 .then((res) => {
-                    let diagrams = this.props.diagrams
-                    diagrams.push({
-                        id: res.data,
-                        name: newFlowName
-                    })
-                    this.setState({
-                        diagrams: diagrams
-                    }, this.enterFlow(res.data, save))
+                    const newDiagram = {
+                      id: res.data,
+                      name: newFlowName,
+                      sub_diagrams: flow.sub_diagrams,
+                      module_id: null,
+                    }
+                    this.props.updateDiagrams([...this.props.diagrams, newDiagram])
+                    this.enterFlow(res.data, save)
                 })
                 .catch((err) => {
                     this.setState({
@@ -780,7 +779,6 @@ export class Canvas extends Component {
           return [...acc, ...combinedNodes]
         },[])
         
-        // console.log("updateddiagrams: ", JSON.stringify([...updatedSubDiagrams, ...updatedStorySubDiagrams]))
       return [...updatedSubDiagrams, ...updatedStorySubDiagrams]
     }
 

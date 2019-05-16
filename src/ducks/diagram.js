@@ -97,7 +97,7 @@ export const appendDiagrams = diagrams => ({
     payload: {diagrams}
 })
 
-export const updateDiagrams = diagrams =>  ({
+export const updateDiagrams = diagrams => ({
   type: UPDATE_DIAGRAMS,
   payload: {diagrams}
 })

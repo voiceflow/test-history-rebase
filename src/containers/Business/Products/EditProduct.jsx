@@ -3,63 +3,39 @@ import moment from 'moment';
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux'
+
+// Form components
 import ProductDescriptionForm from './ProductDescriptionForm';
 import PhrasesForm from './PhrasesForm';
 import PricingForm from './PricingForm';
 import IconsForm from './IconsForm';
+
+// Components
+import Button from "components/Button";
+import Stepper from 'components/Stepper'
+
+// Ducks
 import { addProduct, updateProduct } from 'ducks/product'
 import { setError } from 'ducks/modal'
 import ProductDetailsForm from './ProductDetailsForm';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import Button from 'components/Button'
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
+
+// Constants
 import {TAX_CATEGORY} from './Constants.js';
 import subSchema from './Schemas/subSchema.json';
 import entitlementSchema from './Schemas/entitlementSchema.json';
 import consumableSchema from './Schemas/consumableSchema.json';
 
-const STAGES = ["Description", "Pricing", "Invocations", "Icons", "Details"];
-
-const stepperTheme = createMuiTheme({
-  typography: {
-    useNextVariants: true,
-  },
-  overrides: {
-    MuiStepConnector: {
-      line: {
-        borderColor: '#cdd7e0 !important',
-      }
-    },
-    MuiStepIcon: {
-      root:{
-        color: '#cdd7e0 !important',
-      },
-      completed: {
-        color: '#42a5ff !important',
-        borderRadius: '50%',
-      },
-      active: {
-        color: '#42a5ff !important',
-        boxShadow: '0 2px 5px 0 rgba(0, 0, 0, .10) !important',
-        borderRadius: '50%',
-        margin: '0px !important',
-        transform: 'scale(1.35)',
-        transition: 'all 0.25s',
-        border: '1px solid #fff',
-      }
-    },
-    MuiStepLabel:{
-      label: {
-        color:'#b6c2cc !important',
-      },
-      active: {
-        color: '#2b3950 !important',
-      }
-    }
-  }
-})
+const STAGES = [{
+  id: 0, label: "Description"
+}, {
+  id: 1, label: "Pricing"
+}, {
+  id: 2, label: "Invocations"
+}, {
+  id: 3, label: "Icons"
+}, {
+  id: 4, label: "Details"
+}];
 
 class EditProduct extends React.Component {
   constructor(props) {
@@ -276,10 +252,9 @@ class EditProduct extends React.Component {
   }
 
   invalidSubmit(event, errors, values) {
-    console.log(values);
-    console.log(errors);
     this.props.setError('Invalid Product - ' + JSON.stringify(errors))
   }
+
   renderForm(){
     switch(this.state.stage) {
       case 0:
@@ -352,24 +327,19 @@ class EditProduct extends React.Component {
     }
 
     return (
-      <MuiThemeProvider theme={stepperTheme}>
       <div className="h-100 w-100">
-            <Button className="goback-btn position-fixed" onClick={()=>{
+            <Button className="goback-btn position-fixed" onClick={() => {
                 this.props.history.push(`/tools/${this.props.skill_id}/products`)
             }} style={{top: 135, left: 210}}>
             </Button>
           <div>
               <div className="product-editor pt-2">
-                  <div className="stepper">
-                    <Stepper className="stepper" activeStep={this.state.stage} alternativeLabel>
-                      {
-                        _.map(STAGES, (stage, idx) => { return(
-                            <Step key={idx} className="step" color='#42a5ff' onClick={()=>this.updateStage(idx)}>
-                              <StepLabel color='#42a5ff' className="pointer">{stage}</StepLabel>
-                            </Step>
-                        )})
-                      }
-                    </Stepper>
+                  <div className="stepper mt-4">
+                    <Stepper
+                      steps={STAGES}
+                      activeStepId={this.state.stage}
+                      onChangeStep={idx => this.updateStage(idx)}
+                    />   
                   </div>
                   <div className="product-form">
                     <div className="product-form-inner">
@@ -379,7 +349,6 @@ class EditProduct extends React.Component {
               </div>
         </div>
     </div>
-    </MuiThemeProvider>
     );
   }
 }

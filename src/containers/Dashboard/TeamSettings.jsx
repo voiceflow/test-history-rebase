@@ -491,7 +491,9 @@ class TeamSettings extends Component {
           >
             {this.IS_ADMIN && (
               <small className="d-flex text-muted mt-2 mb-2">
-                <span className="badge mr-2">{this.props.team.seats}</span>{" "}
+                <span className="badge mr-2">
+                  {this.props.team.seats}
+                </span>{" "}
                 current seats
               </small>
             )}
@@ -523,12 +525,14 @@ class TeamSettings extends Component {
             {this.IS_ADMIN && (
               <div className="my-3">
                 <div className="text-center mb-3">
-                  <div
-                    className="btn-link-lg pointer mt-4"
+                  <Button
+                    isBtn
+                    isLinkLarge
+                    className="pointer mt-4"
                     onClick={this.addMember}
                   >
                     Add teammates
-                  </div>
+                  </Button>
                 </div>
                 <div className="text-center mt-3 position-relative">
                   <Button
@@ -538,9 +542,19 @@ class TeamSettings extends Component {
                     disabled={DISABLED}
                     style={{ width: 150 }}
                   >
-                    {UPDATING ? <span className="loader" /> : "Apply Changes"}
+                    {UPDATING ? (
+                      <span className="loader" />
+                    ) : (
+                      "Apply Changes"
+                    )}
                   </Button>
-                  <div style={{ position: "absolute", top: 0, left: "69%" }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: "69%"
+                    }}
+                  >
                     <CheckMark
                       show={show => (this.check = show)}
                       timeout={1500}

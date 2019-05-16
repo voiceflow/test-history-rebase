@@ -2,7 +2,6 @@ import cn from 'classnames'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {Tooltip} from 'react-tippy'
-import { openTab, closeTab } from 'ducks/user'
 import FlowButton from './Sidebars/components/FlowButton'
 import Blocks from './Sidebars/Blocks'
 import Variables from './Sidebars/Variables'
@@ -101,7 +100,7 @@ class Menu extends Component {
                                     <div className={cn('tool', {
                                         active: tab.tab === this.props.tab && this.props.open
                                     })}
-                                        onClick={() => this.openTab(tab.tab)}>
+                                        onClick={() => this.props.openTab(tab.tab)}>
                                         {tab.icon}
                                     </div>
                                 </Tooltip>
@@ -149,19 +148,9 @@ class Menu extends Component {
 }
 
 const mapStateToProps = state => {
-    let tab = localStorage.getItem('tab')
     return{
         diagrams: state.diagrams.diagrams,
-        tab: tab ? tab : state.userSetting.tab,
-        open: state.userSetting.menuOpen,
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        setTab: (tab) => dispatch(openTab(tab)),
-        closeTab: () => dispatch(closeTab()),
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+export default connect(mapStateToProps, null)(Menu);

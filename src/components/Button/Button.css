@@ -90,11 +90,12 @@ button {
      border-radius: 90px;
      cursor: pointer;
      padding: 11px 22px 10px;
-     transition: all 0.25s;
+     -webkit-transition: all .25s;
+     transition: all .25s;
      font-size: 15px;
      line-height: 20px;
      height: 45px;
-     font-weight: 500;
+     font-weight: 500 !important;
  }
 
  .btn-secondary:hover {
@@ -104,7 +105,7 @@ button {
  }
 
  .btn-secondary:active {
-     border: 1px solid #E2E9EC;
+     border: 1px solid #E2E9EC !important;
      background-color: #EFF3F6;
  }
 

@@ -237,7 +237,7 @@ export default withDraggable({
 })(List);
 
 List.propTypes = {
-  id: PropTypes.string,
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   name: PropTypes.string,
   projects: PropTypes.array,
   createSkill: PropTypes.func,

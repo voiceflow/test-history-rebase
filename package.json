@@ -108,6 +108,7 @@
     "react-tippy": "^1.2.3",
     "react-toggle": "^4.0.2",
     "reactstrap": "^6.5.0",
+    "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "resolve": "1.8.1",

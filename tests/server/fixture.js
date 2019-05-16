@@ -9,6 +9,10 @@ const log = require('../../logger');
 
 const { ServiceManager } = require('../../backend');
 
+function hasUserPrototype(obj) {
+  return obj.constructor !== Object;
+}
+
 const createFixture = () => {
   const { middleware, controllers } = (new ServiceManager());
 
@@ -22,15 +26,26 @@ const createFixture = () => {
       return result;
     }, {}),
     controllers: Object.keys(controllers).reduce((result, key) => {
-      result[key] = Object.keys(_.get(controllers, key)).reduce((_result, _key) => {
-        // console.log(key, _key)
-        _result[_key] = sinon.stub().callsFake(serviceFake);
-        return _result;
-      }, {});
+      const target = controllers[key];
+
+      if (hasUserPrototype(target)) {
+        result[key] = Object.getOwnPropertyNames(Object.getPrototypeOf(target))
+          .filter((_key) => _key !== 'constructor')
+          .reduce((_result, _key) => {
+            _result[_key] = sinon.stub().callsFake(serviceFake);
+            return _result;
+          }, {});
+      } else {
+        result[key] = Object.keys(target).reduce((_result, _key) => {
+          _result[_key] = sinon.stub().callsFake(serviceFake);
+          return _result;
+        }, {});
+      }
 
       return result;
     }, {}),
   };
+
 
   return fixture;
 };

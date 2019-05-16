@@ -83,7 +83,7 @@ exports.setTemplate = async (req, res) => {
   } catch (err) {
     writeToLogs('SET ACCOUNT LINK ERROR', { err });
 
-    if (err && err.status) return res.status(err.status).send(message);
+    if (err && err.status) return res.status(err.status).send(err.message);
     res.sendStatus(500);
     console.trace();
   }

@@ -109,12 +109,12 @@ button {
      background-color: #EFF3F6;
  }
 
- .btn-secondary.disabled {
+ .btn-secondary.btn-opaque {
      color: #fff;
      opacity: 1;
  }
 
- .btn-secondary.disabled:hover {
+ .btn-secondary.btn-opaque:hover {
      border-color: #42A5FF;
      background-color: #42A5FF;
  }
@@ -763,7 +763,7 @@ button {
     background: linear-gradient(0deg, #3087FE, #3087FE) !important;
 }
 
-.publish-btn.disabled {
+.publish-btn.btn-opaque {
     opacity: 0.65;
 }
 

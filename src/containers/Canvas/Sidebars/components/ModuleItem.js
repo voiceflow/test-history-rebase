@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import axios from 'axios'
 import { removeUserModules } from '../../../../ducks/version'
-import { replaceDiagrams } from '../../../../ducks/diagram'
+import { updateDiagrams } from '../../../../ducks/diagram'
 
 class ModuleItem extends Component {
     constructor(props){
@@ -80,7 +80,7 @@ class ModuleItem extends Component {
             for(let diagram_id of Array.from(diagrams_to_delete)){
                 await axios.delete(`/diagram/${diagram_id}`)
             }
-            this.props.replaceDiagrams(new_diagrams)
+            this.props.updateDiagrams(new_diagrams)
         } catch (err){
             console.log(err)
         }
@@ -130,7 +130,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
     return {
       removeUserModules: (module_id) => dispatch(removeUserModules(module_id)),
-      replaceDiagrams: (diagrams) => dispatch(replaceDiagrams(diagrams))
+      updateDiagrams: (diagrams) => dispatch(updateDiagrams(diagrams))
     }
   }
 export default connect(mapStateToProps, mapDispatchToProps)(ModuleItem);

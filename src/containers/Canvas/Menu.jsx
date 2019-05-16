@@ -29,14 +29,7 @@ class Menu extends Component {
         let tab = localStorage.getItem('tab')
         if(!tab) tab = 'blocks'
 
-        this.state = {
-            tree: null,
-            depth: 0,
-        }
-
         this.openTab = this.openTab.bind(this)
-        this.buildTree = this.buildTree.bind(this)
-        this.updateTree = this.updateTree.bind(this)
         this.renderSideBar = this.renderSideBar.bind(this)
         this.resize = this.resize.bind(this)
         this.visited = new Set();
@@ -46,9 +39,6 @@ class Menu extends Component {
     componentWillReceiveProps(nextProps){
         if (localStorage.getItem('sideWidth') && this.sidebar && nextProps.open) {
             this.sidebar.style.width = localStorage.getItem('sideWidth')
-        }
-        if (nextProps.diagrams.length !== this.state.depth){
-            this.updateTree(nextProps.current)
         }
     }
 
@@ -61,7 +51,6 @@ class Menu extends Component {
     }
 
     componentDidMount() {
-        this.props.build(this.updateTree)
         this.sidebar.addEventListener('mousedown', e => {
             if (e.srcElement.classList.contains('open')){
                 this.m_pos = e.x;
@@ -71,59 +60,6 @@ class Menu extends Component {
         document.addEventListener("mouseup", () => {
             document.removeEventListener('mousemove', this.resize, false);
         })
-    }
-
-    buildTree(node, current_id, depth=0){
-        if (depth < 4) {
-            this.visited.add(node.id)
-
-            let tree
-            let sub_diagrams
-            if(node.sub_diagrams){
-                sub_diagrams = node.sub_diagrams;
-            }
-            if(Array.isArray(sub_diagrams) && sub_diagrams.length !== 0){
-
-                tree = sub_diagrams.map((diagram_id, i) => {
-                    let block = this.props.diagrams.find(d => d.id === diagram_id);
-
-                    if(block){
-                        return <div className="sub-diagram space-between" key={i}>
-                            <div className="sub-column">
-                                {this.buildTree(block, current_id, depth+1)}
-                            </div>
-                        </div>;
-                    }
-                    return null
-                })
-            }
-            return (<React.Fragment>
-                <FlowButton
-                    flow={node}
-                    active={current_id}
-                    enterFlow={this.props.enterFlow}
-                    copyFlow={()=>this.props.copyFlow(node.id)}
-                    preview={this.props.preview}
-                    deleteFlow={()=>this.props.deleteFlow(node.id)}
-                />
-                {tree}
-            </React.Fragment>)
-
-        } else {
-            return <div className='diagram-block'>...</div>;
-        }
-    }
-
-    updateTree(current_id) {
-        for(let diagram of this.props.diagrams){
-            if(diagram.name === 'ROOT'){
-                this.visited = new Set()
-                this.setState({
-                    tree: this.buildTree(diagram, current_id),
-                    depth: this.props.diagrams.length,
-                })
-            }
-        }
     }
 
     openTab(tab) {

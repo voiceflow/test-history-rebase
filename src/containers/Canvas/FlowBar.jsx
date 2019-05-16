@@ -25,7 +25,18 @@ export class FlowBar extends Component{
         };
     }
 
+    componentDidUpdate(prevProps, prevState) {
+      Object.entries(this.props).forEach(([key, val]) => {
+        prevProps[key] !== val && console.log(`Prop '${key}' changed`)
+      });
+      Object.entries(this.state).forEach(([key, val]) =>
+        prevState[key] !== val && console.log(`State '${key}' changed`)
+      );
+    }
+    
+
     getChildDiagramsWithNames = () => {
+        // console.log("diagrams: ", JSON.stringify(this.props.diagrams, null, 2))
         return this.props.diagram.sub_diagrams.reduce((acc, diagram_id) => {
             const [{name, id}] = this.props.diagrams.filter(({id}) => id === diagram_id)
             return [...acc, {name, id}]
@@ -34,10 +45,9 @@ export class FlowBar extends Component{
 
     getParentDiagramsWithNames = () => {
         return this.props.diagrams.reduce((acc, {sub_diagrams, name, id}) => {
-            if (sub_diagrams.includes(this.props.diagram.id)) {
+            if (sub_diagrams.includes(this.props.diagram_id)) {
                 return [...acc, {name, id}]
             }
-
             return acc
         }, [])
     }

@@ -47,7 +47,7 @@ describe('Diagram', function () {
   let server;
 
   before(async () => {
-    ({ app } = await GetApp());
+    ({ app, server } = await GetApp());
 
     // Get auth token
     await request(app)
@@ -83,7 +83,7 @@ describe('Diagram', function () {
   after(async () => {
     try {
       await request(app).delete(`/skill/${skill_id}`).then();
-      if (server) server.close();
+      if (server) await server.stop();
     } catch (err) {
       throw err;
     }

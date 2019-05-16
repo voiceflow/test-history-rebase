@@ -18,7 +18,7 @@ describe('Authentication', async () => {
   });
 
   after(async () => {
-    if (server) server.stop();
+    if (server) await server.stop();
   });
 
   it('doesn\'t accept empty credentials', async () => {

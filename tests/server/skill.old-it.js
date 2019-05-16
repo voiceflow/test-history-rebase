@@ -50,7 +50,7 @@ describe('Skill', function () {
   let server;
 
   before(async () => {
-    ({ app } = await GetApp());
+    ({ app, server } = await GetApp());
 
     // Get Authentication Token
     await request(app)
@@ -304,14 +304,22 @@ describe('Skill', function () {
         .set('cookie', `auth=${token}`)
         .send({
           name: 'The Gorge',
-          fulfillment: { G4cjZLQZaAEn: { slot_config: { '9N4Xdah9UShx': ['level one', 'level 1'] } }, Q5pVbSymoAjz: { slot_config: { j0Hqhna45404: ['level two', 'level 2', 'open level two'] } }, uDk5iYNOCm8W: { slot_config: { hjNq9UjHOVI9: [] } } },
+          fulfillment: {
+            G4cjZLQZaAEn: { slot_config: { '9N4Xdah9UShx': ['level one', 'level 1'] } },
+            Q5pVbSymoAjz: { slot_config: { j0Hqhna45404: ['level two', 'level 2', 'open level two'] } },
+            uDk5iYNOCm8W: { slot_config: { hjNq9UjHOVI9: [] } }
+          },
         })
         .expect(200)
         .expect(async (res) => {
           try {
             const skill_data = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
             const r = skill_data[0];
-            expect(r.fulfillment).to.eql({ G4cjZLQZaAEn: { slot_config: { '9N4Xdah9UShx': ['level one', 'level 1'] } }, Q5pVbSymoAjz: { slot_config: { j0Hqhna45404: ['level two', 'level 2', 'open level two'] } }, uDk5iYNOCm8W: { slot_config: { hjNq9UjHOVI9: [] } } });
+            expect(r.fulfillment).to.eql({
+              G4cjZLQZaAEn: { slot_config: { '9N4Xdah9UShx': ['level one', 'level 1'] } },
+              Q5pVbSymoAjz: { slot_config: { j0Hqhna45404: ['level two', 'level 2', 'open level two'] } },
+              uDk5iYNOCm8W: { slot_config: { hjNq9UjHOVI9: [] } }
+            });
             expect(r.name).to.eql('UNTITLED PROJECT'); // shouldn't update name
           } catch (err) {
             if (err) throw err;
@@ -340,32 +348,153 @@ describe('Skill', function () {
             const skill_data = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
             const r = skill_data[0];
             expect(r.intents).to.eql([{
-              name: 'intent_one', inputs: [{ slots: ['rhuwpeOxWqnw'], text: 'I think it is {{[slot_one].rhuwpeOxWqnw}}' }, { slots: ['rhuwpeOxWqnw'], text: '{{[slot_one].rhuwpeOxWqnw}}' }, { slots: ['rhuwpeOxWqnw'], text: 'the answer is {{[slot_one].rhuwpeOxWqnw}}' }, { slots: ['rhuwpeOxWqnw'], text: 'answer is {{[slot_one].rhuwpeOxWqnw}}' }, { slots: ['rhuwpeOxWqnw'], text: '{{[slot_one].rhuwpeOxWqnw}} is the answer' }], key: 'c2u2h6a0qfZg', open: true, _platform: null,
+              name: 'intent_one',
+              inputs: [{
+                slots: ['rhuwpeOxWqnw'],
+                text: 'I think it is {{[slot_one].rhuwpeOxWqnw}}'
+              }, {
+                slots: ['rhuwpeOxWqnw'],
+                text: '{{[slot_one].rhuwpeOxWqnw}}'
+              }, {
+                slots: ['rhuwpeOxWqnw'],
+                text: 'the answer is {{[slot_one].rhuwpeOxWqnw}}'
+              }, {
+                slots: ['rhuwpeOxWqnw'],
+                text: 'answer is {{[slot_one].rhuwpeOxWqnw}}'
+              }, {
+                slots: ['rhuwpeOxWqnw'],
+                text: '{{[slot_one].rhuwpeOxWqnw}} is the answer'
+              }],
+              key: 'c2u2h6a0qfZg',
+              open: true,
+              _platform: null,
             }, {
-              name: 'intent_two', inputs: [{ slots: ['Of0UMzUuNKVz'], text: '{{[slot_two].Of0UMzUuNKVz}}' }], key: 'cyLDdu9cvygL', open: true, _platform: 'alexa',
+              name: 'intent_two',
+              inputs: [{
+                slots: ['Of0UMzUuNKVz'],
+                text: '{{[slot_two].Of0UMzUuNKVz}}'
+              }],
+              key: 'cyLDdu9cvygL',
+              open: true,
+              _platform: 'alexa',
             }, {
-              name: 'intent_open', inputs: [{ slots: ['9N4Xdah9UShx'], text: '{{[open_lvlone].9N4Xdah9UShx}}' }], key: 'G4cjZLQZaAEn', open: true, _platform: null,
+              name: 'intent_open',
+              inputs: [{
+                slots: ['9N4Xdah9UShx'],
+                text: '{{[open_lvlone].9N4Xdah9UShx}}'
+              }],
+              key: 'G4cjZLQZaAEn',
+              open: true,
+              _platform: null,
             }, {
-              name: 'intent_lvltwo', inputs: [{ slots: ['j0Hqhna45404'], text: '{{[opne_lvltwo].j0Hqhna45404}}' }], key: 'Q5pVbSymoAjz', open: true, _platform: null,
+              name: 'intent_lvltwo',
+              inputs: [{
+                slots: ['j0Hqhna45404'],
+                text: '{{[opne_lvltwo].j0Hqhna45404}}'
+              }],
+              key: 'Q5pVbSymoAjz',
+              open: true,
+              _platform: null,
             }, {
-              name: 'intent_mini', inputs: [{ slots: ['hjNq9UjHOVI9'], text: '{{[slot_mini].hjNq9UjHOVI9}}' }], key: 'uDk5iYNOCm8W', open: true, _platform: null,
+              name: 'intent_mini',
+              inputs: [{
+                slots: ['hjNq9UjHOVI9'],
+                text: '{{[slot_mini].hjNq9UjHOVI9}}'
+              }],
+              key: 'uDk5iYNOCm8W',
+              open: true,
+              _platform: null,
             }, {
-              name: 'payment_intent', inputs: [{ slots: ['afh8RUpdYt3e'], text: '{{[payment_slot].afh8RUpdYt3e}}' }, { slots: ['afh8RUpdYt3e'], text: 'i want {{[payment_slot].afh8RUpdYt3e}}' }, { slots: ['afh8RUpdYt3e'], text: 'purchase {{[payment_slot].afh8RUpdYt3e}}' }], key: 'Nr70HvSr5NTG', open: true, _platform: null,
+              name: 'payment_intent',
+              inputs: [{
+                slots: ['afh8RUpdYt3e'],
+                text: '{{[payment_slot].afh8RUpdYt3e}}'
+              }, {
+                slots: ['afh8RUpdYt3e'],
+                text: 'i want {{[payment_slot].afh8RUpdYt3e}}'
+              }, {
+                slots: ['afh8RUpdYt3e'],
+                text: 'purchase {{[payment_slot].afh8RUpdYt3e}}'
+              }],
+              key: 'Nr70HvSr5NTG',
+              open: true,
+              _platform: null,
             }, {
-              name: 'refund', inputs: [{ slots: [], text: 'refund' }, { slots: [], text: 'refund payment' }, { slots: [], text: 'return payment' }, { slots: [], text: 'get a refund' }, { slots: [], text: 'return premium content' }], key: 'WYPBdRB4zctc', open: true, _platform: null,
+              name: 'refund',
+              inputs: [{
+                slots: [],
+                text: 'refund'
+              }, {
+                slots: [],
+                text: 'refund payment'
+              }, {
+                slots: [],
+                text: 'return payment'
+              }, {
+                slots: [],
+                text: 'get a refund'
+              }, {
+                slots: [],
+                text: 'return premium content'
+              }],
+              key: 'WYPBdRB4zctc',
+              open: true,
+              _platform: null,
             }]);
             expect(r.slots).to.eql([{
-              name: 'slot_one', inputs: ['dinosaur', 'one', 'two', 'three', 'velociraptor', 't-rex', '1993', '1997', '1995', '2001', '2018', '2015'], type: { label: 'CUSTOM', value: 'CUSTOM' }, key: 'rhuwpeOxWqnw', open: true,
+              name: 'slot_one',
+              inputs: ['dinosaur', 'one', 'two', 'three', 'velociraptor', 't-rex', '1993', '1997', '1995', '2001', '2018', '2015'],
+              type: {
+                label: 'CUSTOM',
+                value: 'CUSTOM'
+              },
+              key: 'rhuwpeOxWqnw',
+              open: true,
             }, {
-              name: 'slot_two', inputs: [], type: { label: 'AMAZON.NUMBER', value: 'AMAZON.NUMBER' }, key: 'Of0UMzUuNKVz', open: true,
+              name: 'slot_two',
+              inputs: [],
+              type: {
+                label: 'AMAZON.NUMBER',
+                value: 'AMAZON.NUMBER'
+              },
+              key: 'Of0UMzUuNKVz',
+              open: true,
             }, {
-              name: 'open_lvlone', inputs: ['level 1', 'level one'], type: { label: 'CUSTOM', value: 'CUSTOM' }, key: '9N4Xdah9UShx', open: true,
+              name: 'open_lvlone',
+              inputs: ['level 1', 'level one'],
+              type: {
+                label: 'CUSTOM',
+                value: 'CUSTOM'
+              },
+              key: '9N4Xdah9UShx',
+              open: true,
             }, {
-              name: 'opne_lvltwo', inputs: ['level 2', 'level two', 'level to', 'level too'], type: { label: 'CUSTOM', value: 'CUSTOM' }, key: 'j0Hqhna45404', open: true,
+              name: 'opne_lvltwo',
+              inputs: ['level 2', 'level two', 'level to', 'level too'],
+              type: {
+                label: 'CUSTOM',
+                value: 'CUSTOM'
+              },
+              key: 'j0Hqhna45404',
+              open: true,
             }, {
-              name: 'slot_mini', inputs: ['mini games', 'mini', 'games'], type: { label: 'CUSTOM', value: 'CUSTOM' }, key: 'hjNq9UjHOVI9', open: true,
+              name: 'slot_mini',
+              inputs: ['mini games', 'mini', 'games'],
+              type: {
+                label: 'CUSTOM',
+                value: 'CUSTOM'
+              },
+              key: 'hjNq9UjHOVI9',
+              open: true,
             }, {
-              name: 'payment_slot', inputs: ['premium content', 'premium', 'purchase', 'upgrade', 'upgrade game', 'purchase upgrade'], type: { label: 'CUSTOM', value: 'CUSTOM' }, key: 'afh8RUpdYt3e', open: true,
+              name: 'payment_slot',
+              inputs: ['premium content', 'premium', 'purchase', 'upgrade', 'upgrade game', 'purchase upgrade'],
+              type: {
+                label: 'CUSTOM',
+                value: 'CUSTOM'
+              },
+              key: 'afh8RUpdYt3e',
+              open: true,
             }]);
             expect(r.name).to.eql('UNTITLED PROJECT'); // shouldn't update name
           } catch (err) {
@@ -419,8 +548,14 @@ describe('Skill', function () {
             const skill_data = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
             const r = skill_data[0];
             expect(r.name).to.eql('pikachu');
-            expect(r.resume_prompt).to.eql({ voice: 'Alexa', content: '' });
-            expect(r.error_prompt).to.eql({ voice: 'Alexa', content: '' });
+            expect(r.resume_prompt).to.eql({
+              voice: 'Alexa',
+              content: ''
+            });
+            expect(r.error_prompt).to.eql({
+              voice: 'Alexa',
+              content: ''
+            });
             expect(r.restart).to.eql(true);
           } catch (err) {
             if (err) throw err;
@@ -463,7 +598,11 @@ describe('Skill', function () {
         .set('cookie', `auth=${token}`)
         .send({
           google_publish_info: {
-            project_id: 'triad-stepping-exercise-6ace1', locales: [], main_locale: 'en', uploaded: true, google_link_user: '0',
+            project_id: 'triad-stepping-exercise-6ace1',
+            locales: [],
+            main_locale: 'en',
+            uploaded: true,
+            google_link_user: '0',
           },
         })
         .expect(200)
@@ -472,7 +611,11 @@ describe('Skill', function () {
             const skill_data = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
             const r = skill_data[0];
             expect(r.google_publish_info).to.eql({
-              project_id: 'triad-stepping-exercise-6ace1', locales: [], main_locale: 'en', uploaded: true, google_link_user: '0',
+              project_id: 'triad-stepping-exercise-6ace1',
+              locales: [],
+              main_locale: 'en',
+              uploaded: true,
+              google_link_user: '0',
             });
           } catch (err) {
             if (err) throw err;
@@ -681,6 +824,6 @@ describe('Skill', function () {
       .set('cookie', `auth=${token}`)
       .expect(200);
 
-    if (server) server.close();
+    if (server) await server.stop();
   });
 });

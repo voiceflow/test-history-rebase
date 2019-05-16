@@ -38,7 +38,7 @@ describe.skip('Marketplace', () => {
   let server;
 
   before(async () => {
-    ({ app } = await GetApp());
+    ({ app, server } = await GetApp());
 
     try {
       module_id = await getTemplate;
@@ -115,7 +115,7 @@ describe.skip('Marketplace', () => {
       .set('cookie', `auth=${token}`)
       .expect(200);
 
-    if (server) server.close();
+    if (server) await server.stop();
   });
 
   describe('Certification', () => {

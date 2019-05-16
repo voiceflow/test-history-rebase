@@ -184,7 +184,7 @@ exports.deleteProjectPromise = (project_id) => new Promise(async (resolve, rejec
   }
 });
 
-copyProducts = (old_skill_id, new_skill_id) => new Promise(async (resolve, reject) => {
+const copyProducts = (old_skill_id, new_skill_id) => new Promise(async (resolve, reject) => {
   const select_query = `
     SELECT * FROM products WHERE skill_id = $1 ORDER BY id
   `;
@@ -212,7 +212,7 @@ copyProducts = (old_skill_id, new_skill_id) => new Promise(async (resolve, rejec
   }
 });
 
-copyEmailTemplates = (old_skill_id, new_skill_id, new_creator_id) => new Promise(async (resolve, reject) => {
+const copyEmailTemplates = (old_skill_id, new_skill_id, new_creator_id) => new Promise(async (resolve, reject) => {
   const select_query = `
     SELECT * FROM email_templates WHERE skill_id = $1 ORDER BY template_id
   `;
@@ -240,7 +240,7 @@ copyEmailTemplates = (old_skill_id, new_skill_id, new_creator_id) => new Promise
   }
 });
 
-copyDisplays = (old_skill_id, new_skill_id, new_creator_id) => new Promise(async (resolve, reject) => {
+const copyDisplays = (old_skill_id, new_skill_id, new_creator_id) => new Promise(async (resolve, reject) => {
   const select_query = `
     SELECT * FROM displays WHERE skill_id = $1 ORDER BY id
   `;
@@ -551,23 +551,21 @@ exports.copySkill = async (req, res, options, cb = false) => {
   }
 };
 
-const copyIntentsAndSkills = (origin_skill_id, dest_skill_id) => {
-  return new Promise(async (resolve, reject) => {
-    try{
-      let origin_skill = (await pool.query(`SELECT * FROM skills WHERE skill_id = $1`, [origin_skill_id])).rows[0]
-      let dest_skill = (await pool.query(`SELECT * FROM skills WHERE skill_id = $1`, [dest_skill_id])).rows[0]
+const copyIntentsAndSkills = (origin_skill_id, dest_skill_id) => new Promise(async (resolve, reject) => {
+  try {
+    const origin_skill = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [origin_skill_id])).rows[0];
+    const dest_skill = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [dest_skill_id])).rows[0];
 
-      let new_intents = dest_skill.intents.concat(origin_skill.intents)
-      let new_slots = dest_skill.slots.concat(origin_skill.slots)
+    const new_intents = dest_skill.intents.concat(origin_skill.intents);
+    const new_slots = dest_skill.slots.concat(origin_skill.slots);
 
-      await pool.query(`UPDATE skills SET intents = $1, slots = $2 WHERE skill_id = $3`, [JSON.stringify(new_intents), JSON.stringify(new_slots), dest_skill_id])
-      resolve({ new_intents: new_intents, new_slots: new_slots })
-    } catch (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', { err })
-      reject()
-    }
-  })
-}
+    await pool.query('UPDATE skills SET intents = $1, slots = $2 WHERE skill_id = $3', [JSON.stringify(new_intents), JSON.stringify(new_slots), dest_skill_id]);
+    resolve({ new_intents, new_slots });
+  } catch (err) {
+    writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+    reject();
+  }
+});
 
 // Expect origin_skill_id and dest_skill_id to be decoded
 exports.copyDiagramsFromSkill = async (origin_skill_id, dest_skill_id, new_creator_id, new_flow_name, module_id, copy_intents_and_skills) => new Promise(async (resolve, reject) => {
@@ -625,15 +623,17 @@ exports.copyDiagramsFromSkill = async (origin_skill_id, dest_skill_id, new_creat
 
     let intents = [];
     let slots = [];
-    if(copy_intents_and_skills){
-      let {new_intents, new_slots} = await copyIntentsAndSkills(origin_skill_id, dest_skill_id)
-      intents = new_intents
-      slots = new_slots
+    if (copy_intents_and_skills) {
+      const { new_intents, new_slots } = await copyIntentsAndSkills(origin_skill_id, dest_skill_id);
+      intents = new_intents;
+      slots = new_slots;
     }
 
     Promise.all(remap_and_copy_promises)
       .then((values) => {
-        resolve({ new_diagrams: values, new_globals: total_globals, new_intents: intents, new_slots: slots });
+        resolve({
+          new_diagrams: values, new_globals: total_globals, new_intents: intents, new_slots: slots,
+        });
       })
       .catch((err) => {
         writeToLogs('CREATOR_BACKEND_ERRORS', { err });

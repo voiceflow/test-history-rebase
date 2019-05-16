@@ -1,3 +1,5 @@
+'use strict';
+
 const {
   pool, hashids, docClient, writeToLogs, ESclient, analytics,
 } = require('./../services');
@@ -5,6 +7,8 @@ const { copySkill, deleteVersionPromise, copyDiagramsFromSkill } = require('./sk
 const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill');
 
 const DEFAULT_VARIABLES = ['sessions', 'user_id', 'timestamp', 'platform', 'locale', 'access_token'];
+
+let ADMIN_MARKETPLACE_ACC;
 
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'development_prod' || process.env.NODE_ENV === 'test') {
   ADMIN_MARKETPLACE_ACC = 2125;
@@ -347,7 +351,9 @@ const giveAccess = async (req, res) => {
 			ORDER BY cert_approved DESC
 			LIMIT 1
     `, [module_id])).rows[0];
-    const { new_diagrams, new_globals, new_intents, new_slots } = await copyDiagramsFromSkill(origin_skill.skill_id, dest_skill_id, creator_id, origin_skill.title, module_id, true);
+    const {
+      new_diagrams, new_globals, new_intents, new_slots,
+    } = await copyDiagramsFromSkill(origin_skill.skill_id, dest_skill_id, creator_id, origin_skill.title, module_id, true);
     // Increment # of downloads and update ES index
     await pool.query('UPDATE modules SET downloads = downloads + 1 WHERE module_id = $1', [module_id]);
     const module_data = (await pool.query(`
@@ -370,7 +376,9 @@ const giveAccess = async (req, res) => {
       event: 'Flow Added',
       properties: module_data,
     });
-    res.send({ new_module: module_data, globals: new_globals, new_diagrams: new_diagrams, new_intents: new_intents, new_slots: new_slots });
+    res.send({
+      new_module: module_data, globals: new_globals, new_diagrams, new_intents, new_slots,
+    });
   } catch (err) {
     await pool.query('DELETE FROM team_modules WHERE team_id = $1 AND module_id = $2 AND project_id = $3', [team_id, module_id, project_id]);
     writeToLogs('CREATOR_BACKEND_ERRORS', { err });
@@ -571,7 +579,7 @@ const copyDefaultTemplate = (req, res) => {
   // Retrieve diagram, trying 5 times
   const getDiagram = (row, num_tries) => {
     const params = {
-      TableName: `${getEnvVariable('DIAGRAMS_DYNAMO_TABLE')}`,
+      TableName: `${process.env.DIAGRAMS_DYNAMO_TABLE}`,
       Key: { id: row.diagram },
     };
 
@@ -666,8 +674,8 @@ const getModuleDiagram = async (req, res) => {
 };
 
 const flowsSearch = async (req, res) => {
-  try{
-    if((await pool.query(`SELECT * FROM creators WHERE creator_id = $1 AND password = $2`, [req.headers.creator_id, req.headers.password])).rows.length > 0){
+  try {
+    if ((await pool.query('SELECT * FROM creators WHERE creator_id = $1 AND password = $2', [req.headers.creator_id, req.headers.password])).rows.length > 0) {
       const query = JSON.parse(req.body.split('\n')[1]);
       const ESoptions = {
         index: 'marketplace',
@@ -675,13 +683,11 @@ const flowsSearch = async (req, res) => {
         body: query,
       };
       ESclient.search(ESoptions)
-      .then((data) => {
-        return res.send({ responses: [data] });
-      })
-      .catch((err) => {
-        writeToLogs('CREATOR_BACKEND_ERRORS', { err });
-        return res.sendStatus(500);
-      });
+        .then((data) => res.send({ responses: [data] }))
+        .catch((err) => {
+          writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+          return res.sendStatus(500);
+        });
     } else {
       return res.sendStatus(403);
     }
@@ -689,7 +695,7 @@ const flowsSearch = async (req, res) => {
     writeToLogs('CREATOR_BACKEND_ERRORS', { err });
     return res.sendStatus(500);
   }
-}
+};
 
 module.exports = {
   getModules,
@@ -712,5 +718,5 @@ module.exports = {
   checkConflicts,
   getInitialTemplate,
   getModuleDiagram,
-  flowsSearch
+  flowsSearch,
 };

@@ -1,13 +1,17 @@
 'use strict';
 
 /* eslint-disable class-methods-use-this, no-empty-function */
+
 const AWS = require('aws-sdk');
+const path = require('path');
 
 const {
-  upload, uploadResize, ESclient, verify,
+  upload,
+  uploadResize,
+  ESclient,
+  verify,
 } = require('../services');
 const { policy, terms } = require('../policy');
-const path = require('path');
 
 const { underMaintenance } = require('../app/src/MAINTENANCE.js');
 
@@ -26,7 +30,6 @@ const Email = require('../routes/email.js');
 const Multimodal = require('../routes/multimodal/multimodal');
 const Onboard = require('../routes/onboard.js');
 const Logs = require('../routes/logs.js');
-const Analytics = require('../routes/analytics.js');
 const Team = require('../routes/team.js');
 const Project = require('../routes/project.js');
 const { copySkill } = require('../routes/skill_util');
@@ -35,6 +38,14 @@ const ProductUpdates = require('../routes/product_updates.js');
 const Integrations = require('../routes/integrations');
 const GoogleSheets = require('../routes/integrations/googleSheets');
 const Custom = require('../routes/integrations/custom');
+
+
+const { ResponseBuilder } = require('@voiceflow/common').middleware;
+const { AnalyticsManager, ProjectManager, SkillsManager } = require('../lib/services');
+const { Project: ProjectMiddleware } = require('../lib/middleware');
+const { Analytics: AnalyticsController } = require('../lib/controllers');
+
+const responseBuilder = new ResponseBuilder();
 
 /**
  * @class
@@ -72,7 +83,12 @@ class ServiceManager {
    * Build all controllers
    * @returns {*}
    */
-  static buildControllers() {
+  static buildControllers(services) {
+    const {
+      analyticsManager,
+      projectManager,
+    } = services;
+
     const utilities = {
       policy,
       terms,
@@ -103,6 +119,12 @@ class ServiceManager {
       },
     };
 
+    const analytics = new AnalyticsController({
+      responseBuilder,
+      analyticsManager,
+      projectManager,
+    });
+
     return {
       Authentication,
       policy,
@@ -122,7 +144,7 @@ class ServiceManager {
       Integrations,
       GoogleSheets,
       Custom,
-      Analytics,
+      analytics,
       Onboard,
       ProductUpdates,
       Logs,
@@ -139,7 +161,11 @@ class ServiceManager {
    * Build all middleware
    * @returns {*}
    */
-  static buildMiddleware() {
+  static buildMiddleware(clients, services, config) {
+    const {
+      projectManager,
+    } = services;
+
     const ensureLoggedIn = (req, res, next) => (req.user ? next() : res.sendStatus(401));
     const ensurePlan = (plan) => (req, res, next) => ((req.user && req.user.admin >= plan) ? next() : res.sendStatus(401));
     const ensureAdmin = ensurePlan(100);
@@ -148,7 +174,13 @@ class ServiceManager {
     // MARKETPLACE BETA
     const ensureBeta = (req, res, next) => ((req.user && req.user.admin === 7) ? next() : res.sendStatus(401));
 
+    const project = new ProjectMiddleware({
+      responseBuilder,
+      projectManager,
+    });
+
     return {
+      isProjectOwner: project.isOwner,
       ensureLoggedIn,
       ensurePlan,
       ensureAdmin,
@@ -181,9 +213,38 @@ class ServiceManager {
 
   /**
    * Build all services
-   * @returns {*}
+   * @param {object }config
+   * @param {object} clients
+   * @returns {{projectManager: (ProjectManager|*), analyticsManager: (AnalyticsManager|*), skillsManager: (SkillsManager|*)}}
    */
-  static buildServices() {
+  static buildServices(config, clients) {
+    const {
+      hashids,
+    } = require('../services'); // eslint-disable-line
+    // The above line is temporary until we finish migrating the routes.
+
+    const {
+      pool,
+      logging_pool,
+    } = clients;
+
+    const projectManager = new ProjectManager({
+      pool,
+      hashids,
+    });
+
+    const skillsManager = new SkillsManager({ pool });
+    const analyticsManager = new AnalyticsManager({
+      logging_pool,
+      skillsManager,
+    });
+
+    return {
+      hashids,
+      projectManager,
+      skillsManager,
+      analyticsManager,
+    };
   }
 
   /**
@@ -191,6 +252,12 @@ class ServiceManager {
    * @returns {*}
    */
   static buildClients() {
+    const {
+      logging_pool,
+      pool,
+    } = require('../services'); // eslint-disable-line
+    // The above line is temporary until we finish migrating the routes.
+
     AWS.config = new AWS.Config({
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -200,6 +267,8 @@ class ServiceManager {
 
     return {
       AWS,
+      pool,
+      logging_pool,
     };
   }
 

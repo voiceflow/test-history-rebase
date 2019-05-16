@@ -10,6 +10,7 @@ const npmPackage = require('./package.json');
 const sockets = require('./sockets');
 
 const { ExpressMiddleware, ServiceManager } = require('./backend');
+
 const app = express();
 
 const serviceManager = new ServiceManager();

@@ -183,7 +183,7 @@ class Onboarding extends Component{
     ]
     pictures.forEach((picture) => {
       const img = new Image();
-      img.src = picture.fileName;
+      img.src = picture;
     })
 
     this.loadDefaultTemplates()

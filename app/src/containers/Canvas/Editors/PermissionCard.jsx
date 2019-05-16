@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {Alert, Button, ButtonGroup} from 'reactstrap'
-import Switch from '@material-ui/core/Switch'
+import Toggle from 'react-toggle'
 import {Link} from 'react-router-dom'
 
 const PERMISSIONS = [
@@ -53,22 +53,20 @@ class PermissionCard extends Component {
                 <button onClick={()=>this.toggle('settings')} className="btn btn-clear exit"><i className="far fa-chevron-left"/> Back</button>
                 <div className="space-between mt-3">
                     <label>Custom Permissions</label>
-                    <Switch
+                    <Toggle
                         checked={!!this.state.node.extras.custom}
                         onChange={()=>this.toggle('custom')}
-                        color="primary"
-                        className="fulfill-switch"
+                        icons={false}
                     />
                 </div>
                 {this.state.node.extras.custom && <React.Fragment>
                     <hr/>
                     {PERMISSIONS.map(permission => <div className="space-between">
                         <label>{permission.name}</label>
-                        <Switch
+                        <Toggle
                             checked={this.state.node.extras.permissions.includes(permission.code)}
                             onChange={()=>this.togglePermission(permission.code)}
-                            color="primary"
-                            className="fulfill-switch"
+                            icons={false}
                         />
                     </div>)}
                 </React.Fragment>}

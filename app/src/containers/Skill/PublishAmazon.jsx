@@ -11,13 +11,8 @@ import {
 } from 'reactstrap'
 import { Link } from "react-router-dom";
 
-//TODO DEPRECATE MUI
-import Checkbox from '@material-ui/core/Checkbox'
-import MUFormGroup from '@material-ui/core/FormGroup'
-import Paper from '@material-ui/core/Paper'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-
 import DefaultButton from 'components/Button'
+import RadioButtons, { YES_NO_RADIO_BUTTONS } from 'components/RadioButtons'
 import Textarea from 'react-textarea-autosize'
 import Image from 'components/Uploads/Image'
 import Multiple from 'components/Forms/Multiple'
@@ -83,9 +78,11 @@ class Skill extends Component {
   }
 
   componentDidMount() {
-    AmazonAccessToken()
-    .then(() => this.setState({stage: 2}))
-    .catch(() => this.setState({stage: 0}))
+    AmazonAccessToken().then(token => {
+      this.setState({
+        stage: token ? 2 : 0
+      });
+    })
 
     axios.get('/skill/' + this.props.skill_id + '?verbose=1&review_check=1')
       .then(res => {
@@ -470,7 +467,7 @@ class Skill extends Component {
     let content;
     let alexaDashboardUrl = `https://developer.amazon.com/alexa/console/ask/build/custom/${this.state.amzn_id}/development/en_US/dashboard`;
     if (this.state.stage === 0 || this.state.stage === -1) {
-      content = <div className="my-5">
+      content = <div>
         {this.state.stage === -1 ?
           <Alert color="danger">Login With Amazon Failed - Try Again.</Alert> : null
         }
@@ -496,7 +493,7 @@ class Skill extends Component {
         <p className="loading">{stage_title[this.state.stage]}</p>
       </div>
     } else if (this.state.stage === 2) {
-      content = <div className="MUIform">
+      content = <div className="form">
         {this.state.stage_error && this.state.stage_error.stage === 2 ?
           <Alert color="danger">{this.state.stage_error.message}</Alert> : null
         }
@@ -515,37 +512,26 @@ class Skill extends Component {
         }, {
           value: 'export',
           text: "This Alexa skill may be imported to and exported from the United States and all other countries and regions in which Amazon operates their program or in which you've authorized sales to end users (without the need for us to obtain any license or clearance or take any other action) and is in full compliance with all applicable laws and regulations governing imports and exports, including those applicable to software that makes use of encryption technology.",
-          yes: 'I certify',
-          no: 'I do not certify'
+          buttons: [{
+            id: true,
+            label: 'I certify',
+          }, {
+            id: false,
+            label: 'I do not certify'
+          }]
         }].map((form, i) => {
           return (
-            <Paper className="p-3 my-3" key={i}>
+            <div className="p-3 my-3 paper" key={i}>
               {form.text}
-              <MUFormGroup row>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={this.state[form.value]}
-                      onChange={() => this.onRadio(form.value, true)}
-                      color="primary"
-                    />
-                  }
-                  label={form.yes ? form.yes : "Yes"}
+                <RadioButtons
+                  buttons={form.buttons ? form.buttons : YES_NO_RADIO_BUTTONS}
+                  checked={this.state[form.value]}
+                  onChange={(val) => this.onRadio(form.value, val)}
                 />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={!this.state[form.value]}
-                      onChange={() => this.onRadio(form.value, false)}
-                      color="primary"
-                    />
-                  }
-                  label={form.no ? form.no : "No"}
-                />
-              </MUFormGroup>
-            </Paper>)
+            </div>
+          );
         })}
-        <Paper className="p-3 my-3">
+        <div className="p-3 my-3 paper">
           <Label>Testing Instructions</Label>
           <Textarea
             name="instructions"
@@ -555,7 +541,7 @@ class Skill extends Component {
             minRows={3}
             placeholder="Any Particular Testing Instructions for Amazon Approval Process"
           />
-        </Paper>
+        </div>
         <DefaultButton isBtn isPrimary onClick={this.onPublish}>Submit to Alexa</DefaultButton>
       </div>
     } else if (this.state.stage === 5 || this.state.stage === 6) {
@@ -600,7 +586,6 @@ class Skill extends Component {
         Getting Skill Status
                 </div>
     </div>;
-
     return (
       <React.Fragment>
         <Modal
@@ -996,15 +981,16 @@ class Skill extends Component {
               <div className="text-center">
                 {disabled_stages.has(this.state.stage) ?
                   null :
-                  <button
-                    className="btn btn-primary"
+                  <DefaultButton
+                    isPrimary
+                    variant="contained"
                     onClick={() => {
                       this.validateForm()
                     }}
                   >
                     Publish Skill
-                    <i className="fab fa-amazon ml-2" />
-                  </button>
+                      <i className="fab fa-amazon ml-2" />
+                  </DefaultButton>
                 }
               </div>
             </div>

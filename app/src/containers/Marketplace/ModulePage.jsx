@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import MUIButton from '@material-ui/core/Button';
-import './Marketplace.css';
 
 import { AMAZON_CATEGORIES } from './../../../services/Categories';
 import types from './../../../services/Types';
+
+import Button from 'components/Button'
+
+import "./Marketplace.css";
 
 class ModulePage extends Component{
 	constructor(props){
@@ -100,7 +102,6 @@ class ModulePage extends Component{
     }
 
 	render(){
-		console.log(this.state.module)
 		let creation_date = ''
 		if(this.state.module.created){
 			creation_date = this.state.module.created.substring(0, this.state.module.created.indexOf("T"))
@@ -118,9 +119,9 @@ class ModulePage extends Component{
 
 					{
                     	this.state.has_access?
-                    	<MUIButton variant="contained" className="btn-primary mb-3" onClick={this.handleRemoveFromLib}>Remove from Library <i className="fas fa-layer-minus ml-2"></i></MUIButton>
+                    	<Button isPrimary variant="contained" className="mb-3" onClick={this.handleRemoveFromLib}>Remove from Library <i className="fas fa-layer-minus ml-2"></i></Button>
                         :
-                        <MUIButton variant="contained" className="btn-primary" onClick={this.handleAddtoLib}>Add to Library <i className="fas fa-layer-plus ml-2"></i></MUIButton>
+                        <Button isPrimary variant="contained" onClick={this.handleAddtoLib}>Add to Library <i className="fas fa-layer-plus ml-2"></i></Button>
                     }
 			    </div>
 			</div>

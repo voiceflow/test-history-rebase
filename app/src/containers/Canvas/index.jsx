@@ -26,7 +26,7 @@ import { combineAppendValidation, appendValidator } from 'utils/combineHelper'
 import { updateVersion, updateIntents, setCanFulfill } from 'ducks/version'
 import { setVariables } from 'ducks/variable'
 import { setCanvasError } from 'ducks/user'
-import { renameDiagram, appendDiagrams } from 'ducks/diagram'
+import { renameDiagram, appendDiagrams, updateDiagrams } from 'ducks/diagram'
 import { setError, setConfirm } from 'ducks/modal'
 import { fetchEmails } from 'ducks/email'
 
@@ -63,6 +63,7 @@ import { Prompt } from 'react-router'
 import moment from 'moment'
 import Upgrade from 'components/Modals/MultiPlatformModalContent.jsx';
 import { fetchIntegrationUsers } from 'ducks/integration';
+import { accessSync } from 'fs';
 
 const NLC = require('natural-language-commander')
 const _ = require('lodash')
@@ -259,9 +260,6 @@ export class Canvas extends Component {
     };
     componentDidUpdate(previous_props, prev_state) {
         if(previous_props.diagram_id !== this.props.diagram_id){
-            if(this.buildDiagrams !== null){
-                this.buildDiagrams(this.props.diagram_id)
-            }
             this.props.setOpen(false)
             let nodes = _.values(this.state.engine.diagramModel.nodes)
             this.state.engine.enableRepaintEntities(nodes)
@@ -655,20 +653,20 @@ export class Canvas extends Component {
 
         const copy = (save = true) => {
 
-            let new_flow_name = flow.name + ' (COPY)'
+            let newFlowName = flow.name + ' (COPY)'
             let index = 1
             const exists = (name) => this.props.diagrams.find(d => d.name === name)
-            while (exists(new_flow_name)) {
-                new_flow_name = `${flow.name} (COPY ${index})`
+            while (exists(newFlowName)) {
+                newFlowName = `${flow.name} (COPY ${index})`
                 index++
             }
 
-            axios.get(`/diagram/copy/${flow_id}?name=${encodeURI(new_flow_name)}`)
+            axios.get(`/diagram/copy/${flow_id}?name=${encodeURI(newFlowName)}`)
                 .then((res) => {
                     let diagrams = this.props.diagrams
                     diagrams.push({
                         id: res.data,
-                        name: new_flow_name
+                        name: newFlowName
                     })
                     this.setState({
                         diagrams: diagrams
@@ -744,100 +742,104 @@ export class Canvas extends Component {
         this.forceUpdate()
     }
 
+    getSubDiagrams = (nodes) => {
+      const updatedSubDiagrams = nodes
+        .filter((node) => !!node.extras.diagram_id)
+        .map((node) => node.extras.diagram_id)
+
+      const updatedStorySubDiagrams = nodes
+        .filter(node => (node.extras.type === 'story' && Array.isArray(node.combines)))
+        .reduce((acc, node) => {
+          const combinedNodes = node.combines.map(({extras}) => {
+            const platformNode = extras[this.props.skill.platform]
+            if (platformNode && platformNode.diagram_id) {
+              return [...acc, platformNode.diagram_id]
+            }
+
+            return acc
+          })
+        },[])
+      
+      return [...updatedSubDiagrams, ...updatedStorySubDiagrams]
+    }
+
+    updateDiagrams = (subDiagrams, newDiagram=[]) => {
+      const {diagrams, diagram_id, updateDiagrams} = this.props
+      const updatedDiagrams = diagrams.map((diagram) => {
+        if (diagram.id === diagram_id) {
+          diagram.sub_diagrams = subDiagrams
+        }
+
+        return diagram
+      })
+
+      updateDiagrams([...updatedDiagrams, ...newDiagram])
+    }
+
     onSave(state=true) {
         if (this.saving) return
         this.saving = true
         try {
-            if (!this.props.preview){
-                state && this.setState({ saving: true })
-                let serialize = util.serializeDiagram(this.state.engine)
-                var data = JSON.stringify(serialize)
+          if (this.props.preview) return 
+          state && this.setState({ saving: true })
+          let serialize = util.serializeDiagram(this.state.engine)
+          var data = JSON.stringify(serialize)
+          const subDiagrams = this.getSubDiagrams(serialize.nodes)
+          if(state) this.updateDiagrams(subDiagrams)
 
-                let sub_diagrams = []
+          var diagram = {
+              title: this.state.diagram_name,
+              variables: this.props.variables,
+              data: data,
+              skill: this.props.skill.skill_id,
+              sub_diagrams: JSON.stringify(subDiagrams),
+              global: this.props.skill.global
+          }
+          const s = this.props.skill;
 
-                serialize.nodes.forEach(node => {
-                    if(node.extras.diagram_id){
-                        sub_diagrams.push(node.extras.diagram_id)
-                    }else if(node.extras.type === 'story' && Array.isArray(node.combines)){
-                        node.combines.forEach(combine_node => {
-                            let extras = combine_node.extras[this.props.skill.platform]
-                            if(extras && extras.diagram_id){
-                                sub_diagrams.push(extras.diagram_id)
-                            }
-                        })
-                    }
-                })
-                if(state){
-                    // UPDATE DIAGRAM STRUCTURE
-                    let diagrams = this.props.diagrams
-                    for (var i = 0; i < diagrams.length; i++) {
-                        if(diagrams[i].id === serialize.id){
-                            diagrams[i].sub_diagrams = sub_diagrams
-                        }
-                    }
-                    state && this.setState({
-                        diagrams: diagrams
-                    }, () => {
-                        if(this.buildDiagrams !== null){
-                            this.buildDiagrams(this.props.diagram_id)
-                        }
-                    })
+          const save_skill_intents = new Promise((resolve, reject) => {
+              axios.patch('/skill/' + s.skill_id + '?intents=true', {
+                  intents: JSON.stringify(s.intents),
+                  slots: JSON.stringify(s.slots),
+                  fulfillment: JSON.stringify(s.fulfillment),
+                  platform: s.platform
+              })
+              .then(res => {
+                  resolve()
+              })
+              .catch(err => {
+                  reject(err)
+              })
+          })
+
+          const save_diagram = axios.post(`/diagram`, diagram)
+
+          Promise.all([save_skill_intents, save_diagram]).then(res => {
+              this.saving = false
+              this.lastModel = data
+              state && this.setState({
+                  saving: false,
+                  saved: true
+              })
+              if(typeof this.props.skillSaveCB === "function"){
+                  this.props.skillSaveCB(serialize.id)
+              } else if(typeof this.saveCB === "function"){
+                  this.saveCB(serialize.id)
+                  this.saveCB = null
+              }
+          }).catch(rej_err => {
+              this.saving = false
+              state && this.setState({
+                  saving: false
+              }) && this.props.setError('Error Saving Project')
+
+              if(typeof this.props.skillSaveCB === "function"){
+                  this.props.skillSaveCB(null)
+              } else if(typeof this.saveCB === "function"){
+                  this.saveCB(null)
+                  this.saveCB = null
                 }
-
-                var diagram = {
-                    title: this.state.diagram_name,
-                    variables: this.props.variables,
-                    data: data,
-                    skill: this.props.skill.skill_id,
-                    sub_diagrams: JSON.stringify(sub_diagrams),
-                    global: this.props.skill.global
-                }
-                const s = this.props.skill;
-
-                const save_skill_intents = new Promise((resolve, reject) => {
-                    axios.patch('/skill/' + s.skill_id + '?intents=true', {
-                        intents: JSON.stringify(s.intents),
-                        slots: JSON.stringify(s.slots),
-                        fulfillment: JSON.stringify(s.fulfillment),
-                        platform: s.platform
-                    })
-                    .then(res => {
-                        resolve()
-                    })
-                    .catch(err => {
-                        reject(err)
-                    })
-                })
-
-                const save_diagram = axios.post(`/diagram`, diagram)
-
-                Promise.all([save_skill_intents, save_diagram]).then(res => {
-                    this.saving = false
-                    this.lastModel = data
-                    state && this.setState({
-                        saving: false,
-                        saved: true
-                    })
-                    if(typeof this.props.skillSaveCB === "function"){
-                        this.props.skillSaveCB(serialize.id)
-                    } else if(typeof this.saveCB === "function"){
-                        this.saveCB(serialize.id)
-                        this.saveCB = null
-                    }
-                }).catch(rej_err => {
-                    this.saving = false
-                    state && this.setState({
-                        saving: false
-                    }) && this.props.setError('Error Saving Project')
-
-                    if(typeof this.props.skillSaveCB === "function"){
-                        this.props.skillSaveCB(null)
-                    } else if(typeof this.saveCB === "function"){
-                        this.saveCB(null)
-                        this.saveCB = null
-                    }
-                })
-            }
+            })
         } catch (e) {
             this.saving = false
             console.log(e)
@@ -1148,9 +1150,6 @@ export class Canvas extends Component {
             if(!this.props.preview){
                 localStorage.setItem('flow', `${this.props.skill.skill_id}/${diagram_id}`)
             }
-            if(this.buildDiagrams !== null){
-                this.buildDiagrams(diagram_id)
-            }
         })
         .catch(err => {
             console.error(err)
@@ -1272,7 +1271,6 @@ export class Canvas extends Component {
                     })
                     .then(this.runTest)
                     .catch(err => {
-                        console.log(err)
                         this.setState({
                             testing_modal: false
                         })
@@ -1359,18 +1357,18 @@ export class Canvas extends Component {
       let data = JSON.stringify(curr_template)
 
       // No Duplicate Flow Names
-      let new_flow_name = base_flow_name
+      let newFlowName = base_flow_name
       let index = 1
       const exists = (name) => this.props.diagrams.find(d => d.name === name)
 
-      while(exists(new_flow_name)){
-          new_flow_name = `${base_flow_name} ${index}`
+      while(exists(newFlowName)){
+          newFlowName = `${base_flow_name} ${index}`
           index++
       }
 
       var diagram = {
           id: id,
-          title: new_flow_name,
+          title: newFlowName,
           variables: [],
           data: data,
           skill: skill_id
@@ -1383,7 +1381,14 @@ export class Canvas extends Component {
         } else {
           node.extras.diagram_id = id
         }
-        this.props.appendDiagrams(new_flow_name, id)
+        const subDiagrams = [...this.props.diagram.sub_diagrams, id]
+        const newDiagram = {
+          id: id,
+          name: newFlowName,
+          sub_diagrams: [],
+          module_id: null,
+        }
+        this.updateDiagrams(subDiagrams, [newDiagram])
         this.enterFlow(id)
       })
       .catch(err => {
@@ -1592,7 +1597,6 @@ export class Canvas extends Component {
               <Menu
                 unfocus={this.onDiagramUnfocus}
                 enterFlow={this.enterFlow}
-                build={fn => (this.buildDiagrams = fn)}
                 history={this.props.history}
                 user={this.props.user}
                 loading_diagram={this.props.load_diagram}
@@ -1755,7 +1759,8 @@ const mapDispatchToProps = dispatch => {
     setConfirm: (confirm) => dispatch(setConfirm(confirm)),
     getIntegrationsUsers: () => dispatch(fetchIntegrationUsers()),
     getEmails: (skill_id) => dispatch(fetchEmails(skill_id)),
-    appendDiagrams: (name, id) => dispatch(appendDiagrams({name, id, sub_diagrams: []}))
+    appendDiagrams: (name, id, sub_diagrams) => dispatch(appendDiagrams({name, id, sub_diagrams})),
+    updateDiagrams: (diagrams) => dispatch(updateDiagrams(diagrams))
   }
 }
 

@@ -10,7 +10,7 @@ export const FETCH_DIAGRAMS_FAILURE = 'FETCH_DIAGRAMS_FAILURE'
 export const ON_FLOW_RENAME = 'ON_FLOW_RENAME'
 export const UPDATE_DIAGRAM_ROOT = 'UPDATE_DIAGRAM_ROOT'
 export const APPEND_DIAGRAMS = 'APPEND_DIAGRAMS'
-export const REPLACE_DIAGRAMS = 'REPLACE_DIAGRAMS'
+export const UPDATE_DIAGRAMS = 'UPDATE_DIAGRAMS'
 
 const initialState = {
   diagrams: [],
@@ -26,7 +26,6 @@ export default function diagramReducer(state = initialState, action) {
         root_id: action.payload.root_id
       }
     case APPEND_DIAGRAMS:
-      console.log("2")
       return {
         ...state,
         diagrams: [
@@ -34,7 +33,7 @@ export default function diagramReducer(state = initialState, action) {
           action.payload.diagrams,
         ]
       }
-    case REPLACE_DIAGRAMS:
+    case UPDATE_DIAGRAMS:
       return {
         ...state,
         diagrams: update(state.diagrams, {$set: action.payload.diagrams})
@@ -94,19 +93,19 @@ export const updateDiagramRoot = (root_id)=> ({
 })
 
 export const appendDiagrams = diagrams => ({
-  type: APPEND_DIAGRAMS,
-  payload: {diagrams}
+    type: APPEND_DIAGRAMS,
+    payload: {diagrams}
 })
 
-export const replaceDiagrams = diagrams => ({
-  type: REPLACE_DIAGRAMS,
+export const updateDiagrams = diagrams =>  ({
+  type: UPDATE_DIAGRAMS,
   payload: {diagrams}
 })
 
 export const fetchDiagrams = skill_id => {
-    return dispatch => {
+    return async dispatch => {
       dispatch(fetchDiagramsBegin());
-      return axios.get('/skill/' + skill_id + '/diagrams')
+      return await axios.get('/skill/' + skill_id + '/diagrams')
         .then(res => {
           let diagrams = res.data.map(flow => {
               try {

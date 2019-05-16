@@ -89,6 +89,7 @@
     "jest": "^23.6.0",
     "mocha": "^6.1.4",
     "redis-mock": "^0.43.0",
+    "redux-devtools-extension": "^2.13.8",
     "semantic-release": "^15.13.3",
     "sinon": "^7.3.2",
     "supertest": "^3.3.0"

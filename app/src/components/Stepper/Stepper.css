@@ -33,7 +33,8 @@
     padding-left: 25px;
     padding-right: 25px;
     padding-top: 34px;
-    min-width: 100px;
+    width: 110px;
+    min-width:110px;
     text-align: center;
     /* display: inline; */
 }
@@ -152,6 +153,7 @@
     display: inline-block;
     vertical-align: top;
     color: #62778c;
+    margin-left: -5px;
 }
 
 .steps-list__issues {

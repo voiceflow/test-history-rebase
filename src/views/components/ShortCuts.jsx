@@ -40,6 +40,18 @@ class ShortCuts extends Component  {
             <div className="shortcut-desc">Delete Block</div>
             <div className="shortcut-cmd"><kbd>Backspace</kbd></div>
           </div>
+          <div className="shortcut">
+            <div className="shortcut-desc">Open Blocks Menu</div>
+            <div className="shortcut-cmd"><kbd>Shift</kbd> + <kbd>1</kbd></div>
+          </div>
+          <div className="shortcut">
+            <div className="shortcut-desc">Open Flows Menu</div>
+            <div className="shortcut-cmd"><kbd>Shift</kbd> + <kbd>2</kbd></div>
+          </div>
+          <div className="shortcut">
+            <div className="shortcut-desc">Open Variables Menu</div>
+            <div className="shortcut-cmd"><kbd>Shift</kbd> + <kbd>3</kbd></div>
+          </div>
         </div>
     )
   }

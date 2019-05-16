@@ -64,7 +64,6 @@ import { Prompt } from 'react-router'
 import moment from 'moment'
 import Upgrade from '../../components/Modals/MultiPlatformModalContent.jsx';
 import { fetchIntegrationUsers } from 'ducks/integration';
-import { sampleUtteranceRegex } from '../../../services/Regex.js';
 
 const NLC = require('natural-language-commander')
 const _ = require('lodash')
@@ -158,16 +157,16 @@ export class Canvas extends Component {
                 e.stopPropagation()
             }
         })
-        Mousetrap.bind(["command+1", "ctrl+1"], e => {
+        Mousetrap.bind(["shift+1"], e => {
             console.log("entered the bind")
             e.preventDefault()
             this.openTab("blocks")
         })
-        Mousetrap.bind(["command+2", "ctrl+2"], e => {
+        Mousetrap.bind(["shift+2"], e => {
             e.preventDefault()
             this.openTab("project")
         })
-        Mousetrap.bind(["command+3", "ctrl+3"], e => {
+        Mousetrap.bind(["shift+3"], e => {
             e.preventDefault()
             this.openTab("variables")
         })

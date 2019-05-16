@@ -6,7 +6,6 @@ import FlowButton from './Sidebars/components/FlowButton'
 import Blocks from './Sidebars/Blocks'
 import Variables from './Sidebars/Variables'
 import Project from './Sidebars/Project'
-import Mousetrap from 'mousetrap'
 
 const tabs = {
     top: [

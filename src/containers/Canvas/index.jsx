@@ -645,8 +645,8 @@ export class Canvas extends Component {
       })
     }
 
-    copyFlow = (flow_id) => {
-        let flow = this.props.diagrams.find(d => d.id === flow_id)
+    copyFlow = (flowId) => {
+        let flow = this.props.diagrams.find(d => d.id === flowId)
         if (!flow) {
             return
         }
@@ -661,7 +661,7 @@ export class Canvas extends Component {
                 index++
             }
 
-            axios.get(`/diagram/copy/${flow_id}?name=${encodeURI(newFlowName)}`)
+            axios.get(`/diagram/copy/${flowId}?name=${encodeURI(newFlowName)}`)
                 .then((res) => {
                     let diagrams = this.props.diagrams
                     diagrams.push({
@@ -684,7 +684,7 @@ export class Canvas extends Component {
                 })
         }
 
-        if (flow_id === this.props.diagram_id && !this.props.preview) {
+        if (flowId === this.props.diagram_id && !this.props.preview) {
             this.saveCB = () => {
                 copy(false)
             }
@@ -694,7 +694,7 @@ export class Canvas extends Component {
         }
     }
 
-    deleteFlow(flow_id) {
+    deleteFlow(flowId) {
         this.props.setConfirm({
             warning: true,
             text: <Alert color = "danger"
@@ -710,18 +710,19 @@ export class Canvas extends Component {
                 this.setState({
                     confirm: null
                 })
-                axios.delete('/diagram/' + flow_id)
+                axios.delete('/diagram/' + flowId)
                     .then(() => {
-                        let index = this.props.diagrams.findIndex(d => d.id === flow_id)
-                        if (index !== -1) {
-                            let diagrams = this.props.diagrams;
-                            diagrams.splice(index, 1)
-                            this.setState({
-                                diagrams: diagrams
-                            })
-                        }
+                        const updatedDiagrams = this.props.diagrams
+                          .filter(({id}) => id !== flowId)
+                          .map((diagram) => {
+                            const updatedSubDiagrams = diagram.sub_diagrams.filter((id) => id !== flowId)
+                            diagram.sub_diagrams = updatedSubDiagrams
+
+                            return diagram
+                          })
+                        this.props.updateDiagrams(updatedDiagrams) 
                         // If they are deleting the flow they are currently on, go back to ROOT
-                        if (flow_id === this.props.diagram_id) {
+                        if (flowId === this.props.diagram_id) {
                             this.enterFlow(this.props.root_id, false)
                         }
                     })
@@ -750,16 +751,14 @@ export class Canvas extends Component {
       const updatedStorySubDiagrams = nodes
         .filter(node => (node.extras.type === 'story' && Array.isArray(node.combines)))
         .reduce((acc, node) => {
-          const combinedNodes = node.combines.map(({extras}) => {
-            const platformNode = extras[this.props.skill.platform]
-            if (platformNode && platformNode.diagram_id) {
-              return [...acc, platformNode.diagram_id]
-            }
-
-            return acc
-          })
+          const combinedNodes = node.combines
+            .filter(({extras}) => extras[this.props.skill.platform] && extras[this.props.skill.platform].diagram_id)
+            .map(({extras}) => extras[this.props.skill.platform].diagram_id)
+          
+          return [...acc, ...combinedNodes]
         },[])
-      
+        
+        // console.log("updateddiagrams: ", JSON.stringify([...updatedSubDiagrams, ...updatedStorySubDiagrams]))
       return [...updatedSubDiagrams, ...updatedStorySubDiagrams]
     }
 

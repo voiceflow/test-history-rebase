@@ -25,31 +25,18 @@ export class FlowBar extends Component{
         };
     }
 
-    componentDidUpdate(prevProps, prevState) {
-      Object.entries(this.props).forEach(([key, val]) => {
-        prevProps[key] !== val && console.log(`Prop '${key}' changed`)
-      });
-      Object.entries(this.state).forEach(([key, val]) =>
-        prevState[key] !== val && console.log(`State '${key}' changed`)
-      );
-    }
-    
-
     getChildDiagramsWithNames = () => {
-        // console.log("diagrams: ", JSON.stringify(this.props.diagrams, null, 2))
-        return this.props.diagram.sub_diagrams.reduce((acc, diagram_id) => {
-            const [{name, id}] = this.props.diagrams.filter(({id}) => id === diagram_id)
-            return [...acc, {name, id}]
-        }, [])
+        return this.props.diagram.sub_diagrams.map((diagram_id) => {
+            const childDiagrams = this.props.diagrams.filter(({id}) => id === diagram_id)
+
+            return {name: childDiagrams.name, id: childDiagrams.id}
+        })
     }
 
     getParentDiagramsWithNames = () => {
-        return this.props.diagrams.reduce((acc, {sub_diagrams, name, id}) => {
-            if (sub_diagrams.includes(this.props.diagram_id)) {
-                return [...acc, {name, id}]
-            }
-            return acc
-        }, [])
+      return this.props.diagrams
+        .filter(({sub_diagrams}) => sub_diagrams.includes(this.props.diagram_id))
+        .map(({name, id}) => ({name, id}))
     }
 
     toggle = side => {

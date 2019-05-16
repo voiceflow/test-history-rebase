@@ -4,12 +4,12 @@ const _ = require('lodash');
 const Server = require('../server');
 const { ServiceManager } = require('../backend');
 
-let lastPort = _.random(10000, 60000);
+let lastPort = 12000;//_.random(10000, 60000);
 
 module.exports = async (serviceManager = new ServiceManager()) => {
   const server = new Server(serviceManager);
   server.port = lastPort;
-  lastPort++;
+  // lastPort++;
 
   await server.start();
   const { app } = server;

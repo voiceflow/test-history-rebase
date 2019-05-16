@@ -1,3 +1,4 @@
+/* global jest, expect */
 const _ = require('lodash');
 const Constants = require('./render_diagram.test.constants');
 

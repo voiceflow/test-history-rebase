@@ -3,8 +3,6 @@
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 import { ModalHeader } from 'components/Modals/ModalHeader'
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 
 const blocks = [
   {
@@ -153,32 +151,17 @@ class HelpModal extends React.Component {
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
         <ModalHeader header={this.props.help && this.props.help.type ? this.props.help.type : 'Blocks'} toggle={this.props.toggle} />
         <ModalBody>
-          {this.props.help && this.props.help.type ?
-            <React.Fragment>
-              <div className="text-muted pl-3 pr-3 pb-3 pt-0">
-                {result ? <React.Fragment>
-                  <p className="mb-4">{result.info}</p>
-                  {result.video &&
-                    <div className="embed-responsive box-shadow embed-responsive-16by9 rounded">
-                      <iframe src={result.video} allowFullScreen title="intro"></iframe>
-                    </div>
-                  }
-                </React.Fragment> :
-                "Information for this block doesn't exist yet. Check back again later"}
-              </div>
-            </React.Fragment> :
-            <React.Fragment>
-              {blocks.map((block, i) => {
-                return (
-                  <Card className="mb-1 MenuItem" key={i}>
-                    <CardActionArea className={"helpMenu MenuItem " + block.type} onClick={()=>this.props.setHelp({type: block.type})}>
-                      <div className="MenuIcon">{block.icon}</div><h5>{block.type}</h5>
-                    </CardActionArea>
-                  </Card>
-                  )
-              })}
-            </React.Fragment>
-          }
+            <div className="text-muted pl-3 pr-3 pb-3 pt-0">
+              {result ? <React.Fragment>
+                <p className="mb-4">{result.info}</p>
+                {result.video && 
+                  <div className="embed-responsive box-shadow embed-responsive-16by9 rounded">
+                    <iframe src={result.video} allowFullScreen title="intro"></iframe>
+                  </div>
+                }
+              </React.Fragment> : 
+              "Information for this block doesn't exist yet. Check back again later"}
+            </div>
         </ModalBody>
       </Modal>
     );

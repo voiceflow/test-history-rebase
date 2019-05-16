@@ -126,9 +126,9 @@ class AudioDrop extends Component {
                         <div className="mb-1">Drag and Drop files here</div>
                         <small>OR</small><br/>
                         <div className="mt-2">
-                            <div className="btn btn-primary-small mb-2">
+                            <Button isBtn isPrimarySmall className="mb-2">
                                 Add Audio
-                            </div>
+                            </Button>
                             <br/>
                             <div className="btn-link" onClick={(e)=>{
                                 e.preventDefault()

@@ -33,11 +33,16 @@ exports[`Audio Drop Test render audio drop 1`] = `
       <div
         className="mt-2"
       >
-        <div
-          className="btn btn-primary-small mb-2"
+        <Button
+          className="mb-2"
+          iconPosition="right"
+          isBtn={true}
+          isPrimarySmall={true}
+          onRef={[Function]}
+          trackEvent="Button Click"
         >
           Add Audio
-        </div>
+        </Button>
         <br />
         <div
           className="btn-link"

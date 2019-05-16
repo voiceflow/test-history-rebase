@@ -810,8 +810,8 @@ export class ActionGroup extends PureComponent {
           return <div id="name-box" className="text-center">
             <div className="mb-5 mt-3">
               <input
-                id="skill-name"
                 className="input-underline"
+                id="skill-name"
                 type="text"
                 name="name"
                 value={this.props.skill.name}

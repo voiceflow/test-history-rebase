@@ -33,7 +33,6 @@ class Server {
    * @return {Promise<void>}
    */
   async start() {
-
     // Start services. This way if pubsub doesn't connect, it'll hang
     await this.serviceManager.start();
 

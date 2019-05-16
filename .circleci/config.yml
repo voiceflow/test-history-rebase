@@ -81,7 +81,7 @@ jobs:
           command: 'sed -i".json" "s/VERSION/$CIRCLE_BUILD_NUM/g" Dockerrun.aws.json'
       - run: # Squash is needed to remove the NPM_TOKEN from the docker image commits
           name: 'Build docker image'
-          command: docker build --build-arg NPM_TOKEN=${NPM_TOKEN} --squash -t voiceflow/creator:$CIRCLE_BUILD_NUM .
+          command: docker build --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --squash -t voiceflow/creator:$CIRCLE_BUILD_NUM .
       - run:
           name: 'Push docker image'
           command: |
@@ -121,7 +121,7 @@ jobs:
           command: 'sed -i".json" "s/VERSION/$CIRCLE_BUILD_NUM/g" Dockerrun.aws.json'
       - run: # Squash is needed to remove the NPM_TOKEN from the docker image commits
           name: 'Build docker image'
-          command: docker build --build-arg NPM_TOKEN=${NPM_TOKEN} --squash -t voiceflow/creator:$CIRCLE_BUILD_NUM .
+          command: docker build --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --squash -t voiceflow/creator:$CIRCLE_BUILD_NUM .
       - run:
           name: 'Push docker image'
           command: |
@@ -161,7 +161,7 @@ jobs:
           command: 'sed -i".json" "s/VERSION/$CIRCLE_BUILD_NUM/g" Dockerrun.aws.json'
       - run: # Squash is needed to remove the NPM_TOKEN from the docker image commits
           name: 'Build docker image'
-          command: docker build --build-arg NPM_TOKEN=${NPM_TOKEN} --squash -t voiceflow/creator:$CIRCLE_BUILD_NUM .
+          command: docker build --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --squash -t voiceflow/creator:$CIRCLE_BUILD_NUM .
       - run:
           name: 'Push docker image'
           command: |

@@ -407,7 +407,7 @@ exports.deleteProduct = async (req, res) => {
   const { pid } = req.params;
 
   try {
-    products = (await pool.query(`
+    const products = (await pool.query(`
       SELECT pc.amzn_prod_id, pc.creator_id, p.skill_id 
       FROM products p
       LEFT JOIN product_creators pc ON pc.product_id = p.id
@@ -417,10 +417,10 @@ exports.deleteProduct = async (req, res) => {
     if (products.length === 0) throw { status: 404 };
     if (!(await checkSkillAccess(products[0].skill_id, req.user.id))) throw { status: 403 };
 
-    products.forEach((product) => {
+    products.forEach(async (product) => {
       if (!product.amzn_prod_id) return;
 
-      AmazonAccessToken(dev_version.creator_id)
+      await AmazonAccessToken(product.creator_id)
         .then((token) => {
           if (!token) return;
           axios.request({
@@ -639,7 +639,7 @@ const checkVersions = (project_id, platform, options = {}) => new Promise(async 
       const remove_live = new Set();
       const add_live = new Set();
 
-      for (dev_version of dev_versions) {
+      for (let dev_version of dev_versions) {
         var token;
 
         try {
@@ -705,7 +705,7 @@ const checkVersions = (project_id, platform, options = {}) => new Promise(async 
         await pool.query(`UPDATE skills SET live = TRUE WHERE skill_id IN (${pg_num(add_live.size)})`, Array.from(add_live));
       }
     } else if (platform === 'google') {
-      for (dev_version of dev_versions) {
+      for (let dev_version of dev_versions) {
         const all_google_versions = dev_version.google_versions;
         const creator_versions = project_versions.filter((v) => ((v.creator_id === dev_version.creator_id) && !!v.google_versions));
 
@@ -921,7 +921,7 @@ exports.buildSkill = async (req, res) => {
             `, [r.skill_id, req.user.id]);
 
             if (Array.isArray(products.rows) && products.rows.length !== 0) {
-              for (row of products.rows) {
+              for (let row of products.rows) {
                 const product = row.data;
                 const productId = row.id;
                 let AmazonProductId = row.amzn_prod_id;
@@ -996,7 +996,7 @@ exports.buildSkill = async (req, res) => {
                 // interaction models only need to be generated per langauge. i.e en-US/en-CA or fr-CA/fr-FR are the same shit
                 const models = {};
                 let secondary = false; // flag on doing a secondary pass
-                for (locale of r.locales) {
+                for (let locale of r.locales) {
                   // ONLY NEED ONE INTERACTION MODEL PER LANGUAGE LOCALE
                   const lang = locale.substring(0, 2);
                   if (!(lang in models)) {

@@ -179,9 +179,9 @@ module.exports = (middleware, controllers) => {
   router.post('/analytics/track_dev_account', middleware.ensureLoggedIn, controllers.Track.trackDevAccount);
   router.post('/analytics/track_flow_used', middleware.ensureLoggedIn, controllers.Track.trackFlowUsed);
 
-  router.get('/analytics/:project_id/users', middleware.ensureLoggedIn, controllers.Analytics.getUsersData);
-  router.get('/analytics/:project_id/:from/:to/:user_tz/DAU', middleware.ensureLoggedIn, controllers.Analytics.getDAU);
-  router.get('/analytics/:project_id', middleware.ensureLoggedIn, controllers.Analytics.getStats);
+  router.get('/analytics/:project_id/users', middleware.ensureLoggedIn, middleware.isProjectOwner, controllers.analytics.getUsersData);
+  router.get('/analytics/:project_id/:from/:to/:user_tz/DAU', middleware.ensureLoggedIn, middleware.isProjectOwner, controllers.analytics.getDAU);
+  router.get('/analytics/:project_id', middleware.ensureLoggedIn, middleware.isProjectOwner, controllers.analytics.getStats);
 
   router.post('/integrations/get_users', middleware.ensureLoggedIn, controllers.Integrations.getAllUsers);
   router.post('/integrations/add_user', middleware.ensureLoggedIn, controllers.Integrations.addUser);

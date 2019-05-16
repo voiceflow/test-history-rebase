@@ -54,7 +54,6 @@ class Publish extends Component {
         } else {
           page = <PublishAmazon {...this.props} />
         }
-
         return (
             <div id="business">
                 <div md="3" className="sidebar-nav">

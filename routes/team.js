@@ -157,6 +157,8 @@ const initalizeStripe = async (team, user, seats, source_id, options = {}) => {
       },
     };
 
+    if(options.coupon) subscription_data.coupon = options.coupon
+
     // if(options.trial_days) subscription_data.trial_period_days = options.trial_days
     // subscription_data.trial_end = (Math.floor((Date.now()/1000)) + 10)
     subscription = await stripe.subscriptions.create(subscription_data);
@@ -226,7 +228,7 @@ exports.checkout = async (req, res) => {
   try {
     const seats = req.body.invites.length + 1;
     let team = await createTeam(req.body.name, req.body.image, req.user);
-    team = await initalizeStripe(team, req.user, seats, req.body.source.id, { plan: req.body.plan });
+    team = await initalizeStripe(team, req.user, seats, req.body.source.id, { plan: req.body.plan, coupon: req.body.coupon });
 
     const { invites, now } = await populateTeam(team.team_id, req.user, req.body.invites);
 
@@ -365,7 +367,7 @@ exports.updateMembers = async (req, res) => {
       if (team.status !== 0 && team.stripe_id && team.stripe_sub_id) {
         team = await updateSubscription(team, new_members.length, req.body.plan);
       } else if (req.body.source) {
-        team = await initalizeStripe(team, req.user, new_members.length, req.body.source.id, { plan: req.body.plan });
+        team = await initalizeStripe(team, req.user, new_members.length, req.body.source.id, { plan: req.body.plan, coupon: req.body.coupon });
       } else if (team.status === 0 && team.seats <= FREE_SEATS) {
         await pool.query(
           'UPDATE teams SET seats = $1 WHERE team_id = $2',

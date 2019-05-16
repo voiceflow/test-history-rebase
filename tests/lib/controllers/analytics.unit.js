@@ -70,9 +70,9 @@ describe('analytics controller unit tests', () => {
         id: 2,
       },
       params: {
-        from: 10,
-        to: 20,
-        user_tz: 5,
+        from: '10',
+        to: '20',
+        user_tz: '5',
       },
     };
     const res = {};

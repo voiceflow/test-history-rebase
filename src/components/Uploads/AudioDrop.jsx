@@ -115,7 +115,7 @@ class AudioDrop extends Component {
                         <div className="mb-1">Drag and Drop files here</div>
                         <small>OR</small><br/>
                         <div className="mt-2">
-                            <Button isBtn isPrimarySmall className="mb-2" onClick={() => this.handleAddBlock(true)}>
+                            <Button isBtn isPrimarySmall className="mb-2">
                                 Add Audio
                             </Button>
                             <br/>

@@ -3,9 +3,7 @@ import cn from 'classnames';
 import pluralize from 'pluralize';
 import PropTypes from 'prop-types';
 
-import Panel from '../Panel';
-import Transition from '../Transition';
-
+import './Stepper.css'
 export default class Stepper extends Component {
   static propTypes = {
     steps: PropTypes.arrayOf(
@@ -18,11 +16,8 @@ export default class Stepper extends Component {
     isFilledAll: PropTypes.bool,
     activeStepId: PropTypes.string,
     onChangeStep: PropTypes.func,
-    detailsRenderer: PropTypes.func,
     showErrorsCount: PropTypes.bool,
     lastStepIsFilled: PropTypes.bool,
-    panelFooterRenderer: PropTypes.func,
-    panelBodyContentRenderer: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -66,19 +61,15 @@ export default class Stepper extends Component {
   };
 
   render() {
-    const { prevStepId, filledSteps, activeStepId } = this.state;
+    const { filledSteps, activeStepId } = this.state;
     const {
       steps,
       isFilledAll,
       showErrorsCount,
-      detailsRenderer,
       lastStepIsFilled,
-      panelFooterRenderer,
-      panelBodyContentRenderer,
     } = this.props;
 
     const lastStepId = steps[steps.length - 1].id;
-    const prevStepIndex = steps.findIndex(({ id }) => id === prevStepId);
 
     return (
       <ul className="steps-list">
@@ -100,19 +91,10 @@ export default class Stepper extends Component {
             : true;
           const isNextStepHasIssue = nextStep ? nextStep.errorsCount : false;
 
-          const rendererProps = {
-            step,
-            steps,
-            nextStep,
-            changeStep: this.onChangeStep,
-            goToNextStep: nextStep ? () => this.onNextStep(nextStep.id) : null,
-            activeStepId,
-            isNextStepHasIssue,
-          };
-
           return (
             <li
               key={id}
+              onClick={() => this.onChangeStep(id)}
               className={cn('steps-list__list-item', {
                 '__is-active': isActive,
                 '__is-filled': isFilled,
@@ -120,7 +102,7 @@ export default class Stepper extends Component {
               })}
             >
               {!isActive && (isFilled || isPrevStepFilled) ? (
-                <a onClick={() => this.onChangeStep(id)} className="steps-list__title">
+                <a className="steps-list__title" href="title">
                   {label}
                 </a>
               ) : (
@@ -131,22 +113,6 @@ export default class Stepper extends Component {
                 <div className="steps-list__issues text-danger">
                   {pluralize('Issue', errorsCount, true)}
                 </div>
-              )}
-
-              {isActive && (
-                <Transition
-                  name={prevStepIndex !== -1 && i > prevStepIndex ? 'fade-down' : 'fade-up'}
-                  component="div"
-                  className="steps-list-content"
-                >
-                  <Panel
-                    footerRenderer={() => panelFooterRenderer && panelFooterRenderer(rendererProps)}
-                  >
-                    {panelBodyContentRenderer(rendererProps)}
-                  </Panel>
-
-                  {detailsRenderer && detailsRenderer(rendererProps)}
-                </Transition>
               )}
             </li>
           );

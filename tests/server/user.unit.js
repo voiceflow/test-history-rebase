@@ -1,9 +1,10 @@
 'use strict';
 
+require('dotenv').config({ path: './.env.test' });
+
 const { expect } = require('chai');
 const request = require('supertest');
 
-const _ = require('lodash');
 const sinon = require('sinon');
 const GetApp = require('../getAppForTest');
 

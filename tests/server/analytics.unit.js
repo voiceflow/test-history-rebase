@@ -1,9 +1,10 @@
 'use strict';
 
+require('dotenv').config({ path: './.env.test' });
+
 const { expect } = require('chai');
 const request = require('supertest');
 
-const _ = require('lodash');
 const sinon = require('sinon');
 const GetApp = require('../getAppForTest');
 
@@ -121,11 +122,12 @@ const tests = [
     calledPath: '/analytics/proj-id/users',
     expected: {
       controllers: {
-        Analytics: {
+        analytics: {
           getUsersData: 1,
         },
       },
       middleware: {
+        isProjectOwner: 1,
         ensureLoggedIn: 1,
         verify: 1,
       },
@@ -137,11 +139,12 @@ const tests = [
     calledPath: '/analytics/proj-id/from/to/user-tz/DAU',
     expected: {
       controllers: {
-        Analytics: {
+        analytics: {
           getDAU: 1,
         },
       },
       middleware: {
+        isProjectOwner: 1,
         ensureLoggedIn: 1,
         verify: 1,
       },
@@ -153,11 +156,12 @@ const tests = [
     calledPath: '/analytics/proj-id',
     expected: {
       controllers: {
-        Analytics: {
+        analytics: {
           getStats: 1,
         },
       },
       middleware: {
+        isProjectOwner: 1,
         ensureLoggedIn: 1,
         verify: 1,
       },
@@ -178,7 +182,10 @@ describe('analytics route unit tests', () => {
     it(`${test.method} ${test.namedPath || test.calledPath}`, async () => {
       const fixture = createFixture();
 
-      ({ app, server } = await GetApp(fixture));
+      ({
+        app,
+        server,
+      } = await GetApp(fixture));
 
       const response = await request(app)[test.method](test.calledPath);
 

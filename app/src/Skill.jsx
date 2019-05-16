@@ -1,36 +1,40 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
+import axios from 'axios'
 import { compose } from 'recompose'
 import { Tooltip } from "react-tippy";
 import {
   Alert,
 } from "reactstrap";
+import { Link } from 'react-router-dom';
 
+// HOCs
 import { loadSession, errorScreen, socketCheck } from 'hocs/socketCheck'
 
+// Ducks
 import { unnormalize } from "ducks/_normalize";
-
 import { fetchVersion, setLiveModeModal, updateVersion, resetVersion } from 'ducks/version'
 import { fetchDiagrams } from 'ducks/diagram'
 import { fetchProducts } from 'ducks/product'
 import { fetchDisplays } from "ducks/display";
 import { fetchEmails } from 'ducks/email';
 
+// Components
 import Header from 'components/Header';
 import Button from 'components/Button'
-import Canvas from './views/pages/Canvas'
-import Visuals from './views/pages/Visuals'
-import Business from './views/pages/Business'
-import Settings from './views/pages/Skill/Settings'
-import Publish from './views/pages/Skill/Publish'
-import Logs from './views/pages/Logs'
-import axios from 'axios'
-import SecondaryNavBar from './views/components/NavBar/SecondaryNavBar'
-import DefaultModal from './views/components/Modals/DefaultModal'
-import { Spinner } from './views/components/Spinner'
-import { Link } from 'react-router-dom';
-import Marketplace from './views/pages/Marketplace';
-import Migrate from 'views/pages/Skill/Migrate'
+import SecondaryNavBar from 'components/NavBar/SecondaryNavBar'
+import DefaultModal from 'components/Modals/DefaultModal'
+import { Spinner } from 'components/Spinner/Spinner'
+
+// Views
+import Canvas from './containers/Canvas'
+import Visuals from './containers/Visuals'
+import Business from './containers/Business'
+import Settings from './containers/Skill/Settings'
+import Publish from './containers/Skill/Publish'
+import Logs from './containers/Logs'
+import Marketplace from './containers/Marketplace';
+import Migrate from 'containers/Skill/Migrate'
 
 const live_modal_content = <div className="text-center">
     <img className="modal-img-small mb-4 mt-3" src="/warning.svg" alt="Upload"/>
@@ -42,7 +46,7 @@ const live_modal_content = <div className="text-center">
 /* Code for detecting whether a user visits a different tab */
 let hidden = null;
 let visibilityChange = null;
-if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support 
+if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
     hidden = 'hidden';
     visibilityChange = 'visibilitychange';
 } else if (typeof document.msHidden !== 'undefined') {
@@ -181,8 +185,8 @@ class Skill extends Component {
     renderPage(){
         switch(this.props.page){
             case 'canvas':
-                return <Canvas 
-                    {...this.props} 
+                return <Canvas
+                    {...this.props}
                     live_mode={this.props.live_mode}
                     ref={this.child_canvas}
                     linter={this.state.linter}
@@ -195,14 +199,14 @@ class Skill extends Component {
                   toggleUpgrade={this.toggleUpgrade}
                 />
             case 'settings':
-                return <Settings 
-                    {...this.props} 
+                return <Settings
+                    {...this.props}
                     page={this.props.secondaryPage}
                     live_mode={this.props.live_mode}
                     toggleUpgrade={this.toggleUpgrade}/>
             case 'publish':
-                return <Publish 
-                    {...this.props} 
+                return <Publish
+                    {...this.props}
                     page={this.props.secondaryPage}
                 />
             case 'logs':
@@ -319,7 +323,7 @@ class Skill extends Component {
             this.props.skill && this.props.skill.name ? this.props.skill.name : "Loading Skill"
             }
           </div> */}
-          {((this.state.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)) ? 
+          {((this.state.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)) ?
             React.createElement(Spinner,  {name: 'Skill'}) :
             <>
               <div id="app" className={this.props.page}>

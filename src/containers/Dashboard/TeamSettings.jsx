@@ -526,6 +526,7 @@ class TeamSettings extends Component {
               <div className="my-3">
                 <div className="text-center mb-3">
                   <Button
+                    isBtn
                     isLinkLarge
                     className="pointer mt-4"
                     onClick={this.addMember}

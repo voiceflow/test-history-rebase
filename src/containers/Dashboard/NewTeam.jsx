@@ -247,7 +247,7 @@ class NewTeam extends Component {
                     isClear
                     isLarge
                     className="mt-3"
-                    style={{ fontWeight: 400 }}
+                    style={{ fontWeight: 400, width: '100%' }}
                     block
                   >
                     <img src={'/add-step.svg'} className="mr-2 mb-1" height={15} alt="add"/> Add Teammate

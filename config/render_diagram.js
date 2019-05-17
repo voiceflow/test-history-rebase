@@ -11,7 +11,8 @@ const _expressionfy = (expression, depth = 0) => {
   if (depth > 8) {
     // return a blank
     return 0;
-  } if (expression.type == 'value') {
+  }
+  if (expression.type == 'value') {
     let value = expression.value.toString();
     if (!expression.value) {
       return 0;
@@ -20,12 +21,19 @@ const _expressionfy = (expression, depth = 0) => {
       return `'${value}'`;
     }
     return (value * 1);
-  } if (expression.type == 'variable') {
+  }
+  if (expression.type == 'variable') {
     if (isVarName(expression.value)) {
       return `v['${expression.value}']`;
     }
     return 0;
   }
+
+  if (expression.type == 'advance') {
+    let value = expression.value.blocks[0].text.replace(/\{([a-zA-Z0-9_]*)\}/g,"v['$1']");
+    return `$${expression.value}$`;
+  }
+
   let string = '(';
 
   if (expression.type == 'not') {

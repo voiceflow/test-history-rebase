@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import { symbols, arithmetic } from './Expression.config'
 
 const expressionfy = (expression, depth=0) => {
+    if(!expression)return <div>err</div>;
     if(depth > 8){
         // return a blank
         return <span className="math unknown">?</span>;
+    }else if(expression.type === 'advance'){
+        let value = expression.value.blocks[0].text;
+        return <span className="brackets">( {value.split(/\{([a-zA-Z0-9_]*)\}/g)
+        .map((v,i)=>i%2===0?v:(<span className="math variable" key={v}>{v}</span>))} )</span>;
     }else if(expression.type === 'value'){
         let value = expression.value.toString();
         if(!expression.value){

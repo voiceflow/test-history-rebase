@@ -14,7 +14,7 @@ const {
   utteranceToIntentName,
   getSlotType,
   findSlot,
-} = require('../app/src/util');
+} = require('../app/src/intent_util');
 const randomstring = require('randomstring');
 const stringSimilarity = require('string-similarity');
 

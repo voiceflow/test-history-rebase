@@ -5,7 +5,7 @@ const {
 const draftToMarkdown = require('./drafttomarkdown');
 const validUrl = require('valid-url');
 const _ = require('lodash');
-const { deepDraftToMarkdown } = require('../app/src/util');
+const { deepDraftToMarkdown } = require('../app/src/intent_util');
 
 const _expressionfy = (expression, depth = 0) => {
   if (depth > 8) {

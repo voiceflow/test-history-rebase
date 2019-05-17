@@ -1,3 +1,8 @@
+.expression-menu {
+  overflow: auto;
+  max-height: 240px;
+}
+
 .type-button {
     border-radius: 50%;
     margin-left: 10px;

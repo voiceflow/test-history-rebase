@@ -2666,7 +2666,40 @@ button.close:hover{
 }
 
 .diagram-block.input-group {
+    display: flex;
     padding-left: 12px;
+    align-content: center;
+}
+
+.diagram-block.input-group.active {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e0e3e5;
+    border-bottom: 1px solid #e0e3e5;
+    padding-bottom: 12px;
+}
+
+.diagram-block.input-group.active > input {
+  color: #62778c;
+}
+
+.diagram-block.input-group.active > .flow-icon {
+  opacity: 1;
+}
+
+.diagram-block.input-group > .flow-icon {
+  margin-right: 8px;
+  margin-top: 2px;
+  padding-left: 29px;
+}
+
+.diagram-block.input-group > .form-control {
+  box-shadow: none !important;
+  border: none !important;
+  background-color: transparent;
+  font-size: 13px !important;
+  margin-left: 1px;
+  color: #8DA2B5;
+  font-weight: 600px;
 }
 
 .diagram-block {
@@ -2688,6 +2721,7 @@ button.close:hover{
     background-color: #f8f9fa;
     border-top: 1px solid #e0e3e5;
     border-bottom: 1px solid #e0e3e5;
+    align-items: center;
 }
 
 .diagram-block.active > .diagram-button {

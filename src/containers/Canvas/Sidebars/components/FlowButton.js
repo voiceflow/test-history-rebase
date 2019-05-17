@@ -48,8 +48,8 @@ class FlowButton extends Component {
         let active = this.props.active === this.props.flow.id;
         return (
             this.state.edit ?
-                <InputGroup className="diagram-block">
-                    <i className="flow-icon mr-3 ">&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                <InputGroup className={cn("diagram-block", {"active": active})}>
+                    <i className="flow-icon">&nbsp;&nbsp;&nbsp;&nbsp;</i>
                     <Input 
                         name="name"
                         value={this.state.name}
@@ -69,7 +69,7 @@ class FlowButton extends Component {
                       onClick={active ? null : ()=>this.props.enterFlow(this.props.flow.id)}
                     >
                         <i className="flow-icon mr-3 ">&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                        < span className = "diagram-text" > {
+                        < span className="diagram-text" > {
                             this.props.flow.name === 'ROOT' ? 'HOME' : _.trim(this.props.name) ?
                                 (this.props.name.length > 15 ? `${this.props.name.substring(0,15)}...` : this.props.name) : 'Flow'
                         } </span>

@@ -172,6 +172,7 @@ export const setLiveModeModal = isLive => ({
 });
 
 export const updateVersion = (type, val) => dispatch => {
+  console.log("update Version, diagram id: ", val)
   dispatch({
     type: UPDATE_VERSION,
     payload: { type, val }

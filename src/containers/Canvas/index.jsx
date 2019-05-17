@@ -791,8 +791,10 @@ export class Canvas extends Component {
 
         return diagram
       })
-
       updateDiagrams([...updatedDiagrams, ...newDiagram])
+      if (!_.isEmpty(newDiagram)) {
+        this.props.updateSkill("diagram", newDiagram[0].id)
+      }
     }
 
     onSave(state=true) {

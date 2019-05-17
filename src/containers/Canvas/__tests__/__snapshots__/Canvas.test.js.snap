@@ -45,7 +45,6 @@ exports[`Canvas render canvas 1`] = `
     onMouseUp={[Function]}
   >
     <Connect(Menu)
-      build={[Function]}
       copyFlow={[Function]}
       deleteFlow={[Function]}
       enterFlow={[Function]}

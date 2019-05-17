@@ -72,7 +72,7 @@ class IfBlock extends Component {
         let node = this.state.node;
         this.props.clearRedo();
         this.props.updateEvents(_.cloneDeep(node).extras, _.cloneDeep(node).ports);
-        
+
         if(node.extras.expressions.length > 1){
             let bestNode;
             if (node.parentCombine){
@@ -107,13 +107,13 @@ class IfBlock extends Component {
                     <small className="text-muted">If statements are evaluated in numerical order</small>
                 </p>
                 {this.state.node.extras.expressions.map((expression, i) => {
-                    let show = !(expression.type === 'value' || expression.type === 'variable');
+                    let show = !(expression.type === 'value' || expression.type === 'variable' || expression.type === 'advance');
 
                     return (
                         <div key={i} className="solid-border set-block">
                             {this.state.node.extras.expressions.length > 1 ?
-                                <div className="close" onClick={()=>this.handleRemoveBlock(i)}></div> 
-                                : null 
+                                <div className="close" onClick={()=>this.handleRemoveBlock(i)}></div>
+                                : null
                             }
                             <div className="variable-group">
                                 <div className="number-bubble mr-2">{i + 1}</div><span>If </span>

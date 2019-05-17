@@ -49,16 +49,15 @@ describe('linkManager integration tests', () => {
     await pool.query('INSERT INTO team_members (team_id, creator_id) VALUES ($1, $2)', [teamId, creatorId]);
     data = await pool.query('INSERT INTO projects (creator_id, team_id) VALUES ($1, $2) RETURNING project_id', [creatorId, teamId]);
     const projectId = data.rows[0].project_id;
-    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId , "a"]);
+    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
     const skillId = data.rows[0].skill_id;
 
-    const linkManager = new LinkManager({pool, hashids, jwt});
+    const linkManager = new LinkManager({ pool, hashids, jwt });
 
-    await linkManager.setTemplate(skillId, {domains:["test"]});
+    await linkManager.setTemplate(skillId, { domains: ['test'] });
     const result = await linkManager.getTemplate(skillId);
     const [domain] = result.account_linking.domains;
-    expect(domain).to.eql("test");
-
+    expect(domain).to.eql('test');
   });
   it('set Template', async () => {
     let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
@@ -68,16 +67,15 @@ describe('linkManager integration tests', () => {
     await pool.query('INSERT INTO team_members (team_id, creator_id) VALUES ($1, $2)', [teamId, creatorId]);
     data = await pool.query('INSERT INTO projects (creator_id, team_id) VALUES ($1, $2) RETURNING project_id', [creatorId, teamId]);
     const projectId = data.rows[0].project_id;
-    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId , "a"]);
+    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
     const skillId = data.rows[0].skill_id;
 
-    const linkManager = new LinkManager({pool, hashids, jwt});
+    const linkManager = new LinkManager({ pool, hashids, jwt });
 
     const payload = {};
-    await linkManager.setTemplate(skillId, {domains:["test"]});
+    await linkManager.setTemplate(skillId, { domains: ['test'] });
     const result = await pool.query('SELECT * from SKILLS WHERE skill_id=$1', [skillId]);
     const [domain] = result.rows[0].account_linking.domains;
-    expect(domain).to.eql("test");
+    expect(domain).to.eql('test');
   });
-
 });

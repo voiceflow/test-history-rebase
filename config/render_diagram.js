@@ -291,7 +291,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
             }),
           };
 
-          for (let input of inputs) {
+          for (const input of inputs) {
             if (input.length) options.used_choices.push(input);
           }
         } else if (node.extras.type === 'god') {
@@ -906,9 +906,9 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
       docClient.put(params, (err) => {
         if (err) {
           writeToLogs('CREATOR_BACKEND_ERRORS', { err });
-          return reject(err)
+          return reject(err);
           // res.sendStatus(err.statusCode);
-        } else if (testing || options.type === 'market') {
+        } if (testing || options.type === 'market') {
           resolve(200);
         } else {
           // Add the story to SQL as well

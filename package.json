@@ -12,7 +12,7 @@
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.16",
     "@sendgrid/mail": "^6.3.1",
-    "@voiceflow/common": "^1.0.0",
+    "@voiceflow/common": "^1.1.2",
     "@voiceflow/verror": "^1.1.0",
     "@xtrctio/express-bunyan-logger": "^1.3.3",
     "adm-zip": "^0.4.13",
@@ -95,6 +95,7 @@
     "knex": "^0.16.7",
     "knex-cleaner": "^1.1.4",
     "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
     "redis-mock": "^0.44.0",
     "semantic-release": "^15.13.12",
     "sinon": "^7.3.2",
@@ -142,7 +143,7 @@
     "redis": "redis-server",
     "staging": "NODE_ENV=staging node index.js",
     "start": "NODE_ENV=production node index.js",
-    "test": "npm run unit && npm run integration && npm run old-integration && npm run old-unit",
+    "test": "NODE_ENV=test node tests/server/init-old-integration.js && NODE_ENV=test nyc mocha --use_strict --exit \"tests/**/*.old-it.js\" \"tests/**/*.unit.js\" \"tests/**/*.it.js\"",
     "unit": "NODE_ENV=test mocha --use_strict --exit \"tests/**/*.unit.js\"",
     "unsecure": "node index.js",
     "update": "npm install && cd app && npm install"

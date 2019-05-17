@@ -47,16 +47,16 @@ describe('emailManager integration tests', () => {
     await pool.query('INSERT INTO team_members (team_id, creator_id) VALUES ($1, $2)', [teamId, creatorId]);
     data = await pool.query('INSERT INTO projects (creator_id, team_id) VALUES ($1, $2) RETURNING project_id', [creatorId, teamId]);
     const projectId = data.rows[0].project_id;
-    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId , "a"]);
+    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
     const skillId = data.rows[0].skill_id;
 
-    const emailManager = new EmailManager({pool, hashids});
+    const emailManager = new EmailManager({ pool, hashids });
 
-    let payload = {
-      content:"a {test} b",
-      subject:"c {thing} d",
-      title:"t",
-      sender:"s",
+    const payload = {
+      content: 'a {test} b',
+      subject: 'c {thing} d',
+      title: 't',
+      sender: 's',
     };
 
     await emailManager.setTemplate(creatorId, skillId, Number.NaN, payload);
@@ -72,32 +72,30 @@ describe('emailManager integration tests', () => {
     await pool.query('INSERT INTO team_members (team_id, creator_id) VALUES ($1, $2)', [teamId, creatorId]);
     data = await pool.query('INSERT INTO projects (creator_id, team_id) VALUES ($1, $2) RETURNING project_id', [creatorId, teamId]);
     const projectId = data.rows[0].project_id;
-    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId , "a"]);
+    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
     const skillId = data.rows[0].skill_id;
 
-    const emailManager = new EmailManager({pool, hashids});
+    const emailManager = new EmailManager({ pool, hashids });
 
-    let payload = {
-      content:"a {test} b",
-      subject:"c {thing} d",
-      title:"t",
-      sender:"s",
+    const payload = {
+      content: 'a {test} b',
+      subject: 'c {thing} d',
+      title: 't',
+      sender: 's',
     };
     const emailIdh = await emailManager.setTemplate(creatorId, skillId, Number.NaN, payload);
 
-    const {content, subject, variables} = await emailManager.getTemplate(creatorId, hashids.decode(emailIdh)[0]);
+    const { content, subject, variables } = await emailManager.getTemplate(creatorId, hashids.decode(emailIdh)[0]);
 
     expect(content).to.eql(payload.content);
     expect(subject).to.eql(payload.subject);
-    expect(variables).to.eql(JSON.stringify(["test","thing"]));
-
-
+    expect(variables).to.eql(JSON.stringify(['test', 'thing']));
   });
 
   it('get Templates', async () => {
-    const emailManager = new EmailManager({pool, hashids});
+    const emailManager = new EmailManager({ pool, hashids });
 
-    expect(await emailManager.getTemplates(1,1)).to.eql([]);
+    expect(await emailManager.getTemplates(1, 1)).to.eql([]);
 
     let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
     const creatorId = data.rows[0].creator_id;
@@ -106,29 +104,27 @@ describe('emailManager integration tests', () => {
     await pool.query('INSERT INTO team_members (team_id, creator_id) VALUES ($1, $2)', [teamId, creatorId]);
     data = await pool.query('INSERT INTO projects (creator_id, team_id) VALUES ($1, $2) RETURNING project_id', [creatorId, teamId]);
     const projectId = data.rows[0].project_id;
-    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId , "a"]);
+    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
     const skillId = data.rows[0].skill_id;
 
 
-    let payload = {
-      content:"a {test} b",
-      subject:"c {thing} d",
-      title:"t",
-      sender:"s",
+    const payload = {
+      content: 'a {test} b',
+      subject: 'c {thing} d',
+      title: 't',
+      sender: 's',
     };
     const emailIdh = await emailManager.setTemplate(creatorId, skillId, Number.NaN, payload);
 
-    const [{content, subject, variables}] = await emailManager.getTemplates(creatorId, skillId);
+    const [{ content, subject, variables }] = await emailManager.getTemplates(creatorId, skillId);
 
     expect(content).to.eql(payload.content);
     expect(subject).to.eql(payload.subject);
-    expect(variables).to.eql(JSON.stringify(["test","thing"]));
-
-
+    expect(variables).to.eql(JSON.stringify(['test', 'thing']));
   });
 
   it('delete Template', async () => {
-    const emailManager = new EmailManager({pool, hashids});
+    const emailManager = new EmailManager({ pool, hashids });
 
 
     let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
@@ -138,22 +134,20 @@ describe('emailManager integration tests', () => {
     await pool.query('INSERT INTO team_members (team_id, creator_id) VALUES ($1, $2)', [teamId, creatorId]);
     data = await pool.query('INSERT INTO projects (creator_id, team_id) VALUES ($1, $2) RETURNING project_id', [creatorId, teamId]);
     const projectId = data.rows[0].project_id;
-    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId , "a"]);
+    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
     const skillId = data.rows[0].skill_id;
 
 
-    let payload = {
-      content:"a {test} b",
-      subject:"c {thing} d",
-      title:"t",
-      sender:"s",
+    const payload = {
+      content: 'a {test} b',
+      subject: 'c {thing} d',
+      title: 't',
+      sender: 's',
     };
     const emailIdh = await emailManager.setTemplate(creatorId, skillId, Number.NaN, payload);
 
-    await emailManager.deleteTemplate(creatorId,hashids.decode(emailIdh)[0]);
+    await emailManager.deleteTemplate(creatorId, hashids.decode(emailIdh)[0]);
     expect(await emailManager.getTemplates(creatorId, skillId)).to.eql([]);
-
-
   });
 
 
@@ -165,34 +159,27 @@ describe('emailManager integration tests', () => {
     await pool.query('INSERT INTO team_members (team_id, creator_id) VALUES ($1, $2)', [teamId, creatorId]);
     data = await pool.query('INSERT INTO projects (creator_id, team_id) VALUES ($1, $2) RETURNING project_id', [creatorId, teamId]);
     const projectId = data.rows[0].project_id;
-    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId , "a"]);
+    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
     const skillId = data.rows[0].skill_id;
 
-    const emailManager = new EmailManager({pool, hashids});
+    const emailManager = new EmailManager({ pool, hashids });
 
-    let payload = {
-      content:"a {test} b",
-      subject:"c {thing} d",
-      title:"t",
-      sender:"s",
+    const payload = {
+      content: 'a {test} b',
+      subject: 'c {thing} d',
+      title: 't',
+      sender: 's',
     };
     const emailIdh = await emailManager.setTemplate(creatorId, skillId, Number.NaN, payload);
 
-    payload.content="z";
+    payload.content = 'z';
 
     await emailManager.setTemplate(creatorId, skillId, hashids.decode(emailIdh)[0], payload);
 
-    const {content, subject, variables} = await emailManager.getTemplate(creatorId, hashids.decode(emailIdh)[0]);
+    const { content, subject, variables } = await emailManager.getTemplate(creatorId, hashids.decode(emailIdh)[0]);
 
     expect(content).to.eql(payload.content);
     expect(subject).to.eql(payload.subject);
-    expect(variables).to.eql(JSON.stringify(["thing"]));
-
-
+    expect(variables).to.eql(JSON.stringify(['thing']));
   });
-
-
-
-
-
 });

@@ -42,9 +42,13 @@ const Custom = require('../routes/integrations/custom');
 
 const { ResponseBuilder } = require('@voiceflow/common').middleware;
 const { JWT } = require('../lib/clients');
-const { AnalyticsManager, ProjectManager, SkillsManager, LinkManager, ProductManager, EmailManager, TTSManager } = require('../lib/services');
+const {
+  AnalyticsManager, ProjectManager, SkillsManager, LinkManager, ProductManager, EmailManager, TTSManager,
+} = require('../lib/services');
 const { Project: ProjectMiddleware, Skill: SkillMiddleware } = require('../lib/middleware');
-const { Analytics: AnalyticsController, Linking:LinkingControllor, ProductUpdates:ProductUpdatesControllor, Email:EmailControllor, Decode:DecodeControllor, Test:TestControllor } = require('../lib/controllers');
+const {
+  Analytics: AnalyticsController, Linking: LinkingControllor, ProductUpdates: ProductUpdatesControllor, Email: EmailControllor, Decode: DecodeControllor, Test: TestControllor,
+} = require('../lib/controllers');
 
 const responseBuilder = new ResponseBuilder();
 
@@ -222,7 +226,7 @@ class ServiceManager {
     });
 
     return {
-      isProjectOwner: (req,res,next)=>project.isOwner(req,res,next),
+      isProjectOwner: (req, res, next) => project.isOwner(req, res, next),
       ensureLoggedIn,
       ensurePlan,
       ensurePaid,
@@ -251,7 +255,7 @@ class ServiceManager {
       },
       verifyProjectAccess: Team.verifyProjectAccess,
       verifyTeam: Team.verifyTeam,
-      hasSkillAccess: (req,res,next)=>skill.hasSkillAccess(req,res,next),
+      hasSkillAccess: (req, res, next) => skill.hasSkillAccess(req, res, next),
     };
   }
 
@@ -298,9 +302,9 @@ class ServiceManager {
       jwt,
     });
 
-    const ttsManager =new TTSManager({
+    const ttsManager = new TTSManager({
       AWS,
-    })
+    });
 
     return {
       hashids,

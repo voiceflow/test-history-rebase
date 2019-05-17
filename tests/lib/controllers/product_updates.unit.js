@@ -54,8 +54,8 @@ describe('product update controller unit tests', () => {
 
     const req = {
       body: {
-        type: "a",
-        details: "b",
+        type: 'a',
+        details: 'b',
       },
     };
     const res = {};
@@ -70,8 +70,7 @@ describe('product update controller unit tests', () => {
     const action = services.responseBuilder.respond.args[0][1];
     expect(await action()).to.eql();
 
-    expect(services.productManager.createUpdate.args[0][0]).to.eql("a");
-    expect(services.productManager.createUpdate.args[0][1]).to.eql("b");
-
+    expect(services.productManager.createUpdate.args[0][0]).to.eql('a');
+    expect(services.productManager.createUpdate.args[0][1]).to.eql('b');
   });
 });

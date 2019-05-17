@@ -32,7 +32,7 @@ describe('skill middleware unit tests', () => {
         id: 1,
       },
       params: {
-        skill_id: "a",
+        skill_id: 'a',
       },
     };
     const res = {};
@@ -40,7 +40,7 @@ describe('skill middleware unit tests', () => {
 
     await skill.hasSkillAccess(req, res, next);
 
-    expect(services.hashids.decode.args[0][0]).to.eql("a");
+    expect(services.hashids.decode.args[0][0]).to.eql('a');
 
     expect(services.skillsManager.checkSkillAccess.args[0][0]).to.eql(0);
     expect(services.skillsManager.checkSkillAccess.args[0][1]).to.eql(1);
@@ -68,7 +68,7 @@ describe('skill middleware unit tests', () => {
         id: 1,
       },
       params: {
-        skill_id: "a",
+        skill_id: 'a',
       },
     };
     const res = {};
@@ -76,7 +76,7 @@ describe('skill middleware unit tests', () => {
 
     await skill.hasSkillAccess(req, res, next);
 
-    expect(services.hashids.decode.args[0][0]).to.eql("a");
+    expect(services.hashids.decode.args[0][0]).to.eql('a');
 
     expect(services.skillsManager.checkSkillAccess.args[0][0]).to.eql(0);
     expect(services.skillsManager.checkSkillAccess.args[0][1]).to.eql(1);

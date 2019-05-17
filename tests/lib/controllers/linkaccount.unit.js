@@ -15,7 +15,7 @@ describe('linking controller unit tests', () => {
   it('get link', async () => {
     const services = {
       linkManager: {
-        getTemplate: sinon.stub().resolves("thing"),
+        getTemplate: sinon.stub().resolves('thing'),
       },
       hashids: {
         decode: sinon.stub().returns([0]),
@@ -29,7 +29,7 @@ describe('linking controller unit tests', () => {
 
     const req = {
       params: {
-        skill_id: "a",
+        skill_id: 'a',
       },
     };
     const res = {};
@@ -42,9 +42,9 @@ describe('linking controller unit tests', () => {
     expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
 
     const action = services.responseBuilder.respond.args[0][1];
-    expect(await action()).to.eql("thing");
+    expect(await action()).to.eql('thing');
 
-    expect(services.hashids.decode.args[0][0]).to.eql("a");
+    expect(services.hashids.decode.args[0][0]).to.eql('a');
     expect(services.linkManager.getTemplate.args[0][0]).to.eql(0);
   });
 
@@ -65,7 +65,7 @@ describe('linking controller unit tests', () => {
 
     const req = {
       params: {
-        skill_id: "a",
+        skill_id: 'a',
       },
       body: {},
     };
@@ -81,10 +81,9 @@ describe('linking controller unit tests', () => {
     const action = services.responseBuilder.respond.args[0][1];
     expect(await action()).to.eql();
 
-    expect(services.hashids.decode.args[0][0]).to.eql("a");
+    expect(services.hashids.decode.args[0][0]).to.eql('a');
 
     expect(services.linkManager.setTemplate.args[0][0]).to.eql(0);
     expect(services.linkManager.setTemplate.args[0][1]).to.eql({});
-
   });
 });

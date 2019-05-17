@@ -90,13 +90,12 @@ describe('skillsManager integration tests', () => {
     await pool.query('INSERT INTO team_members (team_id, creator_id) VALUES ($1, $2)', [teamId, creatorId]);
     data = await pool.query('INSERT INTO projects (creator_id, team_id) VALUES ($1, $2) RETURNING project_id', [creatorId, teamId]);
     const projectId = data.rows[0].project_id;
-    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId , "a"]);
+    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
     const skillId = data.rows[0].skill_id;
 
     const skillsManager = new SkillsManager({ pool });
 
-    expect(await skillsManager.checkSkillAccess(skillId,creatorId)).to.eql(true);
-    expect(await skillsManager.checkSkillAccess(skillId,999)).to.eql(false);
-
-  })
+    expect(await skillsManager.checkSkillAccess(skillId, creatorId)).to.eql(true);
+    expect(await skillsManager.checkSkillAccess(skillId, 999)).to.eql(false);
+  });
 });

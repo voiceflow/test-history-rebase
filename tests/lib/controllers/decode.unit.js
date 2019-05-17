@@ -15,7 +15,7 @@ describe('decode controller unit tests', () => {
   it('decode id', async () => {
     const services = {
       hashids: {
-        encode: sinon.stub().returns("a"),
+        encode: sinon.stub().returns('a'),
       },
       responseBuilder: {
         respond: sinon.stub().resolves(),
@@ -27,7 +27,7 @@ describe('decode controller unit tests', () => {
     const req = {
       params: {
         id: 1,
-      }
+      },
     };
     const res = {};
     const next = sinon.stub().returns();
@@ -39,7 +39,7 @@ describe('decode controller unit tests', () => {
     expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
 
     const action = services.responseBuilder.respond.args[0][1];
-    expect(await action()).to.eql("a");
+    expect(await action()).to.eql('a');
 
     expect(services.hashids.encode.args[0][0]).to.eql(1);
   });
@@ -58,8 +58,8 @@ describe('decode controller unit tests', () => {
 
     const req = {
       params: {
-        id: "a",
-      }
+        id: 'a',
+      },
     };
     const res = {};
     const next = sinon.stub().returns();
@@ -73,6 +73,6 @@ describe('decode controller unit tests', () => {
     const action = services.responseBuilder.respond.args[0][1];
     expect(await action()).to.eql('1');
 
-    expect(services.hashids.decode.args[0][0]).to.eql("a");
+    expect(services.hashids.decode.args[0][0]).to.eql('a');
   });
 });

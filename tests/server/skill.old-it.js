@@ -307,7 +307,7 @@ describe('Skill', function () {
           fulfillment: {
             G4cjZLQZaAEn: { slot_config: { '9N4Xdah9UShx': ['level one', 'level 1'] } },
             Q5pVbSymoAjz: { slot_config: { j0Hqhna45404: ['level two', 'level 2', 'open level two'] } },
-            uDk5iYNOCm8W: { slot_config: { hjNq9UjHOVI9: [] } }
+            uDk5iYNOCm8W: { slot_config: { hjNq9UjHOVI9: [] } },
           },
         })
         .expect(200)
@@ -318,7 +318,7 @@ describe('Skill', function () {
             expect(r.fulfillment).to.eql({
               G4cjZLQZaAEn: { slot_config: { '9N4Xdah9UShx': ['level one', 'level 1'] } },
               Q5pVbSymoAjz: { slot_config: { j0Hqhna45404: ['level two', 'level 2', 'open level two'] } },
-              uDk5iYNOCm8W: { slot_config: { hjNq9UjHOVI9: [] } }
+              uDk5iYNOCm8W: { slot_config: { hjNq9UjHOVI9: [] } },
             });
             expect(r.name).to.eql('UNTITLED PROJECT'); // shouldn't update name
           } catch (err) {
@@ -351,19 +351,19 @@ describe('Skill', function () {
               name: 'intent_one',
               inputs: [{
                 slots: ['rhuwpeOxWqnw'],
-                text: 'I think it is {{[slot_one].rhuwpeOxWqnw}}'
+                text: 'I think it is {{[slot_one].rhuwpeOxWqnw}}',
               }, {
                 slots: ['rhuwpeOxWqnw'],
-                text: '{{[slot_one].rhuwpeOxWqnw}}'
+                text: '{{[slot_one].rhuwpeOxWqnw}}',
               }, {
                 slots: ['rhuwpeOxWqnw'],
-                text: 'the answer is {{[slot_one].rhuwpeOxWqnw}}'
+                text: 'the answer is {{[slot_one].rhuwpeOxWqnw}}',
               }, {
                 slots: ['rhuwpeOxWqnw'],
-                text: 'answer is {{[slot_one].rhuwpeOxWqnw}}'
+                text: 'answer is {{[slot_one].rhuwpeOxWqnw}}',
               }, {
                 slots: ['rhuwpeOxWqnw'],
-                text: '{{[slot_one].rhuwpeOxWqnw}} is the answer'
+                text: '{{[slot_one].rhuwpeOxWqnw}} is the answer',
               }],
               key: 'c2u2h6a0qfZg',
               open: true,
@@ -372,7 +372,7 @@ describe('Skill', function () {
               name: 'intent_two',
               inputs: [{
                 slots: ['Of0UMzUuNKVz'],
-                text: '{{[slot_two].Of0UMzUuNKVz}}'
+                text: '{{[slot_two].Of0UMzUuNKVz}}',
               }],
               key: 'cyLDdu9cvygL',
               open: true,
@@ -381,7 +381,7 @@ describe('Skill', function () {
               name: 'intent_open',
               inputs: [{
                 slots: ['9N4Xdah9UShx'],
-                text: '{{[open_lvlone].9N4Xdah9UShx}}'
+                text: '{{[open_lvlone].9N4Xdah9UShx}}',
               }],
               key: 'G4cjZLQZaAEn',
               open: true,
@@ -390,7 +390,7 @@ describe('Skill', function () {
               name: 'intent_lvltwo',
               inputs: [{
                 slots: ['j0Hqhna45404'],
-                text: '{{[opne_lvltwo].j0Hqhna45404}}'
+                text: '{{[opne_lvltwo].j0Hqhna45404}}',
               }],
               key: 'Q5pVbSymoAjz',
               open: true,
@@ -399,7 +399,7 @@ describe('Skill', function () {
               name: 'intent_mini',
               inputs: [{
                 slots: ['hjNq9UjHOVI9'],
-                text: '{{[slot_mini].hjNq9UjHOVI9}}'
+                text: '{{[slot_mini].hjNq9UjHOVI9}}',
               }],
               key: 'uDk5iYNOCm8W',
               open: true,
@@ -408,13 +408,13 @@ describe('Skill', function () {
               name: 'payment_intent',
               inputs: [{
                 slots: ['afh8RUpdYt3e'],
-                text: '{{[payment_slot].afh8RUpdYt3e}}'
+                text: '{{[payment_slot].afh8RUpdYt3e}}',
               }, {
                 slots: ['afh8RUpdYt3e'],
-                text: 'i want {{[payment_slot].afh8RUpdYt3e}}'
+                text: 'i want {{[payment_slot].afh8RUpdYt3e}}',
               }, {
                 slots: ['afh8RUpdYt3e'],
-                text: 'purchase {{[payment_slot].afh8RUpdYt3e}}'
+                text: 'purchase {{[payment_slot].afh8RUpdYt3e}}',
               }],
               key: 'Nr70HvSr5NTG',
               open: true,
@@ -423,19 +423,19 @@ describe('Skill', function () {
               name: 'refund',
               inputs: [{
                 slots: [],
-                text: 'refund'
+                text: 'refund',
               }, {
                 slots: [],
-                text: 'refund payment'
+                text: 'refund payment',
               }, {
                 slots: [],
-                text: 'return payment'
+                text: 'return payment',
               }, {
                 slots: [],
-                text: 'get a refund'
+                text: 'get a refund',
               }, {
                 slots: [],
-                text: 'return premium content'
+                text: 'return premium content',
               }],
               key: 'WYPBdRB4zctc',
               open: true,
@@ -446,7 +446,7 @@ describe('Skill', function () {
               inputs: ['dinosaur', 'one', 'two', 'three', 'velociraptor', 't-rex', '1993', '1997', '1995', '2001', '2018', '2015'],
               type: {
                 label: 'CUSTOM',
-                value: 'CUSTOM'
+                value: 'CUSTOM',
               },
               key: 'rhuwpeOxWqnw',
               open: true,
@@ -455,7 +455,7 @@ describe('Skill', function () {
               inputs: [],
               type: {
                 label: 'AMAZON.NUMBER',
-                value: 'AMAZON.NUMBER'
+                value: 'AMAZON.NUMBER',
               },
               key: 'Of0UMzUuNKVz',
               open: true,
@@ -464,7 +464,7 @@ describe('Skill', function () {
               inputs: ['level 1', 'level one'],
               type: {
                 label: 'CUSTOM',
-                value: 'CUSTOM'
+                value: 'CUSTOM',
               },
               key: '9N4Xdah9UShx',
               open: true,
@@ -473,7 +473,7 @@ describe('Skill', function () {
               inputs: ['level 2', 'level two', 'level to', 'level too'],
               type: {
                 label: 'CUSTOM',
-                value: 'CUSTOM'
+                value: 'CUSTOM',
               },
               key: 'j0Hqhna45404',
               open: true,
@@ -482,7 +482,7 @@ describe('Skill', function () {
               inputs: ['mini games', 'mini', 'games'],
               type: {
                 label: 'CUSTOM',
-                value: 'CUSTOM'
+                value: 'CUSTOM',
               },
               key: 'hjNq9UjHOVI9',
               open: true,
@@ -491,7 +491,7 @@ describe('Skill', function () {
               inputs: ['premium content', 'premium', 'purchase', 'upgrade', 'upgrade game', 'purchase upgrade'],
               type: {
                 label: 'CUSTOM',
-                value: 'CUSTOM'
+                value: 'CUSTOM',
               },
               key: 'afh8RUpdYt3e',
               open: true,
@@ -550,11 +550,11 @@ describe('Skill', function () {
             expect(r.name).to.eql('pikachu');
             expect(r.resume_prompt).to.eql({
               voice: 'Alexa',
-              content: ''
+              content: '',
             });
             expect(r.error_prompt).to.eql({
               voice: 'Alexa',
-              content: ''
+              content: '',
             });
             expect(r.restart).to.eql(true);
           } catch (err) {

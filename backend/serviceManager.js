@@ -41,9 +41,10 @@ const Custom = require('../routes/integrations/custom');
 
 
 const { ResponseBuilder } = require('@voiceflow/common').middleware;
-const { AnalyticsManager, ProjectManager, SkillsManager } = require('../lib/services');
-const { Project: ProjectMiddleware } = require('../lib/middleware');
-const { Analytics: AnalyticsController } = require('../lib/controllers');
+const { JWT } = require('../lib/clients');
+const { AnalyticsManager, ProjectManager, SkillsManager, LinkManager, ProductManager, EmailManager, TTSManager } = require('../lib/services');
+const { Project: ProjectMiddleware, Skill: SkillMiddleware } = require('../lib/middleware');
+const { Analytics: AnalyticsController, Linking:LinkingControllor, ProductUpdates:ProductUpdatesControllor, Email:EmailControllor, Decode:DecodeControllor, Test:TestControllor } = require('../lib/controllers');
 
 const responseBuilder = new ResponseBuilder();
 
@@ -87,6 +88,11 @@ class ServiceManager {
     const {
       analyticsManager,
       projectManager,
+      productManager,
+      emailManager,
+      linkManager,
+      ttsManager,
+      hashids,
     } = services;
 
     const utilities = {
@@ -125,15 +131,42 @@ class ServiceManager {
       projectManager,
     });
 
+    const productUpdates = new ProductUpdatesControllor({
+      productManager,
+      responseBuilder,
+    });
+
+    const email = new EmailControllor({
+      emailManager,
+      responseBuilder,
+      hashids,
+    });
+
+    const linkAccount = new LinkingControllor({
+      linkManager,
+      hashids,
+      responseBuilder,
+    });
+
+    const decode = new DecodeControllor({
+      hashids,
+      responseBuilder,
+    });
+
+    const test = new TestControllor({
+      ttsManager,
+      responseBuilder,
+    });
+
     return {
       Authentication,
       policy,
       terms,
-      Test,
-      LinkAccount,
-      Email,
+      test,
+      linkAccount,
+      email,
       Multimodal,
-      Decode,
+      decode,
       Skill,
       Project,
       copySkill,
@@ -146,7 +179,7 @@ class ServiceManager {
       Custom,
       analytics,
       Onboard,
-      ProductUpdates,
+      productUpdates,
       Logs,
       Code,
       Problem,
@@ -164,10 +197,13 @@ class ServiceManager {
   static buildMiddleware(clients, services, config) {
     const {
       projectManager,
+      skillsManager,
+      hashids,
     } = services;
 
     const ensureLoggedIn = (req, res, next) => (req.user ? next() : res.sendStatus(401));
     const ensurePlan = (plan) => (req, res, next) => ((req.user && req.user.admin >= plan) ? next() : res.sendStatus(401));
+    const ensurePaid = ensurePlan(1);
     const ensureAdmin = ensurePlan(100);
     const ensureLoggedOut = (req, res, next) => (req.user ? res.redirect('/') : next());
 
@@ -179,10 +215,17 @@ class ServiceManager {
       projectManager,
     });
 
+    const skill = new SkillMiddleware({
+      responseBuilder,
+      skillsManager,
+      hashids,
+    });
+
     return {
-      isProjectOwner: project.isOwner,
+      isProjectOwner: (req,res,next)=>project.isOwner(req,res,next),
       ensureLoggedIn,
       ensurePlan,
+      ensurePaid,
       ensureAdmin,
       ensureLoggedOut,
       ensureBeta,
@@ -208,6 +251,7 @@ class ServiceManager {
       },
       verifyProjectAccess: Team.verifyProjectAccess,
       verifyTeam: Team.verifyTeam,
+      hasSkillAccess: (req,res,next)=>skill.hasSkillAccess(req,res,next),
     };
   }
 
@@ -220,12 +264,14 @@ class ServiceManager {
   static buildServices(config, clients) {
     const {
       hashids,
+      jwt,
     } = require('../services'); // eslint-disable-line
     // The above line is temporary until we finish migrating the routes.
 
     const {
       pool,
       logging_pool,
+      AWS,
     } = clients;
 
     const projectManager = new ProjectManager({
@@ -239,11 +285,32 @@ class ServiceManager {
       skillsManager,
     });
 
+    const productManager = new ProductManager({ pool });
+
+    const emailManager = new EmailManager({
+      pool,
+      hashids,
+    });
+
+    const linkManager = new LinkManager({
+      pool,
+      hashids,
+      jwt,
+    });
+
+    const ttsManager =new TTSManager({
+      AWS,
+    })
+
     return {
       hashids,
       projectManager,
       skillsManager,
       analyticsManager,
+      productManager,
+      emailManager,
+      linkManager,
+      ttsManager,
     };
   }
 
@@ -265,8 +332,11 @@ class ServiceManager {
       endpoint: process.env.AWS_ENDPOINT,
     });
 
+    const jwt = new JWT(process.env.JWT_SECRET);
+
     return {
       AWS,
+      jwt,
       pool,
       logging_pool,
     };

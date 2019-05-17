@@ -154,7 +154,7 @@ class Expression extends Component {
             <DropdownToggle className="type-button">
                 <i className="fas fa-code"/>
             </DropdownToggle>
-            <DropdownMenu>
+            <DropdownMenu className="expression-menu">
                 {groups.map((group, i) => {
                     return <div key={i}> {
                         group.map(type => {

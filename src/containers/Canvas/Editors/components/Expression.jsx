@@ -4,6 +4,9 @@ import { connect } from "react-redux";
 import Select from 'react-select';
 import { openTab } from 'ducks/user'
 import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect'
+import VariableText from './VariableText';
+
+
 import './Expression.css'
 
 import { symbols, groups } from './Expression.config'
@@ -24,6 +27,7 @@ class Expression extends Component {
         this.handleSelection = this.handleSelection.bind(this);
         this.handleType = this.handleType.bind(this);
         this.toggleDropDown = this.toggleDropDown.bind(this);
+        this.handleAdvance = this.handleAdvance.bind(this);
     }
 
     componentWillReceiveProps(nextProps){
@@ -57,6 +61,9 @@ class Expression extends Component {
         expression.type = type;
 
         switch(expression.type){
+            case 'advance':
+                expression.value = '';
+                break;
             case 'value':
                 expression.value = '';
                 break;
@@ -64,7 +71,13 @@ class Expression extends Component {
                 expression.value = null;
                 break;
             case 'not':
-                if(og_type === 'value'){
+                if(og_type === 'advance'){
+                    expression.value = {
+                        type: 'advance',
+                        value: expression.value,
+                        depth: depth,
+                    }
+                } else if(og_type === 'value'){
                     expression.value = {
                         type: 'value',
                         value: expression.value,
@@ -87,6 +100,16 @@ class Expression extends Component {
             default:
                 if(Array.isArray(expression.value)){
                     // do nothing since its already 2 type value
+                }else if(og_type === 'advance'){
+                    expression.value = [{
+                        type: 'advance',
+                        value: expression.value,
+                        depth: depth,
+                    }, {
+                        type: 'value',
+                        value: '',
+                        depth: depth
+                  }];
                 }else if(og_type === 'value'){
                     expression.value = [{
                         type: 'value',
@@ -125,6 +148,15 @@ class Expression extends Component {
         }, this.props.onUpdate);
     }
 
+    handleAdvance(raw) {
+        if(this.state.expression.type!=='advance')return;
+        let expression = this.state.expression;
+        expression.value = raw;
+
+        this.setState({
+            expression: expression
+        }, this.props.onUpdate);
+    }
     handleSelection(selected){
         if (selected.value !== 'Create Variable') {
             let expression = this.state.expression;
@@ -193,6 +225,22 @@ class Expression extends Component {
                 render =
                     <div className="d-flex">
                         <Input placeholder="value" value={this.state.expression.value} onChange={this.handleValue}/>
+                        {dropdown}
+                    </div>
+                break;
+            case 'advance':
+                render =
+                    <div className="d-flex">
+                        <div className="w-100">
+                          <VariableText
+                              className="editor form-control auto-height"
+                              raw={this.state.expression.value}
+                              placeholder={<React.Fragment>{`Enter your expression here.`}</React.Fragment>}
+                              variables={this.props.variables}
+                              updateRaw={this.handleAdvance}
+                          />
+                          <small className="text-muted pb-3 pt-2 d-block">{'Press "{" to add variables'}</small>
+                        </div>
                         {dropdown}
                     </div>
                 break;

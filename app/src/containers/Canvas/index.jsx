@@ -56,7 +56,7 @@ import { Spinner } from 'components/Spinner/Spinner'
 import { SLOT_TYPES, ALLOWED_GOOGLE_BLOCKS } from 'Constants'
 
 import Linter from './linter'
-import { getUtterancesWithSlotNames, getSlotsForKeys } from 'util'
+import { getUtterancesWithSlotNames, getSlotsForKeys } from 'intent_util'
 import randomstring from 'randomstring'
 import { checkBlockDisabledLive } from './Blocks'
 

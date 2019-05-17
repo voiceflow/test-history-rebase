@@ -6,7 +6,7 @@ const {
   getUtterancesWithSlotNames,
   formatName,
   getSlotsForKeysAndFormat,
-} = require('../app/src/util');
+} = require('../app/src/intent_util');
 
 const generateDialogflowPackage = (params) => {
   const { intents } = params;

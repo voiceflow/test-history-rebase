@@ -1,5 +1,5 @@
 const { docClient, writeToLogs } = require('../services');
-const { stripSample } = require('../app/src/util');
+const { stripSample } = require('../app/src/intent_util');
 const _ = require('lodash');
 
 // secondary pass through the entire project to upgrade choice blocks to interaction blocks

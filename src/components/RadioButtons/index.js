@@ -4,9 +4,18 @@ import PropTypes from 'prop-types';
 import Checkbox from '../Checkbox';
 import GroupFormInline from '../GroupFormInline';
 
+export const YES_NO_RADIO_BUTTONS = [{
+    id: true,
+    label: "Yes"
+  },
+  {
+    id: false,
+    label: "No"
+  }
+];
+
 export default function RadioButtons(props) {
   const { label, checked, buttons, onChange, className, disabledAll } = props;
-
   return (
     <Fragment>
       {!!label && <label className="form-label">{label}</label>}
@@ -17,10 +26,9 @@ export default function RadioButtons(props) {
             <Checkbox
               {...button}
               value={button.id}
-              isRadio
               checked={checked === button.id}
               disabled={disabledAll || button.disabled}
-              onChange={() => onChange(button)}
+              onChange={() => onChange(button.id)}
             />
           ),
         }))}

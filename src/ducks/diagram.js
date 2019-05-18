@@ -11,6 +11,7 @@ export const ON_FLOW_RENAME = 'ON_FLOW_RENAME'
 export const UPDATE_DIAGRAM_ROOT = 'UPDATE_DIAGRAM_ROOT'
 export const APPEND_DIAGRAMS = 'APPEND_DIAGRAMS'
 export const UPDATE_DIAGRAMS = 'UPDATE_DIAGRAMS'
+export const UPDATE_DIAGRAM = 'UPDATE_DIAGRAM'
 
 const initialState = {
   diagrams: [],
@@ -58,7 +59,7 @@ export default function diagramReducer(state = initialState, action) {
         diagrams: [],
       };
     case ON_FLOW_RENAME:
-      let idx = state.diagrams.findIndex(d => d.id === action.payload.flow_id)
+      const idx = state.diagrams.findIndex(d => d.id === action.payload.flow_id)
       return {
         ...state,
         diagrams: update(state.diagrams, {[idx]: {name: {$set: action.payload.name}}})

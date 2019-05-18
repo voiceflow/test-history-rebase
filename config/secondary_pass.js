@@ -1,5 +1,5 @@
 const { docClient, writeToLogs } = require('../services');
-const { stripSample } = require('../app/src/util');
+const { stripSample } = require('../app/src/intent_util');
 const _ = require('lodash');
 
 // secondary pass through the entire project to upgrade choice blocks to interaction blocks
@@ -26,7 +26,7 @@ const secondPass = async (diagram_id, parameters, visited = new Set(), depth = 0
     return;
   }
 
-  for (key in data.Item.lines) {
+  for (let key in data.Item.lines) {
     if (!data.Item.lines.hasOwnProperty(key)) continue;
     const line = data.Item.lines[key];
 
@@ -35,7 +35,7 @@ const secondPass = async (diagram_id, parameters, visited = new Set(), depth = 0
       line.interactions = [];
       const intent_set = new Set();
       line.inputs.forEach((input_group, i) => {
-        for (input of input_group) {
+        for (let input of input_group) {
           const stripped = stripSample(input);
           if (stripped in samples) {
             const { name } = samples[stripped];
@@ -91,7 +91,7 @@ const secondPass = async (diagram_id, parameters, visited = new Set(), depth = 0
   }
 
   // iterate through the commands first
-  for (command of data.Item.commands) {
+  for (let command of data.Item.commands) {
     if (command.diagram_id) await secondPass(command.diagram_id, parameters, visited, depth + 1);
   }
 

@@ -23,22 +23,23 @@ const sendError = async (req, res) => {
 };
 
 const getErrors = (req, res) => {
-  const params = {
-    logGroupName: `/aws/lambda/storyflow-${req.params.env}`,
-    interleaved: true,
-    startTime: new Date().getTime() - 24 * 60 * 60 * 1000,
-  };
-  cloudWatchLogs.filterLogEvents(params, (err, data) => {
-    if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', { err });
-      res.sendStatus(400);
-    } else {
-      res.send(data.events
-        .filter((e) => !(e.message.startsWith('START') || e.message.startsWith('END') || e.message.startsWith('REPORT')))
-        .sort((a, b) => a.timestamp - b.timestamp)
-        .map((e) => e.message));
-    }
-  });
+  // cloudwatchlogs do not exist
+  // const params = {
+  //   logGroupName: `/aws/lambda/storyflow-${req.params.env}`,
+  //   interleaved: true,
+  //   startTime: new Date().getTime() - 24 * 60 * 60 * 1000,
+  // };
+  // cloudWatchLogs.filterLogEvents(params, (err, data) => {
+  //   if (err) {
+  //     writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+  //     res.sendStatus(400);
+  //   } else {
+  //     res.send(data.events
+  //       .filter((e) => !(e.message.startsWith('START') || e.message.startsWith('END') || e.message.startsWith('REPORT')))
+  //       .sort((a, b) => a.timestamp - b.timestamp)
+  //       .map((e) => e.message));
+  //   }
+  // });
 };
 
 exports.getErrors = getErrors;

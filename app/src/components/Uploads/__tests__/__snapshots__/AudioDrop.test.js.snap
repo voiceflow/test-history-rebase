@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Audio Drop Test render audio drop 1`] = `
+<n
+  accept="audio/*"
+  activeClassName="active"
+  className="dropzone"
+  disableClick={false}
+  disablePreview={false}
+  disabled={false}
+  getDataTransferItems={[Function]}
+  inputProps={Object {}}
+  maxSize={10485760}
+  minSize={0}
+  multiple={false}
+  onDrop={[Function]}
+  preventDropOnDocument={true}
+  rejectClassName="reject"
+>
+  <div>
+    <div
+      className="drop-child"
+    >
+      <div
+        className="mb-1"
+      >
+        Drag and Drop files here
+      </div>
+      <small>
+        OR
+      </small>
+      <br />
+      <div
+        className="mt-2"
+      >
+        <Button
+          className="mb-2"
+          iconPosition="right"
+          isBtn={true}
+          isPrimarySmall={true}
+          onRef={[Function]}
+          trackEvent="Button Click"
+        >
+          Add Audio
+        </Button>
+        <br />
+        <div
+          className="btn-link"
+          onClick={[Function]}
+        >
+          Add URL
+        </div>
+      </div>
+    </div>
+    <div
+      className="rejected-file text-danger"
+    >
+      <b>
+        File not Accepted
+      </b>
+    </div>
+  </div>
+</n>
+`;

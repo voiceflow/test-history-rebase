@@ -5,7 +5,7 @@ const {
 const draftToMarkdown = require('./drafttomarkdown');
 const validUrl = require('valid-url');
 const _ = require('lodash');
-const { deepDraftToMarkdown } = require('../app/src/util');
+const { deepDraftToMarkdown } = require('../app/src/intent_util');
 
 const _expressionfy = (expression, depth = 0) => {
   if (depth > 8) {
@@ -98,7 +98,7 @@ options object properties {
   slots: Object of all the slots used in the skill (required)
 }
 */
-const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, platform = 'alexa') => new Promise(async (resolve) => {
+const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, platform = 'alexa') => new Promise(async (resolve, reject) => {
   if (!options.rendered_set) options.rendered_set = new Set();
   if (!options.used_intents) options.used_intents = new Set();
   if (!options.permissions) options.permissions = new Set();
@@ -291,7 +291,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
             }),
           };
 
-          for (input of inputs) {
+          for (let input of inputs) {
             if (input.length) options.used_choices.push(input);
           }
         } else if (node.extras.type === 'god') {
@@ -532,7 +532,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
               if (d.audio) {
                 add(`<audio src="${d.audio}"/>`);
               } else if (d.rawContent) {
-                temp = draftToMarkdown(d.rawContent, {
+                const temp = draftToMarkdown(d.rawContent, {
                   alexa: true,
                 });
                 if (d.voice === 'Alexa' || !d.voice) {
@@ -762,7 +762,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
           };
         } else if (node.extras.type === 'reminder') {
           options.permissions.add('alexa::alerts:reminders:skill:readwrite');
-          node_reminder = node.extras.reminder;
+          const node_reminder = node.extras.reminder;
           const reminder = {};
           reminder.text = draftToMarkdown(node_reminder.text);
           reminder.type = node_reminder.reminder_type;
@@ -906,7 +906,8 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
       docClient.put(params, (err) => {
         if (err) {
           writeToLogs('CREATOR_BACKEND_ERRORS', { err });
-          res.sendStatus(err.statusCode);
+          return reject(err)
+          // res.sendStatus(err.statusCode);
         } else if (testing || options.type === 'market') {
           resolve(200);
         } else {

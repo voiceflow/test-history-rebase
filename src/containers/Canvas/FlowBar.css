@@ -4,6 +4,7 @@ button.previous {
 
 #flow-bar > .dropup.dropdown > button {
     margin-left: -42px;
+    justify-content: center;
 }
 
 button:disabled {

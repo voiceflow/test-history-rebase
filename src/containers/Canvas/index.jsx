@@ -64,7 +64,6 @@ import { Prompt } from 'react-router'
 import moment from 'moment'
 import Upgrade from 'components/Modals/MultiPlatformModalContent.jsx';
 import { fetchIntegrationUsers } from 'ducks/integration';
-import { accessSync } from 'fs';
 
 const NLC = require('natural-language-commander')
 const _ = require('lodash')
@@ -281,14 +280,15 @@ export class Canvas extends Component {
     };
     componentDidUpdate(previous_props, prev_state) {
         if(previous_props.diagram_id !== this.props.diagram_id){
-            this.props.setOpen(false)
-            let nodes = _.values(this.state.engine.diagramModel.nodes)
-            this.state.engine.enableRepaintEntities(nodes)
-            this.state.engine.repaintCanvas(false)
-            this.setState({
-                load_diagram: true
-            })
-            this.onLoadId(this.props.diagram_id)
+          if(this.updateTree !== null) this.updateTree()
+          this.props.setOpen(false)
+          let nodes = _.values(this.state.engine.diagramModel.nodes)
+          this.state.engine.enableRepaintEntities(nodes)
+          this.state.engine.repaintCanvas(false)
+          this.setState({
+              load_diagram: true
+          })
+          this.onLoadId(this.props.diagram_id)
         }
     }
 
@@ -792,9 +792,6 @@ export class Canvas extends Component {
         return diagram
       })
       updateDiagrams([...updatedDiagrams, ...newDiagram])
-      if (!_.isEmpty(newDiagram)) {
-        this.props.updateSkill("diagram", newDiagram[0].id)
-      }
     }
 
     onSave(state=true) {
@@ -807,6 +804,8 @@ export class Canvas extends Component {
           var data = JSON.stringify(serialize)
           const subDiagrams = this.getSubDiagrams(serialize.nodes)
           if(state) this.updateDiagrams(subDiagrams)
+
+          if(this.updateTree !== null) this.updateTree()
 
           var diagram = {
               title: this.state.diagram_name,
@@ -1171,6 +1170,7 @@ export class Canvas extends Component {
             if(!this.props.preview){
                 localStorage.setItem('flow', `${this.props.skill.skill_id}/${diagram_id}`)
             }
+            if(this.updateTree !== null) this.updateTree()
         })
         .catch(err => {
             console.error(err)
@@ -1420,21 +1420,20 @@ export class Canvas extends Component {
     }
 
     enterFlow(new_diagram_id, save=true) {
-      this.setState({load_diagram: true})
       if(new_diagram_id !== this.props.diagram_id){
-          this.props.updateSkill("diagram", new_diagram_id)
-          if(save && !this.props.preview){
-              this.saveCB = () => {
-                  this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
-              }
-              this.onSave()
-          }else if (this.props.preview){
-              this.props.history.push(`/preview/${this.props.skill.skill_id}/${new_diagram_id}`)
-          }else{
-              this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
-          }
+        this.setState({load_diagram: true})
+        this.props.updateSkill("diagram", new_diagram_id)
+        if(save && !this.props.preview){
+            this.saveCB = () => {
+                this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
+            }
+            this.onSave()
+        }else if (this.props.preview){
+            this.props.history.push(`/preview/${this.props.skill.skill_id}/${new_diagram_id}`)
+        }else{
+            this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
+        }
       }
-      this.props.updateSkill("diagram", new_diagram_id);
     }
 
     updateFulfillmentOnDeletion = (deleted_node) => {
@@ -1630,6 +1629,7 @@ export class Canvas extends Component {
                 closeTab={this.props.closeTab}
                 tab={this.props.tab}
                 open={this.props.tabOpen}
+                build={fn => (this.updateTree = fn)}
               />
               {this.state.load_diagram &&
                 React.createElement(Spinner, { name: "Flow" })}

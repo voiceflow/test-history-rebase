@@ -39,5 +39,3 @@ window.addEventListener('beforeunload', function () {
 		window.CreatorSocket.disconnect();
 	}
 });
-
-console.log("Socket ran");

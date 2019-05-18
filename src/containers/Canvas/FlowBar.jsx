@@ -27,19 +27,27 @@ export class FlowBar extends Component{
         };
     }
 
-    getChildDiagramsWithNames = () => {
-        return this.props.diagram.sub_diagrams
-          .map((diagram_id) => this.props.diagrams.filter(({id}) => id === diagram_id))
-          .filter((childDiagrams) => !_.isEmpty(childDiagrams))
-          .map(([{name, id}]) => ({name, id}))
+    componentDidUpdate = (nextProps) => {
+      if(nextProps.diagrams !== this.props.diagrams) {
+        this.setState({
+          parentDiagrams: this.getParentDiagramsWithNames(),
+          childDiagrams: this.getChildDiagramsWithNames(),
+        })
+      }
     }
 
-    componentDidMount = () => {
-      const parentDiagrams = this.getParentDiagramsWithNames()
-      const childDiagrams = this.getChildDiagramsWithNames()
+    getChildDiagramsWithNames = () => {
+      if(!this.props.diagram) return;
+
+      return this.props.diagram.sub_diagrams
+        .map((diagram_id) => this.props.diagrams.filter(({id}) => id === diagram_id))
+        .filter((childDiagrams) => !_.isEmpty(childDiagrams))
+        .map(([{name, id}]) => ({name, id}))
     }
 
     getParentDiagramsWithNames = () => {
+      if(!this.props.diagram) return;
+      
       return this.props.diagrams
         .filter(({sub_diagrams}) => sub_diagrams.includes(this.props.diagram_id))
         .map(({name, id}) => ({name, id}))
@@ -78,6 +86,8 @@ export class FlowBar extends Component{
     }
 
     render(){
+      if(!this.props.diagram) return null;
+
         return <React.Fragment>
             <button id="home-button" className="btn-home pl-3" onClick={()=>this.props.enterFlow(this.props.root_id)}>
                 <span>Home</span>
@@ -117,13 +127,13 @@ export class FlowBar extends Component{
                 </div>
                 <Dropdown direction='up' isOpen={this.state.leftDropdownOpen} toggle={() => this.toggle("left")}>
                     <DropdownToggle 
-                        className="dropdown-button mt-1 pl-3 previous" 
+                        className="dropdown-button mt-1 previous" 
                         tag="button" 
                         disabled={this.state.parentDiagrams.length === 0}>
                     <img src="/arrow-left-hover.svg" alt="arrow" className={cn("flow-arrow", {"active": this.state.leftDropdownOpen})} />
                     </DropdownToggle>
                     <DropdownMenu  className="no-select">
-                        {this.state.parentDiagrams.map(({id, name}) => (
+                        {this.state.parentDiagrams && this.state.parentDiagrams.map(({id, name}) => (
                             <DropdownItem onClick={() => this.props.enterFlow(id)} className="pointer" key={v4()}>
                                 {name === 'ROOT' ? 'Home' : name}
                             </DropdownItem>
@@ -132,7 +142,7 @@ export class FlowBar extends Component{
                 </Dropdown>
                 <Dropdown direction='up' isOpen={this.state.rightDropdownOpen} toggle={() => this.toggle("right")}>
                     <DropdownToggle 
-                        className="dropdown-button mr-4 pl-3 mt-1" 
+                        className="dropdown-button mr-4 mt-1" 
                         tag="button" 
                         disabled={this.state.childDiagrams.length === 0}>
                     <img src="/arrow-right-hover.svg" alt="arrow" className={cn("flow-arrow", {"active": this.state.rightDropdownOpen})}/>

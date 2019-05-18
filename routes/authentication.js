@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const bcrypt = require('bcrypt');
 const randomstring = require('randomstring');
 const crypto = require('crypto');

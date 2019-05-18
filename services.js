@@ -18,6 +18,8 @@ const StackTrace = require('stacktrace-js');
 const s3UploadStream = require('s3-upload-stream');
 const httpAwsEs = require('http-aws-es');
 const Analytics = require('analytics-node');
+const axios = require('axios');
+const crypto = require('crypto');
 
 const config = require('./config/config');
 
@@ -292,6 +294,7 @@ const encryptJSON = (data) => jwt.sign(data, process.env.JWT_SECRET);
 const decryptJSON = (token) => jwt.verify(token, process.env.JWT_SECRET);
 
 module.exports = {
+  axios,
   upload,
   docClient,
   pool,
@@ -310,6 +313,7 @@ module.exports = {
   ESclient,
   encryptJSON,
   decryptJSON,
+  crypto,
 };
 
 // SECRET

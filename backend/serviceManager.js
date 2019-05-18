@@ -3,6 +3,7 @@
 /* eslint-disable class-methods-use-this, no-empty-function */
 
 const AWS = require('aws-sdk');
+const { OAuth2Client } = require('google-auth-library');
 const path = require('path');
 
 const {
@@ -41,9 +42,16 @@ const Custom = require('../routes/integrations/custom');
 
 
 const { ResponseBuilder } = require('@voiceflow/common').middleware;
-const { AnalyticsManager, ProjectManager, SkillsManager } = require('../lib/services');
+const { getProcessEnv } = require('@voiceflow/common').util;
+
+const {
+  AnalyticsManager,
+  ProjectManager,
+  SkillsManager,
+  AccountManager,
+} = require('../lib/services');
 const { Project: ProjectMiddleware } = require('../lib/middleware');
-const { Analytics: AnalyticsController } = require('../lib/controllers');
+const { Analytics: AnalyticsController, Account: AccountController } = require('../lib/controllers');
 
 const responseBuilder = new ResponseBuilder();
 
@@ -86,6 +94,7 @@ class ServiceManager {
   static buildControllers(services) {
     const {
       analyticsManager,
+      accountManager,
       projectManager,
     } = services;
 
@@ -125,6 +134,11 @@ class ServiceManager {
       projectManager,
     });
 
+    const account = new AccountController({
+      responseBuilder,
+      accountManager,
+    });
+
     return {
       Authentication,
       policy,
@@ -145,6 +159,7 @@ class ServiceManager {
       GoogleSheets,
       Custom,
       analytics,
+      account,
       Onboard,
       ProductUpdates,
       Logs,
@@ -218,32 +233,45 @@ class ServiceManager {
    * @returns {{projectManager: (ProjectManager|*), analyticsManager: (AnalyticsManager|*), skillsManager: (SkillsManager|*)}}
    */
   static buildServices(config, clients) {
-    const {
-      hashids,
-    } = require('../services'); // eslint-disable-line
+
+    // temporary services (DELETE ALL service.[etc] REFERENCES WHEN etc HAS BEEN DEFINED)
+    const services = require('../services'); // eslint-disable-line
     // The above line is temporary until we finish migrating the routes.
 
     const {
       pool,
       logging_pool,
+      googleClient
     } = clients;
 
     const projectManager = new ProjectManager({
       pool,
-      hashids,
+      hashids: services.hashids,
     });
 
     const skillsManager = new SkillsManager({ pool });
+
     const analyticsManager = new AnalyticsManager({
       logging_pool,
       skillsManager,
     });
 
+    const accountManager = new AccountManager({
+      pool,
+      jwt: services.jwt,
+      redis: services.redisClient,
+      analytics: services.analytics,
+      axios: services.axios,
+      crypto: services.crypto,
+      googleClient,
+    });
+
     return {
-      hashids,
+      hashids: services.hashids,
       projectManager,
       skillsManager,
       analyticsManager,
+      accountManager,
     };
   }
 
@@ -265,9 +293,12 @@ class ServiceManager {
       endpoint: process.env.AWS_ENDPOINT,
     });
 
+    const googleClient = new OAuth2Client(getProcessEnv('GOOGLE_ID'));
+
     return {
       AWS,
       pool,
+      googleClient,
       logging_pool,
     };
   }

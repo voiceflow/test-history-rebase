@@ -110,6 +110,7 @@
     "reactstrap": "^6.5.0",
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
+    "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",
@@ -144,8 +145,6 @@
     "jest": "^24.1.0",
     "jest-pnp-resolver": "^1.0.1",
     "patch-package": "^5.1.1",
-    "redux-devtools": "^3.5.0",
-    "redux-devtools-extension": "^2.13.8",
     "redux-mock-store": "^1.5.3",
     "regenerator-runtime": "^0.13.1"
   },

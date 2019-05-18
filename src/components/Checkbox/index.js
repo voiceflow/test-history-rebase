@@ -2,11 +2,14 @@ import React, { Fragment } from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 
+import './Checkbox.css'
+
 export default function Checkbox(props) {
   const {
     id,
     label,
     error,
+    checked,
     isRadio,
     disabled,
     className,
@@ -28,7 +31,7 @@ export default function Checkbox(props) {
             disabled={disabled}
             className="form-checkbox__input"
           />
-          <span className="form-checkbox__fake" />
+          <span className={cn("form-checkbox__fake", {checked})} />
         </div>
 
         {label && (

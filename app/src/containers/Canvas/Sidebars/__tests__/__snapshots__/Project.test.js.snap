@@ -5,36 +5,58 @@ exports[`SideBar Project render flows sidebar with root 1`] = `
   <div
     className="search-section"
   >
-    <label
-      className="section-title mt-3"
+    <ButtonGroup
+      className="toggle-group w-100"
+      role="group"
+      tag="div"
     >
-      All Flows
-    </label>
-    <Input
-      className="form-control-border mb-3 search-input"
-      name="filter"
-      onChange={[Function]}
-      placeholder="Search Flows"
-      type="text"
-      value=""
-    />
+      <Button
+        color="secondary"
+        disabled={true}
+        key="structure"
+        onClick={[Function]}
+        outline={false}
+        tag="button"
+      >
+        structure
+      </Button>
+      <Button
+        color="secondary"
+        disabled={false}
+        key="flows"
+        onClick={[Function]}
+        outline={true}
+        tag="button"
+      >
+        flows
+      </Button>
+    </ButtonGroup>
   </div>
-  <div
-    className="flows-list"
+  <label
+    className="search-section section-title mt-3"
   >
-    <Connect(FlowButton)
-      copyFlow={[Function]}
-      deleteFlow={[Function]}
-      flow={
-        Object {
-          "id": "1",
-          "name": "ROOT",
-          "sub_diagrams": Array [],
-        }
+    Project Flows
+  </label>
+  <hr
+    className="mb-2 mt-4"
+  />
+  <label
+    className="search-section section-title mt-3"
+  >
+    Other Flows
+  </label>
+  <Connect(FlowButton)
+    copyFlow={[Function]}
+    deleteFlow={[Function]}
+    flow={
+      Object {
+        "id": "1",
+        "name": "ROOT",
+        "sub_diagrams": Array [],
       }
-      key="1"
-    />
-  </div>
+    }
+    key="1"
+  />
 </Fragment>
 `;
 
@@ -43,49 +65,71 @@ exports[`SideBar Project render flows with sub diagrams 1`] = `
   <div
     className="search-section"
   >
-    <label
-      className="section-title mt-3"
+    <ButtonGroup
+      className="toggle-group w-100"
+      role="group"
+      tag="div"
     >
-      All Flows
-    </label>
-    <Input
-      className="form-control-border mb-3 search-input"
-      name="filter"
-      onChange={[Function]}
-      placeholder="Search Flows"
-      type="text"
-      value=""
-    />
+      <Button
+        color="secondary"
+        disabled={true}
+        key="structure"
+        onClick={[Function]}
+        outline={false}
+        tag="button"
+      >
+        structure
+      </Button>
+      <Button
+        color="secondary"
+        disabled={false}
+        key="flows"
+        onClick={[Function]}
+        outline={true}
+        tag="button"
+      >
+        flows
+      </Button>
+    </ButtonGroup>
   </div>
-  <div
-    className="flows-list"
+  <label
+    className="search-section section-title mt-3"
   >
-    <Connect(FlowButton)
-      copyFlow={[Function]}
-      deleteFlow={[Function]}
-      flow={
-        Object {
-          "id": "1",
-          "name": "ROOT",
-          "sub_diagrams": Array [
-            "2",
-          ],
-        }
+    Project Flows
+  </label>
+  <hr
+    className="mb-2 mt-4"
+  />
+  <label
+    className="search-section section-title mt-3"
+  >
+    Other Flows
+  </label>
+  <Connect(FlowButton)
+    copyFlow={[Function]}
+    deleteFlow={[Function]}
+    flow={
+      Object {
+        "id": "1",
+        "name": "ROOT",
+        "sub_diagrams": Array [
+          "2",
+        ],
       }
-      key="1"
-    />
-    <Connect(FlowButton)
-      copyFlow={[Function]}
-      deleteFlow={[Function]}
-      flow={
-        Object {
-          "id": "2",
-          "name": "TEST",
-          "sub_diagrams": Array [],
-        }
+    }
+    key="1"
+  />
+  <Connect(FlowButton)
+    copyFlow={[Function]}
+    deleteFlow={[Function]}
+    flow={
+      Object {
+        "id": "2",
+        "name": "TEST",
+        "sub_diagrams": Array [],
       }
-      key="2"
-    />
-  </div>
+    }
+    key="2"
+  />
 </Fragment>
 `;

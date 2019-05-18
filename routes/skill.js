@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const axios = require('axios');
 const _ = require('lodash');
 const secondPass = require('./../config/secondary_pass');

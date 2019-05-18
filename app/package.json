@@ -129,7 +129,7 @@
   },
   "scripts": {
     "start": "HTTPS=true node scripts/start.js",
-    "build": "GENERATE_SOURCEMAP=false node scripts/build.js",
+    "build": "patch-package && GENERATE_SOURCEMAP=false node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom --watchAll=false",
     "prepublish": "patch-package"
   },

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import {
-    Button,
     Input,
     InputGroup,
     ButtonGroup,
@@ -22,7 +21,7 @@ class FlowButton extends Component {
 
         this.state = {
             edit: false,
-            name: props.name ? props.name : ''
+            name: props.diagram.name ? props.diagram.name : ''
         }
 
         this.close = this.close.bind(this);
@@ -45,6 +44,8 @@ class FlowButton extends Component {
     }
 
     render() {
+      if(!this.props.diagram) return null;
+
         let active = this.props.active === this.props.flow.id;
         return (
             this.state.edit ?
@@ -54,7 +55,7 @@ class FlowButton extends Component {
                         name="name"
                         value={this.state.name}
                         onChange={this.handleChange}
-                        onKeyPress={target => target.charCode == 13 ? this.close() : null}
+                        onKeyPress={target => target.charCode === 13 ? this.close() : null}
                         onBlur={this.close}
                         autoFocus
                     />
@@ -63,27 +64,27 @@ class FlowButton extends Component {
                     </InputGroupAddon>
                 </InputGroup>
                 :
-                <ButtonGroup className={cn("diagram-block", {"active" : active})} >
+                <ButtonGroup className={cn("diagram-block", {"active" : active})}>
                     <button
                       className="diagram-button"
                       onClick={active ? null : ()=>this.props.enterFlow(this.props.flow.id)}
                     >
                         <i className="flow-icon mr-3 ">&nbsp;&nbsp;&nbsp;&nbsp;</i>
                         < span className="diagram-text" > {
-                            this.props.flow.name === 'ROOT' ? 'HOME' : _.trim(this.props.name) ?
-                                (this.props.name.length > 15 ? `${this.props.name.substring(0,15)}...` : this.props.name) : 'Flow'
+                            this.props.flow.name === 'ROOT' ? 'HOME' : _.trim(this.props.diagram.name) ?
+                                (this.props.diagram.name.length > 15 ? `${this.props.diagram.name.substring(0,15)}...` : this.props.diagram.name) : 'Flow'
                         } </span>
                     </button>
                     { (this.props.flow.name !== 'ROOT' && !this.props.preview) &&
                         <UncontrolledDropdown inNavbar>
-                            <DropdownToggle className="diagram-edit append">
+                            <DropdownToggle className="diagram-edit" tag='button'>
                                 <i className="fas fa-cog"/>
                             </DropdownToggle>
-                            <DropdownMenu right className="arrow arrow-right no-select" style={{right: '-2px', marginTop: '4px'}}>
+                            <DropdownMenu right className="arrow arrow-right no-select" style={{marginTop: -2}}>
                                 <DropdownItem header>
                                     Flow Options
                                 </DropdownItem>
-                                <DropdownItem onClick={()=>this.setState({edit: true, name: this.props.name})} className="pointer">
+                                <DropdownItem onClick={()=>this.setState({edit: true, name: this.props.diagram.name})} className="pointer">
                                      Edit Name
                                 </DropdownItem>
                                 <DropdownItem onClick={this.props.copyFlow} className="pointer">
@@ -102,7 +103,7 @@ class FlowButton extends Component {
 
 const mapStateToProps = (state, props) => ({
     active: state.skills.skill.diagram,
-    name: _.find(state.diagrams.diagrams, d => d.id === props.flow.id).name
+    diagram: _.find(state.diagrams.diagrams, d => d.id === props.flow.id)
 })
 
 const mapDispatchToProps = dispatch => {

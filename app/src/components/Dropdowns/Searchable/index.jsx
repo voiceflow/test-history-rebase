@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import mousetrap from 'mousetrap'
 
 export default class SearchableDropdown extends Component {
     constructor(props) {

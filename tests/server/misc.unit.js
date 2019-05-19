@@ -46,7 +46,7 @@ const tests = [
     calledPath: '/product_updates',
     expected: {
       controllers: {
-        ProductUpdates: {
+        productUpdates: {
           getUpdates: 1,
         },
       },
@@ -61,7 +61,7 @@ const tests = [
     calledPath: '/product_updates',
     expected: {
       controllers: {
-        ProductUpdates: {
+        productUpdates: {
           createUpdate: 1,
         },
       },
@@ -309,7 +309,7 @@ const tests = [
   },
 ];
 
-describe('analytics route unit tests', () => {
+describe('misc route unit tests', () => {
   let app;
   let server;
 

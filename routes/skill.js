@@ -567,7 +567,7 @@ const checkVersions = (project_id, platform, options = {}) => new Promise(async 
       const remove_live = new Set();
       const add_live = new Set();
 
-      for (let dev_version of dev_versions) {
+      for (const dev_version of dev_versions) {
         var token;
 
         try {
@@ -633,7 +633,7 @@ const checkVersions = (project_id, platform, options = {}) => new Promise(async 
         await pool.query(`UPDATE skills SET live = TRUE WHERE skill_id IN (${pg_num(add_live.size)})`, Array.from(add_live));
       }
     } else if (platform === 'google') {
-      for (let dev_version of dev_versions) {
+      for (const dev_version of dev_versions) {
         const all_google_versions = dev_version.google_versions;
         const creator_versions = project_versions.filter((v) => ((v.creator_id === dev_version.creator_id) && !!v.google_versions));
 
@@ -842,7 +842,7 @@ exports.buildSkill = async (req, res) => {
             `, [r.skill_id, req.user.id]);
 
             if (Array.isArray(products.rows) && products.rows.length !== 0) {
-              for (let row of products.rows) {
+              for (const row of products.rows) {
                 const product = row.data;
                 const productId = row.id;
                 let AmazonProductId = row.amzn_prod_id;
@@ -917,7 +917,7 @@ exports.buildSkill = async (req, res) => {
                 // interaction models only need to be generated per langauge. i.e en-US/en-CA or fr-CA/fr-FR are the same shit
                 const models = {};
                 let secondary = false; // flag on doing a secondary pass
-                for (let locale of r.locales) {
+                for (const locale of r.locales) {
                   // ONLY NEED ONE INTERACTION MODEL PER LANGUAGE LOCALE
                   const lang = locale.substring(0, 2);
                   if (!(lang in models)) {

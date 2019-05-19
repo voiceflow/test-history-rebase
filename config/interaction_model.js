@@ -21,7 +21,7 @@ const stringSimilarity = require('string-similarity');
 const addSlots = (extracted_slots, intent, existing) => {
   if (extracted_slots.length !== 0) {
     const existing_slots = new Set(intent.slots.map((s) => s.name));
-    for (let extracted_slot of extracted_slots) {
+    for (const extracted_slot of extracted_slots) {
       if (!existing_slots.has(extracted_slot.name)) {
         // slot currently doesn't exist in this intent
         existing_slots.add(extracted_slot.name);
@@ -91,7 +91,7 @@ exports.createInteractionModel = (req, locale) => {
         entered_intents.add(intent.name);
         intents_for_amazon.push(intent);
       }
-      for (let sample of intent.samples) {
+      for (const sample of intent.samples) {
         samples[stripSample(sample)] = intent;
       }
       LOCALE_DEFAULT_SET[intent.name] = new Set(intent.samples);
@@ -110,7 +110,7 @@ exports.createInteractionModel = (req, locale) => {
 
   // INTERFACE REQUIRED INTENTS
   if (Array.isArray(req.alexa_interfaces)) {
-    for (let _interface of req.alexa_interfaces) {
+    for (const _interface of req.alexa_interfaces) {
       if (INTERFACE_INTENTS[_interface]) {
         INTERFACE_INTENTS[_interface].forEach((i) => {
           intents_for_amazon.push(i);
@@ -155,13 +155,13 @@ exports.createInteractionModel = (req, locale) => {
         formatted_intent.slots = getSlotsForKeysAndFormat(intent.inputs.map((input) => input.slots), slots, platform);
 
         const slot_dict = {};
-        for (let slot of formatted_intent.slots) {
+        for (const slot of formatted_intent.slots) {
           if (slot.type) {
             slot_dict[slot.name] = slot.type;
             used_slots.add(slot.type);
           }
         }
-        for (let sample of formatted_intent.samples) {
+        for (const sample of formatted_intent.samples) {
           if (formatted_intent.slots.length !== 0) {
             testSlotOnlyIntent(sample, slot_dict, capture_intents);
           }
@@ -221,7 +221,7 @@ exports.createInteractionModel = (req, locale) => {
   // INTENTS FIRST THEN SLOTS
   // We only need a second pass if there are choice blocks
   let choice_count = 0;
-  for (let choice of used_choices) {
+  for (const choice of used_choices) {
     // UNION CHOICES INTO INTENTS AND SHIT HERE
     // COMPARE EACH OPTION OF THE CHOICE INPUT TO ALL EXISTING INTENTS AND THEIR SYNONYMS
     const matched = [];
@@ -229,7 +229,7 @@ exports.createInteractionModel = (req, locale) => {
 
     const stripped_set = new Set();
 
-    for (let input of choice) {
+    for (const input of choice) {
       // TODO: PREPARE FOR AMAZON DEFAULT INTENTS
       // returns parsed_input to {formatted_input, extracted_slots}
       const parsed_input = parseChoiceInput(input, slots);
@@ -256,18 +256,18 @@ exports.createInteractionModel = (req, locale) => {
 
     // Only one match
     if (matched.length === 1) {
-      for (let parsed_input of parsed_inputs) {
+      for (const parsed_input of parsed_inputs) {
         pushToIntent(parsed_input, matched[0]);
         choice_count++;
       }
     } else if (matched.length > 1) {
       // EDGE EDGE CASE
       // time to jaccard this boi - each input can go into a different intent based on fuzzy search
-      for (let parsed_input of parsed_inputs) {
+      for (const parsed_input of parsed_inputs) {
         let best = null;
         let high = -1;
 
-        for (let match of matched) {
+        for (const match of matched) {
           // if(!Array.isArray(match.samples)){console.log(match); continue}
 
           let i; let
@@ -365,7 +365,7 @@ exports.createInteractionModel = (req, locale) => {
       const utterances = JSON.parse(slot.substring(7));
       const unique_utterances = [];
       // check if there are already slots that have this utterance
-      for (let sample of utterances) {
+      for (const sample of utterances) {
         const stripped = stripSample(sample);
         if (!slot_utterances.has(stripped)) {
           slot_utterances.add(stripped);

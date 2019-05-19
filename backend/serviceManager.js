@@ -4,6 +4,9 @@
 
 const AWS = require('aws-sdk');
 const path = require('path');
+const Promise = require('bluebird');
+
+const { ResponseBuilder } = require('@voiceflow/common').middleware;
 
 const {
   upload,
@@ -19,14 +22,10 @@ const { underMaintenance } = require('../app/src/MAINTENANCE.js');
 const Diagram = require('../routes/diagram.js');
 const Skill = require('../routes/skill.js');
 const Problem = require('../routes/error.js');
-const LinkAccount = require('../routes/linkaccount.js');
 const Audio = require('../routes/audio.js');
-const Test = require('../routes/test.js');
 const Authentication = require('../routes/authentication');
 const Code = require('../config/codes.js');
-const Decode = require('../routes/decode.js');
 const Marketplace = require('../routes/marketplace.js');
-const Email = require('../routes/email.js');
 const Multimodal = require('../routes/multimodal/multimodal');
 const Onboard = require('../routes/onboard.js');
 const Logs = require('../routes/logs.js');
@@ -34,16 +33,18 @@ const Team = require('../routes/team.js');
 const Project = require('../routes/project.js');
 const { copySkill } = require('../routes/skill_util');
 const Track = require('../routes/track.js');
-const ProductUpdates = require('../routes/product_updates.js');
 const Integrations = require('../routes/integrations');
 const GoogleSheets = require('../routes/integrations/googleSheets');
 const Custom = require('../routes/integrations/custom');
 
-
-const { ResponseBuilder } = require('@voiceflow/common').middleware;
-const { AnalyticsManager, ProjectManager, SkillsManager } = require('../lib/services');
-const { Project: ProjectMiddleware } = require('../lib/middleware');
-const { Analytics: AnalyticsController } = require('../lib/controllers');
+const { JWT } = require('../lib/clients');
+const {
+  AnalyticsManager, ProjectManager, SkillsManager, LinkManager, ProductManager, EmailManager, TTSManager,
+} = require('../lib/services');
+const { Project: ProjectMiddleware, Skill: SkillMiddleware } = require('../lib/middleware');
+const {
+  Analytics: AnalyticsController, Linking: LinkingController, ProductUpdates: ProductUpdatesController, Email: EmailController, Decode: DecodeController, Test: TestController,
+} = require('../lib/controllers');
 
 const responseBuilder = new ResponseBuilder();
 
@@ -87,6 +88,11 @@ class ServiceManager {
     const {
       analyticsManager,
       projectManager,
+      productManager,
+      emailManager,
+      linkManager,
+      ttsManager,
+      hashids,
     } = services;
 
     const utilities = {
@@ -125,15 +131,42 @@ class ServiceManager {
       projectManager,
     });
 
+    const productUpdates = new ProductUpdatesController({
+      productManager,
+      responseBuilder,
+    });
+
+    const email = new EmailController({
+      emailManager,
+      responseBuilder,
+      hashids,
+    });
+
+    const linkAccount = new LinkingController({
+      linkManager,
+      hashids,
+      responseBuilder,
+    });
+
+    const decode = new DecodeController({
+      hashids,
+      responseBuilder,
+    });
+
+    const test = new TestController({
+      ttsManager,
+      responseBuilder,
+    });
+
     return {
       Authentication,
       policy,
       terms,
-      Test,
-      LinkAccount,
-      Email,
+      test,
+      linkAccount,
+      email,
       Multimodal,
-      Decode,
+      decode,
       Skill,
       Project,
       copySkill,
@@ -146,7 +179,7 @@ class ServiceManager {
       Custom,
       analytics,
       Onboard,
-      ProductUpdates,
+      productUpdates,
       Logs,
       Code,
       Problem,
@@ -164,10 +197,13 @@ class ServiceManager {
   static buildMiddleware(clients, services, config) {
     const {
       projectManager,
+      skillsManager,
+      hashids,
     } = services;
 
     const ensureLoggedIn = (req, res, next) => (req.user ? next() : res.sendStatus(401));
     const ensurePlan = (plan) => (req, res, next) => ((req.user && req.user.admin >= plan) ? next() : res.sendStatus(401));
+    const ensurePaid = ensurePlan(1);
     const ensureAdmin = ensurePlan(100);
     const ensureLoggedOut = (req, res, next) => (req.user ? res.redirect('/') : next());
 
@@ -179,10 +215,17 @@ class ServiceManager {
       projectManager,
     });
 
+    const skill = new SkillMiddleware({
+      responseBuilder,
+      skillsManager,
+      hashids,
+    });
+
     return {
-      isProjectOwner: project.isOwner,
+      isProjectOwner: (req, res, next) => project.isOwner(req, res, next),
       ensureLoggedIn,
       ensurePlan,
+      ensurePaid,
       ensureAdmin,
       ensureLoggedOut,
       ensureBeta,
@@ -208,6 +251,7 @@ class ServiceManager {
       },
       verifyProjectAccess: Team.verifyProjectAccess,
       verifyTeam: Team.verifyTeam,
+      hasSkillAccess: skill.hasSkillAccess,
     };
   }
 
@@ -220,12 +264,14 @@ class ServiceManager {
   static buildServices(config, clients) {
     const {
       hashids,
+      jwt,
     } = require('../services'); // eslint-disable-line
     // The above line is temporary until we finish migrating the routes.
 
     const {
       pool,
       logging_pool,
+      polly,
     } = clients;
 
     const projectManager = new ProjectManager({
@@ -239,11 +285,32 @@ class ServiceManager {
       skillsManager,
     });
 
+    const productManager = new ProductManager({ pool });
+
+    const emailManager = new EmailManager({
+      pool,
+      hashids,
+    });
+
+    const linkManager = new LinkManager({
+      pool,
+      hashids,
+      jwt,
+    });
+
+    const ttsManager = new TTSManager({
+      polly,
+    });
+
     return {
       hashids,
       projectManager,
       skillsManager,
       analyticsManager,
+      productManager,
+      emailManager,
+      linkManager,
+      ttsManager,
     };
   }
 
@@ -265,8 +332,13 @@ class ServiceManager {
       endpoint: process.env.AWS_ENDPOINT,
     });
 
+    const jwt = new JWT(process.env.JWT_SECRET);
+    const polly = new AWS.Polly();
+
     return {
-      AWS,
+      polly: Promise.promisify(polly.synthesizeSpeech.bind(polly)),
+      aws: AWS,
+      jwt,
       pool,
       logging_pool,
     };

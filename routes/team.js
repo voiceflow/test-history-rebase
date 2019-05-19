@@ -157,7 +157,7 @@ const initalizeStripe = async (team, user, seats, source_id, options = {}) => {
       },
     };
 
-    if(options.coupon) subscription_data.coupon = options.coupon
+    if (options.coupon) subscription_data.coupon = options.coupon;
 
     // if(options.trial_days) subscription_data.trial_period_days = options.trial_days
     // subscription_data.trial_end = (Math.floor((Date.now()/1000)) + 10)
@@ -437,7 +437,7 @@ exports.deleteTeam = async (req, res) => {
     if (projects.rows.length === 0) return res.sendStatus(404);
 
     // Delete all the projects
-    for (let project of projects.rows) {
+    for (const project of projects.rows) {
       if (project.project_id) await deleteProjectPromise(project.project_id);
     }
 

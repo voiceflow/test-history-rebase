@@ -13,9 +13,12 @@ const knexfile = require('@voiceflow/database/knexfile');
 
 const knex = Knex(knexfile.test);
 
-const { SkillsManager } = require('../../../lib/services');
+const Hashids = require('hashids');
+const { JWT } = require('../../../lib/clients');
 
-describe('skillsManager integration tests', () => {
+const { LinkManager } = require('../../../lib/services');
+
+describe('linkManager integration tests', () => {
   let pool;
 
   before(async () => {
@@ -28,6 +31,8 @@ describe('skillsManager integration tests', () => {
     });
   });
 
+  const hashids = new Hashids(utils.getProcessEnv('CONFIG_ID_HASH'), 10);
+  const jwt = new JWT(process.env.JWT_SECRET);
   beforeEach(async () => {
     await knexCleaner.clean(knex, { ignoreTables: ['knex_migrations', 'knex_migrations_lock'] });
   });
@@ -36,53 +41,7 @@ describe('skillsManager integration tests', () => {
     await pool.end();
   });
 
-  it('get live skills for project', async () => {
-    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
-
-    const creatorId = data.rows[0].creator_id;
-    data = await pool.query(`
-                INSERT INTO projects (name, creator_id) 
-                VALUES ($1, $2) 
-                RETURNING project_id`, ['foo', creatorId]);
-
-    const projectId = data.rows[0].project_id;
-
-    const skills = [
-      {
-        diagram: 'foo-1',
-        projectId,
-        live: true,
-      },
-      {
-        diagram: 'foo-2',
-        projectId,
-        live: false,
-      },
-      {
-        diagram: 'foo-3',
-        projectId,
-        live: true,
-      },
-    ];
-
-    const created = await Promise
-      .map(skills, (skill) => pool.query(
-        'INSERT INTO skills (diagram, project_id, live) VALUES ($1, $2, $3) RETURNING skill_id, live',
-        [skill.diagram, skill.projectId, skill.live],
-      ))
-      .filter((_data) => _data.rows[0].live)
-      .map((_data) => _data.rows[0].skill_id);
-
-    const skillsManager = new SkillsManager({ pool });
-
-    const foundSkills = await skillsManager.getLiveSkills(projectId);
-
-    expect(foundSkills.length).to.eql(2);
-    expect(foundSkills.map((skill) => skill.skill_id)).to.eql(created);
-    expect(await skillsManager.getLiveSkills(1234)).to.eql([]);
-  });
-
-  it('check user has skill access', async () => {
+  it('get Template', async () => {
     let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
     const creatorId = data.rows[0].creator_id;
     data = await pool.query('INSERT INTO teams (creator_id) VALUES ($1) RETURNING team_id', [creatorId]);
@@ -93,9 +52,30 @@ describe('skillsManager integration tests', () => {
     data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
     const skillId = data.rows[0].skill_id;
 
-    const skillsManager = new SkillsManager({ pool });
+    const linkManager = new LinkManager({ pool, hashids, jwt });
 
-    expect(await skillsManager.checkSkillAccess(skillId, creatorId)).to.eql(true);
-    expect(await skillsManager.checkSkillAccess(skillId, 999)).to.eql(false);
+    await linkManager.setTemplate(skillId, { domains: ['test'] });
+    const result = await linkManager.getTemplate(skillId);
+    const [domain] = result.account_linking.domains;
+    expect(domain).to.eql('test');
+  });
+  it('set Template', async () => {
+    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
+    const creatorId = data.rows[0].creator_id;
+    data = await pool.query('INSERT INTO teams (creator_id) VALUES ($1) RETURNING team_id', [creatorId]);
+    const teamId = data.rows[0].team_id;
+    await pool.query('INSERT INTO team_members (team_id, creator_id) VALUES ($1, $2)', [teamId, creatorId]);
+    data = await pool.query('INSERT INTO projects (creator_id, team_id) VALUES ($1, $2) RETURNING project_id', [creatorId, teamId]);
+    const projectId = data.rows[0].project_id;
+    data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
+    const skillId = data.rows[0].skill_id;
+
+    const linkManager = new LinkManager({ pool, hashids, jwt });
+
+    const payload = {};
+    await linkManager.setTemplate(skillId, { domains: ['test'] });
+    const result = await pool.query('SELECT * from SKILLS WHERE skill_id=$1', [skillId]);
+    const [domain] = result.rows[0].account_linking.domains;
+    expect(domain).to.eql('test');
   });
 });

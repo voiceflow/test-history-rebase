@@ -3,11 +3,8 @@
 require('dotenv').config({ path: './.env.test' });
 const { expect } = require('chai');
 const sinon = require('sinon');
-// const VError = require('@voiceflow/verror');
-// const { utils } = require('@voiceflow/common');
 
-// const { ProjectManager } = require('../../../lib/services');
-const ProductUpdates = require('../../../lib/controllers/product_updates');
+const ProductUpdates = require('../../../lib/controllers/productUpdates');
 
 describe('product update controller unit tests', () => {
   beforeEach(() => sinon.restore());

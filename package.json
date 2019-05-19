@@ -107,7 +107,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "fixpack && git add package.json && git commit --amend -C HEAD --no-verify && pretty-quick --staged"
+      "pre-commit": "fixpack && git add package.json && git commit --amend -C HEAD --no-verify"
     }
   },
   "jest": {
@@ -140,6 +140,7 @@
     "local": "NODE_ENV=local node index.js",
     "old-integration": "NODE_ENV=test node tests/server/init-old-integration.js && mocha --use_strict --exit \"tests/**/*.old-it.js\"",
     "old-unit": "NODE_ENV=test npx jest --testPathIgnorePatterns=/app/ --detectOpenHandles --runInBand --testMatch=\"**/(*.)+(test).js?(x)\"",
+    "prettier": "prettier",
     "prod": "NODE_ENV=development_prod node index.js",
     "prod_test": "NODE_ENV=development_prod_test node index.js",
     "redis": "redis-server",

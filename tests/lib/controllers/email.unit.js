@@ -3,10 +3,7 @@
 require('dotenv').config({ path: './.env.test' });
 const { expect } = require('chai');
 const sinon = require('sinon');
-// const VError = require('@voiceflow/verror');
-// const { utils } = require('@voiceflow/common');
 
-// const { ProjectManager } = require('../../../lib/services');
 const Email = require('../../../lib/controllers/email');
 
 describe('email controller unit tests', () => {
@@ -134,8 +131,8 @@ describe('email controller unit tests', () => {
 
     expect(services.emailManager.setTemplate.args[0][0]).to.eql(1);
     expect(services.emailManager.setTemplate.args[0][1]).to.eql(0);
-    expect(services.emailManager.setTemplate.args[0][2]).to.eql(0);
-    expect(services.emailManager.setTemplate.args[0][3]).to.eql({});
+    expect(services.emailManager.setTemplate.args[0][2]).to.eql({});
+    expect(services.emailManager.setTemplate.args[0][3]).to.eql(0);
   });
 
   it('delete template', async () => {

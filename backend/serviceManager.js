@@ -4,6 +4,9 @@
 
 const AWS = require('aws-sdk');
 const path = require('path');
+const Promise = require('bluebird');
+
+const { ResponseBuilder } = require('@voiceflow/common').middleware;
 
 const {
   upload,
@@ -19,14 +22,10 @@ const { underMaintenance } = require('../app/src/MAINTENANCE.js');
 const Diagram = require('../routes/diagram.js');
 const Skill = require('../routes/skill.js');
 const Problem = require('../routes/error.js');
-const LinkAccount = require('../routes/linkaccount.js');
 const Audio = require('../routes/audio.js');
-const Test = require('../routes/test.js');
 const Authentication = require('../routes/authentication');
 const Code = require('../config/codes.js');
-const Decode = require('../routes/decode.js');
 const Marketplace = require('../routes/marketplace.js');
-const Email = require('../routes/email.js');
 const Multimodal = require('../routes/multimodal/multimodal');
 const Onboard = require('../routes/onboard.js');
 const Logs = require('../routes/logs.js');
@@ -34,20 +33,17 @@ const Team = require('../routes/team.js');
 const Project = require('../routes/project.js');
 const { copySkill } = require('../routes/skill_util');
 const Track = require('../routes/track.js');
-const ProductUpdates = require('../routes/product_updates.js');
 const Integrations = require('../routes/integrations');
 const GoogleSheets = require('../routes/integrations/googleSheets');
 const Custom = require('../routes/integrations/custom');
 
-
-const { ResponseBuilder } = require('@voiceflow/common').middleware;
 const { JWT } = require('../lib/clients');
 const {
   AnalyticsManager, ProjectManager, SkillsManager, LinkManager, ProductManager, EmailManager, TTSManager,
 } = require('../lib/services');
 const { Project: ProjectMiddleware, Skill: SkillMiddleware } = require('../lib/middleware');
 const {
-  Analytics: AnalyticsController, Linking: LinkingControllor, ProductUpdates: ProductUpdatesControllor, Email: EmailControllor, Decode: DecodeControllor, Test: TestControllor,
+  Analytics: AnalyticsController, Linking: LinkingController, ProductUpdates: ProductUpdatesController, Email: EmailController, Decode: DecodeController, Test: TestController,
 } = require('../lib/controllers');
 
 const responseBuilder = new ResponseBuilder();
@@ -135,29 +131,29 @@ class ServiceManager {
       projectManager,
     });
 
-    const productUpdates = new ProductUpdatesControllor({
+    const productUpdates = new ProductUpdatesController({
       productManager,
       responseBuilder,
     });
 
-    const email = new EmailControllor({
+    const email = new EmailController({
       emailManager,
       responseBuilder,
       hashids,
     });
 
-    const linkAccount = new LinkingControllor({
+    const linkAccount = new LinkingController({
       linkManager,
       hashids,
       responseBuilder,
     });
 
-    const decode = new DecodeControllor({
+    const decode = new DecodeController({
       hashids,
       responseBuilder,
     });
 
-    const test = new TestControllor({
+    const test = new TestController({
       ttsManager,
       responseBuilder,
     });
@@ -255,7 +251,7 @@ class ServiceManager {
       },
       verifyProjectAccess: Team.verifyProjectAccess,
       verifyTeam: Team.verifyTeam,
-      hasSkillAccess: (req, res, next) => skill.hasSkillAccess(req, res, next),
+      hasSkillAccess: skill.hasSkillAccess,
     };
   }
 
@@ -275,7 +271,7 @@ class ServiceManager {
     const {
       pool,
       logging_pool,
-      AWS,
+      polly,
     } = clients;
 
     const projectManager = new ProjectManager({
@@ -303,7 +299,7 @@ class ServiceManager {
     });
 
     const ttsManager = new TTSManager({
-      AWS,
+      polly,
     });
 
     return {
@@ -337,9 +333,11 @@ class ServiceManager {
     });
 
     const jwt = new JWT(process.env.JWT_SECRET);
+    const polly = new AWS.Polly();
 
     return {
-      AWS,
+      polly: Promise.promisify(polly.synthesizeSpeech.bind(polly)),
+      aws: AWS,
       jwt,
       pool,
       logging_pool,

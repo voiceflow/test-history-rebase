@@ -7,7 +7,7 @@ const sinon = require('sinon');
 // const { utils } = require('@voiceflow/common');
 
 // const { ProjectManager } = require('../../../lib/services');
-const Linking = require('../../../lib/controllers/linkaccount');
+const Linking = require('../../../lib/controllers/linkAccount');
 
 describe('linking controller unit tests', () => {
   beforeEach(() => sinon.restore());

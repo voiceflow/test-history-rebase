@@ -50,7 +50,10 @@ describe('emailManager integration tests', () => {
     data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
     const skillId = data.rows[0].skill_id;
 
-    const emailManager = new EmailManager({ pool, hashids });
+    const emailManager = new EmailManager({
+      pool,
+      hashids,
+    });
 
     const payload = {
       content: 'a {test} b',
@@ -59,9 +62,9 @@ describe('emailManager integration tests', () => {
       sender: 's',
     };
 
-    await emailManager.setTemplate(creatorId, skillId, Number.NaN, payload);
-    const result = await pool.query('SELECT title, content, sender, subject from email_templates WHERE skill_id=$1', [skillId]);
-    expect(result.rows[0]).to.eql(payload);
+    await emailManager.setTemplate(creatorId, skillId, payload);
+    const { rows } = await pool.query('SELECT title, content, sender, subject from email_templates WHERE skill_id=$1', [skillId]);
+    expect(rows[0]).to.eql(payload);
   });
 
   it('get Template', async () => {
@@ -75,7 +78,10 @@ describe('emailManager integration tests', () => {
     data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
     const skillId = data.rows[0].skill_id;
 
-    const emailManager = new EmailManager({ pool, hashids });
+    const emailManager = new EmailManager({
+      pool,
+      hashids
+    });
 
     const payload = {
       content: 'a {test} b',
@@ -83,7 +89,7 @@ describe('emailManager integration tests', () => {
       title: 't',
       sender: 's',
     };
-    const emailIdh = await emailManager.setTemplate(creatorId, skillId, Number.NaN, payload);
+    const emailIdh = await emailManager.setTemplate(creatorId, skillId, payload);
 
     const { content, subject, variables } = await emailManager.getTemplate(creatorId, hashids.decode(emailIdh)[0]);
 
@@ -93,7 +99,10 @@ describe('emailManager integration tests', () => {
   });
 
   it('get Templates', async () => {
-    const emailManager = new EmailManager({ pool, hashids });
+    const emailManager = new EmailManager({
+      pool,
+      hashids
+    });
 
     expect(await emailManager.getTemplates(1, 1)).to.eql([]);
 
@@ -114,17 +123,21 @@ describe('emailManager integration tests', () => {
       title: 't',
       sender: 's',
     };
-    const emailIdh = await emailManager.setTemplate(creatorId, skillId, Number.NaN, payload);
+    const emailIdh = await emailManager.setTemplate(creatorId, skillId, payload);
 
     const [{ content, subject, variables }] = await emailManager.getTemplates(creatorId, skillId);
 
+    expect(emailIdh).to.not.be.undefined;
     expect(content).to.eql(payload.content);
     expect(subject).to.eql(payload.subject);
     expect(variables).to.eql(JSON.stringify(['test', 'thing']));
   });
 
   it('delete Template', async () => {
-    const emailManager = new EmailManager({ pool, hashids });
+    const emailManager = new EmailManager({
+      pool,
+      hashids
+    });
 
 
     let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
@@ -144,7 +157,7 @@ describe('emailManager integration tests', () => {
       title: 't',
       sender: 's',
     };
-    const emailIdh = await emailManager.setTemplate(creatorId, skillId, Number.NaN, payload);
+    const emailIdh = await emailManager.setTemplate(creatorId, skillId, payload);
 
     await emailManager.deleteTemplate(creatorId, hashids.decode(emailIdh)[0]);
     expect(await emailManager.getTemplates(creatorId, skillId)).to.eql([]);
@@ -162,7 +175,10 @@ describe('emailManager integration tests', () => {
     data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
     const skillId = data.rows[0].skill_id;
 
-    const emailManager = new EmailManager({ pool, hashids });
+    const emailManager = new EmailManager({
+      pool,
+      hashids
+    });
 
     const payload = {
       content: 'a {test} b',
@@ -170,11 +186,11 @@ describe('emailManager integration tests', () => {
       title: 't',
       sender: 's',
     };
-    const emailIdh = await emailManager.setTemplate(creatorId, skillId, Number.NaN, payload);
+    const emailIdh = await emailManager.setTemplate(creatorId, skillId, payload);
 
     payload.content = 'z';
 
-    await emailManager.setTemplate(creatorId, skillId, hashids.decode(emailIdh)[0], payload);
+    await emailManager.setTemplate(creatorId, skillId, payload, hashids.decode(emailIdh)[0]);
 
     const { content, subject, variables } = await emailManager.getTemplate(creatorId, hashids.decode(emailIdh)[0]);
 

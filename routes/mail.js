@@ -1,11 +1,7 @@
 const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey('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');
-const {
-  writeToLogs,
-  encryptJSON,
-} = require('./../services');
-
+const { writeToLogs, encryptJSON } = require('./../services');
 
 exports.sendOnboarding = (email, name, cb) => {
   if (typeof name !== 'string') {
@@ -18,15 +14,19 @@ exports.sendOnboarding = (email, name, cb) => {
       email: 'braden@voiceflow.com',
       name: 'Braden from Voiceflow',
     },
-    personalizations: [{
-      to: [{
-        email,
-        name,
-      }],
-      dynamic_template_data: {
-        name,
+    personalizations: [
+      {
+        to: [
+          {
+            email,
+            name,
+          },
+        ],
+        dynamic_template_data: {
+          name,
+        },
       },
-    }],
+    ],
     reply_to: {
       email: 'braden@voiceflow.com',
       name: 'Braden from Voiceflow',
@@ -51,15 +51,19 @@ exports.sendResetEmail = async (name, user_id, random, email) => {
       email: 'service@voiceflow.com',
       name: 'Voiceflow Team',
     },
-    personalizations: [{
-      to: [{
-        email,
-      }],
-      dynamic_template_data: {
-        link: `${random}${user_id}`,
-        name,
+    personalizations: [
+      {
+        to: [
+          {
+            email,
+          },
+        ],
+        dynamic_template_data: {
+          link: `${random}${user_id}`,
+          name,
+        },
       },
-    }],
+    ],
   };
 
   await sgMail.send(data);
@@ -76,15 +80,19 @@ exports.sendVerificationEmail = async (name, user_id, random, email) => {
       email: 'service@voiceflow.com',
       name: 'Voiceflow Team',
     },
-    personalizations: [{
-      to: [{
-        email,
-      }],
-      dynamic_template_data: {
-        link: `${random}${user_id}`,
-        name,
+    personalizations: [
+      {
+        to: [
+          {
+            email,
+          },
+        ],
+        dynamic_template_data: {
+          link: `${random}${user_id}`,
+          name,
+        },
       },
-    }],
+    ],
   };
 
   await sgMail.send(data);
@@ -103,16 +111,20 @@ exports.sendTeamInvite = async (inviter, team_name, team_id, email, time) => {
       email: 'service@voiceflow.com',
       name: 'Voiceflow Team',
     },
-    personalizations: [{
-      to: [{
-        email,
-      }],
-      dynamic_template_data: {
-        inviter,
-        team_name,
-        invite_code: `${encodeURIComponent(invite_code)}&email=${encodeURIComponent(email)}`,
+    personalizations: [
+      {
+        to: [
+          {
+            email,
+          },
+        ],
+        dynamic_template_data: {
+          inviter,
+          team_name,
+          invite_code: `${encodeURIComponent(invite_code)}&email=${encodeURIComponent(email)}`,
+        },
       },
-    }],
+    ],
   };
 
   try {

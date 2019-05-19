@@ -1,10 +1,5 @@
 const _ = require('lodash');
-const {
-  BUILT_IN_INTENTS_ALEXA,
-  DEFAULT_INTENTS,
-  INTERFACE_INTENTS,
-  CATCH_ALL_INTENT,
-} = require('./Constants');
+const { BUILT_IN_INTENTS_ALEXA, DEFAULT_INTENTS, INTERFACE_INTENTS, CATCH_ALL_INTENT } = require('./Constants');
 const {
   getUtterancesWithSlotNames,
   formatName,
@@ -128,7 +123,8 @@ exports.createInteractionModel = (req, locale) => {
     if (intent_key.startsWith('CUSTOM:') || intent_key.startsWith('CAPTURE:')) {
       slot_intents.push(intent_key);
       return;
-    } if (intent_key.startsWith('AMAZON.')) {
+    }
+    if (intent_key.startsWith('AMAZON.')) {
       intent = _.find(BUILT_IN_INTENTS_ALEXA, {
         name: intent_key,
       });
@@ -203,18 +199,21 @@ exports.createInteractionModel = (req, locale) => {
 
   // Make this faster
   if (used_choices.length !== 0) {
-    used_choices = used_choices.map((c) => {
-      if (c.length === 1) return [1, c];
-      let sum = 0;
-      let num = 0;
-      for (let i = 0; i < c.length; i++) {
-        for (let k = i + 1; k < c.length; k++) {
-          num++;
-          sum += stringSimilarity.compareTwoStrings(c[i].toLowerCase(), c[k].toLowerCase());
+    used_choices = used_choices
+      .map((c) => {
+        if (c.length === 1) return [1, c];
+        let sum = 0;
+        let num = 0;
+        for (let i = 0; i < c.length; i++) {
+          for (let k = i + 1; k < c.length; k++) {
+            num++;
+            sum += stringSimilarity.compareTwoStrings(c[i].toLowerCase(), c[k].toLowerCase());
+          }
         }
-      }
-      return [sum / num, c];
-    }).sort((i, k) => (k[0] - i[0])).map((c) => c[1]);
+        return [sum / num, c];
+      })
+      .sort((i, k) => k[0] - i[0])
+      .map((c) => c[1]);
   }
 
   // ALEXA "INTENT OPTIMIZATION ENGINE" FOR
@@ -270,8 +269,8 @@ exports.createInteractionModel = (req, locale) => {
         for (const match of matched) {
           // if(!Array.isArray(match.samples)){console.log(match); continue}
 
-          let i; let
-            sum = 0;
+          let i;
+          let sum = 0;
           for (i = 0; i < match.samples.length; i++) {
             sum += stringSimilarity.compareTwoStrings(parsed_input.formatted_input.toLowerCase(), match.samples[0].toLowerCase());
           }
@@ -328,7 +327,7 @@ exports.createInteractionModel = (req, locale) => {
   // Add all the slots to the interaction model
   slots.forEach((slot) => {
     if (Array.isArray(slot.inputs) && slot.inputs.length !== 0) {
-      const slot_name = (!slot.type.value || slot.type.value.toLowerCase() === 'custom') ? slot.name : findSlot(slot.type.value, 'alexa');
+      const slot_name = !slot.type.value || slot.type.value.toLowerCase() === 'custom' ? slot.name : findSlot(slot.type.value, 'alexa');
 
       // Don't add the slot if it ain't used
       if (!slot_name || !used_slots.has(slot_name)) {
@@ -383,10 +382,12 @@ exports.createInteractionModel = (req, locale) => {
         intents_for_amazon.push({
           name: intent_name,
           samples: [`{${slot_name}}`],
-          slots: [{
-            name: slot_name,
-            type: slot_name,
-          }],
+          slots: [
+            {
+              name: slot_name,
+              type: slot_name,
+            },
+          ],
         });
 
         slot_types.push({
@@ -405,12 +406,15 @@ exports.createInteractionModel = (req, locale) => {
     } else if (slot.startsWith('CAPTURE:')) {
       // check it there is a {capture} only slot for this slot type
       let slot_type = slot.substring(8);
-      slot_type = getSlotType({
-        name: slot_type,
-        type: {
-          value: slot_type,
+      slot_type = getSlotType(
+        {
+          name: slot_type,
+          type: {
+            value: slot_type,
+          },
         },
-      }, 'alexa');
+        'alexa'
+      );
       if (!capture_intents.has(slot_type)) {
         if (!slot_type.startsWith('AMAZON.')) {
           return;
@@ -425,10 +429,12 @@ exports.createInteractionModel = (req, locale) => {
         intents_for_amazon.push({
           name: intent_name,
           samples: [`{${slot_name}}`],
-          slots: [{
-            name: slot_name,
-            type: slot_type,
-          }],
+          slots: [
+            {
+              name: slot_name,
+              type: slot_type,
+            },
+          ],
         });
       }
     }

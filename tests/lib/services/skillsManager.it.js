@@ -37,13 +37,20 @@ describe('skillsManager integration tests', () => {
   });
 
   it('get live skills for project', async () => {
-    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
+    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', [
+      'Steve2',
+      'steve@test.com',
+      'foo-gid',
+    ]);
 
     const creatorId = data.rows[0].creator_id;
-    data = await pool.query(`
+    data = await pool.query(
+      `
                 INSERT INTO projects (name, creator_id) 
                 VALUES ($1, $2) 
-                RETURNING project_id`, ['foo', creatorId]);
+                RETURNING project_id`,
+      ['foo', creatorId]
+    );
 
     const projectId = data.rows[0].project_id;
 
@@ -65,11 +72,13 @@ describe('skillsManager integration tests', () => {
       },
     ];
 
-    const created = await Promise
-      .map(skills, (skill) => pool.query(
-        'INSERT INTO skills (diagram, project_id, live) VALUES ($1, $2, $3) RETURNING skill_id, live',
-        [skill.diagram, skill.projectId, skill.live],
-      ))
+    const created = await Promise.map(skills, (skill) =>
+      pool.query('INSERT INTO skills (diagram, project_id, live) VALUES ($1, $2, $3) RETURNING skill_id, live', [
+        skill.diagram,
+        skill.projectId,
+        skill.live,
+      ])
+    )
       .filter((_data) => _data.rows[0].live)
       .map((_data) => _data.rows[0].skill_id);
 
@@ -83,7 +92,11 @@ describe('skillsManager integration tests', () => {
   });
 
   it('check user has skill access', async () => {
-    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
+    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', [
+      'Steve2',
+      'steve@test.com',
+      'foo-gid',
+    ]);
     const creatorId = data.rows[0].creator_id;
     data = await pool.query('INSERT INTO teams (creator_id) VALUES ($1) RETURNING team_id', [creatorId]);
     const teamId = data.rows[0].team_id;

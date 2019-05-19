@@ -34,12 +34,12 @@ AWS.config = new AWS.Config({
 // AWS does some hasOwnProperty check so only define endpoint if set
 const docClient = process.env.DYNAMO_ENDPOINT
   ? new AWS.DynamoDB.DocumentClient({
-    convertEmptyValues: true,
-    endpoint: process.env.DYNAMO_ENDPOINT,
-  })
+      convertEmptyValues: true,
+      endpoint: process.env.DYNAMO_ENDPOINT,
+    })
   : new AWS.DynamoDB.DocumentClient({
-    convertEmptyValues: true,
-  });
+      convertEmptyValues: true,
+    });
 
 const { types } = pg;
 types.setTypeParser(1114, (stringValue) => new Date(`${stringValue}+0000`));
@@ -53,12 +53,13 @@ const pool = new pg.Pool({
 });
 
 // Create a Redis Client for sessions
-const redisClient = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging'
-  ? redis.createClient({
-    host: process.env.REDIS_CLUSTER_HOST,
-    port: process.env.REDIS_CLUSTER_PORT,
-  })
-  : redis.createClient();
+const redisClient =
+  process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging'
+    ? redis.createClient({
+        host: process.env.REDIS_CLUSTER_HOST,
+        port: process.env.REDIS_CLUSTER_PORT,
+      })
+    : redis.createClient();
 
 const s3 = new AWS.S3();
 
@@ -73,58 +74,54 @@ const upload = multer({
     key: (req, file, cb) => {
       cb(
         null,
-        `${Date.now().toString()
-        }-${
-          file.originalname
-            .toLowerCase()
-            .replace(/\s+/g, '-')
-            .replace(/[^\w\-.]+/g, '')}`,
+        `${Date.now().toString()}-${file.originalname
+          .toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^\w\-.]+/g, '')}`
       );
     },
   }),
 });
 
-const uploadResize = (x, y) => multer({
-  limits: {
-    files: 1,
-    filesize: 5 * MB,
-  },
-  storage: multerS3Transform({
-    s3,
-    bucket: 'com.getstoryflow.api.images',
-    shouldTransform(req, file, cb) {
-      cb(null, /^image/i.test(file.mimetype));
+const uploadResize = (x, y) =>
+  multer({
+    limits: {
+      files: 1,
+      filesize: 5 * MB,
     },
-    transforms: [
-      {
-        id: 'image',
-        key(req, file, cb) {
-          const fileSplit = file.originalname.split('.');
+    storage: multerS3Transform({
+      s3,
+      bucket: 'com.getstoryflow.api.images',
+      shouldTransform(req, file, cb) {
+        cb(null, /^image/i.test(file.mimetype));
+      },
+      transforms: [
+        {
+          id: 'image',
+          key(req, file, cb) {
+            const fileSplit = file.originalname.split('.');
 
-          const filename = `${Date.now().toString()
-          }-${
-            fileSplit
+            const filename = `${Date.now().toString()}-${fileSplit
               .slice(0, fileSplit.length - 1)
               .join('.')
               .toLowerCase()
               .replace(/\s+/g, '-')
-              .replace(/[^\w\-.]+/g, '')
-          }.png`;
+              .replace(/[^\w\-.]+/g, '')}.png`;
 
-          cb(null, filename);
+            cb(null, filename);
+          },
+          transform(req, file, cb) {
+            cb(
+              null,
+              sharp()
+                .resize(x, y)
+                .png()
+            );
+          },
         },
-        transform(req, file, cb) {
-          cb(
-            null,
-            sharp()
-              .resize(x, y)
-              .png(),
-          );
-        },
-      },
-    ],
-  }),
-});
+      ],
+    }),
+  });
 
 const s3Stream = s3UploadStream(s3);
 
@@ -206,9 +203,7 @@ const writeToLogs = async (log_group, msg_details) => {
     if (process.env.NODE_ENV === 'development' || 'test') {
       console.log(`WRITING TO LOGS ${group}`, msg);
     }
-    const name = `${time} ${stack_trace[1].fileName} ${Math.floor(
-      Math.random() * 16777215,
-    ).toString(16)}`;
+    const name = `${time} ${stack_trace[1].fileName} ${Math.floor(Math.random() * 16777215).toString(16)}`;
     const stream = {
       logGroupName: group,
       logStreamName: `${name}`,
@@ -263,15 +258,16 @@ const logAxiosError = (err, context = '', data = null) => {
   writeToLogs('CREATOR_BACKEND_ERRORS', msg);
 };
 
-const ESoptions = (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging')
-  ? {
-    hosts: [process.env.ELASTIC_SEARCH_HOST],
-    connectionClass: httpAwsEs,
-    awsConfig: AWS.config,
-  }
-  : {
-    host: 'localhost:9200',
-  };
+const ESoptions =
+  process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging'
+    ? {
+        hosts: [process.env.ELASTIC_SEARCH_HOST],
+        connectionClass: httpAwsEs,
+        awsConfig: AWS.config,
+      }
+    : {
+        host: 'localhost:9200',
+      };
 
 const ESclient = elasticsearch.Client(ESoptions);
 
@@ -317,9 +313,7 @@ if (process.env.NODE_ENV !== 'test') {
   module.exports.intercom = new Intercom.Client({
     token: process.env.INTERCOM_TOKEN,
   });
-  module.exports.analytics = new Analytics(
-    process.env.SEGMENT_WRITE_KEY,
-  );
+  module.exports.analytics = new Analytics(process.env.SEGMENT_WRITE_KEY);
 } else {
   const testTrack = () => {
     //

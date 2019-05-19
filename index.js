@@ -28,9 +28,11 @@ if (process.env.NODE_ENV === 'test') {
     pingInterval: 5000,
     pingTimeout: 10000,
   });
-  io.adapter(redisAdapter({
-    host: process.env.REDIS_CLUSTER_HOST,
-    port: process.env.REDIS_CLUSTER_PORT,
-  }));
+  io.adapter(
+    redisAdapter({
+      host: process.env.REDIS_CLUSTER_HOST,
+      port: process.env.REDIS_CLUSTER_PORT,
+    })
+  );
   sockets(io);
 }

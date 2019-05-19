@@ -3,13 +3,19 @@
 const { redisClient, verify, writeToLogs } = require('./services');
 
 module.exports = (io) => {
-  const join = (socket_id, room) => new Promise((resolve, reject) => io.of('/').adapter.remoteJoin(socket_id, room, (err) => {
-    err ? reject(err) : resolve();
-  }));
+  const join = (socket_id, room) =>
+    new Promise((resolve, reject) =>
+      io.of('/').adapter.remoteJoin(socket_id, room, (err) => {
+        err ? reject(err) : resolve();
+      })
+    );
 
-  const leave = (socket_id, room) => new Promise((resolve, reject) => io.of('/').adapter.remoteLeave(socket_id, room, (err) => {
-    err ? reject(err) : resolve();
-  }));
+  const leave = (socket_id, room) =>
+    new Promise((resolve, reject) =>
+      io.of('/').adapter.remoteLeave(socket_id, room, (err) => {
+        err ? reject(err) : resolve();
+      })
+    );
 
   io.on('connection', (socket) => {
     socket._ip = socket.client.request.headers['cf-connecting-ip'];

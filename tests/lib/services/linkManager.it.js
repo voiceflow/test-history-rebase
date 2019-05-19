@@ -3,7 +3,6 @@
 require('dotenv').config({ path: './.env.test' });
 const { expect } = require('chai');
 const knexCleaner = require('knex-cleaner');
-const Promise = require('bluebird');
 
 const { Pool } = require('pg');
 const { utils } = require('@voiceflow/common');
@@ -42,7 +41,11 @@ describe('linkManager integration tests', () => {
   });
 
   it('get Template', async () => {
-    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
+    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', [
+      'Steve2',
+      'steve@test.com',
+      'foo-gid',
+    ]);
     const creatorId = data.rows[0].creator_id;
     data = await pool.query('INSERT INTO teams (creator_id) VALUES ($1) RETURNING team_id', [creatorId]);
     const teamId = data.rows[0].team_id;
@@ -60,7 +63,11 @@ describe('linkManager integration tests', () => {
     expect(domain).to.eql('test');
   });
   it('set Template', async () => {
-    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
+    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', [
+      'Steve2',
+      'steve@test.com',
+      'foo-gid',
+    ]);
     const creatorId = data.rows[0].creator_id;
     data = await pool.query('INSERT INTO teams (creator_id) VALUES ($1) RETURNING team_id', [creatorId]);
     const teamId = data.rows[0].team_id;
@@ -72,7 +79,6 @@ describe('linkManager integration tests', () => {
 
     const linkManager = new LinkManager({ pool, hashids, jwt });
 
-    const payload = {};
     await linkManager.setTemplate(skillId, { domains: ['test'] });
     const result = await pool.query('SELECT * from SKILLS WHERE skill_id=$1', [skillId]);
     const [domain] = result.rows[0].account_linking.domains;

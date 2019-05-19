@@ -74,7 +74,6 @@ module.exports = (middleware, controllers) => {
   router.post('/test/api', middleware.ensureLoggedIn, controllers.test.api);
   router.post('/test/speak', middleware.ensureLoggedIn, middleware.ensurePaid, controllers.test.speak);
 
-
   // VERSION STUFF
   router.get('/skill/:skill_id', middleware.ensureLoggedIn, middleware.getProjectFromSkill, controllers.Skill.getSkill);
   router.get('/skill/google/:id', middleware.ensureLoggedIn, controllers.Skill.getGoogleSkill);

@@ -4,17 +4,18 @@ const Constants = require('./render_diagram.test.constants');
 
 describe('Render Diagram', () => {
   let mockData = {};
-  let renderDiagram; let
-    services;
+  let renderDiagram;
+  let services;
 
   beforeEach(() => {
     jest.mock('../services');
     services = require('../services');
 
     services.docClient.get = jest.fn((params) => ({
-      promise: () => Promise.resolve({
-        Item: mockData[params.Key.id],
-      }),
+      promise: () =>
+        Promise.resolve({
+          Item: mockData[params.Key.id],
+        }),
     }));
 
     services.pool.query = jest.fn((_, _1, callback) => callback(null, { rows: ['row'] }));
@@ -180,7 +181,11 @@ describe('Render Diagram', () => {
 
       expect(mockCb).toHaveBeenCalled();
       expect(services.pool.query).toHaveBeenCalledWith('SELECT 1 FROM diagrams WHERE id = $1 LIMIT 1', [1], expect.any(Function));
-      expect(services.pool.query).toHaveBeenCalledWith('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [1, 'mockName', 1], expect.any(Function));
+      expect(services.pool.query).toHaveBeenCalledWith(
+        'INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)',
+        [1, 'mockName', 1],
+        expect.any(Function)
+      );
     });
 
     it('should update an existing diagram', () => {

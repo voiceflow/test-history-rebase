@@ -13,7 +13,7 @@ const GetApp = require('../getAppForTest');
 const TEAM_ID = team_hash.encode(1);
 const getTemplate = new Promise(async (resolve, reject) => {
   try {
-    const { rows } = await pool.query('SELECT module_id FROM modules WHERE type = \'TEMPLATES\' ORDER BY template_index DESC LIMIT 1');
+    const { rows } = await pool.query("SELECT module_id FROM modules WHERE type = 'TEMPLATES' ORDER BY template_index DESC LIMIT 1");
     if (rows.length === 0) {
       resolve(null);
     } else {
@@ -85,7 +85,7 @@ describe.skip('Marketplace', () => {
                 title: 'Call to Arms',
                 descr: 'This is a call to arms',
                 creator_id: 1,
-                tags: '[\'ORDERING\']',
+                tags: "['ORDERING']",
                 type: 'FLOW',
                 overview: 'Gareth Emery remixed by Cosmic Gate',
                 module_icon: '',

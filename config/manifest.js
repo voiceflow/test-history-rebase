@@ -1,10 +1,15 @@
 exports.createManifest = (r, encoded_id) => {
   if (r.invocations && Array.isArray(r.invocations.value)) {
-    r.invocations = r.invocations.value.map((item) => (`Alexa, ${item}`));
+    r.invocations = r.invocations.value.map((item) => `Alexa, ${item}`);
   } else {
     r.invocations = [`Alexa, open ${r.inv_name}`];
   }
-  r.keywords = r.keywords ? r.keywords.split(',').map((item) => item.trim()).filter((word) => !!word) : [];
+  r.keywords = r.keywords
+    ? r.keywords
+        .split(',')
+        .map((item) => item.trim())
+        .filter((word) => !!word)
+    : [];
 
   const localeObj = {
     summary: r.summary,
@@ -108,7 +113,7 @@ exports.createManifest = (r, encoded_id) => {
     });
   }
   if (Array.isArray(r.alexa_interfaces) && r.alexa_interfaces.length !== 0) {
-    interfaces.push(...(r.alexa_interfaces.map((_interface) => ({ type: _interface }))));
+    interfaces.push(...r.alexa_interfaces.map((_interface) => ({ type: _interface })));
   }
   if (interfaces.length !== 0) {
     ret.manifest.apis.custom.interfaces = interfaces;

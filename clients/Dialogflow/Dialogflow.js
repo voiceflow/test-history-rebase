@@ -2,15 +2,8 @@ const AdmZip = require('adm-zip');
 const _ = require('lodash');
 const dialogflow = require('dialogflow');
 const uuid = require('uuid/v4');
-const {
-  Package,
-  Agent,
-} = require('./Interfaces');
-const {
-  BUILT_IN_EXAMPLES,
-  WelcomeIntent,
-  FallbackIntent,
-} = require('./Constants');
+const { Package, Agent } = require('./Interfaces');
+const { BUILT_IN_EXAMPLES, WelcomeIntent, FallbackIntent } = require('./Constants');
 
 class DialogFlow {
   constructor(projectId, privateKey, clientEmail) {
@@ -45,7 +38,7 @@ class DialogFlow {
       parent: `projects/${this.projectId}`,
     });
 
-    const res = search.filter((e) => (e || null));
+    const res = search.filter((e) => e || null);
     return res;
   }
 
@@ -65,9 +58,11 @@ class DialogFlow {
       }
 
       all_intents.forEach((intent) => {
-        if (!_.find(new_intents, {
-          name: intent.displayName,
-        })) {
+        if (
+          !_.find(new_intents, {
+            name: intent.displayName,
+          })
+        ) {
           intents_to_delete.push(intent);
         }
         display_name_map[intent.displayName] = intent.name;
@@ -104,7 +99,7 @@ class DialogFlow {
       return;
     } catch (e) {
       console.error('Error uploading to dialogflow', e);
-      throw (`Error uploading to dialogflow: ${e.details || e}`);
+      throw `Error uploading to dialogflow: ${e.details || e}`;
     }
   }
 
@@ -125,7 +120,7 @@ class DialogFlow {
         });
       });
     }
-    const regexp = new RegExp(`(\{(?:${slots.join('|') || '[^\{\}]+'})\})`, 'g');
+    const regexp = new RegExp(`(\{(?:${slots.join('|') || '[^{}]+'})\})`, 'g');
 
     if (intent.samples) {
       intent.samples.forEach((input) => {
@@ -188,9 +183,11 @@ class DialogFlow {
       }
 
       all_slots.forEach((slot) => {
-        if (!_.find(new_slots, {
-          name: slot.displayName,
-        })) {
+        if (
+          !_.find(new_slots, {
+            name: slot.displayName,
+          })
+        ) {
           slots_to_delete.push(slot);
         }
         display_name_map[slot.displayName] = slot.name;
@@ -227,7 +224,7 @@ class DialogFlow {
       return;
     } catch (e) {
       console.error('Error uploading to dialogflow', e);
-      throw (`Error uploading to dialogflow: ${e.details || e}`);
+      throw `Error uploading to dialogflow: ${e.details || e}`;
     }
   }
 
@@ -274,7 +271,7 @@ class DialogFlow {
       await operation.promise();
     } catch (e) {
       console.error('Error uploading to dialogflow', e);
-      throw (`Error uploading to dialogflow: ${e}`);
+      throw `Error uploading to dialogflow: ${e}`;
     }
   }
 
@@ -288,7 +285,7 @@ class DialogFlow {
       await operation.promise();
     } catch (e) {
       console.error('Error training agent', e);
-      throw ('Error training agent');
+      throw 'Error training agent';
     }
   }
 }

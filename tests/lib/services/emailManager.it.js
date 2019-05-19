@@ -3,7 +3,6 @@
 require('dotenv').config({ path: './.env.test' });
 const { expect } = require('chai');
 const knexCleaner = require('knex-cleaner');
-const Promise = require('bluebird');
 
 const { Pool } = require('pg');
 const { utils } = require('@voiceflow/common');
@@ -40,7 +39,11 @@ describe('emailManager integration tests', () => {
   });
 
   it('create Template', async () => {
-    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
+    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', [
+      'Steve2',
+      'steve@test.com',
+      'foo-gid',
+    ]);
     const creatorId = data.rows[0].creator_id;
     data = await pool.query('INSERT INTO teams (creator_id) VALUES ($1) RETURNING team_id', [creatorId]);
     const teamId = data.rows[0].team_id;
@@ -68,7 +71,11 @@ describe('emailManager integration tests', () => {
   });
 
   it('get Template', async () => {
-    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
+    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', [
+      'Steve2',
+      'steve@test.com',
+      'foo-gid',
+    ]);
     const creatorId = data.rows[0].creator_id;
     data = await pool.query('INSERT INTO teams (creator_id) VALUES ($1) RETURNING team_id', [creatorId]);
     const teamId = data.rows[0].team_id;
@@ -80,7 +87,7 @@ describe('emailManager integration tests', () => {
 
     const emailManager = new EmailManager({
       pool,
-      hashids
+      hashids,
     });
 
     const payload = {
@@ -101,12 +108,16 @@ describe('emailManager integration tests', () => {
   it('get Templates', async () => {
     const emailManager = new EmailManager({
       pool,
-      hashids
+      hashids,
     });
 
     expect(await emailManager.getTemplates(1, 1)).to.eql([]);
 
-    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
+    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', [
+      'Steve2',
+      'steve@test.com',
+      'foo-gid',
+    ]);
     const creatorId = data.rows[0].creator_id;
     data = await pool.query('INSERT INTO teams (creator_id) VALUES ($1) RETURNING team_id', [creatorId]);
     const teamId = data.rows[0].team_id;
@@ -115,7 +126,6 @@ describe('emailManager integration tests', () => {
     const projectId = data.rows[0].project_id;
     data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
     const skillId = data.rows[0].skill_id;
-
 
     const payload = {
       content: 'a {test} b',
@@ -136,11 +146,14 @@ describe('emailManager integration tests', () => {
   it('delete Template', async () => {
     const emailManager = new EmailManager({
       pool,
-      hashids
+      hashids,
     });
 
-
-    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
+    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', [
+      'Steve2',
+      'steve@test.com',
+      'foo-gid',
+    ]);
     const creatorId = data.rows[0].creator_id;
     data = await pool.query('INSERT INTO teams (creator_id) VALUES ($1) RETURNING team_id', [creatorId]);
     const teamId = data.rows[0].team_id;
@@ -149,7 +162,6 @@ describe('emailManager integration tests', () => {
     const projectId = data.rows[0].project_id;
     data = await pool.query('INSERT INTO skills (project_id, diagram) VALUES ($1, $2) RETURNING skill_id', [projectId, 'a']);
     const skillId = data.rows[0].skill_id;
-
 
     const payload = {
       content: 'a {test} b',
@@ -163,9 +175,12 @@ describe('emailManager integration tests', () => {
     expect(await emailManager.getTemplates(creatorId, skillId)).to.eql([]);
   });
 
-
   it('set Template', async () => {
-    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
+    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', [
+      'Steve2',
+      'steve@test.com',
+      'foo-gid',
+    ]);
     const creatorId = data.rows[0].creator_id;
     data = await pool.query('INSERT INTO teams (creator_id) VALUES ($1) RETURNING team_id', [creatorId]);
     const teamId = data.rows[0].team_id;
@@ -177,7 +192,7 @@ describe('emailManager integration tests', () => {
 
     const emailManager = new EmailManager({
       pool,
-      hashids
+      hashids,
     });
 
     const payload = {

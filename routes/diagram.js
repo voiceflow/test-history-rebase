@@ -1,37 +1,31 @@
-const {
-  docClient,
-  pool,
-  hashids,
-  writeToLogs,
-} = require('./../services');
-const {
-  deleteDynamoDiagramPromise,
-} = require('./skill_util');
-const {
-  renderDiagram,
-} = require('./../config/render_diagram.js');
+const { docClient, pool, hashids, writeToLogs } = require('./../services');
+const { deleteDynamoDiagramPromise } = require('./skill_util');
+const { renderDiagram } = require('./../config/render_diagram.js');
 
-const generateID = () => 'xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-  const r = (Math.random() * 16) | 0;
-  const v = c === 'x' ? r : (r & 0x3) | 0x8;
-  return v.toString(16);
-});
+const generateID = () =>
+  'xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 
 const { checkSkillAccess } = require('./team_util');
 
 const checkDiagramAccess = async (diagram_id, user_id) => {
   if (diagram_id) {
     try {
-      const result = await pool.query(`
+      const result = await pool.query(
+        `
         SELECT 1 FROM diagrams d
         INNER JOIN skills s ON s.skill_id = d.skill_id
         INNER JOIN projects p ON p.project_id = s.project_id
         INNER JOIN team_members tm ON tm.team_id = p.team_id
         WHERE d.id = $1 AND tm.creator_id = $2 LIMIT 1
-      `, [diagram_id, user_id]);
+      `,
+        [diagram_id, user_id]
+      );
       if (result.rowCount !== 0) return true;
-    } catch (err) {
-    }
+    } catch (err) {}
   }
   return false;
 };
@@ -97,14 +91,13 @@ const updateName = async (req, res) => {
     return;
   }
 
-  pool.query('UPDATE diagrams SET name = $1 WHERE id = $2',
-    [req.body.name, req.params.id], (err) => {
-      if (err) {
-        res.sendStatus(500);
-      } else {
-        res.sendStatus(200);
-      }
-    });
+  pool.query('UPDATE diagrams SET name = $1 WHERE id = $2', [req.body.name, req.params.id], (err) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
+    }
+  });
 };
 
 const setDiagram = async (req, res) => {
@@ -188,29 +181,32 @@ const setDiagram = async (req, res) => {
 const deleteDiagram = async (req, res) => {
   if (!(await checkDiagramAccess(req.params.id, req.user.id))) return res.sendStatus(403);
 
-  pool.query(`
+  pool.query(
+    `
     DELETE FROM diagrams d USING skills s 
     WHERE d.skill_id = s.skill_id AND d.id = $1 AND s.diagram != d.id
   `,
-  [req.params.id], async (err, response) => {
-    if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {
-        err,
-      });
-      return res.sendStatus(500);
-    }
-    if (response.rowCount !== 0) {
-      try {
-        await deleteDynamoDiagramPromise(req.params.id);
-        return res.sendStatus(200);
-      } catch (err) {
-        console.trace(err);
+    [req.params.id],
+    async (err, response) => {
+      if (err) {
+        writeToLogs('CREATOR_BACKEND_ERRORS', {
+          err,
+        });
         return res.sendStatus(500);
       }
-    } else {
-      return res.sendStatus(404);
+      if (response.rowCount !== 0) {
+        try {
+          await deleteDynamoDiagramPromise(req.params.id);
+          return res.sendStatus(200);
+        } catch (err) {
+          console.trace(err);
+          return res.sendStatus(500);
+        }
+      } else {
+        return res.sendStatus(404);
+      }
     }
-  });
+  );
 };
 
 const purgeSubflows = (diagram) => {
@@ -260,8 +256,11 @@ const copyDiagram = async (req, res) => {
       await put_diagram_promise;
 
       try {
-        await pool.query(`INSERT INTO diagrams (id, name, skill_id, used_intents) 
-          (SELECT $1, $2, skill_id, used_intents FROM diagrams WHERE id = $3)`, [new_diagram_id, diagram_name, old_diagram_id]);
+        await pool.query(
+          `INSERT INTO diagrams (id, name, skill_id, used_intents) 
+          (SELECT $1, $2, skill_id, used_intents FROM diagrams WHERE id = $3)`,
+          [new_diagram_id, diagram_name, old_diagram_id]
+        );
         res.send(new_diagram_id);
       } catch (err) {
         // SQL insert failed so delete the diagram from dynamo
@@ -317,12 +316,19 @@ const publishTest = async (req, res) => {
 
   const used_intents = new Set();
   const used_choices = [];
-  const status = await renderDiagram(req.user, req.params.diagram_id, 'TEST', {
-    used_intents,
-    used_choices,
-    intents,
-    slots,
-  }, undefined, req.body.platform);
+  const status = await renderDiagram(
+    req.user,
+    req.params.diagram_id,
+    'TEST',
+    {
+      used_intents,
+      used_choices,
+      intents,
+      slots,
+    },
+    undefined,
+    req.body.platform
+  );
 
   res.sendStatus(status);
 };

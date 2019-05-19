@@ -7,24 +7,22 @@ const request = require('supertest');
 
 const new_diagram = require('../resources/new_diagram.json');
 const { pool, hashids } = require('../../services');
-// const moxios = require('moxios')
 const { team_hash } = require('../../routes/team_util');
 
 const GetApp = require('../../tests/getAppForTest');
 
 const TEAM_ID = team_hash.encode(1);
 
-// jest.setTimeout(10000);
-
-const generateID = () => 'xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-  const r = (Math.random() * 16) | 0;
-  const v = c === 'x' ? r : (r & 0x3) | 0x8;
-  return v.toString(16);
-});
+const generateID = () =>
+  'xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 
 const getTemplate = new Promise(async (resolve, reject) => {
   try {
-    const { rows } = await pool.query('SELECT module_id FROM modules WHERE type = \'TEMPLATES\' ORDER BY template_index DESC LIMIT 1');
+    const { rows } = await pool.query("SELECT module_id FROM modules WHERE type = 'TEMPLATES' ORDER BY template_index DESC LIMIT 1");
     if (rows.length === 0) {
       resolve(null);
     } else {
@@ -35,7 +33,7 @@ const getTemplate = new Promise(async (resolve, reject) => {
   }
 });
 
-describe('Diagram', function () {
+describe('Diagram', function() {
   this.timeout(10000);
 
   let token = '';
@@ -82,7 +80,9 @@ describe('Diagram', function () {
 
   after(async () => {
     try {
-      await request(app).delete(`/skill/${skill_id}`).then();
+      await request(app)
+        .delete(`/skill/${skill_id}`)
+        .then();
       if (server) await server.stop();
     } catch (err) {
       throw err;
@@ -101,7 +101,7 @@ describe('Diagram', function () {
         })
         .set('cookie', `auth=${token}`)
         .expect(200)
-        .end((err, res) => {
+        .end((err) => {
           if (err) throw err;
           done();
         });
@@ -112,7 +112,7 @@ describe('Diagram', function () {
         .get(`/diagram/copy/${diagram_id}`)
         .set('cookie', `auth=${token}`)
         .expect(200)
-        .end(async (err, res) => {
+        .end(async (err) => {
           if (err) throw err;
           const diagram_data = (await pool.query('SELECT * FROM diagrams WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
           expect(diagram_data.length).to.eql(3);
@@ -120,12 +120,12 @@ describe('Diagram', function () {
         });
     });
 
-    it('doesn\'t copy missing diagram', (done) => {
+    it("doesn't copy missing diagram", (done) => {
       request(app)
         .get('/diagram/copy/123242')
         .set('cookie', `auth=${token}`)
         .expect(404)
-        .end((err, res) => {
+        .end((err) => {
           if (err) throw err;
           done();
         });
@@ -141,7 +141,7 @@ describe('Diagram', function () {
         .expect((res) => {
           if (res.body.id !== diagram_id) throw new Error('incorrect result');
         })
-        .end((err, res) => {
+        .end((err) => {
           if (err) throw err;
           done();
         });
@@ -155,17 +155,17 @@ describe('Diagram', function () {
         .expect((res) => {
           expect(res.body).to.eql(['path_selector', 'technic_angel']);
         })
-        .end((err, res) => {
+        .end((err) => {
           if (err) throw err;
           done();
         });
     });
 
-    it('doesn\'t get diagram if not authenticated', (done) => {
+    it("doesn't get diagram if not authenticated", (done) => {
       request(app)
         .get(`/diagram/${diagram_id}`)
         .expect(401)
-        .end((err, res) => {
+        .end((err) => {
           if (err) throw err;
           done();
         });
@@ -187,19 +187,19 @@ describe('Diagram', function () {
             if (err) throw err;
           }
         })
-        .end((err, res) => {
+        .end((err) => {
           if (err) throw err;
           done();
         });
     });
 
-    it('doesn\'t allow empty diagram names', (done) => {
+    it("doesn't allow empty diagram names", (done) => {
       request(app)
         .post(`/diagram/${diagram_id}/name`)
         .send({ name: '' })
         .set('cookie', `auth=${token}`)
         .expect(401)
-        .end((err, res) => {
+        .end((err) => {
           if (err) throw err;
           done();
         });
@@ -218,7 +218,7 @@ describe('Diagram', function () {
         })
         .set('cookie', `auth=${token}`)
         .expect(200)
-        .end((err, res) => {
+        .end((err) => {
           if (err) throw err;
           done();
         });
@@ -240,18 +240,18 @@ describe('Diagram', function () {
     //     })
     //     .set('cookie', `auth=${token}`)
     //     .expect(200)
-    //     .end((err, res) => {
+    //     .end((err) => {
     //       console.log('url', diagram_id)
     //       if(err) throw err
     //       done()
     //     })
     // })
 
-    it('doesn\'t publish without diagram id', (done) => {
+    it("doesn't publish without diagram id", (done) => {
       request(app)
         .post('/diagram/youmakemesosad/test/publish')
         .expect(401)
-        .end((err, res) => {
+        .end((err) => {
           if (err) throw err;
           done();
         });
@@ -262,7 +262,7 @@ describe('Diagram', function () {
         .post(`/diagram/${diagram_id}/${skill_id}/rerender`)
         .set('cookie', `auth=${token}`)
         .expect(200)
-        .end((err, res) => {
+        .end((err) => {
           if (err) throw err;
           done();
         });
@@ -275,7 +275,7 @@ describe('Diagram', function () {
         .delete(`/diagram/${diagram_id}`)
         .set('cookie', `auth=${token}`)
         .expect(200)
-        .expect(async (res) => {
+        .expect(async () => {
           try {
             const diagram_data = (await pool.query('SELECT * FROM diagrams WHERE id = $1', [diagram_id])).rows;
             expect(diagram_data.length).to.eql(0);
@@ -283,7 +283,7 @@ describe('Diagram', function () {
             if (err) throw err;
           }
         })
-        .end(async (err, res) => {
+        .end(async (err) => {
           if (err) throw err;
           done();
         });
@@ -294,7 +294,7 @@ describe('Diagram', function () {
         .delete('/diagram/12323')
         .set('cookie', `auth=${token}`)
         .expect(403)
-        .end((err, res) => {
+        .end((err) => {
           if (err) throw err;
           done();
         });

@@ -16,15 +16,16 @@ const TEAM_ID = team_hash.encode(1);
 
 // jest.setTimeout(100000);
 
-const generateID = () => 'xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-  const r = (Math.random() * 16) | 0;
-  const v = c === 'x' ? r : (r & 0x3) | 0x8;
-  return v.toString(16);
-});
+const generateID = () =>
+  'xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 
 const getTemplate = new Promise(async (resolve, reject) => {
   try {
-    const { rows } = await pool.query('SELECT module_id FROM modules WHERE type = \'TEMPLATES\' ORDER BY template_index DESC LIMIT 1');
+    const { rows } = await pool.query("SELECT module_id FROM modules WHERE type = 'TEMPLATES' ORDER BY template_index DESC LIMIT 1");
     if (rows.length === 0) {
       resolve(null);
     } else {
@@ -35,7 +36,7 @@ const getTemplate = new Promise(async (resolve, reject) => {
   }
 });
 
-describe('Skill', function () {
+describe('Skill', function() {
   this.timeout(10000);
 
   let token = '';
@@ -147,7 +148,7 @@ describe('Skill', function () {
     //     })
     // })
 
-    it('doesn\'t get projects if not authenticated', (done) => {
+    it("doesn't get projects if not authenticated", (done) => {
       request(app)
         .get(`/team/${TEAM_ID}/projects`)
         .expect(401)
@@ -212,8 +213,11 @@ describe('Skill', function () {
         .expect(200)
         .expect(async (res) => {
           try {
-            const diagram_data = (await pool.query(`SELECT d.id, d.name, d.sub_diagrams, d.module_id FROM diagrams d
-                                                  INNER JOIN skills s ON s.skill_id = d.skill_id WHERE d.skill_id = $1`, [hashids.decode(skill_id)[0]])).rows;
+            const diagram_data = (await pool.query(
+              `SELECT d.id, d.name, d.sub_diagrams, d.module_id FROM diagrams d
+                                                  INNER JOIN skills s ON s.skill_id = d.skill_id WHERE d.skill_id = $1`,
+              [hashids.decode(skill_id)[0]]
+            )).rows;
             expect(diagram_data).to.eql(res.body);
           } catch (err) {
             throw err;
@@ -225,7 +229,7 @@ describe('Skill', function () {
         });
     });
 
-    it('doesn\'t get skill if not authenticated', (done) => {
+    it("doesn't get skill if not authenticated", (done) => {
       request(app)
         .get(`/skill/${skill_id}`)
         .expect(401)
@@ -235,7 +239,7 @@ describe('Skill', function () {
         });
     });
 
-    it('doesn\'t check the interaction model if no token', (done) => {
+    it("doesn't check the interaction model if no token", (done) => {
       request(app)
         .get('/interaction_model/1/status')
         .expect(401)
@@ -338,8 +342,10 @@ describe('Skill', function () {
         .set('cookie', `auth=${token}`)
         .send({
           name: 'The Gorge',
-          intents: '[{"name":"intent_one","inputs":[{"slots":["rhuwpeOxWqnw"],"text":"I think it is {{[slot_one].rhuwpeOxWqnw}}"},{"slots":["rhuwpeOxWqnw"],"text":"{{[slot_one].rhuwpeOxWqnw}}"},{"slots":["rhuwpeOxWqnw"],"text":"the answer is {{[slot_one].rhuwpeOxWqnw}}"},{"slots":["rhuwpeOxWqnw"],"text":"answer is {{[slot_one].rhuwpeOxWqnw}}"},{"slots":["rhuwpeOxWqnw"],"text":"{{[slot_one].rhuwpeOxWqnw}} is the answer"}],"key":"c2u2h6a0qfZg","open":true,"_platform":null},{"name":"intent_two","inputs":[{"slots":["Of0UMzUuNKVz"],"text":"{{[slot_two].Of0UMzUuNKVz}}"}],"key":"cyLDdu9cvygL","open":true,"_platform":"alexa"},{"name":"intent_open","inputs":[{"slots":["9N4Xdah9UShx"],"text":"{{[open_lvlone].9N4Xdah9UShx}}"}],"key":"G4cjZLQZaAEn","open":true,"_platform":null},{"name":"intent_lvltwo","inputs":[{"slots":["j0Hqhna45404"],"text":"{{[opne_lvltwo].j0Hqhna45404}}"}],"key":"Q5pVbSymoAjz","open":true,"_platform":null},{"name":"intent_mini","inputs":[{"slots":["hjNq9UjHOVI9"],"text":"{{[slot_mini].hjNq9UjHOVI9}}"}],"key":"uDk5iYNOCm8W","open":true,"_platform":null},{"name":"payment_intent","inputs":[{"slots":["afh8RUpdYt3e"],"text":"{{[payment_slot].afh8RUpdYt3e}}"},{"slots":["afh8RUpdYt3e"],"text":"i want {{[payment_slot].afh8RUpdYt3e}}"},{"slots":["afh8RUpdYt3e"],"text":"purchase {{[payment_slot].afh8RUpdYt3e}}"}],"key":"Nr70HvSr5NTG","open":true,"_platform":null},{"name":"refund","inputs":[{"slots":[],"text":"refund"},{"slots":[],"text":"refund payment"},{"slots":[],"text":"return payment"},{"slots":[],"text":"get a refund"},{"slots":[],"text":"return premium content"}],"key":"WYPBdRB4zctc","open":true,"_platform":null}]',
-          slots: '[{"name":"slot_one","inputs":["dinosaur","one","two","three","velociraptor","t-rex","1993","1997","1995","2001","2018","2015"],"type":{"label":"CUSTOM","value":"CUSTOM"},"key":"rhuwpeOxWqnw","open":true},{"name":"slot_two","inputs":[],"type":{"label":"AMAZON.NUMBER","value":"AMAZON.NUMBER"},"key":"Of0UMzUuNKVz","open":true},{"name":"open_lvlone","inputs":["level 1","level one"],"type":{"label":"CUSTOM","value":"CUSTOM"},"key":"9N4Xdah9UShx","open":true},{"name":"opne_lvltwo","inputs":["level 2","level two","level to","level too"],"type":{"label":"CUSTOM","value":"CUSTOM"},"key":"j0Hqhna45404","open":true},{"name":"slot_mini","inputs":["mini games","mini","games"],"type":{"label":"CUSTOM","value":"CUSTOM"},"key":"hjNq9UjHOVI9","open":true},{"name":"payment_slot","inputs":["premium content","premium","purchase","upgrade","upgrade game","purchase upgrade"],"type":{"label":"CUSTOM","value":"CUSTOM"},"key":"afh8RUpdYt3e","open":true}]',
+          intents:
+            '[{"name":"intent_one","inputs":[{"slots":["rhuwpeOxWqnw"],"text":"I think it is {{[slot_one].rhuwpeOxWqnw}}"},{"slots":["rhuwpeOxWqnw"],"text":"{{[slot_one].rhuwpeOxWqnw}}"},{"slots":["rhuwpeOxWqnw"],"text":"the answer is {{[slot_one].rhuwpeOxWqnw}}"},{"slots":["rhuwpeOxWqnw"],"text":"answer is {{[slot_one].rhuwpeOxWqnw}}"},{"slots":["rhuwpeOxWqnw"],"text":"{{[slot_one].rhuwpeOxWqnw}} is the answer"}],"key":"c2u2h6a0qfZg","open":true,"_platform":null},{"name":"intent_two","inputs":[{"slots":["Of0UMzUuNKVz"],"text":"{{[slot_two].Of0UMzUuNKVz}}"}],"key":"cyLDdu9cvygL","open":true,"_platform":"alexa"},{"name":"intent_open","inputs":[{"slots":["9N4Xdah9UShx"],"text":"{{[open_lvlone].9N4Xdah9UShx}}"}],"key":"G4cjZLQZaAEn","open":true,"_platform":null},{"name":"intent_lvltwo","inputs":[{"slots":["j0Hqhna45404"],"text":"{{[opne_lvltwo].j0Hqhna45404}}"}],"key":"Q5pVbSymoAjz","open":true,"_platform":null},{"name":"intent_mini","inputs":[{"slots":["hjNq9UjHOVI9"],"text":"{{[slot_mini].hjNq9UjHOVI9}}"}],"key":"uDk5iYNOCm8W","open":true,"_platform":null},{"name":"payment_intent","inputs":[{"slots":["afh8RUpdYt3e"],"text":"{{[payment_slot].afh8RUpdYt3e}}"},{"slots":["afh8RUpdYt3e"],"text":"i want {{[payment_slot].afh8RUpdYt3e}}"},{"slots":["afh8RUpdYt3e"],"text":"purchase {{[payment_slot].afh8RUpdYt3e}}"}],"key":"Nr70HvSr5NTG","open":true,"_platform":null},{"name":"refund","inputs":[{"slots":[],"text":"refund"},{"slots":[],"text":"refund payment"},{"slots":[],"text":"return payment"},{"slots":[],"text":"get a refund"},{"slots":[],"text":"return premium content"}],"key":"WYPBdRB4zctc","open":true,"_platform":null}]',
+          slots:
+            '[{"name":"slot_one","inputs":["dinosaur","one","two","three","velociraptor","t-rex","1993","1997","1995","2001","2018","2015"],"type":{"label":"CUSTOM","value":"CUSTOM"},"key":"rhuwpeOxWqnw","open":true},{"name":"slot_two","inputs":[],"type":{"label":"AMAZON.NUMBER","value":"AMAZON.NUMBER"},"key":"Of0UMzUuNKVz","open":true},{"name":"open_lvlone","inputs":["level 1","level one"],"type":{"label":"CUSTOM","value":"CUSTOM"},"key":"9N4Xdah9UShx","open":true},{"name":"opne_lvltwo","inputs":["level 2","level two","level to","level too"],"type":{"label":"CUSTOM","value":"CUSTOM"},"key":"j0Hqhna45404","open":true},{"name":"slot_mini","inputs":["mini games","mini","games"],"type":{"label":"CUSTOM","value":"CUSTOM"},"key":"hjNq9UjHOVI9","open":true},{"name":"payment_slot","inputs":["premium content","premium","purchase","upgrade","upgrade game","purchase upgrade"],"type":{"label":"CUSTOM","value":"CUSTOM"},"key":"afh8RUpdYt3e","open":true}]',
           platform: 'alexa',
         })
         .expect(200)
@@ -347,155 +353,194 @@ describe('Skill', function () {
           try {
             const skill_data = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skill_id)[0]])).rows;
             const r = skill_data[0];
-            expect(r.intents).to.eql([{
-              name: 'intent_one',
-              inputs: [{
-                slots: ['rhuwpeOxWqnw'],
-                text: 'I think it is {{[slot_one].rhuwpeOxWqnw}}',
-              }, {
-                slots: ['rhuwpeOxWqnw'],
-                text: '{{[slot_one].rhuwpeOxWqnw}}',
-              }, {
-                slots: ['rhuwpeOxWqnw'],
-                text: 'the answer is {{[slot_one].rhuwpeOxWqnw}}',
-              }, {
-                slots: ['rhuwpeOxWqnw'],
-                text: 'answer is {{[slot_one].rhuwpeOxWqnw}}',
-              }, {
-                slots: ['rhuwpeOxWqnw'],
-                text: '{{[slot_one].rhuwpeOxWqnw}} is the answer',
-              }],
-              key: 'c2u2h6a0qfZg',
-              open: true,
-              _platform: null,
-            }, {
-              name: 'intent_two',
-              inputs: [{
-                slots: ['Of0UMzUuNKVz'],
-                text: '{{[slot_two].Of0UMzUuNKVz}}',
-              }],
-              key: 'cyLDdu9cvygL',
-              open: true,
-              _platform: 'alexa',
-            }, {
-              name: 'intent_open',
-              inputs: [{
-                slots: ['9N4Xdah9UShx'],
-                text: '{{[open_lvlone].9N4Xdah9UShx}}',
-              }],
-              key: 'G4cjZLQZaAEn',
-              open: true,
-              _platform: null,
-            }, {
-              name: 'intent_lvltwo',
-              inputs: [{
-                slots: ['j0Hqhna45404'],
-                text: '{{[opne_lvltwo].j0Hqhna45404}}',
-              }],
-              key: 'Q5pVbSymoAjz',
-              open: true,
-              _platform: null,
-            }, {
-              name: 'intent_mini',
-              inputs: [{
-                slots: ['hjNq9UjHOVI9'],
-                text: '{{[slot_mini].hjNq9UjHOVI9}}',
-              }],
-              key: 'uDk5iYNOCm8W',
-              open: true,
-              _platform: null,
-            }, {
-              name: 'payment_intent',
-              inputs: [{
-                slots: ['afh8RUpdYt3e'],
-                text: '{{[payment_slot].afh8RUpdYt3e}}',
-              }, {
-                slots: ['afh8RUpdYt3e'],
-                text: 'i want {{[payment_slot].afh8RUpdYt3e}}',
-              }, {
-                slots: ['afh8RUpdYt3e'],
-                text: 'purchase {{[payment_slot].afh8RUpdYt3e}}',
-              }],
-              key: 'Nr70HvSr5NTG',
-              open: true,
-              _platform: null,
-            }, {
-              name: 'refund',
-              inputs: [{
-                slots: [],
-                text: 'refund',
-              }, {
-                slots: [],
-                text: 'refund payment',
-              }, {
-                slots: [],
-                text: 'return payment',
-              }, {
-                slots: [],
-                text: 'get a refund',
-              }, {
-                slots: [],
-                text: 'return premium content',
-              }],
-              key: 'WYPBdRB4zctc',
-              open: true,
-              _platform: null,
-            }]);
-            expect(r.slots).to.eql([{
-              name: 'slot_one',
-              inputs: ['dinosaur', 'one', 'two', 'three', 'velociraptor', 't-rex', '1993', '1997', '1995', '2001', '2018', '2015'],
-              type: {
-                label: 'CUSTOM',
-                value: 'CUSTOM',
+            expect(r.intents).to.eql([
+              {
+                name: 'intent_one',
+                inputs: [
+                  {
+                    slots: ['rhuwpeOxWqnw'],
+                    text: 'I think it is {{[slot_one].rhuwpeOxWqnw}}',
+                  },
+                  {
+                    slots: ['rhuwpeOxWqnw'],
+                    text: '{{[slot_one].rhuwpeOxWqnw}}',
+                  },
+                  {
+                    slots: ['rhuwpeOxWqnw'],
+                    text: 'the answer is {{[slot_one].rhuwpeOxWqnw}}',
+                  },
+                  {
+                    slots: ['rhuwpeOxWqnw'],
+                    text: 'answer is {{[slot_one].rhuwpeOxWqnw}}',
+                  },
+                  {
+                    slots: ['rhuwpeOxWqnw'],
+                    text: '{{[slot_one].rhuwpeOxWqnw}} is the answer',
+                  },
+                ],
+                key: 'c2u2h6a0qfZg',
+                open: true,
+                _platform: null,
               },
-              key: 'rhuwpeOxWqnw',
-              open: true,
-            }, {
-              name: 'slot_two',
-              inputs: [],
-              type: {
-                label: 'AMAZON.NUMBER',
-                value: 'AMAZON.NUMBER',
+              {
+                name: 'intent_two',
+                inputs: [
+                  {
+                    slots: ['Of0UMzUuNKVz'],
+                    text: '{{[slot_two].Of0UMzUuNKVz}}',
+                  },
+                ],
+                key: 'cyLDdu9cvygL',
+                open: true,
+                _platform: 'alexa',
               },
-              key: 'Of0UMzUuNKVz',
-              open: true,
-            }, {
-              name: 'open_lvlone',
-              inputs: ['level 1', 'level one'],
-              type: {
-                label: 'CUSTOM',
-                value: 'CUSTOM',
+              {
+                name: 'intent_open',
+                inputs: [
+                  {
+                    slots: ['9N4Xdah9UShx'],
+                    text: '{{[open_lvlone].9N4Xdah9UShx}}',
+                  },
+                ],
+                key: 'G4cjZLQZaAEn',
+                open: true,
+                _platform: null,
               },
-              key: '9N4Xdah9UShx',
-              open: true,
-            }, {
-              name: 'opne_lvltwo',
-              inputs: ['level 2', 'level two', 'level to', 'level too'],
-              type: {
-                label: 'CUSTOM',
-                value: 'CUSTOM',
+              {
+                name: 'intent_lvltwo',
+                inputs: [
+                  {
+                    slots: ['j0Hqhna45404'],
+                    text: '{{[opne_lvltwo].j0Hqhna45404}}',
+                  },
+                ],
+                key: 'Q5pVbSymoAjz',
+                open: true,
+                _platform: null,
               },
-              key: 'j0Hqhna45404',
-              open: true,
-            }, {
-              name: 'slot_mini',
-              inputs: ['mini games', 'mini', 'games'],
-              type: {
-                label: 'CUSTOM',
-                value: 'CUSTOM',
+              {
+                name: 'intent_mini',
+                inputs: [
+                  {
+                    slots: ['hjNq9UjHOVI9'],
+                    text: '{{[slot_mini].hjNq9UjHOVI9}}',
+                  },
+                ],
+                key: 'uDk5iYNOCm8W',
+                open: true,
+                _platform: null,
               },
-              key: 'hjNq9UjHOVI9',
-              open: true,
-            }, {
-              name: 'payment_slot',
-              inputs: ['premium content', 'premium', 'purchase', 'upgrade', 'upgrade game', 'purchase upgrade'],
-              type: {
-                label: 'CUSTOM',
-                value: 'CUSTOM',
+              {
+                name: 'payment_intent',
+                inputs: [
+                  {
+                    slots: ['afh8RUpdYt3e'],
+                    text: '{{[payment_slot].afh8RUpdYt3e}}',
+                  },
+                  {
+                    slots: ['afh8RUpdYt3e'],
+                    text: 'i want {{[payment_slot].afh8RUpdYt3e}}',
+                  },
+                  {
+                    slots: ['afh8RUpdYt3e'],
+                    text: 'purchase {{[payment_slot].afh8RUpdYt3e}}',
+                  },
+                ],
+                key: 'Nr70HvSr5NTG',
+                open: true,
+                _platform: null,
               },
-              key: 'afh8RUpdYt3e',
-              open: true,
-            }]);
+              {
+                name: 'refund',
+                inputs: [
+                  {
+                    slots: [],
+                    text: 'refund',
+                  },
+                  {
+                    slots: [],
+                    text: 'refund payment',
+                  },
+                  {
+                    slots: [],
+                    text: 'return payment',
+                  },
+                  {
+                    slots: [],
+                    text: 'get a refund',
+                  },
+                  {
+                    slots: [],
+                    text: 'return premium content',
+                  },
+                ],
+                key: 'WYPBdRB4zctc',
+                open: true,
+                _platform: null,
+              },
+            ]);
+            expect(r.slots).to.eql([
+              {
+                name: 'slot_one',
+                inputs: ['dinosaur', 'one', 'two', 'three', 'velociraptor', 't-rex', '1993', '1997', '1995', '2001', '2018', '2015'],
+                type: {
+                  label: 'CUSTOM',
+                  value: 'CUSTOM',
+                },
+                key: 'rhuwpeOxWqnw',
+                open: true,
+              },
+              {
+                name: 'slot_two',
+                inputs: [],
+                type: {
+                  label: 'AMAZON.NUMBER',
+                  value: 'AMAZON.NUMBER',
+                },
+                key: 'Of0UMzUuNKVz',
+                open: true,
+              },
+              {
+                name: 'open_lvlone',
+                inputs: ['level 1', 'level one'],
+                type: {
+                  label: 'CUSTOM',
+                  value: 'CUSTOM',
+                },
+                key: '9N4Xdah9UShx',
+                open: true,
+              },
+              {
+                name: 'opne_lvltwo',
+                inputs: ['level 2', 'level two', 'level to', 'level too'],
+                type: {
+                  label: 'CUSTOM',
+                  value: 'CUSTOM',
+                },
+                key: 'j0Hqhna45404',
+                open: true,
+              },
+              {
+                name: 'slot_mini',
+                inputs: ['mini games', 'mini', 'games'],
+                type: {
+                  label: 'CUSTOM',
+                  value: 'CUSTOM',
+                },
+                key: 'hjNq9UjHOVI9',
+                open: true,
+              },
+              {
+                name: 'payment_slot',
+                inputs: ['premium content', 'premium', 'purchase', 'upgrade', 'upgrade game', 'purchase upgrade'],
+                type: {
+                  label: 'CUSTOM',
+                  value: 'CUSTOM',
+                },
+                key: 'afh8RUpdYt3e',
+                open: true,
+              },
+            ]);
             expect(r.name).to.eql('UNTITLED PROJECT'); // shouldn't update name
           } catch (err) {
             if (err) throw err;
@@ -658,7 +703,7 @@ describe('Skill', function () {
         });
     });
 
-    it('doesn\'t enable a skill without token', (done) => {
+    it("doesn't enable a skill without token", (done) => {
       request(app)
         .put('/interaction_model/1/enable')
         .set('cookie', `auth=${token}`)
@@ -683,7 +728,9 @@ describe('Skill', function () {
         .expect(200)
         .expect(async (res) => {
           try {
-            const product_data = (await pool.query('SELECT * FROM products WHERE skill_id = $1 AND name=\'A Long Way From Home\'', [hashids.decode(skill_id)[0]])).rows;
+            const product_data = (await pool.query("SELECT * FROM products WHERE skill_id = $1 AND name='A Long Way From Home'", [
+              hashids.decode(skill_id)[0],
+            ])).rows;
             expect(product_data.length).to.eql(1);
           } catch (err) {
             throw err;
@@ -721,7 +768,10 @@ describe('Skill', function () {
         .expect(200)
         .expect(async (res) => {
           try {
-            const product_data = (await pool.query('SELECT id, name, data FROM products WHERE skill_id = $1 AND id = $2', [hashids.decode(skill_id)[0], 1])).rows;
+            const product_data = (await pool.query('SELECT id, name, data FROM products WHERE skill_id = $1 AND id = $2', [
+              hashids.decode(skill_id)[0],
+              1,
+            ])).rows;
             expect(product_data).to.eql(res.body);
           } catch (err) {
             throw err;
@@ -777,7 +827,7 @@ describe('Skill', function () {
     //     })
     // })
 
-    it('doesn\'t delete a missing product from the db', (done) => {
+    it("doesn't delete a missing product from the db", (done) => {
       request(app)
         .del(`/skill/${skill_id}/product/0`)
         .set('cookie', `auth=${token}`)
@@ -800,7 +850,6 @@ describe('Skill', function () {
     //       done()
     //     })
     // })
-
     // This case doesn't apply anymore
     // it('doesn\'t get deleted skill', done => {
     //   request(app)

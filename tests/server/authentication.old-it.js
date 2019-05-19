@@ -11,17 +11,14 @@ describe('Authentication', async () => {
   let server;
 
   before(async () => {
-    ({
-      app,
-      server,
-    } = await GetApp());
+    ({ app, server } = await GetApp());
   });
 
   after(async () => {
     if (server) await server.stop();
   });
 
-  it('doesn\'t accept empty credentials', async () => {
+  it("doesn't accept empty credentials", async () => {
     await request(app)
       .put('/session')
       .send({
@@ -30,7 +27,7 @@ describe('Authentication', async () => {
       .expect(400);
   });
 
-  it('doesn\'t accept wrong email', async () => {
+  it("doesn't accept wrong email", async () => {
     await request(app)
       .put('/session')
       .send({
@@ -42,7 +39,7 @@ describe('Authentication', async () => {
       .expect(400);
   });
 
-  it('doesn\'t accept wrong password', async () => {
+  it("doesn't accept wrong password", async () => {
     await request(app)
       .put('/session')
       .send({
@@ -74,13 +71,6 @@ describe('Logout', () => {
   let app;
   let server;
 
-  before(async () => {
-    ({
-      app,
-      server,
-    } = await GetApp());
-  });
-
   after(async () => {
     if (server) server.stop();
   });
@@ -88,6 +78,8 @@ describe('Logout', () => {
   let token = '';
 
   before(async () => {
+    ({ app, server } = await GetApp());
+
     await request(app)
       .put('/session')
       .send({
@@ -99,7 +91,7 @@ describe('Logout', () => {
       .expect(200)
       .then((res) => {
         if (!('token' in res.body)) throw new Error('missing token');
-        token = res.body.token;
+        ({ token } = res.body);
       });
   });
 
@@ -108,7 +100,7 @@ describe('Logout', () => {
       .delete('/session')
       .set('cookie', `auth=${token}`)
       .expect(200)
-      .end((err, res) => {
+      .end((err) => {
         if (err) throw err;
         done();
       });

@@ -3,7 +3,6 @@
 require('dotenv').config({ path: './.env.test' });
 const { expect } = require('chai');
 const knexCleaner = require('knex-cleaner');
-const Promise = require('bluebird');
 
 const { Pool } = require('pg');
 const { utils } = require('@voiceflow/common');

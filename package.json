@@ -107,7 +107,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "fixpack && git add package.json && git commit --amend -C HEAD --no-verify"
+      "pre-commit": "fixpack"
     }
   },
   "jest": {

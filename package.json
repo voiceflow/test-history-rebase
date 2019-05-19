@@ -96,6 +96,8 @@
     "knex-cleaner": "^1.1.4",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
+    "prettier": "^1.17.1",
+    "pretty-quick": "^1.10.0",
     "redis-mock": "^0.44.0",
     "semantic-release": "^15.13.12",
     "sinon": "^7.3.2",
@@ -105,7 +107,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "fixpack"
+      "pre-commit": "fixpack && git add package.json && git commit --amend -C HEAD --no-verify && pretty-quick --staged"
     }
   },
   "jest": {

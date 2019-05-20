@@ -145,7 +145,7 @@
     "prod": "NODE_ENV=development_prod node index.js",
     "prod_test": "NODE_ENV=development_prod_test node index.js",
     "redis": "redis-server",
-    "send-coverage": "cat ./coverage/lcov.info | codacy-coverage",
+    "send-coverage": "cat ./coverage/lcov.info | codacy-coverage -v",
     "staging": "NODE_ENV=staging node index.js",
     "start": "NODE_ENV=production node index.js",
     "test": "NODE_ENV=test node tests/server/init-old-integration.js && NODE_ENV=test nyc mocha --use_strict --exit \"tests/**/*.old-it.js\" \"tests/**/*.unit.js\" \"tests/**/*.it.js\" && npm run old-unit",

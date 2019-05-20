@@ -64,6 +64,9 @@ jobs:
       - run:
           name: Coverage
           command: npm run send-coverage
+      - run:
+          name: Lint
+          command: npm run lint
   deploy-master:
     machine: true
     steps:

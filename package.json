@@ -92,6 +92,7 @@
     "jest": "^24.8.0",
     "knex": "^0.16.7",
     "knex-cleaner": "^1.1.4",
+    "lint-staged": "^8.1.7",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
     "prettier": "^1.17.1",
@@ -105,7 +106,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "npm run lint || (echo $'******\\n\\n\\nTry running: \"npm run lint-fix\"\\n\\n\\n******\\n' && exit 1)"
+      "pre-commit": "lint-staged"
     }
   },
   "jest": {
@@ -118,6 +119,16 @@
     "ui"
   ],
   "license": "ISC",
+  "lint-staged": {
+    "package.json": [
+      "fixpack",
+      "git add"
+    ],
+    "**/*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "main": "index.js",
   "prettier": "@voiceflow/prettier-config",
   "release": {
@@ -135,8 +146,7 @@
     "dev": "concurrently --kill-others-on-fail \"npm run local\" \"npm run client\"",
     "elasticsearch": "elasticsearch",
     "integration": "NODE_ENV=test node tests/server/init-old-integration.js && NODE_ENV=test mocha --use_strict --exit \"tests/**/*.it.js\"",
-    "lint": "eslint \"**/*.js\"",
-    "lint-fix": "fixpack && eslint \"**/*.js\" --fix",
+    "lint": "fixpack && eslint \"**/*.js\" --fix",
     "local": "NODE_ENV=local node index.js",
     "old-integration": "NODE_ENV=test node tests/server/init-old-integration.js && mocha --use_strict --exit \"tests/**/*.old-it.js\"",
     "old-unit": "NODE_ENV=test npx jest --testPathIgnorePatterns=/app/ --detectOpenHandles --runInBand --testMatch=\"**/(*.)+(test).js?(x)\"",

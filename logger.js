@@ -8,11 +8,13 @@ const prettyStdOut = new PrettyStream({ mode: 'dev' });
 prettyStdOut.pipe(process.stdout);
 const pjson = require('./package.json');
 
-const streams = [{
-  type: 'raw',
-  level: 'info',
-  stream: prettyStdOut,
-}];
+const streams = [
+  {
+    type: 'raw',
+    level: 'info',
+    stream: prettyStdOut,
+  },
+];
 
 if (process.env.LOGDNA_API_KEY) {
   const logDNA = new LogDNAStream({

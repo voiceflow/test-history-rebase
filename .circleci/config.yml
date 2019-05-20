@@ -61,6 +61,9 @@ jobs:
       - run:
           name: (Tests)
           command: CIRCLECI=TRUE npm run test
+      - run:
+          name: Coverage
+          command: npm run send-coverage
   deploy-master:
     machine: true
     steps:

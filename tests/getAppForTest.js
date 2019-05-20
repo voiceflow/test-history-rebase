@@ -1,15 +1,11 @@
 'use strict';
 
-const _ = require('lodash');
 const Server = require('../server');
 const { ServiceManager } = require('../backend');
 
-const lastPort = 12000;// _.random(10000, 60000);
-
 module.exports = async (serviceManager = new ServiceManager()) => {
   const server = new Server(serviceManager);
-  server.port = lastPort;
-  // lastPort++;
+  server.port = 12000;
 
   await server.start();
   const { app } = server;

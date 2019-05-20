@@ -1,6 +1,5 @@
 const { docClient, writeToLogs } = require('../services');
 const { stripSample } = require('../app/src/intent_util');
-const _ = require('lodash');
 
 // secondary pass through the entire project to upgrade choice blocks to interaction blocks
 const secondPass = async (diagram_id, parameters, visited = new Set(), depth = 0) => {
@@ -27,6 +26,7 @@ const secondPass = async (diagram_id, parameters, visited = new Set(), depth = 0
   }
 
   for (const key in data.Item.lines) {
+    // eslint-disable-next-line
     if (!data.Item.lines.hasOwnProperty(key)) continue;
     const line = data.Item.lines[key];
 

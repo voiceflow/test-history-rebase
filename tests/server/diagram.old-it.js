@@ -71,8 +71,8 @@ describe('Diagram', function() {
               locales: ['en-US'],
             })
             .set('cookie', `auth=${token}`)
-            .then(() => {
-              skillId = res.body.skill_id;
+            .then((_res) => {
+              skillId = _res.body.skill_id;
             });
         } catch (e) {
           moduleId = null;
@@ -116,7 +116,7 @@ describe('Diagram', function() {
         .expect(200)
         .end(async (err) => {
           if (err) throw err;
-          const diagramData = (await pool.query('SELECT * FROM diagrams WHERE skillId = $1', [hashids.decode(skillId)[0]])).rows;
+          const diagramData = (await pool.query('SELECT * FROM diagrams WHERE skill_id = $1', [hashids.decode(skillId)[0]])).rows;
           expect(diagramData.length).to.eql(3);
           done();
         });

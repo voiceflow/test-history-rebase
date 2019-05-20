@@ -146,7 +146,7 @@
     "redis": "redis-server",
     "staging": "NODE_ENV=staging node index.js",
     "start": "NODE_ENV=production node index.js",
-    "test": "NODE_ENV=test node tests/server/init-old-integration.js && NODE_ENV=test nyc mocha --use_strict --exit \"tests/**/*.old-it.js\" \"tests/**/*.unit.js\" \"tests/**/*.it.js\"",
+    "test": "NODE_ENV=test node tests/server/init-old-integration.js && NODE_ENV=test nyc mocha --use_strict --exit \"tests/**/*.old-it.js\" \"tests/**/*.unit.js\" \"tests/**/*.it.js\" && npm run old-unit",
     "unit": "NODE_ENV=test mocha --use_strict --exit \"tests/**/*.unit.js\"",
     "unsecure": "node index.js",
     "update": "npm install && cd app && npm install"

@@ -87,7 +87,7 @@ describe('Skill', function() {
         .set('cookie', `auth=${token}`)
         .expect(200)
         .expect((res) => {
-          if (!('skillId' in res.body)) throw new Error('missing id');
+          if (!('skill_id' in res.body)) throw new Error('missing id');
         })
         .end((err, res) => {
           if (err) throw err;
@@ -105,11 +105,11 @@ describe('Skill', function() {
     //     .expect(async (res) => {
     //       try{
     //         let decoded_skill_id = hashids.decode(skillId)[0]
-    //         let version_data = (await pool.query(`SELECT * FROM skill_versions WHERE canonical_skill_id = $1 ORDER BY skillId ASC`,
+    //         let version_data = (await pool.query(`SELECT * FROM skill_versions WHERE canonical_skill_id = $1 ORDER BY skill_id ASC`,
     //         [decoded_skill_id])).rows
     //         let skillData = (await pool.query(`SELECT * FROM skills WHERE creator_id = 1`)).rows
     //         // Initial skill won't have default values for used-choices, used_intents, alexa_interfaces, alexa_permissions
-    //         let filtered_fields = ['diagram', 'created', 'live', 'skillId', 'used_choices', 'used_intents', 'alexa_interfaces',
+    //         let filtered_fields = ['diagram', 'created', 'live', 'skill_id', 'used_choices', 'used_intents', 'alexa_interfaces',
     //         'alexa_permissions']
 
     //         for(let i in skillData){
@@ -117,9 +117,9 @@ describe('Skill', function() {
     //             delete skillData[i][field]
     //           }
     //         }
-    //         expect(version_data[0]).to.eql({version: null, canonical_skill_id: decoded_skill_id, skillId: decoded_skill_id,
+    //         expect(version_data[0]).to.eql({version: null, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id,
     //         google_versions: null, published_platform: 'alexa'})
-    //         expect(version_data[1]).to.eql({version: 1, canonical_skill_id: decoded_skill_id, skillId: decoded_skill_id + 1,
+    //         expect(version_data[1]).to.eql({version: 1, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id + 1,
     //         google_versions: null, published_platform: 'alexa'})
     //         expect(skillData[0]).to.eql(skillData[1])
     //       } catch (err) {
@@ -196,7 +196,7 @@ describe('Skill', function() {
     //     .set('cookie', `auth=${token}`)
     //     .expect(200)
     //     .expect(res => {
-    //       if (res.body.skillId !== skillId) throw new Error('incorrect result')
+    //       if (res.body.skill_id !== skillId) throw new Error('incorrect result')
     //       if (!('name' in res.body)) throw new Error('missing name')
     //       if (!('diagram' in res.body)) throw new Error('missing diagram')
     //       if ('summary' in res.body) throw new Error('additional data')
@@ -287,7 +287,7 @@ describe('Skill', function() {
         .expect(200)
         .expect(async () => {
           try {
-            const skillData = (await pool.query('SELECT * FROM skills WHERE skillId = $1', [hashids.decode(skillId)[0]])).rows;
+            const skillData = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skillId)[0]])).rows;
             const r = skillData[0];
             expect(r.locales).to.eql(['en-US']);
             expect(r.fulfillment).to.eql({});
@@ -318,7 +318,7 @@ describe('Skill', function() {
         .expect(200)
         .expect(async () => {
           try {
-            const skillData = (await pool.query('SELECT * FROM skills WHERE skillId = $1', [hashids.decode(skillId)[0]])).rows;
+            const skillData = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skillId)[0]])).rows;
             const r = skillData[0];
             expect(r.fulfillment).to.eql({
               G4cjZLQZaAEn: { slot_config: { '9N4Xdah9UShx': ['level one', 'level 1'] } },
@@ -372,7 +372,7 @@ describe('Skill', function() {
         .expect(200)
         .expect(async () => {
           try {
-            const skillData = (await pool.query('SELECT * FROM skills WHERE skillId = $1', [hashids.decode(skillId)[0]])).rows;
+            const skillData = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skillId)[0]])).rows;
             const r = skillData[0];
             expect(r.intents).to.eql([
               {
@@ -584,7 +584,7 @@ describe('Skill', function() {
         .expect(200)
         .expect(async () => {
           try {
-            const skillData = (await pool.query('SELECT * FROM skills WHERE skillId = $1', [hashids.decode(skillId)[0]])).rows;
+            const skillData = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skillId)[0]])).rows;
             const r = skillData[0];
             expect(r.inv_name).to.eql('Vegas');
           } catch (err) {
@@ -611,7 +611,7 @@ describe('Skill', function() {
         .expect(200)
         .expect(async () => {
           try {
-            const skillData = (await pool.query('SELECT * FROM skills WHERE skillId = $1', [hashids.decode(skillId)[0]])).rows;
+            const skillData = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skillId)[0]])).rows;
             const r = skillData[0];
             expect(r.name).to.eql('pikachu');
             expect(r.resume_prompt).to.eql({
@@ -644,7 +644,7 @@ describe('Skill', function() {
         .expect(200)
         .expect(async () => {
           try {
-            const skillData = (await pool.query('SELECT * FROM skills WHERE skillId = $1', [hashids.decode(skillId)[0]])).rows;
+            const skillData = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skillId)[0]])).rows;
             const r = skillData[0];
             expect(r.preview).to.eql(true);
           } catch (err) {
@@ -674,7 +674,7 @@ describe('Skill', function() {
         .expect(200)
         .expect(async () => {
           try {
-            const skillData = (await pool.query('SELECT * FROM skills WHERE skillId = $1', [hashids.decode(skillId)[0]])).rows;
+            const skillData = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skillId)[0]])).rows;
             const r = skillData[0];
             expect(r.google_publish_info).to.eql({
               project_id: 'triad-stepping-exercise-6ace1',
@@ -707,7 +707,7 @@ describe('Skill', function() {
         .expect(200)
         .expect(async () => {
           try {
-            const skillData = (await pool.query('SELECT * FROM skills WHERE skillId = $1', [hashids.decode(skillId)[0]])).rows;
+            const skillData = (await pool.query('SELECT * FROM skills WHERE skill_id = $1', [hashids.decode(skillId)[0]])).rows;
             const r = skillData[0];
             expect(r.name).to.eql('Tetsuo');
             expect(r.inv_name).to.eql('Kaneda');
@@ -749,7 +749,7 @@ describe('Skill', function() {
         .expect(200)
         .expect(async () => {
           try {
-            const product_data = (await pool.query("SELECT * FROM products WHERE skillId = $1 AND name='A Long Way From Home'", [
+            const product_data = (await pool.query("SELECT * FROM products WHERE skill_id = $1 AND name='A Long Way From Home'", [
               hashids.decode(skillId)[0],
             ])).rows;
             expect(product_data.length).to.eql(1);
@@ -770,7 +770,7 @@ describe('Skill', function() {
         .expect(200)
         .expect(async (res) => {
           try {
-            const product_data = (await pool.query('SELECT id, name, data FROM products WHERE skillId = $1', [hashids.decode(skillId)[0]])).rows;
+            const product_data = (await pool.query('SELECT id, name, data FROM products WHERE skill_id = $1', [hashids.decode(skillId)[0]])).rows;
             expect(product_data).to.eql(res.body);
           } catch (err) {
             throw err;
@@ -789,7 +789,7 @@ describe('Skill', function() {
         .expect(200)
         .expect(async (res) => {
           try {
-            const product_data = (await pool.query('SELECT id, name, data FROM products WHERE skillId = $1 AND id = $2', [
+            const product_data = (await pool.query('SELECT id, name, data FROM products WHERE skill_id = $1 AND id = $2', [
               hashids.decode(skillId)[0],
               1,
             ])).rows;
@@ -836,7 +836,7 @@ describe('Skill', function() {
     //     .expect(200)
     //     .expect(async res => {
     //       try{
-    //         let product_data = (await pool.query(`SELECT * FROM products WHERE skillId = $1 AND name='A Long Way From Home'`,
+    //         let product_data = (await pool.query(`SELECT * FROM products WHERE skill_id = $1 AND name='A Long Way From Home'`,
     //         [hashids.decode(skillId)[0]])).rows
     //         expect(product_data.length).to.eql(0)
     //       } catch (err) {

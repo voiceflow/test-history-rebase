@@ -103,7 +103,8 @@
   "homepage": "https://creator.getvoiceflow.com",
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "npm run lint || (echo $'******\\n\\n\\nTry running: \"npm run lint-fix\"\\n\\n\\n******\\n' && exit 1)"
     }
   },
   "jest": {
@@ -133,7 +134,8 @@
     "dev": "concurrently --kill-others-on-fail \"npm run local\" \"npm run client\"",
     "elasticsearch": "elasticsearch",
     "integration": "NODE_ENV=test node tests/server/init-old-integration.js && NODE_ENV=test mocha --use_strict --exit \"tests/**/*.it.js\"",
-    "lint": "eslint \"**/*.js\" --fix",
+    "lint": "eslint \"**/*.js\"",
+    "lint-fix": "fixpack && eslint \"**/*.js\" --fix",
     "local": "NODE_ENV=local node index.js",
     "old-integration": "NODE_ENV=test node tests/server/init-old-integration.js && mocha --use_strict --exit \"tests/**/*.old-it.js\"",
     "old-unit": "NODE_ENV=test npx jest --testPathIgnorePatterns=/app/ --detectOpenHandles --runInBand --testMatch=\"**/(*.)+(test).js?(x)\"",

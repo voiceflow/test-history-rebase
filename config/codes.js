@@ -29,9 +29,9 @@ const checkCodes = (code) =>
             Item: data.Item,
           };
 
-          docClient.put(params, (err) => {
-            if (err) {
-              console.error(err);
+          docClient.put(params, (_err) => {
+            if (_err) {
+              console.error(_err);
               resolve(false);
             } else {
               resolve(true);

@@ -12,7 +12,6 @@ const _ = require('lodash');
 
 const api = require('./api');
 const pjson = require('../package.json');
-const log = require('../logger');
 
 const name = pjson.name.replace(/^@[a-zA-Z0-9-]+\//g, '');
 

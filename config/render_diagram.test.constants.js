@@ -326,7 +326,7 @@ const _2_AllBlocks_Outputs_Alexa = [
       },
       '417a0dd8-503c-4dce-a982-ea9619616cbc': {
         elseId: 'e8b3fc0a-53cd-4f5d-b9c1-a17a270b60e0',
-        expressions: ['(v[\'var2\'] == v[\'var1\'])', '(v[\'var1\'] == \'some string\')'],
+        expressions: ["(v['var2'] == v['var1'])", "(v['var1'] == 'some string')"],
         nextIds: ['e8b3fc0a-53cd-4f5d-b9c1-a17a270b60e0', 'e8b3fc0a-53cd-4f5d-b9c1-a17a270b60e0'],
       },
       '483e5475-4c49-46dd-af19-d00c57dd17d3': {
@@ -379,7 +379,7 @@ const _2_AllBlocks_Outputs_Alexa = [
             variable: 'var1',
           },
           {
-            expression: '\'some test string\'',
+            expression: "'some test string'",
             variable: 'var2',
           },
         ],
@@ -480,7 +480,7 @@ const _2_AllBlocks_Outputs_Alexa = [
         nextId: '56322c2b-e1a0-40b6-bfd0-dfe0ba19e998',
       },
       '561616f7-b2ea-4514-bb57-57add25a4309': {
-        code: 'let test = \'this is a test\'\n\nvar2 = \'inside code test\'',
+        code: "let test = 'this is a test'\n\nvar2 = 'inside code test'",
         fail_id: 'a76f278b-fadd-49d9-b266-9072db254e52',
         success_id: 'a76f278b-fadd-49d9-b266-9072db254e52',
       },
@@ -574,7 +574,7 @@ const _2_AllBlocks_Outputs_Google = [
       },
       '417a0dd8-503c-4dce-a982-ea9619616cbc': {
         elseId: 'e8b3fc0a-53cd-4f5d-b9c1-a17a270b60e0',
-        expressions: ['(v[\'var2\'] == v[\'var1\'])', '(v[\'var1\'] == \'some string\')'],
+        expressions: ["(v['var2'] == v['var1'])", "(v['var1'] == 'some string')"],
         nextIds: ['e8b3fc0a-53cd-4f5d-b9c1-a17a270b60e0', 'e8b3fc0a-53cd-4f5d-b9c1-a17a270b60e0'],
       },
       '483e5475-4c49-46dd-af19-d00c57dd17d3': {
@@ -627,7 +627,7 @@ const _2_AllBlocks_Outputs_Google = [
             variable: 'var1',
           },
           {
-            expression: '\'some test string\'',
+            expression: "'some test string'",
             variable: 'var2',
           },
         ],
@@ -774,7 +774,7 @@ const _2_AllBlocks_Outputs_Google = [
         nextId: '56322c2b-e1a0-40b6-bfd0-dfe0ba19e998',
       },
       '561616f7-b2ea-4514-bb57-57add25a4309': {
-        code: 'let test = \'this is a test\'\n\nvar2 = \'inside code test\'',
+        code: "let test = 'this is a test'\n\nvar2 = 'inside code test'",
         fail_id: 'a76f278b-fadd-49d9-b266-9072db254e52',
         success_id: 'a76f278b-fadd-49d9-b266-9072db254e52',
       },
@@ -943,7 +943,7 @@ const _3_AdvancedBlocks_Outputs_Alexa = [
         nextId: '1ea9d967-7df0-4590-8e04-3f192bbc5c52',
         sets: [
           {
-            expression: '(((v[\'var1\'] - 9) == (3 * 7)) && (((v[\'var1\'] < 1) || (v[\'var2\'] + 5)) || ((v[\'var2\'] > 5) || (v[\'var1\'] / 56))))',
+            expression: "(((v['var1'] - 9) == (3 * 7)) && (((v['var1'] < 1) || (v['var2'] + 5)) || ((v['var2'] > 5) || (v['var1'] / 56))))",
             variable: null,
           },
         ],

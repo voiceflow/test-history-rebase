@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports.BUILT_IN_EXAMPLES = {
   'zh-HK': {
     '@sys.date-time': '上午十二',

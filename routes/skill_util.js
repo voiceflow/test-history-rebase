@@ -433,7 +433,7 @@ const renderSkill = async (skill, user) => {
 };
 
 const generateCopySkillQuery = (options) => {
-  const copy_str = options.append_copy_str ? 'coalesce(name, \'\') || \' Copy\' AS name' : 'name';
+  const copy_str = options.append_copy_str ? "coalesce(name, '') || ' Copy' AS name" : 'name';
   let copy_query;
   if (options.complete_copy || options.renderDiagram) {
     copy_query = `

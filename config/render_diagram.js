@@ -1,8 +1,12 @@
+'use strict';
+
+/* eslint-disable max-depth, max-params, no-await-in-loop, no-unused-expressions, no-sequences */
+
 const isVarName = require('is-var-name');
-const { docClient, pool, hashids, writeToLogs } = require('../services');
-const draftToMarkdown = require('./drafttomarkdown');
 const validUrl = require('valid-url');
 const _ = require('lodash');
+const { docClient, pool, hashids, writeToLogs } = require('../services');
+const draftToMarkdown = require('./drafttomarkdown');
 const { deepDraftToMarkdown } = require('../app/src/intent_util');
 
 const _expressionfy = (expression, depth = 0) => {
@@ -10,18 +14,21 @@ const _expressionfy = (expression, depth = 0) => {
     // return a blank
     return 0;
   }
-  if (expression.type == 'value') {
+  if (expression.type === 'value') {
     let value = expression.value.toString();
     if (!expression.value) {
       return 0;
     }
+
+    // todo: This 'isNan' does not do what you think it does. Should be fixed!
+    /* eslint-disable-next-line */
     if (isNaN(value)) {
-      value = value.replace(/'/g, '\\\'');
+      value = value.replace(/'/g, "\\'");
       return `'${value}'`;
     }
     return value * 1;
   }
-  if (expression.type == 'variable') {
+  if (expression.type === 'variable') {
     if (isVarName(expression.value)) {
       return `v['${expression.value}']`;
     }
@@ -29,34 +36,34 @@ const _expressionfy = (expression, depth = 0) => {
   }
   let string = '(';
 
-  if (expression.type == 'not') {
+  if (expression.type === 'not') {
     string += `!${_expressionfy(expression.value)}`;
-  } else if (expression.type == 'and') {
+  } else if (expression.type === 'and') {
     string += `${_expressionfy(expression.value[0])} && ${_expressionfy(expression.value[1])}`;
-  } else if (expression.type == 'or') {
+  } else if (expression.type === 'or') {
     string += `${_expressionfy(expression.value[0])} || ${_expressionfy(expression.value[1])}`;
-  } else if (expression.type == 'plus') {
+  } else if (expression.type === 'plus') {
     string += `${_expressionfy(expression.value[0])} + ${_expressionfy(expression.value[1])}`;
-  } else if (expression.type == 'minus') {
+  } else if (expression.type === 'minus') {
     const first = _expressionfy(expression.value[0]);
     const second = _expressionfy(expression.value[1]);
 
     string += `${first} - ${second}`;
-  } else if (expression.type == 'times') {
+  } else if (expression.type === 'times') {
     const first = _expressionfy(expression.value[0]);
     const second = _expressionfy(expression.value[1]);
 
     string += `${first} * ${second}`;
-  } else if (expression.type == 'divide') {
+  } else if (expression.type === 'divide') {
     const first = _expressionfy(expression.value[0]);
     const second = _expressionfy(expression.value[1]);
 
     string += `${first} / ${second}`;
-  } else if (expression.type == 'greater') {
+  } else if (expression.type === 'greater') {
     string += `${_expressionfy(expression.value[0])} > ${_expressionfy(expression.value[1])}`;
-  } else if (expression.type == 'less') {
+  } else if (expression.type === 'less') {
     string += `${_expressionfy(expression.value[0])} < ${_expressionfy(expression.value[1])}`;
-  } else if (expression.type == 'equals') {
+  } else if (expression.type === 'equals') {
     string += `${_expressionfy(expression.value[0])} == ${_expressionfy(expression.value[1])}`;
   }
 
@@ -66,20 +73,18 @@ const _expressionfy = (expression, depth = 0) => {
 const _addStory = (story, cb) => {
   pool.query('SELECT 1 FROM diagrams WHERE id = $1 LIMIT 1', [story.id], (err, res) => {
     if (err || res.rows.length < 1) {
-      pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [story.id, story.name, story.skill_id], (err, res) => {
-        if (err) {
-          cb(err);
-        } else {
-          cb(false);
+      pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [story.id, story.name, story.skill_id], (_err) => {
+        if (_err) {
+          return cb(_err);
         }
+        return cb(false);
       });
     } else {
-      pool.query('UPDATE diagrams SET name = $1 WHERE id = $2', [story.name, story.skill_id], (err, res) => {
-        if (err) {
-          cb(err);
-        } else {
-          cb(false);
+      pool.query('UPDATE diagrams SET name = $1 WHERE id = $2', [story.name, story.skill_id], (_err) => {
+        if (_err) {
+          return cb(_err);
         }
+        return cb(false);
       });
     }
   });
@@ -135,7 +140,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
 
         const links = {};
 
-        for (var i = 0; i < diagram.links.length; i++) {
+        for (let i = 0; i < diagram.links.length; i++) {
           links[diagram.links[i].id] = {
             target: diagram.links[i].target,
             source: diagram.links[i].source,
@@ -159,18 +164,21 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
           commands: [],
         };
         // Iterate through every block in the diagram
-        for (var i = 0; i < diagram.nodes.length; i++) {
+        for (let i = 0; i < diagram.nodes.length; i++) {
           const node = diagram.nodes[i];
           const getLink = (link_id) => {
             if (link_id in links) {
               return links[link_id].target === node.id ? links[link_id].source : links[link_id].target;
             }
+
+            return undefined;
           };
+
           if (node.extras.type === 'story') {
             story.startId = node.id;
             story.prompt = node.extras.prompt;
             let nextLink = null;
-            for (var j = 0; j < node.ports.length; j++) {
+            for (let j = 0; j < node.ports.length; j++) {
               if (!node.ports[j].in) {
                 [nextLink] = node.ports[j].links;
               }
@@ -189,7 +197,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
             (node.extras.type === 'intent' && node.extras.alexa && node.extras.alexa.intent)
           ) {
             let nextLink = null;
-            for (var j = 0; j < node.ports.length; j++) {
+            for (let j = 0; j < node.ports.length; j++) {
               if (!node.ports[j].in) {
                 [nextLink] = node.ports[j].links;
               }
@@ -264,7 +272,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
                 }
               } else if (extras.commands) {
                 // DEPRECATE OLD COMMANDS
-                const commands = extras.commands.split('\n').filter((i) => !!i);
+                const commands = extras.commands.split('\n').filter((line) => !!line);
 
                 commands.forEach((command) => {
                   story.commands.push({
@@ -282,7 +290,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
               id: node.id,
             };
           } else if (node.extras.type === 'choicenew' || node.extras.type === 'choice') {
-            const inputs = node.extras.inputs.map((input) => input.split('\n').filter((i) => !!i));
+            const inputs = node.extras.inputs.map((input) => input.split('\n').filter((line) => !!line));
 
             story.lines[node.id] = {
               prompt: node.extras.prompt ? node.extras.prompt : true,
@@ -299,12 +307,12 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
                 }),
             };
 
-            for (const input of inputs) {
+            inputs.forEach((input) => {
               if (input.length) options.used_choices.push(input);
-            }
+            });
           } else if (node.extras.type === 'god') {
-            _.forEach(node.combines, (nc, i) => {
-              if (i === node.combines.length - 1) {
+            _.forEach(node.combines, (nc, index) => {
+              if (index === node.combines.length - 1) {
                 _.forEach(nc.ports, (cp) => {
                   if (!cp.in) {
                     if (_.find(node.ports, (np) => np.id === cp.id)) {
@@ -326,7 +334,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
             const interactions = [];
             let extras = node.extras[platform];
             if (!extras) {
-              extras = node.extras;
+              ({ extras } = node);
             }
 
             extras.choices.forEach((choice) => {
@@ -401,7 +409,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
             node.extras.type === 'combine'
           ) {
             let nextLink;
-            for (var j = 0; j < node.ports.length; j++) {
+            for (let j = 0; j < node.ports.length; j++) {
               if (!node.ports[j].in) {
                 [nextLink] = node.ports[j].links;
               }
@@ -409,9 +417,10 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
 
             let audio;
             if (node.extras.audio && validUrl.isUri(node.extras.audio)) {
-              audio = node.extras.audio;
+              ({ audio } = node.extras);
             } else if (node.extras.lines[0].audio && validUrl.isUri(node.extras.lines[0].audio)) {
-              audio = node.extras.lines[0].audio;
+              // eslint-disable-next-line
+              ({ audio } = node.extras.lines[0]);
             }
 
             story.lines[node.id] = {
@@ -420,7 +429,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
             };
           } else if (node.extras.type === 'listen') {
             let nextLink = null;
-            for (var j = 0; j < node.ports.length; j++) {
+            for (let j = 0; j < node.ports.length; j++) {
               if (!node.ports[j].in) {
                 [nextLink] = node.ports[j].links;
               }
@@ -432,7 +441,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
             };
           } else if (node.extras.type === 'retry') {
             let nextLink = null;
-            for (var j = 0; j < node.ports.length; j++) {
+            for (let j = 0; j < node.ports.length; j++) {
               if (!node.ports[j].in) {
                 [nextLink] = node.ports[j].links;
               }
@@ -443,10 +452,8 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
               nextId: getLink(nextLink),
             };
           } else if (node.extras.type === 'flow' && node.extras.diagram_id) {
-            const subflow_diagram_id = node.extras.diagram_id;
-
             let nextLink = null;
-            for (var j = 0; j < node.ports.length; j++) {
+            for (let j = 0; j < node.ports.length; j++) {
               if (!node.ports[j].in) {
                 [nextLink] = node.ports[j].links;
               }
@@ -477,6 +484,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
                 // }
                 result = await renderDiagram(user, node.extras.diagram_id, skill_id, options, depth + 1, platform);
               } catch (err) {
+                // eslint-disable-next-line
                 return resolve(500);
               }
 
@@ -492,7 +500,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
             };
           } else if (node.extras.type === 'set' || node.extras.type === 'variable') {
             let nextLink = null;
-            for (var j = 0; j < node.ports.length; j++) {
+            for (let j = 0; j < node.ports.length; j++) {
               if (!node.ports[j].in) {
                 [nextLink] = node.ports[j].links;
               }
@@ -570,7 +578,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
               if (node.extras.rawContent) {
                 raw = node.extras.rawContent;
               } else {
-                raw = node.extras.raw;
+                ({ raw } = node.extras);
               }
               if (raw) {
                 markdownstring = draftToMarkdown(raw, {
@@ -579,7 +587,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
               }
             }
 
-            for (var j = 0; j < node.ports.length; j++) {
+            for (let j = 0; j < node.ports.length; j++) {
               if (!node.ports[j].in) {
                 [nextLink] = node.ports[j].links;
               }
@@ -596,7 +604,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
             }
           } else if (node.extras.type === 'card' && node.extras.cardtype && node.extras.title) {
             let nextLink = null;
-            for (var j = 0; j < node.ports.length; j++) {
+            for (let j = 0; j < node.ports.length; j++) {
               if (!node.ports[j].in) {
                 [nextLink] = node.ports[j].links;
               }
@@ -637,7 +645,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
             };
           } else if (node.extras.type === 'capture') {
             let nextLink = null;
-            for (var j = 0; j < node.ports.length; j++) {
+            for (let j = 0; j < node.ports.length; j++) {
               if (!node.ports[j].in) {
                 [nextLink] = node.ports[j].links;
               }
@@ -723,17 +731,19 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
             let action_data;
             let selected_action;
             let selected_integration;
-            let user;
+            let innerUser;
             try {
               const { actions_data } = node.extras.integrations_data[node.extras.selected_integration];
-              ({ selected_action, user } = node.extras.integrations_data[node.extras.selected_integration]);
+              ({ selected_action, user: innerUser } = node.extras.integrations_data[node.extras.selected_integration]);
 
               action_data = actions_data[selected_action];
-              selected_integration = node.extras.selected_integration;
-            } catch (e) {}
+              ({ selected_integration } = node.extras);
+              // eslint-disable-next-line
+            } catch (e) {
+            }
 
             action_data = deepDraftToMarkdown(action_data).result;
-            if (action_data) action_data.user = user;
+            if (action_data) action_data.user = innerUser;
 
             story.lines[node.id] = {
               type: 'integrations',
@@ -803,7 +813,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
             };
           } else if (node.extras.type === 'permission') {
             let nextLink = null;
-            for (var j = 0; j < node.ports.length; j++) {
+            for (let j = 0; j < node.ports.length; j++) {
               if (!node.ports[j].in) {
                 [nextLink] = node.ports[j].links;
               }
@@ -855,7 +865,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
             };
           } else if (node.extras.type === 'module') {
             let nextLink = null;
-            for (var j = 0; j < node.ports.length; j++) {
+            for (let j = 0; j < node.ports.length; j++) {
               if (!node.ports[j].in) {
                 [nextLink] = node.ports[j].links;
               }
@@ -883,7 +893,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
             };
           } else {
             let nextLink = null;
-            for (var j = 0; j < node.ports.length; j++) {
+            for (let j = 0; j < node.ports.length; j++) {
               if (!node.ports[j].in) {
                 [nextLink] = node.ports[j].links;
               }
@@ -923,30 +933,29 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
         } else {
           render_type = options.type;
         }
-        const params = {
+        const putParams = {
           TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.${render_type}`,
           Item: story,
         };
-        docClient.put(params, (err) => {
+        docClient.put(putParams, (err) => {
           if (err) {
             writeToLogs('CREATOR_BACKEND_ERRORS', { err });
             return reject(err);
             // res.sendStatus(err.statusCode);
           }
           if (testing || options.type === 'market') {
-            resolve(200);
-          } else {
-            // Add the story to SQL as well
-            _addStory(story, (err) => {
-              if (err) {
-                writeToLogs('CREATOR_BACKEND_ERRORS', { err });
-                console.log('REET', err);
-                resolve(500);
-              } else {
-                resolve(200);
-              }
-            });
+            return resolve(200);
           }
+          // Add the story to SQL as well
+          return _addStory(story, (_err) => {
+            if (_err) {
+              writeToLogs('CREATOR_BACKEND_ERRORS', { err: _err });
+              console.log('REET', _err);
+              resolve(500);
+            } else {
+              resolve(200);
+            }
+          });
         });
       } else {
         resolve(404);

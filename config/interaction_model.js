@@ -1,4 +1,6 @@
 const _ = require('lodash');
+const randomstring = require('randomstring');
+const stringSimilarity = require('string-similarity');
 const { BUILT_IN_INTENTS_ALEXA, DEFAULT_INTENTS, INTERFACE_INTENTS, CATCH_ALL_INTENT } = require('./Constants');
 const {
   getUtterancesWithSlotNames,
@@ -10,8 +12,6 @@ const {
   getSlotType,
   findSlot,
 } = require('../app/src/intent_util');
-const randomstring = require('randomstring');
-const stringSimilarity = require('string-similarity');
 
 const addSlots = (extracted_slots, intent, existing) => {
   if (extracted_slots.length !== 0) {
@@ -180,7 +180,9 @@ exports.createInteractionModel = (req, locale) => {
       if (intent.slots.length !== 0) {
         // check if this is an capture type utterance
         const slot_dict = {};
-        intent.slots.forEach((s) => (slot_dict[s.name] = s.type));
+        intent.slots.forEach((s) => {
+          slot_dict[s.name] = s.type;
+        });
         testSlotOnlyIntent(input_object.formatted_input, slot_dict, capture_intents);
       }
     } else {
@@ -219,7 +221,6 @@ exports.createInteractionModel = (req, locale) => {
   // ALEXA "INTENT OPTIMIZATION ENGINE" FOR
   // INTENTS FIRST THEN SLOTS
   // We only need a second pass if there are choice blocks
-  let choice_count = 0;
   for (const choice of used_choices) {
     // UNION CHOICES INTO INTENTS AND SHIT HERE
     // COMPARE EACH OPTION OF THE CHOICE INPUT TO ALL EXISTING INTENTS AND THEIR SYNONYMS
@@ -257,7 +258,6 @@ exports.createInteractionModel = (req, locale) => {
     if (matched.length === 1) {
       for (const parsed_input of parsed_inputs) {
         pushToIntent(parsed_input, matched[0]);
-        choice_count++;
       }
     } else if (matched.length > 1) {
       // EDGE EDGE CASE
@@ -285,7 +285,6 @@ exports.createInteractionModel = (req, locale) => {
 
         if (best) {
           pushToIntent(parsed_input, best);
-          choice_count++;
         }
       }
     } else if (parsed_inputs.length !== 0) {
@@ -318,7 +317,6 @@ exports.createInteractionModel = (req, locale) => {
       intent.slots = extracted_slots;
 
       intents_for_amazon.push(intent);
-      choice_count++;
     }
   }
 
@@ -444,7 +442,8 @@ exports.createInteractionModel = (req, locale) => {
   LOCALE_DEFAULTS.defaults.forEach((intent) => {
     intent.samples = intent.samples.filter((s) => !LOCALE_DEFAULT_SET[intent.name].has(s));
     if (intent.keep) {
-      // amazon is retarded "Interaction model is not valid. MissingSampleUtterance: Missing sample utterance. At least one sample utterance is required."
+      // amazon is retarded "Interaction model is not valid. MissingSampleUtterance: Missing sample utterance.
+      // At least one sample utterance is required."
       // right now all the yes intents will have at least a "yes" as a sample
       intent.samples = [...intent.samples, ...intent.keep];
       delete intent.keep;

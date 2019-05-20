@@ -1,5 +1,5 @@
-const { BUILT_IN_INTENTS_GOOGLE } = require('../app/src/Constants');
 const _ = require('lodash');
+const { BUILT_IN_INTENTS_GOOGLE } = require('../app/src/Constants');
 const { getUtterancesWithSlotNames, formatName, getSlotsForKeysAndFormat } = require('../app/src/intent_util');
 
 const generateDialogflowPackage = (params) => {

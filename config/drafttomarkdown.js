@@ -1,3 +1,5 @@
+/* eslint-disable no-control-regex */
+
 const TRAILING_WHITESPACE = /[ \u0020\t]*$/;
 
 // This escapes some markdown but there's a few cases that are TODO -
@@ -26,8 +28,8 @@ const _escape = function(word) {
   if (typeof word === 'string') {
     word = word
       .replace(/"/g, '"')
-      .replace(/'/g, '\'')
-      .replace(/[\u2018\u2019]/g, '\'')
+      .replace(/'/g, "'")
+      .replace(/[\u2018\u2019]/g, "'")
       .replace(/[\u201C\u201D]/g, '"')
       .replace(/&/g, 'ampersand')
       .replace(/[\x00-\x1F\x7F-\x9F]/g, '');
@@ -57,7 +59,7 @@ const EntityItems = {};
 
 // Bit of a hack - we normally want a double newline after a block,
 // but for list items we just want one (unless it's the _last_ list item in a group.)
-const SingleNewlineAfterBlock = ['unordered-list-item', 'ordered-list-item'];
+// const SingleNewlineAfterBlock = ['unordered-list-item', 'ordered-list-item'];
 
 function isEmptyBlock(block) {
   return block.text.length === 0 && block.entityRanges.length === 0 && Object.keys(block.data || {}).length === 0;
@@ -119,7 +121,7 @@ function renderBlock(block, index, rawDraftObject, options) {
   // Render text within content, along with any inline styles/entities
   Array.from(block.text).some((character, characterIndex) => {
     // Close any entity tags that need closing
-    block.entityRanges.forEach((range, rangeIndex) => {
+    block.entityRanges.forEach((range) => {
       if (range.offset + range.length === characterIndex) {
         const entity = rawDraftObject.entityMap[range.key];
         if (customEntityItems[entity.type] || EntityItems[entity.type]) {
@@ -132,16 +134,16 @@ function renderBlock(block, index, rawDraftObject, options) {
     });
 
     // Close any inline tags that need closing
-    openInlineStyles.forEach((style, styleIndex) => {
+    openInlineStyles.forEach((style) => {
       if (style.offset + style.length === characterIndex) {
         if (customStyleItems[style.style] || StyleItems[style.style]) {
-          var styleIndex = openInlineStyles.indexOf(style);
+          const styleIndex = openInlineStyles.indexOf(style);
           // Handle nested case - close any open inline styles before closing the parent
           if (styleIndex > -1 && styleIndex !== openInlineStyles.length - 1) {
-            for (var i = openInlineStyles.length - 1; i !== styleIndex; i--) {
-              var styleItem = customStyleItems[openInlineStyles[i].style] || StyleItems[openInlineStyles[i].style];
+            for (let i = openInlineStyles.length - 1; i !== styleIndex; i--) {
+              const styleItem = customStyleItems[openInlineStyles[i].style] || StyleItems[openInlineStyles[i].style];
               if (styleItem) {
-                var trailingWhitespace = TRAILING_WHITESPACE.exec(markdownString);
+                const trailingWhitespace = TRAILING_WHITESPACE.exec(markdownString);
                 markdownString = markdownString.slice(0, markdownString.length - trailingWhitespace[0].length);
                 markdownString += styleItem.close();
                 markdownString += trailingWhitespace[0];
@@ -151,7 +153,7 @@ function renderBlock(block, index, rawDraftObject, options) {
 
           // Close the actual inline style being closed
           // Have to trim whitespace first and then re-add after because markdown can't handle leading/trailing whitespace
-          var trailingWhitespace = TRAILING_WHITESPACE.exec(markdownString);
+          const trailingWhitespace = TRAILING_WHITESPACE.exec(markdownString);
           markdownString = markdownString.slice(0, markdownString.length - trailingWhitespace[0].length);
 
           markdownString += (customStyleItems[style.style] || StyleItems[style.style]).close();
@@ -159,8 +161,8 @@ function renderBlock(block, index, rawDraftObject, options) {
 
           // Handle nested case - reopen any inline styles after closing the parent
           if (styleIndex > -1 && styleIndex !== openInlineStyles.length - 1) {
-            for (var i = openInlineStyles.length - 1; i !== styleIndex; i--) {
-              var styleItem = customStyleItems[openInlineStyles[i].style] || StyleItems[openInlineStyles[i].style];
+            for (let i = openInlineStyles.length - 1; i !== styleIndex; i--) {
+              const styleItem = customStyleItems[openInlineStyles[i].style] || StyleItems[openInlineStyles[i].style];
               if (styleItem && openInlineStyles[i].offset + openInlineStyles[i].length > characterIndex) {
                 markdownString += styleItem.open();
               } else {
@@ -175,7 +177,7 @@ function renderBlock(block, index, rawDraftObject, options) {
     });
 
     // Open any inline tags that need opening
-    block.inlineStyleRanges.forEach((style, styleIndex) => {
+    block.inlineStyleRanges.forEach((style) => {
       if (style.offset === characterIndex) {
         if (customStyleItems[style.style] || StyleItems[style.style]) {
           const styleToAdd = (customStyleItems[style.style] || StyleItems[style.style]).open();
@@ -191,7 +193,7 @@ function renderBlock(block, index, rawDraftObject, options) {
     let skip = false;
 
     // Open any entity tags that need opening
-    block.entityRanges.forEach((range, rangeIndex) => {
+    block.entityRanges.forEach((range) => {
       if (range.offset === characterIndex) {
         const entity = rawDraftObject.entityMap[range.key];
         if (customEntityItems[entity.type] || EntityItems[entity.type]) {
@@ -208,8 +210,9 @@ function renderBlock(block, index, rawDraftObject, options) {
     });
 
     // These are all the opening entity and style types being added to the markdown string for this loop
-    // we store in an array and add here because if the character is WS character, we want to hang onto it and not apply it until the next non-whitespace
-    // character before adding the markdown, since markdown doesn’t play nice with leading whitespace (eg '** bold**' is no  good, whereas ' **bold**' is good.)
+    // we store in an array and add here because if the character is WS character, we want to hang onto it and not apply it until the next
+    // non-whitespace character before adding the markdown, since markdown doesn’t play nice with leading whitespace (eg '** bold**' is no  good,
+    // whereas ' **bold**' is good.)
     if (character !== ' ' && markdownToAdd.length) {
       markdownString += markdownToAdd.map((item) => item.value).join('');
 
@@ -235,6 +238,7 @@ function renderBlock(block, index, rawDraftObject, options) {
         // Similar work has to be done for codeblocks.
       } else {
         // Escaping inline markdown characters
+        // eslint-disable-next-line
         if (options.alexa) {
           character = _escape(character);
         }
@@ -253,7 +257,7 @@ function renderBlock(block, index, rawDraftObject, options) {
   });
 
   // Close any remaining entity tags
-  block.entityRanges.forEach((range, rangeIndex) => {
+  block.entityRanges.forEach((range) => {
     if (range.offset + range.length === block.text.length) {
       const entity = rawDraftObject.entityMap[range.key];
       if (customEntityItems[entity.type] || EntityItems[entity.type]) {

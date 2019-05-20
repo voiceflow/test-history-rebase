@@ -13,7 +13,6 @@ const Intercom = require('intercom-client');
 const elasticsearch = require('elasticsearch');
 const AWS = require('aws-sdk');
 const moment = require('moment');
-const _ = require('lodash');
 const StackTrace = require('stacktrace-js');
 const s3UploadStream = require('s3-upload-stream');
 const httpAwsEs = require('http-aws-es');
@@ -126,7 +125,7 @@ const uploadResize = (x, y) =>
 const s3Stream = s3UploadStream(s3);
 
 const validateEmail = (email) => {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
 };
 
@@ -140,33 +139,29 @@ const logging_pool = new pg.Pool({
 
 const verify = (auth, cb) => {
   if (typeof auth !== 'string') {
-    cb();
-  } else {
-    const userHash = auth.substring(0, 16);
-    const token = auth.substring(16);
-    if (!token || !userHash) {
-      cb();
-    } else {
-      redisClient.get(userHash, (err, secret) => {
-        if (err || !secret) {
-          cb();
-        } else {
-          redisClient.expire(userHash, config.expire_time);
-          jwt.verify(token, secret, (err, decoded) => {
-            if (err) {
-              cb();
-            } else {
-              cb({
-                user: decoded,
-                secret,
-                userHash,
-              });
-            }
-          });
-        }
-      });
-    }
+    return cb();
   }
+  const userHash = auth.substring(0, 16);
+  const token = auth.substring(16);
+  if (!token || !userHash) {
+    return cb();
+  }
+  return redisClient.get(userHash, (err, secret) => {
+    if (err || !secret) {
+      return cb();
+    }
+    redisClient.expire(userHash, config.expire_time);
+    return jwt.verify(token, secret, (_err, decoded) => {
+      if (_err) {
+        return cb();
+      }
+      return cb({
+        user: decoded,
+        secret,
+        userHash,
+      });
+    });
+  });
 };
 
 const cloudWatchLogs = new AWS.CloudWatchLogs();

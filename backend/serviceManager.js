@@ -185,7 +185,7 @@ class ServiceManager {
    * Build all middleware
    * @returns {*}
    */
-  static buildMiddleware(clients, services, config) {
+  static buildMiddleware(clients, services) {
     const { projectManager, skillsManager, hashids } = services;
 
     const ensureLoggedIn = (req, res, next) => (req.user ? next() : res.sendStatus(401));

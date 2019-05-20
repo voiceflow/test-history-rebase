@@ -1,4 +1,5 @@
 /* global jest, expect */
+/* eslint-disable global-require */
 const _ = require('lodash');
 const Constants = require('./render_diagram.test.constants');
 
@@ -18,7 +19,7 @@ describe('Render Diagram', () => {
         }),
     }));
 
-    services.pool.query = jest.fn((_, _1, callback) => callback(null, { rows: ['row'] }));
+    services.pool.query = jest.fn((__, _1, callback) => callback(null, { rows: ['row'] }));
     services.writeToLogs.mockImplementation(() => Promise.resolve());
     services.hashids = jest.requireActual('../services').hashids;
   });
@@ -48,7 +49,7 @@ describe('Render Diagram', () => {
         callback(null);
       });
 
-      renderDiagram = require('./render_diagram').renderDiagram;
+      ({ renderDiagram } = require('./render_diagram'));
       const res = await renderDiagram(1, '03ef7b9a9d2e6681ae7ed9dbc26e648e', 1, _.cloneDeep(Constants._1_BasicSpeak_Options));
 
       expect(res).toEqual(200);
@@ -74,7 +75,7 @@ describe('Render Diagram', () => {
         callback(null);
       });
 
-      renderDiagram = require('./render_diagram').renderDiagram;
+      ({ renderDiagram } = require('./render_diagram'));
       const res = await renderDiagram(1, '03ef7b9a9d2e6681ae7ed9dbc26e648e', 1, _.cloneDeep(Constants._1_BasicSpeak_Options), 0, 'google');
 
       expect(res).toEqual(200);
@@ -103,7 +104,7 @@ describe('Render Diagram', () => {
         callback(null);
       });
 
-      renderDiagram = require('./render_diagram').renderDiagram;
+      ({ renderDiagram } = require('./render_diagram'));
       const res = await renderDiagram(1, 'a49cd2fa0daf4379b88e9b17a677c695', 1, _.cloneDeep(Constants._2_AllBlocks_Options));
 
       expect(res).toEqual(200);
@@ -129,7 +130,7 @@ describe('Render Diagram', () => {
         callback(null);
       });
 
-      renderDiagram = require('./render_diagram').renderDiagram;
+      ({ renderDiagram } = require('./render_diagram'));
       const res = await renderDiagram(1, 'a49cd2fa0daf4379b88e9b17a677c695', 1, _.cloneDeep(Constants._2_AllBlocks_Options), 0, 'google');
 
       expect(res).toEqual(200);
@@ -158,7 +159,7 @@ describe('Render Diagram', () => {
         callback(null);
       });
 
-      renderDiagram = require('./render_diagram').renderDiagram;
+      ({ renderDiagram } = require('./render_diagram'));
       const res = await renderDiagram(1, 'a4cd5c7865a951bfa65d24c1e9241e7e', 1, _.cloneDeep(Constants._3_AdvancedBlocks_Options));
 
       expect(res).toEqual(200);
@@ -168,7 +169,7 @@ describe('Render Diagram', () => {
 
   describe('Add Story', () => {
     it('should insert a new diagram', () => {
-      services.pool.query = jest.fn((_, _1, callback) => callback(null, { rows: [] }));
+      services.pool.query = jest.fn((__, _1, callback) => callback(null, { rows: [] }));
       const mockCb = jest.fn();
       const mockStory = {
         id: 1,
@@ -189,7 +190,7 @@ describe('Render Diagram', () => {
     });
 
     it('should update an existing diagram', () => {
-      services.pool.query = jest.fn((_, _1, callback) => callback(null, { rows: ['mockRow'] }));
+      services.pool.query = jest.fn((__, _1, callback) => callback(null, { rows: ['mockRow'] }));
       const mockCb = jest.fn();
       const mockStory = {
         id: 1,

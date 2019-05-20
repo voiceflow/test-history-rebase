@@ -27,33 +27,33 @@ exports.checkGactionsVersionChanged = (creds, google_id, project_id, creator_id)
     let all_google_versions;
 
     try {
-      await new Promise((resolve, reject) => {
+      await new Promise((_resolve, _reject) => {
         mkdirp(dir, (err) => {
-          if (err) reject(err);
-          else resolve();
+          if (err) _reject(err);
+          else _resolve();
         });
       });
 
       const cli_filename = /darwin/.test(process.env.npm_config_user_agent) ? 'gactions' : 'gactions_linux';
 
-      await new Promise((resolve, reject) => {
+      await new Promise((_resolve, _reject) => {
         fs.copyFile(`${GACTIONS_CLI_ROOT}/${cli_filename}`, `${dir}/gactions`, (err) => {
-          if (err) reject(err);
-          resolve();
+          if (err) _reject(err);
+          _resolve();
         });
       });
 
-      await new Promise((resolve, reject) => {
+      await new Promise((_resolve, _reject) => {
         fs.writeFile(`${dir}/creds.data`, creds, 'utf8', (err) => {
           if (err) {
-            reject(err);
+            _reject(err);
           } else {
-            resolve();
+            _resolve();
           }
         });
       });
 
-      all_google_versions = await new Promise(async (resolve, reject) => {
+      all_google_versions = await new Promise(async (_resolve, _reject) => {
         const gactions = spawn('./gactions', ['list', `--project=${google_id}`], {
           cwd: dir,
         });
@@ -65,7 +65,7 @@ exports.checkGactionsVersionChanged = (creds, google_id, project_id, creator_id)
         });
 
         gactions.stderr.on('data', (data) => {
-          reject(data.toString());
+          _reject(data.toString());
         });
 
         await delay(4000);
@@ -91,9 +91,10 @@ exports.checkGactionsVersionChanged = (creds, google_id, project_id, creator_id)
           }
         });
         if (lines.length > 1 && Object.keys(attached_google_versions) === 0) {
-          reject('Unable to verify Google Actions Version');
+          // eslint-disable-next-line
+          _reject('Unable to verify Google Actions Version');
         }
-        resolve(attached_google_versions);
+        _resolve(attached_google_versions);
       });
 
       const data = await pool.query('SELECT google_versions FROM project_members WHERE project_id = $1 AND creator_id = $2', [
@@ -133,20 +134,21 @@ exports.checkGactionsVersionChanged = (creds, google_id, project_id, creator_id)
           existing_google_versions,
         ]);
     } catch (e) {
-      await new Promise((resolve, reject) => {
+      await new Promise((_resolve, _reject) => {
         del([dir])
-          .then(resolve())
-          .catch((e) => reject(e));
+          .then(_resolve())
+          .catch((_e) => _reject(_e));
       });
       console.error(e);
+      // eslint-disable-next-line
       reject(
         `Unable to check Google Actions version! Does the project ${google_id} belong to the same google account that you used for authentication?`
       );
     }
-    await new Promise((resolve, reject) => {
+    await new Promise((_resolve, _reject) => {
       del([dir])
-        .then(resolve())
-        .catch((e) => reject(e));
+        .then(_resolve())
+        .catch((e) => _reject(e));
     });
     resolve(google_versions_to_update);
   });

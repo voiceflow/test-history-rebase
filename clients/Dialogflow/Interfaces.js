@@ -1,3 +1,5 @@
+'use strict';
+
 const uuid = require('uuid/v4');
 
 module.exports.Agent = (encoded_skill_id) => ({

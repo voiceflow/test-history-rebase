@@ -1,4 +1,4 @@
-exports.VALID_UTTERANCES = 'a-zA-Z\xC0-\xFF\u0100-\u017F\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\uFF00-\uFF9F\u4E00-\u9FAF\u3400-\u4DBF._\'\\- \\[\\]';
+exports.VALID_UTTERANCES = "a-zA-Z\xC0-\xFF\u0100-\u017F\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\uFF00-\uFF9F\u4E00-\u9FAF\u3400-\u4DBF._'\\- \\[\\]";
 
 // exports.DEFAULT_INTENTS = [
 //   {
@@ -1010,15 +1010,15 @@ exports.DEFAULT_INTENTS = {
       },
       {
         name: 'AMAZON.HelpIntent',
-        samples: ['aidez-moi', 'aider', 'aide', 'aide moi', 'assistance', 'j\'ai besoin d\'aide', 'je ne comprends pas'],
+        samples: ['aidez-moi', 'aider', 'aide', 'aide moi', 'assistance', "j'ai besoin d'aide", 'je ne comprends pas'],
       },
       {
         name: 'AMAZON.StopIntent',
-        samples: ['s\'arrêter', 'arrêter', 'arrête', 'stop', 'fin', 'cesser', 'mettre fin', 'stopper', 'mettre un terme', 'interrompre'],
+        samples: ["s'arrêter", 'arrêter', 'arrête', 'stop', 'fin', 'cesser', 'mettre fin', 'stopper', 'mettre un terme', 'interrompre'],
       },
       {
         name: 'AMAZON.YesIntent',
-        samples: ['oui', 'yep', 'ok', 'bien sûr', 'ouais', 'ouaip', 'exactement', 'correct', 'okay', 'd\'accord'],
+        samples: ['oui', 'yep', 'ok', 'bien sûr', 'ouais', 'ouaip', 'exactement', 'correct', 'okay', "d'accord"],
         keep: ['oui'],
       },
       {

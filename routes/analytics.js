@@ -1,8 +1,6 @@
 'use strict';
 
-const {
-  pool, logging_pool, hashids, writeToLogs,
-} = require('../services');
+const { pool, logging_pool, hashids, writeToLogs } = require('../services');
 
 const checkUserOwnsProject = (req, res, cb) => {
   const project_id = hashids.decode(req.params.project_id)[0];
@@ -25,7 +23,7 @@ const checkUserOwnsProject = (req, res, cb) => {
         } else {
           res.sendStatus(403);
         }
-      },
+      }
     );
   }
 };
@@ -33,10 +31,13 @@ const checkUserOwnsProject = (req, res, cb) => {
 exports.getUsersData = (req, res) => {
   checkUserOwnsProject(req, res, async () => {
     const project_id = hashids.decode(req.params.project_id)[0];
-    let live_skill_id = (await pool.query(`
+    let live_skill_id = (await pool.query(
+      `
             SELECT skill_id 
             FROM skills
-            WHERE project_id = $1 AND live = TRUE`, [project_id])).rows[0];
+            WHERE project_id = $1 AND live = TRUE`,
+      [project_id]
+    )).rows[0];
 
     if (live_skill_id) {
       live_skill_id = live_skill_id.skill_id;
@@ -55,7 +56,7 @@ exports.getUsersData = (req, res) => {
           } else {
             res.send(data.rows);
           }
-        },
+        }
       );
     } else {
       res.sendStatus(500);
@@ -66,10 +67,13 @@ exports.getUsersData = (req, res) => {
 exports.getDAU = (req, res) => {
   checkUserOwnsProject(req, res, async () => {
     const project_id = hashids.decode(req.params.project_id)[0];
-    let live_skill_id = (await pool.query(`
+    let live_skill_id = (await pool.query(
+      `
             SELECT skill_id 
             FROM skills
-            WHERE project_id = $1 AND live = TRUE`, [project_id])).rows[0];
+            WHERE project_id = $1 AND live = TRUE`,
+      [project_id]
+    )).rows[0];
 
     if (live_skill_id) {
       live_skill_id = live_skill_id.skill_id;
@@ -99,18 +103,14 @@ exports.getDAU = (req, res) => {
                     GROUP BY to_timestamp(session_begin / 1000)::date
                     ORDER BY dau_date ASC`;
       }
-      logging_pool.query(
-        dau_query,
-        [live_skill_id, from, to, -req.params.user_tz],
-        (err, data) => {
-          if (err) {
-            writeToLogs('CREATOR_BACKEND_ERRORS', { err });
-            res.sendStatus(500);
-          } else {
-            res.send(data.rows);
-          }
-        },
-      );
+      logging_pool.query(dau_query, [live_skill_id, from, to, -req.params.user_tz], (err, data) => {
+        if (err) {
+          writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+          res.sendStatus(500);
+        } else {
+          res.send(data.rows);
+        }
+      });
     } else {
       res.sendStatus(500);
     }
@@ -120,19 +120,26 @@ exports.getDAU = (req, res) => {
 exports.getStats = async (req, res) => {
   try {
     const project_id = hashids.decode(req.params.project_id)[0];
-    let live_skill_id = (await pool.query(`
+    let live_skill_id = (await pool.query(
+      `
             SELECT skill_id 
             FROM skills
-            WHERE project_id = $1 AND live = TRUE`, [project_id])).rows[0];
+            WHERE project_id = $1 AND live = TRUE`,
+      [project_id]
+    )).rows[0];
 
     if (live_skill_id) {
       live_skill_id = live_skill_id.skill_id;
       const users = (await logging_pool.query('SELECT count(DISTINCT user_id) AS count FROM sessions WHERE skill_id = $1', [live_skill_id])).rows[0];
-      const sessions = (await logging_pool.query('SELECT COUNT(DISTINCT session_id) AS count FROM sessions WHERE skill_id = $1', [live_skill_id])).rows[0];
-      const interactions = (await logging_pool.query(`
+      const sessions = (await logging_pool.query('SELECT COUNT(DISTINCT session_id) AS count FROM sessions WHERE skill_id = $1', [live_skill_id]))
+        .rows[0];
+      const interactions = (await logging_pool.query(
+        `
                 SELECT COUNT(*) AS count FROM utterances INNER JOIN 
                     (SELECT DISTINCT session_id AS sid FROM sessions WHERE sessions.skill_id = $1) 
-                AS sq ON utterances.session_id = sq.sid`, [live_skill_id])).rows[0];
+                AS sq ON utterances.session_id = sq.sid`,
+        [live_skill_id]
+      )).rows[0];
 
       res.send({
         users: users.count,

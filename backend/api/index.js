@@ -39,20 +39,20 @@ module.exports = (middleware, controllers) => {
   router.post('/user/reset/password', controllers.Authentication.resetPassword);
   router.post('/user/profile/picture', middleware.ensureLoggedIn, middleware.uploadResize512, controllers.Authentication.updateProfilePicture);
   router.get('/user/:creator_id/projects', middleware.ensureAdmin, controllers.Project.getUserProjects);
-  router.get('/decode/:id', middleware.ensureAdmin, controllers.Decode.decodeId);
-  router.get('/encode/:id', middleware.ensureAdmin, controllers.Decode.encodeId);
+  router.get('/decode/:id', middleware.ensureAdmin, controllers.decode.decodeId);
+  router.get('/encode/:id', middleware.ensureAdmin, controllers.decode.encodeId);
 
   router.get('/creator/privacy_policy', controllers.utilities.policy);
   router.get('/creator/terms', controllers.utilities.terms);
 
-  router.get('/link_account/template/:skill_id', middleware.ensureLoggedIn, controllers.LinkAccount.getTemplate);
-  router.post('/link_account/template/:skill_id', middleware.ensureLoggedIn, controllers.LinkAccount.setTemplate);
+  router.get('/link_account/template/:skill_id', middleware.ensureLoggedIn, middleware.hasSkillAccess, controllers.linkAccount.getTemplate);
+  router.post('/link_account/template/:skill_id', middleware.ensureLoggedIn, middleware.hasSkillAccess, controllers.linkAccount.setTemplate);
 
-  router.get('/email/templates', middleware.ensureLoggedIn, controllers.Email.getTemplates);
-  router.get('/email/template/:id', middleware.ensureLoggedIn, controllers.Email.getTemplate);
-  router.post('/email/template', middleware.ensureLoggedIn, controllers.Email.setTemplate);
-  router.patch('/email/template/:id', middleware.ensureLoggedIn, controllers.Email.setTemplate);
-  router.delete('/email/template/:id', middleware.ensureLoggedIn, controllers.Email.deleteTemplate);
+  router.get('/email/templates', middleware.ensureLoggedIn, controllers.email.getTemplates);
+  router.get('/email/template/:id', middleware.ensureLoggedIn, controllers.email.getTemplate);
+  router.post('/email/template', middleware.ensureLoggedIn, controllers.email.setTemplate);
+  router.patch('/email/template/:id', middleware.ensureLoggedIn, controllers.email.setTemplate);
+  router.delete('/email/template/:id', middleware.ensureLoggedIn, controllers.email.deleteTemplate);
 
   router.get('/multimodal/displays', middleware.ensureLoggedIn, controllers.Multimodal.getDisplays);
   router.get('/multimodal/display/:id', middleware.ensureLoggedIn, controllers.Multimodal.getDisplay);
@@ -71,7 +71,8 @@ module.exports = (middleware, controllers) => {
   router.post('/project/:project_id/version/:version_id/google', middleware.ensureLoggedIn, controllers.Skill.buildGoogleSkill);
   router.patch('/project/:project_id/amzn_id', middleware.ensureLoggedIn, middleware.verifyProjectAccess, controllers.Project.updateSkillId);
 
-  router.post('/test/api', middleware.ensureLoggedIn, controllers.Test.api);
+  router.post('/test/api', middleware.ensureLoggedIn, controllers.test.api);
+  router.post('/test/speak', middleware.ensureLoggedIn, middleware.ensurePaid, controllers.test.speak);
 
   // VERSION STUFF
   router.get('/skill/:skill_id', middleware.ensureLoggedIn, middleware.getProjectFromSkill, controllers.Skill.getSkill);
@@ -200,8 +201,8 @@ module.exports = (middleware, controllers) => {
   router.get('/onboard', middleware.ensureLoggedIn, controllers.Onboard.checkIfOnboarded);
   router.post('/onboard', middleware.ensureLoggedIn, controllers.Onboard.submitOnboardSurvey);
 
-  router.get('/product_updates', middleware.ensureLoggedIn, controllers.ProductUpdates.getUpdates);
-  router.post('/product_updates', middleware.ensureLoggedIn, controllers.ProductUpdates.createUpdate);
+  router.get('/product_updates', middleware.ensureLoggedIn, controllers.productUpdates.getUpdates);
+  router.post('/product_updates', middleware.ensureLoggedIn, controllers.productUpdates.createUpdate);
 
   router.get('/logs/:skill_id', middleware.ensureLoggedIn, controllers.Logs.getLogsUser);
 

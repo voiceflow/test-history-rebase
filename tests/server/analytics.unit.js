@@ -182,10 +182,7 @@ describe('analytics route unit tests', () => {
     it(`${test.method} ${test.namedPath || test.calledPath}`, async () => {
       const fixture = createFixture();
 
-      ({
-        app,
-        server,
-      } = await GetApp(fixture));
+      ({ app, server } = await GetApp(fixture));
 
       const response = await request(app)[test.method](test.calledPath);
 

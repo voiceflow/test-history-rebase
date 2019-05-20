@@ -1,0 +1,21 @@
+{
+  "exclude": [
+    "coverage/**",
+    "tests/**",
+    "scratch.js",
+    "index.js",
+    "app/**",
+    "routes/multimodal/apl_authoring_tool",
+    ".*.js",
+    "envSetup.js",
+    "commitlin.config.js",
+    "scripts/setupFile.js"
+  ],
+  "reporter": [
+    "html",
+    "text",
+    "text-summary",
+    "lcov"
+  ],
+  "all": true
+}

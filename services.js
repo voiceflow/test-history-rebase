@@ -174,7 +174,7 @@ const verify = (auth, cb) => {
 
 const cloudWatchLogs = new AWS.CloudWatchLogs();
 const writeToLogs = async (log_group, msg_details) => {
-  if (/development/.test(process.env.NODE_ENV) || process.env.NODE_ENV === 'test') {
+  if (/development|local/.test(process.env.NODE_ENV) || process.env.NODE_ENV === 'test') {
     console.log(log_group, msg_details);
     return;
   }

@@ -119,13 +119,14 @@ class SeatsCheckout extends Component {
           invites: this.props.invites,
           name: this.props.team.name,
           image: this.props.team.image,
-          plan: this.state.plan.id
+          plan: this.state.plan.id,
+          coupon: this.state.coupon
         })
 
         this.props.next(team);
       } else if (Array.isArray(this.props.members)) {
         // use the checkout to update existing members
-        await this.props.updateMembers(this.props.members, {source, plan: this.state.plan.id})
+        await this.props.updateMembers(this.props.members, {source, plan: this.state.plan.id, coupon: this.state.coupon})
         this.props.next();
       } else {
         throw new Error("Invalid Member Format")

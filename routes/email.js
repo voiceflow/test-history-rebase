@@ -6,19 +6,18 @@ exports.getTemplate = (req, res) => {
   if (isNaN(id)) {
     res.sendStatus(404);
   } else {
-    pool.query('SELECT * FROM email_templates WHERE template_id = $1 AND creator_id = $2 LIMIT 1',
-      [id, req.user.id], (err, result) => {
-        if (err) {
-          res.sendStatus(500);
-          writeToLogs('CREATOR_BACKEND_ERRORS', { err });
-          console.trace();
-        } else if (result.rows.length === 0) {
-          res.sendStatus(404);
-        } else {
-          result.rows[0].template_id = hashids.encode(result.rows[0].template_id);
-          res.send(result.rows[0]);
-        }
-      });
+    pool.query('SELECT * FROM email_templates WHERE template_id = $1 AND creator_id = $2 LIMIT 1', [id, req.user.id], (err, result) => {
+      if (err) {
+        res.sendStatus(500);
+        writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+        console.trace();
+      } else if (result.rows.length === 0) {
+        res.sendStatus(404);
+      } else {
+        result.rows[0].template_id = hashids.encode(result.rows[0].template_id);
+        res.send(result.rows[0]);
+      }
+    });
   }
 };
 
@@ -27,20 +26,26 @@ exports.getTemplates = (req, res) => {
   if (isNaN(skill_id)) {
     res.sendStatus(400);
   } else {
-    pool.query('SELECT * FROM email_templates WHERE creator_id = $1 AND (skill_id = $2 OR skill_id IS NULL)', [req.user.id, skill_id], (err, result) => {
-      if (err) {
-        res.sendStatus(500);
-        writeToLogs('CREATOR_BACKEND_ERRORS', { err });
-        console.trace();
-      } else if (result.rows && result.rows.length !== 0) {
-        res.send(result.rows.map((row) => {
-          row.template_id = hashids.encode(row.template_id);
-          return row;
-        }));
-      } else {
-        res.send([]);
+    pool.query(
+      'SELECT * FROM email_templates WHERE creator_id = $1 AND (skill_id = $2 OR skill_id IS NULL)',
+      [req.user.id, skill_id],
+      (err, result) => {
+        if (err) {
+          res.sendStatus(500);
+          writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+          console.trace();
+        } else if (result.rows && result.rows.length !== 0) {
+          res.send(
+            result.rows.map((row) => {
+              row.template_id = hashids.encode(row.template_id);
+              return row;
+            })
+          );
+        } else {
+          res.send([]);
+        }
       }
-    });
+    );
   }
 };
 
@@ -62,18 +67,18 @@ exports.setTemplate = (req, res) => {
     let match = regex.exec(req.body.content);
     while (match != null) {
       if (isVarName(match[1])) {
-		    	variables.add(match[1]);
-		    }
-		    match = regex.exec(req.body.content);
+        variables.add(match[1]);
+      }
+      match = regex.exec(req.body.content);
     }
   }
   if (req.body.subject) {
     let match = regex.exec(req.body.subject);
     while (match != null) {
       if (isVarName(match[1])) {
-		    	variables.add(match[1]);
-		    }
-		    match = regex.exec(req.body.subject);
+        variables.add(match[1]);
+      }
+      match = regex.exec(req.body.subject);
     }
   }
 
@@ -81,7 +86,8 @@ exports.setTemplate = (req, res) => {
   if (isNaN(id)) {
     pool.query(
       'INSERT INTO email_templates (creator_id, title, content, sender, variables, subject, skill_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING template_id',
-      [req.user.id, req.body.title, req.body.content, req.body.sender, variables, req.body.subject, skill_id], (err, result) => {
+      [req.user.id, req.body.title, req.body.content, req.body.sender, variables, req.body.subject, skill_id],
+      (err, result) => {
         if (err) {
           res.sendStatus(500);
           writeToLogs('CREATOR_BACKEND_ERRORS', { err });
@@ -89,12 +95,13 @@ exports.setTemplate = (req, res) => {
         } else {
           res.send(hashids.encode(result.rows[0].template_id));
         }
-      },
+      }
     );
   } else {
     pool.query(
       'UPDATE email_templates SET title = $2, content = $3, sender = $4, modified = NOW(), variables=$5, subject=$6, skill_id=$7 WHERE creator_id = $1 AND template_id = $8',
-      [req.user.id, req.body.title, req.body.content, req.body.sender, variables, req.body.subject, skill_id, id], (err) => {
+      [req.user.id, req.body.title, req.body.content, req.body.sender, variables, req.body.subject, skill_id, id],
+      (err) => {
         if (err) {
           res.sendStatus(500);
           writeToLogs('CREATOR_BACKEND_ERRORS', { err });
@@ -102,7 +109,7 @@ exports.setTemplate = (req, res) => {
         } else {
           res.sendStatus(200);
         }
-      },
+      }
     );
   }
 };

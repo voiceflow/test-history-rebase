@@ -1,3 +1,5 @@
+'use strict';
+
 const uuid = require('uuid/v4');
 
 module.exports.Agent = (encoded_skill_id) => ({
@@ -63,9 +65,10 @@ module.exports.IntentEntry = () => {
   const id = uuid();
   return {
     id,
-    data: [{
-      text: 'test',
-    },
+    data: [
+      {
+        text: 'test',
+      },
     ],
     isTemplate: false,
   };
@@ -76,14 +79,16 @@ module.exports.Intent = (id, name) => ({
   name,
   auto: true,
   contexts: [],
-  responses: [{
-    resetContexts: false,
-    affectedContexts: [],
-    parameters: [],
-    messages: [],
-    defaultResponsePlatforms: {},
-    speech: [],
-  }],
+  responses: [
+    {
+      resetContexts: false,
+      affectedContexts: [],
+      parameters: [],
+      messages: [],
+      defaultResponsePlatforms: {},
+      speech: [],
+    },
+  ],
   priority: 500000,
   webhookUsed: true,
   webhookForSlotFilling: false,

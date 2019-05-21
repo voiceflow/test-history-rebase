@@ -132,7 +132,7 @@ const tests = [
     calledPath: '/decode/foo',
     expected: {
       controllers: {
-        Decode: {
+        decode: {
           decodeId: 1,
         },
       },
@@ -148,7 +148,7 @@ const tests = [
     calledPath: '/encode/foo',
     expected: {
       controllers: {
-        Decode: {
+        decode: {
           encodeId: 1,
         },
       },
@@ -192,11 +192,12 @@ const tests = [
     calledPath: '/link_account/template/skill1',
     expected: {
       controllers: {
-        LinkAccount: {
+        linkAccount: {
           getTemplate: 1,
         },
       },
       middleware: {
+        hasSkillAccess: 1,
         ensureLoggedIn: 1,
         verify: 1,
       },
@@ -208,11 +209,12 @@ const tests = [
     calledPath: '/link_account/template/skill1',
     expected: {
       controllers: {
-        LinkAccount: {
+        linkAccount: {
           setTemplate: 1,
         },
       },
       middleware: {
+        hasSkillAccess: 1,
         ensureLoggedIn: 1,
         verify: 1,
       },
@@ -223,7 +225,7 @@ const tests = [
     calledPath: '/email/templates',
     expected: {
       controllers: {
-        Email: {
+        email: {
           getTemplates: 1,
         },
       },
@@ -239,7 +241,7 @@ const tests = [
     calledPath: '/email/template/some-id',
     expected: {
       controllers: {
-        Email: {
+        email: {
           getTemplate: 1,
         },
       },
@@ -254,7 +256,7 @@ const tests = [
     calledPath: '/email/template',
     expected: {
       controllers: {
-        Email: {
+        email: {
           setTemplate: 1,
         },
       },
@@ -270,7 +272,7 @@ const tests = [
     calledPath: '/email/template/some-id',
     expected: {
       controllers: {
-        Email: {
+        email: {
           setTemplate: 1,
         },
       },
@@ -286,7 +288,7 @@ const tests = [
     calledPath: '/email/template/some-id',
     expected: {
       controllers: {
-        Email: {
+        email: {
           deleteTemplate: 1,
         },
       },

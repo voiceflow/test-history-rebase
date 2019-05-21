@@ -1,22 +1,10 @@
-const {
-  pool,
-  hashids,
-  writeToLogs,
-} = require('./../services');
+const { pool, hashids, writeToLogs } = require('./../services');
 
-const {
-  _getGoogleAccessToken,
-  AmazonAccessToken,
-} = require('./../routes/authentication');
+const { _getGoogleAccessToken, AmazonAccessToken } = require('./../routes/authentication');
 
-const {
-  copySkill,
-  deleteProjectPromise,
-} = require('./skill_util');
+const { copySkill, deleteProjectPromise } = require('./skill_util');
 
-const {
-  checkGactionsVersionChanged,
-} = require('./../config/ga_actions');
+const { checkGactionsVersionChanged } = require('./../config/ga_actions');
 
 const _ = require('lodash')
 
@@ -36,18 +24,23 @@ exports.getProjectFromSkill = async (req, res, next) => {
 
 exports.getUserProjects = async (req, res) => {
   try {
-    const projects = (await pool.query(`
+    const projects = await pool.query(
+      `
       SELECT s.name, p.dev_version AS skill_id
       FROM projects p
       INNER JOIN team_members tm ON tm.team_id = p.team_id
       INNER JOIN skills s ON s.skill_id = p.dev_version
       WHERE tm.creator_id = $1
-    `, [req.params.creator_id]));
+    `,
+      [req.params.creator_id]
+    );
 
-    res.send(projects.rows.map((p) => ({
-      ...p,
-      skill_id: hashids.encode(p.skill_id),
-    })));
+    res.send(
+      projects.rows.map((p) => ({
+        ...p,
+        skill_id: hashids.encode(p.skill_id),
+      }))
+    );
   } catch (err) {
     writeToLogs('GET PROJECTS ERROR', err);
     if (err.status) return res.status(err.status).send(err.message);
@@ -75,28 +68,32 @@ exports.deleteProject = async (req, res) => {
 
 exports.getProjectVersions = (req, res) => {
   const project_id = hashids.decode(req.params.project_id)[0];
-  pool.query(`
+  pool.query(
+    `
       SELECT s.* FROM skills s
       INNER JOIN projects p ON p.project_id = s.project_id
       WHERE s.project_id = $1 AND p.dev_version != s.skill_id
-      ORDER BY s.created DESC`, [project_id],
-  (err, data) => {
-    if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {
-        err,
-      });
-      res.sendStatus(500);
-    } else {
-      for (let i = 0; i < data.rows.length; i++) {
-        data.rows[i].skill_id = hashids.encode(data.rows[i].skill_id);
+      ORDER BY s.created DESC`,
+    [project_id],
+    (err, data) => {
+      if (err) {
+        writeToLogs('CREATOR_BACKEND_ERRORS', {
+          err,
+        });
+        res.sendStatus(500);
+      } else {
+        for (let i = 0; i < data.rows.length; i++) {
+          data.rows[i].skill_id = hashids.encode(data.rows[i].skill_id);
+        }
+        res.send(data.rows);
       }
-      res.send(data.rows);
     }
-  });
+  );
 };
 
 exports.getLiveVersion = async (req, res) => {
   const project_id = hashids.decode(req.params.project_id)[0];
+
   const amzn_id = req.query.amzn_id
 
   let q, p
@@ -157,10 +154,18 @@ exports.updateSkillId = async (req, res) => {
     }
 
     // Update Project Member for this user
-    const update = await pool.query('UPDATE project_members SET amzn_id = $1 WHERE project_id = $2 AND creator_id = $3', [amzn_id, req.params._project_id, req.user.id]);
+    const update = await pool.query('UPDATE project_members SET amzn_id = $1 WHERE project_id = $2 AND creator_id = $3', [
+      amzn_id,
+      req.params._project_id,
+      req.user.id,
+    ]);
 
     if (update.rowCount === 0) {
-      await pool.query('INSERT INTO project_members (project_id, creator_id, amzn_id) VALUES ($1, $2, $3)', [req.params._project_id, req.user.id, amzn_id]);
+      await pool.query('INSERT INTO project_members (project_id, creator_id, amzn_id) VALUES ($1, $2, $3)', [
+        req.params._project_id,
+        req.user.id,
+        amzn_id,
+      ]);
     }
 
     res.send(amzn_id);
@@ -175,9 +180,12 @@ exports.getDevVersion = async (req, res) => {
   const project_id = hashids.decode(req.params.project_id)[0];
   try {
     // TODO ENFORCE THIS TEAM/CREATOR
-    const dev_version_data = await pool.query(`
+    const dev_version_data = await pool.query(
+      `
       SELECT s.* FROM skills s INNER JOIN projects p ON p.dev_version = s.skill_id WHERE s.project_id = $1 LIMIT 1
-    `, [project_id]);
+    `,
+      [project_id]
+    );
     if (dev_version_data.rows.length > 0) {
       dev_version_data.rows[0].skill_id = hashids.encode(dev_version_data.rows[0].skill_id);
       res.send(dev_version_data.rows[0]);
@@ -196,7 +204,7 @@ exports.render = async (req, res) => {
 
   let skill_id;
   try {
-    const project_query = (await pool.query('SELECT project_id, dev_version FROM projects WHERE project_id = $1 LIMIT 1', [project_id]));
+    const project_query = await pool.query('SELECT project_id, dev_version FROM projects WHERE project_id = $1 LIMIT 1', [project_id]);
     if (project_query.rows.length === 0) throw new Error('Invalid Project');
 
     skill_id = project_query.rows[0].dev_version;
@@ -222,7 +230,8 @@ exports.render = async (req, res) => {
         if (Object.keys(google_versions_to_update).length === 0) google_versions_to_update = null;
 
         if (google_versions_to_update) {
-          const versions = await pool.query(`
+          const versions = await pool.query(
+            `
           SELECT skill_id 
           FROM skills
           WHERE project_id = $1
@@ -230,7 +239,8 @@ exports.render = async (req, res) => {
           ORDER BY
             created DESC
           LIMIT 2`,
-          [project_id, platform]);
+            [project_id, platform]
+          );
 
           if (versions.rows.length > 0) {
             const latest_version_skill_id = versions.rows[versions.rows.length > 1 ? 1 : 0].skill_id; // Update second-to-last
@@ -252,12 +262,17 @@ exports.render = async (req, res) => {
   // Spoof the request cause we don't use it anymore
   req.params._version_id = skill_id;
 
-  copySkill(req, res, {
-    renderDiagram: true,
-  }, (new_skill_row) => {
-    const new_skill_id_decoded = hashids.decode(new_skill_row.skill_id)[0];
-    updateVersion(new_skill_id_decoded, skill_id, new_skill_row);
-  });
+  copySkill(
+    req,
+    res,
+    {
+      renderDiagram: true,
+    },
+    (new_skill_row) => {
+      const new_skill_id_decoded = hashids.decode(new_skill_row.skill_id)[0];
+      updateVersion(new_skill_id_decoded, skill_id, new_skill_row);
+    }
+  );
 };
 
 exports.updateVendorId = async (req, res) => {

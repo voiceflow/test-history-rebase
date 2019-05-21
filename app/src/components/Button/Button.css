@@ -109,12 +109,12 @@ button {
      background-color: #EFF3F6;
  }
 
- .btn-secondary.disabled {
+ .btn-secondary.btn-opaque {
      color: #fff;
      opacity: 1;
  }
 
- .btn-secondary.disabled:hover {
+ .btn-secondary.btn-opaque:hover {
      border-color: #42A5FF;
      background-color: #42A5FF;
  }
@@ -151,6 +151,26 @@ button {
      transform: scale(1.05);
  }
 
+ /* Action Button */
+ .btn-action {
+     background: #FFFFFF !important;
+     box-shadow: 0px 2px 4px rgba(17, 49, 96, 0.16), 0px 0px 0px rgba(17, 49, 96, 0.04);
+     border-radius: 90px !important;
+     width: 30px !important;
+     height: 30px !important;
+     cursor: pointer !important;
+     border: none !important;
+     transition: 0.15s all ease;
+ }
+
+ .btn-action:hover {
+     box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
+ }
+
+ .btn-action:active {
+     box-shadow: 0px 2px 4px rgba(17, 49, 96, 0.16), 0px 0px 0px rgba(17, 49, 96, 0.04);
+ }
+ 
  /* Back Button */
  .back-btn-large {
      background-image: url('/back-light.svg');
@@ -763,7 +783,7 @@ button {
     background: linear-gradient(0deg, #3087FE, #3087FE) !important;
 }
 
-.publish-btn.disabled {
+.publish-btn.btn-opaque {
     opacity: 0.65;
 }
 

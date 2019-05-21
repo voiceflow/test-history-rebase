@@ -9,15 +9,17 @@ const { pool, validateEmail } = require('./../services');
 exports.checkSkillAccess = async (skill_id, user_id) => {
   if (skill_id) {
     try {
-      const result = await pool.query(`
+      const result = await pool.query(
+        `
         SELECT 1 FROM skills s
         INNER JOIN projects p ON p.project_id = s.project_id
         INNER JOIN team_members tm ON tm.team_id = p.team_id
         WHERE s.skill_id = $1 AND tm.creator_id = $2 LIMIT 1
-      `, [skill_id, user_id]);
+      `,
+        [skill_id, user_id]
+      );
       if (result.rowCount !== 0) return true;
-    } catch (err) {
-    }
+    } catch (err) {}
   }
   return false;
 };
@@ -71,7 +73,7 @@ const repopulateTeam = async (team_id, members) => {
 
     const mod = i * 5;
     query += `($${1 + mod}, $${2 + mod}, $${3 + mod}, $${4 + mod}, $${5 + mod}), `;
-    insert.push(team_id, m.creator_id, m.status, m.email, (m.created || now));
+    insert.push(team_id, m.creator_id, m.status, m.email, m.created || now);
     emails.add(m.email);
     i++;
   });
@@ -84,15 +86,14 @@ const repopulateTeam = async (team_id, members) => {
 const createTeam = async (name, image, creator, seats = false) => {
   let result;
   if (seats) {
-    result = await pool.query(
-      'INSERT INTO teams (name, image, creator_id, seats) VALUES ($1, $2, $3, $4) RETURNING *',
-      [name, image, creator.id, seats],
-    );
+    result = await pool.query('INSERT INTO teams (name, image, creator_id, seats) VALUES ($1, $2, $3, $4) RETURNING *', [
+      name,
+      image,
+      creator.id,
+      seats,
+    ]);
   } else {
-    result = await pool.query(
-      'INSERT INTO teams (name, image, creator_id) VALUES ($1, $2, $3) RETURNING *',
-      [name, image, creator.id],
-    );
+    result = await pool.query('INSERT INTO teams (name, image, creator_id) VALUES ($1, $2, $3) RETURNING *', [name, image, creator.id]);
   }
   return result.rows[0];
 };

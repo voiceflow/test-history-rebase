@@ -43,7 +43,7 @@ describe('analytics controller unit tests', () => {
     expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
 
     const action = services.responseBuilder.respond.args[0][1];
-    await action();
+    expect(await action()).to.eql(['stuff']);
 
     expect(services.analyticsManager.getUsersData.args[0][0]).to.eql(123);
     expect(services.projectManager.getProjectIdFromReq.args[0][0]).to.eql(req);
@@ -70,9 +70,9 @@ describe('analytics controller unit tests', () => {
         id: 2,
       },
       params: {
-        from: 10,
-        to: 20,
-        user_tz: 5,
+        from: '10',
+        to: '20',
+        user_tz: '5',
       },
     };
     const res = {};
@@ -85,7 +85,7 @@ describe('analytics controller unit tests', () => {
     expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
 
     const action = services.responseBuilder.respond.args[0][1];
-    await action();
+    expect(await action()).to.eql(['stuff']);
 
     expect(services.analyticsManager.getDAU.args[0][0]).to.eql(123);
     expect(services.analyticsManager.getDAU.args[0][1]).to.eql(10);
@@ -125,7 +125,7 @@ describe('analytics controller unit tests', () => {
     expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
 
     const action = services.responseBuilder.respond.args[0][1];
-    await action();
+    expect(await action()).to.eql(['stuff']);
 
     expect(services.analyticsManager.getStats.args[0][0]).to.eql(123);
     expect(services.projectManager.getProjectIdFromReq.args[0][0]).to.eql(req);

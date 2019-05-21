@@ -1,6 +1,6 @@
 import update from "immutability-helper";
 import axios from "axios";
-import { getSlotsForKeys } from "../util";
+import { getSlotsForKeys } from "../intent_util";
 import { getIntentSlots } from "../Helper";
 import { setError } from "ducks/modal";
 import _ from "lodash";

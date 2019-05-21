@@ -49,6 +49,7 @@ exports[`Canvas render canvas 1`] = `
       copyFlow={[Function]}
       deleteFlow={[Function]}
       enterFlow={[Function]}
+      openTab={[Function]}
       type_counter={Object {}}
       unfocus={[Function]}
     />

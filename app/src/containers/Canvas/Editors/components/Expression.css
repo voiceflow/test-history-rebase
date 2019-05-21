@@ -46,10 +46,6 @@
 	/*color: #FFF;*/
 }
 
-.operator {
-	color: #FFF;
-}
-
 .expression-block.plus,.expression-block.minus{
 	background-color: #81C784;
 	border-color: #4CAF50;

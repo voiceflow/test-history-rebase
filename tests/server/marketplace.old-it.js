@@ -1,8 +1,11 @@
+'use strict';
+
+/* eslint-disable */
 /* Uncomment out without beta */
 
 require('dotenv').config({ path: './.env.test' });
 
-const { expect } = require('chai');
+// const { expect } = require('chai');
 
 const request = require('supertest');
 const { pool, hashids } = require('./../../services');
@@ -13,7 +16,7 @@ const GetApp = require('../getAppForTest');
 const TEAM_ID = team_hash.encode(1);
 const getTemplate = new Promise(async (resolve, reject) => {
   try {
-    const { rows } = await pool.query('SELECT module_id FROM modules WHERE type = \'TEMPLATES\' ORDER BY template_index DESC LIMIT 1');
+    const { rows } = await pool.query("SELECT module_id FROM modules WHERE type = 'TEMPLATES' ORDER BY template_index DESC LIMIT 1");
     if (rows.length === 0) {
       resolve(null);
     } else {
@@ -25,14 +28,14 @@ const getTemplate = new Promise(async (resolve, reject) => {
 });
 
 describe.skip('Marketplace', () => {
-  let module_id;
+  let moduleId;
   let token;
-  let project_id;
-  let decoded_project_id;
-  let skill_id;
-  let decoded_skill_id;
-  let module_project_id;
-  let decoded_module_project_id;
+  let projectId;
+  let decodedProjectId;
+  let skillId;
+  let decodedSkillId;
+  let moduleProjectId;
+  let decodedModuleProjectId;
 
   let app;
   let server;
@@ -41,9 +44,9 @@ describe.skip('Marketplace', () => {
     ({ app, server } = await GetApp());
 
     try {
-      module_id = await getTemplate;
+      moduleId = await getTemplate;
     } catch (e) {
-      module_id = null;
+      moduleId = null;
     }
 
     // Get Authentication Token
@@ -62,7 +65,7 @@ describe.skip('Marketplace', () => {
         return;
         // Create a new project
         await request(app)
-          .post(`/team/${TEAM_ID}/copy/module/${hashids.encode(module_id)}`)
+          .post(`/team/${TEAM_ID}/copy/module/${hashids.encode(moduleId)}`)
           .send({
             name: 'Marketplace Test',
             locales: ['en-US'],
@@ -70,22 +73,22 @@ describe.skip('Marketplace', () => {
           .set('cookie', `auth=${token}`)
           .expect(200)
           .expect((res) => {
-            if (!('skill_id' in res.body)) throw new Error('missing id');
+            if (!('skillId' in res.body)) throw new Error('missing id');
           })
           .then((res) => {
-            skill_id = res.body.skill_id;
-            decoded_skill_id = hashids.decode(skill_id)[0];
-            project_id = res.body.project_id;
-            decoded_project_id = hashids.decode(project_id)[0];
+            skillId = res.body.skill_id;
+            decodedSkillId = hashids.decode(skillId)[0];
+            projectId = res.body.project_id;
+            decodedProjectId = hashids.decode(projectId)[0];
 
             // Saves a module
             request(app)
-              .patch(`/marketplace/cert/${project_id}`)
+              .patch(`/marketplace/cert/${projectId}`)
               .send({
                 title: 'Call to Arms',
                 descr: 'This is a call to arms',
                 creator_id: 1,
-                tags: '[\'ORDERING\']',
+                tags: "['ORDERING']",
                 type: 'FLOW',
                 overview: 'Gareth Emery remixed by Cosmic Gate',
                 module_icon: '',
@@ -96,11 +99,11 @@ describe.skip('Marketplace', () => {
               .set('cookie', `auth=${token}`)
               .expect(200)
               .then(async (res) => {
-                // Retrieve module_project_id for future use
+                // Retrieve moduleProjectId for future use
                 try {
-                  const module_data = (await pool.query('SELECT * FROM modules WHERE project_id = $1', [decoded_project_id])).rows;
-                  module_project_id = module_data[0].project_id;
-                  decoded_module_project_id = hashids.decode(module_project_id)[0];
+                  const module_data = (await pool.query('SELECT * FROM modules WHERE projectId = $1', [decodedProjectId])).rows;
+                  moduleProjectId = module_data[0].project_id;
+                  decodedModuleProjectId = hashids.decode(moduleProjectId)[0];
                 } catch (err) {
                   console.log(err);
                 }
@@ -125,7 +128,7 @@ describe.skip('Marketplace', () => {
     });
     // it('requests certification', async (done) => {
     //   request(app)
-    //   .post(`/marketplace/cert/${skill_id}/${project_id}`)
+    //   .post(`/marketplace/cert/${skillId}/${projectId}`)
     //   .set('cookie', `auth=${token}`)
     //   .expect(200)
     //   .end(async (err, res) => {
@@ -133,10 +136,10 @@ describe.skip('Marketplace', () => {
     //     let request_data = (await pool.query(`
     //       SELECT *
     //       FROM modules
-    //       INNER JOIN skills ON modules.module_project_id = skills.project_id
-    //       WHERE modules.project_id = $1
-    //       ORDER BY skills.skill_id DESC
-    //     `, [decoded_project_id])).rows
+    //       INNER JOIN skills ON modules.moduleProjectId = skills.projectId
+    //       WHERE modules.projectId = $1
+    //       ORDER BY skills.skillId DESC
+    //     `, [decodedProjectId])).rows
     //     expect(request_data[0].cert_requested).not.toBe(null)
     //     expect(request_data[0].cert_approved).to.eql(null)
     //     done()
@@ -145,7 +148,7 @@ describe.skip('Marketplace', () => {
 
     // it('updates certification', async (done) => {
     //   request(app)
-    //   .patch(`/marketplace/cert/${project_id}`)
+    //   .patch(`/marketplace/cert/${projectId}`)
     //     .send({
     //       title: 'Awaken',
     //       descr: 'Bwam',
@@ -164,8 +167,8 @@ describe.skip('Marketplace', () => {
     //       let update_data = (await pool.query(`
     //         SELECT title, descr, creator_id, tags, type, overview, module_icon, color, input, output
     //         FROM modules
-    //         WHERE project_id = $1
-    //       `, [decoded_project_id])).rows[0]
+    //         WHERE projectId = $1
+    //       `, [decodedProjectId])).rows[0]
     //       expect(update_data).to.eql({
     //         title: 'Awaken',
     //         descr: 'Bwam',

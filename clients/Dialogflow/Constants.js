@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports.BUILT_IN_EXAMPLES = {
   'zh-HK': {
     '@sys.date-time': '上午十二',
@@ -811,12 +813,7 @@ module.exports.WelcomeIntent = {
         {
           type: 0,
           lang: 'en',
-          speech: [
-            'Hi! How are you doing?',
-            'Hello! How can I help you?',
-            'Good day! What can I do for you today?',
-            'Greetings! How can I assist?',
-          ],
+          speech: ['Hi! How are you doing?', 'Hello! How can I help you?', 'Good day! What can I do for you today?', 'Greetings! How can I assist?'],
         },
       ],
       defaultResponsePlatforms: {},

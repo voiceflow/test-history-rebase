@@ -12,7 +12,6 @@ const _ = require('lodash');
 
 const api = require('./api');
 const pjson = require('../package.json');
-const log = require('../logger');
 
 const name = pjson.name.replace(/^@[a-zA-Z0-9-]+\//g, '');
 
@@ -21,7 +20,6 @@ prettyStdOut.pipe(process.stdout);
 
 const ERROR_RESPONSE_MS = 10000;
 const WARN_RESPONSE_MS = 5000;
-
 
 /**
  * @class
@@ -64,10 +62,12 @@ class ExpressMiddleware {
 
     app.use(compression());
     app.use(bodyParser.json({ limit: '50mb' }));
-    app.use(bodyParser.urlencoded({
-      limit: '50mb',
-      extended: true,
-    }));
+    app.use(
+      bodyParser.urlencoded({
+        limit: '50mb',
+        extended: true,
+      })
+    );
     app.use(cookieParser());
     app.enable('trust proxy');
     app.disable('x-powered-by');

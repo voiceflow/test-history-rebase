@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Dropdown, Input, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import { connect } from "react-redux";
 import Select from 'react-select';
+import { parse } from 'mathjs';
 import { openTab } from 'ducks/user'
 import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect'
 import VariableText from './VariableText';
@@ -20,7 +21,7 @@ class Expression extends Component {
 
         this.state = {
             expression: this.props.expression,
-            dropdownOpen: false
+            dropdownOpen: false,
         }
 
         this.handleValue = this.handleValue.bind(this);
@@ -150,9 +151,16 @@ class Expression extends Component {
 
     handleAdvance(raw) {
         if(this.state.expression.type!=='advance')return;
+        raw.error = false;
+        if(raw.text !== ''){
+          try {
+            parse(raw.text.split("\n"))
+          }catch(e){
+            raw.error = true
+          }
+        }
         let expression = this.state.expression;
         expression.value = raw;
-
         this.setState({
             expression: expression
         }, this.props.onUpdate);
@@ -233,7 +241,7 @@ class Expression extends Component {
                     <div className="d-flex">
                         <div className="w-100">
                           <VariableText
-                              className="editor form-control auto-height"
+                              className={`editor form-control auto-height ${this.state.expression.value.error?"is-invalid":""}`}
                               raw={this.state.expression.value}
                               placeholder={<React.Fragment>{`Enter your expression here.`}</React.Fragment>}
                               variables={this.props.variables}

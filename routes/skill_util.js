@@ -415,6 +415,7 @@ const renderSkill = async (skill, user) => {
         used_choices,
         intents,
         slots,
+        coppa: skill.copa
       },
       undefined,
       skill.platform

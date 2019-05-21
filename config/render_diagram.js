@@ -849,6 +849,11 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
                 if (!permission.selected.value.startsWith('UNOFFICIAL')) {
                   options.permissions.add(permission.selected.value);
                 }
+
+                // temporary check since transaction API only works on COPPA kids skills
+                if (permission.transaction && !options.coppa) {
+                  delete permission.transaction;
+                }
               }
             });
 

@@ -39,7 +39,7 @@ class Permission extends Component {
                             className="map-box"
                             styles={selectStyles}
                             components={{ Option: variableComponent }}
-                            value={this.props.map_to}
+                            value={this.props.permission && this.props.permission.map_to}
                             onChange={this.props.selectVariableToMap}
                             placeholder={this.props.variables.length > 0 ? "Variable" : "No Variables Exist [!]"}
                             options={Array.isArray(this.props.variables) ? this.props.variables.map((variable, idx) => {
@@ -53,8 +53,8 @@ class Permission extends Component {
                 )
             }else if(this.props.selected.label === "Product"){
                 let consumable
-                if(this.props.product){
-                    let product = this.props.products.find(p => p.id === this.props.product.value)
+                if(this.props.permission && this.props.permission.product){
+                    let product = this.props.products.find(p => p.id === this.props.permission.product.value)
                     if(product && product.data && product.data.type === 'CONSUMABLE'){
                         consumable = true
                     }
@@ -65,7 +65,7 @@ class Permission extends Component {
                     <Select
                         classNamePrefix="select-box"
                         className="map-box"
-                        value={this.props.product}
+                        value={this.props.permission && this.props.permission.product}
                         onChange={this.props.selectProductToMap}
                         placeholder={this.props.products.length > 0 ? "Select Product" : "No Products Exist"}
                         options={Array.isArray(this.props.products) ? this.props.products.map(p => {
@@ -74,6 +74,21 @@ class Permission extends Component {
                     />
                     {this.props.kids && <>
                       <label>(Kids Product) Map Purchase Status To</label>
+                      <Select
+                          classNamePrefix="variable-box"
+                          styles={ selectStyles }
+                          components={{Option: variableComponent}}
+                          className="map-box"
+                          value={this.props.permission && this.props.permission.transaction}
+                          onChange={this.props.selectTransactionMap}
+                          placeholder={this.props.variables.length > 0 ? "Variable" : "No Variables Exist [!]"}
+                          options={Array.isArray(this.props.variables) ? this.props.variables.map((variable, idx) => {
+                              if (idx === this.props.variables.length - 1) {
+                                  return { label: variable, value: variable, openVar: this.props.openVarTab }
+                              }
+                              return { label: '{' + variable + '}', value: variable }
+                          }) : null}
+                      />
                     </>}
                     {consumable && <React.Fragment>
                         <label>Map Purchase Quantity To</label>
@@ -82,7 +97,7 @@ class Permission extends Component {
                             styles={ selectStyles }
                             components={{Option: variableComponent}}
                             className="map-box"
-                            value={this.props.map_to}
+                            value={this.props.permission && this.props.permission.map_to}
                             onChange={this.props.selectVariableToMap}
                             placeholder={this.props.variables.length > 0 ? "Variable" : "No Variables Exist [!]"}
                             options={Array.isArray(this.props.variables) ? this.props.variables.map((variable, idx) => {

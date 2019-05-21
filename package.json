@@ -145,6 +145,7 @@
     "debug": "node --inspect-brk index.js",
     "dev": "concurrently --kill-others-on-fail \"npm run local\" \"npm run client\"",
     "elasticsearch": "elasticsearch",
+    "install-client": "cd app && yarn",
     "integration": "NODE_ENV=test node tests/server/init-old-integration.js && NODE_ENV=test mocha --use_strict --exit \"tests/**/*.it.js\"",
     "lint": "fixpack && eslint \"**/*.js\" --fix",
     "local": "NODE_ENV=local node index.js",

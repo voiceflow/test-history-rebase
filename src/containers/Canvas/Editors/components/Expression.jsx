@@ -154,9 +154,9 @@ class Expression extends Component {
         raw.error = false;
         if(raw.text !== ''){
           try {
-            parse(raw.text.split("\n"))
+            parse(raw.text.replace(/\{([a-zA-Z0-9_]*)\}/g, "v['$1']").split("\n"))
           }catch(e){
-            raw.error = true
+            raw.error = e.message
           }
         }
         let expression = this.state.expression;
@@ -247,7 +247,8 @@ class Expression extends Component {
                               variables={this.props.variables}
                               updateRaw={this.handleAdvance}
                           />
-                          <small className="text-muted pb-3 pt-2 d-block">{'Press "{" to add variables'}</small>
+                          <small className="text-muted pt-2 d-block">{'Press "{" to add variables'}</small>
+                          <div className="invalid-feedback">{this.state.expression.value.error}</div>
                         </div>
                         {dropdown}
                     </div>

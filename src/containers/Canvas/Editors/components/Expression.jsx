@@ -241,7 +241,7 @@ class Expression extends Component {
                     <div className="d-flex">
                         <div className="w-100">
                           <VariableText
-                              className={`editor form-control auto-height ${this.state.expression.value.error?"is-invalid":""}`}
+                              className={`editor form-control auto-height oneline ${this.state.expression.value.error?"is-invalid":""}`}
                               raw={this.state.expression.value}
                               placeholder={<React.Fragment>{`Enter your expression here.`}</React.Fragment>}
                               variables={this.props.variables}

@@ -14,13 +14,11 @@ function hasUserPrototype(obj) {
 }
 
 const createFixture = () => {
-  const { middleware, controllers } = (new ServiceManager());
+  const { middleware, controllers } = new ServiceManager();
 
   const fixture = {
-    start: () => {
-    },
-    stop: () => {
-    },
+    start: () => {},
+    stop: () => {},
     middleware: Object.keys(middleware).reduce((result, key) => {
       result[key] = sinon.stub().callsArg(2);
       return result;
@@ -46,43 +44,43 @@ const createFixture = () => {
     }, {}),
   };
 
-
   return fixture;
 };
 
 const checkFixture = (fixture, expected, debug = false) => {
   const { middleware, controllers } = fixture;
 
-  Object.keys(controllers)
-    .forEach((controller) => Object.keys(controllers[controller])
-      .forEach((method) => {
-        const expectedValue = _.get(expected, `controllers.${controller}.${method}`);
+  Object.keys(controllers).forEach((controller) =>
+    Object.keys(controllers[controller]).forEach((method) => {
+      const expectedValue = _.get(expected, `controllers.${controller}.${method}`);
 
-        if (debug || (expectedValue || 0) !== controllers[controller][method].callCount) {
-          log.warn(`Expect controllers.${controller}.${method} to be called ${expectedValue || 0}, actual: ${controllers[controller][method].callCount}`);
-        }
-
-        if (expectedValue) {
-          expect(controllers[controller][method].callCount).to.eql(expectedValue);
-        } else {
-          expect(controllers[controller][method].callCount).to.eql(0);
-        }
-      }));
-
-  Object.keys(middleware)
-    .forEach((method) => {
-      const expectedValue = _.get(expected, `middleware.${method}`);
-
-      if (debug || (expectedValue || 0) !== middleware[method].callCount) {
-        log.warn(`Expect middleware.${method} to be called: ${expectedValue || 0}, actual: ${middleware[method].callCount}`);
+      if (debug || (expectedValue || 0) !== controllers[controller][method].callCount) {
+        log.warn(
+          `Expect controllers.${controller}.${method} to be called ${expectedValue || 0}, actual: ${controllers[controller][method].callCount}`
+        );
       }
 
       if (expectedValue) {
-        expect(middleware[method].callCount).to.eql(expectedValue);
+        expect(controllers[controller][method].callCount).to.eql(expectedValue);
       } else {
-        expect(middleware[method].callCount).to.eql(0);
+        expect(controllers[controller][method].callCount).to.eql(0);
       }
-    });
+    })
+  );
+
+  Object.keys(middleware).forEach((method) => {
+    const expectedValue = _.get(expected, `middleware.${method}`);
+
+    if (debug || (expectedValue || 0) !== middleware[method].callCount) {
+      log.warn(`Expect middleware.${method} to be called: ${expectedValue || 0}, actual: ${middleware[method].callCount}`);
+    }
+
+    if (expectedValue) {
+      expect(middleware[method].callCount).to.eql(expectedValue);
+    } else {
+      expect(middleware[method].callCount).to.eql(0);
+    }
+  });
 };
 
 module.exports = {

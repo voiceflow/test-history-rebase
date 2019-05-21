@@ -16,7 +16,7 @@ const tests = [
     calledPath: '/test/api',
     expected: {
       controllers: {
-        Test: {
+        test: {
           api: 1,
         },
       },

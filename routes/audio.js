@@ -72,7 +72,8 @@ const uploadConcatPreviews = (dir, files, env) => {
         writeToLogs('CREATOR_BACKEND_ERRORS', { err });
 
         return;
-      } if (!data) {
+      }
+      if (!data) {
         return;
       }
       const base64data = new Buffer(data, 'binary');
@@ -127,7 +128,7 @@ exports.concat = async (req, res) => {
   let count = 0;
 
   const { lines } = req.body;
-  for (let line of lines) {
+  for (const line of lines) {
     const key = path.basename(line);
     const file = fs.createWriteStream(path.join(dir, key));
     files.push(path.join(dir, key));
@@ -166,7 +167,8 @@ const uploadConcatLines = (dir, files, res) => {
       if (err) {
         writeToLogs('CREATOR_BACKEND_ERRORS', { err });
         return;
-      } if (!data) {
+      }
+      if (!data) {
         return;
       }
       const base64data = new Buffer(data, 'binary');
@@ -192,7 +194,6 @@ const uploadConcatLines = (dir, files, res) => {
   command.audioBitrate('48k');
   command.audioFrequency(16000);
 };
-
 
 exports.getVoices = (req, res) => {
   polly.describeVoices((err, data) => {

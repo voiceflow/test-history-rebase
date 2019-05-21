@@ -4,9 +4,7 @@ const crypto = require('crypto');
 const uuid = require('uuid/v4');
 const axios = require('axios');
 const validUrl = require('valid-url');
-const {
-  OAuth2Client,
-} = require('google-auth-library');
+const { OAuth2Client } = require('google-auth-library');
 const del = require('del');
 const { spawn } = require('child_process');
 
@@ -18,15 +16,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const { createPersonalTeam } = require('./team_util');
 const Mail = require('./mail.js');
-const {
-  jwt,
-  pool,
-  redisClient,
-  config,
-  hashids,
-  writeToLogs,
-  analytics,
-} = require('./../services');
+const { jwt, pool, redisClient, config, hashids, writeToLogs, analytics } = require('./../services');
 
 const GACTIONS_CLI_ROOT = './gactions_cli';
 
@@ -83,25 +73,28 @@ const trackUser = async (data, analytics_data) => {
   }
 
   if (process.env.NODE_ENV !== 'test') {
-    analytics.identify({
-      userId: id,
-      traits: {
-        email: data.email,
-        name: data.name,
-        admin: data.admin,
-        type: analytics_data.platform,
-        city,
-        country,
-        os: analytics_data.device.os,
-        browser: analytics_data.device.browser,
-        created: data.created.toISOString().substring(0, 10),
-      },
-    }, () => {
-      analytics.track({
+    analytics.identify(
+      {
         userId: id,
-        event: 'Signed up',
-      });
-    });
+        traits: {
+          email: data.email,
+          name: data.name,
+          admin: data.admin,
+          type: analytics_data.platform,
+          city,
+          country,
+          os: analytics_data.device.os,
+          browser: analytics_data.device.browser,
+          created: data.created.toISOString().substring(0, 10),
+        },
+      },
+      () => {
+        analytics.track({
+          userId: id,
+          event: 'Signed up',
+        });
+      }
+    );
   }
 };
 
@@ -111,7 +104,7 @@ function generateUserEmailLink(user_id, name, body, mailFunction, prefix, max_re
     if (err) {
       if (res) res.status(500).send(err);
     } else if (token) {
-      const last_num = (token.substr(-1) * 1);
+      const last_num = token.substr(-1) * 1;
       if (last_num > max_retry) {
         // too many requests
         if (res) res.sendStatus(409);
@@ -184,7 +177,8 @@ async function googleAuth(token, cb) {
 // googleAuth().catch(console.error);
 
 async function fbAuth(data, cb) {
-  axios.get(`https://graph.facebook.com/debug_token?input_token=${data.code}&access_token=${process.env.APP_TOKEN}`)
+  axios
+    .get(`https://graph.facebook.com/debug_token?input_token=${data.code}&access_token=${process.env.APP_TOKEN}`)
     .then((res) => {
       cb(res);
     })
@@ -197,41 +191,43 @@ async function fbAuth(data, cb) {
 }
 
 // Promisfied version of Acccess Token (slowly replace existing ones)
-const AmazonAccessToken = (user_id) => new Promise((resolve, reject) => {
-  redisClient.get(`t_${user_id}`, (err, token) => {
-    if (err) return reject(err);
-    if (!token) return resolve(null);
+const AmazonAccessToken = (user_id) =>
+  new Promise((resolve, reject) => {
+    redisClient.get(`t_${user_id}`, (err, token) => {
+      if (err) return reject(err);
+      if (!token) return resolve(null);
 
-    token = JSON.parse(token);
-    if (token.expire < Date.now()) {
-      axios.post('https://api.amazon.com/auth/o2/token', {
-        grant_type: 'refresh_token',
-        client_id: process.env.CONFIG_CLIENT_ID,
-        client_secret: process.env.CONFIG_CLIENT_SECRET,
-        refresh_token: token.refresh_token,
-      })
-        .then((result) => {
-          const data = {
-            expire: Date.now() + (result.data.expires_in * 1000),
-            access_token: result.data.access_token,
-            refresh_token: result.data.refresh_token,
-          };
-          redisClient.set(`t_${user_id}`, JSON.stringify(data), (err) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(data.access_token);
-            }
+      token = JSON.parse(token);
+      if (token.expire < Date.now()) {
+        axios
+          .post('https://api.amazon.com/auth/o2/token', {
+            grant_type: 'refresh_token',
+            client_id: process.env.CONFIG_CLIENT_ID,
+            client_secret: process.env.CONFIG_CLIENT_SECRET,
+            refresh_token: token.refresh_token,
+          })
+          .then((result) => {
+            const data = {
+              expire: Date.now() + result.data.expires_in * 1000,
+              access_token: result.data.access_token,
+              refresh_token: result.data.refresh_token,
+            };
+            redisClient.set(`t_${user_id}`, JSON.stringify(data), (err) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(data.access_token);
+              }
+            });
+          })
+          .catch((err) => {
+            reject(err);
           });
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    } else {
-      resolve(token.access_token);
-    }
+      } else {
+        resolve(token.access_token);
+      }
+    });
   });
-});
 
 // Gets the Amazon Login Access Token for Skill publishing
 const AccessToken = (user_id, cb) => {
@@ -246,15 +242,16 @@ const AccessToken = (user_id, cb) => {
     } else {
       token = JSON.parse(token);
       if (token.expire < Date.now()) {
-        axios.post('https://api.amazon.com/auth/o2/token', {
-          grant_type: 'refresh_token',
-          client_id: process.env.CONFIG_CLIENT_ID,
-          client_secret: process.env.CONFIG_CLIENT_SECRET,
-          refresh_token: token.refresh_token,
-        })
+        axios
+          .post('https://api.amazon.com/auth/o2/token', {
+            grant_type: 'refresh_token',
+            client_id: process.env.CONFIG_CLIENT_ID,
+            client_secret: process.env.CONFIG_CLIENT_SECRET,
+            refresh_token: token.refresh_token,
+          })
           .then((result) => {
             const data = {
-              expire: Date.now() + (result.data.expires_in * 1000),
+              expire: Date.now() + result.data.expires_in * 1000,
               access_token: result.data.access_token,
               refresh_token: result.data.refresh_token,
             };
@@ -303,15 +300,16 @@ const getAccessToken = async (req, res) => {
 
 const getAmazonCode = (req, res) => {
   if (req.params.code) {
-    axios.post('https://api.amazon.com/auth/o2/token', {
-      grant_type: 'authorization_code',
-      code: req.params.code,
-      client_id: process.env.CONFIG_CLIENT_ID,
-      client_secret: process.env.CONFIG_CLIENT_SECRET,
-    })
+    axios
+      .post('https://api.amazon.com/auth/o2/token', {
+        grant_type: 'authorization_code',
+        code: req.params.code,
+        client_id: process.env.CONFIG_CLIENT_ID,
+        client_secret: process.env.CONFIG_CLIENT_SECRET,
+      })
       .then((result) => {
         const data = {
-          expire: Date.now() + (result.data.expires_in * 1000),
+          expire: Date.now() + result.data.expires_in * 1000,
           access_token: result.data.access_token,
           refresh_token: result.data.refresh_token,
         };
@@ -363,24 +361,28 @@ const putSession = (req, res) => {
         const row = data.rows[0];
         bcrypt.compare(password, row.password, (err, success) => {
           if (['local', 'development_prod', 'development'].includes(process.env.NODE_ENV) || success) {
-            createLogin({
-              id: row.creator_id,
-              email: row.email,
-              name: row.name,
-              admin: row.admin,
-              first_login: false,
-              verified: row.verified,
-              image: row.image,
-              created: row.created,
-            }, {
-              platform: 'VF',
-              device: req.body.device,
-            }, (credentials) => {
-              res.status(200).send({
-                token: credentials.userHash + credentials.token,
-                user: credentials.user,
-              });
-            });
+            createLogin(
+              {
+                id: row.creator_id,
+                email: row.email,
+                name: row.name,
+                admin: row.admin,
+                first_login: false,
+                verified: row.verified,
+                image: row.image,
+                created: row.created,
+              },
+              {
+                platform: 'VF',
+                device: req.body.device,
+              },
+              (credentials) => {
+                res.status(200).send({
+                  token: credentials.userHash + credentials.token,
+                  user: credentials.user,
+                });
+              }
+            );
           } else {
             res.status(400).send('Username or Password Incorrect');
           }
@@ -434,32 +436,38 @@ const googleLogin = async (req, res) => {
                 return res.sendStatus(404);
               } else {
                 const row = data.rows[0];
-                createLogin({
-                  id: row.creator_id,
-                  email: row.email,
-                  name: row.name,
-                  admin: row.admin,
-                  first_login: false,
-                  verified: row.verified,
-                  image: row.image,
-                  created: row.created,
-                }, {
-                  platform: 'Google',
-                  device: req.body.device,
-                }, (credentials) => {
-                  res.status(200).send({
-                    token: credentials.userHash + credentials.token,
-                    user: credentials.user,
-                  });
-                  // Send verification URL
-                  // generateUserEmailLink(hashids.encode(row.creator_id), row.name, row.email, Mail.sendVerificationEmail, 'v_', 0)
-                });
+                createLogin(
+                  {
+                    id: row.creator_id,
+                    email: row.email,
+                    name: row.name,
+                    admin: row.admin,
+                    first_login: false,
+                    verified: row.verified,
+                    image: row.image,
+                    created: row.created,
+                  },
+                  {
+                    platform: 'Google',
+                    device: req.body.device,
+                  },
+                  (credentials) => {
+                    res.status(200).send({
+                      token: credentials.userHash + credentials.token,
+                      user: credentials.user,
+                    });
+                    // Send verification URL
+                    // generateUserEmailLink(hashids.encode(row.creator_id), row.name, row.email, Mail.sendVerificationEmail, 'v_', 0)
+                  }
+                );
               }
             });
           } else {
             const image = getProfile();
-            pool.query('INSERT INTO creators (name, email, gid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id',
-              [name, email, gid, image], async (err, insert_result) => {
+            pool.query(
+              'INSERT INTO creators (name, email, gid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id',
+              [name, email, gid, image],
+              async (err, insert_result) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {
                     err,
@@ -471,27 +479,32 @@ const googleLogin = async (req, res) => {
                     id: user.creator_id,
                     email,
                   });
-                  createLogin({
-                    id: user.creator_id,
-                    email,
-                    name,
-                    admin: 0,
-                    first_login: true,
-                    verified: true,
-                    image,
-                    created: (new Date()),
-                  }, {
-                    platform: 'Google',
-                    device: req.body.device,
-                  }, async (credentials) => {
-                    res.status(200).send({
-                      token: credentials.userHash + credentials.token,
-                      user: credentials.user,
-                    });
-                    // generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_', 0)
-                  });
+                  createLogin(
+                    {
+                      id: user.creator_id,
+                      email,
+                      name,
+                      admin: 0,
+                      first_login: true,
+                      verified: true,
+                      image,
+                      created: new Date(),
+                    },
+                    {
+                      platform: 'Google',
+                      device: req.body.device,
+                    },
+                    async (credentials) => {
+                      res.status(200).send({
+                        token: credentials.userHash + credentials.token,
+                        user: credentials.user,
+                      });
+                      // generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_', 0)
+                    }
+                  );
                 }
-              });
+              }
+            );
           }
         });
       }
@@ -532,24 +545,28 @@ const hasDialogflowToken = (req, res) => {
     return;
   }
 
-  pool.query(`
+  pool.query(
+    `
     SELECT dialogflow_token 
     FROM project_members
     WHERE creator_id = $1 AND project_id = $2
-  `, [req.user.id, project_id], (err, data) => {
-    if (err) {
-      console.trace(err);
-      res.status(500).send('Unable to Access Database');
-    } else if (data.rows && data.rows.length > 0 && !_.isNil(data.rows[0].dialogflow_token)) {
-      res.status(200).send({
-        token: true,
-      });
-    } else {
-      res.status(200).send({
-        token: false,
-      });
+  `,
+    [req.user.id, project_id],
+    (err, data) => {
+      if (err) {
+        console.trace(err);
+        res.status(500).send('Unable to Access Database');
+      } else if (data.rows && data.rows.length > 0 && !_.isNil(data.rows[0].dialogflow_token)) {
+        res.status(200).send({
+          token: true,
+        });
+      } else {
+        res.status(200).send({
+          token: false,
+        });
+      }
     }
-  });
+  );
 };
 
 const verifyDialogflowToken = async (req, res) => {
@@ -566,45 +583,44 @@ const verifyDialogflowToken = async (req, res) => {
 
     const parsed = JSON.parse(token);
     if (!(parsed.type === 'service_account')) {
-      throw ('Invalid credential type, should be type "service_account"');
+      throw 'Invalid credential type, should be type "service_account"';
     }
     if (!parsed.project_id) {
-      throw ('Missing project ID in credentials');
+      throw 'Missing project ID in credentials';
     }
     if (!parsed.private_key) {
-      throw ('Missing private key in credentials');
+      throw 'Missing private key in credentials';
     }
     if (!parsed.client_email === 'service_account') {
-      throw ('Missing client email in credentials');
+      throw 'Missing client email in credentials';
     }
 
-    const {
-      private_key,
-      client_email,
-    } = parsed;
+    const { private_key, client_email } = parsed;
     const google_id = parsed.project_id;
 
     const client = new DialogflowClient(google_id, private_key, client_email);
     const agents = await client.getAgent();
 
-    const UPDATE = await pool.query(`
+    const UPDATE = await pool.query(
+      `
       UPDATE project_members 
       SET dialogflow_token = $1, google_id = $2 
       WHERE project_id = $3 AND creator_id = $4`,
-    [token, google_id, project_id, req.user.id]);
+      [token, google_id, project_id, req.user.id]
+    );
 
     // If nothing was updated create new row
     if (UPDATE.rowCount === 0) {
-      await pool.query(`
+      await pool.query(
+        `
         INSERT INTO project_members (project_id, creator_id, dialogflow_token, google_id) 
         VALUES ($1, $2, $3, $4)
-      `, [project_id, req.user.id, token, google_id]);
+      `,
+        [project_id, req.user.id, token, google_id]
+      );
     }
 
-    const {
-      defaultLanguageCode,
-      supportedLanguageCodes,
-    } = agents[0];
+    const { defaultLanguageCode, supportedLanguageCodes } = agents[0];
 
     res.status(200).send({
       google_id,
@@ -627,89 +643,103 @@ const fbLogin = async (req, res) => {
   if (!name || !email || !fid || !uri) {
     res.status(400).send('Unable to Authenticate with Facebook');
   } else {
-    fbAuth({
-      uri,
-      code,
-    }, (payload, user) => {
-      if (payload.data.data.user_id !== fid) {
-        res.status(400).send('invalid token');
-      } else {
-        email = email.trim().toLowerCase();
-        pool.query('SELECT 1 FROM creators WHERE email = $1 OR fid = $2 LIMIT 1', [email, fid], (err, result) => {
-          if (err) {
-            res.status(500).send('Unable to Access Database');
-          } else if (result.rows.length !== 0) {
-            pool.query('UPDATE creators SET fid = $2 WHERE email = $1 RETURNING *', [email, fid], (err, data) => {
-              if (err) {
-                writeToLogs('CREATOR_BACKEND_ERRORS', {
-                  err,
-                });
-                res.status(500).send('Something went wrong with existing email');
-              } else {
-                const row = data.rows[0];
-                createLogin({
-                  id: row.creator_id,
-                  email: row.email,
-                  name: row.name,
-                  admin: row.admin,
-                  first_login: false,
-                  verified: row.verified,
-                  image: row.image,
-                  created: row.created,
-                }, {
-                  platform: 'Facebook',
-                  device: req.body.device,
-                }, (credentials) => {
-                  res.status(200).send({
-                    token: credentials.userHash + credentials.token,
-                    user: credentials.user,
-                  });
-                  // Send verification URL
-                  // generateUserEmailLink(hashids.encode(row.creator_id), row.name, row.email, Mail.sendVerificationEmail, 'v_', 0)
-                });
-              }
-            });
-          } else {
-            const image = getProfile();
-            pool.query('INSERT INTO creators (name, email, fid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id',
-              [name, email, fid, image], async (err, insert_result) => {
+    fbAuth(
+      {
+        uri,
+        code,
+      },
+      (payload, user) => {
+        if (payload.data.data.user_id !== fid) {
+          res.status(400).send('invalid token');
+        } else {
+          email = email.trim().toLowerCase();
+          pool.query('SELECT 1 FROM creators WHERE email = $1 OR fid = $2 LIMIT 1', [email, fid], (err, result) => {
+            if (err) {
+              res.status(500).send('Unable to Access Database');
+            } else if (result.rows.length !== 0) {
+              pool.query('UPDATE creators SET fid = $2 WHERE email = $1 RETURNING *', [email, fid], (err, data) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {
                     err,
                   });
-                  res.status(500).send('Something Went Wrong');
+                  res.status(500).send('Something went wrong with existing email');
                 } else {
-                  const user = insert_result.rows[0];
-                  await createPersonalTeam({
-                    id: user.creator_id,
-                    email,
-                  });
-                  // console.log(insert_result);
-                  createLogin({
-                    id: user.creator_id,
-                    email,
-                    name,
-                    admin: 0,
-                    first_login: true,
-                    verified: true,
-                    image,
-                    created: (new Date()),
-                  }, {
-                    platform: 'Facebook',
-                    device: req.body.device,
-                  }, async (credentials) => {
-                    res.status(200).send({
-                      token: credentials.userHash + credentials.token,
-                      user: credentials.user,
-                    });
-                    // generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_', 0)
-                  });
+                  const row = data.rows[0];
+                  createLogin(
+                    {
+                      id: row.creator_id,
+                      email: row.email,
+                      name: row.name,
+                      admin: row.admin,
+                      first_login: false,
+                      verified: row.verified,
+                      image: row.image,
+                      created: row.created,
+                    },
+                    {
+                      platform: 'Facebook',
+                      device: req.body.device,
+                    },
+                    (credentials) => {
+                      res.status(200).send({
+                        token: credentials.userHash + credentials.token,
+                        user: credentials.user,
+                      });
+                      // Send verification URL
+                      // generateUserEmailLink(hashids.encode(row.creator_id), row.name, row.email, Mail.sendVerificationEmail, 'v_', 0)
+                    }
+                  );
                 }
               });
-          }
-        });
+            } else {
+              const image = getProfile();
+              pool.query(
+                'INSERT INTO creators (name, email, fid, image) VALUES ($1, $2, $3, $4) RETURNING creator_id',
+                [name, email, fid, image],
+                async (err, insert_result) => {
+                  if (err) {
+                    writeToLogs('CREATOR_BACKEND_ERRORS', {
+                      err,
+                    });
+                    res.status(500).send('Something Went Wrong');
+                  } else {
+                    const user = insert_result.rows[0];
+                    await createPersonalTeam({
+                      id: user.creator_id,
+                      email,
+                    });
+                    // console.log(insert_result);
+                    createLogin(
+                      {
+                        id: user.creator_id,
+                        email,
+                        name,
+                        admin: 0,
+                        first_login: true,
+                        verified: true,
+                        image,
+                        created: new Date(),
+                      },
+                      {
+                        platform: 'Facebook',
+                        device: req.body.device,
+                      },
+                      async (credentials) => {
+                        res.status(200).send({
+                          token: credentials.userHash + credentials.token,
+                          user: credentials.user,
+                        });
+                        // generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_', 0)
+                      }
+                    );
+                  }
+                }
+              );
+            }
+          });
+        }
       }
-    });
+    );
   }
 };
 
@@ -736,8 +766,10 @@ const putUser = async (req, res) => {
             res.status(500).send('Password Error');
           } else {
             const image = getProfile();
-            pool.query('INSERT INTO creators (name, email, password, image) VALUES ($1, $2, $3, $4) RETURNING creator_id',
-              [name, email, hash, image], async (err, insert_result) => {
+            pool.query(
+              'INSERT INTO creators (name, email, password, image) VALUES ($1, $2, $3, $4) RETURNING creator_id',
+              [name, email, hash, image],
+              async (err, insert_result) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {
                     err,
@@ -749,28 +781,33 @@ const putUser = async (req, res) => {
                     id: user.creator_id,
                     email,
                   });
-                  createLogin({
-                    id: user.creator_id,
-                    email,
-                    name,
-                    admin: 0,
-                    first_login: true,
-                    verified: false,
-                    image,
-                    created: (new Date()),
-                  }, {
-                    platform: 'VF',
-                    device: req.body.device,
-                  }, async (credentials) => {
-                    res.status(200).send({
-                      token: credentials.userHash + credentials.token,
-                      user: credentials.user,
-                    });
-                    // Send verification URL
-                    // generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_', 0)
-                  });
+                  createLogin(
+                    {
+                      id: user.creator_id,
+                      email,
+                      name,
+                      admin: 0,
+                      first_login: true,
+                      verified: false,
+                      image,
+                      created: new Date(),
+                    },
+                    {
+                      platform: 'VF',
+                      device: req.body.device,
+                    },
+                    async (credentials) => {
+                      res.status(200).send({
+                        token: credentials.userHash + credentials.token,
+                        user: credentials.user,
+                      });
+                      // Send verification URL
+                      // generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_', 0)
+                    }
+                  );
                 }
-              });
+              }
+            );
           }
         });
       }
@@ -783,13 +820,14 @@ const getVendor = async (req, res) => {
     if (!token) {
       res.sendStatus(401);
     } else {
-      axios.request({
-        url: 'https://api.amazonalexa.com/v1/vendors',
-        method: 'GET',
-        headers: {
-          Authorization: token,
-        },
-      })
+      axios
+        .request({
+          url: 'https://api.amazonalexa.com/v1/vendors',
+          method: 'GET',
+          headers: {
+            Authorization: token,
+          },
+        })
         .then((vendor_request) => {
           const { vendors } = vendor_request.data;
 
@@ -840,7 +878,8 @@ const verifyUser = (req, res) => {
   redisClient.get(`v_${user_id}`, (err, res_token) => {
     if (err) {
       return res.status(500).send(err);
-    } if (!res_token || res_token.substring(0, 12) !== token) {
+    }
+    if (!res_token || res_token.substring(0, 12) !== token) {
       return res.sendStatus(404);
     }
     pool.query('UPDATE creators SET verified = $1 WHERE creator_id = $2', [true, decode_id], (err) => {
@@ -869,11 +908,11 @@ const reset = (req, res, reset = false) => {
   }
   decode_id = decode_id[0];
 
-
   redisClient.get(`r_${user_id}`, (err, res_token) => {
     if (err) {
       return res.status(500).send(err);
-    } if (!res_token || res_token.substring(0, 12) !== token) {
+    }
+    if (!res_token || res_token.substring(0, 12) !== token) {
       return res.sendStatus(404);
     }
     if (reset === true) {
@@ -970,22 +1009,26 @@ const verifyGoogleAccessToken = async (req, res) => {
         if (/400 Bad Request/.test(data)) {
           reject(data);
         } else {
-          fs.readFile(`${dir}/creds.data`, {
-            encoding: 'utf8',
-          }, (err, data) => {
-            if (err) {
-              reject(err);
-            } else {
-              pool.query('UPDATE creators SET gactions_token = $2 WHERE creator_id = $1', [creator_id, data], (err) => {
-                if (err) {
-                  console.trace(err);
-                  reject();
-                } else {
-                  resolve();
-                }
-              });
+          fs.readFile(
+            `${dir}/creds.data`,
+            {
+              encoding: 'utf8',
+            },
+            (err, data) => {
+              if (err) {
+                reject(err);
+              } else {
+                pool.query('UPDATE creators SET gactions_token = $2 WHERE creator_id = $1', [creator_id, data], (err) => {
+                  if (err) {
+                    console.trace(err);
+                    reject();
+                  } else {
+                    resolve();
+                  }
+                });
+              }
             }
-          });
+          );
         }
       });
     });
@@ -994,22 +1037,25 @@ const verifyGoogleAccessToken = async (req, res) => {
     res.status(500).send('Unable to verify google token');
   }
   await new Promise((resolve, reject) => {
-    del([dir]).then(resolve()).catch((e) => reject(e));
+    del([dir])
+      .then(resolve())
+      .catch((e) => reject(e));
   });
 };
 
-const _getGoogleAccessToken = (creatorId) => new Promise((resolve, reject) => {
-  pool.query('SELECT gactions_token FROM creators WHERE creator_id = $1', [creatorId], (err, data) => {
-    if (err) {
-      console.trace(err);
-      reject('Unable to Access Database');
-    } else if (data.rows && data.rows.length > 0 && !_.isNil(data.rows[0].gactions_token)) {
-      resolve(data.rows[0].gactions_token);
-    } else {
-      reject('Google Auth Token not Found');
-    }
+const _getGoogleAccessToken = (creatorId) =>
+  new Promise((resolve, reject) => {
+    pool.query('SELECT gactions_token FROM creators WHERE creator_id = $1', [creatorId], (err, data) => {
+      if (err) {
+        console.trace(err);
+        reject('Unable to Access Database');
+      } else if (data.rows && data.rows.length > 0 && !_.isNil(data.rows[0].gactions_token)) {
+        resolve(data.rows[0].gactions_token);
+      } else {
+        reject('Google Auth Token not Found');
+      }
+    });
   });
-});
 
 const deleteGoogleAccessToken = async (req, res) => {
   const creator_id = req.user.id;

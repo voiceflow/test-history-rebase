@@ -1,13 +1,9 @@
 // PRIMARY KEY TEAM_ID IS ALWAYS HASHED
 const _ = require('lodash');
-const {
-  pool, writeToLogs, hashids, decryptJSON,
-} = require('./../services');
+const { pool, writeToLogs, hashids, decryptJSON } = require('./../services');
 
 const { deleteProjectPromise } = require('./skill_util');
-const {
-  team_hash, createTeam, populateTeam, repopulateTeam,
-} = require('./team_util');
+const { team_hash, createTeam, populateTeam, repopulateTeam } = require('./team_util');
 
 const { sendTeamInvite } = require('./mail');
 
@@ -24,7 +20,7 @@ function removeDuplicates(arr) {
   return Array.from(it);
 }
 
-Date.prototype.isValid = function () {
+Date.prototype.isValid = function() {
   // An invalid date object returns NaN for getTime() and NaN is the only
   // object not strictly equal to itself.
   return this.getTime() === this.getTime();
@@ -45,10 +41,7 @@ exports.verifyTeam = async (req, res, next) => {
     if (!team_id) throw new Error('No Team');
 
     if (req.user.admin < 100) {
-      const result = await pool.query(
-        'SELECT 1 FROM team_members WHERE team_id = $1 AND creator_id = $2 LIMIT 1',
-        [team_id, req.user.id],
-      );
+      const result = await pool.query('SELECT 1 FROM team_members WHERE team_id = $1 AND creator_id = $2 LIMIT 1', [team_id, req.user.id]);
       if (result.rows.length === 0) throw new Error('No Access');
     }
 
@@ -75,7 +68,7 @@ exports.verifyProjectAccess = async (req, res, next) => {
         INNER JOIN team_members tm ON tm.team_id = t.team_id
         WHERE tm.creator_id = $1 AND p.project_id = $2 LIMIT 1  
       `,
-        [req.user.id, project_id],
+        [req.user.id, project_id]
       );
     } else {
       result = await pool.query(
@@ -83,7 +76,7 @@ exports.verifyProjectAccess = async (req, res, next) => {
         SELECT team_id FROM projects
         WHERE project_id = $1
       `,
-        [project_id],
+        [project_id]
       );
     }
     if (result.rows.length === 0) throw new Error('No Access');
@@ -99,12 +92,15 @@ exports.verifyProjectAccess = async (req, res, next) => {
 exports.addTeam = async (req, res) => {
   // INVITES DO NOT INCLUDE CREATOR
   try {
-    if (!(
-      Array.isArray(req.body.invites)
-      && req.body.invites.length < FREE_SEATS
-      && typeof req.body.name === 'string'
-      && req.body.name.length <= MAX_TEAM_NAME_LENGTH
-    )) throw { status: 400 };
+    if (
+      !(
+        Array.isArray(req.body.invites) &&
+        req.body.invites.length < FREE_SEATS &&
+        typeof req.body.name === 'string' &&
+        req.body.name.length <= MAX_TEAM_NAME_LENGTH
+      )
+    )
+      throw { status: 400 };
 
     // Ensure you'd not adding a free team if you have 3 already
     const current = await pool.query('SELECT 1 FROM team_members WHERE creator_id = $1', [req.user.id]);
@@ -148,34 +144,38 @@ const initalizeStripe = async (team, user, seats, source_id, options = {}) => {
 
     const subscription_data = {
       customer: customer.id,
-      items: [{
-        plan: STATUS_TO_PLAN[options.plan],
-        quantity: seats,
-      }],
+      items: [
+        {
+          plan: STATUS_TO_PLAN[options.plan],
+          quantity: seats,
+        },
+      ],
       metadata: {
         team_id: team.team_id,
       },
     };
 
-    if(options.coupon) subscription_data.coupon = options.coupon
+    if (options.coupon) subscription_data.coupon = options.coupon;
 
     // if(options.trial_days) subscription_data.trial_period_days = options.trial_days
     // subscription_data.trial_end = (Math.floor((Date.now()/1000)) + 10)
     subscription = await stripe.subscriptions.create(subscription_data);
 
-    return (await pool.query(`
+    return (await pool.query(
+      `
       UPDATE teams 
       SET stripe_id = $1, stripe_sub_id = $2, seats = $3, status = $4, projects = 1000, expiry = NULL 
       WHERE team_id = $5
       RETURNING *`,
-    [customer.id, subscription.id, seats, options.plan, team.team_id])).rows[0];
+      [customer.id, subscription.id, seats, options.plan, team.team_id]
+    )).rows[0];
   } catch (err) {
     // clean up and delete the customer since the subscription failed
     if (customer && customer.id) {
       stripe.customers.del(customer.id);
     }
 
-    throw ((err && err.message) || err);
+    throw (err && err.message) || err;
   }
 };
 
@@ -202,24 +202,17 @@ const updateSubscription = async (team, seats, status) => {
       });
     }
   } catch (err) {
-    throw ((err && err.message) || err);
+    throw (err && err.message) || err;
   }
 
-  return (await pool.query(
-    'UPDATE teams SET seats = $1, status = $2, projects = 1000 WHERE team_id = $3 RETURNING *',
-    [seats, status, team.team_id],
-  )).rows[0];
+  return (await pool.query('UPDATE teams SET seats = $1, status = $2, projects = 1000 WHERE team_id = $3 RETURNING *', [seats, status, team.team_id]))
+    .rows[0];
 };
 
 // Creating a paid team on the first go
 exports.checkout = async (req, res) => {
   // invites need to be array, there has to be a team name, and credit card source
-  if (!(
-    Array.isArray(req.body.invites)
-      && typeof req.body.name === 'string'
-      && req.body.name.length <= MAX_TEAM_NAME_LENGTH
-      && req.body.source
-  )) {
+  if (!(Array.isArray(req.body.invites) && typeof req.body.name === 'string' && req.body.name.length <= MAX_TEAM_NAME_LENGTH && req.body.source)) {
     return res.sendStatus(400);
   }
 
@@ -255,13 +248,13 @@ exports.getTeams = async (req, res) => {
   try {
     const teams = (await pool.query(
       'SELECT t.*, MAX(tm.status) FROM teams t INNER JOIN team_members tm ON t.team_id = tm.team_id WHERE tm.creator_id = $1 GROUP BY t.team_id',
-      [user],
+      [user]
     )).rows;
     res.send(
       teams.map((t) => {
         t.team_id = team_hash.encode(t.team_id);
         return t;
-      }),
+      })
     );
   } catch (e) {
     res.sendStatus(500);
@@ -280,7 +273,7 @@ exports.getMembers = async (req, res) => {
       LEFT JOIN creators c ON c.creator_id = tm.creator_id
       WHERE t.team_id IN (SELECT team_id FROM team_members WHERE team_id = $1 AND creator_id = $2)
     `,
-      [team_id, req.user.id],
+      [team_id, req.user.id]
     )).rows;
 
     if (members.length === 0) {
@@ -308,7 +301,8 @@ exports.updateMembers = async (req, res) => {
     }
 
     // get team info and existing team members (We're trying to get this done all in one query)
-    const members = (await pool.query(`
+    const members = (await pool.query(
+      `
       SELECT 
         tm.*, 
         t.creator_id AS admin, t.status AS team_status, t.name AS team_name,
@@ -318,7 +312,9 @@ exports.updateMembers = async (req, res) => {
       INNER JOIN teams t ON t.team_id = tm.team_id 
       LEFT JOIN creators c ON c.creator_id = tm.creator_id
       WHERE t.team_id = $1
-    `, [team_id])).rows;
+    `,
+      [team_id]
+    )).rows;
     if (members.length === 0) throw { status: 404 };
 
     // Check to ensure that user has admin access to this team
@@ -336,7 +332,7 @@ exports.updateMembers = async (req, res) => {
       seats: members[0].seats,
     };
 
-    if (!new_members.find((m) => (m.creator_id === team.creator_id && m.status === 100))) {
+    if (!new_members.find((m) => m.creator_id === team.creator_id && m.status === 100)) {
       throw { status: 400, message: 'Deleted/Modified Super Admin' };
     }
 
@@ -348,17 +344,19 @@ exports.updateMembers = async (req, res) => {
     });
 
     // if this new member is going to be already accepted, ensure they were accepted previously and create time is the same
-    if (new_members.find((m, i) => {
-      if (m.creator_id) {
-        const existing = existing_members[m.creator_id];
-        return !existing || !m.created || m.created !== existing.created;
-      } if ((m.email in existing_emails)
-        && existing_emails[m.email].creator_id && existing_emails[m.email].created) {
-        new_members[i] = existing_emails[m.email];
-        new_members[i].created = new_members[i].created;
-      }
-      return false;
-    })) {
+    if (
+      new_members.find((m, i) => {
+        if (m.creator_id) {
+          const existing = existing_members[m.creator_id];
+          return !existing || !m.created || m.created !== existing.created;
+        }
+        if (m.email in existing_emails && existing_emails[m.email].creator_id && existing_emails[m.email].created) {
+          new_members[i] = existing_emails[m.email];
+          new_members[i].created = new_members[i].created;
+        }
+        return false;
+      })
+    ) {
       throw { status: 400, message: 'Modified Existing Member (Refresh Page)' };
     }
 
@@ -369,10 +367,7 @@ exports.updateMembers = async (req, res) => {
       } else if (req.body.source) {
         team = await initalizeStripe(team, req.user, new_members.length, req.body.source.id, { plan: req.body.plan, coupon: req.body.coupon });
       } else if (team.status === 0 && team.seats <= FREE_SEATS) {
-        await pool.query(
-          'UPDATE teams SET seats = $1 WHERE team_id = $2',
-          [new_members.length, team.team_id],
-        );
+        await pool.query('UPDATE teams SET seats = $1 WHERE team_id = $2', [new_members.length, team.team_id]);
         team.seats = new_members.length;
       } else {
         throw { status: 'Invalid Payment' };
@@ -384,7 +379,9 @@ exports.updateMembers = async (req, res) => {
     const { invites, now } = await repopulateTeam(team.team_id, new_members);
 
     // send out new invites to anyone who hasn't been invited before
-    removeDuplicates(invites.filter((i) => !(i in existing_emails))).forEach((email) => sendTeamInvite(req.user.name, team.name, team.team_id, email, now));
+    removeDuplicates(invites.filter((i) => !(i in existing_emails))).forEach((email) =>
+      sendTeamInvite(req.user.name, team.name, team.team_id, email, now)
+    );
 
     team.team_id = team_hash.encode(team.team_id);
     team.members = new_members;
@@ -404,13 +401,8 @@ exports.updateMembers = async (req, res) => {
 
 exports.updatePicture = async (req, res) => {
   try {
-    const url = `https://s3.amazonaws.com/com.getstoryflow.api.images/${
-      req.file.transforms[0].key
-    }`;
-    await pool.query('UPDATE teams SET image = $1 WHERE team_id = $2', [
-      url,
-      req.params._team_id,
-    ]);
+    const url = `https://s3.amazonaws.com/com.getstoryflow.api.images/${req.file.transforms[0].key}`;
+    await pool.query('UPDATE teams SET image = $1 WHERE team_id = $2', [url, req.params._team_id]);
     res.send(url);
   } catch (err) {
     console.log(err);
@@ -430,14 +422,14 @@ exports.deleteTeam = async (req, res) => {
       LEFT JOIN projects p ON p.team_id = t.team_id
       WHERE t.creator_id = $1 AND t.team_id = $2
     `,
-      [req.user.id, team_id],
+      [req.user.id, team_id]
     );
 
     // user either doesn't have permission or team doesn't exist
     if (projects.rows.length === 0) return res.sendStatus(404);
 
     // Delete all the projects
-    for (let project of projects.rows) {
+    for (const project of projects.rows) {
       if (project.project_id) await deleteProjectPromise(project.project_id);
     }
 
@@ -445,10 +437,7 @@ exports.deleteTeam = async (req, res) => {
     if (projects.rows[0].stripe_id) await stripe.customers.del(projects.rows[0].stripe_id);
 
     // Delete team
-    await pool.query(
-      'DELETE FROM teams WHERE team_id = $1 AND creator_id = $2',
-      [team_id, req.user.id],
-    );
+    await pool.query('DELETE FROM teams WHERE team_id = $1 AND creator_id = $2', [team_id, req.user.id]);
     res.sendStatus(200);
   } catch (err) {
     writeToLogs('DELETE TEAMS', err);
@@ -468,7 +457,7 @@ exports.getBoards = async (req, res) => {
       INNER JOIN team_members tm ON tm.team_id = t.team_id
       WHERE tm.team_id = $1 AND tm.creator_id = $2
       `,
-      [team_id, req.user.id],
+      [team_id, req.user.id]
     )).rows[0];
 
     res.send(boards);
@@ -485,17 +474,13 @@ exports.updateBoard = async (req, res) => {
     if (!team_id) return res.sendStatus(404);
 
     const boards = JSON.stringify(req.body.boards);
-    await pool.query('UPDATE teams SET boards = $1 WHERE team_id = $2', [
-      boards,
-      team_id,
-    ]);
+    await pool.query('UPDATE teams SET boards = $1 WHERE team_id = $2', [boards, team_id]);
     res.sendStatus(200);
   } catch (err) {
     writeToLogs('UPDATE BOARDS', err);
     res.sendStatus(500);
   }
 };
-
 
 exports.getProjects = async (req, res) => {
   try {
@@ -511,18 +496,22 @@ exports.getProjects = async (req, res) => {
       INNER JOIN team_members tm ON tm.team_id = p.team_id
       WHERE tm.team_id = $1 AND tm.creator_id = $2
     `,
-      [team_id, req.user.id],
+      [team_id, req.user.id]
     )).rows;
 
     const formatted_projects = [];
     for (const project of projects) {
       const formatted_project = project;
-      formatted_project.isLive = (await pool.query(`
+      formatted_project.isLive =
+        (await pool.query(
+          `
         SELECT *
         FROM skills
         WHERE project_id = $1 AND creator_id = $2 AND live = TRUE
         LIMIT 1
-      `, [project.project_id, req.user.id])).rows.length > 0;
+      `,
+          [project.project_id, req.user.id]
+        )).rows.length > 0;
       formatted_project.skill_id = hashids.encode(project.skill_id);
       formatted_project.project_id = hashids.encode(project.project_id);
       formatted_projects.push(formatted_project);
@@ -550,17 +539,23 @@ exports.checkInvite = async (req, res) => {
     }
 
     // check that this user isn't already in the board
-    const test = (await pool.query(`
+    const test = (await pool.query(
+      `
       SELECT 1 FROM team_members WHERE creator_id = $1 AND team_id = $2
-    `, [req.user.id, invite.team_id])).rows;
+    `,
+      [req.user.id, invite.team_id]
+    )).rows;
 
     if (test.length !== 0) throw { status: 409, message: 'Already part of board' };
 
-    const update = await pool.query(`
+    const update = await pool.query(
+      `
       UPDATE team_members 
       SET creator_id = $1, created = $2 
       WHERE team_id = $3 AND email = $4 AND created = $5
-    `, [req.user.id, moment().unix(), invite.team_id, invite.email, invite.time]);
+    `,
+      [req.user.id, moment().unix(), invite.team_id, invite.email, invite.time]
+    );
 
     if (update.rowCount === 0) {
       throw {
@@ -589,10 +584,7 @@ exports.deleteMember = async (req, res) => {
       };
     }
     if (req.params.creator_id.toString() !== req.user.id.toString()) {
-      const admin = await pool.query(
-        'SELECT 1 FROM team_members WHERE team_id=$1 AND creator_id=$2 AND status=100',
-        [team_id, req.user.id],
-      );
+      const admin = await pool.query('SELECT 1 FROM team_members WHERE team_id=$1 AND creator_id=$2 AND status=100', [team_id, req.user.id]);
       if (admin.rowCount === 0) {
         throw {
           status: 401,
@@ -601,10 +593,7 @@ exports.deleteMember = async (req, res) => {
       }
     }
 
-    const deleted = await pool.query(
-      'DELETE FROM team_members WHERE team_id = $1 AND creator_id = $2',
-      [team_id, req.params.creator_id],
-    );
+    const deleted = await pool.query('DELETE FROM team_members WHERE team_id = $1 AND creator_id = $2', [team_id, req.params.creator_id]);
 
     if (deleted.rowCount === 0) {
       throw {
@@ -633,11 +622,14 @@ exports.getInvoice = async (req, res) => {
       };
     }
 
-    const team = (await pool.query(`
+    const team = (await pool.query(
+      `
       SELECT stripe_id FROM teams t
       INNER JOIN team_members tm ON tm.team_id = t.team_id
       WHERE t.team_id = $1 AND tm.creator_id = $2 AND tm.status = 100
-    `, [team_id, req.user.id])).rows[0];
+    `,
+      [team_id, req.user.id]
+    )).rows[0];
 
     // If unable to find a team either it doesn't exist or authorized
     if (!team) {
@@ -689,11 +681,14 @@ exports.getSource = async (req, res) => {
       };
     }
 
-    const team = (await pool.query(`
+    const team = (await pool.query(
+      `
       SELECT stripe_id FROM teams t
       INNER JOIN team_members tm ON tm.team_id = t.team_id
       WHERE t.team_id = $1 AND tm.creator_id = $2 AND tm.status = 100
-    `, [team_id, req.user.id])).rows[0];
+    `,
+      [team_id, req.user.id]
+    )).rows[0];
 
     // If unable to find a team either it doesn't exist or authorized
     if (!team) {
@@ -747,11 +742,14 @@ exports.updateSource = async (req, res) => {
       };
     }
 
-    const team = (await pool.query(`
+    const team = (await pool.query(
+      `
       SELECT t.team_id, stripe_id, stripe_sub_id, seats, t.status FROM teams t
       INNER JOIN team_members tm ON tm.team_id = t.team_id
       WHERE t.team_id = $1 AND tm.creator_id = $2 AND tm.status = 100
-    `, [team_id, req.user.id])).rows[0];
+    `,
+      [team_id, req.user.id]
+    )).rows[0];
 
     if (!team || !team.stripe_id) {
       throw {
@@ -760,10 +758,7 @@ exports.updateSource = async (req, res) => {
       };
     }
 
-    const customer = await stripe.customers.update(
-      team.stripe_id,
-      { source: req.body.source.id },
-    );
+    const customer = await stripe.customers.update(team.stripe_id, { source: req.body.source.id });
     const s = customer.sources.data[0];
 
     const source = {};
@@ -782,10 +777,12 @@ exports.updateSource = async (req, res) => {
 
         subscription = await stripe.subscriptions.create({
           customer: team.stripe_id,
-          items: [{
-            plan: STATUS_TO_PLAN[team.status],
-            quantity: subscription.quantity,
-          }],
+          items: [
+            {
+              plan: STATUS_TO_PLAN[team.status],
+              quantity: subscription.quantity,
+            },
+          ],
           metadata: {
             team_id: team.team_id,
           },
@@ -831,7 +828,11 @@ exports.webhook = async (req, res) => {
         const { status } = subscription;
         const { team_id } = subscription.metadata;
         if (previous_status && previous_status !== status && team_id) {
-          const update = await pool.query('UPDATE teams SET stripe_status = $1 WHERE team_id = $2 AND stripe_sub_id = $3', [status, team_id, subscription.id]);
+          const update = await pool.query('UPDATE teams SET stripe_status = $1 WHERE team_id = $2 AND stripe_sub_id = $3', [
+            status,
+            team_id,
+            subscription.id,
+          ]);
           if (update.rowCount === 0) return res.sendStatus(404);
         }
       } else if (req.body.type === 'customer.subscription.created') {

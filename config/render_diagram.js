@@ -35,10 +35,10 @@ const _expressionfy = (expression, depth = 0) => {
     return 0;
   }
 
-  if (expression.type == 'advance') {
-    let value = expression.value.text
+  if (expression.type === 'advance') {
+    let value = expression.value.text;
     console.log(value);
-    value=value.replace(/\{([a-zA-Z0-9_]*)\}/g,"v['$1']");
+    value = value.replace(/\{([a-zA-Z0-9_]*)\}/g, "v['$1']");
     return `$${value}$`;
   }
 

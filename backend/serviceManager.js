@@ -44,6 +44,8 @@ const {
   Test: TestController,
 } = require('../lib/controllers');
 
+const log = require('../logger');
+
 const responseBuilder = new ResponseBuilder();
 
 /**
@@ -111,7 +113,7 @@ class ServiceManager {
             res.send({ responses: [data] });
           })
           .catch((err) => {
-            console.log(err);
+            log.info(err);
           });
       },
     };
@@ -249,10 +251,10 @@ class ServiceManager {
    * @returns {{projectManager: (ProjectManager|*), analyticsManager: (AnalyticsManager|*), skillsManager: (SkillsManager|*)}}
    */
   static buildServices(config, clients) {
-    const { hashids, jwt } = require('../services'); // eslint-disable-line
+    const { hashids } = require('../services'); // eslint-disable-line
     // The above line is temporary until we finish migrating the routes.
 
-    const { pool, logging_pool, polly } = clients;
+    const { pool, logging_pool, polly, jwt } = clients;
 
     const projectManager = new ProjectManager({
       pool,

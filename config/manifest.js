@@ -1,3 +1,5 @@
+const log = require('../logger');
+
 exports.createManifest = (r, encoded_id) => {
   if (r.invocations && Array.isArray(r.invocations.value)) {
     r.invocations = r.invocations.value.map((item) => `Alexa, ${item}`);
@@ -84,7 +86,7 @@ exports.createManifest = (r, encoded_id) => {
       ret.manifest.events = JSON.parse(r.alexa_events);
       delete ret.manifest.events.regions;
     } catch (err) {
-      console.log('INVALID JSON');
+      log.error(`INVALID JSON for encoded ID: ${encoded_id}`);
     }
   }
 

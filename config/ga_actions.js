@@ -12,6 +12,8 @@ const { spawn } = require('child_process');
 const { delay } = require('../util');
 const { pool } = require('./../services');
 
+const log = require('../logger');
+
 const VALID_VERSION_REGEXES = [new RegExp('Version (\\d+)'), new RegExp('.-\\[([^\\[\\]]+)\\]\\S+')];
 
 exports.checkGactionsVersionChanged = (creds, google_id, project_id, creator_id) =>
@@ -139,7 +141,7 @@ exports.checkGactionsVersionChanged = (creds, google_id, project_id, creator_id)
           .then(_resolve())
           .catch((_e) => _reject(_e));
       });
-      console.error(e);
+      log.error(e);
       // eslint-disable-next-line
       reject(
         `Unable to check Google Actions version! Does the project ${google_id} belong to the same google account that you used for authentication?`

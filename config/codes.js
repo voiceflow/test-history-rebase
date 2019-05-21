@@ -1,6 +1,8 @@
 const crypto = require('crypto');
 const { docClient } = require('./../services');
 
+const log = require('../logger');
+
 const checkCodes = (code) =>
   new Promise((resolve) => {
     let params = {
@@ -16,7 +18,7 @@ const checkCodes = (code) =>
 
     docClient.get(params, (err, data) => {
       if (err) {
-        console.log(err);
+        log.error(err);
         resolve(false);
       } else if (data.Item) {
         if (data.Item.used) {
@@ -31,7 +33,7 @@ const checkCodes = (code) =>
 
           docClient.put(params, (_err) => {
             if (_err) {
-              console.error(_err);
+              log.error(_err);
               resolve(false);
             } else {
               resolve(true);
@@ -39,9 +41,9 @@ const checkCodes = (code) =>
           });
         }
       } else {
-        console.log(accessCode);
-        console.log(data.Item);
-        console.log('Invalid Item');
+        log.info(accessCode);
+        log.info(data.Item);
+        log.info('Invalid Item');
         resolve(false);
       }
     });
@@ -66,7 +68,7 @@ const generateCode = (user_id) =>
 
     docClient.put(params, (err) => {
       if (err) {
-        console.error(err);
+        log.error(err);
         resolve(null);
       } else {
         resolve(item.code);
@@ -91,7 +93,7 @@ const endpoint = async (req, res) => {
     const codes = await generateCodesArr(req.user.id, req.params.num);
     res.send(codes.join('<br/>'));
   } catch (err) {
-    console.log(err);
+    log.log(err);
     res.sendStatus(500);
   }
 };

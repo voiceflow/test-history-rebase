@@ -5,9 +5,11 @@
 const isVarName = require('is-var-name');
 const validUrl = require('valid-url');
 const _ = require('lodash');
-const { docClient, pool, hashids, writeToLogs } = require('../services');
+const { docClient, pool, hashids } = require('../services');
 const draftToMarkdown = require('./drafttomarkdown');
 const { deepDraftToMarkdown } = require('../app/src/intent_util');
+
+const log = require('../logger');
 
 const _expressionfy = (expression, depth = 0) => {
   if (depth > 8) {
@@ -944,7 +946,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
         };
         docClient.put(putParams, (err) => {
           if (err) {
-            writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+            log.error(err);
             return reject(err);
             // res.sendStatus(err.statusCode);
           }
@@ -954,8 +956,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
           // Add the story to SQL as well
           return _addStory(story, (_err) => {
             if (_err) {
-              writeToLogs('CREATOR_BACKEND_ERRORS', { err: _err });
-              console.log('REET', _err);
+              log.error(_err);
               resolve(500);
             } else {
               resolve(200);
@@ -967,8 +968,7 @@ const renderDiagram = (user, diagram_id, skill_id, options = {}, depth = 0, plat
       }
     } catch (e) {
       // console.error(e)
-      writeToLogs('CREATOR_BACKEND_ERRORS', { err: e });
-      console.log('REEE', e);
+      log.error(e);
       resolve(500);
     }
   });

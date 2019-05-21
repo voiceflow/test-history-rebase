@@ -19,6 +19,7 @@ const httpAwsEs = require('http-aws-es');
 const Analytics = require('analytics-node');
 
 const config = require('./config/config');
+const log = require('./logger');
 
 const hashids = new Hashids(process.env.CONFIG_ID_HASH, 10);
 const MB = 1024 * 1024;
@@ -167,7 +168,7 @@ const verify = (auth, cb) => {
 const cloudWatchLogs = new AWS.CloudWatchLogs();
 const writeToLogs = async (log_group, msg_details) => {
   if (/development/.test(process.env.NODE_ENV) || process.env.NODE_ENV === 'test') {
-    console.log(log_group, msg_details);
+    log.info(log_group, msg_details);
     return;
   }
   try {
@@ -196,7 +197,7 @@ const writeToLogs = async (log_group, msg_details) => {
     };
 
     if (process.env.NODE_ENV === 'development' || 'test') {
-      console.log(`WRITING TO LOGS ${group}`, msg);
+      log.info(`WRITING TO LOGS ${group}`, msg);
     }
     const name = `${time} ${stack_trace[1].fileName} ${Math.floor(Math.random() * 16777215).toString(16)}`;
     const stream = {
@@ -217,17 +218,17 @@ const writeToLogs = async (log_group, msg_details) => {
       try {
         await cloudWatchLogs.createLogStream(stream).promise();
       } catch (err) {
-        console.trace(err);
+        log.trace(err);
       }
       cloudWatchLogs.putLogEvents(params, (err) => {
         if (err) {
-          console.trace(err);
+          log.trace(err);
         }
       });
     }
   } catch (err) {
     // Do nothing, if logs fail it shouldn't affect runtime
-    console.trace(err);
+    log.trace(err);
   }
 };
 
@@ -271,9 +272,9 @@ const setupESIndices = async () => {
     const res = await ESclient.indices.create({
       index: 'marketplace',
     });
-    console.log('marketplace index', res);
+    log.info('marketplace index', res);
   } catch (err) {
-    console.log('marketplace index already exists');
+    log.info('marketplace index already exists');
   }
 };
 

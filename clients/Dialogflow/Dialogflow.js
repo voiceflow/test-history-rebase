@@ -7,6 +7,8 @@ const uuid = require('uuid/v4');
 const { Package, Agent } = require('./Interfaces');
 const { BUILT_IN_EXAMPLES, WelcomeIntent, FallbackIntent } = require('./Constants');
 
+const log = require('../../logger');
+
 class DialogFlow {
   constructor(projectId, privateKey, clientEmail) {
     this.projectId = projectId;
@@ -99,7 +101,7 @@ class DialogFlow {
       }
       return;
     } catch (e) {
-      console.error('Error uploading to dialogflow', e);
+      log.error('Error uploading to dialogflow', e);
       // eslint-disable-next-line
       throw `Error uploading to dialogflow: ${e.details || e}`;
     }
@@ -225,7 +227,7 @@ class DialogFlow {
       }
       return;
     } catch (e) {
-      console.error('Error uploading to dialogflow', e);
+      log.error('Error uploading to dialogflow', e);
       // eslint-disable-next-line
       throw `Error uploading to dialogflow: ${e.details || e}`;
     }
@@ -273,7 +275,7 @@ class DialogFlow {
     try {
       await operation.promise();
     } catch (e) {
-      console.error('Error uploading to dialogflow', e);
+      log.error('Error uploading to dialogflow', e);
       // eslint-disable-next-line
       throw `Error uploading to dialogflow: ${e}`;
     }
@@ -288,7 +290,7 @@ class DialogFlow {
     try {
       await operation.promise();
     } catch (e) {
-      console.error('Error training agent', e);
+      log.error('Error training agent', e);
       // eslint-disable-next-line
       throw 'Error training agent';
     }

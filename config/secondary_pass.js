@@ -1,5 +1,7 @@
-const { docClient, writeToLogs } = require('../services');
+const { docClient } = require('../services');
 const { stripSample } = require('../app/src/intent_util');
+
+const log = require('../logger');
 
 // secondary pass through the entire project to upgrade choice blocks to interaction blocks
 const secondPass = async (diagram_id, parameters, visited = new Set(), depth = 0) => {
@@ -20,8 +22,7 @@ const secondPass = async (diagram_id, parameters, visited = new Set(), depth = 0
     data = await docClient.get(params).promise();
     if (!data.Item || !data.Item.lines) throw new Error('Diagram Not Found');
   } catch (err) {
-    console.log(err);
-    writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+    log.error(err);
     return;
   }
 

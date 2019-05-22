@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 
-import { connect } from 'react-redux';
-import { fetchTeams } from "ducks/team";
+import {connect} from 'react-redux';
+import {fetchTeams} from "ducks/team";
 
 import Header from 'components/Header'
 import './Admin.css';
@@ -11,6 +11,7 @@ import Copy from './Copy';
 import ProductUpdates from './ProductUpdates'
 
 import {ButtonGroup} from 'reactstrap'
+import SkillLookup from "./SkillLookup";
 
 const tabs = [
     {
@@ -19,76 +20,84 @@ const tabs = [
         link: '/admin'
     },
     {
+        display: <React.Fragment><i className="fal fa-search"/> Skill Lookup</React.Fragment>,
+        match: ['lookup'],
+        link: '/admin/lookup'
+    },
+    {
         display: <React.Fragment><i className="fal fa-copy"/> Copy</React.Fragment>,
         match: ['copy'],
         link: '/admin/copy'
-    }, 
+    },
     {
         display: <React.Fragment><i className="fal fa-scroll"/> Product Updates</React.Fragment>,
         match: ['updates'],
         link: '/admin/updates'
     }
-]
+];
 
 class Admin extends Component {
 
     componentDidMount() {
-      if(this.props.teams.allIds.length === 0) {
-        console.log("fetching teams")
-        this.props.fetchTeams()
-      }
+        if (this.props.teams.allIds.length === 0) {
+            console.log("fetching teams")
+            this.props.fetchTeams()
+        }
     }
 
     render() {
         let page;
-        switch(this.props.page){
+        switch (this.props.page) {
             case 'updates':
-                page = <ProductUpdates {...this.props}/>
+                page = <ProductUpdates {...this.props}/>;
                 break;
             case 'copy':
-                page = <Copy {...this.props}/>
+                page = <Copy {...this.props}/>;
+                break;
+            case 'lookup':
+                page = <SkillLookup />;
                 break;
             default:
                 page = <Home {...this.props}/>
         }
 
         return (
-        <>
-            <Header withLogo history={this.props.history}/>
-            <div className="admin Window">
-                <div md="3" className="sidebar">
-                    <div className="title">
-                        Tools
+            <>
+                <Header withLogo history={this.props.history}/>
+                <div className="admin Window">
+                    <div md="3" className="sidebar">
+                        <div className="title">
+                            Tools
+                        </div>
+                        <ButtonGroup vertical>
+                            {tabs.map((tab, i) => {
+                                if (tab.match.includes(this.props.page)) {
+                                    return <div key={i} className="active-btn">
+                                        {tab.display}
+                                    </div>
+                                } else {
+                                    return <Link key={i} to={tab.link} className="inactive-btn">
+                                        {tab.display}
+                                    </Link>
+                                }
+                            })}
+                        </ButtonGroup>
                     </div>
-                    <ButtonGroup vertical>
-                        {tabs.map((tab, i) => {
-                            if(tab.match.includes(this.props.page)){
-                                return <div key={i} className="active-btn">
-                                    {tab.display}
-                                </div>
-                            }else{
-                                return <Link key={i} to={tab.link} className="inactive-btn">
-                                    {tab.display}
-                                </Link>
-                            }
-                        })}
-                    </ButtonGroup>
+                    <div md="9" className="admin-page">
+                        {page}
+                    </div>
                 </div>
-                <div md="9" className="admin-page">
-                    {page}
-                </div>
-            </div>
             </>
         )
     }
 }
 
 const mapStateToProps = state => ({
-  teams: state.team
+    teams: state.team
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchTeams: () => dispatch(fetchTeams())
-})
+    fetchTeams: () => dispatch(fetchTeams())
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin)

@@ -1,9 +1,10 @@
 import React from 'react'
 import { ButtonGroup } from 'reactstrap'
+import cn from 'classnames'
 
 import Button from 'components/Button'
 
-export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update }) =>
+export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update, open }) =>
     <div id={`widget-bar`} className={cn({
         open: open
     })}>

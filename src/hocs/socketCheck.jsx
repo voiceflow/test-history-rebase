@@ -12,7 +12,7 @@ const session_warning_content = (target) => <div style={{ maxWidth: 600 }} class
       This restriction will be addressed in later collaboration updates <br/><br/>
       <span className="btn-link" onClick={() => window.location.reload()}>Refresh this page to recheck</span>
     </div>
-    { target && 
+    { target &&
       <Alert className="text-left py-4 mt-4">
         <h5>Open Session Info</h5>
         <b>Name:</b> {target.name} <br/>
@@ -23,7 +23,7 @@ const session_warning_content = (target) => <div style={{ maxWidth: 600 }} class
 </div>
 
 const connection_error = <Alert color="danger" className="text-center p-4">
-    <i class="fas fa-wifi-slash text-lg" /><br /><br />
+    <i className="fas fa-wifi-slash text-lg" /><br /><br />
     <b>Unable to Connect to Voiceflow</b><br />
     Refresh your page or try again later
 </Alert>

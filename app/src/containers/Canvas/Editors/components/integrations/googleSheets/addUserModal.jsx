@@ -50,6 +50,7 @@ class GoogleAddUserModal extends Component {
             buttonText="Login with Google"
             onSuccess={this.googleLogin}
             responseType={'code'}
+            accessType="offline"
             scope={`profile email https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets`}
           />
         </div>

@@ -66,15 +66,17 @@ class AudioDrop extends Component {
         this.props.update('');
     }
 	submit(){
-		if(this.state.url.startsWith("https://")){
-			this.setState({
-					url_error: false
-			}, ()=>this.props.update(this.state.url));
-		}else{
-			this.setState({
-					url_error: true
-			})
-		}
+    if(this.state.url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g)){
+      if(!this.state.url.startsWith("https://")){
+        this.setState({
+          url_error: true
+        })
+        return
+      }
+    }
+    this.setState({
+      url_error: false
+    }, ()=>this.props.update(this.state.url));
 	}
 	render() {
         if(this.state.loading){

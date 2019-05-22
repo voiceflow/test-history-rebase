@@ -1581,6 +1581,7 @@ export class Canvas extends Component {
                 setCB={cb => {
                   this.saveCB = cb;
                 }}
+                page={this.props.page}
                 onSave={this.onSave}
                 saving={this.state.saving}
                 saved={this.state.saved}

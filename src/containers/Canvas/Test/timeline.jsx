@@ -27,15 +27,6 @@ const valid_tags = new Set([
   "text"
 ]);
 
-let test_endpoint;
-if (process.env.NODE_ENV === 'production') {
-  // production code
-  test_endpoint = 'https://voiceflow.app/state/test'
-} else {
-  // dev code
-  test_endpoint = 'http://localhost:4000/state/test'
-}
-
 const recurse = (tag, index = 0) => {
   if (tag.type === 'text') {
     if (!tag.content.trim()) {
@@ -83,6 +74,7 @@ const Timeline = props => {
   let pause = false;
   let next = false;
   let current_diagram = null;
+  const [outputs, setOutputs] = useState([])
   const [inputs, setInputs] = useState([])
   const [input, setInput] = useState("")
   const [intent, setIntent] = useState("")
@@ -283,7 +275,6 @@ const Timeline = props => {
     if (!data.slots) {
       data.slots = slots
     }
-    console.log(nlc)
     if (nlc) {
       try {
         const results = await nlc.handleCommand(data.input)
@@ -339,9 +330,12 @@ const Timeline = props => {
       }
     }
 
-    axios.post(test_endpoint, data)
+    axios.post('/test/interact', data)
       .then(async res => {
         res = res.data
+        const {
+           trace 
+        } = res
         if (res.line_id) {
           story_state = res
         }
@@ -378,16 +372,12 @@ const Timeline = props => {
           } else {
             toggleAudioPlayer(false)
           }
-
-          let dom = parse('<speak>' + res.output + '</speak>')
-          if (dom && dom.length > 0 && dom[0].type === 'tag' &&
-            dom[0].name === 'speak' && dom[0].children) {
-            if (!pause) removeAudio();
-            recursivePlay(0, dom[0].children, res.ending);
-          } else {
-            setEnded(true)
-          }
-
+          let dom = []
+          _.forEach(trace, block => {
+              let parsed = parse(block.output)
+              dom.push(parsed)
+          })
+          setOutputs(dom)
         } else if (res.ending) {
           setEnded(true)
         }
@@ -399,11 +389,6 @@ const Timeline = props => {
       });
   }
 
-  // useEffect(() => {
-  //   if (testing_info) {
-  //     beginning()
-  //   }
-  // })
   return (
     <div id="Timeline" className="mb-3">
       <div className="break">
@@ -415,6 +400,7 @@ const Timeline = props => {
           audioPlayer={audioPlayer}
           handleRestart={handleRestart}
           inputSubmit={inputSubmit}
+          outputs={outputs}
         />
         <button className="btn-primary mb-3" onClick={() => beginning()}>
           <i className="fas fa-play" />

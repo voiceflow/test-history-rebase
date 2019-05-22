@@ -46,7 +46,7 @@ class FlowBar extends Component{
         return <React.Fragment>
             <button id="home-button" className={cn('btn-home', 'pl-3', {
                 closed: this.props.testing
-            })} onClick={()=>this.props.enterFlow(this.props.root_id)}>
+            })} onClick={() => this.props.enterFlow(this.props.root_id)}>
                 <span>Home</span>
             </button>
             <div id="flow-bar" className="text-center"

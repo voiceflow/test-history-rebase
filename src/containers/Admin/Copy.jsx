@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 import axios from 'axios';
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import Button from "components/Button";
 
@@ -58,7 +59,7 @@ class Copy extends Component {
 
     copy() {
         if (!(this.state.creator && this.state.skill && this.state.target_board)) {
-          alert("Fields Not Complete")
+            toast.error("Fields not Complete!");
           return;
         }
         axios.post(`/version/${this.state.skill.value}/copy/team/${this.state.target_board.value}`)
@@ -68,9 +69,9 @@ class Copy extends Component {
               skill: null,
               target: ''
           });
-          alert('Success');
+          toast.success("Successfully copied skill");
         })
-        .catch(() => alert('Error'));
+        .catch(() => toast.error('Error'));
     }
 
     render() {

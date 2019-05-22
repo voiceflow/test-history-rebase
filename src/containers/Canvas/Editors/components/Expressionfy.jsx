@@ -8,7 +8,7 @@ const expressionfy = (expression, depth=0) => {
         return <span className="math unknown">?</span>;
     }else if(expression.type === 'advance'){
         if(!expression.value.text) return <span className="math unknown">?</span>;
-        let value = expression.value.text.split("\n").filter(x=>!(x==''||/\s+/.test(x))).join(", ");
+        let value = expression.value.text.split("\n").filter(x=>!(x===''||/\s+/.test(x))).join(", ");
         return <span className="math brackets">( {value.split(/\{([a-zA-Z0-9_]*)\}/g)
         .map((v,i)=>i%2===0?v:(<span className="math variable" key={v}>{v}</span>))} )</span>;
     }else if(expression.type === 'value'){

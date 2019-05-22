@@ -275,6 +275,7 @@ ul {
 #app.secondary-padding, #app.secondary-padding>#canvas {
     top: 111px;
 }
+#app.test,
 #app.canvas{
     position: fixed;
     top: 0;

@@ -185,12 +185,14 @@ class Skill extends Component {
     renderPage(){
         switch(this.props.page){
             case 'canvas':
+            case 'test':
                 return <Canvas
                     {...this.props}
                     live_mode={this.props.live_mode}
                     ref={this.child_canvas}
                     linter={this.state.linter}
                     toggleUpgrade={this.toggleUpgrade}
+                    testing={this.props.page === 'test'}
                 />
             case 'tools':
                 return <Business

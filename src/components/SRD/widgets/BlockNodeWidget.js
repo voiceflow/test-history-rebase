@@ -53,7 +53,8 @@ export class BlockNodeWidget extends BaseWidget {
 	addCommand(e){
 		e.preventDefault()
 		e.stopPropagation()
-		if(this.props.nodeProps.disabled) return
+		if (this.props.nodeProps.disabled || this.props.diagramEngine.getDiagramModel().isLocked()) return
+
 		const engine = this.props.diagramEngine
 		const node = new BlockNodeModel('New Command', null, toolkit.UID())
 		node.parentCombine = this.props.node
@@ -78,6 +79,8 @@ export class BlockNodeWidget extends BaseWidget {
 	}
 
 	addBlocks = (e) => {
+		if (this.props.diagramEngine.getDiagramModel().isLocked()) return
+		
 		const engine = this.props.diagramEngine
 		let getNodeRef = findDOMNode(this.nodeRef.current).getBoundingClientRect()
 		let newX = getNodeRef.width/2 + getNodeRef.x

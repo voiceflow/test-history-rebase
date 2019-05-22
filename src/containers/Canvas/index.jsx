@@ -3,6 +3,7 @@ import * as SRD from 'components/SRD/main.js'
 import cn from 'classnames'
 import Menu from './Menu'
 import Editor from './Editor'
+import Test from './Test'
 import axios from 'axios'
 import { compose } from 'recompose'
 import { connect } from "react-redux";
@@ -290,6 +291,9 @@ export class Canvas extends Component {
                 load_diagram: true
             })
             this.onLoadId(this.props.diagram_id)
+        }
+        if (!!this.props.testing !== !!this.state.engine.getDiagramModel().isLocked()) {
+            this.state.engine.getDiagramModel().setLocked(this.props.testing || false)
         }
     }
 
@@ -1274,7 +1278,7 @@ export class Canvas extends Component {
 
     onTest = () => {
         this.state.engine.getDiagramModel().clearSelection()
-        this.toggleTestModal()
+        // this.toggleTestModal()
 
         if(this.props.preview){
             this.runTest()
@@ -1420,14 +1424,16 @@ export class Canvas extends Component {
       this.setState({load_diagram: true})
       if(new_diagram_id !== this.props.diagram_id){
           this.props.updateSkill("diagram", new_diagram_id)
-          if(save && !this.props.preview){
+          if(save && !this.props.preview && !this.props.testing){
               this.saveCB = () => {
                   this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
               }
               this.onSave()
           }else if (this.props.preview){
               this.props.history.push(`/preview/${this.props.skill.skill_id}/${new_diagram_id}`)
-          }else{
+          } else if (this.props.testing) {
+              this.props.history.push(`/test/${this.props.skill.skill_id}/${new_diagram_id}`)
+          } else{
               this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
           }
       }
@@ -1564,7 +1570,7 @@ export class Canvas extends Component {
               }
               setHelp={help => this.setState({ help: help })}
             />
-            {!this.props.preview ?
+            {!this.props.preview &&
               <ActionGroup
                 lastSave={
                   this.state.last_save
@@ -1584,8 +1590,8 @@ export class Canvas extends Component {
                 history={this.props.history}
                 preview={this.props.preview}
               />
-            :
-              <div className="title-group no-select">
+            }
+            {this.props.preview && <div className="title-group no-select">
                 <span className="text-blue" id="preview-title">
                   <span className="dot" /> PREVIEW MODE
                 </span>
@@ -1598,9 +1604,10 @@ export class Canvas extends Component {
                 testing_info={this.state.testing_info}
                 unfocus={this.onDiagramUnfocus}
                 flow={this.props.diagram.name}
+                open={!this.props.testing}
               />
             ) : null}
-            {this.state.spotlight && (
+            {this.state.spotlight && !this.props.testing(
               <Spotlight
                 addBlock={this.onDrop}
                 cancel={() => this.setState({ spotlight: false })}
@@ -1622,6 +1629,7 @@ export class Canvas extends Component {
                 copyFlow={this.copyFlow}
                 deleteFlow={this.deleteFlow}
                 preview={this.props.preview}
+                testing={this.props.testing}
                 toggleUpgrade={this.props.toggleUpgrade}
                 type_counter={this.state.type_counter}
                 openTab={this.openTab}
@@ -1670,6 +1678,13 @@ export class Canvas extends Component {
                 diagram_level_intents={this.state.diagram_level_intents}
                 setCanvasEvents={this.setMousetrap}
                 updateLinter={this.updateLinter}
+                testing={this.props.testing}
+              />
+              <Test
+                open={this.props.testing}
+                testing_info={this.state.testing_info}
+                flow={this.props.diagram.name}
+                onTest={this.onTest}
               />
               <div
                 key={this.props.diagram_id}
@@ -1711,13 +1726,15 @@ export class Canvas extends Component {
                     root_id={this.props.root_id}
                     setBlockMenu={this.props.setBlockMenu}
                     engine={this.state.engine}
+                    testing={this.props.testing}
                   />
                 )}
                 {this.props.blockMenu}
                 <SRD.DiagramWidget
                   diagramEngine={this.state.engine}
                   allowLooseLinks={false}
-                  locked={this.props.preview}
+                  locked={this.props.preview || this.props.testing}
+                  testing={this.props.testing}
                   onConfirm={this.props.setConfirm}
                   onDeleteIntentNode={this.onDeleteIntentNode.bind(
                     this

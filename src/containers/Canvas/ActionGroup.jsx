@@ -608,7 +608,24 @@ export class ActionGroup extends PureComponent {
   }
 
   renderUploadButton() {
-    if (this.props.live_mode) {
+    if (this.props.testing) {
+      return <Tooltip
+        html={<div style={{ width: 155 }}>Begin testing your project</div>}
+        position="bottom"
+        distance={16}
+      >
+        <Button variant="contained" className="publish-btn">
+          {'Begin Test'}<div className="launch">
+            <div className="first">
+              <img src={'/up.svg'} alt="upload" width="15" height="15" />
+            </div>
+            <div className="second">
+              <img src={'/check-white.svg'} alt="check" width="15" height="15" />
+            </div>
+          </div>
+        </Button>
+      </Tooltip>
+    } else if (this.props.live_mode) {
       return <Tooltip
         html={<div style={{ width: 155 }}>Update your live version with your local changes</div>}
         position="bottom"

@@ -144,7 +144,9 @@ class Menu extends Component {
 
     render() {
         return (
-            <div className="Menu"
+            <div className={cn("Menu", {
+                disabled: this.props.testing
+            })}
                 onFocus={this.props.unfocus}
                 onMouseDown={this.props.unfocus}
                 onKeyDown={this.props.unfocus}
@@ -177,7 +179,7 @@ class Menu extends Component {
                         })}
                     </div>
                 </div>
-                <div id="sidebar" className={cn({ open: this.props.open })} ref={ref => this.sidebar = ref}>
+                <div id="sidebar" className={cn({ open: !this.props.testing })} ref={ref => this.sidebar = ref}>
                  <div className="sidebar-container">
                     {this.props.loading_diagram ?
                         null :

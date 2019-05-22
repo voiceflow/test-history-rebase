@@ -4,6 +4,7 @@ import _ from 'lodash'
 import { ListGroup, ListGroupItem } from "reactstrap";
 import { setConfirm } from 'ducks/modal'
 import { renameDiagram } from 'ducks/diagram';
+import cn from 'classnames'
 
 import {UncontrolledDropdown, DropdownToggle, DropdownItem, DropdownMenu} from 'reactstrap'
 class FlowBar extends Component{
@@ -43,7 +44,9 @@ class FlowBar extends Component{
 
     render(){
         return <React.Fragment>
-            <button id="home-button" className="btn-home pl-3" onClick={()=>this.props.enterFlow(this.props.root_id)}>
+            <button id="home-button" className={cn('btn-home', 'pl-3', {
+                closed: this.props.testing
+            })} onClick={()=>this.props.enterFlow(this.props.root_id)}>
                 <span>Home</span>
             </button>
             <div id="flow-bar" className="text-center"

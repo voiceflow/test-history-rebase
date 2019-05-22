@@ -24,7 +24,6 @@ export class MoveItemsAction extends BaseAction {
 				}
 			}
 		}
-		if (locked) selectedItems = []
 		var nodeElement = toolkit.closest(e.target, ".node[data-nodeid]");
 		this.selectionModels = selectedItems.map(item => {
 			return {

@@ -4,7 +4,9 @@ import { ButtonGroup } from 'reactstrap'
 import Button from 'components/Button'
 
 export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update }) =>
-    <div id={`widget-bar`}>
+    <div id={`widget-bar`} className={cn({
+        open: open
+    })}>
         <ButtonGroup>
             <Button isWhiteCirc onClick={()=>zoom(1000, engine, update)} className="round-left"><i className="far fa-plus"/></Button>
             <Button isWhiteCirc onClick={()=>zoom(-1000, engine, update)} className="round-right"><i className="far fa-minus"/></Button>

@@ -13,7 +13,7 @@ import {
   updateDiagramRoot,
   fetchDiagrams
 } from 'ducks/diagram';
-const PAGES = ["canvas", "settings", "visuals", "tools", "publish"];
+const PAGES = ["canvas", "settings", "visuals", "tools", "test", "publish"];
 
 class SecondaryNavBar extends Component {
   constructor(props) {

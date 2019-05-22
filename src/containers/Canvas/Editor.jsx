@@ -718,7 +718,8 @@ class Editor extends Component {
       <div
         id="Editor"
         className={cn({
-          open: this.props.open && type && !this.state.modal
+          open: this.props.open && type && !this.state.modal,
+          testing: this.props.testing,
         })}
         onFocus={this.props.unfocus}
         onClickCapture={this.eventHandler}
@@ -726,7 +727,7 @@ class Editor extends Component {
         onMouseDown={this.props.unfocus}
         onKeyDown={this.props.unfocus}
         onMouseEnter={() => {
-          this.props.diagramEngine.getDiagramModel().setLocked();
+          if (!this.props.testing) this.props.diagramEngine.getDiagramModel().setLocked();
           Mousetrap.unbind(["ctrl+z", "command+z"]);
           Mousetrap.unbind([
             "ctrl+y",
@@ -741,13 +742,15 @@ class Editor extends Component {
           );
         }}
         onMouseLeave={() => {
-          this.props.diagramEngine.getDiagramModel().setLocked(false);
+          if (!this.props.testing) this.props.diagramEngine.getDiagramModel().setLocked(false);
           this.props.setCanvasEvents();
         }}
       >
         {type ? (
           <div className="controls" key={this.state.node.id}>
-            <div id="editor-section">
+            <div id="editor-section" className={cn({
+                disabled: this.props.testing
+            })}>
               {this.renderTitle()}
               {!this.state.expanded ? (
                 this.EditorRender()

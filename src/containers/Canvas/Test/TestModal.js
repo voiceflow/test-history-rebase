@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'production') {
     test_endpoint = 'https://voiceflow.app/state/test'
 } else {
     // dev code
-    test_endpoint = 'http://localhost:4000/state/test'
+    test_endpoint = '/test/interact'
 }
 
 const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text'])

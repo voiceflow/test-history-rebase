@@ -3187,6 +3187,10 @@ button.close:hover{
 
 }
 
+.editor.oneline :global(.public-DraftEditor-content) {
+    min-height: 0;
+}
+
 .editor :global(.public-DraftEditor-content) {
     min-height: 68px;
 }
@@ -3590,5 +3594,3 @@ button.close:hover{
 .disabled{
     opacity: 0.3;
   }
-
-

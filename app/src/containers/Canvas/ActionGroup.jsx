@@ -190,6 +190,7 @@ export class ActionGroup extends PureComponent {
     this.uploadSuccess = this.uploadSuccess.bind(this)
     this.closePrompt = this.closePrompt.bind(this)
     this.token = null
+    this.google_token = null
     this.updateLiveVersion = this.updateLiveVersion.bind(this)
     this.renderUploadButton = this.renderUploadButton.bind(this)
     this.isUploadLoading = this.isUploadLoading.bind(this)
@@ -201,10 +202,14 @@ export class ActionGroup extends PureComponent {
     AmazonAccessToken().then(token => {
       this.token = token;
       this.reset()
+    }).catch(err => {
+      this.token = null;
     })
     googleAccessToken(this.props.skill.skill_id).then(token => {
       this.google_token = token;
       this.reset()
+    }).catch(err => {
+      this.google_token = null;
     })
   }
 

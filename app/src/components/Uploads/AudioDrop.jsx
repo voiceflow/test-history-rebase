@@ -66,15 +66,17 @@ class AudioDrop extends Component {
         this.props.update('');
     }
 	submit(){
-		if(this.state.url.startsWith("https://")){
-			this.setState({
-					url_error: false
-			}, ()=>this.props.update(this.state.url));
-		}else{
-			this.setState({
-					url_error: true
-			})
-		}
+    if(this.state.url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g)){
+      if(!this.state.url.startsWith("https://")){
+        this.setState({
+          url_error: true
+        })
+        return
+      }
+    }
+    this.setState({
+      url_error: false
+    }, ()=>this.props.update(this.state.url));
 	}
 	render() {
         if(this.state.loading){
@@ -105,7 +107,7 @@ class AudioDrop extends Component {
                 <div className="text-center w-100">
                     <label className="text-muted mb-3">Enter Audio URL</label>
 										{this.state.url_error && <span className="text-danger d-block">URL must be HTTPS</span>}
-                    <Input className="mb-3" placeholder="URL Link" value={this.state.url} onChange={this.handleChange} name="url"/>
+                    <Input className="mb-3" placeholder="URL Link (must be [https])" value={this.state.url} onChange={this.handleChange} name="url"/>
                     <Button isFlat onClick={()=>this.setState({url_open: false})} className="mr-1">Back</Button>
                     <Button isPrimary onClick={()=>this.submit()} className="ml-1">Confirm</Button>
                 </div>

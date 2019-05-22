@@ -1035,7 +1035,7 @@ export class ActionGroup extends PureComponent {
               <div className="align-icon">
                 <Tooltip
                   distance={16}
-                  title="Test"
+                  title="Quick Test"
                   position="bottom"
                   className="ml-4 mr-4"
                 >

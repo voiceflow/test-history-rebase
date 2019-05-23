@@ -561,7 +561,7 @@ class Editor extends Component {
               }
               className="pointer"
             >
-              Copy
+              Duplicate
             </DropdownItem>
             <DropdownItem
               onClick={() =>

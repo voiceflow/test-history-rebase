@@ -297,7 +297,7 @@ export const DashBoard = props => {
             <div>
               <h3>Your free trial has expired</h3>
               <div className="text-dull mt-3 mb-4">Please Upgrade to continue using Voiceflow</div>
-              <Button isPrimary className="mb-5" onClick={()=>this.setState({team_settings: 'CHECKOUT'})}>Upgrade Plan</Button>
+              <Button isPrimary className="mb-5" onClick={()=>setTeamSetting('CHECKOUT')}>Upgrade Plan</Button>
             </div>
           </div>}
           <div

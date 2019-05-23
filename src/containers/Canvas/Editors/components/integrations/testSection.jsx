@@ -8,7 +8,7 @@ import { Button, Collapse, InputGroupAddon, Input, InputGroup, Alert } from 'rea
 import IntegrationsService from 'services/Integrations'
 import C from './constants'
 
-import { deepDraftToMarkdown, deepVariableSubstitution } from '../../../../../util'
+import { deepDraftToMarkdown, deepVariableSubstitution } from '../../../../../intent_util'
 
 import { connect } from 'react-redux'
 import { setConfirm, setError } from 'ducks/modal'

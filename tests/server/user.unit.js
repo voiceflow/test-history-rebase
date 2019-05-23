@@ -83,34 +83,6 @@ const tests = [
     },
   },
   {
-    method: 'get',
-    calledPath: '/user/verify/:token',
-    expected: {
-      controllers: {
-        Authentication: {
-          verifyUser: 1,
-        },
-      },
-      middleware: {
-        verify: 1,
-      },
-    },
-  },
-  {
-    method: 'post',
-    calledPath: '/user/reset/password',
-    expected: {
-      controllers: {
-        Authentication: {
-          resetPassword: 1,
-        },
-      },
-      middleware: {
-        verify: 1,
-      },
-    },
-  },
-  {
     method: 'post',
     calledPath: '/user/profile/picture',
     expected: {

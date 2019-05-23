@@ -35,8 +35,6 @@ module.exports = (middleware, controllers) => {
   router.post('/user/reset', controllers.Authentication.resetPasswordEmail);
   router.get('/user/reset/:token', controllers.Authentication.checkReset);
   router.post('/user/reset/:token', controllers.Authentication.resetPassword);
-  router.get('/user/verify/:token', controllers.Authentication.verifyUser);
-  router.post('/user/reset/password', controllers.Authentication.resetPassword);
   router.post('/user/profile/picture', middleware.ensureLoggedIn, middleware.uploadResize512, controllers.Authentication.updateProfilePicture);
   router.get('/user/:creator_id/projects', middleware.ensureAdmin, controllers.Project.getUserProjects);
   router.get('/decode/:id', middleware.ensureAdmin, controllers.decode.decodeId);

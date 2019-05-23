@@ -54,7 +54,7 @@ const pool = new pg.Pool({
 });
 
 // Create a Redis Client for sessions
-const redisClient =
+const redis =
   process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging'
     ? new Redis({
         host: process.env.REDIS_CLUSTER_HOST,
@@ -289,7 +289,7 @@ module.exports = {
   upload,
   docClient,
   pool,
-  redisClient,
+  redis,
   jwt,
   config,
   s3,

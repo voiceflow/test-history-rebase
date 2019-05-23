@@ -281,16 +281,16 @@ class ServiceManager {
       ...clients,
     });
 
-    services.analyticsManager = AnalyticsManager({
+    services.analyticsManager = new AnalyticsManager({
       ...clients,
       skillsManager: services.skillsManager,
     });
 
-    services.teamManager = TeamManager({
+    services.teamManager = new TeamManager({
       ...clients,
     });
 
-    services.accountManager = AccountManager({
+    services.accountManager = new AccountManager({
       ...clients,
       teamManager: services.teamManager,
     });
@@ -311,7 +311,10 @@ class ServiceManager {
       ...clients,
     });
 
-    return services;
+    return {
+      ...clients,
+      ...services,
+    };
   }
 
   /**
@@ -319,7 +322,7 @@ class ServiceManager {
    * @returns {*}
    */
   static buildClients() {
-    const { logging_pool, pool, hashids } = require('../services'); // eslint-disable-line
+    const { logging_pool, pool, hashids, redis } = require('../services'); // eslint-disable-line
     // The above line is temporary until we finish migrating the routes.
 
     AWS.config = new AWS.Config({
@@ -339,6 +342,7 @@ class ServiceManager {
       polly: Promise.promisify(polly.synthesizeSpeech.bind(polly)),
       aws: AWS,
       jwt,
+      redis,
       pool,
       googleClient,
       logging_pool,

@@ -271,47 +271,47 @@ class ServiceManager {
    * @returns {{projectManager: (ProjectManager|*), analyticsManager: (AnalyticsManager|*), skillsManager: (SkillsManager|*)}}
    */
   static buildServices(config, clients) {
-    const r = {};
+    const services = {};
 
-    r.projectManager = new ProjectManager({
+    services.projectManager = new ProjectManager({
       ...clients,
     });
 
-    r.skillsManager = new SkillsManager({
+    services.skillsManager = new SkillsManager({
       ...clients,
     });
 
-    r.analyticsManager = AnalyticsManager({
+    services.analyticsManager = AnalyticsManager({
       ...clients,
-      skillsManager: r.skillsManager,
+      skillsManager: services.skillsManager,
     });
 
-    r.teamManager = TeamManager({
-      ...clients,
-    });
-
-    r.accountManager = AccountManager({
-      ...clients,
-      teamManager: r.teamManager,
-    });
-
-    r.productManager = new ProductManager({
+    services.teamManager = TeamManager({
       ...clients,
     });
 
-    r.emailManager = new EmailManager({
+    services.accountManager = AccountManager({
+      ...clients,
+      teamManager: services.teamManager,
+    });
+
+    services.productManager = new ProductManager({
       ...clients,
     });
 
-    r.linkManager = new LinkManager({
+    services.emailManager = new EmailManager({
       ...clients,
     });
 
-    r.ttsManager = new TTSManager({
+    services.linkManager = new LinkManager({
       ...clients,
     });
 
-    return r;
+    services.ttsManager = new TTSManager({
+      ...clients,
+    });
+
+    return services;
   }
 
   /**

@@ -40,7 +40,7 @@ exports.sendOnboarding = (email, name, cb) => {
   }
 };
 
-exports.sendResetEmail = async (name, user_id, random, email) => {
+exports.sendResetEmail = async (name, token, email) => {
   if (typeof name !== 'string') {
     name = null;
   }
@@ -59,7 +59,7 @@ exports.sendResetEmail = async (name, user_id, random, email) => {
           },
         ],
         dynamic_template_data: {
-          link: `${random}${user_id}`,
+          link: token,
           name,
         },
       },

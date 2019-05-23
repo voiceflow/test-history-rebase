@@ -1,7 +1,7 @@
 'use strict';
 
 // eslint-disable-next-line
-const redis = process.env.TEST ? require('redis-mock') : require('redis');
+const Redis = process.env.TEST ? require('ioredis-mock') : require('ioredis');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
@@ -56,11 +56,11 @@ const pool = new pg.Pool({
 // Create a Redis Client for sessions
 const redisClient =
   process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging'
-    ? redis.createClient({
+    ? new Redis({
         host: process.env.REDIS_CLUSTER_HOST,
         port: process.env.REDIS_CLUSTER_PORT,
       })
-    : redis.createClient();
+    : new Redis();
 
 const s3 = new AWS.S3();
 

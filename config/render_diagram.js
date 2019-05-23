@@ -36,6 +36,13 @@ const _expressionfy = (expression, depth = 0) => {
     }
     return 0;
   }
+
+  if (expression.type === 'advance') {
+    let value = expression.value.text;
+    value = value.replace(/\{([a-zA-Z0-9_]*)\}/g, "v['$1']");
+    return `$${value}$`;
+  }
+
   let string = '(';
 
   if (expression.type === 'not') {

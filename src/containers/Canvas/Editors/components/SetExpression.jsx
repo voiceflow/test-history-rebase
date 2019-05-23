@@ -9,7 +9,7 @@ import { selectStyles, variableComponent } from 'components/VariableSelect/Varia
 class SetExpression extends Component {
     render() {
         let block = this.props.block;
-        let show = !(block.expression.type === 'value' || block.expression.type === 'variable');
+        let show = !(block.expression.type === 'value' || block.expression.type === 'variable' || block.expression.type === 'advance');
 
         return (
             <div className="solid-border set-block">

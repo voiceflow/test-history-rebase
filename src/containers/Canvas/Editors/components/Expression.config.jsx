@@ -12,14 +12,16 @@ const symbols = {
     or: 'OR',
     not: 'NOT',
     value: 'Value',
-    variable: 'Variable'
+    variable: 'Variable',
+    advance: 'Advance'
 }
 
 const groups = [
     ['value', 'variable'],
     ['plus', 'minus', 'times', 'divide'],
     ['equals', 'greater', 'less'],
-    ['and', 'or', 'not']
+    ['and', 'or', 'not'],
+    ['advance']
 ]
 
 const arithmetic = groups[1];

@@ -469,8 +469,8 @@ export class BlockNodeWidget extends BaseWidget {
 														node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter, keepLink),
 														nodeProps: this.props.nodeProps,
 														onClick: () => {
-                              node.parentCombine = this.props.node
-															this.props.diagramEngine.setSuperSelect(node)
+                              								node.parentCombine = this.props.node
+															this.props.diagramEngine.setSuperSelect(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter, keepLink))
 														},
 													},
 													this.props.diagramEngine.generateWidgetForNode(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter, keepLink))

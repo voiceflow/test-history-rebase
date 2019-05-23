@@ -205,5 +205,17 @@ export default {
         }
       })
     },
+  },
+  zapier: {
+    createMessage: async (params) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const resp = await axios.post('/integrations/zapier/trigger', params)
+          resolve(resp.data)
+        } catch (e) {
+          reject(e)
+        }
+      })
+    },
   }
 }

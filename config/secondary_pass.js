@@ -1,6 +1,7 @@
-const { docClient, writeToLogs } = require('../services');
-const { stripSample } = require('../app/src/util');
-const _ = require('lodash');
+const { docClient } = require('../services');
+const { stripSample } = require('../app/src/intent_util');
+
+const log = require('../logger');
 
 // secondary pass through the entire project to upgrade choice blocks to interaction blocks
 const secondPass = async (diagram_id, parameters, visited = new Set(), depth = 0) => {
@@ -21,12 +22,12 @@ const secondPass = async (diagram_id, parameters, visited = new Set(), depth = 0
     data = await docClient.get(params).promise();
     if (!data.Item || !data.Item.lines) throw new Error('Diagram Not Found');
   } catch (err) {
-    console.log(err);
-    writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+    log.error(err);
     return;
   }
 
-  for (let key in data.Item.lines) {
+  for (const key in data.Item.lines) {
+    // eslint-disable-next-line
     if (!data.Item.lines.hasOwnProperty(key)) continue;
     const line = data.Item.lines[key];
 
@@ -35,7 +36,7 @@ const secondPass = async (diagram_id, parameters, visited = new Set(), depth = 0
       line.interactions = [];
       const intent_set = new Set();
       line.inputs.forEach((input_group, i) => {
-        for (let input of input_group) {
+        for (const input of input_group) {
           const stripped = stripSample(input);
           if (stripped in samples) {
             const { name } = samples[stripped];
@@ -91,7 +92,7 @@ const secondPass = async (diagram_id, parameters, visited = new Set(), depth = 0
   }
 
   // iterate through the commands first
-  for (let command of data.Item.commands) {
+  for (const command of data.Item.commands) {
     if (command.diagram_id) await secondPass(command.diagram_id, parameters, visited, depth + 1);
   }
 

@@ -1,19 +1,16 @@
-const {
-  pool, intercom, writeToLogs, analytics,
-} = require('./../services');
+const { pool, intercom, writeToLogs, analytics } = require('./../services');
 
 const checkIfOnboarded = (req, res) => {
-  pool.query('SELECT * FROM user_info WHERE creator_id = $1', [req.user.id],
-    (err, data) => {
-      if (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', { err });
-        res.sendStatus(500);
-      } else if (data.rows.length > 0) {
-        res.send(true);
-      } else {
-        res.send(false);
-      }
-    });
+  pool.query('SELECT * FROM user_info WHERE creator_id = $1', [req.user.id], (err, data) => {
+    if (err) {
+      writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+      res.sendStatus(500);
+    } else if (data.rows.length > 0) {
+      res.send(true);
+    } else {
+      res.send(false);
+    }
+  });
 };
 
 const PROG_XP = (xp) => {
@@ -43,34 +40,49 @@ const submitOnboardSurvey = async (req, res) => {
     req.body.usage_type = 'PERSONAL';
   }
 
-  analytics.identify({
-    userId: req.user.id,
-    traits: {
-      email: req.user.email,
-      name: req.user.name,
-      usage: req.body.usage_type,
-      company: req.body.company_name,
-      company_role: req.body.company_role,
-      company_size: req.body.company_size,
-      design: req.body.design,
-      build: req.body.build,
-      purpose: req.body.purpose,
-      programming_experience: PROG_XP(req.body.programming),
-    },
-  }, () => {
-    analytics.track({
+  analytics.identify(
+    {
       userId: req.user.id,
-      event: 'Completed onboarding survey',
-      properties: {
-        hasIdea: req.body.purpose === 'IDEA',
-        qualified: req.body.company_role !== 'others',
+      traits: {
+        email: req.user.email,
+        name: req.user.name,
+        usage: req.body.usage_type,
+        company: req.body.company_name,
+        company_role: req.body.company_role,
+        company_size: req.body.company_size,
+        design: req.body.design,
+        build: req.body.build,
+        purpose: req.body.purpose,
+        programming_experience: PROG_XP(req.body.programming),
       },
-    });
-  });
+    },
+    () => {
+      analytics.track({
+        userId: req.user.id,
+        event: 'Completed onboarding survey',
+        properties: {
+          hasIdea: req.body.purpose === 'IDEA',
+          qualified: req.body.company_role !== 'others',
+        },
+      });
+    }
+  );
 
   try {
-    await pool.query('INSERT INTO user_info (creator_id, usage_type, company_name, xp, design, build, company_size, role, purpose) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-      [req.user.id, req.body.usage_type, req.body.company_name, convertToOld(req.body.programming), req.body.design, req.body.build, req.body.company_size, req.body.company_role, req.body.purpose]);
+    await pool.query(
+      'INSERT INTO user_info (creator_id, usage_type, company_name, xp, design, build, company_size, role, purpose) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+      [
+        req.user.id,
+        req.body.usage_type,
+        req.body.company_name,
+        convertToOld(req.body.programming),
+        req.body.design,
+        req.body.build,
+        req.body.company_size,
+        req.body.company_role,
+        req.body.purpose,
+      ]
+    );
 
     // Business users get a trial
     if (req.body.usage_type === 'WORK' && req.body.company_name) {

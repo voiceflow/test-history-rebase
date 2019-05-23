@@ -34,6 +34,7 @@ export class Permissions extends Component {
         this.handleRemoveBlock = this.handleRemoveBlock.bind(this);
         this.handleSelectPermission = this.handleSelectPermission.bind(this);
         this.handleSelectVariableToMap = this.handleSelectVariableToMap.bind(this);
+        this.handleTransactionMap = this.handleTransactionMap.bind(this);
     }
 
     onUpdate(){
@@ -118,6 +119,18 @@ export class Permissions extends Component {
         }
     }
 
+    handleTransactionMap(i, selected) {
+      let node = this.state.node;
+
+      if(node.extras.permissions[i].transaction !== selected){
+          node.extras.permissions[i].transaction = selected
+
+          this.setState({
+              node: node
+          }, this.props.onUpdate);
+      }
+    }
+
     handleSelectProductToMap(i, selected) {
         let node = this.state.node;
 
@@ -137,12 +150,14 @@ export class Permissions extends Component {
                     return (
                         <Permission
                             key={i}
+                            permission={perm}
                             selected={perm.selected}
                             map_to={perm.map_to}
                             product={perm.product}
                             onRemove={() => this.handleRemoveBlock(i)}
                             selectPermission={(selected) => this.handleSelectPermission(i, selected)}
                             selectVariableToMap={(selected) => this.handleSelectVariableToMap(i, selected)}
+                            selectTransactionMap={(selected) => this.handleTransactionMap(i, selected)}
                             selectProductToMap={(selected) => this.handleSelectProductToMap(i, selected)}
                             permissions={this.state.permission_options}
                             disabled_perms={this.state.node.extras.permissions}

@@ -1,6 +1,4 @@
-const {
-  pool, hashids, analytics, writeToLogs,
-} = require('./../services');
+const { pool, hashids, analytics, writeToLogs } = require('./../services');
 
 exports.trackSessionTime = (req, res) => {
   analytics.track({
@@ -79,12 +77,14 @@ exports.trackDevAccount = (req, res) => {
 
 exports.trackFlowUsed = async (req, res) => {
   try {
-    const module_data = (await pool.query(`
+    const module_data = (await pool.query(
+      `
             SELECT *
             FROM modules
             INNER JOIN creators ON modules.creator_id = creators.creator_id
             WHERE modules.module_id = $1`,
-    [hashids.decode(req.body.module_id)[0]])).rows[0];
+      [hashids.decode(req.body.module_id)[0]]
+    )).rows[0];
     analytics.track({
       userId: req.user.id,
       event: 'Flow Used',

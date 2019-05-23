@@ -7,6 +7,7 @@ import './Integrations.css'
 
 import Custom from './components/integrations/custom'
 import GoogleSheets from './components/integrations/googleSheets'
+import Zapier from './components/integrations/zapier'
 
 import { connect } from 'react-redux'
 import { setConfirm, clearModal, setError } from 'ducks/modal'
@@ -32,6 +33,12 @@ const INTEGRATIONS = {
     component: GoogleSheets,
     tooltip: 'Manage data stored on Google Sheets'
   },
+  [ZAPIER]: {
+    name: ZAPIER,
+    image: '/zapier.png',
+    component: Zapier,
+    tooltip: 'Trigger a Zap'
+   },
   [AIRTABLE]: {
     name: AIRTABLE,
     image: '/airtable.png'
@@ -43,10 +50,6 @@ const INTEGRATIONS = {
   [DASHBOT]: {
     name: 'Dashbot',
     image: '/dashbot.png'
-  },
-  [ZAPIER]: {
-    name: 'Zapier',
-    image: '/zapier.png'
   }
 }
 
@@ -68,9 +71,9 @@ class Integrations extends Component {
     try {
       const extras = this.props.extras
       const integration = extras.selected_integration
-      
+
       const integration_data = extras.integrations_data[integration]
-  
+
       const actions_data = integration_data && integration_data.actions_data
       const action = integration_data && integration_data.selected_action
 
@@ -89,7 +92,7 @@ class Integrations extends Component {
             }
           }
         }
-      } 
+      }
     } catch (e) {
       // No trimming required
     }
@@ -187,7 +190,7 @@ class Integrations extends Component {
         const new_integrations = update(extras.integrations_data, {
           [integration]: {
             $set: data
-          } 
+          }
         })
         this.updateIntegrationsData(new_integrations, undefined, callback)
       }}
@@ -270,4 +273,3 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Integrations)
-

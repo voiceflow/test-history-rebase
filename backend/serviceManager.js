@@ -131,13 +131,23 @@ class ServiceManager {
       },
     };
 
+    const routeWrapper = (controller) => {
+      for (let route in controller) {
+        if (controller.hasOwnProperty(route)) {
+          controller[route] = ResponseBuilder.route(controller[route]);
+        }
+      }
+
+      return controller;
+    };
+
     const analytics = new AnalyticsController({
       responseBuilder,
       analyticsManager,
       projectManager,
     });
 
-    const account = AccountController({
+    const account = new AccountController({
       responseBuilder,
       accountManager,
     });
@@ -196,6 +206,7 @@ class ServiceManager {
       Code,
       Problem,
       Audio,
+      account: routeWrapper(account),
 
       // Probably can eventually remove these and replace with actual controllers
       utilities,

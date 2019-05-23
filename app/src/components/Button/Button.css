@@ -10,6 +10,7 @@ button {
 .btn:focus {
     outline: 0;
     box-shadow: none !important;
+    background-color: white;
 }
 /* Default Button */
 .btn-default {
@@ -48,7 +49,7 @@ button {
  .btn-primary {
      font-family: 'Open Sans', sans-serif !important;
      padding: 9px 22px 10px;
-     color: #fff;
+     color: #fff !important;
      background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2C85FF 100%);
      text-transform: none;
      border-radius: 90px;
@@ -106,7 +107,7 @@ button {
 
  .btn-secondary:active {
      border: 1px solid #E2E9EC !important;
-     background-color: #EFF3F6;
+     background-color: #EFF3F6 !important;
  }
 
  .btn-secondary.btn-opaque {

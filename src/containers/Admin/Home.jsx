@@ -1,48 +1,44 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import InternalLookup from "./components/InternalLookup/InternalLookup";
 
 
-class Home extends Component {
+const Home = (props) => {
+  return (
+    <div className="admin-page-inner">
+      <div className="subheader">
+        <div className="space-between">
+          <span className="subheader-title">
+            <b>Home</b>
+            <div className="hr-label">
+              <small><i className="far fa-user mr-1"></i></small>
+              {' '}
+              {props.user.name}{' '}
+              <small><i className="far fa-chevron-right"/></small>
+              {' '}
+              <span className="text-secondary">Admin</span>
+            </div>
+          </span>
+        </div>
+      </div>
+      <div className="p-5">
 
-	render() {
+        {/*Admin Header*/}
+        <div>
+          <h3><span className={'crossed_out'}>Tyler's</span>
+            &nbsp; Will's Lookup Emporium <span className={'admin_highlight'}>New and improved!</span>
+          </h3>
+        </div>
 
-		return (
-			<div className="admin-page-inner">
-				<div className="subheader">
-					<div className="space-between">
-			            <span className="subheader-title">
-			              <b>Home</b>
-			              <div className="hr-label">
-			                <small><i className="far fa-user mr-1"></i></small>
-				              {' '}
-				              {this.props.user.name}{' '}
-				              <small><i className="far fa-chevron-right"/></small>
-				              {' '}
-				              <span className="text-secondary">Admin</span>
-			              </div>
-			            </span>
-					</div>
-				</div>
-				<div className="p-5">
+        <InternalLookup user={props.user}/>
 
-					 {/*Admin Header*/}
-					<div>
-						<h3><span className={'crossed_out'}>Tyler's</span>
-							&nbsp; Will's Lookup Emporium <span className={'admin_highlight'}>New and improved!</span>
-						</h3>
-					</div>
-
-					<InternalLookup />
-
-				</div>
-			</div>
-		);
-	}
+      </div>
+    </div>
+  );
 }
 
 const mapStateToProps = state => ({
-	user: state.account
+  user: state.account
 });
 
 export default connect(mapStateToProps)(Home);

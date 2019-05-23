@@ -234,7 +234,6 @@ export class DiagramWidget extends BaseWidget {
 		if (!_.isEmpty(selected) && _.first(selected).extras && _.first(selected).extras.type === 'story') {
 			if (engine.getSuperSelect().extras.type !== 'story'){
 				selected = [engine.getSuperSelect()]
-				selected.setSelected(true)
 			}
 		}
 		if (selected.length === 1 && selected[0]) {

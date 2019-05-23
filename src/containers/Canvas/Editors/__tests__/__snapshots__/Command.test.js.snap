@@ -100,7 +100,6 @@ exports[`CommandEditor render command block editor 1`] = `
         Link Command Flow
       </label>
       <Button
-        block={true}
         iconPosition="right"
         isBlock={true}
         isClear={true}

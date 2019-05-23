@@ -1,9 +1,11 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {Button, Alert} from 'reactstrap';
+import {Alert} from 'reactstrap';
 import Select from 'react-select';
 import {Link} from 'react-router-dom';
+
+import Button from 'components/Button'
 import MenuItem from '../Sidebars/components/MenuItem'
 
 const cancel = { text: 'Cancel Payment', type: 'cancel', icon: <i className="fas fa-user-minus"/>, tip: 'Refund a purchase or cancel an user\'s subscription'}
@@ -104,10 +106,10 @@ class PaymentBlock extends Component {
                         current.data.publishingInformation.pricing['amazon.com'].defaultPriceListing &&
                         current.data.publishingInformation.pricing['amazon.com'].defaultPriceListing.price}</span></span>
                 </label>
-                <Button className="btn-primary btn-block btn-lg" onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/product/${current.id}`)}>
+                <Button isPrimary isBlock isLarge onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/product/${current.id}`)}>
                     Edit Product <i className="fas fa-sign-in"/>
                 </Button>
-                <Button color="clear" block className="btn-lg mt-2" onClick={this.reset}>
+                <Button isClear isLarge isBlock className="mt-2" onClick={this.reset}>
                     Unlink Product
                 </Button>
                 {current.data.type === 'SUBSCRIPTION' ? <React.Fragment>

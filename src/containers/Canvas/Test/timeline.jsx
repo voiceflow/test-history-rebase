@@ -347,6 +347,7 @@ const Timeline = props => {
           }
 
           pause = false;
+          console.log(res)
           if (res.play) {
             if (res.play.action === 'END') {
               delete story_state.play;
@@ -386,7 +387,7 @@ const Timeline = props => {
               } else {
                   console.log(block)
                   console.log(parsed)
-                  setEnded(true)
+                //   setEnded(true)
               }
           })
           setOutputs(dom)

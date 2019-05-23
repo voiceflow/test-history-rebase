@@ -26,6 +26,9 @@ const SERVICES_MAP = {
     [C.CU.PATCH_REQUEST]: IntegrationsService.custom.patchRequest,
     [C.CU.PUT_REQUEST]: IntegrationsService.custom.putRequest,
     [C.CU.DELETE_REQUEST]: IntegrationsService.custom.deleteRequest,
+  },
+  [C.ZP.ZAPIER]:{
+    [C.ZP.CREATE_DATA]: IntegrationsService.zapier.createMessage,
   }
 }
 

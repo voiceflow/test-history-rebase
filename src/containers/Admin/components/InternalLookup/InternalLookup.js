@@ -16,7 +16,7 @@ class InternalLookup extends React.Component {
     super(props);
 
     this.state = {
-      user_id: '2',
+      user_id: '',
       user_email: '',
       loading: false,
       user: null,
@@ -25,10 +25,6 @@ class InternalLookup extends React.Component {
       filtered_boards: null,
       expand_all_boards: false,
     }
-  }
-
-  componentDidMount() {
-    this.lookupUserById();
   }
 
   handleChange = event => {
@@ -146,7 +142,7 @@ class InternalLookup extends React.Component {
         </div>
 
         <div className="internalIdSearchResults">
-          <h4>Results:</h4>
+          <h4>Boards:</h4>
           <div>
             Filter by skill name: <Input name={"skill_filter"} value={this.state.skill_filter}
                                          onChange={this.handleChange}

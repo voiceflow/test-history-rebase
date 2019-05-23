@@ -6,7 +6,7 @@ import moment from "moment";
 
 const UserCard = (props) => {
   if (!props.user)
-    return <div>Loading...</div>
+    return null;
   return (
     <div className="user_card_wrapper">
 

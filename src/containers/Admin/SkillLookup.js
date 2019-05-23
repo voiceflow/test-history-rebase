@@ -70,7 +70,6 @@ class SkillLookup extends React.Component {
       if (isNaN(this.state.skill_id))
         this.lookupSkill();
       else {
-        console.log('it is not a encoded string');
         // Assume that it's a number I guess
         this.setState({
           encoded: false

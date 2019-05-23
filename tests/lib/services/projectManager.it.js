@@ -35,19 +35,29 @@ describe('projectManager integration tests', () => {
   });
 
   it('checks if user is owner of project', async () => {
-    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', ['Steve2', 'steve@test.com', 'foo-gid']);
+    let data = await pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id', [
+      'Steve2',
+      'steve@test.com',
+      'foo-gid',
+    ]);
 
     const creatorId = data.rows[0].creator_id;
-    data = await pool.query(`
+    data = await pool.query(
+      `
                 INSERT INTO projects (name, creator_id) 
                 VALUES ($1, $2) 
-                RETURNING project_id`, ['foo', creatorId]);
+                RETURNING project_id`,
+      ['foo', creatorId]
+    );
 
     const projectId = data.rows[0].project_id;
-    const projectManager = new ProjectManager({
-      pool,
-      hashids,
-    }, {});
+    const projectManager = new ProjectManager(
+      {
+        pool,
+        hashids,
+      },
+      {}
+    );
 
     expect(await projectManager.isOwner(projectId, creatorId)).to.eql(true);
     expect(await projectManager.isOwner(projectId, 1234)).to.eql(false);

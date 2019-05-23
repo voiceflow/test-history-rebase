@@ -3,13 +3,19 @@
 const { redisClient, verify, writeToLogs } = require('./services');
 
 module.exports = (io) => {
-  const join = (socket_id, room) => new Promise((resolve, reject) => io.of('/').adapter.remoteJoin(socket_id, room, (err) => {
-    err ? reject(err) : resolve();
-  }));
+  const join = (socket_id, room) =>
+    new Promise((resolve, reject) =>
+      io.of('/').adapter.remoteJoin(socket_id, room, (err) => {
+        return err ? reject(err) : resolve();
+      })
+    );
 
-  const leave = (socket_id, room) => new Promise((resolve, reject) => io.of('/').adapter.remoteLeave(socket_id, room, (err) => {
-    err ? reject(err) : resolve();
-  }));
+  const leave = (socket_id, room) =>
+    new Promise((resolve, reject) =>
+      io.of('/').adapter.remoteLeave(socket_id, room, (err) => {
+        return err ? reject(err) : resolve();
+      })
+    );
 
   io.on('connection', (socket) => {
     socket._ip = socket.client.request.headers['cf-connecting-ip'];
@@ -21,11 +27,11 @@ module.exports = (io) => {
       socket.device = data.device;
 
       // verify the user's login token
-      verify(data.auth, async (user) => {
+      return verify(data.auth, async (user) => {
         if (!user) return fail();
         socket.user = user.user;
 
-        io.in(data.skill_id).clients((err, clients) => {
+        return io.in(data.skill_id).clients((err, clients) => {
           if (err || clients.length === 0) {
             if (err) writeToLogs('SOCKET ROOM CHECK', err);
             socket.skill_id = data.skill_id;
@@ -58,6 +64,7 @@ module.exports = (io) => {
 
       io.of('/').adapter.clientRooms(socket.id, (err, rooms) => {
         if (!err) {
+          // eslint-disable-next-line
           for (const room of rooms) leave(socket.id, room);
           socket.skill_id = null;
         }

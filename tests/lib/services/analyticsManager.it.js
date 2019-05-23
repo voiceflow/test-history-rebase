@@ -43,38 +43,41 @@ describe('analyticsManager integration tests', () => {
 
     const sessions = [
       {
-        session_id: 'foo-1',
-        skill_id: skillId,
-        session_begin: 10,
-        session_end: 20,
+        sessionId: 'foo-1',
+        skillId,
+        sessionBegin: 10,
+        sessionEnd: 20,
       },
       {
-        session_id: 'foo-2',
-        skill_id: skillId,
-        session_begin: 40,
-        session_end: 60,
+        sessionId: 'foo-2',
+        skillId,
+        sessionBegin: 40,
+        sessionEnd: 60,
       },
       {
-        session_id: 'foo-1',
-        skill_id: skillId,
-        session_begin: 20,
-        session_end: 30,
+        sessionId: 'foo-1',
+        skillId,
+        sessionBegin: 20,
+        sessionEnd: 30,
       },
       {
-        session_id: 'foo-2',
-        skill_id: 30,
-        session_begin: 120,
-        session_end: 130,
+        sessionId: 'foo-2',
+        skillId: 30,
+        sessionBegin: 120,
+        sessionEnd: 130,
       },
     ];
 
-    await Promise.map(sessions,
-      ({
-        session_id, session_begin, session_end, skill_id,
-      }) => pool.query('INSERT INTO sessions (session_id, session_begin, session_end, skill_id) VALUES ($1, $2, $3, $4)',
-        [session_id, session_begin, session_end, skill_id]));
+    await Promise.map(sessions, ({ sessionId, sessionBegin, sessionEnd, skillId: _skillId }) =>
+      pool.query('INSERT INTO sessions (session_id, session_begin, session_end, skill_id) VALUES ($1, $2, $3, $4)', [
+        sessionId,
+        sessionBegin,
+        sessionEnd,
+        _skillId,
+      ])
+    );
 
-    await Promise.map(sessions, ({ session_id }) => pool.query('INSERT INTO utterances (session_id) VALUES ($1)', [session_id]));
+    await Promise.map(sessions, ({ sessionId }) => pool.query('INSERT INTO utterances (session_id) VALUES ($1)', [sessionId]));
 
     const services = {
       logging_pool: pool,
@@ -83,7 +86,7 @@ describe('analyticsManager integration tests', () => {
       },
     };
 
-    const analyticsManager = new AnalyticsManager(services);
+    const analyticsManager = AnalyticsManager(services);
 
     const results = await analyticsManager.getUsersData(123);
 
@@ -132,11 +135,15 @@ describe('analyticsManager integration tests', () => {
       },
     ];
 
-    await Promise.map(sessions,
-      ({
-        sessionId, sessionBegin, sessionEnd, skillId: _skillId, userId,
-      }) => pool.query('INSERT INTO sessions (session_id, session_begin, session_end, skill_id, user_id) VALUES ($1, $2, $3, $4, $5)',
-        [sessionId, sessionBegin, sessionEnd, _skillId, userId]));
+    await Promise.map(sessions, ({ sessionId, sessionBegin, sessionEnd, skillId: _skillId, userId }) =>
+      pool.query('INSERT INTO sessions (session_id, session_begin, session_end, skill_id, user_id) VALUES ($1, $2, $3, $4, $5)', [
+        sessionId,
+        sessionBegin,
+        sessionEnd,
+        _skillId,
+        userId,
+      ])
+    );
 
     const services = {
       logging_pool: pool,
@@ -145,7 +152,7 @@ describe('analyticsManager integration tests', () => {
       },
     };
 
-    const analyticsManager = new AnalyticsManager(services);
+    const analyticsManager = AnalyticsManager(services);
 
     const results = await analyticsManager.getDAU(123, 0, 1000, 0);
 
@@ -158,38 +165,41 @@ describe('analyticsManager integration tests', () => {
 
     const sessions = [
       {
-        session_id: 'foo-1',
-        skill_id: skillId,
-        session_begin: 10,
-        session_end: 20,
+        sessionId: 'foo-1',
+        skillId,
+        sessionBegin: 10,
+        sessionEnd: 20,
       },
       {
-        session_id: 'foo-2',
-        skill_id: skillId,
-        session_begin: 40,
-        session_end: 60,
+        sessionId: 'foo-2',
+        skillId,
+        sessionBegin: 40,
+        sessionEnd: 60,
       },
       {
-        session_id: 'foo-1',
-        skill_id: skillId,
-        session_begin: 20,
-        session_end: 30,
+        sessionId: 'foo-1',
+        skillId,
+        sessionBegin: 20,
+        sessionEnd: 30,
       },
       {
-        session_id: 'foo-2',
-        skill_id: 30,
-        session_begin: 120,
-        session_end: 130,
+        sessionId: 'foo-2',
+        skillId: 30,
+        sessionBegin: 120,
+        sessionEnd: 130,
       },
     ];
 
-    await Promise.map(sessions,
-      ({
-        session_id, session_begin, session_end, skill_id,
-      }) => pool.query('INSERT INTO sessions (session_id, session_begin, session_end, skill_id) VALUES ($1, $2, $3, $4)',
-        [session_id, session_begin, session_end, skill_id]));
+    await Promise.map(sessions, ({ sessionId, sessionBegin, sessionEnd, skillId: _skillId }) =>
+      pool.query('INSERT INTO sessions (session_id, session_begin, session_end, skill_id) VALUES ($1, $2, $3, $4)', [
+        sessionId,
+        sessionBegin,
+        sessionEnd,
+        _skillId,
+      ])
+    );
 
-    await Promise.map(sessions, ({ session_id }) => pool.query('INSERT INTO utterances (session_id) VALUES ($1)', [session_id]));
+    await Promise.map(sessions, ({ sessionId }) => pool.query('INSERT INTO utterances (session_id) VALUES ($1)', [sessionId]));
 
     const services = {
       logging_pool: pool,
@@ -198,7 +208,7 @@ describe('analyticsManager integration tests', () => {
       },
     };
 
-    const analyticsManager = new AnalyticsManager(services);
+    const analyticsManager = AnalyticsManager(services);
 
     const results = await analyticsManager.getStats(123);
 

@@ -28,3 +28,4 @@ shared-local-instance.db
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+.nyc_output

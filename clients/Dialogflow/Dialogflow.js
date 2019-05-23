@@ -1,16 +1,13 @@
+'use strict';
+
 const AdmZip = require('adm-zip');
 const _ = require('lodash');
 const dialogflow = require('dialogflow');
 const uuid = require('uuid/v4');
-const {
-  Package,
-  Agent,
-} = require('./Interfaces');
-const {
-  BUILT_IN_EXAMPLES,
-  WelcomeIntent,
-  FallbackIntent,
-} = require('./Constants');
+const { Package, Agent } = require('./Interfaces');
+const { BUILT_IN_EXAMPLES, WelcomeIntent, FallbackIntent } = require('./Constants');
+
+const log = require('../../logger');
 
 class DialogFlow {
   constructor(projectId, privateKey, clientEmail) {
@@ -33,20 +30,19 @@ class DialogFlow {
     this.locale = locale;
   }
 
-  async listAgents() {
-    const search = await this.agentClient.searchAgents({
-      parent: 'projects/-',
-    });
-    return search;
-  }
+  // async listAgents() {
+  //   const search = await this.agentClient.searchAgents({
+  //     parent: 'projects/-',
+  //   });
+  //   return search;
+  // }
 
   async getAgent() {
     const search = await this.agentClient.getAgent({
       parent: `projects/${this.projectId}`,
     });
 
-    const res = search.filter((e) => (e || null));
-    return res;
+    return search.filter((e) => e || null);
   }
 
   async updateIntents(new_intents) {
@@ -61,13 +57,15 @@ class DialogFlow {
       });
 
       if (all_intents[0]) {
-        all_intents = all_intents[0];
+        [all_intents] = all_intents;
       }
 
       all_intents.forEach((intent) => {
-        if (!_.find(new_intents, {
-          name: intent.displayName,
-        })) {
+        if (
+          !_.find(new_intents, {
+            name: intent.displayName,
+          })
+        ) {
           intents_to_delete.push(intent);
         }
         display_name_map[intent.displayName] = intent.name;
@@ -103,8 +101,9 @@ class DialogFlow {
       }
       return;
     } catch (e) {
-      console.error('Error uploading to dialogflow', e);
-      throw (`Error uploading to dialogflow: ${e.details || e}`);
+      log.error('Error uploading to dialogflow', e);
+      // eslint-disable-next-line
+      throw `Error uploading to dialogflow: ${e.details || e}`;
     }
   }
 
@@ -125,14 +124,14 @@ class DialogFlow {
         });
       });
     }
-    const regexp = new RegExp(`(\{(?:${slots.join('|') || '[^\{\}]+'})\})`, 'g');
+    const regexp = new RegExp(`({(?:${slots.join('|') || '[^{}]+'})})`, 'g');
 
     if (intent.samples) {
       intent.samples.forEach((input) => {
         const raw_texts = input.split(regexp).filter(Boolean);
         const parts = raw_texts.map((part) => {
-          if (/\{[^\{\}]+\}/.test(part)) {
-            const slot_name = part.match(/\{([^\{\}]+)\}/)[1];
+          if (/\{[^{}]+\}/.test(part)) {
+            const slot_name = part.match(/\{([^{}]+)\}/)[1];
             const slot = _.find(intent.slots, {
               name: slot_name,
             });
@@ -184,13 +183,15 @@ class DialogFlow {
       });
 
       if (all_slots[0]) {
-        all_slots = all_slots[0];
+        [all_slots] = all_slots;
       }
 
       all_slots.forEach((slot) => {
-        if (!_.find(new_slots, {
-          name: slot.displayName,
-        })) {
+        if (
+          !_.find(new_slots, {
+            name: slot.displayName,
+          })
+        ) {
           slots_to_delete.push(slot);
         }
         display_name_map[slot.displayName] = slot.name;
@@ -226,8 +227,9 @@ class DialogFlow {
       }
       return;
     } catch (e) {
-      console.error('Error uploading to dialogflow', e);
-      throw (`Error uploading to dialogflow: ${e.details || e}`);
+      log.error('Error uploading to dialogflow', e);
+      // eslint-disable-next-line
+      throw `Error uploading to dialogflow: ${e.details || e}`;
     }
   }
 
@@ -273,8 +275,9 @@ class DialogFlow {
     try {
       await operation.promise();
     } catch (e) {
-      console.error('Error uploading to dialogflow', e);
-      throw (`Error uploading to dialogflow: ${e}`);
+      log.error('Error uploading to dialogflow', e);
+      // eslint-disable-next-line
+      throw `Error uploading to dialogflow: ${e}`;
     }
   }
 
@@ -287,8 +290,9 @@ class DialogFlow {
     try {
       await operation.promise();
     } catch (e) {
-      console.error('Error training agent', e);
-      throw ('Error training agent');
+      log.error('Error training agent', e);
+      // eslint-disable-next-line
+      throw 'Error training agent';
     }
   }
 }

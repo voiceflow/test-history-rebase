@@ -1,10 +1,7 @@
 const _ = require('lodash');
-const {
-  BUILT_IN_INTENTS_ALEXA,
-  DEFAULT_INTENTS,
-  INTERFACE_INTENTS,
-  CATCH_ALL_INTENT,
-} = require('./Constants');
+const randomstring = require('randomstring');
+const stringSimilarity = require('string-similarity');
+const { BUILT_IN_INTENTS_ALEXA, DEFAULT_INTENTS, INTERFACE_INTENTS, CATCH_ALL_INTENT } = require('./Constants');
 const {
   getUtterancesWithSlotNames,
   formatName,
@@ -15,13 +12,11 @@ const {
   getSlotType,
   findSlot,
 } = require('../app/src/intent_util');
-const randomstring = require('randomstring');
-const stringSimilarity = require('string-similarity');
 
 const addSlots = (extracted_slots, intent, existing) => {
   if (extracted_slots.length !== 0) {
     const existing_slots = new Set(intent.slots.map((s) => s.name));
-    for (let extracted_slot of extracted_slots) {
+    for (const extracted_slot of extracted_slots) {
       if (!existing_slots.has(extracted_slot.name)) {
         // slot currently doesn't exist in this intent
         existing_slots.add(extracted_slot.name);
@@ -91,7 +86,7 @@ exports.createInteractionModel = (req, locale) => {
         entered_intents.add(intent.name);
         intents_for_amazon.push(intent);
       }
-      for (let sample of intent.samples) {
+      for (const sample of intent.samples) {
         samples[stripSample(sample)] = intent;
       }
       LOCALE_DEFAULT_SET[intent.name] = new Set(intent.samples);
@@ -110,7 +105,7 @@ exports.createInteractionModel = (req, locale) => {
 
   // INTERFACE REQUIRED INTENTS
   if (Array.isArray(req.alexa_interfaces)) {
-    for (let _interface of req.alexa_interfaces) {
+    for (const _interface of req.alexa_interfaces) {
       if (INTERFACE_INTENTS[_interface]) {
         INTERFACE_INTENTS[_interface].forEach((i) => {
           intents_for_amazon.push(i);
@@ -128,7 +123,8 @@ exports.createInteractionModel = (req, locale) => {
     if (intent_key.startsWith('CUSTOM:') || intent_key.startsWith('CAPTURE:')) {
       slot_intents.push(intent_key);
       return;
-    } if (intent_key.startsWith('AMAZON.')) {
+    }
+    if (intent_key.startsWith('AMAZON.')) {
       intent = _.find(BUILT_IN_INTENTS_ALEXA, {
         name: intent_key,
       });
@@ -155,13 +151,13 @@ exports.createInteractionModel = (req, locale) => {
         formatted_intent.slots = getSlotsForKeysAndFormat(intent.inputs.map((input) => input.slots), slots, platform);
 
         const slot_dict = {};
-        for (let slot of formatted_intent.slots) {
+        for (const slot of formatted_intent.slots) {
           if (slot.type) {
             slot_dict[slot.name] = slot.type;
             used_slots.add(slot.type);
           }
         }
-        for (let sample of formatted_intent.samples) {
+        for (const sample of formatted_intent.samples) {
           if (formatted_intent.slots.length !== 0) {
             testSlotOnlyIntent(sample, slot_dict, capture_intents);
           }
@@ -184,7 +180,9 @@ exports.createInteractionModel = (req, locale) => {
       if (intent.slots.length !== 0) {
         // check if this is an capture type utterance
         const slot_dict = {};
-        intent.slots.forEach((s) => (slot_dict[s.name] = s.type));
+        intent.slots.forEach((s) => {
+          slot_dict[s.name] = s.type;
+        });
         testSlotOnlyIntent(input_object.formatted_input, slot_dict, capture_intents);
       }
     } else {
@@ -203,25 +201,27 @@ exports.createInteractionModel = (req, locale) => {
 
   // Make this faster
   if (used_choices.length !== 0) {
-    used_choices = used_choices.map((c) => {
-      if (c.length === 1) return [1, c];
-      let sum = 0;
-      let num = 0;
-      for (let i = 0; i < c.length; i++) {
-        for (let k = i + 1; k < c.length; k++) {
-          num++;
-          sum += stringSimilarity.compareTwoStrings(c[i].toLowerCase(), c[k].toLowerCase());
+    used_choices = used_choices
+      .map((c) => {
+        if (c.length === 1) return [1, c];
+        let sum = 0;
+        let num = 0;
+        for (let i = 0; i < c.length; i++) {
+          for (let k = i + 1; k < c.length; k++) {
+            num++;
+            sum += stringSimilarity.compareTwoStrings(c[i].toLowerCase(), c[k].toLowerCase());
+          }
         }
-      }
-      return [sum / num, c];
-    }).sort((i, k) => (k[0] - i[0])).map((c) => c[1]);
+        return [sum / num, c];
+      })
+      .sort((i, k) => k[0] - i[0])
+      .map((c) => c[1]);
   }
 
   // ALEXA "INTENT OPTIMIZATION ENGINE" FOR
   // INTENTS FIRST THEN SLOTS
   // We only need a second pass if there are choice blocks
-  let choice_count = 0;
-  for (let choice of used_choices) {
+  for (const choice of used_choices) {
     // UNION CHOICES INTO INTENTS AND SHIT HERE
     // COMPARE EACH OPTION OF THE CHOICE INPUT TO ALL EXISTING INTENTS AND THEIR SYNONYMS
     const matched = [];
@@ -229,7 +229,7 @@ exports.createInteractionModel = (req, locale) => {
 
     const stripped_set = new Set();
 
-    for (let input of choice) {
+    for (const input of choice) {
       // TODO: PREPARE FOR AMAZON DEFAULT INTENTS
       // returns parsed_input to {formatted_input, extracted_slots}
       const parsed_input = parseChoiceInput(input, slots);
@@ -256,22 +256,21 @@ exports.createInteractionModel = (req, locale) => {
 
     // Only one match
     if (matched.length === 1) {
-      for (let parsed_input of parsed_inputs) {
+      for (const parsed_input of parsed_inputs) {
         pushToIntent(parsed_input, matched[0]);
-        choice_count++;
       }
     } else if (matched.length > 1) {
       // EDGE EDGE CASE
       // time to jaccard this boi - each input can go into a different intent based on fuzzy search
-      for (let parsed_input of parsed_inputs) {
+      for (const parsed_input of parsed_inputs) {
         let best = null;
         let high = -1;
 
-        for (let match of matched) {
+        for (const match of matched) {
           // if(!Array.isArray(match.samples)){console.log(match); continue}
 
-          let i; let
-            sum = 0;
+          let i;
+          let sum = 0;
           for (i = 0; i < match.samples.length; i++) {
             sum += stringSimilarity.compareTwoStrings(parsed_input.formatted_input.toLowerCase(), match.samples[0].toLowerCase());
           }
@@ -286,7 +285,6 @@ exports.createInteractionModel = (req, locale) => {
 
         if (best) {
           pushToIntent(parsed_input, best);
-          choice_count++;
         }
       }
     } else if (parsed_inputs.length !== 0) {
@@ -319,7 +317,6 @@ exports.createInteractionModel = (req, locale) => {
       intent.slots = extracted_slots;
 
       intents_for_amazon.push(intent);
-      choice_count++;
     }
   }
 
@@ -328,7 +325,7 @@ exports.createInteractionModel = (req, locale) => {
   // Add all the slots to the interaction model
   slots.forEach((slot) => {
     if (Array.isArray(slot.inputs) && slot.inputs.length !== 0) {
-      const slot_name = (!slot.type.value || slot.type.value.toLowerCase() === 'custom') ? slot.name : findSlot(slot.type.value, 'alexa');
+      const slot_name = !slot.type.value || slot.type.value.toLowerCase() === 'custom' ? slot.name : findSlot(slot.type.value, 'alexa');
 
       // Don't add the slot if it ain't used
       if (!slot_name || !used_slots.has(slot_name)) {
@@ -365,7 +362,7 @@ exports.createInteractionModel = (req, locale) => {
       const utterances = JSON.parse(slot.substring(7));
       const unique_utterances = [];
       // check if there are already slots that have this utterance
-      for (let sample of utterances) {
+      for (const sample of utterances) {
         const stripped = stripSample(sample);
         if (!slot_utterances.has(stripped)) {
           slot_utterances.add(stripped);
@@ -383,10 +380,12 @@ exports.createInteractionModel = (req, locale) => {
         intents_for_amazon.push({
           name: intent_name,
           samples: [`{${slot_name}}`],
-          slots: [{
-            name: slot_name,
-            type: slot_name,
-          }],
+          slots: [
+            {
+              name: slot_name,
+              type: slot_name,
+            },
+          ],
         });
 
         slot_types.push({
@@ -405,12 +404,15 @@ exports.createInteractionModel = (req, locale) => {
     } else if (slot.startsWith('CAPTURE:')) {
       // check it there is a {capture} only slot for this slot type
       let slot_type = slot.substring(8);
-      slot_type = getSlotType({
-        name: slot_type,
-        type: {
-          value: slot_type,
+      slot_type = getSlotType(
+        {
+          name: slot_type,
+          type: {
+            value: slot_type,
+          },
         },
-      }, 'alexa');
+        'alexa'
+      );
       if (!capture_intents.has(slot_type)) {
         if (!slot_type.startsWith('AMAZON.')) {
           return;
@@ -425,10 +427,12 @@ exports.createInteractionModel = (req, locale) => {
         intents_for_amazon.push({
           name: intent_name,
           samples: [`{${slot_name}}`],
-          slots: [{
-            name: slot_name,
-            type: slot_type,
-          }],
+          slots: [
+            {
+              name: slot_name,
+              type: slot_type,
+            },
+          ],
         });
       }
     }
@@ -438,7 +442,8 @@ exports.createInteractionModel = (req, locale) => {
   LOCALE_DEFAULTS.defaults.forEach((intent) => {
     intent.samples = intent.samples.filter((s) => !LOCALE_DEFAULT_SET[intent.name].has(s));
     if (intent.keep) {
-      // amazon is retarded "Interaction model is not valid. MissingSampleUtterance: Missing sample utterance. At least one sample utterance is required."
+      // amazon is retarded "Interaction model is not valid. MissingSampleUtterance: Missing sample utterance.
+      // At least one sample utterance is required."
       // right now all the yes intents will have at least a "yes" as a sample
       intent.samples = [...intent.samples, ...intent.keep];
       delete intent.keep;

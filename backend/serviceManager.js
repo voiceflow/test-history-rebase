@@ -5,13 +5,12 @@
 const AWS = require('aws-sdk');
 const { OAuth2Client } = require('google-auth-library');
 const path = require('path');
+const Promise = require('bluebird');
 
-const {
-  upload,
-  uploadResize,
-  ESclient,
-  verify,
-} = require('../services');
+const { ResponseBuilder } = require('@voiceflow/common').middleware;
+const { getProcessEnv, hasProcessEnv } = require('@voiceflow/common').utils;
+
+const { upload, uploadResize, ESclient, verify } = require('../services');
 const { policy, terms } = require('../policy');
 
 const { underMaintenance } = require('../app/src/MAINTENANCE.js');
@@ -20,14 +19,10 @@ const { underMaintenance } = require('../app/src/MAINTENANCE.js');
 const Diagram = require('../routes/diagram.js');
 const Skill = require('../routes/skill.js');
 const Problem = require('../routes/error.js');
-const LinkAccount = require('../routes/linkaccount.js');
 const Audio = require('../routes/audio.js');
-const Test = require('../routes/test.js');
 const Authentication = require('../routes/authentication');
 const Code = require('../config/codes.js');
-const Decode = require('../routes/decode.js');
 const Marketplace = require('../routes/marketplace.js');
-const Email = require('../routes/email.js');
 const Multimodal = require('../routes/multimodal/multimodal');
 const Onboard = require('../routes/onboard.js');
 const Logs = require('../routes/logs.js');
@@ -35,23 +30,34 @@ const Team = require('../routes/team.js');
 const Project = require('../routes/project.js');
 const { copySkill } = require('../routes/skill_util');
 const Track = require('../routes/track.js');
-const ProductUpdates = require('../routes/product_updates.js');
 const Integrations = require('../routes/integrations');
 const GoogleSheets = require('../routes/integrations/googleSheets');
 const Custom = require('../routes/integrations/custom');
 
-
-const { ResponseBuilder } = require('@voiceflow/common').middleware;
-const { getProcessEnv } = require('@voiceflow/common').util;
-
+const { JWT, Segement, MockSegement, staticClients } = require('../lib/clients');
 const {
   AnalyticsManager,
   ProjectManager,
   SkillsManager,
   AccountManager,
+  LinkManager,
+  ProductManager,
+  TeamManager,
+  EmailManager,
+  TTSManager,
 } = require('../lib/services');
-const { Project: ProjectMiddleware } = require('../lib/middleware');
-const { Analytics: AnalyticsController, Account: AccountController } = require('../lib/controllers');
+const { Project: ProjectMiddleware, Skill: SkillMiddleware } = require('../lib/middleware');
+const {
+  Account: AccountController,
+  Analytics: AnalyticsController,
+  Linking: LinkingController,
+  ProductUpdates: ProductUpdatesController,
+  Email: EmailController,
+  Decode: DecodeController,
+  Test: TestController,
+} = require('../lib/controllers');
+
+const log = require('../logger');
 
 const responseBuilder = new ResponseBuilder();
 
@@ -92,19 +98,16 @@ class ServiceManager {
    * @returns {*}
    */
   static buildControllers(services) {
-    const {
-      analyticsManager,
-      accountManager,
-      projectManager,
-    } = services;
+    const { analyticsManager, accountManager, projectManager, productManager, emailManager, linkManager, ttsManager, hashids } = services;
 
     const utilities = {
       policy,
       terms,
-      teamCopySkill: (req, res) => copySkill(req, res, {
-        append_copy_str: true,
-        user_copy: true,
-      }),
+      teamCopySkill: (req, res) =>
+        copySkill(req, res, {
+          append_copy_str: true,
+          user_copy: true,
+        }),
       s3Audio: (req, res) => res.send(`https://s3.amazonaws.com/com.getstoryflow.audio.production/${req.file.key}`),
       uploadTransformImage: (req, res) => res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${req.file.transforms[0].key}`),
       uploadImage: (req, res) => res.send(`https://s3.amazonaws.com/com.getstoryflow.audio.production/${req.files[0].key}`),
@@ -123,7 +126,7 @@ class ServiceManager {
             res.send({ responses: [data] });
           })
           .catch((err) => {
-            console.log(err);
+            log.info(err);
           });
       },
     };
@@ -134,20 +137,47 @@ class ServiceManager {
       projectManager,
     });
 
-    const account = new AccountController({
+    const account = AccountController({
       responseBuilder,
       accountManager,
+    });
+
+    const productUpdates = new ProductUpdatesController({
+      productManager,
+      responseBuilder,
+    });
+
+    const email = new EmailController({
+      emailManager,
+      responseBuilder,
+      hashids,
+    });
+
+    const linkAccount = new LinkingController({
+      linkManager,
+      hashids,
+      responseBuilder,
+    });
+
+    const decode = new DecodeController({
+      hashids,
+      responseBuilder,
+    });
+
+    const test = new TestController({
+      ttsManager,
+      responseBuilder,
     });
 
     return {
       Authentication,
       policy,
       terms,
-      Test,
-      LinkAccount,
-      Email,
+      test,
+      linkAccount,
+      email,
       Multimodal,
-      Decode,
+      decode,
       Skill,
       Project,
       copySkill,
@@ -161,7 +191,7 @@ class ServiceManager {
       analytics,
       account,
       Onboard,
-      ProductUpdates,
+      productUpdates,
       Logs,
       Code,
       Problem,
@@ -176,28 +206,35 @@ class ServiceManager {
    * Build all middleware
    * @returns {*}
    */
-  static buildMiddleware(clients, services, config) {
-    const {
-      projectManager,
-    } = services;
+  static buildMiddleware(clients, services) {
+    const { projectManager, skillsManager } = services;
+    const { hashids } = clients;
 
     const ensureLoggedIn = (req, res, next) => (req.user ? next() : res.sendStatus(401));
-    const ensurePlan = (plan) => (req, res, next) => ((req.user && req.user.admin >= plan) ? next() : res.sendStatus(401));
+    const ensurePlan = (plan) => (req, res, next) => (req.user && req.user.admin >= plan ? next() : res.sendStatus(401));
+    const ensurePaid = ensurePlan(1);
     const ensureAdmin = ensurePlan(100);
     const ensureLoggedOut = (req, res, next) => (req.user ? res.redirect('/') : next());
 
     // MARKETPLACE BETA
-    const ensureBeta = (req, res, next) => ((req.user && req.user.admin === 7) ? next() : res.sendStatus(401));
+    const ensureBeta = (req, res, next) => (req.user && req.user.admin === 7 ? next() : res.sendStatus(401));
 
     const project = new ProjectMiddleware({
       responseBuilder,
       projectManager,
     });
 
+    const skill = new SkillMiddleware({
+      responseBuilder,
+      skillsManager,
+      hashids,
+    });
+
     return {
-      isProjectOwner: project.isOwner,
+      isProjectOwner: (req, res, next) => project.isOwner(req, res, next),
       ensureLoggedIn,
       ensurePlan,
+      ensurePaid,
       ensureAdmin,
       ensureLoggedOut,
       ensureBeta,
@@ -223,6 +260,7 @@ class ServiceManager {
       },
       verifyProjectAccess: Team.verifyProjectAccess,
       verifyTeam: Team.verifyTeam,
+      hasSkillAccess: skill.hasSkillAccess,
     };
   }
 
@@ -233,46 +271,47 @@ class ServiceManager {
    * @returns {{projectManager: (ProjectManager|*), analyticsManager: (AnalyticsManager|*), skillsManager: (SkillsManager|*)}}
    */
   static buildServices(config, clients) {
+    const r = {};
 
-    // temporary services (DELETE ALL service.[etc] REFERENCES WHEN etc HAS BEEN DEFINED)
-    const services = require('../services'); // eslint-disable-line
-    // The above line is temporary until we finish migrating the routes.
-
-    const {
-      pool,
-      logging_pool,
-      googleClient
-    } = clients;
-
-    const projectManager = new ProjectManager({
-      pool,
-      hashids: services.hashids,
+    r.projectManager = new ProjectManager({
+      ...clients,
     });
 
-    const skillsManager = new SkillsManager({ pool });
-
-    const analyticsManager = new AnalyticsManager({
-      logging_pool,
-      skillsManager,
+    r.skillsManager = new SkillsManager({
+      ...clients,
     });
 
-    const accountManager = new AccountManager({
-      pool,
-      jwt: services.jwt,
-      redis: services.redisClient,
-      analytics: services.analytics,
-      axios: services.axios,
-      crypto: services.crypto,
-      googleClient,
+    r.analyticsManager = AnalyticsManager({
+      ...clients,
+      skillsManager: r.skillsManager,
     });
 
-    return {
-      hashids: services.hashids,
-      projectManager,
-      skillsManager,
-      analyticsManager,
-      accountManager,
-    };
+    r.teamManager = TeamManager({
+      ...clients,
+    });
+
+    r.accountManager = AccountManager({
+      ...clients,
+      teamManager: r.teamManager,
+    });
+
+    r.productManager = new ProductManager({
+      ...clients,
+    });
+
+    r.emailManager = new EmailManager({
+      ...clients,
+    });
+
+    r.linkManager = new LinkManager({
+      ...clients,
+    });
+
+    r.ttsManager = new TTSManager({
+      ...clients,
+    });
+
+    return r;
   }
 
   /**
@@ -280,10 +319,7 @@ class ServiceManager {
    * @returns {*}
    */
   static buildClients() {
-    const {
-      logging_pool,
-      pool,
-    } = require('../services'); // eslint-disable-line
+    const { logging_pool, pool, hashids } = require('../services'); // eslint-disable-line
     // The above line is temporary until we finish migrating the routes.
 
     AWS.config = new AWS.Config({
@@ -294,12 +330,20 @@ class ServiceManager {
     });
 
     const googleClient = new OAuth2Client(getProcessEnv('GOOGLE_ID'));
+    const jwt = new JWT(process.env.JWT_SECRET);
+    const segement = hasProcessEnv('SEGEMENT_WRITE_KEY') ? new Segement(getProcessEnv('SEGMENT_WRITE_KEY')) : MockSegement();
+    const polly = new AWS.Polly();
 
     return {
-      AWS,
+      ...staticClients,
+      polly: Promise.promisify(polly.synthesizeSpeech.bind(polly)),
+      aws: AWS,
+      jwt,
       pool,
       googleClient,
       logging_pool,
+      segement,
+      hashids,
     };
   }
 
@@ -307,15 +351,13 @@ class ServiceManager {
    * Start services
    * @return {Promise<void>}
    */
-  async start() {
-  }
+  async start() {}
 
   /**
    * Stop services
    * @return {Promise<void>}
    */
-  async stop() {
-  }
+  async stop() {}
 }
 
 module.exports = ServiceManager;

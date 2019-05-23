@@ -53,7 +53,9 @@ class VariableText extends Component {
     }
 
     componentWillUnmount(){
-        this.props.updateRaw(convertToRaw(this.state.editorState.getCurrentContent()));
+        const raw = convertToRaw(this.state.editorState.getCurrentContent());
+        raw.text = this.state.editorState.getCurrentContent().getPlainText();
+        this.props.updateRaw(raw);
     }
 
     onSearchChange = ({ value }) => {
@@ -63,7 +65,9 @@ class VariableText extends Component {
     };
 
     onChange = (editorState) => {
-        this.props.updateRaw(convertToRaw(editorState.getCurrentContent()));
+        const raw = convertToRaw(editorState.getCurrentContent())
+        raw.text = editorState.getCurrentContent().getPlainText();
+        this.props.updateRaw(raw);
         this.setState({
           editorState: editorState
         });
@@ -76,7 +80,7 @@ class VariableText extends Component {
     render() {
         const { MentionSuggestions } = this.mentionPlugin;
         const plugins = [this.mentionPlugin];
-        
+
         return (
             <div
             className={this.props.className} draggable

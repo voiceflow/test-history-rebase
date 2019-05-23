@@ -373,9 +373,21 @@ const Timeline = props => {
             toggleAudioPlayer(false)
           }
           let dom = []
+          console.log(trace)
           _.forEach(trace, block => {
-              let parsed = parse(block.output)
-              dom.push(parsed)
+              const type = block.block
+              let parsed = parse(block.output)[0]
+              let outputBlock = {}
+              outputBlock.type = type
+              if (type === 'Speak') {
+                outputBlock.voice = parsed.children[0].attrs.name
+                outputBlock.text = parsed.children[0].children[0].content
+                dom.push(outputBlock)
+              } else {
+                  console.log(block)
+                  console.log(parsed)
+                  setEnded(true)
+              }
           })
           setOutputs(dom)
         } else if (res.ending) {

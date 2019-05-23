@@ -6,6 +6,7 @@ import Button from 'components/Button'
 const TestBox = props => {
     const {
         input,
+        outputs,
         inputs,
         debug,
         ended,
@@ -21,7 +22,7 @@ const TestBox = props => {
         <React.Fragment>
             <div className="chatbox px-3">
             <div className="chats">
-                {inputs.map((chat, i) => {
+                {outputs.map((chat, i) => {
                 if(chat.self){
                     return <div className="mt-2 text-right" key={i}>
                     <div className="self-message message border rounded p-2 align-self-start">
@@ -53,7 +54,7 @@ const TestBox = props => {
                     return <div className="mt-2 text-left" key={i}>
                     <div className="message border rounded align-self-start">
                         <div className="message-container p-2">
-                        <p className="mb-0 px-1 text-left"><span className="text-muted"><i className="fas fa-volume-up"></i></span> {chat.src}<br/><small className="text-muted">{chat.time}</small></p>
+                        <p className="mb-0 px-1 text-left"><span className="text-muted"><i className="fas fa-volume-up"></i></span> {chat.text}<br/><small className="text-muted">{chat.time}</small></p>
                         </div>
                         <div className="message-progress" style={{width: ((chat.currentTime/chat.duration) * 100)+"%"}}>
                         </div>

@@ -1,15 +1,5 @@
 const axios = require('axios');
 
-const _addUser = async (data) => {
-  const resp = await axios.post(`${process.env.INTEGRATIONS_LAMBDA_ENDPOINT}/google_sheets/add_user`, data);
-  return resp.data;
-};
-
-const _deleteUser = async (data) => {
-  const resp = await axios.post(`${process.env.INTEGRATIONS_LAMBDA_ENDPOINT}/google_sheets/delete_user`, data);
-  return resp.data;
-};
-
 const getSpreadsheets = async (req, res) => {
   try {
     const resp = await axios.post(`${process.env.INTEGRATIONS_LAMBDA_ENDPOINT}/google_sheets/spreadsheets`, req.body);
@@ -74,8 +64,6 @@ const deleteData = async (req, res) => {
 };
 
 module.exports = {
-  _addUser,
-  _deleteUser,
   getSpreadsheets,
   getSpreadsheetSheets,
   getSheetHeaders,

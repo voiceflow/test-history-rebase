@@ -32,6 +32,8 @@ const Integrations = require('../routes/integrations');
 const GoogleSheets = require('../routes/integrations/googleSheets');
 const Custom = require('../routes/integrations/custom');
 
+const zapier = require('../lib/proxy/zapier');
+
 const { JWT } = require('../lib/clients');
 const { AnalyticsManager, ProjectManager, SkillsManager, LinkManager, ProductManager, EmailManager, TTSManager } = require('../lib/services');
 const { Project: ProjectMiddleware, Skill: SkillMiddleware } = require('../lib/middleware');
@@ -170,6 +172,7 @@ class ServiceManager {
       Integrations,
       GoogleSheets,
       Custom,
+      zapier,
       analytics,
       Onboard,
       productUpdates,

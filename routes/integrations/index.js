@@ -2,6 +2,7 @@ const axios = require('axios');
 
 const addUser = async (req, res) => {
   if (!req.body) return res.status(401).send('Missing Body');
+  req.body.creator_id = req.user.id;
   try {
     const resp = await axios.post(`${process.env.INTEGRATIONS_LAMBDA_ENDPOINT}/add_user`, req.body);
     return res.send(resp.data);
@@ -12,6 +13,7 @@ const addUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   if (!req.body) return res.status(401).send('Missing Body');
+  req.body.creator_id = req.user.id;
   try {
     const resp = await axios.post(`${process.env.INTEGRATIONS_LAMBDA_ENDPOINT}/delete_user`, req.body);
     return res.send(resp.data);

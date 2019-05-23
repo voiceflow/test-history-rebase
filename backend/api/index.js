@@ -92,7 +92,6 @@ module.exports = (middleware, controllers) => {
   router.get('/version/:version_id/info', middleware.ensureAdmin, controllers.Skill.getVersionInfo);
 
   // ADMIN STUFF
-  // router.get('/admin/:user_id/info', middleware.ensureAdmin, controllers.)
   router.get('/admin-api/:user_id', middleware.ensureAdmin, controllers.admin.getUsersData);
 
   // TEAM RESTful CRUD STUFF

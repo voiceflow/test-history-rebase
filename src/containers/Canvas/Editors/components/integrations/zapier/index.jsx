@@ -11,9 +11,8 @@ import CreateDataSection from './actions/createDataSection'
 
 import FeedAddUserModal from './addUserModal'
 
-import ActionSection from '../actionSection'
-import UserSection from '../userSection'
 import TestSection from '../testSection'
+import FeedSection from './feedSection'
 
 import C from './constants'
 class Zapier extends IntegrationBase {
@@ -30,7 +29,6 @@ class Zapier extends IntegrationBase {
       actions: {
         [C.CREATE_DATA]: {
           sections: [
-            C.ACTIONS_SECTION,
             C.USER_SECTION,
             C.CREATE_OPTIONS_SECTION,
             C.TESTING_SECTION
@@ -46,8 +44,14 @@ class Zapier extends IntegrationBase {
 
   componentDidMount() {
     if (!this.props.integration_data.selected_action) {
+      this.props.updateIntegrationData({
+        actions_data:{
+          [C.CREATE_DATA]:{}
+        },
+        selected_action:C.CREATE_DATA
+      })
       this.setState({
-        active_section: C.ACTIONS_SECTION
+        active_section: C.USER_SECTION
       })
     }
   }
@@ -105,19 +109,8 @@ class Zapier extends IntegrationBase {
           let component
 
           switch (section) {
-            case C.ACTIONS_SECTION:
-              component = <ActionSection
-                integration_data={this.props.integration_data}
-                selected_action={action}
-                all_actions={this.integration_info.actions}
-                toggleSection={() => this.showSection(section)}
-                open={this.state.active_section === C.ACTIONS_SECTION}
-                updateIntegrationData={this.props.updateIntegrationData}
-                showNextSection={() => i + 2 > sections_list.length || this.showSection(sections_list[i + 1])}
-              />
-              break
             case C.USER_SECTION:
-              component = <UserSection
+              component = <FeedSection
                 user_modal={FeedAddUserModal}
                 action_data={action_data}
                 integration_data={this.props.integration_data}

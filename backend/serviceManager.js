@@ -33,7 +33,16 @@ const GoogleSheets = require('../routes/integrations/googleSheets');
 const Custom = require('../routes/integrations/custom');
 
 const { JWT } = require('../lib/clients');
-const { AnalyticsManager, ProjectManager, SkillsManager, LinkManager, ProductManager, EmailManager, TTSManager } = require('../lib/services');
+const {
+  AnalyticsManager,
+  ProjectManager,
+  SkillsManager,
+  LinkManager,
+  ProductManager,
+  EmailManager,
+  TTSManager,
+  AdminManager,
+} = require('../lib/services');
 const { Project: ProjectMiddleware, Skill: SkillMiddleware } = require('../lib/middleware');
 const {
   Analytics: AnalyticsController,
@@ -42,6 +51,7 @@ const {
   Email: EmailController,
   Decode: DecodeController,
   Test: TestController,
+  Admin: AdminController,
 } = require('../lib/controllers');
 
 const log = require('../logger');
@@ -85,7 +95,7 @@ class ServiceManager {
    * @returns {*}
    */
   static buildControllers(services) {
-    const { analyticsManager, projectManager, productManager, emailManager, linkManager, ttsManager, hashids } = services;
+    const { analyticsManager, projectManager, productManager, emailManager, linkManager, ttsManager, hashids, adminManager } = services;
 
     const utilities = {
       policy,
@@ -122,6 +132,11 @@ class ServiceManager {
       responseBuilder,
       analyticsManager,
       projectManager,
+    });
+
+    const admin = new AdminController({
+      adminManager,
+      responseBuilder,
     });
 
     const productUpdates = new ProductUpdatesController({
@@ -177,6 +192,7 @@ class ServiceManager {
       Code,
       Problem,
       Audio,
+      admin,
 
       // Probably can eventually remove these and replace with actual controllers
       utilities,
@@ -284,6 +300,11 @@ class ServiceManager {
       polly,
     });
 
+    const adminManager = new AdminManager({
+      pool,
+      logging_pool,
+    });
+
     return {
       hashids,
       projectManager,
@@ -293,6 +314,7 @@ class ServiceManager {
       emailManager,
       linkManager,
       ttsManager,
+      adminManager,
     };
   }
 

@@ -44,6 +44,7 @@ const {
   EmailManager,
   TTSManager,
   APIManager,
+  AdminManager,
 } = require('../lib/services');
 const { Project: ProjectMiddleware, Skill: SkillMiddleware } = require('../lib/middleware');
 const {
@@ -54,6 +55,7 @@ const {
   Decode: DecodeController,
   Test: TestController,
   Api: ApiController,
+  Admin: AdminController,
 } = require('../lib/controllers');
 
 const log = require('../logger');
@@ -97,7 +99,7 @@ class ServiceManager {
    * @returns {*}
    */
   static buildControllers(services) {
-    const { analyticsManager, projectManager, productManager, emailManager, linkManager, ttsManager, hashids, apiManager } = services;
+    const { analyticsManager, projectManager, productManager, emailManager, linkManager, ttsManager, hashids, adminManager, apiManager } = services;
 
     const utilities = {
       policy,
@@ -134,6 +136,11 @@ class ServiceManager {
       responseBuilder,
       analyticsManager,
       projectManager,
+    });
+
+    const admin = new AdminController({
+      adminManager,
+      responseBuilder,
     });
 
     const productUpdates = new ProductUpdatesController({
@@ -193,6 +200,7 @@ class ServiceManager {
       Code,
       Problem,
       Audio,
+      admin,
 
       // Probably can eventually remove these and replace with actual controllers
       utilities,
@@ -304,6 +312,10 @@ class ServiceManager {
       apijwt,
       pool,
     });
+    const adminManager = new AdminManager({
+      pool,
+      logging_pool,
+    });
 
     return {
       hashids,
@@ -315,6 +327,7 @@ class ServiceManager {
       emailManager,
       linkManager,
       ttsManager,
+      adminManager,
     };
   }
 

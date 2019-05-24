@@ -1,6 +1,17 @@
 import axios from 'axios'
 import _ from 'lodash'
 
+const customAPICall = async (params) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const resp = await axios.post('/integrations/custom/make_test_api_call', params)
+      resolve(resp.data)
+    } catch (e) {
+      reject(e)
+    }
+  })
+}
+
 export default {
   addIntegrationsUser: async (integration, data) => {
     const {
@@ -155,56 +166,11 @@ export default {
     }
   },
   custom: {
-    getRequest: async (params) => {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const resp = await axios.post('/integrations/custom/make_test_api_call', params)
-          resolve(resp.data)
-        } catch (e) {
-          reject(e)
-        }
-      })
-    },
-    postRequest: async (params) => {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const resp = await axios.post('/integrations/custom/make_test_api_call', params)
-          resolve(resp.data)
-        } catch (e) {
-          reject(e)
-        }
-      })
-    },
-    patchRequest: async (params) => {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const resp = await axios.post('/integrations/custom/make_test_api_call', params)
-          resolve(resp.data)
-        } catch (e) {
-          reject(e)
-        }
-      })
-    },
-    putRequest: async (params) => {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const resp = await axios.post('/integrations/custom/make_test_api_call', params)
-          resolve(resp.data)
-        } catch (e) {
-          reject(e)
-        }
-      })
-    },
-    deleteRequest: async (params) => {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const resp = await axios.post('/integrations/custom/make_test_api_call', params)
-          resolve(resp.data)
-        } catch (e) {
-          reject(e)
-        }
-      })
-    },
+    getRequest: customAPICall,
+    postRequest: customAPICall,
+    patchRequest: customAPICall,
+    putRequest: customAPICall,
+    deleteRequest: customAPICall
   },
   zapier: {
     createMessage: async (params) => {

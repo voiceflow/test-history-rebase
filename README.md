@@ -41,5 +41,5 @@ In order to run the entire system locally you need to:
 1. Open another terminal window
 1. Clone storyflow/storyflow-server and move to that directory
 1. Run `npm i`
-1. Run `npm run server`
+1. Run `npm run local`
 1. If testing skills, open another terminal window and use ngrok to proxy calls to your local server

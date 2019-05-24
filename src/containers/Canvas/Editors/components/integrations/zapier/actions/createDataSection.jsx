@@ -36,14 +36,13 @@ class CreateDataSection extends Component {
     return (
       <>
         <div className={`d-flex flex-column section-title-container`} onClick={() => this.props.toggleSection()}>
-          <div className='integrations-section-title text-muted'>With values
+          <div className='integrations-section-title text-muted'>With message
           {this.state.completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
           </div>
         </div>
         <Collapse isOpen={this.props.open} className='w-100'>
           <div className='d-flex flex-column mb-3'>
             <div className='d-flex flex-row w-100 mb-3 align-items-center'>
-                <div className="mr-2 text-muted" style={{ whiteSpace: "nowrap", maxWidth: '7em', textOverflow: 'ellipsis', overflow: 'hidden' }}>Message:</div>
                 <div className="d-flex flex-fill" style={{ overflow: "auto" }}>
                   <VariableText
                     className='form-control form-control auto-height'

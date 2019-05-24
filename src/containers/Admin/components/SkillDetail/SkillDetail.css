@@ -1,0 +1,9 @@
+.skill_preview {
+    margin: 12px 20px;
+    border-bottom: 1px solid lightgrey;
+}
+
+.show_skills_button {
+    color: #00b7ff;
+    width: fit-content;
+}

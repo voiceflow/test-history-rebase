@@ -161,11 +161,11 @@ class UserSection extends Component {
         <div className='integrations-section-title text-muted'>As user
           <span
             className={cn('action-selected', {
-              'action-visible': user && user.user_data && user.user_data.email
+              'action-visible': user && user.user_data && (user.user_data.email||user.user_data.name)
             })}
             onClick={() => this.props.toggleSection()}
           >
-            {user && user.user_data && user.user_data.email}
+            {user && user.user_data && (user.user_data.email||user.user_data.name)}
           </span>
           {this.state.completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
         </div>
@@ -180,7 +180,7 @@ class UserSection extends Component {
                 })}
                 onClick={() => this.selectUser(e)}
               >
-                <div className='close mt-3' onClick={(ev) => this.deleteUser(ev, e)}></div>
+                <div className='close mt-1' onClick={(ev) => this.deleteUser(ev, e)}></div>
                 <div className='d-flex flex-row'>
                   <div className='flex-row align-self-center'>
                   </div>
@@ -188,10 +188,13 @@ class UserSection extends Component {
                     <b>
                       {e.user_data && e.user_data.name}
                     </b>
+                    { e.user_data && e.user_data.email && <>
                     <br />
                     <small>
                       {e.user_data && e.user_data.email}
                     </small>
+                    </>
+                  }
                   </div>
                 </div>
 

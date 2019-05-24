@@ -11,7 +11,7 @@ import { deleteIntegrationUser } from 'ducks/integration'
 // props
 // selected_integration, user, integration_data, updateIntegrationData, showNextSection, user_modal, action_data, toggleSection, open
 
-class UserSection extends Component {
+class FeedSection extends Component {
 
   constructor(props) {
     super(props)
@@ -63,7 +63,7 @@ class UserSection extends Component {
     ev.stopPropagation()
 
     this.props.setConfirm({
-      text: 'Are you sure you want to remove this user?',
+      text: 'Are you sure you want to remove this trigger?',
       confirm: async () => {
         this.props.clearModal()
 
@@ -77,7 +77,7 @@ class UserSection extends Component {
             this.props.setError(this.props.integration_user_error)
           } else {
             this.props.setConfirm({
-              text: 'User deleted successfully.', confirm: () => { this.props.clearModal(); this.forceUpdate() }
+              text: 'Trigger deleted successfully.', confirm: () => { this.props.clearModal(); this.forceUpdate() }
             })
             const newIntegrationData = update(this.props.integration_data, {
               user: {
@@ -111,7 +111,7 @@ class UserSection extends Component {
     return (<>
       {AddUserModal && <DefaultModal
         open={this.state.add_user_modal && !this.state.integration_users_loading}
-        header="Connect Google Account"
+        header="Create a New Trigger"
         toggle={() =>
           this.setState({
             add_user_modal: !this.state.add_user_modal
@@ -158,14 +158,14 @@ class UserSection extends Component {
         noPadding={true}
       />}
       <div className="d-flex flex-column section-title-container" onClick={() => this.props.toggleSection()}>
-        <div className='integrations-section-title text-muted'>As user
+        <div className='integrations-section-title text-muted'>Start Trigger
           <span
             className={cn('action-selected', {
-              'action-visible': user && user.user_data && (user.user_data.email||user.user_data.name)
+              'action-visible': user && user.user_data && user.user_data.name
             })}
             onClick={() => this.props.toggleSection()}
           >
-            {user && user.user_data && (user.user_data.email||user.user_data.name)}
+            {user && user.user_data && user.user_data.name}
           </span>
           {this.state.completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
         </div>
@@ -180,7 +180,7 @@ class UserSection extends Component {
                 })}
                 onClick={() => this.selectUser(e)}
               >
-                <div className='close mt-3' onClick={(ev) => this.deleteUser(ev, e)}></div>
+                <div className='close mt-1' onClick={(ev) => this.deleteUser(ev, e)}></div>
                 <div className='d-flex flex-row'>
                   <div className='flex-row align-self-center'>
                   </div>
@@ -188,13 +188,6 @@ class UserSection extends Component {
                     <b>
                       {e.user_data && e.user_data.name}
                     </b>
-                    { e.user_data && e.user_data.email && <>
-                    <br />
-                    <small>
-                      {e.user_data && e.user_data.email}
-                    </small>
-                    </>
-                  }
                   </div>
                 </div>
 
@@ -203,7 +196,7 @@ class UserSection extends Component {
           })}
           {this.props.integration_users_loading && <div className="text-center my-4"><div className='loader text-lg' /></div>}
           <div className={`btn btn-clear btn-lg btn-block`} onClick={() => this.addUser()}>
-            <span><i className='far fa-plus mr-2'></i></span>  Add User
+            <span><i className='far fa-plus mr-2'></i></span>  Add Trigger
         </div>
         </div>
       </Collapse>
@@ -229,4 +222,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserSection)
+export default connect(mapStateToProps, mapDispatchToProps)(FeedSection)

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { store, history } from 'store/store';
 import { Alert } from 'reactstrap';
+import { toast, ToastContainer } from 'react-toastify';
 import { ConnectedRouter } from 'connected-react-router';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -11,6 +12,7 @@ import './Socket';
 
 // Import Dependent CSS
 import 'react-tippy/dist/tippy.css';
+import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/fontawesome/css/all.min.css';
 import './App.css';
@@ -28,6 +30,11 @@ import { getAuth, getUser } from 'ducks/account';
 import allRoutes from './Routes/allRoutes';
 
 ReactGA.initialize('UA-124745244-3');
+toast.configure({
+	autoClose: 2000,
+	draggable: false,
+	pauseOnFocusLoss: false
+});
 
 class App extends Component {
 	constructor(props) {
@@ -93,6 +100,7 @@ class App extends Component {
 						<ConfirmModal/>
 						<ErrorModal/>
 						<Modal/>
+						<ToastContainer />
 						{allRoutes}
 				</ConnectedRouter>
 			</div>

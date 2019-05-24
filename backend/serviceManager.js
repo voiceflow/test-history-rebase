@@ -35,7 +35,16 @@ const Custom = require('../routes/integrations/custom');
 const zapier = require('../lib/proxy/zapier');
 
 const { JWT } = require('../lib/clients');
-const { AnalyticsManager, ProjectManager, SkillsManager, LinkManager, ProductManager, EmailManager, TTSManager } = require('../lib/services');
+const {
+  AnalyticsManager,
+  ProjectManager,
+  SkillsManager,
+  LinkManager,
+  ProductManager,
+  EmailManager,
+  TTSManager,
+  APIManager,
+} = require('../lib/services');
 const { Project: ProjectMiddleware, Skill: SkillMiddleware } = require('../lib/middleware');
 const {
   Analytics: AnalyticsController,
@@ -44,6 +53,7 @@ const {
   Email: EmailController,
   Decode: DecodeController,
   Test: TestController,
+  Api: ApiController,
 } = require('../lib/controllers');
 
 const log = require('../logger');
@@ -87,7 +97,7 @@ class ServiceManager {
    * @returns {*}
    */
   static buildControllers(services) {
-    const { analyticsManager, projectManager, productManager, emailManager, linkManager, ttsManager, hashids } = services;
+    const { analyticsManager, projectManager, productManager, emailManager, linkManager, ttsManager, hashids, apiManager } = services;
 
     const utilities = {
       policy,
@@ -153,8 +163,11 @@ class ServiceManager {
       responseBuilder,
     });
 
+    const api = ApiController({ apiManager });
+
     return {
       Authentication,
+      api,
       policy,
       terms,
       test,
@@ -257,7 +270,7 @@ class ServiceManager {
     const { hashids } = require('../services'); // eslint-disable-line
     // The above line is temporary until we finish migrating the routes.
 
-    const { pool, logging_pool, polly, jwt } = clients;
+    const { pool, logging_pool, polly, jwt, apijwt } = clients;
 
     const projectManager = new ProjectManager({
       pool,
@@ -287,8 +300,14 @@ class ServiceManager {
       polly,
     });
 
+    const apiManager = APIManager({
+      apijwt,
+      pool,
+    });
+
     return {
       hashids,
+      apiManager,
       projectManager,
       skillsManager,
       analyticsManager,
@@ -315,12 +334,15 @@ class ServiceManager {
     });
 
     const jwt = new JWT(process.env.JWT_SECRET);
+    const apijwt = new JWT(process.env.API_SECRET);
+
     const polly = new AWS.Polly();
 
     return {
       polly: Promise.promisify(polly.synthesizeSpeech.bind(polly)),
       aws: AWS,
       jwt,
+      apijwt,
       pool,
       logging_pool,
     };

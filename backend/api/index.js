@@ -198,7 +198,7 @@ module.exports = (middleware, controllers) => {
 
   router.post('/integrations/custom/make_test_api_call', middleware.ensureLoggedIn, controllers.Custom.makeTestAPICall);
 
-  router.use('/integrations/zapier', middleware.ensureLoggedIn, controllers.zapier);
+  router.use('/integrations/zapier', controllers.zapier);
 
   router.get('/onboard', middleware.ensureLoggedIn, controllers.Onboard.checkIfOnboarded);
   router.post('/onboard', middleware.ensureLoggedIn, controllers.Onboard.submitOnboardSurvey);
@@ -230,6 +230,9 @@ module.exports = (middleware, controllers) => {
   router.post('/image', middleware.ensureLoggedIn, middleware.uploadAny, controllers.utilities.uploadImage);
 
   router.post('/concat', middleware.ensureLoggedIn, controllers.Audio.concat);
+
+  router.get('/api/token', middleware.ensureLoggedIn, controllers.api.getToken);
+  router.get('/api/user', controllers.api.getUser);
 
   // Handle React routing, return all requests to React app
   router.get('*', controllers.utilities.readBuildFiles);

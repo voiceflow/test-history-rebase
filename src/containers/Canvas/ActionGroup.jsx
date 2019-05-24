@@ -1001,7 +1001,7 @@ export class ActionGroup extends PureComponent {
                   position="bottom"
                   distance={16}
                 >
-                  <Button isNavBordered id="icon-share" className="fas fa-share" onClick={this.toggleShare} />
+                  <Button isNavBordered id="icon-share" onClick={this.toggleShare} />
                 </Tooltip>
                 <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
                   <PopoverBody style={{ minWidth: '260px' }}>
@@ -1035,7 +1035,7 @@ export class ActionGroup extends PureComponent {
               <div className="align-icon">
                 <Tooltip
                   distance={16}
-                  title="Test"
+                  title="Quick Test"
                   position="bottom"
                   className="ml-4 mr-4"
                 >

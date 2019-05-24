@@ -7,7 +7,6 @@ import _ from 'lodash';
 
 import './InternalLookup.css';
 import TeamSummary from "../TeamSummary/TeamSummary";
-import moment from "moment";
 import UserCard from "../UserCard/UserCard";
 
 class InternalLookup extends React.Component {
@@ -128,7 +127,10 @@ class InternalLookup extends React.Component {
             <h5>Find User by Id</h5>
             <div>
               <Input name={"user_id"} value={this.state.user_id} onChange={this.handleChange}
-                     placeholder={'Enter the User ID, e.g. 2432'}/>
+                     placeholder={'Enter the User ID, e.g. 2432'} onKeyDown={e => {
+                if (e.key === 'Enter')
+                  this.lookupUserById();
+              }}/>
             </div>
             <Button color={"primary"} className={"w-30 internalIdSearchButton"} isPrimarySmall
                     onClick={this.lookupUserById}>

@@ -148,11 +148,11 @@ const verify = (auth, cb) => {
   if (!token || !userHash) {
     return cb();
   }
-  return redisClient.get(userHash, (err, secret) => {
+  return redis.get(userHash, (err, secret) => {
     if (err || !secret) {
       return cb();
     }
-    redisClient.expire(userHash, config.expire_time);
+    redis.expire(userHash, config.expire_time);
     return jwt.verify(token, secret, (_err, decoded) => {
       if (_err) {
         return cb();
@@ -290,6 +290,7 @@ module.exports = {
   docClient,
   pool,
   redis,
+  redisClient: redis,
   jwt,
   config,
   s3,

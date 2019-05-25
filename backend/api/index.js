@@ -12,30 +12,30 @@ module.exports = (middleware, controllers) => {
 
   router.post('/elasticsearch/*', controllers.utilities.elasticsearch);
 
-  router.get('/session/amazon/access_token', middleware.ensureLoggedIn, controllers.Authentication.getAccessToken);
-  router.get('/session/amazon/:code', middleware.ensureLoggedIn, controllers.Authentication.getAmazonCode);
-  router.delete('/session/amazon', middleware.ensureLoggedIn, controllers.Authentication.deleteAmazon);
+  router.get('/session/amazon/access_token', middleware.ensureLoggedIn, controllers.account.getAccessToken);
+  router.get('/session/amazon/:code', middleware.ensureLoggedIn, controllers.account.getAmazonCode);
+  router.delete('/session/amazon', middleware.ensureLoggedIn, controllers.account.deleteAmazon);
 
-  router.get('/session/google/access_token', middleware.ensureLoggedIn, controllers.Authentication.hasGoogleAccessToken);
-  router.delete('/session/google/access_token', middleware.ensureLoggedIn, controllers.Authentication.deleteGoogleAccessToken);
-  router.get('/session/google/dialogflow_access_token/:project_id', middleware.ensureLoggedIn, controllers.Authentication.hasDialogflowToken);
-  router.post('/session/google/verify_token', middleware.ensureLoggedIn, controllers.Authentication.verifyGoogleAccessToken);
-  router.post('/session/google/verify_dialogflow_token', middleware.ensureLoggedIn, controllers.Authentication.verifyDialogflowToken);
-  router.delete('/session/google/dialogflow_access_token', middleware.ensureLoggedIn, controllers.Authentication.deleteDialogflowToken);
+  router.get('/session/google/access_token', middleware.ensureLoggedIn, controllers.account.hasGoogleAccessToken);
+  router.delete('/session/google/access_token', middleware.ensureLoggedIn, controllers.account.deleteGoogleAccessToken);
+  router.get('/session/google/dialogflow_access_token/:project_id', middleware.ensureLoggedIn, controllers.account.hasDialogflowToken);
+  router.post('/session/google/verify_token', middleware.ensureLoggedIn, controllers.account.verifyGoogleAccessToken);
+  router.post('/session/google/verify_dialogflow_token', middleware.ensureLoggedIn, controllers.account.verifyDialogflowToken);
+  router.delete('/session/google/dialogflow_access_token', middleware.ensureLoggedIn, controllers.account.deleteDialogflowToken);
 
-  router.get('/session', controllers.Authentication.getSession);
-  router.get('/session/vendor', middleware.ensureLoggedIn, controllers.Authentication.getVendor);
-  router.put('/session', controllers.Authentication.putSession);
-  router.delete('/session', controllers.Authentication.deleteSession);
-  router.put('/googleLogin', controllers.Authentication.googleLogin);
-  router.put('/fbLogin', controllers.Authentication.fbLogin);
+  router.get('/session', controllers.account.getSession);
+  router.get('/session/vendor', middleware.ensureLoggedIn, controllers.account.getVendor);
+  router.put('/session', controllers.account.putSession);
+  router.delete('/session', controllers.account.deleteSession);
+  router.put('/googleLogin', controllers.account.googleLogin);
+  router.put('/fbLogin', controllers.account.facebookLogin);
 
-  router.get('/user', middleware.ensureLoggedIn, controllers.Authentication.getUser);
-  router.put('/user', controllers.Authentication.putUser);
-  router.post('/user/reset', controllers.Authentication.resetPasswordEmail);
-  router.get('/user/reset/:token', controllers.Authentication.checkReset);
-  router.post('/user/reset/:token', controllers.Authentication.resetPassword);
-  router.post('/user/profile/picture', middleware.ensureLoggedIn, middleware.uploadResize512, controllers.Authentication.updateProfilePicture);
+  router.get('/user', middleware.ensureLoggedIn, controllers.account.getUser);
+  router.put('/user', controllers.account.putUser);
+  router.post('/user/reset', controllers.account.resetPasswordEmail);
+  router.get('/user/reset/:token', controllers.account.checkReset);
+  router.post('/user/reset/:token', controllers.account.resetPassword);
+  router.post('/user/profile/picture', middleware.ensureLoggedIn, middleware.uploadResize512, controllers.account.updateProfilePicture);
   router.get('/user/:creator_id/projects', middleware.ensureAdmin, controllers.Project.getUserProjects);
   router.get('/decode/:id', middleware.ensureAdmin, controllers.decode.decodeId);
   router.get('/encode/:id', middleware.ensureAdmin, controllers.decode.encodeId);
@@ -45,12 +45,6 @@ module.exports = (middleware, controllers) => {
 
   router.get('/link_account/template/:skill_id', middleware.ensureLoggedIn, middleware.hasSkillAccess, controllers.linkAccount.getTemplate);
   router.post('/link_account/template/:skill_id', middleware.ensureLoggedIn, middleware.hasSkillAccess, controllers.linkAccount.setTemplate);
-
-  router.get('/email/templates', middleware.ensureLoggedIn, controllers.email.getTemplates);
-  router.get('/email/template/:id', middleware.ensureLoggedIn, controllers.email.getTemplate);
-  router.post('/email/template', middleware.ensureLoggedIn, controllers.email.setTemplate);
-  router.patch('/email/template/:id', middleware.ensureLoggedIn, controllers.email.setTemplate);
-  router.delete('/email/template/:id', middleware.ensureLoggedIn, controllers.email.deleteTemplate);
 
   router.get('/multimodal/displays', middleware.ensureLoggedIn, controllers.Multimodal.getDisplays);
   router.get('/multimodal/display/:id', middleware.ensureLoggedIn, controllers.Multimodal.getDisplay);

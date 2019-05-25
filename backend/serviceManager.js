@@ -3,12 +3,12 @@
 /* eslint-disable class-methods-use-this, no-empty-function */
 
 const AWS = require('aws-sdk');
+const sgMail = require('@sendgrid/mail');
 const { OAuth2Client } = require('google-auth-library');
 const path = require('path');
 const Promise = require('bluebird');
-
+const _ = require('lodash');
 const { ResponseBuilder } = require('@voiceflow/common').middleware;
-const { getProcessEnv, hasProcessEnv } = require('@voiceflow/common').utils;
 
 const { upload, uploadResize, ESclient, verify } = require('../services');
 const { policy, terms } = require('../policy');
@@ -20,7 +20,6 @@ const Diagram = require('../routes/diagram.js');
 const Skill = require('../routes/skill.js');
 const Problem = require('../routes/error.js');
 const Audio = require('../routes/audio.js');
-const Authentication = require('../routes/authentication');
 const Code = require('../config/codes.js');
 const Marketplace = require('../routes/marketplace.js');
 const Multimodal = require('../routes/multimodal/multimodal');
@@ -35,24 +34,13 @@ const GoogleSheets = require('../routes/integrations/googleSheets');
 const Custom = require('../routes/integrations/custom');
 
 const { JWT, Segement, MockSegement, staticClients } = require('../lib/clients');
-const {
-  AnalyticsManager,
-  ProjectManager,
-  SkillsManager,
-  AccountManager,
-  LinkManager,
-  ProductManager,
-  TeamManager,
-  EmailManager,
-  TTSManager,
-} = require('../lib/services');
+const managers = require('../lib/services');
 const { Project: ProjectMiddleware, Skill: SkillMiddleware } = require('../lib/middleware');
 const {
   Account: AccountController,
   Analytics: AnalyticsController,
   Linking: LinkingController,
   ProductUpdates: ProductUpdatesController,
-  Email: EmailController,
   Decode: DecodeController,
   Test: TestController,
 } = require('../lib/controllers');
@@ -132,12 +120,9 @@ class ServiceManager {
     };
 
     const routeWrapper = (controller) => {
-      for (let route in controller) {
-        if (controller.hasOwnProperty(route)) {
-          controller[route] = ResponseBuilder.route(controller[route]);
-        }
-      }
-
+      _.forOwn(controller, (value, key) => {
+        controller[key] = responseBuilder.route(value);
+      });
       return controller;
     };
 
@@ -157,12 +142,6 @@ class ServiceManager {
       responseBuilder,
     });
 
-    const email = new EmailController({
-      emailManager,
-      responseBuilder,
-      hashids,
-    });
-
     const linkAccount = new LinkingController({
       linkManager,
       hashids,
@@ -175,19 +154,18 @@ class ServiceManager {
     });
 
     const test = new TestController({
+      ...services,
       ttsManager,
       responseBuilder,
     });
 
     return {
-      Authentication,
       policy,
       terms,
       test,
-      linkAccount,
-      email,
+      linkAccount: routeWrapper(linkAccount),
       Multimodal,
-      decode,
+      decode: routeWrapper(decode),
       Skill,
       Project,
       copySkill,
@@ -198,15 +176,14 @@ class ServiceManager {
       Integrations,
       GoogleSheets,
       Custom,
-      analytics,
-      account,
+      analytics: routeWrapper(analytics),
+      account: routeWrapper(account),
       Onboard,
-      productUpdates,
+      productUpdates: routeWrapper(productUpdates),
       Logs,
       Code,
       Problem,
       Audio,
-      account: routeWrapper(account),
 
       // Probably can eventually remove these and replace with actual controllers
       utilities,
@@ -277,49 +254,26 @@ class ServiceManager {
 
   /**
    * Build all services
-   * @param {object }config
+   * @param {object} config
    * @param {object} clients
    * @returns {{projectManager: (ProjectManager|*), analyticsManager: (AnalyticsManager|*), skillsManager: (SkillsManager|*)}}
    */
   static buildServices(config, clients) {
     const services = {};
 
-    services.projectManager = new ProjectManager({
-      ...clients,
-    });
+    _.forOwn(managers, (Manager, name) => {
+      // convert to camelcase
+      const managerIndex = name.indexOf('Manager');
+      if (managerIndex === -1) throw new Error(`${name} does not include "Manager" suffix`);
+      name = name.substring(0, managerIndex).toLowerCase() + name.substring(managerIndex);
 
-    services.skillsManager = new SkillsManager({
-      ...clients,
-    });
-
-    services.analyticsManager = new AnalyticsManager({
-      ...clients,
-      skillsManager: services.skillsManager,
-    });
-
-    services.teamManager = new TeamManager({
-      ...clients,
-    });
-
-    services.accountManager = new AccountManager({
-      ...clients,
-      teamManager: services.teamManager,
-    });
-
-    services.productManager = new ProductManager({
-      ...clients,
-    });
-
-    services.emailManager = new EmailManager({
-      ...clients,
-    });
-
-    services.linkManager = new LinkManager({
-      ...clients,
-    });
-
-    services.ttsManager = new TTSManager({
-      ...clients,
+      services[name] = new Manager(
+        {
+          ...clients,
+          ...services,
+        },
+        config
+      );
     });
 
     return {
@@ -332,21 +286,22 @@ class ServiceManager {
    * Build all clients
    * @returns {*}
    */
-  static buildClients() {
+  static buildClients(config) {
     const { logging_pool, pool, hashids, redis } = require('../services'); // eslint-disable-line
     // The above line is temporary until we finish migrating the routes.
 
     AWS.config = new AWS.Config({
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      region: process.env.AWS_REGION,
-      endpoint: process.env.AWS_ENDPOINT,
+      accessKeyId: config.AWS_ACCESS_KEY_ID,
+      secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+      region: config.AWS_REGION,
+      endpoint: config.AWS_ENDPOINT,
     });
 
-    const googleClient = new OAuth2Client(getProcessEnv('GOOGLE_ID'));
-    const jwt = new JWT(process.env.JWT_SECRET);
-    const segement = hasProcessEnv('SEGEMENT_WRITE_KEY') ? new Segement(getProcessEnv('SEGMENT_WRITE_KEY')) : MockSegement();
+    const googleClient = new OAuth2Client(config.GOOGLE_ID);
+    const jwt = new JWT(config.JWT_SECRET);
+    const segement = config.SEGEMENT_WRITE_KEY ? new Segement(config.SEGEMENT_WRITE_KEY) : MockSegement();
     const polly = new AWS.Polly();
+    sgMail.setApiKey(config.SENDGRID_KEY);
 
     return {
       ...staticClients,
@@ -359,6 +314,7 @@ class ServiceManager {
       logging_pool,
       segement,
       hashids,
+      sgMail,
     };
   }
 

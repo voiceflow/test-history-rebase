@@ -17,7 +17,6 @@ import { fetchVersion, setLiveModeModal, updateVersion, resetVersion } from 'duc
 import { fetchDiagrams } from 'ducks/diagram'
 import { fetchProducts } from 'ducks/product'
 import { fetchDisplays } from "ducks/display";
-import { fetchEmails } from 'ducks/email';
 
 // Components
 import Header from 'components/Header';
@@ -119,14 +118,6 @@ class Skill extends Component {
             document.title=(this.props.skill.name !== undefined ? this.props.skill.name : 'Voiceflow Creator')
             this.setState({load_skill: false})
             if (!this.props.preview){
-              if (this.props.user && (this.props.user.admin > 0) && this.props.skill) {
-                // LOAD EMAIL TEMPLATES IF ON PLAN > 1
-                try {
-                    this.props.getEmails(this.props.skill.skill_id)
-                } catch (err) {
-                    console.error(err)
-                }
-              }
 
               // LOAD MULTIMODAL/VISUAL TEMPLATES
               try {
@@ -377,7 +368,6 @@ const mapDispatchToProps = dispatch => {
     setLiveModal: isLive => dispatch(setLiveModeModal(isLive)),
     getProducts: (skill_id) => dispatch(fetchProducts(skill_id)),
     getDisplays: (skill_id) => dispatch(fetchDisplays(skill_id)),
-    getEmails: (skill_id) => dispatch(fetchEmails(skill_id)),
     updateSkill: (type, val) => dispatch(updateVersion(type, val)),
     resetSkill: () => dispatch(resetVersion())
   }

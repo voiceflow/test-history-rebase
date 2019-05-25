@@ -31,7 +31,7 @@ export const LoginForm = ({login, history, location}) => {
       password,
     })
     .catch(err => {
-        const errText = (err && err.response && err.response.data) ||
+        const errText = (err && err.response && err.response.data && err.response.data.data) ||
                         (unverified ? "Please verify your email to use Facebook login" : false)
         const errColor = unverified ? "success" : "danger"
         setLoginError(errText)

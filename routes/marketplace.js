@@ -1,6 +1,8 @@
 'use strict';
 
 const {pool, hashids, writeToLogs} = require('./../services');
+const {copySkill} = require('./skill_util');
+const {latestSkillToIntercom, incrementSkillsCreatedIntercom} = require('./skill');
 
 let ADMIN_MARKETPLACE_ACC;
 

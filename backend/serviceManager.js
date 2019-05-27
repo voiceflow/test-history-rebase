@@ -46,7 +46,7 @@ const {
   APIManager,
   AdminManager,
 } = require('../lib/services');
-const { Project: ProjectMiddleware, Skill: SkillMiddleware } = require('../lib/middleware');
+const { Project: ProjectMiddleware, Skill: SkillMiddleware, Api: ApiMiddleware } = require('../lib/middleware');
 const {
   Analytics: AnalyticsController,
   Linking: LinkingController,
@@ -212,7 +212,7 @@ class ServiceManager {
    * @returns {*}
    */
   static buildMiddleware(clients, services) {
-    const { projectManager, skillsManager, hashids } = services;
+    const { projectManager, skillsManager, apiManager, hashids } = services;
 
     const ensureLoggedIn = (req, res, next) => (req.user ? next() : res.sendStatus(401));
     const ensurePlan = (plan) => (req, res, next) => (req.user && req.user.admin >= plan ? next() : res.sendStatus(401));
@@ -233,6 +233,8 @@ class ServiceManager {
       skillsManager,
       hashids,
     });
+
+    const api = ApiMiddleware({ apiManager });
 
     return {
       isProjectOwner: (req, res, next) => project.isOwner(req, res, next),
@@ -265,6 +267,7 @@ class ServiceManager {
       verifyProjectAccess: Team.verifyProjectAccess,
       verifyTeam: Team.verifyTeam,
       hasSkillAccess: skill.hasSkillAccess,
+      getApiUser: api.getUser,
     };
   }
 
@@ -278,7 +281,7 @@ class ServiceManager {
     const { hashids } = require('../services'); // eslint-disable-line
     // The above line is temporary until we finish migrating the routes.
 
-    const { pool, logging_pool, polly, jwt, apijwt } = clients;
+    const { pool, logging_pool, polly, jwt } = clients;
 
     const projectManager = new ProjectManager({
       pool,
@@ -309,7 +312,6 @@ class ServiceManager {
     });
 
     const apiManager = APIManager({
-      apijwt,
       pool,
     });
     const adminManager = new AdminManager({
@@ -347,7 +349,6 @@ class ServiceManager {
     });
 
     const jwt = new JWT(process.env.JWT_SECRET);
-    const apijwt = new JWT(process.env.API_SECRET);
 
     const polly = new AWS.Polly();
 
@@ -355,7 +356,6 @@ class ServiceManager {
       polly: Promise.promisify(polly.synthesizeSpeech.bind(polly)),
       aws: AWS,
       jwt,
-      apijwt,
       pool,
       logging_pool,
     };

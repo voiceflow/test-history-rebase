@@ -201,7 +201,7 @@ module.exports = (middleware, controllers) => {
 
   router.post('/integrations/custom/make_test_api_call', middleware.ensureLoggedIn, controllers.Custom.makeTestAPICall);
 
-  router.use('/integrations/zapier', controllers.zapier);
+  router.use('/integrations/zapier', middleware.getApiUser, controllers.zapier);
 
   router.get('/onboard', middleware.ensureLoggedIn, controllers.Onboard.checkIfOnboarded);
   router.post('/onboard', middleware.ensureLoggedIn, controllers.Onboard.submitOnboardSurvey);

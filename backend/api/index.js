@@ -85,6 +85,7 @@ module.exports = (middleware, controllers) => {
 
   // ADMIN STUFF
   router.get('/admin-api/:user_id', middleware.ensureAdmin, controllers.admin.getUsersData);
+  router.get('/admin-api/email/:user_email', middleware.ensureAdmin, controllers.admin.getUsersDataEmail);
 
   // TEAM RESTful CRUD STUFF
   router.post('/team', middleware.ensureLoggedIn, controllers.Team.addTeam);

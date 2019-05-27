@@ -43,6 +43,7 @@ const {
   ProductUpdates: ProductUpdatesController,
   Decode: DecodeController,
   Test: TestController,
+  Admin: AdminController,
 } = require('../lib/controllers');
 
 const log = require('../logger');
@@ -86,7 +87,7 @@ class ServiceManager {
    * @returns {*}
    */
   static buildControllers(services) {
-    const { analyticsManager, accountManager, projectManager, productManager, emailManager, linkManager, ttsManager, hashids } = services;
+    const { analyticsManager, accountManager, projectManager, productManager, linkManager, ttsManager, hashids } = services;
 
     const utilities = {
       policy,
@@ -132,14 +133,19 @@ class ServiceManager {
       projectManager,
     });
 
-    const account = new AccountController({
+    const admin = new AdminController({
+      adminManager,
       responseBuilder,
-      accountManager,
     });
 
     const productUpdates = new ProductUpdatesController({
       productManager,
+      responseBuilder
+    })
+
+    const account = new AccountController({
       responseBuilder,
+      accountManager,
     });
 
     const linkAccount = new LinkingController({
@@ -184,6 +190,7 @@ class ServiceManager {
       Code,
       Problem,
       Audio,
+      admin,
 
       // Probably can eventually remove these and replace with actual controllers
       utilities,

@@ -83,6 +83,9 @@ module.exports = (middleware, controllers) => {
   router.delete('/skill/:id/product/:pid', middleware.ensureLoggedIn, controllers.Skill.deleteProduct);
   router.get('/version/:version_id/info', middleware.ensureAdmin, controllers.Skill.getVersionInfo);
 
+  // ADMIN STUFF
+  router.get('/admin-api/:user_id', middleware.ensureAdmin, controllers.admin.getUsersData);
+
   // TEAM RESTful CRUD STUFF
   router.post('/team', middleware.ensureLoggedIn, controllers.Team.addTeam);
   router.post('/team/checkout', middleware.ensureLoggedIn, controllers.Team.checkout);

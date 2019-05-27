@@ -123,9 +123,6 @@ module.exports = (middleware, controllers) => {
   router.get('/marketplace/default_templates', middleware.ensureLoggedIn, controllers.Marketplace.getDefaultTemplates);
   router.get('/marketplace/initial_template', middleware.ensureLoggedIn, controllers.Marketplace.getInitialTemplate);
 
-  router.delete('/marketplace/user_module/:project_id/:module_id', middleware.ensureBeta, controllers.Marketplace.removeAccess);
-  router.get('/marketplace/user_module/:project_id/:module_id', middleware.ensureBeta, controllers.Marketplace.checkConflicts);
-
   router.post('/analytics/track_onboarding', middleware.ensureLoggedIn, controllers.Track.trackOnboarding);
   router.post('/analytics/track_session_time', middleware.ensureLoggedIn, controllers.Track.trackSessionTime);
   router.post('/analytics/track_active_canvas', middleware.ensureLoggedIn, controllers.Track.trackCanvasTime);

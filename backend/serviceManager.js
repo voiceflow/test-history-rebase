@@ -87,7 +87,7 @@ class ServiceManager {
    * @returns {*}
    */
   static buildControllers(services) {
-    const { analyticsManager, accountManager, projectManager, productManager, linkManager, ttsManager, hashids } = services;
+    const { analyticsManager, adminManager, accountManager, projectManager, productManager, linkManager, ttsManager, hashids } = services;
 
     const utilities = {
       policy,
@@ -140,8 +140,8 @@ class ServiceManager {
 
     const productUpdates = new ProductUpdatesController({
       productManager,
-      responseBuilder
-    })
+      responseBuilder,
+    });
 
     const account = new AccountController({
       responseBuilder,

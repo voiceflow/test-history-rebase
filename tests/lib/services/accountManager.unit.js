@@ -4,6 +4,9 @@ const _jwt = require('jsonwebtoken');
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+const sinon = require('sinon');
+
+const { generateEmptyServices } = require('@voiceflow/common').utils;
 
 const AccountManager = require('../../../lib/services/accountManager');
 
@@ -37,36 +40,26 @@ class DeterministicRandomString {
   }
 }
 
-const defaultServices = {
-  _jwt: {},
-  pool: {},
-  axios: {},
-  redis: {},
-  bcrypt: {},
-  hashids: {},
-  teamManager: {},
-  mailManager: {},
-  randomstring: {},
-  googleClient: {},
-};
+const DEFAULT_SERVICES = generateEmptyServices(AccountManager.CONSTANTS.SERVICE_DEPENDENCIES);
 
 // DUMMY GLOBAL CONFIG VALUES
 const CONFIG_CLIENT_ID = 'CONFIG_CLIENT_ID';
 const CONFIG_CLIENT_SECRET = 'CONFIG_CLIENT_SECRET';
+const GOOGLE_ID = 'GOOGLE_ID';
 
 describe('accountManager unit tests', () => {
   it('generates valid userHash', async () => {
     const randomstring = new DeterministicRandomString();
 
     const services = {
-      ...defaultServices,
+      ...DEFAULT_SERVICES,
       redis: {
         exists: (userHash) => (userHash === randomstring.result(1) ? 1 : 0),
       },
       randomstring,
     };
 
-    const accountManager = new AccountManager(services, {});
+    const accountManager = new AccountManager(services);
 
     // girst userHash should be normal and valid
     expect(await accountManager.generateUserHash()).to.eql(randomstring.result(0));
@@ -77,7 +70,7 @@ describe('accountManager unit tests', () => {
 
   it('handles userHash redis error', async () => {
     const services = {
-      ...defaultServices,
+      ...DEFAULT_SERVICES,
       redis: {
         exists: () => {
           throw new Error('fail');
@@ -86,7 +79,7 @@ describe('accountManager unit tests', () => {
       randomstring: new DeterministicRandomString(),
     };
 
-    const accountManager = new AccountManager(services, {});
+    const accountManager = new AccountManager(services);
     expect(accountManager.generateUserHash()).to.eventually.be.rejectedWith('fail');
   });
 
@@ -97,7 +90,7 @@ describe('accountManager unit tests', () => {
 
     const redisStore = {};
     const services = {
-      ...defaultServices,
+      ...DEFAULT_SERVICES,
       randomstring,
       redis: {
         exists: () => false,
@@ -112,7 +105,7 @@ describe('accountManager unit tests', () => {
       _jwt,
     };
 
-    const accountManager = new AccountManager(services, {});
+    const accountManager = new AccountManager(services);
 
     const userObject = {
       id: mockAccount.creator_id,
@@ -141,14 +134,14 @@ describe('accountManager unit tests', () => {
 
   it('returns undefined amazon token', async () => {
     const services = {
-      ...defaultServices,
+      ...DEFAULT_SERVICES,
       redis: {
         get: () => null,
       },
     };
 
-    const accountManager = new AccountManager(services, {});
-    expect(await accountManager.defaultServices).to.eq(undefined);
+    const accountManager = new AccountManager(services);
+    expect(await accountManager.DEFAULT_SERVICES).to.eq(undefined);
   });
 
   it('fetches and refreshes amazon token', async () => {
@@ -156,7 +149,7 @@ describe('accountManager unit tests', () => {
     const redisStore = {};
 
     const services = {
-      ...defaultServices,
+      ...DEFAULT_SERVICES,
       redis: {
         set: (key, value) => {
           redisStore[key] = value;
@@ -224,13 +217,13 @@ describe('accountManager unit tests', () => {
     };
 
     const services = {
-      ...defaultServices,
+      ...DEFAULT_SERVICES,
       redis: {
         del: (key) => delete redisStore[key],
       },
     };
 
-    const accountManager = new AccountManager(services, {});
+    const accountManager = new AccountManager(services);
 
     await accountManager.deleteAmazonAccessToken(1);
     // one item should be left in store
@@ -246,7 +239,7 @@ describe('accountManager unit tests', () => {
     const redisStore = {};
 
     const services = {
-      ...defaultServices,
+      ...DEFAULT_SERVICES,
       redis: {
         set: (key, value) => {
           redisStore[key] = value;
@@ -297,7 +290,7 @@ describe('accountManager unit tests', () => {
     };
     const queries = [];
     const services = {
-      ...defaultServices,
+      ...DEFAULT_SERVICES,
       pool: {
         query: (query, params) => {
           queries.push({
@@ -317,7 +310,7 @@ describe('accountManager unit tests', () => {
       },
     };
 
-    const accountManager = new AccountManager(services, {});
+    const accountManager = new AccountManager(services);
 
     expect(await accountManager.checkLogin({ email: 'joe@vf.com', password: 'password2' })).to.deep.eq({
       ...fakeRow,
@@ -326,7 +319,7 @@ describe('accountManager unit tests', () => {
 
   it('checks incorrect password', async () => {
     const services = {
-      ...defaultServices,
+      ...DEFAULT_SERVICES,
       pool: {
         query: () => ({
           rows: [
@@ -345,8 +338,31 @@ describe('accountManager unit tests', () => {
       },
     };
 
-    const accountManager = new AccountManager(services, {});
+    const accountManager = new AccountManager(services);
 
     expect(accountManager.checkLogin({ email: 'joe@vf.com', password: 'password1' })).to.eventually.be.rejectedWith('Username or Password Incorrect');
+  });
+
+  it('checks google auth', async () => {
+    const TOKEN = 'TOKEN';
+    const PAYLOAD = { sub: 'me' };
+    const services = {
+      ...DEFAULT_SERVICES,
+      googleClient: {
+        verifyIdToken: sinon.stub().returns({ getPayload: () => PAYLOAD }),
+      },
+    };
+
+    const accountManager = new AccountManager(services, { GOOGLE_ID });
+
+    expect(await accountManager.googleAuth(TOKEN)).to.deep.eq({
+      payload: PAYLOAD,
+      userid: PAYLOAD.sub,
+    });
+
+    expect(services.googleClient.verifyIdToken.args[0][0]).to.deep.eq({
+      idToken: TOKEN,
+      audience: GOOGLE_ID,
+    });
   });
 });

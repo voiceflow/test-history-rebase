@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
 
 import ResetPassword from 'containers/Register/resetPassword';
 import Reset from 'containers/Register/reset';
@@ -10,7 +10,7 @@ import Skill from '../Skill';
 import Admin from 'containers/Admin';
 import ModuleAdminPage from 'containers/ModuleAdminPage';
 import Account from 'containers/Account';
-import { getAuth } from '../ducks/account';
+import {getAuth} from '../ducks/account';
 import Page404 from 'components/404';
 
 import PrivateRoute from './PrivateRoute';

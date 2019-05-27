@@ -253,6 +253,7 @@ class Onboarding extends Component{
 						</div>
 					</div>
           <Button
+						isPrimary
 						isTransparent
 						disabled={!(['beginner', 'intermediate', 'expert'].includes(this.state.experience))}
           	onClick={this.submitSurvey}

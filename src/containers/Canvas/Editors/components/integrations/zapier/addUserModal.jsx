@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { addIntegrationUser } from 'ducks/integration'
-import { Input } from 'reactstrap'
+import { Input,Label, FormGroup } from 'reactstrap'
 
 import { ZAPIER } from './constants'
 
@@ -35,17 +35,13 @@ class FeedAddUserModal extends Component {
 
   render() {
     return (
-      <div className="d-flex flex-column">
-        <div className="d-flex justify-content-center">
-          <div className="text-muted text-center mt-4 mb-2 mx-5">Name Your Trigger</div>
-        </div>
-        <div className="d-flex justify-content-center mx-5 py-3">
-          <Input placeholder="Trigger Name" onChange={(e) => this.setState({name:e.target.value})}/>
-        </div>
-        <div className="d-flex justify-content-center mb-3">
-            <span className="key-bubble forward pointer" onClick={this.add}><i className="far fa-long-arrow-right"/></span>
-        </div>
-      </div>
+      <form id="feed-submit" onSubmit={(e)=>{this.add(); e.preventDefault(); return false;}}>
+      <FormGroup className="p-3 mb-0 text-center">
+        <Label>Name Your Trigger</Label>
+        <Input placeholder="Trigger Name" onChange={(e) => this.setState({name:e.target.value})} className="mb-3"/>
+        <span className="key-bubble forward pointer" onClick={this.add}><i className="far fa-long-arrow-right"/></span>
+      </FormGroup>
+      </form>
     );
   }
 }

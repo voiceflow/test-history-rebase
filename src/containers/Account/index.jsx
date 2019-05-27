@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setConfirm, setError } from 'ducks/modal'
 import { AmazonAccessToken, googleAccessToken, updateAccount } from 'ducks/account'
-import { Alert, Input, InputGroup, InputGroupAddon } from 'reactstrap'
+import { Alert } from 'reactstrap'
 import moment from 'moment'
 import axios from 'axios'
 import './Account.css'
@@ -10,7 +10,6 @@ import './Account.css'
 import Button from 'components/Button'
 import Image from 'components/Uploads/Image'
 import Header from 'components/Header'
-import ClipBoard from 'components/ClipBoard/ClipBoard'
 
 
 const UNLINKED = 0
@@ -25,7 +24,6 @@ class Account extends Component {
     this.state = {
       amzn: LOADING,
       google: LOADING,
-      api: "Loading..."
     };
 
     this.handleChange = this.handleChange.bind(this)
@@ -100,10 +98,6 @@ class Account extends Component {
       this.setState({
         google: !!g_token ? LINKED : UNLINKED
       })
-    })
-    
-    axios.get('/api/token').then((r)=>{
-      this.setState({api: r.data.key})
     })
   }
 
@@ -194,26 +188,6 @@ class Account extends Component {
               <h4 className="mb-0 text-muted">Google</h4>
               <div className="super-center">
                 {this.renderButton(this.state.google, this.resetGoogle)}
-              </div>
-            </div>
-          </div>
-          <div className="card mb-5">
-            <div className="p-4 space-between">
-              <h4 className="mb-0 text-muted">API Token</h4>
-              <div className="super-center">
-                <InputGroup className="mb-3">
-                  <InputGroupAddon addonType="prepend">
-                    <ClipBoard
-                      component="button"
-                      className="btn btn-clear copy-link"
-                      value={this.state.api}
-                      id="shareLink"
-                    >
-                      <i className="fas fa-copy" />
-                    </ClipBoard>
-                  </InputGroupAddon>
-                  <Input readOnly value={this.state.api} className="form-control-border right" />
-                </InputGroup>
               </div>
             </div>
           </div>

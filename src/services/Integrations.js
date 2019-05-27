@@ -58,7 +58,7 @@ export default {
       if (!user) throw new Error('Parameters missing, please ensure all sections are completed')
       return new Promise(async (resolve, reject) => {
         try {
-          const resp = await axios.post('/integrations/google_sheets/spreadsheet_sheets', {
+          const resp = await axios.post('/integrations/google_sheets/sheets', {
             spreadsheet,
             user
           })

@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import React, {PureComponent} from 'react';
 import MenuItem from './components/MenuItem';
-import ModuleItem from './components/ModuleItem';
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {Collapse} from 'reactstrap';
@@ -92,13 +91,7 @@ export class Blocks extends PureComponent {
               <div className="mb-3 section-blocks"
                    style={(section.title === 'business' && this.props.user.admin === 0) ? {opacity: 0.3} : null}>
                 {section.items.map((item, i) => {
-                  if (item && item.module_id) {
-                    return <ModuleItem
-                      item={item}
-                      key={i}
-                      data-tip={item.tip}
-                      draggable={true}/>
-                  } else if (item) {
+                  if (item) {
                     return <MenuItem
                       item={item}
                       key={i}
@@ -111,16 +104,6 @@ export class Blocks extends PureComponent {
             </Collapse>
           </div>
         })
-    } else {
-      // COULD BE DELETED
-      if (this.props.user_modules.length > 0) {
-        block_content =
-          <div>
-            {this.props.user_modules.map((user_module, i) => {
-              return <ModuleItem module={user_module} key={i}/>;
-            })}
-          </div>
-      }
     }
     return <React.Fragment>
       {block_content}

@@ -2,6 +2,7 @@ import React from 'react'
 import { Alert, Form, Input, InputGroupAddon, InputGroup } from 'reactstrap'
 
 import Button from 'components/Button'
+import SpeakBox from './SpeakBox'
 
 const TestBox = props => {
     const {
@@ -45,11 +46,7 @@ const TestBox = props => {
                     </div>
                     }
                 }else if(chat.text){
-                    return <div className="mt-2 text-left" key={i}>
-                    <div className="message border rounded p-2 align-self-start">
-                        <p className="mb-0 px-1 text-left">{chat.text}<br/><small className="text-muted">{chat.time}</small></p>
-                    </div>
-                    </div>
+                    return <SpeakBox key={i} text={chat.text} delay={chat.delay} audio={chat.audio} />
                 }else{
                     return <div className="mt-2 text-left" key={i}>
                     <div className="message border rounded align-self-start">

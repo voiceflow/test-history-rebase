@@ -58,7 +58,9 @@ const recurse = (tag, index = 0) => {
     }
   }
 }
-
+let story_state = null;
+let pause = false;
+let next = false;
 
 const Timeline = props => {
   const {
@@ -70,9 +72,6 @@ const Timeline = props => {
     testing_info,
   } = props
 
-  let story_state = null;
-  let pause = false;
-  let next = false;
   let current_diagram = null;
   const [outputs, setOutputs] = useState([])
   const [inputs, setInputs] = useState([])
@@ -108,7 +107,7 @@ const Timeline = props => {
       repeat: repeat ? repeat : 100,
       platform: platform
     };
-
+    console.log(story_state)
     if (Array.isArray(global)) {
       global.forEach(variable => {
         story_state.globals[0][variable] = 0
@@ -259,13 +258,21 @@ const Timeline = props => {
           time: moment().format('h:mm:ss A')
         })
       }
-      setInputs("")
+      setInput("")
       setIntent("")
       setInputs(inputs)
       updateState()
     }
 
     return false;
+  }
+
+  const getAudioMeta = audio => {
+    return new Promise(res => {
+      audio.addEventListener('loadedmetadata', (e) => {
+        res(e.target.duration)
+      });
+    })
   }
 
   const updateState = async(start = false) => {
@@ -329,7 +336,6 @@ const Timeline = props => {
         data.play.action = 'NEXT';
       }
     }
-
     axios.post('/test/interact', data)
       .then(async res => {
         res = res.data
@@ -347,7 +353,6 @@ const Timeline = props => {
           }
 
           pause = false;
-          console.log(res)
           if (res.play) {
             if (res.play.action === 'END') {
               delete story_state.play;
@@ -374,22 +379,26 @@ const Timeline = props => {
             toggleAudioPlayer(false)
           }
           let dom = []
-          console.log(trace)
-          _.forEach(trace, block => {
-              const type = block.block
-              let parsed = parse(block.output)[0]
-              let outputBlock = {}
-              outputBlock.type = type
-              if (type === 'Speak') {
-                outputBlock.voice = parsed.children[0].attrs.name
-                outputBlock.text = parsed.children[0].children[0].content
-                dom.push(outputBlock)
-              } else {
-                  console.log(block)
-                  console.log(parsed)
-                //   setEnded(true)
-              }
-          })
+          let delay = 0;
+          for (const block of trace) {
+            const type = block.block
+            let parsed = parse(block.output)[0]
+            let outputBlock = {}
+            outputBlock.type = type
+            if (type === 'Speak') {
+              const audio = new Audio(block.audio[0])
+              outputBlock.voice = parsed.children[0].attrs.name
+              outputBlock.text = parsed.children[0].children[0].content
+              outputBlock.audio = audio
+              const duration = await getAudioMeta(audio)
+              outputBlock.delay = delay
+              delay += duration + 1000
+              dom.push(outputBlock)
+            } else {
+              //   setEnded(true)
+            }
+          }
+          console.log(dom)
           setOutputs(dom)
         } else if (res.ending) {
           setEnded(true)
@@ -412,6 +421,7 @@ const Timeline = props => {
           setEnded={setEnded}
           audioPlayer={audioPlayer}
           handleRestart={handleRestart}
+          handleChange={e => setInput(e.target.value)}
           inputSubmit={inputSubmit}
           outputs={outputs}
         />

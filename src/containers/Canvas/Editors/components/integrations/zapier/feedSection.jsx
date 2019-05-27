@@ -144,9 +144,6 @@ class FeedSection extends Component {
                 add_user_modal: false,
                 completed: true
               })
-              this.props.setConfirm({
-                text: 'Your new trigger has been added successfully!', confirm: () => this.props.clearModal()
-              })
             }}
             onBegin={() =>
               this.setState({
@@ -196,7 +193,7 @@ class FeedSection extends Component {
           })}
           {this.props.integration_users_loading && <div className="text-center my-4"><div className='loader text-lg' /></div>}
           <div className={`btn btn-clear btn-lg btn-block`} onClick={() => this.addUser()}>
-            <span><i className='far fa-plus mr-2'></i></span>  Add Trigger
+            <span><i className='far fa-plus mr-2'></i></span>  Create Trigger
         </div>
         </div>
       </Collapse>

@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
+import axios from 'axios'
 import './zapier.css'
 import IntegrationBase from '../integrationBase'
 
@@ -13,6 +14,7 @@ import FeedAddUserModal from './addUserModal'
 
 import TestSection from '../testSection'
 import FeedSection from './feedSection'
+import SetupSection from './setupSection'
 
 import C from './constants'
 class Zapier extends IntegrationBase {
@@ -21,7 +23,7 @@ class Zapier extends IntegrationBase {
     super(props)
 
     this.state = {
-      spreadsheet: null
+      token: "Loading..."
     }
 
     this.integration = C.ZAPIER
@@ -31,7 +33,8 @@ class Zapier extends IntegrationBase {
           sections: [
             C.USER_SECTION,
             C.CREATE_OPTIONS_SECTION,
-            C.TESTING_SECTION
+            C.SETUP_SECTION,
+            C.TESTING_SECTION,
           ],
           tooltip: 'Trigger a Zap'
         },
@@ -54,6 +57,9 @@ class Zapier extends IntegrationBase {
         active_section: C.USER_SECTION
       })
     }
+    axios.get('/api/token').then((r)=>{
+      this.setState({token: r.data.key})
+    })
   }
 
   componentWillUnmount() {
@@ -126,12 +132,19 @@ class Zapier extends IntegrationBase {
             case C.CREATE_OPTIONS_SECTION:
               component = <CreateDataSection
                 action_data={action_data}
-                headers_loading={this.state.headers_loading}
-                sheet_headers={this.state.headers_list}
                 variables={this.props.variables}
                 updateActionData={this.updateActionData}
                 toggleSection={() => this.showSection(section)}
                 open={this.state.active_section === C.CREATE_OPTIONS_SECTION}
+                showNextSection={() => i + 2 > sections_list.length || this.showSection(sections_list[i + 1])}
+              />
+              break
+            case C.SETUP_SECTION:
+              component = <SetupSection
+                apiKey={this.state.token}
+                integrationsUser={integrationsUser}
+                toggleSection={() => this.showSection(section)}
+                open={this.state.active_section === C.SETUP_SECTION}
                 showNextSection={() => i + 2 > sections_list.length || this.showSection(sections_list[i + 1])}
               />
               break
@@ -140,7 +153,7 @@ class Zapier extends IntegrationBase {
                 selected_integration={this.props.selected_integration}
                 selected_action={action}
                 integration_data={this.props.integration_data}
-                confirmWarningMessage={'Testing this action will directly modify your selected spreadsheet. Would you like to continue?'}
+                confirmWarningMessage={'Testing this action will start your trigger. Would you like to continue?'}
                 showConfirm={this.actionsRequiringConfirm.includes(action)}
                 onError={this.props.setError}
                 toggleSection={() => this.showSection(section)}

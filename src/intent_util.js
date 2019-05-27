@@ -168,7 +168,9 @@ exports.utteranceToIntentName = (utterance, existing) => {
       name = name.substring(0, 164) + '_'
     }
 		name += randomstring.generate({length: 5, charset: 'alphabetic', capitalization: 'lowercase'})
-	}
+  }
+  
+  name = name.replace(/_+/g, '_');
 
 	return name
 }

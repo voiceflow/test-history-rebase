@@ -246,7 +246,7 @@ export class Command extends Component {
                     </React.Fragment> :
                     <React.Fragment>
                         <label>Link Command Flow</label>
-                        <DefaultButton isClear isLarge isBlock block onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'), null, true)}>
+                        <DefaultButton isClear isLarge isBlock onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'), null, true)}>
                             <img className="mr-2" src={'/flows.svg'} height={15} width={15} alt="home"/> Create New Flow
                         </DefaultButton>
                         <div className="break">

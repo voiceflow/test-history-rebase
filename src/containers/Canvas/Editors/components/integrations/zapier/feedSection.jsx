@@ -145,7 +145,7 @@ class FeedSection extends Component {
                 completed: true
               })
               this.props.setConfirm({
-                text: 'Your new user has been added successfully!', confirm: () => this.props.clearModal()
+                text: 'Your new trigger has been added successfully!', confirm: () => this.props.clearModal()
               })
             }}
             onBegin={() =>

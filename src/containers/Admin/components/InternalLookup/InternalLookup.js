@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import {Input} from 'reactstrap';
 import Button from 'components/Button';
-import {toast} from 'react-toastify';
 import _ from 'lodash';
 
 import './InternalLookup.css';

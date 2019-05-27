@@ -5,7 +5,6 @@ import Select from "react-select";
 import {ListGroupItem} from "reactstrap";
 import axios from "axios";
 import {toast} from "react-toastify";
-import Button from "components/Button";
 
 import './SkillDetail.css';
 

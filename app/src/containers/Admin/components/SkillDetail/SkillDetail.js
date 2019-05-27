@@ -60,42 +60,33 @@ class SkillDetail extends React.Component {
         <div className="row skill_preview">
           <div className="col-sm-3">
             <div className="skill_preview_title">
-              Skill name: {this.props.skill.skill_name}
+              {this.props.skill.skill_name} <span
+              className="skill_preview_subtitle">Skill #{this.props.skill.skill_id}</span>
             </div>
             <div className="team_summary_created">
               {moment(this.props.skill.skill_created).format('MMMM Do YYYY, h:mm:ss a')}
             </div>
           </div>
-          <div className="col-sm-3 mb-2">
-            <div className="mt-2">
-              Skill Id: {this.props.skill.skill_id}
+          <div className="col-sm-3 mb-2 skill_summary_and_description">
+            <div className="mt-2 skill_summary">
+              {this.props.skill.summary}
             </div>
-            <div className="mt-2">
-              Skill summary: {this.props.skill.summary}
-            </div>
-            <div className="mt-2">
-              Skill description: {this.props.skill.description}
+            <div className="mt-2 skill_description">
+              {this.props.skill.description}
             </div>
           </div>
           <div className="col-sm-6 mb-2">
-            <div>
-              Actions
-            </div>
             <div>
               <Link to={`/admin/lookup/${this.props.skill.skill_id}`}>
                 View skill in skill lookup
               </Link>
             </div>
             <div>
-              Copy this skill to:
-              <div>
-                <div className="super-center mb-2 row">
-                  <Button isSecondary className="mr-2" onClick={() => {
-                    this.setState({target_user: this.props.user.creator_id}, this.onUserInput);
-                  }}>Myself</Button>
-                  <Button isSecondary className="mr-2 col-sm-2" onClick={() => {
-                    this.setState({target_user: this.props.searched_user.creator_id}, this.onUserInput);
-                  }}>{`User: ${this.props.searched_user.creator_id}`}</Button>
+              <div className="mb-2">
+                Copy this skill to:
+              </div>
+              <div className="row">
+                <div className="col-sm-6 target_user_inputs">
                   <input placeholder="Enter Target User ID"
                          type="text"
                          value={this.state.target_user}
@@ -106,18 +97,35 @@ class SkillDetail extends React.Component {
                            }
                          }}
                          onBlur={this.onUserInput}
-                         className="form-control mr-2 col-sm-3"
+                         className="form-control mr-2"
+                         autoComplete="off"
                   />
+                </div>
+                <div className="col-sm-6">
                   <Select
                     placeholder="Select Board"
                     classNamePrefix="select-box"
-                    className="select-box mb-2 mr-2 mt-1 col-sm-5"
+                    className="select-box mb-2 mr-2 mt-1"
                     value={this.state.target_board}
                     onChange={t => this.setState({target_board: t})}
                     options={this.state.boards}
                   />
                 </div>
-                <div className="team_summary_button_row">
+              </div>
+              <div className="mb-2 row">
+                <div className="col-sm-3 team_summary_button_row sd_left_align" onClick={() => {
+                  this.setState({target_user: this.props.user.creator_id}, this.onUserInput);
+                }}>
+                  <span>Myself</span>
+                </div>
+                <div className="col-sm-3 team_summary_button_row sd_left_align" onClick={() => {
+                  this.setState({target_user: this.props.searched_user.creator_id}, this.onUserInput);
+                }}>
+                  <span>
+                    {`User: ${this.props.searched_user.creator_id}`}
+                  </span>
+                </div>
+                <div className="col-sm-6 team_summary_button_row">
                   <span onClick={() => this.copy(this.props.skill.skill_id)} className="mb-2">Copy!</span>
                 </div>
               </div>

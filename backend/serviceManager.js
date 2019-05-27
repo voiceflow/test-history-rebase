@@ -28,11 +28,8 @@ const Team = require('../routes/team.js');
 const Project = require('../routes/project.js');
 const { copySkill } = require('../routes/skill_util');
 const Track = require('../routes/track.js');
-const Integrations = require('../routes/integrations');
-const GoogleSheets = require('../routes/integrations/googleSheets');
-const Custom = require('../routes/integrations/custom');
 
-const zapier = require('../lib/proxy/zapier');
+const IntegrationProxy = require('../lib/proxy');
 
 const { JWT } = require('../lib/clients');
 const {
@@ -56,6 +53,7 @@ const {
   Test: TestController,
   Api: ApiController,
   Admin: AdminController,
+  Integrations: IntegrationsController,
 } = require('../lib/controllers');
 
 const log = require('../logger');
@@ -172,6 +170,10 @@ class ServiceManager {
 
     const api = ApiController({ apiManager });
 
+    const integrations = IntegrationsController();
+
+    const integrationProxy = IntegrationProxy();
+
     return {
       Authentication,
       api,
@@ -189,10 +191,8 @@ class ServiceManager {
       Team,
       Diagram,
       Track,
-      Integrations,
-      GoogleSheets,
-      Custom,
-      zapier,
+      integrations,
+      integrationProxy,
       analytics,
       Onboard,
       productUpdates,

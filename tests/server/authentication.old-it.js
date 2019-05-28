@@ -36,7 +36,7 @@ describe('Authentication', async () => {
           password: 'password',
         },
       })
-      .expect(400);
+      .expect(406);
   });
 
   it("doesn't accept wrong password", async () => {
@@ -48,7 +48,7 @@ describe('Authentication', async () => {
           password: 'wrongpassword',
         },
       })
-      .expect(400);
+      .expect(406);
   });
 
   it('authenticates', async () => {

@@ -84,6 +84,7 @@ describe('analyticsManager integration tests', () => {
       skillsManager: {
         getLiveSkills: sinon.stub().resolves([{ skill_id: skillId }]),
       },
+      segement: {},
     };
 
     const analyticsManager = AnalyticsManager(services);
@@ -150,6 +151,7 @@ describe('analyticsManager integration tests', () => {
       skillsManager: {
         getLiveSkills: sinon.stub().resolves([{ skill_id: skillId }]),
       },
+      segement: {},
     };
 
     const analyticsManager = AnalyticsManager(services);
@@ -206,6 +208,7 @@ describe('analyticsManager integration tests', () => {
       skillsManager: {
         getLiveSkills: sinon.stub().resolves([{ skill_id: skillId }]),
       },
+      segement: {},
     };
 
     const analyticsManager = AnalyticsManager(services);

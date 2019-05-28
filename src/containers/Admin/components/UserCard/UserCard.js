@@ -3,6 +3,7 @@ import React from 'react';
 import './UserCard.css';
 import {User} from "components/User/User";
 import moment from "moment";
+import AdminAdvancedModal from "../AdminAdvancedModal/AdminAdvancedModal";
 
 const UserCard = (props) => {
   if (!props.user)
@@ -39,6 +40,9 @@ const UserCard = (props) => {
           <p>
             Google ID: {props.user.gid ? props.user.gid : 'no google ID'}
           </p>
+          <div className="advanced_button_row">
+            <AdminAdvancedModal showModal={true} buttonLabel={'Advanced'}/>
+          </div>
           {/*<span className="more">Mouse over the card for metadata</span>*/}
         </div>
       </div>

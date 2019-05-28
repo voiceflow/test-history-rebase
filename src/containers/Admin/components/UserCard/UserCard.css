@@ -1,133 +1,139 @@
 .user_card_wrapper {
-    position: absolute;
+  position: absolute;
 }
 
 .user_card_center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
 }
 
 .user_card_card {
-    width: 450px;
-    height: 250px;
-    background-color: #fff;
-    background: linear-gradient(#f8f8f8, #fff);
-    box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.4);
-    border-radius: 6px;
-    overflow: hidden;
-    position: relative;
+  width: 450px;
+  height: 250px;
+  background-color: #fff;
+  background: linear-gradient(#f8f8f8, #fff);
+  box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.4);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
 }
 
 .user_card_card .user_card_name {
-    text-align: center;
+  text-align: center;
 }
 
 .user_card_card .additional {
-    position: absolute;
-    width: 150px;
-    height: 100%;
-    background: linear-gradient(#dE685E, #EE786E);
-    transition: width 0.4s;
-    overflow: hidden;
-    z-index: 2;
+  position: absolute;
+  width: 150px;
+  height: 100%;
+  background: linear-gradient(#dE685E, #EE786E);
+  transition: width 0.4s;
+  overflow: hidden;
+  z-index: 2;
 }
 
 
 .user_card_card .additional .user-card {
-    width: 150px;
-    height: 100%;
-    position: relative;
-    float: left;
+  width: 150px;
+  height: 100%;
+  position: relative;
+  float: left;
 }
 
 .user_card_card .additional .user-card::after {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 10%;
-    right: -2px;
-    height: 80%;
-    border-left: 2px solid rgba(0, 0, 0, 0.025);
+  content: "";
+  display: block;
+  position: absolute;
+  top: 10%;
+  right: -2px;
+  height: 80%;
+  border-left: 2px solid rgba(0, 0, 0, 0.025);
 }
 
 .user_card_card .additional .user-card .level,
 .user_card_card .additional .user-card .points {
-    top: 15%;
-    color: #fff;
-    text-transform: uppercase;
-    font-size: 0.75em;
-    font-weight: bold;
-    background: rgba(0, 0, 0, 0.15);
-    padding: 0.125rem 0.75rem;
-    border-radius: 100px;
-    white-space: nowrap;
+  top: 15%;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 0.125rem 0.75rem;
+  border-radius: 100px;
+  white-space: nowrap;
 }
 
 .user_card_card .additional .user-card .points {
-    top: 85%;
+  top: 85%;
 }
 
 .user_card_card .additional .user-card svg {
-    top: 50%;
+  top: 50%;
 }
 
 .user_card_card .additional .user_card_more_info {
-    width: 300px;
-    float: left;
-    position: absolute;
-    left: 150px;
-    height: 100%;
+  width: 300px;
+  float: left;
+  position: absolute;
+  left: 150px;
+  height: 100%;
 }
 
 .user_card_card .additional .user_card_more_info .user_card_name {
-    color: #fff;
-    margin-bottom: 0;
+  color: #fff;
+  margin-bottom: 0;
 }
 
 .user_card_card .user_card_general {
-    width: 300px;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1;
-    box-sizing: border-box;
-    padding: 1rem;
-    padding-top: 0;
+  width: 300px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  padding: 1rem;
+  padding-top: 0;
 }
 
 .user_card_card .user_card_general .more {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    font-size: 0.9em;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 0.9em;
 }
 
 .user_card_general > p {
-    margin-top: 1em;
-    margin-bottom: 0;
-    text-align: center;
-    font-size: 13px;
-    color: #99a5a6;
+  margin-top: 1em;
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 13px;
+  color: #99a5a6;
 }
 
 .user_logo {
-    top: 44%;
-    left: 43%;
+  top: 44%;
+  left: 43%;
 }
 
 .user_logo {
-    transform: scale(2.5)
+  transform: scale(2.5)
 }
 
 .user_card_name {
-    font-size: 1.2em;
-    margin-top: 1.2em;
+  font-size: 1.2em;
+  margin-top: 1.2em;
 }
 
 .user_date_joined {
-    color: #99a5a6;
-    text-align: center;
+  color: #99a5a6;
+  text-align: center;
+}
+
+.advanced_button_row {
+  text-align: right;
+  margin-top: 10px;
+  padding-right: 20px;
 }

@@ -16,7 +16,8 @@ const permission_options = [
     { name: 'Reminders', value: 'alexa::alerts:reminders:skill:readwrite' },
     { name: 'Notifications', value: 'alexa::devices:all:notifications:write'},
     { name: 'Account Linking', value: 'UNOFFICIAL::account_linking' },
-    { name: 'Product', value: 'UNOFFICIAL::product' }
+    { name: 'Product', value: 'UNOFFICIAL::product' },
+    { name: 'ISP', value: 'UNOFFICIAL::isp' }
     // Removed for now, amazon pay permissions broken
 ]
 

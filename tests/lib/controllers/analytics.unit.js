@@ -6,6 +6,12 @@ const sinon = require('sinon');
 // const VError = require('@voiceflow/verror');
 // const { utils } = require('@voiceflow/common');
 
+const DEFAULT_SERVICES = {
+  projectManager: {},
+  analyticsManager: {},
+  segement: {},
+};
+
 // const { ProjectManager } = require('../../../lib/services');
 const Analytics = require('../../../lib/controllers/analytics');
 
@@ -14,14 +20,12 @@ describe('analytics controller unit tests', () => {
 
   it('get user data for skill use', async () => {
     const services = {
+      ...DEFAULT_SERVICES,
       projectManager: {
         getProjectIdFromReq: sinon.stub().returns(123),
       },
       analyticsManager: {
         getUsersData: sinon.stub().resolves(['stuff']),
-      },
-      responseBuilder: {
-        respond: sinon.stub().resolves(),
       },
     };
 
@@ -33,17 +37,12 @@ describe('analytics controller unit tests', () => {
         id: 2,
       },
     };
-    const res = {};
+    const res = sinon.stub().returns();
     const next = sinon.stub().returns();
 
-    await analytics.getUsersData(req, res, next);
-
+    expect(await analytics.getUsersData(req, res, next)).to.eql(['stuff']);
+    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
-    expect(services.responseBuilder.respond.callCount).to.eql(1);
-    expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
-
-    const action = services.responseBuilder.respond.args[0][1];
-    expect(await action()).to.eql(['stuff']);
 
     expect(services.analyticsManager.getUsersData.args[0][0]).to.eql(123);
     expect(services.projectManager.getProjectIdFromReq.args[0][0]).to.eql(req);
@@ -51,14 +50,12 @@ describe('analytics controller unit tests', () => {
 
   it('get skill use over time', async () => {
     const services = {
+      ...DEFAULT_SERVICES,
       projectManager: {
         getProjectIdFromReq: sinon.stub().returns(123),
       },
       analyticsManager: {
         getDAU: sinon.stub().resolves(['stuff']),
-      },
-      responseBuilder: {
-        respond: sinon.stub().resolves(),
       },
     };
 
@@ -75,17 +72,12 @@ describe('analytics controller unit tests', () => {
         user_tz: '5',
       },
     };
-    const res = {};
+    const res = sinon.stub().returns();
     const next = sinon.stub().returns();
 
-    await analytics.getDAU(req, res, next);
-
+    expect(await analytics.getDAU(req, res, next)).to.eql(['stuff']);
+    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
-    expect(services.responseBuilder.respond.callCount).to.eql(1);
-    expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
-
-    const action = services.responseBuilder.respond.args[0][1];
-    expect(await action()).to.eql(['stuff']);
 
     expect(services.analyticsManager.getDAU.args[0][0]).to.eql(123);
     expect(services.analyticsManager.getDAU.args[0][1]).to.eql(10);
@@ -102,9 +94,6 @@ describe('analytics controller unit tests', () => {
       analyticsManager: {
         getStats: sinon.stub().resolves(['stuff']),
       },
-      responseBuilder: {
-        respond: sinon.stub().resolves(),
-      },
     };
 
     const analytics = new Analytics(services);
@@ -115,17 +104,12 @@ describe('analytics controller unit tests', () => {
         id: 2,
       },
     };
-    const res = {};
+    const res = sinon.stub().returns();
     const next = sinon.stub().returns();
 
-    await analytics.getStats(req, res, next);
-
+    expect(await analytics.getStats(req, res, next)).to.eql(['stuff']);
+    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
-    expect(services.responseBuilder.respond.callCount).to.eql(1);
-    expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
-
-    const action = services.responseBuilder.respond.args[0][1];
-    expect(await action()).to.eql(['stuff']);
 
     expect(services.analyticsManager.getStats.args[0][0]).to.eql(123);
     expect(services.projectManager.getProjectIdFromReq.args[0][0]).to.eql(req);

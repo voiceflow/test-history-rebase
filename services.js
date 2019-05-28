@@ -1,7 +1,7 @@
 'use strict';
 
 // eslint-disable-next-line
-const redis = process.env.TEST ? require('redis-mock') : require('redis');
+const Redis = process.env.TEST ? require('ioredis-mock') : require('ioredis');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
@@ -17,6 +17,7 @@ const StackTrace = require('stacktrace-js');
 const s3UploadStream = require('s3-upload-stream');
 const httpAwsEs = require('http-aws-es');
 const Analytics = require('analytics-node');
+const axios = require('axios');
 
 const config = require('./config/config');
 const log = require('./logger');
@@ -53,13 +54,13 @@ const pool = new pg.Pool({
 });
 
 // Create a Redis Client for sessions
-const redisClient =
+const redis =
   process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging'
-    ? redis.createClient({
+    ? new Redis({
         host: process.env.REDIS_CLUSTER_HOST,
         port: process.env.REDIS_CLUSTER_PORT,
       })
-    : redis.createClient();
+    : new Redis();
 
 const s3 = new AWS.S3();
 
@@ -147,11 +148,11 @@ const verify = (auth, cb) => {
   if (!token || !userHash) {
     return cb();
   }
-  return redisClient.get(userHash, (err, secret) => {
+  return redis.get(userHash, (err, secret) => {
     if (err || !secret) {
       return cb();
     }
-    redisClient.expire(userHash, config.expire_time);
+    redis.expire(userHash, config.expire_time);
     return jwt.verify(token, secret, (_err, decoded) => {
       if (_err) {
         return cb();
@@ -284,10 +285,12 @@ const encryptJSON = (data) => jwt.sign(data, process.env.JWT_SECRET);
 const decryptJSON = (token) => jwt.verify(token, process.env.JWT_SECRET);
 
 module.exports = {
+  axios,
   upload,
   docClient,
   pool,
-  redisClient,
+  redis,
+  redisClient: redis,
   jwt,
   config,
   s3,

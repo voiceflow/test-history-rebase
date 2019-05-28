@@ -12,6 +12,33 @@
   color: #FF2E58;
 }
 
+.am__close {
+  margin-top: 6px;
+}
+
+.am__close:hover {
+  cursor: pointer;
+}
+
 .am__body {
   padding: 20px;
+}
+
+.am__action_header {
+  font-size: 1.2rem;
+  color: #cc2446;
+  margin-bottom: 2px;
+}
+
+.am__action_body {
+  margin-bottom: 12px;
+}
+
+.am__button_row {
+  margin-top: 12px;
+  text-align: right;
+}
+
+.am__confirm_message {
+  width: 250px;
 }

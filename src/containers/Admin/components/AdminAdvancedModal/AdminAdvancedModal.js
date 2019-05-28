@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import {Modal, ModalHeader, ModalBody, ModalFooter, Alert} from 'reactstrap';
+import Button from 'components/Button';
 
 import './AdminAdvancedModal.css';
 
@@ -9,34 +10,40 @@ class AdminAdvancedModal extends React.Component {
     super(props);
     this.state = {
       modal: this.props.showModal,
-      nestedModal: false,
+      nestedCancelModal: false,
+      nestedRefundModal: false,
       closeAll: false
     };
-
-    this.toggle = this.toggle.bind(this);
-    this.toggleNested = this.toggleNested.bind(this);
-    this.toggleAll = this.toggleAll.bind(this);
   }
 
-  toggle() {
+  toggle = () => {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
-  }
+  };
 
-  toggleNested() {
-    this.setState({
-      nestedModal: !this.state.nestedModal,
-      closeAll: false
-    });
-  }
+  toggleNested = (type) => {
+    if (type === 'cancel') {
+      this.setState({
+        nestedCancelModal: !this.state.nestedCancelModal,
+        closeAll: false
+      });
+    } else {
+      this.setState({
+        nestedRefundModal: !this.state.nestedRefundModal,
+        closeAll: false
+      })
+    }
+  };
 
-  toggleAll() {
+  closeAll = () => {
     this.setState({
-      nestedModal: !this.state.nestedModal,
+      nestedCancelModal: false,
+      nestedRefundModal: false,
+      modal: false,
       closeAll: true
     });
-  }
+  };
 
   render() {
     return (
@@ -44,30 +51,67 @@ class AdminAdvancedModal extends React.Component {
         <span className="trigger_modal_link" onClick={this.toggle}>{this.props.buttonLabel}</span>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <div className="am__title" onClick={this.toggle}>
-            Advanced Actions
+            DANGER ZONE
+            <div className="close am__close"></div>
           </div>
           <ModalBody className="am__body">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
-            <br/>
-            <Button color="success" onClick={this.toggleNested}>Show Nested Modal</Button>
-            <Modal isOpen={this.state.nestedModal} toggle={this.toggleNested}
-                   onClosed={this.state.closeAll ? this.toggle : undefined}>
-              <ModalHeader>Nested Modal title</ModalHeader>
-              <ModalBody>Stuff and things</ModalBody>
+            <div className="am__action_header">
+              Cancel Subscription
+            </div>
+            <div className="am__action_body">
+              Cancel the subscription for creator #{this.props.user.creator_id}
+              <div className="am__button_row">
+                <Button isWarning onClick={() => this.toggleNested('cancel')}>
+                  Cancel Subscription
+                </Button>
+              </div>
+            </div>
+            <hr/>
+            <div className="am__action_header">
+              Refund User
+            </div>
+            <div className="am__action_body">
+              Cancel the subscription for creator #{this.props.user.creator_id} and refund them.
+              <div className="am__button_row">
+                <Button isWarning onClick={() => this.toggleNested('refund')}>
+                  REFUND
+                </Button>
+              </div>
+            </div>
+
+            <Modal isOpen={this.state.nestedCancelModal} toggle={() => this.toggleNested('cancel')}>
+              <ModalHeader>Cancel Subscription for Creator #{this.props.user.creator_id}</ModalHeader>
+              <ModalBody>
+                <Alert color="danger between">
+                  <span className="am__confirm_message">rip user 😭😭😭</span>
+                  <br/>
+                  <Button isWarning>
+                    Cancel Subscription
+                  </Button>
+                </Alert>
+              </ModalBody>
               <ModalFooter>
-                <Button color="primary" onClick={this.toggleNested}>Done</Button>{' '}
-                <Button color="secondary" onClick={this.toggleAll}>All Done</Button>
+                <Button isSecondary onClick={this.closeAll}>Cancel</Button>
               </ModalFooter>
             </Modal>
+
+            <Modal isOpen={this.state.nestedRefundModal} toggle={() => this.toggleNested('refund')}>
+              <ModalHeader>Refund Creator #{this.props.user.creator_id}</ModalHeader>
+              <ModalBody>
+                <Alert color="danger between">
+                  <span className="am__confirm_message">R u sure we like our money in our banks 😫</span>
+                  <br/>
+                  <Button isWarning>
+                    Refund User
+                  </Button>
+                </Alert>
+              </ModalBody>
+              <ModalFooter>
+                <Button isSecondary onClick={this.closeAll}>Cancel</Button>
+              </ModalFooter>
+            </Modal>
+
           </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
-            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-          </ModalFooter>
         </Modal>
       </div>
     );

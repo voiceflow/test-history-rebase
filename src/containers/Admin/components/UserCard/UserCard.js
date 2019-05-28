@@ -41,7 +41,7 @@ const UserCard = (props) => {
             Google ID: {props.user.gid ? props.user.gid : 'no google ID'}
           </p>
           <div className="advanced_button_row">
-            <AdminAdvancedModal showModal={true} buttonLabel={'Advanced'}/>
+            <AdminAdvancedModal showModal={true} buttonLabel={'Advanced'} user={props.user}/>
           </div>
           {/*<span className="more">Mouse over the card for metadata</span>*/}
         </div>

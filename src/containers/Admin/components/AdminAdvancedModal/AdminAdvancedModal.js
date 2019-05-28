@@ -83,9 +83,9 @@ class AdminAdvancedModal extends React.Component {
               <ModalHeader>Cancel Subscription for Creator #{this.props.user.creator_id}</ModalHeader>
               <ModalBody>
                 <Alert color="danger between">
-                  <span className="am__confirm_message">rip user 😭😭😭</span>
+                  <span className="am__confirm_message">sigh 😭😭😭</span>
                   <br/>
-                  <Button isWarning>
+                  <Button isWarning onClick={this.props.cancelSubscription}>
                     Cancel Subscription
                   </Button>
                 </Alert>
@@ -99,9 +99,9 @@ class AdminAdvancedModal extends React.Component {
               <ModalHeader>Refund Creator #{this.props.user.creator_id}</ModalHeader>
               <ModalBody>
                 <Alert color="danger between">
-                  <span className="am__confirm_message">R u sure we like our money in our banks 😫</span>
+                  <span className="am__confirm_message">not our monies 😫😫😫</span>
                   <br/>
-                  <Button isWarning>
+                  <Button isWarning onClick={this.props.refundUser}>
                     Refund User
                   </Button>
                 </Alert>

@@ -86,25 +86,6 @@ class InternalLookup extends React.Component {
       .catch(err => console.error('Error when getting user information: ', err));
   };
 
-  refundUser = () => {
-    if (!this.state.user_id) {
-      toast.error("No user id entered");
-    }
-    if (!this.state.user) {
-      toast.error("No user found")
-    }
-    if (!this.state.stripe_id || !this.state.subscription) {
-      toast.error("The user does not have a stripe id or does not have a subscription");
-    }
-    axios.post(`/admin/refund/${this.state.user_id}`)
-      .then(res => {
-        toast.success("Refund successful!");
-      })
-      .catch(err => {
-        toast.error('Refund unsuccessful');
-      })
-  };
-
   renderBoards = () => {
     if (this.state.boards) {
       let displayboards = this.state.boards;

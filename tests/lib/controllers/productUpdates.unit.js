@@ -14,25 +14,17 @@ describe('product update controller unit tests', () => {
       productManager: {
         getUpdates: sinon.stub().resolves([]),
       },
-      responseBuilder: {
-        respond: sinon.stub().resolves(),
-      },
     };
 
     const productUpdates = new ProductUpdates(services);
 
     const req = {};
-    const res = {};
+    const res = sinon.stub().returns();
     const next = sinon.stub().returns();
 
-    await productUpdates.getUpdates(req, res, next);
-
+    expect(await productUpdates.getUpdates(req, res, next)).to.eql([]);
+    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
-    expect(services.responseBuilder.respond.callCount).to.eql(1);
-    expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
-
-    const action = services.responseBuilder.respond.args[0][1];
-    expect(await action()).to.eql([]);
 
     expect(services.productManager.getUpdates.callCount).to.eql(1);
   });
@@ -41,9 +33,6 @@ describe('product update controller unit tests', () => {
     const services = {
       productManager: {
         createUpdate: sinon.stub().resolves(),
-      },
-      responseBuilder: {
-        respond: sinon.stub().resolves(),
       },
     };
 
@@ -55,17 +44,12 @@ describe('product update controller unit tests', () => {
         details: 'b',
       },
     };
-    const res = {};
+    const res = sinon.stub().returns();
     const next = sinon.stub().returns();
 
-    await productUpdates.createUpdate(req, res, next);
-
+    expect(await productUpdates.createUpdate(req, res, next)).to.eql();
+    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
-    expect(services.responseBuilder.respond.callCount).to.eql(1);
-    expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
-
-    const action = services.responseBuilder.respond.args[0][1];
-    expect(await action()).to.eql();
 
     expect(services.productManager.createUpdate.args[0][0]).to.eql('a');
     expect(services.productManager.createUpdate.args[0][1]).to.eql('b');

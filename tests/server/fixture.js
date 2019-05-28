@@ -7,6 +7,9 @@ const sinon = require('sinon');
 const _ = require('lodash');
 const log = require('../../logger');
 
+require('./../../envSetup');
+const config = require('./../../config');
+
 const { ServiceManager } = require('../../backend');
 
 function hasUserPrototype(obj) {
@@ -14,7 +17,7 @@ function hasUserPrototype(obj) {
 }
 
 const createFixture = () => {
-  const { middleware, controllers } = new ServiceManager();
+  const { middleware, controllers } = new ServiceManager(config);
 
   const fixture = {
     start: () => {},

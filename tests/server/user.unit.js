@@ -16,7 +16,7 @@ const tests = [
     calledPath: '/user',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           getUser: 1,
         },
       },
@@ -31,7 +31,7 @@ const tests = [
     calledPath: '/user',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           putUser: 1,
         },
       },
@@ -45,7 +45,7 @@ const tests = [
     calledPath: '/user/reset',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           resetPasswordEmail: 1,
         },
       },
@@ -59,7 +59,7 @@ const tests = [
     calledPath: '/user/reset/:token',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           checkReset: 1,
         },
       },
@@ -73,7 +73,7 @@ const tests = [
     calledPath: '/user/reset/:token',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           resetPassword: 1,
         },
       },
@@ -87,7 +87,7 @@ const tests = [
     calledPath: '/user/profile/picture',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           updateProfilePicture: 1,
         },
       },

@@ -20,9 +20,6 @@ describe('linking controller unit tests', () => {
       hashids: {
         decode: sinon.stub().returns([0]),
       },
-      responseBuilder: {
-        respond: sinon.stub().resolves(),
-      },
     };
 
     const linking = new Linking(services);
@@ -32,17 +29,12 @@ describe('linking controller unit tests', () => {
         skill_id: 'a',
       },
     };
-    const res = {};
+    const res = sinon.stub().returns();
     const next = sinon.stub().returns();
 
-    await linking.getTemplate(req, res, next);
-
+    expect(await linking.getTemplate(req, res, next)).to.eql('thing');
+    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
-    expect(services.responseBuilder.respond.callCount).to.eql(1);
-    expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
-
-    const action = services.responseBuilder.respond.args[0][1];
-    expect(await action()).to.eql('thing');
 
     expect(services.hashids.decode.args[0][0]).to.eql('a');
     expect(services.linkManager.getTemplate.args[0][0]).to.eql(0);
@@ -56,9 +48,6 @@ describe('linking controller unit tests', () => {
       hashids: {
         decode: sinon.stub().returns([0]),
       },
-      responseBuilder: {
-        respond: sinon.stub().resolves(),
-      },
     };
 
     const linking = new Linking(services);
@@ -69,17 +58,12 @@ describe('linking controller unit tests', () => {
       },
       body: {},
     };
-    const res = {};
+    const res = sinon.stub().returns();
     const next = sinon.stub().returns();
 
-    await linking.setTemplate(req, res, next);
-
+    expect(await linking.setTemplate(req, res, next)).to.eql();
+    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
-    expect(services.responseBuilder.respond.callCount).to.eql(1);
-    expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
-
-    const action = services.responseBuilder.respond.args[0][1];
-    expect(await action()).to.eql();
 
     expect(services.hashids.decode.args[0][0]).to.eql('a');
 

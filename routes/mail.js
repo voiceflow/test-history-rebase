@@ -3,44 +3,7 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey('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');
 const { writeToLogs, encryptJSON } = require('./../services');
 
-exports.sendOnboarding = (email, name, cb) => {
-  if (typeof name !== 'string') {
-    name = null;
-  }
-
-  const data = {
-    template_id: 'd-9ba04cdf70894f489147057e71d2c5c9',
-    from: {
-      email: 'braden@voiceflow.com',
-      name: 'Braden from Voiceflow',
-    },
-    personalizations: [
-      {
-        to: [
-          {
-            email,
-            name,
-          },
-        ],
-        dynamic_template_data: {
-          name,
-        },
-      },
-    ],
-    reply_to: {
-      email: 'braden@voiceflow.com',
-      name: 'Braden from Voiceflow',
-    },
-  };
-
-  try {
-    sgMail.send(data);
-  } catch (err) {
-    console.log(JSON.stringify(err.response.body));
-  }
-};
-
-exports.sendResetEmail = async (name, user_id, random, email) => {
+exports.sendResetEmail = async (name, token, email) => {
   if (typeof name !== 'string') {
     name = null;
   }
@@ -59,36 +22,7 @@ exports.sendResetEmail = async (name, user_id, random, email) => {
           },
         ],
         dynamic_template_data: {
-          link: `${random}${user_id}`,
-          name,
-        },
-      },
-    ],
-  };
-
-  await sgMail.send(data);
-};
-
-exports.sendVerificationEmail = async (name, user_id, random, email) => {
-  if (typeof name !== 'string') {
-    name = null;
-  }
-
-  const data = {
-    template_id: 'd-a0722d2554164efbaa6aed6075834048',
-    from: {
-      email: 'service@voiceflow.com',
-      name: 'Voiceflow Team',
-    },
-    personalizations: [
-      {
-        to: [
-          {
-            email,
-          },
-        ],
-        dynamic_template_data: {
-          link: `${random}${user_id}`,
+          link: token,
           name,
         },
       },

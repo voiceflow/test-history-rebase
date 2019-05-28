@@ -4,8 +4,6 @@ import { connect } from 'react-redux'
 
 import './Business.css'
 import AccountLinkTemplate from './AccountLinkTemplate'
-import Email from './Email'
-import Emails from './Emails'
 import Home from './Home'
 import Products from './Products/Products';
 import EditProduct from './Products/EditProduct';
@@ -19,11 +17,6 @@ const tabs = [
         display: <React.Fragment><i className="far fa-tachometer-alt mr-2"/> Dashboard</React.Fragment>,
         match: ['home'],
         link: '/tools/:skill_id'
-    },
-    {
-        display: <React.Fragment><i className="far fa-envelope mr-2"/> Email</React.Fragment>,
-        match: ['emails'],
-        link: '/tools/:skill_id/emails'
     },
     {
         display: <React.Fragment><i className="far fa-cube mr-2"/> Products</React.Fragment>,
@@ -44,12 +37,6 @@ class Business extends Component {
       case 'link_account':
         page = <AccountLinkTemplate {...this.props}/>
         break;
-      case 'emails':
-        page = <Emails {...this.props}/>
-        break
-      case 'email':
-        page = <Email {...this.props}/>
-        break
       case 'products':
         page = <Products {...this.props}/>
         break

@@ -209,7 +209,7 @@ const copyProducts = (old_skill_id, new_skill_id) =>
       }
 
       for (const i in select_data) {
-        product_remapping[hashids.encode(select_data[i].id)] = hashids.encode(insert_data[i].id);
+        product_remapping[select_data[i].id] = insert_data[i].id;
       }
       resolve(product_remapping);
     } catch (err) {

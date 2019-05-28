@@ -12,6 +12,14 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'developme
   ADMIN_MARKETPLACE_ACC = 19;
 }
 
+const hashIds = (rows) => {
+  for (let i = 0; i < rows.length; i++) {
+    rows[i].skill_id = hashids.encode(rows[i].skill_id);
+    rows[i].project_id = hashids.encode(rows[i].project_id);
+    rows[i].module_id = hashids.encode(rows[i].module_id);
+  }
+};
+
 // NEW PROJECTS CREATED HERE
 const copyDefaultTemplate = (req, res) => {
   const team_id = req.params._team_id;

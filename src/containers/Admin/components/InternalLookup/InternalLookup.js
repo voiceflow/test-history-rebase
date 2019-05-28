@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import {Input} from 'reactstrap';
 import Button from 'components/Button';
-import {toast} from 'react-toastify';
 import _ from 'lodash';
 
 import './InternalLookup.css';
@@ -15,8 +14,7 @@ class InternalLookup extends React.Component {
     super(props);
 
     this.state = {
-      user_id: '2',
-      user_email: '',
+      user_id: '',
       loading: false,
       user: null,
       boards: null,
@@ -75,15 +73,27 @@ class InternalLookup extends React.Component {
     if (!this.state.user_id) {
       return;
     }
-    this.setState({loading: true});
-    axios.get(`/admin-api/${this.state.user_id}`)
-      .then(res => {
-        this.setState({
-          user: res.data.creator,
-          boards: _.values(res.data.boards)
+    if (isNaN(this.state.user_id)) {
+      this.setState({loading: true});
+      axios.get(`/admin-api/email/${this.state.user_id}`)
+        .then(res => {
+          this.setState({
+            user: res.data.creator,
+            boards: _.values(res.data.boards)
+          })
         })
-      })
-      .catch(err => console.error('Error when getting user information: ', err));
+        .catch(err => console.error('Error when getting user information: ', err));
+    } else {
+      this.setState({loading: true});
+      axios.get(`/admin-api/${this.state.user_id}`)
+        .then(res => {
+          this.setState({
+            user: res.data.creator,
+            boards: _.values(res.data.boards)
+          })
+        })
+        .catch(err => console.error('Error when getting user information: ', err));
+    }
   };
 
   renderBoards = () => {
@@ -109,39 +119,37 @@ class InternalLookup extends React.Component {
       <div>
         <div className="row internalIdSearchHeader">
           <div className={'internalIdSearchField'}>
-            <h5>Find User by Id</h5>
+            <h5>Find User by Id or Email</h5>
             <div>
               <Input name={"user_id"} value={this.state.user_id} onChange={this.handleChange}
-                     placeholder={'Enter the User ID, e.g. 2432'} onKeyDown={e => {
+                     placeholder={'Enter a user id or email'} onKeyDown={e => {
                 if (e.key === 'Enter')
                   this.lookupUserById();
               }}/>
             </div>
-            <Button color={"primary"} className={"w-30 internalIdSearchButton"} isPrimarySmall
-                    onClick={this.lookupUserById}>
-              Search
-            </Button>
+            <div className={'internalIdSearchButton'}>
+              <Button color={"primary"} className={"w-30"} isPrimarySmall
+                      onClick={this.lookupUserById}>
+                Search
+              </Button>
+            </div>
+            <div className={'filter_skill'}>
+              Filter by skill name: <Input name={"skill_filter"} value={this.state.skill_filter}
+                                           onChange={this.handleChange}
+                                           placeholder={'Enter a skill name'}/>
+            </div>
           </div>
           <div className="internalIdSearchUserResult">
             <UserCard user={this.state.user}/>
-            {/*{this.renderUser()}*/}
           </div>
         </div>
 
         <div className="internalIdSearchResults">
           <h4>Boards:</h4>
           <div>
-            Filter by skill name: <Input name={"skill_filter"} value={this.state.skill_filter}
-                                         onChange={this.handleChange}
-                                         placeholder={'Enter a skill name'}/>
-          </div>
-          <div>
             {this.state.boards ? this.renderBoards() : null}
           </div>
         </div>
-
-
-        <hr/>
       </div>
     )
   }

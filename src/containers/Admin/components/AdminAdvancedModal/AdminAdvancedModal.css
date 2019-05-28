@@ -1,0 +1,17 @@
+.trigger_modal_link {
+  color: #FF2E58;
+}
+
+.trigger_modal_link:hover {
+  cursor: pointer;
+}
+
+.am__title {
+  padding: 20px;
+  border-bottom: 1px solid #FF2E58;
+  color: #FF2E58;
+}
+
+.am__body {
+  padding: 20px;
+}

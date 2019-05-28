@@ -15,7 +15,7 @@ class InternalLookup extends React.Component {
     super(props);
 
     this.state = {
-      user_id: '',
+      user_id: '2',
       user_email: '',
       loading: false,
       user: null,
@@ -24,6 +24,10 @@ class InternalLookup extends React.Component {
       filtered_boards: null,
       expand_all_boards: false,
     }
+  }
+
+  componentDidMount() {
+    this.lookupUserById();
   }
 
   handleChange = event => {

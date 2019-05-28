@@ -10,8 +10,6 @@ module.exports = (middleware, controllers) => {
 
   router.use(middleware.verify);
 
-  router.post('/elasticsearch/*', controllers.utilities.elasticsearch);
-
   router.get('/session/amazon/access_token', middleware.ensureLoggedIn, controllers.account.getAccessToken);
   router.get('/session/amazon/:code', middleware.ensureLoggedIn, controllers.account.getAmazonCode);
   router.delete('/session/amazon', middleware.ensureLoggedIn, controllers.account.deleteAmazon);

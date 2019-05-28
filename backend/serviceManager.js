@@ -10,7 +10,7 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 const { ResponseBuilder } = require('@voiceflow/common').middleware;
 
-const { upload, uploadResize, ESclient, verify } = require('../services');
+const { upload, uploadResize, verify } = require('../services');
 const { policy, terms } = require('../policy');
 
 const { underMaintenance } = require('../app/src/MAINTENANCE.js');
@@ -45,8 +45,6 @@ const {
   Test: TestController,
   Admin: AdminController,
 } = require('../lib/controllers');
-
-const log = require('../logger');
 
 const responseBuilder = new ResponseBuilder();
 
@@ -101,23 +99,6 @@ class ServiceManager {
       uploadTransformImage: (req, res) => res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${req.file.transforms[0].key}`),
       uploadImage: (req, res) => res.send(`https://s3.amazonaws.com/com.getstoryflow.audio.production/${req.files[0].key}`),
       readBuildFiles: (req, res) => res.sendFile(path.join(__dirname, '../', 'app', 'build', 'index.html')),
-      elasticsearch: async (req, res) => {
-        req.body = req.body.substring(24, req.body.length + 1);
-        req.body = JSON.parse(req.body);
-        const ESparams = req.params[0].split('/');
-        const ESoptions = {
-          index: ESparams[0],
-          type: ESparams[1],
-          body: req.body,
-        };
-        await ESclient.search(ESoptions)
-          .then((data) => {
-            res.send({ responses: [data] });
-          })
-          .catch((err) => {
-            log.info(err);
-          });
-      },
     };
 
     const routeWrapper = (controller) => {

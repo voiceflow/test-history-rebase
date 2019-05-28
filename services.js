@@ -10,12 +10,10 @@ const pg = require('pg');
 const sharp = require('sharp');
 const Hashids = require('hashids');
 const Intercom = require('intercom-client');
-const elasticsearch = require('elasticsearch');
 const AWS = require('aws-sdk');
 const moment = require('moment');
 const StackTrace = require('stacktrace-js');
 const s3UploadStream = require('s3-upload-stream');
-const httpAwsEs = require('http-aws-es');
 const Analytics = require('analytics-node');
 const axios = require('axios');
 
@@ -255,32 +253,6 @@ const logAxiosError = (err, context = '', data = null) => {
   writeToLogs('CREATOR_BACKEND_ERRORS', msg);
 };
 
-const ESoptions =
-  process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging'
-    ? {
-        hosts: [process.env.ELASTIC_SEARCH_HOST],
-        connectionClass: httpAwsEs,
-        awsConfig: AWS.config,
-      }
-    : {
-        host: 'localhost:9200',
-      };
-
-const ESclient = elasticsearch.Client(ESoptions);
-
-const setupESIndices = async () => {
-  try {
-    const res = await ESclient.indices.create({
-      index: 'marketplace',
-    });
-    log.info('marketplace index', res);
-  } catch (err) {
-    log.info('marketplace index already exists');
-  }
-};
-
-setupESIndices();
-
 const encryptJSON = (data) => jwt.sign(data, process.env.JWT_SECRET);
 const decryptJSON = (token) => jwt.verify(token, process.env.JWT_SECRET);
 
@@ -302,7 +274,6 @@ module.exports = {
   verify,
   logAxiosError,
   writeToLogs,
-  ESclient,
   encryptJSON,
   decryptJSON,
 };

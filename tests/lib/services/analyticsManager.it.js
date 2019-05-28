@@ -87,7 +87,7 @@ describe('analyticsManager integration tests', () => {
       segement: {},
     };
 
-    const analyticsManager = AnalyticsManager(services);
+    const analyticsManager = new AnalyticsManager(services);
 
     const results = await analyticsManager.getUsersData(123);
 
@@ -154,7 +154,7 @@ describe('analyticsManager integration tests', () => {
       segement: {},
     };
 
-    const analyticsManager = AnalyticsManager(services);
+    const analyticsManager = new AnalyticsManager(services);
 
     const results = await analyticsManager.getDAU(123, 0, 1000, 0);
 
@@ -211,7 +211,7 @@ describe('analyticsManager integration tests', () => {
       segement: {},
     };
 
-    const analyticsManager = AnalyticsManager(services);
+    const analyticsManager = new AnalyticsManager(services);
 
     const results = await analyticsManager.getStats(123);
 

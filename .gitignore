@@ -29,3 +29,5 @@ shared-local-instance.db
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 .nyc_output
+
+test.js

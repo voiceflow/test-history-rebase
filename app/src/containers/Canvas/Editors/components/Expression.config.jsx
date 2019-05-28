@@ -13,7 +13,7 @@ const symbols = {
     not: 'NOT',
     value: 'Value',
     variable: 'Variable',
-    advance: 'Advance'
+    advance: 'Advanced'
 }
 
 const groups = [

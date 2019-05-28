@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const Hashids = require('hashids');
 const moment = require('moment');
 

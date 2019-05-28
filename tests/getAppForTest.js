@@ -2,8 +2,10 @@
 
 const Server = require('../server');
 const { ServiceManager } = require('../backend');
+require('./../envSetup');
+const config = require('./../config');
 
-module.exports = async (serviceManager = new ServiceManager()) => {
+module.exports = async (serviceManager = new ServiceManager(config)) => {
   const server = new Server(serviceManager);
   server.port = 12000;
 

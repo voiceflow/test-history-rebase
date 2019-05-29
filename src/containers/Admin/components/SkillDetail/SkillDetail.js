@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import moment from "moment";
 import {Link} from "react-router-dom";
 import Select from "react-select";
@@ -118,10 +119,10 @@ class SkillDetail extends React.Component {
                   <span>Myself</span>
                 </div>
                 <div className="col-sm-3 team_summary_button_row sd_left_align" onClick={() => {
-                  this.setState({target_user: this.props.searched_user.creator_id}, this.onUserInput);
+                  this.setState({target_user: this.props.creator.creator_id}, this.onUserInput);
                 }}>
                   <span>
-                    {`User: ${this.props.searched_user.creator_id}`}
+                    {`User: ${this.props.creator.creator_id}`}
                   </span>
                 </div>
                 <div className="col-sm-6 team_summary_button_row">
@@ -134,6 +135,10 @@ class SkillDetail extends React.Component {
       </ListGroupItem>
     )
   }
-};
+}
 
-export default SkillDetail;
+const mapStateToProps = state => ({
+  creator: state.admin.creator
+});
+
+export default connect(mapStateToProps)(SkillDetail);

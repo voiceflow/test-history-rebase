@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import './UserCard.css';
 import {User} from "components/User/User";
@@ -10,13 +11,13 @@ import axios from "axios";
 class UserCard extends React.Component {
 
   refundUser = () => {
-    if (!this.props.user.creator_id) {
+    if (!this.props.creator.creator_id) {
       toast.error("No user id entered");
     }
-    // if (!this.props.user.stripe_id || !this.props.user.subscription) {
+    // if (!this.props.creator.stripe_id || !this.props.creator.subscription) {
     //   toast.error("The user does not have a stripe id or does not have a subscription");
     // }
-    axios.post(`/admin-api/refund/${this.props.user.creator_id}`)
+    axios.post(`/admin-api/refund/${this.props.creator.creator_id}`)
       .then(res => {
         toast.success("Refu");
       })
@@ -26,10 +27,10 @@ class UserCard extends React.Component {
   };
 
   cancelSubscription = () => {
-    if (!this.props.user.creator_id) {
+    if (!this.props.creator.creator_id) {
       toast.error("No user id entered");
     }
-    axios.post(`/admin-api/cancel/${this.props.user.creator_id}`)
+    axios.post(`/admin-api/cancel/${this.props.creator.creator_id}`)
       .then(res => {
         toast.success("Refund successful!");
       })
@@ -39,7 +40,7 @@ class UserCard extends React.Component {
   };
 
   render() {
-    if (!this.props.user)
+    if (!this.props.creator)
       return null;
     return (
       <div className="user_card_wrapper">
@@ -48,36 +49,35 @@ class UserCard extends React.Component {
           <div className="additional">
             <div className="user-card">
               <div className="level user_card_center">
-                Id: {this.props.user.creator_id}
+                Id: {this.props.creator.creator_id}
               </div>
               <div className="points user_card_center">
-                Admin level: {this.props.user.admin}
+                Admin level: {this.props.creator.admin}
               </div>
-              <User user={this.props.user} className="user_card_center user_logo"/>
+              <User user={this.props.creator} className="user_card_center user_logo"/>
             </div>
           </div>
           <div className="user_card_general">
-            <div className="user_card_name">{this.props.user.name}</div>
+            <div className="user_card_name">{this.props.creator.name}</div>
             <div className="user_date_joined">
-              {moment(this.props.user.created).format('MMMM Do YYYY, h:mm:ss a')}
+              {moment(this.props.creator.created).format('MMMM Do YYYY, h:mm:ss a')}
             </div>
             <p>
-              {this.props.user.email}
+              {this.props.creator.email}
             </p>
             <p>
-              {this.props.user.subscription ? this.props.user.subscription : 'No subscription active'}
+              {this.props.creator.subscription ? this.props.creator.subscription : 'No subscription active'}
             </p>
             <p>
-              {this.props.user.strip_id ? this.props.user.strip_id : 'No Stripe Id'}
+              {this.props.creator.strip_id ? this.props.creator.strip_id : 'No Stripe Id'}
             </p>
             <p>
-              Google ID: {this.props.user.gid ? this.props.user.gid : 'no google ID'}
+              Google ID: {this.props.creator.gid ? this.props.creator.gid : 'no google ID'}
             </p>
             <div className="advanced_button_row">
               <AdminAdvancedModal
-                showModal={true}
+                showModal={false}
                 buttonLabel={'Advanced'}
-                user={this.props.user}
                 cancelSubscription={() => this.cancelSubscription()}
                 refundUser={this.refundUser}
               />
@@ -91,4 +91,8 @@ class UserCard extends React.Component {
   }
 };
 
-export default UserCard;
+const mapStateToProps = state => ({
+  creator: state.admin.creator
+});
+
+export default connect(mapStateToProps)(UserCard);

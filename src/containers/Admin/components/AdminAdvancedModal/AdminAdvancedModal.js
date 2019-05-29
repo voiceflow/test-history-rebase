@@ -59,7 +59,7 @@ class AdminAdvancedModal extends React.Component {
               Cancel Subscription
             </div>
             <div className="am__action_body">
-              Cancel the subscription for creator #{this.props.user.creator_id}
+              Cancel the subscription for creator #{this.props.creator.creator_id}
               <div className="am__button_row">
                 <Button isWarning onClick={() => this.toggleNested('cancel')}>
                   Cancel Subscription
@@ -71,7 +71,7 @@ class AdminAdvancedModal extends React.Component {
               Refund User
             </div>
             <div className="am__action_body">
-              Cancel the subscription for creator #{this.props.user.creator_id} and refund them.
+              Cancel the subscription for creator #{this.props.creator.creator_id} and refund them.
               <div className="am__button_row">
                 <Button isWarning onClick={() => this.toggleNested('refund')}>
                   REFUND
@@ -80,7 +80,7 @@ class AdminAdvancedModal extends React.Component {
             </div>
 
             <Modal isOpen={this.state.nestedCancelModal} toggle={() => this.toggleNested('cancel')}>
-              <ModalHeader>Cancel Subscription for Creator #{this.props.user.creator_id}</ModalHeader>
+              <ModalHeader>Cancel Subscription for Creator #{this.props.creator.creator_id}</ModalHeader>
               <ModalBody>
                 <Alert color="danger between">
                   <span className="am__confirm_message">sigh 😭😭😭</span>
@@ -96,7 +96,7 @@ class AdminAdvancedModal extends React.Component {
             </Modal>
 
             <Modal isOpen={this.state.nestedRefundModal} toggle={() => this.toggleNested('refund')}>
-              <ModalHeader>Refund Creator #{this.props.user.creator_id}</ModalHeader>
+              <ModalHeader>Refund Creator #{this.props.creator.creator_id}</ModalHeader>
               <ModalBody>
                 <Alert color="danger between">
                   <span className="am__confirm_message">not our monies 😫😫😫</span>
@@ -118,4 +118,8 @@ class AdminAdvancedModal extends React.Component {
   }
 }
 
-export default connect()(AdminAdvancedModal);
+const mapStateToProps = state => ({
+  creator: state.admin.creator
+});
+
+export default connect(mapStateToProps)(AdminAdvancedModal);

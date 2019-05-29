@@ -1,6 +1,6 @@
 .wh_select-list-header {
     height: 32px;
-    margin: 0 10px 5px 10px;
+    margin: 0 5px 0px 5px;
     padding: 0.5em 0.5em 0.5em 0.9em;
     overflow: hidden;
     word-wrap: break-word;
@@ -11,5 +11,16 @@
 }
 
 .vendors-select-list {
-    padding: 10px 0 0 0;
+  padding: 10px 0 10px 0;
+  position: absolute;
+  width: 100%;
+  background-color: #fff;
+  right: 0;
+  top: 48px;
+  max-height: 165px;
+  overflow-y: scroll;
+  z-index: 1;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06);
+  border: 1px solid rgba(141, 162, 181, .28);
+  border-radius: 5px;
 }

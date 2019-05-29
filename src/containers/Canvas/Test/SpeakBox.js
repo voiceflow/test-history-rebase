@@ -1,6 +1,8 @@
 import React from 'react'
+import cn from 'classnames'
 import {Tooltip} from 'react-tippy'
 import moment from 'moment'
+import { isTSExpressionWithTypeArguments } from '@babel/types';
 
 class SpeakBox extends React.Component {
     constructor(props) {
@@ -14,7 +16,7 @@ class SpeakBox extends React.Component {
         const { delay, audio } = this.props;
         this.timer = setTimeout(() => {
             this.centerNode();
-            audio.play();
+            if (audio) audio.play();
             this.setState({
                 shouldRender: true,
                 renderTime: this.props.time
@@ -38,23 +40,43 @@ class SpeakBox extends React.Component {
     }
 
     render() {
-        const { text, type , delay} = this.props;
+        const { text, type , isLeft, isRight, chat} = this.props;
         const { shouldRender, renderTime } = this.state
         return (
             <>
                 {shouldRender &&
-                   <div className="mt-2 text-left position-relative">
-                   <img src={type === 'audio'? '/audio.svg' :'/alexa.svg'} height={15} width={15} alt="alexa" className="mr-2"/>
-                   <Tooltip
-                    title = {renderTime}
-                   >
-                        <div className = "message border rounded p-2 align-self-start"
-                        onClick = {
-                            () => this.centerNode()
-                        } >
-                            <p className="mb-0 px-1 text-left">{text}<br/></p>
+                   <div className={cn("mt-2 position-relative", {
+                       'text-left': isLeft,
+                       'text-right': isRight,
+                   })}>
+                   {this.props.isChoice &&
+                   <>
+                   <div className="choice-options p-2 align-self-start">
+                        {chat.options.map(option => <div className="choice-option mb-1" onClick={(e) => {
+                            this.props.inputSubmit(e, option)
+                        }}>
+                            {option}
                         </div>
-                    </Tooltip>
+                        )}
+                    </div>
+                   </>    
+                   }
+                   {
+                       this.props.isSpeak &&
+                       <>
+                       <img src={type === 'audio'? '/audio.svg' :'/alexa.svg'} height={15} width={15} alt="alexa" className="mr-2"/>
+                        <Tooltip
+                            title = {renderTime}
+                        >
+                                <div className = "message border rounded p-2 align-self-start"
+                                onClick = {
+                                    () => this.centerNode()
+                                } >
+                                    <p className="mb-0 px-1 text-left">{text}<br/></p>
+                                </div>
+                            </Tooltip>
+                       </>
+                   }
                     </div> 
                 }
             </>

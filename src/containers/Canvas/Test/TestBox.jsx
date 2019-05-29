@@ -35,17 +35,17 @@ const TestBox = props => {
                     <img src='/user_reply.svg' height={15} width={15} alt="user" className="ml-2"/>
                     </div>
                 } else if (chat.options) {
-                    return <div className="mt-2 text-right" key={i}>
-                        <div className="choice-options p-2 align-self-start">
-                        {chat.options.map(option => <div className="choice-option mb-1" onClick={(e) => {
-                            inputSubmit(e, option)
-                        }}>
-                            {option}
-                        </div>
-                        )}
-                        </div>
-                        <img src='/user_reply.svg' height={15} width={15} alt="user" className="ml-2" />
-                    </div>
+                    return <SpeakBox
+                        key={i}
+                        isRight
+                        isChoice
+                        chat={chat}
+                        time={time}
+                        node={chat.node}
+                        delay={chat.delay}
+                        inputSubmit={inputSubmit}
+                        diagramEngine={diagramEngine}
+                    />
                 }else if(chat.debug){
                     if (!debug) {
                     return null
@@ -64,6 +64,8 @@ const TestBox = props => {
                 }else if(chat.text){
                     return <SpeakBox
                         key={i}
+                        isLeft
+                        isSpeak
                         text={chat.text}
                         time={time}
                         type={chat.audioType}

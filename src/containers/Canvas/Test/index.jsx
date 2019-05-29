@@ -46,6 +46,7 @@ class Test extends Component {
                 testing_info={this.props.testing_info}
                 flow={this.props.flow}
                 diagramEngine={this.props.diagramEngine}
+                time={this.props.time}
                 stop={this.props.stop}
                 resume={this.props.resume}
               />

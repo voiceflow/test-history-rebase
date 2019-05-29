@@ -64,6 +64,7 @@ let next = false;
 let timer;
 const Timeline = props => {
   const {
+    time,
     slots,
     global,
     repeat,
@@ -84,14 +85,18 @@ const Timeline = props => {
   const [started, setStarted] = useState(false)
   const [audioPlayer, toggleAudioPlayer] = useState(false)
   const [audio, setAudio] = useState(null)
-  let [time, setTime] = useState(0)
 
   useEffect(() => {
     if (testing_info && !started) beginning()
     if (!testing_info && started) stop()
   })
 
-  if (!testing_info) {
+  if (!testing_info && !started) {
+    return <div className="mb-3">
+      <small className="text-muted d-block ml-3">Start to see the dialog transcription</small>
+    </div>
+  }
+  if (!testing_info && started) {
     return <div className="text-center mb-3">
       <img className="mb-3 mt-5" src={'/Testing.svg'} alt="user" width="80" /><br />
       <span className="text-muted">Waiting for a new session...</span><br />
@@ -422,6 +427,7 @@ const Timeline = props => {
               let outputBlock = {}
               outputBlock.self = data.input
               outputBlock.node = block.line.id
+              outputBlock.delay = delay;
               outputBlock.type = type
               dom.push(outputBlock)
             } else if (type === 'Choice') {
@@ -429,6 +435,7 @@ const Timeline = props => {
               outputBlock.options = _.flatten(block.line.inputs);
               outputBlock.node = block.line.id;
               outputBlock.type = type
+              outputBlock.delay = delay;
               dom.push(outputBlock)
             }
           }

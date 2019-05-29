@@ -157,7 +157,9 @@ describe('accountManager integration tests', () => {
       axios: {
         get: sinon.stub().returns({
           data: {
-            user_id: fbId,
+            data: {
+              user_id: fbId,
+            },
           },
         }),
       },
@@ -187,7 +189,9 @@ describe('accountManager integration tests', () => {
       axios: {
         get: sinon.stub().returns({
           data: {
-            user_id: 'different_id',
+            data: {
+              user_id: 'different_id',
+            },
           },
         }),
       },
@@ -207,7 +211,9 @@ describe('accountManager integration tests', () => {
       axios: {
         get: sinon.stub().returns({
           data: {
-            user_id: 'newFbId',
+            data: {
+              user_id: 'newFbId',
+            },
           },
         }),
       },
@@ -235,7 +241,9 @@ describe('accountManager integration tests', () => {
       axios: {
         get: sinon.stub().returns({
           data: {
-            user_id: fbId,
+            data: {
+              user_id: fbId,
+            },
           },
         }),
       },

@@ -1,3 +1,8 @@
+.expression-menu {
+  overflow: auto;
+  max-height: 240px;
+}
+
 .type-button {
     border-radius: 50%;
     margin-left: 10px;
@@ -39,10 +44,6 @@
 	border: 1px solid;
 	border-radius: 6px;
 	/*color: #FFF;*/
-}
-
-.operator {
-	color: #FFF;
 }
 
 .expression-block.plus,.expression-block.minus{
@@ -116,5 +117,3 @@
 	margin-bottom: 10px;
 	text-align: left;
 }
-
-

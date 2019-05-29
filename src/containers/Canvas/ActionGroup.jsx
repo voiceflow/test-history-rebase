@@ -190,6 +190,7 @@ export class ActionGroup extends PureComponent {
     this.uploadSuccess = this.uploadSuccess.bind(this)
     this.closePrompt = this.closePrompt.bind(this)
     this.token = null
+    this.google_token = null
     this.updateLiveVersion = this.updateLiveVersion.bind(this)
     this.renderUploadButton = this.renderUploadButton.bind(this)
     this.isUploadLoading = this.isUploadLoading.bind(this)
@@ -201,10 +202,14 @@ export class ActionGroup extends PureComponent {
     AmazonAccessToken().then(token => {
       this.token = token;
       this.reset()
+    }).catch(err => {
+      this.token = null;
     })
     googleAccessToken(this.props.skill.skill_id).then(token => {
       this.google_token = token;
       this.reset()
+    }).catch(err => {
+      this.google_token = null;
     })
   }
 
@@ -996,7 +1001,7 @@ export class ActionGroup extends PureComponent {
                   position="bottom"
                   distance={16}
                 >
-                  <Button isNavBordered id="icon-share" className="fas fa-share" onClick={this.toggleShare} />
+                  <Button isNavBordered id="icon-share" onClick={this.toggleShare} />
                 </Tooltip>
                 <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
                   <PopoverBody style={{ minWidth: '260px' }}>
@@ -1030,7 +1035,7 @@ export class ActionGroup extends PureComponent {
               <div className="align-icon">
                 <Tooltip
                   distance={16}
-                  title="Test"
+                  title="Quick Test"
                   position="bottom"
                   className="ml-4 mr-4"
                 >

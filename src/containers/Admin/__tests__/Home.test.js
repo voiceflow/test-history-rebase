@@ -12,7 +12,7 @@ beforeEach(() => {
 
 it('Shows a h3 header', () => {
   expect(wrapped.find('h3').length).toEqual(1);
-})
+});
 
 it('Shows the internal lookup tool', () => {
   expect(wrapped.find(InternalLookup).length).toEqual(1);

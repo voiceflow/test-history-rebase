@@ -1,7 +1,7 @@
 import React from 'react';
 import {mount} from 'enzyme';
 
-import initialState from './testAdminState';
+import {initialState} from './testAdminState';
 import InternalLookup from '../../components/InternalLookup/InternalLookup';
 import TeamSummary from '../../components/TeamSummary/TeamSummary';
 import Root, {history} from 'store/store';
@@ -52,6 +52,15 @@ describe('filter boards', () => {
     wrapped.update();
     expect(wrapped.find(TeamSummary).length).toEqual(2);
     expect(wrapped.find(SkillDetail).length).toEqual(2);
+  });
+
+  it('can also clear the filter and view all skills', () => {
+    wrapped.find('Input#skill_filter_input').simulate('change', {
+      target: {value: '', name: 'skill_filter'}
+    });
+    wrapped.update();
+    expect(wrapped.find(TeamSummary).length).toEqual(2);
+    expect(wrapped.find(SkillDetail).length).toEqual(3);
   })
 
 });

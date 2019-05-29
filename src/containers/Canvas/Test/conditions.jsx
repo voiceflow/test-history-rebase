@@ -8,37 +8,22 @@ import SetExpression from "../Editors/components/SetExpression";
 const Conditions = (props) => {
   const {
     node,
-    variables
+    variables,
+    variableMapping,
+    handleVariableChange,
   } = props
-  const [mockData, setMockData] = useState([
-    {
-      expression: {
-        depth: 0,
-        type: "value",
-        value: ""
-      },
-      variable: null
-    }
-  ])
-  const handleSelection = (i, value) => {
-    if (mockData[i].variable !== value) {
-      mockData[i].variable = value;
-      setMockData(mockData)
-      console.log(mockData)
-    }
-  }
 
   return (
     <div id='Conditions' className="mb-3">
       <div className="text-center">
       {/* node.extras here */}
-        {mockData.map((block, i) => {
+        {variables.map((block, i) => {
           return (
             <SetExpression
               key={i}
-              block={block}
+              variable={block}
               onRemove={_.noop}
-              onSelection={(selected) => handleSelection(i, selected.value)}
+              onSelection={handleVariableChange}
               onUpdate={_.noop}
               variables={variables}
             />

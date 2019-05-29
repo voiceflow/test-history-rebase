@@ -89,7 +89,8 @@ class SetBlock extends Component {
             		return (
             			<SetExpression
             				key={i}
-            				block={block}
+                            block={block}
+                            variable={block.variable}
 		                	onRemove={() => this.handleRemoveBlock(i)}
 		                	onSelection={(selected) => this.handleSelection(i, selected.value)}
 		                	onUpdate={this.onUpdate}

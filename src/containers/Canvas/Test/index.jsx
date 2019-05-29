@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import _ from 'lodash'
+import update from 'immutability-helper'
 import axios from 'axios'
 import { compose } from "recompose";
 import { connect } from "react-redux";
@@ -24,6 +25,18 @@ const SECTIONS = {
 class Test extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      variableMapping: props.variables.reduce((key, val) => {key[val]=val; return key}, {}),
+    }
+  }
+
+  handleVariableChange = (variable, value) => {
+    let newState = update(this.state, {
+      variableMapping: {
+        [variable]: {$set: value}
+      }
+    })
+    this.setState(newState)
   }
 
   render() {
@@ -38,6 +51,8 @@ class Test extends Component {
               section = <Conditions
                 testing_info={this.props.testing_info}
                 flow={this.props.flow}
+                handleVariableChange={this.handleVariableChange}
+                variableMapping={this.state.variableMapping}
               />
 
             break
@@ -49,6 +64,7 @@ class Test extends Component {
                 time={this.props.time}
                 stop={this.props.stop}
                 resume={this.props.resume}
+                setTime={this.props.setTime}
               />
             break
             default:
@@ -70,6 +86,7 @@ class Test extends Component {
 const mapStateToProps = state => ({
   skill: state.skills.skill,
   diagram_id: state.skills.skill.diagram,
+  variables: state.variables.localVariables.concat(state.skills.skill.global)
 });
 
 const mapDispatchToProps = dispatch => {

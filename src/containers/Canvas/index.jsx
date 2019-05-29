@@ -1719,6 +1719,7 @@ export class Canvas extends Component {
                 stop={this.stopTime}
                 resume={this.countTime}
                 time={this.state.time}
+                setTime={this.setTime}
               />
               <div
                 key={this.props.diagram_id}

@@ -52,6 +52,11 @@
     width: 100%; */
 }
 
+#Conditions {
+    max-height: 300px;
+    overflow: scroll
+}
+
 .response-input {
     min-height: 100px;
 }

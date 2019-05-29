@@ -69,6 +69,7 @@ const Timeline = props => {
     global,
     repeat,
     platform,
+    setTime,
     resume,
     stop,
     diagramEngine,
@@ -78,6 +79,7 @@ const Timeline = props => {
 
   const handleRestart = () => {
     setStarted(false)
+    setTime(0)
     setInputs([])
     setOutputs([])
     setEnded(false);

@@ -132,7 +132,8 @@
     "start": "HTTPS=true node scripts/start.js",
     "build": "GENERATE_SOURCEMAP=false node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom --watchAll=false",
-    "prepublish": "patch-package"
+    "prepublish": "patch-package",
+    "test:all": "react-scripts test --verbose"
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {
@@ -144,7 +145,7 @@
     "enzyme-to-json": "^3.3.5",
     "eslint-plugin-react-hooks": "^1.6.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^24.1.0",
+    "jest": "^24.8.0",
     "jest-pnp-resolver": "^1.0.1",
     "patch-package": "^5.1.1",
     "redux-devtools": "^3.5.0",

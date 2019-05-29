@@ -45,4 +45,4 @@ module.exports = {
     "jsx",
     "node"
   ]
-}
+};

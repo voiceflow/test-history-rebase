@@ -37,7 +37,7 @@ class InternalLookup extends React.Component {
       if (event.target.value === '') {
         this.clearSearch();
       } else {
-        let filtered_boards = _.cloneDeep(this.state.boards);
+        let filtered_boards = _.cloneDeep(this.props.boards);
         // Need to reduce the boards array
         filtered_boards = filtered_boards.filter(board => {
           let found = false;

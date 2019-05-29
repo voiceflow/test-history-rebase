@@ -114,9 +114,13 @@ class InternalLookup extends React.Component {
               </Button>
             </div>
             <div className={'filter_skill'}>
-              Filter by skill name: <Input name={"skill_filter"} value={this.state.skill_filter}
-                                           onChange={this.handleChange}
-                                           placeholder={'Enter a skill name'}/>
+              Filter by skill name:
+              <Input
+                id="skill_filter_input"
+                name={"skill_filter"}
+                value={this.state.skill_filter}
+                onChange={this.handleChange}
+                placeholder={'Enter a skill name'}/>
             </div>
           </div>
           <div className="internalIdSearchUserResult">

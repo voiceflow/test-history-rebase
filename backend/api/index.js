@@ -10,8 +10,6 @@ module.exports = (middleware, controllers) => {
 
   router.use(middleware.verify);
 
-  router.post('/elasticsearch/*', controllers.utilities.elasticsearch);
-
   router.get('/session/amazon/access_token', middleware.ensureLoggedIn, controllers.account.getAccessToken);
   router.get('/session/amazon/:code', middleware.ensureLoggedIn, controllers.account.getAmazonCode);
   router.delete('/session/amazon', middleware.ensureLoggedIn, controllers.account.deleteAmazon);
@@ -120,52 +118,8 @@ module.exports = (middleware, controllers) => {
   router.post('/diagram/:diagram_id/test/publish', middleware.ensureLoggedIn, controllers.Diagram.publishTest);
   router.get('/diagram/copy/:diagram_id', middleware.ensureLoggedIn, controllers.Diagram.copyDiagram);
 
-  /*
-      COMMENT OUT ACTUAL MARKETPLACE ROUTES FOR MASTER
-  */
-  // router.get('/marketplace/default_templates', middleware.ensureLoggedIn, controllers.Marketplace.getDefaultTemplates)
-  // router.post('/marketplace/template/:module_id/copy', middleware.ensureLoggedIn, controllers.Marketplace.copyDefaultTemplate)
-  // router.get('/marketplace/featured', middleware.ensureLoggedIn, controllers.Marketplace.getFeaturedModules)
-  // router.get('/marketplace/user_module/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.getUserModules)
-  // router.get('/marketplace/cert/pending', middleware.ensureAdmin, controllers.Marketplace.getPendingModules)
-  // router.get('/marketplace/cert/status/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.certStatus)
-  // router.get('/marketplace/cert/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.getCertModule)
-  // router.post('/marketplace/cert/:skill_id/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.requestCertification)
-  // router.put('/marketplace/cert/:project_id', middleware.ensureAdmin, controllers.Marketplace.giveCertification)
-  // // It doesn't appear that this route needs the version_id param
-  // router.delete('/marketplace/cert/:skill_id/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.cancelCertification)
-  // router.patch('/marketplace/cert/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.saveCertification)
-  // router.post('/marketplace/user_module/:project_id/:module_id', middleware.ensureLoggedIn, controllers.Marketplace.giveAccess)
-  // router.get('/marketplace/user_module/:project_id/:module_id', middleware.ensureLoggedIn, controllers.Marketplace.checkConflicts)
-  // router.delete('/marketplace/user_module/:project_id/:module_id', middleware.ensureLoggedIn, controllers.Marketplace.removeAccess)
-  // router.get('/marketplace/template/:module_id', middleware.ensureLoggedIn, controllers.Marketplace.retrieveTemplate)
-  // router.get('/marketplace/default_templates', middleware.ensureLoggedIn, controllers.Marketplace.getDefaultTemplates)
-  // router.get('/marketplace/initial_template', middleware.ensureLoggedIn, controllers.Marketplace.getInitialTemplate)
-  // router.get('/marketplace/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.getModules)
-  // router.get('/marketplace/:module_id', middleware.ensureLoggedIn, controllers.Marketplace.getModule)
-  // router.get('/marketplace/diagram/:module_id', middleware.ensureLoggedIn, controllers.Marketplace.getModuleDiagram)
-
-  router.get('/marketplace/default_templates', middleware.ensureLoggedIn, controllers.Marketplace.getDefaultTemplates);
-  router.post('/marketplace/template/:module_id/copy', middleware.ensureLoggedIn, controllers.Marketplace.copyDefaultTemplate);
-  router.get('/marketplace/featured', middleware.ensureBeta, controllers.Marketplace.getFeaturedModules);
-  router.get('/marketplace/cert/pending', middleware.ensureAdmin, controllers.Marketplace.getPendingModules);
-  router.post('/marketplace/user_module/:project_id/:module_id', middleware.ensureBeta, controllers.Marketplace.giveAccess);
-  router.get('/marketplace/user_module/:project_id/:module_id', middleware.ensureBeta, controllers.Marketplace.checkConflicts);
-  router.delete('/marketplace/user_module/:project_id/:module_id', middleware.ensureBeta, controllers.Marketplace.removeAccess);
-  router.get('/marketplace/user_module/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.getUserModules);
-  router.get('/marketplace/cert/status/:project_id', middleware.ensureBeta, controllers.Marketplace.certStatus);
-  router.post('/marketplace/cert/:skill_id/:project_id', middleware.ensureBeta, controllers.Marketplace.requestCertification);
-  router.delete('/marketplace/cert/:skill_id/:project_id', middleware.ensureBeta, controllers.Marketplace.cancelCertification);
-  router.get('/marketplace/cert/:project_id', middleware.ensureBeta, controllers.Marketplace.getCertModule);
-  router.put('/marketplace/cert/:project_id', middleware.ensureAdmin, controllers.Marketplace.giveCertification);
-  router.patch('/marketplace/cert/:project_id', middleware.ensureBeta, controllers.Marketplace.saveCertification);
-  router.get('/marketplace/template/:module_id', middleware.ensureLoggedIn, controllers.Marketplace.retrieveTemplate);
   router.get('/marketplace/default_templates', middleware.ensureLoggedIn, controllers.Marketplace.getDefaultTemplates);
   router.get('/marketplace/initial_template', middleware.ensureLoggedIn, controllers.Marketplace.getInitialTemplate);
-  router.get('/marketplace/:project_id', middleware.ensureBeta, controllers.Marketplace.getModules);
-  router.get('/marketplace/:module_id', middleware.ensureBeta, controllers.Marketplace.getModule);
-  router.get('/marketplace/diagram/:module_id', middleware.ensureBeta, controllers.Marketplace.getModuleDiagram);
-  router.post('/marketplace/flows/_msearch?', controllers.Marketplace.flowsSearch);
 
   router.post('/analytics/track_onboarding', middleware.ensureLoggedIn, controllers.Track.trackOnboarding);
   router.post('/analytics/track_session_time', middleware.ensureLoggedIn, controllers.Track.trackSessionTime);

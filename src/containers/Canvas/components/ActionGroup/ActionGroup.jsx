@@ -179,35 +179,41 @@ export class ActionGroup extends PureComponent {
 			should_pop_confetti: false,
 			percentage: 0,
 			upload_button_loading: true,
-			selected_vendor: props.vendor_id
+      selected_vendor: props.vendor_id,
+      vendors: [],
 		};
 
 		this.token = null;
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		AmazonAccessToken()
 			.then(token => {
-				this.token = token;
+        this.token = token;
+        if(token) {
+          getVendors()
+          .then(vendors => {
+            this.setState({
+              vendors,
+              upload_button_loading: false
+            });
+          })
+          .catch(err => {
+            this.setState({
+              upload_button_loading: false
+            });
+          });
+        }else {
+          this.setState({
+            upload_button_loading: false
+          });
+        }
 				this.reset();
 			});
 		googleAccessToken(this.props.skill.skill_id)
 			.then(token => {
 				this.google_token = token;
 				this.reset();
-			});
-		getVendors()
-			.then(vendors => {
-				this.setState({
-					vendors,
-					upload_button_loading: false
-				});
-			})
-			.catch(err => {
-				this.setState({
-					vendors: [],
-					upload_button_loading: false
-				});
 			});
 	}
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import _ from "lodash";
-import toast from 'react-toastify';
+import {toast} from 'react-toastify';
 
 export const SET_CREATOR = 'SET_CREATOR';
 export const FIND_CREATOR_FAILED = 'FIND_CREATOR_FAILED';
@@ -67,4 +67,40 @@ export const findCreator = creatorInfo => async dispatch => {
       }
     })
   }
+};
+
+// Refund a specific user
+export const refundCreator = creatorId => async dispatch => {
+
+  if (!creatorId) {
+    return;
+  }
+
+  try {
+    let response = await axios.post(`/admin-api/refund/${this.props.creator.creator_id}`);
+    toast.success('Refund successful!');
+    console.log('response from refund: ', response);
+  } catch (err) {
+    console.error('error when refunding user: ', err);
+    toast.error('Refund failed.')
+  }
+
+};
+
+// Cancel a user's subscription
+export const cancelSubscription = creatorId => async dispatch => {
+
+  if (!creatorId) {
+    return;
+  }
+
+  try {
+    let response = await axios.post(`/admin-api/cancel/${this.props.creator.creator_id}`);
+    toast.success('Subscription cancelled!');
+    console.log('response from cancel: ', response);
+  } catch (err) {
+    console.error('error from cancelling subscription', err);
+    toast.error('Cancel Subscription Failed');
+  }
+
 };

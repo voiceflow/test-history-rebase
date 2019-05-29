@@ -33,8 +33,8 @@ export default {
         seats: '4',
         projects: [
           {
-            skill_id: '345',
-            skill_name: 'skill3',
+            skill_id: '346',
+            skill_name: 'skill12',
             skill_created: '',
             summary: 'skill summary',
             description: 'skill description'

@@ -12,6 +12,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export default ({children, initialState = {}}) => {
   const store = createStore(
     rootReducer(history),
+    initialState,
     composeEnhancers(
       applyMiddleware(
         routerMiddleware(history),

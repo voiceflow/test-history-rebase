@@ -164,7 +164,7 @@ const tests = [
     calledPath: '/link_account/template/skill1',
     expected: {
       controllers: {
-        linkAccount: {
+        linking: {
           getTemplate: 1,
         },
       },
@@ -181,7 +181,7 @@ const tests = [
     calledPath: '/link_account/template/skill1',
     expected: {
       controllers: {
-        linkAccount: {
+        linking: {
           setTemplate: 1,
         },
       },

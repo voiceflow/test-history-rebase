@@ -14,9 +14,6 @@ describe('admin controller unit tests', () => {
       adminManager: {
         getCreatorData: sinon.stub().resolves(['stuff']),
       },
-      responseBuilder: {
-        respond: sinon.stub().resolves(),
-      },
     };
 
     const admin = new Admin(services);
@@ -26,16 +23,11 @@ describe('admin controller unit tests', () => {
         user_id: 2,
       },
     };
-    const res = {};
+    const res = sinon.stub().returns();
     const next = sinon.stub().returns();
 
-    await admin.getUsersData(req, res, next);
-
+    expect(await admin.getUsersData(req, res, next)).to.eql(['stuff']);
     expect(next.callCount).to.eql(0);
-    expect(services.responseBuilder.respond.callCount).to.eql(1);
-    expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
-
-    const action = services.responseBuilder.respond.args[0][1];
-    expect(await action()).to.eql(['stuff']);
+    expect(res.callCount).to.eql(0);
   });
 });

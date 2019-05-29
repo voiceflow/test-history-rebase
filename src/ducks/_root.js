@@ -6,7 +6,6 @@ import variables from "ducks/variable";
 import diagrams from "ducks/diagram";
 import products from "ducks/product";
 import displays from "ducks/display";
-import emails from "ducks/email";
 import userSetting from "ducks/user";
 import project from "ducks/project";
 import modal from "ducks/modal";
@@ -22,7 +21,6 @@ export default history =>
     skills,
     products,
     displays,
-    emails,
     board,
     diagrams,
     variables,

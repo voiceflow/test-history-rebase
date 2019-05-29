@@ -8,7 +8,7 @@ import Team from '../Team';
 import NewTeam from 'containers/Dashboard/NewTeam';
 import Skill from '../Skill';
 import Admin from 'containers/Admin';
-import ModuleAdminPage from 'containers/ModuleAdminPage';
+// import ModuleAdminPage from 'containers/ModuleAdminPage';
 import Account from 'containers/Account';
 import {getAuth} from '../ducks/account';
 import Page404 from 'components/404';
@@ -37,8 +37,6 @@ const allRoutes = (
     {/* Business routes */}
     <PrivateRoute path="/tools/:skill_id/link_account/templates" component={Skill} page="tools"
                   secondaryPage="link_account"/>
-    <PrivateRoute path="/tools/:skill_id/email/:id" component={Skill} page="tools" secondaryPage="email"/>
-    <PrivateRoute path="/tools/:skill_id/emails" component={Skill} page="tools" secondaryPage="emails"/>
     <PrivateRoute path="/tools/:skill_id/product/:id" component={Skill} page="tools" secondaryPage="product"/>
     <PrivateRoute path="/tools/:skill_id/products" component={Skill} page="tools" secondaryPage="products"/>
     <PrivateRoute path="/tools/:skill_id" component={Skill} page='tools' secondaryPage="home"/>
@@ -61,14 +59,7 @@ const allRoutes = (
     <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
     <PrivateRoute path="/publish/:skill_id/google" component={Skill} page="publish" secondaryPage="google"/>
     <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} page="publish" secondaryPage="alexa"/>
-    <PrivateRoute path="/publish/:skill_id/market" component={Skill} page="publish" secondaryPage="market"/>
     <PrivateRoute path="/publish/:skill_id" component={Skill} page="publish" secondaryPage="alexa"/>
-    {/* <PrivateRoute path="/market/:skill_id/:module_id" component={Skill} secondary={ModulePage} /> */}
-    <PrivateRoute path="/market/:skill_id/flows" name="Market" component={Skill} page="market" secondaryPage="flows"/>
-    <PrivateRoute path="/market/:skill_id/templates" name="Market" component={Skill} page="market"
-                  secondaryPage="templates"/>
-    <PrivateRoute path="/market/:skill_id" name="Market" component={Skill} page="market" secondaryPage="flows"/>
-    <PrivateRoute path="/stuff" name="Certification" component={ModuleAdminPage}/>
     <PrivateRoute path="/account/upgrade" name="Account" component={Account} upgrade/>
     <PrivateRoute path="/account" name="Account" component={Account}/>\
     <PrivateRoute path="/creator_logs/:skill_id" component={Skill} page="logs"/>

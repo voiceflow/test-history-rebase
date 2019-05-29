@@ -793,7 +793,7 @@ exports.buildSkill = async (req, res) => {
                   amzn_id = null;
                 }
               } catch (err) {
-                if (err.response.status === 404) {
+                if (err.response.status === 404 || err.response.status === 401) {
                   amzn_id = null;
                 } else if (err.response) {
                   console.error(err.response.status);

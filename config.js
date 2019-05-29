@@ -10,7 +10,7 @@ module.exports = {
   CONFIG_CLIENT_ID: getProcessEnv('CONFIG_CLIENT_ID'),
   CONFIG_CLIENT_SECRET: getProcessEnv('CONFIG_CLIENT_SECRET'),
   GOOGLE_ID: getProcessEnv('GOOGLE_ID'),
-  APP_TOKEN: optionalProcessEnv('APP_TOKEN'),
+  FB_ID: optionalProcessEnv('FB_ID'),
   SEGMENT_WRITE_KEY: optionalProcessEnv('SEGEMENT_WRITE_KEY'),
   AWS_ACCESS_KEY_ID: getProcessEnv('AWS_ACCESS_KEY_ID'),
   AWS_SECRET_ACCESS_KEY: getProcessEnv('AWS_SECRET_ACCESS_KEY'),

@@ -5,39 +5,8 @@ import './UserCard.css';
 import {User} from "components/User/User";
 import moment from "moment";
 import AdminAdvancedModal from "../AdminAdvancedModal/AdminAdvancedModal";
-import {toast} from "react-toastify";
-import axios from "axios";
 
 class UserCard extends React.Component {
-
-  refundUser = () => {
-    if (!this.props.creator.creator_id) {
-      toast.error("No user id entered");
-    }
-    // if (!this.props.creator.stripe_id || !this.props.creator.subscription) {
-    //   toast.error("The user does not have a stripe id or does not have a subscription");
-    // }
-    axios.post(`/admin-api/refund/${this.props.creator.creator_id}`)
-      .then(res => {
-        toast.success("Refu");
-      })
-      .catch(err => {
-        toast.error('Refund unsuccessful');
-      })
-  };
-
-  cancelSubscription = () => {
-    if (!this.props.creator.creator_id) {
-      toast.error("No user id entered");
-    }
-    axios.post(`/admin-api/cancel/${this.props.creator.creator_id}`)
-      .then(res => {
-        toast.success("Refund successful!");
-      })
-      .catch(err => {
-        toast.error('Refund unsuccessful');
-      })
-  };
 
   render() {
     if (!this.props.creator)
@@ -82,7 +51,6 @@ class UserCard extends React.Component {
                 refundUser={this.refundUser}
               />
             </div>
-            {/*<span className="more">Mouse over the card for metadata</span>*/}
           </div>
         </div>
 

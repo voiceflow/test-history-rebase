@@ -4,6 +4,7 @@ import {Modal, ModalHeader, ModalBody, ModalFooter, Alert} from 'reactstrap';
 import Button from 'components/Button';
 
 import './AdminAdvancedModal.css';
+import {cancelSubscription, refundCreator} from "ducks/admin";
 
 class AdminAdvancedModal extends React.Component {
   constructor(props) {
@@ -85,7 +86,7 @@ class AdminAdvancedModal extends React.Component {
                 <Alert color="danger between">
                   <span className="am__confirm_message">sigh 😭😭😭</span>
                   <br/>
-                  <Button isWarning onClick={this.props.cancelSubscription}>
+                  <Button isWarning onClick={() => this.props.cancelSubscription(this.props.creator.creator_id)}>
                     Cancel Subscription
                   </Button>
                 </Alert>
@@ -101,7 +102,7 @@ class AdminAdvancedModal extends React.Component {
                 <Alert color="danger between">
                   <span className="am__confirm_message">not our monies 😫😫😫</span>
                   <br/>
-                  <Button isWarning onClick={this.props.refundUser}>
+                  <Button isWarning onClick={() => this.props.refundCreator(this.props.creator.creator_id)}>
                     Refund User
                   </Button>
                 </Alert>
@@ -122,4 +123,4 @@ const mapStateToProps = state => ({
   creator: state.admin.creator
 });
 
-export default connect(mapStateToProps)(AdminAdvancedModal);
+export default connect(mapStateToProps, {refundCreator, cancelSubscription})(AdminAdvancedModal);

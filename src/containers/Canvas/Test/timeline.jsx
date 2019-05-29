@@ -68,15 +68,12 @@ const Timeline = props => {
     global,
     repeat,
     platform,
-    setStart,
-    timeline,
+    resume,
+    stop,
     diagramEngine,
     testing_info,
   } = props
 
-  const stop = () => {
-    clearInterval(timer)
-  }
 
   let current_diagram = null;
   const [outputs, setOutputs] = useState([])
@@ -107,13 +104,6 @@ const Timeline = props => {
     initializeStory();
     updateState(true)
     resume()
-  }
-
-  const resume = () => {
-    clearInterval(timer)
-    timer = setInterval(() => {
-      setTime(prevTime => prevTime + 1)
-    }, 1000)
   }
 
   const initializeStory = () => {
@@ -459,7 +449,6 @@ const Timeline = props => {
     <div id="Timeline" className="mb-3">
       <div className="break">
         <span className="or">New Session Started</span>
-        <h3>{moment.utc(time*1000).format('mm:ss')}</h3>
         <TestBox
           inputs={inputs}
           diagramEngine={diagramEngine}

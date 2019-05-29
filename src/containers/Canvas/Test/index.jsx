@@ -45,8 +45,9 @@ class Test extends Component {
               section = <Timeline
                 testing_info={this.props.testing_info}
                 flow={this.props.flow}
-                setTest={this.props.setTest}
                 diagramEngine={this.props.diagramEngine}
+                stop={this.props.stop}
+                resume={this.props.resume}
               />
             break
             default:

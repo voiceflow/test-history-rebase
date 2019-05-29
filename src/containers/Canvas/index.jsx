@@ -109,6 +109,7 @@ export class Canvas extends Component {
             help: null,
             helpOpen: false,
             copy: null,
+            time: 0,
             activityTime: 1000 * 60 * 2, // Multiply for mins
             load_diagram: true,
             diagram_level_intents: {
@@ -129,6 +130,23 @@ export class Canvas extends Component {
 
         // SKILL IS LOADED HERE
         this.onLoadId(props.diagram_id)
+    }
+
+    setTime = (time) => {
+        this.setState({
+            time
+        })
+    }
+
+    countTime = () => {
+        clearInterval(this.timer);
+        this.timer = setInterval(() => {
+            this.setTime(this.state.time + 1)
+        }, 1000)
+    }
+
+    stopTime  = () => {
+        clearInterval(this.timer)
     }
 
     setMousetrap = () => {
@@ -1576,6 +1594,7 @@ export class Canvas extends Component {
                     preview={this.props.preview}
                     history={this.props.history}
                     onTest={this.onTest}
+                    time={this.state.time}
                     resetTest={() => this.setState({ testing_info: false })}
                     page={this.props.page}
                 />
@@ -1697,6 +1716,8 @@ export class Canvas extends Component {
                 flow={this.props.diagram.name}
                 onTest={this.onTest}
                 diagramEngine={this.state.engine}
+                stop={this.stopTime}
+                resume={this.countTime}
               />
               <div
                 key={this.props.diagram_id}

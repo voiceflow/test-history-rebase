@@ -37,7 +37,7 @@ const UserTestHeader = props => {
                 )}
                 centerRenderer={() => (
                     <div id="middle-group">
-                        <h3>{moment.utc(time * 1000).format('mm:ss')}</h3>
+                        <label>{moment.utc(time * 1000).format('mm:ss')}</label>
                     </div>
                 )}
                 rightRenderer={() => (

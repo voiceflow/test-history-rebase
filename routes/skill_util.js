@@ -1,8 +1,8 @@
 const axios = require('axios');
-const { docClient, pool, hashids, logAxiosError, writeToLogs, analytics } = require('./../services');
-const { AccessToken } = require('./authentication');
-const { renderDiagram } = require('../config/render_diagram');
-const { PLATFORMS } = require('../app/src/Constants');
+const {docClient, pool, hashids, logAxiosError, writeToLogs, analytics} = require('./../services');
+const {AccessToken} = require('./authentication');
+const {renderDiagram} = require('../config/render_diagram');
+const {PLATFORMS} = require('../app/src/Constants');
 
 const generateID = () =>
   'xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -83,7 +83,7 @@ exports.deleteSkillDiagramsPromise = (skill_id) =>
           reject(err);
         });
     } catch (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err});
       reject(err);
     }
   });
@@ -122,7 +122,7 @@ exports.deleteVersionPromise = (creator_id, skill_id, opts) => {
       }
       resolve();
     } catch (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', { err, context: 'deleteVersionPromise' });
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err, context: 'deleteVersionPromise'});
       reject(err);
     }
   });
@@ -177,14 +177,14 @@ exports.deleteProjectPromise = (project_id) =>
           try {
             exports.deleteDynamoDiagramPromise(version.id);
           } catch (err) {
-            writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err});
           }
         }, 20 * i);
       }
 
       resolve();
     } catch (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err});
       reject(err);
     }
   });
@@ -209,11 +209,11 @@ const copyProducts = (old_skill_id, new_skill_id) =>
       }
 
       for (const i in select_data) {
-        product_remapping[hashids.encode(select_data[i].id)] = hashids.encode(insert_data[i].id);
+        product_remapping[select_data[i].id] = insert_data[i].id;
       }
       resolve(product_remapping);
     } catch (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', { err, params: { old_skill_id, new_skill_id } });
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err, params: {old_skill_id, new_skill_id}});
       reject(err);
     }
   });
@@ -242,7 +242,7 @@ const copyEmailTemplates = (old_skill_id, new_skill_id, new_creator_id) =>
       }
       resolve(email_templates_remapping);
     } catch (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', { err, params: { old_skill_id, new_skill_id, new_creator_id } });
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err, params: {old_skill_id, new_skill_id, new_creator_id}});
       reject(err);
     }
   });
@@ -271,7 +271,7 @@ const copyDisplays = (old_skill_id, new_skill_id, new_creator_id) =>
       }
       resolve(displays_remapping);
     } catch (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', { err, params: { old_skill_id, new_skill_id, new_creator_id } });
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err, params: {old_skill_id, new_skill_id, new_creator_id}});
       reject(err);
     }
   });
@@ -300,7 +300,7 @@ const uploadCopiedDiagram = (data, new_skill_id, new_creator_id, diagram_names, 
       await docClient.put(params).promise();
       resolve(new_diagram_data);
     } catch (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err});
       reject();
     }
   });
@@ -312,7 +312,7 @@ const remapDiagramIds = async (diagram, new_skill_id, new_creator_id, mappings, 
   diagram.id = mappings.diagram[diagram.id];
   diagram.skill = new_skill_id;
   const JSON_diagram_data = JSON.parse(diagram.data);
-  const { nodes } = JSON_diagram_data;
+  const {nodes} = JSON_diagram_data;
   if (nodes) {
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
@@ -339,7 +339,8 @@ const remapDiagramIds = async (diagram, new_skill_id, new_creator_id, mappings, 
                 node.combines[j].extras[p].diagram_id = mappings.diagram[node.combines[j].extras[p].diagram_id];
                 sub_diagrams.add(node.combines[j].extras[p].diagram_id);
               }
-            } catch (e) {}
+            } catch (e) {
+            }
           });
         }
       }
@@ -372,7 +373,7 @@ const remapAndCopyDiagram = (diagram_id, new_skill_id, platform, new_creator_id,
 
     docClient.get(get_params, async (err, data) => {
       if (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err});
         reject(err);
       } else if (data.Item) {
         const result = await remapDiagramIds(data.Item, new_skill_id, new_creator_id, mappings, platform, module_id);
@@ -429,7 +430,7 @@ const renderSkill = async (skill, user) => {
       JSON.stringify([...interfaces]),
     ]);
   } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err});
   }
 };
 
@@ -465,7 +466,9 @@ const generateCopySkillQuery = (options) => {
 };
 
 exports.copySkill = async (req, res, options, cb = false) => {
-  const id = req.params._version_id ? req.params._version_id : hashids.decode(req.params.version_id)[0];
+  let id = req.params._version_id ? req.params._version_id : hashids.decode(req.params.version_id)[0];
+  if (!id)
+    id = req.params.version_id;
   const new_creator_id = options.creator_id || req.user.id;
   const team_id = req.params._team_id;
   const diagram_mapping = {};
@@ -509,7 +512,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
           remapped_emails = await copyEmailTemplates(id, copy_skill.skill_id, new_creator_id);
           remapped_displays = await copyDisplays(id, copy_skill.skill_id, new_creator_id);
         } catch (err) {
-          writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err});
           return res.sendStatus(500);
         }
       }
@@ -571,7 +574,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
               });
             }
           } catch (err) {
-            writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err});
             return res.sendStatus(500);
           }
         }
@@ -589,11 +592,11 @@ exports.copySkill = async (req, res, options, cb = false) => {
         }
       })
       .catch((err) => {
-        writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err});
         res.sendStatus(500);
       });
   } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err});
     res.sendStatus(500);
   }
 };
@@ -612,9 +615,9 @@ const copyIntentsAndSkills = (origin_skill_id, dest_skill_id) =>
         JSON.stringify(new_slots),
         dest_skill_id,
       ]);
-      resolve({ new_intents, new_slots });
+      resolve({new_intents, new_slots});
     } catch (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err});
       reject();
     }
   });
@@ -639,7 +642,7 @@ exports.copyDiagramsFromSkill = async (origin_skill_id, dest_skill_id, new_creat
         [dest_skill_id]
       )).rows;
       dest_diagram_names = new Set(dest_diagram_names.map((row) => row.name));
-      const { platform } = (await pool.query('SELECT platform FROM skills WHERE skill_id = $1', [origin_skill_id])).rows[0];
+      const {platform} = (await pool.query('SELECT platform FROM skills WHERE skill_id = $1', [origin_skill_id])).rows[0];
       const diagram_data = await pool.query(
         'SELECT id, diagrams.name, intents, slots FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1',
         [origin_skill_id]
@@ -690,7 +693,7 @@ exports.copyDiagramsFromSkill = async (origin_skill_id, dest_skill_id, new_creat
       let intents = [];
       let slots = [];
       if (copy_intents_and_skills) {
-        const { new_intents, new_slots } = await copyIntentsAndSkills(origin_skill_id, dest_skill_id);
+        const {new_intents, new_slots} = await copyIntentsAndSkills(origin_skill_id, dest_skill_id);
         intents = new_intents;
         slots = new_slots;
       }
@@ -705,11 +708,11 @@ exports.copyDiagramsFromSkill = async (origin_skill_id, dest_skill_id, new_creat
           });
         })
         .catch((err) => {
-          writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err});
           reject(err);
         });
     } catch (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', { err });
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err});
       reject(err);
     }
   });

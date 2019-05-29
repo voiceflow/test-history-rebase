@@ -1,8 +1,8 @@
 import update from "immutability-helper";
 import axios from "axios";
-import { getSlotsForKeys } from "../intent_util";
-import { getIntentSlots } from "../Helper";
-import { setError } from "ducks/modal";
+import {getSlotsForKeys} from "../intent_util";
+import {getIntentSlots} from "../Helper";
+import {setError} from "ducks/modal";
 import _ from "lodash";
 
 export const FETCH_VERSION_BEGIN = "FETCH_VERSION_BEGIN";
@@ -80,7 +80,7 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         skill: update(state.skill, {
-          [action.payload.type]: { $set: action.payload.val }
+          [action.payload.type]: {$set: action.payload.val}
         })
       };
     case UPDATE_FULFILLMENT:
@@ -89,7 +89,7 @@ export default function skillReducer(state = initialState, action) {
         skill: update(state.skill, {
           fulfillment: {
             [action.payload.intent_key]: {
-              $set: { slot_config: action.payload.slot_config }
+              $set: {slot_config: action.payload.slot_config}
             }
           }
         })
@@ -99,19 +99,19 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         skill: update(state.skill, {
-          fulfillment: { $unset: [action.payload.intent_key] }
+          fulfillment: {$unset: [action.payload.intent_key]}
         })
       };
     case UPDATE_ENTIRE_VERSION:
       return {
         ...state,
-        skill: update(state.skill, { $merge: action.payload.skill })
+        skill: update(state.skill, {$merge: action.payload.skill})
       };
     case UPDATE_USER_MODULES:
       return {
         ...state,
         user_modules: update(state.user_modules, {
-          [action.payload.module.module_id]: { $set: action.payload.module }
+          [action.payload.module.module_id]: {$set: action.payload.module}
         })
       };
     case REMOVE_USER_MODULES:
@@ -125,7 +125,7 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         skill: update(state.skill, {
-          [action.payload.type]: { $merge: action.payload.val }
+          [action.payload.type]: {$merge: action.payload.val}
         })
       };
     case SET_LIVE_MODE_MODAL:
@@ -144,7 +144,7 @@ export const fetchVersionBegin = () => ({
 
 export const fetchVersionSuccess = (skills, user_modules) => ({
   type: FETCH_VERSION_SUCCESS,
-  payload: { skills, user_modules }
+  payload: {skills, user_modules}
 });
 
 export const resetVersion = () => ({
@@ -153,40 +153,40 @@ export const resetVersion = () => ({
 
 export const fetchVersionFailure = error => ({
   type: FETCH_VERSION_FAILURE,
-  payload: { error }
+  payload: {error}
 });
 
 export const fetchLiveVersionSuccess = (live, show) => ({
   type: FETCH_LIVE_VERSION_SUCCESS,
-  payload: { live, show }
+  payload: {live, show}
 });
 
 export const fetchDevVersionSuccess = dev_skill => ({
   type: FETCH_DEV_VERSION_SUCCESS,
-  payload: { dev_skill }
+  payload: {dev_skill}
 });
 
 export const setLiveModeModal = isLive => ({
   type: SET_LIVE_MODE_MODAL,
-  payload: { isLive }
+  payload: {isLive}
 });
 
 export const updateVersion = (type, val) => dispatch => {
   dispatch({
     type: UPDATE_VERSION,
-    payload: { type, val }
+    payload: {type, val}
   });
   return Promise.resolve();
 };
 
 export const updateEntireVersion = skill => ({
   type: UPDATE_ENTIRE_VERSION,
-  payload: { skill }
+  payload: {skill}
 });
 
 export const updateVersionMerge = (type, val) => ({
   type: UPDATE_VERSION_MERGE,
-  payload: { type, val }
+  payload: {type, val}
 });
 
 export const toggleLive = (
@@ -197,29 +197,29 @@ export const toggleLive = (
 ) => dispatch => {
   dispatch({
     type: TOGGLE_LIVE,
-    payload: { skill, diagram_id, live_version, live_mode }
+    payload: {skill, diagram_id, live_version, live_mode}
   });
   return Promise.resolve();
 };
 
 export const removeFulfillment = intent_key => ({
   type: REMOVE_FULFILLMENT,
-  payload: { intent_key }
+  payload: {intent_key}
 });
 
 export const updateFulfillment = (intent_key, slot_config) => ({
   type: UPDATE_FULFILLMENT,
-  payload: { intent_key, slot_config }
+  payload: {intent_key, slot_config}
 });
 
 export const updateUserModules = module => ({
   type: UPDATE_USER_MODULES,
-  payload: { module }
+  payload: {module}
 });
 
 export const removeUserModules = module_id => ({
   type: REMOVE_USER_MODULES,
-  payload: { module_id }
+  payload: {module_id}
 });
 export const updateLocales = locale => {
   return (dispatch, getState) => {
@@ -277,7 +277,7 @@ export const setCanFulfill = (intent_key, new_value) => {
       dispatch(removeFulfillment(intent_key));
     } else if (!fulfillment && new_value) {
       const slot_config = {};
-      const intent = _.find(skill.intents, { key: intent_key });
+      const intent = _.find(skill.intents, {key: intent_key});
       const intent_slots = getIntentSlots(intent, skill.slots);
 
       intent_slots.forEach(slot => {
@@ -297,7 +297,7 @@ export const fetchVersion = (version_id, preview, diagram_id) => {
         let res = await axios.get(
           `/skill/${version_id}?${
             preview ? "preview=1" : "simple=1"
-          }&user_modules=1`
+            }&user_modules=1`
         );
 
         let skill = res.data;
@@ -342,12 +342,7 @@ export const fetchVersion = (version_id, preview, diagram_id) => {
         if (!preview) {
           dispatch(fetchDevVersionSuccess(skill));
           dispatch(fetchLiveVersion(skill.project_id));
-          let module_data = (await axios.get(
-            `/marketplace/user_module/${skill.project_id}`
-          )).data;
-          for (let row of module_data) {
-            user_modules[row.module_id] = row;
-          }
+
         }
         dispatch(fetchVersionSuccess(skill, user_modules));
         resolve();
@@ -390,7 +385,7 @@ export const togglePreview = preview => {
         isPreview: preview,
       })
       dispatch(updateVersion('preview', preview))
-    } catch(err) {
+    } catch (err) {
       dispatch(setError("Unable to toggle preview"))
     }
     return Promise.resolve()

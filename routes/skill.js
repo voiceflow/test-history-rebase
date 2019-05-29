@@ -1115,8 +1115,8 @@ exports.buildSkill = async (req, res) => {
                     }
                   }
 
-                  if (!_.isNull(r.account_linking)) {
-                    const { account_linking } = r;
+                  const { account_linking } = r;
+                  if (!_.isNull(account_linking) && account_linking.authorizationUrl && account_linking.accessTokenUrl) {
                     if (account_linking.defaultTokenExpirationInSeconds) {
                       account_linking.defaultTokenExpirationInSeconds = parseInt(account_linking.defaultTokenExpirationInSeconds);
                     }

@@ -92,3 +92,15 @@ transform: scale(1.03);
 	background-color: #ffc107;
 	color: #fff;
 }
+
+.crossed_out {
+	text-decoration: line-through;
+}
+
+.admin_highlight {
+	font-size: 12px;
+	padding: 5px 10px;
+	background-color: #00b7ff;
+	border-radius: 5px;
+	color: white;
+}

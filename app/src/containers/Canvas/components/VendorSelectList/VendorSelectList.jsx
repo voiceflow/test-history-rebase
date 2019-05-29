@@ -34,8 +34,7 @@ class VendorSelectList extends Component {
 					key={vendor.id}
 					onClick={() => {
 						this.props.updateVendorId(this.props.project_id, vendor.id)
-						this.props.onBlur()
-						}}>
+          }}>
 					<span>{vendor.name}</span>
 				</Button>
 			);

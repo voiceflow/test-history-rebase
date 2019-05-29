@@ -95,7 +95,9 @@ class ServiceManager {
 
     const routeWrapper = (controller) => {
       _.forOwn(controller, (value, key) => {
-        controller[key] = responseBuilder.route(value);
+        if (value && !value.route) {
+          controller[key] = responseBuilder.route(value);
+        }
       });
       return controller;
     };

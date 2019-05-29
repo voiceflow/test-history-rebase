@@ -793,7 +793,7 @@ exports.buildSkill = async (req, res) => {
                   amzn_id = null;
                 }
               } catch (err) {
-                if (err.response.status === 404) {
+                if (err.response.status === 404 || err.response.status === 401) {
                   amzn_id = null;
                 } else if (err.response) {
                   console.error(err.response.status);
@@ -1016,8 +1016,8 @@ exports.buildSkill = async (req, res) => {
                     }
                   }
 
-                  if (!_.isNull(r.account_linking)) {
-                    const { account_linking } = r;
+                  const { account_linking } = r;
+                  if (!_.isNull(account_linking) && account_linking.authorizationUrl && account_linking.accessTokenUrl) {
                     if (account_linking.defaultTokenExpirationInSeconds) {
                       account_linking.defaultTokenExpirationInSeconds = parseInt(account_linking.defaultTokenExpirationInSeconds);
                     }

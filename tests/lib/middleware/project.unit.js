@@ -18,9 +18,6 @@ describe('project middleware unit tests', () => {
         isOwner: sinon.stub().resolves(true),
         getProjectIdFromReq: sinon.stub().returns(123),
       },
-      responseBuilder: {
-        respond: sinon.stub().resolves(),
-      },
     };
 
     const project = new Project(services);
@@ -31,15 +28,15 @@ describe('project middleware unit tests', () => {
         id: 2,
       },
     };
-    const res = {};
+    const res = sinon.stub().returns();
     const next = sinon.stub().returns();
 
     await project.isOwner(req, res, next);
 
     expect(services.projectManager.isOwner.args[0][0]).to.eql(123);
     expect(services.projectManager.isOwner.args[0][1]).to.eql(2);
+    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(1);
-    expect(services.responseBuilder.respond.callCount).to.eql(0);
   });
 
   it('not next if user is not owner of project', async () => {
@@ -48,9 +45,6 @@ describe('project middleware unit tests', () => {
         isOwner: sinon.stub().resolves(false),
         getProjectIdFromReq: sinon.stub().returns(123),
       },
-      responseBuilder: {
-        respond: sinon.stub().resolves(),
-      },
     };
 
     const project = new Project(services);
@@ -61,17 +55,22 @@ describe('project middleware unit tests', () => {
         id: 2,
       },
     };
-    const res = {};
+    const res = sinon.stub().returns();
     const next = sinon.stub().returns();
+    let error;
 
-    await project.isOwner(req, res, next);
+    try {
+      await project.isOwner(req, res, next);
+    } catch (err) {
+      error = err;
+    }
 
     expect(services.projectManager.isOwner.args[0][0]).to.eql(123);
     expect(services.projectManager.isOwner.args[0][1]).to.eql(2);
     expect(next.callCount).to.eql(0);
-    expect(services.responseBuilder.respond.callCount).to.eql(1);
-    expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
-    expect(services.responseBuilder.respond.args[0][1].message).to.eql('not owner of project');
-    expect(services.responseBuilder.respond.args[0][1].code).to.eql(VError.HTTP_STATUS.FORBIDDEN);
+    expect(res.callCount).to.eql(0);
+    expect(error instanceof Error).to.be.true;
+    expect(error.message).to.eql('not owner of project');
+    expect(error.code).to.eql(VError.HTTP_STATUS.FORBIDDEN);
   });
 });

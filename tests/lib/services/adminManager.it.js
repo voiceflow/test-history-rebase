@@ -47,7 +47,11 @@ describe('adminManager integration tests', () => {
     const teamId = (await pool.query('INSERT INTO teams (name, creator_id) VALUES ($1, $2) RETURNING team_id', ['team_name', creatorId])).rows[0]
       .team_id;
 
-    await pool.query('INSERT INTO projects (creator_id, team_id, dev_version) VALUES ($1, $2, $3)', [creatorId, teamId, skillId]);
+    const projectId = (await pool.query('INSERT INTO projects (creator_id, team_id, dev_version) VALUES ($1, $2, $3) RETURNING project_id', [
+      creatorId,
+      teamId,
+      skillId,
+    ])).rows[0].project_id;
 
     const services = {
       logging_pool: pool,
@@ -59,7 +63,18 @@ describe('adminManager integration tests', () => {
     const results = await adminManager.getCreatorData(creatorId);
 
     expect(results).to.have.all.keys('boards', 'creator');
-    expect(results.boards[creatorId]).to.include.all.keys('team_id', 'name', 'seats', 'created', 'projects');
+    expect(results.boards[teamId]).to.include.all.keys('team_id', 'name', 'seats', 'created', 'projects');
     expect(results.creator).to.include.all.keys('creator_id', 'name', 'created', 'admin');
+    expect(results.boards[teamId]).to.deep.include({
+      team_id: teamId,
+      name: 'team_name',
+    });
+    expect(results.boards[teamId].projects[0]).to.deep.include({
+      project_id: projectId,
+    });
+    expect(results.creator).to.deep.include({
+      creator_id: creatorId,
+      name: 'will',
+    });
   });
 });

@@ -52,7 +52,7 @@ class SpeakBox extends React.Component {
                    {this.props.isChoice &&
                    <>
                    <div className="choice-options p-2 align-self-start">
-                        {chat.options.map(option => <div className="choice-option mb-1" onClick={(e) => {
+                        {chat.options.map((option, i) => <div key={i} className="choice-option mb-1" onClick={(e) => {
                             this.props.inputSubmit(e, option)
                         }}>
                             {option}

@@ -76,6 +76,14 @@ const Timeline = props => {
   } = props
 
 
+  const handleRestart = () => {
+    setStarted(false)
+    setInputs([])
+    setOutputs([])
+    setEnded(false);
+    story_state = null;
+  }
+
   let current_diagram = null;
   const [outputs, setOutputs] = useState([])
   const [inputs, setInputs] = useState([])
@@ -87,8 +95,14 @@ const Timeline = props => {
   const [audio, setAudio] = useState(null)
 
   useEffect(() => {
-    if (testing_info && !started) beginning()
-    if (!testing_info && started) stop()
+    if (testing_info && !started) {
+      beginning()
+    }
+    if (!testing_info) {
+      setStarted(false)
+      handleRestart()
+      stop()
+    }
   })
 
   if (!testing_info && !started) {
@@ -245,13 +259,6 @@ const Timeline = props => {
       });
       setInputs(inputs)
     }
-  }
-
-  const handleRestart = () => {
-    setStarted(false)
-    setInputs([])
-    setEnded(false);
-    story_state = null;
   }
 
   const inputSubmit = (e, val = null) => {
@@ -439,7 +446,6 @@ const Timeline = props => {
               dom.push(outputBlock)
             }
           }
-          console.log(dom)
           setOutputs(outputs.concat(dom))
         } else if (res.ending) {
           setEnded(true)

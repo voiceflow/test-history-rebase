@@ -34,17 +34,9 @@ const GoogleSheets = require('../routes/integrations/googleSheets');
 const Custom = require('../routes/integrations/custom');
 
 const { JWT, Segement, MockSegement, staticClients } = require('../lib/clients');
-const managers = require('../lib/services');
+const Managers = require('../lib/services');
 const { Project: ProjectMiddleware, Skill: SkillMiddleware } = require('../lib/middleware');
-const {
-  Account: AccountController,
-  Analytics: AnalyticsController,
-  Linking: LinkingController,
-  ProductUpdates: ProductUpdatesController,
-  Decode: DecodeController,
-  Test: TestController,
-  Admin: AdminController,
-} = require('../lib/controllers');
+const Controllers = require('../lib/controllers');
 
 const responseBuilder = new ResponseBuilder();
 
@@ -85,7 +77,7 @@ class ServiceManager {
    * @returns {*}
    */
   static buildControllers(services) {
-    const { analyticsManager, adminManager, accountManager, projectManager, productManager, linkManager, ttsManager, hashids } = services;
+    const controllers = {};
 
     const utilities = {
       policy,
@@ -103,56 +95,29 @@ class ServiceManager {
 
     const routeWrapper = (controller) => {
       _.forOwn(controller, (value, key) => {
-        controller[key] = responseBuilder.route(value);
+        if (value && !value.route) {
+          controller[key] = responseBuilder.route(value);
+        }
       });
       return controller;
     };
 
-    const analytics = new AnalyticsController({
-      responseBuilder,
-      analyticsManager,
-      projectManager,
-    });
+    _.forOwn(Controllers, (Controller, name) => {
+      // convert to camelcase
+      name = name.substring(0, 1).toLowerCase() + name.substring(1);
 
-    const admin = new AdminController({
-      adminManager,
-      responseBuilder,
-    });
-
-    const productUpdates = new ProductUpdatesController({
-      productManager,
-      responseBuilder,
-    });
-
-    const account = new AccountController({
-      responseBuilder,
-      accountManager,
-    });
-
-    const linkAccount = new LinkingController({
-      linkManager,
-      hashids,
-      responseBuilder,
-    });
-
-    const decode = new DecodeController({
-      hashids,
-      responseBuilder,
-    });
-
-    const test = new TestController({
-      ...services,
-      ttsManager,
-      responseBuilder,
+      controllers[name] = routeWrapper(
+        new Controller({
+          ...services,
+        })
+      );
     });
 
     return {
+      ...controllers,
       policy,
       terms,
-      test,
-      linkAccount: routeWrapper(linkAccount),
       Multimodal,
-      decode: routeWrapper(decode),
       Skill,
       Project,
       copySkill,
@@ -163,15 +128,11 @@ class ServiceManager {
       Integrations,
       GoogleSheets,
       Custom,
-      analytics: routeWrapper(analytics),
-      account: routeWrapper(account),
       Onboard,
-      productUpdates: routeWrapper(productUpdates),
       Logs,
       Code,
       Problem,
       Audio,
-      admin,
 
       // Probably can eventually remove these and replace with actual controllers
       utilities,
@@ -249,7 +210,7 @@ class ServiceManager {
   static buildServices(config, clients) {
     const services = {};
 
-    _.forOwn(managers, (Manager, name) => {
+    _.forOwn(Managers, (Manager, name) => {
       // convert to camelcase
       const managerIndex = name.indexOf('Manager');
       if (managerIndex === -1) throw new Error(`${name} does not include "Manager" suffix`);

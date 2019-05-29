@@ -41,8 +41,8 @@ module.exports = (middleware, controllers) => {
   router.get('/creator/privacy_policy', controllers.utilities.policy);
   router.get('/creator/terms', controllers.utilities.terms);
 
-  router.get('/link_account/template/:skill_id', middleware.ensureLoggedIn, middleware.hasSkillAccess, controllers.linkAccount.getTemplate);
-  router.post('/link_account/template/:skill_id', middleware.ensureLoggedIn, middleware.hasSkillAccess, controllers.linkAccount.setTemplate);
+  router.get('/link_account/template/:skill_id', middleware.ensureLoggedIn, middleware.hasSkillAccess, controllers.linking.getTemplate);
+  router.post('/link_account/template/:skill_id', middleware.ensureLoggedIn, middleware.hasSkillAccess, controllers.linking.setTemplate);
 
   router.get('/multimodal/displays', middleware.ensureLoggedIn, controllers.Multimodal.getDisplays);
   router.get('/multimodal/display/:id', middleware.ensureLoggedIn, controllers.Multimodal.getDisplay);

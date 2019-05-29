@@ -33,6 +33,7 @@ import { fetchEmails } from 'ducks/email'
 import { openTab, closeTab } from 'ducks/user'
 
 import ActionGroup from './ActionGroup'
+import UserTestHeader from './Test/UserTestHeader'
 import HelpModal from './HelpModal'
 import TestModal from './Test/TestModal'
 import new_template from 'assets/templates/new'
@@ -1570,7 +1571,16 @@ export class Canvas extends Component {
               }
               setHelp={help => this.setState({ help: help })}
             />
-            {!this.props.preview &&
+            {(!this.props.preview && this.props.page === 'test') &&
+                <UserTestHeader
+                    preview={this.props.preview}
+                    history={this.props.history}
+                    onTest={this.onTest}
+                    resetTest={() => this.setState({ testing_info: false })}
+                    page={this.props.page}
+                />
+            }
+            {(!this.props.preview && this.props.page === 'canvas') &&
               <ActionGroup
                 lastSave={
                   this.state.last_save
@@ -1686,6 +1696,7 @@ export class Canvas extends Component {
                 testing_info={this.state.testing_info}
                 flow={this.props.diagram.name}
                 onTest={this.onTest}
+                diagramEngine={this.state.engine}
               />
               <div
                 key={this.props.diagram_id}

@@ -31,7 +31,6 @@ class Test extends Component {
       <div id="TestSidebar" className={cn({
         open: this.props.open
       })}>
-
         {Object.keys(SECTIONS).map((s, i) => {
           let section
           switch (s) {
@@ -46,6 +45,8 @@ class Test extends Component {
               section = <Timeline
                 testing_info={this.props.testing_info}
                 flow={this.props.flow}
+                setTest={this.props.setTest}
+                diagramEngine={this.props.diagramEngine}
               />
             break
             default:

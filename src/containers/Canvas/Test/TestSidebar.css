@@ -20,6 +20,7 @@
     -webkit-transition: -webkit-transform .3s;
     -moz-transition: -moz-transform .3s;
     transition: transform .3s;
+    overflow: hidden;
 }
 
 #Timeline{
@@ -44,6 +45,24 @@
     text-transform: uppercase;
 }
 
+#user__input {
+    text-align: left;
+    /* bottom: 0;
+    position: absolute;
+    width: 100%; */
+}
+
+.response-input {
+    min-height: 100px;
+}
 .sidebar_container {
     /* border-bottom: 1px solid #EAEFF4 !important; */
+}
+
+.choice-option {
+    color: #62778c;
+}
+
+.choice-option:hover {
+    color: #2C85FF;
 }

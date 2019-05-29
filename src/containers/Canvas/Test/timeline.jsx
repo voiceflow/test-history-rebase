@@ -61,16 +61,22 @@ const recurse = (tag, index = 0) => {
 let story_state = null;
 let pause = false;
 let next = false;
-
+let timer;
 const Timeline = props => {
   const {
     slots,
     global,
     repeat,
     platform,
+    setStart,
     timeline,
+    diagramEngine,
     testing_info,
   } = props
+
+  const stop = () => {
+    clearInterval(timer)
+  }
 
   let current_diagram = null;
   const [outputs, setOutputs] = useState([])
@@ -81,6 +87,12 @@ const Timeline = props => {
   const [started, setStarted] = useState(false)
   const [audioPlayer, toggleAudioPlayer] = useState(false)
   const [audio, setAudio] = useState(null)
+  let [time, setTime] = useState(0)
+
+  useEffect(() => {
+    if (testing_info && !started) beginning()
+    if (!testing_info && started) stop()
+  })
 
   if (!testing_info) {
     return <div className="text-center mb-3">
@@ -89,11 +101,19 @@ const Timeline = props => {
       <span className="text-muted">Launch the skill on your Echo device</span>
     </div>
   }
-  
+
   const beginning = () => {
     setStarted(true)
     initializeStory();
     updateState(true)
+    resume()
+  }
+
+  const resume = () => {
+    clearInterval(timer)
+    timer = setInterval(() => {
+      setTime(prevTime => prevTime + 1)
+    }, 1000)
   }
 
   const initializeStory = () => {
@@ -107,7 +127,6 @@ const Timeline = props => {
       repeat: repeat ? repeat : 100,
       platform: platform
     };
-    console.log(story_state)
     if (Array.isArray(global)) {
       global.forEach(variable => {
         story_state.globals[0][variable] = 0
@@ -240,10 +259,9 @@ const Timeline = props => {
     story_state = null;
   }
 
-  const inputSubmit = e => {
+  const inputSubmit = (e, val = null) => {
     if (e) e.preventDefault();
-
-    if (input === 'SKIP LINE') {
+    if (input === 'SKIP LINE' || val === 'SKIP LINE') {
       if (audio !== null) {
         audio.onended()
       }
@@ -252,9 +270,9 @@ const Timeline = props => {
       if (intent) {
         story_state.intent = intent
       } else {
-        story_state.input = input
+        story_state.input = val ? val : input
         inputs.push({
-          self: input,
+          self: val ? val : input,
           time: moment().format('h:mm:ss A')
         })
       }
@@ -336,12 +354,17 @@ const Timeline = props => {
         data.play.action = 'NEXT';
       }
     }
+    let prevTrace = []
+    if (data.trace) {
+      prevTrace = data.trace
+    }
     axios.post('/test/interact', data)
       .then(async res => {
         res = res.data
         const {
            trace 
         } = res
+        console.log(res)
         if (res.line_id) {
           story_state = res
         }
@@ -380,26 +403,47 @@ const Timeline = props => {
           }
           let dom = []
           let delay = 0;
+          console.log(trace)
           for (const block of trace) {
             const type = block.block
             let parsed = parse(block.output)[0]
-            let outputBlock = {}
-            outputBlock.type = type
             if (type === 'Speak') {
-              const audio = new Audio(block.audio[0])
-              outputBlock.voice = parsed.children[0].attrs.name
-              outputBlock.text = parsed.children[0].children[0].content
-              outputBlock.audio = audio
-              const duration = await getAudioMeta(audio)
-              outputBlock.delay = delay
-              delay += duration + 1000
+              const results = await Promise.all(block.audio.map(async audioFile => {
+                const audio = new Audio(audioFile)
+                return {duration: await getAudioMeta(audio), audio: audio}
+              }))
+              _.map(parsed.children, (child, idx) => {
+                let outputBlock = {}
+                if (child.name === 'audio') {
+                  outputBlock.text = 'Audio File'
+                } else {
+                  outputBlock.text = child.children[0].content
+                }
+                outputBlock.audio = results[idx].audio
+                outputBlock.node = block.line.id
+                outputBlock.audioType = child.name
+                const duration = results[idx].duration
+                outputBlock.delay = delay
+                outputBlock.type = type
+                delay += duration + 1000
+                dom.push(outputBlock)
+              })
+            } else if (type === 'Choice' && data.input && block.audio){
+              let outputBlock = {}
+              outputBlock.self = data.input
+              outputBlock.node = block.line.id
+              outputBlock.type = type
               dom.push(outputBlock)
-            } else {
-              //   setEnded(true)
+            } else if (type === 'Choice') {
+              let outputBlock = {}
+              outputBlock.options = _.flatten(block.line.inputs);
+              outputBlock.node = block.line.id;
+              outputBlock.type = type
+              dom.push(outputBlock)
             }
           }
           console.log(dom)
-          setOutputs(dom)
+          setOutputs(outputs.concat(dom))
         } else if (res.ending) {
           setEnded(true)
         }
@@ -415,20 +459,20 @@ const Timeline = props => {
     <div id="Timeline" className="mb-3">
       <div className="break">
         <span className="or">New Session Started</span>
+        <h3>{moment.utc(time*1000).format('mm:ss')}</h3>
         <TestBox
           inputs={inputs}
+          diagramEngine={diagramEngine}
           ended={ended}
           setEnded={setEnded}
           audioPlayer={audioPlayer}
           handleRestart={handleRestart}
           handleChange={e => setInput(e.target.value)}
           inputSubmit={inputSubmit}
+          setInput={val => setInput(val)}
           outputs={outputs}
+          time={moment.utc(time * 1000).format('mm:ss')}
         />
-        <button className="btn-primary mb-3" onClick={() => beginning()}>
-          <i className="fas fa-play" />
-          &nbsp;&nbsp;&nbsp;Start Test
-        </button>
       </div>
     </div>
   );

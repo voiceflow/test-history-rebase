@@ -1,11 +1,12 @@
 import React from 'react'
-import { Alert, Form, Input, InputGroupAddon, InputGroup } from 'reactstrap'
+import { Alert, Form, Input } from 'reactstrap'
 
 import Button from 'components/Button'
 import SpeakBox from './SpeakBox'
 
 const TestBox = props => {
     const {
+        time,
         input,
         outputs,
         inputs,
@@ -13,6 +14,8 @@ const TestBox = props => {
         ended,
         pause,
         onKeydown,
+        setInput,
+        diagramEngine,
         handleChange,
         inputSubmit,
         audioPlayer,
@@ -29,6 +32,19 @@ const TestBox = props => {
                     <div className="self-message message border rounded p-2 align-self-start">
                         <p className="mb-0 px-1 text-left">{chat.self}<br/><small className="text-muted">{chat.time}</small></p>
                     </div>
+                    <img src='/user_reply.svg' height={15} width={15} alt="user" className="ml-2"/>
+                    </div>
+                } else if (chat.options) {
+                    return <div className="mt-2 text-right" key={i}>
+                        <div className="choice-options p-2 align-self-start">
+                        {chat.options.map(option => <div className="choice-option mb-1" onClick={(e) => {
+                            inputSubmit(e, option)
+                        }}>
+                            {option}
+                        </div>
+                        )}
+                        </div>
+                        <img src='/user_reply.svg' height={15} width={15} alt="user" className="ml-2" />
                     </div>
                 }else if(chat.debug){
                     if (!debug) {
@@ -46,7 +62,16 @@ const TestBox = props => {
                     </div>
                     }
                 }else if(chat.text){
-                    return <SpeakBox key={i} text={chat.text} delay={chat.delay} audio={chat.audio} />
+                    return <SpeakBox
+                        key={i}
+                        text={chat.text}
+                        time={time}
+                        type={chat.audioType}
+                        delay={chat.delay}
+                        node={chat.node}
+                        audio={chat.audio}
+                        diagramEngine={diagramEngine}
+                    />
                 }else{
                     return <div className="mt-2 text-left" key={i}>
                     <div className="message border rounded align-self-start">
@@ -61,6 +86,7 @@ const TestBox = props => {
                 })}
             </div>
             </div>
+            <div className="break" />
             {ended ? 
             <Alert onClick={handleRestart} color="warning" className="m-3">Flow Ended - Reset <i className="far fa-sync-alt"/></Alert> :
             <React.Fragment>
@@ -74,11 +100,11 @@ const TestBox = props => {
                     <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.PreviousIntent'}, inputSubmit)}>Previous</Button>
                 </div> 
                 :
-                <Form onSubmit={inputSubmit} className="px-3 mb-3">
-                    <InputGroup>
-                    <Input className='form-bg form-control' name="input" type="text" placeholder="response" value={input} onChange={handleChange} onKeyDown={onKeydown}/>
-                    <InputGroupAddon addonType="append"><Button color="primary btn-thicc" type="submit"><i className="fas fa-bullhorn"></i></Button></InputGroupAddon>
-                    </InputGroup>
+                <Form onSubmit={inputSubmit} id="user__input" className="px-3 mb-3">
+                    <span>User Says</span>
+                    <Input className='form-bg response-input mt-3 mb-2' name="input" type="textarea" placeholder="Enter text of your command" value={input} onChange={handleChange} onKeyDown={onKeydown}/>
+                    <Button isBtn isClear onClick={(e) => inputSubmit(e)}>Send</Button>
+                    <small className="text-muted pb-3 pt-2 d-block"><kbd>⌘</kbd> + Enter</small>
                 </Form>
                 }
             </React.Fragment>

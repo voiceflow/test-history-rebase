@@ -8,6 +8,7 @@ const express = require('express');
 
 const npmPackage = require('./package.json');
 const sockets = require('./sockets');
+const log = require('./logger');
 
 const { ExpressMiddleware, ServiceManager } = require('./backend');
 
@@ -21,16 +22,17 @@ const port = process.env.PORT || 8080;
 
 // eslint-disable-next-line no-console
 if (process.env.NODE_ENV === 'test') {
-  console.log('INTEGRATION TESTS');
-  app.listen(port, () => console.log(`TESTING ${name} | PORT ${port}`));
+  app.listen(port, () => log.info(`TESTING ${name} | PORT ${port}`));
 } else {
-  const io = socketIO(app.listen(port, () => console.log(`${name} | PORT ${port}`)), {
+  const io = socketIO(app.listen(port, () => log.info(`${name} | PORT ${port}`)), {
     pingInterval: 5000,
     pingTimeout: 10000,
   });
-  io.adapter(redisAdapter({
-    host: process.env.REDIS_CLUSTER_HOST,
-    port: process.env.REDIS_CLUSTER_PORT,
-  }));
+  io.adapter(
+    redisAdapter({
+      host: process.env.REDIS_CLUSTER_HOST,
+      port: process.env.REDIS_CLUSTER_PORT,
+    })
+  );
   sockets(io);
 }

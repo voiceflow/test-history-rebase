@@ -168,7 +168,9 @@ exports.utteranceToIntentName = (utterance, existing) => {
       name = name.substring(0, 164) + '_'
     }
 		name += randomstring.generate({length: 5, charset: 'alphabetic', capitalization: 'lowercase'})
-	}
+  }
+  
+  name = name.replace(/_+/g, '_');
 
 	return name
 }
@@ -208,7 +210,7 @@ const deepDraftToMarkdown = (object) => {
     if (typeof sub_collection === 'object') {
       for (let key in sub_collection) {
         let val = sub_collection[key]
-        if (typeof val === 'object' && val && val.blocks && val.entityMap && Object.keys(val).length === 2) {
+        if (typeof val === 'object' && val && val.blocks && val.entityMap) {
           val = draftToMarkdown(val)
         }
         if (typeof val === 'object' && val && val.value !== undefined && typeof val.value !== 'object') {

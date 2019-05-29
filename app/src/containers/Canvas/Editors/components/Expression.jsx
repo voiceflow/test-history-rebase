@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import {Dropdown, Input, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import { connect } from "react-redux";
 import Select from 'react-select';
+import { parse } from 'mathjs';
 import { openTab } from 'ducks/user'
 import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect'
+import VariableText from './VariableText';
+
+
 import './Expression.css'
 
 import { symbols, groups } from './Expression.config'
@@ -17,13 +21,14 @@ class Expression extends Component {
 
         this.state = {
             expression: this.props.expression,
-            dropdownOpen: false
+            dropdownOpen: false,
         }
 
         this.handleValue = this.handleValue.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
         this.handleType = this.handleType.bind(this);
         this.toggleDropDown = this.toggleDropDown.bind(this);
+        this.handleAdvance = this.handleAdvance.bind(this);
     }
 
     componentWillReceiveProps(nextProps){
@@ -57,6 +62,9 @@ class Expression extends Component {
         expression.type = type;
 
         switch(expression.type){
+            case 'advance':
+                expression.value = '';
+                break;
             case 'value':
                 expression.value = '';
                 break;
@@ -64,7 +72,13 @@ class Expression extends Component {
                 expression.value = null;
                 break;
             case 'not':
-                if(og_type === 'value'){
+                if(og_type === 'advance'){
+                    expression.value = {
+                        type: 'advance',
+                        value: expression.value,
+                        depth: depth,
+                    }
+                } else if(og_type === 'value'){
                     expression.value = {
                         type: 'value',
                         value: expression.value,
@@ -87,6 +101,16 @@ class Expression extends Component {
             default:
                 if(Array.isArray(expression.value)){
                     // do nothing since its already 2 type value
+                }else if(og_type === 'advance'){
+                    expression.value = [{
+                        type: 'advance',
+                        value: expression.value,
+                        depth: depth,
+                    }, {
+                        type: 'value',
+                        value: '',
+                        depth: depth
+                  }];
                 }else if(og_type === 'value'){
                     expression.value = [{
                         type: 'value',
@@ -125,6 +149,22 @@ class Expression extends Component {
         }, this.props.onUpdate);
     }
 
+    handleAdvance(raw) {
+        if(this.state.expression.type!=='advance')return;
+        raw.error = false;
+        if(raw.text !== ''){
+          try {
+            parse(raw.text.replace(/\{([a-zA-Z0-9_]*)\}/g, "v['$1']").split("\n"))
+          }catch(e){
+            raw.error = e.message
+          }
+        }
+        let expression = this.state.expression;
+        expression.value = raw;
+        this.setState({
+            expression: expression
+        }, this.props.onUpdate);
+    }
     handleSelection(selected){
         if (selected.value !== 'Create Variable') {
             let expression = this.state.expression;
@@ -154,7 +194,7 @@ class Expression extends Component {
             <DropdownToggle className="type-button">
                 <i className="fas fa-code"/>
             </DropdownToggle>
-            <DropdownMenu>
+            <DropdownMenu className="expression-menu">
                 {groups.map((group, i) => {
                     return <div key={i}> {
                         group.map(type => {
@@ -193,6 +233,23 @@ class Expression extends Component {
                 render =
                     <div className="d-flex">
                         <Input placeholder="value" value={this.state.expression.value} onChange={this.handleValue}/>
+                        {dropdown}
+                    </div>
+                break;
+            case 'advance':
+                render =
+                    <div className="d-flex">
+                        <div className="w-100">
+                          <VariableText
+                              className={`editor form-control auto-height oneline ${this.state.expression.value.error?"is-invalid":""}`}
+                              raw={this.state.expression.value}
+                              placeholder={<React.Fragment>{`Enter your expression here.`}</React.Fragment>}
+                              variables={this.props.variables}
+                              updateRaw={this.handleAdvance}
+                          />
+                          <small className="text-muted pt-2 d-block">{'Press "{" to add variables'}</small>
+                          <div className="invalid-feedback">{this.state.expression.value.error}</div>
+                        </div>
                         {dropdown}
                     </div>
                 break;

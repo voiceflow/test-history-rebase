@@ -59,7 +59,9 @@ class VariableInput extends Component {
     };
 
     onChange = (editorState) => {
-        this.props.updateRaw(convertToRaw(editorState.getCurrentContent()));
+        const raw = convertToRaw(editorState.getCurrentContent())
+        raw.text = editorState.getCurrentContent().getPlainText();
+        this.props.updateRaw(raw);
         this.setState({
           editorState: editorState
         });

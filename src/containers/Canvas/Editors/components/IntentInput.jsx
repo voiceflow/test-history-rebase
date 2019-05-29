@@ -5,7 +5,7 @@ import { MentionsInput, Mention } from 'react-mentions'
 import { connect } from 'react-redux'
 import { Tooltip } from 'react-tippy'
 import { sampleUtteranceRegex } from 'services/Regex'
-import { getUtterancesWithSlotNames } from '../../../../util'
+import { getUtterancesWithSlotNames } from '../../../../intent_util'
 import { setError } from 'ducks/modal'
 
 class IntentInput extends Component {

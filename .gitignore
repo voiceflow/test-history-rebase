@@ -30,4 +30,4 @@ shared-local-instance.db
 !.elasticbeanstalk/*.global.yml
 .nyc_output
 
-test.js
+/test.js

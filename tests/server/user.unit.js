@@ -16,7 +16,7 @@ const tests = [
     calledPath: '/user',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           getUser: 1,
         },
       },
@@ -31,7 +31,7 @@ const tests = [
     calledPath: '/user',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           putUser: 1,
         },
       },
@@ -45,7 +45,7 @@ const tests = [
     calledPath: '/user/reset',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           resetPasswordEmail: 1,
         },
       },
@@ -59,7 +59,7 @@ const tests = [
     calledPath: '/user/reset/:token',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           checkReset: 1,
         },
       },
@@ -73,35 +73,7 @@ const tests = [
     calledPath: '/user/reset/:token',
     expected: {
       controllers: {
-        Authentication: {
-          resetPassword: 1,
-        },
-      },
-      middleware: {
-        verify: 1,
-      },
-    },
-  },
-  {
-    method: 'get',
-    calledPath: '/user/verify/:token',
-    expected: {
-      controllers: {
-        Authentication: {
-          verifyUser: 1,
-        },
-      },
-      middleware: {
-        verify: 1,
-      },
-    },
-  },
-  {
-    method: 'post',
-    calledPath: '/user/reset/password',
-    expected: {
-      controllers: {
-        Authentication: {
+        account: {
           resetPassword: 1,
         },
       },
@@ -115,7 +87,7 @@ const tests = [
     calledPath: '/user/profile/picture',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           updateProfilePicture: 1,
         },
       },
@@ -192,7 +164,7 @@ const tests = [
     calledPath: '/link_account/template/skill1',
     expected: {
       controllers: {
-        linkAccount: {
+        linking: {
           getTemplate: 1,
         },
       },
@@ -209,90 +181,12 @@ const tests = [
     calledPath: '/link_account/template/skill1',
     expected: {
       controllers: {
-        linkAccount: {
+        linking: {
           setTemplate: 1,
         },
       },
       middleware: {
         hasSkillAccess: 1,
-        ensureLoggedIn: 1,
-        verify: 1,
-      },
-    },
-  },
-  {
-    method: 'get',
-    calledPath: '/email/templates',
-    expected: {
-      controllers: {
-        email: {
-          getTemplates: 1,
-        },
-      },
-      middleware: {
-        ensureLoggedIn: 1,
-        verify: 1,
-      },
-    },
-  },
-  {
-    method: 'get',
-    namedPath: '/email/template/:id',
-    calledPath: '/email/template/some-id',
-    expected: {
-      controllers: {
-        email: {
-          getTemplate: 1,
-        },
-      },
-      middleware: {
-        ensureLoggedIn: 1,
-        verify: 1,
-      },
-    },
-  },
-  {
-    method: 'post',
-    calledPath: '/email/template',
-    expected: {
-      controllers: {
-        email: {
-          setTemplate: 1,
-        },
-      },
-      middleware: {
-        ensureLoggedIn: 1,
-        verify: 1,
-      },
-    },
-  },
-  {
-    method: 'patch',
-    namedPath: '/email/template/:id',
-    calledPath: '/email/template/some-id',
-    expected: {
-      controllers: {
-        email: {
-          setTemplate: 1,
-        },
-      },
-      middleware: {
-        ensureLoggedIn: 1,
-        verify: 1,
-      },
-    },
-  },
-  {
-    method: 'delete',
-    namedPath: '/email/template/:id',
-    calledPath: '/email/template/some-id',
-    expected: {
-      controllers: {
-        email: {
-          deleteTemplate: 1,
-        },
-      },
-      middleware: {
         ensureLoggedIn: 1,
         verify: 1,
       },

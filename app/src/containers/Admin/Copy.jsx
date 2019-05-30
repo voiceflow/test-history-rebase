@@ -75,7 +75,6 @@ class Copy extends Component {
   }
 
   render() {
-    console.log('props for copy: ', this.props);
     return (
       <div className="admin-page-inner">
         <div className="subheader">

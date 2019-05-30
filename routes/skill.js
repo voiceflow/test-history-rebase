@@ -145,6 +145,71 @@ const checkSkillInReview = (amzn_id, creator_id, skill_id) => {
   });
 };
 
+const makeVendorEntryForExistingSkill = async (creator_id, project_id, amzn_id) => {
+  if (_.isNil(creator_id)) {
+    throw new Error('Missing creator id');
+  }
+  if (_.isNil(project_id)) {
+    throw new Error('Missing project id');
+  }
+  if (_.isNil(amzn_id)) {
+    throw new Error('Missing amzn id');
+  }
+
+  const token = await new Promise((resolve, reject) => {
+    AccessToken(creator_id, (token) => {
+      if (token === null) {
+        reject(new Error('Missing Amazon Token'));
+      }
+      resolve(token);
+    });
+  });
+
+  const { vendors } = (await axios.request({
+    url: 'https://api.amazonalexa.com/v1/vendors',
+    method: 'GET',
+    headers: {
+      Authorization: token,
+    },
+  })).data;
+
+  let ownerVendor;
+
+  for (vendor of vendors) {
+    const { id } = vendor;
+    let nToken = null;
+
+    while (true) {
+      const { skills, nextToken, isTruncated } = (await axios.request({
+        url: `https://api.amazonalexa.com/v1/skills?vendorId=${id}&maxResults=50&nextToken=${nToken || ''}`,
+        method: 'GET',
+        headers: {
+          Authorization: token,
+        },
+      })).data;
+
+      if (_.find(skills, { skillId: amzn_id })) {
+        ownerVendor = id;
+        break;
+      }
+
+      if (isTruncated) break;
+      nToken = nextToken;
+    }
+    if (ownerVendor) break;
+  }
+
+  if (ownerVendor) {
+    await pool.query('INSERT INTO vendors (project_id, creator_id, vendor_id, amzn_id) VALUES ($1, $2, $3, $4)', [
+      project_id,
+      creator_id,
+      ownerVendor,
+      amzn_id,
+    ]);
+    await pool.query('UPDATE project_members SET selected_vendor = $1 WHERE creator_id = $2 AND project_id = $3', [amzn_id, creator_id, project_id]);
+  }
+};
+
 exports.getSkill = async (req, res) => {
   const project_id = hashids.decode(req.params.project_id)[0];
   const id = hashids.decode(req.params.skill_id)[0];
@@ -176,12 +241,13 @@ exports.getSkill = async (req, res) => {
 
     sql = `
       SELECT
-        s.*, pm.amzn_id AS amzn_id
+        s.*, vd.amzn_id AS amzn_id, pm.amzn_id as deprecated_amzn_id, pm.selected_vendor as vendor_id
       FROM
         skills s
         INNER JOIN projects p ON p.project_id = s.project_id
         INNER JOIN team_members tm ON tm.team_id = p.team_id
         LEFT JOIN (SELECT * FROM project_members WHERE creator_id = $2) pm ON pm.project_id = p.project_id
+        LEFT JOIN vendors vd ON pm.selected_vendor = vd.vendor_id
         WHERE
           skill_id = $1
           AND tm.creator_id = $2
@@ -191,18 +257,32 @@ exports.getSkill = async (req, res) => {
 
   try {
     const skill_data = (await pool.query(sql, params)).rows[0];
+
     if (skill_data === undefined) {
-      res.sendStatus(404);
-    } else {
-      if (req.query.review_check) {
-        skill_data.review = await checkSkillInReview(skill_data.amzn_id, req.user.id, id);
-      }
-      delete skill_data.dialogflow_token;
-      // Don't expose these on front end
-      skill_data.skill_id = req.params.skill_id;
-      skill_data.project_id = hashids.encode(skill_data.project_id);
-      res.send(skill_data);
+      return res.sendStatus(404);
     }
+
+    if (!_.isNil(skill_data.deprecated_amzn_id) && _.isNil(skill_data.amzn_id)) {
+      // Move amzn id from project_members to vendors table to support multiple members
+      const rows = await pool.query('SELECT * FROM vendors WHERE creator_id = $1 AND project_id = $2 AND amzn_id = $3', [
+        req.user.id,
+        project_id,
+        skill_data.deprecated_amzn_id,
+      ]);
+      if (rows.rowCount === 0) {
+        await makeVendorEntryForExistingSkill(req.user.id, project_id, skill_data.deprecated_amzn_id);
+      }
+      skill_data.amzn_id = skill_data.deprecated_amzn_id;
+    }
+
+    if (req.query.review_check) {
+      skill_data.review = await checkSkillInReview(skill_data.amzn_id, req.user.id, id);
+    }
+    delete skill_data.dialogflow_token;
+    // Don't expose these on front end
+    skill_data.skill_id = req.params.skill_id;
+    skill_data.project_id = hashids.encode(skill_data.project_id);
+    res.send(skill_data);
   } catch (err) {
     writeToLogs('CREATOR_BACKEND_ERRORS', {
       err,
@@ -754,7 +834,7 @@ exports.buildSkill = async (req, res) => {
 
     pool.query(
       `
-      SELECT s.*, pm.amzn_id AS amzn_id, pm.creator_id AS status 
+      SELECT s.*, pm.creator_id AS status, pm.selected_vendor as vendor_id
       FROM skills s
       LEFT JOIN (SELECT * FROM project_members WHERE creator_id = $2) pm ON pm.project_id = s.project_id
       WHERE s.skill_id = $1 LIMIT 1
@@ -769,17 +849,65 @@ exports.buildSkill = async (req, res) => {
         } else {
           const r = data.rows[0];
           const { project_id } = r;
-          let { amzn_id } = r;
+          let { vendor_id } = r;
           const manifest = createManifest(r, original_id);
 
           analytics.track({
             userId: req.user.id,
             event: 'Publish Attempt',
             properties: {
-              amzn_id,
+              vendor_id,
               skill_id: id,
             },
           });
+
+          if (_.isNil(vendor_id)) {
+            let vendor_request;
+
+            try {
+              vendor_request = await axios.request({
+                url: 'https://api.amazonalexa.com/v1/vendors',
+                method: 'GET',
+                headers: {
+                  Authorization: token,
+                },
+              });
+            } catch (err) {
+              throw {
+                type: 'VendorIdError',
+                data: JSON.stringify(err && err.response && err.response.data),
+              };
+            }
+
+            const vendors = vendor_request ? vendor_request.data.vendors : null;
+
+            if (Array.isArray(vendors) && vendors.length !== 0) {
+              vendor_id = vendors[0].id;
+              await pool.query('UPDATE project_members SET selected_vendor = $3 WHERE creator_id = $1 AND project_id = $2', [
+                req.user.id,
+                project_id,
+                vendor_id,
+              ]);
+            } else {
+              throw {
+                type: 'VendorIdError',
+                data: JSON.stringify(vendor_request.data),
+              };
+            }
+          }
+
+          const q = await pool.query('SELECT amzn_id FROM vendors WHERE vendor_id = $1 AND creator_id = $2 AND project_id = $3', [
+            vendor_id,
+            req.user.id,
+            project_id,
+          ]);
+
+          let amzn_id;
+          if (q && q.rows && q.rows[0]) {
+            amzn_id = q.rows[0].amzn_id;
+          } else {
+            amzn_id = null;
+          }
 
           try {
             if (amzn_id) {
@@ -804,38 +932,10 @@ exports.buildSkill = async (req, res) => {
               }
             }
 
-            let vendor_request;
-
-            try {
-              vendor_request = await axios.request({
-                url: 'https://api.amazonalexa.com/v1/vendors',
-                method: 'GET',
-                headers: {
-                  Authorization: token,
-                },
-              });
-            } catch (err) {
-              throw {
-                type: 'VendorIdError',
-                data: JSON.stringify(err && err.response && err.response.data),
-              };
-            }
-
-            const vendors = vendor_request ? vendor_request.data.vendors : null;
-            let vendorId = null;
-            if (Array.isArray(vendors) && vendors.length !== 0) {
-              vendorId = vendors[0].id;
-            } else {
-              throw {
-                type: 'VendorIdError',
-                data: JSON.stringify(vendor_request.data),
-              };
-            }
-
             // UPDATE MANIFEST
             try {
               if (!amzn_id) {
-                manifest.vendorId = vendorId;
+                manifest.vendorId = vendor_id;
 
                 const request = await axios.request({
                   url: 'https://api.amazonalexa.com/v1/skills',
@@ -848,20 +948,19 @@ exports.buildSkill = async (req, res) => {
 
                 amzn_id = request.data.skillId;
 
-                // Update AMZN ID in SQL
-                if (r.status) {
-                  await pool.query('UPDATE project_members SET amzn_id = $3 WHERE project_id = $1 AND creator_id = $2', [
-                    project_id,
+                const update = await pool.query('UPDATE vendors SET amzn_id = $4 WHERE vendor_id = $1 AND creator_id = $2 AND project_id = $3', [
+                  vendor_id,
+                  req.user.id,
+                  project_id,
+                  amzn_id,
+                ]);
+                if (update.rowCount === 0) {
+                  await pool.query('INSERT INTO vendors (vendor_id, creator_id, project_id, amzn_id) VALUES ($1, $2, $3, $4)', [
+                    vendor_id,
                     req.user.id,
+                    project_id,
                     amzn_id,
                   ]);
-                } else {
-                  await pool.query('INSERT INTO project_members (project_id, creator_id, amzn_id) VALUES ($1, $2, $3)', [
-                    project_id,
-                    req.user.id,
-                    amzn_id,
-                  ]);
-                  r.status = true;
                 }
 
                 // Update Amazon ID
@@ -918,7 +1017,7 @@ exports.buildSkill = async (req, res) => {
                         Authorization: token,
                       },
                       data: {
-                        vendorId,
+                        vendorId: vendor_id,
                         inSkillProductDefinition: product,
                       },
                     });
@@ -932,7 +1031,7 @@ exports.buildSkill = async (req, res) => {
                         Authorization: token,
                       },
                       data: {
-                        vendorId,
+                        vendorId: vendor_id,
                         inSkillProductDefinition: product,
                       },
                     });
@@ -1018,8 +1117,8 @@ exports.buildSkill = async (req, res) => {
                     }
                   }
 
-                  if (!_.isNull(r.account_linking)) {
-                    const { account_linking } = r;
+                  const { account_linking } = r;
+                  if (!_.isNull(account_linking) && account_linking.authorizationUrl && account_linking.accessTokenUrl) {
                     if (account_linking.defaultTokenExpirationInSeconds) {
                       account_linking.defaultTokenExpirationInSeconds = parseInt(account_linking.defaultTokenExpirationInSeconds);
                     }

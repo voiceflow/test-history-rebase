@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // PRIMARY KEY TEAM_ID IS ALWAYS HASHED
 const _ = require('lodash');
 const { pool, writeToLogs, hashids, decryptJSON } = require('./../services');

@@ -28,10 +28,9 @@ import { setVariables } from 'ducks/variable'
 import { setCanvasError } from 'ducks/user'
 import { renameDiagram, appendDiagrams, updateDiagrams } from 'ducks/diagram'
 import { setError, setConfirm } from 'ducks/modal'
-import { fetchEmails } from 'ducks/email'
 import { openTab, closeTab } from 'ducks/user'
 
-import ActionGroup from './ActionGroup'
+import ActionGroup from './components/ActionGroup/ActionGroup'
 import HelpModal from './HelpModal'
 import TestModal from './Test/TestModal'
 import new_template from 'assets/templates/new'
@@ -217,14 +216,6 @@ export class Canvas extends Component {
                 this.props.setError(this.props.integration_users_error)
             }
         })
-        if (this.props.user && this.props.user.admin > 0 && this.props.skill) {
-            // Re-load templates in case of change
-            try {
-                this.props.getEmails(this.props.skill.skill_id)
-            } catch (err) {
-                console.error(err)
-            }
-        }
 }
 
     componentWillUnmount() {
@@ -1786,7 +1777,6 @@ const mapDispatchToProps = dispatch => {
     setError: (err) => dispatch(setError(err)),
     setConfirm: (confirm) => dispatch(setConfirm(confirm)),
     getIntegrationsUsers: () => dispatch(fetchIntegrationUsers()),
-    getEmails: (skill_id) => dispatch(fetchEmails(skill_id)),
     appendDiagrams: (name, id, sub_diagrams) => dispatch(appendDiagrams({name, id, sub_diagrams})),
     updateDiagrams: (diagrams) => dispatch(updateDiagrams(diagrams)),
     setTab: (tab) => dispatch(openTab(tab)),

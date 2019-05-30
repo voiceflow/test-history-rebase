@@ -71,21 +71,26 @@ describe('skill middleware unit tests', () => {
         skill_id: 'a',
       },
     };
-    const res = {};
+    const res = sinon.stub().returns();
     const next = sinon.stub().returns();
+    let error;
 
-    await skill.hasSkillAccess(req, res, next);
+    try {
+      await skill.hasSkillAccess(req, res, next);
+    } catch (err) {
+      error = err;
+    }
 
     expect(services.hashids.decode.args[0][0]).to.eql('a');
 
     expect(services.skillsManager.checkSkillAccess.args[0][0]).to.eql(0);
     expect(services.skillsManager.checkSkillAccess.args[0][1]).to.eql(1);
 
+    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
 
-    expect(services.responseBuilder.respond.callCount).to.eql(1);
-    expect(services.responseBuilder.respond.args[0][0]).to.eql(res);
-    expect(services.responseBuilder.respond.args[0][1].message).to.eql('No Access to Skill');
-    expect(services.responseBuilder.respond.args[0][1].code).to.eql(VError.HTTP_STATUS.FORBIDDEN);
+    expect(error instanceof Error).to.be.true;
+    expect(error.message).to.eql('No Access to Skill');
+    expect(error.code).to.eql(VError.HTTP_STATUS.FORBIDDEN);
   });
 });

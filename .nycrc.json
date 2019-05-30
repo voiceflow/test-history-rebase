@@ -9,7 +9,8 @@
     ".*.js",
     "envSetup.js",
     "commitlin.config.js",
-    "scripts/setupFile.js"
+    "scripts/setupFile.js",
+    "database/**"
   ],
   "reporter": [
     "html",

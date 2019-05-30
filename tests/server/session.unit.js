@@ -16,7 +16,7 @@ const tests = [
     calledPath: '/session/amazon/access_token',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           getAccessToken: 1,
         },
       },
@@ -32,7 +32,7 @@ const tests = [
     calledPath: '/session/amazon/other',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           getAmazonCode: 1,
         },
       },
@@ -47,7 +47,7 @@ const tests = [
     calledPath: '/session/amazon',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           deleteAmazon: 1,
         },
       },
@@ -62,7 +62,7 @@ const tests = [
     calledPath: '/session/google/access_token',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           hasGoogleAccessToken: 1,
         },
       },
@@ -77,7 +77,7 @@ const tests = [
     calledPath: '/session/google/access_token',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           deleteGoogleAccessToken: 1,
         },
       },
@@ -93,7 +93,7 @@ const tests = [
     calledPath: '/session/google/dialogflow_access_token/project1',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           hasDialogflowToken: 1,
         },
       },
@@ -108,7 +108,7 @@ const tests = [
     calledPath: '/session/google/verify_token',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           verifyGoogleAccessToken: 1,
         },
       },
@@ -123,7 +123,7 @@ const tests = [
     calledPath: '/session/google/verify_dialogflow_token',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           verifyDialogflowToken: 1,
         },
       },
@@ -138,7 +138,7 @@ const tests = [
     calledPath: '/session/google/dialogflow_access_token',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           deleteDialogflowToken: 1,
         },
       },
@@ -153,7 +153,7 @@ const tests = [
     calledPath: '/session',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           getSession: 1,
         },
       },
@@ -167,7 +167,7 @@ const tests = [
     calledPath: '/session/vendor',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           getVendor: 1,
         },
       },
@@ -182,7 +182,7 @@ const tests = [
     calledPath: '/session',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           putSession: 1,
         },
       },
@@ -196,7 +196,7 @@ const tests = [
     calledPath: '/session',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           deleteSession: 1,
         },
       },
@@ -210,7 +210,7 @@ const tests = [
     calledPath: '/googleLogin',
     expected: {
       controllers: {
-        Authentication: {
+        account: {
           googleLogin: 1,
         },
       },
@@ -224,8 +224,8 @@ const tests = [
     calledPath: '/fbLogin',
     expected: {
       controllers: {
-        Authentication: {
-          fbLogin: 1,
+        account: {
+          facebookLogin: 1,
         },
       },
       middleware: {

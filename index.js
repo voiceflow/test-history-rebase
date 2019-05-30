@@ -9,12 +9,13 @@ const express = require('express');
 const npmPackage = require('./package.json');
 const sockets = require('./sockets');
 const log = require('./logger');
+const config = require('./config');
 
 const { ExpressMiddleware, ServiceManager } = require('./backend');
 
 const app = express();
 
-const serviceManager = new ServiceManager();
+const serviceManager = new ServiceManager(config);
 ExpressMiddleware.attach(app, serviceManager.middleware, serviceManager.controllers);
 
 const name = `${npmPackage.name} v${npmPackage.version}`;

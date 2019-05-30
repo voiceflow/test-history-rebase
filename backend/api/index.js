@@ -10,34 +10,30 @@ module.exports = (middleware, controllers) => {
 
   router.use(middleware.verify);
 
-  router.post('/elasticsearch/*', controllers.utilities.elasticsearch);
+  router.get('/session/amazon/access_token', middleware.ensureLoggedIn, controllers.account.getAccessToken);
+  router.get('/session/amazon/:code', middleware.ensureLoggedIn, controllers.account.getAmazonCode);
+  router.delete('/session/amazon', middleware.ensureLoggedIn, controllers.account.deleteAmazon);
 
-  router.get('/session/amazon/access_token', middleware.ensureLoggedIn, controllers.Authentication.getAccessToken);
-  router.get('/session/amazon/:code', middleware.ensureLoggedIn, controllers.Authentication.getAmazonCode);
-  router.delete('/session/amazon', middleware.ensureLoggedIn, controllers.Authentication.deleteAmazon);
+  router.get('/session/google/access_token', middleware.ensureLoggedIn, controllers.account.hasGoogleAccessToken);
+  router.delete('/session/google/access_token', middleware.ensureLoggedIn, controllers.account.deleteGoogleAccessToken);
+  router.get('/session/google/dialogflow_access_token/:project_id', middleware.ensureLoggedIn, controllers.account.hasDialogflowToken);
+  router.post('/session/google/verify_token', middleware.ensureLoggedIn, controllers.account.verifyGoogleAccessToken);
+  router.post('/session/google/verify_dialogflow_token', middleware.ensureLoggedIn, controllers.account.verifyDialogflowToken);
+  router.delete('/session/google/dialogflow_access_token', middleware.ensureLoggedIn, controllers.account.deleteDialogflowToken);
 
-  router.get('/session/google/access_token', middleware.ensureLoggedIn, controllers.Authentication.hasGoogleAccessToken);
-  router.delete('/session/google/access_token', middleware.ensureLoggedIn, controllers.Authentication.deleteGoogleAccessToken);
-  router.get('/session/google/dialogflow_access_token/:project_id', middleware.ensureLoggedIn, controllers.Authentication.hasDialogflowToken);
-  router.post('/session/google/verify_token', middleware.ensureLoggedIn, controllers.Authentication.verifyGoogleAccessToken);
-  router.post('/session/google/verify_dialogflow_token', middleware.ensureLoggedIn, controllers.Authentication.verifyDialogflowToken);
-  router.delete('/session/google/dialogflow_access_token', middleware.ensureLoggedIn, controllers.Authentication.deleteDialogflowToken);
+  router.get('/session', controllers.account.getSession);
+  router.get('/session/vendor', middleware.ensureLoggedIn, controllers.account.getVendor);
+  router.put('/session', controllers.account.putSession);
+  router.delete('/session', controllers.account.deleteSession);
+  router.put('/googleLogin', controllers.account.googleLogin);
+  router.put('/fbLogin', controllers.account.facebookLogin);
 
-  router.get('/session', controllers.Authentication.getSession);
-  router.get('/session/vendor', middleware.ensureLoggedIn, controllers.Authentication.getVendor);
-  router.put('/session', controllers.Authentication.putSession);
-  router.delete('/session', controllers.Authentication.deleteSession);
-  router.put('/googleLogin', controllers.Authentication.googleLogin);
-  router.put('/fbLogin', controllers.Authentication.fbLogin);
-
-  router.get('/user', middleware.ensureLoggedIn, controllers.Authentication.getUser);
-  router.put('/user', controllers.Authentication.putUser);
-  router.post('/user/reset', controllers.Authentication.resetPasswordEmail);
-  router.get('/user/reset/:token', controllers.Authentication.checkReset);
-  router.post('/user/reset/:token', controllers.Authentication.resetPassword);
-  router.get('/user/verify/:token', controllers.Authentication.verifyUser);
-  router.post('/user/reset/password', controllers.Authentication.resetPassword);
-  router.post('/user/profile/picture', middleware.ensureLoggedIn, middleware.uploadResize512, controllers.Authentication.updateProfilePicture);
+  router.get('/user', middleware.ensureLoggedIn, controllers.account.getUser);
+  router.put('/user', controllers.account.putUser);
+  router.post('/user/reset', controllers.account.resetPasswordEmail);
+  router.get('/user/reset/:token', controllers.account.checkReset);
+  router.post('/user/reset/:token', controllers.account.resetPassword);
+  router.post('/user/profile/picture', middleware.ensureLoggedIn, middleware.uploadResize512, controllers.account.updateProfilePicture);
   router.get('/user/:creator_id/projects', middleware.ensureAdmin, controllers.Project.getUserProjects);
   router.get('/decode/:id', middleware.ensureAdmin, controllers.decode.decodeId);
   router.get('/encode/:id', middleware.ensureAdmin, controllers.decode.encodeId);
@@ -45,14 +41,8 @@ module.exports = (middleware, controllers) => {
   router.get('/creator/privacy_policy', controllers.utilities.policy);
   router.get('/creator/terms', controllers.utilities.terms);
 
-  router.get('/link_account/template/:skill_id', middleware.ensureLoggedIn, middleware.hasSkillAccess, controllers.linkAccount.getTemplate);
-  router.post('/link_account/template/:skill_id', middleware.ensureLoggedIn, middleware.hasSkillAccess, controllers.linkAccount.setTemplate);
-
-  router.get('/email/templates', middleware.ensureLoggedIn, controllers.email.getTemplates);
-  router.get('/email/template/:id', middleware.ensureLoggedIn, controllers.email.getTemplate);
-  router.post('/email/template', middleware.ensureLoggedIn, controllers.email.setTemplate);
-  router.patch('/email/template/:id', middleware.ensureLoggedIn, controllers.email.setTemplate);
-  router.delete('/email/template/:id', middleware.ensureLoggedIn, controllers.email.deleteTemplate);
+  router.get('/link_account/template/:skill_id', middleware.ensureLoggedIn, middleware.hasSkillAccess, controllers.linking.getTemplate);
+  router.post('/link_account/template/:skill_id', middleware.ensureLoggedIn, middleware.hasSkillAccess, controllers.linking.setTemplate);
 
   router.get('/multimodal/displays', middleware.ensureLoggedIn, controllers.Multimodal.getDisplays);
   router.get('/multimodal/display/:id', middleware.ensureLoggedIn, controllers.Multimodal.getDisplay);
@@ -70,6 +60,7 @@ module.exports = (middleware, controllers) => {
   router.post('/project/:project_id/version/:version_id/alexa', middleware.ensureLoggedIn, controllers.Skill.buildSkill);
   router.post('/project/:project_id/version/:version_id/google', middleware.ensureLoggedIn, controllers.Skill.buildGoogleSkill);
   router.patch('/project/:project_id/amzn_id', middleware.ensureLoggedIn, middleware.verifyProjectAccess, controllers.Project.updateSkillId);
+  router.post('/project/:project_id/vendor_id', middleware.ensureLoggedIn, middleware.verifyProjectAccess, controllers.Project.updateVendorId);
 
   router.post('/test/api', middleware.ensureLoggedIn, controllers.test.api);
   router.post('/test/speak', middleware.ensureLoggedIn, middleware.ensurePaid, controllers.test.speak);
@@ -93,6 +84,7 @@ module.exports = (middleware, controllers) => {
 
   // ADMIN STUFF
   router.get('/admin-api/:user_id', middleware.ensureAdmin, controllers.admin.getUsersData);
+  router.get('/admin-api/email/:user_email', middleware.ensureAdmin, controllers.admin.getUsersDataEmail);
 
   // TEAM RESTful CRUD STUFF
   router.post('/team', middleware.ensureLoggedIn, controllers.Team.addTeam);
@@ -127,52 +119,8 @@ module.exports = (middleware, controllers) => {
   router.post('/diagram/:diagram_id/test/publish', middleware.ensureLoggedIn, controllers.Diagram.publishTest);
   router.get('/diagram/copy/:diagram_id', middleware.ensureLoggedIn, controllers.Diagram.copyDiagram);
 
-  /*
-      COMMENT OUT ACTUAL MARKETPLACE ROUTES FOR MASTER
-  */
-  // router.get('/marketplace/default_templates', middleware.ensureLoggedIn, controllers.Marketplace.getDefaultTemplates)
-  // router.post('/marketplace/template/:module_id/copy', middleware.ensureLoggedIn, controllers.Marketplace.copyDefaultTemplate)
-  // router.get('/marketplace/featured', middleware.ensureLoggedIn, controllers.Marketplace.getFeaturedModules)
-  // router.get('/marketplace/user_module/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.getUserModules)
-  // router.get('/marketplace/cert/pending', middleware.ensureAdmin, controllers.Marketplace.getPendingModules)
-  // router.get('/marketplace/cert/status/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.certStatus)
-  // router.get('/marketplace/cert/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.getCertModule)
-  // router.post('/marketplace/cert/:skill_id/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.requestCertification)
-  // router.put('/marketplace/cert/:project_id', middleware.ensureAdmin, controllers.Marketplace.giveCertification)
-  // // It doesn't appear that this route needs the version_id param
-  // router.delete('/marketplace/cert/:skill_id/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.cancelCertification)
-  // router.patch('/marketplace/cert/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.saveCertification)
-  // router.post('/marketplace/user_module/:project_id/:module_id', middleware.ensureLoggedIn, controllers.Marketplace.giveAccess)
-  // router.get('/marketplace/user_module/:project_id/:module_id', middleware.ensureLoggedIn, controllers.Marketplace.checkConflicts)
-  // router.delete('/marketplace/user_module/:project_id/:module_id', middleware.ensureLoggedIn, controllers.Marketplace.removeAccess)
-  // router.get('/marketplace/template/:module_id', middleware.ensureLoggedIn, controllers.Marketplace.retrieveTemplate)
-  // router.get('/marketplace/default_templates', middleware.ensureLoggedIn, controllers.Marketplace.getDefaultTemplates)
-  // router.get('/marketplace/initial_template', middleware.ensureLoggedIn, controllers.Marketplace.getInitialTemplate)
-  // router.get('/marketplace/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.getModules)
-  // router.get('/marketplace/:module_id', middleware.ensureLoggedIn, controllers.Marketplace.getModule)
-  // router.get('/marketplace/diagram/:module_id', middleware.ensureLoggedIn, controllers.Marketplace.getModuleDiagram)
-
-  router.get('/marketplace/default_templates', middleware.ensureLoggedIn, controllers.Marketplace.getDefaultTemplates);
-  router.post('/marketplace/template/:module_id/copy', middleware.ensureLoggedIn, controllers.Marketplace.copyDefaultTemplate);
-  router.get('/marketplace/featured', middleware.ensureBeta, controllers.Marketplace.getFeaturedModules);
-  router.get('/marketplace/cert/pending', middleware.ensureAdmin, controllers.Marketplace.getPendingModules);
-  router.post('/marketplace/user_module/:project_id/:module_id', middleware.ensureBeta, controllers.Marketplace.giveAccess);
-  router.get('/marketplace/user_module/:project_id/:module_id', middleware.ensureBeta, controllers.Marketplace.checkConflicts);
-  router.delete('/marketplace/user_module/:project_id/:module_id', middleware.ensureBeta, controllers.Marketplace.removeAccess);
-  router.get('/marketplace/user_module/:project_id', middleware.ensureLoggedIn, controllers.Marketplace.getUserModules);
-  router.get('/marketplace/cert/status/:project_id', middleware.ensureBeta, controllers.Marketplace.certStatus);
-  router.post('/marketplace/cert/:skill_id/:project_id', middleware.ensureBeta, controllers.Marketplace.requestCertification);
-  router.delete('/marketplace/cert/:skill_id/:project_id', middleware.ensureBeta, controllers.Marketplace.cancelCertification);
-  router.get('/marketplace/cert/:project_id', middleware.ensureBeta, controllers.Marketplace.getCertModule);
-  router.put('/marketplace/cert/:project_id', middleware.ensureAdmin, controllers.Marketplace.giveCertification);
-  router.patch('/marketplace/cert/:project_id', middleware.ensureBeta, controllers.Marketplace.saveCertification);
-  router.get('/marketplace/template/:module_id', middleware.ensureLoggedIn, controllers.Marketplace.retrieveTemplate);
   router.get('/marketplace/default_templates', middleware.ensureLoggedIn, controllers.Marketplace.getDefaultTemplates);
   router.get('/marketplace/initial_template', middleware.ensureLoggedIn, controllers.Marketplace.getInitialTemplate);
-  router.get('/marketplace/:project_id', middleware.ensureBeta, controllers.Marketplace.getModules);
-  router.get('/marketplace/:module_id', middleware.ensureBeta, controllers.Marketplace.getModule);
-  router.get('/marketplace/diagram/:module_id', middleware.ensureBeta, controllers.Marketplace.getModuleDiagram);
-  router.post('/marketplace/flows/_msearch?', controllers.Marketplace.flowsSearch);
 
   router.post('/analytics/track_onboarding', middleware.ensureLoggedIn, controllers.Track.trackOnboarding);
   router.post('/analytics/track_session_time', middleware.ensureLoggedIn, controllers.Track.trackSessionTime);

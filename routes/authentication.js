@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const bcrypt = require('bcrypt');
 const randomstring = require('randomstring');
 const crypto = require('crypto');
@@ -832,7 +834,7 @@ const getVendor = async (req, res) => {
           const { vendors } = vendor_request.data;
 
           if (Array.isArray(vendors) && vendors.length !== 0) {
-            res.send(vendors[0].id);
+            res.send(req.query.all ? vendors : vendors[0].id);
           } else {
             res.sendStatus(404);
           }
@@ -1127,5 +1129,5 @@ module.exports = {
   verifyDialogflowToken,
   _getGoogleAccessToken,
   deleteGoogleAccessToken,
-  deleteDialogflowToken,
+  deleteDialogflowToken
 };

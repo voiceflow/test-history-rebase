@@ -106,7 +106,7 @@ button {
 
  .btn-secondary:active {
      border: 1px solid #E2E9EC !important;
-     background-color: #EFF3F6;
+     background-color: #EFF3F6 !important;
  }
 
  .btn-secondary.btn-opaque {
@@ -834,4 +834,12 @@ button {
 
 .publish-btn .launch .second i {
     font-size: 13px;
+}
+
+.publish-btn.multi-vendor-btn {
+    width: 165px;
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
 }

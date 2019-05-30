@@ -635,6 +635,11 @@ class Editor extends Component {
   updateExtras(extras, callback){
     const node = this.state.node
     node.extras = extras
+    if (node.parentCombine) {
+        let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
+        node.parentCombine.combines[bestNode] = node
+
+    }
     this.forceUpdate(callback)
   }
 

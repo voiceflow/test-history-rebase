@@ -1,7 +1,8 @@
 import update from 'immutability-helper'
 import axios from 'axios';
 import _ from 'lodash';
-import { setConfirm } from 'ducks/modal'
+import { setConfirm, setError } from 'ducks/modal'
+import { promises } from 'fs';
 
 export const FETCH_DIAGRAMS_BEGIN = 'FETCH_DIAGRAMS_BEGIN'
 export const FETCH_DIAGRAMS_SUCCESS = 'FETCH_DIAGRAMS_SUCCESS'
@@ -10,7 +11,8 @@ export const FETCH_DIAGRAMS_FAILURE = 'FETCH_DIAGRAMS_FAILURE'
 export const ON_FLOW_RENAME = 'ON_FLOW_RENAME'
 export const UPDATE_DIAGRAM_ROOT = 'UPDATE_DIAGRAM_ROOT'
 export const APPEND_DIAGRAMS = 'APPEND_DIAGRAMS'
-export const REPLACE_DIAGRAMS = 'REPLACE_DIAGRAMS'
+export const UPDATE_DIAGRAMS = 'UPDATE_DIAGRAMS'
+export const UPDATE_DIAGRAM = 'UPDATE_DIAGRAM'
 
 const initialState = {
   diagrams: [],
@@ -28,9 +30,12 @@ export default function diagramReducer(state = initialState, action) {
     case APPEND_DIAGRAMS:
       return {
         ...state,
-        diagrams: update(state.diagrams, {$push: action.payload.diagrams})
+        diagrams: [
+          ...state.diagrams, 
+          action.payload.diagrams,
+        ]
       }
-    case REPLACE_DIAGRAMS:
+    case UPDATE_DIAGRAMS:
       return {
         ...state,
         diagrams: update(state.diagrams, {$set: action.payload.diagrams})
@@ -55,7 +60,7 @@ export default function diagramReducer(state = initialState, action) {
         diagrams: [],
       };
     case ON_FLOW_RENAME:
-      let idx = state.diagrams.findIndex(d => d.id === action.payload.flow_id)
+      const idx = state.diagrams.findIndex(d => d.id === action.payload.flow_id)
       return {
         ...state,
         diagrams: update(state.diagrams, {[idx]: {name: {$set: action.payload.name}}})
@@ -90,19 +95,19 @@ export const updateDiagramRoot = (root_id)=> ({
 })
 
 export const appendDiagrams = diagrams => ({
-  type: APPEND_DIAGRAMS,
-  payload: {diagrams}
+    type: APPEND_DIAGRAMS,
+    payload: {diagrams}
 })
 
-export const replaceDiagrams = diagrams => ({
-  type: REPLACE_DIAGRAMS,
+export const updateDiagrams = diagrams => ({
+  type: UPDATE_DIAGRAMS,
   payload: {diagrams}
 })
 
 export const fetchDiagrams = skill_id => {
-    return dispatch => {
+    return async dispatch => {
       dispatch(fetchDiagramsBegin());
-      return axios.get('/skill/' + skill_id + '/diagrams')
+      return await axios.get('/skill/' + skill_id + '/diagrams')
         .then(res => {
           let diagrams = res.data.map(flow => {
               try {
@@ -139,8 +144,12 @@ export const fetchDiagrams = skill_id => {
 }
 
 export const renameDiagram = (flow_id, name) => {
-    return (dispatch, getState) => {
+    return async (dispatch, getState) => {
         name = name.trim();
+        if(name === 'ROOT') {
+          dispatch(setError("ROOT/HOME is a reserved flow name"))
+          return;
+        }
         let index = getState().diagrams.diagrams.findIndex(d => d.id === flow_id);
         if (index !== -1){
             let flow = getState().diagrams.diagrams.find(d => d.name === name)
@@ -152,15 +161,16 @@ export const renameDiagram = (flow_id, name) => {
                     })
                 }))
             }
-            return axios.post(`/diagram/${flow_id}/name`, {
-                name: name
-            })
-            .then(() => {
-                dispatch(onFlowRename(flow_id, name))
-            })
-            .catch(err => {
-                alert('Error - Name not Updated')
-            })
+            try {
+              await axios.post(`/diagram/${flow_id}/name`, {
+                  name: name
+              })
+              dispatch(onFlowRename(flow_id, name));
+            } catch (err) {
+              console.error(err);
+              dispatch(setError("unable to save new flow name"));
+            }
+            Promise.resolve();
         }
     }
 }

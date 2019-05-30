@@ -1,35 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SideBar Project render project sidebar with root 1`] = `
+exports[`SideBar Project render flows sidebar with root 1`] = `
 <Fragment>
-  <ButtonGroup
-    className="toggle-group w-100"
-    role="group"
-    tag="div"
+  <div
+    className="search-section"
   >
-    <Button
-      color="secondary"
-      disabled={true}
-      key="structure"
-      onClick={[Function]}
-      outline={false}
-      tag="button"
+    <ButtonGroup
+      className="toggle-group w-100"
+      role="group"
+      tag="div"
     >
-      structure
-    </Button>
-    <Button
-      color="secondary"
-      disabled={false}
-      key="flows"
-      onClick={[Function]}
-      outline={true}
-      tag="button"
-    >
-      flows
-    </Button>
-  </ButtonGroup>
+      <Button
+        color="secondary"
+        disabled={true}
+        key="structure"
+        onClick={[Function]}
+        outline={false}
+        tag="button"
+      >
+        structure
+      </Button>
+      <Button
+        color="secondary"
+        disabled={false}
+        key="flows"
+        onClick={[Function]}
+        outline={true}
+        tag="button"
+      >
+        flows
+      </Button>
+    </ButtonGroup>
+  </div>
   <label
-    className="section-title mt-3"
+    className="search-section section-title mt-3"
   >
     Project Flows
   </label>
@@ -37,7 +41,7 @@ exports[`SideBar Project render project sidebar with root 1`] = `
     className="mb-2 mt-4"
   />
   <label
-    className="section-title mt-3"
+    className="search-section section-title mt-3"
   >
     Other Flows
   </label>
@@ -56,36 +60,40 @@ exports[`SideBar Project render project sidebar with root 1`] = `
 </Fragment>
 `;
 
-exports[`SideBar Project render project with sub diagrams 1`] = `
+exports[`SideBar Project render flows with sub diagrams 1`] = `
 <Fragment>
-  <ButtonGroup
-    className="toggle-group w-100"
-    role="group"
-    tag="div"
+  <div
+    className="search-section"
   >
-    <Button
-      color="secondary"
-      disabled={true}
-      key="structure"
-      onClick={[Function]}
-      outline={false}
-      tag="button"
+    <ButtonGroup
+      className="toggle-group w-100"
+      role="group"
+      tag="div"
     >
-      structure
-    </Button>
-    <Button
-      color="secondary"
-      disabled={false}
-      key="flows"
-      onClick={[Function]}
-      outline={true}
-      tag="button"
-    >
-      flows
-    </Button>
-  </ButtonGroup>
+      <Button
+        color="secondary"
+        disabled={true}
+        key="structure"
+        onClick={[Function]}
+        outline={false}
+        tag="button"
+      >
+        structure
+      </Button>
+      <Button
+        color="secondary"
+        disabled={false}
+        key="flows"
+        onClick={[Function]}
+        outline={true}
+        tag="button"
+      >
+        flows
+      </Button>
+    </ButtonGroup>
+  </div>
   <label
-    className="section-title mt-3"
+    className="search-section section-title mt-3"
   >
     Project Flows
   </label>
@@ -93,7 +101,7 @@ exports[`SideBar Project render project with sub diagrams 1`] = `
     className="mb-2 mt-4"
   />
   <label
-    className="section-title mt-3"
+    className="search-section section-title mt-3"
   >
     Other Flows
   </label>

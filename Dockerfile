@@ -18,7 +18,7 @@ RUN echo $NPM_TOKEN > .npmrc
 RUN npm install --production
 RUN rm -f .npmrc
 
-RUN cd ./app && yarn
+RUN cd ./app && yarn --production
 
 RUN npm run build
 

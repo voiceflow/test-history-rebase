@@ -187,34 +187,29 @@ export class ActionGroup extends PureComponent {
 	}
 
 	async componentDidMount() {
-		AmazonAccessToken()
-			.then(token => {
-        this.token = token;
-        if(token) {
-          getVendors()
-          .then(vendors => {
-            this.setState({
-              vendors,
-              upload_button_loading: false
-            });
-          })
-          .catch(err => {
-            this.setState({
-              upload_button_loading: false
-            });
-          });
-        }else {
-          this.setState({
-            upload_button_loading: false
-          });
-        }
-				this.reset();
-			});
-		googleAccessToken(this.props.skill.skill_id)
-			.then(token => {
-				this.google_token = token;
-				this.reset();
-			});
+    // perform google fetch async
+    googleAccessToken(this.props.skill.skill_id)
+    .then(token => {
+      this.google_token = token;
+      this.reset();
+    });
+
+    try {
+      const token = await AmazonAccessToken();
+      this.token = token;
+      if( token ){
+        const vendors = await getVendors();
+        this.setState({
+          vendors,
+        });
+      }
+    } catch(err) {
+      console.error(err);
+    }
+    this.setState({
+      upload_button_loading: false
+    });
+    this.reset();
 	}
 
 	shouldReset = () => {

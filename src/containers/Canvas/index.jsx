@@ -1557,33 +1557,25 @@ export class Canvas extends Component {
               }
               setHelp={help => this.setState({ help: help })}
             />
-            {!this.props.preview ?
-              <ActionGroup
-                lastSave={
-                  this.state.last_save
-                    ? "Last saved " +
-                      moment(this.state.last_save).fromNow()
-                    : "Save"
-                }
-                setCB={cb => {
-                  this.saveCB = cb;
-                }}
-                onSave={this.onSave}
-                saving={this.state.saving}
-                saved={this.state.saved}
-                onTest={this.onTest}
-                updateLinter={this.updateLinter}
-                renderPlatformSwitch={this.renderPlatformSwitch}
-                history={this.props.history}
-                preview={this.props.preview}
-              />
-            :
-              <div className="title-group no-select">
-                <span className="text-blue" id="preview-title">
-                  <span className="dot" /> PREVIEW MODE
-                </span>
-              </div>
-            }
+            <ActionGroup
+              lastSave={
+                this.state.last_save
+                  ? "Last saved " +
+                    moment(this.state.last_save).fromNow()
+                  : "Save"
+              }
+              setCB={cb => {
+                this.saveCB = cb;
+              }}
+              onSave={this.onSave}
+              saving={this.state.saving}
+              saved={this.state.saved}
+              onTest={this.onTest}
+              updateLinter={this.updateLinter}
+              renderPlatformSwitch={this.renderPlatformSwitch}
+              history={this.props.history}
+              preview={this.props.preview}
+            />
             {this.state.testing_modal ? (
               <TestModal
                 open={this.state.testing_modal}
@@ -1600,7 +1592,7 @@ export class Canvas extends Component {
               />
             )}
             <div
-              id="canvas"
+              id={this.props.preview ? "canvas_preview" : "canvas"}
               onMouseMove={this.mouseMove}
               onMouseUp={this.combineNode}
               onMouseDown={() => (this.diagram_focus = true)}
@@ -1693,6 +1685,7 @@ export class Canvas extends Component {
                   engine={this.state.engine}
                   setOpen={this.props.setOpen}
                   update={engine => this.setState({ engine: engine })}
+                  preview={this.props.preview}
                 />
                 {this.props.root_id !== this.props.diagram_id && (
                   <FlowBar

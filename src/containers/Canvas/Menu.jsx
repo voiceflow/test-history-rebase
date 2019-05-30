@@ -207,7 +207,7 @@ class Menu extends Component {
         onMouseDown={this.props.unfocus}
         onKeyDown={this.props.unfocus}
       >
-        <div className="toolbar">
+        {!this.props.preview && <div className="toolbar">
           <div className="top-down">
             {tabs.top.map((tab, i) => {
               return (
@@ -248,7 +248,7 @@ class Menu extends Component {
               );
             })}
           </div>
-        </div>
+        </div>}
         <div
           id="sidebar"
           className={cn({ open: this.props.open })}

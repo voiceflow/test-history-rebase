@@ -1342,7 +1342,7 @@ export class Canvas extends Component {
             this.props.setBlockMenu(
             <React.Fragment>
               <div style={{top: engine.getDiagramModel().getGridPosition(e.clientY - 110), left: engine.getDiagramModel().getGridPosition(e.clientX), cursor: 'pointer', position: 'absolute', zIndex: 10}}>
-                  <ListGroup>
+                  <ListGroup className="floating-menu">
                       <ListGroupItem onClick={() => {
                         this.addComment(e)
                         this.props.setBlockMenu(null)

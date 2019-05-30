@@ -105,8 +105,9 @@ button {
  }
 
  .btn-secondary:active {
-     border: 1px solid #E2E9EC !important;
-     background-color: #EFF3F6 !important;
+    color: #8da2b5 !important;
+    border: 1px solid #E2E9EC !important;
+    background-color: #EFF3F6 !important;
  }
 
  .btn-secondary.btn-opaque {

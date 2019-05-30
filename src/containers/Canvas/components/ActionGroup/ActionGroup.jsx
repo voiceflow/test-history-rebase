@@ -972,6 +972,7 @@ export class ActionGroup extends PureComponent {
 					</ModalBody>
 				</Modal>
 				<Header
+          preview={this.props.preview}
 					history={this.props.history}
 					leftRenderer={() => (
 						<div onDoubleClick={() => this.setState({ editName: true })}>

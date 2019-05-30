@@ -466,12 +466,6 @@ audio {
     background-color: #FFECEE !important;
     border-color: transparent;
 }
-.diagram-button{
-    display: flex;
-    flex-flow: row nowrap;
-    border: none;
-    background-color: transparent;
-}
 .uppercase-header {
     color: #132144 !important;
     text-transform: uppercase;

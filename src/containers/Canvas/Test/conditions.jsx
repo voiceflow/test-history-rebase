@@ -9,12 +9,15 @@ const Conditions = (props) => {
   const {
     node,
     variables,
+    testing_info,
     variableMapping,
     handleVariableChange,
   } = props
 
   return (
-    <div id='Conditions' className="mb-3">
+    <div id='Conditions' className={cn("mb-3", {
+      'disabled': testing_info
+    })}>
       <div className="text-center">
       {/* node.extras here */}
         {variables.map((block, i) => {

@@ -29,7 +29,8 @@ class TeamSummary extends React.Component {
 
   renderSkills = () => {
     return this.props.board.projects.map(skill => {
-      return <SkillDetail skill={skill} searched_user={this.props.searched_user} key={skill.skill_id}/>
+      return <SkillDetail skill={skill} searched_user={this.props.searched_user} key={skill.skill_id}
+                          user={this.props.user}/>
     })
   };
 
@@ -39,7 +40,7 @@ class TeamSummary extends React.Component {
         <div className="row">
           <div className="team_summary_left col-sm-4">
             <h5>{this.props.board.name}</h5>
-            <div id="team_summary_created">
+            <div className="team_summary_created">
               {moment(this.props.board.created).format('MMMM Do YYYY, h:mm:ss a')}
             </div>
           </div>
@@ -59,7 +60,7 @@ class TeamSummary extends React.Component {
 							</span>
             </div>
           </div>
-          <div className="mb-2 col-sm-4">
+          <div className="mb-2 col-sm-4 skills_list">
             <div className="skills_in_board">
               Skills in this board:
             </div>

@@ -805,7 +805,6 @@
 }
 
 .sub-diagram {
-    padding-left: 20px;
     align-items: center;
     display: flex;
     flex-wrap: wrap;
@@ -815,25 +814,14 @@
   position: relative;
 }
 
-.sub-diagram .diagram-block>.diagram-button {
-  padding-left: 10px !important;
-}
-
-.sub-diagram .diagram-block::before {
+.sub-diagram .diagram-block .diagram-button::before {
   position: absolute;
-  left: 4px;
+  left: 2px;
+  top: 12px;
   content: '↳';
   color: #788EA2;
 }
 
-.sub-diagram .active.diagram-block::before {
-  color: #f8f9fa;
-  left: 8px;
-}
-
-.diagram-block.btn-group:hover{
-    cursor: pointer;
-}
 .diagram-text {
     overflow: hidden;
     white-space: nowrap;
@@ -2598,41 +2586,6 @@ button.close:hover{
     flex-flow: row wrap;
 }
 
-.diagram-block .btn-secondary {
-    background-color: #f0f3f7;
-    border: #f0f3f7 1px solid !important;
-    color: #2b3950 !important;
-}
-
-.diagram-block .btn-secondary:hover {
-    background-color: #E2E9EC !important;
-    border: #E2E9EC 1px solid !important;
-}
-
-.diagram-block .btn-secondary:active {
-    background-color: #E2E9EC !important;
-    /*    border: #d1d8e2 1px solid !important;*/
-}
-
-.diagram-block .btn-secondary.disabled {
-    color: #fff !important;
-    background-color: #42A5FF !important;
-    border-color: #42A5FF !important;
-    opacity: 1;
-    /*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);*/
-}
-
-.diagram-block input.form-control {
-    margin-right: 1px;
-    border: 10px !important;
-    box-shadow: none;
-}
-
-.diagram-block input.form-control:focus {
-    box-shadow: none;
-    border: none;
-}
-
 .expressionfy {
     border: 1px dashed #c5d3e0 !important;
 }
@@ -2678,49 +2631,13 @@ button.close:hover{
     /*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);*/
 }
 
-.diagram-block.input-group {
-    display: flex;
-    padding-left: 12px;
-    align-content: center;
-}
-
-.diagram-block.input-group.active {
-    background-color: #f8f9fa;
-    border-top: 1px solid #e0e3e5;
-    border-bottom: 1px solid #e0e3e5;
-    padding-bottom: 12px;
-}
-
-.diagram-block.input-group.active > input {
-  color: #62778c;
-}
-
-.diagram-block.input-group.active > .flow-icon {
-  opacity: 1;
-}
-
-.diagram-block.input-group > .flow-icon {
-  margin-right: 8px;
-  margin-top: 2px;
-  padding-left: 29px;
-}
-
-.diagram-block.input-group > .form-control {
-  box-shadow: none !important;
-  border: none !important;
-  background-color: transparent;
-  font-size: 13px !important;
-  margin-left: 1px;
-  color: #8DA2B5;
-  font-weight: 600px;
-}
-
 .diagram-block {
+  display: flex;
   padding-right: 8px;
-    width: 100%;
-    height: 40px;
-    -webkit-align-items: center;
-    align-items: center;
+  width: 100%;
+  height: 40px;
+  -webkit-align-items: center;
+  align-items: center;
 }
 
 .diagram-block:hover {
@@ -2745,7 +2662,7 @@ button.close:hover{
     opacity: 1;
 }
 
-.diagram-block>button {
+.diagram-block>.diagram-button {
   padding: 10px 0px 10px 18px;
   text-align: left;
   font-size: 12px !important;
@@ -2754,20 +2671,30 @@ button.close:hover{
   border-radius: 5px;
   transition: all 0.15s ease;
   color: #8DA2B5;
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  border: none;
+  background-color: transparent;
 }
 
-.diagram-block>input {
-    padding-left: 0;
-    height: 28px;
-    font-size: 12px !important;
-    background: none;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    font-size: 13px;
-    font-weight: 600;
+.diagram-block>.diagram-button>.form-control {
+  color: #62778c;
+  padding: 0 !important;
+  height: 19px;
+  line-height: 19px;
+  letter-spacing: normal !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  margin-right: 1px;
+  box-shadow: none !important;
+  border: none !important;
+  background-color: transparent;
+  font-size: 13px !important;
+  font-weight: 600px;
 }
-
 .choice-block {
     width: 100%;
     border-radius: 5px;

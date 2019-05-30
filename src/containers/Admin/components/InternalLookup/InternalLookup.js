@@ -7,7 +7,6 @@ import _ from 'lodash';
 
 import './InternalLookup.css';
 import TeamSummary from "../TeamSummary/TeamSummary";
-import moment from "moment";
 import UserCard from "../UserCard/UserCard";
 
 class InternalLookup extends React.Component {

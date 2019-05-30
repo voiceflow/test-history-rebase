@@ -136,6 +136,7 @@ class Menu extends Component {
         <React.Fragment>
           <FlowButton
             flow={node}
+            depth={depth}
             enterFlow={this.props.enterFlow}
             copyFlow={() => this.props.copyFlow(node.id)}
             preview={this.props.preview}
@@ -179,8 +180,8 @@ class Menu extends Component {
             visited={this.visited}
             enterFlow={this.props.enterFlow}
             copyFlow={this.props.copyFlow}
-            deleteFlow={() => {
-              this.props.deleteFlow();
+            deleteFlow={(diagram_id) => {
+              this.props.deleteFlow(diagram_id);
               this.updateTree();
             }}
           />

@@ -81,11 +81,9 @@ export class Flows extends PureComponent {
           </div>
           <div className="flows-list">
             {this.props.diagrams.map(diagram => {
+              let name = diagram.name === 'ROOT' ? 'HOME' : diagram.name;
               if (
-                this.state.filter &&
-                !diagram.name
-                  .toLowerCase()
-                  .includes(this.state.filter.toLowerCase())
+                this.state.filter.trim() && !name.toLowerCase().includes(this.state.filter.toLowerCase())
               )
                 return null;
               return (

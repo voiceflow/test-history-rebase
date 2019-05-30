@@ -1,19 +1,19 @@
 import isVarName from 'is-var-name';
 import _ from 'lodash'
 
-const replacer = (match, inner, variables, modifier) => {
-  if (inner in variables) {
-    return (typeof modifier === 'function') ? modifier(variables[inner]) : variables[inner];
-  } else {
-    return match;
-  }
+const replacer = (match, inner, variables_map, url = false) => {
+    if (inner in variables_map) {
+        return url ? encodeURI(variables_map[inner]) : variables_map[inner];
+    } else {
+        return match;
+    }
 }
 
-export const RegexVariables = (phrase, variables, modifier) => {
+export const RegexVariables = (phrase, variables) => {
   if (!phrase || !phrase.trim()) {
     return ''
   } else {
-    return phrase.replace(/\{([a-zA-Z0-9_]*)\}/g, (match, inner) => replacer(match, inner, variables, modifier))
+    return phrase.replace(/\{([a-zA-Z0-9_]*)\}/g, (match, inner) => replacer(match, inner, variables, false))
   }
 }
 

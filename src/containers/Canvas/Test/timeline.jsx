@@ -75,6 +75,7 @@ const Timeline = props => {
     stop,
     diagramEngine,
     testing_info,
+    variableMapping,
   } = props
 
 
@@ -422,13 +423,8 @@ const Timeline = props => {
                 if (child.name === 'audio') {
                   outputBlock.text = 'Audio File'
                 } else {
-                  outputBlock.text = child.children[0].content
-                  console.log(finder(outputBlock.text))
-                  let variables = finder(outputBlock.text)
-                  let replaced = RegexVariables(outputBlock.text, variables, (test) => {
-                    console.log(test)
-                  })
-                  console.log(replaced)
+                  let replaced = RegexVariables(child.children[0].content, variableMapping)
+                  outputBlock.text = replaced
                 }
                 outputBlock.audio = results[idx].audio
                 outputBlock.node = block.line.id

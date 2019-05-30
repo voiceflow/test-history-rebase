@@ -225,6 +225,7 @@ class API extends Component {
 
                 // Replace url with user set variables
                 let new_url
+                console.log(this.state.innerVariables)
                 new_url = url.replace(/\{([A-Za-z0-9_]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables, true)).trim()
 
                 // Check that variables are set before pushing in

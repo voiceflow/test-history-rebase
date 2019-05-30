@@ -1935,6 +1935,10 @@ kbd {
     margin-bottom: -8px;
   }
 
+  .light-blue {
+      color: #5D9DF5
+  }
+  
   .update-modal-feature{
       color: #5D9DF5;
       display: inline;

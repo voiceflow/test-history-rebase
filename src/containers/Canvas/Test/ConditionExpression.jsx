@@ -19,10 +19,11 @@ const ConditionExpression = props => {
             <div className="close" onClick={() => toggleShow()} />
             <div className="variable-group">
                 <span>Set</span>
-                <span className="action-visible">{`{${variable}}`}</span>
+                <span className="action-visible light-blue">{`{${variable}}`}</span>
                 <span>to:</span>
             </div>
             <Input type="text" onChange={e => onSelection(variable, e.target.value)} />
+            <div className="break" />
         </div>
     );
 }

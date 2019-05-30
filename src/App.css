@@ -2445,14 +2445,3 @@ kbd {
 .active-btn:active {
   border: none !important;
 }
-
-.floating-menu {
-}
-
-.floating-menu .list-group-item {
-  padding: 10px 20px;
-}
-
-.floating-menu .list-group-item:hover {
-  background-color: #f8f9fa;
-}

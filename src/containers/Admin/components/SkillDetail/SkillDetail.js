@@ -60,8 +60,9 @@ class SkillDetail extends React.Component {
         <div className="row skill_preview">
           <div className="col-sm-3">
             <div className="skill_preview_title">
-              {this.props.skill.skill_name} <span
-              className="skill_preview_subtitle">Skill #{this.props.skill.skill_id}</span>
+              <div className="skill_preview_title_large">{this.props.skill.skill_name}</div>
+              <span
+                className="skill_preview_subtitle">Skill #{this.props.skill.skill_id}</span>
             </div>
             <div className="team_summary_created">
               {moment(this.props.skill.skill_created).format('MMMM Do YYYY, h:mm:ss a')}

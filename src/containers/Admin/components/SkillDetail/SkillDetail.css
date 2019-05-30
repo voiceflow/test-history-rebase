@@ -37,6 +37,13 @@
   padding-right: 24px;
 }
 
+.skill_preview_title_large {
+  width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .target_user_inputs {
   margin-top: 4px;
 }

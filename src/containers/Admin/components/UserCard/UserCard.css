@@ -137,3 +137,12 @@
   margin-top: 10px;
   padding-right: 20px;
 }
+
+.view_charges_link {
+  color: #00b7ff;
+}
+
+.view_charges_link:hover {
+  color: #00b7ff;
+  text-decoration: none
+}

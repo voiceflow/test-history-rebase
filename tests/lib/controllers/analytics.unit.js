@@ -37,11 +37,10 @@ describe('analytics controller unit tests', () => {
         id: 2,
       },
     };
-    const res = sinon.stub().returns();
+    const res = null;
     const next = sinon.stub().returns();
 
     expect(await analytics.getUsersData(req, res, next)).to.eql(['stuff']);
-    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
 
     expect(services.analyticsManager.getUsersData.args[0][0]).to.eql(123);
@@ -72,11 +71,10 @@ describe('analytics controller unit tests', () => {
         user_tz: '5',
       },
     };
-    const res = sinon.stub().returns();
+    const res = null;
     const next = sinon.stub().returns();
 
     expect(await analytics.getDAU(req, res, next)).to.eql(['stuff']);
-    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
 
     expect(services.analyticsManager.getDAU.args[0][0]).to.eql(123);
@@ -104,11 +102,10 @@ describe('analytics controller unit tests', () => {
         id: 2,
       },
     };
-    const res = sinon.stub().returns();
+    const res = null;
     const next = sinon.stub().returns();
 
     expect(await analytics.getStats(req, res, next)).to.eql(['stuff']);
-    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
 
     expect(services.analyticsManager.getStats.args[0][0]).to.eql(123);

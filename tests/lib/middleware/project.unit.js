@@ -28,14 +28,13 @@ describe('project middleware unit tests', () => {
         id: 2,
       },
     };
-    const res = sinon.stub().returns();
+    const res = null;
     const next = sinon.stub().returns();
 
     await project.isOwner(req, res, next);
 
     expect(services.projectManager.isOwner.args[0][0]).to.eql(123);
     expect(services.projectManager.isOwner.args[0][1]).to.eql(2);
-    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(1);
   });
 
@@ -55,7 +54,7 @@ describe('project middleware unit tests', () => {
         id: 2,
       },
     };
-    const res = sinon.stub().returns();
+    const res = null;
     const next = sinon.stub().returns();
     let error;
 
@@ -68,7 +67,6 @@ describe('project middleware unit tests', () => {
     expect(services.projectManager.isOwner.args[0][0]).to.eql(123);
     expect(services.projectManager.isOwner.args[0][1]).to.eql(2);
     expect(next.callCount).to.eql(0);
-    expect(res.callCount).to.eql(0);
     expect(error instanceof Error).to.be.true;
     expect(error.message).to.eql('not owner of project');
     expect(error.code).to.eql(VError.HTTP_STATUS.FORBIDDEN);

@@ -19,11 +19,10 @@ describe('product update controller unit tests', () => {
     const productUpdates = new ProductUpdates(services);
 
     const req = {};
-    const res = sinon.stub().returns();
+    const res = null;
     const next = sinon.stub().returns();
 
     expect(await productUpdates.getUpdates(req, res, next)).to.eql([]);
-    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
 
     expect(services.productManager.getUpdates.callCount).to.eql(1);
@@ -44,11 +43,10 @@ describe('product update controller unit tests', () => {
         details: 'b',
       },
     };
-    const res = sinon.stub().returns();
+    const res = null;
     const next = sinon.stub().returns();
 
     expect(await productUpdates.createUpdate(req, res, next)).to.eql();
-    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
 
     expect(services.productManager.createUpdate.args[0][0]).to.eql('a');

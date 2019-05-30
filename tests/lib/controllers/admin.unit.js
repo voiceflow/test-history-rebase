@@ -23,11 +23,13 @@ describe('admin controller unit tests', () => {
         user_id: 2,
       },
     };
-    const res = sinon.stub().returns();
+    const res = null;
     const next = sinon.stub().returns();
 
     expect(await admin.getUsersData(req, res, next)).to.eql(['stuff']);
     expect(next.callCount).to.eql(0);
-    expect(res.callCount).to.eql(0);
+
+    expect(services.adminManager.getCreatorData.args[0][0]).to.eq(2);
+    expect(services.adminManager.getCreatorData.args[0][1]).to.eq(false);
   });
 });

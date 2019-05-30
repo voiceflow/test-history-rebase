@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { compose } from "recompose";
 import { connect } from "react-redux";
 import cn from 'classnames'
-import SetExpression from "../Editors/components/SetExpression";
+import ConditionExpression from "./ConditionExpression";
 
 const Conditions = (props) => {
   const {
@@ -19,7 +19,7 @@ const Conditions = (props) => {
       {/* node.extras here */}
         {variables.map((block, i) => {
           return (
-            <SetExpression
+            <ConditionExpression
               key={i}
               variable={block}
               onRemove={_.noop}

@@ -65,6 +65,7 @@ class Test extends Component {
                 stop={this.props.stop}
                 resume={this.props.resume}
                 setTime={this.props.setTime}
+                variableMapping={this.state.variableMapping}
               />
             break
             default:

@@ -8,6 +8,7 @@ import { parse } from 'html-parse-stringify'
 import cn from 'classnames'
 
 import { useToggle } from 'hooks/toggle'
+import { RegexVariables, finder } from 'utils/variable'
 
 import TestBox from './TestBox'
 
@@ -362,6 +363,7 @@ const Timeline = props => {
     if (data.trace) {
       prevTrace = data.trace
     }
+    console.log(data)
     axios.post('/test/interact', data)
       .then(async res => {
         res = res.data
@@ -407,7 +409,6 @@ const Timeline = props => {
           }
           let dom = []
           let delay = 0;
-          console.log(trace)
           for (const block of trace) {
             const type = block.block
             let parsed = parse(block.output)[0]
@@ -422,6 +423,12 @@ const Timeline = props => {
                   outputBlock.text = 'Audio File'
                 } else {
                   outputBlock.text = child.children[0].content
+                  console.log(finder(outputBlock.text))
+                  let variables = finder(outputBlock.text)
+                  let replaced = RegexVariables(outputBlock.text, variables, (test) => {
+                    console.log(test)
+                  })
+                  console.log(replaced)
                 }
                 outputBlock.audio = results[idx].audio
                 outputBlock.node = block.line.id

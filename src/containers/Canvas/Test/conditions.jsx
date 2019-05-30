@@ -20,14 +20,12 @@ const Conditions = (props) => {
     })}>
       <div className="text-center">
       {/* node.extras here */}
-        {variables.map((block, i) => {
+        {variables.map((variable, i) => {
           return (
             <ConditionExpression
               key={i}
-              variable={block}
-              onRemove={_.noop}
+              variable={variable}
               onSelection={handleVariableChange}
-              onUpdate={_.noop}
               variables={variables}
             />
           )

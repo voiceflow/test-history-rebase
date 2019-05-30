@@ -65,26 +65,6 @@ export class FlowBar extends Component{
         }
     }
 
-    generateFlowMenu = e => {
-        e.stopPropagation();
-        e.preventDefault();
-        let engine = this.props.engine
-        this.props.setBlockMenu(
-            <>
-                <div style={{ top: engine.getDiagramModel().getGridPosition(e.clientY - 155), left: engine.getDiagramModel().getGridPosition(e.clientX), cursor: 'pointer', position: 'absolute', zIndex: 10 }}>
-                    <ListGroup>
-                        <ListGroupItem onClick={() => {
-                            this.props.setBlockMenu(null)
-                            this.setState({
-                                edit: true
-                            })
-                        }}>Rename Flow</ListGroupItem>
-                    </ListGroup>
-                </div>
-            </>
-        )
-    }
-
     render(){
       if(!this.props.diagram) return null;
 
@@ -92,9 +72,7 @@ export class FlowBar extends Component{
             <button id="home-button" className="btn-home pl-3" onClick={()=>this.props.enterFlow(this.props.root_id)}>
                 <span>Home</span>
             </button>
-            <div id="flow-bar" className="text-center"
-                onContextMenu={this.generateFlowMenu}
-            >
+            <div id="flow-bar" className="text-center">
                 <div className="super-center px-5 w-100 no-select">
                     <div className="text-muted text-max w-100 px-5 mt-1">
                         <i className="flow-icon mr-3">&nbsp;&nbsp;&nbsp;&nbsp;</i>
@@ -132,7 +110,7 @@ export class FlowBar extends Component{
                         disabled={this.state.parentDiagrams.length === 0}>
                     <img src="/arrow-left-hover.svg" alt="arrow" className={cn("flow-arrow", {"active": this.state.leftDropdownOpen})} />
                     </DropdownToggle>
-                    <DropdownMenu  className="no-select">
+                    <DropdownMenu  className="no-select py-2 mb-2">
                         {this.state.parentDiagrams && this.state.parentDiagrams.map(({id, name}) => (
                             <DropdownItem onClick={() => this.props.enterFlow(id)} className="pointer" key={v4()}>
                                 {name === 'ROOT' ? 'Home' : name}
@@ -147,7 +125,7 @@ export class FlowBar extends Component{
                         disabled={this.state.childDiagrams.length === 0}>
                     <img src="/arrow-right-hover.svg" alt="arrow" className={cn("flow-arrow", {"active": this.state.rightDropdownOpen})}/>
                     </DropdownToggle>
-                    <DropdownMenu className="no-select">
+                    <DropdownMenu className="no-select py-2 mb-2">
                         {this.state.childDiagrams.map(({id, name}) => (
                             <DropdownItem onClick={() => this.props.enterFlow(id)} className="pointer" key={v4()}>
                                 {name}

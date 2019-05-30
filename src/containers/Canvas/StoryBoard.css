@@ -2631,25 +2631,6 @@ button.close:hover{
     height: 0px;
 }
 
-.btn-secondary.disabled:hover {
-    /*color: #fff !important;*/
-    border-color: #42A5FF;
-    background-color: #42A5FF;
-}
-
-.btn-secondary.disabled,
-.btn-secondary {
-    color: #fff;
-    background-color: #42A5FF;
-}
-
-.btn-secondary.disabled,
-.btn-secondary:disabled {
-    color: #fff;
-    opacity: 1;
-    /*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);*/
-}
-
 .diagram-block {
   display: flex;
   padding-right: 8px;

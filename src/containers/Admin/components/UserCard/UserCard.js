@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import './UserCard.css';
 import {User} from "components/User/User";
 import moment from "moment";
-import AdminAdvancedModal from "../AdminAdvancedModal/AdminAdvancedModal";
+import {Link} from "react-router-dom";
 
 class UserCard extends React.Component {
 
@@ -44,12 +44,17 @@ class UserCard extends React.Component {
               Google ID: {this.props.creator.gid ? this.props.creator.gid : 'no google ID'}
             </p>
             <div className="advanced_button_row">
-              <AdminAdvancedModal
-                showModal={false}
-                buttonLabel={'Advanced'}
-                cancelSubscription={() => this.cancelSubscription()}
-                refundUser={this.refundUser}
-              />
+              <Link
+                to={`/admin/charges/${this.props.creator.creator_id ? this.props.creator.creator_id : null}`}
+                className="view_charges_link">
+                View Charges & Subscription
+              </Link>
+              {/*<AdminAdvancedModal*/}
+              {/*  showModal={false}*/}
+              {/*  buttonLabel={'Advanced'}*/}
+              {/*  cancelSubscription={() => this.cancelSubscription()}*/}
+              {/*  refundUser={this.refundUser}*/}
+              {/*/>*/}
             </div>
           </div>
         </div>

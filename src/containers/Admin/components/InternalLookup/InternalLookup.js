@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import axios from 'axios';
 import {Input} from 'reactstrap';
 import Button from 'components/Button';
 import _ from 'lodash';
@@ -8,7 +7,7 @@ import _ from 'lodash';
 import './InternalLookup.css';
 import TeamSummary from "../TeamSummary/TeamSummary";
 import UserCard from "../UserCard/UserCard";
-import {findCreator} from "../../../../ducks/admin";
+import {findCreator, getCharges} from "../../../../ducks/admin";
 
 class InternalLookup extends React.Component {
 
@@ -105,6 +104,9 @@ class InternalLookup extends React.Component {
               }}/>
             </div>
             <div className={'internalIdSearchButton'}>
+              <Button color={"warning"} className={"w-30"} isPrimarySmall onClick={() => {
+                this.props.getCharges(this.props.creator.creator_id);
+              }}>Get Charges</Button>
               <Button
                 color={"primary"}
                 className={"w-30"}
@@ -146,4 +148,4 @@ const mapStateToProps = state => ({
   errorMessage: state.admin.errorMessage
 });
 
-export default connect(mapStateToProps, {findCreator})(InternalLookup);
+export default connect(mapStateToProps, {findCreator, getCharges})(InternalLookup);

@@ -30,7 +30,7 @@ import { renameDiagram } from 'ducks/diagram'
 import { setError, setConfirm } from 'ducks/modal'
 import { openTab, closeTab } from 'ducks/user'
 
-import ActionGroup from './ActionGroup'
+import ActionGroup from './components/ActionGroup/ActionGroup'
 import HelpModal from './HelpModal'
 import TestModal from './Test/TestModal'
 import new_template from 'assets/templates/new'

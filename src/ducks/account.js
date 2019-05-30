@@ -162,3 +162,9 @@ export const verifyGoogleToken = (token) => new Promise((resolve, reject) => {
   .then(res => resolve(res))
   .catch(err => reject(err))
 })
+
+export const getVendors = () => new Promise((resolve, reject) => {
+  axios.get('/session/vendor?all=true')
+  .then(res => resolve(res.data))
+  .catch(err => reject(err))
+})

@@ -102,7 +102,6 @@ class DiagramBlock extends Component {
                       this.setState({
                           node: node
                       }, this.props.onUpdate)
-                      this.props.enterFlow(node.extras.diagram_id);
                   }}
                   options={options}
                 />
@@ -204,7 +203,7 @@ class DiagramBlock extends Component {
     render() {
 
 
-        if(this.props.broken){
+        if(this.props.broken || (this.state.node.extras.diagram_id && !this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id))){
             return <Alert color="danger" className="text-center">
                 <i className="fas fa-exclamation-triangle fa-2x mb-2"/><br/>
                 Unable to Retrieve Flow - This Flow may be broken or deleted<br/><br/>

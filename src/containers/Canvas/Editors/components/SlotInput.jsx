@@ -148,14 +148,14 @@ class SlotInput extends Component {
           </Tooltip>
           <Button
             isClose
-            className="mt-1"
+            className="mt-1 mr-1"
             onClick={() => this.props.removeSlot(this.props.slot.key)}
             disabled={this.props.live_mode}
           />
         </div>
         <Collapse isOpen={this.props.slot.open}>
           {disabled && (
-            <div className="unavailable-input">
+            <div className="unavailable-input text-muted">
               <div>
                 <i className="fas fa-frown" />
               </div>
@@ -163,7 +163,7 @@ class SlotInput extends Component {
               {this.props.platform === "google" ? "Google Assistant" : "Alexa"}
             </div>
           )}
-          <div className={disabled ? "disabled faded" : ""}>
+          <div className={disabled ? "faded" : ""}>
             <div className="super-center flex-hard choice-select">
               <Select
                 placeholder="Select Slot Type"

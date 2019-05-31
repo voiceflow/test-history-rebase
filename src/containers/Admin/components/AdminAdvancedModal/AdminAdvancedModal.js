@@ -16,6 +16,12 @@ class AdminAdvancedModal extends React.Component {
       closeAll: false
     };
   }
+  
+  componentWillReceiveProps(nextProps, nextContext) {
+    this.setState({
+      modal: nextProps.showModal
+    })
+  }
 
   toggle = () => {
     this.setState(prevState => ({

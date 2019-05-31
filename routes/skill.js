@@ -206,7 +206,7 @@ const makeVendorEntryForExistingSkill = async (creator_id, project_id, amzn_id) 
       ownerVendor,
       amzn_id,
     ]);
-    await pool.query('UPDATE project_members SET selected_vendor = $1 WHERE creator_id = $2 AND project_id = $3', [amzn_id, creator_id, project_id]);
+    await pool.query('UPDATE project_members SET selected_vendor = $1 WHERE creator_id = $2 AND project_id = $3', [ownerVendor, creator_id, project_id]);
   }
 };
 
@@ -861,7 +861,7 @@ exports.buildSkill = async (req, res) => {
             },
           });
 
-          if (_.isNil(vendor_id)) {
+          if (!vendor_id || (typeof vendor_id !== 'string')) {
             let vendor_request;
 
             try {

@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import moment from "moment";
 import {Link} from "react-router-dom";
 import Select from "react-select";
-import {ListGroupItem} from "reactstrap";
 import axios from "axios";
 import {toast} from "react-toastify";
 
@@ -56,8 +55,7 @@ class SkillDetail extends React.Component {
     if (!this.props.skill)
       return <div>Loading...</div>
     return (
-      <ListGroupItem>
-        <div className="row skill_preview">
+        <div className="row skill_preview py-4">
           <div className="col-sm-3">
             <div className="skill_preview_title">
               <div className="skill_preview_title_large">{this.props.skill.skill_name}</div>
@@ -133,7 +131,6 @@ class SkillDetail extends React.Component {
             </div>
           </div>
         </div>
-      </ListGroupItem>
     )
   }
 }

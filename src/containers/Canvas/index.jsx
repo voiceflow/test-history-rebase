@@ -1439,13 +1439,13 @@ export class Canvas extends Component {
         this.props.updateSkill("diagram", new_diagram_id)
         if (save && !this.props.preview && !this.props.testing) {
             this.saveCB = () => {
-                this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
+                this.props.history.push(`/${this.props.page}/${this.props.skill.skill_id}/${new_diagram_id}`)
             }
             this.onSave()
         }else if (this.props.preview){
             this.props.history.push(`/preview/${this.props.skill.skill_id}/${new_diagram_id}`)
         }else{
-            this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
+            this.props.history.push(`/${this.props.page}/${this.props.skill.skill_id}/${new_diagram_id}`)
         }
       }
     }

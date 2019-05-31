@@ -15,7 +15,8 @@ const initialState = {
 	name: null,
 	creator_id: null,
   admin: 0,
-  image: null
+  image: null,
+  vendors: [],
 }
 
 // REDUCER
@@ -83,6 +84,22 @@ export const logout = () => {
     dispatch(resetAccount())
     
     return Promise.resolve()
+  }
+}
+
+export const getVendors = () => {
+  return async dispatch => {
+    try {
+      const vendors = (await axios.get('/session/vendor?all=true')).data;
+      if(Array.isArray(vendors)) {
+        dispatch(updateAccount({
+          vendors
+        }))
+      }
+    } catch(err) {
+      console.error(err);
+    }
+    Promise.resolve();
   }
 }
 
@@ -160,11 +177,5 @@ export const dialogflowToken = (project_id) => new Promise((resolve, reject) => 
 export const verifyGoogleToken = (token) => new Promise((resolve, reject) => {
   axios.post('/session/google/verify_token', {token: token})
   .then(res => resolve(res))
-  .catch(err => reject(err))
-})
-
-export const getVendors = () => new Promise((resolve, reject) => {
-  axios.get('/session/vendor?all=true')
-  .then(res => resolve(res.data))
   .catch(err => reject(err))
 })

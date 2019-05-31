@@ -146,7 +146,7 @@ class Menu extends Component {
         </React.Fragment>
       );
     } else {
-      return <div className="diagram-block">...</div>;
+      return <div className="diagram-block"><div className="diagram-button" style={{marginLeft: 20 * depth}}>...</div></div>;
     }
   }
 

@@ -14,6 +14,7 @@ import {loadSession, errorScreen, socketCheck} from 'hocs/socketCheck'
 // Ducks
 import {unnormalize} from "ducks/_normalize";
 import {fetchVersion, setLiveModeModal, updateVersion, resetVersion} from 'ducks/version'
+import {getVendors} from 'ducks/account'
 import {fetchDiagrams} from 'ducks/diagram'
 import {fetchProducts} from 'ducks/product'
 import {fetchDisplays} from "ducks/display";
@@ -106,7 +107,7 @@ class Skill extends Component {
     window.removeEventListener('beforeunload', this.componentGracefulUnmount);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.setState({
       mounted: true,
     })
@@ -114,6 +115,7 @@ class Skill extends Component {
       "beforeunload",
       this.componentGracefulUnmount
     )
+    await this.props.getVendors();
     if (this.props.computedMatch && this.props.computedMatch.params && this.props.computedMatch.params.skill_id) {
       this.props.getVersion(this.props.computedMatch.params.skill_id, this.props.preview, this.props.computedMatch.params.diagram_id).then(() => {
         document.title = (this.props.skill.name !== undefined ? this.props.skill.name : 'Voiceflow Creator')
@@ -319,7 +321,7 @@ class Skill extends Component {
             }
           </div> */}
       {((this.state.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)) ?
-        React.createElement(Spinner, {name: 'Skill'}) :
+        React.createElement(Spinner, {name: 'Project'}) :
         <>
           <div id="app" className={this.props.page}>
             {this.props.page !== 'canvas' && <div className="main-container-header">
@@ -377,7 +379,8 @@ const mapDispatchToProps = dispatch => {
     getProducts: (skill_id) => dispatch(fetchProducts(skill_id)),
     getDisplays: (skill_id) => dispatch(fetchDisplays(skill_id)),
     updateSkill: (type, val) => dispatch(updateVersion(type, val)),
-    resetSkill: () => dispatch(resetVersion())
+    resetSkill: () => dispatch(resetVersion()),
+    getVendors: () => dispatch(getVendors())
   }
 }
 

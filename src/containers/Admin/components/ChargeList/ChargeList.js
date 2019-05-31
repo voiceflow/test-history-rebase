@@ -2,12 +2,13 @@ import React from 'react';
 import {connect} from 'react-redux';
 import ChargeTeamGroup from "../ChargeTeamGroup/ChargeTeamGroup";
 
+import "./ChargeList.css";
+
 class ChargeList extends React.Component {
 
   renderTeams() {
     const {charges} = this.props;
-    if (charges) {
-      console.log('rendering charges: ', charges);
+    if (charges.length > 0) {
       return charges.map(team => {
         return (
           <div className="cl__team_wrapper" key={team.team_id}>
@@ -16,7 +17,13 @@ class ChargeList extends React.Component {
         )
       })
     } else {
-      return null;
+      return (
+        <div className="cl__no_charges">
+          <p>Search for charges in the search bar above.</p> 
+          <p>If you have already searched, please wait patiently as the developer of this page was
+          too lazy to detect when loading happens.</p>
+        </div>
+      );
     }
   }
 

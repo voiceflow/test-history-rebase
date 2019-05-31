@@ -26,39 +26,40 @@ class FinanceBoard extends React.Component {
       // Get the charges for the user
       this.props.getCharges(setCreatorId);
       // Purposefully using coercion to compare the int creator id in store and the string param one
-      if (this.props.creator && this.props.creator.creator_id == setCreatorId) {
-        console.log('creator already exists, using', setCreatorId);
-
-      } else {
-        console.log('creator does not exist in store');
+      if (this.props.creator && this.props.creator.creator_id != setCreatorId) {
         this.props.findCreator(setCreatorId);
       }
     }
   }
 
   handleSearch = e => {
-    if (e.keyCode === 13) {
-      e.preventDefault();
-      console.log('searching for: ', this.state.searchTerm);
-      this.props.getCharges(this.state.searchTerm);
-    } else {
-      this.setState({
-        searchTerm: e.target.value
-      })
-    }
+    this.setState({
+      searchTerm: e.target.value
+    })
   };
 
   render() {
     return (
       <div className="fb_wrapper">
+        <h3 className="fb_header">
+          Voiceflow Revenue Agency <span className={'admin_highlight_green'}>Will is our favourite intern</span>
+        </h3>
         <div className="fb_search">
-          <Input
-            className="search-input form-control-2"
-            placeholder="Find creator by id or email"
-            onKeyDown={this.handleSearch}
-            value={this.state.searchTerm}
-            type="text"
-          />
+          <div>
+            <Input
+              className="search-input form-control-2"
+              placeholder="Find creator by id or email"
+              onChange={this.handleSearch}
+              onEnterPress={() => this.props.getCharges(this.state.searchTerm)}
+              value={this.state.searchTerm}
+              type="text"
+            />
+            <div className="fb_refresh_wrapper">
+              <span className="fb_refresh" onClick={() => this.props.getCharges(this.state.searchTerm)}>
+                Refresh <i className="fas fa-sync" />
+              </span>
+            </div>
+          </div>
           <ChargeList/>
         </div>
       </div>

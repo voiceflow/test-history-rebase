@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import { ListGroup, ListGroupItem } from "reactstrap";
 import { renameDiagram } from 'ducks/diagram';
 import { v4 } from 'uuid'
 import './FlowBar.css'
@@ -99,7 +98,7 @@ export class FlowBar extends Component{
                                     newFlowName: e.target.value
                                 })}
                             />
-                        :this.state.name
+                        : this.state.name 
                         }
                     </div>
                 </div>

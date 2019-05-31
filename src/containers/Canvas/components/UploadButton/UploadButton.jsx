@@ -2,20 +2,12 @@ import React, { Component } from 'react';
 import { Tooltip } from 'react-tippy';
 import cn from 'classnames';
 import VendorSelectList from '../VendorSelectList/VendorSelectList';
-import { Spinner } from 'components/Spinner/Spinner'
 
 import Button from 'components/Button';
 
 class UploadButton extends Component {
 
 	render() {
-
-		if (this.props.upload_button_loading) {
-			return <div className='upload-button-placeholder'>
-				<Spinner name='Vendors'/>
-				Hello
-			</div>;
-		}
 
 		if (this.props.live_mode) {
 			return <Tooltip

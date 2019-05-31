@@ -7,7 +7,7 @@ import _ from 'lodash';
 import './InternalLookup.css';
 import TeamSummary from "../TeamSummary/TeamSummary";
 import UserCard from "../UserCard/UserCard";
-import {findCreator, getCharges} from "../../../../ducks/admin";
+import {findCreator} from "ducks/admin";
 
 class InternalLookup extends React.Component {
 
@@ -15,16 +15,12 @@ class InternalLookup extends React.Component {
     super(props);
 
     this.state = {
-      user_id: '2',
+      user_id: '',
       loading: false,
       skill_filter: '',
       filtered_boards: null,
       expand_all_boards: false,
     }
-  }
-
-  componentDidMount() {
-    this.lookupUserById();
   }
 
   // do more leetcode shame on u
@@ -104,9 +100,6 @@ class InternalLookup extends React.Component {
               }}/>
             </div>
             <div className={'internalIdSearchButton'}>
-              <Button color={"warning"} className={"w-30"} isPrimarySmall onClick={() => {
-                this.props.getCharges(this.props.creator.creator_id);
-              }}>Get Charges</Button>
               <Button
                 color={"primary"}
                 className={"w-30"}
@@ -131,7 +124,7 @@ class InternalLookup extends React.Component {
         </div>
 
         <div className="internalIdSearchResults">
-          <h4>Boards:</h4>
+          {this.props.boards.length > 0 ? <h4>Boards:</h4> : null }
           <div>
             {this.renderBoards()}
           </div>
@@ -148,4 +141,4 @@ const mapStateToProps = state => ({
   errorMessage: state.admin.errorMessage
 });
 
-export default connect(mapStateToProps, {findCreator, getCharges})(InternalLookup);
+export default connect(mapStateToProps, {findCreator})(InternalLookup);

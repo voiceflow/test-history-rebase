@@ -11,6 +11,6 @@ beforeEach(() => {
 });
 
 it('renders all the necessary information', () => {
-  console.log('text: ', wrapped.text());
+  // console.log('text: ', wrapped.text());
   // expect(wrapped.text()).toContain(testSkill.skill_id);
 });

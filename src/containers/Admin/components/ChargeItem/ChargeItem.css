@@ -25,6 +25,12 @@
   color: #00b0e6;
 }
 
+.ci__refunded {
+  color: #bf0026;
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .ci__link_breaker {
   margin: 4px 0;
 }

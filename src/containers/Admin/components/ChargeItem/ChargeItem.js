@@ -5,7 +5,6 @@ import moment from "moment";
 
 const ChargeItem = (props) => {
   if (props.charge) {
-    console.log('charge: ', props.charge);
     const {charge} = props;
     return (
       <tr>
@@ -20,9 +19,13 @@ const ChargeItem = (props) => {
             <a href={charge.receipt_url} target="_blank" className="ci__view_link">View Charge <i className="fas fa-external-link"/></a>
           </div>
           <hr className="ci__link_breaker"/>
-          <div>
-            <span className="ci__refund_link" onClick={() => props.showModal(charge)}>Refund</span>
-          </div>
+          {charge.amount !== charge.amount_refunded ? 
+            <div>
+              <span className="ci__refund_link" onClick={() => props.showModal(charge)}>Refund</span>
+            </div>
+          : <div>
+              <span className="ci__refunded">Refunded</span>
+            </div>}
         </td>
       </tr>
     )

@@ -37,7 +37,7 @@ class Copy extends Component {
         })
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
   }
 
@@ -77,21 +77,9 @@ class Copy extends Component {
   render() {
     return (
       <div className="admin-page-inner">
-        <div className="subheader">
-          <div className="space-between">
-                        <span className="subheader-title">
-                            <b>Copy</b>
-                            <div className="hr-label">
-                                <small><i className="far fa-user mr-1"></i></small>
-                              {' '}
-                              {this.props.user.name}{' '}
-                              <small><i className="far fa-chevron-right"/></small>
-                              {' '}
-                              <span className="text-secondary">Copy</span>
-                            </div>
-                        </span>
-          </div>
-        </div>
+        <h3 className="fb_header">
+          Voiceflow's Mini Photocopier <span className={'admin_highlight_pink'}>How cute!</span>
+        </h3>
         <div className="content">
           <label>COPY</label>
           <input placeholder="Enter Creator ID"

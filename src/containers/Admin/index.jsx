@@ -21,6 +21,11 @@ const tabs = [
     link: '/admin'
   },
   {
+    display: <React.Fragment><i className="fal fa-money-bill-wave"/> Finance</React.Fragment>,
+    match: ['charges'],
+    link: '/admin/charges'
+  },
+  {
     display: <React.Fragment><i className="fal fa-search"/> Skill Lookup</React.Fragment>,
     match: ['lookup'],
     link: '/admin/lookup'
@@ -29,11 +34,6 @@ const tabs = [
     display: <React.Fragment><i className="fal fa-copy"/> Copy</React.Fragment>,
     match: ['copy'],
     link: '/admin/copy'
-  },
-  {
-    display: <React.Fragment><i className="fal fa-money-bill-wave"/> Finance</React.Fragment>,
-    match: ['charges'],
-    link: '/admin/charges'
   },
   {
     display: <React.Fragment><i className="fal fa-scroll"/> Product Updates</React.Fragment>,

@@ -77,7 +77,6 @@ export const findCreator = creatorInfo => async dispatch => {
 };
 
 export const getCharges = creatorInfo => async dispatch => {
-  console.log('getting charges for: ', creatorInfo);
 
   if (!creatorInfo) {
     return;
@@ -101,30 +100,28 @@ export const getCharges = creatorInfo => async dispatch => {
 
   try {
     let response = await axios.get(`/admin-api/charges/${creatorId}`);
-    toast.success('got charges!');
     dispatch({
       type: SET_CHARGES,
       payload: response.data.teams
     });
-    console.log('received charges: ', response);
+    toast.success('Charges found for user')
   } catch (err) {
-    toast.error('Get charges failed');
+    toast.error('Fetch charges failed');
     console.error('Error when getting charges for user ', err);
   }
 
 };
 
 // Refund a specific user
-export const refundCreator = creatorId => async dispatch => {
+export const refundCharge = (teamId, chargeId, chargeAmount) => async dispatch => {
 
-  if (!creatorId) {
+  if (!teamId || !chargeId || !chargeAmount) {
     return;
   }
-
+  
   try {
-    let response = await axios.post(`/admin-api/refund/${creatorId}`);
-    toast.success('Refund successful!');
-    console.log('response from refund: ', response);
+    let response = await axios.post(`/admin-api/refund/${teamId}/${chargeId}/${chargeAmount}`);
+    toast.success('Refund successful! Please refresh the page to see updated charges');
   } catch (err) {
     console.error('error when refunding user: ', err);
     toast.error('Refund failed.')
@@ -133,16 +130,15 @@ export const refundCreator = creatorId => async dispatch => {
 };
 
 // Cancel a user's subscription
-export const cancelSubscription = creatorId => async dispatch => {
+export const cancelSubscription = (teamId, subscriptionId) => async dispatch => {
 
-  if (!creatorId) {
+  if (!teamId || !subscriptionId) {
     return;
   }
 
   try {
-    let response = await axios.post(`/admin-api/cancel/${creatorId}`);
-    toast.success('Subscription cancelled!');
-    console.log('response from cancel: ', response);
+    let response = await axios.post(`/admin-api/cancel/${teamId}/${subscriptionId}`);
+    toast.success('Subscription cancelled! Refresh to see updated results');
   } catch (err) {
     console.error('error from cancelling subscription', err);
     toast.error('Cancel Subscription Failed');

@@ -265,7 +265,7 @@ export class DiagramWidget extends BaseWidget {
 	onMouseMove(event) {
 		var diagramModel = this.props.diagramEngine.getDiagramModel();
 		//select items so draw a bounding box
-		if (this.state.action instanceof SelectingAction) {
+		if (this.state.action instanceof SelectingAction && !this.props.locked) {
 			var relative = this.props.diagramEngine.getRelativePoint(event.clientX, event.clientY);
 
 			_.forEach(diagramModel.getNodes(), node => {
@@ -295,7 +295,7 @@ export class DiagramWidget extends BaseWidget {
 			this.fireAction();
 			this.setState({ action: this.state.action });
 			return;
-		} else if (this.state.action instanceof MoveItemsAction) {
+		} else if (this.state.action instanceof MoveItemsAction && !this.props.locked) {
 			let amountX = event.clientX - this.state.action.mouseX;
 			let amountY = event.clientY - this.state.action.mouseY;
 			if (amountX === 0 && amountY === 0 || this.props.locked) return;

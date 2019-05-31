@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme/build';
 import _ from 'lodash'
-import { ActionGroup } from '../components/ActionGroup/ActionGroup';
+import { ActionGroup } from '../components/ActionGroup';
 import {testSkill} from '../__mock__/MockSkill';
 import toJson from 'enzyme-to-json';
 

@@ -180,7 +180,6 @@ export class ActionGroup extends PureComponent {
 			percentage: 0,
 			upload_button_loading: true,
       selected_vendor: props.vendor_id,
-      vendors: [],
 		};
 
 		this.token = null;
@@ -197,18 +196,9 @@ export class ActionGroup extends PureComponent {
     try {
       const token = await AmazonAccessToken();
       this.token = token;
-      if( token ){
-        const vendors = await getVendors();
-        this.setState({
-          vendors,
-        });
-      }
     } catch(err) {
       console.error(err);
     }
-    this.setState({
-      upload_button_loading: false
-    });
     this.reset();
 	}
 
@@ -244,11 +234,11 @@ export class ActionGroup extends PureComponent {
 	};
 
 	reset = () => {
-		// TEST FIRST SESSION
+    // TEST FIRST SESSION
 		this.setState({
 			percent: 1,
 			amzn_error: false,
-			stage: this.token ? 0 : 5,
+			stage: this.token ? (this.props.vendors.length === 0 ? 6 : 0) : 5,
 			google_stage: this.google_token ? 2 : 0,
 			is_first_upload: (localStorage.getItem('is_first_session_' + this.props.user.id) !== 'false'),
 			// // TESTING PURPOSES
@@ -335,28 +325,18 @@ export class ActionGroup extends PureComponent {
 		this.props.onSave();
 	};
 
-	checkVendor = () => {
-		this.updateAlexaStage(7);
+	checkVendor = async () => {
+    this.updateAlexaStage(7);
 
-		if (!this.state.vendors || this.state.vendors.length === 0) {
-			axios.get('/session/vendor?all=true')
-				.then(({ data }) => {
-					this.setState({
-						vendors: data
-					});
-					this.updateAlexaStage(0);
-				})
-				.catch(err => {
-					this.updateAlexaStage(6);
-				});
+		if (this.props.vendors.length === 0) {
+      await this.props.getVendors();
+      if(this.props.vendors.length === 0) {
+        this.updateAlexaStage(6);
+      } else {
+        this.updateAlexaStage(0);
+      }
 		} else {
-			axios.get('/session/vendor')
-				.then(() => {
-					this.updateAlexaStage(0);
-				})
-				.catch(err => {
-					this.updateAlexaStage(6);
-				});
+      this.updateAlexaStage(0);
 		}
 	};
 
@@ -415,6 +395,9 @@ export class ActionGroup extends PureComponent {
 	};
 
 	updateAlexa = async () => {
+    if(this.props.vendors.length === 0) {
+      return this.updateAlexaStage(6);
+    }
 		let inv_name = this.state.inv_name ? this.state.inv_name : this.props.skill.inv_name;
 		let error = invNameError(inv_name, this.props.skill.locales);
 		if (error) {
@@ -768,7 +751,7 @@ export class ActionGroup extends PureComponent {
 						   target="_blank" rel="noopener noreferrer">
 							Developer Sign Up
 						</a>
-						<Button isFaux color="clear" className="d-inline-block mb-2" onClick={this.checkVendor}>
+						<Button isSecondary className="mb-2" onClick={this.checkVendor}>
 							<i className="fas fa-sync-alt"/> Check Again
 						</Button>
 					</div>
@@ -972,6 +955,7 @@ export class ActionGroup extends PureComponent {
 					</ModalBody>
 				</Modal>
 				<Header
+          preview={this.props.preview}
 					history={this.props.history}
 					leftRenderer={() => (
 						<div onDoubleClick={() => this.setState({ editName: true })}>
@@ -1081,10 +1065,9 @@ export class ActionGroup extends PureComponent {
 							</div>
 
 							<UploadButton
-								upload_button_loading={this.state.upload_button_loading}
 								live_mode={this.props.live_mode}
 								show_upload_prompt={this.state.show_upload_prompt}
-								vendors={this.state.vendors}
+								vendors={this.props.vendors}
 								platform={this.props.platform}
 								vendors_open={this.state.vendors_open}
 								project_id={this.props.skill.project_id}
@@ -1112,7 +1095,8 @@ const mapStateToProps = state => ({
 	platform: state.skills.skill.platform,
 	diagram_id: state.skills.skill.diagram,
 	live_mode: state.skills.live_mode,
-	vendor_id: state.skills.skill.vendor_id
+  vendor_id: state.skills.skill.vendor_id,
+  vendors: state.account.vendors,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -1121,6 +1105,7 @@ const mapDispatchToProps = dispatch => ({
 	updateSkillLocale: (val) => dispatch(updateLocales(val)),
 	togglePreview: preview => dispatch(togglePreview(preview)),
 	saveSkill: (publish, cb) => dispatch(updateSkillDB(publish, cb)),
-	updateVendorId: (projectId, vendorId) => dispatch(updateVendorId(projectId, vendorId))
+  updateVendorId: (projectId, vendorId) => dispatch(updateVendorId(projectId, vendorId)),
+  getVendors: () => dispatch(getVendors()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ActionGroup);

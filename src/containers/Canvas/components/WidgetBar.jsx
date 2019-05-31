@@ -4,7 +4,7 @@ import cn from 'classnames'
 
 import Button from 'components/Button'
 
-export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update, open }) =>
+export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update, open, preview }) =>
     <div id={`widget-bar`} className={cn({
         open: open
     })}>
@@ -13,7 +13,7 @@ export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, updat
             <Button isWhiteCirc onClick={()=>zoom(-1000, engine, update)} className="round-right"><i className="far fa-minus"/></Button>
         </ButtonGroup>
         <Button isWhiteCirc className="ml-2" onClick={() => centerDiagram(engine, setOpen)}><i className="fas fa-map-marker-alt"></i></Button>
-        <Button isWhiteCirc className="ml-2" onClick={() => toggleKeyboard(!keyboardHelp)}><i className="fas fa-keyboard"></i></Button>
+        {!preview && <Button isWhiteCirc className="ml-2" onClick={() => toggleKeyboard(!keyboardHelp)}><i className="fas fa-keyboard"></i></Button>}
     </div>
 
 const centerDiagram = ( engine, setOpen ) => {

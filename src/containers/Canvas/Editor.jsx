@@ -57,7 +57,9 @@ import {
   BUILT_IN_INTENTS_GOOGLE
 } from "Constants";
 
-const ALEXA_BUILT_INS = BUILT_IN_INTENTS_ALEXA.map(intent => {
+console.log(BUILT_IN_INTENTS_ALEXA)
+console.log(BUILT_IN_INTENTS_GOOGLE)
+const ALEXA_BUILT_INS = BUILT_IN_INTENTS_ALEXA && BUILT_IN_INTENTS_ALEXA.map(intent => {
   return {
     built_in: true,
     platform: "alexa",
@@ -72,7 +74,7 @@ const ALEXA_BUILT_INS = BUILT_IN_INTENTS_ALEXA.map(intent => {
   };
 });
 
-const GOOGLE_BUILT_INS = BUILT_IN_INTENTS_GOOGLE.map(intent => {
+const GOOGLE_BUILT_INS = BUILT_IN_INTENTS_GOOGLE && BUILT_IN_INTENTS_GOOGLE.map(intent => {
   return {
     built_in: true,
     platform: "google",

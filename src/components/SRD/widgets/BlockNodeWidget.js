@@ -174,7 +174,7 @@ export class BlockNodeWidget extends BaseWidget {
   }
 
   close() {
-    if (!this.props.preview) {
+    if (!this.props.nodeProps.disabled) {
       this.props.node.name = this.state.name;
       if (this.props.node.extras.type === 'flow') {
         this.props.nodeProps.renameFlow(this.props.node.extras.diagram_id, this.state.name)

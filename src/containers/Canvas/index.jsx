@@ -1443,9 +1443,11 @@ export class Canvas extends Component {
             }
             this.onSave()
         }else if (this.props.preview){
-            this.props.history.push(`/preview/${this.props.skill.skill_id}/${new_diagram_id}`)
+          this.props.updateSkill("diagram", new_diagram_id)
+          this.props.history.push(`/preview/${this.props.skill.skill_id}/${new_diagram_id}`)
         }else{
-            this.props.history.push(`/${this.props.page}/${this.props.skill.skill_id}/${new_diagram_id}`)
+          this.props.updateSkill("diagram", new_diagram_id)
+          this.props.history.push(`/${this.props.page}/${this.props.skill.skill_id}/${new_diagram_id}`)
         }
       }
     }
@@ -1635,7 +1637,7 @@ export class Canvas extends Component {
               />
             )}
             <div
-              id="canvas"
+              id={this.props.preview ? "canvas_preview" : "canvas"}
               onMouseMove={this.mouseMove}
               onMouseUp={this.combineNode}
               onMouseDown={() => (this.diagram_focus = true)}
@@ -1741,6 +1743,7 @@ export class Canvas extends Component {
                   engine={this.state.engine}
                   setOpen={this.props.setOpen}
                   update={engine => this.setState({ engine: engine })}
+                  preview={this.props.preview}
                 />
                 {this.props.root_id !== this.props.diagram_id && (
                   <FlowBar

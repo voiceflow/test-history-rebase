@@ -15,6 +15,7 @@ exports[`SetEditor render set block editor 1`] = `
     onRemove={[Function]}
     onSelection={[Function]}
     onUpdate={[Function]}
+    variable={null}
   />
   <Button
     className="mt-1"

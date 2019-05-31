@@ -517,15 +517,6 @@
     }
 }
 
-/*#TitleBar .title-group-sub:hover{
-    box-shadow: 0px 3px 10px rgba(14,30,37,.10) !important;
-    transform: translateY(-1px);
-}*/
-#preview-title {
-    color: #93CBFF;
-    font-size: 18px;
-}
-
 .last-save {
     color: #88a2b7;
     margin-right: 25px;
@@ -870,6 +861,10 @@
     transition: transform .3s;
     /* smooth the scrolling on touch devices - webkit browsers */
     -webkit-overflow-scrolling: touch;
+}
+
+#canvas_preview .Menu #sidebar {
+  left: 0px;
 }
 
 .Menu #sidebar:after{
@@ -1322,7 +1317,6 @@
     width: 400px;
     height: 100%;
     background-color: #fff;
-    /*opacity: 0.9;*/
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -1415,6 +1409,31 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+#app>#canvas_preview {
+  position: absolute;
+  top: 65px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  overflow-x: hidden;
+}
+#app>#canvas{
+  position: absolute;
+  top: 116px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  overflow-x: hidden;
+}
+
+#app.secondary-padding>#canvas {
+  top: 111px;
+}
+
+#app.secondary-padding>#canvas_preview {
+  top: 111px;
 }
 
 .controls hr {
@@ -2619,25 +2638,6 @@ button.close:hover{
 }
 .bg {
     height: 0px;
-}
-
-.btn-secondary.disabled:hover {
-    /*color: #fff !important;*/
-    border-color: #42A5FF;
-    background-color: #42A5FF;
-}
-
-.btn-secondary.disabled,
-.btn-secondary {
-    color: #fff;
-    background-color: #42A5FF;
-}
-
-.btn-secondary.disabled,
-.btn-secondary:disabled {
-    color: #fff;
-    opacity: 1;
-    /*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);*/
 }
 
 .diagram-block {

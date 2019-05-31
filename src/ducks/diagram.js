@@ -2,7 +2,6 @@ import update from 'immutability-helper'
 import axios from 'axios';
 import _ from 'lodash';
 import { setConfirm, setError } from 'ducks/modal'
-import { promises } from 'fs';
 
 export const FETCH_DIAGRAMS_BEGIN = 'FETCH_DIAGRAMS_BEGIN'
 export const FETCH_DIAGRAMS_SUCCESS = 'FETCH_DIAGRAMS_SUCCESS'

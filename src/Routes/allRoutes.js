@@ -32,6 +32,7 @@ const allRoutes = (
     <PrivateRoute exact path="/onboarding" component={Team} page="onboarding"/>
     {/* Canvas Routes */}
     <PrivateRoute path="/preview/:skill_id/:diagram_id" component={Skill} page="canvas" preview/>
+    <PrivateRoute path="/preview/:skill_id" component={Skill} page="canvas" preview/>
     <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas"/>
     <PrivateRoute path="/canvas/:skill_id" component={Skill} page="canvas"/>
 	{/* Testing routes */}

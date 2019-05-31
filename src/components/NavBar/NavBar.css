@@ -317,7 +317,7 @@ div.nav-item{
 
 .flow-arrow {
 	opacity: 0.45;
-	transition: 0.3s;
+	/* transition: 0.3s; */
 	width: 16px;
 }
 

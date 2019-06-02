@@ -227,14 +227,14 @@ export class Command extends Component {
                 {extras.diagram_id ?
                     <React.Fragment>
                         {diagram_name ? <React.Fragment>
-                            <DefaultButton isPrimary isLarge block isBlock onClick={() => this.props.enterFlow(extras.diagram_id)}>
+                            <DefaultButton isPrimary isLarge isBlock onClick={() => this.props.enterFlow(extras.diagram_id)}>
                                 <img src={"/flows-white.svg"} alt="flows" className="mr-2" /> Enter {diagram_name} Flow
                             </DefaultButton>
                         </React.Fragment> : <Alert color="danger" className="text-center">
                                 <i className="fas fa-exclamation-triangle fa-2x mb-2" /><br />
                                 Unable to Retrieve Flow - This Flow may be broken or deleted
                         </Alert>}
-                        <DefaultButton isFlat isLarge isBtn block className="mt-3 btn-block" onClick={() => {
+                        <DefaultButton isFlat isLarge isBtn isBlock className="mt-3 btn-block" onClick={() => {
                                 let node = this.state.node;
                                 let extras = node.extras[this.props.platform]; extras.diagram_id = null;
                                 this.setState({ node: node })

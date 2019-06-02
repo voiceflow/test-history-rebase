@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="10px" height="8px" viewBox="0 0 10 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Artboard</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M2.42713564,4.375 L9.375,4.375 C9.72017797,4.375 10,4.65482203 10,5 C10,5.34517797 9.72017797,5.625 9.375,5.625 L2.42713564,5.625 L4.30180443,8.13863232 C4.30567608,8.14382358 4.30941029,8.14911588 4.31300319,8.15450371 C4.42601836,8.3239787 4.38020991,8.55295641 4.21068715,8.66593974 C4.02032376,8.79281291 3.76814558,8.77452681 3.59808856,8.62151861 L0.285630336,5.64114625 C0.263143198,5.62091352 0.241736064,5.59951242 0.22149764,5.57703162 C-0.0972779479,5.22293633 -0.068564762,4.67753952 0.285630336,4.35885375 L3.59808856,1.37848139 C3.76814558,1.22547319 4.02032376,1.20718709 4.21068715,1.33406026 C4.2160765,1.33765215 4.22137029,1.34138531 4.22656301,1.34525586 C4.38990087,1.46700471 4.4235876,1.69807584 4.30180443,1.86136768 L2.42713564,4.375 Z" id="path-1"></path>
+    </defs>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/System/Arrow_back" transform="translate(0.000000, -1.000000)">
+            <g id="Group">
+                <rect id="Rectangle" x="0" y="0" width="10" height="10"></rect>
+                <g id="Combined-Shape">
+                    <use fill="#FFFFFF" xlink:href="#path-1"></use>
+                    <use fill="#BECEDC" xlink:href="#path-1"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

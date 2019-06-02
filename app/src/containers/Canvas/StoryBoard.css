@@ -517,15 +517,6 @@
     }
 }
 
-/*#TitleBar .title-group-sub:hover{
-    box-shadow: 0px 3px 10px rgba(14,30,37,.10) !important;
-    transform: translateY(-1px);
-}*/
-#preview-title {
-    color: #93CBFF;
-    font-size: 18px;
-}
-
 .last-save {
     color: #88a2b7;
     margin-right: 25px;
@@ -805,21 +796,23 @@
 }
 
 .sub-diagram {
-    padding-left: 20px;
     align-items: center;
     display: flex;
     flex-wrap: wrap;
 }
 
-.sub-diagram .diagram-block::before {
-    content: '↳';
-    margin-top: 6px;
-    margin-right: 5px;
+.sub-diagram .diagram-block {
+  position: relative;
 }
 
-.diagram-block.btn-group:hover{
-    cursor: pointer;
+.sub-diagram .diagram-block .diagram-button::before {
+  position: absolute;
+  left: 2px;
+  top: 12px;
+  content: '↳';
+  color: #788EA2;
 }
+
 .diagram-text {
     overflow: hidden;
     white-space: nowrap;
@@ -870,6 +863,10 @@
     -webkit-overflow-scrolling: touch;
 }
 
+#canvas_preview .Menu #sidebar {
+  left: 0px;
+}
+
 .Menu #sidebar:after{
     content: " ";
     background-color: #eaeff3;
@@ -907,6 +904,10 @@
     color: #8da2b5;
 }
 
+.search-section {
+    padding: 0px 15px;
+}
+
 .section-title {
     text-transform: capitalize;
     font-size: 13px !important;
@@ -931,7 +932,15 @@
     overflow-y: scroll;
     overflow-x: hidden;
     height: 100%;
-    padding: 0px 15px 120px 15px;
+    padding: 0px 15px;
+}
+
+.Menu #sidebar .sidebar-container.flows > .sidebar-header {
+    padding: 0px 15px;
+}
+
+.Menu #sidebar .sidebar-container.flows {
+    padding: 0;
 }
 
 .Menu #sidebar .section-title .title-dot {
@@ -1154,6 +1163,7 @@
     background-size: 16px;
     background-repeat: no-repeat;
     background-position: center;
+    opacity: 0.4;
 }
 .menu-tip {
     color: #8da2b5 !important;
@@ -1307,7 +1317,6 @@
     width: 400px;
     height: 100%;
     background-color: #fff;
-    /*opacity: 0.9;*/
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -1395,6 +1404,31 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+#app>#canvas_preview {
+  position: absolute;
+  top: 65px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  overflow-x: hidden;
+}
+#app>#canvas{
+  position: absolute;
+  top: 116px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  overflow-x: hidden;
+}
+
+#app.secondary-padding>#canvas {
+  top: 111px;
+}
+
+#app.secondary-padding>#canvas_preview {
+  top: 111px;
 }
 
 .controls hr {
@@ -2557,7 +2591,8 @@ button.close:hover{
   position: relative;
   flex-grow: 1;
   flex-basis: 0;
-  text-transform: capitalize
+  text-transform: capitalize;
+  cursor: pointer;
 }
 
 .btn-group-vertical>.btn:hover,
@@ -2565,39 +2600,9 @@ button.close:hover{
     z-index: unset !important;
 }
 
-.diagram-block .btn-secondary {
-    background-color: #f0f3f7;
-    border: #f0f3f7 1px solid !important;
-    color: #2b3950 !important;
-}
-
-.diagram-block .btn-secondary:hover {
-    background-color: #E2E9EC !important;
-    border: #E2E9EC 1px solid !important;
-}
-
-.diagram-block .btn-secondary:active {
-    background-color: #E2E9EC !important;
-    /*    border: #d1d8e2 1px solid !important;*/
-}
-
-.diagram-block .btn-secondary.disabled {
-    color: #fff !important;
-    background-color: #42A5FF !important;
-    border-color: #42A5FF !important;
-    opacity: 1;
-    /*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);*/
-}
-
-.diagram-block input.form-control {
-    margin-right: 1px;
-    border: 10px !important;
-    box-shadow: none;
-}
-
-.diagram-block input.form-control:focus {
-    box-shadow: none;
-    border: none;
+.flows-list {
+    display: flex;
+    flex-flow: row wrap;
 }
 
 .expressionfy {
@@ -2605,14 +2610,17 @@ button.close:hover{
 }
 
 .diagram-block .diagram-edit {
-    padding: 0px;
+    text-align: center;
     margin-left: 0px !important;
     font-size: 12px !important;
     color: #8DA2B590 !important;
-    height: 40px;
     border: none !important;
     padding-top: 1px;
     background-color: transparent !important;
+    opacity: 0;
+    height: 40px !important;
+    width: 40px !important;
+    transition: 0.3s;
 }
 .diagram-block .diagram-edit:hover{
     background-color: transparent !important;
@@ -2624,33 +2632,69 @@ button.close:hover{
 }
 
 .diagram-block {
-    width: 100%;
-    height: 35px;
-    max-width: 300px;
+  display: flex;
+  padding-right: 8px;
+  width: 100%;
+  height: 40px;
+  -webkit-align-items: center;
+  align-items: center;
 }
 
-.diagram-block>button {
-    padding-left: 8px;
-    padding-right: 0px;
-    text-align: left;
-    font-size: 12px !important;
-    width: 100%;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: all 0.15s ease;
-    color: #8DA2B5 !important;
-}
-.diagram-block>button:hover{
-    background-color: transparent !important;
-    color: #62778c !important;
-
-}
-.diagram-block>input {
-    padding: 0px 6px;
-    height: 28px;
-    font-size: 12px !important;
+.diagram-block:hover {
+    background-color: #f8f9fa;
 }
 
+.diagram-block:hover > .dropdown > .diagram-edit {
+    opacity: 1;
+}
+
+.diagram-block.active {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e0e3e5;
+    border-bottom: 1px solid #e0e3e5;
+}
+
+.diagram-block.active > .diagram-button {
+    color: #62778c;
+}
+
+.diagram-block.active > .diagram-button > .flow-icon {
+    opacity: 1;
+}
+
+.diagram-block>.diagram-button {
+  padding: 10px 0px 10px 18px;
+  text-align: left;
+  font-size: 12px !important;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.15s ease;
+  color: #8DA2B5;
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  border: none;
+  background-color: transparent;
+}
+
+.diagram-block>.diagram-button>.form-control {
+  color: #62778c;
+  padding: 0 !important;
+  height: 19px;
+  line-height: 19px;
+  letter-spacing: normal !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  margin-right: 1px;
+  box-shadow: none !important;
+  border: none !important;
+  background-color: transparent;
+  font-size: 13px !important;
+  font-weight: 600px;
+}
 .choice-block {
     width: 100%;
     border-radius: 5px;

@@ -60,6 +60,7 @@ module.exports = (middleware, controllers) => {
   router.post('/project/:project_id/version/:version_id/alexa', middleware.ensureLoggedIn, controllers.Skill.buildSkill);
   router.post('/project/:project_id/version/:version_id/google', middleware.ensureLoggedIn, controllers.Skill.buildGoogleSkill);
   router.patch('/project/:project_id/amzn_id', middleware.ensureLoggedIn, middleware.verifyProjectAccess, controllers.Project.updateSkillId);
+  router.post('/project/:project_id/vendor_id', middleware.ensureLoggedIn, middleware.verifyProjectAccess, controllers.Project.updateVendorId);
 
   router.post('/test/api', middleware.ensureLoggedIn, controllers.test.api);
   router.post('/test/speak', middleware.ensureLoggedIn, middleware.ensurePaid, controllers.test.speak);

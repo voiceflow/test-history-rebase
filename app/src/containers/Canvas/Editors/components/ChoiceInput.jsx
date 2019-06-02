@@ -59,6 +59,8 @@ class ChoiceInput extends Component {
         return true
       }else if(this.state.text !== state.text){
         return true
+      }else if(this.state.text_error !== state.text_error){
+        return true
       }
       return false
     }

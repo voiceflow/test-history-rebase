@@ -16,7 +16,7 @@ const tests = [
     calledPath: '/integrations/get_users',
     expected: {
       controllers: {
-        Integrations: {
+        integrations: {
           getAllUsers: 1,
         },
       },
@@ -31,7 +31,7 @@ const tests = [
     calledPath: '/integrations/add_user',
     expected: {
       controllers: {
-        Integrations: {
+        integrations: {
           addUser: 1,
         },
       },
@@ -46,7 +46,7 @@ const tests = [
     calledPath: '/integrations/delete_user',
     expected: {
       controllers: {
-        Integrations: {
+        integrations: {
           deleteUser: 1,
         },
       },
@@ -58,121 +58,18 @@ const tests = [
   },
   {
     method: 'post',
-    calledPath: '/integrations/google_sheets/spreadsheets',
+    calledPath: '/integrations/service/endpoint',
+    namedPath: '/integrations/*',
     expected: {
       controllers: {
-        GoogleSheets: {
-          getSpreadsheets: 1,
+        integrationProxy: {
+          proxy: 1,
         },
       },
       middleware: {
         ensureLoggedIn: 1,
         verify: 1,
-      },
-    },
-  },
-  {
-    method: 'post',
-    calledPath: '/integrations/google_sheets/spreadsheet_sheets',
-    expected: {
-      controllers: {
-        GoogleSheets: {
-          getSpreadsheetSheets: 1,
-        },
-      },
-      middleware: {
-        ensureLoggedIn: 1,
-        verify: 1,
-      },
-    },
-  },
-  {
-    method: 'post',
-    calledPath: '/integrations/google_sheets/sheet_headers',
-    expected: {
-      controllers: {
-        GoogleSheets: {
-          getSheetHeaders: 1,
-        },
-      },
-      middleware: {
-        ensureLoggedIn: 1,
-        verify: 1,
-      },
-    },
-  },
-  {
-    method: 'post',
-    calledPath: '/integrations/google_sheets/retrieve_data',
-    expected: {
-      controllers: {
-        GoogleSheets: {
-          retrieveData: 1,
-        },
-      },
-      middleware: {
-        ensureLoggedIn: 1,
-        verify: 1,
-      },
-    },
-  },
-  {
-    method: 'post',
-    calledPath: '/integrations/google_sheets/create_data',
-    expected: {
-      controllers: {
-        GoogleSheets: {
-          createData: 1,
-        },
-      },
-      middleware: {
-        ensureLoggedIn: 1,
-        verify: 1,
-      },
-    },
-  },
-  {
-    method: 'post',
-    calledPath: '/integrations/google_sheets/update_data',
-    expected: {
-      controllers: {
-        GoogleSheets: {
-          updateData: 1,
-        },
-      },
-      middleware: {
-        ensureLoggedIn: 1,
-        verify: 1,
-      },
-    },
-  },
-  {
-    method: 'post',
-    calledPath: '/integrations/google_sheets/delete_data',
-    expected: {
-      controllers: {
-        GoogleSheets: {
-          deleteData: 1,
-        },
-      },
-      middleware: {
-        ensureLoggedIn: 1,
-        verify: 1,
-      },
-    },
-  },
-  {
-    method: 'post',
-    calledPath: '/integrations/custom/make_test_api_call',
-    expected: {
-      controllers: {
-        Custom: {
-          makeTestAPICall: 1,
-        },
-      },
-      middleware: {
-        ensureLoggedIn: 1,
-        verify: 1,
+        getApiUser: 1,
       },
     },
   },

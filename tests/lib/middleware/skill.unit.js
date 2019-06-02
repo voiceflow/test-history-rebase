@@ -35,7 +35,7 @@ describe('skill middleware unit tests', () => {
         skill_id: 'a',
       },
     };
-    const res = {};
+    const res = null;
     const next = sinon.stub().returns();
 
     await skill.hasSkillAccess(req, res, next);
@@ -71,7 +71,7 @@ describe('skill middleware unit tests', () => {
         skill_id: 'a',
       },
     };
-    const res = sinon.stub().returns();
+    const res = null;
     const next = sinon.stub().returns();
     let error;
 
@@ -86,7 +86,6 @@ describe('skill middleware unit tests', () => {
     expect(services.skillsManager.checkSkillAccess.args[0][0]).to.eql(0);
     expect(services.skillsManager.checkSkillAccess.args[0][1]).to.eql(1);
 
-    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
 
     expect(error instanceof Error).to.be.true;

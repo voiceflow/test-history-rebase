@@ -29,13 +29,12 @@ const Team = require('../routes/team.js');
 const Project = require('../routes/project.js');
 const { copySkill } = require('../routes/skill_util');
 const Track = require('../routes/track.js');
-const Integrations = require('../routes/integrations');
-const GoogleSheets = require('../routes/integrations/googleSheets');
-const Custom = require('../routes/integrations/custom');
+
+const IntegrationProxy = require('../lib/proxy');
 
 const { JWT, Segement, MockSegement, staticClients } = require('../lib/clients');
 const Managers = require('../lib/services');
-const { Project: ProjectMiddleware, Skill: SkillMiddleware } = require('../lib/middleware');
+const { Project: ProjectMiddleware, Skill: SkillMiddleware, Api: ApiMiddleware } = require('../lib/middleware');
 const Controllers = require('../lib/controllers');
 
 const responseBuilder = new ResponseBuilder();
@@ -113,6 +112,8 @@ class ServiceManager {
       );
     });
 
+    const integrationProxy = IntegrationProxy();
+
     return {
       ...controllers,
       policy,
@@ -125,9 +126,7 @@ class ServiceManager {
       Team,
       Diagram,
       Track,
-      Integrations,
-      GoogleSheets,
-      Custom,
+      integrationProxy,
       Onboard,
       Logs,
       Code,
@@ -144,7 +143,7 @@ class ServiceManager {
    * @returns {*}
    */
   static buildMiddleware(clients, services) {
-    const { projectManager, skillsManager } = services;
+    const { projectManager, skillsManager, apiManager } = services;
     const { hashids } = clients;
 
     const ensureLoggedIn = (req, res, next) => (req.user ? next() : res.sendStatus(401));
@@ -166,6 +165,8 @@ class ServiceManager {
       skillsManager,
       hashids,
     });
+
+    const api = ApiMiddleware({ apiManager });
 
     return {
       isProjectOwner: (req, res, next) => project.isOwner(req, res, next),
@@ -198,6 +199,7 @@ class ServiceManager {
       verifyProjectAccess: Team.verifyProjectAccess,
       verifyTeam: Team.verifyTeam,
       hasSkillAccess: skill.hasSkillAccess,
+      getApiUser: api.getUser,
     };
   }
 

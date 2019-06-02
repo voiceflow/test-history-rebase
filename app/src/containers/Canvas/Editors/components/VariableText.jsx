@@ -53,6 +53,7 @@ class VariableText extends Component {
     }
 
     componentWillUnmount(){
+        if(this.props.silent)return;
         const raw = convertToRaw(this.state.editorState.getCurrentContent());
         raw.text = this.state.editorState.getCurrentContent().getPlainText();
         this.props.updateRaw(raw);

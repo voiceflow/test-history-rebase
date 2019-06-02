@@ -78,7 +78,7 @@
     "@babel/core": "^7.3.3",
     "@commitlint/cli": "^7.6.1",
     "@commitlint/config-conventional": "^7.5.0",
-    "@voiceflow/database": "^1.1.3",
+    "@voiceflow/database": "^1.2.0",
     "@voiceflow/eslint-config": "^1.0.0",
     "@voiceflow/git-branch-check": "^1.0.2",
     "@voiceflow/prettier-config": "^1.0.4",

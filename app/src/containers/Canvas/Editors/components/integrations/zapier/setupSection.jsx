@@ -25,17 +25,19 @@ class SetupSection extends Component {
     return (
       <>
         <div className={`d-flex flex-column section-title-container`} onClick={() => this.props.toggleSection()}>
-          <div className='integrations-section-title text-muted'>Zapier Setup
+          <div className='integrations-section-title text-muted'>
+            Zapier Setup
           </div>
         </div>
         <Collapse isOpen={this.props.open} className='w-100'>
           <div className='d-flex flex-column mb-3 text-dark'>
-            <div className='d-flex flex-row w-100 mb-3 align-items-center'>
+            <div className='d-flex flex-row w-100 align-items-center'>
                 <div className="d-flex flex-fill" style={{ overflow: "auto" }}>
                   <ol>
-                  <li>Join the Voiceflow Zapier Beta <a href={zapierInviteEndpoint} target="_blank" rel="noopener noreferrer">here</a></li>
-                  <li>Connect your account with this API key
-                  <InputGroup>
+                  <li className="mb-3">Join the Voiceflow Zapier Beta <a href={zapierInviteEndpoint} target="_blank" rel="noopener noreferrer">here</a></li>
+                  <li className="mb-3">Create a Zap using trigger app <b>Voiceflow</b></li>
+                  <li className="mb-3">Connect your account with this API key
+                  <InputGroup className="mt-1">
                     <InputGroupAddon addonType="prepend">
                       <ClipBoard
                         component="button"
@@ -49,7 +51,7 @@ class SetupSection extends Component {
                     <Input readOnly value={this.props.apiKey} className="form-control-border right" />
                   </InputGroup>
                   </li>
-                  <li>Create a Zap using the trigger <code>{feed}</code></li>
+                  <li>Select trigger <code>{feed}</code></li>
                   </ol>
                 </div>
               </div>

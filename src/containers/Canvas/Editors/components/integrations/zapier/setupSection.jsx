@@ -4,6 +4,12 @@ import { Collapse, InputGroup, InputGroupAddon, Input} from 'reactstrap'
 import Button from 'components/Button'
 import ClipBoard from 'components/ClipBoard/ClipBoard'
 
+var zapierInviteEndpoint;
+if (process.env.REACT_APP_BUILD_ENV === 'staging' || process.env.NODE_ENV !== 'production') {
+  zapierInviteEndpoint = 'https://zapier.com/developer/public-invite/21201/642d361378b287979f713057f57e5473/'
+} else {
+  zapierInviteEndpoint = 'https://zapier.com/developer/public-invite/20085/7eccd63d8c656ef77db11cdc63c42fa4/'
+}
 
 // props
 // action_data, open, headers_loading, sheet_headers, toggleSection, variables, showNextSection
@@ -27,7 +33,7 @@ class SetupSection extends Component {
             <div className='d-flex flex-row w-100 mb-3 align-items-center'>
                 <div className="d-flex flex-fill" style={{ overflow: "auto" }}>
                   <ol>
-                  <li>Join the Voiceflow Zapier Beta <a href="https://zapier.com/developer/public-invite/20085/7eccd63d8c656ef77db11cdc63c42fa4/" target="_blank" rel="noopener noreferrer">here</a></li>
+                  <li>Join the Voiceflow Zapier Beta <a href={zapierInviteEndpoint} target="_blank" rel="noopener noreferrer">here</a></li>
                   <li>Connect your account with this API key
                   <InputGroup>
                     <InputGroupAddon addonType="prepend">

@@ -154,14 +154,15 @@ class EditProduct extends React.Component {
   }
 
   handlePhraseAdd = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     this.setState({
       phrases: this.state.phrases.concat([''])
     });
     return false
   }
 
-  handlePhraseRemove = idx => () => {
+  handlePhraseRemove = idx => (e) => {
+    if(e) e.preventDefault();
     this.setState({
       phrases: _.filter(this.state.phrases, (p, pidx) => idx !== pidx)
     });

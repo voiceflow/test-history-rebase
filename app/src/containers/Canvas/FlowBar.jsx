@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import { ListGroup, ListGroupItem } from "reactstrap";
-import { setConfirm } from 'ducks/modal'
 import { renameDiagram } from 'ducks/diagram';
+import { v4 } from 'uuid'
+import './FlowBar.css'
+import cn from 'classnames'
 
-import {UncontrolledDropdown, DropdownToggle, DropdownItem, DropdownMenu} from 'reactstrap'
-class FlowBar extends Component{
+import {Dropdown, DropdownToggle, DropdownItem, DropdownMenu} from 'reactstrap'
+export class FlowBar extends Component{
     constructor(props){
         super(props);
         this.state = {
             name: this.props.name? this.props.name : "Flow",
             edit: false,
             newFlowName: this.props.name ? this.props.name : "Flow",
+            leftDropdownOpen: false,
+            rightDropdownOpen: false,
+            parentDiagrams: this.getParentDiagramsWithNames(),
+            childDiagrams: this.getChildDiagramsWithNames(),
         };
     }
     static getDerivedStateFromProps(props){
@@ -21,34 +26,52 @@ class FlowBar extends Component{
         };
     }
 
-    generateFlowMenu = e => {
-        e.stopPropagation();
-        e.preventDefault();
-        let engine = this.props.engine
-        this.props.setBlockMenu(
-            <>
-                <div style={{ top: engine.getDiagramModel().getGridPosition(e.clientY - 155), left: engine.getDiagramModel().getGridPosition(e.clientX), cursor: 'pointer', position: 'absolute', zIndex: 10 }}>
-                    <ListGroup>
-                        <ListGroupItem onClick={() => {
-                            this.props.setBlockMenu(null)
-                            this.setState({
-                                edit: true
-                            })
-                        }}>Rename Flow</ListGroupItem>
-                    </ListGroup>
-                </div>
-            </>
-        )
+    componentDidUpdate = (nextProps) => {
+      if(nextProps.diagrams !== this.props.diagrams) {
+        this.setState({
+          parentDiagrams: this.getParentDiagramsWithNames(),
+          childDiagrams: this.getChildDiagramsWithNames(),
+        })
+      }
+    }
+
+    getChildDiagramsWithNames = () => {
+      if(!this.props.diagram) return;
+
+      return this.props.diagram.sub_diagrams
+        .map((diagram_id) => this.props.diagrams.filter(({id}) => id === diagram_id))
+        .filter((childDiagrams) => !_.isEmpty(childDiagrams))
+        .map(([{name, id}]) => ({name, id}))
+    }
+
+    getParentDiagramsWithNames = () => {
+      if(!this.props.diagram) return;
+      
+      return this.props.diagrams
+        .filter(({sub_diagrams}) => sub_diagrams.includes(this.props.diagram_id))
+        .map(({name, id}) => ({name, id}))
+    }
+
+    toggle = side => {
+        if (side === "left")
+            this.setState({
+                leftDropdownOpen: !this.state.leftDropdownOpen
+            })
+        else {
+            this.setState({
+                rightDropdownOpen: !this.state.rightDropdownOpen
+            })
+        }
     }
 
     render(){
+      if(!this.props.diagram) return null;
+
         return <React.Fragment>
             <button id="home-button" className="btn-home pl-3" onClick={()=>this.props.enterFlow(this.props.root_id)}>
                 <span>Home</span>
             </button>
-            <div id="flow-bar" className="text-center"
-                onContextMenu={this.generateFlowMenu}
-            >
+            <div id="flow-bar" className="text-center">
                 <div className="super-center px-5 w-100 no-select">
                     <div className="text-muted text-max w-100 px-5 mt-1">
                         <i className="flow-icon mr-3">&nbsp;&nbsp;&nbsp;&nbsp;</i>
@@ -61,55 +84,68 @@ class FlowBar extends Component{
                                     this.setState({
                                         edit: false,
                                     })
-                                    this.props.renameFlow(this.props.diagram, this.state.newFlowName)
+                                    this.props.renameFlow(this.props.diagram_id, this.state.newFlowName)
                                 }}
                                 onKeyUp={e => {
                                     if (e.keyCode === 13){
                                         this.setState({
                                             edit: false,
                                         })
-                                        this.props.renameFlow(this.props.diagram, this.state.newFlowName)
+                                        this.props.renameFlow(this.props.diagram_id, this.state.newFlowName)
                                     }
                                 }}
                                 onChange={e => this.setState({
                                     newFlowName: e.target.value
                                 })}
                             />
-                        :this.state.name
+                        : this.state.name 
                         }
                     </div>
                 </div>
-                {!this.props.preview &&
-                    <UncontrolledDropdown direction='up'>
-                        <DropdownToggle className="dropdown-button position-absolute right mr-4 mt-1" tag="button">
-                        <i className="far fa-ellipsis-h"></i>
-                        </DropdownToggle>
-                        <DropdownMenu className="no-select">
-                            <DropdownItem header>
-                                Flow Options
+                <Dropdown direction='up' isOpen={this.state.leftDropdownOpen} toggle={() => this.toggle("left")}>
+                    <DropdownToggle 
+                        className="dropdown-button mt-1 previous" 
+                        tag="button" 
+                        disabled={this.state.parentDiagrams.length === 0}>
+                    <img src="/arrow-left-hover.svg" alt="arrow" className={cn("flow-arrow", {"active": this.state.leftDropdownOpen})} />
+                    </DropdownToggle>
+                    <DropdownMenu  className="no-select py-2 mb-2">
+                        {this.state.parentDiagrams && this.state.parentDiagrams.map(({id, name}) => (
+                            <DropdownItem onClick={() => this.props.enterFlow(id)} className="pointer" key={v4()}>
+                                {name === 'ROOT' ? 'Home' : name}
                             </DropdownItem>
-                            <DropdownItem onClick={() => this.props.copyFlow(this.props.diagram)} className="pointer">
-                            Copy
+                        ))}
+                    </DropdownMenu>
+                </Dropdown>
+                <Dropdown direction='up' isOpen={this.state.rightDropdownOpen} toggle={() => this.toggle("right")}>
+                    <DropdownToggle 
+                        className="dropdown-button mr-4 mt-1" 
+                        tag="button" 
+                        disabled={this.state.childDiagrams.length === 0}>
+                    <img src="/arrow-right-hover.svg" alt="arrow" className={cn("flow-arrow", {"active": this.state.rightDropdownOpen})}/>
+                    </DropdownToggle>
+                    <DropdownMenu className="no-select py-2 mb-2">
+                        {this.state.childDiagrams.map(({id, name}) => (
+                            <DropdownItem onClick={() => this.props.enterFlow(id)} className="pointer" key={v4()}>
+                                {name}
                             </DropdownItem>
-                            <DropdownItem onClick={() => this.props.deleteFlow(this.props.diagram)} className="pointer">
-                            Delete
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
-                }
+                        ))}
+                    </DropdownMenu>
+                </Dropdown>
             </div>
         </React.Fragment>
     }
 }
 
 const mapStateToProps = state => ({
-  diagram: state.skills.skill.diagram,
+  diagrams: state.diagrams.diagrams,
+  diagram: _.find(state.diagrams.diagrams, d => d.id === state.skills.skill.diagram),
+  diagram_id: state.skills.skill.diagram,
   name: _.find(state.diagrams.diagrams, d => d.id === state.skills.skill.diagram) && _.find(state.diagrams.diagrams, d => d.id === state.skills.skill.diagram).name,
 });
 
 const mapDispatchToProps = dispatch => {
     return {
-      setConfirm: confirm => dispatch(setConfirm(confirm)),
       renameFlow: (id, name) => dispatch(renameDiagram(id, name))
     };
 }

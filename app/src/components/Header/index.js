@@ -37,6 +37,7 @@ const Header = (props) => {
     user,
     title,
     logout,
+    preview,
     history,
     withLogo,
     className,
@@ -62,6 +63,43 @@ const Header = (props) => {
     })
     return false;
   }
+
+  const renderRight = () => {
+    if(!preview) {
+      return <>
+        {rightRenderer && rightRenderer()}
+        <UncontrolledDropdown className="account-dropdown">
+          <DropdownToggle className="account hover" nav tag="div">
+            <User user={user} className="pointer"/>
+          </DropdownToggle>
+          <DropdownMenu right className="arrow arrow-right no-select">
+            <DropdownItem header>
+              {user.email}
+            </DropdownItem>
+            <DropdownItem divider />
+            <Link className="dropdown-item" to="/account">
+              Account
+            </Link>
+            { user.admin >= 100 &&
+                <Link className="dropdown-item" to="/admin">
+                  Admin
+                </Link>
+            }
+            <DropdownItem onClick={userLogout} tag="a" href="#">
+              Logout
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+      </>
+    } else {
+      return (<div className="title-group no-select">
+          <span className="text-blue" id="preview-title">
+            <span className="dot"/> PREVIEW MODE
+          </span>
+      </div>)
+    }
+  }
+
   return (
     <div className={cn('header', className)}>
       <div className="header-inner">
@@ -81,29 +119,7 @@ const Header = (props) => {
           {centerRenderer && <div className="header-grid__center">{centerRenderer()}</div>}
 
           <div className={cn('header-grid__right', rightClassName)}>
-            {rightRenderer && rightRenderer()}
-            <UncontrolledDropdown className="account-dropdown">
-                  <DropdownToggle className="account hover" nav tag="div">
-                    <User user={user} className="pointer"/>
-                  </DropdownToggle>
-                  <DropdownMenu right className="arrow arrow-right no-select">
-                    <DropdownItem header>
-                      {user.email}
-                    </DropdownItem>
-                    <DropdownItem divider />
-                    <Link className="dropdown-item" to="/account">
-                      Account
-                    </Link>
-                    { user.admin >= 100 &&
-                        <Link className="dropdown-item" to="/admin">
-                          Admin
-                        </Link>
-                    }
-                    <DropdownItem onClick={userLogout} tag="a" href="#">
-                      Logout
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
+            {renderRight()}
           </div>
         </div>
       </div>

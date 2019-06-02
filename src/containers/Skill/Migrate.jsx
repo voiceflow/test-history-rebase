@@ -18,8 +18,6 @@ class Migrate extends Component {
     this.stageHandler = this.stageHandler.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.updateSkill = this.updateSkill.bind(this)
-
-    console.log(this.props)
   }
 
   handleChange = event => {

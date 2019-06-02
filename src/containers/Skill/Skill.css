@@ -594,10 +594,6 @@ textarea::placeholder {
   font-weight: bold
 }
 
-.faded {
-  opacity: 0.55;
-}
-
 .publish-label {
   margin-top: -2px;
 }

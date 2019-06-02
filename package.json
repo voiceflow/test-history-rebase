@@ -146,6 +146,7 @@
     "commit": "git-cz",
     "debug": "node --inspect-brk index.js",
     "dev": "concurrently --kill-others-on-fail \"npm run local\" \"npm run client\"",
+    "development": "NODE_ENV=development node index.js",
     "install-client": "cd app && yarn",
     "integration": "NODE_ENV=test node tests/server/init-old-integration.js && NODE_ENV=test mocha --use_strict --exit \"tests/**/*.it.js\"",
     "lint": "fixpack && eslint \"**/*.js\" --fix",

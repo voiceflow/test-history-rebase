@@ -15,7 +15,8 @@ const initialState = {
 	name: null,
 	creator_id: null,
   admin: 0,
-  image: null
+  image: null,
+  vendors: [],
 }
 
 // REDUCER
@@ -83,6 +84,22 @@ export const logout = () => {
     dispatch(resetAccount())
     
     return Promise.resolve()
+  }
+}
+
+export const getVendors = () => {
+  return async dispatch => {
+    try {
+      const vendors = (await axios.get('/session/vendor?all=true')).data;
+      if(Array.isArray(vendors)) {
+        dispatch(updateAccount({
+          vendors
+        }))
+      }
+    } catch(err) {
+      console.error(err);
+    }
+    Promise.resolve();
   }
 }
 

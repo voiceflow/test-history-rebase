@@ -354,11 +354,11 @@ export const fetchVersion = (version_id, preview, diagram_id) => {
   };
 };
 
-export const fetchLiveVersion = project_id => {
+export const fetchLiveVersion = (project_id, amzn_id) => {
   return (dispatch, getStore) => {
     dispatch(fetchVersionBegin());
     return axios
-      .get(`/project/${project_id}/live_version`)
+      .get(`/project/${project_id}/live_version?amzn_id=${amzn_id || ''}`)
       .then(res => {
         let skill_id = getStore().skills.skill.project_id;
         if (skill_id === res.data.live_version) {

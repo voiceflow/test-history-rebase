@@ -34,7 +34,7 @@ import {
 import './TestModal.css'
 
 var test_endpoint;
-if (process.env.REACT_APP_BUILD_ENV) {
+if (process.env.REACT_APP_BUILD_ENV === 'staging') {
   test_endpoint = 'https://staging.voiceflow.app/state/test'
 } else if (process.env.NODE_ENV === 'development') {
   // dev code

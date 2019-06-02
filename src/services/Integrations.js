@@ -1,3 +1,5 @@
+import React from 'react'
+import { Alert } from 'reactstrap'
 import axios from 'axios'
 import _ from 'lodash'
 
@@ -176,8 +178,8 @@ export default {
     createMessage: async (params) => {
       return new Promise(async (resolve, reject) => {
         try {
-          const resp = await axios.post('/integrations/zapier/trigger', params)
-          resolve(resp.data)
+          await axios.post('/integrations/zapier/trigger', params)
+          resolve(<Alert className="text-center">Successfully Triggered Zap</Alert>)
         } catch (e) {
           reject(e)
         }

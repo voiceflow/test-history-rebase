@@ -1405,9 +1405,9 @@
       }
     },
     "@voiceflow/database": {
-      "version": "1.1.3",
-      "resolved": "https://registry.npmjs.org/@voiceflow/database/-/database-1.1.3.tgz",
-      "integrity": "sha512-+P721/IRb4zxw/2EVOFJkPH6ANQvCB1qeGkLLx5S2zWQWVpl0w9efr03VGOxeZmDFWq3UhPZgFVKaS2FhyjfZQ==",
+      "version": "1.2.0",
+      "resolved": "https://registry.npmjs.org/@voiceflow/database/-/database-1.2.0.tgz",
+      "integrity": "sha512-0hZMEpU9gzN6I0b3oHmmwM+AIcs9TRt7WO2cxFqNQG/23B4z7C+GkLfYjtanLsf5GEOqeKNfgyDL1ivC7CtO5w==",
       "dev": true,
       "requires": {
         "aws-sdk": "^2.448.0",

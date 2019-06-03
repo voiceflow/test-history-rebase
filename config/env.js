@@ -78,7 +78,6 @@ function getClientEnvironment(publicUrl) {
         // images into the `src` and `import` them in code to get their paths.
         PUBLIC_URL: publicUrl,
         APP_API_HOST: process.env.APP_API_HOST || 'localhost',
-        VOICEFLOW_API_HOST: process.env.VOICEFLOW_API_HOST || 'localhost',
       }
     );
   // Stringify all values so we can feed into Webpack DefinePlugin

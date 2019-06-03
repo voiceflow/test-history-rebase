@@ -26,6 +26,9 @@ const SERVICES_MAP = {
     [C.CU.PATCH_REQUEST]: IntegrationsService.custom.patchRequest,
     [C.CU.PUT_REQUEST]: IntegrationsService.custom.putRequest,
     [C.CU.DELETE_REQUEST]: IntegrationsService.custom.deleteRequest,
+  },
+  [C.ZP.ZAPIER]:{
+    [C.ZP.CREATE_DATA]: IntegrationsService.zapier.createMessage,
   }
 }
 
@@ -44,6 +47,7 @@ class TestSection extends Component {
 
     this.copyJSONPath = this.copyJSONPath.bind(this)
     this.runTest = this.runTest.bind(this)
+    this.renderTestContent = this.renderTestContent.bind(this)
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -175,6 +179,31 @@ class TestSection extends Component {
     })
   }
 
+  renderTestContent() {
+    if(this.state.test_loading) {
+      return <div className="text-center"><div className='loader text-lg' /></div>
+    } else if (this.state.test_content) {
+      if (React.isValidElement(this.state.test_content)) {
+        return this.state.test_content
+      } else if (Object.keys(this.state.test_content).length === 0) {
+        return <div className="text-center mb-2 success">
+          Action Performed Succesfully!<div className="small text-muted">(No Data Returned)</div>
+        </div>
+      } else if (Object.keys(this.state.test_content).length > 0) {
+        return <div className="mb-3" >
+          <ReactJson 
+            src={this.state.test_content} 
+            displayDataTypes={false} 
+            name='response' 
+            enableClipboard={this.copyJSONPath} 
+            collapsed={JSON.stringify(this.state.test_content).length > 1000} 
+          />
+        </div>
+      }
+    }
+    return null;
+  }
+
   render() {
     return (
       <>
@@ -217,9 +246,7 @@ class TestSection extends Component {
         </div>
         <Collapse isOpen={this.props.open} className='w-100'>
           <Button className="mb-3 btn btn-lg btn-block" color="clear" onClick={() => this.props.showConfirm ? this.showConfirmModal() : this.runTest()} size="sm" block><i className="fas fa-power-off mr-2"></i>Test Integration</Button>
-          {this.state.test_content && Object.keys(this.state.test_content).length === 0 && !this.state.test_loading && <div className="text-center mb-2 success">Action Performed Succesfully!<div className="small text-muted">(No Data Returned)</div></div>}
-          {this.state.test_content && Object.keys(this.state.test_content).length > 0 && <div className="mb-3" ><ReactJson src={this.state.test_content} displayDataTypes={false} name='response' enableClipboard={this.copyJSONPath} collapsed={JSON.stringify(this.state.test_content).length > 1000} /></div>}
-          {this.state.test_loading && <div className="text-center"><div className='loader text-lg' /></div>}
+          {this.renderTestContent()}
         </Collapse>
       </>
     )

@@ -13,7 +13,7 @@ In order to run the entire system locally you need to:
 1. Start all databases in the background 
 1. Start UI backend in a terminal window 
 1. Start UI client in a terminal window 
-1. Start UI server in a terminal window 
+1. Start storyflow server in a terminal window 
 1. Start ngrok in a a terminal window (if testing alexa skills)
 
 ## Start databases

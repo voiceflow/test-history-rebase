@@ -134,20 +134,11 @@ module.exports = (middleware, controllers) => {
   router.get('/analytics/:project_id/:from/:to/:user_tz/DAU', middleware.ensureLoggedIn, middleware.isProjectOwner, controllers.analytics.getDAU);
   router.get('/analytics/:project_id', middleware.ensureLoggedIn, middleware.isProjectOwner, controllers.analytics.getStats);
 
-  router.post('/integrations/get_users', middleware.ensureLoggedIn, controllers.Integrations.getAllUsers);
-  router.post('/integrations/add_user', middleware.ensureLoggedIn, controllers.Integrations.addUser);
-  router.post('/integrations/delete_user', middleware.ensureLoggedIn, controllers.Integrations.deleteUser);
+  router.post('/integrations/get_users', middleware.ensureLoggedIn, controllers.integrations.getAllUsers);
+  router.post('/integrations/add_user', middleware.ensureLoggedIn, controllers.integrations.addUser);
+  router.post('/integrations/delete_user', middleware.ensureLoggedIn, controllers.integrations.deleteUser);
 
-  router.post('/integrations/google_sheets/spreadsheets', middleware.ensureLoggedIn, controllers.GoogleSheets.getSpreadsheets);
-  router.post('/integrations/google_sheets/spreadsheet_sheets', middleware.ensureLoggedIn, controllers.GoogleSheets.getSpreadsheetSheets);
-  router.post('/integrations/google_sheets/sheet_headers', middleware.ensureLoggedIn, controllers.GoogleSheets.getSheetHeaders);
-
-  router.post('/integrations/google_sheets/retrieve_data', middleware.ensureLoggedIn, controllers.GoogleSheets.retrieveData);
-  router.post('/integrations/google_sheets/create_data', middleware.ensureLoggedIn, controllers.GoogleSheets.createData);
-  router.post('/integrations/google_sheets/update_data', middleware.ensureLoggedIn, controllers.GoogleSheets.updateData);
-  router.post('/integrations/google_sheets/delete_data', middleware.ensureLoggedIn, controllers.GoogleSheets.deleteData);
-
-  router.post('/integrations/custom/make_test_api_call', middleware.ensureLoggedIn, controllers.Custom.makeTestAPICall);
+  router.use('/integrations', middleware.getApiUser, middleware.ensureLoggedIn, controllers.integrationProxy.proxy);
 
   router.get('/onboard', middleware.ensureLoggedIn, controllers.Onboard.checkIfOnboarded);
   router.post('/onboard', middleware.ensureLoggedIn, controllers.Onboard.submitOnboardSurvey);
@@ -179,6 +170,9 @@ module.exports = (middleware, controllers) => {
   router.post('/image', middleware.ensureLoggedIn, middleware.uploadAny, controllers.utilities.uploadImage);
 
   router.post('/concat', middleware.ensureLoggedIn, controllers.Audio.concat);
+
+  router.get('/api/token', middleware.ensureLoggedIn, controllers.api.getToken);
+  router.get('/api/user', controllers.api.getUser);
 
   // Handle React routing, return all requests to React app
   router.get('*', controllers.utilities.readBuildFiles);

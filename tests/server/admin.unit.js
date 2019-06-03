@@ -28,7 +28,7 @@ const tests = [
   },
 ];
 
-describe('analytics route unit tests', () => {
+describe('admin route unit tests', () => {
   let app;
   let server;
 

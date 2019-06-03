@@ -29,11 +29,10 @@ describe('linking controller unit tests', () => {
         skill_id: 'a',
       },
     };
-    const res = sinon.stub().returns();
+    const res = null;
     const next = sinon.stub().returns();
 
     expect(await linking.getTemplate(req, res, next)).to.eql('thing');
-    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
 
     expect(services.hashids.decode.args[0][0]).to.eql('a');
@@ -58,11 +57,10 @@ describe('linking controller unit tests', () => {
       },
       body: {},
     };
-    const res = sinon.stub().returns();
+    const res = null;
     const next = sinon.stub().returns();
 
     expect(await linking.setTemplate(req, res, next)).to.eql();
-    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
 
     expect(services.hashids.decode.args[0][0]).to.eql('a');

@@ -27,11 +27,10 @@ describe('decode controller unit tests', () => {
       },
     };
 
-    const res = sinon.stub().returns();
+    const res = null;
     const next = sinon.stub().returns();
 
     expect(await decode.decodeId(req, res, next)).to.eql('a');
-    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
 
     expect(services.hashids.encode.args[0][0]).to.eql(1);
@@ -52,11 +51,10 @@ describe('decode controller unit tests', () => {
       },
     };
 
-    const res = sinon.stub().returns();
+    const res = null;
     const next = sinon.stub().returns();
 
     expect(await decode.encodeId(req, res, next)).to.eql('1');
-    expect(res.callCount).to.eql(0);
     expect(next.callCount).to.eql(0);
 
     expect(services.hashids.decode.args[0][0]).to.eql('a');

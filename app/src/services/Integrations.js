@@ -1,3 +1,5 @@
+import React from 'react'
+import { Alert } from 'reactstrap'
 import axios from 'axios'
 import _ from 'lodash'
 
@@ -58,7 +60,7 @@ export default {
       if (!user) throw new Error('Parameters missing, please ensure all sections are completed')
       return new Promise(async (resolve, reject) => {
         try {
-          const resp = await axios.post('/integrations/google_sheets/spreadsheet_sheets', {
+          const resp = await axios.post('/integrations/google_sheets/sheets', {
             spreadsheet,
             user
           })
@@ -171,5 +173,17 @@ export default {
     patchRequest: customAPICall,
     putRequest: customAPICall,
     deleteRequest: customAPICall
+  },
+  zapier: {
+    createMessage: async (params) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          await axios.post('/integrations/zapier/trigger', params)
+          resolve(<Alert className="text-center">Successfully Triggered Zap</Alert>)
+        } catch (e) {
+          reject(e)
+        }
+      })
+    },
   }
 }

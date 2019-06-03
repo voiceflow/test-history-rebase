@@ -51,7 +51,7 @@ export const checkSession = () => {
       dispatch(updateAccount(user))
       return Promise.resolve(user)
     } catch(err) {
-      cookies.remove('auth', {path: '/'})
+      cookies.remove('auth', {path: '/', domain: '.voiceflow.com'})
       dispatch(resetAccount())
       return Promise.reject(err)
     }
@@ -65,7 +65,7 @@ export const getUser = () => {
       dispatch(updateAccount(user))
       return Promise.resolve(user)
     } catch(err) {
-      cookies.remove('auth', {path: '/'})
+      cookies.remove('auth', {path: '/', domain: '.voiceflow.com'})
       dispatch(resetAccount())
       return Promise.reject(err)
     }
@@ -79,7 +79,7 @@ export const logout = () => {
     } catch(err) {
       console.error(err)
     }
-    cookies.remove('auth', {path: '/'});
+    cookies.remove('auth', {path: '/', domain: '.voiceflow.com'});
     localStorage.clear()
     dispatch(resetAccount())
     
@@ -113,7 +113,7 @@ const createSession = (endpoint) => {
           delete data.user.id
         }
 
-        cookies.set('auth', data.token, {path: '/'});
+        cookies.set('auth', data.token, {path: '/', domain: '.voiceflow.com'});
         cookies.remove('last_session');
 
         dispatch(updateAccount(data.user))

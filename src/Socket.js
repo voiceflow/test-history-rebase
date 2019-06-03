@@ -1,4 +1,5 @@
 import socket from 'socket.io-client';
+import axios from 'axios';
 
 const getEndpoint = () => {
   let port = '';
@@ -7,8 +8,13 @@ const getEndpoint = () => {
     port = ':8080';
     protocol = 'http';
   }
-  return `${protocol}://${window.location.hostname}${port}`;
+  return `${protocol}://${process.env.APP_API_HOST}${port}`;
 };
+
+// Configure axios 
+axios.defaults.baseURL = getEndpoint();
+axios.defaults.withCredentials = true;
+axios.defaults.crossDomain = true;
 
 const socketFail = () => {
   window.CreatorSocket.status = 'FAIL';

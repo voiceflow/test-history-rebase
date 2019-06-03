@@ -368,7 +368,7 @@ class TestModal extends React.Component {
       }
     }
 
-    axios.post(test_endpoint, data)
+    axios.post(test_endpoint, data, {withCredentials: false})
     .then(async res => {
       res = res.data
       if(res.line_id) {

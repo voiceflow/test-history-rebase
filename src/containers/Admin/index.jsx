@@ -22,13 +22,14 @@ const tabs = [
     link: '/admin'
   },
   {
-    display: <React.Fragment><i className="fal fa-store-alt"/> Vendors</React.Fragment>,
-    match: ['vendors'],
-    link: '/admin/vendors'
-  }, {
     display: <React.Fragment><i className="fal fa-money-bill-wave"/> Finance</React.Fragment>,
     match: ['charges'],
     link: '/admin/charges'
+  },
+  {
+    display: <React.Fragment><i className="fal fa-store-alt"/> Vendors</React.Fragment>,
+    match: ['vendors'],
+    link: '/admin/vendors'
   },
   {
     display: <React.Fragment><i className="fal fa-search"/> Skill Lookup</React.Fragment>,

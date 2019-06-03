@@ -270,7 +270,11 @@ exports.getSkill = async (req, res) => {
         skill_data.deprecated_amzn_id,
       ]);
       if (rows.rowCount === 0) {
-        await makeVendorEntryForExistingSkill(req.user.id, project_id, skill_data.deprecated_amzn_id);
+        try {
+          await makeVendorEntryForExistingSkill(req.user.id, project_id, skill_data.deprecated_amzn_id);
+        } catch(err) {
+          console.error(err);
+        }
       }
       skill_data.amzn_id = skill_data.deprecated_amzn_id;
     }

@@ -55,10 +55,16 @@ const allRoutes = (
     
     <PrivateRoute path="/admin/updates" name="Admin" component={Admin} page='updates'/>
     <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
+
+    <PrivateRoute path="/admin/charges/:creator_id" name="Admin" component={Admin} page='charges'/>
+    <PrivateRoute path="/admin/charges" name="Admin" component={Admin} page='charges'/>
+
     <PrivateRoute path="/admin/lookup/:version_id" name="Admin" component={Admin} page='lookup'/>
     <PrivateRoute path="/admin/lookup" name="Admin" component={Admin} page='lookup'/>
+
     <PrivateRoute path="/admin/vendors/:creator_id" name="Admin" component={Admin} page='vendors'/>
     <PrivateRoute path="/admin/vendors" name="Admin" component={Admin} page='vendors'/>
+
     <PrivateRoute path="/admin/version/:version_id" name="Admin" component={Admin} page='default'/>
     <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
     

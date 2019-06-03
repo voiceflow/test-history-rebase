@@ -26,6 +26,7 @@
 	width: 100%;
 	position: relative;
 	height: 100%;
+  padding: 30px;
 }
 
 .admin.Window .admin-page-inner>.subheader {
@@ -40,7 +41,7 @@
 	height: 41px;    
 }
 .admin.Window .admin-page-inner>.content {
-	padding: 100px 20px 50px 20px;
+	/*padding: 100px 20px 50px 20px;*/
 }
 
 .admin.Window  .sidebar>.sidebar-option {
@@ -103,4 +104,26 @@ transform: scale(1.03);
 	background-color: #00b7ff;
 	border-radius: 5px;
 	color: white;
+}
+
+.admin_highlight_emoji {
+  font-size: 28px;
+  border-radius: 5px;
+  color: white;
+}
+
+.admin_highlight_pink {
+  font-size: 12px;
+  padding: 5px 10px;
+  background-color: #FF69B4;
+  border-radius: 5px;
+  color: white;
+}
+
+.admin_highlight_purple {
+  font-size: 12px;
+  padding: 5px 10px;
+  background-color: #8B008B;
+  border-radius: 5px;
+  color: white;
 }

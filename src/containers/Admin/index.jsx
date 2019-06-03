@@ -13,6 +13,7 @@ import ProductUpdates from './ProductUpdates'
 import {ButtonGroup} from 'reactstrap'
 import SkillLookup from "./SkillLookup";
 import Vendors from "./Vendors";
+import FinanceBoard from "./FinanceBoard";
 
 const tabs = [
   {
@@ -24,6 +25,10 @@ const tabs = [
     display: <React.Fragment><i className="fal fa-store-alt"/> Vendors</React.Fragment>,
     match: ['vendors'],
     link: '/admin/vendors'
+  }, {
+    display: <React.Fragment><i className="fal fa-money-bill-wave"/> Finance</React.Fragment>,
+    match: ['charges'],
+    link: '/admin/charges'
   },
   {
     display: <React.Fragment><i className="fal fa-search"/> Skill Lookup</React.Fragment>,
@@ -64,6 +69,9 @@ class Admin extends Component {
         break;
       case 'vendors':
         page = <Vendors {...this.props}/>;
+        break;
+      case 'charges':
+        page = <FinanceBoard {...this.props}/>;
         break;
       default:
         page = <Home {...this.props}/>

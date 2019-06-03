@@ -108,7 +108,7 @@ class SkillLookup extends React.Component {
     return (
       <div className="admin-page-inner">
         <h3 className="fb_header">
-          Legacy Lookup Tool <span className={'admin_highlight_emoji'}>👨🏻‍🦳</span>
+          Legacy Lookup Tool <span className={'admin_highlight_emoji'}><span role="img" aria-label="old man">👨🏻‍🦳</span></span>
         </h3>
         <h5>Projects/Versions</h5>
         {this.state.loading ?

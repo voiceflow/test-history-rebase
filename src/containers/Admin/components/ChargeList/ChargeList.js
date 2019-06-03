@@ -8,7 +8,6 @@ class ChargeList extends React.Component {
 
   renderTeams() {
     const {charges} = this.props;
-    console.log('charges: ', charges);
     if (charges.length > 0) {
       return charges.map(team => {
         return (

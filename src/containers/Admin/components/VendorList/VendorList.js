@@ -24,7 +24,7 @@ class VendorList extends React.Component {
               </thead>
             </table>
           </div>
-          <div className="ctg__tbl-content">
+          <div className="vl__tbl-content">
             <table cellPadding="0" cellSpacing="0" border="0" className="ctg__table">
               <tbody>
                 {vendors.map(vendor => (

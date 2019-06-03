@@ -54,8 +54,6 @@ class VendorList extends React.Component {
   
   render() {
     
-    console.log('rendering vendors: ', this.props.vendors);
-    
     return (
       <div className="vl__wrapper">
         {this.renderVendors()}

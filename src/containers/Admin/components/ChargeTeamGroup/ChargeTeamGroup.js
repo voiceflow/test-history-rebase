@@ -113,16 +113,13 @@ class ChargeTeamGroup extends React.Component {
                 <div className="ctg__tbl-content">
                   <table cellPadding="0" cellSpacing="0" border="0" className="ctg__table">
                     <tbody>
-                    {team.charges.map(charge => <ChargeItem charge={charge} key={charge.id} showModal={this.showRefundModal}/>)}
+                    {Array.isArray(team.charges) && team.charges.map(charge => <ChargeItem charge={charge} key={charge.id} showModal={this.showRefundModal}/>)}
                     </tbody>
                   </table>
                 </div>
               </CardBody>
             </Card>
           </Collapse>
-          
-          
-          
           
           <Modal isOpen={this.state.showRefundModal} toggle={this.toggle} className={this.props.className}>
             <div className="am__title" onClick={this.toggle}>
@@ -188,14 +185,15 @@ class ChargeTeamGroup extends React.Component {
               </div> : null}
             </ModalBody>
             <ModalFooter>
-              <Button isWarning onClick={() => this.props.refundCharge(team.team_id, this.state.showRefundCharge.id, this.state.refundAmount)}>
+              <Button isWarning onClick={() => {
+                this.props.refundCharge(team.team_id, this.state.showRefundCharge.id, this.state.refundAmount);
+                this.toggle();
+              }}>
                 Refund User
               </Button>
               <Button isSecondary onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
           </Modal>
-
-
 
           <Modal isOpen={this.state.showCancelModal} toggle={this.toggleSub} className={this.props.className}>
             <div className="am__title" onClick={this.toggleSub}>
@@ -225,16 +223,15 @@ class ChargeTeamGroup extends React.Component {
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button isWarning onClick={() => this.props.cancelSubscription(team.team_id, team.stripe_sub_id)}>
+              <Button isWarning onClick={() => {
+                this.props.cancelSubscription(team.team_id, team.stripe_sub_id);
+                this.toggleSub();
+              }}>
                 Cancel Subscription
               </Button>
               <Button isSecondary onClick={this.toggleSub}>Cancel</Button>
             </ModalFooter>
           </Modal>
-          
-          
-          
-          
         </div>
       )
     } else {

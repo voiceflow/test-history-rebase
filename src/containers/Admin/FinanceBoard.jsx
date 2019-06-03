@@ -26,6 +26,7 @@ class FinanceBoard extends React.Component {
       // Get the charges for the user
       this.props.getCharges(setCreatorId);
       // Purposefully using coercion to compare the int creator id in store and the string param one
+      // Not a very important check so the use of purposeful coercion I believe is okay here.
       if (this.props.creator && this.props.creator.creator_id != setCreatorId) {
         this.props.findCreator(setCreatorId);
       }

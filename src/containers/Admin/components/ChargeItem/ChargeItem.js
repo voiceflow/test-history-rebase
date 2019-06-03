@@ -16,7 +16,7 @@ const ChargeItem = (props) => {
         <td>{charge.description}</td>
         <td>
           <div>
-            <a href={charge.receipt_url} target="_blank" className="ci__view_link">View Charge <i className="fas fa-external-link"/></a>
+            <a href={charge.receipt_url} target="_blank" rel="noopener noreferrer" className="ci__view_link">View Charge <i className="fas fa-external-link"/></a>
           </div>
           <hr className="ci__link_breaker"/>
           {charge.amount !== charge.amount_refunded ? 

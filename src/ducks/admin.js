@@ -120,7 +120,7 @@ export const refundCharge = (teamId, chargeId, chargeAmount) => async dispatch =
   }
   
   try {
-    let response = await axios.post(`/admin-api/refund/${teamId}/${chargeId}/${chargeAmount}`);
+    await axios.post(`/admin-api/refund/${teamId}/${chargeId}/${chargeAmount}`);
     toast.success('Refund successful! Please refresh the page to see updated charges');
   } catch (err) {
     console.error('error when refunding user: ', err);
@@ -137,7 +137,7 @@ export const cancelSubscription = (teamId, subscriptionId) => async dispatch => 
   }
 
   try {
-    let response = await axios.post(`/admin-api/cancel/${teamId}/${subscriptionId}`);
+    await axios.post(`/admin-api/cancel/${teamId}/${subscriptionId}`);
     toast.success('Subscription cancelled! Refresh to see updated results');
   } catch (err) {
     console.error('error from cancelling subscription', err);

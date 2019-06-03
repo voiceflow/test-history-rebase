@@ -21,7 +21,6 @@ import 'react-day-picker/lib/style.css';
 import {evaluateMaintenance} from './MAINTENANCE';
 
 // GLOBAL MODALS
-import {setConfirm} from 'ducks/modal';
 import ConfirmModal from 'components/Modals/ConfirmModal';
 import ErrorModal from 'components/Modals/ErrorModal';
 import Modal from 'components/Modals/Modal';

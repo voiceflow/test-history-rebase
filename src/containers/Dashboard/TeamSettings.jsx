@@ -485,8 +485,7 @@ class TeamSettings extends Component {
         const UPDATING = this.state.stage === "UPDATING_MEMBERS";
         const DISABLED = UPDATING || !this.state.is_diff;
         return (
-          <form
-            onSubmit={this.applyChanges}
+          <div
             className={UPDATING ? "disabled" : ""}
           >
             {this.IS_ADMIN && (
@@ -541,6 +540,7 @@ class TeamSettings extends Component {
                     type="submit"
                     disabled={DISABLED}
                     style={{ width: 150 }}
+                    onClick={this.applyChanges}
                   >
                     {UPDATING ? (
                       <span className="loader" />
@@ -564,7 +564,7 @@ class TeamSettings extends Component {
                 {this.props.team.status > 0 && this.priceEstimate()}
               </div>
             )}
-          </form>
+          </div>
         );
     }
   }

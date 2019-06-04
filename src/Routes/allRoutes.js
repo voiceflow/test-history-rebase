@@ -12,6 +12,8 @@ import Admin from 'containers/Admin';
 import Account from 'containers/Account';
 import {getAuth} from '../ducks/account';
 import Page404 from 'components/404';
+import Legal from 'components/Legal';
+
 
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
@@ -23,6 +25,9 @@ const allRoutes = (
     <PublicRoute exact path="/reset" name="Reset" component={Reset}/>
     <PublicRoute exact path="/login" name="Login" page="login" component={Register}/>
     <PublicRoute exact path="/signup" name="SignUp" page="signup" component={Register}/>
+    <Route exact path="/creator/privacy_policy" name="Privacy Policy" component={Legal}/>
+    <Route exact path="/creator/terms" name="Terms" component={Legal}/>
+
     {/* Team routes */}
     <PrivateRoute path="/dashboard" name="Dashboard" component={Team}/>
     <PrivateRoute exact path="/team/new" component={NewTeam}/>

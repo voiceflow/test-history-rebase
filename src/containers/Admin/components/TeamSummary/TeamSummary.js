@@ -28,10 +28,11 @@ class TeamSummary extends React.Component {
   };
 
   renderSkills = () => {
-    return this.props.board.projects.map(skill => {
-      return <SkillDetail skill={skill} searched_user={this.props.searched_user} key={skill.skill_id}
-                          user={this.props.user}/>
-    })
+    if (this.props.board) {
+      return this.props.board.projects.map(skill => {
+        return <SkillDetail skill={skill} key={skill.skill_id} user={this.props.user}/>
+      })
+    }
   };
 
   render() {

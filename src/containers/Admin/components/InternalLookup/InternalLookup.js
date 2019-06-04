@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import {connect} from 'react-redux';
 import {Input} from 'reactstrap';
 import Button from 'components/Button';
 import _ from 'lodash';
@@ -7,6 +7,7 @@ import _ from 'lodash';
 import './InternalLookup.css';
 import TeamSummary from "../TeamSummary/TeamSummary";
 import UserCard from "../UserCard/UserCard";
+import {findCreator} from "ducks/admin";
 
 class InternalLookup extends React.Component {
 
@@ -16,14 +17,13 @@ class InternalLookup extends React.Component {
     this.state = {
       user_id: '',
       loading: false,
-      user: null,
-      boards: null,
       skill_filter: '',
       filtered_boards: null,
       expand_all_boards: false,
     }
   }
 
+  // do more leetcode shame on u
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
@@ -32,7 +32,7 @@ class InternalLookup extends React.Component {
       if (event.target.value === '') {
         this.clearSearch();
       } else {
-        let filtered_boards = _.cloneDeep(this.state.boards);
+        let filtered_boards = _.cloneDeep(this.props.boards);
         // Need to reduce the boards array
         filtered_boards = filtered_boards.filter(board => {
           let found = false;
@@ -66,48 +66,24 @@ class InternalLookup extends React.Component {
   };
 
   lookupUserById = () => {
-    if (!this.state.user_id) {
-      return;
-    }
-    if (isNaN(this.state.user_id)) {
-      this.setState({loading: true});
-      axios.get(`/admin-api/email/${this.state.user_id}`)
-        .then(res => {
-          this.setState({
-            user: res.data.creator,
-            boards: _.values(res.data.boards)
-          })
-        })
-        .catch(err => console.error('Error when getting user information: ', err));
-    } else {
-      this.setState({loading: true});
-      axios.get(`/admin-api/${this.state.user_id}`)
-        .then(res => {
-          this.setState({
-            user: res.data.creator,
-            boards: _.values(res.data.boards)
-          })
-        })
-        .catch(err => console.error('Error when getting user information: ', err));
-    }
+    this.props.findCreator(this.state.user_id);
   };
 
   renderBoards = () => {
-    if (this.state.boards) {
-      let displayboards = this.state.boards;
+    if (this.props.boards.length > 0) {
+      let displayBoards = this.props.boards;
       if (this.state.filtered_boards)
-        displayboards = this.state.filtered_boards;
-      return displayboards.map(board => {
+        displayBoards = this.state.filtered_boards;
+      return displayBoards.map(board => {
         return <TeamSummary
           board={board}
           key={board.team_id}
-          user={this.props.user}
-          searched_user={this.state.user}
           expand_all={this.state.expand_all_boards}
         />
       })
+    } else {
+      return null;
     }
-
   };
 
   render() {
@@ -124,26 +100,33 @@ class InternalLookup extends React.Component {
               }}/>
             </div>
             <div className={'internalIdSearchButton'}>
-              <Button color={"primary"} className={"w-30"} isPrimarySmall
-                      onClick={this.lookupUserById}>
+              <Button
+                color={"primary"}
+                className={"w-30"}
+                isPrimarySmall
+                onClick={this.lookupUserById}>
                 Search
               </Button>
             </div>
             <div className={'filter_skill'}>
-              Filter by skill name: <Input name={"skill_filter"} value={this.state.skill_filter}
-                                           onChange={this.handleChange}
-                                           placeholder={'Enter a skill name'}/>
+              Filter by skill name:
+              <Input
+                id="skill_filter_input"
+                name={"skill_filter"}
+                value={this.state.skill_filter}
+                onChange={this.handleChange}
+                placeholder={'Enter a skill name'}/>
             </div>
           </div>
           <div className="internalIdSearchUserResult">
-            <UserCard user={this.state.user}/>
+            {this.props.creator.creator_id ? <UserCard/> : null}
           </div>
         </div>
 
         <div className="internalIdSearchResults">
-          <h4>Boards:</h4>
+          {this.props.boards.length > 0 ? <h4>Boards:</h4> : null }
           <div>
-            {this.state.boards ? this.renderBoards() : null}
+            {this.renderBoards()}
           </div>
         </div>
       </div>
@@ -152,4 +135,10 @@ class InternalLookup extends React.Component {
 
 }
 
-export default InternalLookup;
+const mapStateToProps = state => ({
+  creator: state.admin.creator,
+  boards: state.admin.boards,
+  errorMessage: state.admin.errorMessage
+});
+
+export default connect(mapStateToProps, {findCreator})(InternalLookup);

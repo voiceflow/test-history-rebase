@@ -7,7 +7,7 @@ import { Tooltip } from 'react-tippy'
 import { sampleUtteranceRegex } from 'services/Regex'
 import { getUtterancesWithSlotNames } from '../../../../intent_util'
 import { setError } from 'ducks/modal'
-import Intent from "./Intent";
+import Utterance from './Utterance';
 
 import './IntentInput.css';
 
@@ -175,7 +175,7 @@ class IntentInput extends Component {
         if (Array.isArray(utterances)) {
             utterances = getUtterancesWithSlotNames(utterances, this.props.slots, true, false, true);
             return utterances.map( (u, i) => {
-              return <Intent
+              return <Utterance
                 key={u}
                 intent={u}
                 live_mode={this.props.live_mode}

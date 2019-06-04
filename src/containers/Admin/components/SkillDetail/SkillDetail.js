@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import moment from "moment";
 import {Link} from "react-router-dom";
 import Select from "react-select";
@@ -57,8 +58,9 @@ class SkillDetail extends React.Component {
         <div className="row skill_preview py-4">
           <div className="col-sm-3">
             <div className="skill_preview_title">
-              {this.props.skill.skill_name} <span
-              className="skill_preview_subtitle">Skill #{this.props.skill.skill_id}</span>
+              <div className="skill_preview_title_large">{this.props.skill.skill_name}</div>
+              <span
+                className="skill_preview_subtitle">Skill #{this.props.skill.skill_id}</span>
             </div>
             <div className="team_summary_created">
               {moment(this.props.skill.skill_created).format('MMMM Do YYYY, h:mm:ss a')}
@@ -116,10 +118,10 @@ class SkillDetail extends React.Component {
                   <span>Myself</span>
                 </div>
                 <div className="col-sm-3 team_summary_button_row sd_left_align" onClick={() => {
-                  this.setState({target_user: this.props.searched_user.creator_id}, this.onUserInput);
+                  this.setState({target_user: this.props.creator.creator_id}, this.onUserInput);
                 }}>
                   <span>
-                    {`User: ${this.props.searched_user.creator_id}`}
+                    {`User: ${this.props.creator.creator_id}`}
                   </span>
                 </div>
                 <div className="col-sm-6 team_summary_button_row">
@@ -131,6 +133,10 @@ class SkillDetail extends React.Component {
         </div>
     )
   }
-};
+}
 
-export default SkillDetail;
+const mapStateToProps = state => ({
+  creator: state.admin.creator
+});
+
+export default connect(mapStateToProps)(SkillDetail);

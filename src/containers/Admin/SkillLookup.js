@@ -106,7 +106,10 @@ class SkillLookup extends React.Component {
   render() {
     let v = this.state.version_info;
     return (
-      <div className="admin-page-inner p-5">
+      <div className="admin-page-inner">
+        <h3 className="fb_header">
+          Legacy Lookup Tool <span className={'admin_highlight_emoji'}><span role="img" aria-label="old man">👨🏻‍🦳</span></span>
+        </h3>
         <h5>Projects/Versions</h5>
         {this.state.loading ?
           <div className="text-center py-3">

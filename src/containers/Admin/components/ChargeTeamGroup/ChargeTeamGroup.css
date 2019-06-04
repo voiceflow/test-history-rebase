@@ -1,0 +1,119 @@
+.ctg__wrapper {
+  padding: 20px;
+  margin-top: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.ctg__team-header {
+  font-size: 1.2rem;
+}
+
+.ctg__header-details {
+  display: inline-block;
+}
+
+.ctg__team-subheader {
+  font-size: 1rem;
+  color: #5f6565;
+}
+
+.ctg__team-cancel {
+  float: right;
+  margin-right: 20px;
+}
+
+.ctg__expand_caret {
+  display: inline-block;
+  color: #5f6565;
+  margin-right: 12px;
+}
+
+.ctg__expand_caret:hover {
+  cursor: pointer;
+}
+
+.ctg__table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.ctg__tbl-header {
+  background-color: #399BFF;
+}
+
+.ctg__tbl-content {
+  height: 300px;
+  overflow-x: auto;
+  margin-top: 0px;
+  border: 1px solid #399BFF;
+}
+
+tr:first-child {
+  table-layout: fixed;
+  width: 20px;
+}
+
+.ctg__tbl-header th {
+  padding: 20px 15px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 12px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.ctg__tbl-content td {
+  padding: 15px;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: 300;
+  font-size: 12px;
+  color: #000;
+  border-bottom: solid 1px #399BFF;
+}
+
+.ctg__warning {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.ctg__charge_overview {
+  width: 90%;
+  margin: 15px auto;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #00b0e6;
+  color: #fff;
+}
+
+.ctg__charge_header {
+  font-size: 24px;
+}
+
+.ctg__charge_header_email {
+  font-size: 14px;
+}
+
+.ctg__charge_user_id {
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.ctg__receipt_divider {
+  height: 1px;
+  border: 1px solid #fff;
+  margin: 10px 0;
+}
+
+.ctg__refund_amount_input {
+  width: 90%;
+  margin: 15px auto;
+  color: #FF2E58;
+}
+
+.ctg__refund_input {
+  margin-top: 8px;
+  border: 1px solid #FF2E58 !important;
+  color: #FF2E58 !important;
+}

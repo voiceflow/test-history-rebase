@@ -12,6 +12,8 @@ import Admin from 'containers/Admin';
 import Account from 'containers/Account';
 import {getAuth} from '../ducks/account';
 import Page404 from 'components/404';
+import Legal from 'components/Legal';
+
 
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
@@ -23,6 +25,9 @@ const allRoutes = (
     <PublicRoute exact path="/reset" name="Reset" component={Reset}/>
     <PublicRoute exact path="/login" name="Login" page="login" component={Register}/>
     <PublicRoute exact path="/signup" name="SignUp" page="signup" component={Register}/>
+    <Route exact path="/creator/privacy_policy" name="Privacy Policy" component={Legal}/>
+    <Route exact path="/creator/terms" name="Terms" component={Legal}/>
+
     {/* Team routes */}
     <PrivateRoute path="/dashboard" name="Dashboard" component={Team}/>
     <PrivateRoute exact path="/team/new" component={NewTeam}/>
@@ -52,12 +57,22 @@ const allRoutes = (
     {/* Admin routes */}
     <PrivateRoute path="/visuals/:skill_id/display/:id" component={Skill} page='visuals' secondaryPage="display"/>
     <PrivateRoute path="/visuals/:skill_id" component={Skill} page='visuals' secondaryPage="displays"/>
+    
     <PrivateRoute path="/admin/updates" name="Admin" component={Admin} page='updates'/>
     <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
+
+    <PrivateRoute path="/admin/charges/:creator_id" name="Admin" component={Admin} page='charges'/>
+    <PrivateRoute path="/admin/charges" name="Admin" component={Admin} page='charges'/>
+
     <PrivateRoute path="/admin/lookup/:version_id" name="Admin" component={Admin} page='lookup'/>
     <PrivateRoute path="/admin/lookup" name="Admin" component={Admin} page='lookup'/>
+
+    <PrivateRoute path="/admin/vendors/:creator_id" name="Admin" component={Admin} page='vendors'/>
+    <PrivateRoute path="/admin/vendors" name="Admin" component={Admin} page='vendors'/>
+
     <PrivateRoute path="/admin/version/:version_id" name="Admin" component={Admin} page='default'/>
     <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
+    
     <PrivateRoute path="/publish/:skill_id/google" component={Skill} page="publish" secondaryPage="google"/>
     <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} page="publish" secondaryPage="alexa"/>
     <PrivateRoute path="/publish/:skill_id" component={Skill} page="publish" secondaryPage="alexa"/>

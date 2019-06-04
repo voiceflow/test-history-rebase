@@ -1,5 +1,5 @@
-import { combineReducers } from "redux";
-import { connectRouter } from "connected-react-router";
+import {combineReducers} from "redux";
+import {connectRouter} from "connected-react-router";
 import skills from "ducks/version";
 import diagramVariables from "ducks/diagram_variable";
 import variables from "ducks/variable";
@@ -13,6 +13,7 @@ import team from "ducks/team";
 import account from "ducks/account";
 import board from "ducks/board"
 import integrationUsers from "ducks/integration";
+import admin from 'ducks/admin';
 
 export default history =>
   combineReducers({
@@ -29,5 +30,6 @@ export default history =>
     modal,
     team,
     account,
-    integrationUsers
+    integrationUsers,
+    admin
   });

@@ -66,14 +66,14 @@ class App extends Component {
 		// REDIRECT TO MAINTENANCE
 		evaluateMaintenance((time) => {
 			if (time) {
-				setTimeout(() => store.dispatch(setConfirm({
+				setTimeout(() => this.props.setConfirm({
 					size: 'rg',
 					text: <Alert className="mb-0">
 						Voiceflow Creator will go under planned maintenance<br/>
 						<b>{time}</b> from now
 						<hr/>
 						Live Projects will not be affected</Alert>
-				})), 100);
+				}), 100);
 			} else {
 				window.location.replace('https://voiceflow.com/maintenance');
 				window.location.href = 'https://voiceflow.com/maintenance';

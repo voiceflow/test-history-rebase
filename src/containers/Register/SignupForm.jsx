@@ -32,7 +32,7 @@ export const SignupForm = ({signup, history, location}) => {
       password,
     })
     .catch(err => {
-      setSignupError(err.response.data)
+      setSignupError(err.response.data.data)
     })
     return false;
   }
@@ -111,4 +111,3 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(null, mapDispatchToProps)(SignupForm)
-

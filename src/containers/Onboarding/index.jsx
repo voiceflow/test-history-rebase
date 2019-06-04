@@ -108,7 +108,7 @@ class Onboarding extends Component{
 	}
 
 	loadDefaultTemplates = () => {
-		axios.get('/marketplace/initial_template')
+		axios.get('/template/all')
     .then(res => {
       if (Array.isArray(res.data)) {
         this.setState({

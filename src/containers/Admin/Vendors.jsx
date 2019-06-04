@@ -1,13 +1,13 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {getCharges, findCreator} from "ducks/admin";
 
-import './FinanceBoard.css';
+import { connect } from 'react-redux';
+import {findCreator, getVendors} from "ducks/admin";
+
 import Input from "components/Input";
-import ChargeList from "./components/ChargeList/ChargeList";
+import VendorList from "./components/VendorList/VendorList";
 import Button from "components/Button";
 
-class FinanceBoard extends React.Component {
+class Vendors extends React.Component {
 
   constructor(props) {
     super(props);
@@ -25,7 +25,7 @@ class FinanceBoard extends React.Component {
         searchTerm: setCreatorId
       });
       // Get the charges for the user
-      this.props.getCharges(setCreatorId);
+      this.props.getVendors(setCreatorId);
       if (this.props.creator && this.props.creator.creator_id.toString() !== setCreatorId.toString()) {
         this.props.findCreator(setCreatorId);
       }
@@ -39,10 +39,11 @@ class FinanceBoard extends React.Component {
   };
 
   render() {
+
     return (
       <div className="fb_wrapper">
         <h3 className="fb_header">
-          Voiceflow Revenue Agency <span className={'admin_highlight_emoji'}><span role="img" aria-label="monocle">🧐</span></span>
+          Vendors <span className={'admin_highlight_amber'}>woo</span>
         </h3>
         <div className="fb_search">
           <div>
@@ -52,28 +53,28 @@ class FinanceBoard extends React.Component {
                   className="search-input form-control-2"
                   placeholder="Find creator by id or email"
                   onChange={this.handleSearch}
-                  onEnterPress={() => this.props.getCharges(this.state.searchTerm)}
+                  onEnterPress={() => {this.props.getVendors(this.state.searchTerm)}}
                   value={this.state.searchTerm}
                   type="text"
                 />
               </div>
               <div className="col-sm-4">
-                <Button className="fb_search_button" isPrimary onClick={() => this.props.getCharges(this.state.searchTerm)}>
+                <Button className="fb_search_button" isPrimary onClick={() => this.props.getVendors(this.state.searchTerm)}>
                   Search
                 </Button>
               </div>
             </div>
-
             <div className="fb_refresh_wrapper">
-              <span className="fb_refresh" onClick={() => this.props.getCharges(this.state.searchTerm)}>
+              <span className="fb_refresh" onClick={() => {this.props.getVendors(this.state.searchTerm)}}>
                 Refresh <i className="fas fa-sync" />
               </span>
             </div>
           </div>
-          <ChargeList/>
+          <VendorList />
         </div>
       </div>
     )
+
   }
 
 }
@@ -82,4 +83,4 @@ const mapStateToProps = state => ({
   creator: state.admin.creator
 });
 
-export default connect(mapStateToProps, {findCreator, getCharges})(FinanceBoard);
+export default connect(mapStateToProps, {findCreator, getVendors})(Vendors);

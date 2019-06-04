@@ -57,10 +57,16 @@ const allRoutes = (
     {/* Admin routes */}
     <PrivateRoute path="/visuals/:skill_id/display/:id" component={Skill} page='visuals' secondaryPage="display"/>
     <PrivateRoute path="/visuals/:skill_id" component={Skill} page='visuals' secondaryPage="displays"/>
+
     <PrivateRoute path="/admin/updates" name="Admin" component={Admin} page='updates'/>
     <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
+
+    <PrivateRoute path="/admin/charges/:creator_id" name="Admin" component={Admin} page='charges'/>
+    <PrivateRoute path="/admin/charges" name="Admin" component={Admin} page='charges'/>
+
     <PrivateRoute path="/admin/lookup/:version_id" name="Admin" component={Admin} page='lookup'/>
     <PrivateRoute path="/admin/lookup" name="Admin" component={Admin} page='lookup'/>
+    
     <PrivateRoute path="/admin/version/:version_id" name="Admin" component={Admin} page='default'/>
     <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
     <PrivateRoute path="/publish/:skill_id/google" component={Skill} page="publish" secondaryPage="google"/>

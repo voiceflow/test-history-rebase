@@ -58,6 +58,64 @@ jobs:
       - run:
           name: Push to Elastic Beanstalk
           command: eb deploy CreatorApp-staging --staged -l $CIRCLE_BUILD_NUM --nohang
+  deploy-master:
+    machine: true
+    steps:
+      - checkout # special step to check out source code to working directory
+      - run:
+          name: 'Update Elastic Beanstalk Dockerrunfile.aws.json'
+          command: 'sed -i".json" "s/VERSION/$CIRCLE_BUILD_NUM/g" Dockerrun.aws.json'
+      - run: 
+          name: 'Build docker image'
+          command: docker build --build-arg build_APP_API_HOST=api.master.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=staging -t voiceflow/creator-app:$CIRCLE_BUILD_NUM .
+      - run:
+          name: 'Push docker image'
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push voiceflow/creator-app:$CIRCLE_BUILD_NUM
+      - run:
+          name: 'Update PIP && Install AWS EB'
+          command: |
+            rm Dockerfile
+            git config user.email "build@voiceflow.com"
+            git config user.name "build"
+            git add -u
+            git commit -m "$CIRCLE_BUILD_NUM BUILD"
+            pip install awsebcli
+            eb init --region us-east-1 --platform docker creator-app
+            eb use CreatorApp-master
+      - run:
+          name: Push to Elastic Beanstalk
+          command: eb deploy CreatorApp-master --staged -l $CIRCLE_BUILD_NUM --nohang
+  deploy-production:
+    machine: true
+    steps:
+      - checkout # special step to check out source code to working directory
+      - run:
+          name: 'Update Elastic Beanstalk Dockerrunfile.aws.json'
+          command: 'sed -i".json" "s/VERSION/$CIRCLE_BUILD_NUM/g" Dockerrun.aws.json'
+      - run: 
+          name: 'Build docker image'
+          command: docker build --build-arg build_APP_API_HOST=api.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=production -t voiceflow/creator-app:$CIRCLE_BUILD_NUM .
+      - run:
+          name: 'Push docker image'
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push voiceflow/creator-app:$CIRCLE_BUILD_NUM
+      - run:
+          name: 'Update PIP && Install AWS EB'
+          command: |
+            rm Dockerfile
+            git config user.email "build@voiceflow.com"
+            git config user.name "build"
+            git add -u
+            git commit -m "$CIRCLE_BUILD_NUM BUILD"
+            pip install awsebcli
+            eb init --region us-east-1 --platform docker creator-app
+            eb use CreatorApp-production
+      - run:
+          name: Push to Elastic Beanstalk
+          command: eb deploy CreatorApp-production --staged -l $CIRCLE_BUILD_NUM --nohang
 workflows:
   version: 2
   build-deploy:
@@ -69,3 +127,22 @@ workflows:
           filters:
             branches:
               only: staging
+      - deploy-master:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
+      - deploy-production:
+          requires:
+            - test
+          filters:
+            branches:
+              only: production
+      - release:
+          requires:
+            - test
+            - deploy-production
+          filters:
+            branches:
+              only: production

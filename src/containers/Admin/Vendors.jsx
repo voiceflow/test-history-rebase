@@ -1,6 +1,5 @@
 import React from 'react';
 
-import './Vendors.css';
 import { connect } from 'react-redux';
 import {findCreator, getVendors} from "ducks/admin";
 
@@ -27,9 +26,7 @@ class Vendors extends React.Component {
       });
       // Get the charges for the user
       this.props.getVendors(setCreatorId);
-      // Purposefully using coercion to compare the int creator id in store and the string param one
-      // Not a very important check so the use of purposeful coercion I believe is okay here.
-      if (this.props.creator && this.props.creator.creator_id != setCreatorId) {
+      if (this.props.creator && this.props.creator.creator_id.toString() !== setCreatorId.toString()) {
         this.props.findCreator(setCreatorId);
       }
     }

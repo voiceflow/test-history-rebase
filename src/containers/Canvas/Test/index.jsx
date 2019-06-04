@@ -5,7 +5,7 @@ import axios from 'axios'
 import { compose } from "recompose";
 import { connect } from "react-redux";
 import cn from 'classnames'
-import { UncontrolledCollapse } from 'reactstrap'
+import { Collapse } from 'reactstrap'
 
 import Conditions from './conditions'
 import Timeline from './timeline'
@@ -27,6 +27,25 @@ class Test extends Component {
     super(props)
     this.state = {
       variableMapping: props.variables.reduce((key, val) => {key[val]=val; return key}, {}),
+      conditionsOpen: false,
+      timelineOpen: false,
+    }
+  }
+
+  componentWillUnmount() {
+    console.log('resetting here')
+  }
+
+  toggleSection = section => {
+    console.log('called toggle section', section)
+    if (section === C.CONDITIONS) {
+      this.setState(state => ({
+        conditionsOpen: !state.conditionsOpen
+      }))
+    } else {
+      this.setState(state => ({
+        timelineOpen: !state.timelineOpen
+      }))
     }
   }
 
@@ -73,10 +92,10 @@ class Test extends Component {
           }
 
           return <div key={i} className="mt-3 mb-3 sidebar_container">
-            <label id={s} className='ml-3 mt-2' onClick={() => {this.setState({ open_section: s })}}>{s}</label>
-            <UncontrolledCollapse toggler={`#${s}`}>
+            <label id={s} className='ml-3 mt-2' onClick={() => {this.toggleSection(s)}}>{s}</label>
+            <Collapse isOpen={s === C.CONDITIONS ? !this.props.testing_info && this.state.conditionsOpen: this.state.timelineOpen}>
               {section}
-            </UncontrolledCollapse>
+            </Collapse>
           </div>
         })}
     </div>

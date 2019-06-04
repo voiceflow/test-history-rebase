@@ -3,9 +3,9 @@ import {Mention, MentionsInput} from "react-mentions";
 import {Tooltip} from "react-tippy";
 import { sampleUtteranceRegex } from 'services/Regex'
 
-import './Intent.css';
+import './Utterance.css';
 
-class Intent extends React.PureComponent {
+class Utterance extends React.PureComponent {
 
   constructor(props) {
     super(props);
@@ -99,4 +99,4 @@ class Intent extends React.PureComponent {
 
 }
 
-export default Intent;
+export default Utterance;

@@ -5,12 +5,14 @@ import {toast} from 'react-toastify';
 export const SET_CREATOR = 'SET_CREATOR';
 export const FIND_CREATOR_FAILED = 'FIND_CREATOR_FAILED';
 export const SET_CHARGES = 'SET_CHARGES';
+export const SET_VENDORS = 'SET_VENDORS';
 
 const initialState = {
   // The current creator being searched
   creator: {},
   boards: [],
   charges: [],
+  vendors: [],
   error: {
     errorMessage: '',
     errorReturned: null
@@ -34,6 +36,11 @@ export default function adminReducer(state = initialState, action) {
       return {
         ...state,
         charges: action.payload
+      };
+    case SET_VENDORS:
+      return {
+        ...state,
+        vendors: action.payload
       };
     default:
       return state;
@@ -107,9 +114,45 @@ export const getCharges = creatorInfo => async dispatch => {
     toast.success('Charges found for user')
   } catch (err) {
     toast.error('Fetch charges failed');
-    console.error('Error when getting charges for user ', err);
+    console.error('Error when getting charges for user: ', err);
   }
 
+};
+
+export const getVendors = creatorInfo => async dispatch => {
+
+  if (!creatorInfo) {
+    return;
+  }
+
+  let creatorId;
+
+  if (isNaN(creatorInfo)) {
+    let response = await axios.get(`/admin-api/email/${creatorInfo}`);
+    creatorId = response.data.creator.creator_id;
+    dispatch({
+      type: SET_CREATOR,
+      payload: {
+        creator: response.data.creator,
+        boards: _.values(response.data.boards),
+      }
+    })
+  } else {
+    creatorId = creatorInfo;
+  }
+  
+  try {
+    let response = await axios.get(`/admin-api/vendors/${creatorId}`);
+    dispatch({
+      type: SET_VENDORS,
+      payload: response.data.vendors
+    });
+    toast.success('Vendors found for user');
+  } catch (err) {
+    toast.error('Fetch vendors failed');
+    console.error('Error when getting vendors for user: ', err);
+  }
+  
 };
 
 // Refund a specific user

@@ -7,6 +7,9 @@ import { Tooltip } from 'react-tippy'
 import { sampleUtteranceRegex } from 'services/Regex'
 import { getUtterancesWithSlotNames } from '../../../../intent_util'
 import { setError } from 'ducks/modal'
+import Intent from "./Intent";
+
+import './IntentInput.css';
 
 class IntentInput extends Component {
     constructor(props) {
@@ -152,15 +155,40 @@ class IntentInput extends Component {
             this.props.intent.name = this.state.name
         }
     }
+  editUtterance = (value, index) => {
+
+    if (!value) {
+      return;
+    }
+
+    const slot_keys = this._getSlotKeys(value);
+
+    this.props.intent.inputs[index] = {
+      slots: Array.from(slot_keys),
+      text: value
+    };
+    this.props.update();
+    this.forceUpdate()
+  };
 
     renderUtterances = (utterances) => {
         if (Array.isArray(utterances)) {
-            utterances = getUtterancesWithSlotNames(utterances, this.props.slots, true)
+            utterances = getUtterancesWithSlotNames(utterances, this.props.slots, true, false, true);
             return utterances.map( (u, i) => {
-                return <div className="interaction-utterance" key={i}>
-                    <div>{u}</div>
-                    <i onClick={(e) => {this.deleteUtterance(e, i)}} className="fas fa-backspace trash-icon"></i>
-                </div>
+              return <Intent
+                key={u}
+                intent={u}
+                live_mode={this.props.live_mode}
+                slots={this.props.slots}
+                index={i}
+                editUtterance={this.editUtterance}
+                deleteUtterance={this.deleteUtterance}
+                utteranceExists={this.props.utteranceExists}
+              />
+                // return <div className="interaction-utterance" key={i}>
+                //     <div>{u}</div>
+                //     <i onClick={(e) => {this.deleteUtterance(e, i)}} className="fas fa-backspace trash-icon"></i>
+                // </div>
             });
         }
         return null

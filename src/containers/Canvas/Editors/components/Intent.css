@@ -1,0 +1,18 @@
+textarea .mentions-input__input, .slot-input {
+  border: 0;
+}
+
+textarea .mentions-input__highlighter, .mentions-input__input, .slot-input {
+  border: 0;
+}
+
+.interaction-block .mentions-input__highlighter {
+  padding-left: 13px !important;
+  letter-spacing: normal;
+  word-spacing: normal;
+}
+
+.slot-utterance {
+  letter-spacing: normal;
+  word-spacing: normal;
+}

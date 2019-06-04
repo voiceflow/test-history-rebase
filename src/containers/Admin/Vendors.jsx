@@ -6,6 +6,7 @@ import {findCreator, getVendors} from "ducks/admin";
 
 import Input from "components/Input";
 import VendorList from "./components/VendorList/VendorList";
+import Button from "components/Button";
 
 class Vendors extends React.Component {
 
@@ -49,14 +50,23 @@ class Vendors extends React.Component {
         </h3>
         <div className="fb_search">
           <div>
-            <Input
-              className="search-input form-control-2"
-              placeholder="Find creator by id or email"
-              onChange={this.handleSearch}
-              onEnterPress={() => {this.props.getVendors(this.state.searchTerm)}}
-              value={this.state.searchTerm}
-              type="text"
-            />
+            <div className="row">
+              <div className="col-sm-8">
+                <Input
+                  className="search-input form-control-2"
+                  placeholder="Find creator by id or email"
+                  onChange={this.handleSearch}
+                  onEnterPress={() => {this.props.getVendors(this.state.searchTerm)}}
+                  value={this.state.searchTerm}
+                  type="text"
+                />
+              </div>
+              <div className="col-sm-4">
+                <Button className="fb_search_button" isPrimary onClick={() => this.props.getVendors(this.state.searchTerm)}>
+                  Search
+                </Button>
+              </div>
+            </div>
             <div className="fb_refresh_wrapper">
               <span className="fb_refresh" onClick={() => {this.props.getVendors(this.state.searchTerm)}}>
                 Refresh <i className="fas fa-sync" />

@@ -238,7 +238,7 @@ class Templates extends Component {
                 </div>
                 <button className="goback-btn position-absolute" onClick={() => this.setState({ preview: false })} style={{ top: 320, left: -90 }} />
                 <div className="position-absolute" style={{ bottom: -75, left: '50%', marginLeft: -73 }}>
-                    <Button isPrimary varient="contained" onClick={() => this.createSkill(this.state.template.module_id)}>Select Template</Button>
+                    <Button isPrimary varient="contained" onClick={() => this.createProject(this.state.template.module_id)}>Select Template</Button>
                 </div>
             </Modal>
         </div>

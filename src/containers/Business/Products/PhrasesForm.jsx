@@ -32,6 +32,9 @@ class PhrasesForm extends React.Component {
                         placeholder="e.g. buy the science category"
                         value={phrase}
                         onChange={this.props.handleChange(idx)}
+                        onKeyPress={(e) => {
+                          if(e.charCode===13) e.preventDefault();
+                        }}
                       />
                       <Button
                         isFloat

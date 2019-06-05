@@ -16,6 +16,7 @@ import { setError, setConfirm } from "ducks/modal";
 import C from './constants'
 
 import './TestSidebar.css'
+import './TestModal.css'
 
 const SECTIONS = {
   [C.CONDITIONS]: Conditions,

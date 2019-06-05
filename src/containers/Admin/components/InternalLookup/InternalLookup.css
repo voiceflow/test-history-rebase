@@ -1,7 +1,7 @@
 .internalIdSearchField {
   margin-top: 30px;
   width: 30%;
-  padding: 5px 15px;
+  padding: 5px 0;
   display: inline-block;
 }
 
@@ -11,8 +11,8 @@
 }
 
 .internalIdSearchResults {
-  margin-top: 70px;
-  padding: 5px 15px;
+  margin: 70px 0;
+  padding: 5px 0;
 }
 
 .internalIdSearchUserResult {

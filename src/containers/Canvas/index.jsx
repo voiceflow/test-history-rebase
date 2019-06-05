@@ -34,7 +34,6 @@ import { openTab, closeTab } from 'ducks/user'
 import ActionGroup from './components/ActionGroup'
 import UserTestHeader from './Test/UserTestHeader'
 import HelpModal from './HelpModal'
-import TestModal from './Test/TestModal'
 import new_template from 'assets/templates/new'
 import { Alert, ListGroup, ListGroupItem } from 'reactstrap'
 
@@ -1205,12 +1204,6 @@ export class Canvas extends Component {
         }
     }
 
-    toggleTestModal = () => {
-        this.setState({
-            testing_info: false,
-            testing_modal: !this.state.testing_modal
-        })
-    }
 
     runTest = () => {
         let engine = this.state.engine
@@ -1288,8 +1281,6 @@ export class Canvas extends Component {
 
     onTest = () => {
         this.state.engine.getDiagramModel().clearSelection()
-        // this.toggleTestModal()
-
         if(this.props.preview){
             this.runTest()
         } else {
@@ -1619,16 +1610,6 @@ export class Canvas extends Component {
                 </span>
               </div>
             }
-            {this.state.testing_modal ? (
-              <TestModal
-                open={this.state.testing_modal}
-                toggle={this.toggleTestModal}
-                testing_info={this.state.testing_info}
-                unfocus={this.onDiagramUnfocus}
-                flow={this.props.diagram.name}
-                open={!this.props.testing}
-              />
-            ) : null}
             {this.state.spotlight && !this.props.testing(
               <Spotlight
                 addBlock={this.onDrop}

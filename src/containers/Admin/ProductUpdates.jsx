@@ -40,19 +40,9 @@ class ProductUpdates extends Component {
   render() {
       return (
           <div className="admin-page-inner">
-              <div className="subheader">
-                  <div className="space-between">
-                      <span className="subheader-title">
-                          <b>Product Updates</b>
-                          <div className="hr-label">
-                              <small><i className="far fa-user mr-1"></i></small>{' '}
-                              {this.props.user.name}{' '}
-                              <small><i className="far fa-chevron-right"/></small>{' '}
-                              <span className="text-secondary">Product Updates</span>
-                          </div>
-                      </span>
-                  </div>
-              </div>
+            <h3 className="fb_header">
+              Product Updates <span className={'admin_highlight_purple'}>Our best update yet!</span>
+            </h3>
               <div className="content">
                   <h5>Create a new update</h5>
                   <Form>

@@ -523,7 +523,7 @@ class Editor extends Component {
           <DropdownMenu
             right
             className="arrow arrow-right no-select"
-            style={{ right: "-12px", marginTop: "5px" }}
+            style={{ right: 2, marginTop: -10 }}
           >
             <DropdownItem header>Block Options</DropdownItem>
             {["interaction", "choice", "capture"].includes(

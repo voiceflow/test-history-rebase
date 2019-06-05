@@ -17,17 +17,30 @@
     margin-top: 10px;
     margin-bottom: 10px;
 }
+.slot-utterance{
+  border-bottom: 1px solid #e9eef3 !important;
+  padding: 7px 0px 7px 8px;
+  display: flex;
+  color: #8DA2B5 !important;
+}
+.slot-utterance>textarea {
+padding: 5px 0;
+font-size: 1rem;
+}
+
+.slot-utterance>div{
+  flex: 1;
+  word-break: break-word;
+  display: inline-block;
+}
 .interaction-utterance {
     border-bottom: 1px solid #e9eef3 !important;
-    padding: 10px 0px 10px 0px;
+    padding: 10px 0px 10px 8px;
     display: flex;
     color: #8DA2B5 !important;
 }
 .interaction-utterance:last-child {
     border: none !important;
-}
-.interaction-utterance:first-child {
-    margin-top: 10px !important;
 }
 .interaction-utterance>div{
     flex: 1;
@@ -181,7 +194,7 @@
 }
 
 .faded {
-    opacity: 0.25;
+    opacity: 0.2;
 }
 
 .unavailable-input {
@@ -207,23 +220,6 @@
 .slot-label .fa-amazon {
     font-size: 1.3em;
     margin-top: 3px;
-}
-
-.slot-utterance{
-    border-bottom: 1px solid #e9eef3 !important;
-    padding: 7px 0px 7px 0px;
-    display: flex;
-    color: #8DA2B5 !important;
-}
-.slot-utterance>textarea {
-  padding: 5px 0;
-  font-size: 1rem;
-}
-
-.slot-utterance>div{
-    flex: 1;
-    word-break: break-word;
-    display: inline-block;
 }
 
 .slot-badge {

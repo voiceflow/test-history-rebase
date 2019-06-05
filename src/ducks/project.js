@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { setError } from 'ducks/modal'
-import { fetchLiveVersion, updateVersion } from 'ducks/version'
+import {setError} from 'ducks/modal'
+import {fetchLiveVersion, updateVersion} from 'ducks/version'
 import Normalize from 'ducks/_normalize'
-import { addProjectToList } from './board'
+import {addProjectToList} from './board'
 
 export const UPDATE_PROJECTS = 'UPDATE_PROJECTS'
 export const RESET_PROJECTS = 'RESET_PROJECTS'
@@ -29,7 +29,7 @@ export default function productReducer(state = initialState, action) {
 
 export const updateProjects = ({byId, allIds}) => ({
   type: UPDATE_PROJECTS,
-  payload: { byId, allIds }
+  payload: {byId, allIds}
 })
 
 const Projects = new Normalize('project_id', 'project', updateProjects)
@@ -41,52 +41,52 @@ export const resetProjects = () => ({
 export const fetchProjects = team_id => {
   return async dispatch => {
     dispatch(resetProjects())
-    if(!team_id) return
+    if (!team_id) return
 
-    try{
+    try {
       let url = `/projects`
-      if(team_id !== -1) url = `/team/${team_id}/projects`
+      if (team_id !== -1) url = `/team/${team_id}/projects`
       let projects = (await axios.get(url)).data
       // NORMALIZE
       dispatch(Projects.create({data: projects}))
       return Promise.resolve()
-    }catch(err){
+    } catch (err) {
       console.error(err)
       dispatch(setError('Unable to retrieve projects'))
     }
   }
-}
+};
 
 export const copyProject = (project_id, team_id, board_id) => {
   return async (dispatch, getState) => {
-    try{
+    try {
       const projects = getState().project
       const project = projects.byId[project_id]
-      if(!project) throw new Error()
+      if (!project) throw new Error()
 
       let new_project = (await axios.post(`/version/${project.skill_id}/copy/team/${team_id}`)).data
       if (board_id) dispatch(addProjectToList(board_id, new_project.project_id))
       dispatch(Projects.add({data: new_project}))
-    }catch(err){
+    } catch (err) {
       console.error(err)
       dispatch(setError('Unable to copy project'))
       return Promise.reject()
     }
     return Promise.resolve()
   }
-}
+};
 
 export const deleteProject = project_id => {
   return async (dispatch) => {
-    try{
+    try {
       await axios.delete(`/projects/${project_id}`)
       dispatch(Projects.delete({id: project_id}))
-    }catch(err){
+    } catch (err) {
       dispatch(setError('Problem deleting project'))
       console.error(err)
     }
   }
-}
+};
 
 export const updateVendorId = (project_id, vendor_id) => {
   return async (dispatch) => {

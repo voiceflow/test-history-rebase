@@ -395,6 +395,9 @@ export class ActionGroup extends PureComponent {
 	};
 
 	updateAlexa = async () => {
+    if(!this.token) {
+      return this.updateAlexaStage(5)
+    }
     if(this.props.vendors.length === 0) {
       return this.updateAlexaStage(6);
     }

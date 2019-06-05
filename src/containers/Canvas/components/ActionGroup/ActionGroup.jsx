@@ -922,7 +922,7 @@ export class ActionGroup extends PureComponent {
 	};
 
 	render() {
-		const link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`;
+		const link = `https://app.voiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`;
 
 		return (
 			<React.Fragment>

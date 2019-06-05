@@ -69,6 +69,8 @@ const Timeline = props => {
     slots,
     global,
     repeat,
+    history,
+    enterFlow,
     platform,
     setTime,
     resume,
@@ -457,6 +459,13 @@ const Timeline = props => {
               outputBlock.type = type
               outputBlock.delay = delay;
               dom.push(outputBlock)
+            } else if (type === 'Flow') {
+              let outputBlock = {}
+              outputBlock.node = block.line.id;
+              outputBlock.diagram = block.line.diagram_id;
+              outputBlock.type = type;
+              outputBlock.delay = delay;
+              dom.push(outputBlock)
             }
           }
           setOutputs(outputs.concat(dom))
@@ -478,7 +487,9 @@ const Timeline = props => {
         <TestBox
           inputs={inputs}
           diagramEngine={diagramEngine}
+          history={history}
           ended={ended}
+          enterFlow={enterFlow}
           setEnded={setEnded}
           audioPlayer={audioPlayer}
           handleRestart={handleRestart}

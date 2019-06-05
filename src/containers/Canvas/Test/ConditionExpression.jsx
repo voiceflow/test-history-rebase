@@ -16,7 +16,7 @@ const ConditionExpression = props => {
     const [show, toggleShow] = useToggle(true)
 
     return (
-        <div className="set-block px-3">
+        <div className="mb-2 px-3">
             <div className="break" />
             <div id="condition-label" onClick={() => toggleShow()}>
                 <div className="text-left w-100">{`${variable}`}</div>

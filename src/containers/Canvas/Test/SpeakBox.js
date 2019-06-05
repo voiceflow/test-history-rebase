@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import cn from 'classnames'
 import {Tooltip} from 'react-tippy'
 import moment from 'moment'
@@ -17,6 +18,9 @@ class SpeakBox extends React.Component {
         this.timer = setTimeout(() => {
             this.centerNode();
             if (audio) audio.play();
+            if (this.props.isFlow) {
+                this.props.enterFlow(this.props.diagram, false)
+            }
             this.setState({
                 shouldRender: true,
                 renderTime: this.props.time
@@ -35,8 +39,10 @@ class SpeakBox extends React.Component {
         } = this.props;
         const model = diagramEngine.getDiagramModel()
         const nodeModel = model.getNode(node)
+        if (nodeModel) {
          model.setZoomLevel(80)
          model.setOffset((300) - (nodeModel.x * 0.8), (300) - (nodeModel.y * 0.8))
+        }
     }
 
     render() {
@@ -84,4 +90,7 @@ class SpeakBox extends React.Component {
     }
 }
 
-export default SpeakBox
+const mapStateToProps = state => ({
+    skillId: state.skills.skill.skill_id,
+})
+export default connect(mapStateToProps)(SpeakBox)

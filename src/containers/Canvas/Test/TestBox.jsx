@@ -13,7 +13,9 @@ const TestBox = props => {
         debug,
         ended,
         pause,
+        history,
         setInput,
+        enterFlow,
         diagramEngine,
         handleChange,
         inputSubmit,
@@ -39,6 +41,17 @@ const TestBox = props => {
                     </div>
                     <img src='/user_reply.svg' height={15} width={15} alt="user" className="ml-2"/>
                     </div>
+                } else if (chat.diagram) {
+                    return <SpeakBox
+                        key={i}
+                        isFlow
+                        diagram={chat.diagram}
+                        history={history}
+                        node={chat.node}
+                        enterFlow={enterFlow}
+                        delay={chat.delay}
+                        diagramEngine={diagramEngine}
+                    />
                 } else if (chat.options) {
                     return <SpeakBox
                         key={i}

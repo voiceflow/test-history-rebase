@@ -1707,6 +1707,8 @@ export class Canvas extends Component {
                 testing_info={this.state.testing_info}
                 flow={this.props.diagram.name}
                 onTest={this.onTest}
+                history={this.props.history}
+                enterFlow={this.enterFlow}
                 diagramEngine={this.state.engine}
                 stop={this.stopTime}
                 resume={this.countTime}

@@ -81,8 +81,10 @@ class Test extends Component {
                 flow={this.props.flow}
                 diagramEngine={this.props.diagramEngine}
                 time={this.props.time}
+                enterFlow={this.props.enterFlow}
                 stop={this.props.stop}
                 resume={this.props.resume}
+                history={this.props.history}
                 setTime={this.props.setTime}
                 variableMapping={this.state.variableMapping}
               />

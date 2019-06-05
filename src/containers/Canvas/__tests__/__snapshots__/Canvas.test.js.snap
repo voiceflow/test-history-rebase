@@ -31,7 +31,6 @@ exports[`Canvas render canvas 1`] = `
   <Connect(ActionGroup)
     lastSave="Save"
     onSave={[Function]}
-    onTest={[Function]}
     page="canvas"
     renderPlatformSwitch={[Function]}
     saved={true}
@@ -205,6 +204,7 @@ exports[`Canvas render canvas 1`] = `
           "superSelect": null,
         }
       }
+      enterFlow={[Function]}
       flow="test"
       onTest={[Function]}
       resume={[Function]}

@@ -155,6 +155,29 @@ export const getVendors = creatorInfo => async dispatch => {
   
 };
 
+export const editTrial = (teamId, date) => async dispatch => {
+  
+  if (!teamId) {
+    return;
+  }
+  
+  try {
+    if (date) {
+      // Date should be a timestamp (something like 1429482798)
+      axios.post(`/admin-api/trial/${teamId}/${date}`)
+    } else {
+      // We want to set the trial expiry to null here
+      axios.post(`/admin-api/trial/${teamId}/${0}`)
+    }
+    toast.success('Trial period set!');
+  } catch (err) {
+    console.error('error when editing trial for project: ', err);
+    toast.error('Trail edit failed.');
+  }
+  
+  
+};
+
 // Refund a specific user
 export const refundCharge = (teamId, chargeId, chargeAmount) => async dispatch => {
 

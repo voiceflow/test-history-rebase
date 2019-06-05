@@ -127,3 +127,11 @@ transform: scale(1.03);
   border-radius: 5px;
   color: white;
 }
+
+.admin_highlight_amber {
+  font-size: 12px;
+  padding: 5px 10px;
+  background-color: #FFC107;
+  border-radius: 5px;
+  color: white;
+}

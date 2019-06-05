@@ -12,6 +12,7 @@ import DefaultModal from 'components/Modals/DefaultModal'
 
 import { updateVersion, updateVersionMerge } from 'ducks/version'
 import { setConfirm, setError } from 'ducks/modal'
+import { deleteProject } from 'ducks/project'
 
 import 'brace/mode/json';
 import 'brace/ext/language_tools'
@@ -49,7 +50,6 @@ class BasicAdvancedSettings extends Component{
         this.state.resume_collapse = props.skill.resume_prompt ? !!props.skill.resume_prompt.follow_content : false
 
         this.confirmDelete = this.confirmDelete.bind(this)
-        this.onDelete = this.onDelete.bind(this)
         this.toggleSwitch = this.toggleSwitch.bind(this)
         this.handleUpdate = this.handleUpdate.bind(this)
         this.renderSettings = this.renderSettings.bind(this)
@@ -77,19 +77,13 @@ class BasicAdvancedSettings extends Component{
         this.props.setConfirm({
             warning: true,
             text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{this.props.skill.name}</i> and all flows can not be recovered</Alert>,
-            confirm: this.onDelete
-        })
-    }
-
-    onDelete() {
-        axios.delete(`/skill/${this.props.skill.skill_id}`)
-            .then(() => {
-                this.props.history.push('/dashboard');
-            })
-            .catch(err => {
+            confirm: () => this.props.deleteProject(this.props.skill.skill_id)
+                .then(() => this.props.history.push('/dashboard'))
+                .catch(err => {
                 console.log(err)
                 this.props.setError('Error Deleting Skill')
             })
+        })
     }
 
     toggleSwitch(e) {
@@ -329,6 +323,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
+        deleteProject: (p_id) => dispatch(deleteProject(p_id)),
         updateSkill: (type, val) => dispatch(updateVersion(type,val)),
         updateSkillMerge: (type, val) => dispatch(updateVersionMerge(type,val)),
         setConfirm: (confirm) => dispatch(setConfirm(confirm)),

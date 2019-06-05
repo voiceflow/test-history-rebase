@@ -1607,7 +1607,6 @@ export class Canvas extends Component {
                 onSave={this.onSave}
                 saving={this.state.saving}
                 saved={this.state.saved}
-                onTest={this.onTest}
                 updateLinter={this.updateLinter}
                 renderPlatformSwitch={this.renderPlatformSwitch}
                 history={this.props.history}

@@ -1060,7 +1060,7 @@ export class ActionGroup extends PureComponent {
 									position="bottom"
 									className="ml-4 mr-4"
 								>
-									<Button isNav onClick={this.props.onTest}><i className="fas fa-play"/></Button>
+									<Button isNav onClick={() => this.props.history.push(`/test/${this.props.skill.skill_id}`)}><i className="fas fa-play"/></Button>
 								</Tooltip>
 							</div>
 

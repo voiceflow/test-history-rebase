@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import _ from 'lodash'
 import update from 'immutability-helper'
-import axios from 'axios'
 import { compose } from "recompose";
 import { connect } from "react-redux";
 import cn from 'classnames'
@@ -11,7 +9,7 @@ import Conditions from './conditions'
 import Timeline from './timeline'
 
 
-import { setError, setConfirm } from "ducks/modal";
+import { setError } from "ducks/modal";
 
 import C from './constants'
 

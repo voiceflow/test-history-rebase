@@ -5,10 +5,8 @@ import moment from 'moment'
 import { compose } from "recompose";
 import { connect } from "react-redux";
 import { parse } from 'html-parse-stringify'
-import cn from 'classnames'
 
-import { useToggle } from 'hooks/toggle'
-import { RegexVariables, finder } from 'utils/variable'
+import { RegexVariables } from 'utils/variable'
 
 import TestBox from './TestBox'
 
@@ -62,7 +60,7 @@ const recurse = (tag, index = 0) => {
 let story_state = null;
 let pause = false;
 let next = false;
-let timer;
+
 const Timeline = props => {
   const {
     time,
@@ -90,7 +88,6 @@ const Timeline = props => {
     story_state = null;
   }
 
-  let current_diagram = null;
   const [outputs, setOutputs] = useState([])
   const [inputs, setInputs] = useState([])
   const [input, setInput] = useState("")
@@ -200,7 +197,6 @@ const Timeline = props => {
       setAudio(audio)
 
       audio.onerror = (err) => {
-        let inputs = inputs
         inputs.push({
           text: <span className="alert alert-warning mb-1 d-inline-block">Unable to Play Audio File on Test Tool<br /><b>{b.attrs.src}</b>{b.attrs.src.startsWith('soundbank') && <React.Fragment><br />(Soundbank Files will work on Alexa)</React.Fragment>}</span>,
           time: moment().format('h:mm:ss A')
@@ -369,10 +365,7 @@ const Timeline = props => {
         data.play.action = 'NEXT';
       }
     }
-    let prevTrace = []
-    if (data.trace) {
-      prevTrace = data.trace
-    }
+
     console.log(data)
     axios.post('/test/interact', data)
       .then(async res => {
@@ -387,10 +380,6 @@ const Timeline = props => {
         if (data.input && !data.trace) return;
         if (res.output && res.output.length > 0) {
           // TYLER'S SUPER JANKY AUDIO THING
-
-          if (res.diagrams.length > 0) {
-            current_diagram = res.diagrams[res.diagrams.length - 1]
-          }
 
           pause = false;
           if (res.play) {
@@ -428,6 +417,7 @@ const Timeline = props => {
                 const audio = new Audio(audioFile)
                 return {duration: await getAudioMeta(audio), audio: audio}
               }))
+              // eslint-disable-next-line
               _.map(parsed.children, (child, idx) => {
                 let outputBlock = {}
                 if (child.name === 'audio') {

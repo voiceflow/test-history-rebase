@@ -298,7 +298,7 @@ export class DiagramWidget extends BaseWidget {
 		} else if (this.state.action instanceof MoveItemsAction && !this.props.locked) {
 			let amountX = event.clientX - this.state.action.mouseX;
 			let amountY = event.clientY - this.state.action.mouseY;
-			if (amountX === 0 && amountY === 0 || this.props.locked) return;
+			if ((amountX === 0 && amountY === 0) || this.props.locked) return;
 			let amountZoom = diagramModel.getZoomLevel() / 100;
 			// console.log(this.state.action.selectionModels)
 			_.forEach(this.state.action.selectionModels, model => {

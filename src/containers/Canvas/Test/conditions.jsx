@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import _ from 'lodash'
+import React from "react";
 import { compose } from "recompose";
 import { connect } from "react-redux";
 import cn from 'classnames'
@@ -7,10 +6,8 @@ import ConditionExpression from "./ConditionExpression";
 
 const Conditions = (props) => {
   const {
-    node,
     variables,
     testing_info,
-    variableMapping,
     handleVariableChange,
   } = props
 

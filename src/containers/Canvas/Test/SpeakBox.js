@@ -2,8 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import cn from 'classnames'
 import {Tooltip} from 'react-tippy'
-import moment from 'moment'
-import { isTSExpressionWithTypeArguments } from '@babel/types';
 
 class SpeakBox extends React.Component {
     constructor(props) {

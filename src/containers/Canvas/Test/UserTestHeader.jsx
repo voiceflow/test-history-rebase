@@ -17,7 +17,6 @@ const UserTestHeader = props => {
         history,
         onTest,
         resetTest,
-        beginTest,
         preview
     } = props
 

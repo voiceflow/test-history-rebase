@@ -17,10 +17,13 @@ const ConditionExpression = props => {
 
     return (
         <div className="set-block p-3">
-            <i className={cn("fas", {
-                "fa-chevron-up": show,
-                "fa-chevron-down": !show
-            })} onClick={() => toggleShow()} />
+            <div id="condition-label" onClick={() => toggleShow()}>
+                <div className="text-left w-100">{`${variable}`}</div>
+                <i className={cn("fas", "d-flex", "align-items-center", {
+                    "fa-chevron-up": show,
+                    "fa-chevron-down": !show
+                })} />
+            </div>
             <Collapse isOpen={show}>
                 <div className="variable-group">
                     <span>Set</span>

@@ -508,7 +508,7 @@ class Editor extends Component {
 
   renderTitle() {
     return (
-      <div id="label-container" className="d-flex mb-3 pl-2">
+      <div className="label-container d-flex mb-3 pl-2">
         <div className="w-100 text-left">{this.titleInput()}</div>
         <i
           className="more-info d-flex align-items-center"

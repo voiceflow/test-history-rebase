@@ -2389,7 +2389,7 @@ button.close:hover{
     /* padding-bottom: 17px; */
 }
 
-#label-container {
+.label-container {
     align-items: center;
     display: flex;
     justify-content: center;

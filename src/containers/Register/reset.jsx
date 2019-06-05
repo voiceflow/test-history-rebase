@@ -86,7 +86,7 @@ class Reset extends Component {
       <div className="d-flex flex-row align-items-center justify-content-center" id="main">
           <div id="side-form">
             <div id="reset-form">
-              <img className="login-logo" src="/logo.svg" alt="logo"/>
+              <img className="login-logo" src="/logo.png" alt="logo"/>
               <div className="p-4 p-md-5">
                 <div className="reset-div">
                   {this.renderStage()}

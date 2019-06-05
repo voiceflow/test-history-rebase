@@ -107,9 +107,7 @@ const Header = (props) => {
             {(leftRenderer || withLogo) && <div className={cn('header-grid__left', leftClassName)}>
               {withLogo &&
               <Link to="/dashboard" className="mx-2">
-                  <img className='voiceflow-logo' src={'/logo.png'} alt='logo'
-                      height="40"
-                  />
+                  <img className='voiceflow-logo' src={'/logo.png'} alt='logo' />
               </Link>}
               {leftRenderer && leftRenderer()}
               {!!title && <div className="header__title">{title}</div>}

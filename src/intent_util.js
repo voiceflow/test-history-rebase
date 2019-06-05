@@ -4,37 +4,45 @@ const randomstring = require("randomstring")
 const { validSpokenCharacters, validLatinChars } = require('./services/Regex')
 const draftToMarkdown = require('./services/draftConvert')
 
-const getUtterancesWithSlotNames = (utterances, slots, square_brackets=false, format_name=false) => {
+const getUtterancesWithSlotNames = (utterances, slots, square_brackets=false, format_name=false, mention=false) => {
 
-	const re = /(\{\{\[[^}{[\]]+]\.([a-zA-Z0-9]+)\}\})/g;
-	let m;
+  const re = /(\{\{\[([^}{[\]]+)]\.([a-zA-Z0-9]+)\}\})/g;
+  let m;
 
-	const new_utterances = utterances.map(e => e.text).filter(e => !!e.trim()).map(input => {
-		let new_input = input
-		do {
-			m = re.exec(input)
-			if (m) {
-				const replace = m[1]
-				const key = m[2]
-				const slot = find(slots, {
-					key: key
-				})
-				if (slot) {
-					let slot_name = slot.name
-					if (format_name) slot_name = formatName(slot_name)
-					if (square_brackets) {
-            new_input = new_input.replace(replace, `[${slot_name}]`)
+  const new_utterances = utterances.map(e => e.text).filter(e => !!e.trim()).map(input => {
+    let new_input = input
+    do {
+      m = re.exec(input)
+      if (m) {
+        const replace = m[1]
+        const slot_text = m[2]
+        const key = m[3]
+        const slot = find(slots, {
+          key: key
+        })
+        if (slot) {
+          let slot_name = slot.name
+          if (format_name) slot_name = formatName(slot_name)
+          if (mention) {
+            if (slot_text !== slot_name) {
+              const new_mention = replace.replace(slot_text, slot_name)
+              new_input = new_input.replace(replace, new_mention)
+            }
           } else {
-            new_input = new_input.replace(replace, `{${slot_name}}`)
+            if (square_brackets) {
+              new_input = new_input.replace(replace, `[${slot_name}]`)
+            } else {
+              new_input = new_input.replace(replace, `{${slot_name}}`)
+            }
           }
-				} else {
-					return new_input
-				}
-			}
-		} while (m);
-		return new_input
-	})
-	return new_utterances
+        } else {
+          return new_input
+        }
+      }
+    } while (m);
+    return new_input
+  })
+  return new_utterances
 }
 
 const formatName = (name) => {

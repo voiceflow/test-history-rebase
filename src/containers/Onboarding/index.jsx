@@ -379,7 +379,7 @@ class Onboarding extends Component{
 			default:
 				return <div key={this.state.stage} className="pb-5 mb-5">
           <div className="text-center">
-            <img className='logo mb-3' src={process.env.PUBLIC_URL+'/logo.svg'} alt='logo'
+            <img className='logo mb-3' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo'
               height="25"
             />
             <p className="modal-bg-txt text-center mb-3">Hi, {this.props.user.name}</p>

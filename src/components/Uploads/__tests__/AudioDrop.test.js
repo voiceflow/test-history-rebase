@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
 import AudioDrop from '../AudioDrop';
-import testaudio from '../__mocks__/testaudio.wav';
+import testaudio from '../__mocks__/audiotest.wav';
 import toJson from 'enzyme-to-json';
 
 const updateFn = jest.fn()

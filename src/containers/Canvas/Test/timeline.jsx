@@ -465,6 +465,7 @@ const Timeline = props => {
               outputBlock.diagram = block.line.diagram_id;
               outputBlock.type = type;
               outputBlock.delay = delay;
+              delay += 1000
               dom.push(outputBlock)
             }
           }

@@ -109,6 +109,12 @@ const Timeline = props => {
     }
   })
 
+  useEffect(() => {
+    return () => {
+      handleRestart();
+    }
+  }, [])
+
   if (!testing_info && !started) {
     return <div className="mb-3">
       <small className="text-muted d-block ml-3">Start to see the dialog transcription</small>
@@ -282,6 +288,7 @@ const Timeline = props => {
           time: moment().format('h:mm:ss A')
         })
       }
+      e.currentTarget.value = ""
       setInput("")
       setIntent("")
       setInputs(inputs)
@@ -375,6 +382,7 @@ const Timeline = props => {
         if (res.line_id) {
           story_state = res
         }
+        if (data.input && !data.trace) return;
         if (res.output && res.output.length > 0) {
           // TYLER'S SUPER JANKY AUDIO THING
 

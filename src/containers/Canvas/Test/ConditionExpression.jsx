@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cn from 'classnames'
 import { connect } from 'react-redux';
+import { Collapse } from 'reactstrap'
 
 import { useToggle } from 'hooks/toggle'
 
@@ -12,17 +13,22 @@ const ConditionExpression = props => {
         onSelection,
     } = props
 
-    const [show, toggleShow] = useToggle()
+    const [show, toggleShow] = useToggle(true)
 
     return (
         <div className="set-block p-3">
-            <div className="close" onClick={() => toggleShow()} />
-            <div className="variable-group">
-                <span>Set</span>
-                <span className="action-visible light-blue">{`{${variable}}`}</span>
-                <span>to:</span>
-            </div>
-            <Input type="text" onChange={e => onSelection(variable, e.target.value)} />
+            <i className={cn("fas", {
+                "fa-chevron-up": show,
+                "fa-chevron-down": !show
+            })} onClick={() => toggleShow()} />
+            <Collapse isOpen={show}>
+                <div className="variable-group">
+                    <span>Set</span>
+                    <span className="action-visible light-blue">{`{${variable}}`}</span>
+                    <span>to:</span>
+                </div>
+                <Input type="text" onChange={e => onSelection(variable, e.target.value)} />
+            </Collapse>
             <div className="break" />
         </div>
     );

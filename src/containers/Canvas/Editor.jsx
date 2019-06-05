@@ -57,8 +57,6 @@ import {
   BUILT_IN_INTENTS_GOOGLE
 } from "Constants";
 
-console.log(BUILT_IN_INTENTS_ALEXA)
-console.log(BUILT_IN_INTENTS_GOOGLE)
 const ALEXA_BUILT_INS = BUILT_IN_INTENTS_ALEXA && BUILT_IN_INTENTS_ALEXA.map(intent => {
   return {
     built_in: true,

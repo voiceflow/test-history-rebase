@@ -13,7 +13,6 @@ const TestBox = props => {
         debug,
         ended,
         pause,
-        onKeydown,
         setInput,
         diagramEngine,
         handleChange,
@@ -21,6 +20,12 @@ const TestBox = props => {
         audioPlayer,
         handleRestart,
     } = props
+
+    const onKeydown = e => {
+        if (e.keyCode === 13 && ! e.shiftKey) {
+            inputSubmit(e)
+        }
+    }
 
     return (
         <React.Fragment>

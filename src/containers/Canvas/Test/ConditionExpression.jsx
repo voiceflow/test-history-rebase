@@ -16,7 +16,8 @@ const ConditionExpression = props => {
     const [show, toggleShow] = useToggle(true)
 
     return (
-        <div className="set-block p-3">
+        <div className="set-block px-3">
+            <div className="break" />
             <div id="condition-label" onClick={() => toggleShow()}>
                 <div className="text-left w-100">{`${variable}`}</div>
                 <i className={cn("fas", "d-flex", "align-items-center", {
@@ -32,7 +33,6 @@ const ConditionExpression = props => {
                 </div>
                 <Input type="text" onChange={e => onSelection(variable, e.target.value)} />
             </Collapse>
-            <div className="break" />
         </div>
     );
 }

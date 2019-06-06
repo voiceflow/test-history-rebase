@@ -42,7 +42,7 @@ class DisplayRender extends Component {
     render() {
         return (
               <div>
-                <div style={{height:this.state.height+"px"}}>
+                <div style={{height:this.state.height+"px",overflow:"hidden"}}>
                   <div className="display-elem" ref={this.elem} style={{transform:this.state.scale}}/>
                 </div>
                 <div className="d-flex justify-content-center pt-1">

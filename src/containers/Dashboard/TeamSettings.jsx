@@ -307,6 +307,12 @@ class TeamSettings extends Component {
           <div className="d-flex align-items-start justify-content-center mx--2 mt-5">
             <PricingCard plan="HOBBY" delay={300} team={this.props.team} />
             <PricingCard
+              plan="PROFESSIONAL"
+              delay={600}
+              team={this.props.team}
+              upgrade={this.upgrade(1)}
+            />
+            <PricingCard
               plan="BUSINESS"
               delay={900}
               team={this.props.team}

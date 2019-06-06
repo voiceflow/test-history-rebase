@@ -9,6 +9,7 @@ import {Link} from 'react-router-dom'
 
 import AceEditor from 'react-ace';
 import './Display.css'
+import DisplayRender from './components/DisplayRender'
 
 import 'brace/mode/json_custom';
 import 'brace/theme/monokai';
@@ -137,12 +138,10 @@ export class Display extends Component {
                 datasource = datasource.replace(re, replacement)
             })
 
-            axios.post(`/multimodal/display/render/${this.state.node.extras.display_id}`, {
-              datasource: datasource
-            })
+            axios.get(`/multimodal/display/${this.state.node.extras.display_id}`)
             .then(res => {
                 this.setState({
-                    modalContent: res.data,
+                    modalContent: res.data.document,
                     current_request: false
                 })
             })
@@ -172,14 +171,14 @@ export class Display extends Component {
             variables: variables,
             variables_error: '',
             user_variables: {}
-        })
+        },
+      ()=>this.testDisplay())
     }
 
     // Render entire modal
     renderDisplayTest() {
         let loading = <div className="text-center mt-3"><div className="loader text-lg"/></div>
         if (_.isNil(this.state.modalContent) && _.isEmpty(this.state.variables)) {
-            this.testDisplay()
             return loading
         }
 
@@ -201,25 +200,12 @@ export class Display extends Component {
                     ))}
                 </React.Fragment>
                 }
-                {this.state.variables_error && <div className='error-message'>{this.state.variables_error}</div>}
+                {this.state.variables_error && <div className='error-message text-center'>{this.state.variables_error}</div>}
                 {this.state.current_request && loading}
                 {this.state.modalContent && <div className="space-between flex-hard">
-                    <label>
-                        Display Test
-                    </label>
-                    <span>
-                        <Tooltip
-                            className="test-help"
-                            title='If a black screen Appears, try double-checking your Data Source JSON and Document format. Note: This is meant to be a quick and convenient way to test your displays. We recommend using the Amazon APL Authoring Tool for double-checking how your display will look, especially on differently-sized screens.'
-                            position="bottom"
-                            theme="block"
-                        >
-                            ?
-                        </Tooltip>
-                    </span>
                 </div>}
 
-                {this.state.modalContent && <img className='test-image' alt='content' src={`data:image/png;base64,${this.state.modalContent}`} />}
+                {this.state.modalContent && <DisplayRender apl={this.state.modalContent} data={this.state.node.extras.datasource} error={e=>this.setState({variables_error:e})}/>}
             </div>
         )
     }

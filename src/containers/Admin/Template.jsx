@@ -2,6 +2,8 @@ import React from 'react';
 import {Table, Button, Form, FormGroup, Label, Col} from 'reactstrap'
 import axios from 'axios'
 import Input from "components/Input";
+import {toast} from 'react-toastify';
+
 
 class Template extends React.Component {
 
@@ -18,7 +20,11 @@ class Template extends React.Component {
     this.onSubmit=this.onSubmit.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount(){
+    this.getTemplates()
+  }
+
+  async getTemplates() {
     const data = await axios.get('/admin-api/template/get')
     this.setState({templates:data.data})
   }
@@ -31,17 +37,33 @@ class Template extends React.Component {
   }
 
   async deleteTemplate(id) {
-    await axios.delete('/admin-api/template/'+id)
-    this.componentDidMount()
+    try{
+      await axios.delete('/admin-api/template/'+id)
+    }catch(e){
+      toast.error("Are you sure the project exists?")
+    }
+    this.getTemplates()
   }
 
   async onSubmit() {
-    if(this.state.template.module_id){
-      await axios.put('/admin-api/template/'+this.state.template.module_id,this.state.template)
-    } else {
-      await axios.post('/admin-api/template/',this.state.template)
+    if(!parseInt(this.state.template.module_project_id,10)){
+      return toast.error("Bad Project ID")
     }
-    this.componentDidMount()
+    if(!parseInt(this.state.template.template_index,10)){
+      return toast.error("Bad Order")
+    }
+    try{
+      if(this.state.template.module_id){
+        await axios.put('/admin-api/template/'+this.state.template.module_id,this.state.template)
+      } else {
+        await axios.post('/admin-api/template/',this.state.template)
+      }
+      toast.success("Submit Success")
+    }catch(e){
+      toast.error("Are you sure the project exists?")
+    }
+
+    this.getTemplates()
   }
 
 
@@ -50,10 +72,10 @@ class Template extends React.Component {
     return (
       <div className="fb_wrapper">
         <h3 className="fb_header">
-          <span className={'crossed_out'}>Marketplace</span> Templates <span className={'admin_highlight_lime'}>not dead yet</span>
+          Templates
         </h3>
         <div>
-          <Form onSubmit={e=>console.log(e)}>
+          <Form>
             <FormGroup row>
               <Label for="id" sm={2}>ID</Label>
               <Col sm={8}><Input name="module_id" id="id" value={this.state.template.module_id} onChange={this.handleInputChange} placeholder="NEW TEMPLATE" readOnly disabled/></Col>
@@ -68,7 +90,7 @@ class Template extends React.Component {
               <Col sm={10}><Input name="descr" id="descr" value={this.state.template.descr} onChange={this.handleInputChange}/></Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="icon" sm={2}>Icon</Label>
+              <Label for="icon" sm={2}>Icon URL</Label>
               <Col sm={10}><Input name="module_icon" id="icon" value={this.state.template.module_icon} onChange={this.handleInputChange}/></Col>
             </FormGroup>
             <FormGroup row>

@@ -162,10 +162,26 @@ export class DiagramModel extends BaseEntity {
 		});
 	}
 
-	setOffset(offsetX, offsetY) {
-		console.log('slope is', ((offsetY - this.offsetY)/(offsetX - this.offsetX)))
-		this.offsetX = offsetX;
-		this.offsetY = offsetY;
+	setOffset(offsetX, offsetY, translate = false) {
+		if (translate) {
+			const deltaX = offsetX - this.offsetX;
+			const deltaY = offsetY - this.offsetY;
+
+			const slopeX = deltaX / 10;
+			const slopeY = deltaY / 10;
+			let counter = 10;
+			this.offsetInterval = setInterval(() => {
+				this.offsetX += slopeX;
+				this.offsetY += slopeY;
+				counter -= 1;
+				if ((this.offsetX === offsetX && this.offsetY === offsetY) || counter <= 0) {
+					clearInterval(this.offsetInterval)
+				}
+			}, 1)
+		} else {
+			this.offsetX = offsetX;
+			this.offsetY = offsetY
+		}
 		this.iterateListeners((listener, event) => {
 			if (listener.offsetUpdated) {
 				listener.offsetUpdated({ ...event, offsetX: offsetX, offsetY: offsetY });

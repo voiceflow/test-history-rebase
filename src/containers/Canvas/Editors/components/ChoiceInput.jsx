@@ -29,7 +29,7 @@ class ContainedTextarea extends PureComponent {
       className={this.props.className}
       value={this.state.value}
       onChange={this.handleChange}
-      onBlur={()=>this.props.onChange(this.state.value)}
+      onBlur={()=>this.props.onChange(this.state.value, this.props.index)}
     />
   }
 }
@@ -135,7 +135,10 @@ class ChoiceInput extends Component {
                 if(i === 0) return null
                 i = utterances.length - i
                 return <div className="choice-utterance" key={utterances[i].key}>
-                  <ContainedTextarea value={utterances[i].text} onChange={(text) => this.updateSample(text, i)}/>
+                  <ContainedTextarea
+                    value={utterances[i].text}
+                    index={i}
+                    onChange={this.updateSample} />
                   <i onClick={(e) => {this.deleteUtterance(e, i)}} className="fas fa-backspace trash-icon mt-2"></i>
                 </div>
             });
@@ -161,7 +164,8 @@ class ChoiceInput extends Component {
                 placeholder='Enter user reply'
                 className="form-control user-input mb-2"
                 value={this.state.samples[0].text}
-                onChange={(text) => this.updateSample(text, 0)}/>
+                index={0}
+                onChange={this.updateSample}/>
               <div className="space-between pointer ml-1 mb-1" onClick={this.toggleOpen}>
                 <div className="section-title">Synonyms ({this.state.samples.length - 1})</div>
                 <i className={cn('text-muted', 'fas', 'fa-caret-down', 'rotate', {

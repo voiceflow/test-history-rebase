@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {Alert, Card, CardBody, Collapse, Modal, ModalBody, ModalFooter} from "reactstrap";
-import DayPicker, { DateUtils } from 'react-day-picker'
 
 import './ChargeTeamGroup.css';
 import moment from "moment";
@@ -10,6 +9,7 @@ import Button from "components/Button";
 import '../AdminAdvancedModal/AdminAdvancedModal.css';
 import Input from "components/Input";
 import {refundCharge, cancelSubscription, editTrial} from "ducks/admin";
+import TrialModal from "../TrialModal/TrialModal";
 
 class ChargeTeamGroup extends React.Component {
 
@@ -23,7 +23,7 @@ class ChargeTeamGroup extends React.Component {
       refundAmountError: '',
       refundAmount: '',
       showCancelModal: false,
-      showTrialModal: true
+      showTrialModal: false
     }
   }
 
@@ -83,7 +83,6 @@ class ChargeTeamGroup extends React.Component {
   render() {
     if (this.props.team) {
       const {team} = this.props;
-      console.log('curernt team: ', team);
       return (
         <div className="ctg__wrapper">
           <div className="ctg__team-header">
@@ -95,6 +94,9 @@ class ChargeTeamGroup extends React.Component {
               Created: {moment(team.created).format('MMMM Do YYYY, h:mm:ss a')}
               <div className="ctg__team-subheader">
                 Subscription id: {team.stripe_sub_id ? team.stripe_sub_id : 'Cancelled'}
+              </div>
+              <div className="ctg__team-subheader">
+                Trial Expiry: {team.expiry ? moment(team.expiry).add(1, 'd').format("MMM Do YYYY") : 'No trial set'}
               </div>
             </div>
             {team.stripe_sub_id ? <Button className="ctg__team-cancel" isWarning onClick={this.toggleSub}>
@@ -245,42 +247,11 @@ class ChargeTeamGroup extends React.Component {
             </ModalFooter>
           </Modal>
 
-          <Modal isOpen={this.state.showTrialModal} toggle={this.toggleTrial} className={this.props.className}>
-            <div className="am__title" onClick={this.toggleTrial}>
-              Trial controls
-              <div className="close am__close"></div>
-            </div>
-            <ModalBody>
-              <div>
-                <div className="ctg__charge_overview">
-                  <div className="ctg__charge_for">
-                    Editing trial for: 
-                  </div>
-                  <div className="ctg__charge_header">
-                    Team #{team.team_id}
-                  </div>
-                  <div className="ctg__receipt_divider"> </div>
-                  <div className="ctg__charge_amount">
-                    <div>
-                      Current trial status: {team.expiry ? moment(team.expiry).format('MMMM Do YYYY, h:mm:ss a') : 'No trial set'}
-                    </div>
-                    <div>
-                      <DayPicker />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ModalBody>
-            <ModalFooter>
-              <Button isWarning onClick={() => {
-                this.props.cancelSubscription(team.team_id, team.stripe_sub_id);
-                this.toggleSub();
-              }}>
-                Change to free plan
-              </Button>
-              <Button isSecondary onClick={this.toggleTrial}>Cancel</Button>
-            </ModalFooter>
-          </Modal>
+          <TrialModal
+            showTrialModal={this.state.showTrialModal}
+            toggleTrial={this.toggleTrial}
+            team={team}
+          />
           
         </div>
       )

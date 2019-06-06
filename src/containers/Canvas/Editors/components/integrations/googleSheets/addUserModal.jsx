@@ -1,17 +1,11 @@
 import GoogleLogin from 'react-google-login';
+import { googleClient } from 'containers/Register/social-id';
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { addIntegrationUser } from 'ducks/integration'
 
 import { GOOGLE_SHEETS } from './constants'
 
-let clientId;
-
-if (process.env.NODE_ENV === 'production'){
-    clientId = '792099969137-uf81ar579b5ea2ll96a37r3ruucfbrmv.apps.googleusercontent.com';
-}else{
-    clientId = '432667713405-2sqne6de9h447oumls37rj2g4no4qr85.apps.googleusercontent.com';
-}
 class GoogleAddUserModal extends Component {
 
   googleLogin = async (userProfile) => {
@@ -45,7 +39,7 @@ class GoogleAddUserModal extends Component {
         </div>
         <div className="d-flex justify-content-center mx-5 my-3">
           <GoogleLogin
-            clientId={clientId}
+            clientId={googleClient}
             className="social-button class-ggl mb-4"
             buttonText="Login with Google"
             onSuccess={this.googleLogin}

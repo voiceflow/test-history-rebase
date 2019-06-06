@@ -140,7 +140,7 @@ class Templates extends Component {
     }
 
     loadDefaultTemplates() {
-        axios.get('/marketplace/default_templates')
+        axios.get('/template/all')
             .then(res => {
                 if (Array.isArray(res.data)) {
                     this.setState({

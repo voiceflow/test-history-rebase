@@ -163,6 +163,7 @@ export class DiagramModel extends BaseEntity {
 	}
 
 	setOffset(offsetX, offsetY) {
+		console.log('slope is', ((offsetY - this.offsetY)/(offsetX - this.offsetX)))
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
 		this.iterateListeners((listener, event) => {

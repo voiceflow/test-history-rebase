@@ -272,6 +272,10 @@ ul {
   overflow-x: hidden;
 }
 
+.light-grey{
+  color: #90A2B3;
+}
+
 .main-container-header {
   flex: 0 0 auto;
   min-width: 0;

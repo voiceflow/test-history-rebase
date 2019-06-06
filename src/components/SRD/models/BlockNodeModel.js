@@ -38,7 +38,13 @@ export class BlockNodeModel extends DefaultNodeModel {
 		this.locked = locked;
 		return this;
 	}
-
+	setFocused(focused){
+		this.focused = focused
+		return this;
+	}
+	isFocused(){
+		return this.focused;
+	}
 	centerLinks(diagramEngine) {
 		_.forEach(this.ports, port => {
 			let center = diagramEngine.getPortCenter(port)

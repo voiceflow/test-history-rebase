@@ -119,7 +119,7 @@ const TestBox = props => {
                 </div> 
                 :
                 <Form onSubmit={inputSubmit} id="user__input" className="px-3 mb-3">
-                    <span>User Says</span>
+                    <span className="light-grey">User Says</span>
                     <Input className='form-bg response-input mt-3 mb-2' name="input" type="textarea" placeholder="Enter text of your command" value={input} onChange={handleChange} onKeyDown={onKeydown}/>
                     <Button isBtn isClear onClick={(e) => inputSubmit(e)}>Send</Button>
                     <small className="text-muted pb-3 pt-2 d-block"><kbd>⌘</kbd> + Enter</small>

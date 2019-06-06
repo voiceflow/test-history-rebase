@@ -26,7 +26,7 @@ class Test extends Component {
     super(props)
     this.state = {
       variableMapping: props.variables.reduce((key, val) => {key[val]=val; return key}, {}),
-      conditionsOpen: false,
+      conditionsOpen: true,
       timelineOpen: false,
     }
   }
@@ -58,6 +58,10 @@ class Test extends Component {
   }
 
   render() {
+    const {
+      conditionsOpen,
+      timelineOpen
+    } = this.state
     return (
       <div id="TestSidebar" className={cn({
         open: this.props.open
@@ -93,10 +97,17 @@ class Test extends Component {
           }
 
           return <div key={i} className="mt-3 mb-3 sidebar_container">
-            <label id={s} className='ml-3 mt-2' onClick={() => {this.toggleSection(s)}}>{s}</label>
+            <div className="condition-label" onClick={() => {this.toggleSection(s)}}>
+            <label id={s} className='ml-3 mt-2 text-left'>{s}</label>
+              <i className={cn("fas", "light-grey", "d-flex", "align-items-center", {
+                "fa-chevron-up": s === C.CONDITIONS ? conditionsOpen : timelineOpen,
+                "fa-chevron-down": s === C.CONDITIONS ? !conditionsOpen: !timelineOpen,
+              })} />
+            </div>
             <Collapse isOpen={s === C.CONDITIONS ? !this.props.testing_info && this.state.conditionsOpen: this.state.timelineOpen}>
               {section}
             </Collapse>
+            {s === C.CONDITIONS && <div className="break" />}
           </div>
         })}
     </div>

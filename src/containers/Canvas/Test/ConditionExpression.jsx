@@ -17,9 +17,9 @@ const ConditionExpression = props => {
     return (
         <div className="mb-2 px-3">
             <div className="break" />
-            <div id="condition-label" onClick={() => toggleShow()}>
+            <div className="condition-label" onClick={() => toggleShow()}>
                 <div className="text-left w-100">{`${variable}`}</div>
-                <i className={cn("fas", "d-flex", "align-items-center", {
+                <i className={cn("fas","light-grey", "d-flex", "align-items-center", {
                     "fa-chevron-up": show,
                     "fa-chevron-down": !show
                 })} />

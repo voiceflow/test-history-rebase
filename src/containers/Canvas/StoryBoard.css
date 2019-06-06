@@ -1571,14 +1571,15 @@ label {
     cursor: pointer !important;
 }
 
-.srd-node--selected>* {
+.srd-node--selected>*, .srd-node--focused>* {
     border: 1px solid !important;
     border-top: 6px solid !important;
     outline: 0;
     box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08) !important;
     box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25);
 }
-.srd-node--selected{
+
+.srd-node--selected, .srd-node--focused{
     z-index: 100 !important;
 }
     /* .port.flow{
@@ -1708,10 +1709,7 @@ label {
 .srd-default-node.god>.srd-default-node__title span {
     margin: 0 auto;
 }
-.srd-node--selected .srd-default-node.god, .srd-node--selected .srd-default-node.story{
-    /* box-shadow: 0 15px 30px rgba(50, 50, 93, .15), 0 3px 6px rgba(0, 0, 0, .08) !important; */
 
-}
 .last .srd-default-node__out {
     margin-top: 10px;
  }
@@ -1793,9 +1791,7 @@ label {
     bottom: 20px;
     right: 13px;
 }
-/* .srd-node--selected .srd-default-node__out.god {
-    right: 13px;
-} */
+
 .srd-default-node__in.god {
     display: none;
     margin-top: -13%;

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import _ from "lodash";
 import {toast} from 'react-toastify';
+import moment from "moment";
 
 export const SET_CREATOR = 'SET_CREATOR';
 export const FIND_CREATOR_FAILED = 'FIND_CREATOR_FAILED';
@@ -164,14 +165,15 @@ export const editTrial = (teamId, date) => async dispatch => {
   try {
     if (date) {
       // Date should be a timestamp (something like 1429482798)
-      axios.post(`/admin-api/trial/${teamId}/${date}`)
+      // Add one extra day to account for reset at midnight
+      const formatDate = moment(date).add(1, 'd').unix();
+      axios.post(`/admin-api/trial/${teamId}/${formatDate}`)
     } else {
       // We want to set the trial expiry to null here
       axios.post(`/admin-api/trial/${teamId}/${0}`)
     }
-    toast.success('Trial period set!');
+    toast.success('Trial period set! Please refresh the page to see updated charges\'');
   } catch (err) {
-    console.error('error when editing trial for project: ', err);
     toast.error('Trail edit failed.');
   }
   

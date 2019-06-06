@@ -118,7 +118,7 @@ const TestBox = props => {
                     <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.PreviousIntent'}, inputSubmit)}>Previous</Button>
                 </div> 
                 :
-                <Form onSubmit={inputSubmit} id="user__input" className="px-3 mb-3">
+                <Form onSubmit={inputSubmit} id="user__input" className="px-3 mb-3 mt-3">
                     <span className="light-grey">User Says</span>
                     <Input className='form-bg response-input mt-3 mb-2' name="input" type="textarea" placeholder="Enter text of your command" value={input} onChange={handleChange} onKeyDown={onKeydown}/>
                     <Button isBtn isClear onClick={(e) => inputSubmit(e)}>Send</Button>

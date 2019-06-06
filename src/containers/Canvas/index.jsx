@@ -1622,7 +1622,6 @@ export class Canvas extends Component {
               onMouseUp={this.combineNode}
               onMouseDown={() => (this.diagram_focus = true)}
             >
-              {!this.state.testing_info &&  
               <Menu
                 unfocus={this.onDiagramUnfocus}
                 enterFlow={this.enterFlow}
@@ -1641,13 +1640,11 @@ export class Canvas extends Component {
                 open={this.props.tabOpen && this.props.page === 'canvas'}
                 build={fn => (this.updateTree = fn)}
               />
-              }
               {this.state.load_diagram &&
                 React.createElement(Spinner, { name: "Flow" })}
-
-              {!this.state.testing_info && <Editor
+                <Editor
                 unfocus={this.onDiagramUnfocus}
-                open={this.props.open}
+                open={this.props.open && this.props.page === 'canvas'}
                 diagramEngine={this.state.engine}
                 node={this.state.engine.getSuperSelect()}
                 onUpdate={this.onUpdate}
@@ -1670,7 +1667,7 @@ export class Canvas extends Component {
                     : _.noop()
                 }
                 removeCombineNode={
-                  !this.props.preview
+                  !this.props.preview                                                                                                                                                                                                                                                                                                             
                     ? this.removeCombineNode
                     : _.noop()
                 }
@@ -1685,7 +1682,6 @@ export class Canvas extends Component {
                 updateLinter={this.updateLinter}
                 testing={this.props.testing}
               />
-              }
               <Test
                 open={this.props.testing}
                 testing_info={this.state.testing_info}

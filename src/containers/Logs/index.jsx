@@ -31,10 +31,10 @@ class TablePagination extends React.Component {
   };
 
   render() {
-    const { classes, count, page, rowsPerPage, theme } = this.props;
+    const { count, page, rowsPerPage, theme } = this.props;
 
     return (
-      <div className={classes.root}>
+      <div>
         <Button
           isBtn
           isClear
@@ -97,7 +97,6 @@ class TablePagination extends React.Component {
 }
 
 TablePagination.propTypes = {
-  classes: PropTypes.object.isRequired,
   count: PropTypes.number.isRequired,
   onChangePage: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,

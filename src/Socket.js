@@ -1,4 +1,5 @@
 import socket from 'socket.io-client';
+import randomstring from 'randomstring';
 
 const getEndpoint = () => {
   let port = '';
@@ -15,6 +16,14 @@ const socketFail = () => {
 };
 
 window.CreatorSocket = socket(getEndpoint());
+
+if (!sessionStorage.getItem("tabId")) {
+  sessionStorage.setItem("tabId", randomstring.generate());
+}
+
+window.CreatorSocket.tabId = sessionStorage.getItem("tabId");
+
+
 window.CreatorSocket.connectedCB = {};
 // catch error events
 window.CreatorSocket.on('fail', socketFail);

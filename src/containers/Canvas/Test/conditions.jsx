@@ -12,7 +12,7 @@ const Conditions = (props) => {
   } = props
 
   return (
-    <div id='Conditions' className={cn("mb-3", {
+    <div id='Conditions' className={cn({
       'disabled': testing_info
     })}>
       <div className="text-center">

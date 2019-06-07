@@ -14,6 +14,7 @@ const TestBox = props => {
         pause,
         history,
         enterFlow,
+        resetTest,
         diagramEngine,
         handleChange,
         inputSubmit,
@@ -43,6 +44,8 @@ const TestBox = props => {
                     return <SpeakBox
                         key={i}
                         isFlow
+                        resetTest={resetTest}
+                        isLast={chat.isLast}
                         diagram={chat.diagram}
                         history={history}
                         node={chat.node}
@@ -56,6 +59,8 @@ const TestBox = props => {
                         isRight
                         isChoice
                         chat={chat}
+                        resetTest={resetTest}
+                        isLast={chat.isLast}
                         time={time}
                         node={chat.node}
                         delay={chat.delay}
@@ -83,11 +88,22 @@ const TestBox = props => {
                         isLeft
                         isSpeak
                         text={chat.text}
+                        resetTest={resetTest}
                         time={time}
                         type={chat.audioType}
+                        isLast={chat.isLast}
                         delay={chat.delay}
                         node={chat.node}
                         audio={chat.audio}
+                        diagramEngine={diagramEngine}
+                    />
+                } else if (chat.isLast) {
+                    return <SpeakBox
+                        key={i}
+                        isLast={chat.isLast}
+                        resetTest={resetTest}
+                        delay={chat.delay}
+                        node={chat.node}
                         diagramEngine={diagramEngine}
                     />
                 }else{
@@ -121,7 +137,7 @@ const TestBox = props => {
                 <Form onSubmit={inputSubmit} id="user__input" className="px-3 mb-3 mt-3">
                     <span className="light-grey">User Says</span>
                     <Input className='form-bg response-input mt-3 mb-2' name="input" type="textarea" placeholder="Enter text of your command" value={input} onChange={handleChange} onKeyDown={onKeydown}/>
-                    <Button isBtn isClear onClick={(e) => inputSubmit(e)}>Send</Button>
+                    <Button isBtn isBlack isLarge onClick={(e) => inputSubmit(e)}>Send</Button>
                     <small className="text-muted pb-3 pt-2 d-block"><kbd>⌘</kbd> + Enter</small>
                 </Form>
                 }

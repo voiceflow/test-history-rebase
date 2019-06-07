@@ -96,6 +96,7 @@ export class Canvas extends Component {
         }
         this.loaded = false
         this.time_mounted = null;
+        this.updateTree = null;
 
         this.state = {
             engine: engine,
@@ -1579,6 +1580,7 @@ export class Canvas extends Component {
                     history={this.props.history}
                     onTest={this.onTest}
                     time={this.state.time}
+                    testing_info={this.state.testing_info}
                     resetTest={() => this.setState({ testing_info: false })}
                     page={this.props.page}
                 />
@@ -1622,7 +1624,7 @@ export class Canvas extends Component {
               onMouseUp={this.combineNode}
               onMouseDown={() => (this.diagram_focus = true)}
             >
-              <Menu
+              {this.props.page === 'canvas' && <Menu
                 unfocus={this.onDiagramUnfocus}
                 enterFlow={this.enterFlow}
                 history={this.props.history}
@@ -1640,6 +1642,7 @@ export class Canvas extends Component {
                 open={this.props.tabOpen && this.props.page === 'canvas'}
                 build={fn => (this.updateTree = fn)}
               />
+              }
               {this.state.load_diagram &&
                 React.createElement(Spinner, { name: "Flow" })}
                 <Editor
@@ -1691,6 +1694,7 @@ export class Canvas extends Component {
                 enterFlow={this.enterFlow}
                 diagramEngine={this.state.engine}
                 stop={this.stopTime}
+                resetTest={() => this.setState({ testing_info: false })}
                 resume={this.countTime}
                 time={this.state.time}
                 setTime={this.setTime}

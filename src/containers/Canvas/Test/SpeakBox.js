@@ -6,15 +6,17 @@ import {Tooltip} from 'react-tippy'
 class SpeakBox extends React.Component {
     constructor(props) {
         super(props)
+        this.timer = null;
         this.state = {
             shouldRender: false,
             renderTime: '00:00'
         }
     }
     componentDidMount() {
-        const { delay, audio } = this.props;
+        const { delay, audio, isLast } = this.props;
         this.timer = setTimeout(() => {
             this.centerNode();
+            if (isLast) this.props.resetTest()
             if (audio) audio.play();
             if (this.props.isFlow) {
                 this.props.enterFlow(this.props.diagram, false)
@@ -23,11 +25,14 @@ class SpeakBox extends React.Component {
                 shouldRender: true,
                 renderTime: this.props.time
             })
+            clearTimeout(this.timer)
         }, delay) 
     }
 
     componentWillUnmount() {
-        clearTimeout(this.timer)
+        if (this.timer) {
+            clearTimeout(this.timer)
+        }
     }
 
     centerNode = () => {
@@ -38,7 +43,7 @@ class SpeakBox extends React.Component {
         const model = diagramEngine.getDiagramModel()
         const nodeModel = model.getNode(node)
         if (nodeModel) {
-         nodeModel.setFocused(true)
+         nodeModel.setSelected(true)
          model.setZoomLevel(80)
          model.setOffset((300) - (nodeModel.x * 0.8), (300) - (nodeModel.y * 0.8), true)
         }
@@ -75,7 +80,10 @@ class SpeakBox extends React.Component {
                         >
                                 <div className = "message border rounded p-2 align-self-start"
                                 onClick = {
-                                    () => this.centerNode()
+                                    () => {
+                                        this.props.audio.play()
+                                        this.centerNode()
+                                    }
                                 } >
                                     <p className="mb-0 px-1 text-left">{text}<br/></p>
                                 </div>

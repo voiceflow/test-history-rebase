@@ -75,6 +75,7 @@ const Timeline = props => {
     stop,
     diagramEngine,
     testing_info,
+    resetTest,
     variableMapping,
   } = props
 
@@ -315,7 +316,6 @@ const Timeline = props => {
       try {
         const results = await nlc.handleCommand(data.input)
         const detected_intents = []
-
         _.forEach(results, result => {
           const intent_name = result.name;
           const detected_slots = result.slots;
@@ -410,6 +410,7 @@ const Timeline = props => {
           let dom = []
           let delay = 0;
           for (const block of trace) {
+            console.log(block)
             const type = block.block
             let parsed = parse(block.output)[0]
             if (type === 'Speak') {
@@ -429,9 +430,10 @@ const Timeline = props => {
                 outputBlock.audio = results[idx].audio
                 outputBlock.node = block.line.id
                 outputBlock.audioType = child.name
-                const duration = results[idx].duration
+                const duration = results[idx].duration* 1000
                 outputBlock.delay = delay
                 outputBlock.type = type
+                outputBlock.isLast = !block.line.nextId
                 delay += duration + 1000
                 dom.push(outputBlock)
               })
@@ -441,6 +443,7 @@ const Timeline = props => {
               outputBlock.node = block.line.id
               outputBlock.delay = delay;
               outputBlock.type = type
+              outputBlock.isLast = !block.line.nextId
               dom.push(outputBlock)
             } else if (type === 'Choice') {
               let outputBlock = {}
@@ -455,8 +458,16 @@ const Timeline = props => {
               outputBlock.diagram = block.line.diagram_id;
               outputBlock.type = type;
               outputBlock.delay = delay;
+              outputBlock.isLast = !block.line.nextId
               delay += 1000
               dom.push(outputBlock)
+            } else {
+              if (!block.line.nextId) {
+                let outputBlock = {};
+                outputBlock.isLast = !block.line.nextId
+                outputBlock.delay = delay
+                dom.push(outputBlock)
+              }
             }
           }
           setOutputs(outputs.concat(dom))
@@ -487,6 +498,7 @@ const Timeline = props => {
           handleChange={e => setInput(e.target.value)}
           inputSubmit={inputSubmit}
           setInput={val => setInput(val)}
+          resetTest={resetTest}
           outputs={outputs}
           time={moment.utc(time * 1000).format('mm:ss')}
         />

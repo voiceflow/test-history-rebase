@@ -1589,6 +1589,12 @@ body.modal-open {
   margin-top: 10px;
 }
 
+.no-space__break{
+  width: 100%;
+  border-bottom: 1px solid #8da2b545;
+  text-align: center;
+}
+
 .or {
   font-size: 12px;
   background-color: #FFF;

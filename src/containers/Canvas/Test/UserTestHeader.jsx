@@ -16,6 +16,7 @@ const UserTestHeader = props => {
         skill,
         history,
         onTest,
+        testing_info,
         resetTest,
         preview
     } = props
@@ -41,7 +42,7 @@ const UserTestHeader = props => {
                 )}
                 rightRenderer={() => (
                     <div>
-                        {isTesting
+                        {isTesting && testing_info
                             ?
                             <Button isBtn isSecondary className="mr-2" onClick={() => {
                                 toggleTesting()

@@ -27,12 +27,12 @@ const tabs = {
   ],
   bottom: [
     {
-      link: "https://forum.getvoiceflow.com",
+      link: "https://forum.voiceflow.com",
       icon: <i className="fas fa-question" />,
       tip: "Join the Voiceflow Forum for help & updates"
     },
     {
-      link: "https://university.getvoiceflow.com/",
+      link: "https://university.voiceflow.com/",
       icon: <i className="fas fa-graduation-cap" />,
       tip: "Access tutorials through Voiceflow University"
     },

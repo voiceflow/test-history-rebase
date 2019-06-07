@@ -769,7 +769,7 @@ export class ActionGroup extends PureComponent {
 					<Alert color="danger" className="mt-1">
 						{this.state.upload_error}
 					</Alert>
-					<Alert>Amazon responded with an error, Visit our <u><a href="https://forum.getvoiceflow.com">community</a></u> or contact us for
+					<Alert>Amazon responded with an error, Visit our <u><a href="https://forum.voiceflow.com">community</a></u> or contact us for
 						help</Alert>
 				</div>;
 			case 11:

@@ -42,9 +42,7 @@ class Vendors extends React.Component {
 
     return (
       <div className="fb_wrapper">
-        <h3 className="fb_header">
-          Vendors <span className={'admin_highlight_amber'}>woo</span>
-        </h3>
+        <h3 className="fb_header">Vendors</h3>
         <div className="fb_search">
           <div>
             <div className="row">

@@ -77,9 +77,7 @@ class Copy extends Component {
   render() {
     return (
       <div className="admin-page-inner">
-        <h3 className="fb_header">
-          Voiceflow's Mini Photocopier <span className={'admin_highlight_pink'}>How cute!</span>
-        </h3>
+        <h3 className="fb_header">Copy Skills</h3>
         <div className="content">
           <label>COPY</label>
           <input placeholder="Enter Creator ID"

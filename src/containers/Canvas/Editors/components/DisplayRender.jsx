@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import {Tooltip} from 'react-tippy'
+
 import {DeviceConfig, createRenderer, devices} from '@voiceflow/apl-renderer'
 
 import _ from 'lodash'
@@ -47,7 +49,15 @@ class DisplayRender extends Component {
                 </div>
                 <div className="d-flex justify-content-center pt-1">
                   { _.values(devices).map(d=>{
-                    return (<div className={d.id===this.state.device?'svg-active':''} dangerouslySetInnerHTML={{__html:d.svgIcon}} key={d.id} onClick={()=>this.changeDevice(d.id)}/>)
+                    return (
+                      <Tooltip
+                          className="menu-tip"
+                          title={d.name}
+                          position="top"
+                          theme="block"
+                      >
+                      <div className={d.id===this.state.device?'svg-active':''} dangerouslySetInnerHTML={{__html:d.svgIcon}} key={d.id} onClick={()=>this.changeDevice(d.id)}/>
+                    </Tooltip>)
                   }) }
                 </div>
               </div>

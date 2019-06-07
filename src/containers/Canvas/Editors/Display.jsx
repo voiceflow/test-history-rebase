@@ -190,7 +190,7 @@ export class Display extends Component {
                 {
                 !_.isEmpty(this.state.variables) &&
                 <React.Fragment>
-                    <Button color="primary" onClick={()=>this.testDisplay()} className="mt-2"><i className="fas fa-play mr-2"/> Run</Button>
+                    <Button color="primary" onClick={()=>this.testDisplay()} className="mt-2" disabled={this.state.variables_error}><i className="fas fa-play mr-2"/> Run</Button>
                     <br />
                     <label>We've detected you are using variables in your Data Source JSON, please set variables and run</label><br/>
                     {_.map(this.state.variables, (val, key) => (
@@ -203,7 +203,7 @@ export class Display extends Component {
                     ))}
                 </React.Fragment>
                 }
-                {this.state.variables_error && <div className='error-message text-center'>{this.state.variables_error}</div>}
+                {this.state.modalContent && this.state.variables_error && <div className='error-message text-center'>{this.state.variables_error}</div>}
                 {this.state.current_request && loading}
                 {this.state.modalContent && <div className="space-between flex-hard">
                 </div>}

@@ -1613,7 +1613,7 @@ export class Canvas extends Component {
                 openTab={this.openTab}
                 closeTab={this.props.closeTab}
                 tab={this.props.tab}
-                open={this.props.tabOpen}
+                open={!this.props.preview && this.props.tabOpen}
                 build={fn => (this.updateTree = fn)}
               />
               {this.state.load_diagram &&

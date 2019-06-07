@@ -1,5 +1,6 @@
 import socket from 'socket.io-client';
 import randomstring from 'randomstring';
+import axios from 'axios'
 
 const getEndpoint = () => {
   let port = '';
@@ -23,6 +24,7 @@ if (!sessionStorage.getItem("tabId")) {
 
 window.CreatorSocket.tabId = sessionStorage.getItem("tabId");
 
+axios.defaults.headers.common['tabid'] = window.CreatorSocket.tabId;
 
 window.CreatorSocket.connectedCB = {};
 // catch error events

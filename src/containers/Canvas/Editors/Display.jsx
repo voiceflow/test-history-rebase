@@ -40,7 +40,8 @@ export class Display extends Component {
             user_variables: {},
             variables: [],
             variables_error: '',
-            modal_error: ''
+            modal_error: '',
+            rendered_datasource:'',
         };
 
         this.onChange = this.onChange.bind(this);
@@ -142,7 +143,8 @@ export class Display extends Component {
             .then(res => {
                 this.setState({
                     modalContent: res.data.document,
-                    current_request: false
+                    current_request: false,
+                    rendered_datasource: datasource
                 })
             })
             .catch(err => {
@@ -170,7 +172,8 @@ export class Display extends Component {
             modalContent: null,
             variables: variables,
             variables_error: '',
-            user_variables: {}
+            user_variables: {},
+            rendered_datasource: null
         },
       ()=>this.testDisplay())
     }
@@ -205,7 +208,7 @@ export class Display extends Component {
                 {this.state.modalContent && <div className="space-between flex-hard">
                 </div>}
 
-                {this.state.modalContent && <DisplayRender apl={this.state.modalContent} data={this.state.node.extras.datasource} error={e=>this.setState({variables_error:e})}/>}
+                {this.state.modalContent && <DisplayRender apl={this.state.modalContent} data={this.state.rendered_datasource} error={e=>this.setState({variables_error:e})}/>}
             </div>
         )
     }

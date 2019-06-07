@@ -41,9 +41,7 @@ class FinanceBoard extends React.Component {
   render() {
     return (
       <div className="fb_wrapper">
-        <h3 className="fb_header">
-          Voiceflow Revenue Agency <span className={'admin_highlight_emoji'}><span role="img" aria-label="monocle">🧐</span></span>
-        </h3>
+        <h3 className="fb_header">Manage/Update Billing</h3>
         <div className="fb_search">
           <div>
             <div className="row">

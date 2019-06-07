@@ -48,7 +48,7 @@ export const SignupForm = ({signup, history, location}) => {
 
   return (
   <Form id="signup-form" onSubmit={signupSubmit}>
-    <img className="login-logo" src="/logo.svg" alt="logo"/>
+    <img className="login-logo" src="/logo.png" alt="logo"/>
     <div className="px-5 pb-5 pt-4">
       <div className="text-center">
         <h4 className="mb-4">Sign Up</h4>

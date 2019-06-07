@@ -207,6 +207,7 @@ exports[`Canvas render canvas 1`] = `
       enterFlow={[Function]}
       flow="test"
       onTest={[Function]}
+      resetTest={[Function]}
       resume={[Function]}
       setTime={[Function]}
       stop={[Function]}

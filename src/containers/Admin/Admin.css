@@ -38,7 +38,7 @@
 }
 .admin.Window .admin-page-inner>.subheader>div{
 	flex: 1;
-	height: 41px;    
+	height: 41px;
 }
 .admin.Window .admin-page-inner>.content {
 	/*padding: 100px 20px 50px 20px;*/
@@ -132,6 +132,14 @@ transform: scale(1.03);
   font-size: 12px;
   padding: 5px 10px;
   background-color: #FFC107;
+  border-radius: 5px;
+  color: white;
+}
+
+.admin_highlight_lime {
+  font-size: 12px;
+  padding: 5px 10px;
+  background-color: #03C03C;
   border-radius: 5px;
   color: white;
 }

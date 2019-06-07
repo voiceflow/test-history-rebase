@@ -96,7 +96,7 @@ class ChargeTeamGroup extends React.Component {
                 Subscription id: {team.stripe_sub_id ? team.stripe_sub_id : 'Cancelled'}
               </div>
               <div className="ctg__team-subheader">
-                Trial Expiry: {team.expiry ? moment(team.expiry).add(1, 'd').format("MMM Do YYYY") : 'No trial set'}
+                Trial Expiry: {team.expiry ? moment(team.expiry).format("MMM Do YYYY") : 'No trial set'}
               </div>
             </div>
             {team.stripe_sub_id ? <Button className="ctg__team-cancel" isWarning onClick={this.toggleSub}>

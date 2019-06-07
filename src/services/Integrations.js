@@ -49,6 +49,8 @@ export default {
           const resp = await axios.post('/integrations/google_sheets/spreadsheets', {
             query,
             user
+          }, {
+            withCredentials: true
           })
           resolve(resp.data)
         } catch (e) {
@@ -63,6 +65,8 @@ export default {
           const resp = await axios.post('/integrations/google_sheets/sheets', {
             spreadsheet,
             user
+          }, {
+            withCredentials: true
           })
           resolve(resp.data)
         } catch (e) {
@@ -78,6 +82,8 @@ export default {
             sheet,
             spreadsheet,
             user
+          }, {
+            withCredentials: true
           })
           resolve(resp.data)
         } catch (e) {

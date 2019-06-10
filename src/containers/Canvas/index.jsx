@@ -1685,7 +1685,7 @@ export class Canvas extends Component {
                 updateLinter={this.updateLinter}
                 testing={this.props.testing}
               />
-              {this.props.page === 'test' &&  <Test
+              <Test
                 open={this.props.testing}
                 testing_info={this.state.testing_info}
                 flow={this.props.diagram.name}
@@ -1698,7 +1698,7 @@ export class Canvas extends Component {
                 resume={this.countTime}
                 time={this.state.time}
                 setTime={this.setTime}
-              />}
+              />
               <div
                 key={this.props.diagram_id}
                 id="diagram"

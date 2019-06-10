@@ -26,7 +26,7 @@ class Vendors extends React.Component {
       });
       // Get the charges for the user
       this.props.getVendors(setCreatorId);
-      if (this.props.creator && this.props.creator.creator_id.toString() !== setCreatorId.toString()) {
+      if (this.props.creator.creator_id && this.props.creator.creator_id.toString() !== setCreatorId) {
         this.props.findCreator(setCreatorId);
       }
     }
@@ -42,9 +42,7 @@ class Vendors extends React.Component {
 
     return (
       <div className="fb_wrapper">
-        <h3 className="fb_header">
-          Vendors <span className={'admin_highlight_amber'}>woo</span>
-        </h3>
+        <h3 className="fb_header">Vendors</h3>
         <div className="fb_search">
           <div>
             <div className="row">

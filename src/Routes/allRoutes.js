@@ -58,6 +58,7 @@ const allRoutes = (
     <PrivateRoute path="/visuals/:skill_id/display/:id" component={Skill} page='visuals' secondaryPage="display"/>
     <PrivateRoute path="/visuals/:skill_id" component={Skill} page='visuals' secondaryPage="displays"/>
     
+    <PrivateRoute path="/admin/template" name="Admin" component={Admin} page='template'/>
     <PrivateRoute path="/admin/updates" name="Admin" component={Admin} page='updates'/>
     <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
 

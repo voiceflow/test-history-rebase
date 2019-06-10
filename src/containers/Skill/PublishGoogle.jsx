@@ -407,7 +407,7 @@ class GooglePublish extends Component {
               className="btn btn-primary mr-4" target="_blank" rel="noopener noreferrer">
               Test on Google Actions Simulator
             </a>
-            <a href={`http://university.getvoiceflow.com/voiceflow-tutorials/google-assistant/deploying-your-google-assistant-project-to-production`}
+            <a href={`http://learn.voiceflow.com/advanced-voiceflow-tutorials/uploading-your-project-to-google-assistant`}
               className="btn btn-default" target="_blank" rel="noopener noreferrer">
               Submit for Review
             </a>
@@ -561,7 +561,7 @@ class GooglePublish extends Component {
                       <div className="row">
                         <div className="col-3 publish-info">
                           <p className="helper-text">
-                            Your <b>Dialogflow Credentials File</b> for publishing. Instructions can be found <a href="http://university.getvoiceflow.com/voiceflow-tutorials/google-assistant/uploading-your-project-to-google-assistant" target="_blank" className="google-link" rel="noopener noreferrer">here</a></p>
+                            Your <b>Dialogflow Credentials File</b> for publishing. Instructions can be found <a href="http://learn.voiceflow.com/advanced-voiceflow-tutorials/uploading-your-project-to-google-assistant" target="_blank" className="google-link" rel="noopener noreferrer">here</a></p>
                         </div>
                         <div className="col-9">
                           <Label className="publish-label">Dialogflow Credentials File *</Label>

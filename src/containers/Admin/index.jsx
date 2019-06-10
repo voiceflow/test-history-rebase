@@ -14,6 +14,7 @@ import {ButtonGroup} from 'reactstrap'
 import SkillLookup from "./SkillLookup";
 import Vendors from "./Vendors";
 import FinanceBoard from "./FinanceBoard";
+import Template from "./Template"
 
 const tabs = [
   {
@@ -40,6 +41,11 @@ const tabs = [
     display: <React.Fragment><i className="fal fa-copy"/> Copy</React.Fragment>,
     match: ['copy'],
     link: '/admin/copy'
+  },
+  {
+    display: <React.Fragment><i className="fal fa-ruler-combined"/> Templates</React.Fragment>,
+    match: ['template'],
+    link: '/admin/template'
   },
   {
     display: <React.Fragment><i className="fal fa-scroll"/> Product Updates</React.Fragment>,
@@ -73,6 +79,9 @@ class Admin extends Component {
         break;
       case 'charges':
         page = <FinanceBoard {...this.props}/>;
+        break;
+      case 'template':
+        page = <Template {...this.props}/>;
         break;
       default:
         page = <Home {...this.props}/>

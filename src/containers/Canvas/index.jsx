@@ -1639,7 +1639,7 @@ export class Canvas extends Component {
                 openTab={this.openTab}
                 closeTab={this.props.closeTab}
                 tab={this.props.tab}
-                open={this.props.tabOpen && this.props.page === 'canvas'}
+                open={!this.props.preview && this.props.tabOpen && this.props.page === 'canvas'}
                 build={fn => (this.updateTree = fn)}
               />
               }

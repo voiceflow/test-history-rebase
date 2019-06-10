@@ -973,29 +973,33 @@ export class ActionGroup extends PureComponent {
 							}
 						</div>
 					)}
-					centerRenderer={() => (
-						<div id="middle-group">
-							<Tooltip
-								distance={16}
-								title={(this.props.platform === 'google') ? 'Switch to Amazon View' : 'Switch to Google View'}
-								position="bottom"
-								className="switch switch-blue"
-								tag='div'
-							>
-								<input onClick={() => {
-									if (this.props.platform !== 'alexa') this.toggleGoogle();
-								}} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} value="alexa_toggle"
-								       id="alexa_toggle"/>
-								<label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">Alexa</label>
-								<input onClick={() => {
-									if (this.props.platform !== 'google') this.toggleGoogle();
-								}} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} value="google_toggle"
-								       id="google_toggle"/>
-								<label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">Google</label>
-								<span className="switch-selection"></span>
-							</Tooltip>
-						</div>
-					)}
+					centerRenderer={() => {
+					  if (!this.props.preview) {
+					    return (
+                <div id="middle-group">
+                  <Tooltip
+                    distance={16}
+                    title={(this.props.platform === 'google') ? 'Switch to Amazon View' : 'Switch to Google View'}
+                    position="bottom"
+                    className="switch switch-blue"
+                    tag='div'
+                  >
+                    <input onClick={() => {
+                      if (this.props.platform !== 'alexa') this.toggleGoogle();
+                    }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} value="alexa_toggle"
+                           id="alexa_toggle"/>
+                    <label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">Alexa</label>
+                    <input onClick={() => {
+                      if (this.props.platform !== 'google') this.toggleGoogle();
+                    }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} value="google_toggle"
+                           id="google_toggle"/>
+                    <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">Google</label>
+                    <span className="switch-selection"></span>
+                  </Tooltip>
+                </div>
+              )
+            }
+          }}
 					rightRenderer={() => (
 						<div className="title-group no-select">
 							<div className="align-icon">

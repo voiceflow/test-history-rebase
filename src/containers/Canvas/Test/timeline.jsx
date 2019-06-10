@@ -102,7 +102,7 @@ const Timeline = props => {
     if (testing_info && !started) {
       beginning()
     }
-    if (!testing_info) {
+    if (!testing_info && started) {
       setStarted(false)
       handleRestart()
       stop()

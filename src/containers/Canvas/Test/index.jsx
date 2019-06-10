@@ -31,10 +31,6 @@ class Test extends Component {
     }
   }
 
-  componentWillUnmount() {
-    console.log('resetting here')
-  }
-
   toggleSection = section => {
     console.log('called toggle section', section)
     if (section === C.CONDITIONS) {

@@ -923,7 +923,7 @@ export class ActionGroup extends PureComponent {
 
 	render() {
 		const link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`;
-
+		// console.log('rerendering action group')
 		return (
 			<React.Fragment>
 				{this.state.updateModal && <div id="confetti-positioner">

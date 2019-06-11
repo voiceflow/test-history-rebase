@@ -4,9 +4,11 @@ import cn from 'classnames'
 
 import Button from 'components/Button'
 
-export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update, open, preview }) =>
+export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update, open, preview, isCanvas }) =>
     <div id={`widget-bar`} className={cn({
-        open: open
+        open: open,
+        'isCanvas': isCanvas,
+        'isTest': !isCanvas
     })}>
         <ButtonGroup>
             <Button isWhiteCirc onClick={()=>zoom(1000, engine, update)} className="round-left"><i className="far fa-plus"/></Button>

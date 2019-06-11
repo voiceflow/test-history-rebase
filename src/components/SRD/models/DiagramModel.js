@@ -163,6 +163,7 @@ export class DiagramModel extends BaseEntity {
 	}
 
 	setOffset(offsetX, offsetY, translate = false, diagramEngine = null) {
+		clearInterval(this.offsetInterval)
 		if (translate) {
 			const deltaX = offsetX - this.offsetX;
 			const deltaY = offsetY - this.offsetY;

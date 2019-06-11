@@ -3277,7 +3277,6 @@ button.close:hover{
 #widget-bar {
     position: absolute;
     bottom: 13px;
-    left: 303px;
     z-index: 5;
     display: flex;
     vertical-align: middle;
@@ -3291,6 +3290,12 @@ button.close:hover{
     transition: transform .3s;
     /* smooth the scrolling on touch devices - webkit browsers */
     -webkit-overflow-scrolling: touch;
+}
+#widget-bar.isCanvas{
+    left: 578px;
+}
+#widget-bar.isTest{
+    left: 303px;
 }
 
 #widget-bar.open {

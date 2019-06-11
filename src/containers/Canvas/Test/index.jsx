@@ -96,7 +96,7 @@ class Test extends Component {
           return <div key={i} className="mt-3 sidebar_container">
             <div className="condition-label" onClick={() => {this.toggleSection(s)}}>
             <label id={s} className='ml-3 mt-2 text-left'>{s}</label>
-              {s === C.CONDITIONS && <i className={cn("fas", "light-grey", "d-flex", "align-items-center", {
+              {(s === C.CONDITIONS && !this.props.testing_info) && <i className={cn("fas", "light-grey", "d-flex", "align-items-center", {
                 "fa-chevron-up": conditionsOpen,
                 "fa-chevron-down":!conditionsOpen
               })} />
@@ -105,7 +105,9 @@ class Test extends Component {
             <Collapse isOpen={s === C.CONDITIONS ? !this.props.testing_info && this.state.conditionsOpen : true}>
               {section}
             </Collapse>
-            {s === C.CONDITIONS && <div className="no-space__break" />}
+            {s === C.CONDITIONS && <div className={cn("no-space__break", {
+              'mt-3': !conditionsOpen
+            })} />}
           </div>
         })}
     </div>

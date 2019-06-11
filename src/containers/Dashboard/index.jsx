@@ -218,7 +218,7 @@ export const DashBoard = props => {
                                 </Tooltip>
                             </DropdownToggle>
                             <DropdownMenu className="mt-2">
-                                <a href="https://university.voiceflow.com/" target='_blank' rel='noopener noreferrer'>
+                                <a href="https://learn.voiceflow.com/" target='_blank' rel='noopener noreferrer'>
                                     <DropdownItem>University</DropdownItem>
                                 </a>
                                 <a href="https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ/videos" target='_blank' rel='noopener noreferrer'>

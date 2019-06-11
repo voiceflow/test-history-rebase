@@ -9,6 +9,8 @@ export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT'
 export const RESET_ACCOUNT = 'RESET_ACCOUNT'
 
 const cookies = new Cookies()
+const cookieDomain = process.env.NODE_ENV === 'development' ? 'localhost' : '.voiceflow.com';
+
 const initialState = {
   loading: false,
   email: null,
@@ -51,7 +53,7 @@ export const checkSession = () => {
       dispatch(updateAccount(user))
       return Promise.resolve(user)
     } catch(err) {
-      cookies.remove('auth', {path: '/', domain: '.voiceflow.com'})
+      cookies.remove('auth', {path: '/', domain: cookieDomain})
       dispatch(resetAccount())
       return Promise.reject(err)
     }
@@ -65,7 +67,7 @@ export const getUser = () => {
       dispatch(updateAccount(user))
       return Promise.resolve(user)
     } catch(err) {
-      cookies.remove('auth', {path: '/', domain: '.voiceflow.com'})
+      cookies.remove('auth', {path: '/', domain: cookieDomain})
       dispatch(resetAccount())
       return Promise.reject(err)
     }
@@ -79,7 +81,7 @@ export const logout = () => {
     } catch(err) {
       console.error(err)
     }
-    cookies.remove('auth', {path: '/', domain: '.voiceflow.com'});
+    cookies.remove('auth', {path: '/', domain: cookieDomain});
     localStorage.clear()
     dispatch(resetAccount())
     
@@ -113,7 +115,7 @@ const createSession = (endpoint) => {
           delete data.user.id
         }
 
-        cookies.set('auth', data.token, {path: '/', domain: '.voiceflow.com'});
+        cookies.set('auth', data.token, {path: '/', domain: cookieDomain});
         cookies.remove('last_session');
 
         dispatch(updateAccount(data.user))

@@ -447,7 +447,7 @@ const Timeline = props => {
               dom.push(outputBlock)
             } else if (type === 'Choice') {
               let outputBlock = {}
-              outputBlock.options = block.line.inputs[0];
+              outputBlock.options = _.map(block.line.inputs, _.head);
               outputBlock.node = block.line.id;
               outputBlock.type = type
               outputBlock.delay = delay;

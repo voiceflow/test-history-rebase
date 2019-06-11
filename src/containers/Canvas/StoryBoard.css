@@ -3583,37 +3583,3 @@ button.close:hover{
     opacity: 0.3;
   }
 
-  #TestSidebar {
-      position: absolute;
-      right: 0;
-      z-index: 5;
-      width: 400px;
-      height: 100%;
-      background-color: #fff;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      border-left: 1px solid #E2E9EC;
-      -webkit-transform: translateX(400px);
-      -moz-transform: translateX(400px);
-      -ms-transform: translateX(400px);
-      -o-transform: translateX(400px);
-      transform: translateX(400px);
-      -webkit-transition: -webkit-transform .3s;
-      -moz-transition: -moz-transform .3s;
-      transition: transform .3s;
-  }
-
-  #TestSidebar.open {
-      -webkit-transform: translateX(0);
-      -moz-transform: translateX(0);
-      -ms-transform: translateX(0);
-      -o-transform: translateX(0);
-      transform: translateX(0);
-      -webkit-transition: -webkit-transform .3s;
-      -moz-transition: -moz-transform .3s;
-      transition: transform .3s;
-  }

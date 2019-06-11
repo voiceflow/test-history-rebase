@@ -1,1613 +1,2010 @@
 // Regex'd from https://developer.amazon.com/docs/custom-skills/slot-type-reference.html#availability
 
 const LOCALES = {
-  US: "en-US",
-  AU: "en-AU",
-  CA: "en-CA",
-  IN: "en-IN",
-  GB: "en-GB",
-  CA_fr: "fr-CA",
-  FR: "fr-FR",
-  DE: "de-DE",
-  IT: "it-IT",
-  JP: "ja-JP",
-  ES: "es-ES",
-  MX: "es-MX",
-  BR: "pt-BR"
-}
+  US: 'en-US',
+  AU: 'en-AU',
+  CA: 'en-CA',
+  IN: 'en-IN',
+  GB: 'en-GB',
+  CA_fr: 'fr-CA',
+  FR: 'fr-FR',
+  DE: 'de-DE',
+  IT: 'it-IT',
+  JP: 'ja-JP',
+  ES: 'es-ES',
+  MX: 'es-MX',
+  BR: 'pt-BR',
+};
 
 const GOOGLE_LOCALES = {
-  HK: "zh-HK",
-  CN: "zh-CN",
-  TW: "zh-TW",
-  DA: "da",
-  NL: "nl",
-  EN: "en",
-  FR: "fr",
-  DE: "de",
-  HI: "hi",
-  ID: "id",
-  IT: "it",
-  JA: "ja",
-  KO: "ko",
-  NO: "no",
-  PL: "pl",
-  PT: "pt",
-  BR: "pt-BR",
-  RU: "ru",
-  ES: "es",
-  SV: "sv",
-  TH: "th",
-  TR: "tr",
-  UK: "uk",
-}
+  HK: 'zh-HK',
+  CN: 'zh-CN',
+  TW: 'zh-TW',
+  DA: 'da',
+  NL: 'nl',
+  EN: 'en',
+  FR: 'fr',
+  DE: 'de',
+  HI: 'hi',
+  ID: 'id',
+  IT: 'it',
+  JA: 'ja',
+  KO: 'ko',
+  NO: 'no',
+  PL: 'pl',
+  PT: 'pt',
+  BR: 'pt-BR',
+  RU: 'ru',
+  ES: 'es',
+  SV: 'sv',
+  TH: 'th',
+  TR: 'tr',
+  UK: 'uk',
+};
 
-const L = LOCALES
-const GL = GOOGLE_LOCALES
+const L = LOCALES;
+const GL = GOOGLE_LOCALES;
 
-const SLOT_TYPES = [{
+const SLOT_TYPES = [
+  {
     label: 'Custom',
     type: {
       alexa: null,
-      google: null
+      google: null,
     },
     locales: {
       alexa: null,
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Date',
     type: {
       alexa: 'AMAZON.DATE',
-      google: '@sys.date'
+      google: '@sys.date',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR, GL.UK]
-    }
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.PT,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+        GL.UK,
+      ],
+    },
   },
   {
     label: 'Number',
     type: {
       alexa: 'AMAZON.NUMBER',
-      google: '@sys.number'
+      google: '@sys.number',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR, GL.UK]
-    }
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.PT,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+        GL.UK,
+      ],
+    },
   },
   {
     label: 'Time',
     type: {
       alexa: 'AMAZON.TIME',
-      google: '@sys.time'
+      google: '@sys.time',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR, GL.UK]
-    }
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.PT,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+        GL.UK,
+      ],
+    },
   },
   {
     label: 'DayOfWeek',
     type: {
       alexa: 'AMAZON.DayOfWeek',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Color',
     type: {
       alexa: 'AMAZON.Color',
-      google: '@sys.color'
+      google: '@sys.color',
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
-    }
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+      ],
+    },
   },
   {
     label: 'Organization',
     type: {
       alexa: 'AMAZON.Organization',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Person',
     type: {
       alexa: 'AMAZON.Person',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Book',
     type: {
       alexa: 'AMAZON.Book',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.GB],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Movie',
     type: {
       alexa: 'AMAZON.Movie',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.GB, L.FR, L.DE],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'TVSeries',
     type: {
       alexa: 'AMAZON.TVSeries',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'MusicAlbum',
     type: {
       alexa: 'AMAZON.MusicAlbum',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'MusicRecording',
     type: {
       alexa: 'AMAZON.MusicRecording',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'PhoneNumber',
     type: {
       alexa: 'AMAZON.PhoneNumber',
-      google: '@sys.phone-number'
+      google: '@sys.phone-number',
     },
     locales: {
       alexa: [L.US, L.JP],
-      google: [GL.HK, GL.CN, GL.TW, GL.NL, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.PT, GL.BR, GL.RU, GL.ES, GL.UK]
-    }
+      google: [GL.HK, GL.CN, GL.TW, GL.NL, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.PT, GL.BR, GL.RU, GL.ES, GL.UK],
+    },
   },
   {
     label: 'Duration',
     type: {
       alexa: 'AMAZON.DURATION',
-      google: '@sys.duration'
+      google: '@sys.duration',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.RU, GL.ES]
-    }
+      google: [GL.HK, GL.CN, GL.TW, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.RU, GL.ES],
+    },
   },
   {
     label: 'FourDigitNumber',
     type: {
       alexa: 'AMAZON.FOUR_DIGIT_NUMBER',
-      google: null
+      google: null,
     },
     locales: {
       alexa: null,
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'SearchQuery',
     type: {
       alexa: 'AMAZON.SearchQuery',
-      google: null
+      google: null,
     },
     locales: {
       alexa: null,
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Ordinal',
     type: {
       alexa: 'AMAZON.Ordinal',
-      google: '@sys.ordinal'
+      google: '@sys.ordinal',
     },
     locales: {
       alexa: [L.US, L.JP],
-      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
   },
   {
     label: 'US_CITY',
     type: {
       alexa: 'AMAZON.US_CITY',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.CA, L.GB, L.DE],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Actor',
     type: {
       alexa: 'AMAZON.Actor',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'AdministrativeArea',
     type: {
       alexa: 'AMAZON.AdministrativeArea',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'AggregateRating',
     type: {
       alexa: 'AMAZON.AggregateRating',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Airline',
     type: {
       alexa: 'AMAZON.Airline',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Airport',
     type: {
       alexa: 'AMAZON.Airport',
-      google: '@sys.airport'
+      google: '@sys.airport',
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: [GL.EN]
-    }
+      google: [GL.EN],
+    },
   },
   {
     label: 'Anaphor',
     type: {
       alexa: 'AMAZON.Anaphor',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Animal',
     type: {
       alexa: 'AMAZON.Animal',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Artist',
     type: {
       alexa: 'AMAZON.Artist',
-      google: '@sys.music-artist'
+      google: '@sys.music-artist',
     },
     locales: {
       alexa: [L.US, L.IN, L.FR, L.DE],
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
-    }
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+      ],
+    },
   },
   {
     label: 'AT_CITY',
     type: {
       alexa: 'AMAZON.AT_CITY',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.CA, L.GB, L.DE],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'AT_REGION',
     type: {
       alexa: 'AMAZON.AT_REGION',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.CA, L.GB, L.DE],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Athlete',
     type: {
       alexa: 'AMAZON.Athlete',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Author',
     type: {
       alexa: 'AMAZON.Author',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.IN],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'BookSeries',
     type: {
       alexa: 'AMAZON.BookSeries',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'BroadcastChannel',
     type: {
       alexa: 'AMAZON.BroadcastChannel',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'CivicStructure',
     type: {
       alexa: 'AMAZON.CivicStructure',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Comic',
     type: {
       alexa: 'AMAZON.Comic',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Corporation',
     type: {
       alexa: 'AMAZON.Corporation',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.DE],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Country',
     type: {
       alexa: 'AMAZON.Country',
-      google: '@sys.geo-country'
+      google: '@sys.geo-country',
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
-    }
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.PT,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+      ],
+    },
   },
   {
     label: 'CreativeWorkType',
     type: {
       alexa: 'AMAZON.CreativeWorkType',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'DE_CITY',
     type: {
       alexa: 'AMAZON.DE_CITY',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.CA, L.GB, L.DE],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'DE_FIRST_NAME',
     type: {
       alexa: 'AMAZON.DE_FIRST_NAME',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.GB, L.DE],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'DE_REGION',
     type: {
       alexa: 'AMAZON.DE_REGION',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.CA, L.GB, L.DE],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Dessert',
     type: {
       alexa: 'AMAZON.Dessert',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'DeviceType',
     type: {
       alexa: 'AMAZON.DeviceType',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Director',
     type: {
       alexa: 'AMAZON.Director',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Drink',
     type: {
       alexa: 'AMAZON.Drink',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'EducationalOrganization',
     type: {
       alexa: 'AMAZON.EducationalOrganization',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'EUROPE_CITY',
     type: {
       alexa: 'AMAZON.EUROPE_CITY',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.CA, L.GB, L.DE],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'EventType',
     type: {
       alexa: 'AMAZON.EventType',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Festival',
     type: {
       alexa: 'AMAZON.Festival',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'FictionalCharacter',
     type: {
       alexa: 'AMAZON.FictionalCharacter',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'FinancialService',
     type: {
       alexa: 'AMAZON.FinancialService',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Food',
     type: {
       alexa: 'AMAZON.Food',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'FoodEstablishment',
     type: {
+      // eslint-disable-next-line no-secrets/no-secrets
       alexa: 'AMAZON.FoodEstablishment',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Game',
     type: {
       alexa: 'AMAZON.Game',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'GB_CITY',
     type: {
       alexa: 'AMAZON.GB_CITY',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.CA, L.GB, L.DE],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'GB_FIRST_NAME',
     type: {
       alexa: 'AMAZON.GB_FIRST_NAME',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.CA, L.GB, L.DE],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'GB_REGION',
     type: {
       alexa: 'AMAZON.GB_REGION',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.CA, L.GB, L.DE],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Genre',
     type: {
       alexa: 'AMAZON.Genre',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Landform',
     type: {
       alexa: 'AMAZON.Landform',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'LandmarksOrHistoricalBuildings',
     type: {
+      // eslint-disable-next-line no-secrets/no-secrets
       alexa: 'AMAZON.LandmarksOrHistoricalBuildings',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Language',
     type: {
       alexa: 'AMAZON.Language',
-      google: '@sys.language'
+      google: '@sys.language',
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
-    }
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.PT,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+      ],
+    },
   },
   {
     label: 'LocalBusiness',
     type: {
       alexa: 'AMAZON.LocalBusiness',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.CA],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'LocalBusinessType',
     type: {
+      // eslint-disable-next-line no-secrets/no-secrets
       alexa: 'AMAZON.LocalBusinessType',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'MedicalOrganization',
     type: {
       alexa: 'AMAZON.MedicalOrganization',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Month',
     type: {
       alexa: 'AMAZON.Month',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'MovieSeries',
     type: {
       alexa: 'AMAZON.MovieSeries',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'MovieTheater',
     type: {
       alexa: 'AMAZON.MovieTheater',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'MusicCreativeWorkType',
     type: {
+      // eslint-disable-next-line no-secrets/no-secrets
       alexa: 'AMAZON.MusicCreativeWorkType',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'MusicEvent',
     type: {
       alexa: 'AMAZON.MusicEvent',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'MusicGroup',
     type: {
       alexa: 'AMAZON.MusicGroup',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.FR],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Musician',
     type: {
       alexa: 'AMAZON.Musician',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.FR],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'MusicPlaylist',
     type: {
       alexa: 'AMAZON.MusicPlaylist',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'MusicVenue',
     type: {
       alexa: 'AMAZON.MusicVenue',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'MusicVideo',
     type: {
       alexa: 'AMAZON.MusicVideo',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'PostalAddress',
     type: {
       alexa: 'AMAZON.PostalAddress',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Professional',
     type: {
       alexa: 'AMAZON.Professional',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'ProfessionalType',
     type: {
       alexa: 'AMAZON.ProfessionalType',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'RadioChannel',
     type: {
       alexa: 'AMAZON.RadioChannel',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'RelativePosition',
     type: {
       alexa: 'AMAZON.RelativePosition',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Residence',
     type: {
       alexa: 'AMAZON.Residence',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Room',
     type: {
       alexa: 'AMAZON.Room',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'ScreeningEvent',
     type: {
       alexa: 'AMAZON.ScreeningEvent',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Service',
     type: {
       alexa: 'AMAZON.Service',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'SocialMediaPlatform',
     type: {
       alexa: 'AMAZON.SocialMediaPlatform',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'SoftwareApplication',
     type: {
       alexa: 'AMAZON.SoftwareApplication',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'SoftwareGame',
     type: {
       alexa: 'AMAZON.SoftwareGame',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Sport',
     type: {
       alexa: 'AMAZON.Sport',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'SportsEvent',
     type: {
       alexa: 'AMAZON.SportsEvent',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'SportsTeam',
     type: {
       alexa: 'AMAZON.SportsTeam',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'StreetAddress',
     type: {
       alexa: 'AMAZON.StreetAddress',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'StreetName',
     type: {
       alexa: 'AMAZON.StreetName',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'TelevisionChannel',
     type: {
       alexa: 'AMAZON.TelevisionChannel',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'TVEpisode',
     type: {
       alexa: 'AMAZON.TVEpisode',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'TVSeason',
     type: {
       alexa: 'AMAZON.TVSeason',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'US_FIRST_NAME',
     type: {
       alexa: 'AMAZON.US_FIRST_NAME',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.CA, L.GB, L.DE],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'US_STATE',
     type: {
       alexa: 'AMAZON.US_STATE',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.CA, L.GB, L.DE],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'VideoGame',
     type: {
       alexa: 'AMAZON.VideoGame',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'VisualModeTrigger',
     type: {
       alexa: 'AMAZON.VisualModeTrigger',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'WeatherCondition',
     type: {
       alexa: 'AMAZON.WeatherCondition',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'WrittenCreativeWorkType',
     type: {
       alexa: 'AMAZON.WrittenCreativeWorkType',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.US],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'City',
     type: {
       alexa: 'AMAZON.City',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX, L.BR],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'FirstName',
     type: {
       alexa: 'AMAZON.FirstName',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX, L.BR],
-      google: null
-    }
+      google: null,
+    },
   },
   {
     label: 'Region',
     type: {
       alexa: 'AMAZON.Region',
-      google: null
+      google: null,
     },
     locales: {
       alexa: [L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX, L.BR],
-      google: null
-    }
+      google: null,
+    },
   },
   {
-    label: "Date Time",
+    label: 'Date Time',
     type: {
       alexa: null,
-      google: "@sys.date-time"
+      google: '@sys.date-time',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR, GL.UK]
-    }
-  }, {
-
-    label: "Date Period",
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.PT,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+        GL.UK,
+      ],
+    },
+  },
+  {
+    label: 'Date Period',
     type: {
       alexa: null,
-      google: "@sys.date-period"
+      google: '@sys.date-period',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR, GL.UK]
-    }
-  }, {
-
-    label: "Time Period",
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.PT,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+        GL.UK,
+      ],
+    },
+  },
+  {
+    label: 'Time Period',
     type: {
       alexa: null,
-      google: "@sys.time-period"
+      google: '@sys.time-period',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR, GL.UK]
-    }
-  }, {
-
-    label: "Flight Number",
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.PT,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+        GL.UK,
+      ],
+    },
+  },
+  {
+    label: 'Flight Number',
     type: {
       alexa: null,
-      google: "@sys.flight-number"
+      google: '@sys.flight-number',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.NL, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.KO, GL.PT, GL.BR, GL.RU, GL.ES, GL.UK]
-    }
-  }, {
-
-    label: "Unit Currency",
+      google: [GL.HK, GL.CN, GL.TW, GL.NL, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.KO, GL.PT, GL.BR, GL.RU, GL.ES, GL.UK],
+    },
+  },
+  {
+    label: 'Unit Currency',
     type: {
       alexa: null,
-      google: "@sys.unit-currency"
+      google: '@sys.unit-currency',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Percentage",
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+      ],
+    },
+  },
+  {
+    label: 'Percentage',
     type: {
       alexa: null,
-      google: "@sys.percentage"
+      google: '@sys.percentage',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.EN, GL.FR, GL.DE, GL.IT, GL.RU, GL.ES]
-    }
-  }, {
-
-    label: "Age",
+      google: [GL.HK, GL.CN, GL.TW, GL.EN, GL.FR, GL.DE, GL.IT, GL.RU, GL.ES],
+    },
+  },
+  {
+    label: 'Age',
     type: {
       alexa: null,
-      google: "@sys.age"
+      google: '@sys.age',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.EN, GL.FR, GL.IT]
-    }
-  }, {
-
-    label: "Currency Name",
+      google: [GL.HK, GL.CN, GL.TW, GL.EN, GL.FR, GL.IT],
+    },
+  },
+  {
+    label: 'Currency Name',
     type: {
       alexa: null,
-      google: "@sys.currency-name"
+      google: '@sys.currency-name',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Zip Code",
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+      ],
+    },
+  },
+  {
+    label: 'Zip Code',
     type: {
       alexa: null,
-      google: "@sys.zip-code"
+      google: '@sys.zip-code',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Geo Capital",
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.PT,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+      ],
+    },
+  },
+  {
+    label: 'Geo Capital',
     type: {
       alexa: null,
-      google: "@sys.geo-capital"
+      google: '@sys.geo-capital',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Geo City",
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Geo City',
     type: {
       alexa: null,
-      google: "@sys.geo-city"
+      google: '@sys.geo-city',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Location",
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.PT,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+      ],
+    },
+  },
+  {
+    label: 'Location',
     type: {
       alexa: null,
-      google: "@sys.location"
+      google: '@sys.location',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.PT, GL.BR, GL.RU, GL.ES]
-    }
-  }, {
-
-    label: "Email",
+      google: [GL.HK, GL.CN, GL.TW, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.PT, GL.BR, GL.RU, GL.ES],
+    },
+  },
+  {
+    label: 'Email',
     type: {
       alexa: null,
-      google: "@sys.email"
+      google: '@sys.email',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.NL, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.PT, GL.BR, GL.RU, GL.ES, GL.UK]
-    }
-  }, {
-
-    label: "Given Name",
+      google: [GL.HK, GL.CN, GL.TW, GL.NL, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.PT, GL.BR, GL.RU, GL.ES, GL.UK],
+    },
+  },
+  {
+    label: 'Given Name',
     type: {
       alexa: null,
-      google: "@sys.given-name"
+      google: '@sys.given-name',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Last Name",
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+      ],
+    },
+  },
+  {
+    label: 'Last Name',
     type: {
       alexa: null,
-      google: "@sys.last-name"
+      google: '@sys.last-name',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Any",
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+      ],
+    },
+  },
+  {
+    label: 'Any',
     type: {
       alexa: null,
-      google: "@sys.any"
+      google: '@sys.any',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR, GL.UK]
-    }
-  }, {
-
-    label: "Url",
+      google: [
+        GL.HK,
+        GL.CN,
+        GL.TW,
+        GL.DA,
+        GL.NL,
+        GL.EN,
+        GL.FR,
+        GL.DE,
+        GL.HI,
+        GL.ID,
+        GL.IT,
+        GL.JA,
+        GL.KO,
+        GL.NO,
+        GL.PL,
+        GL.PT,
+        GL.BR,
+        GL.RU,
+        GL.ES,
+        GL.SV,
+        GL.TH,
+        GL.TR,
+        GL.UK,
+      ],
+    },
+  },
+  {
+    label: 'Url',
     type: {
       alexa: null,
-      google: "@sys.url"
+      google: '@sys.url',
     },
     locales: {
       alexa: null,
-      google: [GL.HK, GL.CN, GL.TW, GL.NL, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.KO, GL.PT, GL.BR, GL.RU, GL.ES, GL.UK]
-    }
-  }, {
-
-    label: "Address",
+      google: [GL.HK, GL.CN, GL.TW, GL.NL, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.KO, GL.PT, GL.BR, GL.RU, GL.ES, GL.UK],
+    },
+  },
+  {
+    label: 'Address',
     type: {
       alexa: null,
-      google: "@sys.address"
+      google: '@sys.address',
     },
     locales: {
       alexa: null,
-      google: [GL.CN, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.RU, GL.ES]
-    }
-  }, {
-
-    label: "Cardinal",
+      google: [GL.CN, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.RU, GL.ES],
+    },
+  },
+  {
+    label: 'Cardinal',
     type: {
       alexa: null,
-      google: "@sys.cardinal"
+      google: '@sys.cardinal',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Number Integer",
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Number Integer',
     type: {
       alexa: null,
-      google: "@sys.number-integer"
+      google: '@sys.number-integer',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Unit Area",
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Unit Area',
     type: {
       alexa: null,
-      google: "@sys.unit-area"
+      google: '@sys.unit-area',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Unit Length",
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Unit Length',
     type: {
       alexa: null,
-      google: "@sys.unit-length"
+      google: '@sys.unit-length',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.FR, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Unit Speed",
+      google: [GL.DA, GL.NL, GL.EN, GL.FR, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Unit Speed',
     type: {
       alexa: null,
-      google: "@sys.unit-speed"
+      google: '@sys.unit-speed',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Unit Volume",
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Unit Volume',
     type: {
       alexa: null,
-      google: "@sys.unit-volume"
+      google: '@sys.unit-volume',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.DE, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Unit Weight",
+      google: [GL.DA, GL.NL, GL.EN, GL.DE, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Unit Weight',
     type: {
       alexa: null,
-      google: "@sys.unit-weight"
+      google: '@sys.unit-weight',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.DE, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Unit Information",
+      google: [GL.DA, GL.NL, GL.EN, GL.DE, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Unit Information',
     type: {
       alexa: null,
-      google: "@sys.unit-information"
+      google: '@sys.unit-information',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Temperature",
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Temperature',
     type: {
       alexa: null,
-      google: "@sys.temperature"
+      google: '@sys.temperature',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Unit Area Name",
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Unit Area Name',
     type: {
       alexa: null,
-      google: "@sys.unit-area-name"
+      google: '@sys.unit-area-name',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Unit Length Name",
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Unit Length Name',
     type: {
       alexa: null,
-      google: "@sys.unit-length-name"
+      google: '@sys.unit-length-name',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Unit Speed Name",
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Unit Speed Name',
     type: {
       alexa: null,
-      google: "@sys.unit-speed-name"
+      google: '@sys.unit-speed-name',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Unit Volume Name",
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Unit Volume Name',
     type: {
       alexa: null,
-      google: "@sys.unit-volume-name"
+      google: '@sys.unit-volume-name',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Unit Weight Name",
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Unit Weight Name',
     type: {
       alexa: null,
-      google: "@sys.unit-weight-name"
+      google: '@sys.unit-weight-name',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Unit Information Name",
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Unit Information Name',
     type: {
       alexa: null,
-      google: "@sys.unit-information-name"
+      google: '@sys.unit-information-name',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Geo State",
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Geo State',
     type: {
       alexa: null,
-      google: "@sys.geo-state"
+      google: '@sys.geo-state',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.FR, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.ES, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Music Genre",
+      google: [GL.DA, GL.NL, GL.EN, GL.FR, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.ES, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Music Genre',
     type: {
       alexa: null,
-      google: "@sys.music-genre"
+      google: '@sys.music-genre',
     },
     locales: {
       alexa: null,
-      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.ES, GL.SV, GL.TH, GL.TR]
-    }
-  }, {
-
-    label: "Number Sequence",
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.ES, GL.SV, GL.TH, GL.TR],
+    },
+  },
+  {
+    label: 'Number Sequence',
     type: {
       alexa: null,
-      google: "@sys.number-sequence"
+      google: '@sys.number-sequence',
     },
     locales: {
       alexa: null,
-      google: [GL.EN]
-    }
-  }, {
-
-    label: "Geo Country Code",
+      google: [GL.EN],
+    },
+  },
+  {
+    label: 'Geo Country Code',
     type: {
       alexa: null,
-      google: "@sys.geo-country-code"
+      google: '@sys.geo-country-code',
     },
     locales: {
       alexa: null,
-      google: [GL.EN]
-    }
-  }, {
-
-    label: "Place Attraction",
+      google: [GL.EN],
+    },
+  },
+  {
+    label: 'Place Attraction',
     type: {
       alexa: null,
-      google: "@sys.place-attraction"
+      google: '@sys.place-attraction',
     },
     locales: {
       alexa: null,
-      google: [GL.EN, GL.FR, GL.JA]
-    }
-  }, {
-
-    label: "Patronymic Name",
+      google: [GL.EN, GL.FR, GL.JA],
+    },
+  },
+  {
+    label: 'Patronymic Name',
     type: {
       alexa: null,
-      google: "@sys.patronymic-name"
+      google: '@sys.patronymic-name',
     },
     locales: {
       alexa: null,
-      google: [GL.RU]
-    }
-  }
-]
+      google: [GL.RU],
+    },
+  },
+];
 
 const BUILT_IN_INTENTS_ALEXA = [
   // { name: "AMAZON.AddAction<object@Book,targetCollection@ReadingList>",
@@ -2611,330 +3008,288 @@ const BUILT_IN_INTENTS_ALEXA = [
   //   ]
   // },
   {
-    name: "AMAZON.CancelIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.CancelIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.FallbackIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.FallbackIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.HelpIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.HelpIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.LoopOffIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.LoopOffIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.LoopOnIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.LoopOnIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.MoreIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.MoreIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.NavigateHomeIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.NavigateHomeIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.NavigateSettingsIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.NavigateSettingsIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.NextIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.NextIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.NoIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.NoIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.PageDownIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.PageDownIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.PageUpIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.PageUpIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.PauseIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.PauseIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.PreviousIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.PreviousIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.RepeatIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.RepeatIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.ResumeIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.ResumeIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.ScrollDownIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.ScrollDownIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.ScrollLeftIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.ScrollLeftIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.ScrollRightIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.ScrollRightIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.ScrollUpIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.ScrollUpIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.SelectIntent",
-    slots: [
-      "Anaphor",
-      "ListPosition",
-      "PositionRelation",
-      "VisualModeTrigger"
-    ]
+    name: 'AMAZON.SelectIntent',
+    slots: ['Anaphor', 'ListPosition', 'PositionRelation', 'VisualModeTrigger'],
   },
   {
-    name: "AMAZON.ShuffleOffIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.ShuffleOffIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.ShuffleOnIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.ShuffleOnIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.StartOverIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.StartOverIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.StopIntent",
-    slots: [
-
-    ]
+    name: 'AMAZON.StopIntent',
+    slots: [],
   },
   {
-    name: "AMAZON.YesIntent",
-    slots: [
+    name: 'AMAZON.YesIntent',
+    slots: [],
+  },
+];
 
-    ]
-  }
-]
-
-const VOICES = [{
+const VOICES = [
+  {
     label: 'Default',
-    options: [{
-      value: 'Alexa',
-      label: 'Alexa'
-    }]
+    options: [
+      {
+        value: 'Alexa',
+        label: 'Alexa',
+      },
+    ],
   },
   {
     label: 'English US',
-    options: [{
+    options: [
+      {
         value: 'Ivy',
-        label: 'Ivy'
+        label: 'Ivy',
       },
       {
         value: 'Joanna',
-        label: 'Joanna'
+        label: 'Joanna',
       },
       {
         value: 'Joey',
-        label: 'Joey'
+        label: 'Joey',
       },
       {
         value: 'Justin',
-        label: 'Justin'
+        label: 'Justin',
       },
       {
         value: 'Kendra',
-        label: 'Kendra'
+        label: 'Kendra',
       },
       {
         value: 'Kimberly',
-        label: 'Kimberly'
+        label: 'Kimberly',
       },
       {
         value: 'Matthew',
-        label: 'Matthew'
+        label: 'Matthew',
       },
       {
         value: 'Salli',
-        label: 'Salli'
+        label: 'Salli',
       },
-    ]
+    ],
   },
   {
     label: 'English AU',
-    options: [{
+    options: [
+      {
         value: 'Nicole',
-        label: 'Nicole'
+        label: 'Nicole',
       },
       {
         value: 'Russell',
-        label: 'Russell'
+        label: 'Russell',
       },
-    ]
+    ],
   },
   {
     label: 'English GB',
-    options: [{
+    options: [
+      {
         value: 'Amy',
-        label: 'Amy'
+        label: 'Amy',
       },
       {
         value: 'Brian',
-        label: 'Brian'
+        label: 'Brian',
       },
       {
         value: 'Emma',
-        label: 'Emma'
-      }
-    ]
+        label: 'Emma',
+      },
+    ],
   },
   {
     label: 'English IN',
-    options: [{
+    options: [
+      {
         value: 'Aditi',
-        label: 'Aditi'
+        label: 'Aditi',
       },
       {
         value: 'Raveena',
-        label: 'Raveena'
+        label: 'Raveena',
       },
-    ]
+    ],
   },
   {
     label: 'German',
-    options: [{
+    options: [
+      {
         value: 'Hans',
-        label: 'Hans'
+        label: 'Hans',
       },
       {
         value: 'Marlene',
-        label: 'Marlene'
+        label: 'Marlene',
       },
       {
         value: 'Vicki',
-        label: 'Vicki'
+        label: 'Vicki',
       },
-    ]
+    ],
   },
   {
     label: 'Spanish',
-    options: [{
+    options: [
+      {
         value: 'Conchita',
-        label: 'Conchita'
+        label: 'Conchita',
       },
       {
         value: 'Enrique',
-        label: 'Enrique'
+        label: 'Enrique',
       },
-    ]
+    ],
   },
   {
     label: 'Italian',
-    options: [{
+    options: [
+      {
         value: 'Carla',
-        label: 'Carla'
+        label: 'Carla',
       },
       {
         value: 'Giorgio',
-        label: 'Giorgio'
+        label: 'Giorgio',
       },
-    ]
+    ],
   },
   {
     label: 'Japanese',
-    options: [{
+    options: [
+      {
         value: 'Mizuki',
-        label: 'Mizuki'
+        label: 'Mizuki',
       },
       {
         value: 'Takumi',
-        label: 'Takumi'
+        label: 'Takumi',
       },
-    ]
+    ],
   },
   {
     label: 'French',
-    options: [{
+    options: [
+      {
         value: 'Celine',
-        label: 'Celine'
+        label: 'Celine',
       },
       {
         value: 'Lea',
-        label: 'Lea'
+        label: 'Lea',
       },
       {
         value: 'Mathieu',
-        label: 'Mathieu'
+        label: 'Mathieu',
       },
-    ]
+    ],
   },
   {
     label: 'Portuguese BR',
-    options: [{
+    options: [
+      {
         value: 'Vitoria',
-        label: 'Vitoria'
+        label: 'Vitoria',
       },
       {
         value: 'Ricardo',
-        label: 'Ricardo'
+        label: 'Ricardo',
       },
-    ]
-  }
-]
+    ],
+  },
+];
 
 const ALLOWED_GOOGLE_BLOCKS = [
   'choice',
@@ -2957,8 +3312,8 @@ const ALLOWED_GOOGLE_BLOCKS = [
   'code',
   'god',
   'integrations',
-  'stream'
-]
+  'stream',
+];
 
 // const BUILT_IN_INTENTS_GOOGLE = [{
 //   name: 'actions.intent.PLAY_GAME',
@@ -3009,12 +3364,12 @@ const ALLOWED_GOOGLE_BLOCKS = [
 //   name: 'actions.intent.START_CALMING_ACTIVITY',
 //   slots: []
 // }]
-const BUILT_IN_INTENTS_GOOGLE = []
+const BUILT_IN_INTENTS_GOOGLE = [];
 
-exports.SLOT_TYPES = SLOT_TYPES
-exports.PLATFORMS = ['alexa', 'google']
-exports.VOICES = VOICES
+exports.SLOT_TYPES = SLOT_TYPES;
+exports.PLATFORMS = ['alexa', 'google'];
+exports.VOICES = VOICES;
 exports.BUILT_IN_INTENTS_ALEXA = BUILT_IN_INTENTS_ALEXA;
 exports.BUILT_IN_INTENTS_GOOGLE = BUILT_IN_INTENTS_GOOGLE;
 exports.ALLOWED_GOOGLE_BLOCKS = ALLOWED_GOOGLE_BLOCKS;
-exports.GOOGLE_LOCALES = GOOGLE_LOCALES
+exports.GOOGLE_LOCALES = GOOGLE_LOCALES;

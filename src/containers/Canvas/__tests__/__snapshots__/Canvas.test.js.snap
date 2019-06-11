@@ -297,6 +297,7 @@ exports[`Canvas render canvas 1`] = `
             "superSelect": null,
           }
         }
+        isCanvas={true}
         update={[Function]}
       />
       <DiagramWidget

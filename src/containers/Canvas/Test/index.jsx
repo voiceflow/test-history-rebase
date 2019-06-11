@@ -106,7 +106,7 @@ class Test extends Component {
               {section}
             </Collapse>
             {s === C.CONDITIONS && <div className={cn("no-space__break", {
-              'mt-3': !conditionsOpen
+              'mt-3': !conditionsOpen || this.props.testing_info
             })} />}
           </div>
         })}

@@ -1,0 +1,15 @@
+/node_modules
+/public
+
+# TODO: remove to re-enable linting
+/src/*.jsx
+/src/assets
+/src/components
+/src/containers
+/src/ducks
+/src/hocs
+/src/hooks
+/src/Routes
+/src/services
+/src/store
+/src/utils

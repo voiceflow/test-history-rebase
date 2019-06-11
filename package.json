@@ -136,7 +136,8 @@
     "build": "patch-package && GENERATE_SOURCEMAP=false node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom --watchAll=false",
     "prepublish": "patch-package",
-    "test:all": "react-scripts test --verbose"
+    "test:all": "react-scripts test --verbose",
+    "lint": "eslint \"src/**/*.{js,jsx}\""
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {

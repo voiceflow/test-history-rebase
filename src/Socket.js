@@ -3,12 +3,10 @@ import axios from 'axios';
 
 const getEndpoint = () => {
   let port = '';
-  let protocol = 'https';
   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     port = ':8080';
-    protocol = 'http';
   }
-  return `${protocol}://${process.env.APP_API_HOST}${port}`;
+  return `https://${process.env.APP_API_HOST}${port}`;
 };
 
 // Configure axios 

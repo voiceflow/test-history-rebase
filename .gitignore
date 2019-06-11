@@ -66,3 +66,6 @@ build
 package-lock.json
 
 .elasticbeanstalk
+
+# Generated self-signed localhost certificates
+certs/

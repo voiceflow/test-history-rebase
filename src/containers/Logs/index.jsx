@@ -31,7 +31,7 @@ class TablePagination extends React.Component {
   };
 
   render() {
-    const { count, page, rowsPerPage, theme } = this.props;
+    const { count, page, rowsPerPage } = this.props;
 
     return (
       <div>
@@ -43,10 +43,8 @@ class TablePagination extends React.Component {
           aria-label="First Page"
         >
           <i
-            className={cn("fas", {
-              "fa-step-forward": theme.direction === "rtl",
-              "fa-step-backward": theme.direction !== "rtl"
-            })}
+            className="fas fa-step-forward"
+          />
           />
         </Button>
         <Button
@@ -57,10 +55,7 @@ class TablePagination extends React.Component {
           aria-label="Previous Page"
         >
           <i
-            className={cn("fas", {
-              "fa-chevron-right": theme.direction === "rtl",
-              "fa-chevron-left": theme.direction !== "rtl"
-            })}
+            className="fas fa-chevron-left"
           />
         </Button>
         <Button
@@ -71,10 +66,7 @@ class TablePagination extends React.Component {
           aria-label="Next Page"
         >
           <i
-            className={cn("fas", {
-              "fa-chevron-right": theme.direction !== "rtl",
-              "fa-chevron-left": theme.direction === "rtl"
-            })}
+            className="fas fa-chevron-right"
           />
         </Button>
         <Button
@@ -85,10 +77,7 @@ class TablePagination extends React.Component {
           aria-label="Last Page"
         >
           <i
-            className={cn("fas", {
-              "fa-step-forward": theme.direction !== "rtl",
-              "fa-step-backward": theme.direction === "rtl"
-            })}
+            className="fas fa-step-backward"
           />
         </Button>
       </div>

@@ -1,5 +1,5 @@
 import GoogleLogin from 'react-google-login';
-import { googleClient } from 'containers/Register/social-id';
+import { googleClient, devGoogleClient } from 'containers/Register/social-id';
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { addIntegrationUser } from 'ducks/integration'
@@ -39,7 +39,7 @@ class GoogleAddUserModal extends Component {
         </div>
         <div className="d-flex justify-content-center mx-5 my-3">
           <GoogleLogin
-            clientId={googleClient}
+            clientId={process.env.REACT_APP_BUILD_ENV === 'production' ? googleClient : devGoogleClient }
             className="social-button class-ggl mb-4"
             buttonText="Login with Google"
             onSuccess={this.googleLogin}

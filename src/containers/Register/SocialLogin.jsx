@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment} from 'react'
-import {googleClient, fbId} from './social-id.js';
+import {googleClient, devGoogleClient, fbId} from './social-id.js';
 import { googleLogin, fbLogin } from 'ducks/account'
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login'
@@ -50,7 +50,7 @@ const SocialLogin = ({entryText, googleLogin, fbLogin}) => {
     <ErrorWidget error={authError} color="danger"/>
     <div className="social-login">
       <GoogleLogin
-        clientId={googleClient}
+        clientId={process.env.REACT_APP_BUILD_ENV === 'production' ? googleClient : devGoogleClient }
         className="social-button class-ggl mb-2"
         buttonText={`${entryText} with Google`}
         onSuccess={triggerGoogleLogin}

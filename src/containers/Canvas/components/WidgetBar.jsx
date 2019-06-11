@@ -25,7 +25,7 @@ const centerDiagram = ( engine, setOpen ) => {
             nodes[key].setSelected()
             setOpen(true)
             model.setZoomLevel(80)
-            model.setOffset((300) - (nodes[key].x * 0.8), (300) - (nodes[key].y * 0.8), true)
+            model.setOffset((300) - (nodes[key].x * 0.8), (300) - (nodes[key].y * 0.8), true, engine)
             return
         }
     }

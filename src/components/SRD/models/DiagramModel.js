@@ -162,17 +162,18 @@ export class DiagramModel extends BaseEntity {
 		});
 	}
 
-	setOffset(offsetX, offsetY, translate = false) {
+	setOffset(offsetX, offsetY, translate = false, diagramEngine = null) {
 		if (translate) {
 			const deltaX = offsetX - this.offsetX;
 			const deltaY = offsetY - this.offsetY;
 
-			const slopeX = deltaX / 10;
-			const slopeY = deltaY / 10;
-			let counter = 10;
+			const slopeX = deltaX / 100;
+			const slopeY = deltaY / 100;
+			let counter = 100;
 			this.offsetInterval = setInterval(() => {
 				this.offsetX += slopeX;
 				this.offsetY += slopeY;
+				diagramEngine.repaintCanvas(false)
 				counter -= 1;
 				if ((this.offsetX === offsetX && this.offsetY === offsetY) || counter <= 0) {
 					clearInterval(this.offsetInterval)

@@ -4,6 +4,8 @@ import moment from 'moment';
 
 import './TeamSummary.css';
 import SkillDetail from "../SkillDetail/SkillDetail";
+import TrialModal from "../TrialModal/TrialModal";
+import Button from "components/Button";
 
 
 class TeamSummary extends React.Component {
@@ -12,11 +14,18 @@ class TeamSummary extends React.Component {
     super(props);
     this.state = {
       showSkills: false,
+      showTrialModal: false
     };
   }
 
   toggle = () => {
     this.setState(state => ({showSkills: !state.showSkills}));
+  };
+
+  toggleTrial = () => {
+    this.setState(prevState => ({
+      showTrialModal: !prevState.showTrialModal
+    }))
   };
 
   renderSkillPreviews = () => {
@@ -44,6 +53,12 @@ class TeamSummary extends React.Component {
             <div className="team_summary_created">
               {moment(this.props.board.created).format('MMMM Do YYYY, h:mm:ss a')}
             </div>
+            <div className="team_summary_created">
+              Trial Expiry: {this.props.board.expiry ? moment(this.props.board.expiry).format("MMM Do YYYY") : 'No trial set'}
+            </div>
+            <Button className="mt-2" isPrimary onClick={this.toggleTrial}>
+              Manage Trial
+            </Button>
           </div>
           <div className="mb-2 col-sm-4">
             <div className="mt-2">
@@ -83,6 +98,12 @@ class TeamSummary extends React.Component {
             </CardBody>
           </Card>
         </Collapse>
+
+        <TrialModal
+          showTrialModal={this.state.showTrialModal}
+          toggleTrial={this.toggleTrial}
+          team={this.props.board}
+        />
       </div>
     )
   }

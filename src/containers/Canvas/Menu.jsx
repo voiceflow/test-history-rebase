@@ -32,7 +32,7 @@ const tabs = {
       tip: "Join the Voiceflow Forum for help & updates"
     },
     {
-      link: "https://learn.voiceflow.com/",
+      link: "https://docs.voiceflow.com/",
       icon: <i className="fas fa-graduation-cap" />,
       tip: "Access tutorials through Voiceflow University"
     },

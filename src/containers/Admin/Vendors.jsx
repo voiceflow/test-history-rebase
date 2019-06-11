@@ -26,7 +26,7 @@ class Vendors extends React.Component {
       });
       // Get the charges for the user
       this.props.getVendors(setCreatorId);
-      if (this.props.creator && this.props.creator.creator_id.toString() !== setCreatorId.toString()) {
+      if (this.props.creator.creator_id && this.props.creator.creator_id.toString() !== setCreatorId) {
         this.props.findCreator(setCreatorId);
       }
     }

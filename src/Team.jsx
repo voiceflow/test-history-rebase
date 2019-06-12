@@ -8,14 +8,15 @@ import Templates from 'containers/Templates';
 import { setConfirm, setError, setModal } from 'ducks/modal';
 // Actions
 import { fetchTeams, teamInvite, updateCurrentTeam } from 'ducks/team';
+import * as _ from 'lodash';
 import queryString from 'query-string';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-const getTeamFromURL = (computedMatch) => {
-  return computedMatch && computedMatch.params && computedMatch.params.team_id;
-};
+const DASHBOARD_PATH = '/dashboard';
+
+const getTeamFromURL = (computedMatch) => _.get(computedMatch, 'params.team_id');
 
 class Team extends PureComponent {
   constructor(props) {
@@ -33,26 +34,25 @@ class Team extends PureComponent {
   async initialize() {
     if (this.props.location.search) {
       const query = queryString.parse(this.props.location.search);
-      if (query.invite) {
-        if (await this.props.teamInvite(query.invite)) {
-          this.props.setModal({
-            size: 'sm',
-            header: true,
-            body: (
-              <div className="text-center py-1 mb-5 text-muted">
-                <img src="/images/icons/takeoff.svg" height={140} alt="blast off" />
-                <br />
-                <br />
-                Successfully Accepted Invite
-                <br />
-                Welcome to Voiceflow
-              </div>
-            ),
-          });
-        }
+      if (query.invite && (await this.props.teamInvite(query.invite))) {
+        this.props.setModal({
+          size: 'sm',
+          header: true,
+          body: (
+            <div className="text-center py-1 mb-5 text-muted">
+              <img src="/images/icons/takeoff.svg" height={140} alt="blast off" />
+              <br />
+              <br />
+              Successfully Accepted Invite
+              <br />
+              Welcome to Voiceflow
+            </div>
+          ),
+        });
       }
     }
 
+    // eslint-disable-next-line promise/catch-or-return
     this.props.fetchTeams().then(() => {
       this.setState({ loading: false });
       if (this.props.teams.allIds.length > 0) {
@@ -62,9 +62,9 @@ class Team extends PureComponent {
         }
         if (!urlTeam && this.props.page !== 'template') this.updateTeam(this.props.team_id);
       } else {
-        if (this.props.location.pathname !== '/dashboard')
+        if (this.props.location.pathname !== DASHBOARD_PATH)
           this.props.history.push({
-            pathname: '/dashboard',
+            pathname: DASHBOARD_PATH,
             search: this.props.location.search,
           });
       }
@@ -85,7 +85,7 @@ class Team extends PureComponent {
       this.props.updateCurrentTeam(new_team);
       // If redux store updated and it went into no team
     } else if (prevProps.team_id && !this.props.team_id) {
-      this.props.history.push('/dashboard');
+      this.props.history.push(DASHBOARD_PATH);
     }
   }
 

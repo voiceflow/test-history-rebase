@@ -5,6 +5,7 @@ import { compose } from 'recompose';
 import { Tooltip } from 'react-tippy';
 import { Alert } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import * as _ from 'lodash';
 
 // HOCs
 import { loadSession, errorScreen, socketCheck } from 'hocs/socketCheck';
@@ -93,8 +94,8 @@ class Skill extends Component {
   }
 
   trackCanvasTime() {
-    let time_unmounted = new Date();
-    if (!!this.props.skill) {
+    const time_unmounted = new Date();
+    if (this.props.skill) {
       axios.post('/analytics/track_session_time', {
         duration: time_unmounted - this.time_mounted,
         skill_id: this.props.skill.skill_id,
@@ -114,7 +115,7 @@ class Skill extends Component {
     });
     window.addEventListener('beforeunload', this.componentGracefulUnmount);
     await this.props.getVendors();
-    if (this.props.computedMatch && this.props.computedMatch.params && this.props.computedMatch.params.skill_id) {
+    if (_.has(this.props, ['computedMatch', 'params', 'skill_id'])) {
       this.props.getVersion(this.props.computedMatch.params.skill_id, this.props.preview, this.props.computedMatch.params.diagram_id).then(() => {
         document.title = this.props.skill.name !== undefined ? this.props.skill.name : 'Voiceflow Creator';
         this.setState({ load_skill: false });
@@ -167,7 +168,7 @@ class Skill extends Component {
   };
 
   toggleGoogle = () => {
-    let platform = this.props.skill.platform === 'google' ? 'alexa' : 'google';
+    const platform = this.props.skill.platform === 'google' ? 'alexa' : 'google';
     this.props.updateSkill('platform', platform).then(() => {
       // this.props.updateGoogleFade();
       // this.props.updateLinter()
@@ -207,9 +208,8 @@ class Skill extends Component {
     if (this.state.saving) return true;
     if (this.props.platform === 'alexa') {
       return !ENDING_STAGES[this.props.platform].includes(this.state.stage) && ![0, 5, 6, 8].includes(this.state.stage);
-    } else {
-      return !ENDING_STAGES[this.props.platform].includes(this.state.google_stage) && ![0, 5, 6, 8].includes(this.state.google_stage);
     }
+    return !ENDING_STAGES[this.props.platform].includes(this.state.google_stage) && ![0, 5, 6, 8].includes(this.state.google_stage);
   };
 
   displayUploadPrompt = () => {
@@ -221,7 +221,6 @@ class Skill extends Component {
         </div>
       );
     }
-    return;
   };
 
   renderUploadButton = () => {
@@ -241,46 +240,44 @@ class Skill extends Component {
           </Button>
         </Tooltip>
       );
-    } else {
-      if (this.isUploadLoading()) {
-        return (
-          <Button isPublish disabled variant="contained" onClick={() => this.setState({ show_upload_prompt: !this.state.show_upload_prompt })}>
-            <p className="loading-btn m-0 p-0">Uploading</p>
-            <div className="launch">
-              <div className="load-spinner pt-1">
-                <span className="save-loader-white" />
-              </div>
-            </div>
-          </Button>
-        );
-      } else {
-        return (
-          <Tooltip
-            html={
-              <div style={{ width: 155 }}>
-                {this.props.platform === 'google'
-                  ? 'Test your Action on your own Google device, or in the Google Actions console'
-                  : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}
-              </div>
-            }
-            position="bottom"
-            distance={16}
-          >
-            <Button isPublish variant="contained" onClick={this.openUpdate}>
-              {this.props.platform === 'google' ? 'Upload to Google' : 'Upload to Alexa'}
-              <div className="launch">
-                <div className="first">
-                  <img src={'/up.svg'} alt="upload" width="15" height="15" />
-                </div>
-                <div className="second">
-                  <img src={'/check-white.svg'} alt="check" width="15" height="15" />
-                </div>
-              </div>
-            </Button>
-          </Tooltip>
-        );
-      }
     }
+    if (this.isUploadLoading()) {
+      return (
+        <Button isPublish disabled variant="contained" onClick={() => this.setState({ show_upload_prompt: !this.state.show_upload_prompt })}>
+          <p className="loading-btn m-0 p-0">Uploading</p>
+          <div className="launch">
+            <div className="load-spinner pt-1">
+              <span className="save-loader-white" />
+            </div>
+          </div>
+        </Button>
+      );
+    }
+    return (
+      <Tooltip
+        html={
+          <div style={{ width: 155 }}>
+            {this.props.platform === 'google'
+              ? 'Test your Action on your own Google device, or in the Google Actions console'
+              : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}
+          </div>
+        }
+        position="bottom"
+        distance={16}
+      >
+        <Button isPublish variant="contained" onClick={this.openUpdate}>
+          {this.props.platform === 'google' ? 'Upload to Google' : 'Upload to Alexa'}
+          <div className="launch">
+            <div className="first">
+              <img src={'/up.svg'} alt="upload" width="15" height="15" />
+            </div>
+            <div className="second">
+              <img src={'/check-white.svg'} alt="check" width="15" height="15" />
+            </div>
+          </div>
+        </Button>
+      </Tooltip>
+    );
   };
 
   render() {

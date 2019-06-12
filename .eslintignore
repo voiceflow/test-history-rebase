@@ -2,7 +2,6 @@
 /public
 
 # TODO: remove to re-enable linting
-/src/*.jsx
 /src/assets
 /src/components
 /src/containers

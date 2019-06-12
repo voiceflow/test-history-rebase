@@ -14,9 +14,10 @@ class ErrorBoundary extends React.Component {
     };
   }
 
-  componentDidCatch(error, info) {
-    if (!error) return;
-    error = serializeError(error);
+  componentDidCatch(rawError, info) {
+    if (!rawError) return;
+
+    const error = serializeError(rawError);
     axios.post('/errors', {
       name: error.name,
       message: error.message,

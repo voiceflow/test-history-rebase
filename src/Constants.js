@@ -7,6 +7,7 @@ const LOCALES = {
   IN: 'en-IN',
   GB: 'en-GB',
   CA_fr: 'fr-CA',
+  US_es: 'es-US',
   FR: 'fr-FR',
   DE: 'de-DE',
   IT: 'it-IT',

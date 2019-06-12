@@ -1,150 +1,151 @@
-import React, { PureComponent } from 'react'
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
-import queryString from 'query-string'
-
-// Actions
-import { fetchTeams, updateCurrentTeam, teamInvite } from "ducks/team";
-import { setConfirm, setError, setModal } from 'ducks/modal'
-
 // Components
-import Button from 'components/Button'
-import { Spinner } from 'components/Spinner/Spinner'
-
+import Button from 'components/Button';
+import { Spinner } from 'components/Spinner/Spinner';
+import Dashboard from 'containers/Dashboard';
 // Views
-import Onboarding from 'containers/Onboarding'
-import Templates from 'containers/Templates'
-import Dashboard from 'containers/Dashboard'
+import Onboarding from 'containers/Onboarding';
+import Templates from 'containers/Templates';
+import { setConfirm, setError, setModal } from 'ducks/modal';
+// Actions
+import { fetchTeams, teamInvite, updateCurrentTeam } from 'ducks/team';
+import queryString from 'query-string';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const getTeamFromURL = (computedMatch) => {
-  return computedMatch && computedMatch.params && computedMatch.params.team_id
-}
+  return computedMatch && computedMatch.params && computedMatch.params.team_id;
+};
 
 class Team extends PureComponent {
-
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      loading: true
-    }
+      loading: true,
+    };
   }
 
-  updateTeam(team_id){
-    if(!this.props.page) this.props.history.push(`/team/${team_id}`)
+  updateTeam(team_id) {
+    if (!this.props.page) this.props.history.push(`/team/${team_id}`);
   }
 
   async initialize() {
-    if(this.props.location.search){
-      let query = queryString.parse(this.props.location.search)
-      if(query.invite) {
-        if((await this.props.teamInvite(query.invite))) {
+    if (this.props.location.search) {
+      const query = queryString.parse(this.props.location.search);
+      if (query.invite) {
+        if (await this.props.teamInvite(query.invite)) {
           this.props.setModal({
             size: 'sm',
             header: true,
-            body: (<div className="text-center py-1 mb-5 text-muted">
-              <img src="/images/icons/takeoff.svg" height={140} alt="blast off"/><br/><br/>
-              Successfully Accepted Invite<br/>
-              Welcome to Voiceflow
-            </div>)
-          })
+            body: (
+              <div className="text-center py-1 mb-5 text-muted">
+                <img src="/images/icons/takeoff.svg" height={140} alt="blast off" />
+                <br />
+                <br />
+                Successfully Accepted Invite
+                <br />
+                Welcome to Voiceflow
+              </div>
+            ),
+          });
         }
       }
     }
 
     this.props.fetchTeams().then(() => {
-      this.setState({loading: false})
-      if(this.props.teams.allIds.length > 0){
-        let urlTeam = getTeamFromURL(this.props.computedMatch)
-        if(!this.props.team_id){
-          this.props.updateCurrentTeam( urlTeam || this.props.teams.allIds[0])
+      this.setState({ loading: false });
+      if (this.props.teams.allIds.length > 0) {
+        const urlTeam = getTeamFromURL(this.props.computedMatch);
+        if (!this.props.team_id) {
+          this.props.updateCurrentTeam(urlTeam || this.props.teams.allIds[0]);
         }
-        if(!urlTeam && this.props.page !== 'template') this.updateTeam(this.props.team_id)
-      }else{
-        if(this.props.location.pathname !== '/dashboard') this.props.history.push({
-          pathname: '/dashboard',
-          search: this.props.location.search
-        })
+        if (!urlTeam && this.props.page !== 'template') this.updateTeam(this.props.team_id);
+      } else {
+        if (this.props.location.pathname !== '/dashboard')
+          this.props.history.push({
+            pathname: '/dashboard',
+            search: this.props.location.search,
+          });
       }
-    })
+    });
   }
 
   componentDidMount() {
-    this.initialize()
+    this.initialize();
   }
 
   componentDidUpdate(prevProps) {
-    const new_team = getTeamFromURL(this.props.computedMatch)
+    const new_team = getTeamFromURL(this.props.computedMatch);
     // If redux store updated and url doesn't match
     if (prevProps.team_id !== this.props.team_id && this.props.team_id !== new_team) {
-      this.updateTeam(this.props.team_id)
-    // If url updated and redux store doesn't match
+      this.updateTeam(this.props.team_id);
+      // If url updated and redux store doesn't match
     } else if (new_team && this.props.team_id !== new_team) {
-      this.props.updateCurrentTeam(new_team)
-    // If redux store updated and it went into no team
+      this.props.updateCurrentTeam(new_team);
+      // If redux store updated and it went into no team
     } else if (prevProps.team_id && !this.props.team_id) {
-      this.props.history.push(`/dashboard`)
+      this.props.history.push('/dashboard');
     }
   }
 
   render() {
-    if(this.state.loading) return <Spinner name="Team"/>
+    if (this.state.loading) return <Spinner name="Team" />;
 
-    if(this.props.teams.allIds.length === 0) {
-      return <div className="h-100 d-flex justify-content-center">
-        <div className="align-self-center text-center">
-          <img
-            src="/images/icons/conversation.svg"
-            alt="skill-icon"
-            width="160"
-            height="105"
-            className="mb-1"
-          />
-          <br />
-          <label className="dark">Create a Board</label>
-          <span className="text-muted">
-            Create a shared board where your<br/>
-            team can collaboratively design and build<br/>
-            incredible voice experiences
-          </span><br/>
-          <Link to={`/team/new`} className="no-underline">
-            <Button isPrimary className="mt-4">
-              New Board
-            </Button>
-          </Link>
+    if (this.props.teams.allIds.length === 0) {
+      return (
+        <div className="h-100 d-flex justify-content-center">
+          <div className="align-self-center text-center">
+            <img src="/images/icons/conversation.svg" alt="skill-icon" width="160" height="105" className="mb-1" />
+            <br />
+            <label className="dark">Create a Board</label>
+            <span className="text-muted">
+              Create a shared board where your
+              <br />
+              team can collaboratively design and build
+              <br />
+              incredible voice experiences
+            </span>
+            <br />
+            <Link to="/team/new" className="no-underline">
+              <Button isPrimary className="mt-4">
+                New Board
+              </Button>
+            </Link>
+          </div>
         </div>
-      </div>
+      );
     }
 
-    switch(this.props.page) {
+    switch (this.props.page) {
       case 'onboarding':
-        return <Onboarding {...this.props}/>
+        return <Onboarding {...this.props} />;
       case 'template':
-        return <Templates {...this.props}/>
+        return <Templates {...this.props} />;
       default:
-        return <Dashboard {...this.props}/>
+        return <Dashboard {...this.props} />;
     }
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   team_id: state.team.team_id,
   team: state.team.byId[state.team.team_id],
-  teams: state.team
+  teams: state.team,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     fetchTeams: () => dispatch(fetchTeams()),
-    updateCurrentTeam: team_id => dispatch(updateCurrentTeam(team_id)),
-    setConfirm: confirm => dispatch(setConfirm(confirm)),
-    setError: err => dispatch(setError(err)),
-    teamInvite: invite => dispatch(teamInvite(invite)),
-    setModal: modal => dispatch(setModal(modal))
+    updateCurrentTeam: (team_id) => dispatch(updateCurrentTeam(team_id)),
+    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
+    setError: (err) => dispatch(setError(err)),
+    teamInvite: (invite) => dispatch(teamInvite(invite)),
+    setModal: (modal) => dispatch(setModal(modal)),
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Team)
+)(Team);

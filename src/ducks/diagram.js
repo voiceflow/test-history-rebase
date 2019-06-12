@@ -1,49 +1,46 @@
-import update from 'immutability-helper'
 import axios from 'axios';
+import { setConfirm, setError } from 'ducks/modal';
+import update from 'immutability-helper';
 import _ from 'lodash';
-import { setConfirm, setError } from 'ducks/modal'
 
-export const FETCH_DIAGRAMS_BEGIN = 'FETCH_DIAGRAMS_BEGIN'
-export const FETCH_DIAGRAMS_SUCCESS = 'FETCH_DIAGRAMS_SUCCESS'
-export const FETCH_DIAGRAMS_FAILURE = 'FETCH_DIAGRAMS_FAILURE'
+export const FETCH_DIAGRAMS_BEGIN = 'FETCH_DIAGRAMS_BEGIN';
+export const FETCH_DIAGRAMS_SUCCESS = 'FETCH_DIAGRAMS_SUCCESS';
+export const FETCH_DIAGRAMS_FAILURE = 'FETCH_DIAGRAMS_FAILURE';
 // const FETCH_DIAGRAM = 'FETCH_DIAGRAM'
-export const ON_FLOW_RENAME = 'ON_FLOW_RENAME'
-export const UPDATE_DIAGRAM_ROOT = 'UPDATE_DIAGRAM_ROOT'
-export const APPEND_DIAGRAMS = 'APPEND_DIAGRAMS'
-export const UPDATE_DIAGRAMS = 'UPDATE_DIAGRAMS'
-export const UPDATE_DIAGRAM = 'UPDATE_DIAGRAM'
+export const ON_FLOW_RENAME = 'ON_FLOW_RENAME';
+export const UPDATE_DIAGRAM_ROOT = 'UPDATE_DIAGRAM_ROOT';
+export const APPEND_DIAGRAMS = 'APPEND_DIAGRAMS';
+export const UPDATE_DIAGRAMS = 'UPDATE_DIAGRAMS';
+export const UPDATE_DIAGRAM = 'UPDATE_DIAGRAM';
 
 const initialState = {
   diagrams: [],
   loading: false,
-  error: null
+  error: null,
 };
 
 export default function diagramReducer(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
     case UPDATE_DIAGRAM_ROOT:
       return {
         ...state,
-        root_id: action.payload.root_id
-      }
+        root_id: action.payload.root_id,
+      };
     case APPEND_DIAGRAMS:
       return {
         ...state,
-        diagrams: [
-          ...state.diagrams, 
-          action.payload.diagrams,
-        ]
-      }
+        diagrams: [...state.diagrams, action.payload.diagrams],
+      };
     case UPDATE_DIAGRAMS:
       return {
         ...state,
-        diagrams: update(state.diagrams, {$set: action.payload.diagrams})
-      }
+        diagrams: update(state.diagrams, { $set: action.payload.diagrams }),
+      };
     case FETCH_DIAGRAMS_BEGIN:
       return {
         ...state,
         loading: true,
-        error: null
+        error: null,
       };
     case FETCH_DIAGRAMS_SUCCESS:
       return {
@@ -59,117 +56,124 @@ export default function diagramReducer(state = initialState, action) {
         diagrams: [],
       };
     case ON_FLOW_RENAME:
-      const idx = state.diagrams.findIndex(d => d.id === action.payload.flow_id)
+      // eslint-disable-next-line no-case-declarations
+      const idx = state.diagrams.findIndex((d) => d.id === action.payload.flow_id);
       return {
         ...state,
-        diagrams: update(state.diagrams, {[idx]: {name: {$set: action.payload.name}}})
-      }
+        diagrams: update(state.diagrams, { [idx]: { name: { $set: action.payload.name } } }),
+      };
     default:
       return state;
   }
 }
 
 export const fetchDiagramsBegin = () => ({
-  type: FETCH_DIAGRAMS_BEGIN
+  type: FETCH_DIAGRAMS_BEGIN,
 });
 
-export const fetchDiagramsSuccess = diagrams => ({
+export const fetchDiagramsSuccess = (diagrams) => ({
   type: FETCH_DIAGRAMS_SUCCESS,
-  payload: { diagrams }
+  payload: { diagrams },
 });
 
-export const fetchDiagramsFailure = error => ({
+export const fetchDiagramsFailure = (error) => ({
   type: FETCH_DIAGRAMS_FAILURE,
-  payload: { error }
+  payload: { error },
 });
 
-export const onFlowRename = (flow_id, name)=> ({
-    type: ON_FLOW_RENAME,
-    payload: {flow_id, name}
-})
+export const onFlowRename = (flow_id, name) => ({
+  type: ON_FLOW_RENAME,
+  payload: { flow_id, name },
+});
 
-export const updateDiagramRoot = (root_id)=> ({
+export const updateDiagramRoot = (root_id) => ({
   type: UPDATE_DIAGRAM_ROOT,
-  payload: {root_id}
-})
+  payload: { root_id },
+});
 
-export const appendDiagrams = diagrams => ({
-    type: APPEND_DIAGRAMS,
-    payload: {diagrams}
-})
+export const appendDiagrams = (diagrams) => ({
+  type: APPEND_DIAGRAMS,
+  payload: { diagrams },
+});
 
-export const updateDiagrams = diagrams => ({
+export const updateDiagrams = (diagrams) => ({
   type: UPDATE_DIAGRAMS,
-  payload: {diagrams}
-})
+  payload: { diagrams },
+});
 
-export const fetchDiagrams = skill_id => {
-    return async dispatch => {
-      dispatch(fetchDiagramsBegin());
-      return await axios.get('/skill/' + skill_id + '/diagrams')
-        .then(res => {
-          let diagrams = res.data.map(flow => {
-              try {
-                  return {
-                      id: flow.id,
-                      name: flow.name,
-                      sub_diagrams: JSON.parse(flow.sub_diagrams),
-                      module_id: flow.module_id
-                  }
-              } catch (err) {
-                  return {
-                      id: flow.id,
-                      name: flow.name
-                  }
-              }
-          })
-          
-          if(diagrams.length === 0) throw new Error("No Diagrams Associated With this Skill")
+export const fetchDiagrams = (skill_id) => {
+  return async (dispatch) => {
+    dispatch(fetchDiagramsBegin());
 
-          let root = _.find(diagrams, d => d.name === 'ROOT')
-          if(!root){
-            diagrams[0].name = 'ROOT'
-            root=diagrams[0]
-            dispatch(renameDiagram(root.id, 'ROOT'))
+    return axios
+      .get(`/skill/${skill_id}/diagrams`)
+      .then((res) => {
+        const diagrams = res.data.map((flow) => {
+          try {
+            return {
+              id: flow.id,
+              name: flow.name,
+              sub_diagrams: JSON.parse(flow.sub_diagrams),
+              module_id: flow.module_id,
+            };
+          } catch (err) {
+            return {
+              id: flow.id,
+              name: flow.name,
+            };
           }
-          dispatch(updateDiagramRoot(root.id))
-          dispatch(fetchDiagramsSuccess(diagrams))
-        })
-        .catch(err => {
-          console.error(err.response)
-          dispatch(fetchDiagramsFailure('Could Not Retrieve Project Diagrams'))
-        })
-    }
-}
+        });
 
-export const renameDiagram = (flow_id, name) => {
-    return async (dispatch, getState) => {
-        name = name.trim();
-        if(name === 'ROOT') {
-          dispatch(setError("ROOT/HOME is a reserved flow name"))
-          return;
+        if (diagrams.length === 0) throw new Error('No Diagrams Associated With this Skill');
+
+        let root = _.find(diagrams, ['name', 'ROOT']);
+        if (!root) {
+          diagrams[0].name = 'ROOT';
+          root = diagrams[0];
+          dispatch(renameDiagram(root.id, 'ROOT'));
         }
-        let index = getState().diagrams.diagrams.findIndex(d => d.id === flow_id);
-        if (index !== -1){
-            let flow = getState().diagrams.diagrams.find(d => d.name === name)
-            if (flow && flow.name !== name) {
-                return dispatch(setConfirm({
-                    text: 'Flow names must be unique',
-                    confirm: () => this.setState({
-                        confirm: null
-                    })
-                }))
-            }
-            try {
-              await axios.post(`/diagram/${flow_id}/name`, {
-                  name: name
-              })
-              dispatch(onFlowRename(flow_id, name));
-            } catch (err) {
-              console.error(err);
-              dispatch(setError("unable to save new flow name"));
-            }
-            Promise.resolve();
-        }
+        dispatch(updateDiagramRoot(root.id));
+        dispatch(fetchDiagramsSuccess(diagrams));
+      })
+      .catch((err) => {
+        console.error(err.response);
+        dispatch(fetchDiagramsFailure('Could Not Retrieve Project Diagrams'));
+      });
+  };
+};
+
+export function renameDiagram(flow_id, rawName) {
+  return async (dispatch, getState) => {
+    const name = rawName.trim();
+
+    if (name === 'ROOT') {
+      dispatch(setError('ROOT/HOME is a reserved flow name'));
+      return;
     }
+    const index = getState().diagrams.diagrams.findIndex((d) => d.id === flow_id);
+    if (index !== -1) {
+      const flow = getState().diagrams.diagrams.find((d) => d.name === name);
+      if (flow && flow.name !== name) {
+        return dispatch(
+          setConfirm({
+            text: 'Flow names must be unique',
+            confirm: () =>
+              this.setState({
+                confirm: null,
+              }),
+          })
+        );
+      }
+      try {
+        await axios.post(`/diagram/${flow_id}/name`, {
+          name,
+        });
+        dispatch(onFlowRename(flow_id, name));
+      } catch (err) {
+        console.error(err);
+        dispatch(setError('unable to save new flow name'));
+      }
+      Promise.resolve();
+    }
+  };
 }

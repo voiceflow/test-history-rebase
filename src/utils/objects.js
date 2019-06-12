@@ -1,17 +1,16 @@
-import toPath from 'lodash/toPath';
 import cloneDeep from 'lodash/cloneDeep';
+import toPath from 'lodash/toPath';
 
 export const mapKeysAndValuesObjects = (keysObj, valuesObj) =>
-  Object.keys(keysObj).reduce(
-    (res, key) => Object.assign(res, { [keysObj[key]]: valuesObj[key] }),
-    {}
-  );
+  Object.keys(keysObj).reduce((res, key) => Object.assign(res, { [keysObj[key]]: valuesObj[key] }), {});
 
-export const getIn = (obj, key, def, p = 0) => {
+export const getIn = (rawObj, key, def, index = 0) => {
   const path = toPath(key);
+  let obj = rawObj;
+  let i = index;
 
-  while (obj && p < path.length) {
-    obj = obj[path[p++]];
+  while (obj && i < path.length) {
+    obj = obj[path[i++]];
   }
 
   return obj === undefined ? def : obj;

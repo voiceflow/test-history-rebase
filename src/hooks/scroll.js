@@ -1,9 +1,7 @@
-import { useRef, useEffect, useContext, useCallback } from 'react';
-
-import { scrollTo, getOffsetToNode, getOffsetLeftToNode, setScrollbarOffset } from '../utils/dom';
+import { useCallback, useContext, useEffect, useRef } from 'react';
 
 import { ScrollContext } from '../contexts';
-
+import { getOffsetLeftToNode, getOffsetToNode, scrollTo, setScrollbarOffset } from '../utils/dom';
 import { useToggle } from './toggle';
 
 export const useScrollHelpers = ({ enableScrollbarOffset } = {}) => {
@@ -18,8 +16,8 @@ export const useScrollHelpers = ({ enableScrollbarOffset } = {}) => {
     },
 
     setScrollBarOffset() {
-      enableScrollbarOffset &&
-        requestAnimationFrame(() => setScrollbarOffset(bodyRef.current, innerRef.current));
+      // eslint-disable-next-line no-unused-expressions
+      enableScrollbarOffset && requestAnimationFrame(() => setScrollbarOffset(bodyRef.current, innerRef.current));
     },
 
     scrollHorizontalToNode(node, padding = 0) {
@@ -60,47 +58,36 @@ export const useScrollShadows = (bodyRef, updateByProps = []) => {
   const [isHeaderShadowShown, toggleHeaderShadowShown] = useToggle(false);
   const [isFooterShadowShown, toggleFooterShadowShown] = useToggle(false);
 
-  const onScroll = useCallback(
-    () => {
-      const aRef = requestAnimationFrame(() => {
-        if (!bodyRef.current) {
-          return;
-        }
+  const onScroll = useCallback(() => {
+    const aRef = requestAnimationFrame(() => {
+      if (!bodyRef.current) {
+        return;
+      }
 
-        const {
-          current: { scrollTop, clientHeight, scrollHeight },
-        } = bodyRef;
+      const {
+        current: { scrollTop, clientHeight, scrollHeight },
+      } = bodyRef;
 
-        if (scrollTop && !isHeaderShadowShown) {
-          toggleHeaderShadowShown();
-        } else if (!scrollTop && isHeaderShadowShown) {
-          toggleHeaderShadowShown();
-        }
+      if (scrollTop && !isHeaderShadowShown) {
+        toggleHeaderShadowShown();
+      } else if (!scrollTop && isHeaderShadowShown) {
+        toggleHeaderShadowShown();
+      }
 
-        const isScrollExists = scrollHeight > clientHeight;
-        const clientHeightWithScrollTop = clientHeight + scrollTop;
+      const isScrollExists = scrollHeight > clientHeight;
+      const clientHeightWithScrollTop = clientHeight + scrollTop;
 
-        if (!isScrollExists && isFooterShadowShown) {
-          toggleFooterShadowShown();
-        } else if (
-          isScrollExists &&
-          clientHeightWithScrollTop === scrollHeight &&
-          isFooterShadowShown
-        ) {
-          toggleFooterShadowShown();
-        } else if (
-          isScrollExists &&
-          clientHeightWithScrollTop !== scrollHeight &&
-          !isFooterShadowShown
-        ) {
-          toggleFooterShadowShown();
-        }
-      });
+      if (!isScrollExists && isFooterShadowShown) {
+        toggleFooterShadowShown();
+      } else if (isScrollExists && clientHeightWithScrollTop === scrollHeight && isFooterShadowShown) {
+        toggleFooterShadowShown();
+      } else if (isScrollExists && clientHeightWithScrollTop !== scrollHeight && !isFooterShadowShown) {
+        toggleFooterShadowShown();
+      }
+    });
 
-      return () => cancelAnimationFrame(aRef);
-    },
-    [isHeaderShadowShown, isFooterShadowShown]
-  );
+    return () => cancelAnimationFrame(aRef);
+  }, [isHeaderShadowShown, isFooterShadowShown]);
 
   useEffect(onScroll, updateByProps);
 

@@ -7,6 +7,7 @@ export default [
     { value: "en-US", name: "English (US)" },
     { value: "es-ES", name: "Spanish (ES)" },
     { value: "es-MX", name: "Spanish (MX)" },
+    { value: "es-US", name: "Spanish (US)" },
     { value: "fr-CA", name: "French (CA)" },
     { value: "fr-FR", name: "French (FR)" },
     { value: "it-IT", name: "Italian (IT)" },

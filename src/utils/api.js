@@ -1,15 +1,9 @@
 import axios from 'axios';
-import Raven from 'raven-js';
-import { push } from 'connected-react-router';
-
 import config from 'config';
-
+import { push } from 'connected-react-router';
 import { LOGOUT_USER } from 'containers/App/constants';
-import {
-  NOTIFICATIONS_SHOW_ERROR,
-  NOTIFICATIONS_SHOW_SUCCESS,
-} from 'containers/Notifications/constants';
-
+import { NOTIFICATIONS_SHOW_ERROR, NOTIFICATIONS_SHOW_SUCCESS } from 'containers/Notifications/constants';
+import Raven from 'raven-js';
 import Storage from 'utils/storage';
 
 const axiosApi = axios.create({
@@ -27,7 +21,7 @@ const request = (options, headers = {}, { anonymous } = {}) =>
     },
   });
 
-export const getUrl = path => `${config.apiUrl}/${path}`;
+export const getUrl = (path) => `${config.apiUrl}/${path}`;
 
 export const clearUserInfo = () => {
   Storage.remove('token');
@@ -35,6 +29,7 @@ export const clearUserInfo = () => {
   if (process.env.NODE_ENV === 'production') {
     Raven.setUserContext();
 
+    // eslint-disable-next-line no-unused-expressions
     window.Intercom && window.Intercom('shutdown');
   }
 };
@@ -80,7 +75,8 @@ export const requestProcessorCreator = ({ unauthorizedErrorMessage } = {}) => ({
 
     return response;
   } catch (err) {
-    console.warn('api-error', err); // eslint-disable-line
+    // eslint-disable-next-line no-console
+    console.warn('api-error', err);
 
     if (!err.response || err.response.status >= 500) {
       dispatch(push('/500'));
@@ -100,12 +96,7 @@ export const requestProcessorCreator = ({ unauthorizedErrorMessage } = {}) => ({
       let responseError = '';
       let errorPostfix = disableErrorPostfix ? '' : 'Please contact the Invocable team.';
 
-      if (
-        errorResponseKey &&
-        err.response &&
-        err.response.data &&
-        err.response.data[errorResponseKey]
-      ) {
+      if (errorResponseKey && err.response && err.response.data && err.response.data[errorResponseKey]) {
         const error = err.response.data[errorResponseKey];
 
         errorPostfix = '';
@@ -128,6 +119,7 @@ export const requestProcessorCreator = ({ unauthorizedErrorMessage } = {}) => ({
 
     return null;
   } finally {
+    // eslint-disable-next-line no-unused-expressions
     after && after(dispatch, getState, stateBeforeUpdate);
   }
 };

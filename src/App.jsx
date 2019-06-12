@@ -52,6 +52,7 @@ class App extends Component {
           })
         )
         .catch((err) => {
+          // eslint-disable-next-line no-console
           console.log(err);
           this.setState({ loading: false });
           history.push('/login');
@@ -85,6 +86,7 @@ class App extends Component {
         );
       } else {
         window.location.replace('https://getvoiceflow.com/maintenance');
+        // eslint-disable-next-line xss/no-location-href-assign
         window.location.href = 'https://getvoiceflow.com/maintenance';
         throw new Error('MAINTENANCE');
       }
@@ -117,7 +119,7 @@ class App extends Component {
 }
 
 // Hack until this ticket is fixed https://github.com/react-dnd/react-dnd/issues/894
-global.__isReactDndBackendSetUp = false;
+global.__isReactDndBackendSetUp = false; // eslint-disable-line no-underscore-dangle
 
 export default compose(
   connect(
@@ -126,5 +128,6 @@ export default compose(
       getUser,
     }
   ),
+  // eslint-disable-next-line xss/no-mixed-html
   DragDropContext(HTML5Backend)
 )(App);

@@ -3,5 +3,5 @@ export const getCookie = (name) => {
 
   if (match) {
     return match[2];
-  };
-}
+  }
+};

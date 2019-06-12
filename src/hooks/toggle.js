@@ -1,9 +1,9 @@
-import { useState, useReducer } from 'react';
+import { useReducer, useState } from 'react';
 
 export const useToggle = (defaultValue = false) => {
   const [value, toggleValue] = useState(defaultValue);
 
-  return [value, () => toggleValue(v => !v)];
+  return [value, () => toggleValue((v) => !v)];
 };
 
 export const useEnableDisable = (defaultValue = false) => {

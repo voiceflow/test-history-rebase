@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-
 import { isEqualArrays } from 'utils/arrays';
 
 export const usePropControlledValue = (defaultValue = false, forceUpdateBy) => {
@@ -16,7 +15,7 @@ export const usePropControlledValue = (defaultValue = false, forceUpdateBy) => {
   return [value, changeValue];
 };
 
-export const usePropsControlledValues = defaultValues => {
+export const usePropsControlledValues = (defaultValues) => {
   const ref = useRef(defaultValues);
   const [values, changeValue] = useState(defaultValues);
 
@@ -25,5 +24,5 @@ export const usePropsControlledValues = defaultValues => {
     ref.current = defaultValues;
   }
 
-  return [values, newValues => changeValue(Object.assign([], values, newValues))];
+  return [values, (newValues) => changeValue(Object.assign([], values, newValues))];
 };

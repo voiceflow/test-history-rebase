@@ -1,7 +1,8 @@
-import React, { Fragment, Component } from 'react';
 import cn from 'classnames';
 import memoize from 'memoize-one';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
 
 import Icon from '../Icon';
 
@@ -33,9 +34,9 @@ export default class PopoverList extends Component {
     hovered: false,
   };
 
-  withIcons = memoize(items => items.some(({ icon }) => !!icon));
+  withIcons = memoize((items) => items.some(({ icon }) => !!icon));
 
-  withRightIcons = memoize(items => items.some(({ rightIcon }) => !!rightIcon));
+  withRightIcons = memoize((items) => items.some(({ rightIcon }) => !!rightIcon));
 
   onMouseEnter = () => {
     if (!this.state.hovered) {
@@ -45,15 +46,7 @@ export default class PopoverList extends Component {
 
   render() {
     const { hovered } = this.state;
-    const {
-      items,
-      noWrap,
-      onClick,
-      notFound,
-      selectedId,
-      textTruncate,
-      renderListItem,
-    } = this.props;
+    const { items, noWrap, onClick, notFound, selectedId, textTruncate, renderListItem } = this.props;
 
     if (!items.length) {
       return (
@@ -84,7 +77,7 @@ export default class PopoverList extends Component {
           '__with-right-icons': this.withRightIcons(items),
         })}
       >
-        {items.map(item => {
+        {items.map((item) => {
           const { id, icon, level, label, rightIcon, labelNode } = item;
           const isActive = id === selectedId;
 
@@ -105,6 +98,7 @@ export default class PopoverList extends Component {
           }
 
           return (
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
             <li
               key={id}
               onClick={() => onClick && onClick(item)}

@@ -1,13 +1,12 @@
-import React from 'react';
-import { mount, shallow, render } from 'enzyme';
-import WarningModal from '../WarningModal';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import React from 'react';
 
-const clickFn = jest.fn()
+import WarningModal from '../WarningModal';
 
 describe('Warning Modal Test', () => {
-    it('render warning modal', () => {
-        const component = shallow(<WarningModal/>);
-        expect(toJson(component)).toMatchSnapshot()
-    });
-})
+  it('render warning modal', () => {
+    const component = shallow(<WarningModal />);
+    expect(toJson(component)).toMatchSnapshot();
+  });
+});

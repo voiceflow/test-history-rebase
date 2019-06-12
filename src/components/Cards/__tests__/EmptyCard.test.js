@@ -1,13 +1,12 @@
-import React from 'react';
-import { mount, shallow, render } from 'enzyme';
-import EmptyCard from '../EmptyCard';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import React from 'react';
 
-const clickFn = jest.fn()
+import EmptyCard from '../EmptyCard';
 
 describe('Empty Card Test', () => {
-    it('render empty card', () => {
-        const component = shallow(<EmptyCard />);
-        expect(toJson(component)).toMatchSnapshot()
-    });
-})
+  it('render empty card', () => {
+    const component = shallow(<EmptyCard />);
+    expect(toJson(component)).toMatchSnapshot();
+  });
+});

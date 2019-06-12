@@ -1,11 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React from 'react';
-
-import centered from '@storybook/addon-centered';
 import { action } from '@storybook/addon-actions';
+import centered from '@storybook/addon-centered';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
-import { text, boolean, withKnobs } from '@storybook/addon-knobs';
+import React from 'react';
 
 import Selectable from './index';
 
@@ -19,8 +18,8 @@ storiesOf('components/Selectable', module)
       onShow={action('onShow')}
       onHide={action('onHide')}
       onSelect={action('onSelect')}
-      popoverRenderer={props => JSON.stringify(props)}
+      popoverRenderer={(props) => JSON.stringify(props)}
     >
-      {props => JSON.stringify(props)}
+      {(props) => JSON.stringify(props)}
     </Selectable>
   ));

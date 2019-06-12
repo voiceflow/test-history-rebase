@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import cn from 'classnames';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import Tooltip from '../Tooltip';
 
@@ -20,12 +20,7 @@ export default function Counter(props) {
   }
 
   return (
-    <Tooltip
-      gap={1}
-      text={isDanger ? null : `${limit - length} of ${limit} ${counterWord} left`}
-      TagName="div"
-      buttonProps={{ style }}
-    >
+    <Tooltip gap={1} text={isDanger ? null : `${limit - length} of ${limit} ${counterWord} left`} TagName="div" buttonProps={{ style }}>
       <div className={cn('barchart-group', className)}>
         {(withLabel || (withDangerLabel && isDanger)) && (
           <div className="barchart-group__label">
@@ -36,10 +31,7 @@ export default function Counter(props) {
         <div className="barchart-group__value">
           <div className={cn('barchart', { '__has-danger': isDanger })}>
             <div className="barchart-line" />
-            <div
-              style={{ width: `${Math.min((length / limit) * 100, 100)}%` }}
-              className="barchart-track"
-            />
+            <div style={{ width: `${Math.min((length / limit) * 100, 100)}%` }} className="barchart-track" />
           </div>
         </div>
       </div>

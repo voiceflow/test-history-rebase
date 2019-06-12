@@ -16,7 +16,6 @@ export const useScrollHelpers = ({ enableScrollbarOffset } = {}) => {
     },
 
     setScrollBarOffset() {
-      // eslint-disable-next-line no-unused-expressions
       enableScrollbarOffset && requestAnimationFrame(() => setScrollbarOffset(bodyRef.current, innerRef.current));
     },
 

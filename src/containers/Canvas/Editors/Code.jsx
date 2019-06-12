@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import AceEditor from "react-ace";
+import React, { Component } from 'react';
+import AceEditor from 'react-ace';
 
 class Code extends Component {
   constructor(props) {
     super(props);
 
     if (!props.node.extras.code) {
-      props.node.extras.code = "";
+      props.node.extras.code = '';
     }
     this.state = {
       code: props.node.extras.code || '',
-      node: props.node
+      node: props.node,
     };
 
     this.updateContent = this.updateContent.bind(this);
@@ -18,11 +18,12 @@ class Code extends Component {
 
   componentDidMount() {
     const that = this;
+    // eslint-disable-next-line react/no-string-refs
     this.refs.aceEditor.editor.completers.push({
-      getCompletions: function(editor, session, pos, prefix, callback) {
-        var wordList = [...that.props.variables]
+      getCompletions(editor, session, pos, prefix, callback) {
+        const wordList = [...that.props.variables];
 
-        wordList.push(...["voiceflow", "_system"])
+        wordList.push(...['voiceflow', '_system']);
 
         callback(
           null,
@@ -30,25 +31,26 @@ class Code extends Component {
             return {
               caption: word,
               value: word,
-              meta: "variable"
+              meta: 'variable',
             };
           })
         );
-      }
+      },
     });
   }
 
   updateContent(content) {
     this.setState({
-      code: content
-    })
-    this.props.node.extras.code = content
+      code: content,
+    });
+    this.props.node.extras.code = content;
   }
 
   render() {
     return (
       <div>
         <AceEditor
+          // eslint-disable-next-line react/no-string-refs
           ref="aceEditor"
           name="code"
           className="editor w-100"
@@ -66,7 +68,7 @@ class Code extends Component {
             enableSnippets: false,
             showLineNumbers: true,
             tabSize: 2,
-            useWorker: false
+            useWorker: false,
           }}
         />
       </div>

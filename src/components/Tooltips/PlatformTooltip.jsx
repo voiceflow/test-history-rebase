@@ -1,6 +1,6 @@
+import cn from 'classnames';
 import React from 'react';
-import cn from 'classnames'
-import {Tooltip} from 'react-tippy';
+import { Tooltip } from 'react-tippy';
 
 const PlatformTooltip = ({ field, platform }) => (
   <Tooltip
@@ -10,13 +10,14 @@ const PlatformTooltip = ({ field, platform }) => (
     position="left"
     title={`${field} are platform-specific. You are currently on ${platform === 'google' ? 'Google' : 'Alexa'}`}
   >
-    <i className={cn('fab', {
-      'fa-google': platform === 'google',
-      'fa-amazon': platform !== 'google'
-    })} id="tooltip" />
+    <i
+      className={cn('fab', {
+        'fa-google': platform === 'google',
+        'fa-amazon': platform !== 'google',
+      })}
+      id="tooltip"
+    />
   </Tooltip>
-)
+);
 
 export default PlatformTooltip;
-
-

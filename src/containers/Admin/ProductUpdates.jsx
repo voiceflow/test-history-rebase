@@ -1,72 +1,73 @@
-import React, { Component } from 'react';
-import { Form, FormGroup, Input, Label } from 'reactstrap';
 import axios from 'axios';
-import { connect } from 'react-redux'
-
-import Button from 'components/Button'
+import Button from 'components/Button';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Form, FormGroup, Input, Label } from 'reactstrap';
 
 class ProductUpdates extends Component {
-
   constructor(props) {
-      super(props)
+    super(props);
 
-      this.state = {
-          type: 'FEATURE'
-      }
+    this.state = {
+      type: 'FEATURE',
+    };
 
-      this.handleChange = this.handleChange.bind(this)
-      this.createNewUpdate = this.createNewUpdate.bind(this)
+    this.handleChange = this.handleChange.bind(this);
+    this.createNewUpdate = this.createNewUpdate.bind(this);
   }
 
   handleChange(event) {
-		this.setState({
-			[event.target.name]: event.target.value
-		})
-	}
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  }
 
   createNewUpdate() {
-      axios.post('/product_updates', {
-          type: this.state.type,
-          details: this.state.details
+    axios
+      .post('/product_updates', {
+        type: this.state.type,
+        details: this.state.details,
       })
       .then(() => {
-          alert('it worked')
+        alert('it worked');
       })
-      .catch((err) => {
-          alert('it did not work')
-      })
+      .catch(() => {
+        alert('it did not work');
+      });
   }
 
   render() {
-      return (
-          <div className="admin-page-inner">
-            <h3 className="fb_header">Product Updates</h3>
-              <div className="content">
-                  <h5>Create a new update</h5>
-                  <Form>
-                      <FormGroup>
-                          <Label for="type">What type of update is it</Label>
-                          <Input type="select" name="type" id="type" onChange={this.handleChange}>
-                              <option>FEATURE</option>
-                              <option>UPDATE</option>
-                              <option>CHANGE</option>
-                          </Input>
-                      </FormGroup>
-                      <FormGroup>
-                          <Label for="details">Enter your update here</Label>
-                          <Input type="textarea" name="details" id="details" onChange={this.handleChange} maxLength={150}></Input>
-                      </FormGroup>
-                  </Form>
+    return (
+      <div className="admin-page-inner">
+        <h3 className="fb_header">Product Updates</h3>
+        <div className="content">
+          <h5>Create a new update</h5>
+          <Form>
+            <FormGroup>
+              <Label for="type">What type of update is it</Label>
+              <Input type="select" name="type" id="type" onChange={this.handleChange}>
+                <option>FEATURE</option>
+                <option>UPDATE</option>
+                <option>CHANGE</option>
+              </Input>
+            </FormGroup>
+            <FormGroup>
+              <Label for="details">Enter your update here</Label>
+              <Input type="textarea" name="details" id="details" onChange={this.handleChange} maxLength={150} />
+            </FormGroup>
+          </Form>
 
-                  <Button isBtn isPrimary onClick={this.createNewUpdate}>Create New Update</Button>
-              </div>
-          </div>
-      )
+          <Button isBtn isPrimary onClick={this.createNewUpdate}>
+            Create New Update
+          </Button>
+        </div>
+      </div>
+    );
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.account
-})
+const mapStateToProps = (state) => ({
+  user: state.account,
+});
 
-export default connect(mapStateToProps)(ProductUpdates)
+export default connect(mapStateToProps)(ProductUpdates);

@@ -1,11 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React from 'react';
-
 import centered from '@storybook/addon-centered';
+import { boolean, object, select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
-import { text, object, boolean, select, withKnobs } from '@storybook/addon-knobs';
-
+import React from 'react';
 import withMinWidth from 'stories/decorators/withMinWidth';
 
 import Loader from './index';

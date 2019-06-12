@@ -1,21 +1,21 @@
-import {combineReducers} from "redux";
-import {connectRouter} from "connected-react-router";
-import skills from "ducks/version";
-import diagramVariables from "ducks/diagram_variable";
-import variables from "ducks/variable";
-import diagrams from "ducks/diagram";
-import products from "ducks/product";
-import displays from "ducks/display";
-import userSetting from "ducks/user";
-import project from "ducks/project";
-import modal from "ducks/modal";
-import team from "ducks/team";
-import account from "ducks/account";
-import board from "ducks/board"
-import integrationUsers from "ducks/integration";
+import { connectRouter } from 'connected-react-router';
+import account from 'ducks/account';
 import admin from 'ducks/admin';
+import board from 'ducks/board';
+import diagrams from 'ducks/diagram';
+import diagramVariables from 'ducks/diagram_variable';
+import displays from 'ducks/display';
+import integrationUsers from 'ducks/integration';
+import modal from 'ducks/modal';
+import products from 'ducks/product';
+import project from 'ducks/project';
+import team from 'ducks/team';
+import userSetting from 'ducks/user';
+import variables from 'ducks/variable';
+import skills from 'ducks/version';
+import { combineReducers } from 'redux';
 
-export default history =>
+export default (history) =>
   combineReducers({
     router: connectRouter(history),
     skills,
@@ -31,5 +31,5 @@ export default history =>
     team,
     account,
     integrationUsers,
-    admin
+    admin,
   });

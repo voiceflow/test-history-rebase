@@ -1,12 +1,12 @@
 const validCharacters = 'a-zA-Z';
 
 // Latin character Unicode points from https://tiny.amazon.com/1hix1tfzz/enwikiorgwikiList
-const validLatinChars = validCharacters + '\xC0-\xFF\u0100-\u017F';
+const validLatinChars = `${validCharacters}\xC0-\xFF\u0100-\u017F`;
 // const punctuation = '._\'\\-\\{\\}';
 // Support for latin and asian characters - Consider using library such as
 // https://www.npmjs.com/package/unicode-6.3.0#readme
 // to generate valid chars. Additional flushing out of this lib would be necessary
-const validSpokenCharacters = validLatinChars + '\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\uFF00-\uFF9F\u4E00-\u9FAF\u3400-\u4DBF';
+const validSpokenCharacters = `${validLatinChars}\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\uFF00-\uFF9F\u4E00-\u9FAF\u3400-\u4DBF`;
 // const validSpokenSpanishCharacters = validLatinChars + '\xBF';
 
 // Helper unicode version of regex \w
@@ -16,8 +16,8 @@ const validSpokenCharacters = validLatinChars + '\u3000-\u303F\u3040-\u309F\u30A
 // const validSlotNameCharacters = 'a-zA-Z\\._';
 // const validSlotNameString = '[a-zA-Z][' + validSlotNameCharacters + ']*'; // From https://tiny.amazon.com/g5867zfo
 // const validSlotTypeNameCharacters = '[a-zA-Z][a-zA-Z\\._]*'; // From https://tiny.amazon.com/14gwu5p7n
-const validSampleCharactersWithoutCurlyBracesOrSpaces = validSpokenCharacters + '._\'\\-';
-const validSampleCharacters = validSampleCharactersWithoutCurlyBracesOrSpaces + ' \\[\\]';
+const validSampleCharactersWithoutCurlyBracesOrSpaces = `${validSpokenCharacters}._'\\-`;
+const validSampleCharacters = `${validSampleCharactersWithoutCurlyBracesOrSpaces} \\[\\]`;
 // const validPromptCharacters = validSampleCharacters + '\\-,\\?';
 
 // // locale constiations of valid prompt characters
@@ -87,7 +87,7 @@ const validSampleCharacters = validSampleCharactersWithoutCurlyBracesOrSpaces + 
 //     };
 // }
 // TYLER: lmao I decompiled the ADC front end source code so these regexes are good as it gets 👌
-exports.sampleUtteranceRegex = '[^' + validSampleCharacters + '|]'
-exports.validCharacters = validCharacters
-exports.validLatinChars = validLatinChars
-exports.validSpokenCharacters = validSpokenCharacters
+exports.sampleUtteranceRegex = `[^${validSampleCharacters}|]`;
+exports.validCharacters = validCharacters;
+exports.validLatinChars = validLatinChars;
+exports.validSpokenCharacters = validSpokenCharacters;

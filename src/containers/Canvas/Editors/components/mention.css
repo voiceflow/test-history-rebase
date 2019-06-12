@@ -1,62 +1,56 @@
-.mention,
-.mention:visited {
-  display: inline-block;
-  padding-right: 2px;
-  padding-left: 2px;
+.mention, .mention:visited {
   color: #575f67;
-  text-decoration: none;
-  background: #e6f3ff;
-  border-radius: 2px;
   cursor: pointer;
+  display: inline-block;
+  background: #e6f3ff;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 2px;
+  text-decoration: none;
 }
-
-.mention:hover,
-.mention:focus {
+.mention:hover, .mention:focus {
   color: #677584;
   background: #edf5fd;
   outline: 0; /* reset for :focus */
 }
-
 .mention:active {
   color: #222;
   background: #455261;
 }
-
 .mentionSuggestionsEntry {
+  font-size: 15px !important;
   padding: 11px 10px 4px 33px;
   color: #0b1a38;
-  font-size: 15px !important;
   background-image: url('/logic-gray.svg');
   background-repeat: no-repeat;
   background-position: 10% 50%;
   transition: all ease 0.15s;
-
-  /* transition: background-color 0.4s cubic-bezier(.27,1.27,.48,.56); */
+  /*transition: background-color 0.4s cubic-bezier(.27,1.27,.48,.56);*/
 }
 
-/* .mentionSuggestionsEntry:active {
+/*.mentionSuggestionsEntry:active {
   background-color: #f00;
 }
 */
 .mentionSuggestionsEntryFocused {
   padding: 11px 10px 4px 33px;
+  background-color: #F7F9FB;
   color: #0b1a38;
-  font-size: 15px !important;
-  background-color: #f7f9fb;
   background-image: url('/logic.svg');
   background-repeat: no-repeat;
   background-position: 10% 50%;
+  font-size: 15px !important;
 }
 
 .mentionSuggestionsEntryText {
   display: inline-block;
-  max-width: 368px;
-  margin-bottom: 0.2em;
   margin-left: 8px;
-  overflow: hidden;
-  font-size: 0.9em;
   white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 368px;
+  font-size: 0.9em;
+  margin-bottom: 0.2em;
 }
 
 .mentionSuggestionsEntryAvatar {
@@ -65,28 +59,26 @@
   height: 24px;
   border-radius: 12px;
 }
-
 .mentionSuggestions {
+  box-shadow: 0 0 0 1px rgba(17,49,96,.04), 0 8px 16px 0 rgba(17,49,96,.16);
+  border-radius: 5px;
+  color: #0b1a38 !important;
+  margin-top: 0.4em;
   position: absolute;
+  min-width: 150px;
+  max-width: 440px;
+  /*background-color: #373F53;*/
+  background-color: #fff;
+  cursor: pointer;
+  padding-top: 8px;
+  padding-bottom: 8px;
   z-index: 2;
   display: -webkit-box;
   display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  min-width: 150px;
-  max-width: 440px;
-  margin-top: 0.4em;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  color: #0b1a38 !important;
-
-  /* background-color: #373F53; */
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
-  -webkit-transform: scale(0);
-  transform: scale(0);
-  cursor: pointer;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
+          flex-direction: column;
+  box-sizing: border-box;
+  -webkit-transform: scale(0);
+          transform: scale(0);
 }

@@ -1,7 +1,7 @@
 .fulfill-label {
-  color: #8da2b5;
   font-weight: 400 !important;
   font-size: 15px !important;
+  color: #8da2b5;
 }
 
 .fulfill-switch {
@@ -15,6 +15,6 @@
 
 .va {
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  flex-direction: column;
 }

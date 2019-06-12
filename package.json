@@ -136,8 +136,7 @@
     "build": "patch-package && GENERATE_SOURCEMAP=false node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom --watchAll=false",
     "prepublish": "patch-package",
-    "test:all": "react-scripts test --verbose",
-    "lint:css": "stylelint src/**/*.css"
+    "test:all": "react-scripts test --verbose"
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {
@@ -152,14 +151,14 @@
     "jest": "^24.8.0",
     "jest-pnp-resolver": "^1.0.1",
     "redux-mock-store": "^1.5.3",
-    "regenerator-runtime": "^0.13.1",
-    "stylelint": "^10.1.0",
-    "stylelint-config-rational-order": "^0.1.2",
-    "stylelint-config-standard": "^18.3.0",
-    "stylelint-declaration-block-no-ignored-properties": "^2.1.0",
-    "stylelint-no-unsupported-browser-features": "^3.0.2",
-    "stylelint-order": "^3.0.0"
+    "regenerator-runtime": "^0.13.1"
   },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "babel": {
     "presets": [
       "react-app"

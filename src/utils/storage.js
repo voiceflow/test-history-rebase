@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 class Storage {
   __prefix__ = 'invocable:';
 
@@ -21,7 +22,7 @@ class Storage {
     if (this.__storage__) {
       let migratedKeys = this.get('__migratedStoreKeys__') || '';
 
-      this.__keysToMigrate__.forEach(key => {
+      this.__keysToMigrate__.forEach((key) => {
         const value = this.__storage__.getItem(`${this.__prefixToMigrate__}${key}`);
 
         if (value && !migratedKeys.includes(key)) {

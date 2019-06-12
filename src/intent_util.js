@@ -16,7 +16,7 @@ const formatName = (name) => {
 };
 
 const getUtterancesWithSlotNames = (utterances, slots, square_brackets = false, format_name = false, mention = false) => {
-  const re = /(\{\{\[([^}{[\]]+)]\.([a-zA-Z0-9]+)\}\})/g;
+  const re = /({{\[([^[\]{}]+)]\.([\dA-Za-z]+)}})/g;
   let m;
 
   return utterances
@@ -135,7 +135,7 @@ const replacer = (match, inner, slots, extracted) => {
 
 exports.parseChoiceInput = (input, slots) => {
   const extracted = [];
-  const cleansedInput = input.replace(/\[([a-zA-Z_]{1,170})\]/g, (match, inner) => replacer(match, inner, slots, extracted)).replace();
+  const cleansedInput = input.replace(/\[([A-Z_a-z]{1,170})]/g, (match, inner) => replacer(match, inner, slots, extracted)).replace();
 
   // get rid of any non valid characters
   const reg = new RegExp(`[^${validSpokenCharacters} \\{\\}|]`, 'g');
@@ -201,12 +201,12 @@ exports.utteranceToIntentName = (utterance, existing) => {
 const deepDraftToMarkdown = (object) => {
   const result = object;
   const variables = new Set();
-  const regex = /\{([A-Za-z0-9_]*)\}/g;
+  const regex = /{(\w*)}/g;
 
   const finder = (str) => {
     let match = regex.exec(str);
     while (match != null) {
-      if (/[A-Za-z0-9_]{1,24}/.test(match[1])) {
+      if (/\w{1,24}/.test(match[1])) {
         variables.add(match[1]);
       }
       match = regex.exec(str);
@@ -258,7 +258,7 @@ const deepVariableSubstitution = (object, variableMap) => {
     }
 
     if (typeof sub_collection === 'string') {
-      return sub_collection.replace(/\{([A-Za-z0-9_]*)\}/g, (match, inner) => replacer(match, inner, variableMap, uriEncode));
+      return sub_collection.replace(/{(\w*)}/g, (match, inner) => replacer(match, inner, variableMap, uriEncode));
     }
 
     return sub_collection;

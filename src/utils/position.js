@@ -19,10 +19,12 @@ export function createStrategyFromFunction(positionFunc) {
   };
 }
 
+// eslint-disable-next-line max-params
 function calculate(vp, lp, lc, kp, kc, Δv) {
   return vp + kp * lp - kc * lc + Δv;
 }
 
+// eslint-disable-next-line max-params
 function calculateWithFallback(vp, lp, lc, kp, kc, vm, Δv) {
   const primary = kp !== kc;
   const vc = calculate(vp, lp, lc, kp, kc, Δv);
@@ -32,50 +34,35 @@ function calculateWithFallback(vp, lp, lc, kp, kc, vm, Δv) {
       const position = calculate(vp, lp, lc, 1 - kp, 1 - kc, -Δv);
 
       return position < 0 ? vc : position;
-    } else {
-      return vc;
     }
-  } else if (vc < 0) {
-    return calculate(vp, lp, lc, 0, 0, Δv);
-  } else if (vc + lc > vm) {
-    return calculate(vp, lp, lc, 1, 1, Δv);
-  } else {
     return vc;
   }
+  if (vc < 0) {
+    return calculate(vp, lp, lc, 0, 0, Δv);
+  }
+  if (vc + lc > vm) {
+    return calculate(vp, lp, lc, 1, 1, Δv);
+  }
+  return vc;
 }
 
+// eslint-disable-next-line max-params
 function createStrategy(parentX, childX, parentY, childY, gapX, gapY) {
   return function(parent, child, options) {
     const parentRect = parent.getBoundingClientRect();
     const childWidth = child.offsetWidth;
     const childHeight = child.offsetHeight;
 
-    const left = calculateWithFallback(
-      parentRect.left,
-      parentRect.width,
-      childWidth,
-      parentX,
-      childX,
-      window.innerWidth,
-      gapX * options.gap
-    );
-    const top = calculateWithFallback(
-      parentRect.top,
-      parentRect.height,
-      childHeight,
-      parentY,
-      childY,
-      window.innerHeight,
-      gapY * options.gap
-    );
+    const left = calculateWithFallback(parentRect.left, parentRect.width, childWidth, parentX, childX, window.innerWidth, gapX * options.gap);
+    const top = calculateWithFallback(parentRect.top, parentRect.height, childHeight, parentY, childY, window.innerHeight, gapY * options.gap);
 
     setPosition(child, left, top);
   };
 }
 
-function setPosition(child, left, top) {
-  left = Math.round(left);
-  top = Math.round(top);
+function setPosition(child, rawLeft, rawTop) {
+  const left = Math.round(rawLeft);
+  const top = Math.round(rawTop);
 
   child.style.left = `${left}px`;
   child.style.top = `${top}px`;

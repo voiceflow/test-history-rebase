@@ -1,119 +1,140 @@
 .expression-menu {
-  overflow: auto;
   max-height: 240px;
+  overflow: auto;
 }
 
 .type-button {
-    border-radius: 50%;
-    margin-left: 10px;
-    padding: 2px 3px;
-    font-size: 11px;
-	height: 22px;
-	width: 22px;
-	border: none !important;
-	background: #FFFFFF;
-	box-shadow: 0px 1px 4px rgba(17, 49, 96, 0.16), 0px 0px 0px rgba(17, 49, 96, 0.04);
+  width: 22px;
+  height: 22px;
+  margin-left: 10px;
+  padding: 2px 3px;
+  font-size: 11px;
+  background: #fff;
+  border: none !important;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(17, 49, 96, 0.16), 0 0 0 rgba(17, 49, 96, 0.04);
 }
+
 .type-button:hover {
-	background: #FFFFFF;
-	box-shadow: 0px 1px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
-	background: #FFFFFF !important;
-	border: none !important;
-	color: #62778C !important;
+  color: #62778c !important;
+  background: #fff;
+  background: #fff !important;
+  border: none !important;
+  box-shadow: 0 1px 6px rgba(17, 49, 96, 0.24), 0 0 0 rgba(17, 49, 96, 0.04);
 }
-.dropdown{
-	display: flex;
-	align-items: center;
+
+.dropdown {
+  display: flex;
+  align-items: center;
 }
-.expression-block>.operator {
-	display: flex;
-	padding: 7px 35px 7px 5px;
-	align-items: center;
-	justify-content: space-between;
+
+.expression-block > .operator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 35px 7px 5px;
 }
-.expression-block>.operator>.dropdown>.type-button{
-	margin-left: 10px;
+
+.expression-block > .operator > .dropdown > .type-button {
+  margin-left: 10px;
 }
 
 .variable-box__placeholder {
-	color: #0b1a38 !important
+  color: #0b1a38 !important;
 }
 
 .expression-block {
-	padding: 5px 4px;
-	border: 1px solid;
-	border-radius: 6px;
-	/*color: #FFF;*/
+  padding: 5px 4px;
+  border: 1px solid;
+  border-radius: 6px;
+
+  /* color: #FFF; */
 }
 
-.expression-block.plus,.expression-block.minus{
-	background-color: #81C784;
-	border-color: #4CAF50;
-}
-.expression-block.divide, .expression-block.times{
-	background-color: #4CAF50;
-	border-color: #43A047;
-}
-.expression-block.greater, .expression-block.equals, .expression-block.less{
-	background-color: #FDD835;
-	border-color: #F57F17;
+.expression-block.plus,
+.expression-block.minus {
+  background-color: #81c784;
+  border-color: #4caf50;
 }
 
-.expression-block.and{
-	background-color: #FFA726;
-	border-color: #F57C00;
-}
-.expression-block.or{
-	background-color: #03A9F4;
-	border-color: #0288D1;
+.expression-block.divide,
+.expression-block.times {
+  background-color: #4caf50;
+  border-color: #43a047;
 }
 
-.expression-block.not{
-	padding-top: 0px !important;
-	background-color: #EF5350;
-	border-color: #E64A19;
+.expression-block.greater,
+.expression-block.equals,
+.expression-block.less {
+  background-color: #fdd835;
+  border-color: #f57f17;
 }
 
-.brackets>.variable{
-	background-color:linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2C85FF 100%) !important;
-	color: #6A1B9A;
-	border-radius: 5px;
-	padding: 2px 4px 4px 4px;
+.expression-block.and {
+  background-color: #ffa726;
+  border-color: #f57c00;
 }
-.brackets>.NaN{
-	background-color: #FFAB91;
-	color: #BF360C;
-	border-radius: 5px;
-	padding: 2px 4px 4px 4px;
-	cursor: pointer;
+
+.expression-block.or {
+  background-color: #03a9f4;
+  border-color: #0288d1;
 }
-.brackets>.NaN:after{
-	content: 'NaN';
+
+.expression-block.not {
+  padding-top: 0 !important;
+  background-color: #ef5350;
+  border-color: #e64a19;
 }
-.brackets>.NaN:hover:after{
-	content: 'Not a Number';
+
+.brackets > .variable {
+  padding: 2px 4px 4px 4px;
+  color: #6a1b9a;
+  background-color: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%) !important;
+  border-radius: 5px;
 }
-.expressionfy i{
-	font-size: 12px;
+
+.brackets > .NaN {
+  padding: 2px 4px 4px 4px;
+  color: #bf360c;
+  background-color: #ffab91;
+  border-radius: 5px;
+  cursor: pointer;
 }
-.brackets>.or{
-	color: #03A9F4;
+
+.brackets > .NaN::after {
+  content: 'NaN';
 }
-.brackets>.and{
-	color: #FFA726;
+
+.brackets > .NaN:hover::after {
+  content: 'Not a Number';
 }
-.brackets>.not{
-	color: #EF5350;
+
+.expressionfy i {
+  font-size: 12px;
 }
-.brackets>.unknown{
-	color: #496cf6;
-	font-weight: bold;
+
+.brackets > .or {
+  color: #03a9f4;
 }
-.expressionfy{
-	line-height: 28px;
-	padding: 5px 8px;
-	border-radius: 5px;
-	border: 1px solid #DDD;
-	margin-bottom: 10px;
-	text-align: left;
+
+.brackets > .and {
+  color: #ffa726;
+}
+
+.brackets > .not {
+  color: #ef5350;
+}
+
+.brackets > .unknown {
+  color: #496cf6;
+  font-weight: bold;
+}
+
+.expressionfy {
+  margin-bottom: 10px;
+  padding: 5px 8px;
+  line-height: 28px;
+  text-align: left;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }

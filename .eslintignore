@@ -1,7 +1,6 @@
 /node_modules
 /public
+/src/assets
 
 # TODO: remove to re-enable linting
-/src/assets
-/src/components
-/src/containers
+/src/components/SRD

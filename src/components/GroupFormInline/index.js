@@ -1,6 +1,7 @@
-import React from 'react';
 import cn from 'classnames';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
+import React from 'react';
 
 export default function GroupFormInline({ cols, className }) {
   return (

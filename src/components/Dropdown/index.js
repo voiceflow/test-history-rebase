@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
 import camelCase from 'lodash/camelCase';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 import Button from '../Button';
 import Popover from '../Popover';
-import Selectable from '../Selectable';
 import PopoverList from '../PopoverList';
+import Selectable from '../Selectable';
 
 export default class Dropdown extends Component {
   static propTypes = {
@@ -34,6 +35,7 @@ export default class Dropdown extends Component {
 
     const { onSelect, [callbackName]: callback } = this.props;
 
+    // eslint-disable-next-line callback-return
     callback && callback();
     onSelect && onSelect(id);
   };
@@ -45,15 +47,7 @@ export default class Dropdown extends Component {
   };
 
   popoverRenderer = ({ onSelect, ...popoverProps }) => {
-    return (
-      <Popover
-        gap={1}
-        isList
-        strategy="bottom left"
-        {...popoverProps}
-        renderBody={() => this.popoverBodyRenderer({ onSelect })}
-      />
-    );
+    return <Popover gap={1} isList strategy="bottom left" {...popoverProps} renderBody={() => this.popoverBodyRenderer({ onSelect })} />;
   };
 
   render() {

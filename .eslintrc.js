@@ -19,10 +19,15 @@ module.exports = {
       },
     ],
     'eslint-comments/disable-enable-pair': ['error', { allowWholeFile: true }],
+    'class-methods-use-this': ['error', { exceptMethods: ['render'] }],
+    'lodash/preferred-alias': ['error', { ignoreMethods: ['first'] }],
 
     // disabled
     'react/no-unescaped-entities': 'off',
     'promise/always-return': 'off',
+    'no-unused-expressions': 'off',
+    'lodash/prefer-lodash-chain': 'off',
+    'import/no-named-as-default': 'off',
 
     // disabled temporarily by setting as warnings
     'max-len': 'warn',
@@ -51,5 +56,19 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 'warn',
     'jsx-a11y/no-static-element-interactions': 'warn',
     'promise/catch-or-return': 'warn',
+  },
+  settings: {
+    polyfills: [
+      'Number.isNaN',
+      'Promise',
+      'Array.from',
+      'Object.assign',
+      'Object.values',
+      'Object.entries',
+      'Set',
+      'TextEncoder',
+      'window.performance',
+      'performance',
+    ],
   },
 };

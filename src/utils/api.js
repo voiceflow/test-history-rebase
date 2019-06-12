@@ -29,7 +29,6 @@ export const clearUserInfo = () => {
   if (process.env.NODE_ENV === 'production') {
     Raven.setUserContext();
 
-    // eslint-disable-next-line no-unused-expressions
     window.Intercom && window.Intercom('shutdown');
   }
 };
@@ -119,7 +118,6 @@ export const requestProcessorCreator = ({ unauthorizedErrorMessage } = {}) => ({
 
     return null;
   } finally {
-    // eslint-disable-next-line no-unused-expressions
     after && after(dispatch, getState, stateBeforeUpdate);
   }
 };

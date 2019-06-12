@@ -1,28 +1,27 @@
+import Button from 'components/Button';
+import Input from 'components/Input';
+import { findCreator, getVendors } from 'ducks/admin';
+import _ from 'lodash';
 import React from 'react';
-
 import { connect } from 'react-redux';
-import {findCreator, getVendors} from "ducks/admin";
 
-import Input from "components/Input";
-import VendorList from "./components/VendorList/VendorList";
-import Button from "components/Button";
+import VendorList from './components/VendorList/VendorList';
 
 class Vendors extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
-      searchTerm: ''
-    }
+      searchTerm: '',
+    };
   }
 
   componentDidMount() {
-    if (this.props.match && this.props.match.params && this.props.match.params.creator_id) {
+    if (_.has(this.props, ['match', 'params', 'creator_id'])) {
       // The creator id we are looking for
       const setCreatorId = this.props.match.params.creator_id;
       this.setState({
-        searchTerm: setCreatorId
+        searchTerm: setCreatorId,
       });
       // Get the charges for the user
       this.props.getVendors(setCreatorId);
@@ -32,14 +31,13 @@ class Vendors extends React.Component {
     }
   }
 
-  handleSearch = e => {
+  handleSearch = (e) => {
     this.setState({
-      searchTerm: e.target.value
-    })
+      searchTerm: e.target.value,
+    });
   };
 
   render() {
-
     return (
       <div className="fb_wrapper">
         <h3 className="fb_header">Vendors</h3>
@@ -51,7 +49,9 @@ class Vendors extends React.Component {
                   className="search-input form-control-2"
                   placeholder="Find creator by id or email"
                   onChange={this.handleSearch}
-                  onEnterPress={() => {this.props.getVendors(this.state.searchTerm)}}
+                  onEnterPress={() => {
+                    this.props.getVendors(this.state.searchTerm);
+                  }}
                   value={this.state.searchTerm}
                   type="text"
                 />
@@ -63,7 +63,12 @@ class Vendors extends React.Component {
               </div>
             </div>
             <div className="fb_refresh_wrapper">
-              <span className="fb_refresh" onClick={() => {this.props.getVendors(this.state.searchTerm)}}>
+              <span
+                className="fb_refresh"
+                onClick={() => {
+                  this.props.getVendors(this.state.searchTerm);
+                }}
+              >
                 Refresh <i className="fas fa-sync" />
               </span>
             </div>
@@ -71,14 +76,15 @@ class Vendors extends React.Component {
           <VendorList />
         </div>
       </div>
-    )
-
+    );
   }
-
 }
 
-const mapStateToProps = state => ({
-  creator: state.admin.creator
+const mapStateToProps = (state) => ({
+  creator: state.admin.creator,
 });
 
-export default connect(mapStateToProps, {findCreator, getVendors})(Vendors);
+export default connect(
+  mapStateToProps,
+  { findCreator, getVendors }
+)(Vendors);

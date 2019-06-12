@@ -1,13 +1,12 @@
-import React from 'react';
-import { mount, shallow, render } from 'enzyme';
-import VoiceCards from '../VoiceCards';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import React from 'react';
 
-const clickFn = jest.fn()
+import VoiceCards from '../VoiceCards';
 
 describe('Voice Card Test', () => {
-    it('render empty card', () => {
-        const component = shallow(<VoiceCards />);
-        expect(toJson(component)).toMatchSnapshot()
-    });
-})
+  it('render empty card', () => {
+    const component = shallow(<VoiceCards />);
+    expect(toJson(component)).toMatchSnapshot();
+  });
+});

@@ -1,27 +1,25 @@
-import cn from 'classnames';
-import React from 'react';
-import {Mention, MentionsInput} from "react-mentions";
-import {Tooltip} from "react-tippy";
-import { sampleUtteranceRegex } from 'services/Regex'
-
 import './Utterance.css';
 
-class Utterance extends React.PureComponent {
+import cn from 'classnames';
+import React from 'react';
+import { Mention, MentionsInput } from 'react-mentions';
+import { Tooltip } from 'react-tippy';
+import { sampleUtteranceRegex } from 'services/Regex';
 
+class Utterance extends React.PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
       text: props.intent,
       text_error: '',
-    }
-
+    };
   }
 
   handleKeyPress = (e) => {
     // Enter key pressed
     // Add utterance
-    if(e.charCode===13) {
+    if (e.charCode === 13) {
       e.preventDefault();
       this.onEdit(e);
     }
@@ -29,88 +27,92 @@ class Utterance extends React.PureComponent {
 
   onTextChange = (e) => {
     const newValue = e.target.value.trim();
-    let escaped_value = newValue.replace(/({{\[)|(\].[a-zA-Z0-9]+\}\})/g, '');
+    const escaped_value = newValue.replace(/({{\[)|(].[\dA-Za-z]+}})/g, '');
     if (escaped_value.match(sampleUtteranceRegex)) {
       return this.setState({
         text: e.target.value,
-        text_error: 'Sample utterances can consist of only unicode characters, spaces, periods for abbreviations, underscores, possessive apostrophes, curly braces, and hyphens'
+        text_error:
+          'Sample utterances can consist of only unicode characters, spaces, periods for abbreviations, underscores, possessive apostrophes, curly braces, and hyphens',
       });
-    } else {
-      this.setState({
-        text: e.target.value,
-        text_error: null
-      })
     }
+    this.setState({
+      text: e.target.value,
+      text_error: null,
+    });
   };
 
   onEdit = (targetInput = null) => {
     const newValue = this.state.text.trim();
-    if (this.props.intent.trim() === newValue)
-      return;
+    if (this.props.intent.trim() === newValue) return;
     if (this.props.utteranceExists(newValue)) {
       return this.setState({
-        text_error: 'Duplicate utterances are not allowed'
+        text_error: 'Duplicate utterances are not allowed',
       });
-    } else {
-      if (targetInput)
-        targetInput.target.blur();
-      this.props.editUtterance(newValue, this.props.index);
     }
+    if (targetInput) targetInput.target.blur();
+    this.props.editUtterance(newValue, this.props.index);
   };
 
   render() {
-
     return (
       <div>
-        <div className={cn('interaction-utterance', {u__utterance_warning: this.props.showWarning})}>
+        <div className={cn('interaction-utterance', { u__utterance_warning: this.props.showWarning })}>
           <Tooltip
             className="flex-hard"
             theme="warning"
             arrow={true}
             position="bottom-start"
-            open={!!(this.state.text_error)}
+            open={!!this.state.text_error}
             distance={5}
             html={this.state.text_error}
           >
             <MentionsInput
               className="mentions-input"
-              markup='{{[__display__].__id__}}'
-              displayTransform={(id, display) => { return '[' + display + ']'}}
+              markup="{{[__display__].__id__}}"
+              displayTransform={(id, display) => {
+                return `[${display}]`;
+              }}
               value={this.state.text}
               onChange={this.onTextChange}
               onBlur={this.onEdit}
               onKeyPress={this.handleKeyPress}
-              placeholder={"Enter Synonyms"}
+              placeholder="Enter Synonyms"
               allowSpaceInQuery={true}
-              disabled={this.props.live_mode}>
+              disabled={this.props.live_mode}
+            >
               <Mention
                 trigger="["
-                data={this.props.slots.map((slot) => {return {display: slot.name, id: slot.key.toString()}})}
-                style={{backgroundColor: '#DCEEFF', outline: '1px solid #DCEEFF'}}
+                data={this.props.slots.map((slot) => {
+                  return { display: slot.name, id: slot.key.toString() };
+                })}
+                style={{ backgroundColor: '#DCEEFF', outline: '1px solid #DCEEFF' }}
               />
             </MentionsInput>
           </Tooltip>
-          <i onClick={(e) => {
-            this.props.deleteUtterance(e, this.props.index);
-          }} className="fas fa-backspace trash-icon ii__trash"/>
+          <i
+            onClick={(e) => {
+              this.props.deleteUtterance(e, this.props.index);
+            }}
+            className="fas fa-backspace trash-icon ii__trash"
+          />
         </div>
-        {this.props.showWarning &&
+        {this.props.showWarning && (
           <Tooltip
             className="flex-hard"
             theme="warning"
             arrow={true}
             position="bottom-start"
-            html={'Having slots with the same type in different intents and using them in an utterance ' +
-            'without any context (other words) may confuse your virtual assistant. Proceed with caution.'}
+            html={
+              'Having slots with the same type in different intents and using them in an utterance ' +
+              'without any context (other words) may confuse your virtual assistant. Proceed with caution.'
+            }
           >
-            <div className={'u__warning_message'}>
-              Warning: This type of slot is repeated in two intents without context.
-            </div>
-          </Tooltip>}
+            <div className="u__warning_message">Warning: This type of slot is repeated in two intents without context.</div>
+          </Tooltip>
+        )}
       </div>
-    )
+    );
   }
-
 }
 
 export default Utterance;

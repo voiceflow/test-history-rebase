@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
 class EmptyCard extends Component {
-  render(){
+  render() {
     return (
       <div className="empty-card">
         <div onClick={this.props.onClick}>
-          <img src='/add-step.svg' style={{height: '25px'}} alt="empty card"/>
+          <img src="/add-step.svg" style={{ height: '25px' }} alt="empty card" />
         </div>
       </div>
-    )
+    );
   }
 }
 

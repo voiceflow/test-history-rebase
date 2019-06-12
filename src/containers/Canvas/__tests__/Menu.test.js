@@ -1,14 +1,13 @@
-import React from 'react';
-import { mount, shallow, render } from 'enzyme/build';
-import Menu from '../Menu';
-import _ from 'lodash';
 import toJson from 'enzyme-to-json';
+import { shallow } from 'enzyme/build';
+import _ from 'lodash';
+import React from 'react';
 
-const clickFn = jest.fn()
+import Menu from '../Menu';
 
 describe('Menu', () => {
-    it('render menu', () => {
-        const component = shallow(<Menu build={() => {}} />);
-        expect(toJson(component)).toMatchSnapshot()
-    });
-})
+  it('render menu', () => {
+    const component = shallow(<Menu build={_.noop} />);
+    expect(toJson(component)).toMatchSnapshot();
+  });
+});

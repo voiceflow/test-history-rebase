@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+/* eslint-disable no-underscore-dangle */
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
-import { findDOMNode, createPortal } from 'react-dom';
-
-import { strategies, createStrategyFromFunction } from 'utils/position';
+import React, { Component } from 'react';
+import { createPortal, findDOMNode } from 'react-dom';
+import { createStrategyFromFunction, strategies } from 'utils/position';
 
 import Transition from '../../../Transition';
 
@@ -43,8 +44,10 @@ export default class Overlay extends Component {
 
   onReposition = () => {
     this.repositionAnimationFrame = requestAnimationFrame(() => {
+      /* eslint-disable react/no-find-dom-node */
       const child = findDOMNode(this.popoverOverlay);
       const parent = findDOMNode(this.props.target);
+      /* eslint-enable react/no-find-dom-node */
 
       if (parent && child) {
         const { strategy, gap } = this.props;
@@ -108,7 +111,11 @@ export default class Overlay extends Component {
         name="fade-up-small"
         timeout={150}
         className={className}
-        wrapperProps={{ ref: r => (this.popoverOverlay = r) }}
+        wrapperProps={{
+          ref: (r) => {
+            this.popoverOverlay = r;
+          },
+        }}
       >
         {children}
       </Transition>,

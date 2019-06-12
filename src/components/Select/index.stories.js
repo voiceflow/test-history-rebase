@@ -1,21 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React from 'react';
-
-import centered from '@storybook/addon-centered';
 import { action } from '@storybook/addon-actions';
+import centered from '@storybook/addon-centered';
+import { object, select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
-import { text, object, select, withKnobs } from '@storybook/addon-knobs';
-
+import React from 'react';
 import { convertArrayToSelect } from 'stories/lib/helpers';
 
 import Select from './index';
 
-const options = [
-  { id: '1', label: 'Option 1' },
-  { id: '2', label: 'Option 2' },
-  { id: '3', label: 'Option 3' },
-];
+const options = [{ id: '1', label: 'Option 1' }, { id: '2', label: 'Option 2' }, { id: '3', label: 'Option 3' }];
 
 storiesOf('components/Select', module)
   .addDecorator(centered)

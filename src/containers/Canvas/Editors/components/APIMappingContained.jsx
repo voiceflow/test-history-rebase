@@ -1,60 +1,60 @@
-import APIMapping from './APIMapping'
-import React, { Component } from 'react'
-import randomstring from 'randomstring'
+import randomstring from 'randomstring';
+import React, { Component } from 'react';
+
+import APIMapping from './APIMapping';
 
 class APIMappingContained extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      mapping: this.props.mapping
-    }
+      mapping: this.props.mapping,
+    };
 
-    this.handleAddPairMapping = this.handleAddPairMapping.bind(this)
-    this.handleRemovePairMapping = this.handleRemovePairMapping.bind(this)
-    this.handleKVMappingChange = this.handleKVMappingChange.bind(this)
+    this.handleAddPairMapping = this.handleAddPairMapping.bind(this);
+    this.handleRemovePairMapping = this.handleRemovePairMapping.bind(this);
+    this.handleKVMappingChange = this.handleKVMappingChange.bind(this);
   }
 
   handleAddPairMapping() {
-    const mapping = this.state.mapping
-    this.props.clearRedo()
-    this.props.updateEvents()
+    const mapping = this.state.mapping;
+    this.props.clearRedo();
+    this.props.updateEvents();
 
     mapping.push({
       index: randomstring.generate(10),
       path: '',
-      var: ''
-    })
+      var: '',
+    });
 
     this.setState({
-      mapping: mapping
-    })
-    this.props.onChange()
+      mapping,
+    });
+    this.props.onChange();
   } // For variable mapping fields
 
   handleRemovePairMapping(i) {
-    const mapping = this.state.mapping
-    this.props.clearRedo()
-    this.props.updateEvents()
+    const mapping = this.state.mapping;
+    this.props.clearRedo();
+    this.props.updateEvents();
 
-    mapping.splice(i, 1)
+    mapping.splice(i, 1);
 
     this.setState({
-      mapping: mapping
-    })
-    this.props.onChange()
+      mapping,
+    });
+    this.props.onChange();
   }
 
   handleKVMappingChange(new_value, i, inputType) {
-    const mapping = this.state.mapping
-    this.props.clearRedo()
-    this.props.updateEvents()
-    mapping[i][inputType] = new_value
+    const mapping = this.state.mapping;
+    this.props.clearRedo();
+    this.props.updateEvents();
+    mapping[i][inputType] = new_value;
     this.setState({
-      mapping: mapping
-    })
-    this.props.onChange()
+      mapping,
+    });
+    this.props.onChange();
   }
 
   render() {
@@ -66,8 +66,8 @@ class APIMappingContained extends Component {
         onChange={this.handleKVMappingChange}
         variables={this.props.variables}
       />
-    )
+    );
   }
 }
 
-export default APIMappingContained
+export default APIMappingContained;

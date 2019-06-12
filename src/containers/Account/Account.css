@@ -1,28 +1,25 @@
 .text-pricing {
-  color: #42a5ff;
-  font-weight: 700;
-  font-size: 50px;
+    color: #42a5ff;
+    font-size: 50px;
+    font-weight: 700;
 }
-
 .price {
-  margin-bottom: 0;
-  color: #b0b3d3;
-  font-weight: 400;
-  font-size: 23px;
+    margin-bottom: 0;
+    color: #b0b3d3;
+    font-size: 23px;
+    font-weight: 400;
 }
 
-.billing-info input,
-.billing-info select {
+.billing-info input, .billing-info select {
   margin-top: 10px;
 }
 
 .feature-item {
-  margin-top: 10px;
+	margin-top: 10px;
 }
-
 .feature-item i {
-  margin-right: 10px;
-  color: #79ecb1;
+	color: #79ECB1;
+	margin-right: 10px;
 }
 
 .payment-form {
@@ -30,5 +27,5 @@
 }
 
 .payment-form label {
-  margin-bottom: 5px;
+    margin-bottom: 5px;
 }

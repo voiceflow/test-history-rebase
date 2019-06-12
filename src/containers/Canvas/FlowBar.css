@@ -1,12 +1,12 @@
 button.previous {
-  right: 383px;
+    right: 383px;
 }
 
 #flow-bar > .dropup.dropdown > button {
-  justify-content: center;
-  margin-left: -42px;
+    margin-left: -42px;
+    justify-content: center;
 }
 
 button:disabled {
-  pointer-events: none;
+    pointer-events: none;
 }

@@ -1,6 +1,6 @@
 .ctg__wrapper {
-  margin-top: 20px;
   padding: 20px;
+  margin-top: 20px;
   background-color: #fff;
   border-radius: 5px;
 }
@@ -14,8 +14,8 @@
 }
 
 .ctg__team-subheader {
-  color: #5f6565;
   font-size: 1rem;
+  color: #5f6565;
 }
 
 .ctg__team-cancel {
@@ -25,8 +25,8 @@
 
 .ctg__expand_caret {
   display: inline-block;
-  margin-right: 12px;
   color: #5f6565;
+  margin-right: 12px;
 }
 
 .ctg__expand_caret:hover {
@@ -39,38 +39,38 @@
 }
 
 .ctg__tbl-header {
-  background-color: #399bff;
+  background-color: #399BFF;
 }
 
 .ctg__tbl-content {
   height: 300px;
-  margin-top: 0;
   overflow-x: auto;
-  border: 1px solid #399bff;
+  margin-top: 0px;
+  border: 1px solid #399BFF;
 }
 
 tr:first-child {
-  width: 20px;
   table-layout: fixed;
+  width: 20px;
 }
 
 .ctg__tbl-header th {
   padding: 20px 15px;
-  color: #fff;
+  text-align: left;
   font-weight: 500;
   font-size: 12px;
-  text-align: left;
+  color: #fff;
   text-transform: uppercase;
 }
 
 .ctg__tbl-content td {
   padding: 15px;
-  color: #000;
-  font-weight: 300;
-  font-size: 12px;
   text-align: left;
   vertical-align: middle;
-  border-bottom: solid 1px #399bff;
+  font-weight: 300;
+  font-size: 12px;
+  color: #000;
+  border-bottom: solid 1px #399BFF;
 }
 
 .ctg__warning {
@@ -82,9 +82,9 @@ tr:first-child {
   width: 90%;
   margin: 15px auto;
   padding: 20px;
-  color: #fff;
-  background-color: #00b0e6;
   border-radius: 5px;
+  background-color: #00b0e6;
+  color: #fff;
 }
 
 .ctg__charge_header {
@@ -96,26 +96,26 @@ tr:first-child {
 }
 
 .ctg__charge_user_id {
-  margin-top: 5px;
   font-size: 13px;
+  margin-top: 5px;
 }
 
 .ctg__receipt_divider {
   height: 1px;
-  margin: 10px 0;
   border: 1px solid #fff;
+  margin: 10px 0;
 }
 
 .ctg__refund_amount_input {
   width: 90%;
   margin: 15px auto;
-  color: #ff2e58;
+  color: #FF2E58;
 }
 
 .ctg__refund_input {
   margin-top: 8px;
-  color: #ff2e58 !important;
-  border: 1px solid #ff2e58 !important;
+  border: 1px solid #FF2E58 !important;
+  color: #FF2E58 !important;
 }
 
 

@@ -1,11 +1,8 @@
-textarea .mentions-input__input,
-.slot-input {
+textarea .mentions-input__input, .slot-input {
   border: 0;
 }
 
-textarea .mentions-input__highlighter,
-.mentions-input__input,
-.slot-input {
+textarea .mentions-input__highlighter, .mentions-input__input, .slot-input {
   border: 0;
 }
 

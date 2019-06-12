@@ -1,5 +1,5 @@
 .trigger_modal_link {
-  color: #ff2e58;
+  color: #FF2E58;
 }
 
 .trigger_modal_link:hover {
@@ -8,8 +8,8 @@
 
 .am__title {
   padding: 20px;
-  color: #ff2e58;
-  border-bottom: 1px solid #ff2e58;
+  border-bottom: 1px solid #FF2E58;
+  color: #FF2E58;
 }
 
 .am__close {
@@ -25,9 +25,9 @@
 }
 
 .am__action_header {
-  margin-bottom: 2px;
-  color: #cc2446;
   font-size: 1.2rem;
+  color: #cc2446;
+  margin-bottom: 2px;
 }
 
 .am__action_body {

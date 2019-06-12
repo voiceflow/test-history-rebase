@@ -1,33 +1,33 @@
 .ace_custom_variable {
-  display: inline-block;
-  padding-right: 2px;
-  padding-left: 2px;
-  color: #fff;
-  text-decoration: none;
-  background-color: #42a5ff;
-  border-radius: 4px;
-  cursor: pointer;
+    background-color: #42A5FF;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 4px;
+    text-decoration: none;
 }
 
 .test-image {
-  width: 100%;
-  height: auto;
+    width: 100%;
+    height: auto;
 }
 
 .error-message {
-  color: red;
+    color:red;
 }
 
 .apl-disclaimer {
-  margin-top: 10px;
-  color: #8da2b5;
-  font-size: 14px;
-  font-style: italic;
+    font-size: 14px;
+    color: #8da2b5;
+    font-style: italic;
+    margin-top: 10px;
 }
 
 .test-help {
-  margin-right: 10px;
-  color: #8da2b5;
-  font-size: 20px;
-  cursor: pointer;
+    cursor: pointer;
+    margin-right: 10px;
+    color: #8da2b5;
+    font-size: 20px;
 }

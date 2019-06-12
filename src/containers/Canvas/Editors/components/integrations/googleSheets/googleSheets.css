@@ -11,19 +11,19 @@
 }
 
 .spreadsheet-link {
-  width: 16px;
-  height: 16px;
   font-size: 1.3em;
   background-image: url('/logs.svg');
   background-repeat: no-repeat;
   background-position: 50% 50%;
+  width: 16px;
+  height: 16px;
 }
 
 .spreadsheet-link:hover {
+  cursor: pointer;
   background-image: url('/log-hover.svg');
   background-repeat: no-repeat;
   background-position: 50% 50%;
-  cursor: pointer;
 }
 
 .google-sheets-dropdown {

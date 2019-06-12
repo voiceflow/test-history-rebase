@@ -4,7 +4,7 @@ import wrapDisplayName from 'recompose/wrapDisplayName';
 
 const rootNode = document.querySelector('#root');
 
-export default () => Wrapper => {
+export default () => (Wrapper) => {
   function WithRootPortal(props) {
     return createPortal(<Wrapper {...props} />, rootNode);
   }

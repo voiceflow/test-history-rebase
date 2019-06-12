@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 
 const DASHBOARD_PATH = '/dashboard';
 
-const getTeamFromURL = (computedMatch) => _.get(computedMatch, 'params.team_id');
+const getTeamFromURL = (computedMatch) => _.get(computedMatch, ['params', 'team_id']);
 
 class Team extends PureComponent {
   constructor(props) {
@@ -52,7 +52,6 @@ class Team extends PureComponent {
       }
     }
 
-    // eslint-disable-next-line promise/catch-or-return
     this.props.fetchTeams().then(() => {
       this.setState({ loading: false });
       if (this.props.teams.allIds.length > 0) {

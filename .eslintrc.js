@@ -5,7 +5,8 @@ module.exports = {
     // errors
     'no-param-reassign': ['error', { props: false }],
     'no-console': ['error', { allow: ['error'] }],
-    'lodash/path-style': ['error'],
+    'no-secrets/no-secrets': ['error', { tolerance: 4.2 }],
+    'lodash/path-style': ['error', 'array'],
 
     // disabled
     'react/no-unescaped-entities': 'off',
@@ -35,5 +36,6 @@ module.exports = {
     'max-depth': 'warn',
     'jsx-a11y/label-has-associated-control': 'warn',
     'jsx-a11y/label-has-for': 'warn',
+    'promise/catch-or-return': 'warn',
   },
 };

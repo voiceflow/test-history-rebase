@@ -1,7 +1,15 @@
 module.exports = {
   extends: '@voiceflow/eslint-config/frontend',
+  parser: 'babel-eslint',
   rules: {
+    // errors
     'no-param-reassign': ['error', { props: false }],
+    'no-console': ['error', { allow: ['error'] }],
+    'lodash/path-style': ['error'],
+
+    // disabled
+    'react/no-unescaped-entities': 'off',
+    'promise/always-return': 'off',
 
     // disabled temporarily by setting as warnings
     'max-len': 'warn',
@@ -25,5 +33,7 @@ module.exports = {
     'no-process-env': 'warn',
     'no-shadow': 'warn',
     'max-depth': 'warn',
+    'jsx-a11y/label-has-associated-control': 'warn',
+    'jsx-a11y/label-has-for': 'warn',
   },
 };

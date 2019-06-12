@@ -8,7 +8,8 @@ import ChargeItem from "../ChargeItem/ChargeItem";
 import Button from "components/Button";
 import '../AdminAdvancedModal/AdminAdvancedModal.css';
 import Input from "components/Input";
-import {refundCharge, cancelSubscription} from "ducks/admin";
+import {refundCharge, cancelSubscription, editTrial} from "ducks/admin";
+import TrialModal from "../TrialModal/TrialModal";
 
 class ChargeTeamGroup extends React.Component {
 
@@ -21,7 +22,8 @@ class ChargeTeamGroup extends React.Component {
       showRefundCharge: null,
       refundAmountError: '',
       refundAmount: '',
-      showCancelModal: false
+      showCancelModal: false,
+      showTrialModal: false
     }
   }
 
@@ -34,6 +36,12 @@ class ChargeTeamGroup extends React.Component {
   toggleSub = () => {
     this.setState(prevState => ({
       showCancelModal: !prevState.showCancelModal
+    }))
+  };
+
+  toggleTrial = () => {
+    this.setState(prevState => ({
+      showTrialModal: !prevState.showTrialModal
     }))
   };
 
@@ -87,10 +95,16 @@ class ChargeTeamGroup extends React.Component {
               <div className="ctg__team-subheader">
                 Subscription id: {team.stripe_sub_id ? team.stripe_sub_id : 'Cancelled'}
               </div>
+              <div className="ctg__team-subheader">
+                Trial Expiry: {team.expiry ? moment(team.expiry).format("MMM Do YYYY") : 'No trial set'}
+              </div>
             </div>
             {team.stripe_sub_id ? <Button className="ctg__team-cancel" isWarning onClick={this.toggleSub}>
               Cancel Subscription
             </Button> : null}
+            <Button className="ctg__team-cancel" isPrimary onClick={this.toggleTrial}>
+              Manage Trial
+            </Button>
           </div>
           <Collapse isOpen={this.state.collapse}>
             <Card>
@@ -232,6 +246,13 @@ class ChargeTeamGroup extends React.Component {
               <Button isSecondary onClick={this.toggleSub}>Cancel</Button>
             </ModalFooter>
           </Modal>
+
+          <TrialModal
+            showTrialModal={this.state.showTrialModal}
+            toggleTrial={this.toggleTrial}
+            team={team}
+          />
+          
         </div>
       )
     } else {
@@ -245,4 +266,4 @@ class ChargeTeamGroup extends React.Component {
 
 }
 
-export default connect(null, { refundCharge, cancelSubscription })(ChargeTeamGroup);
+export default connect(null, { refundCharge, cancelSubscription, editTrial })(ChargeTeamGroup);

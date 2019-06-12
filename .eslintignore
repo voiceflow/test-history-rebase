@@ -5,10 +5,3 @@
 /src/assets
 /src/components
 /src/containers
-/src/ducks
-/src/hocs
-/src/hooks
-/src/Routes
-/src/services
-/src/store
-/src/utils

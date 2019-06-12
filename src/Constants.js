@@ -760,7 +760,6 @@ const SLOT_TYPES = [
   {
     label: 'FoodEstablishment',
     type: {
-      // eslint-disable-next-line no-secrets/no-secrets
       alexa: 'AMAZON.FoodEstablishment',
       google: null,
     },
@@ -838,7 +837,6 @@ const SLOT_TYPES = [
   {
     label: 'LandmarksOrHistoricalBuildings',
     type: {
-      // eslint-disable-next-line no-secrets/no-secrets
       alexa: 'AMAZON.LandmarksOrHistoricalBuildings',
       google: null,
     },
@@ -895,7 +893,6 @@ const SLOT_TYPES = [
   {
     label: 'LocalBusinessType',
     type: {
-      // eslint-disable-next-line no-secrets/no-secrets
       alexa: 'AMAZON.LocalBusinessType',
       google: null,
     },
@@ -951,7 +948,6 @@ const SLOT_TYPES = [
   {
     label: 'MusicCreativeWorkType',
     type: {
-      // eslint-disable-next-line no-secrets/no-secrets
       alexa: 'AMAZON.MusicCreativeWorkType',
       google: null,
     },

@@ -38,11 +38,15 @@ class SpeakBox extends React.Component {
     centerNode = () => {
         const {
             diagramEngine,
+            lastNode,
+            setLastNode,
             node
         } = this.props;
         const model = diagramEngine.getDiagramModel()
         const nodeModel = model.getNode(node)
         if (nodeModel) {
+            if (lastNode) lastNode.setSelected(false)
+         setLastNode(nodeModel)
          nodeModel.setSelected(true)
          nodeModel.setFocused(true)
          model.setZoomLevel(80)

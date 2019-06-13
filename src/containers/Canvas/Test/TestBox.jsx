@@ -14,6 +14,8 @@ const TestBox = props => {
         pause,
         history,
         enterFlow,
+        lastNode,
+        setLastNode,
         resetTest,
         diagramEngine,
         handleChange,
@@ -44,6 +46,8 @@ const TestBox = props => {
                     return <SpeakBox
                         key={i}
                         isFlow
+                        lastNode={lastNode}
+                        setLastNode={setLastNode}
                         resetTest={resetTest}
                         isLast={chat.isLast}
                         diagram={chat.diagram}
@@ -58,6 +62,8 @@ const TestBox = props => {
                         key={i}
                         isRight
                         isChoice
+                        lastNode={lastNode}
+                        setLastNode={setLastNode}
                         chat={chat}
                         resetTest={resetTest}
                         isLast={chat.isLast}
@@ -88,6 +94,8 @@ const TestBox = props => {
                         isLeft
                         isSpeak
                         text={chat.text}
+                        lastNode={lastNode}
+                        setLastNode={setLastNode}
                         resetTest={resetTest}
                         time={time}
                         type={chat.audioType}
@@ -101,6 +109,8 @@ const TestBox = props => {
                     return <SpeakBox
                         key={i}
                         isLast={chat.isLast}
+                        lastNode={lastNode}
+                        setLastNode={setLastNode}
                         resetTest={resetTest}
                         delay={chat.delay}
                         node={chat.node}

@@ -97,6 +97,7 @@ const Timeline = props => {
   const [started, setStarted] = useState(false)
   const [audioPlayer, toggleAudioPlayer] = useState(false)
   const [audio, setAudio] = useState(null)
+  const [lastNode, setLastNode] = useState(null)
 
   useEffect(() => {
     if (testing_info && !started) {
@@ -519,6 +520,8 @@ const Timeline = props => {
           setInput={val => setInput(val)}
           resetTest={resetTest}
           outputs={outputs}
+          lastNode={lastNode}
+          setLastNode={setLastNode}
           time={moment.utc(time * 1000).format('mm:ss')}
         />
       </div>

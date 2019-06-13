@@ -237,3 +237,8 @@
 .slot-utterance:last-child {
   border: none !important;
 }
+
+.intent-input__warning {
+  color: #FF2E58;
+  padding: 0.3rem 1.2rem 0;
+}

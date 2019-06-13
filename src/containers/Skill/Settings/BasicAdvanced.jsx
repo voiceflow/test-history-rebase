@@ -77,7 +77,7 @@ class BasicAdvancedSettings extends Component{
         this.props.setConfirm({
             warning: true,
             text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{this.props.skill.name}</i> and all flows can not be recovered</Alert>,
-            confirm: () => this.props.deleteProject(this.props.skill.skill_id)
+            confirm: () => this.props.deleteProject(this.props.skill.project_id)
                 .then(() => this.props.history.push('/dashboard'))
                 .catch(err => {
                 console.log(err)

@@ -27,14 +27,10 @@ window.CreatorSocket.on('connect_failed', socketFail);
 window.CreatorSocket.on('connect', () => {
   window.CreatorSocket.status = 'CONNECTED';
   // queued up events after reconnection
-  for (var cb in window.CreatorSocket.connectedCB) {
-    if (typeof window.CreatorSocket.connectedCB[cb] === 'function') {
-      window.CreatorSocket.connectedCB[cb]();
-    }
-  }
+  Object.values(window.CreatorSocket.connectedCB).forEach((cb) => typeof cb === 'function' && cb());
 });
 
-window.addEventListener('beforeunload', function () {
+window.addEventListener('beforeunload', function() {
   if (window.CreatorSocket && window.CreatorSocket.disconnect) {
     window.CreatorSocket.disconnect();
   }

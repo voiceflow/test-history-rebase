@@ -31,7 +31,7 @@ module.exports = {
     'import/no-unresolved': 'warn',
     'react/jsx-curly-brace-presence': 'warn',
     'react/destructuring-assignment': 'warn',
-    'filenames/match-regex': 'warn',
+    'filenames/match-regex': 'off',
     'filenames/match-exported': 'warn',
     'optimize-regex/optimize-regex': 'warn',
     'lodash/prefer-lodash-typecheck': 'warn',

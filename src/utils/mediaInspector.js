@@ -11,7 +11,8 @@ export default async function mediaInspector(url) {
 
     return data;
   } catch (err) {
-    console.warn('api-error', err); // eslint-disable-line
+    // eslint-disable-next-line no-console
+    console.warn('api-error', err);
 
     return {};
   }

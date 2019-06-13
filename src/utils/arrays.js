@@ -1,7 +1,6 @@
-export const sortIdsByPosition = (ids, data) =>
-  [...ids].sort((lId, rId) => data[lId].position - data[rId].position);
+export const sortIdsByPosition = (ids, data) => [...ids].sort((lId, rId) => data[lId].position - data[rId].position);
 
-export const getIdsAndValuesFromArrayOfObjects = array =>
+export const getIdsAndValuesFromArrayOfObjects = (array) =>
   array.reduce(
     (_obj, value) => ({
       ids: [..._obj.ids, value.id],
@@ -17,7 +16,7 @@ export const isEqualArrays = (arr1, arr2) => {
 
   let i = arr1.length;
 
-  for (; i--; ) {
+  while (i--) {
     if (arr1[i] !== arr2[i]) {
       return false;
     }

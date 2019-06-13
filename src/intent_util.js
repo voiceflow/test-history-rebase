@@ -1,187 +1,186 @@
-const  { find } = require('lodash')
-const { SLOT_TYPES } = require('./Constants')
-const randomstring = require("randomstring")
-const { validSpokenCharacters, validLatinChars } = require('./services/Regex')
-const draftToMarkdown = require('./services/draftConvert')
+const { find } = require('lodash');
+const { SLOT_TYPES } = require('./Constants');
+const randomstring = require('randomstring');
+const { validSpokenCharacters, validLatinChars } = require('./services/Regex');
+const draftToMarkdown = require('./services/draftConvert');
 
-const getUtterancesWithSlotNames = (utterances, slots, square_brackets=false, format_name=false, mention=false) => {
-
-  const re = /(\{\{\[([^}{[\]]+)]\.([a-zA-Z0-9]+)\}\})/g;
-  let m;
-
-  const new_utterances = utterances.map(e => e.text).filter(e => !!e.trim()).map(input => {
-    let new_input = input
-    do {
-      m = re.exec(input)
-      if (m) {
-        const replace = m[1]
-        const slot_text = m[2]
-        const key = m[3]
-        const slot = find(slots, {
-          key: key
-        })
-        if (slot) {
-          let slot_name = slot.name
-          if (format_name) slot_name = formatName(slot_name)
-          if (mention) {
-            if (slot_text !== slot_name) {
-              const new_mention = replace.replace(slot_text, slot_name)
-              new_input = new_input.replace(replace, new_mention)
-            }
-          } else {
-            if (square_brackets) {
-              new_input = new_input.replace(replace, `[${slot_name}]`)
-            } else {
-              new_input = new_input.replace(replace, `{${slot_name}}`)
-            }
-          }
-        } else {
-          return new_input
-        }
-      }
-    } while (m);
-    return new_input
-  })
-  return new_utterances
-}
+// eslint-disable-next-line no-secrets/no-secrets
+const ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
 
 const formatName = (name) => {
-	let formatted_name = name.replace(' ', '_')
-	Array.from(Array(10).keys()).forEach(i => {
-		formatted_name = formatted_name.replace(i.toString(), String.fromCharCode(i + 65))
-	})
-	return formatted_name
-}
+  let formatted_name = name.replace(' ', '_');
+  Array.from(Array(10).keys()).forEach((i) => {
+    formatted_name = formatted_name.replace(i.toString(), String.fromCharCode(i + 65));
+  });
+  return formatted_name;
+};
+
+const getUtterancesWithSlotNames = (utterances, slots, square_brackets = false, format_name = false, mention = false) => {
+  const re = /({{\[([^[\]{}]+)]\.([\dA-Za-z]+)}})/g;
+  let m;
+
+  return utterances
+    .map((e) => e.text)
+    .filter((e) => !!e.trim())
+    .map((input) => {
+      let new_input = input;
+      do {
+        m = re.exec(input);
+        if (m) {
+          const replace = m[1];
+          const slot_text = m[2];
+          const key = m[3];
+          const slot = find(slots, {
+            key,
+          });
+          if (slot) {
+            let slot_name = slot.name;
+            if (format_name) slot_name = formatName(slot_name);
+            if (mention) {
+              if (slot_text !== slot_name) {
+                const new_mention = replace.replace(slot_text, slot_name);
+                new_input = new_input.replace(replace, new_mention);
+              }
+            } else {
+              if (square_brackets) {
+                new_input = new_input.replace(replace, `[${slot_name}]`);
+              } else {
+                new_input = new_input.replace(replace, `{${slot_name}}`);
+              }
+            }
+          } else {
+            return new_input;
+          }
+        }
+      } while (m);
+      return new_input;
+    });
+};
 
 const getSlotType = (slot, platform) => {
-	let type = slot.name
-	if (slot.type.value && slot.type.value.toLowerCase() !== 'custom') {
-		let default_slot = find(SLOT_TYPES, (s => s.label.toLowerCase() === slot.type.value.toLowerCase()))
-		if (!default_slot) {
-			type = slot.type.value  //Platform specific slot
-		} else {
-			type = default_slot.type[platform]
-		}
-	}
-	return type
+  let type = slot.name;
+  if (slot.type.value && slot.type.value.toLowerCase() !== 'custom') {
+    const default_slot = find(SLOT_TYPES, (s) => s.label.toLowerCase() === slot.type.value.toLowerCase());
+    if (!default_slot) {
+      type = slot.type.value; // Platform specific slot
+    } else {
+      type = default_slot.type[platform];
+    }
+  }
+  return type;
+};
+
+function unique(keys) {
+  const keySet = new Set();
+
+  keys.forEach((keyArr) => keyArr.forEach((key) => keySet.add(key)));
+
+  return Array.from(keySet);
 }
 
 const getSlotsForKeysAndFormat = (keys, slots, platform) => {
-	let key_set = new Set()
+  return unique(keys).map((key) => {
+    const slot = find(slots, {
+      key,
+    });
 
-	keys.forEach(key_arr => {
-		key_arr.forEach(key => {
-			key_set.add(key)
-		})
-	})
+    slot.name = formatName(slot.name);
 
-	key_set = Array.from(key_set)
-
-	return key_set.map(key => {
-		const slot = find(slots, {
-			key: key
-		})
-
-		slot.name = formatName(slot.name)
-
-		return {
-			name: slot.name,
-			type: getSlotType(slot, platform)
-		}
-	})
-}
+    return {
+      name: slot.name,
+      type: getSlotType(slot, platform),
+    };
+  });
+};
 
 const getSlotsForKeys = (keys, slots, platform) => {
-	let key_set = new Set()
+  return unique(keys).map((key) => {
+    const slot = find(slots, { key });
+    const slot_type = slot.type.value;
+    let formatted_type = slot.name;
 
-	keys.forEach(key_arr => {
-		key_arr.forEach(key => {
-			key_set.add(key)
-		})
-	})
+    if (slot_type && slot_type.toLowerCase() !== 'custom') {
+      formatted_type = slot.type.value;
+      const built_in_slot = find(SLOT_TYPES, { label: slot_type });
+      if (built_in_slot && platform && built_in_slot.type[platform]) {
+        formatted_type = built_in_slot.type[platform];
+      }
+    }
 
-	key_set = Array.from(key_set)
-
-	return key_set.map(key => {
-		const slot = find(slots, {key: key})
-		let slot_type = slot.type.value
-		let formatted_type = slot.name
-
-		if (slot_type && slot_type.toLowerCase() !== 'custom') {
-			formatted_type = slot.type.value
-			const built_in_slot = find(SLOT_TYPES, { label: slot_type })
-			if (built_in_slot && platform && built_in_slot.type[platform]) {
-				formatted_type = built_in_slot.type[platform]
-			}
-		}
-
-		return {
-			name: slot.name,
-			type: formatted_type
-		}
-	})
-}
+    return {
+      name: slot.name,
+      type: formatted_type,
+    };
+  });
+};
 
 const findSlot = (slot_type, platform) => {
-  const built_in_slot = find(SLOT_TYPES, { label: slot_type })
-  if(built_in_slot) return built_in_slot.type[platform] 
-  return null
-}
+  const built_in_slot = find(SLOT_TYPES, { label: slot_type });
+  if (built_in_slot) return built_in_slot.type[platform];
+  return null;
+};
 
 const replacer = (match, inner, slots, extracted) => {
-	const slot = find(slots, {name: inner})
-	if(slot){
-		slot.name = formatName(slot.name)
-		extracted.push({
-			name: slot.name,
-			type: getSlotType(slot, 'alexa')
-		})
-		return `{${slot.name}}`
-	}else{
-		return inner.replace(/_/g, " ")
-	}
-}
+  const slot = find(slots, { name: inner });
+  if (slot) {
+    slot.name = formatName(slot.name);
+    extracted.push({
+      name: slot.name,
+      type: getSlotType(slot, 'alexa'),
+    });
+    return `{${slot.name}}`;
+  }
+  return inner.replace(/_/g, ' ');
+};
 
 exports.parseChoiceInput = (input, slots) => {
-	let extracted = []
-	input = input.replace(/\[([a-zA-Z_]{1,170})\]/g, (match, inner) => replacer(match, inner, slots, extracted)).replace()
+  const extracted = [];
+  const cleansedInput = input.replace(/\[([A-Z_a-z]{1,170})]/g, (match, inner) => replacer(match, inner, slots, extracted)).replace();
 
-	// get rid of any non valid characters
-	let reg = new RegExp("[^"+validSpokenCharacters+" \\{\\}|]", "g")
-	return {
-		formatted_input: input.replace(reg, ''),
-		extracted_slots: extracted
-	}
-}
+  // get rid of any non valid characters
+  const reg = new RegExp(`[^${validSpokenCharacters} \\{\\}|]`, 'g');
+  return {
+    formatted_input: cleansedInput.replace(reg, ''),
+    extracted_slots: extracted,
+  };
+};
 
 exports.stripSample = (utterance) => {
-	let reg = new RegExp("[^"+validSpokenCharacters+"\\{\\}|]", "g")
-	return utterance.replace(reg, '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase()
-}
-
+  const reg = new RegExp(`[^${validSpokenCharacters}\\{\\}|]`, 'g');
+  return utterance
+    .replace(reg, '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+};
 exports.utteranceToIntentName = (utterance, existing) => {
-	let reg = new RegExp("[^"+validLatinChars+"_|]", "g")
-	// REGEX GOD
-	let name = utterance
-		.trim().replace(/\s/g, '_').replace(reg, '').normalize('NFD')
-		.replace(/[\u0300-\u036f]/g, "").toLowerCase().substring(0, 170)
+  const reg = new RegExp(`[^${validLatinChars}_|]`, 'g');
+  // REGEX GOD
+  let name = utterance
+    .trim()
+    .replace(/\s/g, '_')
+    .replace(reg, '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .substring(0, 170);
 
-	// make sure the first letter is valid alphanumeric
-	while(!'abcdefghijklmnopqrstuvwxyz'.includes(name.charAt(0)) && name.length > 0){
-		name = name.substring(1)
-	}
-
-	while(existing.has(name) || !name.trim()){
-    if(name.trim()){
-      name = name.substring(0, 164) + '_'
-    }
-		name += randomstring.generate({length: 5, charset: 'alphabetic', capitalization: 'lowercase'})
+  // make sure the first letter is valid alphanumeric
+  while (!ALPHABET.includes(name.charAt(0)) && name.length > 0) {
+    name = name.substring(1);
   }
-  
+
+  while (existing.has(name) || !name.trim()) {
+    if (name.trim()) {
+      name = `${name.substring(0, 164)}_`;
+    }
+    name += randomstring.generate({ length: 5, charset: 'alphabetic', capitalization: 'lowercase' });
+  }
+
   name = name.replace(/_+/g, '_');
 
-	return name
-}
+  return name;
+};
 
 // THIS IS TERRIBLE BUT JUST TO CHECK IF IT IS ON BACKEND
 // if(process.env.CONFIG_ID_HASH){
@@ -200,75 +199,79 @@ exports.utteranceToIntentName = (utterance, existing) => {
 // }
 
 const deepDraftToMarkdown = (object) => {
-  let result = object
-  let variables = new Set()
-  let regex = /\{([A-Za-z0-9_]*)\}/g
+  const result = object;
+  const variables = new Set();
+  const regex = /{(\w*)}/g;
 
-  const finder = str => {
-    let match = regex.exec(str)
+  const finder = (str) => {
+    let match = regex.exec(str);
     while (match != null) {
-      if(/[A-Za-z0-9_]{1,24}/.test(match[1])){
-          variables.add(match[1])
-        }
-        match = regex.exec(str)
+      if (/\w{1,24}/.test(match[1])) {
+        variables.add(match[1]);
+      }
+      match = regex.exec(str);
     }
-  }
+  };
 
   const recurse = (sub_collection, resultToModify) => {
-    if (typeof sub_collection === 'object') {
-      for (let key in sub_collection) {
-        let val = sub_collection[key]
+    if (sub_collection !== null && typeof sub_collection === 'object') {
+      Object.keys(sub_collection).forEach((key) => {
+        let val = sub_collection[key];
         if (typeof val === 'object' && val && val.blocks && val.entityMap) {
-          val = draftToMarkdown(val)
+          val = draftToMarkdown(val);
         }
         if (typeof val === 'object' && val && val.value !== undefined && typeof val.value !== 'object') {
-          val = val.value
+          val = val.value;
         }
-        resultToModify[key] = val
-        recurse(sub_collection[key], resultToModify[key])
-      }
+        resultToModify[key] = val;
+        recurse(sub_collection[key], resultToModify[key]);
+      });
     } else {
       if (typeof sub_collection === 'string') {
-        finder(sub_collection)
+        finder(sub_collection);
       }
     }
-  }
+  };
 
-  recurse(object, result)
+  recurse(object, result);
   return {
     result,
-    variables: [...variables]
-  }
-}
+    variables: [...variables],
+  };
+};
 
 const deepVariableSubstitution = (object, variableMap) => {
   const replacer = (match, inner, variables_map, uriEncode = false) => {
-    if(inner in variables_map){
-        return uriEncode ? encodeURI(variables_map[inner]) : variables_map[inner]
-    }else{
-        return match
+    if (inner in variables_map) {
+      return uriEncode ? encodeURI(variables_map[inner]) : variables_map[inner];
     }
-  }
+    return match;
+  };
 
   const recurse = (sub_collection, uriEncode = false) => {
     if (typeof sub_collection === 'object') {
-      for (let key in sub_collection) {
-        sub_collection[key] = key === 'url' ? recurse(sub_collection[key], true) : recurse(sub_collection[key])
-      }
-    } else if (typeof sub_collection === 'string') {
-      return sub_collection.replace(/\{([A-Za-z0-9_]*)\}/g, (match, inner) => replacer(match, inner, variableMap, uriEncode))
+      return Object.keys(sub_collection).reduce((acc, key) => {
+        acc[key] = recurse(sub_collection[key], key === 'url');
+
+        return acc;
+      }, {});
     }
-    return sub_collection
-  }
 
-  return recurse(object)
-}
+    if (typeof sub_collection === 'string') {
+      return sub_collection.replace(/{(\w*)}/g, (match, inner) => replacer(match, inner, variableMap, uriEncode));
+    }
 
-exports.findSlot = findSlot
-exports.getUtterancesWithSlotNames = getUtterancesWithSlotNames
-exports.formatName = formatName
-exports.getSlotsForKeysAndFormat = getSlotsForKeysAndFormat
-exports.getSlotsForKeys = getSlotsForKeys
-exports.getSlotType = getSlotType
-exports.deepDraftToMarkdown = deepDraftToMarkdown
-exports.deepVariableSubstitution = deepVariableSubstitution
+    return sub_collection;
+  };
+
+  return recurse(object);
+};
+
+exports.findSlot = findSlot;
+exports.getUtterancesWithSlotNames = getUtterancesWithSlotNames;
+exports.formatName = formatName;
+exports.getSlotsForKeysAndFormat = getSlotsForKeysAndFormat;
+exports.getSlotsForKeys = getSlotsForKeys;
+exports.getSlotType = getSlotType;
+exports.deepDraftToMarkdown = deepDraftToMarkdown;
+exports.deepVariableSubstitution = deepVariableSubstitution;

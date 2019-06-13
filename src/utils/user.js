@@ -1,3 +1,3 @@
-import get from "lodash/get";
+import get from 'lodash/get';
 
-export const isUserPro = user => get(user, 'subscription.plan') === 'pro';
+export const isUserPro = (user) => get(user, ['subscription', 'plan']) === 'pro';

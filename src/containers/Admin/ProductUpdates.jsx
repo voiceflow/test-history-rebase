@@ -40,9 +40,7 @@ class ProductUpdates extends Component {
   render() {
       return (
           <div className="admin-page-inner">
-            <h3 className="fb_header">
-              Product Updates <span className={'admin_highlight_purple'}>Our best update yet!</span>
-            </h3>
+            <h3 className="fb_header">Product Updates</h3>
               <div className="content">
                   <h5>Create a new update</h5>
                   <Form>

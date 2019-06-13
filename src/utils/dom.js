@@ -1,6 +1,4 @@
-/* eslint-disable */
-
-export const getNodePosition = node => {
+export const getNodePosition = (node) => {
   const box = node.getBoundingClientRect();
   const body = document.body;
   const docElem = document.documentElement;
@@ -19,14 +17,15 @@ export const getNodePosition = node => {
   };
 };
 
-export const getCursorPosition = e => {
-  const x = e.pageX,
-    y = e.pageY;
+export const getCursorPosition = (e) => {
+  const x = e.pageX;
+
+  const y = e.pageY;
 
   return [x < 0 ? 0 : x, y < 0 ? 0 : y];
 };
 
-export const getNodeSize = node => {
+export const getNodeSize = (node) => {
   return {
     height: node.offsetHeight,
     width: node.offsetWidth,
@@ -64,8 +63,9 @@ export const getScrollbarWidth = () => {
  * @param {node} node
  * @return {node}
  */
-const _findScrollableParent = node => {
-  if (node === null || typeof node === 'undefined' || node === '' || node === document.body) {
+// eslint-disable-next-line no-underscore-dangle
+const _findScrollableParent = (node) => {
+  if (node == null || node === '' || node === document.body) {
     return { node: document.body, axis: 'xy' };
   }
 
@@ -75,20 +75,21 @@ const _findScrollableParent = node => {
 
   if (xy === 'auto' || xy === 'scroll') {
     return { node, axis: 'xy' };
-  } else if (x === 'auto' || x === 'scroll') {
-    return { node, axis: 'x' };
-  } else if (y === 'auto' || y === 'scroll') {
-    return { node, axis: 'y' };
-  } else {
-    return _findScrollableParent(node.parentNode);
   }
+  if (x === 'auto' || x === 'scroll') {
+    return { node, axis: 'x' };
+  }
+  if (y === 'auto' || y === 'scroll') {
+    return { node, axis: 'y' };
+  }
+  return _findScrollableParent(node.parentNode);
 };
 
-export const findScrollableParent = node => {
+export const findScrollableParent = (node) => {
   return _findScrollableParent(node).node;
 };
 
-export const findScrollableParents = node => {
+export const findScrollableParents = (node) => {
   const first = _findScrollableParent(node);
   if (first.axis === 'xy') {
     return [first.node];
@@ -104,21 +105,15 @@ export const findScrollableParents = node => {
  * @return {node}
  */
 export const findClosestNode = (currentNode, name) => {
-  if (
-    currentNode === null ||
-    typeof currentNode === 'undefined' ||
-    currentNode === '' ||
-    currentNode === document
-  ) {
+  if (currentNode == null || currentNode === '' || currentNode === document) {
     return false;
   }
 
   const { parentNode, classList, localName } = currentNode;
   if ((classList && classList.contains(name)) || localName === name) {
     return currentNode;
-  } else {
-    return findClosestNode(parentNode, name);
   }
+  return findClosestNode(parentNode, name);
 };
 
 /**
@@ -127,13 +122,13 @@ export const findClosestNode = (currentNode, name) => {
  * @param {string} property (CSS Property, not Style Object)
  * @return {string}
  */
-export const getCSSValue = (node, property) => {
+export function getCSSValue(node, property) {
   if (!node) {
     return '';
   }
 
   return window.getComputedStyle(node).getPropertyValue(property);
-};
+}
 
 /**
  * Set the offset of the element depending on the width of the scroll
@@ -142,36 +137,27 @@ export const getCSSValue = (node, property) => {
  * @param {string} property (CSS Style Object)
  * @param {boolean} styleImportant (if style should be !important)
  * @param {number} initialValue (if the property already has some value)
+ * @return {void}
  */
-export const setScrollbarOffset = (
-  scrollableNode,
-  offsetNode,
-  property = 'margin-right',
-  styleImportant,
-  initialValue = 0
-) => {
+export const setScrollbarOffset = (scrollableNode, offsetNode, property = 'margin-right', styleImportant, initialValue = 0) => {
   const SCROLLBAR_WIDTH = getScrollbarWidth();
 
   if (scrollableNode && offsetNode && SCROLLBAR_WIDTH) {
     let offset = initialValue;
     const important = styleImportant ? 'important' : '';
 
-    const [offsetProp, scrollProp] = property.match(/(margin-right|margin-left)/)
-      ? ['offsetHeight', 'scrollHeight']
-      : ['offsetWidth', 'scrollWidth'];
+    const [offsetProp, scrollProp] = property.match(/(margin-right|margin-left)/) ? ['offsetHeight', 'scrollHeight'] : ['offsetWidth', 'scrollWidth'];
 
     if (scrollableNode[offsetProp] < scrollableNode[scrollProp]) {
       offsetNode.style.removeProperty(property);
     } else {
-      offset =
-        (!!initialValue && initialValue > SCROLLBAR_WIDTH
-          ? initialValue - SCROLLBAR_WIDTH
-          : SCROLLBAR_WIDTH) + 'px';
+      offset = `${!!initialValue && initialValue > SCROLLBAR_WIDTH ? initialValue - SCROLLBAR_WIDTH : SCROLLBAR_WIDTH}px`;
       offsetNode.style.setProperty(property, offset, important);
     }
   }
 };
 
+// eslint-disable-next-line no-underscore-dangle
 const _getOffsetToNode = (node, body, key) => {
   let obj = node;
   let offset = 0;
@@ -198,8 +184,9 @@ export const getOffsetLeftToNode = (node, body) => {
 
 /**
  * Smart scroll to the node, uses scrollTo method or scrollTop|scrollLeft
- * @param {node} scrollableNode
+ * @param {node} node
  * @param {options} offsetNode
+ * @return {void}
  */
 export const scrollTo = (node, { top = 0, left = 0, ...opts } = {}) => {
   if (node.scrollTo) {

@@ -16,3 +16,24 @@ textarea .mentions-input__highlighter, .mentions-input__input, .slot-input {
   letter-spacing: normal;
   word-spacing: normal;
 }
+
+.interaction-utterance {
+  border-bottom: 1px solid #e9eef3;
+  display: flex;
+  color: #8DA2B5 !important;
+}
+.interaction-utterance>div{
+  flex: 1;
+  word-break: break-word;
+  display: inline-block;
+}
+
+.interaction-utterance.u__utterance_warning {
+  border-bottom: 1px solid #FF2E58;
+}
+
+.u__warning_message {
+  padding-left: 13px;
+  color: #FF2E58;
+  font-size: 11px;
+}

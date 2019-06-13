@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import React from 'react';
 import {Mention, MentionsInput} from "react-mentions";
 import {Tooltip} from "react-tippy";
@@ -60,39 +61,54 @@ class Utterance extends React.PureComponent {
   render() {
 
     return (
-      <div className="interaction-utterance">
-        <Tooltip
-          className="flex-hard"
-          theme="warning"
-          arrow={true}
-          position="bottom-start"
-          open={!!(this.state.text_error)}
-          distance={5}
-          html={this.state.text_error}
-        >
-          <MentionsInput
-            className="mentions-input"
-            markup='{{[__display__].__id__}}'
-            displayTransform={(id, display) => { return '[' + display + ']'}}
-            value={this.state.text}
-            onChange={this.onTextChange}
-            onBlur={this.onEdit}
-            onKeyPress={this.handleKeyPress}
-            placeholder={"Enter Synonyms"}
-            allowSpaceInQuery={true}
-            disabled={this.props.live_mode}>
-            <Mention
-              trigger="["
-              data={this.props.slots.map((slot) => {return {display: slot.name, id: slot.key.toString()}})}
-              style={{backgroundColor: '#DCEEFF', outline: '1px solid #DCEEFF'}}
-            />
-          </MentionsInput>
-        </Tooltip>
-        <i onClick={(e) => {
-          this.props.deleteUtterance(e, this.props.index);
-        }} className="fas fa-backspace trash-icon ii__trash">
-
-        </i>
+      <div>
+        <div className={cn('interaction-utterance', {u__utterance_warning: this.props.showWarning})}>
+          <Tooltip
+            className="flex-hard"
+            theme="warning"
+            arrow={true}
+            position="bottom-start"
+            open={!!(this.state.text_error)}
+            distance={5}
+            html={this.state.text_error}
+          >
+            <MentionsInput
+              className="mentions-input"
+              markup='{{[__display__].__id__}}'
+              displayTransform={(id, display) => { return '[' + display + ']'}}
+              value={this.state.text}
+              onChange={this.onTextChange}
+              onBlur={this.onEdit}
+              onKeyPress={this.handleKeyPress}
+              placeholder={"Enter Synonyms"}
+              allowSpaceInQuery={true}
+              disabled={this.props.live_mode}>
+              <Mention
+                trigger="["
+                data={this.props.slots.map((slot) => {return {display: slot.name, id: slot.key.toString()}})}
+                style={{backgroundColor: '#DCEEFF', outline: '1px solid #DCEEFF'}}
+              />
+            </MentionsInput>
+          </Tooltip>
+          <i onClick={(e) => {
+            this.props.deleteUtterance(e, this.props.index);
+          }} className="fas fa-backspace trash-icon ii__trash"/>
+        </div>
+        {this.props.showWarning
+          ?
+          <Tooltip
+            className="flex-hard"
+            theme="warning"
+            arrow={true}
+            position="bottom-start"
+            html={'Having slots with the same type in different intents and using them in an utterance ' +
+            'without any context (other words) may confuse your virtual assistant. Proceed with caution.'}
+          >
+            <div className={'u__warning_message'}>
+              Warning: This type of slot is repeated in two intents without context.
+            </div>
+          </Tooltip>
+          : null}
       </div>
     )
   }

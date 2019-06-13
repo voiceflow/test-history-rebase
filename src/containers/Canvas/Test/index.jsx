@@ -32,7 +32,6 @@ class Test extends Component {
   }
 
   toggleSection = section => {
-    console.log('called toggle section', section)
     if (section === C.CONDITIONS) {
       this.setState(state => ({
         conditionsOpen: !state.conditionsOpen

@@ -1684,20 +1684,20 @@ export class Canvas extends Component {
                 updateLinter={this.updateLinter}
                 testing={this.props.testing}
               />
-              <Test
-                open={this.props.testing}
-                testing_info={this.state.testing_info}
-                flow={this.props.diagram.name}
-                onTest={this.onTest}
-                history={this.props.history}
-                enterFlow={this.enterFlow}
-                diagramEngine={this.state.engine}
-                stop={this.stopTime}
-                resetTest={() => this.setState({ testing_info: false })}
-                resume={this.countTime}
-                time={this.state.time}
-                setTime={this.setTime}
-              />
+                {this.props.page === 'test' && <Test
+                    open={this.props.testing}
+                    testing_info={this.state.testing_info}
+                    flow={this.props.diagram.name}
+                    onTest={this.onTest}
+                    history={this.props.history}
+                    enterFlow={this.enterFlow}
+                    diagramEngine={this.state.engine}
+                    stop={this.stopTime}
+                    resetTest={() => this.setState({ testing_info: false })}
+                    resume={this.countTime}
+                    time={this.state.time}
+                    setTime={this.setTime}
+                />}
               <div
                 key={this.props.diagram_id}
                 id="diagram"

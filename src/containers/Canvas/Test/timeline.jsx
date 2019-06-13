@@ -86,6 +86,7 @@ const Timeline = props => {
     setInputs([])
     setOutputs([])
     setEnded(false);
+    resetTest();
     story_state = null;
   }
 
@@ -112,7 +113,9 @@ const Timeline = props => {
 
   useEffect(() => {
     return () => {
+      setStarted(false)
       handleRestart();
+      stop()
     }
   }, [])
 
@@ -378,14 +381,12 @@ const Timeline = props => {
       }
     }
 
-    console.log(data)
     axios.post('/test/interact', data)
       .then(async res => {
         res = res.data
         const {
            trace 
         } = res
-        console.log(res)
         if (res.line_id) {
           story_state = res
         }

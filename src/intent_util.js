@@ -214,7 +214,7 @@ const deepDraftToMarkdown = (object) => {
   };
 
   const recurse = (sub_collection, resultToModify) => {
-    if (typeof sub_collection === 'object') {
+    if (sub_collection !== null && typeof sub_collection === 'object') {
       Object.keys(sub_collection).forEach((key) => {
         let val = sub_collection[key];
         if (typeof val === 'object' && val && val.blocks && val.entityMap) {

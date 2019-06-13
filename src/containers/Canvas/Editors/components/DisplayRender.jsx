@@ -51,10 +51,11 @@ class DisplayRender extends Component {
                   { _.values(devices).map(d=>{
                     return (
                       <Tooltip
-                          className="menu-tip"
                           title={d.name}
-                          position="top"
+                          position="bottom"
                           theme="block"
+                          animation="fade"
+                          arrow
                       >
                       <div className={d.id===this.state.device?'svg-active':''} dangerouslySetInnerHTML={{__html:d.svgIcon}} key={d.id} onClick={()=>this.changeDevice(d.id)}/>
                     </Tooltip>)

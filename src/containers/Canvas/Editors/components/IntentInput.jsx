@@ -172,14 +172,14 @@ class IntentInput extends Component {
   renderUtterances = (utterances) => {
     if (Array.isArray(utterances)) {
       utterances = getUtterancesWithSlotNames(utterances, this.props.slots, true, false, true);
-      console.log('all utterances for intent: ', this.props.intent.intent_id, ' utternaces: ', utterances);
+      // Need a regex to pull the slot name out of the encoded mention
       const re = /({{\[([^[\]{}]+)]\.([\dA-Za-z]+)}})/g;
       return utterances.map((u, i) => {
-        // TODO: WHAT???
-        console.log('prerender utterance: ', u);
-        let m = re.exec(u);
-        console.log('rendering utterance: ', m);
-        if (m && this.props.showWarning) {
+        // Reset regex state
+        re.lastIndex = 0;
+        // get the slot name
+        let slot_name = re.exec(u);
+        if (slot_name && this.props.showWarning) {
           return <Utterance
             key={u}
             intent={u}
@@ -189,9 +189,10 @@ class IntentInput extends Component {
             editUtterance={this.editUtterance}
             deleteUtterance={this.deleteUtterance}
             utteranceExists={this.props.utteranceExists}
-            showWarning={this.props.intent_warning_slots.includes(m[2])}
+            showWarning={this.props.intent_warning_slots.includes(slot_name[2])}
           />
         } else {
+          // If we don't have a slot name (in the case of an mention less utterance)
           return <Utterance
             key={u}
             intent={u}
@@ -214,8 +215,6 @@ class IntentInput extends Component {
     if ((this.props.intent._platform === 'google' && !(this.props.platform === 'google')) || (this.props.intent._platform === 'alexa' && !(this.props.platform === 'alexa'))) {
       disabled = true
     }
-    console.log(this.props.intent_id ,'show warning: ', this.props.showWarning);
-    console.log('show warning for slots: ', this.props.intent_warning_slots);
 
     return (
       <div className={"interaction-block"}>

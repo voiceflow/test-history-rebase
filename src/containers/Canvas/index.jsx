@@ -847,7 +847,6 @@ export class Canvas extends Component {
           })
 
           const save_diagram = axios.post(`/diagram`, diagram)
-
           Promise.all([save_skill_intents, save_diagram]).then(res => {
               this.saving = false
               this.lastModel = data

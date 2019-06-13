@@ -488,7 +488,7 @@ export class BlockNodeWidget extends BaseWidget {
                     diagramEngine: this.props.diagramEngine,
                     key: node.id,
                     isLast: idx === this.props.node.combines.length - 1,
-                    selected: this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().id === node.id,
+                    selected: ((this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().id === node.id) || node.selected),
                     node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter, keepLink),
                     nodeProps: this.props.nodeProps,
                     onClick: () => {

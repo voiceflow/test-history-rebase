@@ -316,6 +316,16 @@ const Timeline = props => {
       try {
         const results = await nlc.handleCommand(data.input)
         const detected_intents = []
+        const diagram_intents = [];
+        _.forEach(diagramEngine.getDiagramModel().getNodes(), node => {
+          if (node.extras.type === 'intent') {
+            diagram_intents.push({
+              id: node.id,
+              google_intent: node.extras.google,
+              alexa_intent: node.extras.alexa,
+            })
+          }
+        })
         _.forEach(results, result => {
           const intent_name = result.name;
           const detected_slots = result.slots;
@@ -335,6 +345,7 @@ const Timeline = props => {
               slots: formatted_slots
             })
           }
+          data.diagram_intents = diagram_intents
           data.detected_intents = detected_intents
         })
       } catch (err) {
@@ -410,7 +421,7 @@ const Timeline = props => {
           let dom = []
           let delay = 0;
           for (const block of trace) {
-            console.log(block)
+            if (!block.output) continue;
             const type = block.block
             let parsed = parse(block.output)[0]
             if (type === 'Speak') {
@@ -461,6 +472,14 @@ const Timeline = props => {
               outputBlock.isLast = !block.line.nextId
               delay += 1000
               dom.push(outputBlock)
+            } else if (type === 'One Shot Intent') {
+              let outputBlock = {}
+              outputBlock.node = block.line.id
+              outputBlock.diagram = _.last(block.diagrams).id
+              outputBlock.type = type;
+              outputBlock.delay = delay;
+              delay += 1000
+              dom.push(outputBlock)
             } else {
               if (!block.line.nextId) {
                 let outputBlock = {};
@@ -507,7 +526,9 @@ const Timeline = props => {
   );
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+});
+
 export default compose(
   connect(mapStateToProps)
 )(Timeline);

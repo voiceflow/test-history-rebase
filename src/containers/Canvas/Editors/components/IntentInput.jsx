@@ -14,7 +14,7 @@ import './IntentInput.css';
 
 class IntentInput extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       name: (this.props.intent && this.props.intent.name) ? this.props.intent.name : "",
@@ -22,54 +22,45 @@ class IntentInput extends Component {
       name_error: null,
       text_error: null,
       intent: this.props.intent,
-      warning: ''
     }
-    this.handleKeyPress = this.handleKeyPress.bind(this)
-    this.onTextChange = this.onTextChange.bind(this)
-    this.onNameChange = this.onNameChange.bind(this)
-    this.onNameSave = this.onNameSave.bind(this)
-    this.addUtterance = this.addUtterance.bind(this)
-    this.deleteUtterance = this.deleteUtterance.bind(this)
-    this.renderUtterances = this.renderUtterances.bind(this)
-    this.toggleCollapse = this.toggleCollapse.bind(this)
-  }
+  };
 
   componentDidMount() {
-    this.checkDuplicateSlots();
-  }
+    this.props.checkIntentConflict();
+  };
 
-  toggleCollapse() {
+  toggleCollapse = () => {
     this.props.intent.open = !this.props.intent.open
     this.forceUpdate()
-  }
+  };
 
-  _getSlotKeys(input) {
+  _getSlotKeys = (input) => {
     const re = /\{\{\[[^}{[\]]+]\.([a-zA-Z0-9]+)\}\}/g;
     let m;
-    const slot_keys = new Set()
+    const slot_keys = new Set();
 
     do {
-      m = re.exec(input)
+      m = re.exec(input);
       if (m) {
-        const key = m[1]
+        const key = m[1];
         slot_keys.add(key)
       }
     } while (m);
 
     return slot_keys
-  }
+  };
 
-  handleKeyPress(e, i) {
+  handleKeyPress = (e, i) => {
     // Enter key pressed
     // Add utterance
     if (e.charCode === 13) {
       e.preventDefault()
       this.addUtterance(i)
     }
-  }
+  };
 
-  addUtterance() {
-    const newValue = this.state.text.trim()
+  addUtterance = () => {
+    const newValue = this.state.text.trim();
 
     if (!newValue) {
       return
@@ -100,28 +91,25 @@ class IntentInput extends Component {
     this.props.update()
 
     this.setState({text: ''})
-    this.checkDuplicateSlots()
+    this.props.checkIntentConflict();
   }
 
-  deleteUtterance(e, i) {
+  deleteUtterance = (e, i) => {
     e.preventDefault()
-    const intent = this.state.intent
-    intent.inputs.splice(i, 1)
-    this.setState({
-      intent: intent
-    })
+    this.props.intent.inputs.splice(i, 1)
+    this.forceUpdate();
     this.props.update()
-    this.checkDuplicateSlots()
+    this.props.checkIntentConflict();
   }
 
-  onTextChange(e) {
+  onTextChange = (e) => {
     this.setState({
       text: e.target.value,
       text_error: null
     })
   }
 
-  onNameChange(e) {
+  onNameChange = (e) => {
     e.preventDefault()
     const input = e.target.value.toLowerCase().replace(/\s/g, '_')
     const re = /^[_a-z]+$/g
@@ -139,7 +127,7 @@ class IntentInput extends Component {
     })
   }
 
-  onNameSave(e) {
+  onNameSave = (e) => {
     e.preventDefault()
     if (this.state.name === this.props.intent.name) {
       return
@@ -178,59 +166,47 @@ class IntentInput extends Component {
     };
     this.props.update();
     this.forceUpdate()
+    this.props.checkIntentConflict();
   };
 
   renderUtterances = (utterances) => {
     if (Array.isArray(utterances)) {
       utterances = getUtterancesWithSlotNames(utterances, this.props.slots, true, false, true);
+      console.log('all utterances for intent: ', this.props.intent.intent_id, ' utternaces: ', utterances);
+      const re = /({{\[([^[\]{}]+)]\.([\dA-Za-z]+)}})/g;
       return utterances.map((u, i) => {
-        return <Utterance
-          key={u}
-          intent={u}
-          live_mode={this.props.live_mode}
-          slots={this.props.slots}
-          index={i}
-          editUtterance={this.editUtterance}
-          deleteUtterance={this.deleteUtterance}
-          utteranceExists={this.props.utteranceExists}
-        />
+        // TODO: WHAT???
+        console.log('prerender utterance: ', u);
+        let m = re.exec(u);
+        console.log('rendering utterance: ', m);
+        if (m && this.props.showWarning) {
+          return <Utterance
+            key={u}
+            intent={u}
+            live_mode={this.props.live_mode}
+            slots={this.props.slots}
+            index={i}
+            editUtterance={this.editUtterance}
+            deleteUtterance={this.deleteUtterance}
+            utteranceExists={this.props.utteranceExists}
+            showWarning={this.props.intent_warning_slots.includes(m[2])}
+          />
+        } else {
+          return <Utterance
+            key={u}
+            intent={u}
+            live_mode={this.props.live_mode}
+            slots={this.props.slots}
+            index={i}
+            editUtterance={this.editUtterance}
+            deleteUtterance={this.deleteUtterance}
+            utteranceExists={this.props.utteranceExists}
+            showWarning={false}
+          />
+        }
       });
     }
     return null
-  }
-
-  checkDuplicateSlots = () => {
-    if (this.props.slots) {
-      const types = this.props.slots.map(slot => slot.type.value);
-      let errorFlag = false;
-      // Check if the slots are all unique
-      if (_.uniq(types).length !== types.length) {
-
-        // Get all the slot types that have duplicate values
-        let duplicateSlotTypes = _.filter(types, (val, i, iteratee) => _.includes(iteratee, val, i + 1));
-        // Convert from the types to all the actual slot objects
-        let duplicateSlots = this.props.slots.filter(slot => _.includes(duplicateSlotTypes, slot.type.value));
-        // We just want the name of the slot
-        duplicateSlots = duplicateSlots.map(slot => slot.name);
-        // Check if any utterance contains just the slot name
-        const utterances = getUtterancesWithSlotNames(this.props.intent.inputs, this.props.slots, true);
-        utterances.forEach(utterance => {
-          const filtered = utterance.replace(/[[\]']+/g, '');
-          if (_.includes(duplicateSlots, filtered.trim())) {
-            errorFlag = true;
-          }
-        });
-      }
-      if (!errorFlag) {
-        this.setState({
-          warning: ''
-        })
-      } else {
-        this.setState({
-          warning: 'Warning: This intent contains an utterance with no context.'
-        })
-      }
-    }
   };
 
   render() {
@@ -238,6 +214,8 @@ class IntentInput extends Component {
     if ((this.props.intent._platform === 'google' && !(this.props.platform === 'google')) || (this.props.intent._platform === 'alexa' && !(this.props.platform === 'alexa'))) {
       disabled = true
     }
+    console.log(this.props.intent_id ,'show warning: ', this.props.showWarning);
+    console.log('show warning for slots: ', this.props.intent_warning_slots);
 
     return (
       <div className={"interaction-block"}>
@@ -272,22 +250,8 @@ class IntentInput extends Component {
             />
           </Tooltip>
           <button className="close mt-1 mr-1" onClick={() => this.props.removeIntent(this.props.intent.key)}
-                  disabled={this.props.live_mode}></button>
+                  disabled={this.props.live_mode}/>
         </div>
-        {this.state.warning ?
-          <Tooltip
-            className="flex-hard"
-            theme="warning"
-            arrow={true}
-            position="bottom-start"
-            html={'Having multiple slots with the same type and using them in an utterance ' +
-            'without any context (other words) may confuse your virtual assistant'}
-          >
-            <div className="intent-input__warning">
-              {this.state.warning}
-            </div>
-          </Tooltip>
-          : null}
         <Collapse isOpen={this.props.intent.open}>
           {disabled && <div className='unavailable-input'>
             <div><i className="fas fa-frown"></i></div>

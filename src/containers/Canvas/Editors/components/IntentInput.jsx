@@ -8,6 +8,7 @@ import {sampleUtteranceRegex} from 'services/Regex'
 import {getUtterancesWithSlotNames} from '../../../../intent_util'
 import {setError} from 'ducks/modal'
 import Utterance from './Utterance';
+import _ from 'lodash';
 
 import './IntentInput.css';
 
@@ -20,7 +21,8 @@ class IntentInput extends Component {
       text: "",
       name_error: null,
       text_error: null,
-      intent: this.props.intent
+      intent: this.props.intent,
+      warning: ''
     }
     this.handleKeyPress = this.handleKeyPress.bind(this)
     this.onTextChange = this.onTextChange.bind(this)
@@ -30,6 +32,10 @@ class IntentInput extends Component {
     this.deleteUtterance = this.deleteUtterance.bind(this)
     this.renderUtterances = this.renderUtterances.bind(this)
     this.toggleCollapse = this.toggleCollapse.bind(this)
+  }
+
+  componentDidMount() {
+    this.checkDuplicateSlots();
   }
 
   toggleCollapse() {
@@ -94,6 +100,7 @@ class IntentInput extends Component {
     this.props.update()
 
     this.setState({text: ''})
+    this.checkDuplicateSlots()
   }
 
   deleteUtterance(e, i) {
@@ -104,6 +111,7 @@ class IntentInput extends Component {
       intent: intent
     })
     this.props.update()
+    this.checkDuplicateSlots()
   }
 
   onTextChange(e) {
@@ -191,6 +199,40 @@ class IntentInput extends Component {
     return null
   }
 
+  checkDuplicateSlots = () => {
+    if (this.props.slots) {
+      const types = this.props.slots.map(slot => slot.type.value);
+      let errorFlag = false;
+      // Check if the slots are all unique
+      if (_.uniq(types).length !== types.length) {
+
+        // Get all the slot types that have duplicate values
+        let duplicateSlotTypes = _.filter(types, (val, i, iteratee) => _.includes(iteratee, val, i + 1));
+        // Convert from the types to all the actual slot objects
+        let duplicateSlots = this.props.slots.filter(slot => _.includes(duplicateSlotTypes, slot.type.value));
+        // We just want the name of the slot
+        duplicateSlots = duplicateSlots.map(slot => slot.name);
+        // Check if any utterance contains just the slot name
+        const utterances = getUtterancesWithSlotNames(this.props.intent.inputs, this.props.slots, true);
+        utterances.forEach(utterance => {
+          const filtered = utterance.replace(/[[\]']+/g, '');
+          if (_.includes(duplicateSlots, filtered.trim())) {
+            errorFlag = true;
+          }
+        });
+      }
+      if (!errorFlag) {
+        this.setState({
+          warning: ''
+        })
+      } else {
+        this.setState({
+          warning: 'Warning: This intent contains an utterance with no context.'
+        })
+      }
+    }
+  };
+
   render() {
     let disabled = false
     if ((this.props.intent._platform === 'google' && !(this.props.platform === 'google')) || (this.props.intent._platform === 'alexa' && !(this.props.platform === 'alexa'))) {
@@ -232,6 +274,20 @@ class IntentInput extends Component {
           <button className="close mt-1 mr-1" onClick={() => this.props.removeIntent(this.props.intent.key)}
                   disabled={this.props.live_mode}></button>
         </div>
+        {this.state.warning ?
+          <Tooltip
+            className="flex-hard"
+            theme="warning"
+            arrow={true}
+            position="bottom-start"
+            html={'Having multiple slots with the same type and using them in an utterance ' +
+            'without any context (other words) may confuse your virtual assistant'}
+          >
+            <div className="intent-input__warning">
+              {this.state.warning}
+            </div>
+          </Tooltip>
+          : null}
         <Collapse isOpen={this.props.intent.open}>
           {disabled && <div className='unavailable-input'>
             <div><i className="fas fa-frown"></i></div>

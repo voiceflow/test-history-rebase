@@ -1,7 +1,23 @@
-import socket from 'socket.io-client';
-import randomstring from 'randomstring';
 import axios from 'axios';
+import LogRocket from 'logrocket';
+import setupLogRocketReact from 'logrocket-react';
+import randomstring from 'randomstring';
+import socket from 'socket.io-client';
 
+import { LOGROCKET_ENABLED, LOGROCKET_PROJECT } from './config';
+
+// setup LogRocket
+if (LOGROCKET_ENABLED) {
+  LogRocket.init(LOGROCKET_PROJECT);
+  setupLogRocketReact(LogRocket);
+
+  LogRocket.getSessionURL((sessionURL) => {
+    // add session URL to all outgoing HTTP requests
+    axios.defaults.headers.common['X-LogRocket-URL'] = sessionURL;
+  });
+}
+
+// setup socket.io
 const getEndpoint = () => {
   let port = '';
   let protocol = 'https';

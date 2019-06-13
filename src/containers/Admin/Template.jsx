@@ -3,6 +3,7 @@ import {Table, Button, Form, FormGroup, Label, Col} from 'reactstrap'
 import axios from 'axios'
 import Input from "components/Input";
 import {toast} from 'react-toastify';
+import Toggle from 'react-toggle';
 
 
 class Template extends React.Component {
@@ -12,7 +13,9 @@ class Template extends React.Component {
 
     this.state = {
       templates: [],
-      template:{}
+      template:{
+        template_index:"-1"
+      }
     }
 
     this.handleInputChange=this.handleInputChange.bind(this);
@@ -99,7 +102,16 @@ class Template extends React.Component {
             </FormGroup>
             <FormGroup row>
               <Label for="order" sm={2}>Order</Label>
-              <Col sm={10}><Input name="template_index" id="order" value={this.state.template.template_index} onChange={this.handleInputChange}/></Col>
+              <Col sm={8}><Input name="template_index" id="order" value={this.state.template.template_index} onChange={this.handleInputChange}/></Col>
+              <Col sm={2} className="space-between">
+              <label>Hidden: </label>
+              <Toggle
+                checked={parseInt(this.state.template.template_index,10)<0}
+                icons={false}
+                disabled={false}
+                onChange={()=>this.handleInputChange({target:{name:"template_index",value:-parseInt(this.state.template.template_index,10)}})}
+              />
+              </Col>
             </FormGroup>
             <Button className="w-100 m-3" onClick={this.onSubmit}>Submit</Button>
           </Form>
@@ -124,7 +136,7 @@ class Template extends React.Component {
               <td>{t.descr}</td>
               <td><img src={t.module_icon} height="100px" alt=""></img></td>
               <td>{t.module_project_id}</td>
-              <td>{t.template_index}</td>
+              <td>{t.template_index>0?t.template_index:`Hidden (${-t.template_index})`}</td>
               <td><Button color="primary" onClick={()=>this.setState({template:t})}>Edit</Button> <Button color="warning" onClick={()=>this.deleteTemplate(t.module_id)}>Delete</Button></td>
             </tr>
           ))}

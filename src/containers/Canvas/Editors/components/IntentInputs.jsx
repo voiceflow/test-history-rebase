@@ -35,7 +35,6 @@ class IntentInputs extends Component {
 
     if (this.props.slots) {
       const types = this.props.slots.map(slot => slot.type.value);
-      console.log('ww types: ', types);
       // Check if the slots are all unique
       if (_.uniq(types).length !== types.length) {
 
@@ -48,19 +47,15 @@ class IntentInputs extends Component {
         duplicateSlots = duplicateSlots.map(slot => slot.name);
 
         this.props.intents.forEach(intent => {
-          console.log('\n\n ww checking intent: ', intent);
-          console.log('ww checking against duplicate slots: ', duplicateSlots);
           // For each intent, we need to see if we need to flag a certain slot type
           // Check if any utterance contains just the slot name
           const utterances = getUtterancesWithSlotNames(intent.inputs, this.props.slots, true);
           utterances.forEach(utterance => {
-            console.log('ww utterance check: ', utterance);
             const filtered = utterance.replace(/[[\]']+/g, '');
             if (_.includes(duplicateSlots, filtered.trim())) {
               // We need to show a warning here for type: slot.type
               this.props.slots.forEach(slot => {
                 if (slot.name === filtered.trim()) {
-                  console.log('ww found warning for slot: ', slot);
                   // We need to add to the list of slots that we need to show errors for because
                   // the warning is shown underneath the utterance, not the intent block
                   // This just narrows specificity
@@ -81,8 +76,6 @@ class IntentInputs extends Component {
         });
 
         // Need to scan through the warningDictionary and add any intents that show up in a type with more than one intent showWarningInIntents
-        console.log('warning dictionary: ', warningDictionary);
-        let reset = true;
         _.keys(warningDictionary).forEach(errorSlotType => {
           // If we have a warning for a type
           if (warningDictionary[errorSlotType].length > 1) {
@@ -93,7 +86,9 @@ class IntentInputs extends Component {
             // Otherwise we want to clear the type
             warningDictionary[errorSlotType] = [];
             // We also want to clear the stored slots of the same type
-            showWarningSlots.filter(slot => slot.type.value !== errorSlotType);
+            showWarningSlots = showWarningSlots.filter(slot => {
+              return slot.type.value !== errorSlotType
+            });
           }
         });
         showWarningSlots = showWarningSlots.map(slot => slot.name);

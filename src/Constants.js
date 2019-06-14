@@ -50,17 +50,17 @@ const DEFAULT_INTENTS = {
   en: {
     defaults: [{
         name: 'AMAZON.CancelIntent',
-        samples: ['cancel'],
+        samples: ['cancel', 'never mind', 'forget it'],
         slots: [],
       },
       {
         name: 'AMAZON.HelpIntent',
-        samples: ['help'],
+        samples: ['help', 'help me', 'can you help me'],
         slots: [],
       },
       {
         name: 'AMAZON.StopIntent',
-        samples: ['stop'],
+        samples: ['stop', 'off', 'shut up'],
         slots: [],
       },
       {
@@ -71,13 +71,13 @@ const DEFAULT_INTENTS = {
       },
       {
         name: 'AMAZON.NoIntent',
-        samples: ['no', 'nope', 'I do not', 'no thank you', 'nay', 'nah', 'no way', 'negative'],
+        samples: ['no', 'no thanks', 'nope', 'I do not', 'no thank you', 'nay', 'nah', 'no way', 'negative'],
         slots: [],
       },
     ],
     built_ins: [{
       name: 'AMAZON.RepeatIntent',
-      samples: ['repeat', 'again', 'say again'],
+      samples: ['repeat','say that again', 'repeat that', 'again', 'say again'],
       slots: [],
     }, ],
   },

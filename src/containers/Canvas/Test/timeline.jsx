@@ -318,7 +318,7 @@ const Timeline = props => {
       data.slots = slots
     }
     const defaultIntents = DEFAULT_INTENTS[skill.locales[0].substring(0, 2)]
-    _.forEach(defaultIntents.defaults, d_intent => {
+    _.forEach(defaultIntents.defaults.concat(defaultIntents.built_ins), d_intent => {
       if (_.some(d_intent.samples, s => s.toLowerCase() === data.input.toLowerCase())){
         data.detected_intents = [{
           intent: d_intent.name,

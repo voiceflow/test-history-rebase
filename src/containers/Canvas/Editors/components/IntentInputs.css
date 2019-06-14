@@ -35,16 +35,6 @@
   word-break: break-word;
   display: inline-block;
 }
-.interaction-utterance {
-  border-bottom: 1px solid #e9eef3 !important;
-  display: flex;
-  color: #8DA2B5 !important;
-}
-.interaction-utterance>div{
-  flex: 1;
-  word-break: break-word;
-  display: inline-block;
-}
 .choice-utterance{
   border-bottom: 1px solid #e9eef3 !important;
   padding: 3px 0px 3px 0px;
@@ -236,4 +226,9 @@
 
 .slot-utterance:last-child {
   border: none !important;
+}
+
+.intent-input__warning {
+  color: #FF2E58;
+  padding: 0.3rem 1.2rem 0;
 }

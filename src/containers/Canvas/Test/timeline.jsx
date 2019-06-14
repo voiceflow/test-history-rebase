@@ -8,6 +8,8 @@ import { parse } from 'html-parse-stringify'
 
 import { RegexVariables } from 'utils/variable'
 
+import { DEFAULT_INTENTS } from 'Constants.js'
+
 import TestBox from './TestBox'
 
 const valid_tags = new Set([
@@ -246,7 +248,6 @@ const Timeline = props => {
       addDebugBlock(b)
       recursivePlay(index + 1, urls, ended)
     } else {
-      console.log('called parseblock')
       parseBlock(b)
       recursivePlay(index + 1, urls, ended)
     }
@@ -312,15 +313,17 @@ const Timeline = props => {
   const updateState = async(start = false) => {
     const nlc = testing_info.nlc
     let data = story_state;
-
     if (!data.slots) {
       data.slots = slots
     }
+    console.log(nlc)
+    console.log(DEFAULT_INTENTS)
     if (nlc) {
       try {
         const results = await nlc.handleCommand(data.input)
         const detected_intents = []
         const diagram_intents = [];
+        const { input } = data
         _.forEach(diagramEngine.getDiagramModel().getNodes(), node => {
           if (node.extras.type === 'intent') {
             diagram_intents.push({
@@ -380,10 +383,11 @@ const Timeline = props => {
         data.play.action = 'NEXT';
       }
     }
-
+    console.log(data)
     axios.post('/test/interact', data)
       .then(async res => {
         res = res.data
+        console.log(res)
         const {
            trace 
         } = res

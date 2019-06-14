@@ -208,7 +208,7 @@ export class Display extends Component {
                 {this.state.modalContent && <div className="space-between flex-hard">
                 </div>}
 
-                {this.state.modalContent && <DisplayRender apl={this.state.modalContent} data={this.state.rendered_datasource} error={e=>this.setState({variables_error:e})}/>}
+                {this.state.modalContent && <DisplayRender apl={this.state.modalContent} data={this.state.rendered_datasource} commands={this.state.node.extras.apl_commands} error={e=>this.setState({variables_error:e})}/>}
             </div>
         )
     }

@@ -249,6 +249,10 @@ const deepVariableSubstitution = (object, variableMap) => {
   };
 
   const recurse = (sub_collection, uriEncode = false) => {
+    if (Array.isArray(sub_collection)) {
+      return sub_collection.map((v) => recurse(v, uriEncode));
+    }
+
     if (typeof sub_collection === 'object') {
       return Object.keys(sub_collection).reduce((acc, key) => {
         acc[key] = recurse(sub_collection[key], key === 'url');

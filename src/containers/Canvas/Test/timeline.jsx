@@ -494,7 +494,8 @@ const Timeline = props => {
               delay += 1000
               dom.push(outputBlock)
             } else {
-              if (!block.line.nextId) {
+              console.log(block)
+              if (!(block.line.nextId|| block.line.nextIds)) {
                 let outputBlock = {};
                 outputBlock.isLast = !block.line.nextId
                 outputBlock.delay = delay

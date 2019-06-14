@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -23,6 +23,11 @@ const UserTestHeader = props => {
 
     const [isTesting, toggleTesting] = useToggle();
     
+    useEffect(() => {
+        if (!testing_info){
+            toggleTesting(false)
+        }
+    })
     return (
         <>
             <Header

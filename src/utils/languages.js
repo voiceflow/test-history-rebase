@@ -34,6 +34,7 @@ export const LANGUAGES = {
   'en-US': 'English (US)',
   'es-ES': 'Spanish (ES)',
   'es-MX': 'Spanish (MX)',
+  'es-US': 'Spanish (US)',
   'fr-CA': 'French (CA)',
   'fr-FR': 'French (FR)',
   'it-IT': 'Italian (IT)',

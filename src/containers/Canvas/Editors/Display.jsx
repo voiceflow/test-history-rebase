@@ -9,6 +9,7 @@ import {Link} from 'react-router-dom'
 
 import AceEditor from 'react-ace';
 import './Display.css'
+import DisplayRender from './components/DisplayRender'
 
 import 'brace/mode/json_custom';
 import 'brace/theme/monokai';
@@ -39,7 +40,8 @@ export class Display extends Component {
             user_variables: {},
             variables: [],
             variables_error: '',
-            modal_error: ''
+            modal_error: '',
+            rendered_datasource:'',
         };
 
         this.onChange = this.onChange.bind(this);
@@ -137,13 +139,12 @@ export class Display extends Component {
                 datasource = datasource.replace(re, replacement)
             })
 
-            axios.post(`/multimodal/display/render/${this.state.node.extras.display_id}`, {
-              datasource: datasource
-            })
+            axios.get(`/multimodal/display/${this.state.node.extras.display_id}`)
             .then(res => {
                 this.setState({
-                    modalContent: res.data,
-                    current_request: false
+                    modalContent: res.data.document,
+                    current_request: false,
+                    rendered_datasource: datasource
                 })
             })
             .catch(err => {
@@ -171,15 +172,16 @@ export class Display extends Component {
             modalContent: null,
             variables: variables,
             variables_error: '',
-            user_variables: {}
-        })
+            user_variables: {},
+            rendered_datasource: null
+        },
+      ()=>this.testDisplay())
     }
 
     // Render entire modal
     renderDisplayTest() {
         let loading = <div className="text-center mt-3"><div className="loader text-lg"/></div>
         if (_.isNil(this.state.modalContent) && _.isEmpty(this.state.variables)) {
-            this.testDisplay()
             return loading
         }
 
@@ -188,7 +190,7 @@ export class Display extends Component {
                 {
                 !_.isEmpty(this.state.variables) &&
                 <React.Fragment>
-                    <Button color="primary" onClick={()=>this.testDisplay()} className="mt-2"><i className="fas fa-play mr-2"/> Run</Button>
+                    <Button color="primary" onClick={()=>this.testDisplay()} className="mt-2" disabled={this.state.variables_error}><i className="fas fa-play mr-2"/> Run</Button>
                     <br />
                     <label>We've detected you are using variables in your Data Source JSON, please set variables and run</label><br/>
                     {_.map(this.state.variables, (val, key) => (
@@ -201,25 +203,12 @@ export class Display extends Component {
                     ))}
                 </React.Fragment>
                 }
-                {this.state.variables_error && <div className='error-message'>{this.state.variables_error}</div>}
+                {this.state.modalContent && this.state.variables_error && <div className='error-message text-center'>{this.state.variables_error}</div>}
                 {this.state.current_request && loading}
                 {this.state.modalContent && <div className="space-between flex-hard">
-                    <label>
-                        Display Test
-                    </label>
-                    <span>
-                        <Tooltip
-                            className="test-help"
-                            title='If a black screen Appears, try double-checking your Data Source JSON and Document format. Note: This is meant to be a quick and convenient way to test your displays. We recommend using the Amazon APL Authoring Tool for double-checking how your display will look, especially on differently-sized screens.'
-                            position="bottom"
-                            theme="block"
-                        >
-                            ?
-                        </Tooltip>
-                    </span>
                 </div>}
 
-                {this.state.modalContent && <img className='test-image' alt='content' src={`data:image/png;base64,${this.state.modalContent}`} />}
+                {this.state.modalContent && <DisplayRender apl={this.state.modalContent} data={this.state.rendered_datasource} error={e=>this.setState({variables_error:e})}/>}
             </div>
         )
     }

@@ -71,6 +71,7 @@ class Template extends React.Component {
 
 
   render() {
+    const curorder = parseInt(this.state.template.template_index,10);
 
     return (
       <div className="fb_wrapper">
@@ -106,10 +107,10 @@ class Template extends React.Component {
               <Col sm={2} className="space-between">
               <label>Hidden: </label>
               <Toggle
-                checked={parseInt(this.state.template.template_index,10)<0}
+                checked={curorder<0}
                 icons={false}
                 disabled={false}
-                onChange={()=>this.handleInputChange({target:{name:"template_index",value:-parseInt(this.state.template.template_index,10)}})}
+                onChange={()=>this.handleInputChange({target:{name:"template_index",value:-curorder}})}
               />
               </Col>
             </FormGroup>

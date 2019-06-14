@@ -95,6 +95,7 @@ export class Canvas extends Component {
         }
         this.loaded = false
         this.time_mounted = null;
+        this.updateTree = null;
 
         this.state = {
             engine: engine,
@@ -732,7 +733,7 @@ export class Canvas extends Component {
 
                             return diagram
                           })
-                        this.props.updateDiagrams(updatedDiagrams) 
+                        this.props.updateDiagrams(updatedDiagrams)
                         // If they are deleting the flow they are currently on, go back to ROOT
                         if (flowId === this.props.diagram_id) {
                             this.enterFlow(this.props.root_id, false)
@@ -766,10 +767,10 @@ export class Canvas extends Component {
           const combinedNodes = node.combines
             .filter(({extras}) => extras[this.props.skill.platform] && extras[this.props.skill.platform].diagram_id)
             .map(({extras}) => extras[this.props.skill.platform].diagram_id)
-          
+
           return [...acc, ...combinedNodes]
         },[])
-        
+
       return [...updatedSubDiagrams, ...updatedStorySubDiagrams]
     }
 
@@ -789,7 +790,7 @@ export class Canvas extends Component {
         if (this.saving) return
         this.saving = true
         try {
-          if (this.props.preview) return 
+          if (this.props.preview) return
           state && this.setState({ saving: true })
           let serialize = util.serializeDiagram(this.state.engine)
           var data = JSON.stringify(serialize)

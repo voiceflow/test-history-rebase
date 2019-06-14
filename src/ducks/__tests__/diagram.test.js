@@ -7,11 +7,25 @@ const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 const store = mockStore();
 
+jest.mock('axios', () => ({
+  __esModule: true,
+  default: {
+    get: () =>
+      new Promise((resolve, reject) => {
+        const e = new Error('No Net');
+        e.response = 'No Net';
+        reject(e);
+      }),
+  },
+}));
+
 describe('Diagram Actions Test', () => {
   beforeEach(() => {
     store.clearActions();
   });
-  test('dispatches fetch diagram (failure)', () => {
+  test('dispatches fetch diagram (failure)', async () => {
+    console.error = jest.fn();
+
     const expectedAction = [
       {
         type: 'FETCH_DIAGRAMS_BEGIN',
@@ -23,8 +37,8 @@ describe('Diagram Actions Test', () => {
         },
       },
     ];
-    return store.dispatch(actions.fetchDiagrams(1)).then(() => {
-      expect(store.getActions()).toEqual(expectedAction);
-    });
+    await store.dispatch(actions.fetchDiagrams(1));
+    expect(store.getActions()).toEqual(expectedAction);
+    expect(console.error.mock.calls[0][0]).toEqual('No Net');
   });
 });

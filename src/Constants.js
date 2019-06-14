@@ -65,13 +65,13 @@ const DEFAULT_INTENTS = {
       },
       {
         name: 'AMAZON.YesIntent',
-        samples: ['yes', 'yea', 'ok', 'okay', 'yup', 'ya', 'sure'],
+        samples: ['yes', 'yea', 'yeah', 'I do', 'yes please', 'you know it', 'ok', 'okay', 'yup', 'ya', 'sure'],
         keep: ['yes'],
         slots: [],
       },
       {
         name: 'AMAZON.NoIntent',
-        samples: ['no', 'nope', 'nay', 'nah', 'no way', 'negative'],
+        samples: ['no', 'nope', 'I do not', 'no thank you', 'nay', 'nah', 'no way', 'negative'],
         slots: [],
       },
     ],

@@ -319,7 +319,7 @@ const Timeline = props => {
     }
     const defaultIntents = DEFAULT_INTENTS[skill.locales[0].substring(0, 2)]
     _.forEach(defaultIntents.defaults, d_intent => {
-      if (_.includes(d_intent.samples, data.input)){
+      if (_.includes(d_intent.samples, s => s.toLowerCase() === data.input.toLowerCase())){
         data.detected_intents = [{
           intent: d_intent.name,
           slots: d_intent.slots,
@@ -494,7 +494,6 @@ const Timeline = props => {
               delay += 1000
               dom.push(outputBlock)
             } else {
-              console.log(block)
               if (!(block.line.nextId|| block.line.nextIds)) {
                 let outputBlock = {};
                 outputBlock.isLast = !block.line.nextId

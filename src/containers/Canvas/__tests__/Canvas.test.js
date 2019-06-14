@@ -52,7 +52,7 @@ describe('Canvas', () => {
         let skill = testSkill
         const diagram_id = "e9f52b0622f08ff1b21137bae05a242b"
         const onSave= jest.spyOn(Canvas.prototype, 'onSave')
-        const component = shallow(<Canvas skill={skill} setOnSave={setOnSave} diagram_id={diagram_id} history={historyMock} updateSkill={jest.fn()} setError={error} getIntegrationsUsers={jest.fn(() => Promise.resolve())}/>)
+        const component = shallow(<Canvas skill={skill} diagrams={[]} setOnSave={setOnSave} diagram_id={diagram_id} history={historyMock} updateSkill={jest.fn()} setError={error} updateDiagrams={() => {}} getIntegrationsUsers={jest.fn(() => Promise.resolve())}/>)
         component.instance().onSave()
         expect(onSave).toHaveBeenCalled()
     })

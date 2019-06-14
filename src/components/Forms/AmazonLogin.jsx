@@ -20,9 +20,8 @@ const AmazonLoad = () => new Promise((resolve) => {
 
     return resolve()
   }
-
   if (!firstJS) {
-    document.appendChild(js)
+    document.head.appendChild(js)
   } else {
     firstJS.parentNode.appendChild(js)
   }
@@ -81,5 +80,5 @@ class Button extends Component{
 		)
 	}
 }
- 
+
 export default Button

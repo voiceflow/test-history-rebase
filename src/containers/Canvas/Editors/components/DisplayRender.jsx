@@ -21,11 +21,12 @@ class DisplayRender extends Component {
     }
 
     async componentDidMount() {
-      this.renderer = createRenderer(this.device, this.elem.current)
+      this.renderer = createRenderer(this.device, this.elem.current, {sendCommandEvent:()=>0,sendActivityEvent:()=>0})
       try{
-        await this.renderer.render(JSON.parse(this.props.apl),JSON.parse(this.props.data),{})
+        await this.renderer.render(JSON.parse(this.props.apl),JSON.parse(this.props.data||"{}"),{})
+        await this.renderer.executeCommands(JSON.parse(this.props.commands||"[]"))
       }catch(e){
-        this.props.error("Invalid APL or datasource")
+        this.props.error("Invalid APL or datasource or commands")
       }
     }
 
@@ -34,8 +35,9 @@ class DisplayRender extends Component {
       this.renderer.setDeviceConfiguration(this.device)
       try{
         await this.renderer.render(JSON.parse(this.props.apl),JSON.parse(this.props.data),{})
+        await this.renderer.executeCommands(JSON.parse(this.props.commands||"[]"))
       }catch(e){
-        this.props.error("Invalid APL or datasource")
+        this.props.error("Invalid APL or datasource or commands")
       }
       const scale = Math.min(768/this.device.getDpWidth(),1);
       this.setState({height:this.device.getDpHeight()*scale, scale:`scale(${scale})`, device});
@@ -56,8 +58,9 @@ class DisplayRender extends Component {
                           theme="block"
                           animation="fade"
                           arrow
+                          key={d.id}
                       >
-                      <div className={d.id===this.state.device?'svg-active':''} dangerouslySetInnerHTML={{__html:d.svgIcon}} key={d.id} onClick={()=>this.changeDevice(d.id)}/>
+                      <div className={d.id===this.state.device?'svg-active':''} dangerouslySetInnerHTML={{__html:d.svgIcon}} onClick={()=>this.changeDevice(d.id)}/>
                     </Tooltip>)
                   }) }
                 </div>
@@ -65,5 +68,8 @@ class DisplayRender extends Component {
         );
     }
 }
-
+DisplayRender.defaultProps={
+  data:"{}",
+  commands:"[]"
+}
 export default DisplayRender;

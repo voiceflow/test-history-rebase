@@ -67,6 +67,7 @@ const Timeline = props => {
   const {
     time,
     slots,
+    skill,
     global,
     repeat,
     history,
@@ -316,14 +317,20 @@ const Timeline = props => {
     if (!data.slots) {
       data.slots = slots
     }
-    console.log(nlc)
-    console.log(DEFAULT_INTENTS)
+    const defaultIntents = DEFAULT_INTENTS[skill.locales[0].substring(0, 2)]
+    _.forEach(defaultIntents.defaults, d_intent => {
+      if (_.includes(d_intent.samples, data.input)){
+        data.detected_intents = [{
+          intent: d_intent.name,
+          slots: d_intent.slots,
+        }]
+      }
+    })
     if (nlc) {
       try {
         const results = await nlc.handleCommand(data.input)
         const detected_intents = []
         const diagram_intents = [];
-        const { input } = data
         _.forEach(diagramEngine.getDiagramModel().getNodes(), node => {
           if (node.extras.type === 'intent') {
             diagram_intents.push({
@@ -394,7 +401,7 @@ const Timeline = props => {
         if (res.line_id) {
           story_state = res
         }
-        if (data.input && !data.trace) return;
+        if (data.input && !data.trace) return;                    
         if (res.output && res.output.length > 0) {
           // TYLER'S SUPER JANKY AUDIO THING
 
@@ -535,6 +542,7 @@ const Timeline = props => {
 }
 
 const mapStateToProps = state => ({
+  skill: state.skills.skill,
 });
 
 export default compose(

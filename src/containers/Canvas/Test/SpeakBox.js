@@ -16,7 +16,7 @@ class SpeakBox extends React.Component {
         const { delay, audio, isLast } = this.props;
         this.timer = setTimeout(() => {
             this.centerNode();
-            if (isLast) this.props.resetTest()
+            // if (isLast) this.props.resetTest()
             if (audio) audio.play();
             if (this.props.isFlow) {
                 this.props.enterFlow(this.props.diagram, false)

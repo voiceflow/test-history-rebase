@@ -94,8 +94,7 @@ class Utterance extends React.PureComponent {
             this.props.deleteUtterance(e, this.props.index);
           }} className="fas fa-backspace trash-icon ii__trash"/>
         </div>
-        {this.props.showWarning
-          ?
+        {this.props.showWarning &&
           <Tooltip
             className="flex-hard"
             theme="warning"
@@ -107,8 +106,7 @@ class Utterance extends React.PureComponent {
             <div className={'u__warning_message'}>
               Warning: This type of slot is repeated in two intents without context.
             </div>
-          </Tooltip>
-          : null}
+          </Tooltip>}
       </div>
     )
   }

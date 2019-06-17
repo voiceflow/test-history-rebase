@@ -169,11 +169,12 @@ const getSections = (type_counter) => {
 
   // Check whether we want a favourites section
   let sortable = [];
-  Object.keys(type_counter).forEach((type) => {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const type in type_counter) {
     if (type !== 'god' && type !== 'comment' && type !== 'combine' && type !== 'command' && type_counter[type] >= 3) {
       sortable.push([type, type_counter[type]]);
     }
-  });
+  }
 
   sortable.sort((a, b) => {
     return b[1] - a[1];
@@ -186,7 +187,7 @@ const getSections = (type_counter) => {
       items: [],
     };
 
-    Object.values(sortable).forEach(([type]) => favorite_section.items.push(BLOCK_TYPES[type]));
+    sortable.forEach(([key]) => BLOCK_TYPES[key]);
 
     sections.unshift(favorite_section);
   }

@@ -433,6 +433,12 @@ const Timeline = props => {
           }
           let dom = []
           let delay = 0;
+          if (!!data.input){
+            let outputBlock = {}
+            outputBlock.self = data.input
+            outputBlock.delay = delay;
+            dom.push(outputBlock)
+          }
           for (const block of trace) {
             if (!block.output) continue;
             const type = block.block
@@ -461,15 +467,7 @@ const Timeline = props => {
                 delay += duration + 1000
                 dom.push(outputBlock)
               })
-            } else if (type === 'Choice' && data.input && block.audio){
-              let outputBlock = {}
-              outputBlock.self = data.input
-              outputBlock.node = block.line.id
-              outputBlock.delay = delay;
-              outputBlock.type = type
-              outputBlock.isLast = !block.line.nextId
-              dom.push(outputBlock)
-            } else if (type === 'Choice') {
+            } else if (type === 'Choice' && !block.audio) {
               let outputBlock = {}
               outputBlock.options = _.map(block.line.inputs, _.head);
               outputBlock.node = block.line.id;
@@ -504,6 +502,7 @@ const Timeline = props => {
             }
           }
           setOutputs(outputs.concat(dom))
+          console.log(outputs)
         } else if (res.ending) {
           setEnded(true)
         }

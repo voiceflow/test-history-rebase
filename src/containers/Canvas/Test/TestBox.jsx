@@ -35,6 +35,14 @@ const TestBox = props => {
             <div className="chatbox px-3">
             <div className="chats">
                 {outputs.map((chat, i) => {
+                    if (chat.self) {
+                        return <div className="mt-2 text-right" key={i}>
+                            <div className="self-message message border rounded p-2 align-self-start">
+                                <p className="mb-0 px-1 text-left">{chat.self}<br /><small className="text-muted">{chat.time}</small></p>
+                            </div>
+                            <img src='/user_reply.svg' height={15} width={15} alt="user" className="ml-2" />
+                        </div>
+                    }
                     return <SpeakBox
                         key={i}
                         isSpeak={!!chat.text}
@@ -48,6 +56,7 @@ const TestBox = props => {
                         setLastNode={setLastNode}
                         resetTest={resetTest}
                         time={time}
+                        self={chat.self}
                         isLast={chat.isLast}
                         type={chat.audioType}
                         audio={chat.audio}
@@ -79,7 +88,6 @@ const TestBox = props => {
                 <Form onSubmit={inputSubmit} id="user__input" className="px-3 mb-3 mt-3">
                     <span className="light-grey">User Says</span>
                     <Input className='form-bg response-input mt-3 mb-2' name="input" type="textarea" placeholder="Enter text of your command" value={input} onChange={handleChange} onKeyDown={onKeydown}/>
-                    <Button isBtn isBlack isLarge onClick={(e) => inputSubmit(e)}>Send</Button>
                     <small className="text-muted pb-3 pt-2 d-block"><kbd>⌘</kbd> + Enter</small>
                 </Form>
                 }

@@ -15,7 +15,8 @@ const Conditions = (props) => {
     <div id='Conditions' className={cn({
       'disabled': testing_info
     })}>
-      <div className="text-center mt-2">
+      <div className="no-space__break" />
+      <div className="text-center">
       {/* node.extras here */}
         {variables.map((variable, i) => {
           return (

@@ -11,8 +11,7 @@ const ConditionExpression = props => {
 
     return (
         <div className="mb-2 px-3">
-            <div className="break" />
-            <div className="variable-group">
+            <div className="variable-group mt-3">
                 <span>Set</span>
                 <span className="action-visible light-blue">{`{${variable}}`}</span>
                 <span>to:</span>

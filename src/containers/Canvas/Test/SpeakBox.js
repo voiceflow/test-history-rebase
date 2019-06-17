@@ -45,12 +45,15 @@ class SpeakBox extends React.Component {
         const model = diagramEngine.getDiagramModel()
         const nodeModel = model.getNode(node)
         if (nodeModel) {
-            if (lastNode) lastNode.setSelected(false)
+            if (lastNode) {
+                lastNode.setSelected(false)
+                lastNode.setFocused(false)
+            }
          setLastNode(nodeModel)
          nodeModel.setSelected(true)
          nodeModel.setFocused(true)
          model.setZoomLevel(80)
-         model.setOffset(750 - (nodeModel.x * 0.8), 250 - (nodeModel.y * 0.8), true, diagramEngine)
+         model.setOffset(300 - (nodeModel.x * 0.8), 300 - (nodeModel.y * 0.8), true, diagramEngine)
         }
     }
 

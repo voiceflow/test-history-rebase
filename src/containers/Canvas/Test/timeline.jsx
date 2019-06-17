@@ -494,12 +494,13 @@ const Timeline = props => {
               delay += 1000
               dom.push(outputBlock)
             } else {
-              if (!(block.line.nextId|| block.line.nextIds)) {
-                let outputBlock = {};
-                outputBlock.isLast = !block.line.nextId
-                outputBlock.delay = delay
-                dom.push(outputBlock)
-              }
+              let outputBlock = {};
+              outputBlock.isLast = !block.line.nextId
+              outputBlock.delay = delay
+              outputBlock.node = block.line.id
+              outputBlock.type = type;
+              delay += 1000
+              dom.push(outputBlock)
             }
           }
           setOutputs(outputs.concat(dom))

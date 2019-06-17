@@ -21,13 +21,6 @@ const UserTestHeader = props => {
         preview
     } = props
 
-    const [isTesting, toggleTesting] = useToggle();
-    
-    useEffect(() => {
-        if (!testing_info){
-            toggleTesting(false)
-        }
-    })
     return (
         <>
             <Header
@@ -47,16 +40,14 @@ const UserTestHeader = props => {
                 )}
                 rightRenderer={() => (
                     <div>
-                        {isTesting && testing_info
+                        {testing_info
                             ?
                             <Button isBtn isSecondary className="mr-2" onClick={() => {
-                                toggleTesting()
                                 resetTest()
                             }}>Finish Test</Button>
                             :
                             <Button isPrimary className="mr-2" onClick={() => {
                                 onTest()
-                                toggleTesting()
                             }}>
                                 Start Test
                                 &nbsp;&nbsp;&nbsp;<i className="fas fa-play" />

@@ -168,14 +168,22 @@ export class DiagramModel extends BaseEntity {
 			const deltaX = offsetX - this.offsetX;
 			const deltaY = offsetY - this.offsetY;
 
-			const slopeX = deltaX / 100;
-			const slopeY = deltaY / 100;
-			let counter = 100;
+			const accelerationX = 0.0025 * deltaX;
+			const accelerationY = 0.0025 * deltaY;
+			let vX = deltaX/100;
+			let vY = deltaY/100;
+			let counter = 25;
 			this.offsetInterval = setInterval(() => {
-				this.offsetX += slopeX;
-				this.offsetY += slopeY;
+				this.offsetX += vX;
+				this.offsetY += vY;
 				diagramEngine.repaintCanvas(false)
 				counter -= 1;
+				if (Math.abs(vX) < Math.abs(deltaX)) {
+					vX += accelerationX;
+				}
+				if (Math.abs(vY) < Math.abs(deltaY)) {
+					vY += accelerationY;
+				}
 				if ((this.offsetX === offsetX && this.offsetY === offsetY) || counter <= 0) {
 					clearInterval(this.offsetInterval)
 				}

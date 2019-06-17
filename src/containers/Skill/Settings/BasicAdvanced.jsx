@@ -144,7 +144,7 @@ class BasicAdvancedSettings extends Component {
       warning: true,
       text: (
         <Alert color="danger" className="mb-0">
-          WARNING: This action can not be undone and will replace your development version completely with your live version.{' '}
+          WARNING: This action can not be undone and will replace your development version completely with your live version.
         </Alert>
       ),
       confirm: this.props.onSwapVersions,

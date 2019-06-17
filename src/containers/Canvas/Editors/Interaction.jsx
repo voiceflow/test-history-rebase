@@ -199,8 +199,7 @@ export class Interaction extends Component {
             }}
             disabled={this.state.tab === 'choices'}
           >
-            {' '}
-            Choices{' '}
+            Choices
           </Button>
           <Button
             outline={this.state.tab !== 'intents'}
@@ -210,8 +209,7 @@ export class Interaction extends Component {
             }}
             disabled={this.state.tab === 'intents'}
           >
-            {' '}
-            Intents{' '}
+            Intents
           </Button>
           <Button
             outline={this.state.tab !== 'slots'}
@@ -221,8 +219,7 @@ export class Interaction extends Component {
             }}
             disabled={this.state.tab === 'slots'}
           >
-            {' '}
-            Slots{' '}
+            Slots
           </Button>
         </ButtonGroup>
         <div className={cn({ 'disabled-overlay': this.props.live_mode })}>{this.renderTab()}</div>

@@ -221,7 +221,6 @@ class Expression extends Component {
             {groups.map((group, i) => {
               return (
                 <div key={i}>
-                  {' '}
                   {group.map((type) => {
                     return (
                       <DropdownItem key={type} onClick={() => this.handleType(type)}>

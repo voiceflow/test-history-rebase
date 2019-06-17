@@ -952,7 +952,6 @@ export class ActionGroup extends PureComponent {
             <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
             <div className="modal-bg-txt text-center mt-2"> Upload your Skill for testing</div>
             <div className="modal-txt text-center mt-2">
-              {' '}
               Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console
             </div>
             <div className="super-center mb-3 mt-3">
@@ -1027,7 +1026,6 @@ export class ActionGroup extends PureComponent {
           <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
           <div className="modal-bg-txt text-center mt-2"> Upload your Action for testing</div>
           <div className="modal-txt text-center mt-2">
-            {' '}
             Updating to Google will allow you to test on your Google device or the Google Actions Console.
           </div>
           {(this.props.skill.live || this.props.skill.review) && <hr />}

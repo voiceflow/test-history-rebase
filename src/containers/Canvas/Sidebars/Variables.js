@@ -115,7 +115,6 @@ export class Variables extends PureComponent {
                   Create Variable
                   <Tooltip position="bottom" html={tt(180, 'Project Variables can be used anywhere in the project and save across sessions')}>
                     <span onClick={() => this.setState({ tab: 'local' })} className="pointer">
-                      {' '}
                       (Project)
                     </span>
                   </Tooltip>
@@ -144,7 +143,6 @@ export class Variables extends PureComponent {
                   Create Variable
                   <Tooltip position="bottom" html={tt(180, 'Flow Variables exist only in this flow and are reset after you leave the flow')}>
                     <span onClick={() => this.setState({ tab: 'global' })} className="pointer">
-                      {' '}
                       (Flow)
                     </span>
                   </Tooltip>

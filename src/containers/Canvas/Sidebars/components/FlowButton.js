@@ -59,7 +59,6 @@ class FlowButton extends Component {
             />
           ) : (
             <span className="diagram-text">
-              {' '}
               {/* eslint-disable no-nested-ternary */}
               {this.props.flow.name === 'ROOT'
                 ? 'HOME'
@@ -67,7 +66,7 @@ class FlowButton extends Component {
                 ? this.props.diagram.name.length > 15
                   ? `${this.props.diagram.name.substring(0, 15)}...`
                   : this.props.diagram.name
-                : 'Flow'}{' '}
+                : 'Flow'}
               {/* eslint-enable no-nested-ternary */}
             </span>
           )}

@@ -42,12 +42,10 @@ class Card extends Component {
         <label className="mt-0">Card Type</label>
         <ButtonGroup className="toggle-group mb-2">
           <Button outline={type !== 'Simple'} onClick={() => this.updateContent('cardtype', 'Simple')} disabled={type === 'Simple'}>
-            {' '}
-            Simple{' '}
+            Simple
           </Button>
           <Button outline={type !== 'Standard'} onClick={() => this.updateContent('cardtype', 'Standard')} disabled={type === 'Standard'}>
-            {' '}
-            Standard{' '}
+            Standard
           </Button>
         </ButtonGroup>
         <label>Title</label>

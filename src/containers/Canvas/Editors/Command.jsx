@@ -372,8 +372,7 @@ export class Command extends Component {
             }}
             disabled={this.state.tab === 'command'}
           >
-            {' '}
-            Command{' '}
+            Command
           </Button>
           <Button
             outline={this.state.tab !== 'intents'}
@@ -382,8 +381,7 @@ export class Command extends Component {
             }}
             disabled={this.state.tab === 'intents'}
           >
-            {' '}
-            Intents{' '}
+            Intents
           </Button>
           <Button
             outline={this.state.tab !== 'slots'}
@@ -392,8 +390,7 @@ export class Command extends Component {
             }}
             disabled={this.state.tab === 'slots'}
           >
-            {' '}
-            Slots{' '}
+            Slots
           </Button>
         </ButtonGroup>
         <div className={this.props.live_mode ? 'disabled-overlay' : ''}>{this.renderTab()}</div>

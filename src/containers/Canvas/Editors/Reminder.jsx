@@ -79,16 +79,14 @@ class ReminderBlock extends Component {
             onClick={() => this.updateContent('reminder_type', 'SCHEDULED_RELATIVE')}
             disabled={type === 'SCHEDULED_RELATIVE'}
           >
-            {' '}
-            Timer{' '}
+            Timer
           </Button>
           <Button
             outline={type !== 'SCHEDULED_ABSOLUTE'}
             onClick={() => this.updateContent('reminder_type', 'SCHEDULED_ABSOLUTE')}
             disabled={type === 'SCHEDULED_ABSOLUTE'}
           >
-            {' '}
-            Scheduled{' '}
+            Scheduled
           </Button>
         </ButtonGroup>
         {type === 'SCHEDULED_RELATIVE' ? (

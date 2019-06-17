@@ -155,18 +155,20 @@ class LightCanvas extends Component {
       model.addListener({ linksUpdated: this.unsave });
 
       const nodes = model.getNodes();
-      Object.keys(nodes).forEach((key) => {
+      // eslint-disable-next-line guard-for-in, no-restricted-syntax
+      for (const key in nodes) {
         if (nodes[key].extras.type === 'story' || nodes[key].extras.type === 'comment') {
           nodes[key].clearListeners();
           nodes[key].addListener({ entityRemoved: (e) => e.stopPropagation() });
         }
-      });
+      }
 
       const links = model.getLinks();
-      Object.keys(links).forEach((key) => {
+      // eslint-disable-next-line guard-for-in, no-restricted-syntax
+      for (const key in links) {
         links[key].setColor(line_color);
         links[key].setWidth(line_width);
-      });
+      }
 
       engine.stopMove();
       engine.setDiagramModel(model);

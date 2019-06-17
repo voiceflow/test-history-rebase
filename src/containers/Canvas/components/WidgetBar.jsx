@@ -28,7 +28,7 @@ function centerDiagram(engine, setOpen) {
   const nodes = model.getNodes();
 
   // eslint-disable-next-line no-restricted-syntax
-  for (const key of Object.keys(nodes)) {
+  for (const key in nodes) {
     if (nodes[key].extras && nodes[key].extras.type === 'story') {
       // engine.setSuperSelect(nodes[key])
       nodes[key].setSelected();

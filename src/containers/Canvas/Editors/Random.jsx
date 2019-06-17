@@ -51,8 +51,8 @@ class RandomBlock extends Component {
     if (node.parentCombine) {
       bestNode = _.findIndex(node.parentCombine.combines, ['name', node.name]);
     }
-    // eslint-disable-next-line no-restricted-syntax
-    for (const name of Object.keys(ports)) {
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const name in ports) {
       const port = node.getPort(name);
       // eslint-disable-next-line no-continue
       if (port.in) continue;

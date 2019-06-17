@@ -359,8 +359,8 @@ export class ActionGroup extends PureComponent {
             .get(`/interaction_model/${this.props.skill.amzn_id}/status`)
             .then((res) => {
               if (res.data && res.data.interactionModel) {
-                // eslint-disable-next-line no-restricted-syntax
-                for (const key of Object.keys(res.data.interactionModel)) {
+                // eslint-disable-next-line no-restricted-syntax, guard-for-in
+                for (const key in res.data.interactionModel) {
                   const locale = res.data.interactionModel[key];
                   if (locale.lastUpdateRequest && locale.lastUpdateRequest.status && locale.lastUpdateRequest.status === 'SUCCEEDED') {
                     this.enableSkill(key);

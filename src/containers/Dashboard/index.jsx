@@ -127,7 +127,7 @@ export const DashBoard = (props) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const updates = await axios.get(`/product_updates`);
+        const updates = await axios.get('/product_updates');
         if (updates.data.length > 0) {
           const lastCheckedTime = localStorage.getItem('voiceflowProductUpdateCheckTime');
           const newUpdates = updates.data.filter((update) => {
@@ -168,20 +168,19 @@ export const DashBoard = (props) => {
   const renderUpdatesButton = () => {
     if (!show_update_bubble) {
       return <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />;
-    } else {
-      return (
-        <div className={'dropdown-update-container'} onMouseEnter={() => toggleUpdatesHover(true)} onMouseLeave={() => toggleUpdatesHover(false)}>
-          <div className={'dropdown-update-bubble'} />
-          {!updates_hover && !updates_open ? (
-            <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />
-          ) : (
-            <div className={cn('dropdown-button-numbered')} onClick={updateButtonClick}>
-              <div className="update-number-circle">{new_product_updates.length}</div>
-            </div>
-          )}
-        </div>
-      );
     }
+    return (
+      <div className={'dropdown-update-container'} onMouseEnter={() => toggleUpdatesHover(true)} onMouseLeave={() => toggleUpdatesHover(false)}>
+        <div className={'dropdown-update-bubble'} />
+        {!updates_hover && !updates_open ? (
+          <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />
+        ) : (
+          <div className={cn('dropdown-button-numbered')} onClick={updateButtonClick}>
+            <div className="update-number-circle">{new_product_updates.length}</div>
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (

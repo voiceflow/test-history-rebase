@@ -80,8 +80,8 @@ class IfBlock extends Component {
       if (node.parentCombine) {
         bestNode = _.findIndex(node.parentCombine.combines, ['name', node.name]);
       }
-      // eslint-disable-next-line no-restricted-syntax
-      for (const name of Object.keys(node.getPorts())) {
+      // eslint-disable-next-line guard-for-in, no-restricted-syntax
+      for (const name in node.getPorts()) {
         const port = node.getPort(name);
 
         if (port.label === node.extras.expressions.length) {

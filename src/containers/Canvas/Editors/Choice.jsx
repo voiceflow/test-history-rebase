@@ -84,8 +84,8 @@ export class Choice extends Component {
     if (node.parentCombine) {
       bestNode = _.findIndex(node.parentCombine.combines, ['id', node.id]);
     }
-    // eslint-disable-next-line no-restricted-syntax
-    for (const name of Object.keys(node.getPorts())) {
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const name in node.getPorts()) {
       const port = node.getPort(name);
 
       if (port.label === node.extras.inputs.length) {

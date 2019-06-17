@@ -152,7 +152,8 @@ class Menu extends Component {
   }
 
   updateTree() {
-    Object.keys(this.props.diagrams).forEach((diagram) => {
+    // eslint-disable-next-line guard-for-in, no-restricted-syntax
+    for (const diagram of this.props.diagrams) {
       if (diagram.name === 'ROOT') {
         this.visited = new Set();
         this.setState({
@@ -160,7 +161,7 @@ class Menu extends Component {
           depth: this.props.diagrams.length,
         });
       }
-    });
+    }
   }
 
   openTab(tab) {

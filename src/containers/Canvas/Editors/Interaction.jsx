@@ -99,8 +99,8 @@ export class Interaction extends Component {
       bestNode = _.findIndex(node.parentCombine.combines, ['name', node.name]);
     }
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const name of Object.keys(node.getPorts())) {
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const name in node.getPorts()) {
       const port = node.getPort(name);
 
       if (port.label === a_choices.length) {

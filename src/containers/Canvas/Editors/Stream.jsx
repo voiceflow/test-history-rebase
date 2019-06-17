@@ -42,8 +42,8 @@ class Stream extends Component {
     if (this.state.node.extras.custom_pause) {
       const idsEqual = (npc) => npc.id === node.id;
 
-      // eslint-disable-next-line no-restricted-syntax
-      for (const name of Object.keys(ports)) {
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+      for (const name in ports) {
         const port = node.getPort(name);
         // eslint-disable-next-line no-continue
         if (port.in) continue;

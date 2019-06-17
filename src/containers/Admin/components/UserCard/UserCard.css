@@ -34,7 +34,6 @@
   transition: width 0.4s;
 }
 
-
 .user_card_card .additional .user-card {
   position: relative;
   float: left;
@@ -49,7 +48,7 @@
   display: block;
   height: 80%;
   border-left: 2px solid rgba(0, 0, 0, 0.025);
-  content: "";
+  content: '';
 }
 
 .user_card_card .additional .user-card .level,
@@ -76,7 +75,6 @@
 .user_card_card .additional .user_card_more_info {
   position: absolute;
   left: 150px;
-  float: left;
   width: 300px;
   height: 100%;
 }

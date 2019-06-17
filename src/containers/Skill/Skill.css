@@ -158,7 +158,6 @@ textarea::placeholder {
 .return-button {
   float: left;
   height: 100%;
-  vertical-align: center !important;
 }
 
 .empty-desc {
@@ -628,8 +627,6 @@ textarea::placeholder {
 
 .google-link-input {
   display: inline;
-  width: 1.5em;
-  height: 1.6em;
   padding: 0.1em;
   text-align: center;
 }

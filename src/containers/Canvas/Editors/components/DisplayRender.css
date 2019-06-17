@@ -1,10 +1,10 @@
-.display-elem{
+.display-elem {
   margin: 0 auto;
   transform-origin: top left;
 }
 
-.svg-active path{
-  fill:#2c85ff;
+.svg-active path {
+  fill: #2c85ff;
 }
 
 font-face {
@@ -234,7 +234,7 @@ font-face {
 
 /* Offset direction
  */
-html:not([dir="rtl"]) .noUi-horizontal .noUi-origin {
+html:not([dir='rtl']) .noUi-horizontal .noUi-origin {
   right: 0;
   left: auto;
 }
@@ -295,7 +295,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-origin {
   height: 34px;
 }
 
-html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
+html:not([dir='rtl']) .noUi-horizontal .noUi-handle {
   right: -17px;
   left: auto;
 }
@@ -351,7 +351,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   width: 1px;
   height: 14px;
   background: #e8e7e6;
-  content: "";
+  content: '';
 }
 
 .noUi-handle::after {
@@ -631,6 +631,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 /* MS supports */
+/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
 @supports (-ms-overflow-style: none) {
   .ps {
     overflow: auto !important;

@@ -3448,10 +3448,12 @@ button.close:hover{
   cursor: text;
 }
 
+/* stylelint-disable-next-line selector-pseudo-class-no-unknown */
 .editor.oneline :global(.public-DraftEditor-content) {
   min-height: 0;
 }
 
+/* stylelint-disable-next-line selector-pseudo-class-no-unknown */
 .editor :global(.public-DraftEditor-content) {
   min-height: 68px;
 }

@@ -74,7 +74,7 @@ exports[`Sidebar Variables render variable sidebar on global 1`] = `
             className="pointer"
             onClick={[Function]}
           >
-             (Project)
+            (Project)
           </span>
         </Tooltip>
       </Label>

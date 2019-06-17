@@ -14,7 +14,7 @@ exports[`InteractionEditor render alexa interaction block editor 1`] = `
       outline={false}
       tag="button"
     >
-       Choices 
+      Choices
     </Button>
     <Button
       color="secondary"
@@ -23,7 +23,7 @@ exports[`InteractionEditor render alexa interaction block editor 1`] = `
       outline={true}
       tag="button"
     >
-       Intents 
+      Intents
     </Button>
     <Button
       color="secondary"
@@ -32,7 +32,7 @@ exports[`InteractionEditor render alexa interaction block editor 1`] = `
       outline={true}
       tag="button"
     >
-       Slots 
+      Slots
     </Button>
   </ButtonGroup>
   <div

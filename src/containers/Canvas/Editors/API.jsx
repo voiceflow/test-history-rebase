@@ -1,5 +1,8 @@
+/* eslint-disable simple-import-sort/sort */
+import AceEditor from 'react-ace';
 import 'brace/mode/javascript';
 import 'brace/theme/chrome';
+/* eslint-enable simple-import-sort/sort */
 
 import axios from 'axios';
 import { ModalHeader } from 'components/Modals/ModalHeader';
@@ -10,7 +13,6 @@ import * as _ from 'lodash';
 import pretty from 'prettysize';
 import randomstring from 'randomstring';
 import React, { Component } from 'react';
-import AceEditor from 'react-ace';
 import ReactJson from 'react-json-view';
 import {
   Button,

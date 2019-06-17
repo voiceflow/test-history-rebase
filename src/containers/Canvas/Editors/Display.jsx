@@ -1,13 +1,15 @@
+/* eslint-disable simple-import-sort/sort */
 import './Display.css';
+import AceEditor from 'react-ace';
 import 'brace/mode/json_custom';
 import 'brace/theme/monokai';
 import 'brace/ext/language_tools';
+/* eslint-enable simple-import-sort/sort */
 
 import axios from 'axios';
 import { ModalHeader } from 'components/Modals/ModalHeader';
 import _ from 'lodash';
 import React, { Component } from 'react';
-import AceEditor from 'react-ace';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';

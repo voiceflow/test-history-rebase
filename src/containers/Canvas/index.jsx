@@ -1,64 +1,76 @@
-/* eslint-disable guard-for-in, no-restricted-syntax */
+/* eslint-disable guard-for-in, no-restricted-syntax, simple-import-sort/sort */
+import React, { Component } from 'react';
+import * as SRD from 'components/SRD/main.js';
+import cn from 'classnames';
+import Menu from './Menu';
+import Editor from './Editor';
+import axios from 'axios';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+// import Loader from './Loader'
 import 'draft-js/dist/Draft.css';
 import 'components/SRD/sass/main.css';
 import './StoryBoard.css';
 
+//HOCs
+import { undo, redo } from 'hocs/withUndoRedo';
+import { open, blockMenu } from 'hocs/withCanvasHelper';
+import { keyboardModal } from 'hocs/withModalHandlers';
+
+import { WidgetBar } from './components/WidgetBar';
+import CanvasWarning from './components/CanvasWarning';
+//Helpers
+import { combineAppendValidation, appendValidator } from 'utils/combineHelper';
+
+import { updateVersion, updateIntents, setCanFulfill } from 'ducks/version';
+import { setVariables } from 'ducks/variable';
+import { setCanvasError } from 'ducks/user';
+import { renameDiagram, appendDiagrams, updateDiagrams } from 'ducks/diagram';
+import { setError, setConfirm } from 'ducks/modal';
+import { openTab, closeTab } from 'ducks/user';
+
+import ActionGroup from './components/ActionGroup/ActionGroup';
+import HelpModal from './HelpModal';
+import TestModal from './Test/TestModal';
 import new_template from 'assets/templates/new';
-import axios from 'axios';
-import cn from 'classnames';
-import DefaultModal from 'components/Modals/DefaultModal';
-import Upgrade from 'components/Modals/MultiPlatformModalContent';
+import { Alert, ListGroup, ListGroupItem } from 'reactstrap';
+
+import cloneDeep from 'lodash/cloneDeep';
+import * as util from './util';
+import Spotlight from './Spotlight';
 import { Toolkit } from 'components/SRD/Toolkit';
-/* eslint-disable no-secrets/no-secrets */
-import { BlockLinkFactory } from 'components/SRD/factories/BlockLinkFactory';
-import { BlockNodeFactory } from 'components/SRD/factories/BlockNodeFactory';
-import { BlockPortFactory } from 'components/SRD/factories/BlockPortFactory';
-/* eslint-enable no-secrets/no-secrets */
-import * as SRD from 'components/SRD/main';
+import FlowBar from './FlowBar';
+import DefaultModal from 'components/Modals/DefaultModal';
+import ShortCuts from 'components/ShortCuts/ShortCuts';
+import Mousetrap from 'mousetrap';
+
 import { BlockNodeModel } from 'components/SRD/models/BlockNodeModel';
 import { PointModel } from 'components/SRD/models/PointModel';
-import ShortCuts from 'components/ShortCuts/ShortCuts';
+/* eslint-disable no-secrets/no-secrets */
+import { BlockLinkFactory } from 'components/SRD/factories/BlockLinkFactory';
+import { BlockPortFactory } from 'components/SRD/factories/BlockPortFactory';
+import { BlockNodeFactory } from 'components/SRD/factories/BlockNodeFactory';
+/* eslint-enable no-secrets/no-secrets */
 import { Spinner } from 'components/Spinner/Spinner';
-import { appendDiagrams, renameDiagram, updateDiagrams } from 'ducks/diagram';
-import { fetchIntegrationUsers } from 'ducks/integration';
-import { setConfirm, setError } from 'ducks/modal';
-import { closeTab, openTab, setCanvasError } from 'ducks/user';
-import { setCanFulfill, setVariables, updateIntents, updateVersion } from 'ducks/variable';
-import { blockMenu, open } from 'hocs/withCanvasHelper';
-import { keyboardModal } from 'hocs/withModalHandlers';
-// HOCs
-import { redo, undo } from 'hocs/withUndoRedo';
-import { getSlotsForKeys, getUtterancesWithSlotNames } from 'intent_util';
-import _ from 'lodash';
-import cloneDeep from 'lodash/cloneDeep';
-import moment from 'moment';
-import Mousetrap from 'mousetrap';
-import * as NLC from 'natural-language-commander';
+
+import { SLOT_TYPES, ALLOWED_GOOGLE_BLOCKS } from 'Constants';
+
+import Linter from './linter';
+import { getUtterancesWithSlotNames, getSlotsForKeys } from 'intent_util';
 import randomstring from 'randomstring';
-import React, { Component } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { connect } from 'react-redux';
+import { checkBlockDisabledLive } from './Blocks';
+
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Prompt } from 'react-router';
-import { Alert, ListGroup, ListGroupItem } from 'reactstrap';
-import { compose } from 'recompose';
-// Helpers
-import { appendValidator, combineAppendValidation } from 'utils/combineHelper';
+import moment from 'moment';
+import Upgrade from 'components/Modals/MultiPlatformModalContent.jsx';
+import { fetchIntegrationUsers } from 'ducks/integration';
+/* eslint-enable simple-import-sort/sort */
 
-import { ALLOWED_GOOGLE_BLOCKS, SLOT_TYPES } from 'Constants';
-
-import { checkBlockDisabledLive } from './Blocks';
-import Editor from './Editor';
-import FlowBar from './FlowBar';
-import HelpModal from './HelpModal';
-import Menu from './Menu';
-import Spotlight from './Spotlight';
-import TestModal from './Test/TestModal';
-import ActionGroup from './components/ActionGroup/ActionGroup';
-import CanvasWarning from './components/CanvasWarning';
-import { WidgetBar } from './components/WidgetBar';
-import Linter from './linter';
-import * as util from './util';
+const NLC = require('natural-language-commander');
+const _ = require('lodash');
 
 const toolkit = new Toolkit();
 

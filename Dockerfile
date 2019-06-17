@@ -11,7 +11,6 @@ WORKDIR /app
 COPY . .
 
 RUN echo $NPM_TOKEN > .npmrc
-RUN cat .npmrc
 RUN yarn
 RUN npm run build
 

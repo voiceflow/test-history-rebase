@@ -50,6 +50,9 @@ export const DashBoard = (props) => {
   const [product_updates, setProductUpdates] = useState([]);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
   const [updates_open, toggleUpdatesOpen] = useState(false);
+  const [new_product_updates, setNewProductUpdates] = useState([]);
+  const [updates_hover, toggleUpdatesHover] = useState(false);
+  const [show_update_bubble, setShowUpdateBubble] = useState(false);
 
   const copyProject = (project_id, board_id = null) => {
     if (props.projects.allIds.length >= props.team.projects) {
@@ -115,17 +118,34 @@ export const DashBoard = (props) => {
     updateTeam();
   }, [props.team_id]);
 
+  const updateButtonClick = () => {
+    toggleUpdatesOpen(!updates_open);
+    const checkTime = Math.floor(Date.now() / 1000);
+    localStorage.setItem('voiceflowProductUpdateCheckTime', checkTime.toString());
+  };
+
   useEffect(() => {
-    axios
-      .get('/product_updates')
-      .then((res) => {
-        if (res.data.length > 0) {
-          setProductUpdates(res.data);
+    async function fetchData() {
+      try {
+        const updates = await axios.get(`/product_updates`);
+        if (updates.data.length > 0) {
+          const lastCheckedTime = localStorage.getItem('voiceflowProductUpdateCheckTime');
+          const newUpdates = updates.data.filter((update) => {
+            const updateTime = Math.floor(new Date(update.created) / 1000);
+            return updateTime > lastCheckedTime;
+          });
+          if (newUpdates && newUpdates.length > 0) {
+            setNewProductUpdates(newUpdates);
+            setShowUpdateBubble(true);
+          }
+          setProductUpdates(updates.data);
         }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      } catch (err) {
+        console.error('there was an error getting the product updates: ', err);
+      }
+    }
+
+    fetchData();
   }, []);
 
   const newProject = (id) => {
@@ -144,6 +164,25 @@ export const DashBoard = (props) => {
   const filtered_projects = filter ? filter_projects(props.projects, filter) : props.projects.byId;
 
   const saveList = () => props.updateLists(props.team_id);
+
+  const renderUpdatesButton = () => {
+    if (!show_update_bubble) {
+      return <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />;
+    } else {
+      return (
+        <div className={'dropdown-update-container'} onMouseEnter={() => toggleUpdatesHover(true)} onMouseLeave={() => toggleUpdatesHover(false)}>
+          <div className={'dropdown-update-bubble'} />
+          {!updates_hover && !updates_open ? (
+            <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />
+          ) : (
+            <div className={cn('dropdown-button-numbered')} onClick={updateButtonClick}>
+              <div className="update-number-circle">{new_product_updates.length}</div>
+            </div>
+          )}
+        </div>
+      );
+    }
+  };
 
   return (
     <>
@@ -171,21 +210,20 @@ export const DashBoard = (props) => {
           rightRenderer={() => (
             <div className="title-group no-select pr-2">
               <div className="subheader-right mr-2">
-                <Button
-                  className={cn('dropdown-button-border', { active: updates_open })}
-                  id="update-popup"
-                  type="button"
-                  onClick={() => toggleUpdatesOpen(!updates_open)}
-                />
+                <div id="update-popup">{renderUpdatesButton()}</div>
                 <Popover
                   className="updates-popover-container"
                   placement="bottom"
                   isOpen={updates_open}
                   target="update-popup"
-                  toggle={() => toggleUpdatesOpen(!updates_open)}
+                  toggle={() => {
+                    toggleUpdatesOpen(!updates_open);
+                    setNewProductUpdates([]);
+                    setShowUpdateBubble(false);
+                  }}
                 >
                   <PopoverBody>
-                    <UpdatesPopover product_updates={product_updates} />
+                    <UpdatesPopover product_updates={product_updates} new_product_updates={new_product_updates} />
                   </PopoverBody>
                 </Popover>
               </div>

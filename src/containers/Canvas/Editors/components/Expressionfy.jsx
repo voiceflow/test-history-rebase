@@ -17,7 +17,6 @@ const expressionfy = (expression, depth = 0) => {
       .join(', ');
     return (
       <span className="math brackets">
-        ({' '}
         {value.split(/{(\w*)}/g).map((v, i) =>
           i % 2 === 0 ? (
             v
@@ -26,7 +25,7 @@ const expressionfy = (expression, depth = 0) => {
               {v}
             </span>
           )
-        )}{' '}
+        )}
         )
       </span>
     );

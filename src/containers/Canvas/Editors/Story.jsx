@@ -11,7 +11,6 @@ class Story extends Component {
           </span>
         </p>
         <p className="modal-txt-no-pad text-center mb-4">
-          {' '}
           Watch this 5 minute introduction video by Voiceflow's CEO to familiarize yourself with our creator tool!
         </p>
         <div className="embed-responsive box-shadow embed-responsive-16by9 rounded">

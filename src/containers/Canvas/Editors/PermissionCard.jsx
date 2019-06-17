@@ -84,16 +84,14 @@ class PermissionCard extends Component {
             onClick={() => this.state.node.extras.a_l && this.toggle('a_l')}
             disabled={!this.state.node.extras.a_l}
           >
-            {' '}
-            Permissions{' '}
+            Permissions
           </Button>
           <Button
             outline={!this.state.node.extras.a_l}
             onClick={() => !this.state.node.extras.a_l && this.toggle('a_l')}
             disabled={this.state.node.extras.a_l}
           >
-            {' '}
-            Account Linking{' '}
+            Account Linking
           </Button>
         </ButtonGroup>
         <div className={this.props.live_mode ? 'text-center disabled-overlay' : 'text-center'}>

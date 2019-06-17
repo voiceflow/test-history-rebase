@@ -75,7 +75,7 @@ class BackupSettings extends Component {
       text: (
         <Alert color="danger" className="mb-0">
           WARNING: This action can not be undone, will delete all your current work since your last backup, and will not change your skill's Amazon
-          endpoint.{' '}
+          endpoint.
         </Alert>
       ),
       confirm: this.props.onSwapVersions,
@@ -148,7 +148,7 @@ class BackupSettings extends Component {
                     {this.state.live_version ? (
                       <tr className="table-primary">
                         <td>
-                          {moment(this.state.live_version.created).fromNow()} <br /> (Current live version){' '}
+                          {moment(this.state.live_version.created).fromNow()} <br /> (Current live version)
                         </td>
                         <td className="text-center">
                           <i

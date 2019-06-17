@@ -249,7 +249,6 @@ class Display extends Component {
                           this.props.history.push(`/visuals/${this.props.skill_id}`);
                         }}
                       >
-                        {' '}
                         Back
                       </Button>
                       <Button isPrimary varient="contained" onClick={this.save} style={{ width: 100 }}>

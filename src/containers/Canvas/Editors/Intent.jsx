@@ -320,8 +320,7 @@ export class Intent extends Component {
             }}
             disabled={this.state.tab === 'Select'}
           >
-            {' '}
-            Select{' '}
+            Select
           </Button>
           <Button
             outline={this.state.tab !== 'intents'}
@@ -330,8 +329,7 @@ export class Intent extends Component {
             }}
             disabled={this.state.tab === 'intents'}
           >
-            {' '}
-            Intents{' '}
+            Intents
           </Button>
           <Button
             outline={this.state.tab !== 'slots'}
@@ -340,8 +338,7 @@ export class Intent extends Component {
             }}
             disabled={this.state.tab === 'slots'}
           >
-            {' '}
-            Slots{' '}
+            Slots
           </Button>
         </ButtonGroup>
         <div className={this.props.live_mode ? 'disabled-overlay' : null}>
@@ -382,7 +379,7 @@ export class Intent extends Component {
                   }}
                 >
                   <span className="slot-fulfillment">
-                    <i className="fas fa-comment-alt-check mr-2" /> Slot Fulfillment{' '}
+                    <i className="fas fa-comment-alt-check mr-2" /> Slot Fulfillment
                   </span>
                 </button>
               )}

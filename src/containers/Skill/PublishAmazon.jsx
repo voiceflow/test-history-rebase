@@ -1084,8 +1084,7 @@ class Skill extends Component {
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              {' '}
-                              Children's Online Privacy Protection Act (COPPA){' '}
+                              Children's Online Privacy Protection Act (COPPA)
                             </a>
                             )
                           </p>

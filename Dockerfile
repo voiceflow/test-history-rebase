@@ -8,6 +8,7 @@ ENV REACT_APP_BUILD_ENV=${build_REACT_APP_BUILD_ENV}
 WORKDIR /app
 COPY . .
 
+RUN echo $NPM_TOKEN > .npmrc
 RUN yarn
 RUN npm run build
 

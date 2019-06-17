@@ -49,7 +49,7 @@ jobs:
           command: 'sed -i".json" "s/VERSION/$CIRCLE_BUILD_NUM/g" Dockerrun.aws.json'
       - run: 
           name: 'Build docker image'
-          command: docker build --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_APP_API_HOST=api.staging.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=staging --squash -t voiceflow/creator-app:$CIRCLE_BUILD_NUM .
+          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_APP_API_HOST=api.staging.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=staging --squash -t voiceflow/creator-app:$CIRCLE_BUILD_NUM .
       - run:
           name: 'Push docker image'
           command: |
@@ -123,7 +123,7 @@ jobs:
           command: 'sed -i".json" "s/VERSION/$CIRCLE_BUILD_NUM/g" Dockerrun.aws.json'
       - run: 
           name: 'Build docker image'
-          command: docker build --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_APP_API_HOST=api.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=production --squash -t voiceflow/creator-app:$CIRCLE_BUILD_NUM .
+          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_APP_API_HOST=api.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=production --squash -t voiceflow/creator-app:$CIRCLE_BUILD_NUM .
       - run:
           name: 'Push docker image'
           command: |

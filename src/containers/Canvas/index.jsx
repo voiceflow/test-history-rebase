@@ -1,6 +1,6 @@
 /* eslint-disable guard-for-in, no-restricted-syntax, simple-import-sort/sort */
 import React, { Component } from 'react';
-import * as SRD from 'components/SRD/main.js';
+import * as SRD from 'components/SRD/main';
 import cn from 'classnames';
 import Menu from './Menu';
 import Editor from './Editor';
@@ -14,22 +14,21 @@ import 'draft-js/dist/Draft.css';
 import 'components/SRD/sass/main.css';
 import './StoryBoard.css';
 
-//HOCs
+// HOCs
 import { undo, redo } from 'hocs/withUndoRedo';
 import { open, blockMenu } from 'hocs/withCanvasHelper';
 import { keyboardModal } from 'hocs/withModalHandlers';
 
 import { WidgetBar } from './components/WidgetBar';
 import CanvasWarning from './components/CanvasWarning';
-//Helpers
+// Helpers
 import { combineAppendValidation, appendValidator } from 'utils/combineHelper';
 
 import { updateVersion, updateIntents, setCanFulfill } from 'ducks/version';
 import { setVariables } from 'ducks/variable';
-import { setCanvasError } from 'ducks/user';
 import { renameDiagram, appendDiagrams, updateDiagrams } from 'ducks/diagram';
 import { setError, setConfirm } from 'ducks/modal';
-import { openTab, closeTab } from 'ducks/user';
+import { openTab, closeTab, setCanvasError } from 'ducks/user';
 
 import ActionGroup from './components/ActionGroup/ActionGroup';
 import HelpModal from './HelpModal';
@@ -65,7 +64,7 @@ import { checkBlockDisabledLive } from './Blocks';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Prompt } from 'react-router';
 import moment from 'moment';
-import Upgrade from 'components/Modals/MultiPlatformModalContent.jsx';
+import Upgrade from 'components/Modals/MultiPlatformModalContent';
 import { fetchIntegrationUsers } from 'ducks/integration';
 /* eslint-enable simple-import-sort/sort */
 

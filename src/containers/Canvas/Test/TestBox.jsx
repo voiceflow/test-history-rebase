@@ -36,11 +36,11 @@ const TestBox = props => {
             <div className="chats">
                 {outputs.map((chat, i) => {
                     if (chat.self) {
-                        return <div className="mt-2 text-right" key={i}>
+                        return <div className="mt-2 position-relative text-right mr-4" key={i}>
                             <div className="self-message message border rounded p-2 align-self-start">
                                 <p className="mb-0 px-1 text-left">{chat.self}<br /><small className="text-muted">{chat.time}</small></p>
                             </div>
-                            <img src='/user_reply.svg' height={15} width={15} alt="user" className="ml-2" />
+                            <img src='/user_reply.svg' height={18} width={18} alt="user" className="speak-box-icon ml-2" />
                         </div>
                     }
                     return <SpeakBox
@@ -87,8 +87,8 @@ const TestBox = props => {
                 :
                 <Form onSubmit={inputSubmit} id="user__input" className="px-3 mb-3 mt-3">
                     <span className="light-grey">User Says</span>
-                    <Input className='form-bg response-input mt-3 mb-2' name="input" type="textarea" placeholder="Enter text of your command" value={input} onChange={handleChange} onKeyDown={onKeydown}/>
-                    <small className="text-muted pb-3 pt-2 d-block"><kbd>⌘</kbd> + Enter</small>
+                    <Input className='form-bg response-input mt-3 mb-2 pt-3' name="input" type="textarea" placeholder="Enter response" value={input} onChange={handleChange} onKeyDown={onKeydown}/>
+                    <small className="float-right text-muted pb-3 pt-2 d-block"><kbd>Enter</kbd> To Send</small>
                 </Form>
                 }
             </React.Fragment>

@@ -4,6 +4,7 @@ import { compose } from "recompose";
 import { connect } from "react-redux";
 import cn from 'classnames'
 import { Collapse } from 'reactstrap'
+import { Tooltip } from 'react-tippy';
 
 import Conditions from './conditions'
 import Timeline from './timeline'
@@ -94,12 +95,21 @@ class Test extends Component {
 
           return <div key={i} className="sidebar_container">
             <div className="condition-label" onClick={() => {this.toggleSection(s)}}>
-            <label id={s} className='ml-3 mt-3 mb-3 text-left'>{s}</label>
-              {(s === C.CONDITIONS && !this.props.testing_info) && <i className={cn("fas", "light-grey", "d-flex", "align-items-center", {
-                "fa-chevron-up": conditionsOpen,
-                "fa-chevron-down":!conditionsOpen
-              })} />
-            }
+            <label id={s} className='ml-3 mt-4 mb-4 text-left'>
+              {s}
+            </label>
+              {(s === C.CONDITIONS && !this.props.testing_info) && <i className={cn("fas fa-caret-down fa-lg", "light-grey", "d-flex", "align-items-center", {
+                "rotate": conditionsOpen,
+                "fa-rotate--90":!conditionsOpen
+              })} />}
+              {(s === C.TIMELINE) && <Tooltip
+                  title="Restart Test"
+                  position="bottom"
+                  distance={16}
+                  className="d-flex align-items-center"
+                >
+                  <img src={'/restart.svg'} alt="restart" width="15" height="15" onClick={() => this.props.resetTest()} />
+                </Tooltip>}
             </div>
             <Collapse isOpen={s === C.CONDITIONS ? !this.props.testing_info && this.state.conditionsOpen : true}>
               {section}

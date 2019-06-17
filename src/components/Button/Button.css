@@ -68,9 +68,10 @@ button {
      box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
  }
 
- .btn-primary:active {
-     background: linear-gradient(0deg, #3087FE, #3087FE) !;
-     box-shadow: 0px 6px 12px rgba(17, 49, 96, 0.2), 0px 0px 6px rgba(17, 49, 96, 0.1);
+ .btn-primary:active, .btn-primary:focus {
+     border: none !important;
+     outline: none !important;
+     box-shadow: none !important;
  }
 
  .btn-primary.__small {

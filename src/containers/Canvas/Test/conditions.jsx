@@ -1,9 +1,11 @@
 import React from "react";
+import _ from 'lodash'
 import { compose } from "recompose";
 import { connect } from "react-redux";
 import cn from 'classnames'
 import ConditionExpression from "./ConditionExpression";
 
+const filter_variables = ['user_id', 'timestamp', 'platform', 'locale', 'access_token']
 const Conditions = (props) => {
   const {
     variables,
@@ -18,7 +20,7 @@ const Conditions = (props) => {
       <div className="no-space__break" />
       <div className="text-center">
       {/* node.extras here */}
-        {variables.map((variable, i) => {
+        {_.difference(variables, filter_variables).map((variable, i) => {
           return (
             <ConditionExpression
               key={i}

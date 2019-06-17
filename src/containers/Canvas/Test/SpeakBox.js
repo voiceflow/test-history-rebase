@@ -82,11 +82,14 @@ class SpeakBox extends React.Component {
                    {
                        this.props.isSpeak &&
                        <>
-                       <img src={type === 'audio'? '/audio.svg' :'/alexa.svg'} height={15} width={15} alt="alexa" className="mr-2"/>
+                       <img src={type === 'audio'? '/audio.svg' :'/alexa.svg'} height={18} width={18} alt="alexa" className="speak-box-icon mr-2"/>
                         <Tooltip
                             title = {renderTime}
                         >
-                                <div className = "message border rounded p-2 align-self-start"
+                                <div className={cn("message border rounded p-2 align-self-start", {
+                                    'ml-4': isLeft,
+                                    'mr-4': isRight,
+                                })}
                                 onClick = {
                                     () => {
                                         this.props.audio.play()

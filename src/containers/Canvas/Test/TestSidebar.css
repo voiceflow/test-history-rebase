@@ -80,4 +80,10 @@
 
 .choice-option:hover {
     color: #2C85FF;
+    cursor: pointer;
+}
+
+.speak-box-icon {
+    bottom: 0;
+    position: absolute;
 }

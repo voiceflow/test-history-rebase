@@ -168,11 +168,11 @@ export class DiagramModel extends BaseEntity {
 			const deltaX = offsetX - this.offsetX;
 			const deltaY = offsetY - this.offsetY;
 
-			const accelerationX = 0.0025 * deltaX;
-			const accelerationY = 0.0025 * deltaY;
+			const accelerationX = 0.004 * deltaX;
+			const accelerationY = 0.004 * deltaY;
 			let vX = deltaX/100;
 			let vY = deltaY/100;
-			let counter = 25;
+			let counter = 20;
 			this.offsetInterval = setInterval(() => {
 				this.offsetX += vX;
 				this.offsetY += vY;

@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import { useToggle } from 'hooks/toggle'
 
@@ -15,6 +16,7 @@ const UserTestHeader = props => {
         page,
         skill,
         history,
+        dev_skill,
         onTest,
         testing_info,
         resetTest,
@@ -44,14 +46,23 @@ const UserTestHeader = props => {
                             ?
                             <Button isBtn isSecondary className="mr-2" onClick={() => {
                                 resetTest()
+                                history.push(
+                                    `/canvas/${dev_skill.skill_id}/${
+                                    dev_skill.diagram
+                                    }`
+                                );
                             }}>Finish Test</Button>
                             :
-                            <Button isPrimary className="mr-2" onClick={() => {
-                                onTest()
-                            }}>
-                                Start Test
-                                &nbsp;&nbsp;&nbsp;<i className="fas fa-play" />
-                            </Button>
+                            <ReactCSSTransitionGroup
+                                transitionLeaveTimeout={500}
+                            >
+                                <Button isPrimary className="mr-2" onClick={() => {
+                                    onTest()
+                                }}>
+                                    Start Test
+                                    &nbsp;&nbsp;&nbsp;<i className="fas fa-play" />
+                                </Button>
+                            </ReactCSSTransitionGroup>
                         }
                     </div>
                 )}
@@ -65,6 +76,9 @@ const UserTestHeader = props => {
 
 const mapStateToProps = state => ({
     skill: state.skills.skill,
+    dev_skill: state.skills.dev_skill ?
+        state.skills.dev_skill :
+        state.skills.skill
 })
 
 export default connect(mapStateToProps)(UserTestHeader)

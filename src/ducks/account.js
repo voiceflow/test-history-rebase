@@ -1,6 +1,9 @@
 import axios from 'axios';
+import { LOGROCKET_ENABLED } from 'config';
 import { push } from 'connected-react-router';
+import LogRocket from 'logrocket';
 import queryString from 'query-string';
+import { IntercomAPI } from 'react-intercom';
 import Cookies from 'universal-cookie';
 
 import { getDevice } from 'Helper';
@@ -64,13 +67,16 @@ export const checkSession = () => {
 export const getUser = () => {
   return async (dispatch) => {
     try {
-      const user = (await axios.get('/user')).data
-      dispatch(updateAccount(user))
-      return Promise.resolve(user)
-    } catch(err) {
-      cookies.remove('auth', {path: '/', domain: cookieDomain})
-      dispatch(resetAccount())
-      return Promise.reject(err)
+      const user = (await axios.get('/user')).data;
+      dispatch(updateAccount(user));
+
+      identifyLogRocket(user);
+
+      return Promise.resolve(user);
+    } catch (err) {
+      cookies.remove('auth', { path: '/', domain: cookieDomain });
+      dispatch(resetAccount());
+      return Promise.reject(err);
     }
   };
 };
@@ -140,6 +146,8 @@ const createSession = (endpoint) => {
           dispatch(push('/onboarding'));
         }
 
+        identifyLogRocket(data.user);
+
         if (window.Appcues) {
           window.Appcues.identify(data.user.creator_id, {
             email: user.email,
@@ -196,3 +204,15 @@ export const verifyGoogleToken = (token) =>
       .then((res) => resolve(res))
       .catch((err) => reject(err));
   });
+
+export function identifyLogRocket(user) {
+  if (LOGROCKET_ENABLED) {
+    LogRocket.identify(user.creator_id, {
+      email: user.email,
+      name: user.name,
+    });
+
+    // add session URL to intercom timeline
+    LogRocket.getSessionURL((sessionURL) => IntercomAPI('trackEvent', 'LogRocket', { sessionURL }));
+  }
+}

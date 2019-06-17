@@ -1,4 +1,4 @@
-require('dotenv').config({path:'./.env.test'})
+require('dotenv').config({path:'.test'})
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';

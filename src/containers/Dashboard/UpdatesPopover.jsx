@@ -25,7 +25,9 @@ class UpdatesPopover extends React.Component {
             return (
               <React.Fragment key={i}>
                 <div align="left" className="pr-1 pl-1">
-                  <p className={`d-inline-block mb-0 ${class_mapping[entry.type].class}`}>&bull; {class_mapping[entry.type].label}: </p>
+                  {this.props.new_product_updates.indexOf(entry) >= 0 && (
+                    <p className={'d-inline-block mb-0 ' + class_mapping[entry.type].class}>&bull; {class_mapping[entry.type].label}:&nbsp;</p>
+                  )}
                   {/* eslint-disable-next-line xss/no-mixed-html */}
                   <p className="d-inline-block mb-1" dangerouslySetInnerHTML={{ __html: entry.details }} />
                   <p className="text-secondary mb-0">{moment(entry.created).fromNow()}</p>

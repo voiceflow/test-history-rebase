@@ -2,6 +2,7 @@ import axios from 'axios';
 import Button from 'components/Button';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 import { Form, FormGroup, Input, Label } from 'reactstrap';
 
 class ProductUpdates extends Component {
@@ -29,10 +30,10 @@ class ProductUpdates extends Component {
         details: this.state.details,
       })
       .then(() => {
-        alert('it worked');
+        toast.success('Product update successfully added');
       })
       .catch(() => {
-        alert('it did not work');
+        toast.error('Fields not Complete!');
       });
   }
 

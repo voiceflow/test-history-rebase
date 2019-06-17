@@ -122,16 +122,10 @@ const Timeline = props => {
     }
   }, [])
 
-  if (!testing_info && !started) {
-    return <div className="mb-3">
-      <small className="text-muted d-block ml-3">Start to see the dialog transcription</small>
-    </div>
-  }
-  if (!testing_info && started) {
+  if (!testing_info) {
     return <div className="text-center mb-3">
       <img className="mb-3 mt-5" src={'/Testing.svg'} alt="user" width="80" /><br />
-      <span className="text-muted">Waiting for a new session...</span><br />
-      <span className="text-muted">Launch the skill on your Echo device</span>
+      <span className="text-muted">Start to see the dialog transcription.</span>
     </div>
   }
 

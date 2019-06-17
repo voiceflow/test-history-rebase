@@ -3493,7 +3493,6 @@ button.close:hover{
   left: 303px;
   z-index: 5;
   display: flex;
-  vertical-align: middle;
 }
 
 #home-button {
@@ -3514,7 +3513,6 @@ button.close:hover{
   height: 58px;
   margin-left: -215px;
   text-align: center;
-  vertical-align: middle;
   background: url('/images/flowmenu.svg') no-repeat;
   background-position: center center;
   background-size: contain;
@@ -3749,7 +3747,6 @@ button.close:hover{
   top: 12px;
   right: 7px;
   display: inline-block;
-  float: right;
   width: 16px;
   height: 16px;
   background-image: url('/remove.svg');

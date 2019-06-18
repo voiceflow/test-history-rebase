@@ -1,16 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import {Modal, ModalBody, ModalFooter} from "reactstrap";
-import moment from "moment";
-import DayPicker from "react-day-picker";
-import Button from "components/Button";
-import {editTrial} from "ducks/admin";
-import {toast} from 'react-toastify';
-
 import './TrialModal.css';
 
-class TrialModal extends React.Component {
+import Button from 'components/Button';
+import { editTrial } from 'ducks/admin';
+import moment from 'moment';
+import React from 'react';
+import DayPicker from 'react-day-picker';
+import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
+import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 
+class TrialModal extends React.Component {
   constructor(props) {
     super(props);
     this.handleDayClick = this.handleDayClick.bind(this);
@@ -18,6 +17,7 @@ class TrialModal extends React.Component {
       selectedDay: undefined,
     };
   }
+
   handleDayClick(day, { selected, disabled }) {
     if (disabled) {
       // Day is disabled, do nothing
@@ -30,7 +30,7 @@ class TrialModal extends React.Component {
     }
     this.setState({ selectedDay: day });
   }
-  
+
   giveTrial = (trialLength) => {
     if (!trialLength && trialLength !== null) {
       toast.error('You must select a day for the trial');
@@ -41,66 +41,66 @@ class TrialModal extends React.Component {
       return;
     }
     if (this.props.team) {
-      this.props.editTrial(this.props.team.team_id, trialLength)
+      this.props.editTrial(this.props.team.team_id, trialLength);
     } else {
-      toast.error('Team not found.')
+      toast.error('Team not found.');
     }
     this.props.toggleTrial();
   };
-  
+
   getSelectedDays = () => {
     if (this.props.team && this.props.team.expiry && !this.state.selectedDay) {
-      return {from: new Date(), to: new Date(this.props.team.expiry)};
-    } 
-    return {from: new Date(), to: this.state.selectedDay};
+      return { from: new Date(), to: new Date(this.props.team.expiry) };
+    }
+    return { from: new Date(), to: this.state.selectedDay };
   };
-  
-  render() {
 
+  render() {
     const modifiersStyles = {
       selected: {
         color: '#3191FF',
         backgroundColor: '#A8D9FF',
       },
     };
-    
+
     const selectedDays = this.getSelectedDays();
-    
-    const {team} = this.props;
+
+    const { team } = this.props;
     return (
       <div>
         <Modal isOpen={this.props.showTrialModal} toggle={this.props.toggleTrial}>
           <div className="am__title" onClick={this.props.toggleTrial}>
             Trial controls
-            <div className="close am__close"></div>
+            <div className="close am__close" />
           </div>
           <ModalBody>
             <div>
               <div className="ctg__charge_overview">
-                <div className="ctg__charge_for">
-                  Editing trial for:
-                </div>
-                <div className="ctg__charge_header">
-                  Team #{team.team_id}
-                </div>
+                <div className="ctg__charge_for">Editing trial for:</div>
+                <div className="ctg__charge_header">Team #{team.team_id}</div>
                 <div className="ctg__receipt_divider"> </div>
                 <div className="ctg__charge_amount">
-                  <div>
-                    Current trial status: {team.expiry ? moment(team.expiry).format('MMMM Do YYYY, h:mm:ss a') : 'No trial set'}
-                  </div>
+                  <div>Current trial status: {team.expiry ? moment(team.expiry).format('MMMM Do YYYY, h:mm:ss a') : 'No trial set'}</div>
                   <div className="ctg__date-picker">
-                    <DayPicker 
+                    <DayPicker
                       onDayClick={this.handleDayClick}
                       selectedDays={selectedDays}
-                      disabledDays={{before: new Date()}}
+                      disabledDays={{ before: new Date() }}
                       modifiersStyles={modifiersStyles}
                     />
                     <div className="ctg__trial_details">
                       <div>
-                        Trial will expire {moment(this.state.selectedDay).startOf('day').fromNow()}
+                        Trial will expire{' '}
+                        {moment(this.state.selectedDay)
+                          .startOf('day')
+                          .fromNow()}
                       </div>
                       <div>
-                        Trial Expiry: {moment(this.state.selectedDay).add(1, 'd').format("MMM Do YYYY")} (expires at midnight)
+                        Trial Expiry:{' '}
+                        {moment(this.state.selectedDay)
+                          .add(1, 'd')
+                          .format('MMM Do YYYY')}{' '}
+                        (expires at midnight)
                       </div>
                     </div>
                   </div>
@@ -109,23 +109,33 @@ class TrialModal extends React.Component {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button isSecondary onClick={this.props.toggleTrial}>Cancel</Button>
-            <Button isWarning onClick={() => {
-              this.giveTrial(null);
-            }}>
+            <Button isSecondary onClick={this.props.toggleTrial}>
+              Cancel
+            </Button>
+            <Button
+              isWarning
+              onClick={() => {
+                this.giveTrial(null);
+              }}
+            >
               Change to free plan
             </Button>
-            <Button isPrimary onClick={() => {
-              this.giveTrial(this.state.selectedDay);
-            }}>
+            <Button
+              isPrimary
+              onClick={() => {
+                this.giveTrial(this.state.selectedDay);
+              }}
+            >
               Grant Trial
             </Button>
           </ModalFooter>
         </Modal>
       </div>
-    )
+    );
   }
-  
 }
 
-export default connect(null, {editTrial})(TrialModal);
+export default connect(
+  null,
+  { editTrial }
+)(TrialModal);

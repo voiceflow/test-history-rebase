@@ -19,7 +19,7 @@ exports[`Card render card block editor 1`] = `
       outline={false}
       tag="button"
     >
-       Simple 
+      Simple
     </Button>
     <Button
       color="secondary"
@@ -28,7 +28,7 @@ exports[`Card render card block editor 1`] = `
       outline={true}
       tag="button"
     >
-       Standard 
+      Standard
     </Button>
   </ButtonGroup>
   <label>

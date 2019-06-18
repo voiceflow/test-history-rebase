@@ -1,16 +1,16 @@
-module.exports.ACTIONS_SECTION = 'action_section'
-module.exports.USER_SECTION = 'user_section'
-module.exports.SPREADSHEET_SECTION = 'spreadsheet_section'
-module.exports.OUTPUT_SECTION = 'output_section'
-module.exports.TESTING_SECTION = 'testing_section'
+module.exports.ACTIONS_SECTION = 'action_section';
+module.exports.USER_SECTION = 'user_section';
+module.exports.SPREADSHEET_SECTION = 'spreadsheet_section';
+module.exports.OUTPUT_SECTION = 'output_section';
+module.exports.TESTING_SECTION = 'testing_section';
 
-module.exports.RETRIEVE_OPTIONS_SECTION = 'retrieve_options_section'
-module.exports.CREATE_OPTIONS_SECTION = 'create_options_section'
-module.exports.UPDATE_OPTIONS_SECTION = 'update_options_section'
-module.exports.DELETE_OPTIONS_SECTION = 'delete_options_section'
+module.exports.RETRIEVE_OPTIONS_SECTION = 'retrieve_options_section';
+module.exports.CREATE_OPTIONS_SECTION = 'create_options_section';
+module.exports.UPDATE_OPTIONS_SECTION = 'update_options_section';
+module.exports.DELETE_OPTIONS_SECTION = 'delete_options_section';
 
-module.exports.GOOGLE_SHEETS = 'Google Sheets'
-module.exports.RETRIEVE_DATA = 'Retrieve Data'
-module.exports.CREATE_DATA = 'Create Data'
-module.exports.UPDATE_DATA = 'Update Data'
-module.exports.DELETE_DATA = 'Delete Data'
+module.exports.GOOGLE_SHEETS = 'Google Sheets';
+module.exports.RETRIEVE_DATA = 'Retrieve Data';
+module.exports.CREATE_DATA = 'Create Data';
+module.exports.UPDATE_DATA = 'Update Data';
+module.exports.DELETE_DATA = 'Delete Data';

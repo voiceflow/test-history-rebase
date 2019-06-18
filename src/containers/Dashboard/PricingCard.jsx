@@ -1,10 +1,10 @@
-import React from "react";
-import cn from "classnames";
+import cn from 'classnames';
+import Button from 'components/Button';
+import React from 'react';
 
-import PLANS from "./PLANS";
+import PLANS from './PLANS';
 
-import Button from 'components/Button'
-
+// eslint-disable-next-line react/display-name
 export default ({ plan, upgrade, delay, team }) => {
   if (!(plan in PLANS)) return null;
 
@@ -13,8 +13,8 @@ export default ({ plan, upgrade, delay, team }) => {
 
   return (
     <div
-      className={cn("pricing-card px-3 py-4 text-center fadein", {
-        selected: current
+      className={cn('pricing-card px-3 py-4 text-center fadein', {
+        selected: current,
       })}
       style={{ animationDelay: delay ? `${delay}ms` : undefined }}
     >
@@ -37,7 +37,9 @@ export default ({ plan, upgrade, delay, team }) => {
       </div>
       <div className="mb-2">
         {current ? (
-          <Button isPrimary disabled>Current Plan</Button>
+          <Button isPrimary disabled>
+            Current Plan
+          </Button>
         ) : (
           upgrade && (
             <Button isPrimary className="mt-2" onClick={() => upgrade(pricing)}>

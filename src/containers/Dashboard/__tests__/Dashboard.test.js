@@ -1,50 +1,50 @@
-import React from 'react';
-import { mount, shallow, render } from 'enzyme/build';
-import { DashBoard } from '../index.jsx';
 import toJson from 'enzyme-to-json';
-import _ from 'lodash'
+import { shallow } from 'enzyme/build';
+import React from 'react';
 
-const clickFn = jest.fn()
+import { DashBoard } from '../index.jsx';
+
+const clickFn = jest.fn();
 
 const props = {
   team: {
     team_id: 1,
-    state: null
+    state: null,
   },
   teams: {
     byId: {},
-    allIds: []
+    allIds: [],
   },
   projects: {
     byId: {},
-    allIds: []
+    allIds: [],
   },
-  getMembers: () => new Promise(resolve => resolve()),
-  fetchProjects: () => new Promise(resolve => resolve()),
+  getMembers: () => new Promise((resolve) => resolve()),
+  fetchProjects: () => new Promise((resolve) => resolve()),
   user: {
-    id: 1
-  }
-}
+    id: 1,
+  },
+};
 
 describe('Dashboard', () => {
-    it('render dashboard', () => {
-        const component = shallow( <DashBoard {...props}/> );
-        expect(toJson(component)).toMatchSnapshot()
-    });
-})
+  it('render dashboard', () => {
+    const component = shallow(<DashBoard {...props} />);
+    expect(toJson(component)).toMatchSnapshot();
+  });
+});
 
 describe('dashboard create skill', () => {
-    it ('create new skill', () => {
-        global.user_detail = {
-            admin: 100,
-            email: "jason@getvoiceflow.com",
-            first_login: false,
-            iat: 1550192538,
-            id: 18,
-            name: "Jason Zhao",
-            verified: null,
-        }
-        const component = shallow(<DashBoard onClick={clickFn} {...props}/>)
-        component.unmount()
-    })
-})
+  it('create new skill', () => {
+    global.user_detail = {
+      admin: 100,
+      email: 'jason@getvoiceflow.com',
+      first_login: false,
+      iat: 1550192538,
+      id: 18,
+      name: 'Jason Zhao',
+      verified: null,
+    };
+    const component = shallow(<DashBoard onClick={clickFn} {...props} />);
+    component.unmount();
+  });
+});

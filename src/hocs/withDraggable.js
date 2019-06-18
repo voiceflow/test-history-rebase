@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import throttle from 'lodash/throttle';
 import React, { Component } from 'react';
 import { DragSource, DropTarget } from 'react-dnd';

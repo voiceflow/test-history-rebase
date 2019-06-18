@@ -1,9 +1,11 @@
-import React, { Fragment, Component } from 'react';
-import cn from 'classnames';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import './Button.css';
 
+import cn from 'classnames';
+import _ from 'lodash';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import { track } from 'utils/tracker';
 
 import Icon from '../Icon';
@@ -44,12 +46,12 @@ export default class Button extends Component {
   };
 
   static defaultProps = {
-    onRef: () => null,
+    onRef: _.noop,
     trackEvent: 'Button Click',
     iconPosition: 'right',
   };
 
-  onClick = e => {
+  onClick = (e) => {
     const { onClick, trackName, trackOpts, trackEvent } = this.props;
 
     trackName && track(trackEvent, trackName, trackOpts);
@@ -121,14 +123,14 @@ export default class Button extends Component {
     const buttonProps = {
       ref: props.to ? undefined : onRef,
       className: cn(className, {
-        'btn': isBtn,
+        btn: isBtn,
         'btn-tertiary tertiary': isFlat,
         'btn-tertiary variable': isFlatVariable,
         'btn-icon': isIcon,
         'btn-sm': isSmall,
         'btn-lg': isLarge,
         'nav-btn': isNav,
-        'close': isClose,
+        close: isClose,
         'close small': isCloseSmall,
         'nav-btn border': isNavBordered,
         'btn-outline-secondary': outline,
@@ -140,16 +142,16 @@ export default class Button extends Component {
         'btn-link': isLink,
         'btn-link __large': isLinkLarge,
         'btn-float': isFloat,
-        'faux': isFaux,
+        faux: isFaux,
         'btn-clear': isClear,
         'btn-default': isDefault,
         'white-btn': isWhite,
         'white-btn circ': isWhiteCirc,
-        'disabled': disabled,
+        disabled,
         'btn-opaque': isDisabled,
         'purple-btn': isPurple,
         'btn-black': isBlack,
-        'active': isActive,
+        active: isActive,
         'btn-block': isBlock,
         'dropdown-button': isDropdown,
         'btn-secondary': isSecondary && !outline,
@@ -170,6 +172,7 @@ export default class Button extends Component {
       buttonProps.innerRef = onRef;
     }
 
+    // eslint-disable-next-line no-nested-ternary
     const ButtonComponent = props.to ? Link : props.href ? 'a' : 'button';
 
     const iconElm =
@@ -205,12 +208,7 @@ export default class Button extends Component {
     );
 
     return tooltipText ? (
-      <Tooltip
-        text={tooltipText}
-        TagName={ButtonComponent}
-        {...tooltipProps}
-        buttonProps={buttonProps}
-      >
+      <Tooltip text={tooltipText} TagName={ButtonComponent} {...tooltipProps} buttonProps={buttonProps}>
         {content}
       </Tooltip>
     ) : (

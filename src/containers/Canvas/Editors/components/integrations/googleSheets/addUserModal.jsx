@@ -1,45 +1,48 @@
-import GoogleLogin from 'react-google-login';
+import { addIntegrationUser } from 'ducks/integration';
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { addIntegrationUser } from 'ducks/integration'
+import GoogleLogin from 'react-google-login';
+import { connect } from 'react-redux';
 
-import { GOOGLE_SHEETS } from './constants'
+import { GOOGLE_SHEETS } from './constants';
 
 let clientId;
 
-if (process.env.NODE_ENV === 'production'){
-    clientId = '792099969137-uf81ar579b5ea2ll96a37r3ruucfbrmv.apps.googleusercontent.com';
-}else{
-    clientId = '432667713405-2sqne6de9h447oumls37rj2g4no4qr85.apps.googleusercontent.com';
+if (process.env.NODE_ENV === 'production') {
+  // eslint-disable-next-line no-secrets/no-secrets
+  clientId = '792099969137-uf81ar579b5ea2ll96a37r3ruucfbrmv.apps.googleusercontent.com';
+} else {
+  // eslint-disable-next-line no-secrets/no-secrets
+  clientId = '432667713405-2sqne6de9h447oumls37rj2g4no4qr85.apps.googleusercontent.com';
 }
 class GoogleAddUserModal extends Component {
-
   googleLogin = async (userProfile) => {
     try {
-      this.props.onBegin()
+      this.props.onBegin();
       await this.props.addUser({
         user_info: userProfile,
         creator_id: this.props.user.creator_id,
-        skill_id: this.props.skill_id
-      })
-      this.props.onSuccess()
+        skill_id: this.props.skill_id,
+      });
+      this.props.onSuccess();
     } catch (e) {
-      let error = e
+      let error = e;
       if (e.response && typeof e.response.data === 'string') {
-        error = e.response.data
+        error = e.response.data;
       } else if (typeof e === 'string') {
-        error = e
+        error = e;
       } else if (e.response) {
-        error = `Error occured: ${JSON.stringify(e.response.data)}`
+        error = `Error occured: ${JSON.stringify(e.response.data)}`;
       }
-      this.props.onError(error)
+      this.props.onError(error);
     }
-  }
+  };
 
   render() {
     return (
       <div className="d-flex flex-column">
-        <div className='text-center mt-3'><img className='add-user-image' src='/google-sheets.svg' alt="empty" /></div>
+        <div className="text-center mt-3">
+          <img className="add-user-image" src="/google-sheets.svg" alt="empty" />
+        </div>
         <div className="d-flex justify-content-center">
           <div className="text-muted text-center mt-4 mb-2 mx-5">Log in to connect your account</div>
         </div>
@@ -49,9 +52,9 @@ class GoogleAddUserModal extends Component {
             className="social-button class-ggl mb-4"
             buttonText="Login with Google"
             onSuccess={this.googleLogin}
-            responseType={'code'}
+            responseType="code"
             accessType="offline"
-            scope={`profile email https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets`}
+            scope="profile email https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets"
           />
         </div>
       </div>
@@ -59,14 +62,17 @@ class GoogleAddUserModal extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.account
-})
+const mapStateToProps = (state) => ({
+  user: state.account,
+});
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    addUser: (body) => dispatch(addIntegrationUser(GOOGLE_SHEETS, body))
-  }
-}
+    addUser: (body) => dispatch(addIntegrationUser(GOOGLE_SHEETS, body)),
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(GoogleAddUserModal)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GoogleAddUserModal);

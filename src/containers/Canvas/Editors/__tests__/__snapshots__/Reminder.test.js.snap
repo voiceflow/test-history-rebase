@@ -19,7 +19,7 @@ exports[`ReminderEditor render reminder block editor 1`] = `
       outline={false}
       tag="button"
     >
-       Timer 
+      Timer
     </Button>
     <Button
       color="secondary"
@@ -28,7 +28,7 @@ exports[`ReminderEditor render reminder block editor 1`] = `
       outline={true}
       tag="button"
     >
-       Scheduled 
+      Scheduled
     </Button>
   </ButtonGroup>
   <label>

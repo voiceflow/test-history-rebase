@@ -1,64 +1,90 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-
-import {connect} from 'react-redux';
-import {fetchTeams} from "ducks/team";
-
-import Header from 'components/Header'
 import './Admin.css';
-import Home from './Home';
-import Copy from './Copy';
-import ProductUpdates from './ProductUpdates'
 
-import {ButtonGroup} from 'reactstrap'
-import SkillLookup from "./SkillLookup";
-import Vendors from "./Vendors";
-import FinanceBoard from "./FinanceBoard";
-import Template from "./Template"
+import Header from 'components/Header';
+import { fetchTeams } from 'ducks/team';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { ButtonGroup } from 'reactstrap';
+
+import Copy from './Copy';
+import FinanceBoard from './FinanceBoard';
+import Home from './Home';
+import ProductUpdates from './ProductUpdates';
+import SkillLookup from './SkillLookup';
+import Template from './Template';
+import Vendors from './Vendors';
 
 const tabs = [
   {
-    display: <React.Fragment><i className="fal fa-home"/> Home</React.Fragment>,
+    display: (
+      <React.Fragment>
+        <i className="fal fa-home" /> Home
+      </React.Fragment>
+    ),
     match: ['default'],
-    link: '/admin'
+    link: '/admin',
   },
   {
-    display: <React.Fragment><i className="fal fa-money-bill-wave"/> Finance</React.Fragment>,
+    display: (
+      <React.Fragment>
+        <i className="fal fa-money-bill-wave" /> Finance
+      </React.Fragment>
+    ),
     match: ['charges'],
-    link: '/admin/charges'
+    link: '/admin/charges',
   },
   {
-    display: <React.Fragment><i className="fal fa-store-alt"/> Vendors</React.Fragment>,
+    display: (
+      <React.Fragment>
+        <i className="fal fa-store-alt" /> Vendors
+      </React.Fragment>
+    ),
     match: ['vendors'],
-    link: '/admin/vendors'
+    link: '/admin/vendors',
   },
   {
-    display: <React.Fragment><i className="fal fa-search"/> Skill Lookup</React.Fragment>,
+    display: (
+      <React.Fragment>
+        <i className="fal fa-search" /> Skill Lookup
+      </React.Fragment>
+    ),
     match: ['lookup'],
-    link: '/admin/lookup'
+    link: '/admin/lookup',
   },
   {
-    display: <React.Fragment><i className="fal fa-copy"/> Copy</React.Fragment>,
+    display: (
+      <React.Fragment>
+        <i className="fal fa-copy" /> Copy
+      </React.Fragment>
+    ),
     match: ['copy'],
-    link: '/admin/copy'
+    link: '/admin/copy',
   },
   {
-    display: <React.Fragment><i className="fal fa-ruler-combined"/> Templates</React.Fragment>,
+    display: (
+      <React.Fragment>
+        <i className="fal fa-ruler-combined" /> Templates
+      </React.Fragment>
+    ),
     match: ['template'],
-    link: '/admin/template'
+    link: '/admin/template',
   },
   {
-    display: <React.Fragment><i className="fal fa-scroll"/> Product Updates</React.Fragment>,
+    display: (
+      <React.Fragment>
+        <i className="fal fa-scroll" /> Product Updates
+      </React.Fragment>
+    ),
     match: ['updates'],
-    link: '/admin/updates'
-  }
+    link: '/admin/updates',
+  },
 ];
 
 class Admin extends Component {
-
   componentDidMount() {
     if (this.props.teams.allIds.length === 0) {
-      this.props.fetchTeams()
+      this.props.fetchTeams();
     }
   }
 
@@ -66,46 +92,47 @@ class Admin extends Component {
     let page;
     switch (this.props.page) {
       case 'updates':
-        page = <ProductUpdates {...this.props}/>;
+        page = <ProductUpdates {...this.props} />;
         break;
       case 'copy':
-        page = <Copy {...this.props}/>;
+        page = <Copy {...this.props} />;
         break;
       case 'lookup':
-        page = <SkillLookup {...this.props}/>;
+        page = <SkillLookup {...this.props} />;
         break;
       case 'vendors':
-        page = <Vendors {...this.props}/>;
+        page = <Vendors {...this.props} />;
         break;
       case 'charges':
-        page = <FinanceBoard {...this.props}/>;
+        page = <FinanceBoard {...this.props} />;
         break;
       case 'template':
-        page = <Template {...this.props}/>;
+        page = <Template {...this.props} />;
         break;
       default:
-        page = <Home {...this.props}/>
+        page = <Home {...this.props} />;
     }
 
     return (
       <>
-        <Header withLogo history={this.props.history}/>
+        <Header withLogo history={this.props.history} />
         <div className="admin Window">
           <div md="3" className="sidebar">
-            <div className="title">
-              Tools
-            </div>
+            <div className="title">Tools</div>
             <ButtonGroup vertical>
               {tabs.map((tab, i) => {
                 if (tab.match.includes(this.props.page)) {
-                  return <div key={i} className="active-btn">
-                    {tab.display}
-                  </div>
-                } else {
-                  return <Link key={i} to={tab.link} className="inactive-btn">
+                  return (
+                    <div key={i} className="active-btn">
+                      {tab.display}
+                    </div>
+                  );
+                }
+                return (
+                  <Link key={i} to={tab.link} className="inactive-btn">
                     {tab.display}
                   </Link>
-                }
+                );
               })}
             </ButtonGroup>
           </div>
@@ -114,16 +141,19 @@ class Admin extends Component {
           </div>
         </div>
       </>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => ({
-  teams: state.team
+const mapStateToProps = (state) => ({
+  teams: state.team,
 });
 
-const mapDispatchToProps = dispatch => ({
-  fetchTeams: () => dispatch(fetchTeams())
+const mapDispatchToProps = (dispatch) => ({
+  fetchTeams: () => dispatch(fetchTeams()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Admin)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Admin);

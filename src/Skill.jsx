@@ -36,7 +36,6 @@ const live_modal_content = (
     <img className="modal-img-small mb-4 mt-3" src="/warning.svg" alt="Upload" />
     <div className="modal-bg-txt mt-2">Entering Live Editing</div>
     <div className="modal-txt mt-2 mb-3">
-      {' '}
       Updating your skill in live mode will not affect the live version of the skill until you hit the upload button.
     </div>
   </div>

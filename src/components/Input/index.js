@@ -1,16 +1,17 @@
-import React, { Fragment, Component } from 'react';
 import cn from 'classnames';
 import memoize from 'memoize-one';
-import Textarea from 'react-textarea-autosize';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import AutoSizeInput from 'react-input-autosize';
+import Textarea from 'react-textarea-autosize';
 
-import Icon from '../Icon';
-import Loader from '../Loader';
 import Counter from '../Counter';
 import Dropdown from '../Dropdown';
-
-import { validateNumber, validateInteger } from './validations';
+import Icon from '../Icon';
+import Loader from '../Loader';
+import { validateInteger, validateNumber } from './validations';
 
 export default class Input extends Component {
   static propTypes = {
@@ -76,6 +77,7 @@ export default class Input extends Component {
   };
 
   static getDropdownProps({ label, options, selectedId, buttonProps = {}, ...props }) {
+    // eslint-disable-next-line no-underscore-dangle
     let _label = label;
 
     if (selectedId) {
@@ -102,14 +104,15 @@ export default class Input extends Component {
   getCounterLength = memoize((value, splitBy) => {
     if (!value) {
       return 0;
-    } else if (!splitBy) {
+    }
+    if (!splitBy) {
       return value.length;
     }
 
-    return value.split(splitBy).filter(s => !!s).length;
+    return value.split(splitBy).filter((s) => !!s).length;
   });
 
-  onRef = node => {
+  onRef = (node) => {
     const { onRef, selected } = this.props;
 
     selected && node && node.select && node.select();
@@ -117,7 +120,7 @@ export default class Input extends Component {
     onRef && onRef(node);
   };
 
-  onBlur = e => {
+  onBlur = (e) => {
     const { focused } = this.state;
     const { onBlur, readOnly } = this.props;
 
@@ -132,7 +135,7 @@ export default class Input extends Component {
     this.setState({ focused: false });
   };
 
-  onChange = e => {
+  onChange = (e) => {
     const { max, type, onChange, onValidate, onEnterPress, allowShiftEnter } = this.props;
 
     if (e && e.target) {
@@ -142,10 +145,7 @@ export default class Input extends Component {
         return;
       }
 
-      if (
-        (type === 'number' && validateNumber(value, this.props)) ||
-        (type === 'integer' && validateInteger(value, this.props))
-      ) {
+      if ((type === 'number' && validateNumber(value, this.props)) || (type === 'integer' && validateInteger(value, this.props))) {
         if (value > max) {
           e.target.value = max;
         } else {
@@ -159,7 +159,7 @@ export default class Input extends Component {
     onChange && onChange(e, this.pressedKeys);
   };
 
-  onFocus = e => {
+  onFocus = (e) => {
     const { readOnly, onFocus } = this.props;
 
     if (readOnly) {
@@ -173,7 +173,7 @@ export default class Input extends Component {
     this.setState({ focused: true });
   };
 
-  onKeyUp = e => {
+  onKeyUp = (e) => {
     const { onKeyUp, onEscapePress } = this.props;
 
     this.pressedKeys[e.key] = false;
@@ -185,7 +185,7 @@ export default class Input extends Component {
     onKeyUp && onKeyUp(e);
   };
 
-  onKeyDown = e => {
+  onKeyDown = (e) => {
     const { onKeyDown } = this.props;
 
     this.pressedKeys[e.key] = true;
@@ -193,7 +193,7 @@ export default class Input extends Component {
     onKeyDown && onKeyDown(e);
   };
 
-  onKeyPress = e => {
+  onKeyPress = (e) => {
     const { onKeyPress, onEnterPress } = this.props;
 
     if (e.key === 'Enter' && onEnterPress && !this.pressedKeys.Shift) {
@@ -250,6 +250,7 @@ export default class Input extends Component {
       ...ownProps
     } = this.props;
 
+    // eslint-disable-next-line no-nested-ternary
     const Component = autoSize ? AutoSizeInput : type === 'textarea' ? Textarea : 'input';
 
     const inputProps = {
@@ -285,11 +286,8 @@ export default class Input extends Component {
     const input = isRenderProps ? children(inputProps) : <Component {...inputProps} />;
 
     const actionNode = (!!action || actionText) && (
-      <div
-        role="button"
-        onClick={onActionClick}
-        className={cn('form-control-group__addon __with-action', actionClassName)}
-      >
+      // eslint-disable-next-line jsx-a11y/interactive-supports-focus
+      <div role="button" onClick={onActionClick} className={cn('form-control-group__addon __with-action', actionClassName)}>
         {!!action && <Icon className={action} />}
         {!!actionText && <span className="text-link">{actionText}</span>}
       </div>
@@ -318,11 +316,7 @@ export default class Input extends Component {
                 ? asideRenderer()
                 : counterProps &&
                   (showCounter === 'always' || (showCounter === 'onFocus' && focused)) && (
-                    <Counter
-                      {...counterProps}
-                      length={this.getCounterLength(value, counterSplitBy)}
-                      className="__text-position"
-                    />
+                    <Counter {...counterProps} length={this.getCounterLength(value, counterSplitBy)} className="__text-position" />
                   )}
             </div>
           </div>
@@ -336,9 +330,7 @@ export default class Input extends Component {
               '__with-header-control': !!controlGroupHeaderRenderer,
             })}
           >
-            {!!controlGroupHeaderRenderer && (
-              <div className="form-control-group__header">{controlGroupHeaderRenderer()}</div>
-            )}
+            {!!controlGroupHeaderRenderer && <div className="form-control-group__header">{controlGroupHeaderRenderer()}</div>}
 
             {!!loader && (
               <div className="form-control-group__addon">
@@ -358,9 +350,7 @@ export default class Input extends Component {
               </div>
             )}
 
-            {!!leftAddon && (
-              <div className={cn('form-control-group__addon', leftAddonClassName)}>{leftAddon}</div>
-            )}
+            {!!leftAddon && <div className={cn('form-control-group__addon', leftAddonClassName)}>{leftAddon}</div>}
 
             {actionPosition === 'left' && actionNode}
 
@@ -368,20 +358,11 @@ export default class Input extends Component {
 
             {actionPosition === 'right' && actionNode}
 
-            {!!rightAddon && (
-              <div className={cn('form-control-group__addon', rightAddonClassName)}>
-                {rightAddon}
-              </div>
-            )}
+            {!!rightAddon && <div className={cn('form-control-group__addon', rightAddonClassName)}>{rightAddon}</div>}
           </div>
         )}
 
-        {hint &&
-          (isHintSmall ? (
-            <small className="form-hint text-gray">{hint}</small>
-          ) : (
-            <div className="form-hint text-gray">{hint}</div>
-          ))}
+        {hint && (isHintSmall ? <small className="form-hint text-gray">{hint}</small> : <div className="form-hint text-gray">{hint}</div>)}
 
         {!withoutErrorText && !!error && (
           <small className="form-hint text-danger">

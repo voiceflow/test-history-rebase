@@ -1,20 +1,20 @@
-import React from 'react';
+import _ from 'lodash';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
+import React from 'react';
 
 class ClipboardButton extends React.Component {
   static propTypes = {
-    options: function(props, propName, componentName) {
+    options(props, propName, componentName) {
       const options = props[propName];
       if ((options && typeof options !== 'object') || Array.isArray(options)) {
-        return new Error(`Invalid props '${propName}' supplied to '${componentName}'. ` +
-        `'${propName}' is not an object.`);
+        return new Error(`Invalid props '${propName}' supplied to '${componentName}'. '${propName}' is not an object.`);
       }
 
       if (props['option-text'] !== undefined) {
         const optionText = props['option-text'];
         if (typeof optionText !== 'function') {
-          return new Error(`Invalid props 'option-text' supplied to '${componentName}'. ` +
-          `'option-text' is not a function.`);
+          return new Error(`Invalid props 'option-text' supplied to '${componentName}'. 'option-text' is not a function.`);
         }
       }
     },
@@ -22,17 +22,12 @@ class ClipboardButton extends React.Component {
     className: PropTypes.string,
     style: PropTypes.object,
     component: PropTypes.string,
-    children: PropTypes.oneOfType([
-      PropTypes.element,
-      PropTypes.string,
-      PropTypes.number,
-      PropTypes.object,
-    ]),
-  }
+    children: PropTypes.oneOfType([PropTypes.element, PropTypes.string, PropTypes.number, PropTypes.object]),
+  };
 
   static defaultProps = {
-    onClick: function() {},
-  }
+    onClick: _.noop,
+  };
 
   /* Returns a object with all props that fulfill a certain naming pattern
    *
@@ -52,7 +47,7 @@ class ClipboardButton extends React.Component {
    * this.propsWith(on*, true); // returns {Bar: 2}
    * this.propsWith(data-*); // returns {data-foobar: 1, data-baz: 4}
    */
-  propsWith(regexp, remove=false) {
+  propsWith(regexp, remove = false) {
     const object = {};
 
     Object.keys(this.props).forEach(function(key) {
@@ -72,14 +67,15 @@ class ClipboardButton extends React.Component {
   componentDidMount() {
     // Support old API by trying to assign this.props.options first;
     const options = this.props.options || this.propsWith(/^option-/, true);
-    const element = React.version.match(/0\.13(.*)/)
-      ? this.refs.element.getDOMNode() : this.element;
+    // eslint-disable-next-line react/no-string-refs
+    const element = React.version.match(/0\.13(.*)/) ? this.refs.element.getDOMNode() : this.element;
+    // eslint-disable-next-line global-require
     const Clipboard = require('clipboard');
     this.clipboard = new Clipboard(element, options);
 
     const callbacks = this.propsWith(/^on/, true);
     Object.keys(callbacks).forEach(function(callback) {
-      this.clipboard.on(callback.toLowerCase(), this.props['on' + callback]);
+      this.clipboard.on(callback.toLowerCase(), this.props[`on${callback}`]);
     }, this);
   }
 
@@ -89,26 +85,22 @@ class ClipboardButton extends React.Component {
       type: this.getType(),
       className: this.props.className || '',
       style: this.props.style || {},
-      ref: element => { this.element = element; },
+      ref: (element) => {
+        this.element = element;
+      },
       onClick: this.props.onClick,
       ...this.propsWith(/^data-/),
       ...this.propsWith(/^button-/, true),
     };
 
-    return React.createElement(
-      this.getComponent(),
-      attributes,
-      this.props.children
-    );
+    return React.createElement(this.getComponent(), attributes, this.props.children);
   }
 
   getType() {
     if (this.getComponent() === 'button' || this.getComponent() === 'input') {
       return this.props.type || 'button';
     }
-    else {
-      return undefined;
-    }
+    return undefined;
   }
 
   getComponent() {

@@ -1,5 +1,7 @@
-import React, { Fragment, Component } from 'react';
+/* eslint-disable no-underscore-dangle */
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
 
 export default class Selectable extends Component {
   static propTypes = {
@@ -38,7 +40,7 @@ export default class Selectable extends Component {
     this.__unmounted = true;
   }
 
-  onRef = node => {
+  onRef = (node) => {
     this.target = node;
   };
 
@@ -51,7 +53,7 @@ export default class Selectable extends Component {
     !this.__unmounted && this.setState({ opened: false });
   };
 
-  onShow = e => {
+  onShow = (e) => {
     const { opened } = this.state;
     const { onShow, stopPropagation } = this.props;
 
@@ -64,7 +66,7 @@ export default class Selectable extends Component {
     !this.__unmounted && this.setState({ opened: true });
   };
 
-  onSelect = value => {
+  onSelect = (value) => {
     const { onHide, onSelect } = this.props;
 
     onHide && onHide();
@@ -75,17 +77,7 @@ export default class Selectable extends Component {
 
   render() {
     const { opened } = this.state;
-    const {
-      value,
-      onHide,
-      opened: defaultOpened,
-      onShow,
-      onSelect,
-      children,
-      stopPropagation,
-      popoverRenderer,
-      ...popoverProps
-    } = this.props;
+    const { value, onHide, opened: defaultOpened, onShow, onSelect, children, stopPropagation, popoverRenderer, ...popoverProps } = this.props;
 
     return (
       <Fragment>

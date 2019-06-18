@@ -1,11 +1,12 @@
-import React, { Fragment, Component } from 'react';
 import cn from 'classnames';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
 
 import Button from '../Button';
 import Popover from '../Popover';
-import Selectable from '../Selectable';
 import PopoverList from '../PopoverList';
+import Selectable from '../Selectable';
 
 export default class Select extends Component {
   static propTypes = {
@@ -35,6 +36,7 @@ export default class Select extends Component {
         gap={1}
         isList
         strategy="bottom left"
+        // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus
         setMinWidth
         {...popoverProps}
@@ -46,28 +48,11 @@ export default class Select extends Component {
   renderBody = ({ value, onSelect }) => {
     const { options, textTruncate } = this.props;
 
-    return (
-      <PopoverList
-        items={options}
-        onClick={onSelect}
-        selectedId={value}
-        textTruncate={textTruncate}
-      />
-    );
+    return <PopoverList items={options} onClick={onSelect} selectedId={value} textTruncate={textTruncate} />;
   };
 
   render() {
-    const {
-      label,
-      options,
-      children,
-      disabled,
-      formLabel,
-      buttonProps,
-      customLabel,
-      setMaxOptionWidth,
-      ...selectableProps
-    } = this.props;
+    const { label, options, children, disabled, formLabel, buttonProps, customLabel, setMaxOptionWidth, ...selectableProps } = this.props;
 
     return (
       <Fragment>
@@ -91,14 +76,11 @@ export default class Select extends Component {
                 >
                   <div className="filter-item">
                     {!!label && <div className="filter-item__label">{label}</div>}
-                    <div className="filter-item__value">
-                      {customLabel ||
-                        (option ? option.title || option.label : 'Please select an option')}
-                    </div>
+                    <div className="filter-item__value">{customLabel || (option ? option.title || option.label : 'Please select an option')}</div>
                   </div>
 
                   {setMaxOptionWidth &&
-                    options.map(opt => (
+                    options.map((opt) => (
                       <div key={opt.id} className="filter-item h-h-0">
                         {!!label && <div className="filter-item__label">{label}</div>}
                         <div className="filter-item__value">{opt.title || opt.label}</div>

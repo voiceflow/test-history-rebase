@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
-import compose from 'recompose/compose';
-import { DragLayer } from 'react-dnd';
-
+/* eslint-disable no-underscore-dangle */
 import withRootPortal from 'hocs/withRootPortal';
+import React, { useMemo } from 'react';
+import { DragLayer } from 'react-dnd';
+import compose from 'recompose/compose';
 
 function CustomDragLayer(props) {
   const { _diff, _item, _offset, children, _initSourceClientOffset, ...ownProps } = props;
@@ -31,7 +31,7 @@ function CustomDragLayer(props) {
 
 export default compose(
   withRootPortal(),
-  DragLayer(monitor => {
+  DragLayer((monitor) => {
     const item = monitor.getItem();
     const offset = monitor.getClientOffset() || {};
     const initClientOffset = monitor.getInitialClientOffset() || {};

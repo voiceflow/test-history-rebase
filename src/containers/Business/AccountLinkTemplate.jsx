@@ -1,34 +1,32 @@
-import _ from "lodash";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import update from "immutability-helper";
-import Select from "react-select";
-import { Spinner } from 'components/Spinner/Spinner'
-import { updateVersion } from 'ducks/version'
-
-import MultipleFields from "components/Forms/MultipleFields";
-import axios from "axios";
-import { Nav, NavItem, NavLink, Input } from "reactstrap";
-
-import { setError } from "ducks/modal";
+import axios from 'axios';
+import MultipleFields from 'components/Forms/MultipleFields';
+import { Spinner } from 'components/Spinner/Spinner';
+import { setError } from 'ducks/modal';
+import { updateVersion } from 'ducks/version';
+import update from 'immutability-helper';
+import _ from 'lodash';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Select from 'react-select';
+import { Input, Nav, NavItem, NavLink } from 'reactstrap';
 
 const clientAuthScheme = [
-  { value: "HTTP_BASIC", label: "HTTP Basic(recommended)" },
-  { value: "REQUEST_BODY_CREDENTIALS", label: "Credentials in request body" }
+  { value: 'HTTP_BASIC', label: 'HTTP Basic(recommended)' },
+  { value: 'REQUEST_BODY_CREDENTIALS', label: 'Credentials in request body' },
 ];
 
 const EMPTY_ACCOUNT_LINKING = {
   skipOnEnablement: false,
-  type: "AUTH_CODE",
-  authorizationUrl: "",
+  type: 'AUTH_CODE',
+  authorizationUrl: '',
   domains: [],
-  clientId: "",
+  clientId: '',
   scopes: [],
-  accessTokenUrl: "",
-  clientSecret: "",
-  accessTokenScheme: "HTTP_BASIC",
-  defaultTokenExpirationInSeconds: 3600
-}
+  accessTokenUrl: '',
+  clientSecret: '',
+  accessTokenScheme: 'HTTP_BASIC',
+  defaultTokenExpirationInSeconds: 3600,
+};
 
 class AccountLinkTemplate extends Component {
   constructor(props) {
@@ -37,8 +35,8 @@ class AccountLinkTemplate extends Component {
     this.state = {
       accountLinkingRequest: EMPTY_ACCOUNT_LINKING,
       saving: false,
-      type: "client",
-      loading: true
+      type: 'client',
+      loading: true,
     };
 
     this.handleAdd = this.handleAdd.bind(this);
@@ -47,66 +45,60 @@ class AccountLinkTemplate extends Component {
   }
 
   componentWillUnmount() {
-    if(JSON.stringify(this.state.accountLinkingRequest) !== this.snapshot) this.save()
+    if (JSON.stringify(this.state.accountLinkingRequest) !== this.snapshot) this.save();
   }
 
   componentDidMount() {
     axios
       .get(`/link_account/template/${this.props.skill_id}`)
-      .then(res => {
-        if (
-          !_.isEmpty(res.data.account_linking) &&
-          !_.isNull(res.data.account_linking)
-        ) {
-          const account_linking = res.data.account_linking
-          this.snapshot = JSON.stringify(account_linking)
+      .then((res) => {
+        if (!_.isEmpty(res.data.account_linking) && !_.isNull(res.data.account_linking)) {
+          const account_linking = res.data.account_linking;
+          this.snapshot = JSON.stringify(account_linking);
           this.setState({
             accountLinkingRequest: account_linking,
-            loading: false
+            loading: false,
           });
         } else {
-          this.snapshot = JSON.stringify(EMPTY_ACCOUNT_LINKING)
+          this.snapshot = JSON.stringify(EMPTY_ACCOUNT_LINKING);
           this.setState({
             accountLinkingRequest: EMPTY_ACCOUNT_LINKING,
-            loading: false
+            loading: false,
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
-        this.props.setError({ message: "Unable to Retrieve Account Linking Info" });
+        this.props.setError({ message: 'Unable to Retrieve Account Linking Info' });
       });
   }
 
   save() {
     this.setState({
-      saving: true
+      saving: true,
     });
     axios
-      .post(
-        `/link_account/template/${this.props.skill_id}`,
-        this.state.accountLinkingRequest
-      )
+      .post(`/link_account/template/${this.props.skill_id}`, this.state.accountLinkingRequest)
       .then(() => {
-        this.props.updateVersion('account_linking', this.state.accountLinkingRequest)
+        this.props.updateVersion('account_linking', this.state.accountLinkingRequest);
         this.setState({
-          saving: false
+          saving: false,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
-        this.props.setError({ message: "Unable to save template" });
+        this.props.setError({ message: 'Unable to save template' });
         this.setState({
-          saving: false
+          saving: false,
         });
       });
   }
 
-  handleChange(idx, e, type, fields) {
+  handleChange(idx, e, type) {
     this.setState({
       accountLinkingRequest: update(this.state.accountLinkingRequest, {
-        [type]: { [idx]: { $set: [e.target.value] } }
-      })
+        [type]: { [idx]: { $set: [e.target.value] } },
+      }),
     });
   }
 
@@ -114,14 +106,14 @@ class AccountLinkTemplate extends Component {
     if (_.isUndefined(this.state.accountLinkingRequest[type])) {
       this.setState({
         accountLinkingRequest: update(this.state.accountLinkingRequest, {
-          [type]: { $set: [""] }
-        })
+          [type]: { $set: [''] },
+        }),
       });
     } else {
       this.setState({
         accountLinkingRequest: update(this.state.accountLinkingRequest, {
-          [type]: { $push: [""] }
-        })
+          [type]: { $push: [''] },
+        }),
       });
     }
   }
@@ -130,18 +122,15 @@ class AccountLinkTemplate extends Component {
     this.setState({
       accountLinkingRequest: update(this.state.accountLinkingRequest, {
         [type]: {
-          $set: _.filter(
-            this.state.accountLinkingRequest[type],
-            (p, pidx) => idx !== pidx
-          )
-        }
-      })
+          $set: _.filter(this.state.accountLinkingRequest[type], (p, pidx) => idx !== pidx),
+        },
+      }),
     });
   }
 
   render() {
-    if(this.state.loading) {
-      return <Spinner name="Account Linking"/>
+    if (this.state.loading) {
+      return <Spinner name="Account Linking" />;
     }
 
     return (
@@ -163,26 +152,26 @@ class AccountLinkTemplate extends Component {
               <label>URL Authorization</label>
               <Input
                 name="form-control-border form-control mb-3"
-                value={this.state.accountLinkingRequest.authorizationUrl || ""}
+                value={this.state.accountLinkingRequest.authorizationUrl || ''}
                 placeholder="URL Authorization"
-                onChange={e => {
-                  let accountLinkingRequest = this.state.accountLinkingRequest;
+                onChange={(e) => {
+                  const accountLinkingRequest = this.state.accountLinkingRequest;
                   accountLinkingRequest.authorizationUrl = e.target.value;
                   this.setState({
-                    accountLinkingRequest: accountLinkingRequest
+                    accountLinkingRequest,
                   });
                 }}
               />
               <label>Access Token URL</label>
               <Input
                 className="form-control-border form-control mb-3"
-                value={this.state.accountLinkingRequest.accessTokenUrl || ""}
+                value={this.state.accountLinkingRequest.accessTokenUrl || ''}
                 placeholder="Access Token URL"
-                onChange={e => {
-                  let accountLinkingRequest = this.state.accountLinkingRequest;
+                onChange={(e) => {
+                  const accountLinkingRequest = this.state.accountLinkingRequest;
                   accountLinkingRequest.accessTokenUrl = e.target.value;
                   this.setState({
-                    accountLinkingRequest: accountLinkingRequest
+                    accountLinkingRequest,
                   });
                 }}
               />
@@ -190,46 +179,39 @@ class AccountLinkTemplate extends Component {
               <hr />
 
               <Nav tabs className="mb-3">
-                <NavItem
-                  className="mr-2"
-                  onClick={() => this.setState({ type: "client" })}
-                >
-                  <NavLink href="#" active={this.state.type === "client"}>
+                <NavItem className="mr-2" onClick={() => this.setState({ type: 'client' })}>
+                  <NavLink href="#" active={this.state.type === 'client'}>
                     Client
                   </NavLink>
                 </NavItem>
                 <NavItem
                   className="mr-2"
                   onClick={() => {
-                    this.setState({ type: "scope" });
+                    this.setState({ type: 'scope' });
                   }}
                 >
-                  <NavLink href="#" active={this.state.type === "scope"}>
+                  <NavLink href="#" active={this.state.type === 'scope'}>
                     Scope
                   </NavLink>
                 </NavItem>
-                <NavItem
-                  className="mr-2"
-                  onClick={() => this.setState({ type: "domain" })}
-                >
-                  <NavLink href="#" active={this.state.type === "domain"}>
+                <NavItem className="mr-2" onClick={() => this.setState({ type: 'domain' })}>
+                  <NavLink href="#" active={this.state.type === 'domain'}>
                     Domain
                   </NavLink>
                 </NavItem>
               </Nav>
-              {this.state.type === "client" && (
+              {this.state.type === 'client' && (
                 <React.Fragment>
                   <label>Client ID</label>
                   <Input
                     className="form-control-border form-control mb-3"
-                    value={this.state.accountLinkingRequest.clientId || ""}
+                    value={this.state.accountLinkingRequest.clientId || ''}
                     placeholder="Client ID"
-                    onChange={e => {
-                      let accountLinkingRequest = this.state
-                        .accountLinkingRequest;
+                    onChange={(e) => {
+                      const accountLinkingRequest = this.state.accountLinkingRequest;
                       accountLinkingRequest.clientId = e.target.value;
                       this.setState({
-                        accountLinkingRequest: accountLinkingRequest
+                        accountLinkingRequest,
                       });
                     }}
                   />
@@ -237,20 +219,19 @@ class AccountLinkTemplate extends Component {
                   <Input
                     className="form-control-border form-control mb-3"
                     type="password"
-                    value={this.state.accountLinkingRequest.clientSecret || ""}
+                    value={this.state.accountLinkingRequest.clientSecret || ''}
                     placeholder="Client Secret"
-                    onChange={e => {
-                      let accountLinkingRequest = this.state
-                        .accountLinkingRequest;
+                    onChange={(e) => {
+                      const accountLinkingRequest = this.state.accountLinkingRequest;
                       accountLinkingRequest.clientSecret = e.target.value;
                       this.setState({
-                        accountLinkingRequest: accountLinkingRequest
+                        accountLinkingRequest,
                       });
                     }}
                   />
                 </React.Fragment>
               )}
-              {this.state.type === "scope" && (
+              {this.state.type === 'scope' && (
                 <MultipleFields
                   handleChange={this.handleChange}
                   handleAdd={this.handleAdd}
@@ -260,7 +241,7 @@ class AccountLinkTemplate extends Component {
                   type="scopes"
                 />
               )}
-              {this.state.type === "domain" && (
+              {this.state.type === 'domain' && (
                 <MultipleFields
                   label="Domains"
                   type="domains"
@@ -276,17 +257,13 @@ class AccountLinkTemplate extends Component {
               <Input
                 type="number"
                 className="form-control-border form-control right mb-3"
-                value={
-                  this.state.accountLinkingRequest
-                    .defaultTokenExpirationInSeconds || ""
-                }
+                value={this.state.accountLinkingRequest.defaultTokenExpirationInSeconds || ''}
                 placeholder="3600"
-                onChange={e => {
-                  let accountLinkingRequest = this.state.accountLinkingRequest;
-                  accountLinkingRequest.defaultTokenExpirationInSeconds =
-                    e.target.value;
+                onChange={(e) => {
+                  const accountLinkingRequest = this.state.accountLinkingRequest;
+                  accountLinkingRequest.defaultTokenExpirationInSeconds = e.target.value;
                   this.setState({
-                    accountLinkingRequest: accountLinkingRequest
+                    accountLinkingRequest,
                   });
                 }}
               />
@@ -294,16 +271,16 @@ class AccountLinkTemplate extends Component {
               <Select
                 classNamePrefix="select-box"
                 className="map-box"
-                onChange={e => {
-                  let accountLinkingRequest = this.state.accountLinkingRequest;
+                onChange={(e) => {
+                  const accountLinkingRequest = this.state.accountLinkingRequest;
                   accountLinkingRequest.accessTokenScheme = e.value;
                   this.setState({
-                    accountLinkingRequest: accountLinkingRequest
+                    accountLinkingRequest,
                   });
                 }}
                 placeholder={
                   _.find(clientAuthScheme, {
-                    value: this.state.accountLinkingRequest.accessTokenScheme
+                    value: this.state.accountLinkingRequest.accessTokenScheme,
                   }).label
                 }
                 options={clientAuthScheme}
@@ -317,10 +294,10 @@ class AccountLinkTemplate extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setError: err => dispatch(setError(err)),
-    updateVersion: (type, payload) => dispatch(updateVersion(type, payload))
+    setError: (err) => dispatch(setError(err)),
+    updateVersion: (type, payload) => dispatch(updateVersion(type, payload)),
   };
 };
 export default connect(

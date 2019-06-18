@@ -1,7 +1,7 @@
 .skill_preview {
-  padding: 12px 0;
-  margin: 0 36px;
   box-sizing: border-box;
+  margin: 0 36px;
+  padding: 12px 0;
   border-bottom: 2px solid lightgrey;
 }
 
@@ -11,8 +11,8 @@
 }
 
 .skill_preview_subtitle {
+  color: #6c7778;
   font-size: 14px;
-  color: #6C7778;
 }
 
 .skill_summary {
@@ -27,20 +27,20 @@
 }
 
 .show_skills_button {
-  color: #00b7ff;
   width: fit-content;
+  color: #00b7ff;
 }
 
 .skill_summary_and_description {
-  overflow-y: scroll;
   padding-right: 24px;
+  overflow-y: scroll;
 }
 
 .skill_preview_title_large {
   width: 200px;
+  overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow: hidden;
 }
 
 .target_user_inputs {

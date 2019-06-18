@@ -1,5 +1,3 @@
-import './zapier.css';
-
 import axios from 'axios';
 import { clearModal, setConfirm, setError } from 'ducks/modal';
 import update from 'immutability-helper';

@@ -1,47 +1,49 @@
-import cn from "classnames";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Tooltip } from "react-tippy";
-import Blocks from "./Sidebars/Blocks";
-import Variables from "./Sidebars/Variables";
-import Flows from "./Sidebars/Flows";
-import FlowButton from "./Sidebars/components/FlowButton";
+import cn from 'classnames';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Tooltip } from 'react-tippy';
+
+import Blocks from './Sidebars/Blocks';
+import Flows from './Sidebars/Flows';
+import Variables from './Sidebars/Variables';
+import FlowButton from './Sidebars/components/FlowButton';
 
 const tabs = {
   top: [
     {
-      tab: "blocks",
+      tab: 'blocks',
       icon: <i className="blocks-icon pl-3 pr-3 pt-3 pb-3 mt-2" />,
-      tip: "Blocks"
+      tip: 'Blocks',
     },
     {
-      tab: "flows",
+      tab: 'flows',
       icon: <i className="flows-icon pl-3 pr-3 pt-3 pb-3 mt-2" />,
-      tip: "Flows"
+      tip: 'Flows',
     },
     {
-      tab: "variables",
+      tab: 'variables',
       icon: <i className="var-icon pl-3 pr-3 pt-3 pb-3 mt-2" />,
-      tip: "Variables"
-    }
+      tip: 'Variables',
+    },
   ],
   bottom: [
     {
-      link: "https://forum.getvoiceflow.com",
+      link: 'https://forum.getvoiceflow.com',
       icon: <i className="fas fa-question" />,
-      tip: "Join the Voiceflow Forum for help & updates"
+      tip: 'Join the Voiceflow Forum for help & updates',
     },
     {
-      link: "https://docs.voiceflow.com/",
+      link: 'https://docs.voiceflow.com/',
       icon: <i className="fas fa-graduation-cap" />,
-      tip: "Access tutorials through Voiceflow University"
+      tip: 'Access tutorials through Voiceflow University',
     },
     {
-      link: "https://www.facebook.com/groups/199476704186240/",
+      // eslint-disable-next-line no-secrets/no-secrets
+      link: 'https://www.facebook.com/groups/199476704186240/',
       icon: <i className="fab fa-facebook-f" />,
-      tip: "Join the Voiceflow Facebook Community"
-    }
-  ]
+      tip: 'Join the Voiceflow Facebook Community',
+    },
+  ],
 };
 
 class Menu extends Component {
@@ -49,12 +51,12 @@ class Menu extends Component {
     super(props);
 
     // DO THIS IN MAPSTATE TO PROPS
-    let tab = localStorage.getItem("tab");
-    if (!tab) tab = "blocks";
+    let tab = localStorage.getItem('tab');
+    if (!tab) tab = 'blocks';
 
     this.state = {
       tree: null,
-      depth: 0
+      depth: 0,
     };
 
     this.buildTree = this.buildTree.bind(this);
@@ -66,39 +68,35 @@ class Menu extends Component {
     this.m_pos = 0;
   }
 
+  // eslint-disable-next-line react/no-deprecated
   componentWillReceiveProps(nextProps) {
-    if (localStorage.getItem("sideWidth") && this.sidebar && nextProps.open) {
-      this.sidebar.style.width = localStorage.getItem("sideWidth");
+    if (localStorage.getItem('sideWidth') && this.sidebar && nextProps.open) {
+      this.sidebar.style.width = localStorage.getItem('sideWidth');
     }
   }
 
   resize(e) {
     const dx = this.m_pos - e.x;
-    if (this.sidebar.style.width && (e.clientX < 280 || e.clientX > 960))
-      return;
+    if (this.sidebar.style.width && (e.clientX < 280 || e.clientX > 960)) return;
     this.m_pos = e.x;
-    this.sidebar.style.width =
-      parseInt(getComputedStyle(this.sidebar, "").width) - dx + "px";
-    localStorage.setItem(
-      "sideWidth",
-      parseInt(getComputedStyle(this.sidebar, "").width) - dx + "px"
-    );
+    this.sidebar.style.width = `${parseInt(getComputedStyle(this.sidebar, '').width, 10) - dx}px`;
+    localStorage.setItem('sideWidth', `${parseInt(getComputedStyle(this.sidebar, '').width, 10) - dx}px`);
   }
 
   componentDidMount() {
     this.props.build(this.updateTree);
     this.sidebar.addEventListener(
-      "mousedown",
-      e => {
-        if (e.srcElement.classList.contains("open")) {
+      'mousedown',
+      (e) => {
+        if (e.srcElement.classList.contains('open')) {
           this.m_pos = e.x;
-          document.addEventListener("mousemove", this.resize, false);
+          document.addEventListener('mousemove', this.resize, false);
         }
       },
       false
     );
-    document.addEventListener("mouseup", () => {
-      document.removeEventListener("mousemove", this.resize, false);
+    document.addEventListener('mouseup', () => {
+      document.removeEventListener('mousemove', this.resize, false);
     });
   }
 
@@ -112,19 +110,17 @@ class Menu extends Component {
         sub_diagrams = node.sub_diagrams;
       }
 
-      const visited_sub_diagrams = new Set()
+      const visited_sub_diagrams = new Set();
       if (Array.isArray(sub_diagrams) && sub_diagrams.length !== 0) {
         tree = sub_diagrams.map((diagram_id, i) => {
-          if(!visited_sub_diagrams.has(diagram_id)){
-            visited_sub_diagrams.add(diagram_id)
-            let block = this.props.diagrams.find(d => d.id === diagram_id);
+          if (!visited_sub_diagrams.has(diagram_id)) {
+            visited_sub_diagrams.add(diagram_id);
+            const block = this.props.diagrams.find((d) => d.id === diagram_id);
 
             if (block) {
               return (
                 <div className="sub-diagram space-between" key={i}>
-                  <div className="sub-column">
-                    {this.buildTree(block, depth + 1)}
-                  </div>
+                  <div className="sub-column">{this.buildTree(block, depth + 1)}</div>
                 </div>
               );
             }
@@ -145,18 +141,24 @@ class Menu extends Component {
           {tree}
         </React.Fragment>
       );
-    } else {
-      return <div className="diagram-block"><div className="diagram-button" style={{marginLeft: 20 * depth}}>...</div></div>;
     }
+    return (
+      <div className="diagram-block">
+        <div className="diagram-button" style={{ marginLeft: 20 * depth }}>
+          ...
+        </div>
+      </div>
+    );
   }
 
   updateTree() {
-    for (let diagram of this.props.diagrams) {
-      if (diagram.name === "ROOT") {
+    // eslint-disable-next-line guard-for-in, no-restricted-syntax
+    for (const diagram of this.props.diagrams) {
+      if (diagram.name === 'ROOT') {
         this.visited = new Set();
         this.setState({
           tree: this.buildTree(diagram),
-          depth: this.props.diagrams.length
+          depth: this.props.diagrams.length,
         });
       }
     }
@@ -164,16 +166,16 @@ class Menu extends Component {
 
   openTab(tab) {
     if (tab !== this.props.tab || !this.props.open) {
-      localStorage.setItem("tab", tab);
+      localStorage.setItem('tab', tab);
       this.props.setTab(tab);
     }
   }
 
   renderSideBar() {
     switch (this.props.tab) {
-      case "variables":
+      case 'variables':
         return <Variables locked={this.props.preview} />;
-      case "flows":
+      case 'flows':
         return (
           <Flows
             tree={this.state.tree}
@@ -201,60 +203,47 @@ class Menu extends Component {
 
   render() {
     return (
-      <div
-        className="Menu"
-        onFocus={this.props.unfocus}
-        onMouseDown={this.props.unfocus}
-        onKeyDown={this.props.unfocus}
-      >
-        {!this.props.preview && <div className="toolbar">
-          <div className="top-down">
-            {tabs.top.map((tab, i) => {
-              return (
-                <Tooltip
-                  key={i}
-                  title={tab.tip}
-                  position="right"
-                  disabled={
-                    true && tab.tab === this.props.tab && this.props.open
-                  }
-                >
-                  <div
-                    className={cn("tool", {
-                      active: tab.tab === this.props.tab && this.props.open
-                    })}
-                    onClick={() => this.props.openTab(tab.tab)}
-                  >
-                    {tab.icon}
-                  </div>
-                </Tooltip>
-              );
-            })}
+      <div className="Menu" onFocus={this.props.unfocus} onMouseDown={this.props.unfocus} onKeyDown={this.props.unfocus}>
+        {!this.props.preview && (
+          <div className="toolbar">
+            <div className="top-down">
+              {tabs.top.map((tab, i) => {
+                return (
+                  <Tooltip key={i} title={tab.tip} position="right" disabled={tab.tab === this.props.tab && this.props.open}>
+                    <div
+                      className={cn('tool', {
+                        active: tab.tab === this.props.tab && this.props.open,
+                      })}
+                      onClick={() => this.props.openTab(tab.tab)}
+                    >
+                      {tab.icon}
+                    </div>
+                  </Tooltip>
+                );
+              })}
+            </div>
+            <div className="spacer" />
+            <div className="bottom-up">
+              {tabs.bottom.map((tab, i) => {
+                return (
+                  <Tooltip key={i} title={tab.tip} position="right">
+                    <a className="tool no-underline" href={tab.link} target="_blank" rel="noopener noreferrer">
+                      {tab.icon}
+                    </a>
+                  </Tooltip>
+                );
+              })}
+            </div>
           </div>
-          <div className="spacer" />
-          <div className="bottom-up">
-            {tabs.bottom.map((tab, i) => {
-              return (
-                <Tooltip key={i} title={tab.tip} position="right">
-                  <a
-                    className="tool no-underline"
-                    href={tab.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {tab.icon}
-                  </a>
-                </Tooltip>
-              );
-            })}
-          </div>
-        </div>}
+        )}
         <div
           id="sidebar"
           className={cn({ open: this.props.open })}
-          ref={ref => (this.sidebar = ref)}
+          ref={(ref) => {
+            this.sidebar = ref;
+          }}
         >
-          <div className={cn("sidebar-container", this.props.tab)}>
+          <div className={cn('sidebar-container', this.props.tab)}>
             {this.props.loading_diagram ? null : (
               <React.Fragment>
                 <div className="sidebar-header">
@@ -262,11 +251,8 @@ class Menu extends Component {
                     className="block-title no-select mb-3"
                     onClick={() => {
                       this.props.closeTab();
-                      localStorage.setItem(
-                        "sideWidth",
-                        this.sidebar.style.width
-                      );
-                      this.sidebar.style.width = "240px";
+                      localStorage.setItem('sideWidth', this.sidebar.style.width);
+                      this.sidebar.style.width = '240px';
                     }}
                   >
                     <h5 className="mb-0">{this.props.tab}</h5>
@@ -283,9 +269,9 @@ class Menu extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    diagrams: state.diagrams.diagrams
+    diagrams: state.diagrams.diagrams,
   };
 };
 

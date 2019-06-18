@@ -1,18 +1,10 @@
-import React from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 
 function Link(props) {
-  const {
-    to,
-    onRef,
-    match,
-    history,
-    location,
-    staticContext,
-    component: Component,
-    ...ownProps
-  } = props;
+  const { to, onRef, match, history, location, staticContext, component: Component, ...ownProps } = props;
 
   return <Component ref={onRef} onClick={() => history.push(to)} {...ownProps} />;
 }

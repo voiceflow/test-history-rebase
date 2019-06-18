@@ -1,9 +1,9 @@
 /* eslint-disable react/no-unused-state */
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
 import { PropsBridgeContextProvider } from 'contexts';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 export default class Provider extends Component {
   static propTypes = {
@@ -29,7 +29,7 @@ export default class Provider extends Component {
     }));
   };
 
-  onDeleteProps = key => {
+  onDeleteProps = (key) => {
     this.setState(({ providedProps }) => ({ providedProps: { ...providedProps, [key]: null } }));
   };
 

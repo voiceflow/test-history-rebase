@@ -1,45 +1,53 @@
+import 'react-day-picker/lib/style.css';
+
 import React, { Component } from 'react';
-import DayPicker, { DateUtils } from 'react-day-picker'
-import 'react-day-picker/lib/style.css'
-import { Popover, PopoverBody } from 'reactstrap'
-import Select from 'react-select'
+import DayPicker, { DateUtils } from 'react-day-picker';
+import Select from 'react-select';
+import { Popover, PopoverBody } from 'reactstrap';
 
 const yesterday = () => {
-  var date = new Date()
-  date.setDate(date.getDate() - 1)
-  return date
-}
+  const date = new Date();
+  date.setDate(date.getDate() - 1);
+  return date;
+};
 
 const options = [
   {
     label: 'Today',
-    value: 'td'
+    value: 'td',
   },
   {
     label: 'Yesterday',
-    value: 'yd'
+    value: 'yd',
   },
   {
     label: 'Last 7 Days',
-    value: '7d'
+    value: '7d',
   },
   {
     label: 'Last 30 Days',
-    value: '30d'
+    value: '30d',
   },
   {
     label: 'Custom Range',
-    value: 'custom'
-  }
-]
+    value: 'custom',
+  },
+];
+
+function getInitialState() {
+  return {
+    from: yesterday(),
+    to: new Date(),
+  };
+}
 
 class TimeInterval extends Component {
   static default_props = {
-    number_of_months: 2
-  }
+    number_of_months: 2,
+  };
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       from: yesterday(),
@@ -47,70 +55,61 @@ class TimeInterval extends Component {
       show_calendar: false,
       active: {
         value: 'td',
-        label: 'Today'
-      }
-    }
+        label: 'Today',
+      },
+    };
 
-    this.handleDayClick = this.handleDayClick.bind(this)
-    this.handleResetClick = this.handleResetClick.bind(this)
-    this.getInitialState = this.getInitialState.bind(this)
-    this.toggleCalendar = this.toggleCalendar.bind(this)
-    this.getValue = this.getValue.bind(this)
-    this.updateFilter = this.updateFilter.bind(this)
+    this.handleDayClick = this.handleDayClick.bind(this);
+    this.handleResetClick = this.handleResetClick.bind(this);
+    this.toggleCalendar = this.toggleCalendar.bind(this);
+    this.getValue = this.getValue.bind(this);
+    this.updateFilter = this.updateFilter.bind(this);
   }
 
-  getInitialState() {
-    return {
-      from: yesterday(),
-      to: new Date()
-    }
-  }
-
-  handleDayClick(day, { selected }) {
-    const range = DateUtils.addDayToRange(day, this.state)
-    this.setState(range)
-    this.props.handleFilterTypeChange({...range})
+  handleDayClick(day) {
+    const range = DateUtils.addDayToRange(day, this.state);
+    this.setState(range);
+    this.props.handleFilterTypeChange({ ...range });
   }
 
   handleResetClick() {
-    this.setState(this.getInitialState())
+    this.setState(getInitialState());
   }
 
   toggleCalendar() {
-    this.setState(prev_state => ({
-      show_calendar: !prev_state.show_calendar
-    }))
+    this.setState((prev_state) => ({
+      show_calendar: !prev_state.show_calendar,
+    }));
   }
 
   getValue = (val) => {
     if (val === 'custom') {
-      return `${this.state.from.toISOString().slice(0,10)} to ${this.state.to.toISOString().slice(0,10)}`
-    } else {
-      for (let i = 0; i < options.length; i++) {
-        if (options[i].value === val) {
-          return options[i].label
-        }
+      return `${this.state.from.toISOString().slice(0, 10)} to ${this.state.to.toISOString().slice(0, 10)}`;
+    }
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].value === val) {
+        return options[i].label;
       }
     }
-  }
+  };
 
-  updateFilter(option){
-    if(option.value === 'custom'){
+  updateFilter(option) {
+    if (option.value === 'custom') {
       this.setState({
         active: option,
-        show_calendar: true
-      })
+        show_calendar: true,
+      });
     } else {
-      this.props.handleFilterTypeChange(option.value)
+      this.props.handleFilterTypeChange(option.value);
       this.setState({
-        active: option
-      })
+        active: option,
+      });
     }
   }
 
   render() {
-    const { from, to } = this.state
-    const modifiers = { start: from, end: to }
+    const { from, to } = this.state;
+    const modifiers = { start: from, end: to };
     return (
       <div className="time-interval">
         <Select
@@ -135,7 +134,7 @@ class TimeInterval extends Component {
           </PopoverBody>
         </Popover>
       </div>
-    )
+    );
   }
 }
 

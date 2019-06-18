@@ -1,7 +1,7 @@
-import { BrowserRouter } from 'react-router-dom';
-import Enzyme, { shallow, mount } from 'enzyme/build';
-
+/* eslint-disable import/no-extraneous-dependencies */
+import { mount, shallow } from 'enzyme/build';
 import { shape } from 'prop-types';
+import { BrowserRouter } from 'react-router-dom';
 
 // Instantiate router context
 const router = {

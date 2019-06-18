@@ -1,12 +1,11 @@
-import React, { Component } from 'react'
-import { Line, Chart } from 'react-chartjs-2'
+import React, { Component } from 'react';
+import { Chart, Line } from 'react-chartjs-2';
 
-Chart.defaults.global.defaultFontColor = '#8da2b5'
+Chart.defaults.global.defaultFontColor = '#8da2b5';
 
-
-class LineBar extends Component{
-  render(){
-    const data={
+class LineBar extends Component {
+  render() {
+    const data = {
       labels: this.props.dates,
       datasets: [
         {
@@ -19,40 +18,42 @@ class LineBar extends Component{
           cubicInterpolationMode: 'monotone',
           defaultFontColor: '#8da2b5',
           defaultFontSize: '20px',
-          lineTension: '120'
-        }
-      ]
-    }
+          lineTension: '120',
+        },
+      ],
+    };
 
-    const options={
+    const options = {
       legend: {
-        display: false
+        display: false,
       },
       scales: {
-        xAxes: [{
-          gridLines: {
-            display: false,
-            color: '#8da2b530',
-            zeroLineColor: '#8da2b530'
-          }
-        }],
-        yAxes: [{
-          gridLines: {
-            display: true,
-            color: '#8da2b530',
-            zeroLineColor: '#8da2b530'
+        xAxes: [
+          {
+            gridLines: {
+              display: false,
+              color: '#8da2b530',
+              zeroLineColor: '#8da2b530',
+            },
           },
-          ticks: {
-            min: 0
-          }
-        }]
-      }
-    }
+        ],
+        yAxes: [
+          {
+            gridLines: {
+              display: true,
+              color: '#8da2b530',
+              zeroLineColor: '#8da2b530',
+            },
+            ticks: {
+              min: 0,
+            },
+          },
+        ],
+      },
+    };
 
-    return(
-      <Line data={data} options={options}/>
-    )
+    return <Line data={data} options={options} />;
   }
 }
 
-export default LineBar
+export default LineBar;

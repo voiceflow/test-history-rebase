@@ -1,18 +1,21 @@
+/* eslint no-restricted-globals: ["error", "isFinite"] */
+import './ChargeTeamGroup.css';
+import '../AdminAdvancedModal/AdminAdvancedModal.css';
+
+import Button from 'components/Button';
+import Input from 'components/Input';
+import { cancelSubscription, editTrial, refundCharge } from 'ducks/admin';
+import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
-import {Alert, Card, CardBody, Collapse, Modal, ModalBody, ModalFooter} from "reactstrap";
+import { Alert, Card, CardBody, Collapse, Modal, ModalBody, ModalFooter } from 'reactstrap';
 
-import './ChargeTeamGroup.css';
-import moment from "moment";
-import ChargeItem from "../ChargeItem/ChargeItem";
-import Button from "components/Button";
-import '../AdminAdvancedModal/AdminAdvancedModal.css';
-import Input from "components/Input";
-import {refundCharge, cancelSubscription, editTrial} from "ducks/admin";
-import TrialModal from "../TrialModal/TrialModal";
+import ChargeItem from '../ChargeItem/ChargeItem';
+import TrialModal from '../TrialModal/TrialModal';
+
+const DATETIME_FORMAT = 'MMMM Do YYYY, h:mm:ss a';
 
 class ChargeTeamGroup extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -23,85 +26,84 @@ class ChargeTeamGroup extends React.Component {
       refundAmountError: '',
       refundAmount: '',
       showCancelModal: false,
-      showTrialModal: false
-    }
+      showTrialModal: false,
+    };
   }
 
   toggle = () => {
-    this.setState(prevState => ({
-      showRefundModal: !prevState.showRefundModal
+    this.setState((prevState) => ({
+      showRefundModal: !prevState.showRefundModal,
     }));
   };
-  
+
   toggleSub = () => {
-    this.setState(prevState => ({
-      showCancelModal: !prevState.showCancelModal
-    }))
+    this.setState((prevState) => ({
+      showCancelModal: !prevState.showCancelModal,
+    }));
   };
 
   toggleTrial = () => {
-    this.setState(prevState => ({
-      showTrialModal: !prevState.showTrialModal
-    }))
+    this.setState((prevState) => ({
+      showTrialModal: !prevState.showTrialModal,
+    }));
   };
 
   toggleCharges = () => {
-    this.setState(prevState => ({
-      collapse: !prevState.collapse
-    }))
+    this.setState((prevState) => ({
+      collapse: !prevState.collapse,
+    }));
   };
-  
-  showRefundModal = charge => {
-    this.setState({
-      showRefundModal: true,
-      showRefundCharge: charge
-    }, () => {
-      this.setRefundAmount(parseInt(charge.amount, 10) - parseInt(charge.amount_refunded))
-    })
+
+  showRefundModal = (charge) => {
+    this.setState(
+      {
+        showRefundModal: true,
+        showRefundCharge: charge,
+      },
+      () => {
+        this.setRefundAmount(parseInt(charge.amount, 10) - parseInt(charge.amount_refunded, 10));
+      }
+    );
   };
-  
-  setRefundAmount = amount => {
-    if (!this.state.showRefundCharge)
-      return;
+
+  setRefundAmount = (amount) => {
+    if (!this.state.showRefundCharge) return;
     if (isNaN(amount)) {
       this.setState({
-        refundAmountError: 'Amount must be an integer'
-      })
+        refundAmountError: 'Amount must be an integer',
+      });
     } else {
       if (parseInt(amount, 10) > this.state.showRefundCharge.amount) {
         this.setState({
-          refundAmountError: 'Refund amount must be less than or equal to the charge amount'
-        })
+          refundAmountError: 'Refund amount must be less than or equal to the charge amount',
+        });
       } else {
         this.setState({
-          refundAmount: amount
-        })
+          refundAmount: amount,
+        });
       }
     }
   };
 
   render() {
     if (this.props.team) {
-      const {team} = this.props;
+      const { team } = this.props;
       return (
         <div className="ctg__wrapper">
           <div className="ctg__team-header">
             <div className="ctg__expand_caret" onClick={this.toggleCharges}>
-              {this.state.collapse ? <i className="fas fa-caret-down"/> : <i className="fas fa-caret-right"/>}
+              {this.state.collapse ? <i className="fas fa-caret-down" /> : <i className="fas fa-caret-right" />}
             </div>
             <div className="ctg__header-details">
-              Team #{team.team_id} - Seats: {team.seats} -
-              Created: {moment(team.created).format('MMMM Do YYYY, h:mm:ss a')}
-              <div className="ctg__team-subheader">
-                Subscription id: {team.stripe_sub_id ? team.stripe_sub_id : 'Cancelled'}
-              </div>
-              <div className="ctg__team-subheader">
-                Trial Expiry: {team.expiry ? moment(team.expiry).format("MMM Do YYYY") : 'No trial set'}
-              </div>
+              Team #{team.team_id} - Seats: {team.seats} - Created: {moment(team.created).format(DATETIME_FORMAT)}
+              <div className="ctg__team-subheader">Subscription id: {team.stripe_sub_id ? team.stripe_sub_id : 'Cancelled'}</div>
+              <div className="ctg__team-subheader">Trial Expiry: {team.expiry ? moment(team.expiry).format('MMM Do YYYY') : 'No trial set'}</div>
             </div>
-            {team.stripe_sub_id ? <Button className="ctg__team-cancel" isWarning onClick={this.toggleSub}>
-              Cancel Subscription
-            </Button> : null}
+            {team.stripe_sub_id ? (
+              <Button className="ctg__team-cancel" isWarning onClick={this.toggleSub}>
+                Cancel Subscription
+              </Button>
+            ) : null}
             <Button className="ctg__team-cancel" isPrimary onClick={this.toggleTrial}>
               Manage Trial
             </Button>
@@ -112,158 +114,142 @@ class ChargeTeamGroup extends React.Component {
                 <div className="ctg__tbl-header">
                   <table cellPadding="0" cellSpacing="0" border="0" className="ctg__table">
                     <thead>
-                    <tr>
-                      <th>Charge ID</th>
-                      <th>Customer ID</th>
-                      <th>Amount</th>
-                      <th>Amount Refunded</th>
-                      <th>Created</th>
-                      <th>Description</th>
-                      <th>Actions</th>
-                    </tr>
+                      <tr>
+                        <th>Charge ID</th>
+                        <th>Customer ID</th>
+                        <th>Amount</th>
+                        <th>Amount Refunded</th>
+                        <th>Created</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                      </tr>
                     </thead>
                   </table>
                 </div>
                 <div className="ctg__tbl-content">
                   <table cellPadding="0" cellSpacing="0" border="0" className="ctg__table">
                     <tbody>
-                    {Array.isArray(team.charges) && team.charges.map(charge => <ChargeItem charge={charge} key={charge.id} showModal={this.showRefundModal}/>)}
+                      {Array.isArray(team.charges) &&
+                        team.charges.map((charge) => <ChargeItem charge={charge} key={charge.id} showModal={this.showRefundModal} />)}
                     </tbody>
                   </table>
                 </div>
               </CardBody>
             </Card>
           </Collapse>
-          
+
           <Modal isOpen={this.state.showRefundModal} toggle={this.toggle} className={this.props.className}>
             <div className="am__title" onClick={this.toggle}>
               REFUND USER
-              <div className="close am__close"></div>
+              <div className="close am__close" />
             </div>
             <ModalBody>
-              {this.state.showRefundCharge ? <div>
-                <Alert color="danger between" className="ctg__warning">
-                  <span>Are you sure you want to refund user? This action cannot be undone</span>
-                  <br/>
-                </Alert>
-                <div className="ctg__charge_overview">
-                  <div className="ctg__charge_for">
-                    Charge for 
-                  </div>
-                  <div className="ctg__charge_header">
-                    {this.state.showRefundCharge.billing_details.name} <span className="ctg__charge_header_email">{this.state.showRefundCharge.receipt_email}</span>
-                  </div>
-                  <div className="ctg__charge_user_id">
-                    Customer ID: {this.state.showRefundCharge.customer}
-                  </div>
-                  <div className="ctg__charge_user_id">
-                    Charge ID: {this.state.showRefundCharge.id}
-                  </div>
-                  <div className="ctg__charge_user_id">
-                    Charge Status: {this.state.showRefundCharge.status}
-                  </div>
-                  <div className="ctg__charge_user_id">
-                    Invoice ID: {this.state.showRefundCharge.invoice}
-                  </div>
-                  <div className="ctg__receipt_divider"> </div>
-                  <div className="ctg__charge_amount">
-                    <div>
-                      Created: {moment(this.state.showRefundCharge.created).format('MMMM Do YYYY, h:mm:ss a')}
+              {this.state.showRefundCharge ? (
+                <div>
+                  <Alert color="danger between" className="ctg__warning">
+                    <span>Are you sure you want to refund user? This action cannot be undone</span>
+                    <br />
+                  </Alert>
+                  <div className="ctg__charge_overview">
+                    <div className="ctg__charge_for">Charge for</div>
+                    <div className="ctg__charge_header">
+                      {this.state.showRefundCharge.billing_details.name}{' '}
+                      <span className="ctg__charge_header_email">{this.state.showRefundCharge.receipt_email}</span>
                     </div>
-                    <div>
-                      Total: {this.state.showRefundCharge.amount / 100} {this.state.showRefundCharge.currency}
+                    <div className="ctg__charge_user_id">Customer ID: {this.state.showRefundCharge.customer}</div>
+                    <div className="ctg__charge_user_id">Charge ID: {this.state.showRefundCharge.id}</div>
+                    <div className="ctg__charge_user_id">Charge Status: {this.state.showRefundCharge.status}</div>
+                    <div className="ctg__charge_user_id">Invoice ID: {this.state.showRefundCharge.invoice}</div>
+                    <div className="ctg__receipt_divider"> </div>
+                    <div className="ctg__charge_amount">
+                      <div>Created: {moment(this.state.showRefundCharge.created).format(DATETIME_FORMAT)}</div>
+                      <div>
+                        Total: {this.state.showRefundCharge.amount / 100} {this.state.showRefundCharge.currency}
+                      </div>
+                      <div>
+                        Amount refunded: {this.state.showRefundCharge.amount_refunded / 100} {this.state.showRefundCharge.currency}
+                      </div>
                     </div>
-                    <div>
-                      Amount refunded: {this.state.showRefundCharge.amount_refunded / 100} {this.state.showRefundCharge.currency}
+                    <div className="ctg__charge_description">
+                      <div>Receipt Number: {this.state.showRefundCharge.receipt_number}</div>
+                      <div>Description: {this.state.showRefundCharge.description}</div>
                     </div>
                   </div>
-                  <div className="ctg__charge_description">
-                    <div>
-                      Receipt Number: {this.state.showRefundCharge.receipt_number}
-                    </div>
-                    <div>
-                      Description: {this.state.showRefundCharge.description}
-                    </div>
+                  <div className="ctg__refund_amount_input">
+                    Refund Amount (in cents):
+                    <Input
+                      className="form-control-2 ctg__refund_input"
+                      placeholder="Enter the amount to refund"
+                      onChange={(e) => this.setRefundAmount(e.target.value)}
+                      value={this.state.refundAmount}
+                      type="text"
+                    />
                   </div>
                 </div>
-                <div className="ctg__refund_amount_input">
-                  Refund Amount (in cents):
-                  <Input
-                    className="form-control-2 ctg__refund_input"
-                    placeholder="Enter the amount to refund"
-                    onChange={(e) => this.setRefundAmount(e.target.value)}
-                    value={this.state.refundAmount}
-                    type="text"
-                  />
-                </div>
-              </div> : null}
+              ) : null}
             </ModalBody>
             <ModalFooter>
-              <Button isWarning onClick={() => {
-                this.props.refundCharge(team.team_id, this.state.showRefundCharge.id, this.state.refundAmount);
-                this.toggle();
-              }}>
+              <Button
+                isWarning
+                onClick={() => {
+                  this.props.refundCharge(team.team_id, this.state.showRefundCharge.id, this.state.refundAmount);
+                  this.toggle();
+                }}
+              >
                 Refund User
               </Button>
-              <Button isSecondary onClick={this.toggle}>Cancel</Button>
+              <Button isSecondary onClick={this.toggle}>
+                Cancel
+              </Button>
             </ModalFooter>
           </Modal>
 
           <Modal isOpen={this.state.showCancelModal} toggle={this.toggleSub} className={this.props.className}>
             <div className="am__title" onClick={this.toggleSub}>
               CANCEL SUBSCRIPTION
-              <div className="close am__close"></div>
+              <div className="close am__close" />
             </div>
             <ModalBody>
               <div>
                 <Alert color="danger between" className="ctg__warning">
                   <span>Are you sure you want to cancel this team? This action cannot be undone</span>
-                  <br/>
+                  <br />
                 </Alert>
                 <div className="ctg__charge_overview">
-                  <div className="ctg__charge_for">
-                    Subscription for
-                  </div>
-                  <div className="ctg__charge_header">
-                    Team #{team.team_id}
-                  </div>
+                  <div className="ctg__charge_for">Subscription for</div>
+                  <div className="ctg__charge_header">Team #{team.team_id}</div>
                   <div className="ctg__receipt_divider"> </div>
                   <div className="ctg__charge_amount">
-                    <div>
-                      Subscription started: {moment(team.created).format('MMMM Do YYYY, h:mm:ss a')}
-                    </div>
+                    <div>Subscription started: {moment(team.created).format(DATETIME_FORMAT)}</div>
                   </div>
                 </div>
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button isWarning onClick={() => {
-                this.props.cancelSubscription(team.team_id, team.stripe_sub_id);
-                this.toggleSub();
-              }}>
+              <Button
+                isWarning
+                onClick={() => {
+                  this.props.cancelSubscription(team.team_id, team.stripe_sub_id);
+                  this.toggleSub();
+                }}
+              >
                 Cancel Subscription
               </Button>
-              <Button isSecondary onClick={this.toggleSub}>Cancel</Button>
+              <Button isSecondary onClick={this.toggleSub}>
+                Cancel
+              </Button>
             </ModalFooter>
           </Modal>
 
-          <TrialModal
-            showTrialModal={this.state.showTrialModal}
-            toggleTrial={this.toggleTrial}
-            team={team}
-          />
-          
-        </div>
-      )
-    } else {
-      return (
-        <div>
-          Loading... Is it possible this team doesn't have any charges?
+          <TrialModal showTrialModal={this.state.showTrialModal} toggleTrial={this.toggleTrial} team={team} />
         </div>
       );
     }
+    return <div>Loading... Is it possible this team doesn't have any charges?</div>;
   }
-
 }
 
-export default connect(null, { refundCharge, cancelSubscription, editTrial })(ChargeTeamGroup);
+export default connect(
+  null,
+  { refundCharge, cancelSubscription, editTrial }
+)(ChargeTeamGroup);

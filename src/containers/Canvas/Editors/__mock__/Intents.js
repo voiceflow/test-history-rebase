@@ -1,9 +1,11 @@
-let intents = [{
+const intents = [
+  {
     inputs: [],
-    key: "M5s3gMETzsul",
-    name: "intent_one",
+    key: 'M5s3gMETzsul',
+    name: 'intent_one',
     open: true,
-    _platform: 'alexa'
-}];
+    _platform: 'alexa',
+  },
+];
 
 exports.intents = intents;

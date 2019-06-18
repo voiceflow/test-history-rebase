@@ -1,17 +1,19 @@
-import React, { Fragment } from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 
 import Checkbox from '../Checkbox';
 import GroupFormInline from '../GroupFormInline';
 
-export const YES_NO_RADIO_BUTTONS = [{
+export const YES_NO_RADIO_BUTTONS = [
+  {
     id: true,
-    label: "Yes"
+    label: 'Yes',
   },
   {
     id: false,
-    label: "No"
-  }
+    label: 'No',
+  },
 ];
 
 export default function RadioButtons(props) {
@@ -21,7 +23,7 @@ export default function RadioButtons(props) {
       {!!label && <label className="form-label">{label}</label>}
 
       <GroupFormInline
-        cols={buttons.map(button => ({
+        cols={buttons.map((button) => ({
           content: (
             <Checkbox
               {...button}

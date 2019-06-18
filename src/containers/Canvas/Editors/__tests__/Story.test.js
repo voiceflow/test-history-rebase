@@ -1,13 +1,12 @@
-import React from 'react';
-import { mount, shallow, render } from 'enzyme/build';
-import Story from '../Story';
 import toJson from 'enzyme-to-json';
+import { shallow } from 'enzyme/build';
+import React from 'react';
 
-const clickFn = jest.fn()
+import Story from '../Story';
 
 describe('StoryEditor', () => {
-    it('render story block editor', () => {
-        const component = shallow(<Story />);
-        expect(toJson(component)).toMatchSnapshot()
-    });
-})
+  it('render story block editor', () => {
+    const component = shallow(<Story />);
+    expect(toJson(component)).toMatchSnapshot();
+  });
+});

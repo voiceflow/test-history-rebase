@@ -1,10 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React from 'react';
-
 import centered from '@storybook/addon-centered';
+import { object, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
-import { text, object, withKnobs } from '@storybook/addon-knobs';
+import React from 'react';
 
 import GroupFormInline from './index';
 

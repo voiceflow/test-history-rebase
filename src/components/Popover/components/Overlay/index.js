@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+/* eslint-disable no-underscore-dangle */
 import cn from 'classnames';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { createPortal, findDOMNode } from 'react-dom';
 import { RootCloseWrapper } from 'react-overlays';
-import { findDOMNode, createPortal } from 'react-dom';
-
 import { findClosestNode } from 'utils/dom';
-import { strategies, createStrategyFromFunction } from 'utils/position';
+import { createStrategyFromFunction, strategies } from 'utils/position';
 
 import Transition from '../../../Transition';
 
@@ -31,7 +32,7 @@ export default class Overlay extends Component {
     repositionOnUpdate: true,
   };
 
-  static isDropdown = node => node.classList && node.classList.contains('__type-dropdown');
+  static isDropdown = (node) => node.classList && node.classList.contains('__type-dropdown');
 
   scrollContainersListeners = {};
 
@@ -67,17 +68,18 @@ export default class Overlay extends Component {
     this.removeListeners(scrollContainers);
   }
 
-  onRootRef = node => {
+  onRootRef = (node) => {
     this.me = node;
   };
 
-  onRootClose = e => {
+  onRootClose = (e) => {
     if (e._processed) {
       return;
     }
 
     const { onHide } = this.props;
 
+    // eslint-disable-next-line react/no-find-dom-node
     const me = findDOMNode(this.me);
     const popover = findClosestNode(e.target, 'popover');
 
@@ -95,17 +97,11 @@ export default class Overlay extends Component {
         return true;
       }
 
-      const {
-        gap,
-        target,
-        onHide,
-        strategy,
-        sameWidth,
-        setMinWidth,
-        scrollContainers,
-      } = this.props;
+      const { gap, target, onHide, strategy, sameWidth, setMinWidth, scrollContainers } = this.props;
 
+      // eslint-disable-next-line react/no-find-dom-node
       const parent = findDOMNode(target);
+      // eslint-disable-next-line react/no-find-dom-node
       const child = findDOMNode(this.popoverOverlay);
 
       if (parent && child) {
@@ -130,15 +126,13 @@ export default class Overlay extends Component {
           scrollContainerSizes.right >= parentSizes.right - parentSizes.width
         ) {
           if (setMinWidth) {
-            const childWidth =
-              typeof setMinWidth === 'boolean' ? Math.round(parentSizes.width) : +setMinWidth;
+            const childWidth = typeof setMinWidth === 'boolean' ? Math.round(parentSizes.width) : +setMinWidth;
 
             child.style.minWidth = `${childWidth}px`;
           }
 
           if (sameWidth) {
-            const childWidth =
-              typeof sameWidth === 'boolean' ? Math.round(parentSizes.width) : +sameWidth;
+            const childWidth = typeof sameWidth === 'boolean' ? Math.round(parentSizes.width) : +sameWidth;
 
             child.style.width = `${childWidth}px`;
           }
@@ -169,16 +163,14 @@ export default class Overlay extends Component {
   removeListeners(scrollContainers) {
     window.removeEventListener('resize', this.onReposition);
 
-    scrollContainers.forEach((container, i) =>
-      container.removeEventListener('scroll', this.scrollContainersListeners[i])
-    );
+    scrollContainers.forEach((container, i) => container.removeEventListener('scroll', this.scrollContainersListeners[i]));
 
     this.scrollContainersListeners = {};
   }
 
   render() {
     const { show, style, strategy = '', children, className, disableOutsideClose } = this.props;
-    const strategies = strategy.split(' ').map(s => `__strategy-${s}`);
+    const strategies = strategy.split(' ').map((s) => `__strategy-${s}`);
 
     const body = (
       <Transition
@@ -187,8 +179,10 @@ export default class Overlay extends Component {
         timeout={150}
         className={cn(className, strategies)}
         wrapperProps={{
-          ref: node => (this.popoverOverlay = node),
-          onClick: e => e.stopPropagation(),
+          ref: (node) => {
+            this.popoverOverlay = node;
+          },
+          onClick: (e) => e.stopPropagation(),
         }}
       >
         {children}
@@ -196,11 +190,7 @@ export default class Overlay extends Component {
     );
 
     return createPortal(
-      <RootCloseWrapper
-        ref={this.onRootRef}
-        disabled={!show || disableOutsideClose}
-        onRootClose={this.onRootClose}
-      >
+      <RootCloseWrapper ref={this.onRootRef} disabled={!show || disableOutsideClose} onRootClose={this.onRootClose}>
         {body}
       </RootCloseWrapper>,
       document.querySelector('#root')

@@ -6,6 +6,7 @@ import { User } from 'components/User/User';
 import { LOGROCKET_PROJECT } from 'config';
 // Actions
 import { logout } from 'ducks/account';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React from 'react';
 import Intercom from 'react-intercom';

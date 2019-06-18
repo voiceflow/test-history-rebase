@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
 import cn from 'classnames';
+import _ from 'lodash';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
-
 import { findScrollableParents } from 'utils/dom';
 
 import Input from '../Input';
 import Transition from '../Transition';
-
-import Tabs from './components/Tabs';
 import Overlay from './components/Overlay';
+import Tabs from './components/Tabs';
 
 export default class Popover extends Component {
   static propTypes = {
@@ -46,7 +46,7 @@ export default class Popover extends Component {
   };
 
   static defaultProps = {
-    onClick: () => null,
+    onClick: _.noop,
     strategy: 'bottom center',
   };
 
@@ -54,6 +54,7 @@ export default class Popover extends Component {
     if (!state || !state.prevTarget || state.prevTarget !== props.target) {
       return {
         prevTarget: props.target,
+        // eslint-disable-next-line react/no-find-dom-node
         scrollContainers: props.target ? findScrollableParents(findDOMNode(props.target)) : [],
       };
     }
@@ -65,15 +66,14 @@ export default class Popover extends Component {
     scrollContainers: [],
   };
 
-  onShow = ref => {
+  onShow = (ref) => {
     const { onShow, autoFocus } = this.props;
 
     onShow && onShow();
 
     if (autoFocus && ref) {
-      const focusable = findDOMNode(ref).querySelector(
-        'input:not([type="radio"]):not([type="checkbox"])'
-      );
+      // eslint-disable-next-line react/no-find-dom-node
+      const focusable = findDOMNode(ref).querySelector('input:not([type="radio"]):not([type="checkbox"])');
 
       focusable && focusable.focus && focusable.focus();
     }
@@ -129,14 +129,7 @@ export default class Popover extends Component {
     });
 
     return (
-      <Overlay
-        show={show}
-        onHide={onHide}
-        onShow={this.onShow}
-        className={popoverClassName}
-        scrollContainers={scrollContainers}
-        {...overlayProps}
-      >
+      <Overlay show={show} onHide={onHide} onShow={this.onShow} className={popoverClassName} scrollContainers={scrollContainers} {...overlayProps}>
         {renderHeader && !title && <div className="popover-header">{renderHeader({ onHide })}</div>}
 
         {title && !renderHeader && (
@@ -146,16 +139,13 @@ export default class Popover extends Component {
         )}
 
         {!!withSearch && (
-          <Transition
-            name="fade-up-small"
-            delay={150}
-            className={cn('popover-search', searchClassName)}
-          >
+          <Transition name="fade-up-small" delay={150} className={cn('popover-search', searchClassName)}>
             <Input
               icon="search"
               value={searchText}
               action={searchText ? 'close-regular' : null}
               onChange={({ target }) => onSearchChange(target.value)}
+              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
               placeholder={searchPlaceholder}
               onActionClick={() => onSearchChange('')}
@@ -164,21 +154,13 @@ export default class Popover extends Component {
         )}
 
         {!!tabs && (
-          <Transition
-            name="fade-up-small"
-            delay={150}
-            className={cn('popover-tabs', tabsClassName)}
-          >
+          <Transition name="fade-up-small" delay={150} className={cn('popover-tabs', tabsClassName)}>
             <Tabs list={tabs} active={activeTab} onChange={onChangeTab} />
           </Transition>
         )}
 
         {renderBody && (
-          <Transition
-            name="fade-up-small"
-            delay={150}
-            wrapperProps={{ onClick }}
-          >
+          <Transition name="fade-up-small" delay={150} wrapperProps={{ onClick }}>
             <div className="popover-body-inner">{renderBody({ onHide })}</div>
           </Transition>
         )}

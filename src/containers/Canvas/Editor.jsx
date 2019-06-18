@@ -1,89 +1,82 @@
-import _ from "lodash";
-import cn from "classnames";
-import React, { Component } from "react";
-import Mousetrap from "mousetrap";
-import { compose } from "recompose";
-import { connect } from "react-redux";
-import CreatableSelect from 'react-select/lib/Creatable';
-
+import cn from 'classnames';
+import Button from 'components/Button';
+import { ModalHeader } from 'components/Modals/ModalHeader';
+import Prompt from 'components/Uploads/Prompt';
 // HOCs
-import { undo, redo } from "hocs/withUndoRedo";
+import { redo, undo } from 'hocs/withUndoRedo';
+import _ from 'lodash';
+import Mousetrap from 'mousetrap';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import CreatableSelect from 'react-select/lib/Creatable';
+import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Modal, ModalBody, UncontrolledDropdown } from 'reactstrap';
+import { compose } from 'recompose';
 
-import Line from "./Editors/Line";
-import Choice from "./Editors/Choice";
-import Intent from "./Editors/Intent";
-import Interaction from "./Editors/Interaction";
-import Random from "./Editors/Random";
-import Variable from "./Editors/Variable";
-import SetBlock from "./Editors/Set";
-import IfBlock from "./Editors/If";
-import OldIfBlock from "./Editors/OldIf";
-import Speak from "./Editors/Speak";
-import OldSpeak from "./Editors/OldSpeak";
-import Card from "./Editors/Card";
-import Capture from "./Editors/Capture";
-import OldCommand from "./Editors/OldCommand";
-import Command from "./Editors/Command";
-import Diagram from "./Editors/Diagram";
-import API from "./Editors/API";
-import Integrations from "./Editors/Integrations";
-import Payment from "./Editors/Payment";
-import CancelPayment from "./Editors/CancelPayment";
-import Module from "./Editors/Module";
-import Mail from "./Editors/Mail";
-import Display from "./Editors/Display";
-import Stream from "./Editors/Stream";
-import Permissions from "./Editors/Permissions";
-import Reminder from "./Editors/Reminder";
-import Code from "./Editors/Code";
-import PermissionCard from "./Editors/PermissionCard";
-import Prompt from "components/Uploads/Prompt";
+import { BUILT_IN_INTENTS_ALEXA, BUILT_IN_INTENTS_GOOGLE, SLOT_TYPES } from 'Constants';
 
-import {
-  Alert,
-  Modal,
-  ModalBody,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from "reactstrap";
-import Button from 'components/Button'
-import { ModalHeader } from "components/Modals/ModalHeader";
+import API from './Editors/API';
+import CancelPayment from './Editors/CancelPayment';
+import Capture from './Editors/Capture';
+import Card from './Editors/Card';
+import Choice from './Editors/Choice';
+import Code from './Editors/Code';
+import Command from './Editors/Command';
+import Diagram from './Editors/Diagram';
+import Display from './Editors/Display';
+import IfBlock from './Editors/If';
+import Integrations from './Editors/Integrations';
+import Intent from './Editors/Intent';
+import Interaction from './Editors/Interaction';
+import Line from './Editors/Line';
+import Mail from './Editors/Mail';
+import Module from './Editors/Module';
+import OldCommand from './Editors/OldCommand';
+import OldIfBlock from './Editors/OldIf';
+import OldSpeak from './Editors/OldSpeak';
+import Payment from './Editors/Payment';
+import PermissionCard from './Editors/PermissionCard';
+import Permissions from './Editors/Permissions';
+import Random from './Editors/Random';
+import Reminder from './Editors/Reminder';
+import SetBlock from './Editors/Set';
+import Speak from './Editors/Speak';
+import Stream from './Editors/Stream';
+import Variable from './Editors/Variable';
 
-import {
-  SLOT_TYPES,
-  BUILT_IN_INTENTS_ALEXA,
-  BUILT_IN_INTENTS_GOOGLE
-} from "Constants";
+const CMD_Z = 'command+z';
+const CTRL_Z = 'ctrl+z';
+const CTRL_SHIFT_Z = 'ctrl+shift+z';
+const CMD_Y = 'command+y';
+const CTRL_Y = 'ctrl+y';
+const CMD_SHIFT_Z = 'command+shift+z';
 
-const ALEXA_BUILT_INS = BUILT_IN_INTENTS_ALEXA.map(intent => {
+const ALEXA_BUILT_INS = BUILT_IN_INTENTS_ALEXA.map((intent) => {
   return {
     built_in: true,
-    platform: "alexa",
+    platform: 'alexa',
     name: intent.name,
     key: intent.name,
     inputs: [
       {
-        text: "",
-        slots: intent.slots
-      }
-    ]
+        text: '',
+        slots: intent.slots,
+      },
+    ],
   };
 });
 
-const GOOGLE_BUILT_INS = BUILT_IN_INTENTS_GOOGLE.map(intent => {
+const GOOGLE_BUILT_INS = BUILT_IN_INTENTS_GOOGLE.map((intent) => {
   return {
     built_in: true,
-    platform: "google",
+    platform: 'google',
     name: intent.name,
     key: intent.name,
     inputs: [
       {
-        text: "",
-        slots: intent.slots
-      }
-    ]
+        text: '',
+        slots: intent.slots,
+      },
+    ],
   };
 });
 
@@ -99,7 +92,7 @@ class Editor extends Component {
       expanded: false,
       error: null,
       confirm: null,
-      chipsInput: ''
+      chipsInput: '',
     };
 
     this.eventHandler = this.eventHandler.bind(this);
@@ -115,11 +108,8 @@ class Editor extends Component {
 
   componentDidMount() {
     Mousetrap.reset();
-    Mousetrap.bind(["ctrl+z", "command+z"], this.undo);
-    Mousetrap.bind(
-      ["ctrl+y", "command+y", "ctrl+shift+z", "command+shift+z"],
-      this.redo
-    );
+    Mousetrap.bind([CTRL_Z, CMD_Z], this.undo);
+    Mousetrap.bind([CTRL_Y, CMD_Y, CTRL_SHIFT_Z, CMD_SHIFT_Z], this.redo);
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -128,18 +118,18 @@ class Editor extends Component {
       props.clearUndo();
     }
     return {
-      node: props.node
+      node: props.node,
     };
   }
 
-  undo(e) {
+  undo() {
     if (!_.isEmpty(this.props.undoEvents) && this.state.node) {
-      let recent = _.last(this.props.undoEvents);
+      const recent = _.last(this.props.undoEvents);
       this.props.addRedo({
         node: _.cloneDeep(this.state.node.extras),
-        eventType: _.cloneDeep(this.state.node.ports)
+        eventType: _.cloneDeep(this.state.node.ports),
       });
-      let node = this.state.node;
+      const node = this.state.node;
       node.extras = recent.node;
       if (recent.eventType) {
         let diff = _.difference(_.keys(node.ports), _.keys(recent.eventType));
@@ -163,12 +153,9 @@ class Editor extends Component {
 
   redo(e) {
     if (!_.isEmpty(this.props.redoEvents) && this.state.node) {
-      let recent = _.last(this.props.redoEvents);
-      this.props.addUndo(
-        _.cloneDeep(this.state.node.extras),
-        _.cloneDeep(this.state.node.ports)
-      );
-      let node = this.state.node;
+      const recent = _.last(this.props.redoEvents);
+      this.props.addUndo(_.cloneDeep(this.state.node.extras), _.cloneDeep(this.state.node.ports));
+      const node = this.state.node;
       node.extras = recent.node;
       if (recent.eventType) {
         let diff = _.difference(_.keys(recent.eventType), _.keys(node.ports));
@@ -189,21 +176,21 @@ class Editor extends Component {
     e.preventDefault();
   }
 
-  handleChange(e, key = undefined) {
-    var node = this.state.node;
-    var name = e.target.getAttribute("name");
-    var value = e.target.value;
+  handleChange(e) {
+    const node = this.state.node;
+    const name = e.target.getAttribute('name');
+    const value = e.target.value;
     node[name] = value;
     if (node.parentCombine) {
-      _.find(node.parentCombine.combines, n => n.id === node.id).name = value;
+      _.find(node.parentCombine.combines, ['id', node.id]).name = value;
     }
     this.setState(
       {
-        node: node
+        node,
       },
       () => {
         this.props.onUpdate();
-        if (name === "name") {
+        if (name === 'name') {
           this.props.repaint();
         }
       }
@@ -211,32 +198,24 @@ class Editor extends Component {
   }
 
   getSlotTypes(locales, filter) {
-    let slots = [SLOT_TYPES[0]]; //Custom Slot
-    for (let i in SLOT_TYPES) {
-      const slot = SLOT_TYPES[i];
+    let slots = [SLOT_TYPES[0]]; // Custom Slot
+    // eslint-disable-next-line no-restricted-syntax
+    for (const slot of Object.values(SLOT_TYPES)) {
+      // eslint-disable-next-line no-continue
       if (filter && filter === slot.label) continue;
+      // eslint-disable-next-line no-continue
       if (!slot.type[this.props.platform]) continue;
 
       const slot_locales = slot.locales[this.props.platform];
 
       switch (this.props.platform) {
-        case "google":
+        case 'google':
+          // eslint-disable-next-line no-case-declarations
           const google_info = this.props.google_publish_info;
-          if (
-            !(
-              google_info &&
-              google_info.main_locale &&
-              !slot_locales.includes(google_info.main_locale)
-            )
-          )
-            slots.push(slot);
+          if (!(google_info && google_info.main_locale && !slot_locales.includes(google_info.main_locale))) slots.push(slot);
           break;
-        case "alexa":
-          if (
-            !slot_locales ||
-            (locales &&
-              _.intersection(slot_locales, locales).length === locales.length)
-          ) {
+        case 'alexa':
+          if (!slot_locales || (locales && _.intersection(slot_locales, locales).length === locales.length)) {
             slots.push(slot);
           }
           break;
@@ -249,23 +228,16 @@ class Editor extends Component {
       slots.slice(1).sort((a, b) => {
         if (a.type.google && a.type.alexa && !(b.type.google && b.type.alexa)) {
           return -1;
-        } else if (
-          b.type.google &&
-          b.type.alexa &&
-          !(a.type.google && a.type.alexa)
-        ) {
-          return 1;
-        } else {
-          return a.label.localeCompare(b.label);
         }
+        if (b.type.google && b.type.alexa && !(a.type.google && a.type.alexa)) {
+          return 1;
+        }
+        return a.label.localeCompare(b.label);
       })
     );
-    return slots.map(type => {
+    return slots.map((type) => {
       let value;
-      if (
-        (type.type.alexa && type.type.google) ||
-        (!type.type.alexa && !type.type.google)
-      ) {
+      if ((type.type.alexa && type.type.google) || (!type.type.alexa && !type.type.google)) {
         value = type.label;
       } else if (type.type.alexa && !type.type.google) {
         value = type.type.alexa;
@@ -273,61 +245,48 @@ class Editor extends Component {
         value = type.type.google;
       }
 
-      return { label: type.label, value: value };
+      return { label: type.label, value };
     });
   }
 
   BlockViewer(variables) {
     switch (this.state.node.extras.type) {
-      case "story":
+      case 'story':
         return;
-      case "choice":
-      case "choicenew":
-        return (
-          <Choice
-            diagramEngine={this.props.diagramEngine}
-            repaint={this.props.repaint}
-          />
-        );
-      case "intent":
+      case 'choice':
+      case 'choicenew':
+        return <Choice diagramEngine={this.props.diagramEngine} repaint={this.props.repaint} />;
+      case 'intent':
         return (
           <Intent
             diagramEngine={this.props.diagramEngine}
             updateLinter={this.props.updateLinter}
             slot_types={this.getSlotTypes(this.props.locales)}
-            built_ins={
-              this.props.platform === "google"
-                ? GOOGLE_BUILT_INS
-                : ALEXA_BUILT_INS
-            }
+            built_ins={this.props.platform === 'google' ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
             history={this.props.history}
             diagram_level_intents={this.props.diagram_level_intents}
             platform={this.props.platform}
           />
         );
-      case "command":
+      case 'command':
         // DEPRECATE OLD COMMAND BLOCKS
-        if (typeof this.state.node.extras.commands === "string") {
+        if (typeof this.state.node.extras.commands === 'string') {
           return <OldCommand />;
-        } else {
-          return (
-            <Command
-              slot_types={this.getSlotTypes(this.props.locales)}
-              updateLinter={this.props.updateLinter}
-              built_ins={
-                this.props.platform === "google"
-                  ? GOOGLE_BUILT_INS
-                  : ALEXA_BUILT_INS
-              }
-              repaint={this.props.repaint}
-              createDiagram={this.props.createDiagram}
-              enterFlow={this.props.enterFlow}
-              platform={this.props.platform}
-              diagram_level_intents={this.props.diagram_level_intents}
-            />
-          );
         }
-      case "interaction":
+        return (
+          <Command
+            slot_types={this.getSlotTypes(this.props.locales)}
+            updateLinter={this.props.updateLinter}
+            built_ins={this.props.platform === 'google' ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
+            repaint={this.props.repaint}
+            createDiagram={this.props.createDiagram}
+            enterFlow={this.props.enterFlow}
+            platform={this.props.platform}
+            diagram_level_intents={this.props.diagram_level_intents}
+          />
+        );
+
+      case 'interaction':
         return (
           <Interaction
             repaint={this.props.repaint}
@@ -340,69 +299,55 @@ class Editor extends Component {
             onIntent={this.props.onIntent}
             diagramEngine={this.props.diagramEngine}
             slot_types={this.getSlotTypes(this.props.locales)}
-            built_ins={
-              this.props.platform === "google"
-                ? GOOGLE_BUILT_INS
-                : ALEXA_BUILT_INS
-            }
+            built_ins={this.props.platform === 'google' ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
             onConfirm={this.props.onConfirm}
             platform={this.props.platform}
           />
         );
-      case "combine":
-      case "line":
-      case "audio":
-      case "multiline":
+      case 'combine':
+      case 'line':
+      case 'audio':
+      case 'multiline':
         // DEPRECATE OLD LINE BLOCKS
-        if (this.state.node.extras.type !== "combine") {
-          let node = this.state.node;
-          node.extras.type = "combine";
-          this.setState({ node: node });
+        if (this.state.node.extras.type !== 'combine') {
+          const node = this.state.node;
+          node.extras.type = 'combine';
+          this.setState({ node });
         }
         return <Line />;
-      case "set":
+      case 'set':
         return <SetBlock />;
-      case "variable":
+      case 'variable':
         return <Variable />;
-      case "if":
+      case 'if':
         // DEPRECATE OLD IF BLOCK
         if (this.state.node.extras.expressions) {
-          return (
-            <IfBlock
-              diagramEngine={this.props.diagramEngine}
-              repaint={this.props.repaint}
-            />
-          );
-        } else {
-          return <OldIfBlock repaint={this.props.repaint} />;
+          return <IfBlock diagramEngine={this.props.diagramEngine} repaint={this.props.repaint} />;
         }
-      case "random":
-        return (
-          <Random
-            diagramEngine={this.props.diagramEngine}
-            repaint={this.props.repaint}
-          />
-        );
-      case "speak":
+        return <OldIfBlock repaint={this.props.repaint} />;
+
+      case 'random':
+        return <Random diagramEngine={this.props.diagramEngine} repaint={this.props.repaint} />;
+      case 'speak':
         // DEPRECATE OLD SPEAK BLOCKS
         if (this.state.node.extras.raw !== undefined) {
           return <OldSpeak />;
-        } else {
-          return <Speak />;
         }
-      case "card":
+        return <Speak />;
+
+      case 'card':
         return <Card />;
-      case "capture":
+      case 'capture':
         return (
           <Capture
-            slot_types={this.getSlotTypes(this.props.locales, "SearchQuery")}
+            slot_types={this.getSlotTypes(this.props.locales, 'SearchQuery')}
             platform={this.props.platform}
             node={this.state.node}
             onUpdate={this.props.onUpdate}
             variables={variables}
           />
         );
-      case "flow":
+      case 'flow':
         return (
           <Diagram
             node={this.state.node}
@@ -412,38 +357,21 @@ class Editor extends Component {
             enterFlow={this.props.enterFlow}
           />
         );
-      case "api":
+      case 'api':
         return <API />;
-      case "integrations":
-        return (
-          <Integrations
-            onUpdate={this.props.onUpdate}
-            variables={variables}
-            editorOpen={this.props.open}
-          />
-        );
-      case "payment":
-        return (
-          <Payment
-            history={this.props.history}
-            createProduct={this.props.createProduct}
-            editProduct={this.props.editProduct}
-          />
-        );
-      case "cancel":
-        return (
-          <CancelPayment
-            createProduct={this.props.createProduct}
-            editProduct={this.props.editProduct}
-          />
-        );
-      case "module":
+      case 'integrations':
+        return <Integrations onUpdate={this.props.onUpdate} variables={variables} editorOpen={this.props.open} />;
+      case 'payment':
+        return <Payment history={this.props.history} createProduct={this.props.createProduct} editProduct={this.props.editProduct} />;
+      case 'cancel':
+        return <CancelPayment createProduct={this.props.createProduct} editProduct={this.props.editProduct} />;
+      case 'module':
         return <Module user_modules={this.props.user_modules} />;
-      case "mail":
+      case 'mail':
         return <Mail />;
-      case "display":
+      case 'display':
         return <Display />;
-      case "stream":
+      case 'stream':
         return (
           <Stream
             diagramEngine={this.props.diagramEngine}
@@ -452,17 +380,15 @@ class Editor extends Component {
             platform={this.props.platform}
           />
         );
-      case "permissions":
+      case 'permissions':
         return <Permissions />;
-      case "exit":
-        return (
-          <Alert>This block ends the skill in its current flow and state</Alert>
-        );
-      case "reminder":
+      case 'exit':
+        return <Alert>This block ends the skill in its current flow and state</Alert>;
+      case 'reminder':
         return <Reminder />;
-      case "permission":
+      case 'permission':
         return <PermissionCard />;
-      case "code":
+      case 'code':
         return <Code />;
       default:
         return null;
@@ -471,20 +397,18 @@ class Editor extends Component {
 
   titleInput() {
     switch (this.state.node.extras.type) {
-      case "story":
+      case 'story':
         return <div id="label">Start Block</div>;
-      case "module":
+      case 'module':
         return <div id="label">{this.state.node.name}</div>;
-      case "flow":
+      case 'flow':
         if (this.state.node.extras.diagram_id) {
-          let block = this.props.diagrams.find(
-            d => d.id === this.state.node.extras.diagram_id
-          );
+          const block = this.props.diagrams.find((d) => d.id === this.state.node.extras.diagram_id);
           if (block && block.name !== this.state.node.name) {
-            let node = this.state.node;
+            const node = this.state.node;
             node.name = block.name;
           }
-          return <div id="label">{block ? block.name : "New Flow"}</div>;
+          return <div id="label">{block ? block.name : 'New Flow'}</div>;
         }
         return <div id="label">Add Flow</div>;
       default:
@@ -496,7 +420,7 @@ class Editor extends Component {
             name="name"
             value={this.state.node.name}
             onChange={this.handleChange.bind(this)}
-            onKeyPress={e => {
+            onKeyPress={(e) => {
               if (e.charCode === 13) {
                 e.preventDefault();
               }
@@ -510,43 +434,24 @@ class Editor extends Component {
     return (
       <div id="label-container" className="d-flex mb-3 pl-2">
         <div className="w-100 text-left">{this.titleInput()}</div>
-        <i
-          className="more-info d-flex align-items-center"
-          onClick={() =>
-            this.props.setHelp({ type: this.state.node.extras.type })
-          }
-        />
+        <i className="more-info d-flex align-items-center" onClick={() => this.props.setHelp({ type: this.state.node.extras.type })} />
         <UncontrolledDropdown nav inNavbar>
           <DropdownToggle nav tag="div">
             <div className="cog" />
           </DropdownToggle>
-          <DropdownMenu
-            right
-            className="arrow arrow-right no-select"
-            style={{ right: 2, marginTop: -10 }}
-          >
+          <DropdownMenu right className="arrow arrow-right no-select" style={{ right: 2, marginTop: -10 }}>
             <DropdownItem header>Block Options</DropdownItem>
-            {["interaction", "choice", "capture"].includes(
-              this.state.node.extras.type
-            ) &&
-              !this.state.node.extras.reprompt && (
-                <DropdownItem onClick={this.toggleReprompt}>
-                  Reprompt
-                </DropdownItem>
-              )}
-            {["interaction", "choice", "capture", "stream"].includes(
-              this.state.node.extras.type
-            ) && this.props.platform === "google" &&
-              !this.state.node.extras.chips && (
-                <DropdownItem onClick={this.toggleChips}>
-                  Chips
-                </DropdownItem>
-              )}
+            {['interaction', 'choice', 'capture'].includes(this.state.node.extras.type) && !this.state.node.extras.reprompt && (
+              <DropdownItem onClick={this.toggleReprompt}>Reprompt</DropdownItem>
+            )}
+            {['interaction', 'choice', 'capture', 'stream'].includes(this.state.node.extras.type) &&
+              this.props.platform === 'google' &&
+              !this.state.node.extras.chips && <DropdownItem onClick={this.toggleChips}>Chips</DropdownItem>}
             <DropdownItem
               onClick={() =>
                 this.setState({
                   expanded: true,
-                  modal: true
+                  modal: true,
                 })
               }
               className="pointer"
@@ -554,21 +459,13 @@ class Editor extends Component {
               Expand
             </DropdownItem>
             <DropdownItem
-              onClick={() =>
-                this.props.node.parentCombine
-                  ? this.props.appendCombineNode(this.state.node)
-                  : this.props.copyNode()
-              }
+              onClick={() => (this.props.node.parentCombine ? this.props.appendCombineNode(this.state.node) : this.props.copyNode())}
               className="pointer"
             >
               Duplicate
             </DropdownItem>
             <DropdownItem
-              onClick={() =>
-                this.props.node.parentCombine
-                  ? this.props.removeCombineNode(this.state.node)
-                  : this.props.removeNode()
-              }
+              onClick={() => (this.props.node.parentCombine ? this.props.removeCombineNode(this.state.node) : this.props.removeNode())}
               className="pointer"
             >
               Delete
@@ -587,65 +484,67 @@ class Editor extends Component {
   }
 
   toggleReprompt() {
-    let node = this.state.node;
+    const node = this.state.node;
     if (node.extras.reprompt) {
-      delete node.extras.reprompt
+      delete node.extras.reprompt;
     } else {
       node.extras.reprompt = {
-        voice: "Alexa",
-        content: ""
+        voice: 'Alexa',
+        content: '',
       };
     }
-    this.setState({ node: node });
+    this.setState({ node });
   }
 
   toggleChips = () => {
-    const node = this.state.node
+    const node = this.state.node;
     if (node.extras.chips) {
-      delete node.extras.chips
+      delete node.extras.chips;
     } else {
-      node.extras.chips = []
+      node.extras.chips = [];
     }
-    this.setState({ node: node, chipsInput: '' })
-  }
+    this.setState({ node, chipsInput: '' });
+  };
 
   handleChipsInputKeyDown = (event) => {
     const { chipsInput } = this.state;
-    if (!chipsInput || !chipsInput.trim()) return
+    if (!chipsInput || !chipsInput.trim()) return;
     switch (event.key) {
       case 'Enter':
       case 'Tab':
-        let node = this.state.node
-        node.extras.chips = [...node.extras.chips, {
-          label: chipsInput,
-          value: chipsInput
-        }]
+        // eslint-disable-next-line no-case-declarations
+        const node = this.state.node;
+        node.extras.chips = [
+          ...node.extras.chips,
+          {
+            label: chipsInput,
+            value: chipsInput,
+          },
+        ];
         this.setState({
           chipsInput: '',
-          node: node
-        })
-        event.preventDefault()
-        break
+          node,
+        });
+        event.preventDefault();
+        break;
       default:
-        break
+        break;
     }
   };
 
-
-  updateExtras(extras, callback){
-    const node = this.state.node
-    node.extras = extras
+  updateExtras(extras, callback) {
+    const node = this.state.node;
+    node.extras = extras;
     if (node.parentCombine) {
-        let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
-        node.parentCombine.combines[bestNode] = node
-
+      const bestNode = _.findIndex(node.parentCombine.combines, ['id', node.id]);
+      node.parentCombine.combines[bestNode] = node;
     }
-    this.forceUpdate(callback)
+    this.forceUpdate(callback);
   }
 
   EditorRender() {
     let variables = this.props.global_variables.concat(this.props.variables);
-    variables = variables.concat(["Create Variable"]);
+    variables = variables.concat(['Create Variable']);
     return (
       <React.Fragment>
         {this.BlockViewer(variables) &&
@@ -655,8 +554,8 @@ class Editor extends Component {
             onUpdate: this.props.onUpdate,
             updateEvents: this.props.addUndo,
             clearRedo: this.props.clearRedo,
-            variables: variables,
-            updateExtras: this.updateExtras
+            variables,
+            updateExtras: this.updateExtras,
           })}
         {this.state.node.extras.reprompt && (
           <React.Fragment>
@@ -669,11 +568,11 @@ class Editor extends Component {
               placeholder="Sorry I didn't get that! Do you like this or that?"
               voice={this.state.node.extras.reprompt.voice}
               content={this.state.node.extras.reprompt.content}
-              updatePrompt={prompt => {
-                let node = this.state.node;
+              updatePrompt={(prompt) => {
+                const node = this.state.node;
                 if (node && node.extras && node.extras.reprompt) {
                   node.extras.reprompt = { ...node.extras.reprompt, ...prompt };
-                  this.setState({ node: node });
+                  this.setState({ node });
                 }
               }}
             />
@@ -688,24 +587,24 @@ class Editor extends Component {
             </div>
             <CreatableSelect
               components={{
-                DropdownIndicator: null
+                DropdownIndicator: null,
               }}
               inputValue={this.state.chipsInput}
               isClearable
               isMulti
               menuIsOpen={false}
-              onChange={v => {
-                let node = this.state.node
-                node.extras.chips = v
-                this.setState({node})
+              onChange={(v) => {
+                const node = this.state.node;
+                node.extras.chips = v;
+                this.setState({ node });
               }}
-              onInputChange={v => {
+              onInputChange={(v) => {
                 this.setState({
-                  chipsInput: v
-                })
+                  chipsInput: v,
+                });
               }}
               onKeyDown={this.handleChipsInputKeyDown}
-              placeholder='Enter suggestion and press enter'
+              placeholder="Enter suggestion and press enter"
               value={this.state.node.extras.chips}
             />
           </React.Fragment>
@@ -715,15 +614,15 @@ class Editor extends Component {
   }
 
   render() {
-    let type = this.state.node ? this.state.node.extras.type : null;
-    if (type === "god" || type === "story") {
+    const type = this.state.node ? this.state.node.extras.type : null;
+    if (type === 'god' || type === 'story') {
       return null;
     }
     return (
       <div
         id="Editor"
         className={cn({
-          open: this.props.open && type && !this.state.modal
+          open: this.props.open && type && !this.state.modal,
         })}
         onFocus={this.props.unfocus}
         onClickCapture={this.eventHandler}
@@ -732,18 +631,10 @@ class Editor extends Component {
         onKeyDown={this.props.unfocus}
         onMouseEnter={() => {
           this.props.diagramEngine.getDiagramModel().setLocked();
-          Mousetrap.unbind(["ctrl+z", "command+z"]);
-          Mousetrap.unbind([
-            "ctrl+y",
-            "command+y",
-            "ctrl+shift+z",
-            "command+shift+z"
-          ]);
-          Mousetrap.bind(["ctrl+z", "command+z"], this.undo);
-          Mousetrap.bind(
-            ["ctrl+y", "command+y", "ctrl+shift+z", "command+shift+z"],
-            this.redo
-          );
+          Mousetrap.unbind([CTRL_Z, CMD_Z]);
+          Mousetrap.unbind([CTRL_Y, CMD_Y, CTRL_SHIFT_Z, CMD_SHIFT_Z]);
+          Mousetrap.bind([CTRL_Z, CMD_Z], this.undo);
+          Mousetrap.bind([CTRL_Y, CMD_Y, CTRL_SHIFT_Z, CMD_SHIFT_Z], this.redo);
         }}
         onMouseLeave={() => {
           this.props.diagramEngine.getDiagramModel().setLocked(false);
@@ -769,13 +660,8 @@ class Editor extends Component {
                     onClosed={() => this.setState({ expanded: false })}
                     size="lg"
                   >
-                    <ModalHeader
-                      toggle={() => this.setState({ modal: false })}
-                      header={`${this.state.node.name} Settings`}
-                    />
-                    <ModalBody className="pb-4 px-4">
-                      {this.EditorRender()}
-                    </ModalBody>
+                    <ModalHeader toggle={() => this.setState({ modal: false })} header={`${this.state.node.name} Settings`} />
+                    <ModalBody className="pb-4 px-4">{this.EditorRender()}</ModalBody>
                   </Modal>
                 </React.Fragment>
               )}
@@ -787,13 +673,13 @@ class Editor extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   locales: state.skills.skill.locales,
   platform: state.skills.skill.platform,
   global_variables: state.skills.skill.global,
   variables: state.variables.localVariables,
   google_publish_info: state.skills.skill.google_publish_info,
-  diagrams: state.diagrams.diagrams
+  diagrams: state.diagrams.diagrams,
 });
 export default compose(
   connect(mapStateToProps),

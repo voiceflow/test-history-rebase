@@ -1,13 +1,12 @@
-import React from 'react';
-import { mount, shallow, render } from 'enzyme/build';
-import CancelPayment from '../CancelPayment';
 import toJson from 'enzyme-to-json';
+import { shallow } from 'enzyme/build';
+import React from 'react';
 
-const clickFn = jest.fn()
+import CancelPayment from '../CancelPayment';
 
 describe('CancelPayment', () => {
-    it('render cancel payment editor', () => {
-        const component = shallow(<CancelPayment />);
-        expect(toJson(component)).toMatchSnapshot()
-    });
-})
+  it('render cancel payment editor', () => {
+    const component = shallow(<CancelPayment />);
+    expect(toJson(component)).toMatchSnapshot();
+  });
+});

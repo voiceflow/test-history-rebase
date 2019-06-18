@@ -1,13 +1,12 @@
-import React from 'react';
-import { mount, shallow, render } from 'enzyme';
-import GoogleAuthenticationModalContent from '../GoogleAuthenticationModalContent';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import React from 'react';
 
-const clickFn = jest.fn()
+import GoogleAuthenticationModalContent from '../GoogleAuthenticationModalContent';
 
 describe('Render Google Auth Modal Test', () => {
-    it('render default modal', () => {
-        const component = shallow(<GoogleAuthenticationModalContent />);
-        expect(toJson(component)).toMatchSnapshot()
-    });
-})
+  it('render default modal', () => {
+    const component = shallow(<GoogleAuthenticationModalContent />);
+    expect(toJson(component)).toMatchSnapshot();
+  });
+});

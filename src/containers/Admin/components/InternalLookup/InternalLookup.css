@@ -1,8 +1,8 @@
 .internalIdSearchField {
-  margin-top: 30px;
-  width: 30%;
-  padding: 5px 0;
   display: inline-block;
+  width: 30%;
+  margin-top: 30px;
+  padding: 5px 0;
 }
 
 .internalIdSearchButton {
@@ -17,8 +17,8 @@
 
 .internalIdSearchUserResult {
   position: relative;
-  width: 70%;
   display: inline-block;
+  width: 70%;
   margin-top: 30px;
   padding-left: 40px;
 }

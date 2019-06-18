@@ -11,6 +11,7 @@ import { getDevice } from 'Helper';
 
 export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT';
 export const RESET_ACCOUNT = 'RESET_ACCOUNT';
+export const AUTH_COOKIE = 'auth';
 
 const cookies = new Cookies();
 const initialState = {
@@ -55,7 +56,7 @@ export const checkSession = () => {
       dispatch(updateAccount(user));
       return Promise.resolve(user);
     } catch (err) {
-      cookies.remove('auth', { path: '/' });
+      cookies.remove(AUTH_COOKIE, { path: '/' });
       dispatch(resetAccount());
       return Promise.reject(err);
     }
@@ -72,7 +73,7 @@ export const getUser = () => {
 
       return Promise.resolve(user);
     } catch (err) {
-      cookies.remove('auth', { path: '/' });
+      cookies.remove(AUTH_COOKIE, { path: '/' });
       dispatch(resetAccount());
       return Promise.reject(err);
     }
@@ -86,7 +87,7 @@ export const logout = () => {
     } catch (err) {
       console.error(err);
     }
-    cookies.remove('auth', { path: '/' });
+    cookies.remove(AUTH_COOKIE, { path: '/' });
     localStorage.clear();
     dispatch(resetAccount());
 
@@ -122,7 +123,7 @@ const createSession = (endpoint) => {
           delete data.user.id;
         }
 
-        cookies.set('auth', data.token, { path: '/' });
+        cookies.set(AUTH_COOKIE, data.token, { path: '/' });
         cookies.remove('last_session');
 
         dispatch(updateAccount(data.user));
@@ -168,7 +169,7 @@ export const fbLogin = createSession('/fbLogin');
 
 // Non Action functions
 export const getAuth = () => {
-  return cookies.get('auth', { path: '/' });
+  return cookies.get(AUTH_COOKIE, { path: '/' });
 };
 
 export const AmazonAccessToken = () =>

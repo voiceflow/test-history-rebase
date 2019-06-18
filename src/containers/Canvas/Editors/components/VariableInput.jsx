@@ -7,6 +7,8 @@ import createSingleLinePlugin from 'draft-js-single-line-plugin';
 import _ from 'lodash';
 import React, { Component } from 'react';
 
+import './VariableInput.css';
+
 class VariableInput extends Component {
   constructor(props) {
     super(props);
@@ -18,9 +20,11 @@ class VariableInput extends Component {
       }),
     };
 
+    const theme = `mentionSuggestions ${props.leftSide ? 'vi__displayOnLeft' : ''}`;
+
     this.mentionPlugin = createMentionPlugin({
       theme: {
-        mentionSuggestions: 'mentionSuggestions',
+        mentionSuggestions: theme,
         mentionSuggestionsEntry: 'mentionSuggestionsEntry',
         mentionSuggestionsEntryFocused: 'mentionSuggestionsEntryFocused',
         mentionSuggestionsEntryText: 'mentionSuggestionsEntryText',
@@ -111,7 +115,12 @@ class VariableInput extends Component {
             }}
           />
         </div>
-        <MentionSuggestions onSearchChange={this.onSearchChange} suggestions={this.state.suggestions} onAddMention={this.onAddMention} />
+        <MentionSuggestions
+          className={this.props.leftSide ? 'vi__displayOnLeft' : 'noleft'}
+          onSearchChange={this.onSearchChange}
+          suggestions={this.state.suggestions}
+          onAddMention={this.onAddMention}
+        />
       </React.Fragment>
     );
   }

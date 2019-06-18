@@ -54,6 +54,8 @@ const UserTestHeader = props => {
                             }}>Finish Test</Button>
                             :
                             <ReactCSSTransitionGroup
+                                transitionName="test_button"
+                                transitionEnterTimeout={0}
                                 transitionLeaveTimeout={500}
                             >
                                 <Button isPrimary className="mr-2" onClick={() => {

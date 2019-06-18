@@ -1,4 +1,5 @@
 import * as React from "react";
+import { connect } from 'react-redux';
 import cn from 'classnames'
 import {findDOMNode} from 'react-dom'
 import * as _ from "lodash";
@@ -11,6 +12,7 @@ import {BaseWidget} from "./../main.js";
 import Textarea from 'react-textarea-autosize';
 import AnimateHeight from 'react-animate-height'
 import {Tooltip} from 'react-tippy'
+import { renameDiagram } from 'ducks/diagram';
 // import Select from 'react-select'
 import Select from 'components/Dropdowns/Searchable'
 import {getBlocks} from 'containers/Canvas/Blocks'
@@ -18,7 +20,7 @@ import Button from 'components/Button'
 
 const toolkit = new Toolkit()
 
-export class BlockNodeWidget extends BaseWidget {
+class BlockNodeWidgetLocal extends BaseWidget {
   constructor(props) {
     super("srd-default-node", props);
     this.state = {
@@ -174,7 +176,7 @@ export class BlockNodeWidget extends BaseWidget {
     if (!this.props.nodeProps.disabled) {
       this.props.node.name = this.state.name;
       if (this.props.node.extras.type === 'flow') {
-        this.props.nodeProps.renameFlow(this.props.node.extras.diagram_id, this.state.name)
+        this.props.renameFlow(this.props.node.extras.diagram_id, this.state.name)
       }
       this.props.node.setLocked(false);
       this.props.node.edit = false
@@ -549,3 +551,12 @@ export class BlockNodeWidget extends BaseWidget {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    renameFlow: (flow_id, name) => dispatch(renameDiagram(flow_id, name)),
+  };
+};
+
+export const BlockNodeWidget = connect(null, mapDispatchToProps)(BlockNodeWidgetLocal);
+

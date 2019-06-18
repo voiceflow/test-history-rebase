@@ -59,13 +59,13 @@ export class Variables extends PureComponent {
     if (e) e.preventDefault();
     const variables = this.props.variables;
     const new_var = this.state.new_var;
-    if (isVarName(new_var) && !variables.includes(new_var) && !this.props.global_variables.includes(new_var)) {
+    if (isVarName(new_var) && !variables.includes(new_var) && !new_var.startsWith('_') && !this.props.global_variables.includes(new_var)) {
       this.props.addVariable(new_var);
       this.setState({
         new_var: '',
       });
     } else {
-      alert('Invalid Variable: Variables must start with a character and can not contain spaces or special characters');
+      alert('Invalid Variable: Variables must start with a character and can not contain spaces or special characters or begin with an underscore.');
     }
     return false;
   }
@@ -74,7 +74,7 @@ export class Variables extends PureComponent {
     if (e) e.preventDefault();
     const variables = this.props.global_variables;
     const new_var = this.state.new_global;
-    if (isVarName(new_var) && !variables.includes(new_var) && !this.props.variables.includes(new_var)) {
+    if (isVarName(new_var) && !variables.includes(new_var) && !new_var.startsWith('_') && !this.props.variables.includes(new_var)) {
       variables.push(new_var);
       this.props.updateSkill('globals', variables);
       this.setState({
@@ -82,7 +82,7 @@ export class Variables extends PureComponent {
       });
     } else {
       this.props.setError(
-        "Invalid Variable: Variables can't have the same name and must start with a character and can not contain spaces or special characters"
+        "Invalid Variable: Variables can't have the same name and must start with a character and can not contain spaces or special characters or begin with an underscore."
       );
     }
     return false;

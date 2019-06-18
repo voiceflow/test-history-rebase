@@ -57,7 +57,7 @@ export const checkSession = () => {
       dispatch(updateAccount(user))
       return Promise.resolve(user)
     } catch(err) {
-      cookies.remove('auth_vf', {path: '/', domain: cookieDomain})
+      cookies.remove('auth', {path: '/', domain: cookieDomain})
       dispatch(resetAccount())
       return Promise.reject(err)
     }
@@ -74,7 +74,7 @@ export const getUser = () => {
 
       return Promise.resolve(user);
     } catch (err) {
-      cookies.remove('auth_vf', { path: '/', domain: cookieDomain });
+      cookies.remove('auth', { path: '/', domain: cookieDomain });
       dispatch(resetAccount());
       return Promise.reject(err);
     }
@@ -88,7 +88,7 @@ export const logout = () => {
     } catch (err) {
       console.error(err);
     }
-    cookies.remove('auth_vf', {path: '/', domain: cookieDomain});
+    cookies.remove('auth', {path: '/', domain: cookieDomain});
     localStorage.clear()
     dispatch(resetAccount())
     
@@ -124,7 +124,7 @@ const createSession = (endpoint) => {
           delete data.user.id;
         }
 
-        cookies.set('auth_vf', data.token, {path: '/', domain: cookieDomain});
+        cookies.set('auth', data.token, {path: '/', domain: cookieDomain});
         cookies.remove('last_session');
 
         dispatch(updateAccount(data.user));
@@ -170,7 +170,7 @@ export const fbLogin = createSession('/fbLogin');
 
 // Non Action functions
 export const getAuth = () => {
-  return cookies.get('auth_vf', { path: '/', domain: cookieDomain });
+  return cookies.get('auth', { path: '/', domain: cookieDomain });
 };
 
 export const AmazonAccessToken = () =>

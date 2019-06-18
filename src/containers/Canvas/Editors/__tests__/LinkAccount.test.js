@@ -1,15 +1,14 @@
-import React from 'react';
-import { mount, shallow, render } from 'enzyme/build';
-import LinkAccount from '../LinkAccount';
-import {testSkill} from '../../__mock__/MockSkill';
 import toJson from 'enzyme-to-json';
+import { shallow } from 'enzyme/build';
+import React from 'react';
 
-const clickFn = jest.fn()
+import { testSkill } from '../../__mock__/MockSkill';
+import LinkAccount from '../LinkAccount';
 
 describe('AccountLinkEditor', () => {
-    it('render account linking block editor', () => {
-        let skill = testSkill
-        const component = shallow(<LinkAccount skill={skill}/>);
-        expect(toJson(component)).toMatchSnapshot()
-    });
-})
+  it('render account linking block editor', () => {
+    const skill = testSkill;
+    const component = shallow(<LinkAccount skill={skill} />);
+    expect(toJson(component)).toMatchSnapshot();
+  });
+});

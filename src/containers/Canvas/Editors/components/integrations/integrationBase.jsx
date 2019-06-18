@@ -1,23 +1,25 @@
-import { Component } from 'react'
-class IntegrationBase extends Component {
+import { Component } from 'react';
 
+class IntegrationBase extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      node: this.props.node
-    }
+      node: this.props.node,
+    };
 
-    this.showSection = this.showSection.bind(this)
+    this.showSection = this.showSection.bind(this);
   }
 
-  showSection(section) {
-    if (this.state.active_section === section) section = null
+  showSection(initialSection) {
+    let section = initialSection;
+
+    if (this.state.active_section === section) section = null;
 
     this.setState({
-      active_section: section
-    })
+      active_section: section,
+    });
   }
 }
 
-export default IntegrationBase
+export default IntegrationBase;

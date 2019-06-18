@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
-import { findScrollableParent, getNodePosition, getCursorPosition, getNodeSize } from 'utils/dom';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { findScrollableParent, getCursorPosition, getNodePosition, getNodeSize } from 'utils/dom';
 
 import Overlay from './components/Overlay';
 
@@ -40,6 +40,7 @@ export default class Tooltip extends Component {
     this.setState({ scrollContainer: findScrollableParent(this.target) });
   }
 
+  // eslint-disable-next-line react/no-deprecated
   componentWillReceiveProps() {
     if (this.state.visible) {
       this.setState({ visible: false }, () => this.setState({ visible: true }));
@@ -61,7 +62,7 @@ export default class Tooltip extends Component {
     window.document.removeEventListener('mousemove', this.onMouseMove);
   }
 
-  onRef = node => {
+  onRef = (node) => {
     const { buttonProps } = this.props;
     this.target = node;
 
@@ -101,9 +102,9 @@ export default class Tooltip extends Component {
     this.setState({ visible: false }, onHide);
   };
 
-  onChangeStrategy = strategy => this.setState({ strategy });
+  onChangeStrategy = (strategy) => this.setState({ strategy });
 
-  onHide = e => {
+  onHide = (e) => {
     const { stayOpen } = this.props;
 
     if (!(stayOpen && this.hoverInsideTooltip(e))) {
@@ -111,7 +112,7 @@ export default class Tooltip extends Component {
     }
   };
 
-  hoverInsideTooltip = e => {
+  hoverInsideTooltip = (e) => {
     if (!this.tooltip || !e) {
       return false;
     }
@@ -119,15 +120,18 @@ export default class Tooltip extends Component {
     const point = getCursorPosition(e);
     const domNodeSize = getNodeSize(this.tooltip);
     const domNodePosition = getNodePosition(this.tooltip);
-    let _return = false;
+    let result = false;
 
-    if (point[0] >= domNodePosition.left && point[0] <= domNodePosition.left + domNodeSize.width) {
-      if (point[1] >= domNodePosition.top && point[1] <= domNodePosition.top + domNodeSize.height) {
-        _return = true;
-      }
+    if (
+      point[0] >= domNodePosition.left &&
+      point[0] <= domNodePosition.left + domNodeSize.width &&
+      point[1] >= domNodePosition.top &&
+      point[1] <= domNodePosition.top + domNodeSize.height
+    ) {
+      result = true;
     }
 
-    return _return;
+    return result;
   };
 
   renderText = () => {
@@ -141,18 +145,7 @@ export default class Tooltip extends Component {
   };
 
   render() {
-    const {
-      gap,
-      text,
-      style,
-      TagName,
-      display,
-      children,
-      stayOpen,
-      forceShow,
-      className,
-      buttonProps,
-    } = this.props;
+    const { gap, text, style, TagName, display, children, stayOpen, forceShow, className, buttonProps } = this.props;
     const { visible, strategy, scrollContainer } = this.state;
 
     const show = this.target && text && (forceShow || visible);
@@ -171,6 +164,7 @@ export default class Tooltip extends Component {
 
         {show && (
           <Overlay
+            // eslint-disable-next-line no-nested-ternary
             gap={gap !== undefined ? gap : stayOpen ? 0 : undefined}
             role="tooltip"
             target={this.target}
@@ -179,8 +173,11 @@ export default class Tooltip extends Component {
             scrollContainer={scrollContainer}
             onChangeStrategy={this.onChangeStrategy}
           >
+            {/* eslint-disable-next-line jsx-a11y/interactive-supports-focus */}
             <div
-              ref={r => (this.tooltip = r)}
+              ref={(r) => {
+                this.tooltip = r;
+              }}
               role="button"
               onClick={this.onForceHide}
               className="tooltip-inner"

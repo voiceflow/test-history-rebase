@@ -1,13 +1,12 @@
-import React from 'react';
-import { mount, shallow, render } from 'enzyme';
-import PlatformTooltip from '../PlatformTooltip';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import React from 'react';
 
-const clickFn = jest.fn()
+import PlatformTooltip from '../PlatformTooltip';
 
 describe('Platform tooltip Test', () => {
-    it('render platform tooltip', () => {
-        const component = shallow(<PlatformTooltip/>);
-        expect(toJson(component)).toMatchSnapshot()
-    });
-})
+  it('render platform tooltip', () => {
+    const component = shallow(<PlatformTooltip />);
+    expect(toJson(component)).toMatchSnapshot();
+  });
+});

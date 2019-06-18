@@ -1,41 +1,42 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import {getCharges, findCreator} from "ducks/admin";
-
 import './FinanceBoard.css';
-import Input from "components/Input";
-import ChargeList from "./components/ChargeList/ChargeList";
-import Button from "components/Button";
+
+import Button from 'components/Button';
+import Input from 'components/Input';
+import { findCreator, getCharges } from 'ducks/admin';
+import _ from 'lodash';
+import React from 'react';
+import { connect } from 'react-redux';
+
+import ChargeList from './components/ChargeList/ChargeList';
 
 class FinanceBoard extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
-      searchTerm: ''
-    }
+      searchTerm: '',
+    };
   }
 
   componentDidMount() {
-    if (this.props.match && this.props.match.params && this.props.match.params.creator_id) {
+    if (_.has(this.props, ['match', 'params', 'creator_id'])) {
       // The creator id we are looking for
       const setCreatorId = this.props.match.params.creator_id;
       this.setState({
-        searchTerm: setCreatorId
+        searchTerm: setCreatorId,
       });
       // Get the charges for the user
       this.props.getCharges(setCreatorId);
-      if (this.props.creator && this.props.creator.creator_id.toString() !== setCreatorId.toString()) {
+      if (this.props.creator.creator_id && this.props.creator.creator_id.toString() !== setCreatorId) {
         this.props.findCreator(setCreatorId);
       }
     }
   }
 
-  handleSearch = e => {
+  handleSearch = (e) => {
     this.setState({
-      searchTerm: e.target.value
-    })
+      searchTerm: e.target.value,
+    });
   };
 
   render() {
@@ -68,16 +69,18 @@ class FinanceBoard extends React.Component {
               </span>
             </div>
           </div>
-          <ChargeList/>
+          <ChargeList />
         </div>
       </div>
-    )
+    );
   }
-
 }
 
-const mapStateToProps = state => ({
-  creator: state.admin.creator
+const mapStateToProps = (state) => ({
+  creator: state.admin.creator,
 });
 
-export default connect(mapStateToProps, {findCreator, getCharges})(FinanceBoard);
+export default connect(
+  mapStateToProps,
+  { findCreator, getCharges }
+)(FinanceBoard);

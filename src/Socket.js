@@ -1,5 +1,23 @@
+import axios from 'axios';
+import LogRocket from 'logrocket';
+import setupLogRocketReact from 'logrocket-react';
+import randomstring from 'randomstring';
 import socket from 'socket.io-client';
 
+import { LOGROCKET_ENABLED, LOGROCKET_PROJECT } from './config';
+
+// setup LogRocket
+if (LOGROCKET_ENABLED) {
+  LogRocket.init(LOGROCKET_PROJECT);
+  setupLogRocketReact(LogRocket);
+
+  LogRocket.getSessionURL((sessionURL) => {
+    // add session URL to all outgoing HTTP requests
+    axios.defaults.headers.common['X-LogRocket-URL'] = sessionURL;
+  });
+}
+
+// setup socket.io
 const getEndpoint = () => {
   let port = '';
   let protocol = 'https';
@@ -15,6 +33,15 @@ const socketFail = () => {
 };
 
 window.CreatorSocket = socket(getEndpoint());
+
+if (!sessionStorage.getItem('tabId')) {
+  sessionStorage.setItem('tabId', randomstring.generate());
+}
+
+window.CreatorSocket.tabId = sessionStorage.getItem('tabId');
+
+axios.defaults.headers.common.tabid = window.CreatorSocket.tabId;
+
 window.CreatorSocket.connectedCB = {};
 // catch error events
 window.CreatorSocket.on('fail', socketFail);
@@ -27,14 +54,10 @@ window.CreatorSocket.on('connect_failed', socketFail);
 window.CreatorSocket.on('connect', () => {
   window.CreatorSocket.status = 'CONNECTED';
   // queued up events after reconnection
-  for (var cb in window.CreatorSocket.connectedCB) {
-    if (typeof window.CreatorSocket.connectedCB[cb] === 'function') {
-      window.CreatorSocket.connectedCB[cb]();
-    }
-  }
+  Object.values(window.CreatorSocket.connectedCB).forEach((cb) => typeof cb === 'function' && cb());
 });
 
-window.addEventListener('beforeunload', function () {
+window.addEventListener('beforeunload', function() {
   if (window.CreatorSocket && window.CreatorSocket.disconnect) {
     window.CreatorSocket.disconnect();
   }

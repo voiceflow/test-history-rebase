@@ -1,46 +1,34 @@
 const PLANS = {
-  "HOBBY": {
+  HOBBY: {
     id: 0,
-    name: "Hobbyist",
+    name: 'Hobbyist',
     rate: 0,
-    image: "/images/icons/collaborate-selected.svg",
-    features: [
-      "3 projects",
-      "Community support"
-    ]
+    image: '/images/icons/collaborate-selected.svg',
+    features: ['3 projects', 'Community support'],
   },
-  "PROFESSIONAL": {
+  PROFESSIONAL: {
     id: 1,
-    name: "Professional",
+    name: 'Professional',
     rate: 29,
-    image: "/images/icons/collaborate-selected.svg",
-    features: [
-      "Intercom support",
-      "Unlimited projects",
-      "3 collaborators"
-    ]
+    image: '/images/icons/collaborate-selected.svg',
+    features: ['Intercom support', 'Unlimited projects', '3 collaborators'],
   },
-  "BUSINESS": {
+  BUSINESS: {
     id: 2,
-    name: "Business",
+    name: 'Business',
     rate: 99,
     image: '/images/icons/briefcase.svg',
-    features: [
-      "Priority support",
-      "All Professional features",
-      "Unlimited collaborators",
-      "Account linking"
-    ]
-  }
-}
+    features: ['Priority support', 'All Professional features', 'Unlimited collaborators', 'Account linking'],
+  },
+};
 
-const temp = {}
-for(var p in PLANS) {
-  temp[PLANS[p].id] = {
-    ...PLANS[p],
-    tag: p
-  }
-}
+const temp = {};
+Object.keys(PLANS).forEach((key) => {
+  temp[PLANS[key].id] = {
+    ...PLANS[key],
+    tag: key,
+  };
+});
 
-export default PLANS
-export const PLANS_ID = temp
+export default PLANS;
+export const PLANS_ID = temp;

@@ -1,9 +1,9 @@
 import toPath from 'lodash/toPath';
 
-export const getTransform = (obj, field) => {
+export const getTransform = (rawObj, field) => {
   const path = toPath(field);
-
   let p = 0;
+  let obj = rawObj;
 
   while (obj && p < path.length) {
     if (typeof obj === 'object' && !Array.isArray(obj) && !Number.isNaN(+path[p])) {
@@ -20,10 +20,10 @@ export const getTransform = (obj, field) => {
   return null;
 };
 
-export const autoFocusCreator = errors => {
+export const autoFocusCreator = (errors) => {
   let focused = false;
 
-  return field => {
+  return (field) => {
     if (!!errors[field] && !focused) {
       focused = true;
       return true;

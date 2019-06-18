@@ -1,8 +1,8 @@
-import toLower from 'lodash/toLower';
 import capitalize from 'lodash/capitalize';
+import toLower from 'lodash/toLower';
 import { parseUrl } from 'query-string';
 
-export const getHumanizedAudioUrl = src => {
+export const getHumanizedAudioUrl = (src) => {
   const { url } = parseUrl(src);
 
   return url;
@@ -44,7 +44,7 @@ export const sortUserReplies = (a, b) => {
   return a.id - b.id;
 };
 
-export const getStepIcon = step => {
+export const getStepIcon = (step) => {
   if (!step) {
     return '';
   }
@@ -77,7 +77,7 @@ export const getAlexaReplyIconAndGroupBasedOnSiblings = (step, prevStep, nextSte
   };
 };
 
-export const isStepConnected = step => {
+export const isStepConnected = (step) => {
   if (!step) {
     return false;
   }
@@ -89,15 +89,12 @@ export const isStepConnected = step => {
   return !!step.linked_to_block_id || !!step.linked_to_node_id;
 };
 
-export const isBlockNotEmpty = block => {
+export const isBlockNotEmpty = (block) => {
   switch (block && block.block_type) {
     case 'default':
       return !!block.userRepliesIds.length || !!block.alexaRepliesIds.length;
     case 'audio_player':
-      return (
-        !!block.audio_player_info.stream_url.length !== 0 ||
-        !!block.audio_player_info.playback_paused_handler_id
-      );
+      return !!block.audio_player_info.stream_url.length !== 0 || !!block.audio_player_info.playback_paused_handler_id;
     case 'condition':
       return !!block.conditionsIds.length;
     case 'quiz':

@@ -57,7 +57,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
           <div
             className="modal-txt text-center mt-2"
           >
-             Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console
+            Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console
           </div>
           <div
             className="super-center mb-3 mt-3"

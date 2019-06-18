@@ -1,13 +1,12 @@
-import React from 'react';
-import { mount, shallow, render } from 'enzyme';
-import {ErrorModal} from '../ErrorModal';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import React from 'react';
 
-const clickFn = jest.fn()
+import { ErrorModal } from '../ErrorModal';
 
 describe('Error Modal Test', () => {
-    it('render error modal', () => {
-        const component = shallow(<ErrorModal error={true}/>);
-        expect(toJson(component)).toMatchSnapshot()
-    });
-})
+  it('render error modal', () => {
+    const component = shallow(<ErrorModal error={true} />);
+    expect(toJson(component)).toMatchSnapshot();
+  });
+});

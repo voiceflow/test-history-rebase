@@ -1,21 +1,12 @@
+import throttle from 'lodash/throttle';
 import React, { Component } from 'react';
+import { DragSource, DropTarget } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 import { findDOMNode } from 'react-dom';
 import compose from 'recompose/compose';
-import throttle from 'lodash/throttle';
 import wrapDisplayName from 'recompose/wrapDisplayName';
-import { getEmptyImage } from 'react-dnd-html5-backend';
-import { DragSource, DropTarget } from 'react-dnd';
 
-export default ({
-  name,
-  styles = {},
-  canDrag,
-  canDrop,
-  onDropKey,
-  onMoveKey,
-  allowXTransform = false,
-  allowYTransform = true,
-}) => Wrapper => {
+export default ({ name, styles = {}, canDrag, canDrop, onDropKey, onMoveKey, allowXTransform = false, allowYTransform = true }) => (Wrapper) => {
   class WithDraggable extends Component {
     static displayName = wrapDisplayName(Wrapper, 'WithDraggable');
 
@@ -36,11 +27,13 @@ export default ({
       const item = monitor.getItem();
       const { [onDropKey]: onDrop, onToggleDragging } = props;
 
+      // eslint-disable-next-line no-underscore-dangle
       onDrop && onDrop({ toListId: item.listId, fromListId: item._initialListId });
       onToggleDragging && onToggleDragging(false);
     },
     beginDrag(props, _, component) {
       const { onToggleDragging } = props;
+      // eslint-disable-next-line react/no-find-dom-node
       const { clientWidth, clientHeight } = findDOMNode(component);
 
       onToggleDragging && onToggleDragging(true);
@@ -87,7 +80,7 @@ export default ({
   };
 
   return compose(
-    DropTarget(name, panelTarget, connect => ({
+    DropTarget(name, panelTarget, (connect) => ({
       connectDropTarget: connect.dropTarget(),
     })),
     DragSource(name, panelSource, (connect, monitor) => ({

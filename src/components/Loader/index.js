@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
 import cn from 'classnames';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 export default class Loader extends Component {
   static propTypes = {
@@ -78,17 +79,7 @@ export default class Loader extends Component {
 
   render() {
     const { step } = this.state;
-    const {
-      text = '',
-      size,
-      inner,
-      inline,
-      pending,
-      children,
-      transparent,
-      withoutIcon,
-      isFullscreen,
-    } = this.props;
+    const { text = '', size, inner, inline, pending, children, transparent, withoutIcon, isFullscreen } = this.props;
 
     const style = this.props.style || {};
     const isMultiple = Loader.isMultiple(text);
@@ -99,6 +90,7 @@ export default class Loader extends Component {
       style.backgroundColor = '#f6f6f6';
     }
 
+    // eslint-disable-next-line no-nested-ternary
     return pending ? (
       <div
         style={style}

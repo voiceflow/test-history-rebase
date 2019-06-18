@@ -1,14 +1,19 @@
-import React, {Component} from 'react';
-import Select from 'react-select';
+/* eslint no-restricted-globals: ["error", "isFinite"] */
 import axios from 'axios';
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom';
-import {toast} from 'react-toastify';
+import Button from 'components/Button';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Select from 'react-select';
+import { toast } from 'react-toastify';
 
-import Button from "components/Button";
+function preventDefaultOnEnter(e) {
+  if (e.charCode === 13) {
+    e.preventDefault();
+  }
+}
 
 class Copy extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -16,60 +21,61 @@ class Copy extends Component {
       skill: null,
       target_board: '',
       target_user: '',
-      creator_skills: []
+      creator_skills: [],
     };
 
-    this.onCreatorInput = this.onCreatorInput.bind(this)
-    this.onUserInput = this.onUserInput.bind(this)
+    this.onCreatorInput = this.onCreatorInput.bind(this);
+    this.onUserInput = this.onUserInput.bind(this);
   }
 
   onCreatorInput() {
     if (isNaN(this.state.creator)) {
       return;
     }
-    axios.get(`/user/${this.state.creator}/projects`)
-      .then(res => {
+    axios
+      .get(`/user/${this.state.creator}/projects`)
+      .then((res) => {
         this.setState({
-          creator_skills: res.data.map(skill => ({
-            label: `${skill.name} - ${skill.skill_id} ${(skill.live ? "(Live)" : "")}`,
-            value: skill.skill_id
-          }))
-        })
+          creator_skills: res.data.map((skill) => ({
+            label: `${skill.name} - ${skill.skill_id} ${skill.live ? '(Live)' : ''}`,
+            value: skill.skill_id,
+          })),
+        });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
 
   onUserInput() {
-    const target = this.state.target_user
+    const target = this.state.target_user;
     if (isNaN(target)) {
       return;
     }
-    axios.get(`/teams/${target}`)
-      .then(res => {
-        this.setState({
-          boards: res.data.map(t => ({
-            label: `${t.name} - ${t.team_id}`,
-            value: t.team_id
-          }))
-        })
-      })
+    axios.get(`/teams/${target}`).then((res) => {
+      this.setState({
+        boards: res.data.map((t) => ({
+          label: `${t.name} - ${t.team_id}`,
+          value: t.team_id,
+        })),
+      });
+    });
   }
 
   copy() {
     if (!(this.state.creator && this.state.skill && this.state.target_board)) {
-      toast.error("Fields not Complete!");
+      toast.error('Fields not Complete!');
       return;
     }
-    axios.post(`/version/${this.state.skill.value}/copy/team/${this.state.target_board.value}`)
+    axios
+      .post(`/version/${this.state.skill.value}/copy/team/${this.state.target_board.value}`)
       .then(() => {
         this.setState({
           creator: '',
           skill: null,
-          target: ''
+          target: '',
         });
-        toast.success("Successfully copied skill");
+        toast.success('Successfully copied skill');
       })
       .catch(() => toast.error('Error'));
   }
@@ -80,47 +86,49 @@ class Copy extends Component {
         <h3 className="fb_header">Copy Skills</h3>
         <div className="content">
           <label>COPY</label>
-          <input placeholder="Enter Creator ID"
-                 type="text"
-                 value={this.state.creator}
-                 onChange={e => this.setState({creator: e.target.value})}
-                 onBlur={this.onCreatorInput}
-                 onKeyPress={(e) => {
-                   if (e.charCode === 13) {
-                     e.preventDefault()
-                   }
-                 }}
-                 className="form-control mb-2"
+          <input
+            placeholder="Enter Creator ID"
+            type="text"
+            value={this.state.creator}
+            onChange={(e) => this.setState({ creator: e.target.value })}
+            onBlur={this.onCreatorInput}
+            onKeyPress={preventDefaultOnEnter}
+            className="form-control mb-2"
           />
           <Select
             placeholder="Select Skill"
             classNamePrefix="select-box"
             className="select-box mb-2"
             value={this.state.skill}
-            onChange={t => this.setState({skill: t})}
+            onChange={(t) => this.setState({ skill: t })}
             options={this.state.creator_skills}
           />
-          {this.state.skill && <>
-            <i className="far fa-search text-dull mr-1"/>
-            <Link to={`/admin/lookup/${this.state.skill.value}`}>{this.state.skill.value}</Link>
-          </>}
-          <hr/>
+          {this.state.skill && (
+            <>
+              <i className="far fa-search text-dull mr-1" />
+              <Link to={`/admin/lookup/${this.state.skill.value}`}>{this.state.skill.value}</Link>
+            </>
+          )}
+          <hr />
           <label>TO</label>
           <div className="super-center mb-2">
-            <Button isSecondary className="mr-3" onClick={() => {
-              this.setState({target_user: this.props.user.creator_id}, this.onUserInput);
-            }}>Myself</Button>
-            <input placeholder="Enter Target User ID"
-                   type="text"
-                   value={this.state.target_user}
-                   onChange={e => this.setState({target_user: e.target.value})}
-                   onKeyPress={(e) => {
-                     if (e.charCode === 13) {
-                       e.preventDefault()
-                     }
-                   }}
-                   onBlur={this.onUserInput}
-                   className="form-control"
+            <Button
+              isSecondary
+              className="mr-3"
+              onClick={() => {
+                this.setState({ target_user: this.props.user.creator_id }, this.onUserInput);
+              }}
+            >
+              Myself
+            </Button>
+            <input
+              placeholder="Enter Target User ID"
+              type="text"
+              value={this.state.target_user}
+              onChange={(e) => this.setState({ target_user: e.target.value })}
+              onKeyPress={preventDefaultOnEnter}
+              onBlur={this.onUserInput}
+              className="form-control"
             />
           </div>
           <Select
@@ -128,20 +136,22 @@ class Copy extends Component {
             classNamePrefix="select-box"
             className="select-box mb-2"
             value={this.state.target_board}
-            onChange={t => this.setState({target_board: t})}
+            onChange={(t) => this.setState({ target_board: t })}
             options={this.state.boards}
           />
-          <hr/>
-          <Button isPrimary onClick={this.copy.bind(this)} className="mb-2">Copy!</Button>
+          <hr />
+          <Button isPrimary onClick={this.copy.bind(this)} className="mb-2">
+            Copy!
+          </Button>
         </div>
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.account,
-  teams: state.team
-})
+  teams: state.team,
+});
 
-export default connect(mapStateToProps)(Copy)
+export default connect(mapStateToProps)(Copy);

@@ -1,11 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React from 'react';
-
 import centered from '@storybook/addon-centered';
-import storyRouter from 'storybook-react-router';
-import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react';
+import React from 'react';
+import storyRouter from 'storybook-react-router';
 
 import Link from './index';
 

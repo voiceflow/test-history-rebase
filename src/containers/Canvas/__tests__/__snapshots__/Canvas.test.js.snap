@@ -28,31 +28,12 @@ exports[`Canvas render canvas 1`] = `
     setHelp={[Function]}
     toggle={[Function]}
   />
-  <Connect(ActionGroup)
-    lastSave="Save"
-    onSave={[Function]}
-    page="canvas"
-    renderPlatformSwitch={[Function]}
-    saved={true}
-    saving={false}
-    setCB={[Function]}
-    updateLinter={[Function]}
-  />
   <div
     id="canvas"
     onMouseDown={[Function]}
     onMouseMove={[Function]}
     onMouseUp={[Function]}
   >
-    <Connect(Menu)
-      build={[Function]}
-      copyFlow={[Function]}
-      deleteFlow={[Function]}
-      enterFlow={[Function]}
-      openTab={[Function]}
-      type_counter={Object {}}
-      unfocus={[Function]}
-    />
     <Spinner
       name="Flow"
     />
@@ -224,7 +205,6 @@ exports[`Canvas render canvas 1`] = `
             "superSelect": null,
           }
         }
-        isCanvas={true}
         update={[Function]}
       />
       <DiagramWidget
@@ -305,9 +285,7 @@ exports[`Canvas render canvas 1`] = `
         nodeProps={
           Object {
             "addCombineNode": [Function],
-            "diagram": Object {
-              "name": "test",
-            },
+            "diagram": undefined,
             "disabled": false,
             "enterFlow": [Function],
             "generateBlockMenu": [Function],

@@ -133,6 +133,7 @@ class GetRequestSection extends Component {
               className="form-control google-sheets-input"
               raw={this.props.action_data.url || null}
               variables={this.props.variables}
+              leftSide
               updateRaw={(raw) => {
                 this.props.updateActionData(
                   {

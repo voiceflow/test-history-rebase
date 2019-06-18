@@ -7,6 +7,24 @@ import createSingleLinePlugin from 'draft-js-single-line-plugin';
 import _ from 'lodash';
 import React, { Component } from 'react';
 
+import './VariableInput.css';
+
+const isOutOfViewport = function(elem) {
+  // Get element's bounding
+  const bounding = elem.getBoundingClientRect();
+
+  // Check if it's out of the viewport on each side
+  const out = {};
+  out.top = bounding.top < 0;
+  out.left = bounding.left < 0;
+  out.bottom = bounding.bottom > (window.innerHeight || document.documentElement.clientHeight);
+  out.right = bounding.right > (window.innerWidth || document.documentElement.clientWidth);
+  out.any = out.top || out.left || out.bottom || out.right;
+  out.all = out.top && out.left && out.bottom && out.right;
+
+  return out;
+};
+
 class VariableInput extends Component {
   constructor(props) {
     super(props);
@@ -18,9 +36,11 @@ class VariableInput extends Component {
       }),
     };
 
+    const theme = `mentionSuggestions ${props.leftSide ? 'vi__displayOnLeft' : ''}`;
+
     this.mentionPlugin = createMentionPlugin({
       theme: {
-        mentionSuggestions: 'mentionSuggestions',
+        mentionSuggestions: theme,
         mentionSuggestionsEntry: 'mentionSuggestionsEntry',
         mentionSuggestionsEntryFocused: 'mentionSuggestionsEntryFocused',
         mentionSuggestionsEntryText: 'mentionSuggestionsEntryText',
@@ -111,7 +131,12 @@ class VariableInput extends Component {
             }}
           />
         </div>
-        <MentionSuggestions onSearchChange={this.onSearchChange} suggestions={this.state.suggestions} onAddMention={this.onAddMention} />
+        <MentionSuggestions
+          className={this.props.leftSide ? 'vi__displayOnLeft' : 'noleft'}
+          onSearchChange={this.onSearchChange}
+          suggestions={this.state.suggestions}
+          onAddMention={this.onAddMention}
+        />
       </React.Fragment>
     );
   }

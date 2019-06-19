@@ -1,89 +1,91 @@
 #TestSidebar {
-    position: absolute;
-    right: 0;
-    z-index: 5;
-    width: 400px;
-    height: 100%;
-    background-color: #fff;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    border-left: 1px solid #E2E9EC;
-    -webkit-transform: translateX(400px);
-    -moz-transform: translateX(400px);
-    -ms-transform: translateX(400px);
-    -o-transform: translateX(400px);
-    transform: translateX(400px);
-    -webkit-transition: -webkit-transform .3s;
-    -moz-transition: -moz-transform .3s;
-    transition: transform .3s;
+  position: absolute;
+  right: 0;
+  z-index: 5;
+  width: 400px;
+  height: 100%;
+  background-color: #fff;
+  border-left: 1px solid #e2e9ec;
+  -webkit-transform: translateX(400px);
+  -moz-transform: translateX(400px);
+  -ms-transform: translateX(400px);
+  -o-transform: translateX(400px);
+  transform: translateX(400px);
+  -webkit-transition: -webkit-transform 0.3s;
+  -moz-transition: -moz-transform 0.3s;
+  transition: transform 0.3s;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 #Timeline{
-    height: 100%;
+  height: 100%;
 }
 
 #TestSidebar.open {
-    -webkit-transform: translateX(0);
-    -moz-transform: translateX(0);
-    -ms-transform: translateX(0);
-    -o-transform: translateX(0);
-    transform: translateX(0);
-    -webkit-transition: -webkit-transform .3s;
-    -moz-transition: -moz-transform .3s;
-    transition: transform .3s;
-    overflow:  hidden;
+  overflow:  hidden;
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  -ms-transform: translateX(0);
+  -o-transform: translateX(0);
+  transform: translateX(0);
+  -webkit-transition: -webkit-transform 0.3s;
+  -moz-transition: -moz-transform 0.3s;
+  transition: transform 0.3s;
 }
 
 #TestSidebar label {
-    display: inline-block;
-    vertical-align: middle;
-    text-transform: uppercase;
-    width: 85%;
-    padding-right: 10px;
+  display: inline-block;
+  width: 85%;
+  padding-right: 10px;
+  text-transform: uppercase;
+  vertical-align: middle;
 }
 
 #user__input {
-    text-align: left;
-    /* bottom: 0;
+  text-align: left;
+
+  /* bottom: 0;
     position: absolute;
     width: 100%; */
 }
 
 #Conditions {
-    max-height: 300px;
-    overflow: scroll
+  max-height: 300px;
+  overflow: scroll
 }
 
 .condition-label {
-    display: flex;
-    text-align: center;
-    margin-right: -20px;
-    margin-left: -20px;
-    padding-left: 20px !important;
-    padding-right: 10px;
+  display: flex;
+  margin-right: -20px;
+  margin-left: -20px;
+  padding-right: 10px;
+  padding-left: 20px !important;
+  text-align: center;
 }
 
 .response-input {
-    min-height: 100px;
+  min-height: 100px;
 }
+
 .sidebar_container {
-    /* border-bottom: 1px solid #EAEFF4 !important; */
+  /* border-bottom: 1px solid #EAEFF4 !important; */
 }
 
 .choice-option {
-    color: #62778c;
+  color: #62778c;
 }
 
 .choice-option:hover {
-    color: #2C85FF;
-    cursor: pointer;
+  color: #2c85ff;
+  cursor: pointer;
 }
 
 .speak-box-icon {
-    bottom: 0;
-    position: absolute;
+  position: absolute;
+  bottom: 0;
 }

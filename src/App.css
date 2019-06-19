@@ -299,7 +299,7 @@ ul {
 }
 
 .light-grey{
-  color: #90A2B3;
+  color: #90a2b3;
 }
 
 .main-container-header {
@@ -2080,15 +2080,16 @@ kbd {
   clip: rect(0 0 0 0);
 }
 
-  .light-blue {
-      color: #5D9DF5
-  }
+.light-blue {
+  color: #5d9df5
+}
   
-  .update-modal-feature{
-      color: #5D9DF5;
-      display: inline;
-      font-size: 13px;
-  }
+.update-modal-feature{
+  display: inline;
+  color: #5d9df5;
+  font-size: 13px;
+}
+
 .react-toggle--disabled {
   cursor: not-allowed;
   opacity: 0.5;

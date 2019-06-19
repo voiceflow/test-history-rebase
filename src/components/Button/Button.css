@@ -71,12 +71,12 @@ button {
   box-shadow: 0 4px 8px rgba(17, 49, 96, 0.16), 0 0 4px rgba(17, 49, 96, 0.08);
 }
 
- .btn-primary:active,
- .btn-primary:focus {
-   border: none !important;
-   outline: none !important;
-   box-shadow: none !important;
- }
+.btn-primary:active,
+.btn-primary:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
 
 .btn-primary.__small {
   display: inline-block;

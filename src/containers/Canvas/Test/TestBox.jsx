@@ -107,7 +107,7 @@ const TestBox = (props) => {
             <Form onSubmit={inputSubmit} id="user__input" className="px-3 mb-3 mt-3">
               <span className="light-grey">User Says</span>
               <Input
-                className="form-bg response-input mt-3 mb-2 pt-3"
+                className="form-bg response-input mt-3 mb-2 pt-2"
                 name="input"
                 type="textarea"
                 placeholder="Enter response"
@@ -115,9 +115,7 @@ const TestBox = (props) => {
                 onChange={handleChange}
                 onKeyDown={onKeydown}
               />
-              <small className="float-right text-muted pb-3 pt-2 d-block">
-                <kbd>Enter</kbd> To Send
-              </small>
+              <small className="float-right text-muted pb-3 pt-2 d-block">Enter to send</small>
             </Form>
           )}
         </React.Fragment>

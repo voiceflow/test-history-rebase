@@ -50,7 +50,7 @@ const UserTestHeader = (props) => {
                     onTest();
                   }}
                 >
-                  Start Test &nbsp;&nbsp;&nbsp;
+                  Start test &nbsp;&nbsp;&nbsp;
                   <i className="fas fa-play" />
                 </Button>
               </ReactCSSTransitionGroup>

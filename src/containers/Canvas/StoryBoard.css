@@ -1046,8 +1046,6 @@
 .Menu #sidebar .blocks {
   border: 1px solid #ddd;
   border-left: none !important;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
 }
 
 .MenuItem {
@@ -2567,7 +2565,7 @@ button.close:hover{
 
 #label-container {
   display: flex;
-  align-items: center;
+  align-items: center !important;
   justify-content: center;
   margin-right: -20px;
   margin-left: -20px;
@@ -3199,8 +3197,7 @@ button.close:hover{
 }
 
 .variable-group > span {
-  margin-right: 7px;
-  margin-left: 2px;
+  margin-right: 5px;
   font-weight: 500;
 }
 
@@ -3531,10 +3528,16 @@ button.close:hover{
 #home-button {
   position: absolute;
   top: 14px;
-  left: 302px;
   z-index: 5;
 }
 
+#home-button.isCanvas {
+    left: 302px;
+}
+
+#home-button.isTest {
+    left: 55px;
+}
 #home-button.closed {
   -webkit-transform: translateX(-250px);
   -moz-transform: translateX(-250px);

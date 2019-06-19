@@ -70,15 +70,19 @@ export class FlowBar extends Component {
 
     return (
       <React.Fragment>
-        <button
-          id="home-button"
-          className={cn('btn-home', 'pl-3', {
-            closed: this.props.testing,
-          })}
-          onClick={() => this.props.enterFlow(this.props.root_id)}
-        >
-          <span>Home</span>
-        </button>
+        {!this.props.testing_info && (
+          <button
+            id="home-button"
+            className={cn('btn-home', 'pl-3', {
+              closed: this.props.testing,
+              isCanvas: this.props.isCanvas,
+              isTest: !this.props.isCanvas,
+            })}
+            onClick={() => this.props.enterFlow(this.props.root_id)}
+          >
+            <span>Home</span>
+          </button>
+        )}
         <div id="flow-bar" className="text-center">
           <div className="super-center px-5 w-100 no-select">
             <div className="text-muted text-max w-100 px-5 mt-1">

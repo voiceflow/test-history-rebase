@@ -17,7 +17,6 @@ const Conditions = (props) => {
         disabled: testing_info,
       })}
     >
-      <div className="no-space__break" />
       <div className="text-center">
         {/* node.extras here */}
         {_.difference(variables, filter_variables).map((variable, i) => {

@@ -63,12 +63,14 @@ const Timeline = (props) => {
     time,
     slots,
     skill,
+    reset,
     global,
     repeat,
     history,
     enterFlow,
     platform,
     setTime,
+    setReset,
     resume,
     stop,
     diagramEngine,
@@ -117,15 +119,16 @@ const Timeline = (props) => {
       updateState(true);
       resume();
     }
-    if (!testing_info && started) {
+    if (reset && started) {
       setStarted(false);
       setTime(0);
       setInputs([]);
       setOutputs([]);
       setEnded(false);
-      resetTest();
+      // resetTest();
       story_state = null;
-      stop();
+      // stop();
+      setReset(false);
     }
   });
 
@@ -147,7 +150,7 @@ const Timeline = (props) => {
       <div className="text-center mb-3">
         <img className="mb-3 mt-5" src="/Testing.svg" alt="user" width="80" />
         <br />
-        <span className="text-muted">Start to see the dialog transcription.</span>
+        <span className="text-muted">Start test to see the dialog transcription</span>
       </div>
     );
   }
@@ -390,6 +393,7 @@ const Timeline = (props) => {
       .then(async (res) => {
         // eslint-disable-next-line no-param-reassign
         res = res.data;
+        console.log(res);
         const { trace } = res;
         if (res.line_id) {
           story_state = res;
@@ -464,7 +468,7 @@ const Timeline = (props) => {
                 outputBlock.delay = delay;
                 outputBlock.type = type;
                 outputBlock.isLast = !block.line.nextId;
-                delay += duration + 1000;
+                delay += duration;
                 dom.push(outputBlock);
               });
             } else if (type === 'Choice' && idx === trace.length - 1) {
@@ -483,7 +487,7 @@ const Timeline = (props) => {
                 type,
                 delay,
               };
-              delay += 1000;
+              // delay += 1000;
               dom.push(outputBlock);
             } else if (type === 'One Shot Intent') {
               const outputBlock = {
@@ -492,7 +496,6 @@ const Timeline = (props) => {
                 type,
                 delay,
               };
-              delay += 1000;
               dom.push(outputBlock);
             } else {
               const outputBlock = {
@@ -501,7 +504,6 @@ const Timeline = (props) => {
                 type,
                 delay,
               };
-              delay += 1000;
               dom.push(outputBlock);
             }
             idx++;
@@ -547,7 +549,7 @@ const Timeline = (props) => {
 
   return (
     <div id="Timeline" className="mb-3">
-      <div className="break">
+      <div className="no-margin__break">
         <span className="or">New Session Started</span>
         <TestBox
           inputs={inputs}

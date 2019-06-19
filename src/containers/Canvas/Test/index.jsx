@@ -23,6 +23,7 @@ class Test extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      reset: false,
       variableMapping: props.variables.reduce((key, val) => {
         key[val] = val;
         return key;
@@ -75,6 +76,8 @@ class Test extends Component {
               section = (
                 <Timeline
                   testing_info={this.props.testing_info}
+                  reset={this.state.reset}
+                  setReset={(r) => this.setState({ reset: r })}
                   flow={this.props.flow}
                   diagramEngine={this.props.diagramEngine}
                   time={this.props.time}
@@ -101,7 +104,7 @@ class Test extends Component {
                 }}
               >
                 <label id={s} className="ml-3 mt-4 mb-4 text-left">
-                  {s}
+                  {s === C.CONDITIONS ? 'Variables' : 'Dialog'}
                 </label>
                 {s === C.CONDITIONS && !this.props.testing_info && (
                   <i
@@ -112,11 +115,11 @@ class Test extends Component {
                   />
                 )}
                 {s === C.TIMELINE && (
-                  <Tooltip title="Restart Test" position="bottom" distance={16} className="d-flex align-items-center">
-                    <div onClick={() => this.props.resetTest()}>
+                  <div onClick={() => this.setState({ reset: true })} className="d-flex align-items-center">
+                    <Tooltip title="Restart Test" position="bottom">
                       <img src="/restart.svg" alt="restart" width="15" height="15" />
-                    </div>
-                  </Tooltip>
+                    </Tooltip>
+                  </div>
                 )}
               </div>
               <Collapse isOpen={s === C.CONDITIONS ? !this.props.testing_info && this.state.conditionsOpen : true}>{section}</Collapse>

@@ -1648,6 +1648,12 @@ body.modal-open {
   border-bottom: 1px solid #8da2b545;
 }
 
+.no-space__break {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #8da2b545;
+}
+
 .or {
   padding: 5px 10px;
   color: #8da2b5;

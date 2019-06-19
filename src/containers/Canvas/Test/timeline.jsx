@@ -433,6 +433,7 @@ const Timeline = (props) => {
             };
             dom.push(outputBlock);
           }
+          let idx = 0;
           // eslint-disable-next-line no-restricted-syntax
           for (const block of trace) {
             // eslint-disable-next-line no-continue
@@ -466,7 +467,7 @@ const Timeline = (props) => {
                 delay += duration + 1000;
                 dom.push(outputBlock);
               });
-            } else if (type === 'Choice' && block.audio) {
+            } else if (type === 'Choice' && idx === trace.length - 1) {
               const outputBlock = {
                 options: _.map(block.line.inputs, _.head),
                 node: block.line.id,
@@ -503,6 +504,7 @@ const Timeline = (props) => {
               delay += 1000;
               dom.push(outputBlock);
             }
+            idx++;
           }
           setOutputs(outputs.concat(dom));
         } else if (res.ending) {

@@ -17,9 +17,10 @@ const interactionBlockLinter = (node, platform) => {
   const n = node.linter.length;
   const extras = node.extras[platform];
 
+  const choices = Object.values(extras.choices);
   // eslint-disable-next-line no-restricted-syntax
-  for (const choice in Object.values(extras.choices)) {
-    if (!choice.intent) {
+  for (let i = 0; i < choices.length; i++) {
+    if (!choices[i].intent) {
       active_warnings.add(INTERACTION_BLOCK_LINTER_WARNINGS.missing_intent);
       break;
     }

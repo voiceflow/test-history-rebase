@@ -311,6 +311,7 @@ exports[`Canvas render canvas 1`] = `
             "hasFlow": [Function],
             "removeCombineNode": [Function],
             "removeNode": [Function],
+            "renameFlow": undefined,
             "setBlockMenu": undefined,
             "setCanvasError": undefined,
           }

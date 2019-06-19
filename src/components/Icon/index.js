@@ -1,12 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import cn from 'classnames';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import PropTypes from 'prop-types';
+import React from 'react';
 
 export default function Icon({ custom, className, isBig, textPosition, textSmPosition, ...props }) {
-  const iconClassName = isBig
-    ? `sl-big-icon sl-big-icon-${className}`
-    : `sl-icon sl-icon-${className}`;
+  const iconClassName = isBig ? `sl-big-icon sl-big-icon-${className}` : `sl-icon sl-icon-${className}`;
 
   return (
     <i

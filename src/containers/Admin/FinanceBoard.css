@@ -1,6 +1,6 @@
 .fb_wrapper {
-  padding: 30px;
   margin-bottom: 70px;
+  padding: 30px;
 }
 
 .fb_search {
@@ -16,11 +16,11 @@
 }
 
 .admin_highlight_green {
-  font-size: 12px;
   padding: 5px 10px;
-  background-color: #00E676;
-  border-radius: 5px;
   color: white;
+  font-size: 12px;
+  background-color: #00e676;
+  border-radius: 5px;
 }
 
 .fb_refresh_wrapper {

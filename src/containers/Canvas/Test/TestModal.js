@@ -1,50 +1,29 @@
-/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
+import './TestModal.css';
 
-import React from 'react'
-import { connect } from 'react-redux'
-import axios from 'axios'
-import moment from 'moment'
-import Select from 'react-select'
-import {
-  parse
-} from 'html-parse-stringify'
-import Toggle from 'react-toggle'
-import {
-  Table,
-  Button,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  InputGroup,
-  Input,
-  InputGroupAddon,
-  Form,
-  Alert,
-  ListGroup,
-  ListGroupItem
-} from 'reactstrap'
-
+import axios from 'axios';
 // Components
-import DefaultButton from 'components/Button'
-import {
-  ModalHeader
-} from 'components/Modals/ModalHeader'
+import DefaultButton from 'components/Button';
+import { ModalHeader } from 'components/Modals/ModalHeader';
+import { parse } from 'html-parse-stringify';
+import moment from 'moment';
+import React from 'react';
+import { connect } from 'react-redux';
+import Select from 'react-select';
+import Toggle from 'react-toggle';
+import { Alert, Button, Form, Input, InputGroup, InputGroupAddon, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, Table } from 'reactstrap';
 
-
-import './TestModal.css'
-
-var test_endpoint;
+let test_endpoint;
 if (process.env.REACT_APP_BUILD_ENV === 'staging') {
-  test_endpoint = 'https://staging.voiceflow.app/state/test'
+  test_endpoint = 'https://staging.voiceflow.app/state/test';
 } else if (process.env.NODE_ENV === 'development') {
   // dev code
   test_endpoint = 'https://localhost:4000/state/test'
 } else {
   // production code
-  test_endpoint = 'https://voiceflow.app/state/test'
+  test_endpoint = 'https://voiceflow.app/state/test';
 }
 
-const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text'])
+const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text']);
 
 // const default_state = () => {
 //   return {
@@ -55,46 +34,55 @@ const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-a
 //   }
 // }
 
-const recurse = (tag, index=0) => {
-    if(tag.type === 'text'){
-      if(!tag.content.trim()){
-        return null
-      }else{
-        return tag.content
-      }
-    }else{
-      if(!valid_tags.has(tag.name)){ return null }
-
-      if(tag.children && tag.children.length > 0){
-        let return_string = [];
-        tag.children.forEach((t, i) => {
-          return_string.push(recurse(t, i));
-        });
-
-        if(tag.name === 's'){
-          return return_string;
-        }else if(tag.name === 'voice'){
-          return <React.Fragment key={index}><span className="text-muted">{tag.attrs.name}:</span>
-            <br/>
-            {return_string}
-          </React.Fragment>
-        }else{
-          return <span key={index} className="tag-wrap"><span className="tag-span">{tag.name}</span> {return_string}</span>
-        }
-      }else{
-        return <span key={index} className="tag-wrap tag-span">({tag.name})</span>
-      }
+const recurse = (tag, index = 0) => {
+  if (tag.type === 'text') {
+    if (!tag.content.trim()) {
+      return null;
     }
-}
+    return tag.content;
+  }
+  if (!valid_tags.has(tag.name)) {
+    return null;
+  }
+
+  if (tag.children && tag.children.length > 0) {
+    const return_string = [];
+    tag.children.forEach((t, i) => {
+      return_string.push(recurse(t, i));
+    });
+
+    if (tag.name === 's') {
+      return return_string;
+    }
+    if (tag.name === 'voice') {
+      return (
+        <React.Fragment key={index}>
+          <span className="text-muted">{tag.attrs.name}:</span>
+          <br />
+          {return_string}
+        </React.Fragment>
+      );
+    }
+    return (
+      <span key={index} className="tag-wrap">
+        <span className="tag-span">{tag.name}</span> {return_string}
+      </span>
+    );
+  }
+  return (
+    <span key={index} className="tag-wrap tag-span">
+      ({tag.name})
+    </span>
+  );
+};
 
 class TestModal extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       error: null,
-      input: "",
+      input: '',
       inputs: [],
       audio: null,
       started: false,
@@ -104,11 +92,11 @@ class TestModal extends React.Component {
       ended: false,
       debug: false,
       audioplayer: false,
-    }
+    };
 
-    this.story_state = null
-    this.pause = false
-    this.next = false
+    this.story_state = null;
+    this.pause = false;
+    this.next = false;
     this.updateState = this.updateState.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.inputSubmit = this.inputSubmit.bind(this);
@@ -120,33 +108,37 @@ class TestModal extends React.Component {
     this.handleRestart = this.handleRestart.bind(this);
     this.getVariables = this.getVariables.bind(this);
     this.parseBlock = this.parseBlock.bind(this);
-    this.removeAudio = this.removeAudio.bind(this)
-    this.current_diagram = null
+    this.removeAudio = this.removeAudio.bind(this);
+    this.current_diagram = null;
   }
 
   removeAudio() {
     return new Promise((resolve) => {
-      if(this.state.audio){
-        let audio = this.state.audio;
+      if (this.state.audio) {
+        const audio = this.state.audio;
         audio.onended = null;
         audio.ontimeupdate = null;
         audio.onloadedmetadata = null;
         this.state.audio.pause();
         this.state.audio.removeAttribute('src');
         this.state.audio.load();
-        this.setState({
-          audio: null
-        }, resolve)
-      }else{
-        resolve()
+        this.setState(
+          {
+            audio: null,
+          },
+          resolve
+        );
+      } else {
+        resolve();
       }
-    })
+    });
   }
 
-  componentWillReceiveProps(nextProps){
-    if(this.props.testing_info === false && !!nextProps.testing_info){
+  // eslint-disable-next-line react/no-deprecated
+  componentWillReceiveProps(nextProps) {
+    if (this.props.testing_info === false && !!nextProps.testing_info) {
       this.setState({
-          nodes: nextProps.testing_info.nodes
+        nodes: nextProps.testing_info.nodes,
       });
     }
   }
@@ -154,560 +146,647 @@ class TestModal extends React.Component {
   initializeStory() {
     this.story_state = {
       diagrams: null,
-      input: "",
+      input: '',
       line: null,
       testing: true,
       skill_id: 'TEST_SKILL',
       globals: [{}],
       repeat: this.props.repeat ? this.props.repeat : 100,
-      platform: this.props.platform
+      platform: this.props.platform,
     };
 
     // Inject New Globals in if updated
-    if(Array.isArray(this.props.global)){
-        this.props.global.forEach(variable => {
-            this.story_state.globals[0][variable] = 0
-        })
+    if (Array.isArray(this.props.global)) {
+      this.props.global.forEach((variable) => {
+        this.story_state.globals[0][variable] = 0;
+      });
     }
 
     // stick in global variables
-    this.story_state.globals[0].sessions = 1
-    this.story_state.globals[0].user_id = 'TEST_USER'
-    this.story_state.globals[0].platform = this.props.platform
+    this.story_state.globals[0].sessions = 1;
+    this.story_state.globals[0].user_id = 'TEST_USER';
+    this.story_state.globals[0].platform = this.props.platform;
   }
 
   componentWillUnmount() {
     this.removeAudio();
   }
 
-  handleEnd(){
+  handleEnd() {
     // keep the story id the same though
     this.setState({
-      ended: true
-    })
+      ended: true,
+    });
   }
 
-  handleRestart(){
+  handleRestart() {
     // keep the story id the same though
     this.setState({
       started: false,
       inputs: [],
-      ended: false
-    })
+      ended: false,
+    });
 
     this.story_state = null;
   }
 
   // Super Janky recusive function to play audio
-  recursivePlay(index, urls, ended){
+  recursivePlay(index, urls, ended) {
     // End of Audio
-    if(index >= urls.length ) {
-      if(!this.pause){
-        this.setState({
-          audio: null
-        }, () => {
-          if(this.story_state.play && ['START', 'RESUME'].includes(this.story_state.play.action)){
-            this.next = true
-            this.updateState()
+    if (index >= urls.length) {
+      if (!this.pause) {
+        this.setState(
+          {
+            audio: null,
+          },
+          () => {
+            if (this.story_state.play && ['START', 'RESUME'].includes(this.story_state.play.action)) {
+              this.next = true;
+              this.updateState();
+            }
           }
-        })
+        );
       }
-      if(ended){
-        this.handleEnd()
+      if (ended) {
+        this.handleEnd();
       }
-      return
+      return;
     }
 
-    let b = urls[index];
+    const b = urls[index];
 
-    if(b.type === 'tag' && b.name === 'audio' && b.attrs && b.attrs.src){
+    if (b.type === 'tag' && b.name === 'audio' && b.attrs && b.attrs.src) {
       // AUDIO TAGS
-      let audio
-      audio = new Audio(b.attrs.src)
+      const audio = new Audio(b.attrs.src);
 
       this.setState({
-        audio: audio
-      })
+        audio,
+      });
 
-      audio.onerror = (err) => {
-        let inputs = this.state.inputs
+      audio.onerror = () => {
+        const inputs = this.state.inputs;
         inputs.push({
-          text: <span className="alert alert-warning mb-1 d-inline-block">Unable to Play Audio File on Test Tool<br/><b>{b.attrs.src}</b>{b.attrs.src.startsWith('soundbank')&&<React.Fragment><br/>(Soundbank Files will work on Alexa)</React.Fragment>}</span>,
-          time: moment().format('h:mm:ss A')
-        })
+          text: (
+            <span className="alert alert-warning mb-1 d-inline-block">
+              Unable to Play Audio File on Test Tool
+              <br />
+              <b>{b.attrs.src}</b>
+              {b.attrs.src.startsWith('soundbank') && (
+                <React.Fragment>
+                  <br />
+                  (Soundbank Files will work on Alexa)
+                </React.Fragment>
+              )}
+            </span>
+          ),
+          time: moment().format('h:mm:ss A'),
+        });
         this.setState({
-          inputs: inputs
-        })
-        this.recursivePlay(index + 1, urls, ended)
-      }
+          inputs,
+        });
+        this.recursivePlay(index + 1, urls, ended);
+      };
 
       audio.onended = () => {
-        this.recursivePlay(index + 1, urls, ended)
+        this.recursivePlay(index + 1, urls, ended);
         audio.ontimeupdate = null;
         audio.onended = null;
         audio.onloadedmetadata = null;
-        audio.pause()
-        audio.removeAttribute('src')
-        audio.load()
-      }
+        audio.pause();
+        audio.removeAttribute('src');
+        audio.load();
+      };
       audio.onloadedmetadata = () => {
-        let inputs = this.state.inputs;
-        let index = inputs.push({
-          src: audio.src.split('/').pop().split('-').pop(),
+        const inputs = this.state.inputs;
+        const index = inputs.push({
+          src: audio.src
+            .split('/')
+            .pop()
+            .split('-')
+            .pop(),
           currentTime: 0,
           duration: audio.duration,
-          time: moment().format('h:mm:ss A')
-        })
-        this.setState({inputs: inputs});
+          time: moment().format('h:mm:ss A'),
+        });
+        this.setState({ inputs });
         audio.ontimeupdate = () => {
-          let inputs = this.state.inputs;
+          const inputs = this.state.inputs;
           inputs[index - 1].currentTime = audio.currentTime;
-          this.setState({inputs: inputs});
-        }
-      }
+          this.setState({ inputs });
+        };
+      };
 
-      audio.play()
-    }else if(b.type==='tag' && b.name === 'debug'){
-      this.addDebugBlock(b)
-      this.recursivePlay(index + 1, urls, ended)
-    }else{
-      this.parseBlock(b)
-      this.recursivePlay(index + 1, urls, ended)
+      audio.play();
+    } else if (b.type === 'tag' && b.name === 'debug') {
+      this.addDebugBlock(b);
+      this.recursivePlay(index + 1, urls, ended);
+    } else {
+      this.parseBlock(b);
+      this.recursivePlay(index + 1, urls, ended);
     }
   }
 
   parseBlock(block) {
-      // TEXT TYPE
-      let text = recurse(block)
-      if(text){
-        let inputs = this.state.inputs
-        inputs.push({
-          text: text,
-          time: moment().format('h:mm:ss A')
-        });
-        this.forceUpdate()
-      }
+    // TEXT TYPE
+    const text = recurse(block);
+    if (text) {
+      const inputs = this.state.inputs;
+      inputs.push({
+        text,
+        time: moment().format('h:mm:ss A'),
+      });
+      this.forceUpdate();
+    }
   }
 
   addDebugBlock(block) {
-      let inputs = this.state.inputs;
+    const inputs = this.state.inputs;
 
-      let text = block.children && block.children[0] && block.children[0].content ? block.children[0].content : '';
+    const text = block.children && block.children[0] && block.children[0].content ? block.children[0].content : '';
 
-      inputs.push({
-        debug: block.attrs.type,
-        text: text,
-        time: moment().format('h:mm:ss A')
-      });
+    inputs.push({
+      debug: block.attrs.type,
+      text,
+      time: moment().format('h:mm:ss A'),
+    });
 
-      this.setState({inputs: inputs});
+    this.setState({ inputs });
   }
 
-  async updateState(start=false){
-    let data = this.story_state
+  async updateState(start = false) {
+    const data = this.story_state;
 
     if (!data.slots) {
-      data.slots = this.props.slots
+      data.slots = this.props.slots;
     }
 
-    const nlc = this.props.testing_info.nlc
+    const nlc = this.props.testing_info.nlc;
 
     if (nlc) {
       try {
-        const results = await nlc.handleCommand(data.input)
-        const detected_intents = []
+        const results = await nlc.handleCommand(data.input);
+        const detected_intents = [];
 
-        for (let i = 0; i < results.length; i ++) {
-          const result = results[i]
+        for (let i = 0; i < results.length; i++) {
+          const result = results[i];
 
-          const intent_name = result.name
-          const detected_slots = result.slots
-          const slot_mapping = this.props.testing_info.slot_mappings[intent_name] ? this.props.testing_info.slot_mappings[intent_name] : []
+          const intent_name = result.name;
+          const detected_slots = result.slots;
+          const slot_mapping = this.props.testing_info.slot_mappings[intent_name] ? this.props.testing_info.slot_mappings[intent_name] : [];
 
-          const formatted_slots = {}
+          const formatted_slots = {};
           slot_mapping.forEach((slot, i) => {
-              if (detected_slots[i]) {
-                  formatted_slots[slot.name] = {
-                      value: detected_slots[i]
-                  }
-              }
-          })
+            if (detected_slots[i]) {
+              formatted_slots[slot.name] = {
+                value: detected_slots[i],
+              };
+            }
+          });
           if (intent_name) {
             detected_intents.push({
               intent: intent_name,
-              slots: formatted_slots
-            })
+              slots: formatted_slots,
+            });
           }
         }
-        data.detected_intents = detected_intents
+        data.detected_intents = detected_intents;
       } catch (err) {
         // NLC No Match
       }
     }
 
-    if(start){
+    if (start) {
       data.testing = {
-        line: this.story_state.line_id ? this.story_state.line_id : "START",
+        line: this.story_state.line_id ? this.story_state.line_id : 'START',
       };
-      data.diagrams = [{id: this.props.testing_info.id}]
+      data.diagrams = [{ id: this.props.testing_info.id }];
     }
 
-    if(this.next){
-      if(this.story_state.play.loop){
-        await this.removeAudio()
-        this.next = false
-        return this.recursivePlay(0, [{
-          name: 'audio',
-          type: 'tag',
-          attrs: {
-            src: this.story_state.play.url
-          }
-        }], false);
-      }else{
-        data.play.action = 'NEXT';
+    if (this.next) {
+      if (this.story_state.play.loop) {
+        await this.removeAudio();
+        this.next = false;
+        return this.recursivePlay(
+          0,
+          [
+            {
+              name: 'audio',
+              type: 'tag',
+              attrs: {
+                src: this.story_state.play.url,
+              },
+            },
+          ],
+          false
+        );
       }
+      data.play.action = 'NEXT';
     }
 
-    axios.post(test_endpoint, data, {withCredentials: false})
-    .then(async res => {
-      res = res.data
-      if(res.line_id) {
-        this.story_state = res
-      }
-      if(res.output && res.output.length > 0){
-        // TYLER'S SUPER JANKY AUDIO THING
-
-        if (res.diagrams.length > 0) {
-          this.current_diagram = res.diagrams[res.diagrams.length-1]
+    axios
+      .post(test_endpoint, data, {withCredentials: false})
+      .then(async ({ data: res }) => {
+        if (res.line_id) {
+          this.story_state = res;
         }
+        if (res.output && res.output.length > 0) {
+          // TYLER'S SUPER JANKY AUDIO THING
 
-        this.pause = false;
-        if(res.play){
-          if(res.play.action === 'END'){
-            delete this.story_state.play;
-            this.setState({audioplayer: false});
-          }else{
-            this.setState({audioplayer: true});
-            if(res.play.action === 'START'){
-              if(this.next){
-                res.output = '<audio src="'+res.play.url+'" />';
-              }else{
-                res.output += '<audio src="'+res.play.url+'" />';
+          if (res.diagrams.length > 0) {
+            this.current_diagram = res.diagrams[res.diagrams.length - 1];
+          }
+
+          this.pause = false;
+          if (res.play) {
+            if (res.play.action === 'END') {
+              delete this.story_state.play;
+              this.setState({ audioplayer: false });
+            } else {
+              this.setState({ audioplayer: true });
+              if (res.play.action === 'START') {
+                if (this.next) {
+                  res.output = `<audio src="${res.play.url}" />`;
+                } else {
+                  res.output += `<audio src="${res.play.url}" />`;
+                }
+              } else if (res.play.action === 'PAUSE') {
+                this.pause = true;
+                if (this.state.audio) this.state.audio.pause();
+              } else if (res.play.action === 'RESUME') {
+                if (this.state.audio) {
+                  this.state.audio.play();
+                }
+                return;
               }
-            }else if(res.play.action === 'PAUSE'){
-              this.pause = true
-              if(this.state.audio) this.state.audio.pause()
-            }else if(res.play.action === 'RESUME'){
-              if(this.state.audio){
-                this.state.audio.play()
-              }
-              return;
             }
+          } else {
+            this.setState({ audioplayer: false });
           }
-        }else{
-          this.setState({audioplayer: false});
-        }
 
-        let dom = parse('<speak>' + res.output + '</speak>')
+          const dom = parse(`<speak>${res.output}</speak>`);
 
-        if(dom && dom.length > 0 && dom[0].type === 'tag' &&
-          dom[0].name === 'speak' && dom[0].children){
-          if(!this.pause) this.removeAudio();
-          this.recursivePlay(0, dom[0].children, res.ending);
-        }else{
+          if (dom && dom.length > 0 && dom[0].type === 'tag' && dom[0].name === 'speak' && dom[0].children) {
+            if (!this.pause) this.removeAudio();
+            this.recursivePlay(0, dom[0].children, res.ending);
+          } else {
+            this.handleEnd();
+          }
+
+          // if (dom) {
+          //   dom.forEach((element) => {
+          //     if(element.type === 'tag' &&
+          //       element.name === 'speak' && element.children){
+          //       this.removeAudio();
+          //       this.recursivePlay(0, element.children, res.ending);
+          //     }else if (element.type === 'tag' && element.name === 'debug') {
+          //       this.addDebugBlock(element.children)
+          //     } else {
+          //       this.handleEnd();
+          //     }
+          //   })
+          // }
+        } else if (res.ending) {
           this.handleEnd();
         }
-
-        // if (dom) {
-        //   dom.forEach((element) => {
-        //     if(element.type === 'tag' &&
-        //       element.name === 'speak' && element.children){
-        //       this.removeAudio();
-        //       this.recursivePlay(0, element.children, res.ending);
-        //     }else if (element.type === 'tag' && element.name === 'debug') {
-        //       this.addDebugBlock(element.children)
-        //     } else {
-        //       this.handleEnd();
-        //     }
-        //   })
-        // }
-
-      }else if(res.ending){
-        this.handleEnd();
-      }
-      this.next = false;
-    })
-    .catch(err => {
-      this.setState({
-        error: err
+        this.next = false;
+      })
+      .catch((err) => {
+        this.setState({
+          error: err,
+        });
+        this.next = false;
       });
-      this.next = false;
-    });
   }
 
-  handleChange (evt) {
+  handleChange(evt) {
     this.setState({ [evt.target.name]: evt.target.value });
   }
 
-  inputSubmit(e){
-    if(e) e.preventDefault();
+  inputSubmit(e) {
+    if (e) e.preventDefault();
 
-    if(this.state.input === 'SKIP LINE'){
-      if(this.state.audio !== null){
-        this.state.audio.onended()
+    if (this.state.input === 'SKIP LINE') {
+      if (this.state.audio !== null) {
+        this.state.audio.onended();
       }
       this.setState({
-        input: ""
+        input: '',
       });
-    }else{
-      let inputs = this.state.inputs
-      if(this.state.intent){
-        this.story_state.intent = this.state.intent
-      }else{
-        this.story_state.input = this.state.input
+    } else {
+      const inputs = this.state.inputs;
+      if (this.state.intent) {
+        this.story_state.intent = this.state.intent;
+      } else {
+        this.story_state.input = this.state.input;
         inputs.push({
           self: this.state.input,
-          time: moment().format('h:mm:ss A')
-        })
+          time: moment().format('h:mm:ss A'),
+        });
       }
 
-      this.setState({
-        input: "",
-        intent: "",
-        inputs: inputs
-      }, this.updateState);
+      this.setState(
+        {
+          input: '',
+          intent: '',
+          inputs,
+        },
+        this.updateState
+      );
     }
 
     return false;
   }
 
-  onKeyDown(event){
+  onKeyDown(event) {
     // 'keypress' event misbehaves on mobile so we track 'Enter' key via 'keydown' event
     if (event.key === 'Enter') {
       this.inputSubmit(event);
     }
   }
 
-  handleLineSelection(selectedOption){
+  handleLineSelection(selectedOption) {
     this.setState({
-      selected_line: selectedOption
+      selected_line: selectedOption,
     });
   }
 
-  startline(){
-    if(!this.state.selected_line) return;
+  startline() {
+    if (!this.state.selected_line) return;
     this.initializeStory();
-    this.story_state.line_id = this.state.selected_line.value
-    this.setState({
-      started: true
-    }, () => {this.updateState(true)});
+    this.story_state.line_id = this.state.selected_line.value;
+    this.setState(
+      {
+        started: true,
+      },
+      () => {
+        this.updateState(true);
+      }
+    );
   }
 
-  beginning(){
+  beginning() {
     this.setState({
-      started: true
+      started: true,
     });
     this.initializeStory();
     this.updateState(true);
   }
 
-  getVariables(){
-    let state = this.story_state
-    if(Array.isArray(state.globals) && state.globals.length !== 0){
-      if(!this.current_diagram){
-        return null
+  getVariables() {
+    const state = this.story_state;
+    if (Array.isArray(state.globals) && state.globals.length !== 0) {
+      if (!this.current_diagram) {
+        return null;
       }
-      let variables = this.current_diagram.variable_state
-      let v_array = []
-      let g_array = []
-      var key
-      for (key in variables) {
-          if (variables.hasOwnProperty(key)) {
-              v_array.push({
-                name: key,
-                value: variables[key]
-              })
-          }
-      }
-      let globals = state.globals[0]
-      for (key in globals) {
-        if (globals.hasOwnProperty(key)) {
-            g_array.push({
-              name: key,
-              value: globals[key]
-            })
-        }
-      }
+      const variables = this.current_diagram.variable_state;
+      const v_array = [];
+      const g_array = [];
+      Object.keys(variables).forEach((key) =>
+        v_array.push({
+          name: key,
+          value: variables[key],
+        })
+      );
 
-      return (<React.Fragment>
-        <label>Local Variables</label>
-        <Table className="var-table">
-        <tbody>
-          {v_array.map(v => <tr key={v.name}>
-            <td className="v"><span>{`{${v.name}}`}</span></td>
-            <td>{`{${v.value}}`}</td>
-          </tr>)}
-        </tbody>
-        </Table>
-        <label>Global Variables</label>
-        <Table className="var-table">
-        <tbody>
-          {g_array.map(v => <tr key={v.name}>
-            <td className="v"><span>{`{${v.name}}`}</span></td>
-            <td>{`{${v.value}}`}</td>
-          </tr>)}
-        </tbody>
-      </Table>
-      </React.Fragment>
-      )
-    }else{
-      return null
+      const globals = state.globals[0];
+      Object.keys(globals).forEach((key) =>
+        g_array.push({
+          name: key,
+          value: globals[key],
+        })
+      );
+
+      return (
+        <React.Fragment>
+          <label>Local Variables</label>
+          <Table className="var-table">
+            <tbody>{v_array.map(renderVariable)}</tbody>
+          </Table>
+          <label>Global Variables</label>
+          <Table className="var-table">
+            <tbody>{g_array.map(renderVariable)}</tbody>
+          </Table>
+        </React.Fragment>
+      );
     }
+    return null;
   }
 
   render() {
     return (
-      <Modal isOpen={this.props.open} size='lg'>
+      <Modal isOpen={this.props.open} size="lg">
         <ModalHeader toggle={this.props.toggle} header="Project Testing" />
         <ModalBody className="text-center env-modal test-modal">
-          { this.props.testing_info !== false ?
+          {this.props.testing_info !== false ? (
             <React.Fragment>
               <div className="row">
                 <div className="col-sm-8 p-0 test-main">
-                  { this.state.started ?
+                  {this.state.started ? (
                     <React.Fragment>
                       <div className="chatbox px-3">
                         <div className="chats">
                           {this.state.inputs.map((chat, i) => {
-                            if(chat.self){
-                              return <div className="mt-2 text-right" key={i}>
-                                <div className="self-message message border rounded p-2 align-self-start">
-                                  <p className="mb-0 px-1 text-left">{chat.self}<br/><small className="text-muted">{chat.time}</small></p>
+                            if (chat.self) {
+                              return (
+                                <div className="mt-2 text-right" key={i}>
+                                  <div className="self-message message border rounded p-2 align-self-start">
+                                    <p className="mb-0 px-1 text-left">
+                                      {chat.self}
+                                      <br />
+                                      <small className="text-muted">{chat.time}</small>
+                                    </p>
+                                  </div>
                                 </div>
-                              </div>
-                            }else if(chat.debug){
+                              );
+                            }
+                            if (chat.debug) {
                               if (!this.state.debug) {
-                                return null
-                              } else {
-                                return <div className="mt-2 text-left" key={i}>
+                                return null;
+                              }
+                              return (
+                                <div className="mt-2 text-left" key={i}>
                                   <div className="message border rounded p-2 align-self-start debug">
                                     <div className="mb-0 px-1 text-left">
                                       <small>{chat.debug}</small>
-                                      <pre className="mb-2">
-                                        {chat.text}
-                                      </pre>
+                                      <pre className="mb-2">{chat.text}</pre>
                                     </div>
                                   </div>
                                 </div>
-                              }
-                            }else if(chat.text){
-                              return <div className="mt-2 text-left" key={i}>
-                                <div className="message border rounded p-2 align-self-start">
-                                  <p className="mb-0 px-1 text-left">{chat.text}<br/><small className="text-muted">{chat.time}</small></p>
+                              );
+                            }
+                            if (chat.text) {
+                              return (
+                                <div className="mt-2 text-left" key={i}>
+                                  <div className="message border rounded p-2 align-self-start">
+                                    <p className="mb-0 px-1 text-left">
+                                      {chat.text}
+                                      <br />
+                                      <small className="text-muted">{chat.time}</small>
+                                    </p>
+                                  </div>
                                 </div>
-                              </div>
-                            }else{
-                              return <div className="mt-2 text-left" key={i}>
+                              );
+                            }
+                            return (
+                              <div className="mt-2 text-left" key={i}>
                                 <div className="message border rounded align-self-start">
                                   <div className="message-container p-2">
-                                    <p className="mb-0 px-1 text-left"><span className="text-muted"><i className="fas fa-volume-up"></i></span> {chat.src}<br/><small className="text-muted">{chat.time}</small></p>
+                                    <p className="mb-0 px-1 text-left">
+                                      <span className="text-muted">
+                                        <i className="fas fa-volume-up" />
+                                      </span>{' '}
+                                      {chat.src}
+                                      <br />
+                                      <small className="text-muted">{chat.time}</small>
+                                    </p>
                                   </div>
-                                  <div className="message-progress" style={{width: ((chat.currentTime/chat.duration) * 100)+"%"}}>
-                                  </div>
+                                  <div className="message-progress" style={{ width: `${(chat.currentTime / chat.duration) * 100}%` }} />
                                 </div>
                               </div>
-                            }
+                            );
                           })}
                         </div>
                       </div>
-                      {this.state.ended ?
-                        <Alert onClick={this.handleRestart} color="warning" className="m-3">Flow Ended - Reset <i className="far fa-sync-alt"/></Alert> :
+                      {this.state.ended ? (
+                        <Alert onClick={this.handleRestart} color="warning" className="m-3">
+                          Flow Ended - Reset <i className="far fa-sync-alt" />
+                        </Alert>
+                      ) : (
                         <React.Fragment>
-                          {this.state.audioplayer ?
+                          {this.state.audioplayer ? (
                             <div className="audioplayer-options mb-2">
-                              {this.pause ?
-                                <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.ResumeIntent'}, this.inputSubmit)}>Resume</Button> :
-                                <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.PauseIntent'}, this.inputSubmit)}>Stop/Pause</Button>
-                              }
-                              <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.NextIntent'}, this.inputSubmit)}>Next</Button>
-                              <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.PreviousIntent'}, this.inputSubmit)}>Previous</Button>
+                              {this.pause ? (
+                                <Button outline color="primary" onClick={() => this.setState({ intent: 'AMAZON.ResumeIntent' }, this.inputSubmit)}>
+                                  Resume
+                                </Button>
+                              ) : (
+                                <Button outline color="primary" onClick={() => this.setState({ intent: 'AMAZON.PauseIntent' }, this.inputSubmit)}>
+                                  Stop/Pause
+                                </Button>
+                              )}
+                              <Button outline color="primary" onClick={() => this.setState({ intent: 'AMAZON.NextIntent' }, this.inputSubmit)}>
+                                Next
+                              </Button>
+                              <Button outline color="primary" onClick={() => this.setState({ intent: 'AMAZON.PreviousIntent' }, this.inputSubmit)}>
+                                Previous
+                              </Button>
                             </div>
-                            :
+                          ) : (
                             <Form onSubmit={this.inputSubmit} className="px-3 mb-3">
                               <InputGroup>
-                                <Input className='form-bg form-control' name="input" type="text" placeholder="response" value={this.state.input} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
-                                <InputGroupAddon addonType="append"><Button color="primary btn-thicc" type="submit"><i className="fas fa-bullhorn"></i></Button></InputGroupAddon>
+                                <Input
+                                  className="form-bg form-control"
+                                  name="input"
+                                  type="text"
+                                  placeholder="response"
+                                  value={this.state.input}
+                                  onChange={this.handleChange}
+                                  onKeyDown={this.onKeyDown}
+                                />
+                                <InputGroupAddon addonType="append">
+                                  <Button color="primary btn-thicc" type="submit">
+                                    <i className="fas fa-bullhorn" />
+                                  </Button>
+                                </InputGroupAddon>
                               </InputGroup>
                             </Form>
-                          }
+                          )}
                         </React.Fragment>
-                      }
-                    </React.Fragment> :
+                      )}
+                    </React.Fragment>
+                  ) : (
                     <div className="p-3">
                       <h6 className="mt-3 mb-3">Start Project from the beginning</h6>
-                      <DefaultButton isPrimary className="mb-3" onClick={this.beginning}><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp;Start Test</DefaultButton>
+                      <DefaultButton isPrimary className="mb-3" onClick={this.beginning}>
+                        <i className="fas fa-play" />
+                        &nbsp;&nbsp;&nbsp;Start Test
+                      </DefaultButton>
                       <div className="break">
-                      <span className="or">
-                        OR
-                      </span>
-                    </div>
+                        <span className="or">OR</span>
+                      </div>
                       <h6 className="mt-4 mb-3">Start from a specific point in the project</h6>
                       <Select
                         classNamePrefix="select-box"
                         className="text-left mb-3 w-75 ml-5 pl-4"
                         value={this.state.selected_line}
                         onChange={this.handleLineSelection}
-                        options={this.state.nodes} />
-                      <DefaultButton isPrimary onClick={this.startline}><i className="fas fa-fast-forward"></i>&nbsp;&nbsp;&nbsp;Start From Block</DefaultButton>
+                        options={this.state.nodes}
+                      />
+                      <DefaultButton isPrimary onClick={this.startline}>
+                        <i className="fas fa-fast-forward" />
+                        &nbsp;&nbsp;&nbsp;Start From Block
+                      </DefaultButton>
                     </div>
-                  }
+                  )}
                 </div>
                 <div className="col-sm-4 text-left test-sidebar">
                   <b>{this.state.started && this.state.debug ? 'Variable State' : 'Test Tool'}</b>
                   <div className="debug-switch space-between mt-2">
-                      <label>Debug Mode</label>
-                      <Toggle
-                        icons={false}
-                        checked={this.state.debug}
-                        onChange={() => {
-                          this.setState(prev_state => ({debug: !prev_state.debug}))
-                        }}
-                        value={`${this.state.debug}`}
-                      />
+                    <label>Debug Mode</label>
+                    <Toggle
+                      icons={false}
+                      checked={this.state.debug}
+                      onChange={() => {
+                        this.setState((prev_state) => ({ debug: !prev_state.debug }));
+                      }}
+                      value={`${this.state.debug}`}
+                    />
                   </div>
-                  { this.state.started && this.state.debug ?
+                  {this.state.started && this.state.debug ? (
                     <React.Fragment>
-                      <small className="py-2">Current Flow: <b>{this.props.flow}</b></small>
-                      <div className="sidebar-scroll">
-                        {this.getVariables()}
-                      </div>
-                    </React.Fragment>:
+                      <small className="py-2">
+                        Current Flow: <b>{this.props.flow}</b>
+                      </small>
+                      <div className="sidebar-scroll">{this.getVariables()}</div>
+                    </React.Fragment>
+                  ) : (
                     <div className="sidebar-scroll">
                       <ListGroup flush>
                         <ListGroupItem tag="p">This Test Tool simulates voice apps in the browser</ListGroupItem>
-                        <ListGroupItem tag="p">You don't have to wait for the speech to complete before typing or saying your next response</ListGroupItem>
+                        <ListGroupItem tag="p">
+                          You don't have to wait for the speech to complete before typing or saying your next response
+                        </ListGroupItem>
                         <ListGroupItem tag="p">SSML tags are not displayed but will work in production on Google/Alexa</ListGroupItem>
                         <ListGroupItem tag="p">Debug Mode shows you block by block paths/variables</ListGroupItem>
                       </ListGroup>
                     </div>
-                  }
+                  )}
                 </div>
               </div>
-            </React.Fragment> : <div className="p-5"><h1><span className="loader"/></h1></div>
-          }
+            </React.Fragment>
+          ) : (
+            <div className="p-5">
+              <h1>
+                <span className="loader" />
+              </h1>
+            </div>
+          )}
         </ModalBody>
         <ModalFooter className="justify-content-center">
-          <DefaultButton isClear onClick={this.props.toggle}>Close</DefaultButton>
+          <DefaultButton isClear onClick={this.props.toggle}>
+            Close
+          </DefaultButton>
         </ModalFooter>
       </Modal>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   global: state.skills.skill.global,
   repeat: state.skills.skill.repeat,
   slots: state.skills.skill.slots,
   platform: state.skills.skill.platform,
-})
+});
 export default connect(mapStateToProps)(TestModal);
+
+function renderVariable(v) {
+  return (
+    <tr key={v.name}>
+      <td className="v">
+        <span>{`{${v.name}}`}</span>
+      </td>
+      <td>{`{${v.value}}`}</td>
+    </tr>
+  );
+}

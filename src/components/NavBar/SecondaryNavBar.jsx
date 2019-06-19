@@ -1,26 +1,21 @@
-import React, {Component} from 'react'
-import axios from 'axios'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import Toggle from 'react-toggle'
-import './NavBar.css'
+import './NavBar.css';
 
-import {
-  toggleLive,
-  setLiveModeModal
-} from 'ducks/version'
-import {
-  updateDiagramRoot,
-  fetchDiagrams
-} from 'ducks/diagram';
-const PAGES = ["canvas", "settings", "visuals", "tools", "publish"];
+import axios from 'axios';
+import { fetchDiagrams, updateDiagramRoot } from 'ducks/diagram';
+import { setLiveModeModal, toggleLive } from 'ducks/version';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Toggle from 'react-toggle';
+
+const PAGES = ['canvas', 'settings', 'visuals', 'tools', 'publish'];
 
 class SecondaryNavBar extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      loading: false
+      loading: false,
     };
 
     this.renderItem = this.renderItem.bind(this);
@@ -32,96 +27,73 @@ class SecondaryNavBar extends Component {
       this.props.updateDiagramRoot(this.props.dev_skill.diagram);
       this.props.fetchDiagrams(this.props.dev_skill.skill_id);
       this.props.setLiveModal(false);
-      this.props
-        .toggleLive(
-          this.props.dev_skill,
-          this.props.dev_skill.diagram,
-          this.props.skill_id,
-          false
-        )
-        .then(() => {
-          this.setState({
-            loading: false
-          });
-          this.props.history.push(
-            `/canvas/${this.props.dev_skill.skill_id}/${
-              this.props.dev_skill.diagram
-            }`
-          );
+      this.props.toggleLive(this.props.dev_skill, this.props.dev_skill.diagram, this.props.skill_id, false).then(() => {
+        this.setState({
+          loading: false,
         });
+        this.props.history.push(`/canvas/${this.props.dev_skill.skill_id}/${this.props.dev_skill.diagram}`);
+      });
     } else {
       axios
         .get(`/skill/${this.props.live_version}`)
-        .then(res => {
+        .then((res) => {
           this.props.updateDiagramRoot(res.data.diagram);
           this.props.fetchDiagrams(res.data.skill_id);
           this.props.setLiveModal(true);
-          this.props
-            .toggleLive(res.data, res.data.diagram, res.data.skill_id, true)
-            .then(() => {
-              this.setState({
-                loading: false
-              });
-              this.props.history.push(
-                `/canvas/${res.data.skill_id}/${res.data.diagram}`
-              );
+          this.props.toggleLive(res.data, res.data.diagram, res.data.skill_id, true).then(() => {
+            this.setState({
+              loading: false,
             });
+            this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`);
+          });
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
-          alert("Unable to fetch live version");
+          alert('Unable to fetch live version');
         });
     }
   }
 
   renderItem(page) {
-    if (page === "publish" && this.props.live_mode) {
+    if (page === 'publish' && this.props.live_mode) {
       return (
-        <Link
-          to=""
-          key={page}
-          className="nav-item live-mode-disabled"
-          onClick={e => e.preventDefault()}
-        >
+        <Link to="" key={page} className="nav-item live-mode-disabled" onClick={(e) => e.preventDefault()}>
           {page}
         </Link>
       );
-    } else if (page === this.props.page) {
+    }
+    if (page === this.props.page) {
       return (
         <div key={page} className="nav-item active">
           {page}
         </div>
       );
-    } else if (this.props.skill_id) {
-      let suffix = "";
-      if (page === "settings") {
-        suffix = "basic";
-      } else if (page === "publish") {
-        suffix = this.props.platform === "alexa" ? "" : this.props.platform;
+    }
+    if (this.props.skill_id) {
+      let suffix = '';
+      if (page === 'settings') {
+        suffix = 'basic';
+      } else if (page === 'publish') {
+        suffix = this.props.platform === 'alexa' ? '' : this.props.platform;
       }
       return (
-        <Link
-          to={`/${page}/${this.props.skill_id}/${suffix}`}
-          key={page}
-          className="nav-item"
-        >
+        <Link to={`/${page}/${this.props.skill_id}/${suffix}`} key={page} className="nav-item">
           {page}
         </Link>
       );
-    } else {
-      return (
-        <div key={page} className="nav-item">
-          {page}
-        </div>
-      );
     }
+    return (
+      <div key={page} className="nav-item">
+        {page}
+      </div>
+    );
   }
 
   render() {
     return (
       <React.Fragment>
         <div id="secondary-nav">
-          <div>{PAGES.map(page => this.renderItem(page))}</div>
+          <div>{PAGES.map((page) => this.renderItem(page))}</div>
           <div id="secondary-nav-right-group">
             {this.props.amzn_id && (
               <React.Fragment>
@@ -143,22 +115,17 @@ class SecondaryNavBar extends Component {
                         this.setState({ loading: true });
                         this.toggleLiveMode();
                       }}
-                      disabled={
-                        this.props.page !== "canvas" || this.state.loading
-                      }
+                      disabled={this.props.page !== 'canvas' || this.state.loading}
                     />
                   </React.Fragment>
                 ) : null}
-                {this.props.page === "logs" ? (
+                {this.props.page === 'logs' ? (
                   <div className="nav-item">
-                    <img src={"/logs.svg"} alt="logs" width="16" height="16" />
+                    <img src="/logs.svg" alt="logs" width="16" height="16" />
                   </div>
                 ) : (
-                  <Link
-                    to={`/creator_logs/${this.props.skill_id}`}
-                    className="nav-item"
-                  >
-                    <img src={"/logs.svg"} alt="logs" width="16" height="16" />
+                  <Link to={`/creator_logs/${this.props.skill_id}`} className="nav-item">
+                    <img src="/logs.svg" alt="logs" width="16" height="16" />
                   </Link>
                 )}
               </React.Fragment>
@@ -178,24 +145,21 @@ class SecondaryNavBar extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   platform: state.skills.skill.platform,
   skill_id: state.skills.skill.skill_id,
   amzn_id: state.skills.skill.amzn_id,
   live_mode: state.skills.live_mode,
   live_version: state.skills.live_version,
-  dev_skill: state.skills.dev_skill ?
-    state.skills.dev_skill :
-    state.skills.skill
+  dev_skill: state.skills.dev_skill ? state.skills.dev_skill : state.skills.skill,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    toggleLive: (dev_skill, diagram, live_version, isLive) =>
-    dispatch(toggleLive(dev_skill, diagram, live_version, isLive)),
-    updateDiagramRoot: root_id => dispatch(updateDiagramRoot(root_id)),
-    fetchDiagrams: skill_id => dispatch(fetchDiagrams(skill_id)),
-    setLiveModal: isLive => dispatch(setLiveModeModal(isLive))
+    toggleLive: (dev_skill, diagram, live_version, isLive) => dispatch(toggleLive(dev_skill, diagram, live_version, isLive)),
+    updateDiagramRoot: (root_id) => dispatch(updateDiagramRoot(root_id)),
+    fetchDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id)),
+    setLiveModal: (isLive) => dispatch(setLiveModeModal(isLive)),
   };
 };
 export default connect(

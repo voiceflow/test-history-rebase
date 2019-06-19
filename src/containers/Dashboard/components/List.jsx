@@ -1,42 +1,36 @@
-import React, { useRef, useState } from 'react';
 import cn from 'classnames';
-import PropTypes from 'prop-types';
-
-import { ScrollContextProvider } from 'contexts';
-
-import { useToggle } from 'hooks/toggle';
-import { useScrollShadows, useScrollHelpers, useHorizontalScrollToNode } from 'hooks/scroll';
-
-import withDraggable from 'hocs/withDraggable';
-
-import Form from 'components/Form';
 import Button from 'components/Button';
 import Dropdown from 'components/Dropdown';
+import Form from 'components/Form';
+import { ScrollContextProvider } from 'contexts';
+import withDraggable from 'hocs/withDraggable';
+import { useHorizontalScrollToNode, useScrollHelpers, useScrollShadows } from 'hooks/scroll';
+import { useToggle } from 'hooks/toggle';
+import * as _ from 'lodash';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import PropTypes from 'prop-types';
+import React, { useRef, useState } from 'react';
 
 import Item from './Item';
 
 const DropContainer = withDraggable({
   name: 'dashboard-item',
-  canDrag: () => false,
+  canDrag: _.constant(false),
   onDropKey: 'onDrop',
   onMoveKey: 'onMove',
-})(
-  ({ children, className, connectDropTarget }) =>
-    connectDropTarget && connectDropTarget(<div className={className}>{children}</div>)
-);
+})(({ children, className, connectDropTarget }) => connectDropTarget && connectDropTarget(<div className={className}>{children}</div>));
 
 const DROPDOWN_OPTIONS = [
   {
-    id: "remove",
-    label: "Remove List"
-  }
+    id: 'remove',
+    label: 'Remove List',
+  },
 ];
 
 const DROPDOWN_BUTTON_PROPS = {
-  icon: "more",
+  icon: 'more',
   isDropdown: true,
 };
-
 
 export function List(props) {
   const {
@@ -67,11 +61,9 @@ export function List(props) {
 
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
 
-  const [onScroll, isHeaderShadowShown, isFooterShadowShown] = useScrollShadows(bodyRef, [
-    projects,
-  ]);
+  const [onScroll, isHeaderShadowShown, isFooterShadowShown] = useScrollShadows(bodyRef, [projects]);
 
-  const [moving, setMoving] = useState(false)
+  const [moving, setMoving] = useState(false);
 
   const list = (
     <div
@@ -81,7 +73,9 @@ export function List(props) {
       })}
     >
       <Form
-        onRef={node => (listRef.current = node)}
+        onRef={(node) => {
+          listRef.current = node;
+        }}
         style={{ height: isDraggingPreview || isDragging ? '100%' : null }}
         className={cn('main-list', {
           hidden: isDragging,
@@ -99,21 +93,16 @@ export function List(props) {
 
           return (
             <ScrollContextProvider value={scrollHelpers}>
-              {isDragging && (
-                <div
-                  style={{ top: 0, left: 0, right: 0, bottom: 0 }}
-                  className="h-pos-a main-list-dropzone"
-                />
-              )}
+              {isDragging && <div style={{ top: 0, left: 0, right: 0, bottom: 0 }} className="h-pos-a main-list-dropzone" />}
 
               <DropContainer
                 id={0}
                 index={0}
                 listId={id}
                 onMove={onMoveProject}
-                className={cn("main-list-header", {
-                  "h-o-0": isDragging,
-                  __scrolling: isHeaderShadowShown
+                className={cn('main-list-header', {
+                  'h-o-0': isDragging,
+                  __scrolling: isHeaderShadowShown,
                 })}
               >
                 <div className="main-list-header__main">
@@ -122,10 +111,8 @@ export function List(props) {
                     value={values.name}
                     onBlur={onInputNameBlur}
                     selected
-                    onChange={({ target }) =>
-                      handleChange("name", target.value)
-                    }
-                    onKeyPress={({ charCode }) => (charCode === 13) && onInputNameBlur()}
+                    onChange={({ target }) => handleChange('name', target.value)}
+                    onKeyPress={({ charCode }) => charCode === 13 && onInputNameBlur()}
                     maxLength={32}
                     placeholder="Enter list name"
                   />
@@ -145,31 +132,25 @@ export function List(props) {
                 <div
                   ref={bodyRef}
                   onScroll={onScroll}
-                  className={cn("main-list-body", {
-                    "h-o-0": isDragging,
-                    "still": !moving
+                  className={cn('main-list-body', {
+                    'h-o-0': isDragging,
+                    still: !moving,
                   })}
                 >
-                  <div
-                    ref={innerRef}
-                    className="main-list-body-inner"
-                  >
+                  <div ref={innerRef} className="main-list-body-inner">
                     <ul className="projects-list">
                       {projects.map((project, i) => {
                         if (!project) return null;
                         let icon;
-                        let smallIcon = project.small_icon;
-                        let largeIcon = project.large_icon;
-                        if (!!largeIcon) {
+                        const smallIcon = project.small_icon;
+                        const largeIcon = project.large_icon;
+                        if (largeIcon) {
                           icon = largeIcon;
-                        } else if (!!smallIcon) {
+                        } else if (smallIcon) {
                           icon = smallIcon;
                         }
                         return !project ? null : (
-                          <li
-                            key={project.project_id}
-                            className="projects-list__list-item"
-                          >
+                          <li key={project.project_id} className="projects-list__list-item">
                             <Item
                               index={i}
                               id={project.project_id}
@@ -185,15 +166,8 @@ export function List(props) {
                               onToggleDragging={setMoving}
                               language={project.locales}
                               uploaded={project.isLive}
-                              onRemove={() =>
-                                onDeleteProject(project.project_id)
-                              }
-                              onDuplicate={() =>
-                                onCopyProject(
-                                  project.project_id,
-                                  id
-                                )
-                              }
+                              onRemove={() => onDeleteProject(project.project_id)}
+                              onDuplicate={() => onCopyProject(project.project_id, id)}
                             />
                           </li>
                         );
@@ -203,15 +177,15 @@ export function List(props) {
                 </div>
               )}
               <div
-                className={cn("main-list-footer", {
-                  "h-o-0": isDragging,
-                  __scrolling: isFooterShadowShown
+                className={cn('main-list-footer', {
+                  'h-o-0': isDragging,
+                  __scrolling: isFooterShadowShown,
                 })}
               >
                 <div className="main-list-footer-center">
-                    <Button isFlat isBtn onClick={() => createSkill(id)}>
-                      Create Project
-                    </Button>
+                  <Button isFlat isBtn onClick={() => createSkill(id)}>
+                    Create Project
+                  </Button>
                 </div>
               </div>
             </ScrollContextProvider>
@@ -228,8 +202,8 @@ export function List(props) {
 export default withDraggable({
   name: 'dashboard-list',
   styles: { display: 'flex' },
-  canDrag: props => !props.disableDragging,
-  canDrop: () => true,
+  canDrag: (props) => !props.disableDragging,
+  canDrop: _.constant(true),
   onMoveKey: 'onMove',
   onDropKey: 'onDrop',
   allowXTransform: true,

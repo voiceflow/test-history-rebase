@@ -5,7 +5,8 @@ exports[`StoryEditor render story block editor 1`] = `
   <p
     className="modal-bg-txt text-center mt-5 mb-2"
   >
-    Let's get started! 
+    Let's get started!
+     
     <span
       aria-label="happy"
       role="img"
@@ -16,7 +17,7 @@ exports[`StoryEditor render story block editor 1`] = `
   <p
     className="modal-txt-no-pad text-center mb-4"
   >
-     Watch this 5 minute introduction video by Voiceflow's CEO to familiarize yourself with our creator tool!
+    Watch this 5 minute introduction video by Voiceflow's CEO to familiarize yourself with our creator tool!
   </p>
   <div
     className="embed-responsive box-shadow embed-responsive-16by9 rounded"

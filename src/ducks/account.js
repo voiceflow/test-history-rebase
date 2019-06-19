@@ -11,6 +11,7 @@ import { getDevice } from 'Helper';
 
 export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT';
 export const RESET_ACCOUNT = 'RESET_ACCOUNT';
+export const AUTH_COOKIE = 'auth';
 
 const cookies = new Cookies()
 const cookieDomain = process.env.NODE_ENV === 'development' ? 'localhost' : '.voiceflow.com';
@@ -53,13 +54,13 @@ export const updateAccount = (payload) => ({
 export const checkSession = () => {
   return async (dispatch) => {
     try {
-      const user = (await axios.get('/session')).data
-      dispatch(updateAccount(user))
-      return Promise.resolve(user)
-    } catch(err) {
-      cookies.remove('auth', {path: '/', domain: cookieDomain})
-      dispatch(resetAccount())
-      return Promise.reject(err)
+      const user = (await axios.get('/session')).data;
+      dispatch(updateAccount(user));
+      return Promise.resolve(user);
+    } catch (err) {
+      cookies.remove(AUTH_COOKIE, { path: '/', domain: cookieDomain });
+      dispatch(resetAccount());
+      return Promise.reject(err);
     }
   };
 };
@@ -74,7 +75,7 @@ export const getUser = () => {
 
       return Promise.resolve(user);
     } catch (err) {
-      cookies.remove('auth', { path: '/', domain: cookieDomain });
+      cookies.remove(AUTH_COOKIE, { path: '/', domain: cookieDomain });
       dispatch(resetAccount());
       return Promise.reject(err);
     }
@@ -88,13 +89,13 @@ export const logout = () => {
     } catch (err) {
       console.error(err);
     }
-    cookies.remove('auth', {path: '/', domain: cookieDomain});
-    localStorage.clear()
-    dispatch(resetAccount())
-    
-    return Promise.resolve()
-  }
-}
+    cookies.remove(AUTH_COOKIE, { path: '/', domain: cookieDomain });
+    localStorage.clear();
+    dispatch(resetAccount());
+
+    return Promise.resolve();
+  };
+};
 
 export const getVendors = () => {
   return async (dispatch) => {
@@ -124,7 +125,7 @@ const createSession = (endpoint) => {
           delete data.user.id;
         }
 
-        cookies.set('auth', data.token, {path: '/', domain: cookieDomain});
+        cookies.set(AUTH_COOKIE, data.token, { path: '/', domain: cookieDomain });
         cookies.remove('last_session');
 
         dispatch(updateAccount(data.user));
@@ -170,7 +171,7 @@ export const fbLogin = createSession('/fbLogin');
 
 // Non Action functions
 export const getAuth = () => {
-  return cookies.get('auth', { path: '/', domain: cookieDomain });
+  return cookies.get(AUTH_COOKIE, { path: '/', domain: cookieDomain });
 };
 
 export const AmazonAccessToken = () =>

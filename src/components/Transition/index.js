@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
 import cn from 'classnames';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 const nameTypes = [
@@ -137,8 +138,9 @@ export default class Transition extends Component {
       ...transitionProps
     } = this.props;
 
+    // eslint-disable-next-line no-underscore-dangle
     let _style = {};
-
+    // eslint-disable-next-line no-underscore-dangle
     let _name = name;
 
     if (delay) {

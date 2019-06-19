@@ -1,14 +1,14 @@
-import React, { Fragment, Component } from 'react';
+/* eslint-disable no-underscore-dangle */
 import cn from 'classnames';
-
-import isEqual from 'lodash/isEqual';
-import isEmpty from 'lodash/isEmpty';
 import cloneDeep from 'lodash/cloneDeep';
+import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
 import transform from 'lodash/transform';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
-
+import React, { Component, Fragment } from 'react';
+import { autoFocusCreator, getTransform } from 'utils/forms';
 import { getIn, setIn } from 'utils/objects';
-import { getTransform, autoFocusCreator } from 'utils/forms';
 
 import { PropsBridgeUpdater } from '../PropsBridge';
 
@@ -78,7 +78,7 @@ export default class Form extends Component {
       if (!inner || inner.length === 0) {
         res.errors = setIn(res.errors, path, message);
       } else {
-        inner.forEach(err => {
+        inner.forEach((err) => {
           if (!getIn(res.errors, err.path)) {
             res.errors = setIn(res.errors, err.path, err.message);
           }
@@ -94,7 +94,7 @@ export default class Form extends Component {
     let errors = {};
 
     for (let i = 0; i < scheme._nodes.length; i++) {
-      // eslint-disable-next-line
+      // eslint-disable-next-line no-await-in-loop
       const res = await Form.validateYupSchemeField(scheme, scheme._nodes[i], values, errors);
 
       isValid = isValid && res.isValid;
@@ -152,7 +152,7 @@ export default class Form extends Component {
     );
   };
 
-  onBlur = async field => {
+  onBlur = async (field) => {
     let { values, errors, isValid } = this.state;
     const { validationsInProgress } = this.state;
     const { scheme, onBlur, transforms, initialValues, resetToInitialFields } = this.props;
@@ -175,7 +175,7 @@ export default class Form extends Component {
 
       const res = await Form.validateYupSchemeField(scheme, field, values, errors);
 
-      errors = res.errors; // eslint-disable-line
+      errors = res.errors;
       isValid = isValid && res.isValid;
     }
 
@@ -195,10 +195,7 @@ export default class Form extends Component {
       const value = getIn(values, field);
 
       return {
-        values: setIn(values, field, [
-          ...(value.length === 0 ? [val, cloneDeep(val)] : [val]),
-          ...value,
-        ]),
+        values: setIn(values, field, [...(value.length === 0 ? [val, cloneDeep(val)] : [val]), ...value]),
       };
     });
   };
@@ -231,10 +228,7 @@ export default class Form extends Component {
 
     if (scheme) {
       this.setState({
-        validationsInProgress: Object.keys(scheme._nodes).reduce(
-          (obj, key) => Object.assign(obj, { [key]: true }),
-          {}
-        ),
+        validationsInProgress: Object.keys(scheme._nodes).reduce((obj, key) => Object.assign(obj, { [key]: true }), {}),
       });
 
       const res = await Form.validateYupScheme(scheme, values);
@@ -250,12 +244,7 @@ export default class Form extends Component {
         isValid,
         submitCount,
         isSubmitting: isValid,
-        validationsInProgress: scheme
-          ? Object.keys(scheme._nodes).reduce(
-              (obj, key) => Object.assign(obj, { [key]: false }),
-              {}
-            )
-          : {},
+        validationsInProgress: scheme ? Object.keys(scheme._nodes).reduce((obj, key) => Object.assign(obj, { [key]: false }), {}) : {},
       },
       isValid && onSubmit
         ? async () => {
@@ -278,10 +267,7 @@ export default class Form extends Component {
 
     if (scheme) {
       this.setState({
-        validationsInProgress: Object.keys(scheme._nodes).reduce(
-          (obj, key) => Object.assign(obj, { [key]: true }),
-          {}
-        ),
+        validationsInProgress: Object.keys(scheme._nodes).reduce((obj, key) => Object.assign(obj, { [key]: true }), {}),
       });
 
       const res = await Form.validateYupScheme(scheme, values);
@@ -289,27 +275,15 @@ export default class Form extends Component {
       ({ errors, isValid } = res);
     }
 
-    this.setState( {
+    this.setState({
       errors,
       isValid,
-      validationsInProgress: scheme
-        ? Object.keys(scheme._nodes).reduce(
-          (obj, key) => Object.assign(obj, { [key]: false }),
-          {}
-        )
-        : {},
+      validationsInProgress: scheme ? Object.keys(scheme._nodes).reduce((obj, key) => Object.assign(obj, { [key]: false }), {}) : {},
     });
   }
 
   render() {
-    const {
-      values,
-      errors,
-      isValid,
-      submitCount,
-      isSubmitting,
-      validationsInProgress,
-    } = this.state;
+    const { values, errors, isValid, submitCount, isSubmitting, validationsInProgress } = this.state;
 
     const {
       id,
@@ -332,14 +306,7 @@ export default class Form extends Component {
 
     return (
       <RComponent {...wrapperProps} ref={onRef} className={cn('form', className)}>
-        {!!id && (
-          <PropsBridgeUpdater
-            id={`${id}-form`}
-            isValid={isValid}
-            handleSubmit={this.onSubmit}
-            isSubmitting={isSubmitting}
-          />
-        )}
+        {!!id && <PropsBridgeUpdater id={`${id}-form`} isValid={isValid} handleSubmit={this.onSubmit} isSubmitting={isSubmitting} />}
 
         {children({
           values,
@@ -358,7 +325,7 @@ export default class Form extends Component {
         })}
 
         {process.env.NODE_ENV === 'development' &&
-          Object.keys(errors).map(key => {
+          Object.keys(errors).map((key) => {
             const value = errors[key];
             const isObject = typeof value === 'object';
 
@@ -366,8 +333,9 @@ export default class Form extends Component {
               return null;
             }
 
+            // eslint-disable-next-line no-nested-ternary
             return isObject ? (
-              Object.values(value).some(v => v) ? (
+              Object.values(value).some((v) => v) ? (
                 <span key={key} className="form-hint text-danger">
                   {key}: {JSON.stringify(value)}
                 </span>

@@ -1,34 +1,33 @@
-import React, { PureComponent } from 'react'
-import { connect } from 'react-redux'
-import { pushVariable, setVariables } from 'ducks/variable'
-import { updateVersion } from 'ducks/version'
-import { setError } from 'ducks/modal'
-import { Input, FormGroup, Label } from 'reactstrap';
-import {Tooltip} from 'react-tippy'
-import isVarName from 'is-var-name'
+import { setError } from 'ducks/modal';
+import { pushVariable, setVariables } from 'ducks/variable';
+import { updateVersion } from 'ducks/version';
+import isVarName from 'is-var-name';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { Tooltip } from 'react-tippy';
+import { FormGroup, Input, Label } from 'reactstrap';
 
 const defaultVariables = {
-  sessions: "The Number of times a particular user has opened the app",
+  sessions: 'The Number of times a particular user has opened the app',
   user_id: "The user's Amazon/Google unique id",
-  timestamp:
-    "UNIX timestamp (number of seconds since January 1st, 1970 at UTC.)",
+  timestamp: 'UNIX timestamp (number of seconds since January 1st, 1970 at UTC.)',
   platform: 'The platform your skill is running on ("alexa" or "google")',
-  locale: "The locale of the user (eg en-US, en-CA, it-IT, fr-FR ...)"
+  locale: 'The locale of the user (eg en-US, en-CA, it-IT, fr-FR ...)',
 };
 
-const tt = (width, message) => <div style={{ width: width }}>{message}</div>
+const tt = (width, message) => <div style={{ width }}>{message}</div>;
 
 export class Variables extends PureComponent {
   constructor(props) {
     super(props);
 
-    let tab = localStorage.getItem("variable_tab");
-    if (!tab) tab = "global";
+    let tab = localStorage.getItem('variable_tab');
+    if (!tab) tab = 'global';
 
     this.state = {
-      tab: tab,
-      new_var: "",
-      new_global: ""
+      tab,
+      new_var: '',
+      new_global: '',
     };
 
     this.addVariable = this.addVariable.bind(this);
@@ -43,138 +42,130 @@ export class Variables extends PureComponent {
     if (tab !== this.state.tab) {
       this.setState(
         {
-          tab: tab
+          tab,
         },
-        () => localStorage.setItem("variable_tab", tab)
+        () => localStorage.setItem('variable_tab', tab)
       );
     }
   }
 
   handleChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   }
 
   addVariable(e) {
     if (e) e.preventDefault();
-    let variables = this.props.variables;
-    let new_var = this.state.new_var;
-    if (
-      isVarName(new_var) &&
-      !variables.includes(new_var) &&
-      !this.props.global_variables.includes(new_var)
-    ) {
+    const variables = this.props.variables;
+    const new_var = this.state.new_var;
+    if (isVarName(new_var) && !variables.includes(new_var) && !new_var.startsWith('_') && !this.props.global_variables.includes(new_var)) {
       this.props.addVariable(new_var);
       this.setState({
-        new_var: ""
+        new_var: '',
       });
     } else {
-      alert(
-        "Invalid Variable: Variables must start with a character and can not contain spaces or special characters"
-      );
+      alert('Invalid Variable: Variables must start with a character and can not contain spaces or special characters or begin with an underscore.');
     }
     return false;
   }
 
   addGlobalVariable(e) {
     if (e) e.preventDefault();
-    let variables = this.props.global_variables;
-    let new_var = this.state.new_global;
-    if (
-      isVarName(new_var) &&
-      !variables.includes(new_var) &&
-      !this.props.variables.includes(new_var)
-    ) {
+    const variables = this.props.global_variables;
+    const new_var = this.state.new_global;
+    if (isVarName(new_var) && !variables.includes(new_var) && !new_var.startsWith('_') && !this.props.variables.includes(new_var)) {
       variables.push(new_var);
-      this.props.updateSkill("globals", variables);
+      this.props.updateSkill('globals', variables);
       this.setState({
-        new_global: ""
+        new_global: '',
       });
     } else {
       this.props.setError(
-        "Invalid Variable: Variables can't have the same name and must start with a character and can not contain spaces or special characters"
+        "Invalid Variable: Variables can't have the same name and must start with a character and can not contain spaces or special characters or begin with an underscore."
       );
     }
     return false;
   }
 
   deleteVariable(variable) {
-    let variables = this.props.variables;
-    let index = variables.indexOf(variable);
+    const variables = this.props.variables;
+    const index = variables.indexOf(variable);
     if (index !== -1) variables.splice(index, 1);
     this.props.setVariables(variables);
     this.forceUpdate();
   }
 
   deleteGlobalVariable(variable) {
-    let variables = this.props.global_variables;
-    let index = variables.indexOf(variable);
+    const variables = this.props.global_variables;
+    const index = variables.indexOf(variable);
     if (index !== -1) variables.splice(index, 1);
-    this.props.updateSkill("globals", variables);
+    this.props.updateSkill('globals', variables);
     this.forceUpdate();
   }
 
   render() {
     return (
       <React.Fragment>
-        {this.state.tab !== "local" ? (<>
-          <form id="variable-submit" onSubmit={this.addGlobalVariable}>
-            <FormGroup className="mb-0 text-center">
-              <Label className="mt-2 text-left">
-                Create Variable
-                <Tooltip
-                  position="bottom"
-                  html={tt(180, "Project Variables can be used anywhere in the project and save across sessions")}
-                >
-                  <span onClick={()=>this.setState({tab: "local"})} className="pointer"> (Project)</span>
-                </Tooltip>
-              </Label>
-              <div className="variable-box">
-                <Input
-                  readOnly={this.props.locked}
-                  name="new_global"
-                  value={this.state.new_global}
-                  onChange={this.handleChange}
-                  maxLength="16"
-                  placeholder="Variable Name"
-                />
-              </div>
-            </FormGroup>
-          </form>
-          <small className="text-muted mb-4 pt-2 d-block">
-          Press <b>'Enter'</b> to add variable
-        </small>
+        {this.state.tab !== 'local' ? (
+          <>
+            <form id="variable-submit" onSubmit={this.addGlobalVariable}>
+              <FormGroup className="mb-0 text-center">
+                <Label className="mt-2 text-left">
+                  Create Variable
+                  <Tooltip position="bottom" html={tt(180, 'Project Variables can be used anywhere in the project and save across sessions')}>
+                    <span onClick={() => this.setState({ tab: 'local' })} className="pointer">
+                      (Project)
+                    </span>
+                  </Tooltip>
+                </Label>
+                <div className="variable-box">
+                  <Input
+                    readOnly={this.props.locked}
+                    name="new_global"
+                    value={this.state.new_global}
+                    onChange={this.handleChange}
+                    maxLength="16"
+                    placeholder="Variable Name"
+                  />
+                </div>
+              </FormGroup>
+            </form>
+            <small className="text-muted mb-4 pt-2 d-block">
+              Press <b>'Enter'</b> to add variable
+            </small>
           </>
-        ) : (<>
-          <form id="variable-submit" onSubmit={this.addVariable}>
-            <FormGroup className="mb-0 text-center">
-              <Label className="mt-2 text-left">
-                Create Variable
-                <Tooltip
-                  position="bottom"
-                  html={tt(180, "Flow Variables exist only in this flow and are reset after you leave the flow")}
-                >
-                  <span onClick={()=>this.setState({tab: "global"})} className="pointer"> (Flow)</span>
-                </Tooltip>
-              </Label>
-              <div className="variable-box">
-                <Input
-                  autoFocus
-                  readOnly={this.props.locked}
-                  name="new_var"
-                  value={this.state.new_var}
-                  onChange={this.handleChange}
-                  maxLength="16"
-                  placeholder="Flow Variable Name"
-                />
-              </div>
-            </FormGroup>
-          </form>
-          <small className="text-muted mb-4 pt-2 d-block">
-          Press <b>'Enter'</b> to add flow variable
-        </small>
-        </>)}
+        ) : (
+          <>
+            <form id="variable-submit" onSubmit={this.addVariable}>
+              <FormGroup className="mb-0 text-center">
+                <Label className="mt-2 text-left">
+                  Create Variable
+                  <Tooltip position="bottom" html={tt(180, 'Flow Variables exist only in this flow and are reset after you leave the flow')}>
+                    <span onClick={() => this.setState({ tab: 'global' })} className="pointer">
+                      (Flow)
+                    </span>
+                  </Tooltip>
+                </Label>
+                <div className="variable-box">
+                  <Input
+                    // eslint-disable-next-line jsx-a11y/no-autofocus
+                    autoFocus
+                    readOnly={this.props.locked}
+                    name="new_var"
+                    value={this.state.new_var}
+                    onChange={this.handleChange}
+                    maxLength="16"
+                    placeholder="Flow Variable Name"
+                  />
+                </div>
+              </FormGroup>
+            </form>
+            <small className="text-muted mb-4 pt-2 d-block">
+              Press <b>'Enter'</b> to add flow variable
+            </small>
+          </>
+        )}
         <hr />
         <div>
           {this.props.variables.length > 0 && (
@@ -185,7 +176,7 @@ export class Variables extends PureComponent {
                   function(variable, i) {
                     return (
                       <div key={variable} className="variable_tag">
-                        {"{" + variable + "}"}{" "}
+                        {`{${variable}}`}{' '}
                         <span onClick={() => this.deleteVariable(variable)}>
                           <i className="fas fa-times" />
                         </span>
@@ -201,30 +192,19 @@ export class Variables extends PureComponent {
             {this.props.global_variables.map((variable, i) => {
               if (variable in defaultVariables) {
                 return (
-                  <Tooltip
-                    key={variable}
-                    position="bottom"
-                    html={
-                      <div style={{ width: 165 }}>
-                        {defaultVariables[variable]}
-                      </div>
-                    }
-                  >
-                    <div className="variable_tag global default">
-                      {"{" + variable + "}"}
-                    </div>
+                  <Tooltip key={variable} position="bottom" html={<div style={{ width: 165 }}>{defaultVariables[variable]}</div>}>
+                    <div className="variable_tag global default">{`{${variable}}`}</div>
                   </Tooltip>
                 );
-              } else {
-                return (
-                  <div key={variable} className="variable_tag global">
-                    {"{" + variable + "}"}{" "}
-                    <span onClick={() => this.deleteGlobalVariable(variable)}>
-                      <i className="fas fa-times" />
-                    </span>
-                  </div>
-                );
               }
+              return (
+                <div key={variable} className="variable_tag global">
+                  {`{${variable}}`}{' '}
+                  <span onClick={() => this.deleteGlobalVariable(variable)}>
+                    <i className="fas fa-times" />
+                  </span>
+                </div>
+              );
             })}
           </div>
         </div>
@@ -233,17 +213,17 @@ export class Variables extends PureComponent {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   global_variables: state.skills.skill.global,
-  variables: state.variables.localVariables
+  variables: state.variables.localVariables,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    addVariable: variable => dispatch(pushVariable(variable)),
-    setVariables: variables => dispatch(setVariables(variables)),
+    addVariable: (variable) => dispatch(pushVariable(variable)),
+    setVariables: (variables) => dispatch(setVariables(variables)),
     updateSkill: (type, val) => dispatch(updateVersion(type, val)),
-    setError: err => dispatch(setError(err))
+    setError: (err) => dispatch(setError(err)),
   };
 };
 export default connect(

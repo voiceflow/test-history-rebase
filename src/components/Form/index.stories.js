@@ -1,17 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React, { Fragment } from 'react';
-
-import centered from '@storybook/addon-centered';
-import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import centered from '@storybook/addon-centered';
 import { object, withKnobs } from '@storybook/addon-knobs';
-
+import { storiesOf } from '@storybook/react';
+import React, { Fragment } from 'react';
 import withMinWidth from 'stories/decorators/withMinWidth';
 
-import Input from '../Input';
 import Button from '../Button';
-
+import Input from '../Input';
 import Form from './index';
 
 storiesOf('components/Form', module)

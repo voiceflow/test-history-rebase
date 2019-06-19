@@ -1,34 +1,31 @@
-import React from 'react';
 import cn from 'classnames';
-import upperCase from 'lodash/upperCase';
-import map from 'lodash/map'
-import PropTypes from 'prop-types';
-import { Tooltip } from "react-tippy";
-
+import Dropdown from 'components/Dropdown';
+import Link from 'components/Link';
 import withDraggable from 'hocs/withDraggable';
-
+import { useToggle } from 'hooks/toggle';
+import * as _ from 'lodash';
+import map from 'lodash/map';
+import upperCase from 'lodash/upperCase';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Tooltip } from 'react-tippy';
+import { colors } from 'utils/colors';
 import { getHumanLanguageName } from 'utils/languages';
 
-import { useToggle } from 'hooks/toggle';
-
-import Link from 'components/Link';
-import Dropdown from 'components/Dropdown';
-
-import { colors } from 'utils/colors';
-
 const DROPDOWN_OPTIONS = [
-    {
-        id: 'duplicate',
-        label: 'Copy Project'
-    },
-    {
-        id: 'remove',
-        label: 'Remove Project',
-    },
+  {
+    id: 'duplicate',
+    label: 'Copy Project',
+  },
+  {
+    id: 'remove',
+    label: 'Remove Project',
+  },
 ];
 
 const DROPDOWN_BUTTON_PROPS = {
-    isDropdown: true,
+  isDropdown: true,
 };
 
 export function Item(props) {
@@ -51,21 +48,21 @@ export function Item(props) {
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
   const pathTo = `/canvas/${version_id}/${diagram}`;
 
-  const color = colors[(new Date(created)).getTime() % colors.length]
+  const color = colors[new Date(created).getTime() % colors.length];
 
   const item = (
     <div>
       <Link
         to={pathTo}
-        className={cn("projects-list__item", {
+        className={cn('projects-list__item', {
           hidden: isDragging,
-          "__is-active __is-hovered": isDropdownOpened,
-          "__is-draggable __is-dragging": isDraggingPreview
+          '__is-active __is-hovered': isDropdownOpened,
+          '__is-draggable __is-dragging': isDraggingPreview,
         })}
       >
         <div
           style={{
-            backgroundImage: avatarUrl ? `url(${avatarUrl})` : undefined
+            backgroundImage: avatarUrl ? `url(${avatarUrl})` : undefined,
           }}
           className={`projects-list__item-image cap-${color}`}
         >
@@ -81,7 +78,7 @@ export function Item(props) {
             popoverProps={{
               onShow: toggleDropdownOpened,
               onHide: toggleDropdownOpened,
-              stopPropagation: true
+              stopPropagation: true,
             }}
             label={<i className="far fa-ellipsis-h" />}
           />
@@ -89,22 +86,11 @@ export function Item(props) {
 
         <div className="projects-list__item-details">
           <div className="projects-list__item-title">{name}</div>
-          <div className="projects-list__item-caption">
-            {map(language, l => getHumanLanguageName(l)).join(", ")}
-          </div>
+          <div className="projects-list__item-caption">{map(language, (l) => getHumanLanguageName(l)).join(', ')}</div>
         </div>
 
-        <Tooltip
-          position="top"
-          title={uploaded ? "Live" : "Development"}
-          className="projects-list__item-status"
-          distance={10}
-        >
-          <i
-            className={`status-indicator status-indicator-${
-              uploaded ? "success" : "info"
-            }`}
-          />
+        <Tooltip position="top" title={uploaded ? 'Live' : 'Development'} className="projects-list__item-status" distance={10}>
+          <i className={`status-indicator status-indicator-${uploaded ? 'success' : 'info'}`} />
         </Tooltip>
       </Link>
 
@@ -116,9 +102,9 @@ export function Item(props) {
 }
 
 export default withDraggable({
-  name: props => `dashboard-item`,
-  canDrag: props => !props.disableDragging,
-  canDrop: () => true,
+  name: _.constant('dashboard-item'),
+  canDrag: (props) => !props.disableDragging,
+  canDrop: _.constant(true),
   onDropKey: 'onDrop',
   onMoveKey: 'onMove',
   allowXTransform: true,

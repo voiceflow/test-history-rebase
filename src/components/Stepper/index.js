@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
-import cn from 'classnames';
-import pluralize from 'pluralize';
-import PropTypes from 'prop-types';
+import './Stepper.css';
 
-import './Stepper.css'
+import cn from 'classnames';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import pluralize from 'pluralize';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+
 export default class Stepper extends Component {
   static propTypes = {
     steps: PropTypes.arrayOf(
@@ -37,20 +40,17 @@ export default class Stepper extends Component {
   }
 
   state = {
-    filledSteps: this.props.steps.reduce(
-      (obj, s) => ({ ...obj, [s.id]: this.props.isFilledAll }),
-      {}
-    ),
+    filledSteps: this.props.steps.reduce((obj, s) => ({ ...obj, [s.id]: this.props.isFilledAll }), {}),
     activeStepId: this.props.activeStepId,
   };
 
-  onChangeStep = stepId => {
+  onChangeStep = (stepId) => {
     const { onChangeStep } = this.props;
 
     onChangeStep && onChangeStep(stepId);
   };
 
-  onNextStep = nextActiveStepId => {
+  onNextStep = (nextActiveStepId) => {
     const { onChangeStep } = this.props;
 
     this.setState(({ filledSteps, activeStepId }) => ({
@@ -62,12 +62,7 @@ export default class Stepper extends Component {
 
   render() {
     const { filledSteps, activeStepId } = this.state;
-    const {
-      steps,
-      isFilledAll,
-      showErrorsCount,
-      lastStepIsFilled,
-    } = this.props;
+    const { steps, isFilledAll, showErrorsCount, lastStepIsFilled } = this.props;
 
     const lastStepId = steps[steps.length - 1].id;
 
@@ -77,21 +72,17 @@ export default class Stepper extends Component {
           const { id, label, errorsCount } = step;
 
           const isActive = id === activeStepId;
-          const isFilled =
-            !errorsCount &&
-            (isFilledAll || filledSteps[id] || (lastStepId === id && lastStepIsFilled));
+          const isFilled = !errorsCount && (isFilledAll || filledSteps[id] || (lastStepId === id && lastStepIsFilled));
           const prevStep = steps[i - 1];
           const nextStep = steps[i + 1];
           const isNextStepLast = nextStep ? nextStep.id === lastStepId : false;
           const isPrevStepFilled = prevStep ? filledSteps[prevStep.id] : true;
-          const isNextStepFilled = nextStep
-            ? isNextStepLast
-              ? lastStepIsFilled
-              : filledSteps[nextStep.id]
-            : true;
+          // eslint-disable-next-line no-nested-ternary
+          const isNextStepFilled = nextStep ? (isNextStepLast ? lastStepIsFilled : filledSteps[nextStep.id]) : true;
           const isNextStepHasIssue = nextStep ? nextStep.errorsCount : false;
 
           return (
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
             <li
               key={id}
               onClick={() => this.onChangeStep(id)}
@@ -110,9 +101,7 @@ export default class Stepper extends Component {
               )}
 
               {showErrorsCount && !!errorsCount && id !== activeStepId && (
-                <div className="steps-list__issues text-danger">
-                  {pluralize('Issue', errorsCount, true)}
-                </div>
+                <div className="steps-list__issues text-danger">{pluralize('Issue', errorsCount, true)}</div>
               )}
             </li>
           );

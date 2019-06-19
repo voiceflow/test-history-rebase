@@ -1,10 +1,12 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import {Modal, ModalHeader, ModalBody, ModalFooter, Alert} from 'reactstrap';
-import Button from 'components/Button';
-
 import './AdminAdvancedModal.css';
-import {cancelSubscription, refundCreator} from "ducks/admin";
+
+import Button from 'components/Button';
+import { cancelSubscription, refundCreator } from 'ducks/admin';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Alert, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+
+const CANCEL_SUBSCRIPTION = 'Cancel Subscription';
 
 class AdminAdvancedModal extends React.Component {
   constructor(props) {
@@ -13,19 +15,20 @@ class AdminAdvancedModal extends React.Component {
       modal: this.props.showModal,
       nestedCancelModal: false,
       nestedRefundModal: false,
-      closeAll: false
+      closeAll: false,
     };
   }
-  
-  componentWillReceiveProps(nextProps, nextContext) {
+
+  // eslint-disable-next-line react/no-deprecated
+  componentWillReceiveProps(nextProps) {
     this.setState({
-      modal: nextProps.showModal
-    })
+      modal: nextProps.showModal,
+    });
   }
 
   toggle = () => {
-    this.setState(prevState => ({
-      modal: !prevState.modal
+    this.setState((prevState) => ({
+      modal: !prevState.modal,
     }));
   };
 
@@ -33,13 +36,13 @@ class AdminAdvancedModal extends React.Component {
     if (type === 'cancel') {
       this.setState({
         nestedCancelModal: !this.state.nestedCancelModal,
-        closeAll: false
+        closeAll: false,
       });
     } else {
       this.setState({
         nestedRefundModal: !this.state.nestedRefundModal,
-        closeAll: false
-      })
+        closeAll: false,
+      });
     }
   };
 
@@ -48,35 +51,33 @@ class AdminAdvancedModal extends React.Component {
       nestedCancelModal: false,
       nestedRefundModal: false,
       modal: false,
-      closeAll: true
+      closeAll: true,
     });
   };
 
   render() {
     return (
       <div>
-        <span className="trigger_modal_link" onClick={this.toggle}>{this.props.buttonLabel}</span>
+        <span className="trigger_modal_link" onClick={this.toggle}>
+          {this.props.buttonLabel}
+        </span>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <div className="am__title" onClick={this.toggle}>
             DANGER ZONE
-            <div className="close am__close"></div>
+            <div className="close am__close" />
           </div>
           <ModalBody className="am__body">
-            <div className="am__action_header">
-              Cancel Subscription
-            </div>
+            <div className="am__action_header">{CANCEL_SUBSCRIPTION}</div>
             <div className="am__action_body">
               Cancel the subscription for creator #{this.props.creator.creator_id}
               <div className="am__button_row">
                 <Button isWarning onClick={() => this.toggleNested('cancel')}>
-                  Cancel Subscription
+                  {CANCEL_SUBSCRIPTION}
                 </Button>
               </div>
             </div>
-            <hr/>
-            <div className="am__action_header">
-              Refund User
-            </div>
+            <hr />
+            <div className="am__action_header">Refund User</div>
             <div className="am__action_body">
               Cancel the subscription for creator #{this.props.creator.creator_id} and refund them.
               <div className="am__button_row">
@@ -90,15 +91,18 @@ class AdminAdvancedModal extends React.Component {
               <ModalHeader>Cancel Subscription for Creator #{this.props.creator.creator_id}</ModalHeader>
               <ModalBody>
                 <Alert color="danger between">
+                  {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
                   <span className="am__confirm_message">sigh 😭😭😭</span>
-                  <br/>
+                  <br />
                   <Button isWarning onClick={() => this.props.cancelSubscription(this.props.creator.creator_id)}>
-                    Cancel Subscription
+                    {CANCEL_SUBSCRIPTION}
                   </Button>
                 </Alert>
               </ModalBody>
               <ModalFooter>
-                <Button isSecondary onClick={this.closeAll}>Cancel</Button>
+                <Button isSecondary onClick={this.closeAll}>
+                  Cancel
+                </Button>
               </ModalFooter>
             </Modal>
 
@@ -106,18 +110,20 @@ class AdminAdvancedModal extends React.Component {
               <ModalHeader>Refund Creator #{this.props.creator.creator_id}</ModalHeader>
               <ModalBody>
                 <Alert color="danger between">
+                  {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
                   <span className="am__confirm_message">not our monies 😫😫😫</span>
-                  <br/>
+                  <br />
                   <Button isWarning onClick={() => this.props.refundCreator(this.props.creator.creator_id)}>
                     Refund User
                   </Button>
                 </Alert>
               </ModalBody>
               <ModalFooter>
-                <Button isSecondary onClick={this.closeAll}>Cancel</Button>
+                <Button isSecondary onClick={this.closeAll}>
+                  Cancel
+                </Button>
               </ModalFooter>
             </Modal>
-
           </ModalBody>
         </Modal>
       </div>
@@ -125,8 +131,11 @@ class AdminAdvancedModal extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  creator: state.admin.creator
+const mapStateToProps = (state) => ({
+  creator: state.admin.creator,
 });
 
-export default connect(mapStateToProps, {refundCreator, cancelSubscription})(AdminAdvancedModal);
+export default connect(
+  mapStateToProps,
+  { refundCreator, cancelSubscription }
+)(AdminAdvancedModal);

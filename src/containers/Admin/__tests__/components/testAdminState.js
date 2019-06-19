@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/no-duplicate-string */
+
 export const initialState = {
   admin: {
     creator: {
@@ -15,16 +17,16 @@ export const initialState = {
             skill_name: 'skill1',
             skill_created: '',
             summary: 'skill summary',
-            description: 'skill description'
+            description: 'skill description',
           },
           {
             skill_id: '345',
             skill_name: 'skill2',
             skill_created: '',
             summary: 'skill summary',
-            description: 'skill description'
-          }
-        ]
+            description: 'skill description',
+          },
+        ],
       },
       {
         team_id: '1234',
@@ -37,12 +39,12 @@ export const initialState = {
             skill_name: 'skill12',
             skill_created: '',
             summary: 'skill summary',
-            description: 'skill description'
-          }
-        ]
-      }
-    ]
-  }
+            description: 'skill description',
+          },
+        ],
+      },
+    ],
+  },
 };
 
 export const testBoard = {
@@ -56,16 +58,16 @@ export const testBoard = {
       skill_name: 'skill1',
       skill_created: '',
       summary: 'skill summary',
-      description: 'skill description'
+      description: 'skill description',
     },
     {
       skill_id: '345',
       skill_name: 'skill2',
       skill_created: '',
       summary: 'skill summary',
-      description: 'skill description'
-    }
-  ]
+      description: 'skill description',
+    },
+  ],
 };
 
 export const testSkill = {
@@ -73,5 +75,5 @@ export const testSkill = {
   skill_name: 'skill1',
   skill_created: '',
   summary: 'skill summary',
-  description: 'skill description'
+  description: 'skill description',
 };

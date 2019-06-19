@@ -1,82 +1,89 @@
-import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
-import {connect} from 'react-redux';
-
-import PublishAmazon from './PublishAmazon'
-import PublishGoogle from './PublishGoogle'
 import cloneDeep from 'lodash/cloneDeep';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Badge } from 'reactstrap';
 
-import {Badge} from 'reactstrap';
+import PublishAmazon from './PublishAmazon';
+import PublishGoogle from './PublishGoogle';
 
 const updateLink = (link, skill_id) => {
-  return link.replace(':skill_id', skill_id)
-}
+  return link.replace(':skill_id', skill_id);
+};
 
 const tabs = [
   {
-    display: (key) => <React.Fragment key={key}><i className="fab fa-amazon mr-2"/> Alexa</React.Fragment>,
+    // eslint-disable-next-line react/display-name
+    display: (key) => (
+      <React.Fragment key={key}>
+        <i className="fab fa-amazon mr-2" /> Alexa
+      </React.Fragment>
+    ),
     match: ['alexa'],
-    link: '/publish/:skill_id'
+    link: '/publish/:skill_id',
   },
   {
-    display: (key) => <React.Fragment key={key}><i className="fab fa-google mr-2"></i> Google <Badge color="primary"
-                                                                                                     className="beta-badge align-middle ml-1">Beta</Badge></React.Fragment>,
+    // eslint-disable-next-line react/display-name
+    display: (key) => (
+      <React.Fragment key={key}>
+        <i className="fab fa-google mr-2" /> Google{' '}
+        <Badge color="primary" className="beta-badge align-middle ml-1">
+          Beta
+        </Badge>
+      </React.Fragment>
+    ),
     match: ['google'],
-    link: '/publish/:skill_id/google'
-  }
-]
+    link: '/publish/:skill_id/google',
+  },
+];
 
 class Publish extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    let TABS = cloneDeep(tabs);
+    const TABS = cloneDeep(tabs);
 
     this.state = {
-      tabs: TABS
-    }
+      tabs: TABS,
+    };
   }
 
   render() {
     let page;
     if (this.props.page === 'google') {
-      page = <PublishGoogle {...this.props} />
+      page = <PublishGoogle {...this.props} />;
     } else {
-      page = <PublishAmazon {...this.props} />
+      page = <PublishAmazon {...this.props} />;
     }
     return (
       <div id="business">
         <div md="3" className="sidebar-nav">
           {this.state.tabs.map((tab, i) => {
-            let res
+            let res;
             if (tab.match.includes(this.props.page)) {
-              res = <div className="nav-item active">
-                {tab.display(i)}
-              </div>
+              res = <div className="nav-item active">{tab.display(i)}</div>;
             } else {
-              res = <Link to={updateLink(tab.link, this.props.skill_id)} className="nav-item">
-                {tab.display(i)}
-              </Link>
+              res = (
+                <Link to={updateLink(tab.link, this.props.skill_id)} className="nav-item">
+                  {tab.display(i)}
+                </Link>
+              );
             }
-            return (
-              <React.Fragment key={i}>
-                {res}
-              </React.Fragment>
-            )
+            return <React.Fragment key={i}>{res}</React.Fragment>;
           })}
         </div>
         <div md="9" className="business-page">
           {page}
         </div>
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.account,
   skill_id: state.skills.skill.skill_id,
   platform: state.skills.skill.platform,
-})
+});
 
-export default connect(mapStateToProps)(Publish)
+export default connect(mapStateToProps)(Publish);

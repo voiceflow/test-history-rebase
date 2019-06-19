@@ -291,11 +291,10 @@ const Timeline = (props) => {
   };
 
   const getAudioMeta = (audio) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       audio.addEventListener('loadedmetadata', (e) => {
         resolve(e.target.duration);
       });
-      reject(new Error('Failed to get audio'));
     });
   };
 
@@ -445,11 +444,7 @@ const Timeline = (props) => {
               const results = await Promise.all(
                 block.audio.map(async (audioFile) => {
                   const audio = new Audio(audioFile);
-                  try {
-                    return { duration: await getAudioMeta(audio), audio };
-                  } catch (err) {
-                    console.error(err);
-                  }
+                  return { duration: await getAudioMeta(audio), audio };
                 })
               );
               // eslint-disable-next-line lodash/collection-return, lodash/collection-method-value, no-loop-func

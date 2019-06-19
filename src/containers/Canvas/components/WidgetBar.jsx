@@ -7,7 +7,7 @@ export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, updat
   <div
     id="widget-bar"
     className={cn({
-      isCanvas: isCanvas,
+      isCanvas,
       isTest: !isCanvas,
     })}
   >

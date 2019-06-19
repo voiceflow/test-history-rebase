@@ -3532,12 +3532,13 @@ button.close:hover{
 }
 
 #home-button.isCanvas {
-    left: 302px;
+  left: 302px;
 }
 
 #home-button.isTest {
-    left: 55px;
+  left: 55px;
 }
+
 #home-button.closed {
   -webkit-transform: translateX(-250px);
   -moz-transform: translateX(-250px);

@@ -11,7 +11,7 @@ import { getDevice } from 'Helper';
 
 export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT';
 export const RESET_ACCOUNT = 'RESET_ACCOUNT';
-export const AUTH_COOKIE = 'auth';
+export const AUTH_COOKIE = 'auth_vf';
 
 const cookies = new Cookies()
 const cookieDomain = process.env.NODE_ENV === 'development' ? 'localhost' : '.voiceflow.com';

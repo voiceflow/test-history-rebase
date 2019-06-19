@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useDelay = (timeout, condition, recallEffect) => {
   const [delayed, updateDelayed] = useState(false);

@@ -1,7 +1,7 @@
-const CONDITIONS = 'conditions'
-const TIMELINE = 'timeline'
+const CONDITIONS = 'conditions';
+const TIMELINE = 'timeline';
 
- module.exports = {
+module.exports = {
   CONDITIONS,
-  TIMELINE
-} 
+  TIMELINE,
+};

@@ -149,6 +149,7 @@ export class Canvas extends Component {
   stopTime = () => {
     clearInterval(this.timer);
   };
+
   setMousetrap = () => {
     Mousetrap.reset();
     Mousetrap.bind(['shift+/'], () => this.props.toggleKeyboard(!this.props.keyboardHelp));
@@ -1311,8 +1312,7 @@ export class Canvas extends Component {
       this.runTest();
     } else {
       this.saveCB = (diagram_id) => {
-        if (diagram_id === null) {
-        } else {
+        if (diagram_id !== null) {
           axios
             .post(`/diagram/${diagram_id}/test/publish`, {
               intents: this.props.skill.intents,

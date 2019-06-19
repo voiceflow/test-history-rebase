@@ -103,6 +103,7 @@ class Menu extends Component {
   componentWillUnmount() {
     document.removeEventListener('mousemove', this.resize, false);
   }
+
   buildTree(node, depth = 0) {
     if (depth < 5) {
       this.visited.add(node.id);

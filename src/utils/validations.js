@@ -1,5 +1,5 @@
 const REGEXPS = {
-  VARIABLE: /^\{[a-zA-Z][a-zA-Z.]*[a-zA-Z]\}$/,
+  VARIABLE: /^{[A-Za-z][.A-Za-z]*[A-Za-z]}$/,
 };
 
 export const containVariable = (value = '') => value.match(REGEXPS.VARIABLE);

@@ -1,4 +1,10 @@
 // Regex'd from https://developer.amazon.com/docs/custom-skills/slot-type-reference.html#availability
+const AMAZON_CANCEL_INTENT = 'AMAZON.CancelIntent';
+const AMAZON_HELP_INTENT = 'AMAZON.HelpIntent';
+const AMAZON_STOP_INTENT = 'AMAZON.StopIntent';
+const AMAZON_YES_INTENT = 'AMAZON.YesIntent';
+const AMAZON_NO_INTENT = 'AMAZON.NoIntent';
+const AMAZON_REPEAT_INTENT = 'AMAZON.RepeatIntent';
 
 const LOCALES = {
   US: 'en-US',
@@ -51,35 +57,35 @@ const DEFAULT_INTENTS = {
   en: {
     defaults: [
       {
-        name: 'AMAZON.CancelIntent',
+        name: AMAZON_CANCEL_INTENT,
         samples: ['cancel', 'never mind', 'forget it'],
         slots: [],
       },
       {
-        name: 'AMAZON.HelpIntent',
+        name: AMAZON_HELP_INTENT,
         samples: ['help', 'help me', 'can you help me'],
         slots: [],
       },
       {
-        name: 'AMAZON.StopIntent',
+        name: AMAZON_STOP_INTENT,
         samples: ['stop', 'off', 'shut up'],
         slots: [],
       },
       {
-        name: 'AMAZON.YesIntent',
+        name: AMAZON_YES_INTENT,
         samples: ['yes', 'yea', 'yeah', 'I do', 'yes please', 'you know it', 'ok', 'okay', 'yup', 'ya', 'sure'],
         keep: ['yes'],
         slots: [],
       },
       {
-        name: 'AMAZON.NoIntent',
+        name: AMAZON_NO_INTENT,
         samples: ['no', 'no thanks', 'nope', 'I do not', 'no thank you', 'nay', 'nah', 'no way', 'negative'],
         slots: [],
       },
     ],
     built_ins: [
       {
-        name: 'AMAZON.RepeatIntent',
+        name: AMAZON_REPEAT_INTENT,
         samples: ['repeat', 'say that again', 'repeat that', 'again', 'say again'],
         slots: [],
       },
@@ -89,35 +95,35 @@ const DEFAULT_INTENTS = {
   fr: {
     defaults: [
       {
-        name: 'AMAZON.CancelIntent',
+        name: AMAZON_CANCEL_INTENT,
         samples: ['annuler', 'annule'],
         slots: [],
       },
       {
-        name: 'AMAZON.HelpIntent',
+        name: AMAZON_HELP_INTENT,
         samples: ['aidez-moi', 'aider', 'aide', 'aide moi', 'assistance', "j'ai besoin d'aide", 'je ne comprends pas'],
         slots: [],
       },
       {
-        name: 'AMAZON.StopIntent',
+        name: AMAZON_STOP_INTENT,
         samples: ["s'arrêter", 'arrêter', 'arrête', 'stop', 'fin', 'cesser', 'mettre fin', 'stopper', 'mettre un terme', 'interrompre'],
         slots: [],
       },
       {
-        name: 'AMAZON.YesIntent',
+        name: AMAZON_YES_INTENT,
         samples: ['oui', 'yep', 'ok', 'bien sûr', 'ouais', 'ouaip', 'exactement', 'correct', 'okay', "d'accord"],
         keep: ['oui'],
         slots: [],
       },
       {
-        name: 'AMAZON.NoIntent',
+        name: AMAZON_NO_INTENT,
         samples: ['non', 'nan', 'absolument pas', 'hors de question', 'bien sûr que non'],
         slots: [],
       },
     ],
     built_ins: [
       {
-        name: 'AMAZON.RepeatIntent',
+        name: AMAZON_REPEAT_INTENT,
         samples: [
           'repeat',
           'est-ce que tu peux répéter',
@@ -136,12 +142,12 @@ const DEFAULT_INTENTS = {
   ja: {
     defaults: [
       {
-        name: 'AMAZON.CancelIntent',
+        name: AMAZON_CANCEL_INTENT,
         samples: ['取り消す', 'キャンセル', '取り消し', '取消'],
         slots: [],
       },
       {
-        name: 'AMAZON.HelpIntent',
+        name: AMAZON_HELP_INTENT,
         samples: [
           '助ける',
           '手伝う',
@@ -164,7 +170,7 @@ const DEFAULT_INTENTS = {
         slots: [],
       },
       {
-        name: 'AMAZON.StopIntent',
+        name: AMAZON_STOP_INTENT,
         samples: [
           '止める',
           '立ち止まる',
@@ -184,20 +190,20 @@ const DEFAULT_INTENTS = {
         slots: [],
       },
       {
-        name: 'AMAZON.YesIntent',
+        name: AMAZON_YES_INTENT,
         samples: ['yes', 'はい', 'ええ', 'そうです'],
         keep: ['はい'],
         slots: [],
       },
       {
-        name: 'AMAZON.NoIntent',
+        name: AMAZON_NO_INTENT,
         samples: ['no', 'いいえ', 'そうだはない', 'いやそれどころか', 'ノン', '否', '否や'],
         slots: [],
       },
     ],
     built_ins: [
       {
-        name: 'AMAZON.RepeatIntent',
+        name: AMAZON_REPEAT_INTENT,
         samples: ['repeat', '繰り返す', '引き返す', '折れ返る', '返す'],
         slots: [],
       },
@@ -207,12 +213,12 @@ const DEFAULT_INTENTS = {
   it: {
     defaults: [
       {
-        name: 'AMAZON.CancelIntent',
+        name: AMAZON_CANCEL_INTENT,
         samples: ['cancellare', 'annullare', 'disdire', 'sopprimere', 'rescindre', 'chiudere', 'abrogare', 'obliterare'],
         slots: [],
       },
       {
-        name: 'AMAZON.HelpIntent',
+        name: AMAZON_HELP_INTENT,
         samples: [
           'la assistenza',
           'il aiuto',
@@ -228,7 +234,7 @@ const DEFAULT_INTENTS = {
         slots: [],
       },
       {
-        name: 'AMAZON.StopIntent',
+        name: AMAZON_STOP_INTENT,
         samples: [
           'la fermata',
           'il fermo',
@@ -249,20 +255,20 @@ const DEFAULT_INTENTS = {
         slots: [],
       },
       {
-        name: 'AMAZON.YesIntent',
+        name: AMAZON_YES_INTENT,
         samples: ['yes', 'si', 'certo'],
         keep: ['si'],
         slots: [],
       },
       {
-        name: 'AMAZON.NoIntent',
+        name: AMAZON_NO_INTENT,
         samples: ['il no', 'no', 'il rifiuto', 'la negazione', 'nessuno'],
         slots: [],
       },
     ],
     built_ins: [
       {
-        name: 'AMAZON.RepeatIntent',
+        name: AMAZON_REPEAT_INTENT,
         samples: ['repeat', '繰り返す', '引き返す', '折れ返る', '返す'],
         slots: [],
       },
@@ -272,7 +278,7 @@ const DEFAULT_INTENTS = {
   es: {
     defaults: [
       {
-        name: 'AMAZON.CancelIntent',
+        name: AMAZON_CANCEL_INTENT,
         samples: [
           'cancelar',
           'anular',
@@ -288,30 +294,30 @@ const DEFAULT_INTENTS = {
         slots: [],
       },
       {
-        name: 'AMAZON.HelpIntent',
+        name: AMAZON_HELP_INTENT,
         samples: ['la ayuda', 'el favor', 'ei auxilio', 'el socorro', 'el empleado', 'la criada', 'ayudar', 'servir', 'auxiliar', 'socorrer'],
         slots: [],
       },
       {
-        name: 'AMAZON.StopIntent',
+        name: AMAZON_STOP_INTENT,
         samples: ['detener', 'dejar', 'parar', 'suspender', 'cesar', 'pararse', 'terminar', 'de alto'],
         slots: [],
       },
       {
-        name: 'AMAZON.YesIntent',
+        name: AMAZON_YES_INTENT,
         samples: ['yes', 'si', 'sí', 'decir si'],
         keep: ['sí'],
         slots: [],
       },
       {
-        name: 'AMAZON.NoIntent',
+        name: AMAZON_NO_INTENT,
         samples: ['no', 'ninguno', 'imposible', 'prohibido', 'la negativa', 'el voto negativo', 'el voto en contra'],
         slots: [],
       },
     ],
     built_ins: [
       {
-        name: 'AMAZON.RepeatIntent',
+        name: AMAZON_REPEAT_INTENT,
         samples: ['repeat', 'repetir', 'repetirse', 'reiterar', 'recitar', 'volver a dar'],
         slots: [],
       },
@@ -321,17 +327,17 @@ const DEFAULT_INTENTS = {
   de: {
     defaults: [
       {
-        name: 'AMAZON.CancelIntent',
+        name: AMAZON_CANCEL_INTENT,
         samples: ['stornieren', 'aufheben', 'kündigen', 'annullieren', 'beenden', 'absagen', 'abbestellen', 'abmelden', 'auflösen', 'zurücknehmen'],
         slots: [],
       },
       {
-        name: 'AMAZON.HelpIntent',
+        name: AMAZON_HELP_INTENT,
         samples: ['die hilfe', 'der beistand', 'die aushilfe', 'helfen', 'beitragen', 'behilflich sein', 'hilfe leisten'],
         slots: [],
       },
       {
-        name: 'AMAZON.StopIntent',
+        name: AMAZON_STOP_INTENT,
         samples: [
           'der stopp',
           'der anschlag',
@@ -354,20 +360,20 @@ const DEFAULT_INTENTS = {
         slots: [],
       },
       {
-        name: 'AMAZON.YesIntent',
+        name: AMAZON_YES_INTENT,
         samples: ['yes', 'ja', 'doch', 'jawohl'],
         keep: ['ja'],
         slots: [],
       },
       {
-        name: 'AMAZON.NoIntent',
+        name: AMAZON_NO_INTENT,
         samples: ['no', 'nein', 'kein', 'nicht'],
         slots: [],
       },
     ],
     built_ins: [
       {
-        name: 'AMAZON.RepeatIntent',
+        name: AMAZON_REPEAT_INTENT,
         samples: ['repeat', 'wiederholen', 'wiedergeben', 'repetieren', 'weitersagen'],
         slots: [],
       },
@@ -377,35 +383,35 @@ const DEFAULT_INTENTS = {
   pt: {
     defaults: [
       {
-        name: 'AMAZON.CancelIntent',
+        name: AMAZON_CANCEL_INTENT,
         samples: ['cancelar', 'anular', 'suspender'],
         slots: [],
       },
       {
-        name: 'AMAZON.HelpIntent',
+        name: AMAZON_HELP_INTENT,
         samples: ['ajudar', 'socorrer', 'auxiliar'],
         slots: [],
       },
       {
-        name: 'AMAZON.StopIntent',
+        name: AMAZON_STOP_INTENT,
         samples: ['parar', 'terminar', 'impedir', 'fazer parar'],
         slots: [],
       },
       {
-        name: 'AMAZON.YesIntent',
+        name: AMAZON_YES_INTENT,
         samples: ['yes', 'sim', 'o sim', 'dizer sim'],
         keep: ['sim'],
         slots: [],
       },
       {
-        name: 'AMAZON.NoIntent',
+        name: AMAZON_NO_INTENT,
         samples: ['no', 'não', 'negativa'],
         slots: [],
       },
     ],
     built_ins: [
       {
-        name: 'AMAZON.RepeatIntent',
+        name: AMAZON_REPEAT_INTENT,
         samples: ['repeat', 'repetir', 'reiterar', 'refazer', 'amiudar', 'recitar de cor'],
         slots: [],
       },
@@ -2305,7 +2311,7 @@ const BUILT_IN_INTENTS_ALEXA = [
   //   ]
   // },
   {
-    name: 'AMAZON.CancelIntent',
+    name: AMAZON_CANCEL_INTENT,
     slots: [],
   },
   {
@@ -2313,7 +2319,7 @@ const BUILT_IN_INTENTS_ALEXA = [
     slots: [],
   },
   {
-    name: 'AMAZON.HelpIntent',
+    name: AMAZON_HELP_INTENT,
     slots: [],
   },
   {
@@ -2341,7 +2347,7 @@ const BUILT_IN_INTENTS_ALEXA = [
     slots: [],
   },
   {
-    name: 'AMAZON.NoIntent',
+    name: AMAZON_NO_INTENT,
     slots: [],
   },
   {
@@ -2361,7 +2367,7 @@ const BUILT_IN_INTENTS_ALEXA = [
     slots: [],
   },
   {
-    name: 'AMAZON.RepeatIntent',
+    name: AMAZON_REPEAT_INTENT,
     slots: [],
   },
   {
@@ -2401,11 +2407,11 @@ const BUILT_IN_INTENTS_ALEXA = [
     slots: [],
   },
   {
-    name: 'AMAZON.StopIntent',
+    name: AMAZON_STOP_INTENT,
     slots: [],
   },
   {
-    name: 'AMAZON.YesIntent',
+    name: AMAZON_YES_INTENT,
     slots: [],
   },
 ];

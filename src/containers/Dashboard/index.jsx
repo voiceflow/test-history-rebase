@@ -170,8 +170,8 @@ export const DashBoard = (props) => {
       return <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />;
     }
     return (
-      <div className={'dropdown-update-container'} onMouseEnter={() => toggleUpdatesHover(true)} onMouseLeave={() => toggleUpdatesHover(false)}>
-        <div className={'dropdown-update-bubble'} />
+      <div className="dropdown-update-container" onMouseEnter={() => toggleUpdatesHover(true)} onMouseLeave={() => toggleUpdatesHover(false)}>
+        <div className="dropdown-update-bubble" />
         {!updates_hover && !updates_open ? (
           <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />
         ) : (

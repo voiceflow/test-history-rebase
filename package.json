@@ -141,6 +141,7 @@
     "prepublish": "patch-package",
     "test:all": "react-scripts test --verbose",
     "lint": "npm run lint:js && npm run lint:css",
+    "lint:quiet": "npm run lint:js -- --quiet && npm run lint:css -- --quiet",
     "lint:js": "eslint \"src/**/*.{js,jsx}\"",
     "lint:css": "stylelint src/**/*.css"
   },

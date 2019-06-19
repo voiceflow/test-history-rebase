@@ -3499,7 +3499,6 @@ button.close:hover{
   bottom: 13px;
   z-index: 5;
   display: flex;
-  vertical-align: middle;
   -webkit-transform: translateX(-250px);
   -moz-transform: translateX(-250px);
   -ms-transform: translateX(-250px);

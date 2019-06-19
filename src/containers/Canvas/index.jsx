@@ -1751,6 +1751,7 @@ export class Canvas extends Component {
               setOpen={this.props.setOpen}
               update={(engine) => this.setState({ engine })}
               preview={this.props.preview}
+              isCanvas={this.props.page === 'canvas'}
             />
             {this.props.root_id !== this.props.diagram_id && (
               <FlowBar

@@ -22,6 +22,7 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
+const { UnusedFilesWebpackPlugin } = require('unused-files-webpack-plugin');
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
@@ -544,6 +545,21 @@ module.exports = function(webpackEnv) {
           if (paths.length > 2) {
             compilation.warnings.push(new Error(`Circular dependency detected:\n${paths.join(' -> ')}`));
           }
+        },
+      }),
+      new UnusedFilesWebpackPlugin({
+        // failOnUnused: true,
+        globOptions: {
+          cwd: path.resolve(process.cwd(), 'src'),
+          ignore: [
+            'assets/**/*',
+            '**/__tests__/**/*',
+            '**/__mock__/**/*',
+            '**/__mocks__/**/*',
+            '**/*.stories.js',
+            'components/SRD/sass/**/*',
+            'setupTests.js',
+          ],
         },
       }),
     ].filter(Boolean),

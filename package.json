@@ -1,8 +1,26 @@
 {
   "name": "storyflow-creator",
   "version": "1.1.1",
-  "private": true,
-  "homepage": "/",
+  "babel": {
+    "presets": [
+      "react-app"
+    ],
+    "plugins": [
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ],
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/plugin-transform-modules-commonjs"
+    ]
+  },
   "dependencies": {
     "@appbaseio/reactivesearch": "^3.0.0-beta.13",
     "@babel/core": "^7.1.6",
@@ -126,6 +144,7 @@
     "style-loader": "0.23.0",
     "terser-webpack-plugin": "1.1.0",
     "universal-cookie": "^3.0.4",
+    "unused-files-webpack-plugin": "^3.4.0",
     "url-loader": "1.1.1",
     "valid-url": "^1.0.9",
     "webpack": "4.19.1",
@@ -134,18 +153,6 @@
     "workbox-webpack-plugin": "3.6.3",
     "ws": "^6.1.2"
   },
-  "scripts": {
-    "start": "HTTPS=true node scripts/start.js",
-    "build": "patch-package && GENERATE_SOURCEMAP=false node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom --watchAll=false",
-    "prepublish": "patch-package",
-    "test:all": "react-scripts test --verbose",
-    "lint": "npm run lint:js && npm run lint:css",
-    "lint:quiet": "npm run lint:js -- --quiet && npm run lint:css -- --quiet",
-    "lint:js": "eslint \"src/**/*.{js,jsx}\"",
-    "lint:css": "stylelint src/**/*.css"
-  },
-  "proxy": "http://localhost:8080",
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
@@ -167,27 +174,21 @@
     "stylelint-no-unsupported-browser-features": "^3.0.2",
     "stylelint-order": "^3.0.0"
   },
-  "babel": {
-    "presets": [
-      "react-app"
-    ],
-    "plugins": [
-      [
-        "@babel/plugin-proposal-decorators",
-        {
-          "legacy": true
-        }
-      ],
-      [
-        "@babel/plugin-proposal-class-properties",
-        {
-          "loose": true
-        }
-      ],
-      "@babel/plugin-transform-modules-commonjs"
-    ]
-  },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "homepage": "/",
+  "private": true,
+  "proxy": "http://localhost:8080",
+  "scripts": {
+    "build": "patch-package && GENERATE_SOURCEMAP=false node scripts/build.js",
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint:css": "stylelint src/**/*.css",
+    "lint:js": "eslint \"src/**/*.{js,jsx}\"",
+    "lint:quiet": "npm run lint:js -- --quiet && npm run lint:css -- --quiet",
+    "prepublish": "patch-package",
+    "start": "HTTPS=true node scripts/start.js",
+    "test": "node scripts/test.js --env=jsdom --watchAll=false",
+    "test:all": "react-scripts test --verbose"
   }
 }

@@ -85,9 +85,9 @@ class App extends Component {
           100
         );
       } else {
-        window.location.replace('https://getvoiceflow.com/maintenance');
+        window.location.replace('https://voiceflow.com/maintenance');
         // eslint-disable-next-line xss/no-location-href-assign
-        window.location.href = 'https://getvoiceflow.com/maintenance';
+        window.location.href = 'https://voiceflow.com/maintenance';
         throw new Error('MAINTENANCE');
       }
     });

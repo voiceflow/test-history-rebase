@@ -42,9 +42,9 @@ const ConditionExpression = (props) => {
             }}
           />
         </div>
-        <div className="expression-control">
+        <div className="expression-control mt-2">
           <button className={cn('expression-button expression-remove', { disabled: first })} onClick={() => setSelected(idx)} />
-          <button className={cn('expression-button', { 'expression-add': first, 'd-none': !first })} onClick={() => addVariable()} />
+          <button className={cn('expression-button', { 'expression-add': first, invisible: !first })} onClick={() => addVariable()} />
         </div>
       </div>
       {!last && <div className="break" />}

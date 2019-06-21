@@ -299,7 +299,10 @@ export class Canvas extends Component {
       });
       this.onLoadId(this.props.diagram_id);
     }
-    if (this.props.testing && !this.state.engine.getDiagramModel().isLocked()) {
+    if (
+      (this.props.testing && !this.state.engine.getDiagramModel().isLocked()) ||
+      (!this.props.testing && this.state.engine.getDiagramModel().isLocked())
+    ) {
       this.state.engine.getDiagramModel().setLocked(!!this.props.testing);
     }
   }

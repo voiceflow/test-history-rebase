@@ -3,28 +3,34 @@ import { ModalHeader } from 'components/Modals/ModalHeader';
 import React from 'react';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 
-class DefaultModal extends React.Component {
-  render() {
-    return (
-      <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle} header={this.props.header} />
-        <ModalBody style={{ padding: this.props.noPadding ? '0' : undefined, border: '0', overflow: 'none' }}>{this.props.content}</ModalBody>
-        {!this.props.hideFooter && (
-          <ModalFooter className="super-center">
-            {this.props.close_button_text ? (
-              <Button isPrimary type="button" onClick={this.props.toggle}>
-                {this.props.close_button_text}
-              </Button>
-            ) : (
-              <Button isClear type="button" onClick={this.props.toggle}>
-                Close
-              </Button>
-            )}
-          </ModalFooter>
-        )}
-      </Modal>
-    );
-  }
-}
+const DefaultModal = (props) => {
+  return (
+    <Modal isOpen={props.open} toggle={props.toggle}>
+      <ModalHeader toggle={props.toggle} header={props.header} />
+      <ModalBody
+        style={{
+          padding: props.noPadding ? '0' : undefined,
+          border: '0',
+          overflow: 'none',
+        }}
+      >
+        {props.content}
+      </ModalBody>
+      {!props.hideFooter && (
+        <ModalFooter className="super-center">
+          {props.close_button_text ? (
+            <Button isPrimary type="button" onClick={props.toggle}>
+              {props.close_button_text}
+            </Button>
+          ) : (
+            <Button isClear type="button" onClick={props.toggle}>
+              Close
+            </Button>
+          )}
+        </ModalFooter>
+      )}
+    </Modal>
+  );
+};
 
 export default DefaultModal;

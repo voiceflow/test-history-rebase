@@ -17,44 +17,42 @@ const class_mapping = {
   },
 };
 
-class UpdatesModal extends React.Component {
-  render() {
-    return (
-      <Modal isOpen={this.props.show_update_modal} toggle={this.props.toggle} centered>
-        <div className="pt-3 mb-0 text-center">
-          <p className="mb-0" id="update-modal-header-title">
-            Since you've been gone{' '}
-            <span role="img" aria-label="jsx-a11y/accessible-emoji">
-              ✨
-            </span>
-          </p>
+const UpdatesModal = (props) => {
+  return (
+    <Modal isOpen={this.props.show_update_modal} toggle={this.props.toggle} centered>
+      <div className="pt-3 mb-0 text-center">
+        <p className="mb-0" id="update-modal-header-title">
+          Since you've been gone{' '}
+          <span role="img" aria-label="jsx-a11y/accessible-emoji">
+            ✨
+          </span>
+        </p>
+      </div>
+      <ModalBody className="text-center pl-0 pr-0">
+        <hr className="mt-0 w-100" />
+        <div className="update-modal-body mb-4">
+          {Array.isArray(this.props.product_updates) &&
+            this.props.product_updates.map((entry, i) => {
+              return (
+                <React.Fragment key={i}>
+                  <div align="left" className="pr-4 pl-4">
+                    <p className={class_mapping[entry.type].class}>&bull; {class_mapping[entry.type].label}: </p>
+                    {/* eslint-disable-next-line xss/no-mixed-html */}
+                    <p className="update-modal-txt" dangerouslySetInnerHTML={{ __html: entry.details }} />
+                  </div>
+                  <hr className="w-100" />
+                </React.Fragment>
+              );
+            })}
         </div>
-        <ModalBody className="text-center pl-0 pr-0">
-          <hr className="mt-0 w-100" />
-          <div className="update-modal-body mb-4">
-            {Array.isArray(this.props.product_updates) &&
-              this.props.product_updates.map((entry, i) => {
-                return (
-                  <React.Fragment key={i}>
-                    <div align="left" className="pr-4 pl-4">
-                      <p className={class_mapping[entry.type].class}>&bull; {class_mapping[entry.type].label}: </p>
-                      {/* eslint-disable-next-line xss/no-mixed-html */}
-                      <p className="update-modal-txt" dangerouslySetInnerHTML={{ __html: entry.details }} />
-                    </div>
-                    <hr className="w-100" />
-                  </React.Fragment>
-                );
-              })}
-          </div>
-          <div>
-            <Button isBtn isClear onClick={this.props.toggle}>
-              Got it!
-            </Button>
-          </div>
-        </ModalBody>
-      </Modal>
-    );
-  }
-}
+        <div>
+          <Button isBtn isClear onClick={this.props.toggle}>
+            Got it!
+          </Button>
+        </div>
+      </ModalBody>
+    </Modal>
+  );
+};
 
 export default UpdatesModal;

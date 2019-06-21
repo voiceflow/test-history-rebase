@@ -393,6 +393,7 @@ const Timeline = (props) => {
       .then(async (res) => {
         // eslint-disable-next-line no-param-reassign
         res = res.data;
+        console.log(res);
         const { trace } = res;
         if (res.line_id) {
           story_state = res;
@@ -467,7 +468,7 @@ const Timeline = (props) => {
                 outputBlock.delay = delay;
                 outputBlock.type = type;
                 outputBlock.isLast = !block.line.nextId;
-                delay += duration;
+                delay += duration + 500;
                 dom.push(outputBlock);
               });
             } else if (type === 'Choice' && idx === trace.length - 1) {
@@ -486,7 +487,7 @@ const Timeline = (props) => {
                 type,
                 delay,
               };
-              // delay += 1000;
+              delay += 500;
               dom.push(outputBlock);
             } else if (type === 'One Shot Intent') {
               const outputBlock = {
@@ -503,6 +504,7 @@ const Timeline = (props) => {
                 type,
                 delay,
               };
+              delay += 500;
               dom.push(outputBlock);
             }
             idx++;

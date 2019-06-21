@@ -298,9 +298,9 @@ export class Canvas extends Component {
         load_diagram: true,
       });
       this.onLoadId(this.props.diagram_id);
-      if (!!this.props.testing !== !!this.state.engine.getDiagramModel().isLocked()) {
-        this.state.engine.getDiagramModel().setLocked(this.props.testing || false);
-      }
+    }
+    if (this.props.testing && !this.state.engine.getDiagramModel().isLocked()) {
+      this.state.engine.getDiagramModel().setLocked(!!this.props.testing);
     }
   }
 
@@ -1796,6 +1796,7 @@ export class Canvas extends Component {
               setBlockMenu={this.props.setBlockMenu}
               setOpen={this.props.setOpen}
               platform={this.props.skill.platform}
+              locked={this.state.engine.getDiagramModel().isLocked()}
             />
           </div>
         </div>

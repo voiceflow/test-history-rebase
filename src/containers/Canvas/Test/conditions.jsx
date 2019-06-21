@@ -1,14 +1,26 @@
 import cn from 'classnames';
 import _ from 'lodash';
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
 import ConditionExpression from './ConditionExpression';
 
-const filter_variables = ['user_id', 'timestamp', 'platform', 'locale', 'access_token'];
 const Conditions = (props) => {
+  const [selectedVariables, setSelectedVariables] = useState(['']);
   const { variables, testing_info, handleVariableChange } = props;
+
+  const setSelected = (idx, variable = null) => {
+    if (variable) {
+      setSelectedVariables((prev) => prev.splice(idx, 1, variable));
+    } else {
+      setSelectedVariables((prev) => prev.filter((_, i2) => i2 !== idx));
+    }
+  };
+
+  const addVariable = () => {
+    setSelectedVariables([...selectedVariables, '']);
+  };
 
   return (
     <div
@@ -19,8 +31,20 @@ const Conditions = (props) => {
     >
       <div className="text-center">
         {/* node.extras here */}
-        {_.difference(variables, filter_variables).map((variable, i) => {
-          return <ConditionExpression key={i} variable={variable} onSelection={handleVariableChange} variables={variables} />;
+        {selectedVariables.map((variable, i) => {
+          return (
+            <ConditionExpression
+              key={i}
+              idx={i}
+              first={i === 0}
+              last={i === selectedVariables.length - 1}
+              variable={variable}
+              onSelection={handleVariableChange}
+              addVariable={addVariable}
+              setSelected={setSelected}
+              variables={variables}
+            />
+          );
         })}
       </div>
     </div>
@@ -28,7 +52,12 @@ const Conditions = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  variables: state.variables.localVariables.concat(state.skills.skill.global),
+  variables: _.map(state.variables.localVariables.concat(state.skills.skill.global), (varMap) => {
+    return {
+      value: varMap,
+      label: varMap,
+    };
+  }),
 });
 
 export default compose(connect(mapStateToProps))(Conditions);

@@ -438,7 +438,7 @@ class Editor extends Component {
     return (
       <div className="label-container d-flex mb-3 pl-2">
         <div className="w-100 dropdown text-left">{this.titleInput()}</div>
-        <i className="more-info dropdown d-flex align-items-center" onClick={() => this.props.setHelp({ type: this.state.node.extras.type })} />
+        <i className="more-info d-flex align-items-center" onClick={() => this.props.setHelp({ type: this.state.node.extras.type })} />
         <UncontrolledDropdown nav inNavbar>
           <DropdownToggle nav tag="div">
             <div className="cog" />

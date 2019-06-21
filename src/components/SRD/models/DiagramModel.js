@@ -229,6 +229,10 @@ export class DiagramModel extends BaseEntity {
 		return this.zoom;
 	}
 
+	isLocked() {
+		return this.locked;
+	}
+	
 	getNode(node) {
 		if (node instanceof NodeModel) {
 			return node;

@@ -2563,7 +2563,7 @@ button.close:hover{
   /* padding-bottom: 17px; */
 }
 
-#label-container {
+.label-container {
   display: flex;
   align-items: center !important;
   justify-content: center;

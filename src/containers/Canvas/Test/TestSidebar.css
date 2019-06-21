@@ -91,3 +91,42 @@
   position: absolute;
   bottom: 0;
 }
+
+.expression-add{
+    font-weight: normal;
+    background-image: url(/expression-add.svg);
+    background-repeat: no-repeat;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 13px;
+    cursor: pointer;
+    border: none;
+}
+
+.expression-button {
+    width: 18px;
+    height: 18px;
+}
+.expression-remove {
+    font-weight: normal;
+    background-image: url(/expression-minus.svg);
+    background-repeat: no-repeat;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 13px;
+    cursor: pointer;
+    border: none;
+    margin-right: 10px;
+}
+
+.expression-container {
+    width: 80%;
+}
+
+.expression-control {
+    width: 20%;
+    vertical-align: middle;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}

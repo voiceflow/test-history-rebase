@@ -28,7 +28,7 @@ const tabs = {
   ],
   bottom: [
     {
-      link: 'https://forum.getvoiceflow.com',
+      link: 'https://forum.voiceflow.com',
       icon: <i className="fas fa-question" />,
       tip: 'Join the Voiceflow Forum for help & updates',
     },

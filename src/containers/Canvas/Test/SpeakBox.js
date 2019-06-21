@@ -36,6 +36,7 @@ class SpeakBox extends React.Component {
     }
     if (this.props.lastNode) {
       this.props.lastNode.setFocused(false);
+      this.props.lastNode.setSelected(false);
     }
   }
 

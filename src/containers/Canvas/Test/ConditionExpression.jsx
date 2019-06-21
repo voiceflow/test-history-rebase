@@ -21,11 +21,11 @@ const ConditionExpression = (props) => {
             value={variable}
             options={variables}
             onChange={(selected) => {
-              if (value) {
-                onSelection(selected.value, value);
-              }
               if (variable) {
                 onSelection(variable.value, variable.value);
+              }
+              if (value) {
+                onSelection(selected.value, value);
               }
               setVariable(selected);
             }}

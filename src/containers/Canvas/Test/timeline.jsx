@@ -222,6 +222,7 @@ const Timeline = (props) => {
     const b = urls[index];
     if (b.type === 'tag' && b.name === 'audio' && b.attrs && b.attrs.src) {
       // AUDIO TAGS
+
       const audio = new Audio(b.attrs.src);
 
       setAudio(audio);
@@ -393,7 +394,6 @@ const Timeline = (props) => {
       .then(async (res) => {
         // eslint-disable-next-line no-param-reassign
         res = res.data;
-        console.log(res);
         const { trace } = res;
         if (res.line_id) {
           story_state = res;

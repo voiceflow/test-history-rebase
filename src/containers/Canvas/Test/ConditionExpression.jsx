@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { selectStyles } from 'components/VariableSelect/VariableSelect';
 import cn from 'classnames';
-import { Input } from 'reactstrap';
+import { selectStyles } from 'components/VariableSelect/VariableSelect';
+import React, { useState } from 'react';
 import Select from 'react-select';
+import { Input } from 'reactstrap';
 
 const ConditionExpression = (props) => {
   const [value, setValue] = useState();

@@ -1768,7 +1768,6 @@ export class Canvas extends Component {
             <SRD.DiagramWidget
               diagramEngine={this.state.engine}
               allowLooseLinks={false}
-              locked={this.props.preview}
               onConfirm={this.props.setConfirm}
               onDeleteIntentNode={this.onDeleteIntentNode.bind(this)}
               nodeProps={{
@@ -1796,7 +1795,7 @@ export class Canvas extends Component {
               setBlockMenu={this.props.setBlockMenu}
               setOpen={this.props.setOpen}
               platform={this.props.skill.platform}
-              locked={this.state.engine.getDiagramModel().isLocked()}
+              locked={this.state.engine.getDiagramModel().isLocked() || this.props.preview}
             />
           </div>
         </div>

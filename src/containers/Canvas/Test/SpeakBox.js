@@ -34,6 +34,9 @@ class SpeakBox extends React.Component {
     if (this.timer) {
       clearTimeout(this.timer);
     }
+    if (this.props.lastNode) {
+      this.props.lastNode.setFocused(false);
+    }
   }
 
   centerNode = () => {

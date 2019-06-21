@@ -837,7 +837,7 @@ export class ActionGroup extends PureComponent {
             <Alert>
               Amazon responded with an error, Visit our{' '}
               <u>
-                <a href="https://forum.getvoiceflow.com">community</a>
+                <a href="https://forum.voiceflow.com">community</a>
               </u>{' '}
               or contact us for help
             </Alert>
@@ -1050,7 +1050,7 @@ export class ActionGroup extends PureComponent {
   };
 
   render() {
-    const link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`;
+    const link = `https://creator.voiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`;
 
     return (
       <React.Fragment>

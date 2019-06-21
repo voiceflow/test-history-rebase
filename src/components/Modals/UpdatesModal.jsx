@@ -19,7 +19,7 @@ const class_mapping = {
 
 const UpdatesModal = (props) => {
   return (
-    <Modal isOpen={this.props.show_update_modal} toggle={this.props.toggle} centered>
+    <Modal isOpen={props.show_update_modal} toggle={props.toggle} centered>
       <div className="pt-3 mb-0 text-center">
         <p className="mb-0" id="update-modal-header-title">
           Since you've been gone{' '}
@@ -31,8 +31,8 @@ const UpdatesModal = (props) => {
       <ModalBody className="text-center pl-0 pr-0">
         <hr className="mt-0 w-100" />
         <div className="update-modal-body mb-4">
-          {Array.isArray(this.props.product_updates) &&
-            this.props.product_updates.map((entry, i) => {
+          {Array.isArray(props.product_updates) &&
+            props.product_updates.map((entry, i) => {
               return (
                 <React.Fragment key={i}>
                   <div align="left" className="pr-4 pl-4">
@@ -46,7 +46,7 @@ const UpdatesModal = (props) => {
             })}
         </div>
         <div>
-          <Button isBtn isClear onClick={this.props.toggle}>
+          <Button isBtn isClear onClick={props.toggle}>
             Got it!
           </Button>
         </div>

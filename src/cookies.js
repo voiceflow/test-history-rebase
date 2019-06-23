@@ -6,7 +6,16 @@ const cookies = new Cookies();
 
 const creatorUrl = 'creator.voiceflow.com';
 const legacyUrl = 'creator.getvoiceflow.com';
-const cookieDomain = window.location.host === creatorUrl ? '.voiceflow.com' : window.location.host;
+let cookieDomain;
+if (process.env.NODE_ENV !== 'development') {
+  if (window.location.host === creatorUrl) {
+    cookieDomain = '.voiceflow.com';
+  } else {
+    cookieDomain = window.location.host;
+  }
+} else {
+  cookieDomain = 'localhost';
+}
 const cookieOptions = { path: '/', domain: cookieDomain };
 
 export const removeAuthCookie = () => cookies.remove(AUTH_COOKIE, cookieOptions);

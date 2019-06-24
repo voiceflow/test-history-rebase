@@ -99,7 +99,7 @@ class Test extends Component {
           return (
             <div
               key={i}
-              className={cn('sidebar_container', (s === C.CONDITIONS ? 'variables' : 'dialog') + '_container', {
+              className={cn('sidebar_container', `${s === C.CONDITIONS ? 'variables' : 'dialog'}_container`, {
                 open: this.props.open,
               })}
             >

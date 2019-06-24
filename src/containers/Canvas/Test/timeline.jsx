@@ -405,7 +405,6 @@ const Timeline = (props) => {
       .then(async (res) => {
         // eslint-disable-next-line no-param-reassign
         res = res.data;
-        console.log(res);
         const { trace } = res;
         if (res.line_id) {
           story_state = res;

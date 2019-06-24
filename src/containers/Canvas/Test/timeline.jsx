@@ -389,13 +389,11 @@ const Timeline = (props) => {
       }
       data.play.action = 'NEXT';
     }
-    console.log(data);
     axios
       .post('/test/interact', data)
       .then(async (res) => {
         // eslint-disable-next-line no-param-reassign
         res = res.data;
-        console.log(res);
         const { trace } = res;
         if (res.line_id) {
           story_state = res;
@@ -473,6 +471,24 @@ const Timeline = (props) => {
                 delay += duration + 500;
                 dom.push(outputBlock);
               });
+            } else if (type === 'Stream') {
+              const results = await Promise.all(
+                block.audio.map(async (audioFile) => {
+                  const audio = new Audio(audioFile);
+                  return { duration: await getAudioMeta(audio), audio };
+                })
+              );
+              const duration = results[0].duration * 1000;
+              const outputBlock = {
+                audio: results[0].audio,
+                text: 'Streaming',
+                node: block.line.id,
+                isLast: !block.line.nextId,
+                delay,
+                type,
+              };
+              delay += duration + 500;
+              dom.push(outputBlock);
             } else if (type === 'Choice' && idx === trace.length - 1) {
               const outputBlock = {
                 options: _.map(block.line.inputs, _.head),

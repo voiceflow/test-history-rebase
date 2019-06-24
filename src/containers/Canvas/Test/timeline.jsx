@@ -575,27 +575,27 @@ const Timeline = (props) => {
 
   return (
     <div id="Timeline" className="mb-3">
-      <div className="no-margin__break">
+      <div className="break position-absolute" style={{ top: -20 }}>
         <span className="or">New Session Started</span>
-        <TestBox
-          inputs={inputs}
-          diagramEngine={diagramEngine}
-          history={history}
-          ended={ended}
-          enterFlow={enterFlow}
-          setEnded={setEnded}
-          audioPlayer={audioPlayer}
-          handleRestart={handleRestart}
-          handleChange={(e) => setInput(e.target.value)}
-          inputSubmit={inputSubmit}
-          setInput={(val) => setInput(val)}
-          resetTest={resetTest}
-          outputs={outputs}
-          lastNode={lastNode}
-          setLastNode={setLastNode}
-          time={moment.utc(time * 1000).format('mm:ss')}
-        />
       </div>
+      <TestBox
+        inputs={inputs}
+        diagramEngine={diagramEngine}
+        history={history}
+        ended={ended}
+        enterFlow={enterFlow}
+        setEnded={setEnded}
+        audioPlayer={audioPlayer}
+        handleRestart={handleRestart}
+        handleChange={(e) => setInput(e.target.value)}
+        inputSubmit={inputSubmit}
+        setInput={(val) => setInput(val)}
+        resetTest={resetTest}
+        outputs={outputs}
+        lastNode={lastNode}
+        setLastNode={setLastNode}
+        time={moment.utc(time * 1000).format('mm:ss')}
+      />
     </div>
   );
 };

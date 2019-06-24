@@ -96,7 +96,7 @@ class Test extends Component {
           }
 
           return (
-            <div key={i} className="sidebar_container">
+            <div key={i} className={(s === C.CONDITIONS ? 'variables' : 'dialog') + '_container'}>
               <div
                 className="condition-label"
                 onClick={() => {

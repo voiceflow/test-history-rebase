@@ -20,9 +20,24 @@
   -ms-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
+  display: flex;
+  flex-direction: column;
+}
+
+#TestSidebar .dialog_container {
+  display: flex;
+  flex-direction: column;
+  flex: 1
+}
+
+#TestSidebar .dialog_container .collapse {
+  flex: 1
 }
 
 #Timeline{
+  display: flex;
+  flex-direction: column;
+  position: relative;
   height: 100%;
   margin-bottom: 1rem !important;
 }
@@ -72,10 +87,6 @@
 
 .response-input {
   min-height: 100px;
-}
-
-.sidebar_container {
-  /* border-bottom: 1px solid #EAEFF4 !important; */
 }
 
 .choice-option {

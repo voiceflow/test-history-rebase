@@ -51,7 +51,7 @@ td {
 }
 
 .chat-container {
-  height: 40vh;
+  flex: 1;
 }
 
 .var-table {

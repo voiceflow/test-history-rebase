@@ -96,7 +96,7 @@ const TestBox = (props) => {
                 onChange={handleChange}
                 onKeyDown={onKeydown}
               />
-              <small className="float-right text-muted pb-3 pt-2 d-block">Enter to send</small>
+              <small className="float-left text-muted pb-3 pl-1 pt-2 d-block">Enter to send</small>
             </Form>
           </React.Fragment>
         )}

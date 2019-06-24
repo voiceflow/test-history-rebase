@@ -65,25 +65,33 @@ class App extends Component {
       this.setState({ session: !!getAuth() });
     });
 
-		// REDIRECT TO MAINTENANCE
-		evaluateMaintenance((time) => {
-			if (time) {
-				setTimeout(() => this.props.setConfirm({
-					size: 'rg',
-					text: <Alert className="mb-0">
-						Voiceflow Creator will go under planned maintenance<br/>
-						<b>{time}</b> from now
-						<hr/>
-						Live Projects will not be affected</Alert>
-				}), 100);
-			} else {
+    // REDIRECT TO MAINTENANCE
+    evaluateMaintenance((time) => {
+      if (time) {
+        setTimeout(
+          () =>
+            this.props.setConfirm({
+              size: 'rg',
+              text: (
+                <Alert className="mb-0">
+                  Voiceflow Creator will go under planned maintenance
+                  <br />
+                  <b>{time}</b> from now
+                  <hr />
+                  Live Projects will not be affected
+                </Alert>
+              ),
+            }),
+          100
+        );
+      } else {
         window.location.replace('https://voiceflow.com/maintenance');
         // eslint-disable-next-line xss/no-location-href-assign
-				window.location.href = 'https://voiceflow.com/maintenance';
-				throw new Error('MAINTENANCE');
-			}
-		});
-	}
+        window.location.href = 'https://voiceflow.com/maintenance';
+        throw new Error('MAINTENANCE');
+      }
+    });
+  }
 
   render() {
     if (this.state.loading) {

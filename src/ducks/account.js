@@ -4,17 +4,14 @@ import { push } from 'connected-react-router';
 import LogRocket from 'logrocket';
 import queryString from 'query-string';
 import { IntercomAPI } from 'react-intercom';
-import Cookies from 'universal-cookie';
 
 import { getDevice } from 'Helper';
-// import { setError } from 'ducks/modal'
+
+import { getAuthCookie, removeAuthCookie, removeLastSessionCookie, setAuthCookie } from '../cookies';
 
 export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT';
 export const RESET_ACCOUNT = 'RESET_ACCOUNT';
-export const AUTH_COOKIE = 'auth_vf';
 
-const cookies = new Cookies()
-const cookieDomain = process.env.NODE_ENV === 'development' ? 'localhost' : '.voiceflow.com';
 
 const initialState = {
   loading: false,
@@ -58,7 +55,7 @@ export const checkSession = () => {
       dispatch(updateAccount(user));
       return Promise.resolve(user);
     } catch (err) {
-      cookies.remove(AUTH_COOKIE, { path: '/', domain: cookieDomain });
+      removeAuthCookie();
       dispatch(resetAccount());
       return Promise.reject(err);
     }
@@ -75,7 +72,7 @@ export const getUser = () => {
 
       return Promise.resolve(user);
     } catch (err) {
-      cookies.remove(AUTH_COOKIE, { path: '/', domain: cookieDomain });
+      removeAuthCookie();
       dispatch(resetAccount());
       return Promise.reject(err);
     }
@@ -89,7 +86,7 @@ export const logout = () => {
     } catch (err) {
       console.error(err);
     }
-    cookies.remove(AUTH_COOKIE, { path: '/', domain: cookieDomain });
+    removeAuthCookie();
     localStorage.clear();
     dispatch(resetAccount());
 
@@ -125,8 +122,8 @@ const createSession = (endpoint) => {
           delete data.user.id;
         }
 
-        cookies.set(AUTH_COOKIE, data.token, { path: '/', domain: cookieDomain });
-        cookies.remove('last_session');
+        setAuthCookie(data.token);
+        removeLastSessionCookie();
 
         dispatch(updateAccount(data.user));
 
@@ -170,9 +167,7 @@ export const googleLogin = createSession('/googleLogin');
 export const fbLogin = createSession('/fbLogin');
 
 // Non Action functions
-export const getAuth = () => {
-  return cookies.get(AUTH_COOKIE, { path: '/', domain: cookieDomain });
-};
+export const getAuth = getAuthCookie;
 
 export const AmazonAccessToken = () =>
   new Promise((resolve, reject) => {

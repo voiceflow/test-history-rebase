@@ -1,4 +1,4 @@
-import {googleClient, devGoogleClient, fbId} from './social-id.js';
+import {googleClient, devGoogleClient, fbId} from './social-id';
 import { fbLogin, googleLogin } from 'ducks/account';
 import React, { Fragment, useEffect, useState } from 'react';
 import FacebookLogin from 'react-facebook-login';

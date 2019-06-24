@@ -79,6 +79,7 @@
     "patch-package": "^6.1.2",
     "pathfinding": "^0.4.18",
     "paths-js": "^0.4.7",
+    "pluralize": "^8.0.0",
     "pnp-webpack-plugin": "1.1.0",
     "postcss-flexbugs-fixes": "4.1.0",
     "postcss-loader": "3.0.0",

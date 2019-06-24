@@ -581,11 +581,19 @@ const Timeline = (props) => {
       if (intent) {
         story_state.intent = intent;
       } else {
-        story_state.input = (val ? val.val : val) || input;
-        inputs.push({
-          self: (val.val ? val.label : val) || input,
-          time: moment().format('h:mm:ss A'),
-        });
+        if (val) {
+          story_state.input = val.val ? val.val : val;
+          inputs.push({
+            self: val.label ? val.label : val,
+            time: moment().format('h:mm:ss A'),
+          });
+        } else {
+          story_state.input = input;
+          inputs.push({
+            self: input,
+            time: moment().format('h:mm:ss A'),
+          });
+        }
       }
       e.currentTarget.value = '';
       setInput('');

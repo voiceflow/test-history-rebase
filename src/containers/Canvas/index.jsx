@@ -544,7 +544,6 @@ export class Canvas extends Component {
     const removeNode = () => {
       const diagramEngine = this.state.engine;
       const combineBlock = node.parentCombine;
-      console.log('combine block combines: ', combineBlock.combines);
       combineBlock.combines = _.filter(combineBlock.combines, (c) => {
         if (c.id === node.id) {
           diagramEngine.setSuperSelect(null);
@@ -553,7 +552,6 @@ export class Canvas extends Component {
         }
         return true;
       });
-      console.log('combine block combines: ', combineBlock.combines);
 
       if (combineBlock.extras.type !== 'god') return this.forceRepaint();
       const lastNode = _.last(combineBlock.combines);

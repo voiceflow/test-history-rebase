@@ -472,6 +472,7 @@ const Timeline = (props) => {
                 dom.push(outputBlock);
               });
             } else if (type === 'Stream') {
+              // eslint-disable-next-line no-await-in-loop
               const results = await Promise.all(
                 block.audio.map(async (audioFile) => {
                   const audio = new Audio(audioFile);
@@ -516,10 +517,9 @@ const Timeline = (props) => {
               };
               dom.push(outputBlock);
             } else {
-              // eslint-disable-next-line lodash/collection-return, lodash/collection-method-value, no-loop-func
               if (!_.isEmpty(parsed.children)) {
-                console.log(parsed);
-                _.map(parsed.children, (child, idx) => {
+                // eslint-disable-next-line lodash/collection-return, lodash/collection-method-value, no-loop-func
+                _.map(parsed.children, (child) => {
                   const outputBlock = {
                     text: child.children[0].children[0].content,
                     node: block.line.id,

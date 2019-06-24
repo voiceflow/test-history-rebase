@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Alert, Modal, ModalBody } from 'reactstrap';
 
-const ErrorModal = ({ error, dismiss }) => {
+export const ErrorModal = ({ error, dismiss }) => {
   if (!error) {
     return null;
   }

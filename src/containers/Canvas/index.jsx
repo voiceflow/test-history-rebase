@@ -29,6 +29,7 @@ import { setVariables } from 'ducks/variable';
 import { renameDiagram, appendDiagrams, updateDiagrams } from 'ducks/diagram';
 import { setError, setConfirm } from 'ducks/modal';
 import { openTab, closeTab, setCanvasError } from 'ducks/user';
+import clipboard from './clipboard';
 
 import ActionGroup from './components/ActionGroup/ActionGroup';
 import HelpModal from './HelpModal';
@@ -135,14 +136,13 @@ export class Canvas extends Component {
   setMousetrap = () => {
     Mousetrap.reset();
     Mousetrap.bind(['shift+/'], () => this.props.toggleKeyboard(!this.props.keyboardHelp));
-    Mousetrap.bind(['ctrl+c', 'command+c'], () =>
-      this.setState({
-        copy: this.state.engine
-          .getDiagramModel()
-          .getSelectedItems()
-          .filter((n) => n instanceof BlockNodeModel),
-      })
-    );
+    Mousetrap.bind(['ctrl+c', 'command+c'], () => {
+      const blocks = this.state.engine.getDiagramModel().getSelectedItems();
+      const skill = this.props.skill.skill_id;
+      const diagram = this.props.diagram_id;
+      const payload = clipboard.copy(blocks, { skill, diagram });
+      localStorage.clipboard = JSON.stringify(payload);
+    });
     Mousetrap.bind(['ctrl+v', 'command+v'], this.paste);
     Mousetrap.bind(['ctrl+z', 'command+z'], this.undo);
     Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo);
@@ -289,18 +289,28 @@ export class Canvas extends Component {
   };
 
   paste = () => {
-    if (this.state.copy) {
-      const event = {
-        clientX: this.mouseX,
-        clientY: this.mouseY,
-      };
-      const point = this.state.engine.getRelativeMousePoint(event);
-      const centerX = _.maxBy(this.state.copy, 'x').x - (_.maxBy(this.state.copy, 'x').x - _.minBy(this.state.copy, 'x').x) / 2;
-      const centerY = _.maxBy(this.state.copy, 'y').y - (_.maxBy(this.state.copy, 'y').y - _.minBy(this.state.copy, 'y').y) / 2;
-      _.forEach(this.state.copy, (node) => {
-        this.copyNode(node, { x: point.x + (node.x - centerX), y: point.y + (node.y - centerY) });
-      });
+    const skill = this.props.skill.skill_id;
+    const diagram = this.props.diagram_id;
+
+    const event = {
+      clientX: this.mouseX,
+      clientY: this.mouseY,
+    };
+    const engine = this.state.engine;
+    const point = engine.getRelativeMousePoint(event);
+    engine.getDiagramModel().clearSelection();
+    engine.stopMove();
+    const nodes = clipboard.paste(JSON.parse(localStorage.clipboard), { skill, diagram }, point);
+    engine.getDiagramModel().addAll(...nodes);
+
+    if (this.props.undoEvents.length >= 10) {
+      this.props.shiftUndo();
     }
+    this.props.addUndo(nodes, 'copy');
+    this.props.clearRedo();
+    this.setState({
+      engine,
+    });
   };
 
   undo = (e) => {
@@ -368,79 +378,6 @@ export class Canvas extends Component {
       }
     } else {
       this.props.setError('Cannot delete blocks that would alter the interaction model in live version editing');
-    }
-  };
-
-  // copy individual node
-  copyNode = (newNode = null, pos = null) => {
-    const selected = newNode || this.state.engine.getSuperSelect();
-    if (selected.extras.type !== 'story') {
-      const engine = this.state.engine;
-      engine.stopMove();
-
-      const node = new BlockNodeModel(`${selected.name} copy`, null, toolkit.UID());
-      node.extras = cloneDeep(selected.extras);
-      if (selected.extras.type === 'god') {
-        const newCombines = [];
-        selected.combines.forEach((combineNode, idx) => {
-          const newCombineNode = new BlockNodeModel(combineNode.name, null, toolkit.UID());
-          newCombineNode.extras = cloneDeep(combineNode.extras);
-          newCombineNode.x = combineNode.x + 30;
-          newCombineNode.y = combineNode.y + 30;
-          const ports = combineNode.ports;
-          let newPort;
-          for (const name in ports) {
-            const port = ports[name];
-            port.in ? (newPort = newCombineNode.addInPort(port.label)) : (newPort = newCombineNode.addOutPort(port.label));
-            if (port.hidden) {
-              newPort.setHidden(port.hidden);
-            }
-          }
-          newCombines.push(newCombineNode);
-          newCombines[idx].parentCombine = node;
-        });
-        node.combines = newCombines;
-      }
-      const ports = selected.getPorts();
-      let newPort;
-      if (node.extras.type !== 'god') {
-        for (const name in ports) {
-          const port = ports[name];
-          port.in ? (newPort = node.addInPort(port.label)) : (newPort = node.addOutPort(port.label));
-          if (port.hidden) {
-            newPort.setHidden(port.hidden);
-          }
-        }
-      }
-
-      node.x = pos ? pos.x : selected.x + 30;
-      node.y = pos ? pos.y : selected.y + 30;
-      if (!_.isEmpty(node.combines)) {
-        let totalHeight = 40;
-        _.forEach(node.combines, (c, idx) => {
-          if (!(c instanceof String) && c.id !== node.id) {
-            c.x = node.x + 10;
-            c.y = node.y + totalHeight;
-            if (c.height) {
-              totalHeight += c.height;
-            } else {
-              totalHeight += selected.combines[idx].height;
-            }
-          }
-        });
-      }
-      engine.getDiagramModel().clearSelection();
-      node.setSelected();
-      engine.setSuperSelect(node);
-      engine.getDiagramModel().addNode(node);
-      if (this.props.undoEvents.length >= 10) {
-        this.props.shiftUndo();
-      }
-      this.props.addUndo([node], 'copy');
-      this.props.clearRedo();
-      this.setState({
-        engine,
-      });
     }
   };
 

@@ -2535,17 +2535,14 @@ button.close:hover{
 
 .read-only {
   position: absolute;
-  top: 14px;
-  left: 50px;
+  top: 15px;
+  left: 15px;
   z-index: 5;
   color: #8da2b5;
   font-size: 13px;
-  background-color: #fff;
+  background-color: #E7EEF5;
   border: none !important;
   border-radius: 5px;
-  box-shadow:
-    0 0 1px 1px rgba(17, 49, 96, 0.06),
-    0 2px 4px 0 rgba(17, 49, 96, 0.08);
   transition: all 0.1s ease;
 }
 

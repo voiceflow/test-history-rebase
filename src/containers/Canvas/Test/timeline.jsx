@@ -405,6 +405,7 @@ const Timeline = (props) => {
       .then(async (res) => {
         // eslint-disable-next-line no-param-reassign
         res = res.data;
+        console.log(res);
         const { trace } = res;
         if (res.line_id) {
           story_state = res;
@@ -547,7 +548,6 @@ const Timeline = (props) => {
                   const outputBlock = {
                     text: child.children[0].children[0].content,
                     node: block.line.id,
-                    audioType: child.name,
                     delay,
                     type: 'system',
                     isLast: !block.line.nextId,
@@ -599,28 +599,27 @@ const Timeline = (props) => {
 
   return (
     <div id="Timeline" className="mb-3">
-      <div className="no-margin__break">
-        <span className="or">New Session Started</span>
-        <TestBox
-          inputs={inputs}
-          diagramEngine={diagramEngine}
-          history={history}
-          ended={ended}
-          enterFlow={enterFlow}
-          setEnded={setEnded}
-          setIntent={setIntent}
-          audioPlayer={audioPlayer}
-          handleRestart={handleRestart}
-          handleChange={(e) => setInput(e.target.value)}
-          inputSubmit={inputSubmit}
-          setInput={(val) => setInput(val)}
-          resetTest={resetTest}
-          outputs={outputs}
-          lastNode={lastNode}
-          setLastNode={setLastNode}
-          time={moment.utc(time * 1000).format('mm:ss')}
-        />
-      </div>
+      <div className="no-margin__break" />
+      <span className="or session-break">New Session Started</span>
+      <TestBox
+        inputs={inputs}
+        diagramEngine={diagramEngine}
+        history={history}
+        ended={ended}
+        enterFlow={enterFlow}
+        setEnded={setEnded}
+        setIntent={setIntent}
+        audioPlayer={audioPlayer}
+        handleRestart={handleRestart}
+        handleChange={(e) => setInput(e.target.value)}
+        inputSubmit={inputSubmit}
+        setInput={(val) => setInput(val)}
+        resetTest={resetTest}
+        outputs={outputs}
+        lastNode={lastNode}
+        setLastNode={setLastNode}
+        time={moment.utc(time * 1000).format('mm:ss')}
+      />
     </div>
   );
 };

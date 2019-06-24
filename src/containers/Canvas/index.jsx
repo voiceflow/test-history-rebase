@@ -1672,6 +1672,7 @@ export class Canvas extends Component {
             deleteFlow={this.deleteFlow}
             preview={this.props.preview}
             toggleUpgrade={this.props.toggleUpgrade}
+            isCanvas={this.props.page === 'canvas'}
             type_counter={this.state.type_counter}
             openTab={this.openTab}
             closeTab={this.props.closeTab}

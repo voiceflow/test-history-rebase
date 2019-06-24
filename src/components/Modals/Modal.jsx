@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 
-const StandardModal = ({ modal, toggle }) => {
+export const StandardModal = ({ modal, toggle }) => {
   // TODO this class is pure cancer
   if (!modal) {
     return null;
@@ -18,8 +18,6 @@ const StandardModal = ({ modal, toggle }) => {
     </Modal>
   );
 };
-
-export { StandardModal };
 
 const mapStateToProps = (state) => ({
   modal: state.modal.modal,

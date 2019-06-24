@@ -7,7 +7,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 
-const ConfirmModal = ({ toggle, confirm }) => {
+export const ConfirmModal = ({ toggle, confirm }) => {
   // TODO this class is pure cancer
   if (!confirm) {
     return null;
@@ -42,8 +42,6 @@ const ConfirmModal = ({ toggle, confirm }) => {
     </Modal>
   );
 };
-
-export { ConfirmModal };
 
 const mapStateToProps = (state) => ({
   confirm: state.modal.confirmModal,

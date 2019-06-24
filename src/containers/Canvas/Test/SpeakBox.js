@@ -69,31 +69,19 @@ class SpeakBox extends React.Component {
               'text-right': isRight,
             })}
           >
-            {this.props.isChoice && (
-              <>
-                <div className="choice-options p-2 align-self-start">
-                  {chat.options.map((option, i) => (
-                    <div
-                      key={i}
-                      className="choice-option mb-1"
-                      onClick={(e) => {
-                        this.props.inputSubmit(e, option);
-                      }}
-                    >
-                      {option}
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
             {this.props.isSpeak && (
               <>
-                <img src={type === 'audio' ? '/audio.svg' : '/alexa.svg'} height={18} width={18} alt="alexa" className="speak-box-icon mr-2" />
+                {type ? (
+                  <img src={type === 'audio' ? '/audio.svg' : '/alexa.svg'} height={18} width={18} alt="alexa" className="speak-box-icon mr-2" />
+                ) : (
+                  <img src="/images/icons/power.svg" height={18} width={18} alt="alexa" className="speak-box-icon mr-2" />
+                )}
                 <Tooltip title={renderTime}>
                   <div
                     className={cn('message border rounded p-2 align-self-start', {
                       'ml-4': isLeft,
                       'mr-4': isRight,
+                      'bg-light-turqoise': !type,
                     })}
                     onClick={() => {
                       this.props.audio.play();
@@ -106,6 +94,23 @@ class SpeakBox extends React.Component {
                     </p>
                   </div>
                 </Tooltip>
+              </>
+            )}
+            {this.props.isChoice && (
+              <>
+                <div className="choice-options p-2 align-self-start">
+                  {chat.options.map((option, i) => (
+                    <div
+                      key={i}
+                      className="choice-option mb-1"
+                      onClick={(e) => {
+                        this.props.inputSubmit(e, option);
+                      }}
+                    >
+                      {option.label ? option.label : option}
+                    </div>
+                  ))}
+                </div>
               </>
             )}
           </div>

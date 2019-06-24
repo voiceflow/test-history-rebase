@@ -44,11 +44,14 @@ td {
   flex-direction: column-reverse;
   box-sizing: border-box;
   width: 100%;
-  height: 40vh;
-  margin-bottom: 10px;
+  height: 100%;
   padding: 0 15px;
   overflow-y: auto;
   flex: 1;
+}
+
+.chat-container {
+  height: 40vh;
 }
 
 .var-table {
@@ -142,6 +145,7 @@ td {
 
 .chats {
   width: 100%;
+  padding: 20px 0;
 }
 
 .message-container {

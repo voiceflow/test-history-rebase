@@ -208,7 +208,7 @@ class Menu extends Component {
   render() {
     return (
       <div className="Menu" onFocus={this.props.unfocus} onMouseDown={this.props.unfocus} onKeyDown={this.props.unfocus}>
-        {!this.props.preview && (
+        {!this.props.preview && this.props.isCanvas && (
           <div className="toolbar">
             <div className="top-down">
               {tabs.top.map((tab, i) => {

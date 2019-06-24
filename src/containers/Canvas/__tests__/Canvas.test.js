@@ -10,11 +10,12 @@ const setOnSave = jest.fn();
 const historyMock = { push: jest.fn() };
 const error = jest.fn();
 
+const diagram = {};
 describe('Canvas', () => {
   it('render canvas', () => {
     const skill = testSkill;
     const component = shallow(
-      <Canvas skill={skill} setOnSave={setOnSave} resetSkill={jest.fn()} getIntegrationsUsers={jest.fn(() => Promise.resolve())} />
+      <Canvas skill={skill} setOnSave={setOnSave} diagram={diagram} resetSkill={jest.fn()} getIntegrationsUsers={jest.fn(() => Promise.resolve())} />
     );
     expect(toJson(component)).toMatchSnapshot();
     component.unmount();
@@ -34,6 +35,7 @@ describe('Canvas', () => {
         updateSkill={_.noop}
         setOnSave={setOnSave}
         getIntegrationsUsers={jest.fn(() => Promise.resolve())}
+        diagram={diagram}
       />
     );
     component.unmount();
@@ -54,6 +56,7 @@ describe('Canvas', () => {
         history={historyMock}
         updateSkill={jest.fn()}
         getIntegrationsUsers={jest.fn(() => Promise.resolve())}
+        diagram={diagram}
       />
     );
     component.instance().enterFlow('12345', false);
@@ -79,6 +82,7 @@ describe('Canvas', () => {
         history={historyMock}
         setError={error}
         getIntegrationsUsers={jest.fn(() => Promise.resolve())}
+        diagram={diagram}
       />
     );
     component.instance().createDiagram(node);
@@ -99,6 +103,7 @@ describe('Canvas', () => {
         updateSkill={jest.fn()}
         setError={error}
         updateDiagrams={_.noop}
+        diagram={diagram}
         getIntegrationsUsers={jest.fn(() => Promise.resolve())}
       />
     );

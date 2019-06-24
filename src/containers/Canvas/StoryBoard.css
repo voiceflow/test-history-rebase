@@ -2533,6 +2533,26 @@ button.close:hover{
   color: #ff3562;
 }
 
+.read-only {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 5;
+  color: #8da2b5;
+  font-size: 13px;
+  background-color: #E7EEF5;
+  border: none !important;
+  border-radius: 5px;
+  transition: all 0.1s ease;
+}
+
+.read-only-container {
+  padding-top: 3px;
+  padding-right: 10px;
+  padding-bottom: 3px;
+  padding-left: 10px;
+}
+
 #label-label {
   display: block;
   margin: 0;

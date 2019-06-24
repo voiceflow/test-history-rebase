@@ -88,6 +88,7 @@ class Test extends Component {
                   setTime={this.props.setTime}
                   resetTest={this.props.resetTest}
                   variableMapping={this.state.variableMapping}
+                  open={this.props.open}
                 />
               );
               break;
@@ -96,7 +97,12 @@ class Test extends Component {
           }
 
           return (
-            <div key={i} className={(s === C.CONDITIONS ? 'variables' : 'dialog') + '_container'}>
+            <div
+              key={i}
+              className={cn('sidebar_container', (s === C.CONDITIONS ? 'variables' : 'dialog') + '_container', {
+                open: this.props.open,
+              })}
+            >
               <div
                 className="condition-label"
                 onClick={() => {

@@ -64,6 +64,7 @@ const Timeline = (props) => {
     slots,
     skill,
     reset,
+    open,
     global,
     repeat,
     history,
@@ -129,6 +130,16 @@ const Timeline = (props) => {
       story_state = null;
       // stop();
       setReset(false);
+    }
+    if (!open && started) {
+      setStarted(false);
+      setTime(0);
+      setInputs([]);
+      setOutputs([]);
+      setEnded(false);
+      resetTest();
+      story_state = null;
+      stop();
     }
   });
 
@@ -394,6 +405,7 @@ const Timeline = (props) => {
       .then(async (res) => {
         // eslint-disable-next-line no-param-reassign
         res = res.data;
+        console.log(res);
         const { trace } = res;
         if (res.line_id) {
           story_state = res;
@@ -488,8 +500,21 @@ const Timeline = (props) => {
                 delay,
                 type,
               };
-              delay += duration + 500;
               dom.push(outputBlock);
+              const outputBlockChoices = {
+                options: [
+                  { label: 'Resume', val: 'AMAZON.ResumeIntent' },
+                  { label: 'Pause', val: 'AMAZON.PauseIntent' },
+                  { label: 'Next', val: 'AMAZON.NextIntent' },
+                  { label: 'Previous', val: 'AMAZON.PreviousIntent' },
+                ],
+                node: block.line.id,
+                isLast: !block.line.nextId,
+                delay,
+                type,
+              };
+              delay += duration + 500;
+              dom.push(outputBlockChoices);
             } else if (type === 'Choice' && idx === trace.length - 1) {
               const outputBlock = {
                 options: _.map(block.line.inputs, _.head),
@@ -523,9 +548,8 @@ const Timeline = (props) => {
                   const outputBlock = {
                     text: child.children[0].children[0].content,
                     node: block.line.id,
-                    audioType: child.name,
                     delay,
-                    type,
+                    type: 'system',
                     isLast: !block.line.nextId,
                   };
                   dom.push(outputBlock);
@@ -557,9 +581,9 @@ const Timeline = (props) => {
       if (intent) {
         story_state.intent = intent;
       } else {
-        story_state.input = val || input;
+        story_state.input = (val ? val.val : val) || input;
         inputs.push({
-          self: val || input,
+          self: (val.val ? val.label : val) || input,
           time: moment().format('h:mm:ss A'),
         });
       }
@@ -585,6 +609,7 @@ const Timeline = (props) => {
         ended={ended}
         enterFlow={enterFlow}
         setEnded={setEnded}
+        setIntent={setIntent}
         audioPlayer={audioPlayer}
         handleRestart={handleRestart}
         handleChange={(e) => setInput(e.target.value)}

@@ -1768,7 +1768,7 @@ export class Canvas extends Component {
             {this.props.page === 'test' && (
               <div className="read-only">
                 <div className="read-only-container">
-                  <img className="mr-2" src="/eye.svg" width={10} height={10} />
+                  <img className="mr-2" src="/eye.svg" width={15} height={15} />
                   <span>Read Only</span>
                 </div>
               </div>

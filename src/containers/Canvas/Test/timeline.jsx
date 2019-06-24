@@ -64,6 +64,7 @@ const Timeline = (props) => {
     slots,
     skill,
     reset,
+    open,
     global,
     repeat,
     history,
@@ -129,6 +130,16 @@ const Timeline = (props) => {
       story_state = null;
       // stop();
       setReset(false);
+    }
+    if (!open && started) {
+      setStarted(false);
+      setTime(0);
+      setInputs([]);
+      setOutputs([]);
+      setEnded(false);
+      resetTest();
+      story_state = null;
+      stop();
     }
   });
 
@@ -389,6 +400,7 @@ const Timeline = (props) => {
       }
       data.play.action = 'NEXT';
     }
+    console.log(data);
     axios
       .post('/test/interact', data)
       .then(async (res) => {

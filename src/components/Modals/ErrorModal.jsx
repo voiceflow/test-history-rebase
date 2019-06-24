@@ -4,19 +4,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Alert, Modal, ModalBody } from 'reactstrap';
 
-const ErrorModal = (props) => {
-  if (!props.error) return null;
+const ErrorModal = ({ error, dismiss }) => {
+  if (!error) return null;
   return (
-    <Modal isOpen={!!props.error} centered size="sm">
+    <Modal isOpen={!!error} centered size="sm">
       <ModalBody className="text-center">
         <h5>
           <i className="fas fa-exclamation-triangle text-danger" /> Error
         </h5>
-        {props.error.message ? (
+        {error.message ? (
           <React.Fragment>
-            <Alert color="danger">{props.error.message}</Alert>
-            {props.error.violations
-              ? props.error.violations.map((violation, i) => (
+            <Alert color="danger">{error.message}</Alert>
+            {error.violations
+              ? error.violations.map((violation, i) => (
                   <Alert color="danger" key={i}>
                     {violation.message}
                   </Alert>
@@ -24,10 +24,10 @@ const ErrorModal = (props) => {
               : null}
           </React.Fragment>
         ) : (
-          <Alert color="danger">{typeof props.error === 'string' ? props.error : props.error.error}</Alert>
+          <Alert color="danger">{typeof error === 'string' ? error : error.error}</Alert>
         )}
         <hr />
-        <Button isPrimary onClick={props.dismiss}>
+        <Button isPrimary onClick={dismiss}>
           Return <i className="fas fa-undo" />
         </Button>
       </ModalBody>

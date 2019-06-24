@@ -3,7 +3,7 @@ import './Modals.css';
 import Button from 'components/Button';
 import React from 'react';
 
-const MultiPlatformModalContent = (props) => {
+const MultiPlatformModalContent = ({ toggle, history }) => {
   return (
     <div className="d-flex flex-column">
       <div className="d-flex justify-content-center">
@@ -23,14 +23,14 @@ const MultiPlatformModalContent = (props) => {
           borderTop: '1px solid 1px solid rgba(141, 162, 181, .28)',
         }}
       >
-        <Button isFlat className="mr-4" onClick={props.toggle}>
+        <Button isFlat className="mr-4" onClick={toggle}>
           Close
         </Button>
         <Button
           isPrimary
           className="mr-4"
           onClick={() => {
-            props.history.push('/account/upgrade');
+            history.push('/account/upgrade');
           }}
         >
           Upgrade

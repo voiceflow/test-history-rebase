@@ -1,9 +1,6 @@
-import { getAuth } from 'ducks/account';
 import React from 'react';
 import { Alert } from 'reactstrap';
 import { lifecycle, withState } from 'recompose';
-
-import { getDevice } from 'Helper';
 
 const session_warning_content = (target, takeover) => (
   <div style={{ maxWidth: 600 }} className="text-center">
@@ -48,21 +45,15 @@ export const socketCheck = lifecycle({
       this.props.setLoadSession(false);
     } else {
       // SKILL SOCKET STATUS
-      if (window.CreatorSocket.status === 'CONNECTED') {
+      if (window.CreatorSocket.status !== 'FAIL') {
         window.CreatorSocket.emit('project', {
           skill_id,
-          auth: getAuth(),
-          device: getDevice(),
-          tabId: window.CreatorSocket.tabId,
         });
         window.CreatorSocket.on('occupied', (target) => {
           this.props.setErrorScreen(
             session_warning_content(target, function() {
               window.CreatorSocket.emit('takeover', {
                 skill_id,
-                auth: getAuth(),
-                device: getDevice(),
-                tabId: window.CreatorSocket.tabId,
               });
               window.location.reload();
             })
@@ -77,9 +68,6 @@ export const socketCheck = lifecycle({
         window.CreatorSocket.connectedCB[`SKILL_${skill_id}`] = () => {
           window.CreatorSocket.emit('project', {
             skill_id,
-            auth: getAuth(),
-            device: getDevice(),
-            tabId: window.CreatorSocket.tabId,
             reconnect: true,
           });
         };

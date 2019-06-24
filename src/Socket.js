@@ -46,7 +46,7 @@ window.CreatorSocket = socket(getEndpoint());
 
 window.CreatorSocket.status = 'CONNECTING';
 
-axios.defaults.headers.common.tabid = window.CreatorSocket.tabId;
+axios.defaults.headers.common.tabid = tabId;
 
 window.CreatorSocket.connectedCB = {};
 // catch error events

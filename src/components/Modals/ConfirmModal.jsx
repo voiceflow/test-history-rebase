@@ -12,7 +12,7 @@ const ConfirmModal = ({ toggle, confirm }) => {
   if (!confirm) {
     return null;
   }
-  const cancel = confirm.cancel !== undefined ? confirm.cancel : true;
+  const cancel = confirm.cancel === undefined || confirm.cancel;
   return (
     <Modal isOpen={!!confirm} toggle={toggle} centered size={confirm.size || 'sm'}>
       {confirm.header && <ModalHeader toggle={toggle}>{confirm.header}</ModalHeader>}

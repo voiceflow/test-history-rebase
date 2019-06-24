@@ -389,11 +389,13 @@ const Timeline = (props) => {
       }
       data.play.action = 'NEXT';
     }
+    console.log(data);
     axios
       .post('/test/interact', data)
       .then(async (res) => {
         // eslint-disable-next-line no-param-reassign
         res = res.data;
+        console.log(res);
         const { trace } = res;
         if (res.line_id) {
           story_state = res;
@@ -498,14 +500,21 @@ const Timeline = (props) => {
               };
               dom.push(outputBlock);
             } else {
-              const outputBlock = {
-                isLast: !block.line.nextId,
-                node: block.line.id,
-                type,
-                delay,
-              };
-              delay += 500;
-              dom.push(outputBlock);
+              // eslint-disable-next-line lodash/collection-return, lodash/collection-method-value, no-loop-func
+              if (!_.isEmpty(parsed.children)) {
+                console.log(parsed);
+                _.map(parsed.children, (child, idx) => {
+                  const outputBlock = {
+                    text: child.children[0].children[0].content,
+                    node: block.line.id,
+                    audioType: child.name,
+                    delay,
+                    type,
+                    isLast: !block.line.nextId,
+                  };
+                  dom.push(outputBlock);
+                });
+              }
             }
             idx++;
           }

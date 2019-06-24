@@ -28,54 +28,56 @@ const TestBox = (props) => {
 
   return (
     <React.Fragment>
-      <div className="chatbox px-3">
-        <div className="chats">
-          {outputs.map((chat, i) => {
-            if (chat.self) {
-              return (
-                <div className="mt-2 position-relative text-right mr-4" key={i}>
-                  <div className="self-message message border rounded p-2 align-self-start">
-                    <p className="mb-0 px-1 text-left">
-                      {chat.self}
-                      <br />
-                      <small className="text-muted">{chat.time}</small>
-                    </p>
+      <div className="chat-container">
+        <div className="chatbox px-3">
+          <div className="chats">
+            {outputs.map((chat, i) => {
+              if (chat.self) {
+                return (
+                  <div className="mt-2 position-relative text-right mr-4" key={i}>
+                    <div className="self-message message border rounded p-2 align-self-start">
+                      <p className="mb-0 px-1 text-left">
+                        {chat.self}
+                        <br />
+                        <small className="text-muted">{chat.time}</small>
+                      </p>
+                    </div>
+                    <img src="/user_reply.svg" height={18} width={18} alt="user" className="speak-box-icon ml-2" />
                   </div>
-                  <img src="/user_reply.svg" height={18} width={18} alt="user" className="speak-box-icon ml-2" />
-                </div>
+                );
+              }
+              return (
+                <SpeakBox
+                  key={i}
+                  isSpeak={!!chat.text}
+                  isLeft={!!chat.text}
+                  isFlow={!!chat.diagram}
+                  isRight={!!chat.options}
+                  isChoice={!!chat.options}
+                  text={chat.text}
+                  chat={chat}
+                  lastNode={lastNode}
+                  setLastNode={setLastNode}
+                  resetTest={resetTest}
+                  time={time}
+                  self={chat.self}
+                  isLast={chat.isLast}
+                  type={chat.audioType}
+                  audio={chat.audio}
+                  diagram={chat.diagram}
+                  history={history}
+                  node={chat.node}
+                  enterFlow={enterFlow}
+                  inputSubmit={inputSubmit}
+                  delay={chat.delay}
+                  diagramEngine={diagramEngine}
+                />
               );
-            }
-            return (
-              <SpeakBox
-                key={i}
-                isSpeak={!!chat.text}
-                isLeft={!!chat.text}
-                isFlow={!!chat.diagram}
-                isRight={!!chat.options}
-                isChoice={!!chat.options}
-                text={chat.text}
-                chat={chat}
-                lastNode={lastNode}
-                setLastNode={setLastNode}
-                resetTest={resetTest}
-                time={time}
-                self={chat.self}
-                isLast={chat.isLast}
-                type={chat.audioType}
-                audio={chat.audio}
-                diagram={chat.diagram}
-                history={history}
-                node={chat.node}
-                enterFlow={enterFlow}
-                inputSubmit={inputSubmit}
-                delay={chat.delay}
-                diagramEngine={diagramEngine}
-              />
-            );
-          })}
+            })}
+          </div>
         </div>
+        <div className="break" />
       </div>
-      <div className="break" />
       {ended ? (
         <Alert onClick={handleRestart} color="warning" className="m-3">
           Flow Ended - Reset <i className="far fa-sync-alt" />

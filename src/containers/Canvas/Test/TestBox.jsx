@@ -1,4 +1,3 @@
-import Button from 'components/Button';
 import React from 'react';
 import { Alert, Form, Input } from 'reactstrap';
 
@@ -10,17 +9,14 @@ const TestBox = (props) => {
     input,
     outputs,
     ended,
-    pause,
     history,
     enterFlow,
     lastNode,
     setLastNode,
-    setIntent,
     resetTest,
     diagramEngine,
     handleChange,
     inputSubmit,
-    audioPlayer,
     handleRestart,
   } = props;
 

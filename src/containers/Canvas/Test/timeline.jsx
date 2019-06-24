@@ -400,13 +400,11 @@ const Timeline = (props) => {
       }
       data.play.action = 'NEXT';
     }
-    console.log(data);
     axios
       .post('/test/interact', data)
       .then(async (res) => {
         // eslint-disable-next-line no-param-reassign
         res = res.data;
-        console.log(res);
         const { trace } = res;
         if (res.line_id) {
           story_state = res;

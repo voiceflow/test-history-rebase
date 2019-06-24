@@ -74,7 +74,7 @@ class SpeakBox extends React.Component {
                 {type ? (
                   <img src={type === 'audio' ? '/audio.svg' : '/alexa.svg'} height={18} width={18} alt="alexa" className="speak-box-icon mr-2" />
                 ) : (
-                  <img src={'/images/icons/power.svg'} height={18} width={18} alt="alexa" className="speak-box-icon mr-2" />
+                  <img src="/images/icons/power.svg" height={18} width={18} alt="alexa" className="speak-box-icon mr-2" />
                 )}
                 <Tooltip title={renderTime}>
                   <div

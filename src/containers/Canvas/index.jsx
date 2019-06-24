@@ -1720,7 +1720,6 @@ export class Canvas extends Component {
             resetTest={() => this.setState({ testing_info: false })}
             resume={this.countTime}
             time={this.state.time}
-            open={this.props.page === 'test'}
             setTime={this.setTime}
           />
           <div
@@ -1768,7 +1767,7 @@ export class Canvas extends Component {
             {this.props.page === 'test' && (
               <div className="read-only">
                 <div className="read-only-container">
-                  <img className="mr-2" src="/eye.svg" width={15} height={15} />
+                  <img className="mr-2" alt="eye" src="/eye.svg" width={15} height={15} />
                   <span>Read Only</span>
                 </div>
               </div>

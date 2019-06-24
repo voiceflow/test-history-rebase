@@ -181,7 +181,7 @@ export const googleAccessToken = () =>
   new Promise((resolve, reject) => {
     axios
       .get('/session/google/access_token')
-      .then((res) => resolve(res.data))
+      .then((res) => resolve(!!(res.data && res.data.token)))
       .catch((err) => reject(err));
   });
 

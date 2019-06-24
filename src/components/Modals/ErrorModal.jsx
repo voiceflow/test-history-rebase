@@ -5,7 +5,10 @@ import { connect } from 'react-redux';
 import { Alert, Modal, ModalBody } from 'reactstrap';
 
 const ErrorModal = ({ error, dismiss }) => {
-  if (!error) return null;
+  if (!error) {
+    return null;
+  }
+  
   return (
     <Modal isOpen={!!error} centered size="sm">
       <ModalBody className="text-center">

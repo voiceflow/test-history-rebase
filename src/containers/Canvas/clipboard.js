@@ -5,9 +5,29 @@ import { BlockNodeModel } from 'components/SRD/models/BlockNodeModel';
 const _ = require('lodash');
 
 const toolkit = new Toolkit();
+// todo optimize
+function lookup(arr, id) {
+  return arr.filter((i) => i.key === id)[0];
+}
 
-function copy(blocks, project) {
+function copy(blocks, skill) {
   const nodes = blocks.filter((block) => block instanceof BlockNodeModel && block.extras.type !== 'story');
+  let intents = [];
+  nodes
+    .filter((block) => block.extras.google || block.extras.alexa)
+    .map((block) => block.extras)
+    .forEach((data) => {
+      intents.push(data.alexa.intent || data.alexa.choices.map((choice) => choice.intent));
+      intents.push(data.google.intent || data.google.choices.map((choice) => choice.intent));
+    });
+  intents = _.uniqBy(intents.flat().filter((intent) => intent), 'key').map((intent) => lookup(skill.intents, intent.key));
+  const slots = intents
+    .map((intent) => intent.inputs)
+    .flat()
+    .map((input) => input.slots)
+    .flat()
+    .map((id) => lookup(skill.slots, id));
+
   const nodeset = new Set(nodes.map((node) => node.id));
   nodes
     .map((n) => n.combines || [])
@@ -16,16 +36,24 @@ function copy(blocks, project) {
   const links = blocks.filter(
     (block) => block instanceof BlockLinkModel && nodeset.has(block.sourcePort.parent.id) && nodeset.has(block.targetPort.parent.id)
   );
-  const payload = { project };
-  payload.nodes = nodes.map((n) => n.serialize());
-  payload.links = links.map((n) => n.serialize());
-
-  return payload;
+  return {
+    skill: skill.skill_id,
+    nodes: nodes.map((n) => n.serialize()),
+    links: links.map((n) => n.serialize()),
+    slots,
+    intents,
+  };
 }
 
 function makeNode(selected, pos, portMap, scope) {
   const node = new BlockNodeModel(selected.name, null, toolkit.UID());
   node.extras = selected.extras;
+
+  if (scope === 'NEW') {
+    if (node.extras.display_id) node.extras.display_id = null;
+    if (node.extras.product_id) node.extras.product_id = null;
+    if (node.extras.diagram_id) node.extras.diagram_id = '';
+  }
 
   node.x = pos.x;
   node.y = pos.y;
@@ -56,9 +84,17 @@ function makeNode(selected, pos, portMap, scope) {
   return node;
 }
 
-function paste(payload, project, point) {
+function paste(payload, skill, point) {
   if (payload.nodes.length === 0) return [];
-  const scope = 'NEW'; // NEW, SKILL, DIAGRAM
+  const scope = payload.skill === skill.skill_id ? 'SKILL' : 'NEW';
+
+  payload.slots.forEach((slot) => {
+    if (!lookup(skill.slots, slot.key)) skill.slots.push(slot);
+  });
+
+  payload.intents.forEach((intent) => {
+    if (!lookup(skill.intents, intent.key)) skill.intents.push(intent);
+  });
 
   const centerX = (_.maxBy(payload.nodes, 'x').x + _.minBy(payload.nodes, 'x').x) / 2;
   const centerY = (_.maxBy(payload.nodes, 'y').y + _.minBy(payload.nodes, 'y').y) / 2;
@@ -77,9 +113,8 @@ function paste(payload, project, point) {
 
   return [...newNodes, ...newLinks];
 
-  // same diagram => keep slots/intent/display/product/global vars/local vars/flows
-  // same project => keep slots/intent/display/product/global vars/flows vars/flows, import local vars
-  // else => import slots/intents/variables/diagram, reset display/product
+  // same project => keep slots/intent/display/product/flows
+  // else => import slots/intents/diagram, reset display/product
 }
 
 export default { copy, paste };

@@ -138,9 +138,7 @@ export class Canvas extends Component {
     Mousetrap.bind(['shift+/'], () => this.props.toggleKeyboard(!this.props.keyboardHelp));
     Mousetrap.bind(['ctrl+c', 'command+c'], () => {
       const blocks = this.state.engine.getDiagramModel().getSelectedItems();
-      const skill = this.props.skill.skill_id;
-      const diagram = this.props.diagram_id;
-      const payload = clipboard.copy(blocks, { skill, diagram });
+      const payload = clipboard.copy(blocks, this.props.skill);
       localStorage.clipboard = JSON.stringify(payload);
     });
     Mousetrap.bind(['ctrl+v', 'command+v'], this.paste);
@@ -289,9 +287,6 @@ export class Canvas extends Component {
   };
 
   paste = () => {
-    const skill = this.props.skill.skill_id;
-    const diagram = this.props.diagram_id;
-
     const event = {
       clientX: this.mouseX,
       clientY: this.mouseY,
@@ -300,8 +295,9 @@ export class Canvas extends Component {
     const point = engine.getRelativeMousePoint(event);
     engine.getDiagramModel().clearSelection();
     engine.stopMove();
-    const nodes = clipboard.paste(JSON.parse(localStorage.clipboard), { skill, diagram }, point);
+    const nodes = clipboard.paste(JSON.parse(localStorage.clipboard), this.props.skill, point);
     engine.getDiagramModel().addAll(...nodes);
+    this.props.updateIntents();
 
     if (this.props.undoEvents.length >= 10) {
       this.props.shiftUndo();

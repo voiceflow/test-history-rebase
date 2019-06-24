@@ -234,7 +234,7 @@ export const DashBoard = (props) => {
                     </Tooltip>
                   </DropdownToggle>
                   <DropdownMenu className="mt-2">
-                    <a href="https://university.getvoiceflow.com/" target="_blank" rel="noopener noreferrer">
+                    <a href="https://learn.voiceflow.com/" target="_blank" rel="noopener noreferrer">
                       <DropdownItem>University</DropdownItem>
                     </a>
                     <a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
@@ -243,7 +243,7 @@ export const DashBoard = (props) => {
                     <a href="https://www.facebook.com/groups/voiceflowgroup/" target="_blank" rel="noopener noreferrer">
                       <DropdownItem>Community</DropdownItem>
                     </a>
-                    <a href="https://forum.getvoiceflow.com/" target="_blank" rel="noopener noreferrer">
+                    <a href="https://forum.voiceflow.com/" target="_blank" rel="noopener noreferrer">
                       <DropdownItem>Forums</DropdownItem>
                     </a>
                   </DropdownMenu>

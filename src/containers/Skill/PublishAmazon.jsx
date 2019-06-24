@@ -432,7 +432,7 @@ class Skill extends Component {
 
     if (locales.includes(locale)) {
       if (locales.length > 1) {
-        locales = _.without(locales, (v) => v === locale);
+        locales = _.without(locales, locale);
       }
     } else {
       locales.push(locale);
@@ -442,14 +442,6 @@ class Skill extends Component {
       locales,
     });
   }
-
-  // transferIcon(){
-  //     if(this.state.large_icon){
-  //         this.setState({
-  //             small_icon: this.state.large_icon
-  //         })
-  //     }
-  // }
 
   render() {
     // Success Screen

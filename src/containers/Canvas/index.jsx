@@ -1784,6 +1784,7 @@ export class Canvas extends Component {
                 generateBlockMenu: this.generateBlockMenu,
                 setBlockMenu: this.props.setBlockMenu,
                 disabled: !!this.props.preview,
+                renameFlow: this.props.renameFlow,
               }}
               removeHandler={(node) => {
                 if (this.props.undoEvents.length >= 10) {

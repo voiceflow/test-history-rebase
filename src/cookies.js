@@ -8,10 +8,10 @@ const creatorUrl = 'creator.voiceflow.com';
 const legacyUrl = 'creator.getvoiceflow.com';
 let cookieDomain;
 if (process.env.NODE_ENV !== 'development') {
-  if (window.location.host === creatorUrl) {
-    cookieDomain = 'voiceflow.com';
-  } else {
+  if (window.location.host === legacyUrl) {
     cookieDomain = window.location.host;
+  } else {
+    cookieDomain = 'voiceflow.com';
   }
 } else {
   cookieDomain = 'localhost';

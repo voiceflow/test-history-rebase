@@ -15,6 +15,7 @@ const TestBox = (props) => {
     enterFlow,
     lastNode,
     setLastNode,
+    setIntent,
     resetTest,
     diagramEngine,
     handleChange,
@@ -85,39 +86,19 @@ const TestBox = (props) => {
         </Alert>
       ) : (
         <React.Fragment>
-          {audioPlayer ? (
-            <div className="audioplayer-options mb-2">
-              {pause ? (
-                <Button outline color="primary" onClick={() => this.setState({ intent: 'AMAZON.ResumeIntent' }, inputSubmit)}>
-                  Resume
-                </Button>
-              ) : (
-                <Button outline color="primary" onClick={() => this.setState({ intent: 'AMAZON.PauseIntent' }, inputSubmit)}>
-                  Stop/Pause
-                </Button>
-              )}
-              <Button outline color="primary" onClick={() => this.setState({ intent: 'AMAZON.NextIntent' }, inputSubmit)}>
-                Next
-              </Button>
-              <Button outline color="primary" onClick={() => this.setState({ intent: 'AMAZON.PreviousIntent' }, inputSubmit)}>
-                Previous
-              </Button>
-            </div>
-          ) : (
-            <Form onSubmit={inputSubmit} id="user__input" className="px-3 mb-3 mt-3">
-              <span className="light-grey">User Says</span>
-              <Input
-                className="form-bg response-input mt-3 mb-2 pt-2"
-                name="input"
-                type="textarea"
-                placeholder="Enter response"
-                value={input}
-                onChange={handleChange}
-                onKeyDown={onKeydown}
-              />
-              <small className="float-right text-muted pb-3 pt-2 d-block">Enter to send</small>
-            </Form>
-          )}
+          <Form onSubmit={inputSubmit} id="user__input" className="px-3 mb-3 mt-3">
+            <span className="light-grey">User Says</span>
+            <Input
+              className="form-bg response-input mt-3 mb-2 pt-2"
+              name="input"
+              type="textarea"
+              placeholder="Enter response"
+              value={input}
+              onChange={handleChange}
+              onKeyDown={onKeydown}
+            />
+            <small className="float-right text-muted pb-3 pt-2 d-block">Enter to send</small>
+          </Form>
         </React.Fragment>
       )}
     </React.Fragment>

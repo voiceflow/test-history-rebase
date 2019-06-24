@@ -1662,27 +1662,25 @@ export class Canvas extends Component {
             this.diagram_focus = true;
           }}
         >
-          {this.props.page === 'canvas' && (
-            <Menu
-              unfocus={this.onDiagramUnfocus}
-              enterFlow={this.enterFlow}
-              history={this.props.history}
-              user={this.props.user}
-              loading_diagram={this.props.load_diagram}
-              copyFlow={this.copyFlow}
-              deleteFlow={this.deleteFlow}
-              preview={this.props.preview}
-              toggleUpgrade={this.props.toggleUpgrade}
-              type_counter={this.state.type_counter}
-              openTab={this.openTab}
-              closeTab={this.props.closeTab}
-              tab={this.props.tab}
-              open={!this.props.preview && this.props.tabOpen}
-              build={(fn) => {
-                this.updateTree = fn;
-              }}
-            />
-          )}
+          <Menu
+            unfocus={this.onDiagramUnfocus}
+            enterFlow={this.enterFlow}
+            history={this.props.history}
+            user={this.props.user}
+            loading_diagram={this.props.load_diagram}
+            copyFlow={this.copyFlow}
+            deleteFlow={this.deleteFlow}
+            preview={this.props.preview}
+            toggleUpgrade={this.props.toggleUpgrade}
+            type_counter={this.state.type_counter}
+            openTab={this.openTab}
+            closeTab={this.props.closeTab}
+            tab={this.props.tab}
+            open={!this.props.preview && this.props.tabOpen && this.props.page === 'canvas'}
+            build={(fn) => {
+              this.updateTree = fn;
+            }}
+          />
           {this.state.load_diagram && React.createElement(Spinner, { name: 'Flow' })}
 
           <Editor
@@ -1710,22 +1708,21 @@ export class Canvas extends Component {
             setCanvasEvents={this.setMousetrap}
             updateLinter={this.updateLinter}
           />
-          {this.props.page === 'test' && (
-            <Test
-              open={this.props.testing}
-              testing_info={this.state.testing_info}
-              flow={this.props.diagram.name}
-              onTest={this.onTest}
-              history={this.props.history}
-              enterFlow={this.enterFlow}
-              diagramEngine={this.state.engine}
-              stop={this.stopTime}
-              resetTest={() => this.setState({ testing_info: false })}
-              resume={this.countTime}
-              time={this.state.time}
-              setTime={this.setTime}
-            />
-          )}
+          <Test
+            open={this.props.testing}
+            testing_info={this.state.testing_info}
+            flow={this.props.diagram.name}
+            onTest={this.onTest}
+            history={this.props.history}
+            enterFlow={this.enterFlow}
+            diagramEngine={this.state.engine}
+            stop={this.stopTime}
+            resetTest={() => this.setState({ testing_info: false })}
+            resume={this.countTime}
+            time={this.state.time}
+            open={this.props.page === 'test'}
+            setTime={this.setTime}
+          />
           <div
             key={this.props.diagram_id}
             id="diagram"
@@ -1768,6 +1765,14 @@ export class Canvas extends Component {
               />
             )}
             {this.props.blockMenu}
+            {this.props.page === 'test' && (
+              <div className="read-only">
+                <div className="read-only-container">
+                  <img className="mr-2" src="/eye.svg" width={10} height={10} />
+                  <span>Read Only</span>
+                </div>
+              </div>
+            )}
             <SRD.DiagramWidget
               diagramEngine={this.state.engine}
               allowLooseLinks={false}

@@ -96,7 +96,12 @@ class Test extends Component {
           }
 
           return (
-            <div key={i} className="sidebar_container">
+            <div
+              key={i}
+              className={cn('sidebar_container', {
+                open: this.props.open,
+              })}
+            >
               <div
                 className="condition-label"
                 onClick={() => {

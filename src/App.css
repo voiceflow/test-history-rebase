@@ -2096,7 +2096,10 @@ kbd {
 .light-blue {
   color: #5d9df5
 }
-  
+
+.bg-light-turqoise {
+  background-color: #EEF4F6;
+}
 .variable-color {
   color: #4e6ff9
 }

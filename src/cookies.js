@@ -9,7 +9,7 @@ const legacyUrl = 'creator.getvoiceflow.com';
 let cookieDomain;
 if (process.env.NODE_ENV !== 'development') {
   if (window.location.host === creatorUrl) {
-    cookieDomain = '.voiceflow.com';
+    cookieDomain = 'voiceflow.com';
   } else {
     cookieDomain = window.location.host;
   }
@@ -33,7 +33,7 @@ export function getAuthCookie() {
     // no default
   }
 
-  return cookies.get(AUTH_COOKIE, cookieOptions);
+  return cookies.get(AUTH_COOKIE);
 }
 
 export const removeLastSessionCookie = () => cookies.remove('last_session');

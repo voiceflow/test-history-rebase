@@ -59,7 +59,6 @@ exports[`Canvas render canvas 1`] = `
     <Connect(withStateHandlers(withStateHandlers(Editor)))
       appendCombineNode={[Function]}
       close={[Function]}
-      copyNode={[Function]}
       createDiagram={[Function]}
       diagramEngine={
         DiagramEngine {

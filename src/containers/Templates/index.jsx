@@ -52,7 +52,7 @@ class Templates extends Component {
 
     if (locales.includes(locale)) {
       if (locales.length > 1) {
-        locales = _.without(locales, (v) => v === locale);
+        locales = _.without(locales, locale);
       }
     } else {
       locales.push(locale);

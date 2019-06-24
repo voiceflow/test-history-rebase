@@ -3,27 +3,27 @@ import { ModalHeader } from 'components/Modals/ModalHeader';
 import React from 'react';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 
-const DefaultModal = (props) => {
+const DefaultModal = ({ open, toggle, header, content, noPadding, hideFooter, close_button_text }) => {
   return (
-    <Modal isOpen={props.open} toggle={props.toggle}>
-      <ModalHeader toggle={props.toggle} header={props.header} />
+    <Modal isOpen={open} toggle={toggle}>
+      <ModalHeader toggle={toggle} header={header} />
       <ModalBody
         style={{
-          padding: props.noPadding ? '0' : undefined,
+          padding: noPadding ? '0' : undefined,
           border: '0',
           overflow: 'none',
         }}
       >
-        {props.content}
+        {content}
       </ModalBody>
-      {!props.hideFooter && (
+      {!hideFooter && (
         <ModalFooter className="super-center">
-          {props.close_button_text ? (
-            <Button isPrimary type="button" onClick={props.toggle}>
-              {props.close_button_text}
+          {close_button_text ? (
+            <Button isPrimary type="button" onClick={toggle}>
+              {close_button_text}
             </Button>
           ) : (
-            <Button isClear type="button" onClick={props.toggle}>
+            <Button isClear type="button" onClick={toggle}>
               Close
             </Button>
           )}

@@ -8,7 +8,7 @@ const OAUTH_URL =
   // eslint-disable-next-line no-secrets/no-secrets
   'https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state';
 
-const MultiPlatformModalContent = (props) => {
+const MultiPlatformModalContent = ({ token, onChange, loading, onVerify }) => {
   return (
     <div className="d-flex flex-column">
       <div className="w-100">
@@ -34,19 +34,19 @@ const MultiPlatformModalContent = (props) => {
             type="text"
             name="google_token"
             placeholder="Paste your Google Authentication Token here"
-            value={props.token}
-            onChange={props.onChange}
-            disabled={props.loading}
+            value={token}
+            onChange={onChange}
+            disabled={loading}
           />
         </div>
       </div>
       <div className="d-flex justify-content-center pt-1 mb-4 w-100">
-        {!props.loading && (
-          <Button isPrimary className="mr-4" onClick={props.onVerify}>
+        {!loading && (
+          <Button isPrimary className="mr-4" onClick={onVerify}>
             Verify
           </Button>
         )}
-        {props.loading && <span style={{ height: '44px' }} className="loader" />}
+        {loading && <span style={{ height: '44px' }} className="loader" />}
       </div>
     </div>
   );

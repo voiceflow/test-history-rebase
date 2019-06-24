@@ -1,9 +1,9 @@
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 
-const LoadingModal = (props) => {
+const LoadingModal = ({ open }) => {
   return (
-    <Modal isOpen={props.open} centered size="sm">
+    <Modal isOpen={open} centered size="sm">
       <ModalBody className="text-center my-4">
         <div>
           <h1>

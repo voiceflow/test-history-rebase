@@ -4,17 +4,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 
-const StandardModal = (props) => {
+const StandardModal = ({ modal, toggle }) => {
   // TODO this class is pure cancer
-  if (!props.modal) {
+  if (!modal) {
     return null;
   }
 
   return (
-    <Modal isOpen={!!props.modal} toggle={props.toggle} centered size={props.modal.size}>
-      {props.modal.header && <ModalHeader toggle={props.toggle}>{props.modal.header}</ModalHeader>}
-      {props.modal.body && <ModalBody className="text-center">{props.modal.body}</ModalBody>}
-      {props.modal.footer && <ModalFooter className="justify-content-center">{props.modal.footer}</ModalFooter>}
+    <Modal isOpen={!!modal} toggle={toggle} centered size={modal.size}>
+      {modal.header && <ModalHeader toggle={toggle}>{modal.header}</ModalHeader>}
+      {modal.body && <ModalBody className="text-center">{modal.body}</ModalBody>}
+      {modal.footer && <ModalFooter className="justify-content-center">{modal.footer}</ModalFooter>}
     </Modal>
   );
 };

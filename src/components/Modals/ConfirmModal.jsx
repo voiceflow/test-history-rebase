@@ -7,33 +7,33 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 
-const ConfirmModal = (props) => {
+const ConfirmModal = ({ toggle, confirm }) => {
   // TODO this class is pure cancer
-  if (!props.confirm) {
+  if (!confirm) {
     return null;
   }
-  const cancel = props.confirm.cancel !== undefined ? props.confirm.cancel : true;
+  const cancel = confirm.cancel !== undefined ? confirm.cancel : true;
   return (
-    <Modal isOpen={!!props.confirm} toggle={props.toggle} centered size={props.confirm.size || 'sm'}>
-      {props.confirm.header && <ModalHeader toggle={props.toggle}>{props.confirm.header}</ModalHeader>}
-      <ModalBody className="text-center">{props.confirm.text}</ModalBody>
+    <Modal isOpen={!!confirm} toggle={toggle} centered size={confirm.size || 'sm'}>
+      {confirm.header && <ModalHeader toggle={toggle}>{confirm.header}</ModalHeader>}
+      <ModalBody className="text-center">{confirm.text}</ModalBody>
       <ModalFooter className="justify-content-center">
         {cancel && (
-          <Button isFlatGray onClick={props.toggle}>
+          <Button isFlatGray onClick={toggle}>
             Cancel
           </Button>
         )}
         <Button
-          isWarning={props.confirm.warning}
-          isPrimary={!props.confirm.warning}
+          isWarning={confirm.warning}
+          isPrimary={!confirm.warning}
           onClick={() => {
-            if (typeof props.confirm.confirm !== 'function') return props.toggle();
-            if (props.confirm.params) {
-              props.confirm.confirm(...props.confirm.params);
+            if (typeof confirm.confirm !== 'function') return toggle();
+            if (confirm.params) {
+              confirm.confirm(...confirm.params);
             } else {
-              props.confirm.confirm();
+              confirm.confirm();
             }
-            props.toggle();
+            toggle();
           }}
         >
           Confirm

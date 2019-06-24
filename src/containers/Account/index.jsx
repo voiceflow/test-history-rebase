@@ -73,7 +73,7 @@ class Account extends Component {
           axios
             .delete('/session/google/access_token')
             .then(() => {
-              this.setState({ google: UNLINKED, gprofile: null });
+              this.setState({ google: UNLINKED });
             })
             .catch(() => {
               this.setState({ google: LINKED });
@@ -103,18 +103,11 @@ class Account extends Component {
         });
       });
 
-    googleAccessToken()
-      .then((g_token) => {
-        this.setState({
-          google: g_token.token ? LINKED : UNLINKED,
-          gprofile: g_token.profile,
-        });
-      })
-      .catch(() => {
-        this.setState({
-          google: UNLINKED,
-        });
+    googleAccessToken().then((g_token) => {
+      this.setState({
+        google: g_token ? LINKED : UNLINKED,
       });
+    });
   }
 
   handleChange = (event) => {
@@ -204,29 +197,6 @@ class Account extends Component {
                 <h4 className="mb-0 text-muted">Google</h4>
                 <div className="super-center">{renderButton(this.state.google, this.resetGoogle)}</div>
               </div>
-              {this.state.gprofile && (
-                <React.Fragment>
-                  <hr />
-                  <div className="pl-4 pb-4 pr-4 space-between helper-text">
-                    <div className="col-0">
-                      Name:
-                      <br />
-                      Email:
-                      <br />
-                      User Id:
-                      <br />
-                    </div>
-                    <div className="col-sm">
-                      {this.state.gprofile.name}
-                      <br />
-                      {this.state.gprofile.email}
-                      <br />
-                      {this.state.gprofile.id}
-                      <br />
-                    </div>
-                  </div>
-                </React.Fragment>
-              )}
             </div>
           </div>
         </div>

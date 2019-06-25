@@ -2,7 +2,7 @@ import toJson from 'enzyme-to-json';
 import { shallow } from 'enzyme/build';
 import React from 'react';
 
-import Spotlight from '../Spotlight';
+import { Spotlight } from '../Spotlight';
 
 describe('Spotlight', () => {
   it('render spotlight', () => {

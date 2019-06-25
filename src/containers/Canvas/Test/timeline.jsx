@@ -627,9 +627,6 @@ const Timeline = (props) => {
 
   return (
     <div id="Timeline" className="mb-3">
-      <div className="break position-absolute" style={{ top: -20 }}>
-        <span className="or">New Session Started</span>
-      </div>
       <TestBox
         inputs={inputs}
         diagramEngine={diagramEngine}

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Alert, Form, Input } from 'reactstrap';
 
 import SpeakBox from './SpeakBox';
 
 const TestBox = (props) => {
+  const containerRef = useRef(null);
   const {
     time,
     input,
@@ -26,12 +27,17 @@ const TestBox = (props) => {
     }
   };
 
+  const isOverflow = containerRef.current && containerRef.current.scrollTop !== 0;
+
   return (
     <React.Fragment>
       <div className="dialog">
-        <div className="chat-container">
-          <div className="chatbox px-3">
+        <div className="chat-container" style={isOverflow ? { borderTop: '1px solid #8da2b545' } : null}>
+          <div ref={containerRef} className="chatbox px-3">
             <div className="chats">
+              <div className="break" style={{ top: -20 }}>
+                <span className="or">New Session Started</span>
+              </div>
               {outputs.map((chat, i) => {
                 if (chat.self) {
                   return (
@@ -77,7 +83,6 @@ const TestBox = (props) => {
               })}
             </div>
           </div>
-          <div className="no-space__break" />
         </div>
         {ended ? (
           <Alert onClick={handleRestart} color="warning" className="m-3">
@@ -85,6 +90,7 @@ const TestBox = (props) => {
           </Alert>
         ) : (
           <React.Fragment>
+            <div className="no-space__break" />
             <Form onSubmit={inputSubmit} id="user__input" className="px-3 mb-3 mt-3">
               <span className="light-grey">User Says</span>
               <Input

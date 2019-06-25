@@ -48,11 +48,15 @@ td {
   height: 100%;
   padding: 0 15px;
   overflow-y: auto;
-  max-height: 500px;
+  position: absolute;
 }
 
 .chat-container {
   flex: 1;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  position: relative;
 }
 
 .var-table {
@@ -146,7 +150,7 @@ td {
 
 .chats {
   width: 100%;
-  padding: 20px 0;
+  padding-bottom: 20px;
 }
 
 .message-container {

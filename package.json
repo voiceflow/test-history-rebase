@@ -56,12 +56,7 @@
     "draft-js-mention-plugin": "github:DecathectZero/draft-js-mention",
     "draft-js-plugins-editor": "^2.1.1",
     "draft-js-single-line-plugin": "^2.0.2",
-    "eslint": "5.6.0",
-    "eslint-config-react-app": "^3.0.6",
-    "eslint-plugin-flowtype": "2.50.1",
-    "eslint-plugin-import": "2.14.0",
-    "eslint-plugin-jsx-a11y": "6.1.2",
-    "eslint-plugin-react": "7.11.1",
+    "eslint": "^6.0.0",
     "file-loader": "2.0.0",
     "fork-ts-checker-webpack-plugin-alt": "0.4.14",
     "fs-extra": "7.0.0",
@@ -84,6 +79,7 @@
     "patch-package": "^6.1.2",
     "pathfinding": "^0.4.18",
     "paths-js": "^0.4.7",
+    "pluralize": "^8.0.0",
     "pnp-webpack-plugin": "1.1.0",
     "postcss-flexbugs-fixes": "4.1.0",
     "postcss-loader": "3.0.0",
@@ -173,9 +169,6 @@
     "stylelint-declaration-block-no-ignored-properties": "^2.1.0",
     "stylelint-no-unsupported-browser-features": "^3.0.2",
     "stylelint-order": "^3.0.0"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "homepage": "/",
   "private": true,

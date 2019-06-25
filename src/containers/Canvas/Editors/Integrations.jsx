@@ -14,9 +14,6 @@ import Zapier from './components/integrations/zapier';
 
 const GOOGLE_SHEETS = 'Google Sheets';
 const CUSTOM_API = 'Custom API';
-const AIRTABLE = 'Airtable';
-const SENDGRID = 'Sendgrid';
-const DASHBOT = 'Dashbot';
 const ZAPIER = 'Zapier';
 
 const INTEGRATIONS = {
@@ -37,18 +34,6 @@ const INTEGRATIONS = {
     image: '/zapier.png',
     component: Zapier,
     tooltip: 'Trigger a Zap',
-  },
-  [AIRTABLE]: {
-    name: AIRTABLE,
-    image: '/airtable.png',
-  },
-  [SENDGRID]: {
-    name: 'Sendgrid',
-    image: '/sendgrid.png',
-  },
-  [DASHBOT]: {
-    name: 'Dashbot',
-    image: '/dashbot.png',
   },
 };
 

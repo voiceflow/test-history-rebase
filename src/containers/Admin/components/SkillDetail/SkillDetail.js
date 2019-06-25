@@ -3,13 +3,13 @@ import './SkillDetail.css';
 
 import axios from 'axios';
 import moment from 'moment';
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
 
-class SkillDetail extends React.Component {
+export class SkillDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {

@@ -11,8 +11,40 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input } from 'rea
 import { groups, symbols } from './Expression.config';
 import VariableText from './VariableText';
 
+import cn from 'classnames';
+import { useToggle } from 'hooks/toggle';
+
 // logic type that allows for arithmatic
 // const arithmatic = groups[1]
+
+const OperatorSelect = <i class="fas fa-code" />;
+
+function OperatorDropdown(props) {
+  const { depth, children, update, className } = props;
+
+  const [open, toggleOpen] = useToggle(false);
+
+  return (
+    <Dropdown isOpen={open} toggle={toggleOpen}>
+      <DropdownToggle tag="div" className={className}>
+        {children}
+      </DropdownToggle>
+      <DropdownMenu className="expression-menu">
+        {groups.map((group, i) => (
+          <>
+            <div key={i} className={`expression-group group-${group.length}`}>
+              {group.map((type) => (
+                <div key={type} onClick={() => (update(type), toggleOpen())}>
+                  {symbols[type]}
+                </div>
+              ))}
+            </div>
+          </>
+        ))}
+      </DropdownMenu>
+    </Dropdown>
+  );
+}
 
 class Expression extends Component {
   constructor(props) {
@@ -167,6 +199,22 @@ class Expression extends Component {
     );
   }
 
+  defaultTop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const expression = this.state.expression;
+    if (Array.isArray(expression.value)) {
+      expression.type = expression.value[0].type;
+      expression.value = expression.value[0].value;
+      this.setState(
+        {
+          expression,
+        },
+        this.props.onUpdate
+      );
+    }
+  };
+
   handleAdvance(raw) {
     if (this.state.expression.type !== 'advance') return;
     raw.error = false;
@@ -211,35 +259,15 @@ class Expression extends Component {
 
     const type = this.state.expression.type;
 
-    const dropdown =
-      this.state.expression.depth < 8 ? (
-        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropDown}>
-          <DropdownToggle className="type-button">
-            <i className="fas fa-code" />
-          </DropdownToggle>
-          <DropdownMenu className="expression-menu">
-            {groups.map((group, i) => {
-              return (
-                <div key={i}>
-                  {group.map((type) => {
-                    return (
-                      <DropdownItem key={type} onClick={() => this.handleType(type)}>
-                        {symbols[type]}
-                      </DropdownItem>
-                    );
-                  })}
-                  {i !== groups.length - 1 ? <DropdownItem divider /> : null}
-                </div>
-              );
-            })}
-          </DropdownMenu>
-        </Dropdown>
-      ) : null;
-
     switch (type) {
       case 'variable':
         render = (
-          <div className="d-flex">
+          <div className={`expression-block ${type}`}>
+            <div className="type-button-container">
+              <OperatorDropdown update={this.handleType} className="type-button">
+                {OperatorSelect}
+              </OperatorDropdown>
+            </div>
             <Select
               classNamePrefix="variable-box"
               styles={selectStyles}
@@ -259,43 +287,50 @@ class Expression extends Component {
                   : null
               }
             />
-            {dropdown}
           </div>
         );
         break;
 
       case 'value':
         render = (
-          <div className="d-flex">
+          <div className={`expression-block ${type}`}>
+            <div className="type-button-container">
+              <OperatorDropdown update={this.handleType} className="type-button">
+                {OperatorSelect}
+              </OperatorDropdown>
+            </div>
             <Input placeholder="value" value={this.state.expression.value} onChange={this.handleValue} />
-            {dropdown}
           </div>
         );
         break;
       case 'advance':
+        // const error = this.state.expression.value.error;
         render = (
-          <div className="d-flex">
-            <div className="w-100">
-              <VariableText
-                className={`editor form-control auto-height oneline ${this.state.expression.value.error ? 'is-invalid' : ''}`}
-                raw={this.state.expression.value}
-                placeholder={<React.Fragment>Enter your expression here.</React.Fragment>}
-                variables={this.props.variables}
-                updateRaw={this.handleAdvance}
-              />
-              <small className="text-muted pt-2 d-block">{'Press "{" to add variables'}</small>
-              <div className="invalid-feedback">{this.state.expression.value.error}</div>
+          <div className={`expression-block ${type}`}>
+            <div className="type-button-container">
+              <OperatorDropdown update={this.handleType} className="type-button">
+                {OperatorSelect}
+              </OperatorDropdown>
             </div>
-            {dropdown}
+            <VariableText
+              className={`editor form-control auto-height oneline ${this.state.expression.value.error ? 'is-invalid' : ''}`}
+              raw={this.state.expression.value}
+              placeholder={<React.Fragment>Enter your expression here</React.Fragment>}
+              variables={this.props.variables}
+              updateRaw={this.handleAdvance}
+            />
           </div>
         );
         break;
       case 'not':
         render = (
-          <div className={`expression-block ${type}`}>
+          <div
+            className={cn('expression-block', type, {
+              same: type == this.props.parentType,
+            })}
+          >
             <div className="operator">
-              {symbols[type]}
-              {dropdown}
+              <OperatorDropdown update={this.handleType}>{symbols[type]}</OperatorDropdown>
             </div>
             <Expression expression={this.state.expression.value} variables={this.props.variables} onUpdate={this.props.onUpdate} />
           </div>
@@ -303,22 +338,30 @@ class Expression extends Component {
         break;
       default:
         render = (
-          <div className={`expression-block ${type}`}>
+          <div
+            className={cn('expression-block', type, {
+              same: type == this.props.parentType,
+            })}
+          >
             <Expression
               expression={this.state.expression.value[0]}
               openVarTab={this.props.openVarTab}
               variables={this.props.variables}
               onUpdate={this.props.onUpdate}
+              parentType={type}
             />
-            <div className="operator">
+            <OperatorDropdown update={this.handleType} className="operator">
               {symbols[type]}
-              {dropdown}
-            </div>
+              <div className="type-button" onClick={this.defaultTop}>
+                <i className="fas fa-trash" />
+              </div>
+            </OperatorDropdown>
             <Expression
               expression={this.state.expression.value[1]}
               openVarTab={this.props.openVarTab}
               variables={this.props.variables}
               onUpdate={this.props.onUpdate}
+              parentType={type}
             />
           </div>
         );

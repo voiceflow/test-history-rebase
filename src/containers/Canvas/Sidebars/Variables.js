@@ -112,7 +112,7 @@ export class Variables extends PureComponent {
             <form id="variable-submit" onSubmit={this.addGlobalVariable}>
               <FormGroup className="mb-0 text-center">
                 <Label className="mt-2 text-left">
-                  Create Variable
+                  Create Variable{' '}
                   <Tooltip position="bottom" html={tt(180, 'Project Variables can be used anywhere in the project and save across sessions')}>
                     <span onClick={() => this.setState({ tab: 'local' })} className="pointer">
                       (Project)
@@ -140,7 +140,7 @@ export class Variables extends PureComponent {
             <form id="variable-submit" onSubmit={this.addVariable}>
               <FormGroup className="mb-0 text-center">
                 <Label className="mt-2 text-left">
-                  Create Variable
+                  Create Variable{' '}
                   <Tooltip position="bottom" html={tt(180, 'Flow Variables exist only in this flow and are reset after you leave the flow')}>
                     <span onClick={() => this.setState({ tab: 'global' })} className="pointer">
                       (Flow)

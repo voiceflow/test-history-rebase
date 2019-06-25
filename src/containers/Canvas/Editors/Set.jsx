@@ -98,25 +98,29 @@ class SetBlock extends Component {
 
   render() {
     return (
-      <div className="text-center">
-        {this.state.node.extras.sets.map((block, i) => {
-          return (
-            <SetExpression
-              key={i}
-              block={block}
-              onRemove={() => this.handleRemoveBlock(i)}
-              onSelection={(selected) => this.handleSelection(i, selected.value)}
-              onUpdate={this.onUpdate}
-              variables={this.props.variables}
-            />
-          );
-        })}
-        {this.state.node.extras.sets.length < 20 ? (
-          <Button isBtn isFlatVariable className="mt-1" onClick={this.handleAddBlock}>
-            Add Variable Set
-          </Button>
-        ) : null}
-      </div>
+      <>
+        <div id="set-container">
+          {this.state.node.extras.sets.map((block, i) => {
+            return (
+              <SetExpression
+                key={i}
+                block={block}
+                onRemove={() => this.handleRemoveBlock(i)}
+                onSelection={(selected) => this.handleSelection(i, selected.value)}
+                onUpdate={this.onUpdate}
+                variables={this.props.variables}
+              />
+            );
+          })}
+        </div>
+        {this.state.node.extras.sets.length < 20 && (
+          <div className="text-center mt-3">
+            <Button isBtn isFlatVariable onClick={this.handleAddBlock}>
+              Add Variable Set
+            </Button>
+          </div>
+        )}
+      </>
     );
   }
 }

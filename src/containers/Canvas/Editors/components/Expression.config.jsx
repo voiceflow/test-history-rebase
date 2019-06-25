@@ -13,10 +13,10 @@ const symbols = {
   not: 'NOT',
   value: 'Value',
   variable: 'Variable',
-  advance: 'Advanced',
+  advance: 'Expression',
 };
 
-const groups = [['value', 'variable'], ['plus', 'minus', 'times', 'divide'], ['equals', 'greater', 'less'], ['and', 'or', 'not'], ['advance']];
+const groups = [['plus', 'minus', 'times', 'divide'], ['equals', 'greater', 'less'], ['and', 'or', 'not'], ['value', 'variable'], ['advance']];
 
 const arithmetic = groups[1];
 

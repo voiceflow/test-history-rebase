@@ -93,6 +93,8 @@ class VariableText extends Component {
           plugins={plugins}
           editorState={this.state.editorState}
           onChange={this.onChange}
+          onFocus={this.props.onFocus}
+          onBlur={this.props.onBlur}
           placeholder={this.props.placeholder ? this.props.placeholder : 'Enter Text Here'}
           stripPastedStyles={true}
         />

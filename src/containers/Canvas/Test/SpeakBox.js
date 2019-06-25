@@ -107,7 +107,7 @@ class SpeakBox extends React.Component {
                         this.props.inputSubmit(e, option);
                       }}
                     >
-                      {option.label ? option.label : option}
+                      {option && option.label ? option.label : option}
                     </div>
                   ))}
                 </div>

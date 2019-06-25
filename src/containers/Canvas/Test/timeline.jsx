@@ -461,9 +461,9 @@ const Timeline = (props) => {
               delay += 1000;
               const outputBlock = {
                 node: trace[idx - 1].line.id,
-                diagram: block.diagram,
                 delay,
               };
+              if (block.diagram) outputBlock.diagram = block.diagram;
               dom.push(outputBlock);
               // eslint-disable-next-line no-continue
               continue;
@@ -475,7 +475,7 @@ const Timeline = (props) => {
             if (idx === 0 && type === 'Choice' && res.ending) {
               const outputBlock = {
                 node: block.line.id,
-                diagram: _.last(res.diagrams).id,
+                diagram: !_.isEmpty(res.diagrams) && _.last(res.diagrams).id,
                 type,
                 delay,
               };

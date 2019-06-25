@@ -403,13 +403,11 @@ const Timeline = (props) => {
       data.play.action = 'NEXT';
     }
     data.variableMapping = variableMapping;
-    console.log(data);
     axios
       .post('/test/interact', data)
       .then(async (res) => {
         // eslint-disable-next-line no-param-reassign
         res = res.data;
-        console.log(res);
         if (!_.isEmpty(res.diagrams)) {
           setHomeDiagram(res.diagrams[0].id);
         }
@@ -464,10 +462,10 @@ const Timeline = (props) => {
               const outputBlock = {
                 node: trace[idx - 1].line.id,
                 diagram: block.diagram,
-                type,
                 delay,
               };
               dom.push(outputBlock);
+              // eslint-disable-next-line no-continue
               continue;
             }
             // eslint-disable-next-line no-continue
@@ -513,8 +511,8 @@ const Timeline = (props) => {
                 dom.push(outputBlock);
               });
             } else if (type === 'Stream') {
-              // eslint-disable-next-line no-await-in-loop
               delay += 1000;
+              // eslint-disable-next-line no-await-in-loop
               const results = await Promise.all(
                 block.audio.map(async (audioFile) => {
                   const audio = new Audio(audioFile);

@@ -29,8 +29,8 @@ import { setVariables } from 'ducks/variable';
 import { renameDiagram, appendDiagrams, updateDiagrams } from 'ducks/diagram';
 import { setError, setConfirm } from 'ducks/modal';
 import { openTab, closeTab, setCanvasError } from 'ducks/user';
-import clipboard from './clipboard';
 
+import Clipboard from './components/Clipboard';
 import ActionGroup from './components/ActionGroup/ActionGroup';
 import HelpModal from './HelpModal';
 import TestModal from './Test/TestModal';
@@ -85,6 +85,7 @@ export class Canvas extends Component {
     this.enterFlow = this.enterFlow.bind(this);
     this.deleteFlow = this.deleteFlow.bind(this);
     this.openTab = this.openTab.bind(this);
+    this.clipboard = React.createRef();
     const engine = new SRD.DiagramEngine();
     engine.registerLabelFactory(new SRD.DefaultLabelFactory());
     engine.registerNodeFactory(new BlockNodeFactory());
@@ -134,14 +135,7 @@ export class Canvas extends Component {
   }
 
   setMousetrap = () => {
-    Mousetrap.reset();
     Mousetrap.bind(['shift+/'], () => this.props.toggleKeyboard(!this.props.keyboardHelp));
-    Mousetrap.bind(['ctrl+c', 'command+c'], () => {
-      const blocks = this.state.engine.getDiagramModel().getSelectedItems();
-      const payload = clipboard.copy(blocks, this.props.skill);
-      localStorage.clipboard = JSON.stringify(payload);
-    });
-    Mousetrap.bind(['ctrl+v', 'command+v'], this.paste);
     Mousetrap.bind(['ctrl+z', 'command+z'], this.undo);
     Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo);
     Mousetrap.bind(['ctrl+/', 'command+/'], this.addComment);
@@ -286,19 +280,7 @@ export class Canvas extends Component {
     this.mouseY = clientY;
   };
 
-  paste = () => {
-    const event = {
-      clientX: this.mouseX,
-      clientY: this.mouseY,
-    };
-    const engine = this.state.engine;
-    const point = engine.getRelativeMousePoint(event);
-    engine.getDiagramModel().clearSelection();
-    engine.stopMove();
-    const nodes = clipboard.paste(JSON.parse(localStorage.clipboard), this.props.skill, point);
-    engine.getDiagramModel().addAll(...nodes);
-    this.props.updateIntents();
-
+  onPaste = (nodes, engine) => {
     if (this.props.undoEvents.length >= 10) {
       this.props.shiftUndo();
     }
@@ -374,6 +356,79 @@ export class Canvas extends Component {
       }
     } else {
       this.props.setError('Cannot delete blocks that would alter the interaction model in live version editing');
+    }
+  };
+
+  // copy individual node
+  copyNode = (newNode = null, pos = null) => {
+    const selected = newNode || this.state.engine.getSuperSelect();
+    if (selected.extras.type !== 'story') {
+      const engine = this.state.engine;
+      engine.stopMove();
+
+      const node = new BlockNodeModel(`${selected.name} copy`, null, toolkit.UID());
+      node.extras = cloneDeep(selected.extras);
+      if (selected.extras.type === 'god') {
+        const newCombines = [];
+        selected.combines.forEach((combineNode, idx) => {
+          const newCombineNode = new BlockNodeModel(combineNode.name, null, toolkit.UID());
+          newCombineNode.extras = cloneDeep(combineNode.extras);
+          newCombineNode.x = combineNode.x + 30;
+          newCombineNode.y = combineNode.y + 30;
+          const ports = combineNode.ports;
+          let newPort;
+          for (const name in ports) {
+            const port = ports[name];
+            port.in ? (newPort = newCombineNode.addInPort(port.label)) : (newPort = newCombineNode.addOutPort(port.label));
+            if (port.hidden) {
+              newPort.setHidden(port.hidden);
+            }
+          }
+          newCombines.push(newCombineNode);
+          newCombines[idx].parentCombine = node;
+        });
+        node.combines = newCombines;
+      }
+      const ports = selected.getPorts();
+      let newPort;
+      if (node.extras.type !== 'god') {
+        for (const name in ports) {
+          const port = ports[name];
+          port.in ? (newPort = node.addInPort(port.label)) : (newPort = node.addOutPort(port.label));
+          if (port.hidden) {
+            newPort.setHidden(port.hidden);
+          }
+        }
+      }
+
+      node.x = pos ? pos.x : selected.x + 30;
+      node.y = pos ? pos.y : selected.y + 30;
+      if (!_.isEmpty(node.combines)) {
+        let totalHeight = 40;
+        _.forEach(node.combines, (c, idx) => {
+          if (!(c instanceof String) && c.id !== node.id) {
+            c.x = node.x + 10;
+            c.y = node.y + totalHeight;
+            if (c.height) {
+              totalHeight += c.height;
+            } else {
+              totalHeight += selected.combines[idx].height;
+            }
+          }
+        });
+      }
+      engine.getDiagramModel().clearSelection();
+      node.setSelected();
+      engine.setSuperSelect(node);
+      engine.getDiagramModel().addNode(node);
+      if (this.props.undoEvents.length >= 10) {
+        this.props.shiftUndo();
+      }
+      this.props.addUndo([node], 'copy');
+      this.props.clearRedo();
+      this.setState({
+        engine,
+      });
     }
   };
 
@@ -1294,11 +1349,8 @@ export class Canvas extends Component {
               )}
               <ListGroupItem
                 onClick={() => {
-                  if (combineNode) {
-                    this.appendCombineNode(combineNode);
-                  } else {
-                    this.copyNode(node);
-                  }
+                  this.clipboard.current.copy([combineNode || node]);
+
                   this.props.setBlockMenu(null);
                 }}
               >
@@ -1670,6 +1722,19 @@ export class Canvas extends Component {
               />
             )}
             {this.props.blockMenu}
+            <Clipboard
+              engine={this.state.engine}
+              getEvent={() => ({
+                clientX: this.mouseX,
+                clientY: this.mouseY,
+              })}
+              onPaste={this.onPaste}
+              addDiagrams={(diagrams) => {
+                const subDiagrams = [...this.props.diagram.sub_diagrams, ...diagrams.map((diagram) => diagram.id)];
+                this.updateDiagrams(subDiagrams, diagrams);
+              }}
+              ref={this.clipboard}
+            />
             <SRD.DiagramWidget
               diagramEngine={this.state.engine}
               allowLooseLinks={false}

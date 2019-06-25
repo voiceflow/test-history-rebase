@@ -459,14 +459,25 @@ const Timeline = (props) => {
           let idx = 0;
           // eslint-disable-next-line no-restricted-syntax
           for (const block of trace) {
+            if (block.isExitFlow) {
+              delay += 1000;
+              const outputBlock = {
+                node: trace[idx - 1].line.id,
+                diagram: block.diagram,
+                type,
+                delay,
+              };
+              dom.push(outputBlock);
+              continue;
+            }
             // eslint-disable-next-line no-continue
             if (!block.output) continue;
             const type = block.block;
             const parsed = parse(block.output)[0];
-            if (idx === 0 && type === 'Choice' && !res.ending) {
+            if (idx === 0 && type === 'Choice' && res.ending) {
               const outputBlock = {
                 node: block.line.id,
-                diagram: _.first(res.diagrams).id,
+                diagram: _.last(res.diagrams).id,
                 type,
                 delay,
               };
@@ -488,7 +499,7 @@ const Timeline = (props) => {
                 if (child.name === 'audio') {
                   outputBlock.text = 'Audio File';
                 } else {
-                  const replaced = RegexVariables(child.children[0].content, variableMapping);
+                  const replaced = RegexVariables(block.line.speak, variableMapping);
                   outputBlock.text = replaced;
                 }
                 outputBlock.audio = results[idx].audio;

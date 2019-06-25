@@ -195,7 +195,7 @@ exports[`API render api editor 1`] = `
   <label>
     Result Variable Mapping
   </label>
-  <Connect(APIMapping)
+  <ConnectFunction
     onAdd={[Function]}
     onChange={[Function]}
     onRemove={[Function]}

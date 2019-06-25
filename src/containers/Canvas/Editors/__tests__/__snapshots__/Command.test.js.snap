@@ -121,7 +121,7 @@ exports[`CommandEditor render command block editor 1`] = `
         className="break"
       >
         <span
-          className="or"
+          className="break-text"
         >
           OR
         </span>

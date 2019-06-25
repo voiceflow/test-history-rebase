@@ -1,16 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`IfEditor render if block editor 1`] = `
-<div>
-  <p>
-    <small
-      className="text-muted"
-    >
-      If statements are evaluated in numerical order
-    </small>
-  </p>
+<Fragment>
+  <small
+    className="text-muted"
+  >
+    If statements are evaluated in numerical order
+  </small>
   <div
-    className="solid-border set-block"
+    className="conditional-wrapper"
     key="0"
   >
     <div
@@ -25,7 +23,7 @@ exports[`IfEditor render if block editor 1`] = `
         If 
       </span>
     </div>
-    <Connect(Expression)
+    <ConnectFunction
       expression={
         Object {
           "depth": 0,
@@ -37,10 +35,9 @@ exports[`IfEditor render if block editor 1`] = `
     />
   </div>
   <div
-    className="text-center"
+    className="text-center mt-3"
   >
     <Button
-      className="mt-1"
       iconPosition="right"
       isFlatVariable={true}
       onClick={[Function]}
@@ -50,5 +47,5 @@ exports[`IfEditor render if block editor 1`] = `
       Add If Statement
     </Button>
   </div>
-</div>
+</Fragment>
 `;

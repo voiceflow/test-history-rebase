@@ -8,7 +8,6 @@ import { setCanvasInfo } from 'ducks/user';
 import { updateIntents } from 'ducks/version';
 import Mousetrap from 'mousetrap';
 import React from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { connect } from 'react-redux';
 
 const _ = require('lodash');
@@ -56,7 +55,6 @@ class Clipboard extends React.Component {
 
   async copy(singleBlock) {
     const blocks = singleBlock || this.props.engine.getDiagramModel().getSelectedItems();
-    console.log(blocks);
     const nodes = blocks.filter((block) => block instanceof BlockNodeModel && block.extras.type !== 'story');
 
     const flatNodes = nodes.map((n) => (_.isEmpty(n.combines) ? n : n.combines)).flat();

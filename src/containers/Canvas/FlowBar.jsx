@@ -70,7 +70,7 @@ export class FlowBar extends Component {
 
     return (
       <React.Fragment>
-        {!this.props.testing_info && (
+        {this.props.isCanvas && (
           <button
             id="home-button"
             className={cn('btn-home', 'pl-3', {

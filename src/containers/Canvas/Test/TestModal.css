@@ -48,6 +48,7 @@ td {
   height: 100%;
   padding: 0 15px;
   overflow-y: auto;
+  max-height: 500px;
 }
 
 .chat-container {

@@ -111,6 +111,7 @@ const Timeline = (props) => {
   const [audioPlayer, toggleAudioPlayer] = useState(false);
   const [audio, setAudio] = useState(null);
   const [lastNode, setLastNode] = useState(null);
+  const [homeId, setHomeDiagram] = useState(null);
 
   useEffect(() => {
     if (testing_info && !started) {
@@ -121,6 +122,7 @@ const Timeline = (props) => {
       resume();
     }
     if (reset && started) {
+      enterFlow(homeId, false);
       setStarted(false);
       setTime(0);
       setInputs([]);
@@ -400,11 +402,17 @@ const Timeline = (props) => {
       }
       data.play.action = 'NEXT';
     }
+    data.variableMapping = variableMapping;
+    console.log(data);
     axios
       .post('/test/interact', data)
       .then(async (res) => {
         // eslint-disable-next-line no-param-reassign
         res = res.data;
+        console.log(res);
+        if (!_.isEmpty(res.diagrams)) {
+          setHomeDiagram(res.diagrams[0].id);
+        }
         const { trace } = res;
         if (res.line_id) {
           story_state = res;
@@ -455,7 +463,18 @@ const Timeline = (props) => {
             if (!block.output) continue;
             const type = block.block;
             const parsed = parse(block.output)[0];
+            if (idx === 0 && type === 'Choice' && !res.ending) {
+              const outputBlock = {
+                node: block.line.id,
+                diagram: _.first(res.diagrams).id,
+                type,
+                delay,
+              };
+              delay += 500;
+              dom.push(outputBlock);
+            }
             if (type === 'Speak') {
+              delay += 1000;
               // eslint-disable-next-line no-await-in-loop
               const results = await Promise.all(
                 block.audio.map(async (audioFile) => {
@@ -479,11 +498,12 @@ const Timeline = (props) => {
                 outputBlock.delay = delay;
                 outputBlock.type = type;
                 outputBlock.isLast = !block.line.nextId;
-                delay += duration + 500;
+                delay += duration;
                 dom.push(outputBlock);
               });
             } else if (type === 'Stream') {
               // eslint-disable-next-line no-await-in-loop
+              delay += 1000;
               const results = await Promise.all(
                 block.audio.map(async (audioFile) => {
                   const audio = new Audio(audioFile);
@@ -512,9 +532,9 @@ const Timeline = (props) => {
                 delay,
                 type,
               };
-              delay += duration + 500;
+              delay += duration;
               dom.push(outputBlockChoices);
-            } else if (type === 'Choice' && idx === trace.length - 1) {
+            } else if (type === 'Choice' && idx > 0) {
               const outputBlock = {
                 options: _.map(block.line.inputs, _.head),
                 node: block.line.id,
@@ -539,6 +559,7 @@ const Timeline = (props) => {
                 type,
                 delay,
               };
+              delay += 500;
               dom.push(outputBlock);
             } else {
               if (!_.isEmpty(parsed.children)) {

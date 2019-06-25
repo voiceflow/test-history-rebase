@@ -109,7 +109,7 @@ class Test extends Component {
                   this.toggleSection(s);
                 }}
               >
-                <label id={s} className="ml-3 mt-4 mb-4 text-left">
+                <label id={s} className="ml-3 mt-3 mb-3 text-left">
                   {s === C.CONDITIONS ? 'Variables' : 'Dialog'}
                 </label>
                 {s === C.CONDITIONS && !this.props.testing_info && (

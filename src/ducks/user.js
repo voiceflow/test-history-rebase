@@ -51,9 +51,14 @@ export const setPreview = (preview) => ({
   payload: { preview },
 });
 
+export const setCanvasInfo = (error) => ({
+  type: CANVAS_ERROR,
+  payload: { error: { msg: error, icon: '/green-check.svg' } },
+});
+
 export const setCanvasError = (error) => ({
   type: CANVAS_ERROR,
-  payload: { error },
+  payload: { error: { msg: error, icon: '/yellow-error.svg' } },
 });
 
 export const closeCanvasError = (idx) => ({

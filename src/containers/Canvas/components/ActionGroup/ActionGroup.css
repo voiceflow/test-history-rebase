@@ -50,9 +50,9 @@
 
 /*
     Note: using adjacent or general sibling selectors
-    combined with pseudo classes doesn't work in Safari 
+    combined with pseudo classes doesn't work in Safari
     5.0 and Chrome 12.
-    See this article for more info and a potential fix: 
+    See this article for more info and a potential fix:
     https://css-tricks.com/webkit-sibling-bug/
   */
 
@@ -142,4 +142,23 @@
 
 .react-sweet-progress-symbol {
   color: #0b1a38;
+}
+
+.ag__settings_modal {
+  max-width: 600px;
+}
+
+.ag__settings_modal .modal-content {
+  height: 80vh;
+  overflow-y: scroll;
+}
+
+.settings-content .content {
+  min-width: 0;
+}
+
+.d__see_all {
+  color: #00b0e6;
+  float: right;
+  cursor: pointer;
 }

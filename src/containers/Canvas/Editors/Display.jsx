@@ -11,7 +11,7 @@ import { ModalHeader } from 'components/Modals/ModalHeader';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import Select from 'react-select';
 import { Tooltip } from 'react-tippy';
 import { Button, Input, InputGroup, InputGroupAddon, Modal, ModalBody } from 'reactstrap';
@@ -251,6 +251,9 @@ export class Display extends Component {
   disableModal = () => this.setState({ modal: false });
 
   render() {
+  
+    const { skill_id } = this.props.match.params;
+  
     if (this.props.displays.length === 0) {
       return (
         <div className="text-center">
@@ -272,6 +275,7 @@ export class Display extends Component {
         </Modal>
         <div>
           <label>Multimodal Display</label>
+          <div onClick={() => this.props.history.push(`/visuals/${skill_id}`)} className="d__see_all">See all</div>
           <Select
             classNamePrefix="select-box"
             value={this.state.selected}
@@ -284,7 +288,7 @@ export class Display extends Component {
               };
             })}
           />
-          <InputGroup className="my-3">
+          {this.state.selected ? <InputGroup className="my-3">
             <label className="input-group-text w-100 m-0 d-flex">
               <Input
                 addon
@@ -293,6 +297,7 @@ export class Display extends Component {
                 checked={this.state.node.extras.update_on_change}
                 onChange={this.updateOnChange}
               />
+              
               <div className="ml-2 space-between flex-hard">
                 <span>Update on Variable Changes</span>
                 <span>
@@ -307,77 +312,92 @@ export class Display extends Component {
                 </span>
               </div>
             </label>
-          </InputGroup>
-          <hr />
-          <Button color="clear" onClick={this.openModal} size="sm" block>
-            <i className="fas fa-power-off mr-1" />
-            Test Display
-          </Button>
-          {this.state.modal_error && <div className="error-message">{this.state.modal_error}</div>}
-          <label>Data Source JSON</label>
-          <AceEditor
-            name="datasource_editor"
-            className="datasource_editor"
-            mode="json_custom"
-            theme="monokai"
-            onChange={this.onChangeEditor}
-            fontSize={14}
-            showPrintMargin={false}
-            showGutter={true}
-            highlightActiveLine={true}
-            value={this.state.node.extras.datasource}
-            editorProps={{
-              $blockScrolling: true,
-              $rules: {
-                start: [
-                  {
-                    token: 'highlightWords',
-                    regex: 'word1|word2|word3|phrase one|phrase number two|etc',
-                  },
-                ],
-              },
-            }}
-            setOptions={{
-              enableBasicAutocompletion: true,
-              enableLiveAutocompletion: false,
-              enableSnippets: false,
-              showLineNumbers: true,
-              tabSize: 2,
-              useWorker: false,
-            }}
-          />
-          <label>APL Commands</label>
-          <AceEditor
-            name="apl_commands_editor"
-            className="datasource_editor"
-            mode="json_custom"
-            theme="monokai"
-            onChange={this.onChangeCommands}
-            fontSize={14}
-            showPrintMargin={false}
-            showGutter={true}
-            highlightActiveLine={true}
-            value={this.state.node.extras.apl_commands}
-            editorProps={{
-              $blockScrolling: true,
-              $rules: {
-                start: [
-                  {
-                    token: 'highlightWords',
-                    regex: 'word1|word2|word3|phrase one|phrase number two|etc',
-                  },
-                ],
-              },
-            }}
-            setOptions={{
-              enableBasicAutocompletion: true,
-              enableLiveAutocompletion: false,
-              enableSnippets: false,
-              showLineNumbers: true,
-              tabSize: 2,
-              useWorker: false,
-            }}
-          />
+          </InputGroup> : null}
+          
+          {!this.state.selected ? <div>
+            <div className="d__or_box">
+              <div className="d__or_text">
+                OR
+              </div>
+            </div>
+  
+            <button className={'btn-clear btn-block btn-lg'} onClick={() => this.props.history.push(`/visuals/${this.props.skill_id}`)}>
+              Create new visual
+            </button>
+          </div> : null}
+          
+          {this.state.selected ? <div>
+            <hr />
+            <Button color="clear" onClick={this.openModal} size="sm" block>
+              <i className="fas fa-power-off mr-1" />
+              Test Display
+            </Button>
+            {this.state.modal_error && <div className="error-message">{this.state.modal_error}</div>}
+            <label>Data Source JSON</label>
+            <AceEditor
+              name="datasource_editor"
+              className="datasource_editor"
+              mode="json_custom"
+              theme="monokai"
+              onChange={this.onChangeEditor}
+              fontSize={14}
+              showPrintMargin={false}
+              showGutter={true}
+              highlightActiveLine={true}
+              value={this.state.node.extras.datasource}
+              editorProps={{
+                $blockScrolling: true,
+                $rules: {
+                  start: [
+                    {
+                      token: 'highlightWords',
+                      regex: 'word1|word2|word3|phrase one|phrase number two|etc',
+                    },
+                  ],
+                },
+              }}
+              setOptions={{
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: false,
+                enableSnippets: false,
+                showLineNumbers: true,
+                tabSize: 2,
+                useWorker: false,
+              }}
+            />
+            <label>APL Commands</label>
+            <AceEditor
+              name="apl_commands_editor"
+              className="datasource_editor"
+              mode="json_custom"
+              theme="monokai"
+              onChange={this.onChangeCommands}
+              fontSize={14}
+              showPrintMargin={false}
+              showGutter={true}
+              highlightActiveLine={true}
+              value={this.state.node.extras.apl_commands}
+              editorProps={{
+                $blockScrolling: true,
+                $rules: {
+                  start: [
+                    {
+                      token: 'highlightWords',
+                      regex: 'word1|word2|word3|phrase one|phrase number two|etc',
+                    },
+                  ],
+                },
+              }}
+              setOptions={{
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: false,
+                enableSnippets: false,
+                showLineNumbers: true,
+                tabSize: 2,
+                useWorker: false,
+              }}
+            />
+          </div>: null}
         </div>
       </React.Fragment>
     );
@@ -389,4 +409,5 @@ const mapStateToProps = (state) => ({
   skill_id: state.skills.skill_id,
   displays: state.displays.displays,
 });
-export default connect(mapStateToProps)(Display);
+const routeredDisplay = withRouter(Display);
+export default connect(mapStateToProps)(routeredDisplay);

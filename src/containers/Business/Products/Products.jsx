@@ -49,9 +49,14 @@ class Products extends Component {
               <div className="products-container position-relative">
                 <div className="space-between w-100 px-3">
                   <h5 className="text-muted mb-0">Products</h5>
-                  <Link to={`/tools/${this.props.skill_id}/product/new`} className="no-underline btn btn-primary">
-                    New Product
-                  </Link>
+                  <div>
+                    <Link to={`/canvas/${this.props.skill_id}`} className="no-underline btn btn-secondary mr-2">
+                      Back
+                    </Link>
+                    <Link to={`/tools/${this.props.skill_id}/product/new`} className="no-underline btn btn-primary">
+                      New Product
+                    </Link>
+                  </div>
                 </div>
                 <Masonry elementType="div" imagesLoadedOptions={{ columnWidth: '200', itemSelector: '.grid-item' }}>
                   {_.map(this.props.products, (product) => {

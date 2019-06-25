@@ -14,6 +14,11 @@ import DiscoverySettings from './Discovery';
 const TABS = ['basic', 'advanced', 'discovery', 'backups'];
 
 class Settings extends Component {
+  
+  state = {
+    tab: 'basic'
+  };
+  
   constructor(props) {
     super(props);
 
@@ -23,8 +28,9 @@ class Settings extends Component {
   }
 
   switchTab(tab) {
-    if (tab !== this.props.page) {
-      this.props.history.push(`/settings/${this.props.skill_id}/${tab}`);
+    if (tab !== this.state.tab) {
+      this.setState({ tab: tab });
+      // this.props.history.push(`/settings/${this.props.skill_id}/${tab}`);
     }
   }
 
@@ -63,10 +69,10 @@ class Settings extends Component {
       return null;
     }
 
-    switch (this.props.page) {
+    switch (this.state.tab) {
       case 'basic':
       case 'advanced':
-        return <BasicAdvancedSettings {...this.props} onSwapVersions={this.onSwapVersions} />;
+        return <BasicAdvancedSettings {...this.props} page={this.state.tab} onSwapVersions={this.onSwapVersions} />;
       case 'discovery':
         return <DiscoverySettings {...this.props} />;
       case 'backups':
@@ -87,8 +93,8 @@ class Settings extends Component {
                   <Button
                     key={tab}
                     onClick={() => this.switchTab(tab)}
-                    outline={this.props.page !== tab}
-                    disabled={this.props.page === tab || (this.props.live_mode && tab === 'backups')}
+                    outline={this.state.tab !== tab}
+                    disabled={this.state.tab === tab || (this.props.live_mode && tab === 'backups')}
                   >
                     {_.startCase(tab)}
                   </Button>

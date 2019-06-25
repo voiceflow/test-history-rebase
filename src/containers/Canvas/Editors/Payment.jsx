@@ -94,6 +94,7 @@ class PaymentBlock extends Component {
   }
 
   render() {
+    
     if (!Array.isArray(this.props.products) || this.props.products.length === 0) {
       return (
         <div className="text-center">
@@ -159,6 +160,7 @@ class PaymentBlock extends Component {
     return (
       <React.Fragment>
         <label>Select Existing Product</label>
+        <div onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/products`)} className="d__see_all">See all</div>
         <Select
           classNamePrefix="select-box"
           onChange={(selected) => {
@@ -171,6 +173,16 @@ class PaymentBlock extends Component {
           }}
           options={options}
         />
+        <div>
+          <div className="d__or_box">
+            <div className="d__or_text">
+              OR
+            </div>
+          </div>
+        </div>
+        <Link className="d__new_visual_button" to={`/tools/${this.props.skill_id}/products`}>
+          Create new product
+        </Link>
       </React.Fragment>
     );
   }

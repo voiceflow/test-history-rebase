@@ -1860,7 +1860,7 @@ body.modal-open {
 }
 
 #icon-save.unsaved {
-  background-image: url('/save-dark.svg'), linear-gradient(#5d9df515, #5d9df530);
+  background-image: url('/cog.svg'), linear-gradient(#5d9df515, #5d9df530);
   background-position: 50% 50% !important;
 }
 
@@ -1870,6 +1870,10 @@ body.modal-open {
 
 #icon-save .loader {
   border-color: #fff;
+}
+
+.icon-settings {
+  background-image: url("/cog.svg") !important
 }
 
 .skill-name-top-left {

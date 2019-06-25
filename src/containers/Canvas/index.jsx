@@ -1625,14 +1625,7 @@ export class Canvas extends Component {
           setCB={(cb) => {
             this.saveCB = cb;
           }}
-          onSave={this.onSave}
-          saving={this.state.saving}
-          saved={this.state.saved}
-          onTest={this.onTest}
-          updateLinter={this.updateLinter}
-          renderPlatformSwitch={this.renderPlatformSwitch}
-          history={this.props.history}
-          preview={this.props.preview}
+          {...this.props}
         />
         {this.state.testing_modal ? (
           <TestModal

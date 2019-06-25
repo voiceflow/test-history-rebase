@@ -31,3 +31,38 @@
   font-size: 20px;
   cursor: pointer;
 }
+
+.d__new_visual_button {
+  width: 100%;
+  border: 1px solid #c1cedc;
+  border-radius: 3px;
+  margin-top: 20px;
+  display: block;
+  text-align: center;
+  color: #8da2b5;
+  padding: 16px 0;
+}
+
+.d__new_visual_button:hover {
+  text-decoration: none;
+  color: #8da2b5;
+}
+
+.d__or_box {
+  /*height: 1px;*/
+  border: 0.5px solid #c1cedc;
+  width: 100%;
+  position: relative;
+  margin: 20px 0;
+}
+
+.d__or_text {
+  position: absolute;
+  left: 43%;
+  top: -10px;
+  background-color: #fff;
+  padding: 0 15px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #8da2b5;
+}

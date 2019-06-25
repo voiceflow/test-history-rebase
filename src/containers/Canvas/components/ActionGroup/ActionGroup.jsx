@@ -25,6 +25,7 @@ import LOCALE_MAP from 'services/LocaleMap';
 import InvRegex from 'services/Regex';
 
 import UploadButton from '../UploadButton/UploadButton';
+import Settings from "../../../Skill/Settings";
 
 const loading = (message) => {
   return (
@@ -172,6 +173,7 @@ export class ActionGroup extends PureComponent {
       percentage: 0,
       upload_button_loading: true,
       selected_vendor: props.vendor_id,
+      settingsModal: false,
     };
 
     this.token = null;
@@ -1096,6 +1098,15 @@ export class ActionGroup extends PureComponent {
             <div>{this.renderLiveStage()}</div>
           </ModalBody>
         </Modal>
+        
+        <Modal
+          isOpen={this.state.settingsModal}
+          toggle={() => this.setState({ settingsModal: false })}
+          className={'ag__settings_modal'}
+        >
+          <Settings {...this.props} page={'basic'} live_mode={this.props.live_mode} toggleUpgrade={this.toggleUpgrade} />
+        </Modal>
+        
         <Header
           preview={this.props.preview}
           history={this.props.history}
@@ -1168,16 +1179,17 @@ export class ActionGroup extends PureComponent {
           rightRenderer={() => (
             <div className="title-group no-select">
               <div className="align-icon">
-                <Tooltip distance={16} title={this.props.lastSave} position="bottom" className="mr-4">
+                <Tooltip distance={16} title={'settings'} position="bottom" className="mr-4">
                   <Button
                     id="icon-save"
                     isNav
                     className={cn({
-                      'btn-successful': this.props.saved,
+                      'icon-settings': this.props.saved,
                       unsaved: !this.props.saved,
                       saving: this.props.saving,
                     })}
-                    onClick={this.props.onSave}
+                    // onClick={() => this.props.history.push(`/settings/${this.props.skill.skill_id}/basic`)}
+                    onClick={() => this.setState({ settingsModal: true })}
                   >
                     {this.props.saving && <span className="save-loader" />}
                   </Button>

@@ -32,24 +32,12 @@ const tabs = [
     match: ['products'],
     link: '/tools/:skill_id/products',
   },
-  {
-    display: (
-      <React.Fragment>
-        <i className="far fa-link mr-2" /> Link Account
-      </React.Fragment>
-    ),
-    match: ['link_account', 'link_template'],
-    link: '/tools/:skill_id/link_account/templates',
-  },
 ];
 
 class Business extends Component {
   render() {
     let page;
     switch (this.props.page) {
-      case 'link_account':
-        page = <AccountLinkTemplate {...this.props} />;
-        break;
       case 'products':
         page = <Products {...this.props} />;
         break;
@@ -62,23 +50,7 @@ class Business extends Component {
 
     return (
       <div id="business">
-        <div md="3" className="sidebar-nav">
-          {tabs.map((tab, i) => {
-            if (tab.match.includes(this.props.page)) {
-              return (
-                <div key={i} className="nav-item active">
-                  {tab.display}
-                </div>
-              );
-            }
-            return (
-              <Link key={i} to={updateLink(tab.link, this.props.skill_id)} className="nav-item">
-                {tab.display}
-              </Link>
-            );
-          })}
-        </div>
-        <div md="9" className="business-page">
+        <div className="business-page">
           {page}
         </div>
       </div>

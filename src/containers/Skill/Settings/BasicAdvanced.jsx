@@ -14,6 +14,7 @@ import AceEditor from 'react-ace';
 import { connect } from 'react-redux';
 import Toggle from 'react-toggle';
 import { Alert, Collapse, FormGroup, Input, Label } from 'reactstrap';
+import AccountLinkTemplate from "../../Business/AccountLinkTemplate";
 
 class BasicAdvancedSettings extends Component {
   constructor(props) {
@@ -221,6 +222,9 @@ class BasicAdvancedSettings extends Component {
               </FormGroup>
             </div>
           )}
+          <div className="settings-content clearfix">
+            <AccountLinkTemplate {...this.props} />
+          </div>
           <div className="settings-content clearfix">
             <FormGroup>
               <Label>Delete Project</Label>

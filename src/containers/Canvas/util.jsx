@@ -423,12 +423,10 @@ const createCombineNode = (node, type, parent) => {
   }
 };
 
-function buildKeyValue(i) {
-  return {
-    key: i,
-    val: '',
-  };
-}
+const buildKeyValue = (i) => ({
+  key: i,
+  val: '',
+});
 
 const createDropNode = (event, engine, type, name) => {
   const node = new BlockNodeModel(name, null, toolkit.UID());

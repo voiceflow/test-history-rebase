@@ -351,11 +351,9 @@ export default class Form extends Component {
   }
 }
 
-export function FormReviewField({ label, children, childrenClassName }) {
-  return (
-    <Fragment>
-      <label className="form-label">{label}</label>
-      <p className={childrenClassName}>{children}</p>
-    </Fragment>
-  );
-}
+export const FormReviewField = ({ label, children, childrenClassName }) => (
+  <Fragment>
+    <label className="form-label">{label}</label>
+    <p className={childrenClassName}>{children}</p>
+  </Fragment>
+);

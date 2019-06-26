@@ -34,12 +34,10 @@ const options = [
   },
 ];
 
-function getInitialState() {
-  return {
-    from: yesterday(),
-    to: new Date(),
-  };
-}
+const getInitialState = () => ({
+  from: yesterday(),
+  to: new Date(),
+});
 
 class TimeInterval extends Component {
   static default_props = {

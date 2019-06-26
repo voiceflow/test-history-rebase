@@ -1,4 +1,5 @@
 import 'draft-js-mention-plugin/lib/plugin.css';
+import './VariableInput.css';
 
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
@@ -6,8 +7,6 @@ import Editor from 'draft-js-plugins-editor';
 import createSingleLinePlugin from 'draft-js-single-line-plugin';
 import _ from 'lodash';
 import React, { Component } from 'react';
-
-import './VariableInput.css';
 
 class VariableInput extends Component {
   constructor(props) {

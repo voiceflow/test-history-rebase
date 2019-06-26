@@ -702,7 +702,7 @@ class TestModal extends React.Component {
                         &nbsp;&nbsp;&nbsp;Start Test
                       </DefaultButton>
                       <div className="break">
-                        <span className="or">OR</span>
+                        <span className="break-text">OR</span>
                       </div>
                       <h6 className="mt-4 mb-3">Start from a specific point in the project</h6>
                       <Select

@@ -340,7 +340,7 @@ class GooglePublish extends Component {
     let locales = this.state.locales;
 
     if (locales.includes(locale)) {
-      locales = _.without(locales, (v) => v === locale);
+      locales = _.without(locales, locale);
     } else {
       locales.push(locale);
     }

@@ -63,7 +63,7 @@ const SocialLogin = ({ entryText, googleLogin, fbLogin }) => {
           callback={triggerFbLogin}
         />
         <div className="break">
-          <span className="or">OR</span>
+          <span className="break-text">OR</span>
         </div>
       </div>
     </Fragment>

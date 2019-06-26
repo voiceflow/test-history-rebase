@@ -1,15 +1,14 @@
 import axios from 'axios';
-import { parse } from 'html-parse-stringify';
 import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { RegexVariables } from 'utils/variable';
 
 import { DEFAULT_INTENTS } from 'Constants';
 
 import TestBox from './TestBox';
+import { getDiagramIntents, getUserTestOutputs } from './utils';
 
 const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text']);
 
@@ -63,7 +62,6 @@ class Timeline extends React.Component {
     intent: '',
     ended: false,
     started: false,
-    audioPlayer: false,
     audio: null,
     lastNode: null,
     homeId: null,
@@ -138,25 +136,6 @@ class Timeline extends React.Component {
     });
     setTime(0);
     this.story_state = null;
-  };
-
-  removeAudio = () => {
-    const { audio } = this.state;
-    return new Promise((resolve) => {
-      if (audio) {
-        const audio = this.state.audio;
-        audio.onended = null;
-        audio.ontimeupdate = null;
-        audio.onloadedmetadata = null;
-        this.state.audio.pause();
-        this.state.audio.removeAttribute('src');
-        this.state.audio.load();
-        this.setState({
-          audio: null,
-        });
-      }
-      resolve();
-    });
   };
 
   addDebugBlock = (block) => {
@@ -245,34 +224,10 @@ class Timeline extends React.Component {
         this.recursivePlay(index + 1, urls, ended);
         audio.ontimeupdate = null;
         audio.onended = null;
-        audio.onloadedmetadata = null;
         audio.pause();
         audio.removeAttribute('src');
         audio.load();
       };
-      audio.onloadedmetadata = () => {
-        const inputs = this.state.inputs;
-        const index = inputs.push({
-          src: audio.src
-            .split('/')
-            .pop()
-            .split('-')
-            .pop(),
-          currentTime: 0,
-          duration: audio.duration,
-          time: moment().format('h:mm:ss A'),
-        });
-        this.setState({
-          inputs,
-        });
-        audio.ontimeupdate = () => {
-          inputs[index - 1].currentTime = audio.currentTime;
-          this.setState({
-            inputs,
-          });
-        };
-      };
-
       audio.play();
     } else if (b.type === 'tag' && b.name === 'debug') {
       this.addDebugBlock(b);
@@ -283,18 +238,9 @@ class Timeline extends React.Component {
     }
   };
 
-  getAudioMeta = (audio) => {
-    return new Promise((resolve) => {
-      audio.addEventListener('loadedmetadata', (e) => {
-        resolve(e.target.duration);
-      });
-    });
-  };
-
   updateState = async (start = false) => {
     const { testing_info, skill, diagramEngine, variableMapping } = this.props;
     const { nlc } = testing_info;
-    const { audio } = this.state;
     const data = this.story_state;
     if (!data.slots) {
       data.slots = skill.slots;
@@ -313,40 +259,9 @@ class Timeline extends React.Component {
     if (nlc) {
       try {
         const results = await nlc.handleCommand(data.input);
-        const detected_intents = [];
-        const diagram_intents = [];
-        // eslint-disable-next-line lodash/prefer-filter
-        _.forEach(diagramEngine.getDiagramModel().getNodes(), (node) => {
-          if (node.extras.type === 'intent') {
-            diagram_intents.push({
-              id: node.id,
-              google_intent: node.extras.google,
-              alexa_intent: node.extras.alexa,
-            });
-          }
-        });
-        _.forEach(results, (result) => {
-          const intent_name = result.name;
-          const detected_slots = result.slots;
-          const slot_mapping = testing_info.slot_mappings[intent_name] || [];
-          const formatted_slots = {};
-
-          slot_mapping.forEach((slot, i) => {
-            if (detected_slots) {
-              formatted_slots[slot.name] = {
-                value: detected_slots[i],
-              };
-            }
-          });
-          if (intent_name) {
-            detected_intents.push({
-              intent: intent_name,
-              slots: formatted_slots,
-            });
-          }
-          data.diagram_intents = diagram_intents;
-          data.detected_intents = detected_intents;
-        });
+        const { diagram_intents, detected_intents } = getDiagramIntents(diagramEngine, results, testing_info);
+        data.diagram_intents = diagram_intents;
+        data.detected_intents = detected_intents;
       } catch (err) {
         // NLC No Match'
         console.error('NLC No Match');
@@ -360,26 +275,6 @@ class Timeline extends React.Component {
       data.diagrams = [{ id: testing_info.id }];
     }
 
-    if (this.next) {
-      if (this.story_state.play.loop) {
-        await this.removeAudio();
-        this.next = false;
-        return this.recursivePlay(
-          0,
-          [
-            {
-              name: 'audio',
-              type: 'tag',
-              attrs: {
-                src: this.story_state.play.url,
-              },
-            },
-          ],
-          false
-        );
-      }
-      data.play.action = 'NEXT';
-    }
     data.variableMapping = variableMapping;
     axios
       .post('/test/interact', data)
@@ -397,184 +292,9 @@ class Timeline extends React.Component {
         }
         if (data.input && !data.trace) return;
         if (res.output && res.output.length > 0) {
-          // TYLER'S SUPER JANKY AUDIO THING
-
-          this.pause = false;
-          if (res.play) {
-            if (res.play.action === 'END') {
-              delete this.story_state.play;
-              this.setState({
-                audioPlayer: false,
-              });
-            } else {
-              this.setState({
-                audioPlayer: true,
-              });
-              if (res.play.action === 'START') {
-                if (this.next) {
-                  res.output = `<audio src="${res.play.url}" />`;
-                } else {
-                  res.output += `<audio src="${res.play.url}" />`;
-                }
-              } else if (res.play.action === 'PAUSE') {
-                this.pause = true;
-                if (audio) audio.pause();
-              } else if (res.play.action === 'RESUME') {
-                if (audio) {
-                  audio.play();
-                }
-                return;
-              }
-            }
-          } else {
-            this.setState({
-              audioPlayer: false,
-            });
-          }
-          const dom = [];
-          let delay = 0;
-          if (data.input) {
-            const outputBlock = {
-              self: data.input,
-              delay,
-            };
-            dom.push(outputBlock);
-          }
-          let idx = 0;
-          // eslint-disable-next-line no-restricted-syntax
-          for (const block of trace) {
-            if (block.isExitFlow) {
-              delay += 1000;
-              const outputBlock = {
-                node: trace[idx - 1].line.id,
-                delay,
-              };
-              if (block.diagram) outputBlock.diagram = block.diagram;
-              dom.push(outputBlock);
-              // eslint-disable-next-line no-continue
-              continue;
-            }
-            // eslint-disable-next-line no-continue
-            if (!block.output) continue;
-            const type = block.block;
-            const parsed = parse(block.output)[0];
-            if (idx === 0 && type === 'Choice' && res.ending) {
-              const outputBlock = {
-                node: block.line.id,
-                diagram: !_.isEmpty(res.diagrams) && _.last(res.diagrams).id,
-                type,
-                delay,
-              };
-              delay += 500;
-              dom.push(outputBlock);
-            }
-            if (type === 'Speak') {
-              delay += 1000;
-              // eslint-disable-next-line no-await-in-loop
-              const results = await Promise.all(
-                block.audio.map(async (audioFile) => {
-                  const audio = new Audio(audioFile);
-                  return { duration: await this.getAudioMeta(audio), audio };
-                })
-              );
-              // eslint-disable-next-line lodash/collection-return, lodash/collection-method-value, no-loop-func
-              _.map(parsed.children, (child, idx) => {
-                const outputBlock = {};
-                if (child.name === 'audio') {
-                  outputBlock.text = 'Audio File';
-                } else {
-                  const replaced = RegexVariables(block.line.speak, variableMapping);
-                  outputBlock.text = replaced;
-                }
-                outputBlock.audio = results[idx].audio;
-                outputBlock.node = block.line.id;
-                outputBlock.audioType = child.name;
-                const duration = results[idx].duration * 1000;
-                outputBlock.delay = delay;
-                outputBlock.type = type;
-                outputBlock.isLast = !block.line.nextId;
-                delay += duration;
-                dom.push(outputBlock);
-              });
-            } else if (type === 'Stream') {
-              delay += 1000;
-              // eslint-disable-next-line no-await-in-loop
-              const results = await Promise.all(
-                block.audio.map(async (audioFile) => {
-                  const audio = new Audio(audioFile);
-                  return { duration: await this.getAudioMeta(audio), audio };
-                })
-              );
-              const duration = results[0].duration * 1000;
-              const outputBlock = {
-                audio: results[0].audio,
-                text: 'Streaming',
-                node: block.line.id,
-                isLast: !block.line.nextId,
-                delay,
-                type,
-              };
-              dom.push(outputBlock);
-              const outputBlockChoices = {
-                options: [
-                  { label: 'Resume', val: 'AMAZON.ResumeIntent' },
-                  { label: 'Pause', val: 'AMAZON.PauseIntent' },
-                  { label: 'Next', val: 'AMAZON.NextIntent' },
-                  { label: 'Previous', val: 'AMAZON.PreviousIntent' },
-                ],
-                node: block.line.id,
-                isLast: !block.line.nextId,
-                delay,
-                type,
-              };
-              delay += duration;
-              dom.push(outputBlockChoices);
-            } else if (type === 'Choice' && idx > 0) {
-              const outputBlock = {
-                options: _.map(block.line.inputs, _.head),
-                node: block.line.id,
-                type,
-                delay,
-              };
-              dom.push(outputBlock);
-            } else if (type === 'Flow') {
-              const outputBlock = {
-                node: block.line.id,
-                diagram: block.line.diagram_id,
-                isLast: !block.line.nextId,
-                type,
-                delay,
-              };
-              delay += 500;
-              dom.push(outputBlock);
-            } else if (type === 'One Shot Intent') {
-              const outputBlock = {
-                node: block.line.id,
-                diagram: _.last(block.diagrams).id,
-                type,
-                delay,
-              };
-              delay += 500;
-              dom.push(outputBlock);
-            } else {
-              if (!_.isEmpty(parsed.children)) {
-                // eslint-disable-next-line lodash/collection-return, lodash/collection-method-value, no-loop-func
-                _.map(parsed.children, (child) => {
-                  const outputBlock = {
-                    text: child.children[0].children[0].content,
-                    node: block.line.id,
-                    delay,
-                    type: 'system',
-                    isLast: !block.line.nextId,
-                  };
-                  dom.push(outputBlock);
-                });
-              }
-            }
-            idx++;
-          }
+          const userTestOutputs = await getUserTestOutputs(data, trace, res, variableMapping);
           this.setState({
-            outputs: this.state.outputs.concat(dom),
+            outputs: this.state.outputs.concat(userTestOutputs),
           });
         } else if (res.ending) {
           this.setState({
@@ -631,7 +351,7 @@ class Timeline extends React.Component {
 
   render() {
     const { time, testing_info, diagramEngine, history, enterFlow, resetTest } = this.props;
-    const { inputs, ended, audioPlayer, outputs, lastNode } = this.state;
+    const { inputs, ended, outputs, lastNode } = this.state;
     if (!testing_info) {
       return (
         <div className="text-center mb-3">
@@ -659,7 +379,11 @@ class Timeline extends React.Component {
               intent,
             });
           }}
-          audioPlayer={audioPlayer}
+          setAudio={(audio) => {
+            this.setState({
+              audio,
+            });
+          }}
           handleRestart={this.handleRestart}
           handleChange={(e) => this.setState({ input: e.target.value })}
           inputSubmit={this.inputSubmit}

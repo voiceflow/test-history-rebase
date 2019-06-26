@@ -17,6 +17,7 @@ const TestBox = (props) => {
     resetTest,
     diagramEngine,
     handleChange,
+    setAudio,
     inputSubmit,
     handleRestart,
   } = props;
@@ -57,6 +58,7 @@ const TestBox = (props) => {
                   key={i}
                   chat={chat}
                   lastNode={lastNode}
+                  setAudio={setAudio}
                   setLastNode={setLastNode}
                   resetTest={resetTest}
                   time={time}

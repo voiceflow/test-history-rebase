@@ -12,11 +12,14 @@ class SpeakBox extends React.Component {
   };
 
   componentDidMount() {
-    const { chat } = this.props;
+    const { chat, setAudio } = this.props;
     const { audio, delay } = chat;
     this.timer = setTimeout(() => {
       this.centerNode();
-      if (audio) audio.play();
+      if (audio) {
+        audio.play();
+        setAudio(audio);
+      }
       if (chat.diagram) {
         this.props.enterFlow(chat.diagram, false);
       }

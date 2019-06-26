@@ -50,9 +50,7 @@ export default ({ name, styles = {}, canDrag, canDrop, onDropKey, onMoveKey, all
         isDraggingPreview: true,
       };
     },
-    isDragging(props, monitor) {
-      return !props.isFB && props.id === monitor.getItem().id;
-    },
+    isDragging: (props, monitor) => !props.isFB && props.id === monitor.getItem().id,
   };
 
   const panelTarget = {

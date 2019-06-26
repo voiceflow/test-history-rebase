@@ -1,7 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CancelPayment render cancel payment editor 1`] = `
-<ContextConsumer>
-  <Component />
-</ContextConsumer>
+<div
+  className="text-center"
+>
+  <img
+    alt="user"
+    className="mb-3 mt-5"
+    src="/images/OpenSafe.svg"
+    width="80"
+  />
+  <br />
+  <span
+    className="text-muted"
+  >
+    You currently have no In Skill Products
+  </span>
+  <Link
+    className="btn btn-secondary mt-3"
+    to="/tools/undefined/products"
+  >
+    Add Products
+  </Link>
+</div>
 `;

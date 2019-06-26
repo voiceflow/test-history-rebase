@@ -96,11 +96,7 @@ class Clipboard extends React.Component {
       diagrams,
     };
     localStorage.clipboard = JSON.stringify(payload);
-    this.props.setCanvasInfo(
-      `Copied ${nodes.length} block(s), ${links.length} line(s), ${slots.length} slot(s), ${intents.length} intent(s), ${
-        displays.length
-      } display(s), ${products.length} product(s) and ${diagrams.length} flow(s)`
-    );
+    this.props.setCanvasInfo(`${nodes.length} block(s) copied to clipboard`);
   }
 
   async paste() {

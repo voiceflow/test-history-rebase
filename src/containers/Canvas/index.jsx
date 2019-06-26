@@ -28,7 +28,7 @@ import { updateVersion, updateIntents, setCanFulfill } from 'ducks/version';
 import { setVariables } from 'ducks/variable';
 import { renameDiagram, appendDiagrams, updateDiagrams } from 'ducks/diagram';
 import { setError, setConfirm } from 'ducks/modal';
-import { openTab, closeTab, setCanvasError } from 'ducks/user';
+import { openTab, closeTab, setCanvasError, clearCanvasMessage } from 'ducks/user';
 
 import Clipboard from './components/Clipboard';
 import ActionGroup from './components/ActionGroup/ActionGroup';
@@ -221,6 +221,7 @@ export class Canvas extends Component {
       this.trackCanvasTime();
     }
     localStorage.setItem('is_first_session', 'false');
+    this.props.clearCanvasMessage();
   }
 
   openTab(tab) {
@@ -1462,6 +1463,7 @@ export class Canvas extends Component {
 
   enterFlow(new_diagram_id, save = true) {
     if (new_diagram_id !== this.props.diagram_id) {
+      this.props.clearCanvasMessage();
       this.setState({ load_diagram: true });
       if (save && !this.props.preview) {
         this.saveCB = () => {
@@ -1810,6 +1812,7 @@ const mapDispatchToProps = (dispatch) => {
     updateDiagrams: (diagrams) => dispatch(updateDiagrams(diagrams)),
     setTab: (tab) => dispatch(openTab(tab)),
     closeTab: () => dispatch(closeTab()),
+    clearCanvasMessage: () => dispatch(clearCanvasMessage()),
   };
 };
 

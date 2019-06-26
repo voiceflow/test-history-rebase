@@ -11,13 +11,12 @@ import { Alert, Input } from 'reactstrap';
 import { getUtterancesWithSlotNames } from '../../../../intent_util';
 import IntentInput from './IntentInput';
 
-function getIndex(index) {
-  return converter
+const getIndex = (index) =>
+  converter
     .toWords(index)
     .replace(/\s/g, '_')
     .replace(/,/g, '')
     .replace(/-/g, '_');
-}
 
 class IntentInputs extends Component {
   constructor(props) {

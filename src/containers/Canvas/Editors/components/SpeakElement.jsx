@@ -22,12 +22,10 @@ const style = {
   padding: '5px',
 };
 const source = {
-  beginDrag(props) {
-    return {
-      id: props.id,
-      index: props.index,
-    };
-  },
+  beginDrag: (props) => ({
+    id: props.id,
+    index: props.index,
+  }),
 };
 
 const target = {

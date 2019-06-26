@@ -64,6 +64,12 @@ function findPath(path, data) {
   return cur_data;
 }
 
+const findVariablesInNode = (finder) => (nodeValue) => {
+  _.forEach(_.concat(nodeValue.key, nodeValue.val), (value) => {
+    finder(draftToMarkdown(value));
+  });
+};
+
 function copyJSONPath(copy_event) {
   const total_path = copy_event.namespace.slice();
 
@@ -715,11 +721,3 @@ class API extends Component {
 }
 
 export default API;
-
-function findVariablesInNode(finder) {
-  return (nodeValue) => {
-    _.forEach(_.concat(nodeValue.key, nodeValue.val), (value) => {
-      finder(draftToMarkdown(value));
-    });
-  };
-}

@@ -185,7 +185,7 @@ export class ActionGroup extends PureComponent {
   async componentDidMount() {
     // perform google fetch async
     googleAccessToken(this.props.skill.skill_id).then((token) => {
-      this.google_token = token;
+      this.google_token = token.token;
       this.reset();
     });
 

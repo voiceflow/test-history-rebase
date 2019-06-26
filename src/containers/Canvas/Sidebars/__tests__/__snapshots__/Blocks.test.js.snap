@@ -41,7 +41,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         className="mb-3 section-blocks"
         style={null}
       >
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Tell Alexa what to say, or play audio clips"
           draggable={true}
           item={
@@ -56,7 +56,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="0"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Listen for the user to make a choice from a list of options you set"
           draggable={true}
           item={
@@ -113,7 +113,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         className="mb-3 section-blocks"
         style={null}
       >
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Set the value of a variable, or many variables at once"
           draggable={true}
           item={
@@ -128,7 +128,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="0"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Set conditions that activate paths only when true"
           draggable={true}
           item={
@@ -143,7 +143,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="1"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Capture what the user says into a variable"
           draggable={true}
           item={
@@ -158,7 +158,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="2"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Choose randomly from a set number of paths"
           draggable={true}
           item={
@@ -215,7 +215,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         className="mb-3 section-blocks"
         style={null}
       >
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Select choices and capture slot values from user input"
           draggable={true}
           item={
@@ -230,7 +230,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="0"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Handle intents, from within the skill and upon skill launch with CanFulfillIntent)"
           draggable={true}
           item={
@@ -245,7 +245,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="1"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Stream long audio files & URLs for the user"
           draggable={true}
           item={
@@ -260,7 +260,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="2"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Integrate external services into your skill"
           draggable={true}
           item={
@@ -275,7 +275,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="3"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Organize your project into manageable sections or perform computations"
           draggable={true}
           item={
@@ -290,7 +290,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="4"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Modify Variables directly with Code"
           draggable={true}
           item={
@@ -305,7 +305,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="5"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="End the skill on the current flow"
           draggable={true}
           item={
@@ -362,7 +362,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         className="mb-3 section-blocks"
         style={null}
       >
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Tell Alexa to show a card"
           draggable={true}
           item={
@@ -377,7 +377,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="0"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Show a Multimodal Display on the screen using APL"
           draggable={true}
           item={
@@ -434,7 +434,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         className="mb-3 section-blocks"
         style={null}
       >
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Ask users to enable permissions (User Info, Reminders, etc.)"
           draggable={true}
           item={
@@ -449,7 +449,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="0"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Get User Information and check Permissions"
           draggable={true}
           item={
@@ -464,7 +464,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="1"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Request payment from user"
           draggable={true}
           item={
@@ -479,7 +479,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="2"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Refund a purchase or cancel an user's subscription"
           draggable={true}
           item={
@@ -494,7 +494,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="3"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Send a remind to the user in a set amount of time"
           draggable={true}
           item={
@@ -556,7 +556,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         className="mb-3 section-blocks"
         style={null}
       >
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Tell Alexa what to say, or play audio clips"
           draggable={true}
           item={
@@ -571,7 +571,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="0"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Listen for the user to make a choice from a list of options you set"
           draggable={true}
           item={
@@ -628,7 +628,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         className="mb-3 section-blocks"
         style={null}
       >
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Set the value of a variable, or many variables at once"
           draggable={true}
           item={
@@ -643,7 +643,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="0"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Set conditions that activate paths only when true"
           draggable={true}
           item={
@@ -658,7 +658,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="1"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Capture what the user says into a variable"
           draggable={true}
           item={
@@ -673,7 +673,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="2"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Choose randomly from a set number of paths"
           draggable={true}
           item={
@@ -730,7 +730,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         className="mb-3 section-blocks"
         style={null}
       >
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Select choices and capture slot values from user input"
           draggable={true}
           item={
@@ -745,7 +745,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="0"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Handle intents, from within the skill and upon skill launch with CanFulfillIntent)"
           draggable={true}
           item={
@@ -760,7 +760,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="1"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Stream long audio files & URLs for the user"
           draggable={true}
           item={
@@ -775,7 +775,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="2"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Integrate external services into your skill"
           draggable={true}
           item={
@@ -790,7 +790,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="3"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Organize your project into manageable sections or perform computations"
           draggable={true}
           item={
@@ -805,7 +805,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="4"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Modify Variables directly with Code"
           draggable={true}
           item={
@@ -820,7 +820,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="5"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="End the skill on the current flow"
           draggable={true}
           item={
@@ -877,7 +877,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         className="mb-3 section-blocks"
         style={null}
       >
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Tell Alexa to show a card"
           draggable={true}
           item={
@@ -892,7 +892,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="0"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Show a Multimodal Display on the screen using APL"
           draggable={true}
           item={
@@ -949,7 +949,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         className="mb-3 section-blocks"
         style={null}
       >
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Ask users to enable permissions (User Info, Reminders, etc.)"
           draggable={true}
           item={
@@ -964,7 +964,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="0"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Get User Information and check Permissions"
           draggable={true}
           item={
@@ -979,7 +979,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="1"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Request payment from user"
           draggable={true}
           item={
@@ -994,7 +994,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="2"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Refund a purchase or cancel an user's subscription"
           draggable={true}
           item={
@@ -1009,7 +1009,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="3"
         />
-        <ConnectFunction
+        <Connect(MenuItem)
           data-tip="Send a remind to the user in a set amount of time"
           draggable={true}
           item={

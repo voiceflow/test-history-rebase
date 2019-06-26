@@ -1,75 +1,75 @@
 /* eslint-disable guard-for-in, no-restricted-syntax, simple-import-sort/sort */
-import React, { Component } from 'react';
-import * as SRD from 'components/SRD/main';
-import cn from 'classnames';
-import Menu from './Menu';
-import Editor from './Editor';
-import axios from 'axios';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import React, { Component } from "react";
+import * as SRD from "components/SRD/main";
+import cn from "classnames";
+import Menu from "./Menu";
+import Editor from "./Editor";
+import axios from "axios";
+import { compose } from "recompose";
+import { connect } from "react-redux";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
 // import Loader from './Loader'
-import 'draft-js/dist/Draft.css';
-import 'components/SRD/sass/main.css';
-import './StoryBoard.css';
+import "draft-js/dist/Draft.css";
+import "components/SRD/sass/main.css";
+import "./StoryBoard.css";
 
 // HOCs
-import { undo, redo } from 'hocs/withUndoRedo';
-import { open, blockMenu } from 'hocs/withCanvasHelper';
-import { keyboardModal } from 'hocs/withModalHandlers';
+import { undo, redo } from "hocs/withUndoRedo";
+import { open, blockMenu } from "hocs/withCanvasHelper";
+import { keyboardModal } from "hocs/withModalHandlers";
 
-import { WidgetBar } from './components/WidgetBar';
-import CanvasWarning from './components/CanvasWarning';
+import { WidgetBar } from "./components/WidgetBar";
+import CanvasWarning from "./components/CanvasWarning";
 // Helpers
-import { combineAppendValidation, appendValidator } from 'utils/combineHelper';
+import { combineAppendValidation, appendValidator } from "utils/combineHelper";
 
-import { updateVersion, updateIntents, setCanFulfill } from 'ducks/version';
-import { setVariables } from 'ducks/variable';
-import { renameDiagram, appendDiagrams, updateDiagrams } from 'ducks/diagram';
-import { setError, setConfirm } from 'ducks/modal';
-import { openTab, closeTab, setCanvasError } from 'ducks/user';
+import { updateVersion, updateIntents, setCanFulfill } from "ducks/version";
+import { setVariables } from "ducks/variable";
+import { renameDiagram, appendDiagrams, updateDiagrams } from "ducks/diagram";
+import { setError, setConfirm } from "ducks/modal";
+import { openTab, closeTab, setCanvasError } from "ducks/user";
 
-import ActionGroup from './components/ActionGroup/ActionGroup';
-import HelpModal from './HelpModal';
-import TestModal from './Test/TestModal';
-import new_template from 'assets/templates/new';
-import { Alert, ListGroup, ListGroupItem } from 'reactstrap';
+import ActionGroup from "./components/ActionGroup/ActionGroup";
+import HelpModal from "./HelpModal";
+import TestModal from "./Test/TestModal";
+import new_template from "assets/templates/new";
+import { Alert, ListGroup, ListGroupItem } from "reactstrap";
 
-import cloneDeep from 'lodash/cloneDeep';
-import * as util from './util';
-import Spotlight from './Spotlight';
-import { Toolkit } from 'components/SRD/Toolkit';
-import FlowBar from './FlowBar';
-import DefaultModal from 'components/Modals/DefaultModal';
-import ShortCuts from 'components/ShortCuts/ShortCuts';
-import Mousetrap from 'mousetrap';
+import cloneDeep from "lodash/cloneDeep";
+import * as util from "./util";
+import Spotlight from "./Spotlight";
+import { Toolkit } from "components/SRD/Toolkit";
+import FlowBar from "./FlowBar";
+import DefaultModal from "components/Modals/DefaultModal";
+import ShortCuts from "components/ShortCuts/ShortCuts";
+import Mousetrap from "mousetrap";
 
-import { BlockNodeModel } from 'components/SRD/models/BlockNodeModel';
-import { PointModel } from 'components/SRD/models/PointModel';
+import { BlockNodeModel } from "components/SRD/models/BlockNodeModel";
+import { PointModel } from "components/SRD/models/PointModel";
 /* eslint-disable no-secrets/no-secrets */
-import { BlockLinkFactory } from 'components/SRD/factories/BlockLinkFactory';
-import { BlockPortFactory } from 'components/SRD/factories/BlockPortFactory';
-import { BlockNodeFactory } from 'components/SRD/factories/BlockNodeFactory';
+import { BlockLinkFactory } from "components/SRD/factories/BlockLinkFactory";
+import { BlockPortFactory } from "components/SRD/factories/BlockPortFactory";
+import { BlockNodeFactory } from "components/SRD/factories/BlockNodeFactory";
 /* eslint-enable no-secrets/no-secrets */
-import { Spinner } from 'components/Spinner/Spinner';
+import { Spinner } from "components/Spinner/Spinner";
 
-import { SLOT_TYPES, ALLOWED_GOOGLE_BLOCKS } from 'Constants';
+import { SLOT_TYPES, ALLOWED_GOOGLE_BLOCKS } from "Constants";
 
-import Linter from './linter';
-import { getUtterancesWithSlotNames, getSlotsForKeys } from 'intent_util';
-import randomstring from 'randomstring';
-import { checkBlockDisabledLive } from './Blocks';
+import Linter from "./linter";
+import { getUtterancesWithSlotNames, getSlotsForKeys } from "intent_util";
+import randomstring from "randomstring";
+import { checkBlockDisabledLive } from "./Blocks";
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Prompt } from 'react-router';
-import moment from 'moment';
-import Upgrade from 'components/Modals/MultiPlatformModalContent';
-import { fetchIntegrationUsers } from 'ducks/integration';
+import { Prompt } from "react-router";
+import moment from "moment";
+import Upgrade from "components/Modals/MultiPlatformModalContent";
+import { fetchIntegrationUsers } from "ducks/integration";
 /* eslint-enable simple-import-sort/sort */
 
-const NLC = require('natural-language-commander');
-const _ = require('lodash');
+const NLC = require("natural-language-commander");
+const _ = require("lodash");
 
 const toolkit = new Toolkit();
 
@@ -87,15 +87,17 @@ export class Canvas extends Component {
     const engine = new SRD.DiagramEngine();
     engine.registerLabelFactory(new SRD.DefaultLabelFactory());
     engine.registerNodeFactory(new BlockNodeFactory());
-    engine.registerLinkFactory(new BlockLinkFactory(null, null, this.props.preview));
+    engine.registerLinkFactory(
+      new BlockLinkFactory(null, null, this.props.preview)
+    );
     engine.registerPortFactory(new BlockPortFactory());
 
-    const diagram_name = '';
+    const diagram_name = "";
 
     if (window.Appcues) {
       window.Appcues.identify(this.props.user.id, {
         email: this.props.user.email,
-        name: this.props.user.name,
+        name: this.props.user.name
       });
     }
     this.loaded = false;
@@ -116,15 +118,19 @@ export class Canvas extends Component {
       load_diagram: true,
       diagram_level_intents: {
         alexa: new Set(),
-        google: new Set(),
+        google: new Set()
       },
       confirm_info: null,
       spotlight: false,
       upgrade_modal: false,
-      type_counter: {},
+      type_counter: {}
     };
 
-    if (window.performance && performance.naviation && performance.navigation.type === 1) {
+    if (
+      window.performance &&
+      performance.naviation &&
+      performance.navigation.type === 1
+    ) {
       this.trackCanvasTime();
     }
 
@@ -134,27 +140,35 @@ export class Canvas extends Component {
 
   setMousetrap = () => {
     Mousetrap.reset();
-    Mousetrap.bind(['shift+/'], () => this.props.toggleKeyboard(!this.props.keyboardHelp));
-    Mousetrap.bind(['ctrl+c', 'command+c'], () =>
+    Mousetrap.bind(["shift+/"], () =>
+      this.props.toggleKeyboard(!this.props.keyboardHelp)
+    );
+    Mousetrap.bind(["ctrl+c", "command+c"], () =>
       this.setState({
         copy: this.state.engine
           .getDiagramModel()
           .getSelectedItems()
-          .filter((n) => n instanceof BlockNodeModel),
+          .filter(n => n instanceof BlockNodeModel)
       })
     );
-    Mousetrap.bind(['ctrl+v', 'command+v'], this.paste);
-    Mousetrap.bind(['ctrl+z', 'command+z'], this.undo);
-    Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo);
-    Mousetrap.bind(['ctrl+/', 'command+/'], this.addComment);
-    Mousetrap.bind(['ctrl+s', 'command+s'], (e) => {
+    Mousetrap.bind(["ctrl+v", "command+v"], this.paste);
+    Mousetrap.bind(["ctrl+z", "command+z"], this.undo);
+    Mousetrap.bind(
+      ["ctrl+y", "command+y", "ctrl+shift+z", "command+shift+z"],
+      this.redo
+    );
+    Mousetrap.bind(["ctrl+/", "command+/"], this.addComment);
+    Mousetrap.bind(["ctrl+s", "command+s"], e => {
       e.preventDefault();
       if (!this.state.saved && !this.props.preview) {
         this.onSave();
       }
     });
-    Mousetrap.bind('esc', () => this.state.spotlight && this.setState({ spotlight: false }));
-    Mousetrap.bind('space', (e) => {
+    Mousetrap.bind(
+      "esc",
+      () => this.state.spotlight && this.setState({ spotlight: false })
+    );
+    Mousetrap.bind("space", e => {
       if (this.diagram_focus) {
         this.onDiagramUnfocus();
         this.setState({ spotlight: true });
@@ -162,18 +176,18 @@ export class Canvas extends Component {
         e.stopPropagation();
       }
     });
-    Mousetrap.bind('enter', (e) => e.target.click());
-    Mousetrap.bind(['shift+1'], (e) => {
+    Mousetrap.bind("enter", e => e.target.click());
+    Mousetrap.bind(["shift+1"], e => {
       e.preventDefault();
-      this.openTab('blocks');
+      this.openTab("blocks");
     });
-    Mousetrap.bind(['shift+2'], (e) => {
+    Mousetrap.bind(["shift+2"], e => {
       e.preventDefault();
-      this.openTab('project');
+      this.openTab("project");
     });
-    Mousetrap.bind(['shift+3'], (e) => {
+    Mousetrap.bind(["shift+3"], e => {
       e.preventDefault();
-      this.openTab('variables');
+      this.openTab("variables");
     });
   };
 
@@ -181,7 +195,14 @@ export class Canvas extends Component {
     if (window.Appcues) {
       window.Appcues.page();
     }
-    this.events = ['load', 'mousemove', 'mousedown', 'click', 'scroll', 'keypress'];
+    this.events = [
+      "load",
+      "mousemove",
+      "mousedown",
+      "click",
+      "scroll",
+      "keypress"
+    ];
 
     for (const i in this.events) {
       window.addEventListener(this.events[i], this.resetTimeout);
@@ -192,10 +213,18 @@ export class Canvas extends Component {
     this.setTimeout();
     this.setMousetrap();
     // AUTOSAVE EVERY 10 SECONDS
-    if (!this.props.preview && this.props.skill && this.props.skill.skill_id && this.props.diagram_id && !window.error) {
+    if (
+      !this.props.preview &&
+      this.props.skill &&
+      this.props.skill.skill_id &&
+      this.props.diagram_id &&
+      !window.error
+    ) {
       this.interval = setInterval(() => {
         if (this.lastModel) {
-          const currentModel = JSON.stringify(util.serializeDiagram(this.state.engine));
+          const currentModel = JSON.stringify(
+            util.serializeDiagram(this.state.engine)
+          );
           if (currentModel !== this.lastModel) {
             if (util.canSave(currentModel)) {
               this.tooBig = false;
@@ -203,7 +232,9 @@ export class Canvas extends Component {
             } else {
               if (!this.tooBig) {
                 this.tooBig = true;
-                this.props.setError('Your flow is too large to be saved - Delete blocks and use sub-flows to reduce size');
+                this.props.setError(
+                  "Your flow is too large to be saved - Delete blocks and use sub-flows to reduce size"
+                );
               }
             }
           }
@@ -218,7 +249,13 @@ export class Canvas extends Component {
   }
 
   componentWillUnmount() {
-    if (!this.props.preview && this.props.skill && this.props.skill.skill_id && this.props.diagram_id && !window.error) {
+    if (
+      !this.props.preview &&
+      this.props.skill &&
+      this.props.skill.skill_id &&
+      this.props.diagram_id &&
+      !window.error
+    ) {
       this.onSave(false);
     }
     Mousetrap.reset();
@@ -228,12 +265,12 @@ export class Canvas extends Component {
     if (this.props.skill) {
       this.trackCanvasTime();
     }
-    localStorage.setItem('is_first_session', 'false');
+    localStorage.setItem("is_first_session", "false");
   }
 
   openTab(tab) {
     if (tab !== this.props.tab || !this.props.tabOpen) {
-      localStorage.setItem('tab', tab);
+      localStorage.setItem("tab", tab);
       this.props.setTab(tab);
     }
   }
@@ -243,20 +280,27 @@ export class Canvas extends Component {
   };
 
   setTimeout = () => {
-    this.activityTimeout = setTimeout(this.pauseActivity, this.state.activityTime);
+    this.activityTimeout = setTimeout(
+      this.pauseActivity,
+      this.state.activityTime
+    );
   };
 
   pauseActivity = () => {
-    this.time_active = this.time_active ? new Date() - this.time_mounted + this.time_active : new Date() - this.time_mounted;
+    this.time_active = this.time_active
+      ? new Date() - this.time_mounted + this.time_active
+      : new Date() - this.time_mounted;
     this.isInactive = true;
   };
 
   trackCanvasTime = () => {
     const time_unmounted = new Date();
     if (!!this.props.skill && this.time_mounted) {
-      axios.post('/analytics/track_active_canvas', {
-        duration: this.time_active ? time_unmounted - this.time_mounted + this.time_active : time_unmounted - this.time_mounted,
-        skill_id: this.props.skill.skill_id,
+      axios.post("/analytics/track_active_canvas", {
+        duration: this.time_active
+          ? time_unmounted - this.time_mounted + this.time_active
+          : time_unmounted - this.time_mounted,
+        skill_id: this.props.skill.skill_id
       });
     }
     this.time_mounted = null;
@@ -277,7 +321,7 @@ export class Canvas extends Component {
       this.state.engine.enableRepaintEntities(nodes);
       this.state.engine.repaintCanvas(false);
       this.setState({
-        load_diagram: true,
+        load_diagram: true
       });
       this.onLoadId(this.props.diagram_id);
     }
@@ -292,29 +336,39 @@ export class Canvas extends Component {
     if (this.state.copy) {
       const event = {
         clientX: this.mouseX,
-        clientY: this.mouseY,
+        clientY: this.mouseY
       };
       const point = this.state.engine.getRelativeMousePoint(event);
-      const centerX = _.maxBy(this.state.copy, 'x').x - (_.maxBy(this.state.copy, 'x').x - _.minBy(this.state.copy, 'x').x) / 2;
-      const centerY = _.maxBy(this.state.copy, 'y').y - (_.maxBy(this.state.copy, 'y').y - _.minBy(this.state.copy, 'y').y) / 2;
-      _.forEach(this.state.copy, (node) => {
-        this.copyNode(node, { x: point.x + (node.x - centerX), y: point.y + (node.y - centerY) });
+      const centerX =
+        _.maxBy(this.state.copy, "x").x -
+        (_.maxBy(this.state.copy, "x").x - _.minBy(this.state.copy, "x").x) / 2;
+      const centerY =
+        _.maxBy(this.state.copy, "y").y -
+        (_.maxBy(this.state.copy, "y").y - _.minBy(this.state.copy, "y").y) / 2;
+      _.forEach(this.state.copy, node => {
+        this.copyNode(node, {
+          x: point.x + (node.x - centerX),
+          y: point.y + (node.y - centerY)
+        });
       });
     }
   };
 
-  undo = (e) => {
-    if (!_.isEmpty(this.props.undoEvents) && !this.state.engine.getDiagramModel().locked) {
+  undo = e => {
+    if (
+      !_.isEmpty(this.props.undoEvents) &&
+      !this.state.engine.getDiagramModel().locked
+    ) {
       const recent = _.clone(_.last(this.props.undoEvents));
-      if (recent.eventType === 'remove') {
-        _.forEach(recent.node, (n) => {
+      if (recent.eventType === "remove") {
+        _.forEach(recent.node, n => {
           if (n instanceof BlockNodeModel) {
             n.parentCombine = null;
             this.state.engine.getDiagramModel().addNode(n);
           }
         });
       } else {
-        _.forEach(recent.node, (n) => n instanceof BlockNodeModel && n.remove());
+        _.forEach(recent.node, n => n instanceof BlockNodeModel && n.remove());
       }
       this.state.engine.getDiagramModel().clearSelection();
       this.props.addRedo(recent);
@@ -323,14 +377,22 @@ export class Canvas extends Component {
     e.preventDefault();
   };
 
-  redo = (e) => {
-    if (!_.isEmpty(this.props.redoEvents) && !this.state.engine.getDiagramModel().locked) {
+  redo = e => {
+    if (
+      !_.isEmpty(this.props.redoEvents) &&
+      !this.state.engine.getDiagramModel().locked
+    ) {
       const recent = _.last(this.props.redoEvents);
-      if (recent.eventType === 'remove') {
-        _.forEach(recent.node, (n) => n instanceof BlockNodeModel && n.remove());
+      if (recent.eventType === "remove") {
+        _.forEach(recent.node, n => n instanceof BlockNodeModel && n.remove());
       } else {
         this.state.engine.getDiagramModel().clearSelection();
-        _.forEach(recent.node, (n) => n instanceof BlockNodeModel && this.state.engine.getDiagramModel().addNode(n));
+        _.forEach(
+          recent.node,
+          n =>
+            n instanceof BlockNodeModel &&
+            this.state.engine.getDiagramModel().addNode(n)
+        );
       }
       this.state.engine.getDiagramModel().clearSelection();
       this.props.addUndo(recent.node, recent.eventType);
@@ -339,51 +401,62 @@ export class Canvas extends Component {
     e.preventDefault();
   };
 
-  addComment = (e) => {
+  addComment = e => {
     e.preventDefault();
-    this.onDrop('comment');
+    this.onDrop("comment");
   };
 
   removeNode = (selectedNode = null) => {
     const selected = selectedNode || this.state.engine.getSuperSelect();
     if (!checkBlockDisabledLive(this.props.live_mode, selected.extras.type)) {
       this.state.engine.stopMove();
-      if (selected.extras && selected.extras.type === 'god') {
+      if (selected.extras && selected.extras.type === "god") {
         this.props.setConfirm({
           warning: true,
           text: (
             <Alert color="danger" className="mb-0">
-              WARNING: This action can not be undone, <i>{selected.name}</i> can not be recovered
+              WARNING: This action can not be undone, <i>{selected.name}</i> can
+              not be recovered
             </Alert>
           ),
-          confirm: () => selected.remove(),
+          confirm: () => selected.remove()
         });
       } else if (selected) {
         if (this.props.undoEvents.length >= 10) {
           this.props.shiftUndo();
         }
-        this.props.addUndo([selected], 'remove');
+        this.props.addUndo([selected], "remove");
         this.props.clearRedo();
         selected.remove();
       }
     } else {
-      this.props.setError('Cannot delete blocks that would alter the interaction model in live version editing');
+      this.props.setError(
+        "Cannot delete blocks that would alter the interaction model in live version editing"
+      );
     }
   };
 
   // copy individual node
   copyNode = (newNode = null, pos = null) => {
     const selected = newNode || this.state.engine.getSuperSelect();
-    if (selected.extras.type !== 'story') {
+    if (selected.extras.type !== "story") {
       const engine = this.state.engine;
       engine.stopMove();
 
-      const node = new BlockNodeModel(`${selected.name} copy`, null, toolkit.UID());
+      const node = new BlockNodeModel(
+        `${selected.name} copy`,
+        null,
+        toolkit.UID()
+      );
       node.extras = cloneDeep(selected.extras);
-      if (selected.extras.type === 'god') {
+      if (selected.extras.type === "god") {
         const newCombines = [];
         selected.combines.forEach((combineNode, idx) => {
-          const newCombineNode = new BlockNodeModel(combineNode.name, null, toolkit.UID());
+          const newCombineNode = new BlockNodeModel(
+            combineNode.name,
+            null,
+            toolkit.UID()
+          );
           newCombineNode.extras = cloneDeep(combineNode.extras);
           newCombineNode.x = combineNode.x + 30;
           newCombineNode.y = combineNode.y + 30;
@@ -391,7 +464,9 @@ export class Canvas extends Component {
           let newPort;
           for (const name in ports) {
             const port = ports[name];
-            port.in ? (newPort = newCombineNode.addInPort(port.label)) : (newPort = newCombineNode.addOutPort(port.label));
+            port.in
+              ? (newPort = newCombineNode.addInPort(port.label))
+              : (newPort = newCombineNode.addOutPort(port.label));
             if (port.hidden) {
               newPort.setHidden(port.hidden);
             }
@@ -403,10 +478,12 @@ export class Canvas extends Component {
       }
       const ports = selected.getPorts();
       let newPort;
-      if (node.extras.type !== 'god') {
+      if (node.extras.type !== "god") {
         for (const name in ports) {
           const port = ports[name];
-          port.in ? (newPort = node.addInPort(port.label)) : (newPort = node.addOutPort(port.label));
+          port.in
+            ? (newPort = node.addInPort(port.label))
+            : (newPort = node.addOutPort(port.label));
           if (port.hidden) {
             newPort.setHidden(port.hidden);
           }
@@ -436,10 +513,10 @@ export class Canvas extends Component {
       if (this.props.undoEvents.length >= 10) {
         this.props.shiftUndo();
       }
-      this.props.addUndo([node], 'copy');
+      this.props.addUndo([node], "copy");
       this.props.clearRedo();
       this.setState({
-        engine,
+        engine
       });
     }
   };
@@ -450,9 +527,9 @@ export class Canvas extends Component {
     const newNode = new BlockNodeModel(_.startCase(type), null, toolkit.UID());
     util.createCombineNode(newNode, type, node);
     newNode.extras.type = type;
-    if (node.extras.type !== 'god') {
-      const combineNode = new BlockNodeModel('New Block', null, toolkit.UID());
-      combineNode.extras.type = 'god';
+    if (node.extras.type !== "god") {
+      const combineNode = new BlockNodeModel("New Block", null, toolkit.UID());
+      combineNode.extras.type = "god";
       node.parentCombine = combineNode;
       newNode.parentCombine = combineNode;
       combineNode.x = node.x - 10;
@@ -462,8 +539,8 @@ export class Canvas extends Component {
       newNode.y = node.y + 40;
       combineNode.combines = [node];
       combineNode.combines.push(newNode);
-      node.remove('combine');
-      newNode.remove('combine');
+      node.remove("combine");
+      newNode.remove("combine");
       combineNode.setSelected();
       this.state.engine.setSuperSelect(combineNode);
       this.state.engine.getDiagramModel().addNode(combineNode);
@@ -473,7 +550,10 @@ export class Canvas extends Component {
       newNode.parentCombine = node;
       newNode.x = _.last(node.combines).x;
       newNode.y = _.last(node.combines).y + 40;
-      if (appendValidator(newNode) && combineAppendValidation(_.last(node.combines))) {
+      if (
+        appendValidator(newNode) &&
+        combineAppendValidation(_.last(node.combines))
+      ) {
         node.combines.push(newNode);
         engine.setSuperSelect(node);
         this.forceRepaint();
@@ -481,21 +561,27 @@ export class Canvas extends Component {
     }
   };
 
-  appendCombineNode = (node) => {
-    const idx = _.findIndex(node.parentCombine.combines, ['id', node.id]);
+  appendCombineNode = node => {
+    const idx = _.findIndex(node.parentCombine.combines, ["id", node.id]);
     const engine = this.state.engine;
     if (idx !== -1 && combineAppendValidation(node)) {
       engine.stopMove();
 
-      const newNode = new BlockNodeModel(`${node.name} copy`, null, toolkit.UID());
+      const newNode = new BlockNodeModel(
+        `${node.name} copy`,
+        null,
+        toolkit.UID()
+      );
       newNode.extras = cloneDeep(node.extras);
       let name;
       const ports = node.ports;
       for (name in ports) {
         const port = ports[name];
-        port.in ? newNode.addInPort(port.label) : newNode.addOutPort(port.label).setMaximumLinks(1);
+        port.in
+          ? newNode.addInPort(port.label)
+          : newNode.addOutPort(port.label).setMaximumLinks(1);
       }
-      newNode.ports.forEach((p) => {
+      newNode.ports.forEach(p => {
         p.parent = newNode;
       });
       node.parentCombine.combines.splice(idx + 1, 0, newNode);
@@ -510,19 +596,25 @@ export class Canvas extends Component {
         const lastPorts = newNode.getOutPorts();
         node.parentCombine.ports.push(lastPorts);
       } else {
-        _.forEach(node.parentCombine.getOutPorts(), (port) => {
+        _.forEach(node.parentCombine.getOutPorts(), port => {
           if (!port.in && !_.isEmpty(port.links)) {
             // eslint-disable-next-line lodash/matches-prop-shorthand
-            const pointIdx = _.findIndex(_.first(_.values(port.links)).points, (p) => p.parent.sourcePort.id === port.id);
+            const pointIdx = _.findIndex(
+              _.first(_.values(port.links)).points,
+              p => p.parent.sourcePort.id === port.id
+            );
             const point = _.first(_.values(port.links)).points[pointIdx];
             if (point instanceof PointModel) {
-              _.first(_.values(port.links)).points[pointIdx].updateLocation({ x: point.x, y: point.y + 40 });
+              _.first(_.values(port.links)).points[pointIdx].updateLocation({
+                x: point.x,
+                y: point.y + 40
+              });
             }
           }
         });
       }
       let totalHeight = 40;
-      _.forEach(node.parentCombine.combines, (c) => {
+      _.forEach(node.parentCombine.combines, c => {
         if (!(c instanceof String) && c.id !== node.parentCombine.id) {
           c.x = node.parentCombine.x + 25;
           c.y = node.parentCombine.y + totalHeight;
@@ -540,11 +632,11 @@ export class Canvas extends Component {
     }
   };
 
-  removeCombineNode = (node) => {
+  removeCombineNode = node => {
     const removeNode = () => {
       const diagramEngine = this.state.engine;
       const combineBlock = node.parentCombine;
-      combineBlock.combines = _.without(combineBlock.combines, (c) => {
+      combineBlock.combines = _.without(combineBlock.combines, c => {
         if (c.id === node.id) {
           diagramEngine.setSuperSelect(null);
           c.remove();
@@ -552,7 +644,7 @@ export class Canvas extends Component {
         }
       });
 
-      if (combineBlock.extras.type !== 'god') return this.forceRepaint();
+      if (combineBlock.extras.type !== "god") return this.forceRepaint();
       const lastNode = _.last(combineBlock.combines);
       if (combineBlock.combines.length === 1) {
         const removed = lastNode;
@@ -563,7 +655,7 @@ export class Canvas extends Component {
       }
       let totalHeight = 40;
       // eslint-disable-next-line sonarjs/no-identical-functions
-      _.forEach(node.parentCombine.combines, (c) => {
+      _.forEach(node.parentCombine.combines, c => {
         if (!(c instanceof String) && c.id !== node.parentCombine.id) {
           c.x = node.parentCombine.x + 25;
           c.y = node.parentCombine.y + totalHeight;
@@ -579,11 +671,14 @@ export class Canvas extends Component {
       diagramEngine.setSuperSelect(null);
       this.forceRepaint();
     };
-    if (node.extras.type === 'command') {
-      if (this.props.diagram_id === this.props.skill.diagram && node.parentCombine) {
+    if (node.extras.type === "command") {
+      if (
+        this.props.diagram_id === this.props.skill.diagram &&
+        node.parentCombine
+      ) {
         // Do not allow help/stop be deleted
         try {
-          const intents = ['AMAZON.HelpIntent', 'AMAZON.StopIntent'];
+          const intents = ["AMAZON.HelpIntent", "AMAZON.StopIntent"];
           for (const intent of intents) {
             if (node.extras.alexa.intent.value === intent) {
               let count = 0;
@@ -601,7 +696,7 @@ export class Canvas extends Component {
                       <b>{intent}</b> is required by default
                     </Alert>
                   ),
-                  confirm: _.noop,
+                  confirm: _.noop
                 });
                 return;
               }
@@ -620,7 +715,7 @@ export class Canvas extends Component {
             Are you sure you want to remove this command?
           </Alert>
         ),
-        confirm: removeNode,
+        confirm: removeNode
       });
     } else {
       removeNode();
@@ -629,56 +724,69 @@ export class Canvas extends Component {
 
   combineNode = (e = null) => {
     const current = this.state.engine.getSuperSelect();
-    const nodeElement = e ? toolkit.closest(e.target, '.node[data-nodeid]') : null;
-    const element = nodeElement ? this.state.engine.getDiagramModel().getNode(nodeElement.getAttribute('data-nodeid')) : null;
-    _.values(this.state.engine.getDiagramModel().getNodes()).forEach((target_node) => {
-      if (current && target_node) {
-        if (target_node.id === current.id) {
-          return;
-        }
-        if (current.parentCombine || (element && element.extras && element.extras.type === 'god')) {
-          const parent = current.parentCombine ? current.parentCombine : element;
-          const tempIdx = _.findIndex(parent.combines, (c) => {
-            return c === 'temp';
-          });
-          if (tempIdx >= 0) {
-            let lastNode = _.findLast(parent.combines, (c) => c !== 'temp');
-            if (tempIdx === parent.combines.length - 1) {
-              lastNode.clearOutLinks();
-              lastNode = current;
-            } else {
-              current.clearOutLinks();
-            }
-            current.x = parent.x + 10;
-
-            parent.combines[tempIdx] = current;
-            let totalHeight = 40;
-            _.forEach(parent.combines, (c) => {
-              if (!(c instanceof String) && c.id !== parent.id) {
-                c.x = parent.x + 25;
-                c.y = parent.y + totalHeight;
-                if (c.height && current.id !== c.id) {
-                  totalHeight += c.height;
-                } else {
-                  const dimensions = this.state.engine.getNodeDimensions(c);
-                  c.updateDimensions(dimensions);
-                  totalHeight += dimensions.height;
-                }
-              }
+    const nodeElement = e
+      ? toolkit.closest(e.target, ".node[data-nodeid]")
+      : null;
+    const element = nodeElement
+      ? this.state.engine
+          .getDiagramModel()
+          .getNode(nodeElement.getAttribute("data-nodeid"))
+      : null;
+    _.values(this.state.engine.getDiagramModel().getNodes()).forEach(
+      target_node => {
+        if (current && target_node) {
+          if (target_node.id === current.id) {
+            return;
+          }
+          if (
+            current.parentCombine ||
+            (element && element.extras && element.extras.type === "god")
+          ) {
+            const parent = current.parentCombine
+              ? current.parentCombine
+              : element;
+            const tempIdx = _.findIndex(parent.combines, c => {
+              return c === "temp";
             });
-            current.remove(false);
-            this.state.engine.getDiagramModel().clearSelection();
-            this.state.engine.setSuperSelect(parent);
-            this.state.engine.enableRepaintEntities([parent]);
-            this.state.engine.repaintCanvas(false);
+            if (tempIdx >= 0) {
+              let lastNode = _.findLast(parent.combines, c => c !== "temp");
+              if (tempIdx === parent.combines.length - 1) {
+                lastNode.clearOutLinks();
+                lastNode = current;
+              } else {
+                current.clearOutLinks();
+              }
+              current.x = parent.x + 10;
+
+              parent.combines[tempIdx] = current;
+              let totalHeight = 40;
+              _.forEach(parent.combines, c => {
+                if (!(c instanceof String) && c.id !== parent.id) {
+                  c.x = parent.x + 25;
+                  c.y = parent.y + totalHeight;
+                  if (c.height && current.id !== c.id) {
+                    totalHeight += c.height;
+                  } else {
+                    const dimensions = this.state.engine.getNodeDimensions(c);
+                    c.updateDimensions(dimensions);
+                    totalHeight += dimensions.height;
+                  }
+                }
+              });
+              current.remove(false);
+              this.state.engine.getDiagramModel().clearSelection();
+              this.state.engine.setSuperSelect(parent);
+              this.state.engine.enableRepaintEntities([parent]);
+              this.state.engine.repaintCanvas(false);
+            }
           }
         }
       }
-    });
+    );
   };
 
-  copyFlow = (flowId) => {
-    const flow = this.props.diagrams.find((d) => d.id === flowId);
+  copyFlow = flowId => {
+    const flow = this.props.diagrams.find(d => d.id === flowId);
     if (!flow) {
       return;
     }
@@ -686,7 +794,7 @@ export class Canvas extends Component {
     const copy = (save = true) => {
       let newFlowName = `${flow.name} (COPY)`;
       let index = 1;
-      const exists = (name) => this.props.diagrams.find((d) => d.name === name);
+      const exists = name => this.props.diagrams.find(d => d.name === name);
       while (exists(newFlowName)) {
         newFlowName = `${flow.name} (COPY ${index})`;
         index++;
@@ -694,12 +802,12 @@ export class Canvas extends Component {
 
       axios
         .get(`/diagram/copy/${flowId}?name=${encodeURI(newFlowName)}`)
-        .then((res) => {
+        .then(res => {
           const newDiagram = {
             id: res.data,
             name: newFlowName,
             sub_diagrams: flow.sub_diagrams,
-            module_id: null,
+            module_id: null
           };
           this.props.updateDiagrams([...this.props.diagrams, newDiagram]);
           this.enterFlow(res.data, save);
@@ -709,9 +817,9 @@ export class Canvas extends Component {
             text: <Alert color="danger"> Unable to Copy Flow </Alert>,
             confirm: {
               confirm: this.setState({
-                confirm: null,
-              }),
-            },
+                confirm: null
+              })
+            }
           });
         });
     };
@@ -733,7 +841,8 @@ export class Canvas extends Component {
         <Alert color="danger" className="mb-0">
           <i className="fas fa-exclamation-triangle fa-2x" />
           <br />
-          Deleting this flow permanently deletes everything inside and can not be recovered
+          Deleting this flow permanently deletes everything inside and can not
+          be recovered
           <br />
           <br />
           Are you sure ?
@@ -741,15 +850,17 @@ export class Canvas extends Component {
       ),
       confirm: () => {
         this.setState({
-          confirm: null,
+          confirm: null
         });
         axios
           .delete(`/diagram/${flowId}`)
           .then(() => {
             const updatedDiagrams = this.props.diagrams
               .filter(({ id }) => id !== flowId)
-              .map((diagram) => {
-                const updatedSubDiagrams = diagram.sub_diagrams.filter((id) => id !== flowId);
+              .map(diagram => {
+                const updatedSubDiagrams = diagram.sub_diagrams.filter(
+                  id => id !== flowId
+                );
                 diagram.sub_diagrams = updatedSubDiagrams;
 
                 return diagram;
@@ -760,12 +871,12 @@ export class Canvas extends Component {
               this.enterFlow(this.props.root_id, false);
             }
           })
-          .catch((err) => {
+          .catch(err => {
             // eslint-disable-next-line no-console
             console.log(err);
-            alert('failed to delete diagram');
+            alert("failed to delete diagram");
           });
-      },
+      }
     });
   }
 
@@ -778,14 +889,22 @@ export class Canvas extends Component {
     this.forceUpdate();
   };
 
-  getSubDiagrams = (nodes) => {
-    const updatedSubDiagrams = nodes.filter((node) => !!node.extras.diagram_id).map((node) => node.extras.diagram_id);
+  getSubDiagrams = nodes => {
+    const updatedSubDiagrams = nodes
+      .filter(node => !!node.extras.diagram_id)
+      .map(node => node.extras.diagram_id);
 
     const updatedStorySubDiagrams = nodes
-      .filter((node) => node.extras.type === 'story' && Array.isArray(node.combines))
+      .filter(
+        node => node.extras.type === "story" && Array.isArray(node.combines)
+      )
       .reduce((acc, node) => {
         const combinedNodes = node.combines
-          .filter(({ extras }) => extras[this.props.skill.platform] && extras[this.props.skill.platform].diagram_id)
+          .filter(
+            ({ extras }) =>
+              extras[this.props.skill.platform] &&
+              extras[this.props.skill.platform].diagram_id
+          )
           .map(({ extras }) => extras[this.props.skill.platform].diagram_id);
 
         return [...acc, ...combinedNodes];
@@ -796,7 +915,7 @@ export class Canvas extends Component {
 
   updateDiagrams = (subDiagrams, newDiagram = []) => {
     const { diagrams, diagram_id, updateDiagrams } = this.props;
-    const updatedDiagrams = diagrams.map((diagram) => {
+    const updatedDiagrams = diagrams.map(diagram => {
       if (diagram.id === diagram_id) {
         diagram.sub_diagrams = subDiagrams;
       }
@@ -825,7 +944,7 @@ export class Canvas extends Component {
         data,
         skill: this.props.skill.skill_id,
         sub_diagrams: JSON.stringify(subDiagrams),
-        global: this.props.skill.global,
+        global: this.props.skill.global
       };
       const s = this.props.skill;
 
@@ -835,17 +954,17 @@ export class Canvas extends Component {
             intents: JSON.stringify(s.intents),
             slots: JSON.stringify(s.slots),
             fulfillment: JSON.stringify(s.fulfillment),
-            platform: s.platform,
+            platform: s.platform
           })
           .then(() => {
             resolve();
           })
-          .catch((err) => {
+          .catch(err => {
             reject(err);
           });
       });
 
-      const save_diagram = axios.post('/diagram', diagram);
+      const save_diagram = axios.post("/diagram", diagram);
 
       Promise.all([save_skill_intents, save_diagram])
         .then(() => {
@@ -854,11 +973,11 @@ export class Canvas extends Component {
           state &&
             this.setState({
               saving: false,
-              saved: true,
+              saved: true
             });
-          if (typeof this.props.skillSaveCB === 'function') {
+          if (typeof this.props.skillSaveCB === "function") {
             this.props.skillSaveCB(serialize.id);
-          } else if (typeof this.saveCB === 'function') {
+          } else if (typeof this.saveCB === "function") {
             this.saveCB(serialize.id);
             this.saveCB = null;
           }
@@ -867,13 +986,13 @@ export class Canvas extends Component {
           this.saving = false;
           state &&
             this.setState({
-              saving: false,
+              saving: false
             }) &&
-            this.props.setError('Error Saving Project');
+            this.props.setError("Error Saving Project");
 
-          if (typeof this.props.skillSaveCB === 'function') {
+          if (typeof this.props.skillSaveCB === "function") {
             this.props.skillSaveCB(null);
-          } else if (typeof this.saveCB === 'function') {
+          } else if (typeof this.saveCB === "function") {
             this.saveCB(null);
             this.saveCB = null;
           }
@@ -882,10 +1001,11 @@ export class Canvas extends Component {
       this.saving = false;
       // eslint-disable-next-line no-console
       console.log(e);
-      state && this.props.setError('Error Saving - Project Structure (Check Logs)');
-      if (typeof this.props.skillSaveCB === 'function') {
+      state &&
+        this.props.setError("Error Saving - Project Structure (Check Logs)");
+      if (typeof this.props.skillSaveCB === "function") {
         this.props.skillSaveCB(null);
-      } else if (typeof this.saveCB === 'function') {
+      } else if (typeof this.saveCB === "function") {
         this.saveCB(null);
         this.saveCB = null;
       }
@@ -924,33 +1044,51 @@ export class Canvas extends Component {
 
       const diagram_level_intents = {
         alexa: new Set(),
-        google: new Set(),
+        google: new Set()
       };
 
       const makeNodeMultiPlatform = (type, node) => {
-        if (type === 'intent' || type === 'jump' || type === 'interaction' || type === 'command') {
+        if (
+          type === "intent" ||
+          type === "jump" ||
+          type === "interaction" ||
+          type === "command"
+        ) {
           if (!node.extras.google && !node.extras.alexa) {
             if (node.extras.choices) {
-              node.extras.alexa = _.cloneDeep(_.pick(node.extras, ['choices']));
+              node.extras.alexa = _.cloneDeep(_.pick(node.extras, ["choices"]));
 
               let g_choices = _.cloneDeep(node.extras.alexa.choices);
               g_choices = g_choices.map(() => {
-                return { intent: null, mappings: [], key: randomstring.generate(12), open: true };
+                return {
+                  intent: null,
+                  mappings: [],
+                  key: randomstring.generate(12),
+                  open: true
+                };
               });
 
               node.extras.google = {
-                choices: g_choices,
+                choices: g_choices
               };
               delete node.extras.choices;
               delete node.extras.choices_open;
             } else if (node.extras.intent) {
-              node.extras.alexa = _.cloneDeep(_.pick(node.extras, ['intent', 'mappings', 'resume', 'end', 'diagram_id']));
+              node.extras.alexa = _.cloneDeep(
+                _.pick(node.extras, [
+                  "intent",
+                  "mappings",
+                  "resume",
+                  "end",
+                  "diagram_id"
+                ])
+              );
               node.extras.google = {
                 intent: null,
                 mappings: [],
                 resume: node.extras.alexa.resume,
                 end: node.extras.alexa.end,
-                diagram_id: node.extras.alexa.diagram_id,
+                diagram_id: node.extras.alexa.diagram_id
               };
               delete node.extras.intent;
               delete node.extras.mappings;
@@ -960,8 +1098,13 @@ export class Canvas extends Component {
             }
           }
           if (node.extras.alexa && node.extras.google) {
-            const has_intents = node.extras.alexa.intent !== undefined || node.extras.google.intent !== undefined;
-            if ((type === 'intent' && has_intents) || (type === 'jump' && has_intents)) {
+            const has_intents =
+              node.extras.alexa.intent !== undefined ||
+              node.extras.google.intent !== undefined;
+            if (
+              (type === "intent" && has_intents) ||
+              (type === "jump" && has_intents)
+            ) {
               if (node.extras.google.intent) {
                 diagram_level_intents.google.add(node.extras.google.intent.key);
               }
@@ -974,21 +1117,24 @@ export class Canvas extends Component {
       };
 
       const addMissingPorts = (type, node) => {
-        if (type === 'stream') {
+        if (type === "stream") {
           try {
             let hasGooglePort = false;
             const ports = node.getPorts();
             for (const name in ports) {
               const port = node.getPort(name);
-              if (!port.in && port.label && port.label.trim() === '') {
+              if (!port.in && port.label && port.label.trim() === "") {
                 hasGooglePort = true;
               }
             }
             if (!hasGooglePort) {
-              node.addOutPort(' ').setMaximumLinks(1);
+              node.addOutPort(" ").setMaximumLinks(1);
             }
             if (node.parentCombine) {
-              const bestNode = _.findIndex(node.parentCombine.combines, ['id', node.id]);
+              const bestNode = _.findIndex(node.parentCombine.combines, [
+                "id",
+                node.id
+              ]);
               node.parentCombine.combines[bestNode] = node;
             }
           } catch (e) {
@@ -1009,8 +1155,8 @@ export class Canvas extends Component {
 
         // Combine block
         if (Array.isArray(node.combines) && node.combines.length !== 0) {
-          node.combines.forEach((n) => {
-            if (typeof n !== 'object') return;
+          node.combines.forEach(n => {
+            if (typeof n !== "object") return;
 
             if (type_counter[n.extras.type] === undefined) {
               type_counter[n.extras.type] = 1;
@@ -1018,7 +1164,7 @@ export class Canvas extends Component {
               type_counter[n.extras.type] += 1;
             }
 
-            if (this.props.skill.platform === 'google') {
+            if (this.props.skill.platform === "google") {
               n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type);
             } else {
               n.fade = false;
@@ -1027,7 +1173,7 @@ export class Canvas extends Component {
             addMissingPorts(n.extras.type, n);
           });
         } else {
-          if (this.props.skill.platform === 'google') {
+          if (this.props.skill.platform === "google") {
             nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type);
           } else {
             nodes[key].fade = false;
@@ -1042,7 +1188,7 @@ export class Canvas extends Component {
       // make sure variables are unique and don't overlap with global variables
       const variables = [];
       if (Array.isArray(diagram.variables)) {
-        diagram.variables.forEach((v) => {
+        diagram.variables.forEach(v => {
           if (!variables.includes(v) && !this.props.skill.global.includes(v)) {
             variables.push(v);
           }
@@ -1054,8 +1200,8 @@ export class Canvas extends Component {
         load_diagram: false,
         type_counter,
         engine,
-        diagram_name: diagram.title ? diagram.title : 'New Flow',
-        diagram_level_intents,
+        diagram_name: diagram.title ? diagram.title : "New Flow",
+        diagram_level_intents
       });
       // this.props.history.push(`/canvas/${this.props.skill.skill_id}/${this.props.skill.diagram}`)
       this.setState({ saved: true });
@@ -1063,9 +1209,9 @@ export class Canvas extends Component {
     } else {
       this.setState({
         load_diagram: false,
-        type_counter,
+        type_counter
       });
-      this.props.setError('Could Not Open Project - Corrupted File');
+      this.props.setError("Could Not Open Project - Corrupted File");
     }
   };
 
@@ -1075,8 +1221,8 @@ export class Canvas extends Component {
     const nodes = model.getNodes();
     let update = false;
 
-    const lint = (n) => {
-      if (typeof n !== 'object') return;
+    const lint = n => {
+      if (typeof n !== "object") return;
       if (!n.linter) n.linter = [];
 
       if (Linter[n.extras.type] && n.linter) {
@@ -1088,7 +1234,7 @@ export class Canvas extends Component {
       const node = nodes[key];
       const type = node.extras.type;
 
-      if (type === 'god') {
+      if (type === "god") {
         node.combines.forEach(lint);
       } else {
         if (!node.linter) node.linter = [];
@@ -1102,7 +1248,7 @@ export class Canvas extends Component {
 
     if (force || update) {
       this.setState({
-        engine,
+        engine
       });
       engine.repaintCanvas();
       this.forceRepaint();
@@ -1111,17 +1257,17 @@ export class Canvas extends Component {
 
   renderPlatformSwitch = () => {
     const updateGoogleFade = (type, key, node, nodes) => {
-      if (this.props.skill.platform === 'google') {
-        if (type === 'god') {
-          node.combines.forEach((n) => {
+      if (this.props.skill.platform === "google") {
+        if (type === "god") {
+          node.combines.forEach(n => {
             n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type);
           });
         } else {
           nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type);
         }
       } else {
-        if (type === 'god') {
-          node.combines.forEach((n) => {
+        if (type === "god") {
+          node.combines.forEach(n => {
             n.fade = false;
           });
         } else {
@@ -1133,25 +1279,25 @@ export class Canvas extends Component {
     const updatePortsAndLinks = (type, key, node) => {
       const ports = node.getPorts();
 
-      if (type === 'stream') {
+      if (type === "stream") {
         for (const name in ports) {
           const port = node.getPort(name);
           // eslint-disable-next-line no-continue
           if (port.in) continue;
 
-          if (port.label === 'pause') {
-            port.setHidden(this.props.skill.platform === 'google');
+          if (port.label === "pause") {
+            port.setHidden(this.props.skill.platform === "google");
           }
 
-          if (port.label === 'previous') {
-            port.setHidden(this.props.skill.platform === 'google');
+          if (port.label === "previous") {
+            port.setHidden(this.props.skill.platform === "google");
           }
 
-          if (port.label === 'next') {
-            port.setHidden(this.props.skill.platform === 'google');
+          if (port.label === "next") {
+            port.setHidden(this.props.skill.platform === "google");
           }
-          if (port.label.trim() === '') {
-            port.setHidden(this.props.skill.platform !== 'google');
+          if (port.label.trim() === "") {
+            port.setHidden(this.props.skill.platform !== "google");
           }
         }
       }
@@ -1178,28 +1324,31 @@ export class Canvas extends Component {
     }
     engine.repaintCanvas();
     this.setState({
-      engine,
+      engine
     });
   };
 
-  onLoadId = (diagram_id) => {
+  onLoadId = diagram_id => {
     axios
       .get(`/diagram/${diagram_id}`)
-      .then((res) => {
+      .then(res => {
         this.loadDiagram(res.data, diagram_id);
         // this.props.fetchDiagramSuccess(true)
         if (!this.props.preview) {
-          localStorage.setItem('flow', `${this.props.skill.skill_id}/${diagram_id}`);
+          localStorage.setItem(
+            "flow",
+            `${this.props.skill.skill_id}/${diagram_id}`
+          );
         }
         if (this.updateTree !== null) this.updateTree();
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err);
-        this.props.setError('Could Not Retrieve Project');
+        this.props.setError("Could Not Retrieve Project");
       });
   };
 
-  unsave = (e) => {
+  unsave = e => {
     if (e && e.node && !e.isCreated) {
       const selected = this.state.engine.getSuperSelect();
       if (selected && e.node.id === selected.getID()) {
@@ -1215,7 +1364,7 @@ export class Canvas extends Component {
   toggleTestModal = () => {
     this.setState({
       testing_info: false,
-      testing_modal: !this.state.testing_modal,
+      testing_modal: !this.state.testing_modal
     });
   };
 
@@ -1225,14 +1374,16 @@ export class Canvas extends Component {
     const data = model.serializeDiagram();
 
     let nlc = this.state.testing_info ? this.state.testing_info.nlc : null;
-    let slot_mappings = this.state.testing_info ? this.state.testing_info.slot_mappings : {};
+    let slot_mappings = this.state.testing_info
+      ? this.state.testing_info.slot_mappings
+      : {};
 
     const nodes = [];
-    data.nodes.forEach((node) => {
-      if (node.extras && node.extras.type !== 'story') {
+    data.nodes.forEach(node => {
+      if (node.extras && node.extras.type !== "story") {
         nodes.push({
           value: node.id,
-          label: node.name,
+          label: node.name
         });
       }
     });
@@ -1241,40 +1392,47 @@ export class Canvas extends Component {
 
       const built_in_slots = [];
 
-      SLOT_TYPES.forEach((s) => {
+      SLOT_TYPES.forEach(s => {
         if (s.type.alexa) built_in_slots.push(s.type.alexa);
         if (s.type.google) built_in_slots.push(s.type.google);
       });
-      built_in_slots.forEach((s) => {
+      built_in_slots.forEach(s => {
         const matcher = /[\S\s]*/;
         nlc.addSlotType({
           type: s,
-          matcher,
+          matcher
         });
       });
 
       slot_mappings = {};
-      this.props.skill.slots.forEach((slot) => {
-        if (slot.type.value && slot.type.value.toLowerCase() === 'custom') {
+      this.props.skill.slots.forEach(slot => {
+        if (slot.type.value && slot.type.value.toLowerCase() === "custom") {
           nlc.addSlotType({
             type: slot.name,
-            matcher: slot.inputs,
+            matcher: slot.inputs
           });
         }
       });
 
-      this.props.skill.intents.forEach((intent) => {
+      this.props.skill.intents.forEach(intent => {
         let samples;
         if (!intent.built_in) {
-          samples = getUtterancesWithSlotNames(intent.inputs, this.props.skill.slots);
+          samples = getUtterancesWithSlotNames(
+            intent.inputs,
+            this.props.skill.slots
+          );
         }
-        const slots = getSlotsForKeys(intent.inputs.map((input) => input.slots), this.props.skill.slots, this.props.skill.platform);
+        const slots = getSlotsForKeys(
+          intent.inputs.map(input => input.slots),
+          this.props.skill.slots,
+          this.props.skill.platform
+        );
 
         nlc.registerIntent({
           slots,
           intent: intent.name,
           utterances: samples,
-          callback: _.noop,
+          callback: _.noop
         });
 
         slot_mappings[intent.name] = slots;
@@ -1286,8 +1444,8 @@ export class Canvas extends Component {
         id: this.props.diagram_id,
         nodes,
         nlc,
-        slot_mappings,
-      },
+        slot_mappings
+      }
     });
   };
 
@@ -1298,24 +1456,24 @@ export class Canvas extends Component {
     if (this.props.preview) {
       this.runTest();
     } else {
-      this.saveCB = (diagram_id) => {
+      this.saveCB = diagram_id => {
         if (diagram_id === null) {
           this.setState({
-            testing_modal: false,
+            testing_modal: false
           });
         } else {
           axios
             .post(`/diagram/${diagram_id}/test/publish`, {
               intents: this.props.skill.intents,
               slots: this.props.skill.slots,
-              platform: this.props.skill.platform,
+              platform: this.props.skill.platform
             })
             .then(this.runTest)
             .catch(() => {
               this.setState({
-                testing_modal: false,
+                testing_modal: false
               });
-              this.props.setError('Could Not Render Your Project');
+              this.props.setError("Could Not Render Your Project");
             });
         }
       };
@@ -1328,11 +1486,13 @@ export class Canvas extends Component {
       this.props.setBlockMenu(null);
       return;
     }
-    const nodeElement = toolkit.closest(e.target, '.node[data-nodeid]');
+    const nodeElement = toolkit.closest(e.target, ".node[data-nodeid]");
     e.preventDefault();
     const engine = this.state.engine;
     if (nodeElement) {
-      const node = this.state.engine.getDiagramModel().getNode(nodeElement.getAttribute('data-nodeid'));
+      const node = this.state.engine
+        .getDiagramModel()
+        .getNode(nodeElement.getAttribute("data-nodeid"));
       engine.getDiagramModel().clearSelection();
       engine.setSuperSelect(node);
       this.props.setBlockMenu(
@@ -1341,9 +1501,9 @@ export class Canvas extends Component {
             style={{
               top: engine.getDiagramModel().getGridPosition(e.clientY - 100),
               left: engine.getDiagramModel().getGridPosition(e.clientX),
-              cursor: 'pointer',
-              position: 'absolute',
-              zIndex: 10,
+              cursor: "pointer",
+              position: "absolute",
+              zIndex: 10
             }}
           >
             <ListGroup>
@@ -1394,9 +1554,9 @@ export class Canvas extends Component {
             style={{
               top: engine.getDiagramModel().getGridPosition(e.clientY - 110),
               left: engine.getDiagramModel().getGridPosition(e.clientX),
-              cursor: 'pointer',
-              position: 'absolute',
-              zIndex: 10,
+              cursor: "pointer",
+              position: "absolute",
+              zIndex: 10
             }}
           >
             <ListGroup>
@@ -1416,7 +1576,12 @@ export class Canvas extends Component {
   };
 
   // Create a new diagram from the flow block
-  createDiagram(node, base_flow_name = 'New Flow', template = null, forCommand = false) {
+  createDiagram(
+    node,
+    base_flow_name = "New Flow",
+    template = null,
+    forCommand = false
+  ) {
     this.setState({ load_diagram: true });
     const id = util.generateID();
 
@@ -1434,7 +1599,7 @@ export class Canvas extends Component {
     // No Duplicate Flow Names
     let newFlowName = base_flow_name;
     let index = 1;
-    const exists = (name) => this.props.diagrams.find((d) => d.name === name);
+    const exists = name => this.props.diagrams.find(d => d.name === name);
 
     while (exists(newFlowName)) {
       newFlowName = `${base_flow_name} ${index}`;
@@ -1446,11 +1611,11 @@ export class Canvas extends Component {
       title: newFlowName,
       variables: [],
       data,
-      skill: skill_id,
+      skill: skill_id
     };
 
     axios
-      .post('/diagram?new=1', diagram)
+      .post("/diagram?new=1", diagram)
       .then(() => {
         if (forCommand) {
           node.extras[this.props.skill.platform].diagram_id = id;
@@ -1462,16 +1627,16 @@ export class Canvas extends Component {
           id,
           name: newFlowName,
           sub_diagrams: [],
-          module_id: null,
+          module_id: null
         };
         this.updateDiagrams(subDiagrams, [newDiagram]);
         this.enterFlow(id);
       })
-      .catch((err) => {
+      .catch(err => {
         // eslint-disable-next-line no-console
         console.log(err.response);
         this.setState({ loading_diagram: false });
-        this.props.setError('Unable to create new Flow');
+        this.props.setError("Unable to create new Flow");
       });
   }
 
@@ -1480,21 +1645,27 @@ export class Canvas extends Component {
       this.setState({ load_diagram: true });
       if (save && !this.props.preview) {
         this.saveCB = () => {
-          this.props.updateSkill('diagram', new_diagram_id);
-          this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`);
+          this.props.updateSkill("diagram", new_diagram_id);
+          this.props.history.push(
+            `/canvas/${this.props.skill.skill_id}/${new_diagram_id}`
+          );
         };
         this.onSave();
       } else if (this.props.preview) {
-        this.props.updateSkill('diagram', new_diagram_id);
-        this.props.history.push(`/preview/${this.props.skill.skill_id}/${new_diagram_id}`);
+        this.props.updateSkill("diagram", new_diagram_id);
+        this.props.history.push(
+          `/preview/${this.props.skill.skill_id}/${new_diagram_id}`
+        );
       } else {
-        this.props.updateSkill('diagram', new_diagram_id);
-        this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`);
+        this.props.updateSkill("diagram", new_diagram_id);
+        this.props.history.push(
+          `/canvas/${this.props.skill.skill_id}/${new_diagram_id}`
+        );
       }
     }
   }
 
-  updateFulfillmentOnDeletion = (deleted_node) => {
+  updateFulfillmentOnDeletion = deleted_node => {
     const extras = deleted_node.extras[this.props.skill.platform];
 
     if (extras.intent && extras.intent.key) {
@@ -1506,7 +1677,7 @@ export class Canvas extends Component {
     this.removeNode(deleted_node);
   };
 
-  onDeleteIntentNode = (deleted_node) => {
+  onDeleteIntentNode = deleted_node => {
     const skill = this.props.skill;
     const fulfillments = skill.fulfillment;
 
@@ -1515,15 +1686,13 @@ export class Canvas extends Component {
     if (key && fulfillments[key]) {
       const confirm_info = {
         // eslint-disable-next-line prettier/prettier
-        text: `CanfulfillIntent is enabled for the "${
-          extras.intent.label
-        }" intent. Deleting this intent will also delete any slot fulfillment values you have set for this intent.`,
+        text: `CanfulfillIntent is enabled for the "${extras.intent.label}" intent. Deleting this intent will also delete any slot fulfillment values you have set for this intent.`,
         confirm: () => {
           this.updateFulfillmentOnDeletion(deleted_node);
           this.setState({
-            confirm_info: null,
+            confirm_info: null
           });
-        },
+        }
       };
       this.props.setConfirm(confirm_info);
     } else {
@@ -1531,26 +1700,26 @@ export class Canvas extends Component {
     }
   };
 
-  onDrop = (rawEvent) => {
+  onDrop = rawEvent => {
     if (this.props.preview) return;
     let event = rawEvent;
     let type;
     let name;
     let diagram_id;
-    if (typeof event === 'string') {
+    if (typeof event === "string") {
       type = event;
       event = {
         clientX: this.mouseX,
-        clientY: this.mouseY,
+        clientY: this.mouseY
       };
       if (this.state.spotlight) {
         this.setState({ spotlight: false });
       }
     } else {
       try {
-        type = event.dataTransfer.getData('node');
-        name = event.dataTransfer.getData('name');
-        diagram_id = event.dataTransfer.getData('diagram_id');
+        type = event.dataTransfer.getData("node");
+        name = event.dataTransfer.getData("name");
+        diagram_id = event.dataTransfer.getData("diagram_id");
       } catch (e) {
         return;
       }
@@ -1558,11 +1727,11 @@ export class Canvas extends Component {
 
     if (diagram_id) {
       // Track which flow was used
-      const module = this.props.diagrams.find((diagram) => {
+      const module = this.props.diagrams.find(diagram => {
         return diagram.id === diagram_id;
       });
-      axios.post('/analytics/track_flow_used', {
-        module_id: module.module_id,
+      axios.post("/analytics/track_flow_used", {
+        module_id: module.module_id
       });
     }
 
@@ -1571,9 +1740,9 @@ export class Canvas extends Component {
     }
     util.createDropNode(event, this.state.engine, type, name);
     this.combineNode();
-    this.props.setOpen(type !== 'comment');
+    this.props.setOpen(type !== "comment");
     this.setState({
-      open: type !== 'comment',
+      open: type !== "comment"
     });
     this.renderPlatformSwitch();
     this.updateLinter();
@@ -1586,7 +1755,7 @@ export class Canvas extends Component {
 
   toggleUpgradeModal = () =>
     this.setState({
-      upgrade_modal: !this.state.upgrade_modal,
+      upgrade_modal: !this.state.upgrade_modal
     });
 
   render() {
@@ -1595,7 +1764,7 @@ export class Canvas extends Component {
         <Prompt
           message={() => {
             if (!util.canSave()) {
-              return 'This flow is too large to be saved, please remove blocks to reduce size - are you sure you would like to leave without saving?';
+              return "This flow is too large to be saved, please remove blocks to reduce size - are you sure you would like to leave without saving?";
             }
             return true;
           }}
@@ -1604,7 +1773,12 @@ export class Canvas extends Component {
           open={this.state.upgrade_modal}
           header="Multi Platform Development"
           toggle={this.toggleUpgradeModal}
-          content={<Upgrade history={this.props.history} toggle={this.toggleUpgradeModal} />}
+          content={
+            <Upgrade
+              history={this.props.history}
+              toggle={this.toggleUpgradeModal}
+            />
+          }
           hideFooter={true}
           noPadding={true}
         />
@@ -1618,11 +1792,15 @@ export class Canvas extends Component {
           open={this.state.helpOpen}
           help={this.state.help}
           toggle={() => this.setState({ helpOpen: !this.state.helpOpen })}
-          setHelp={(help) => this.setState({ help })}
+          setHelp={help => this.setState({ help })}
         />
         <ActionGroup
-          lastSave={this.state.last_save ? `Last saved ${moment(this.state.last_save).fromNow()}` : 'Save'}
-          setCB={(cb) => {
+          lastSave={
+            this.state.last_save
+              ? `Last saved ${moment(this.state.last_save).fromNow()}`
+              : "Save"
+          }
+          setCB={cb => {
             this.saveCB = cb;
           }}
           {...this.props}
@@ -1636,9 +1814,14 @@ export class Canvas extends Component {
             flow={this.props.diagram.name}
           />
         ) : null}
-        {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={() => this.setState({ spotlight: false })} />}
+        {this.state.spotlight && (
+          <Spotlight
+            addBlock={this.onDrop}
+            cancel={() => this.setState({ spotlight: false })}
+          />
+        )}
         <div
-          id={this.props.preview ? 'canvas_preview' : 'canvas'}
+          id={this.props.preview ? "canvas_preview" : "canvas"}
           onMouseMove={this.mouseMove}
           onMouseUp={this.combineNode}
           onMouseDown={() => {
@@ -1660,11 +1843,12 @@ export class Canvas extends Component {
             closeTab={this.props.closeTab}
             tab={this.props.tab}
             open={!this.props.preview && this.props.tabOpen}
-            build={(fn) => {
+            build={fn => {
               this.updateTree = fn;
             }}
           />
-          {this.state.load_diagram && React.createElement(Spinner, { name: 'Flow' })}
+          {this.state.load_diagram &&
+            React.createElement(Spinner, { name: "Flow" })}
 
           <Editor
             unfocus={this.onDiagramUnfocus}
@@ -1673,14 +1857,18 @@ export class Canvas extends Component {
             node={this.state.engine.getSuperSelect()}
             onUpdate={this.onUpdate}
             close={() => this.props.setOpen(false)}
-            setHelp={(help) => this.setState({ help, helpOpen: true })}
+            setHelp={help => this.setState({ help, helpOpen: true })}
             createDiagram={this.createDiagram}
             enterFlow={this.enterFlow}
             repaint={this.forceRepaint}
             removeNode={!this.props.preview ? this.removeNode : _.noop()}
             copyNode={!this.props.preview ? this.copyNode : _.noop()}
-            appendCombineNode={!this.props.preview ? this.appendCombineNode : _.noop()}
-            removeCombineNode={!this.props.preview ? this.removeCombineNode : _.noop()}
+            appendCombineNode={
+              !this.props.preview ? this.appendCombineNode : _.noop()
+            }
+            removeCombineNode={
+              !this.props.preview ? this.removeCombineNode : _.noop()
+            }
             preview={this.props.preview}
             onboarding={this.onboarding}
             finished={() => {
@@ -1694,9 +1882,9 @@ export class Canvas extends Component {
           <div
             key={this.props.diagram_id}
             id="diagram"
-            className={cn({ 'no-padding': this.props.preview })}
+            className={cn({ "no-padding": this.props.preview })}
             onDrop={this.onDrop}
-            onDragOver={(e) => {
+            onDragOver={e => {
               e.stopPropagation();
               e.preventDefault();
             }}
@@ -1706,7 +1894,11 @@ export class Canvas extends Component {
             onContextMenu={this.generateBlockMenu}
           >
             <div className="canvas-warnings">
-              <ReactCSSTransitionGroup transitionName="fade" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+              <ReactCSSTransitionGroup
+                transitionName="fade"
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={300}
+              >
                 {_.map(this.props.canvasError, (err, idx) => (
                   <CanvasWarning key={idx} idx={idx} err={err} />
                 ))}
@@ -1717,7 +1909,7 @@ export class Canvas extends Component {
               keyboardHelp={this.props.keyboardHelp}
               engine={this.state.engine}
               setOpen={this.props.setOpen}
-              update={(engine) => this.setState({ engine })}
+              update={engine => this.setState({ engine })}
               preview={this.props.preview}
             />
             {this.props.root_id !== this.props.diagram_id && (
@@ -1737,7 +1929,7 @@ export class Canvas extends Component {
               onConfirm={this.props.setConfirm}
               onDeleteIntentNode={this.onDeleteIntentNode.bind(this)}
               nodeProps={{
-                hasFlow: (diagram_id) => this.props.diagram_set.has(diagram_id),
+                hasFlow: diagram_id => this.props.diagram_set.has(diagram_id),
                 enterFlow: this.enterFlow,
                 setCanvasError: this.props.setCanvasError,
                 removeNode: this.removeNode,
@@ -1747,13 +1939,13 @@ export class Canvas extends Component {
                 generateBlockMenu: this.generateBlockMenu,
                 setBlockMenu: this.props.setBlockMenu,
                 disabled: !!this.props.preview,
-                renameFlow: this.props.renameFlow,
+                renameFlow: this.props.renameFlow
               }}
-              removeHandler={(node) => {
+              removeHandler={node => {
                 if (this.props.undoEvents.length >= 10) {
                   this.props.shiftUndo();
                 }
-                this.props.addUndo(node, 'remove');
+                this.props.addUndo(node, "remove");
                 this.props.clearRedo();
               }}
               forceRepaint={this.forceRepaint}
@@ -1770,8 +1962,8 @@ export class Canvas extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const tab = localStorage.getItem('tab');
+const mapStateToProps = state => {
+  const tab = localStorage.getItem("tab");
   return {
     user: state.account,
     skill: state.skills.skill,
@@ -1781,30 +1973,34 @@ const mapStateToProps = (state) => {
     root_id: state.diagrams.root_id,
     error: state.skills.error,
     variables: state.variables.localVariables,
-    diagram_set: new Set(state.diagrams.diagrams.map((d) => d.id)),
-    diagram: _.find(state.diagrams.diagrams, ['id', state.skills.skill.diagram]),
+    diagram_set: new Set(state.diagrams.diagrams.map(d => d.id)),
+    diagram: _.find(state.diagrams.diagrams, [
+      "id",
+      state.skills.skill.diagram
+    ]),
     canvasError: state.userSetting.canvasError,
     integration_users_error: state.integrationUsers.error,
     tab: tab || state.userSetting.tab,
-    tabOpen: state.userSetting.menuOpen,
+    tabOpen: state.userSetting.menuOpen
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     updateSkill: (type, val) => dispatch(updateVersion(type, val)),
-    setVariables: (variable) => dispatch(setVariables(variable)),
+    setVariables: variable => dispatch(setVariables(variable)),
     updateIntents: () => dispatch(updateIntents()),
     setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
     renameFlow: (id, name) => dispatch(renameDiagram(id, name)),
-    setCanvasError: (err) => dispatch(setCanvasError(err)),
-    setError: (err) => dispatch(setError(err)),
-    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
+    setCanvasError: err => dispatch(setCanvasError(err)),
+    setError: err => dispatch(setError(err)),
+    setConfirm: confirm => dispatch(setConfirm(confirm)),
     getIntegrationsUsers: () => dispatch(fetchIntegrationUsers()),
-    appendDiagrams: (name, id, sub_diagrams) => dispatch(appendDiagrams({ name, id, sub_diagrams })),
-    updateDiagrams: (diagrams) => dispatch(updateDiagrams(diagrams)),
-    setTab: (tab) => dispatch(openTab(tab)),
-    closeTab: () => dispatch(closeTab()),
+    appendDiagrams: (name, id, sub_diagrams) =>
+      dispatch(appendDiagrams({ name, id, sub_diagrams })),
+    updateDiagrams: diagrams => dispatch(updateDiagrams(diagrams)),
+    setTab: tab => dispatch(openTab(tab)),
+    closeTab: () => dispatch(closeTab())
   };
 };
 

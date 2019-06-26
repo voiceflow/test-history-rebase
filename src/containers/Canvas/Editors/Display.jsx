@@ -1,22 +1,29 @@
 /* eslint-disable simple-import-sort/sort */
-import './Display.css';
-import AceEditor from 'react-ace';
-import 'brace/mode/json_custom';
-import 'brace/theme/monokai';
-import 'brace/ext/language_tools';
+import "./Display.css";
+import AceEditor from "react-ace";
+import "brace/mode/json_custom";
+import "brace/theme/monokai";
+import "brace/ext/language_tools";
 /* eslint-enable simple-import-sort/sort */
 
-import axios from 'axios';
-import { ModalHeader } from 'components/Modals/ModalHeader';
-import _ from 'lodash';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {Link, withRouter} from 'react-router-dom';
-import Select from 'react-select';
-import { Tooltip } from 'react-tippy';
-import { Button, Input, InputGroup, InputGroupAddon, Modal, ModalBody } from 'reactstrap';
+import axios from "axios";
+import { ModalHeader } from "components/Modals/ModalHeader";
+import _ from "lodash";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
+import Select from "react-select";
+import { Tooltip } from "react-tippy";
+import {
+  Button,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  Modal,
+  ModalBody
+} from "reactstrap";
 
-import DisplayRender from './components/DisplayRender';
+import DisplayRender from "./components/DisplayRender";
 
 export class Display extends Component {
   constructor(props) {
@@ -24,11 +31,13 @@ export class Display extends Component {
 
     let selected;
     if (props.node.extras.display_id) {
-      const find = props.displays.find((t) => t.display_id === props.node.extras.display_id);
+      const find = props.displays.find(
+        t => t.display_id === props.node.extras.display_id
+      );
       if (find) {
         selected = {
           label: find.title,
-          value: find.display_id,
+          value: find.display_id
         };
       }
     }
@@ -40,9 +49,9 @@ export class Display extends Component {
       current_request: false,
       user_variables: {},
       variables: [],
-      variables_error: '',
-      modal_error: '',
-      rendered_datasource: '',
+      variables_error: "",
+      modal_error: "",
+      rendered_datasource: ""
     };
 
     this.onChange = this.onChange.bind(this);
@@ -62,7 +71,7 @@ export class Display extends Component {
 
     this.setState(
       {
-        node,
+        node
       },
       () => this.props.onUpdate()
     );
@@ -73,7 +82,7 @@ export class Display extends Component {
     node.extras.datasource = value;
     this.setState(
       {
-        node,
+        node
       },
       () => this.props.onUpdate()
     );
@@ -84,7 +93,7 @@ export class Display extends Component {
     node.extras.apl_commands = value;
     this.setState(
       {
-        node,
+        node
       },
       () => this.props.onUpdate()
     );
@@ -95,7 +104,7 @@ export class Display extends Component {
     node.extras.update_on_change = !node.extras.update_on_change;
     this.setState(
       {
-        node,
+        node
       },
       () => this.props.onUpdate()
     );
@@ -104,16 +113,16 @@ export class Display extends Component {
   selectDisplay(selected) {
     if (selected.value === this.state.node.extras.display_id) return;
 
-    const find = this.props.displays.find((t) => t.display_id === selected.value);
+    const find = this.props.displays.find(t => t.display_id === selected.value);
     const node = this.state.node;
     node.extras.display_id = find.display_id;
-    node.extras.datasource = find.datasource.trim() ? find.datasource : '';
+    node.extras.datasource = find.datasource.trim() ? find.datasource : "";
 
     this.setState(
       {
         selected,
         node,
-        modal_error: '',
+        modal_error: ""
       },
       () => this.props.onUpdate()
     );
@@ -124,7 +133,7 @@ export class Display extends Component {
     user_variables[e.target.name] = e.target.value;
     this.setState({
       user_variables,
-      variables_error: '',
+      variables_error: ""
     });
   }
 
@@ -134,9 +143,9 @@ export class Display extends Component {
     for (let i = 0; i < this.state.variables.length; i++) {
       const variable = this.state.variables[i];
       const user_variable = this.state.user_variables[variable];
-      if (_.isNil(user_variable) || user_variable === '') {
+      if (_.isNil(user_variable) || user_variable === "") {
         this.setState({
-          variables_error: 'Variables cannot be blank!',
+          variables_error: "Variables cannot be blank!"
         });
         return;
       }
@@ -145,28 +154,30 @@ export class Display extends Component {
     if (!this.state.current_request) {
       this.setState({
         current_request: true,
-        modalContent: null,
+        modalContent: null
       });
 
-      Object.entries(this.state.user_variables).forEach(([old_str, new_str]) => {
-        const replacement = new_str;
-        const re = new RegExp(`{${old_str}}`, 'g');
-        datasource = datasource.replace(re, replacement);
-      });
+      Object.entries(this.state.user_variables).forEach(
+        ([old_str, new_str]) => {
+          const replacement = new_str;
+          const re = new RegExp(`{${old_str}}`, "g");
+          datasource = datasource.replace(re, replacement);
+        }
+      );
 
       axios
         .get(`/multimodal/display/${this.state.node.extras.display_id}`)
-        .then((res) => {
+        .then(res => {
           this.setState({
             modalContent: res.data.document,
             current_request: false,
-            rendered_datasource: datasource,
+            rendered_datasource: datasource
           });
         })
-        .catch((err) => {
+        .catch(err => {
           this.setState({
             modalContent: err,
-            current_request: false,
+            current_request: false
           });
         });
     }
@@ -174,11 +185,13 @@ export class Display extends Component {
 
   openModal() {
     const datasource = this.state.node.extras.datasource;
-    const variables = (datasource.match(/{\w+}/g) || []).map((s) => s.slice(1, -1));
+    const variables = (datasource.match(/{\w+}/g) || []).map(s =>
+      s.slice(1, -1)
+    );
 
     if (!this.state.node.extras.display_id) {
       this.setState({
-        modal_error: 'Select a display first from the drop down!',
+        modal_error: "Select a display first from the drop down!"
       });
       return;
     }
@@ -188,9 +201,9 @@ export class Display extends Component {
         modal: true,
         modalContent: null,
         variables,
-        variables_error: '',
+        variables_error: "",
         user_variables: {},
-        rendered_datasource: null,
+        rendered_datasource: null
       },
       () => this.testDisplay()
     );
@@ -211,11 +224,19 @@ export class Display extends Component {
       <div>
         {!_.isEmpty(this.state.variables) && (
           <React.Fragment>
-            <Button color="primary" onClick={() => this.testDisplay()} className="mt-2" disabled={this.state.variables_error}>
+            <Button
+              color="primary"
+              onClick={() => this.testDisplay()}
+              className="mt-2"
+              disabled={this.state.variables_error}
+            >
               <i className="fas fa-play mr-2" /> Run
             </Button>
             <br />
-            <label>We've detected you are using variables in your Data Source JSON, please set variables and run</label>
+            <label>
+              We've detected you are using variables in your Data Source JSON,
+              please set variables and run
+            </label>
             <br />
             {_.map(this.state.variables, (val, key) => (
               <React.Fragment key={key}>
@@ -232,7 +253,11 @@ export class Display extends Component {
             ))}
           </React.Fragment>
         )}
-        {this.state.modalContent && this.state.variables_error && <div className="error-message text-center">{this.state.variables_error}</div>}
+        {this.state.modalContent && this.state.variables_error && (
+          <div className="error-message text-center">
+            {this.state.variables_error}
+          </div>
+        )}
         {this.state.current_request && loading}
         {this.state.modalContent && <div className="space-between flex-hard" />}
 
@@ -241,7 +266,7 @@ export class Display extends Component {
             apl={this.state.modalContent}
             data={this.state.rendered_datasource}
             commands={this.state.node.extras.apl_commands}
-            error={(e) => this.setState({ variables_error: e })}
+            error={e => this.setState({ variables_error: e })}
           />
         )}
       </div>
@@ -251,16 +276,25 @@ export class Display extends Component {
   disableModal = () => this.setState({ modal: false });
 
   render() {
-  
     const { skill_id } = this.props.match.params;
-  
+
     if (this.props.displays.length === 0) {
       return (
         <div className="text-center">
-          <img className="mb-3 mt-5" src="/images/desktop.svg" alt="user" width="80" />
+          <img
+            className="mb-3 mt-5"
+            src="/images/desktop.svg"
+            alt="user"
+            width="80"
+          />
           <br />
-          <span className="text-muted">You currently have no Multimodal Displays</span>
-          <Link className="btn btn-secondary mt-3" to={`/visuals/${this.props.skill_id}`}>
+          <span className="text-muted">
+            You currently have no Multimodal Displays
+          </span>
+          <Link
+            className="btn btn-secondary mt-3"
+            to={`/visuals/${this.props.skill_id}`}
+          >
             Add Displays
           </Link>
         </div>
@@ -270,144 +304,165 @@ export class Display extends Component {
     return (
       <React.Fragment>
         <Modal size="lg" isOpen={this.state.modal} toggle={this.disableModal}>
-          <ModalHeader toggle={this.disableModal} header="Multimodal Display Test" />
+          <ModalHeader
+            toggle={this.disableModal}
+            header="Multimodal Display Test"
+          />
           <ModalBody>{this.state.modal && this.renderDisplayTest()}</ModalBody>
         </Modal>
         <div>
           <label>Multimodal Display</label>
-          <div onClick={() => this.props.history.push(`/visuals/${skill_id}`)} className="d__see_all">See all</div>
+          <div
+            onClick={() => this.props.history.push(`/visuals/${skill_id}`)}
+            className="d__see_all"
+          >
+            See all
+          </div>
           <Select
             classNamePrefix="select-box"
             value={this.state.selected}
             onChange={this.selectDisplay}
             placeholder="Select Multimodal Display"
-            options={this.props.displays.map((t) => {
+            options={this.props.displays.map(t => {
               return {
                 value: t.display_id,
-                label: t.title,
+                label: t.title
               };
             })}
           />
-          {this.state.selected ? <InputGroup className="my-3">
-            <label className="input-group-text w-100 m-0 d-flex">
-              <Input
-                addon
-                type="checkbox"
-                value={this.state.node.extras.update_on_change}
-                checked={this.state.node.extras.update_on_change}
-                onChange={this.updateOnChange}
-              />
-              
-              <div className="ml-2 space-between flex-hard">
-                <span>Update on Variable Changes</span>
-                <span>
-                  <Tooltip
-                    className="menu-tip"
-                    title="When this option is checked, the multimodal display will update whenever a change is detected in any of the variables used in the Data Source JSON"
-                    position="bottom"
-                    theme="block"
-                  >
-                    ?
-                  </Tooltip>
-                </span>
+          {this.state.selected ? (
+            <InputGroup className="my-3">
+              <label className="input-group-text w-100 m-0 d-flex">
+                <Input
+                  addon
+                  type="checkbox"
+                  value={this.state.node.extras.update_on_change}
+                  checked={this.state.node.extras.update_on_change}
+                  onChange={this.updateOnChange}
+                />
+
+                <div className="ml-2 space-between flex-hard">
+                  <span>Update on Variable Changes</span>
+                  <span>
+                    <Tooltip
+                      className="menu-tip"
+                      title="When this option is checked, the multimodal display will update whenever a change is detected in any of the variables used in the Data Source JSON"
+                      position="bottom"
+                      theme="block"
+                    >
+                      ?
+                    </Tooltip>
+                  </span>
+                </div>
+              </label>
+            </InputGroup>
+          ) : null}
+
+          {!this.state.selected ? (
+            <div>
+              <div className="d__or_box">
+                <div className="d__or_text">OR</div>
               </div>
-            </label>
-          </InputGroup> : null}
-          
-          {!this.state.selected ? <div>
-            <div className="d__or_box">
-              <div className="d__or_text">
-                OR
-              </div>
+
+              <button
+                className={"btn-clear btn-block btn-lg"}
+                onClick={() =>
+                  this.props.history.push(`/visuals/${this.props.skill_id}`)
+                }
+              >
+                Create new visual
+              </button>
             </div>
-  
-            <button className={'btn-clear btn-block btn-lg'} onClick={() => this.props.history.push(`/visuals/${this.props.skill_id}`)}>
-              Create new visual
-            </button>
-          </div> : null}
-          
-          {this.state.selected ? <div>
-            <hr />
-            <Button color="clear" onClick={this.openModal} size="sm" block>
-              <i className="fas fa-power-off mr-1" />
-              Test Display
-            </Button>
-            {this.state.modal_error && <div className="error-message">{this.state.modal_error}</div>}
-            <label>Data Source JSON</label>
-            <AceEditor
-              name="datasource_editor"
-              className="datasource_editor"
-              mode="json_custom"
-              theme="monokai"
-              onChange={this.onChangeEditor}
-              fontSize={14}
-              showPrintMargin={false}
-              showGutter={true}
-              highlightActiveLine={true}
-              value={this.state.node.extras.datasource}
-              editorProps={{
-                $blockScrolling: true,
-                $rules: {
-                  start: [
-                    {
-                      token: 'highlightWords',
-                      regex: 'word1|word2|word3|phrase one|phrase number two|etc',
-                    },
-                  ],
-                },
-              }}
-              setOptions={{
-                enableBasicAutocompletion: true,
-                enableLiveAutocompletion: false,
-                enableSnippets: false,
-                showLineNumbers: true,
-                tabSize: 2,
-                useWorker: false,
-              }}
-            />
-            <label>APL Commands</label>
-            <AceEditor
-              name="apl_commands_editor"
-              className="datasource_editor"
-              mode="json_custom"
-              theme="monokai"
-              onChange={this.onChangeCommands}
-              fontSize={14}
-              showPrintMargin={false}
-              showGutter={true}
-              highlightActiveLine={true}
-              value={this.state.node.extras.apl_commands}
-              editorProps={{
-                $blockScrolling: true,
-                $rules: {
-                  start: [
-                    {
-                      token: 'highlightWords',
-                      regex: 'word1|word2|word3|phrase one|phrase number two|etc',
-                    },
-                  ],
-                },
-              }}
-              setOptions={{
-                enableBasicAutocompletion: true,
-                enableLiveAutocompletion: false,
-                enableSnippets: false,
-                showLineNumbers: true,
-                tabSize: 2,
-                useWorker: false,
-              }}
-            />
-          </div>: null}
+          ) : null}
+
+          {this.state.selected ? (
+            <div>
+              <hr />
+              <Button color="clear" onClick={this.openModal} size="sm" block>
+                <i className="fas fa-power-off mr-1" />
+                Test Display
+              </Button>
+              {this.state.modal_error && (
+                <div className="error-message">{this.state.modal_error}</div>
+              )}
+              <label>Data Source JSON</label>
+              <AceEditor
+                name="datasource_editor"
+                className="datasource_editor"
+                mode="json_custom"
+                theme="monokai"
+                onChange={this.onChangeEditor}
+                fontSize={14}
+                showPrintMargin={false}
+                showGutter={true}
+                highlightActiveLine={true}
+                value={this.state.node.extras.datasource}
+                editorProps={{
+                  $blockScrolling: true,
+                  $rules: {
+                    start: [
+                      {
+                        token: "highlightWords",
+                        regex:
+                          "word1|word2|word3|phrase one|phrase number two|etc"
+                      }
+                    ]
+                  }
+                }}
+                setOptions={{
+                  enableBasicAutocompletion: true,
+                  enableLiveAutocompletion: false,
+                  enableSnippets: false,
+                  showLineNumbers: true,
+                  tabSize: 2,
+                  useWorker: false
+                }}
+              />
+              <label>APL Commands</label>
+              <AceEditor
+                name="apl_commands_editor"
+                className="datasource_editor"
+                mode="json_custom"
+                theme="monokai"
+                onChange={this.onChangeCommands}
+                fontSize={14}
+                showPrintMargin={false}
+                showGutter={true}
+                highlightActiveLine={true}
+                value={this.state.node.extras.apl_commands}
+                editorProps={{
+                  $blockScrolling: true,
+                  $rules: {
+                    start: [
+                      {
+                        token: "highlightWords",
+                        regex:
+                          "word1|word2|word3|phrase one|phrase number two|etc"
+                      }
+                    ]
+                  }
+                }}
+                setOptions={{
+                  enableBasicAutocompletion: true,
+                  enableLiveAutocompletion: false,
+                  enableSnippets: false,
+                  showLineNumbers: true,
+                  tabSize: 2,
+                  useWorker: false
+                }}
+              />
+            </div>
+          ) : null}
         </div>
       </React.Fragment>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   user: state.account,
   skill_id: state.skills.skill_id,
-  displays: state.displays.displays,
+  displays: state.displays.displays
 });
 const routeredDisplay = withRouter(Display);
 export default connect(mapStateToProps)(routeredDisplay);

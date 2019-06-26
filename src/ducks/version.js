@@ -284,6 +284,50 @@ export const setCanFulfill = (intent_key, new_value) => {
   };
 };
 
+export const fetchDevVersion = (project_id) => (dispatch) => {
+  dispatch(fetchVersionBegin());
+  return axios
+    .get(`/skill/${project_id}/dev_version`)
+    .then((res) => {
+      dispatch(fetchDevVersionSuccess(res.data));
+    })
+    .catch((err) => {
+      console.error(err);
+      dispatch(fetchVersionFailure('Unable to fetch dev skills'));
+    });
+};
+
+export const fetchLiveVersion = (project_id, amzn_id) => (dispatch, getStore) => {
+  dispatch(fetchVersionBegin());
+  return axios
+    .get(`/project/${project_id}/live_version?amzn_id=${amzn_id || ''}`)
+    .then((res) => {
+      const skill_id = getStore().skills.skill.project_id;
+      if (skill_id === res.data.live_version) {
+        dispatch(fetchDevVersion(project_id));
+      }
+      dispatch(fetchLiveVersionSuccess(res.data.live_version, skill_id === res.data.live_version));
+    })
+    .catch((err) => {
+      console.error(err);
+      dispatch(fetchVersionFailure('Unable to load live versions'));
+    });
+};
+
+export const togglePreview = (preview) => {
+  return async (dispatch, getState) => {
+    try {
+      await axios.patch(`/skill/${getState().skills.skill.skill_id}?preview=true`, {
+        isPreview: preview,
+      });
+      dispatch(updateVersion('preview', preview));
+    } catch (err) {
+      dispatch(setError('Unable to toggle preview'));
+    }
+    return Promise.resolve();
+  };
+};
+
 export const fetchVersion = (version_id, preview, diagram_id) => {
   return (dispatch, getState) => {
     dispatch(fetchVersionBegin());
@@ -338,54 +382,6 @@ export const fetchVersion = (version_id, preview, diagram_id) => {
     });
   };
 };
-
-export function fetchLiveVersion(project_id, amzn_id) {
-  return (dispatch, getStore) => {
-    dispatch(fetchVersionBegin());
-    return axios
-      .get(`/project/${project_id}/live_version?amzn_id=${amzn_id || ''}`)
-      .then((res) => {
-        const skill_id = getStore().skills.skill.project_id;
-        if (skill_id === res.data.live_version) {
-          dispatch(fetchDevVersion(project_id));
-        }
-        dispatch(fetchLiveVersionSuccess(res.data.live_version, skill_id === res.data.live_version));
-      })
-      .catch((err) => {
-        console.error(err);
-        dispatch(fetchVersionFailure('Unable to load live versions'));
-      });
-  };
-}
-
-export const togglePreview = (preview) => {
-  return async (dispatch, getState) => {
-    try {
-      await axios.patch(`/skill/${getState().skills.skill.skill_id}?preview=true`, {
-        isPreview: preview,
-      });
-      dispatch(updateVersion('preview', preview));
-    } catch (err) {
-      dispatch(setError('Unable to toggle preview'));
-    }
-    return Promise.resolve();
-  };
-};
-
-export function fetchDevVersion(project_id) {
-  return (dispatch) => {
-    dispatch(fetchVersionBegin());
-    return axios
-      .get(`/skill/${project_id}/dev_version`)
-      .then((res) => {
-        dispatch(fetchDevVersionSuccess(res.data));
-      })
-      .catch((err) => {
-        console.error(err);
-        dispatch(fetchVersionFailure('Unable to fetch dev skills'));
-      });
-  };
-}
 
 export const updateSkillDB = (publish = false, cb) => {
   return (dispatch, getState) => {

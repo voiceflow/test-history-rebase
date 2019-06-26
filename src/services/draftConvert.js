@@ -22,7 +22,7 @@ function renderBlock(block, index, rawDraftObject, options) {
   let markdownString = '';
 
   // Render text within content, along with any inline styles/entities
-  Array.from(block.text).some(function(rawCharacter) {
+  Array.from(block.text).some((rawCharacter) => {
     let character = rawCharacter;
 
     if (options.alexa) {
@@ -41,7 +41,7 @@ function draftToMarkdown(rawDraftObject, rawOptions) {
   const options = rawOptions || {};
   let markdownString = '';
 
-  rawDraftObject.blocks.forEach(function(block, index) {
+  rawDraftObject.blocks.forEach((block, index) => {
     markdownString += renderBlock(block, index, rawDraftObject, options);
     if (options.newline) {
       markdownString += '\n';

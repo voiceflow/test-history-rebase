@@ -1,28 +1,30 @@
 import './Expression.css';
 
+import cn from 'classnames';
 import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect';
 import { openTab } from 'ducks/user';
+import { useToggle } from 'hooks/toggle';
 import { parse } from 'mathjs';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input } from 'reactstrap';
+import { Dropdown, DropdownMenu, DropdownToggle, Input } from 'reactstrap';
 
-import { groups, symbols } from './Expression.config';
+import { groups, levels, symbols } from './Expression.config';
 import VariableText from './VariableText';
-
-import cn from 'classnames';
-import { useToggle } from 'hooks/toggle';
 
 // logic type that allows for arithmatic
 // const arithmatic = groups[1]
 
-const OperatorSelect = <i class="fas fa-code" />;
+const OperatorSelect = <i className="fas fa-code" />;
 
 function OperatorDropdown(props) {
   const { depth, children, update, className } = props;
 
   const [open, toggleOpen] = useToggle(false);
+
+  let menuGroups = groups;
+  if (depth === 8) menuGroups = [['value', 'variable'], ['advance']];
 
   return (
     <Dropdown isOpen={open} toggle={toggleOpen}>
@@ -30,11 +32,17 @@ function OperatorDropdown(props) {
         {children}
       </DropdownToggle>
       <DropdownMenu className="expression-menu">
-        {groups.map((group, i) => (
+        {menuGroups.map((group, i) => (
           <>
             <div key={i} className={`expression-group group-${group.length}`}>
               {group.map((type) => (
-                <div key={type} onClick={() => (update(type), toggleOpen())}>
+                <div
+                  key={type}
+                  onClick={() => {
+                    update(type);
+                    toggleOpen();
+                  }}
+                >
                   {symbols[type]}
                 </div>
               ))}
@@ -253,34 +261,36 @@ class Expression extends Component {
   }
 
   render() {
-    if (!this.state.expression || !this.state.expression.type) return null;
+    const { expression } = this.state;
+    if (!expression || !expression.type) return null;
+
+    const { onUpdate, openVarTab, variables, parentType } = this.props;
 
     let render = null;
-
-    const type = this.state.expression.type;
+    const type = expression.type;
 
     switch (type) {
       case 'variable':
         render = (
           <div className={`expression-block ${type}`}>
             <div className="type-button-container">
-              <OperatorDropdown update={this.handleType} className="type-button">
+              <OperatorDropdown update={this.handleType} className="type-button" depth={expression.depth}>
                 {OperatorSelect}
               </OperatorDropdown>
             </div>
             <Select
               classNamePrefix="variable-box"
               styles={selectStyles}
-              placeholder={this.props.variables.length > 0 ? 'Variable Name' : 'No Variables Exist [!]'}
+              placeholder={variables.length > 0 ? 'Variable Name' : 'No Variables Exist [!]'}
               className="variable-box"
               components={{ Option: variableComponent }}
-              value={this.state.expression.value ? { label: `{${this.state.expression.value}}`, value: this.state.expression.value } : null}
+              value={expression.value ? { label: `{${expression.value}}`, value: expression.value } : null}
               onChange={this.handleSelection}
               options={
-                Array.isArray(this.props.variables)
-                  ? this.props.variables.map((variable, idx) => {
-                      if (idx === this.props.variables.length - 1) {
-                        return { label: variable, value: variable, openVar: this.props.openVarTab };
+                Array.isArray(variables)
+                  ? variables.map((variable, idx) => {
+                      if (idx === variables.length - 1) {
+                        return { label: variable, value: variable, openVar: openVarTab };
                       }
                       return { label: `{${variable}}`, value: variable };
                     })
@@ -295,28 +305,28 @@ class Expression extends Component {
         render = (
           <div className={`expression-block ${type}`}>
             <div className="type-button-container">
-              <OperatorDropdown update={this.handleType} className="type-button">
+              <OperatorDropdown update={this.handleType} className="type-button" depth={expression.depth}>
                 {OperatorSelect}
               </OperatorDropdown>
             </div>
-            <Input placeholder="value" value={this.state.expression.value} onChange={this.handleValue} />
+            <Input placeholder="value" value={expression.value} onChange={this.handleValue} />
           </div>
         );
         break;
       case 'advance':
-        // const error = this.state.expression.value.error;
+        // const error = expression.value.error;
         render = (
           <div className={`expression-block ${type}`}>
             <div className="type-button-container">
-              <OperatorDropdown update={this.handleType} className="type-button">
+              <OperatorDropdown update={this.handleType} className="type-button" depth={expression.depth}>
                 {OperatorSelect}
               </OperatorDropdown>
             </div>
             <VariableText
-              className={`editor form-control auto-height oneline ${this.state.expression.value.error ? 'is-invalid' : ''}`}
-              raw={this.state.expression.value}
+              className={`editor form-control auto-height oneline ${expression.value.error ? 'is-invalid' : ''}`}
+              raw={expression.value}
               placeholder={<React.Fragment>Enter your expression here</React.Fragment>}
-              variables={this.props.variables}
+              variables={variables}
               updateRaw={this.handleAdvance}
             />
           </div>
@@ -326,13 +336,15 @@ class Expression extends Component {
         render = (
           <div
             className={cn('expression-block', type, {
-              same: type == this.props.parentType,
+              same: levels[type] && levels[type].has(parentType),
             })}
           >
             <div className="operator">
-              <OperatorDropdown update={this.handleType}>{symbols[type]}</OperatorDropdown>
+              <OperatorDropdown update={this.handleType} depth={expression.depth}>
+                {symbols[type]}
+              </OperatorDropdown>
             </div>
-            <Expression expression={this.state.expression.value} variables={this.props.variables} onUpdate={this.props.onUpdate} />
+            <Expression expression={expression.value} variables={variables} onUpdate={onUpdate} />
           </div>
         );
         break;
@@ -340,29 +352,17 @@ class Expression extends Component {
         render = (
           <div
             className={cn('expression-block', type, {
-              same: type == this.props.parentType,
+              same: levels[type] && levels[type].has(parentType),
             })}
           >
-            <Expression
-              expression={this.state.expression.value[0]}
-              openVarTab={this.props.openVarTab}
-              variables={this.props.variables}
-              onUpdate={this.props.onUpdate}
-              parentType={type}
-            />
+            <Expression expression={expression.value[0]} openVarTab={openVarTab} variables={variables} onUpdate={onUpdate} parentType={type} />
             <OperatorDropdown update={this.handleType} className="operator">
               {symbols[type]}
               <div className="type-button" onClick={this.defaultTop}>
                 <i className="fas fa-trash" />
               </div>
             </OperatorDropdown>
-            <Expression
-              expression={this.state.expression.value[1]}
-              openVarTab={this.props.openVarTab}
-              variables={this.props.variables}
-              onUpdate={this.props.onUpdate}
-              parentType={type}
-            />
+            <Expression expression={expression.value[1]} openVarTab={openVarTab} variables={variables} onUpdate={onUpdate} parentType={type} />
           </div>
         );
     }

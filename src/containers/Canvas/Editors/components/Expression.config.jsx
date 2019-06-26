@@ -18,6 +18,16 @@ const symbols = {
 
 const groups = [['plus', 'minus', 'times', 'divide'], ['equals', 'greater', 'less'], ['and', 'or', 'not'], ['value', 'variable'], ['advance']];
 
+const sameLevel = [['plus', 'minus'], ['times'], ['divide'], ['equals'], ['greater'], ['less'], ['and'], ['or'], ['not']];
+
+const levels = {};
+
+sameLevel.forEach((level) => {
+  level.forEach((type) => {
+    levels[type] = new Set(level);
+  });
+});
+
 const arithmetic = groups[1];
 
-export { symbols, groups, arithmetic };
+export { symbols, groups, arithmetic, levels };

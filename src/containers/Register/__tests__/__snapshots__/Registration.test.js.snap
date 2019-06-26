@@ -11,7 +11,7 @@ exports[`Onboarding renders without crashing 1`] = `
     <div
       id="side-form"
     >
-      <ConnectFunction
+      <Connect(LoginForm)
         location={
           Object {
             "hash": "",
@@ -21,7 +21,7 @@ exports[`Onboarding renders without crashing 1`] = `
           }
         }
       />
-      <ConnectFunction
+      <Connect(SignupForm)
         location={
           Object {
             "hash": "",

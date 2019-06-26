@@ -332,7 +332,7 @@ exports[`Menu render menu 1`] = `
       <div
         className="sidebar-content"
       >
-        <ConnectFunction />
+        <Connect(Blocks) />
       </div>
     </div>
   </div>

@@ -49,7 +49,7 @@ exports[`InteractionEditor render alexa interaction block editor 1`] = `
         platform="alexa"
       />
     </div>
-    <ConnectFunction
+    <Connect(ChoiceDropdownInputs)
       choices={Array []}
       onAdd={[Function]}
       onChange={[Function]}

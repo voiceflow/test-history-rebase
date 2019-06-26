@@ -28,7 +28,7 @@ exports[`Canvas render canvas 1`] = `
     setHelp={[Function]}
     toggle={[Function]}
   />
-  <ConnectFunction
+  <Connect(ActionGroup)
     lastSave="Save"
     onSave={[Function]}
     onTest={[Function]}
@@ -44,7 +44,7 @@ exports[`Canvas render canvas 1`] = `
     onMouseMove={[Function]}
     onMouseUp={[Function]}
   >
-    <ConnectFunction
+    <Connect(Menu)
       build={[Function]}
       copyFlow={[Function]}
       deleteFlow={[Function]}
@@ -56,7 +56,7 @@ exports[`Canvas render canvas 1`] = `
     <Spinner
       name="Flow"
     />
-    <ConnectFunction
+    <Connect(withStateHandlers(withStateHandlers(Editor)))
       appendCombineNode={[Function]}
       close={[Function]}
       copyNode={[Function]}

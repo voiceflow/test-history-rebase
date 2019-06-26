@@ -138,7 +138,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       </div>
     </ModalBody>
   </Modal>
-  <ConnectFunction
+  <Connect(Header)
     centerRenderer={[Function]}
     leftRenderer={[Function]}
     rightRenderer={[Function]}

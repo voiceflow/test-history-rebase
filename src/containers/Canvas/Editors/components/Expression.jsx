@@ -214,13 +214,16 @@ class Expression extends Component {
     if (Array.isArray(expression.value)) {
       expression.type = expression.value[0].type;
       expression.value = expression.value[0].value;
-      this.setState(
-        {
-          expression,
-        },
-        this.props.onUpdate
-      );
+    } else if (expression.value && expression.value.type) {
+      expression.type = expression.value.type;
+      expression.value = expression.value.value;
     }
+    this.setState(
+      {
+        expression,
+      },
+      this.props.onUpdate
+    );
   };
 
   handleAdvance(raw) {
@@ -339,11 +342,12 @@ class Expression extends Component {
               same: levels[type] && levels[type].has(parentType),
             })}
           >
-            <div className="operator">
-              <OperatorDropdown update={this.handleType} depth={expression.depth}>
-                {symbols[type]}
-              </OperatorDropdown>
-            </div>
+            <OperatorDropdown update={this.handleType} depth={expression.depth} className="operator">
+              {symbols[type]}
+              <div className="type-button" onClick={this.defaultTop}>
+                <i className="fas fa-trash" />
+              </div>
+            </OperatorDropdown>
             <Expression expression={expression.value} variables={variables} onUpdate={onUpdate} />
           </div>
         );

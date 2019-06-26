@@ -25,26 +25,26 @@ const recurse = (tag, index = 0) => {
   }
 
   if (tag.children && tag.children.length > 0) {
-    const return_string = [];
+    const returnString = [];
     tag.children.forEach((t, i) => {
-      return_string.push(recurse(t, i));
+      returnString.push(recurse(t, i));
     });
 
     if (tag.name === 's') {
-      return return_string;
+      return returnString;
     }
     if (tag.name === 'voice') {
       return (
         <React.Fragment key={index}>
           <span className="text-muted">{tag.attrs.name}:</span>
           <br />
-          {return_string}
+          {returnString}
         </React.Fragment>
       );
     }
     return (
       <span key={index} className="tag-wrap">
-        <span className="tag-span">{tag.name}</span> {return_string}
+        <span className="tag-span">{tag.name}</span> {returnString}
       </span>
     );
   }
@@ -54,34 +54,58 @@ const recurse = (tag, index = 0) => {
     </span>
   );
 };
-let story_state = null;
-let pause = false;
-let next = false;
 
-const Timeline = (props) => {
-  const {
-    time,
-    slots,
-    skill,
-    reset,
-    open,
-    global,
-    repeat,
-    history,
-    enterFlow,
-    platform,
-    setTime,
-    setReset,
-    resume,
-    stop,
-    diagramEngine,
-    testing_info,
-    resetTest,
-    variableMapping,
-  } = props;
+class Timeline extends React.Component {
+  state = {
+    outputs: [],
+    inputs: [],
+    input: '',
+    intent: '',
+    ended: false,
+    started: false,
+    audioPlayer: false,
+    audio: null,
+    lastNode: null,
+    homeId: null,
+  };
+  story_state = null;
+  pause = false;
+  next = false;
 
-  const initializeStory = () => {
-    story_state = {
+  componentDidUpdate() {
+    const { testing_info, reset, enterFlow, setReset, open, resume } = this.props;
+    const { started, homeId } = this.state;
+    if (testing_info && !started) {
+      this.setState({
+        started: true,
+      });
+      this.initializeStory();
+      this.updateState(true);
+      resume();
+    }
+    if (reset && started) {
+      this.handleClose();
+      enterFlow(homeId, false);
+      setReset(false);
+    }
+    if (!open && started) {
+      this.handleClose();
+      resetTest();
+      stop();
+    }
+  }
+
+  componentWillUnmount() {
+    // Cleanup propagation
+    const { setTime, resetTest, stop } = this.props;
+    setTime(0);
+    resetTest();
+    stop();
+  }
+
+  initializeStory = () => {
+    const { repeat, platform } = this.props.skill;
+    this.story_state = {
       diagrams: null,
       input: '',
       line: null,
@@ -89,145 +113,91 @@ const Timeline = (props) => {
       skill_id: 'TEST_SKILL',
       globals: [{}],
       repeat: repeat || 100,
-      platform,
+      platform: platform,
     };
-    if (Array.isArray(global)) {
-      global.forEach((variable) => {
-        story_state.globals[0][variable] = 0;
-      });
-    }
-
-    story_state.globals[0].sessions = 1;
-    story_state.globals[0].user_id = 'TEST_USER';
-    story_state.globals[0].platform = platform;
+    this.story_state.globals[0].sessions = 1;
+    this.story_state.globals[0].user_id = 'TEST_USER';
+    this.story_state.globals[0].platform = platform;
   };
 
-  const [outputs, setOutputs] = useState([]);
-  const [inputs, setInputs] = useState([]);
-  const [input, setInput] = useState('');
-  const [intent, setIntent] = useState('');
-  const [ended, setEnded] = useState(false);
-  const [started, setStarted] = useState(false);
-  const [audioPlayer, toggleAudioPlayer] = useState(false);
-  const [audio, setAudio] = useState(null);
-  const [lastNode, setLastNode] = useState(null);
-  const [homeId, setHomeDiagram] = useState(null);
+  handleRestart = () => {
+    this.handleClose();
+    this.props.resetTest();
+  };
 
-  useEffect(() => {
-    if (testing_info && !started) {
-      setStarted(true);
-      initializeStory();
-      // eslint-disable-next-line no-use-before-define
-      updateState(true);
-      resume();
-    }
-    if (reset && started) {
-      enterFlow(homeId, false);
-      setStarted(false);
-      setTime(0);
-      setInputs([]);
-      setOutputs([]);
-      setEnded(false);
-      // resetTest();
-      story_state = null;
-      // stop();
-      setReset(false);
-    }
-    if (!open && started) {
-      setStarted(false);
-      setTime(0);
-      setInputs([]);
-      setOutputs([]);
-      setEnded(false);
-      resetTest();
-      story_state = null;
-      stop();
-    }
-  });
-
-  useEffect(() => {
-    return () => {
-      setStarted(false);
-      setTime(0);
-      setInputs([]);
-      setOutputs([]);
-      setEnded(false);
-      resetTest();
-      story_state = null;
-      stop();
-    };
-  }, []);
-
-  if (!testing_info) {
-    return (
-      <div className="text-center mb-3">
-        <img className="mb-3 mt-5" src="/Testing.svg" alt="user" width="80" />
-        <br />
-        <span className="text-muted">Start test to see the dialog transcription</span>
-      </div>
-    );
-  }
-
-  const handleRestart = () => {
-    setStarted(false);
+  handleClose = () => {
+    const { setTime } = this.props;
+    this.setState({
+      started: false,
+      inputs: [],
+      outputs: [],
+      ended: false,
+    });
     setTime(0);
-    setInputs([]);
-    setOutputs([]);
-    setEnded(false);
-    resetTest();
-    story_state = null;
+    this.story_state = null;
   };
 
-  const removeAudio = () => {
+  removeAudio = () => {
     return new Promise((resolve) => {
       if (audio) {
+        const audio = this.state.audio;
         audio.onended = null;
         audio.ontimeupdate = null;
         audio.onloadedmetadata = null;
-        audio.pause();
-        audio.removeAttribute('src');
-        audio.load();
-        setAudio(null);
-        resolve();
-      } else {
-        resolve();
+        this.state.audio.pause();
+        this.state.audio.removeAttribute('src');
+        this.state.audio.load();
+        this.setState({
+          audio: null,
+        });
       }
+      resolve();
     });
   };
-  const addDebugBlock = (block) => {
-    const text = _.get(block, ['children', 0, 'content']);
 
+  addDebugBlock = (block) => {
+    const text = _.get(block, ['children', 0, 'content']);
+    const inputs = this.state.inputs;
     inputs.push({
       debug: block.attrs.type,
       text,
       time: moment().format('h:mm:ss A'),
     });
-    setInputs(inputs);
+    this.setState({
+      inputs,
+    });
   };
 
-  const parseBlock = (block) => {
+  parseBlock = (block) => {
     const text = recurse(block);
     if (text) {
+      const inputs = this.state.inputs;
       inputs.push({
         text,
         time: moment().format('h:mm:ss A'),
       });
-      setInputs(inputs);
+      this.setState({
+        inputs,
+      });
     }
   };
 
-  const recursivePlay = (index, urls, ended) => {
+  recursivePlay = (index, urls, ended) => {
     if (index >= urls.length) {
       if (!pause) {
-        setAudio(null);
-        if (story_state.play && ['START', 'RESUME'].includes(story_state.play.action)) {
-          next = true;
+        this.setState({
+          audio: null,
+        });
+        if (this.story_state.play && ['START', 'RESUME'].includes(this.story_state.play.action)) {
+          this.next = true;
           // eslint-disable-next-line no-use-before-define
-          updateState();
+          this.updateState();
         }
       }
       if (ended) {
-        setEnded(true);
+        this.setState({
+          ended: true,
+        });
       }
       return;
     }
@@ -237,8 +207,10 @@ const Timeline = (props) => {
       // AUDIO TAGS
 
       const audio = new Audio(b.attrs.src);
-
-      setAudio(audio);
+      const inputs = this.state.inputs;
+      this.setState({
+        audio,
+      });
 
       audio.onerror = (err) => {
         inputs.push({
@@ -257,13 +229,16 @@ const Timeline = (props) => {
           ),
           time: moment().format('h:mm:ss A'),
         });
-        setInputs(inputs);
-        recursivePlay(index + 1, urls, ended);
+        this.setState({
+          inputs,
+        });
+        this.recursivePlay(index + 1, urls, ended);
         console.error(err);
       };
 
       audio.onended = () => {
-        recursivePlay(index + 1, urls, ended);
+        const audio = this.state.audio;
+        this.recursivePlay(index + 1, urls, ended);
         audio.ontimeupdate = null;
         audio.onended = null;
         audio.onloadedmetadata = null;
@@ -272,6 +247,7 @@ const Timeline = (props) => {
         audio.load();
       };
       audio.onloadedmetadata = () => {
+        const inputs = this.state.inputs;
         const index = inputs.push({
           src: audio.src
             .split('/')
@@ -282,32 +258,28 @@ const Timeline = (props) => {
           duration: audio.duration,
           time: moment().format('h:mm:ss A'),
         });
-        // setInputs(update(inputs, {
-        //   $push: [{
-        //     src: audio.src.split('/').pop().split('-').pop(),
-        //     currentTime: 0,
-        //     duration: audio.duration,
-        //     time: moment().format('h:mm:ss A')
-        //   }]
-        // }))
-        setInputs(inputs);
+        this.setState({
+          inputs,
+        });
         audio.ontimeupdate = () => {
           inputs[index - 1].currentTime = audio.currentTime;
-          setInputs(inputs);
+          this.setState({
+            inputs,
+          });
         };
       };
 
       audio.play();
     } else if (b.type === 'tag' && b.name === 'debug') {
-      addDebugBlock(b);
-      recursivePlay(index + 1, urls, ended);
+      this.addDebugBlock(b);
+      this.recursivePlay(index + 1, urls, ended);
     } else {
-      parseBlock(b);
-      recursivePlay(index + 1, urls, ended);
+      this.parseBlock(b);
+      this.recursivePlay(index + 1, urls, ended);
     }
   };
 
-  const getAudioMeta = (audio) => {
+  getAudioMeta = (audio) => {
     return new Promise((resolve) => {
       audio.addEventListener('loadedmetadata', (e) => {
         resolve(e.target.duration);
@@ -315,11 +287,13 @@ const Timeline = (props) => {
     });
   };
 
-  const updateState = async (start = false) => {
-    const nlc = testing_info.nlc;
-    const data = story_state;
+  updateState = async (start = false) => {
+    const { testing_info, skill, diagramEngine, variableMapping } = this.props;
+    const { nlc } = testing_info;
+    const { audio } = this.state;
+    const data = this.story_state;
     if (!data.slots) {
-      data.slots = slots;
+      data.slots = skill.slots;
     }
     const defaultIntents = DEFAULT_INTENTS[skill.locales[0].substring(0, 2)];
     _.forEach(defaultIntents.defaults.concat(defaultIntents.built_ins), (d_intent) => {
@@ -350,7 +324,7 @@ const Timeline = (props) => {
         _.forEach(results, (result) => {
           const intent_name = result.name;
           const detected_slots = result.slots;
-          const slot_mapping = testing_info.slot_mappings[intent_name] ? testing_info.slot_mappings[intent_name] : [];
+          const slot_mapping = testing_info.slot_mappings[intent_name] || [];
           const formatted_slots = {};
 
           slot_mapping.forEach((slot, i) => {
@@ -377,23 +351,23 @@ const Timeline = (props) => {
 
     if (start) {
       data.testing = {
-        line: story_state.line_id ? story_state.line_id : 'START',
+        line: this.story_state.line_id || 'START',
       };
       data.diagrams = [{ id: testing_info.id }];
     }
 
-    if (next) {
-      if (story_state.play.loop) {
-        await removeAudio();
-        next = false;
-        return recursivePlay(
+    if (this.next) {
+      if (this.story_state.play.loop) {
+        await this.removeAudio();
+        this.next = false;
+        return this.recursivePlay(
           0,
           [
             {
               name: 'audio',
               type: 'tag',
               attrs: {
-                src: story_state.play.url,
+                src: this.story_state.play.url,
               },
             },
           ],
@@ -409,31 +383,37 @@ const Timeline = (props) => {
         // eslint-disable-next-line no-param-reassign
         res = res.data;
         if (!_.isEmpty(res.diagrams)) {
-          setHomeDiagram(res.diagrams[0].id);
+          this.setState({
+            homeId: res.diagrams[0].id,
+          });
         }
         const { trace } = res;
         if (res.line_id) {
-          story_state = res;
+          this.story_state = res;
         }
         if (data.input && !data.trace) return;
         if (res.output && res.output.length > 0) {
           // TYLER'S SUPER JANKY AUDIO THING
 
-          pause = false;
+          this.pause = false;
           if (res.play) {
             if (res.play.action === 'END') {
-              delete story_state.play;
-              toggleAudioPlayer(false);
+              delete this.story_state.play;
+              this.setState({
+                audioPlayer: false,
+              });
             } else {
-              toggleAudioPlayer(true);
+              this.setState({
+                audioPlayer: true,
+              });
               if (res.play.action === 'START') {
-                if (next) {
+                if (this.next) {
                   res.output = `<audio src="${res.play.url}" />`;
                 } else {
                   res.output += `<audio src="${res.play.url}" />`;
                 }
               } else if (res.play.action === 'PAUSE') {
-                pause = true;
+                this.pause = true;
                 if (audio) audio.pause();
               } else if (res.play.action === 'RESUME') {
                 if (audio) {
@@ -443,7 +423,9 @@ const Timeline = (props) => {
               }
             }
           } else {
-            toggleAudioPlayer(false);
+            this.setState({
+              audioPlayer: false,
+            });
           }
           const dom = [];
           let delay = 0;
@@ -488,7 +470,7 @@ const Timeline = (props) => {
               const results = await Promise.all(
                 block.audio.map(async (audioFile) => {
                   const audio = new Audio(audioFile);
-                  return { duration: await getAudioMeta(audio), audio };
+                  return { duration: await this.getAudioMeta(audio), audio };
                 })
               );
               // eslint-disable-next-line lodash/collection-return, lodash/collection-method-value, no-loop-func
@@ -516,7 +498,7 @@ const Timeline = (props) => {
               const results = await Promise.all(
                 block.audio.map(async (audioFile) => {
                   const audio = new Audio(audioFile);
-                  return { duration: await getAudioMeta(audio), audio };
+                  return { duration: await this.getAudioMeta(audio), audio };
                 })
               );
               const duration = results[0].duration * 1000;
@@ -587,37 +569,45 @@ const Timeline = (props) => {
             }
             idx++;
           }
-          setOutputs(outputs.concat(dom));
+          console.log(dom);
+          this.setState({
+            outputs: this.state.outputs.concat(dom),
+          });
         } else if (res.ending) {
-          setEnded(true);
+          this.setState({
+            ended: true,
+          });
         }
-        next = false;
+        this.next = false;
       })
       .catch((err) => {
         console.error(err);
-        next = false;
+        this.next = false;
       });
   };
 
-  const inputSubmit = (e, val = null) => {
+  inputSubmit = (e, val = null) => {
+    const { input, audio, intent, inputs } = this.state;
     if (e) e.preventDefault();
     if (input === 'SKIP LINE' || val === 'SKIP LINE') {
       if (audio !== null) {
         audio.onended();
       }
-      setInput('');
+      this.setState({
+        input: '',
+      });
     } else {
       if (intent) {
-        story_state.intent = intent;
+        this.story_state.intent = intent;
       } else {
         if (val) {
-          story_state.input = val.val ? val.val : val;
+          this.story_state.input = val.val || val;
           inputs.push({
             self: val.label ? val.label : val,
             time: moment().format('h:mm:ss A'),
           });
         } else {
-          story_state.input = input;
+          this.story_state.input = input;
           inputs.push({
             self: input,
             time: moment().format('h:mm:ss A'),
@@ -625,39 +615,66 @@ const Timeline = (props) => {
         }
       }
       e.currentTarget.value = '';
-      setInput('');
-      setIntent('');
-      setInputs(inputs);
-      updateState();
+      this.setState({
+        input: '',
+        intent: '',
+        inputs,
+      });
+      this.updateState();
     }
 
     return false;
   };
 
-  return (
-    <div id="Timeline" className="mb-3">
-      <TestBox
-        inputs={inputs}
-        diagramEngine={diagramEngine}
-        history={history}
-        ended={ended}
-        enterFlow={enterFlow}
-        setEnded={setEnded}
-        setIntent={setIntent}
-        audioPlayer={audioPlayer}
-        handleRestart={handleRestart}
-        handleChange={(e) => setInput(e.target.value)}
-        inputSubmit={inputSubmit}
-        setInput={(val) => setInput(val)}
-        resetTest={resetTest}
-        outputs={outputs}
-        lastNode={lastNode}
-        setLastNode={setLastNode}
-        time={moment.utc(time * 1000).format('mm:ss')}
-      />
-    </div>
-  );
-};
+  render() {
+    const { time, testing_info, diagramEngine, history, enterFlow, resetTest } = this.props;
+    const { inputs, ended, audioPlayer, outputs, lastNode } = this.state;
+    if (!testing_info) {
+      return (
+        <div className="text-center mb-3">
+          <img className="mb-3 mt-5" src="/Testing.svg" alt="user" width="80" />
+          <br />
+          <span className="text-muted">Start test to see the dialog transcription</span>
+        </div>
+      );
+    }
+    return (
+      <div id="Timeline" className="mb-3">
+        <TestBox
+          inputs={inputs}
+          diagramEngine={diagramEngine}
+          history={history}
+          ended={ended}
+          enterFlow={enterFlow}
+          setEnded={(isEnded) => {
+            this.setState({
+              ended: isEnded,
+            });
+          }}
+          setIntent={(intent) => {
+            this.setState({
+              intent,
+            });
+          }}
+          audioPlayer={audioPlayer}
+          handleRestart={this.handleRestart}
+          handleChange={(e) => this.setState({ input: e.target.value })}
+          inputSubmit={this.inputSubmit}
+          setInput={(val) => this.setInput({ input: val })}
+          resetTest={resetTest}
+          outputs={outputs}
+          lastNode={lastNode}
+          setLastNode={(node) => {
+            this.setState({
+              lastNode: node,
+            });
+          }}
+          time={moment.utc(time * 1000).format('mm:ss')}
+        />
+      </div>
+    );
+  }
+}
 
 const mapStateToProps = (state) => ({
   skill: state.skills.skill,

@@ -3,6 +3,7 @@ import update from 'immutability-helper';
 export const SET_PREVIEW = 'SET_PREVIEW';
 export const CANVAS_ERROR = 'CANVAS_ERROR';
 export const CLOSE_CANVAS_ERROR = 'CLOSE_CANVAS_ERROR';
+export const CLEAR_CANVAS_MESSAGE = 'CLEAR_CANVAS_MESSAGE';
 export const SET_TAB = 'SET_TAB';
 export const CLOSE_TAB = 'CLOSE_TAB';
 
@@ -29,6 +30,11 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         canvasError: update(state.canvasError, { $splice: [[action.payload.idx, 1]] }),
+      };
+    case CLEAR_CANVAS_MESSAGE:
+      return {
+        ...state,
+        canvasError: [],
       };
     case SET_TAB:
       return {
@@ -64,6 +70,10 @@ export const setCanvasError = (error) => ({
 export const closeCanvasError = (idx) => ({
   type: CLOSE_CANVAS_ERROR,
   payload: [idx],
+});
+
+export const clearCanvasMessage = () => ({
+  type: CLEAR_CANVAS_MESSAGE,
 });
 
 export const openTab = (tab) => ({

@@ -2,7 +2,7 @@ import toJson from 'enzyme-to-json';
 import { shallow } from 'enzyme/build';
 import React from 'react';
 
-import FlowBar from '../FlowBar';
+import { FlowBar } from '../FlowBar';
 
 describe('FlowBar', () => {
   it('render flow bar', () => {

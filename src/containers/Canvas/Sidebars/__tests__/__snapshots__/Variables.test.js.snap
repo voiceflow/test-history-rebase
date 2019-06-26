@@ -24,6 +24,7 @@ exports[`Sidebar Variables render variable sidebar on global 1`] = `
         }
       >
         Create Variable
+         
         <Tooltip
           animateFill={true}
           animation="shift"

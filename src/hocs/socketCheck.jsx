@@ -57,7 +57,7 @@ export const socketCheck = lifecycle({
         });
         window.CreatorSocket.on('occupied', (target) => {
           this.props.setErrorScreen(
-            session_warning_content(target, function() {
+            session_warning_content(target, () => {
               window.CreatorSocket.emit('takeover', {
                 skill_id,
                 auth: getAuth(),

@@ -272,7 +272,6 @@ class IntentInput extends Component {
             </div>
           )}
           <div className={cn({ faded: disabled })}>
-            <div className="pt-2">{this.renderUtterances(this.props.intent.inputs)}</div>
             <Tooltip
               className="flex-hard"
               theme="warning"
@@ -304,11 +303,16 @@ class IntentInput extends Component {
                 />
               </MentionsInput>
             </Tooltip>
-            <div className="text-center mt-2">
-              <span className="key-bubble forward pointer" onClick={this.addUtterance}>
-                <i className="far fa-long-arrow-right" />
-              </span>
-            </div>
+            {this.props.intent.inputs.length === 0 ? (
+              <div className="ii__enter-helper-text">Enter to add</div>
+            ) : (
+              <div>
+                <hr style={{ marginBottom: 0 }} />
+                <div className="pt-2">
+                  {this.renderUtterances(this.props.intent.inputs)}
+                </div>
+              </div>
+            )}
           </div>
         </Collapse>
       </div>

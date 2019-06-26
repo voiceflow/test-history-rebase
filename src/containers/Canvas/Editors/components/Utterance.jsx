@@ -1,10 +1,10 @@
-import './Utterance.css';
+import "./Utterance.css";
 
-import cn from 'classnames';
-import React from 'react';
-import { Mention, MentionsInput } from 'react-mentions';
-import { Tooltip } from 'react-tippy';
-import { sampleUtteranceRegex } from 'services/Regex';
+import cn from "classnames";
+import React from "react";
+import { Mention, MentionsInput } from "react-mentions";
+import { Tooltip } from "react-tippy";
+import { sampleUtteranceRegex } from "services/Regex";
 
 class Utterance extends React.PureComponent {
   constructor(props) {
@@ -12,11 +12,11 @@ class Utterance extends React.PureComponent {
 
     this.state = {
       text: props.intent,
-      text_error: '',
+      text_error: ""
     };
   }
 
-  handleKeyPress = (e) => {
+  handleKeyPress = e => {
     // Enter key pressed
     // Add utterance
     if (e.charCode === 13) {
@@ -25,19 +25,19 @@ class Utterance extends React.PureComponent {
     }
   };
 
-  onTextChange = (e) => {
+  onTextChange = e => {
     const newValue = e.target.value.trim();
-    const escaped_value = newValue.replace(/({{\[)|(].[\dA-Za-z]+}})/g, '');
+    const escaped_value = newValue.replace(/({{\[)|(].[\dA-Za-z]+}})/g, "");
     if (escaped_value.match(sampleUtteranceRegex)) {
       return this.setState({
         text: e.target.value,
         text_error:
-          'Sample utterances can consist of only unicode characters, spaces, periods for abbreviations, underscores, possessive apostrophes, curly braces, and hyphens',
+          "Sample utterances can consist of only unicode characters, spaces, periods for abbreviations, underscores, possessive apostrophes, curly braces, and hyphens"
       });
     }
     this.setState({
       text: e.target.value,
-      text_error: null,
+      text_error: null
     });
   };
 
@@ -46,7 +46,7 @@ class Utterance extends React.PureComponent {
     if (this.props.intent.trim() === newValue) return;
     if (this.props.utteranceExists(newValue)) {
       return this.setState({
-        text_error: 'Duplicate utterances are not allowed',
+        text_error: "Duplicate utterances are not allowed"
       });
     }
     if (targetInput) targetInput.target.blur();
@@ -56,7 +56,11 @@ class Utterance extends React.PureComponent {
   render() {
     return (
       <div>
-        <div className={cn('interaction-utterance', { u__utterance_warning: this.props.showWarning })}>
+        <div
+          className={cn("interaction-utterance", {
+            u__utterance_warning: this.props.showWarning
+          })}
+        >
           <Tooltip
             className="flex-hard"
             theme="warning"
@@ -82,34 +86,37 @@ class Utterance extends React.PureComponent {
             >
               <Mention
                 trigger="["
-                data={this.props.slots.map((slot) => {
+                data={this.props.slots.map(slot => {
                   return { display: slot.name, id: slot.key.toString() };
                 })}
-                style={{ backgroundColor: '#DCEEFF', outline: '1px solid #DCEEFF' }}
+                style={{
+                  backgroundColor: "#DCEEFF",
+                  outline: "1px solid #DCEEFF"
+                }}
               />
             </MentionsInput>
+            {this.props.showWarning && (
+              <Tooltip
+                className="flex-hard ii__exclamation-triangle"
+                theme="warning"
+                arrow={true}
+                position="bottom-end"
+                html={
+                  "Having slots with the same type in different intents and using them in an utterance " +
+                  "without any context (other words) may confuse your virtual assistant. Proceed with caution."
+                }
+              >
+                <i className="fas fa-exclamation-triangle" />
+              </Tooltip>
+            )}
           </Tooltip>
           <i
-            onClick={(e) => {
+            onClick={e => {
               this.props.deleteUtterance(e, this.props.index);
             }}
-            className="fas fa-backspace trash-icon ii__trash"
+            className="fas fa-minus-circle trash-icon ii__trash"
           />
         </div>
-        {this.props.showWarning && (
-          <Tooltip
-            className="flex-hard"
-            theme="warning"
-            arrow={true}
-            position="bottom-start"
-            html={
-              'Having slots with the same type in different intents and using them in an utterance ' +
-              'without any context (other words) may confuse your virtual assistant. Proceed with caution.'
-            }
-          >
-            <div className="u__warning_message">Warning: This type of slot is repeated in two intents without context.</div>
-          </Tooltip>
-        )}
       </div>
     );
   }

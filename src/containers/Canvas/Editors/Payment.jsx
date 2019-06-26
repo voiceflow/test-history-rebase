@@ -14,7 +14,7 @@ const cancel = {
   icon: <i className="fas fa-user-minus" />,
   tip: "Refund a purchase or cancel an user's subscription",
 };
-class PaymentBlock extends Component {
+export class Payment extends Component {
   constructor(props) {
     super(props);
 
@@ -180,4 +180,4 @@ const mapStateToProps = (state) => ({
   skill_id: state.skills.skill.skill_id,
   products: state.products.products,
 });
-export default connect(mapStateToProps)(PaymentBlock);
+export default connect(mapStateToProps)(Payment);

@@ -272,7 +272,7 @@ export class Command extends Component {
                 <img className="mr-2" src="/flows.svg" height={15} width={15} alt="home" /> Create New Flow
               </DefaultButton>
               <div className="break">
-                <span className="or">OR</span>
+                <span className="break-text">OR</span>
               </div>
               {this.props.diagrams && this.props.diagrams.length > 0 ? (
                 <React.Fragment>

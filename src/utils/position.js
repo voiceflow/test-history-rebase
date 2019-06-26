@@ -12,17 +12,14 @@
 
 export const strategies = {};
 
-export function createStrategyFromFunction(positionFunc) {
-  return function(parent, child, options) {
+export const createStrategyFromFunction = (positionFunc) =>
+  function(parent, child, options) {
     const position = positionFunc(parent, child, options);
     setPosition(child, position.left, position.top);
   };
-}
 
 // eslint-disable-next-line max-params
-function calculate(vp, lp, lc, kp, kc, Δv) {
-  return vp + kp * lp - kc * lc + Δv;
-}
+const calculate = (vp, lp, lc, kp, kc, Δv) => vp + kp * lp - kc * lc + Δv;
 
 // eslint-disable-next-line max-params
 function calculateWithFallback(vp, lp, lc, kp, kc, vm, Δv) {
@@ -47,8 +44,8 @@ function calculateWithFallback(vp, lp, lc, kp, kc, vm, Δv) {
 }
 
 // eslint-disable-next-line max-params
-function createStrategy(parentX, childX, parentY, childY, gapX, gapY) {
-  return function(parent, child, options) {
+const createStrategy = (parentX, childX, parentY, childY, gapX, gapY) =>
+  function(parent, child, options) {
     const parentRect = parent.getBoundingClientRect();
     const childWidth = child.offsetWidth;
     const childHeight = child.offsetHeight;
@@ -58,7 +55,6 @@ function createStrategy(parentX, childX, parentY, childY, gapX, gapY) {
 
     setPosition(child, left, top);
   };
-}
 
 function setPosition(child, rawLeft, rawTop) {
   const left = Math.round(rawLeft);

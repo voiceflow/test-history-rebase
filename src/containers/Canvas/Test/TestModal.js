@@ -25,15 +25,6 @@ if (process.env.REACT_APP_BUILD_ENV === 'staging') {
 
 const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text']);
 
-// const default_state = () => {
-//   return {
-//     diagrams: null,
-//     input: "",
-//     line: null,
-//     testing: true
-//   }
-// }
-
 const recurse = (tag, index = 0) => {
   if (tag.type === 'text') {
     if (!tag.content.trim()) {
@@ -75,6 +66,15 @@ const recurse = (tag, index = 0) => {
     </span>
   );
 };
+
+const renderVariable = (v) => (
+  <tr key={v.name}>
+    <td className="v">
+      <span>{`{${v.name}}`}</span>
+    </td>
+    <td>{`{${v.value}}`}</td>
+  </tr>
+);
 
 class TestModal extends React.Component {
   constructor(props) {
@@ -779,14 +779,3 @@ const mapStateToProps = (state) => ({
   platform: state.skills.skill.platform,
 });
 export default connect(mapStateToProps)(TestModal);
-
-function renderVariable(v) {
-  return (
-    <tr key={v.name}>
-      <td className="v">
-        <span>{`{${v.name}}`}</span>
-      </td>
-      <td>{`{${v.value}}`}</td>
-    </tr>
-  );
-}

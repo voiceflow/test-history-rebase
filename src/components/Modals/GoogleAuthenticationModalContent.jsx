@@ -6,7 +6,7 @@ import { Input } from 'reactstrap';
 
 const OAUTH_URL =
   // eslint-disable-next-line no-secrets/no-secrets
-  'https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state';
+  'https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state=state';
 
 const MultiPlatformModalContent = ({ token, onChange, loading, onVerify }) => {
   return (
@@ -18,9 +18,9 @@ const MultiPlatformModalContent = ({ token, onChange, loading, onVerify }) => {
             Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.
           </div>
           <a href={OAUTH_URL} target="_blank" rel="noopener noreferrer">
-            <button type="button" className="btn btn-clear">
+            <Button type="button" className="btn btn-clear">
               Log In
-            </button>
+            </Button>
           </a>
         </div>
         <hr />

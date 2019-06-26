@@ -1,7 +1,2 @@
-const CONDITIONS = 'conditions';
-const TIMELINE = 'timeline';
-
-module.exports = {
-  CONDITIONS,
-  TIMELINE,
-};
+export const CONDITIONS = 'conditions';
+export const TIMELINE = 'timeline';

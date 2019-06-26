@@ -1,17 +1,17 @@
 import axios from 'axios';
 import { LOGROCKET_ENABLED } from 'config';
 import { push } from 'connected-react-router';
-import { getAuthCookie, removeAuthCookie, removeLastSessionCookie, setAuthCookie } from '../cookies';
 import LogRocket from 'logrocket';
 import queryString from 'query-string';
 import { IntercomAPI } from 'react-intercom';
 
 import { getDevice } from 'Helper';
+
+import { getAuthCookie, removeAuthCookie, removeLastSessionCookie, setAuthCookie } from '../cookies';
 // import { setError } from 'ducks/modal'
 
 export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT';
 export const RESET_ACCOUNT = 'RESET_ACCOUNT';
-export const AUTH_COOKIE = 'auth';
 
 const initialState = {
   loading: false,

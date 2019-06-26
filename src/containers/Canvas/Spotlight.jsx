@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 import { getBlocks } from './Blocks';
 
-class Spotlight extends Component {
+export class Spotlight extends Component {
   constructor(props) {
     super(props);
 

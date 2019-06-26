@@ -38,9 +38,20 @@ class IfBlock extends Component {
 
     if (node.extras.expressions.length < BLOCK_LIMIT) {
       node.extras.expressions.push({
-        type: 'value',
-        value: '',
+        type: 'equals',
         depth: 0,
+        value: [
+          {
+            type: 'variable',
+            value: null,
+            depth: 1,
+          },
+          {
+            type: 'value',
+            value: '',
+            depth: 1,
+          },
+        ],
       });
 
       // Remove the else port and add it back in so that it is always on the bottom
@@ -107,15 +118,13 @@ class IfBlock extends Component {
 
   render() {
     return (
-      <div>
-        <p>
-          <small className="text-muted">If statements are evaluated in numerical order</small>
-        </p>
+      <>
+        <small className="text-muted">If statements are evaluated in numerical order</small>
         {this.state.node.extras.expressions.map((expression, i) => {
           const show = !(expression.type === 'value' || expression.type === 'variable' || expression.type === 'advance');
 
           return (
-            <div key={i} className="solid-border set-block">
+            <div key={i} className="conditional-wrapper">
               {this.state.node.extras.expressions.length > 1 ? <div className="close" onClick={() => this.handleRemoveBlock(i)} /> : null}
               <div className="variable-group">
                 <div className="number-bubble mr-2">{i + 1}</div>
@@ -127,14 +136,14 @@ class IfBlock extends Component {
           );
         })}
 
-        {this.state.node.extras.expressions.length < BLOCK_LIMIT ? (
-          <div className="text-center">
-            <Button isFlatVariable className="mt-1" onClick={this.handleAddBlock}>
+        {this.state.node.extras.expressions.length < BLOCK_LIMIT && (
+          <div className="text-center mt-3">
+            <Button isFlatVariable onClick={this.handleAddBlock}>
               Add If Statement
             </Button>
           </div>
-        ) : null}
-      </div>
+        )}
+      </>
     );
   }
 }

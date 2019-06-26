@@ -1,14 +1,14 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import SkillDetail from '../../components/SkillDetail/SkillDetail';
+import { SkillDetail } from '../../components/SkillDetail/SkillDetail';
 import { testSkill } from './testAdminState';
 
 // eslint-disable-next-line no-unused-vars
 let wrapped;
 
 beforeEach(() => {
-  wrapped = shallow(<SkillDetail skill={testSkill} />);
+  wrapped = shallow(<SkillDetail skill={testSkill} creator={{ creator_id: 2 }} />);
 });
 
 describe('Skill Detail', () => {

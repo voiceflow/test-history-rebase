@@ -22,11 +22,10 @@ const expressionfy = (expression, depth = 0) => {
             v
           ) : (
             <span className="math variable" key={v}>
-              {v}
+              {`{${v}}`}
             </span>
           )
         )}
-        )
       </span>
     );
   }

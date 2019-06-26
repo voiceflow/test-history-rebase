@@ -4,22 +4,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 
-export class StandardModal extends React.Component {
+export const StandardModal = ({ modal, toggle }) => {
   // TODO this class is pure cancer
-  render() {
-    if (!this.props.modal) {
-      return null;
-    }
-
-    return (
-      <Modal isOpen={!!this.props.modal} toggle={this.props.toggle} centered size={this.props.modal.size}>
-        {this.props.modal.header && <ModalHeader toggle={this.props.toggle}>{this.props.modal.header}</ModalHeader>}
-        {this.props.modal.body && <ModalBody className="text-center">{this.props.modal.body}</ModalBody>}
-        {this.props.modal.footer && <ModalFooter className="justify-content-center">{this.props.modal.footer}</ModalFooter>}
-      </Modal>
-    );
+  if (!modal) {
+    return null;
   }
-}
+
+  return (
+    <Modal isOpen={!!modal} toggle={toggle} centered size={modal.size}>
+      {modal.header && <ModalHeader toggle={toggle}>{modal.header}</ModalHeader>}
+      {modal.body && <ModalBody className="text-center">{modal.body}</ModalBody>}
+      {modal.footer && <ModalFooter className="justify-content-center">{modal.footer}</ModalFooter>}
+    </Modal>
+  );
+};
 
 const mapStateToProps = (state) => ({
   modal: state.modal.modal,

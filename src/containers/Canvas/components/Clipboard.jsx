@@ -6,11 +6,10 @@ import { fetchDisplays } from 'ducks/display';
 import { fetchProducts } from 'ducks/product';
 import { setCanvasInfo } from 'ducks/user';
 import { updateIntents } from 'ducks/version';
+import _ from 'lodash';
 import Mousetrap from 'mousetrap';
 import React from 'react';
 import { connect } from 'react-redux';
-
-const _ = require('lodash');
 
 const toolkit = new Toolkit();
 
@@ -99,40 +98,43 @@ class Clipboard extends React.Component {
     this.props.setCanvasInfo(`${nodes.length} block(s) copied to clipboard`);
   }
 
+  async importExtra(payload) {
+    const { skill, dintents, dslots } = this.props;
+    const { slots, intents, products, displays, diagrams, nodes } = payload;
+
+    slots.forEach((slot) => {
+      if (!dslots[slot.key]) skill.slots.push(slot);
+    });
+
+    intents.forEach((intent) => {
+      if (!dintents[intent.key]) skill.intents.push(intent);
+    });
+
+    this.props.updateIntents();
+
+    const { newNodes, newDiagrams } = (await axios.post(`/skill/${skill.skill_id}/clipboard/paste`, {
+      nodes,
+      products,
+      displays,
+      diagrams,
+    })).data;
+    this.props.fetchProducts(skill.skill_id);
+    this.props.fetchDisplays(skill.skill_id);
+    this.props.addDiagrams(diagrams.map((diagram) => ({ ...diagram, sub_diagrams: [], id: newDiagrams[diagram.id] })));
+    return newNodes;
+  }
+
   async paste() {
-    const { engine, skill, dintents, dslots } = this.props;
+    const { engine, skill } = this.props;
     const point = engine.getRelativeMousePoint(this.props.getEvent());
     engine.stopMove();
     engine.getDiagramModel().clearSelection();
     if (!localStorage.clipboard || JSON.parse(localStorage.clipboard).nodes.length === 0) return;
-    const { skill: source, slots, intents, products, displays, diagrams, links, nodes: srcNodes } = JSON.parse(localStorage.clipboard);
-    let nodes;
+
+    const payload = JSON.parse(localStorage.clipboard);
+    const { skill: source, links } = payload;
     const scope = source === skill.skill_id ? 'SKILL' : 'NEW';
-
-    if (scope === 'NEW') {
-      slots.forEach((slot) => {
-        if (!dslots[slot.key]) skill.slots.push(slot);
-      });
-
-      intents.forEach((intent) => {
-        if (!dintents[intent.key]) skill.intents.push(intent);
-      });
-
-      this.props.updateIntents();
-
-      const { newNodes, newDiagrams } = (await axios.post(`/skill/${this.props.skill.skill_id}/clipboard/paste`, {
-        nodes: srcNodes,
-        products,
-        displays,
-        diagrams,
-      })).data;
-      nodes = newNodes;
-      this.props.fetchProducts(skill.skill_id);
-      this.props.fetchDisplays(skill.skill_id);
-      this.props.addDiagrams(diagrams.map((diagram) => ({ ...diagram, sub_diagrams: [], id: newDiagrams[diagram.id] })));
-    } else {
-      nodes = srcNodes;
-    }
+    const nodes = scope === 'NEW' ? await this.importExtra(payload) : payload.nodes;
 
     const centerX = (_.maxBy(nodes, 'x').x + _.minBy(nodes, 'x').x) / 2;
     const centerY = (_.maxBy(nodes, 'y').y + _.minBy(nodes, 'y').y) / 2;
@@ -161,29 +163,20 @@ class Clipboard extends React.Component {
   }
 }
 
+const arrToDict = (arr, key) =>
+  arr.reduce((dict, i) => {
+    dict[i[key]] = i;
+    return dict;
+  }, {});
+
 const mapStateToProps = (state) => {
   return {
     skill: state.skills.skill,
-    dintents: state.skills.skill.intents.reduce((dict, i) => {
-      dict[i.key] = i;
-      return dict;
-    }, {}),
-    dslots: state.skills.skill.slots.reduce((dict, i) => {
-      dict[i.key] = i;
-      return dict;
-    }, {}),
-    ddisplays: state.displays.displays.reduce((dict, i) => {
-      dict[i.display_id] = i;
-      return dict;
-    }, {}),
-    dproducts: state.products.products.reduce((dict, i) => {
-      dict[i.id] = i;
-      return dict;
-    }, {}),
-    ddiagrams: state.diagrams.diagrams.reduce((dict, i) => {
-      dict[i.id] = i;
-      return dict;
-    }, {}),
+    dintents: arrToDict(state.skills.skill.intents, 'key'),
+    dslots: arrToDict(state.skills.skill.slots, 'key'),
+    ddisplays: arrToDict(state.displays.displays, 'display_id'),
+    dproducts: arrToDict(state.products.products, 'id'),
+    ddiagrams: arrToDict(state.diagrams.diagrams, 'id'),
   };
 };
 

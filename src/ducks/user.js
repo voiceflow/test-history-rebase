@@ -1,5 +1,8 @@
 import update from 'immutability-helper';
 
+const SUCESS_ICON = '/green-check.svg';
+const WARNING_ICON = '/yellow-error.svg';
+
 export const SET_PREVIEW = 'SET_PREVIEW';
 export const CANVAS_ERROR = 'CANVAS_ERROR';
 export const CLOSE_CANVAS_ERROR = 'CLOSE_CANVAS_ERROR';
@@ -59,12 +62,12 @@ export const setPreview = (preview) => ({
 
 export const setCanvasInfo = (error) => ({
   type: CANVAS_ERROR,
-  payload: { error: { msg: error, icon: '/green-check.svg' } },
+  payload: { error: { msg: error, icon: SUCESS_ICON } },
 });
 
 export const setCanvasError = (error) => ({
   type: CANVAS_ERROR,
-  payload: { error: { msg: error, icon: '/yellow-error.svg' } },
+  payload: { error: { msg: error, icon: WARNING_ICON } },
 });
 
 export const closeCanvasError = (idx) => ({

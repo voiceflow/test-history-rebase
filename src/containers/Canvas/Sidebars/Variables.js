@@ -172,18 +172,16 @@ export class Variables extends PureComponent {
             <div className="mb-4">
               <Label>Flow Variables</Label>
               <div className="variables">
-                {this.props.variables.map(
-                  function(variable, i) {
-                    return (
-                      <div key={variable} className="variable_tag">
-                        {`{${variable}}`}{' '}
-                        <span onClick={() => this.deleteVariable(variable)}>
-                          <i className="fas fa-times" />
-                        </span>
-                      </div>
-                    );
-                  }.bind(this)
-                )}
+                {this.props.variables.map((variable, i) => {
+                  return (
+                    <div key={variable} className="variable_tag">
+                      {`{${variable}}`}{' '}
+                      <span onClick={() => this.deleteVariable(variable)}>
+                        <i className="fas fa-times" />
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}

@@ -46,8 +46,8 @@ const variableSpan = (props) => {
   );
 };
 
-function getEntityStrategy(mutability) {
-  return function(contentBlock, callback, contentState) {
+const getEntityStrategy = (mutability) =>
+  function(contentBlock, callback, contentState) {
     contentBlock.findEntityRanges((character) => {
       const entityKey = character.getEntity();
       if (entityKey === null) {
@@ -56,7 +56,6 @@ function getEntityStrategy(mutability) {
       return contentState.getEntity(entityKey).getMutability() === mutability;
     }, callback);
   };
-}
 
 const compositeDecorator = new CompositeDecorator([
   {

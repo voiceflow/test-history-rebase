@@ -36,6 +36,11 @@ const loading = (message) => {
   );
 };
 
+const matchesKeyword = (splitName) => (l) =>
+  splitName.find((split) => {
+    return split === l.toLowerCase();
+  });
+
 const GOOGLE_STAGES = {
   0: 'No Google Token Found',
   1: 'No Project ID Found',
@@ -1260,10 +1265,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ActionGroup);
-
-function matchesKeyword(splitName) {
-  return (l) =>
-    splitName.find((split) => {
-      return split === l.toLowerCase();
-    });
-}

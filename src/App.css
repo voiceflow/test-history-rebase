@@ -1860,7 +1860,7 @@ body.modal-open {
 }
 
 #icon-save.unsaved {
-  background-image: url('/cog.svg'), linear-gradient(#5d9df515, #5d9df530);
+  background-image: url('/cog.svg');
   background-position: 50% 50% !important;
 }
 

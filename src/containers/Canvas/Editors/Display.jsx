@@ -24,6 +24,7 @@ import {
 } from "reactstrap";
 
 import DisplayRender from "./components/DisplayRender";
+import {selectStyles, variableComponent} from "../../../components/VariableSelect/VariableSelect";
 
 export class Display extends Component {
   constructor(props) {
@@ -111,6 +112,9 @@ export class Display extends Component {
   }
 
   selectDisplay(selected) {
+    if (selected.openVar) {
+      return selected.openVar()
+    }
     if (selected.value === this.state.node.extras.display_id) return;
 
     const find = this.props.displays.find(t => t.display_id === selected.value);
@@ -274,6 +278,10 @@ export class Display extends Component {
   }
 
   disableModal = () => this.setState({ modal: false });
+  
+  goToSidebar = () => {
+    this.props.history.push(`/visuals/${this.props.match.params.skill_id}`);
+  };
 
   render() {
     const { skill_id } = this.props.match.params;
@@ -300,6 +308,11 @@ export class Display extends Component {
         </div>
       );
     }
+    const displayOptions = _.cloneDeep(this.props.displays);
+    displayOptions.push({
+      display_id: 'Create a new Display',
+      title: 'Create a new Display'
+    });
 
     return (
       <React.Fragment>
@@ -322,13 +335,19 @@ export class Display extends Component {
             classNamePrefix="select-box"
             value={this.state.selected}
             onChange={this.selectDisplay}
+            styles={selectStyles}
             placeholder="Select Multimodal Display"
-            options={this.props.displays.map(t => {
-              return {
-                value: t.display_id,
-                label: t.title
-              };
-            })}
+            options={
+              displayOptions.map((display, idx) => {
+                if (idx === displayOptions.length - 1) {
+                  return { label: display.display_id, value: display.title, openVar: this.goToSidebar };
+                }
+                return {
+                  value: display.display_id,
+                  label: display.title
+                }
+              })
+            }
           />
           {this.state.selected ? (
             <InputGroup className="my-3">

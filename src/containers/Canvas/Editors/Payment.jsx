@@ -7,6 +7,7 @@ import Select from "react-select";
 import { Alert } from "reactstrap";
 
 import MenuItem from "../Sidebars/components/MenuItem";
+import {selectStyles} from "../../../components/VariableSelect/VariableSelect";
 
 const cancel = {
   text: "Cancel Payment",
@@ -92,6 +93,10 @@ class PaymentBlock extends Component {
       this.props.onUpdate
     );
   }
+  
+  openProductPage = () => {
+    this.props.history.push(`/tools/${this.props.skill_id}/products`);
+  };
 
   render() {
     if (
@@ -119,8 +124,21 @@ class PaymentBlock extends Component {
         </div>
       );
     }
+  
+    const productOptions = _.cloneDeep(this.props.products);
+    productOptions.push({
+      id: 'Create a new Product',
+      name: 'Create a new Product'
+    });
 
-    const options = _.map(this.props.products, product => {
+    const options = productOptions.map((product, idx) => {
+      if (idx === productOptions.length - 1) {
+        return {
+          value: product.id,
+          label: product.name,
+          openProductPage: this.openProductPage
+        };
+      }
       return {
         value: product.id,
         label: product.name
@@ -207,7 +225,11 @@ class PaymentBlock extends Component {
         </div>
         <Select
           classNamePrefix="select-box"
+          styles={selectStyles}
           onChange={selected => {
+            if (selected.openProductPage) {
+              return selected.openProductPage();
+            }
             const node = this.state.node;
             node.extras.product_id = selected.value;
             this.setState({

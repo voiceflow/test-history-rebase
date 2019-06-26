@@ -1295,6 +1295,9 @@ export class ActionGroup extends PureComponent {
           toggle={() => this.setState({ settingsModal: false })}
           className={"ag__settings_modal"}
         >
+          <div className="ag__settings_header">
+            Settings
+          </div>
           <Settings
             {...this.props}
             page={"basic"}

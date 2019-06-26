@@ -2,7 +2,7 @@ import axios from 'axios';
 import { parse } from 'html-parse-stringify';
 import _ from 'lodash';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { RegexVariables } from 'utils/variable';
@@ -68,12 +68,15 @@ class Timeline extends React.Component {
     lastNode: null,
     homeId: null,
   };
+
   story_state = null;
+
   pause = false;
+
   next = false;
 
   componentDidUpdate() {
-    const { testing_info, reset, enterFlow, setReset, open, resume } = this.props;
+    const { testing_info, reset, enterFlow, setReset, open, stop, resume, resetTest } = this.props;
     const { started, homeId } = this.state;
     if (testing_info && !started) {
       this.setState({
@@ -113,7 +116,7 @@ class Timeline extends React.Component {
       skill_id: 'TEST_SKILL',
       globals: [{}],
       repeat: repeat || 100,
-      platform: platform,
+      platform,
     };
     this.story_state.globals[0].sessions = 1;
     this.story_state.globals[0].user_id = 'TEST_USER';
@@ -138,6 +141,7 @@ class Timeline extends React.Component {
   };
 
   removeAudio = () => {
+    const { audio } = this.state;
     return new Promise((resolve) => {
       if (audio) {
         const audio = this.state.audio;
@@ -184,7 +188,7 @@ class Timeline extends React.Component {
 
   recursivePlay = (index, urls, ended) => {
     if (index >= urls.length) {
-      if (!pause) {
+      if (!this.pause) {
         this.setState({
           audio: null,
         });
@@ -569,7 +573,6 @@ class Timeline extends React.Component {
             }
             idx++;
           }
-          console.log(dom);
           this.setState({
             outputs: this.state.outputs.concat(dom),
           });

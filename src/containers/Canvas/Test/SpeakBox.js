@@ -5,6 +5,7 @@ import { Tooltip } from 'react-tippy';
 
 class SpeakBox extends React.Component {
   timer = null;
+
   state = {
     shouldRender: false,
     renderTime: '00:00',
@@ -16,7 +17,7 @@ class SpeakBox extends React.Component {
     this.timer = setTimeout(() => {
       this.centerNode();
       if (audio) audio.play();
-      if (!!chat.diagram) {
+      if (chat.diagram) {
         this.props.enterFlow(chat.diagram, false);
       }
       this.setState({

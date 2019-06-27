@@ -1,19 +1,19 @@
-import Button from "components/Button";
-import _ from "lodash";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import Select from "react-select";
-import { Alert } from "reactstrap";
+import Button from 'components/Button';
+import _ from 'lodash';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Select from 'react-select';
+import { Alert } from 'reactstrap';
 
-import MenuItem from "../Sidebars/components/MenuItem";
-import { selectStyles } from "../../../components/VariableSelect/VariableSelect";
+import { selectStyles } from '../../../components/VariableSelect/VariableSelect';
+import MenuItem from '../Sidebars/components/MenuItem';
 
 const cancel = {
-  text: "Cancel Payment",
-  type: "cancel",
+  text: 'Cancel Payment',
+  type: 'cancel',
   icon: <i className="fas fa-user-minus" />,
-  tip: "Refund a purchase or cancel an user's subscription"
+  tip: "Refund a purchase or cancel an user's subscription",
 };
 export class Payment extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ export class Payment extends Component {
 
     this.state = {
       node: this.props.node,
-      selectedProduct: null
+      selectedProduct: null,
     };
 
     this.onUpdate = this.onUpdate.bind(this);
@@ -34,7 +34,7 @@ export class Payment extends Component {
   onUpdate() {
     this.setState(
       {
-        node: this.state.node
+        node: this.state.node,
       },
       this.props.onUpdate
     );
@@ -44,12 +44,12 @@ export class Payment extends Component {
     const node = this.state.node;
     node.extras[io].push({
       arg1: null,
-      arg2: null
+      arg2: null,
     });
 
     this.setState(
       {
-        node
+        node,
       },
       this.props.onUpdate
     );
@@ -62,7 +62,7 @@ export class Payment extends Component {
 
     this.setState(
       {
-        node
+        node,
       },
       this.props.onUpdate
     );
@@ -76,7 +76,7 @@ export class Payment extends Component {
 
       this.setState(
         {
-          node
+          node,
         },
         this.props.onUpdate
       );
@@ -88,7 +88,7 @@ export class Payment extends Component {
     node.extras.product_id = null;
     this.setState(
       {
-        node
+        node,
       },
       this.props.onUpdate
     );
@@ -99,26 +99,13 @@ export class Payment extends Component {
   };
 
   render() {
-    if (
-      !Array.isArray(this.props.products) ||
-      this.props.products.length === 0
-    ) {
+    if (!Array.isArray(this.props.products) || this.props.products.length === 0) {
       return (
         <div className="text-center">
-          <img
-            className="mb-3 mt-5"
-            src="/images/OpenSafe.svg"
-            alt="user"
-            width="80"
-          />
+          <img className="mb-3 mt-5" src="/images/OpenSafe.svg" alt="user" width="80" />
           <br />
-          <span className="text-muted">
-            You currently have no In Skill Products
-          </span>
-          <Link
-            className="btn btn-secondary mt-3"
-            to={`/tools/${this.props.skill_id}/products`}
-          >
+          <span className="text-muted">You currently have no In Skill Products</span>
+          <Link className="btn btn-secondary mt-3" to={`/tools/${this.props.skill_id}/products`}>
             Add Products
           </Link>
         </div>
@@ -127,8 +114,8 @@ export class Payment extends Component {
 
     const productOptions = _.cloneDeep(this.props.products);
     productOptions.push({
-      id: "Create a new Product",
-      name: "Create a new Product"
+      id: 'Create a new Product',
+      name: 'Create a new Product',
     });
 
     const options = productOptions.map((product, idx) => {
@@ -136,21 +123,18 @@ export class Payment extends Component {
         return {
           value: product.id,
           label: product.name,
-          openProductPage: this.openProductPage
+          openProductPage: this.openProductPage,
         };
       }
       return {
         value: product.id,
-        label: product.name
+        label: product.name,
       };
     });
 
     let current;
     if (this.state.node.extras.product_id) {
-      current = _.find(this.props.products, [
-        "id",
-        this.state.node.extras.product_id
-      ]);
+      current = _.find(this.props.products, ['id', this.state.node.extras.product_id]);
     }
 
     if (current) {
@@ -161,51 +145,29 @@ export class Payment extends Component {
             <span>
               $
               <span className="text-cash-money">
-                {_.get(current, [
-                  "data",
-                  "publishingInformation",
-                  "pricing",
-                  "amazon.com",
-                  "defaultPriceListing",
-                  "price"
-                ])}
+                {_.get(current, ['data', 'publishingInformation', 'pricing', 'amazon.com', 'defaultPriceListing', 'price'])}
               </span>
             </span>
           </label>
-          <Button
-            isPrimary
-            isBlock
-            isLarge
-            onClick={() =>
-              this.props.history.push(
-                `/tools/${this.props.skill_id}/product/${current.id}`
-              )
-            }
-          >
+          <Button isPrimary isBlock isLarge onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/product/${current.id}`)}>
             Edit Product <i className="fas fa-sign-in" />
           </Button>
           <Button isClear isLarge isBlock className="mt-2" onClick={this.reset}>
             Unlink Product
           </Button>
-          {current.data.type === "SUBSCRIPTION" ? (
+          {current.data.type === 'SUBSCRIPTION' ? (
             <React.Fragment>
               <h2 className="cut-through mt-5 mb-4">
                 <span>Subscription Settings</span>
               </h2>
-              <Alert>
-                Alexa requires an unsubscribe option, place a cancel payment
-                block in an easily accessible part of your flow
-              </Alert>
+              <Alert>Alexa requires an unsubscribe option, place a cancel payment block in an easily accessible part of your flow</Alert>
             </React.Fragment>
           ) : (
             <React.Fragment>
               <h2 className="cut-through mt-5 mb-4">
                 <span>Refund Settings</span>
               </h2>
-              <Alert>
-                Alexa requires users be able to refund a purchase, place a
-                cancel payment block in an easily accessible part of your flow
-              </Alert>
+              <Alert>Alexa requires users be able to refund a purchase, place a cancel payment block in an easily accessible part of your flow</Alert>
             </React.Fragment>
           )}
           <MenuItem item={cancel} data={current.id} />
@@ -215,18 +177,13 @@ export class Payment extends Component {
     return (
       <React.Fragment>
         <label>Select Existing Product</label>
-        <div
-          onClick={() =>
-            this.props.history.push(`/tools/${this.props.skill_id}/products`)
-          }
-          className="d__see_all"
-        >
+        <div onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/products`)} className="d__see_all">
           See all
         </div>
         <Select
           classNamePrefix="select-box"
           styles={selectStyles}
-          onChange={selected => {
+          onChange={(selected) => {
             if (selected.openProductPage) {
               return selected.openProductPage();
             }
@@ -234,7 +191,7 @@ export class Payment extends Component {
             node.extras.product_id = selected.value;
             this.setState({
               node,
-              selectedProduct: selected
+              selectedProduct: selected,
             });
           }}
           options={options}
@@ -244,12 +201,7 @@ export class Payment extends Component {
             <div className="d__or_text">OR</div>
           </div>
         </div>
-        <button
-          className={"btn-clear btn-block btn-lg"}
-          onClick={() =>
-            this.props.history.push(`/tools/${this.props.skill_id}/products`)
-          }
-        >
+        <button className="btn-clear btn-block btn-lg" onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/products`)}>
           Create new visual
         </button>
       </React.Fragment>
@@ -257,8 +209,8 @@ export class Payment extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   skill_id: state.skills.skill.skill_id,
-  products: state.products.products
+  products: state.products.products,
 });
 export default connect(mapStateToProps)(Payment);

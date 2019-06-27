@@ -1,21 +1,21 @@
-import axios from "axios";
-import { updateDiagramRoot } from "ducks/diagram";
-import { updateVersion } from "ducks/version";
-import _ from "lodash";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Button, ButtonGroup } from "reactstrap";
+import axios from 'axios';
+import { updateDiagramRoot } from 'ducks/diagram';
+import { updateVersion } from 'ducks/version';
+import _ from 'lodash';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Button, ButtonGroup } from 'reactstrap';
 
-import BackupSettings from "./Backups";
+import BackupSettings from './Backups';
 // SETTING PAGES
-import BasicAdvancedSettings from "./BasicAdvanced";
-import DiscoverySettings from "./Discovery";
+import BasicAdvancedSettings from './BasicAdvanced';
+import DiscoverySettings from './Discovery';
 
-const TABS = ["basic", "advanced", "discovery", "backups"];
+const TABS = ['basic', 'advanced', 'discovery', 'backups'];
 
 class Settings extends Component {
   state = {
-    tab: "basic"
+    tab: 'basic',
   };
 
   constructor(props) {
@@ -28,7 +28,7 @@ class Settings extends Component {
 
   switchTab(tab) {
     if (tab !== this.state.tab) {
-      this.setState({ tab: tab });
+      this.setState({ tab });
       // this.props.history.push(`/settings/${this.props.skill_id}/${tab}`);
     }
   }
@@ -36,26 +36,24 @@ class Settings extends Component {
   onSwapVersions(skill_id, is_overwrite, cb) {
     axios
       .post(`/skill/${skill_id}/restore`)
-      .then(res => {
+      .then((res) => {
         if (!is_overwrite) {
-          this.props.updateSkill("skill_id", res.data.skill_id);
-          this.props.updateSkill("diagram", res.data.diagram);
+          this.props.updateSkill('skill_id', res.data.skill_id);
+          this.props.updateSkill('diagram', res.data.diagram);
         }
 
         if (!cb) {
           this.props.updateDiagramRoot(res.data.diagram);
-          this.props.history.push(
-            `/canvas/${res.data.skill_id}/${res.data.diagram}`
-          );
+          this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`);
         } else {
           // eslint-disable-next-line callback-return
           cb(true);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err.response);
         this.setState({
-          error: "Unable to restore version"
+          error: 'Unable to restore version',
         });
 
         if (cb) {
@@ -71,24 +69,13 @@ class Settings extends Component {
     }
 
     switch (this.state.tab) {
-      case "basic":
-      case "advanced":
-        return (
-          <BasicAdvancedSettings
-            {...this.props}
-            page={this.state.tab}
-            onSwapVersions={this.onSwapVersions}
-          />
-        );
-      case "discovery":
+      case 'basic':
+      case 'advanced':
+        return <BasicAdvancedSettings {...this.props} page={this.state.tab} onSwapVersions={this.onSwapVersions} />;
+      case 'discovery':
         return <DiscoverySettings {...this.props} />;
-      case "backups":
-        return (
-          <BackupSettings
-            {...this.props}
-            onSwapVersions={this.onSwapVersions}
-          />
-        );
+      case 'backups':
+        return <BackupSettings {...this.props} onSwapVersions={this.onSwapVersions} />;
       default:
         return null;
     }
@@ -100,16 +87,13 @@ class Settings extends Component {
         <div>
           <div className="nav-bar-top mb-4">
             <ButtonGroup className="toggle-group mb-2 toggle-group-settings">
-              {TABS.map(tab => {
+              {TABS.map((tab) => {
                 return (
                   <Button
                     key={tab}
                     onClick={() => this.switchTab(tab)}
                     outline={this.state.tab !== tab}
-                    disabled={
-                      this.state.tab === tab ||
-                      (this.props.live_mode && tab === "backups")
-                    }
+                    disabled={this.state.tab === tab || (this.props.live_mode && tab === 'backups')}
                   >
                     {_.startCase(tab)}
                   </Button>
@@ -124,16 +108,16 @@ class Settings extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   skill_id: state.skills.skill.skill_id,
   load_skill: state.skills.loading,
-  error: state.skills.error
+  error: state.skills.error,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     updateSkill: (type, val) => dispatch(updateVersion(type, val)),
-    updateDiagramRoot: val => dispatch(updateDiagramRoot(val))
+    updateDiagramRoot: (val) => dispatch(updateDiagramRoot(val)),
   };
 };
 export default connect(

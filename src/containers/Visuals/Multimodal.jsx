@@ -1,23 +1,23 @@
-import "./Display.css";
+import './Display.css';
 
-import Button from "components/Button";
-import EmptyCard from "components/Cards/EmptyCard";
-import VoiceCards from "components/Cards/VoiceCards";
-import { Spinner } from "components/Spinner/Spinner";
-import { deleteDisplay } from "ducks/display";
-import { setConfirm } from "ducks/modal";
-import React, { Component } from "react";
-import Masonry from "react-masonry-component";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { Alert } from "reactstrap";
+import Button from 'components/Button';
+import EmptyCard from 'components/Cards/EmptyCard';
+import VoiceCards from 'components/Cards/VoiceCards';
+import { Spinner } from 'components/Spinner/Spinner';
+import { deleteDisplay } from 'ducks/display';
+import { setConfirm } from 'ducks/modal';
+import React, { Component } from 'react';
+import Masonry from 'react-masonry-component';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Alert } from 'reactstrap';
 
 class Multimodal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      confirm: null
+      confirm: null,
     };
 
     this.deleteDisplay = this.deleteDisplay.bind(this);
@@ -27,17 +27,16 @@ class Multimodal extends Component {
     this.props.setConfirm({
       text: (
         <Alert color="warning" className="mb-0">
-          Deleting this display will delete it from your project and all
-          versions of it.
+          Deleting this display will delete it from your project and all versions of it.
         </Alert>
       ),
-      confirm: () => this.props.deleteDisplay(id)
+      confirm: () => this.props.deleteDisplay(id),
     });
   }
 
   render() {
     if (this.props.loading) {
-      return React.createElement(Spinner, { name: "Displays" });
+      return React.createElement(Spinner, { name: 'Displays' });
     }
     return (
       <div className="h-100 w-100">
@@ -47,14 +46,8 @@ class Multimodal extends Component {
               <div className="empty-container">
                 <img src="/images/desktop.svg" alt="open safe" width="100" />
                 <p className="empty">No Visual Templates Exist</p>
-                <p className="empty-desc">
-                  Add viduals to your project and create stunning visuals with
-                  Alexa Presentation Language
-                </p>
-                <Link
-                  to={`/visuals/${this.props.skill_id}/display/new`}
-                  className="no-underline"
-                >
+                <p className="empty-desc">Add viduals to your project and create stunning visuals with Alexa Presentation Language</p>
+                <Link to={`/visuals/${this.props.skill_id}/display/new`} className="no-underline">
                   <Button isPrimary varient="contained">
                     New Display
                   </Button>
@@ -67,16 +60,10 @@ class Multimodal extends Component {
                 <div className="space-between w-100 px-3">
                   <h5 className="text-muted mb-0">Visuals</h5>
                   <div>
-                    <Link
-                      to={`/canvas/${this.props.skill_id}`}
-                      className="no-underline btn btn-secondary mr-2"
-                    >
+                    <Link to={`/canvas/${this.props.skill_id}`} className="no-underline btn btn-secondary mr-2">
                       Back
                     </Link>
-                    <Link
-                      to={`/visuals/${this.props.skill_id}/display/new`}
-                      className="no-underline btn btn-primary"
-                    >
+                    <Link to={`/visuals/${this.props.skill_id}/display/new`} className="no-underline btn btn-primary">
                       New Display
                     </Link>
                   </div>
@@ -84,14 +71,14 @@ class Multimodal extends Component {
                 <Masonry
                   elementType="div"
                   imagesLoadedOptions={{
-                    columnWidth: "200",
-                    itemSelector: ".grid-item"
+                    columnWidth: '200',
+                    itemSelector: '.grid-item',
                   }}
                 >
-                  {this.props.displays.map(display => {
+                  {this.props.displays.map((display) => {
                     let name = display.title.match(/\b(\w)/g);
                     if (name) {
-                      name = name.join("");
+                      name = name.join('');
                     } else {
                       name = display.title;
                     }
@@ -109,22 +96,12 @@ class Multimodal extends Component {
                         }
                         onDelete={this.deleteDisplay}
                         deleteLabel="Delete Visual"
-                        onClick={() =>
-                          this.props.history.push(
-                            `/visuals/${this.props.skill_id}/display/${display.display_id}`
-                          )
-                        }
+                        onClick={() => this.props.history.push(`/visuals/${this.props.skill_id}/display/${display.display_id}`)}
                         buttonLabel="Edit Visual"
                       />
                     );
                   })}
-                  <EmptyCard
-                    onClick={() =>
-                      this.props.history.push(
-                        `/visuals/${this.props.skill_id}/display/new`
-                      )
-                    }
-                  />
+                  <EmptyCard onClick={() => this.props.history.push(`/visuals/${this.props.skill_id}/display/new`)} />
                 </Masonry>
               </div>
             </div>
@@ -135,16 +112,16 @@ class Multimodal extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   skill_id: state.skills.skill.skill_id,
   displays: state.displays.displays,
-  loading: state.displays.loading
+  loading: state.displays.loading,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    deleteDisplay: display_id => dispatch(deleteDisplay(display_id)),
-    setConfirm: confirm => dispatch(setConfirm(confirm))
+    deleteDisplay: (display_id) => dispatch(deleteDisplay(display_id)),
+    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
   };
 };
 export default connect(

@@ -89,7 +89,6 @@ export class Speak extends Component {
 
   render() {
     const properties = this.state.node.extras;
-
     return (
       <div>
         {properties.dialogs.map((d, i) => (
@@ -112,12 +111,31 @@ export class Speak extends Component {
         {properties.dialogs.length < BLOCK_LIMIT ? (
           <React.Fragment>
             <div className="d-flex mt-4">
-              <Button isBtn isSecondary className="mr-3" onClick={() => this.handleAddBlock(false)}>
-                <img src="/comment.svg" alt="comment" className="mr-3 mb-1" width="17px" />
+              <Button
+                isBtn
+                isSecondary
+                className="mr-3"
+                onClick={() => this.handleAddBlock(false)}
+              >
+                <img
+                  src="/comment.svg"
+                  alt="comment"
+                  className="mr-3 mb-1"
+                  width="17px"
+                />
                 Add Speech
               </Button>
-              <Button isBtn isSecondary onClick={() => this.handleAddBlock(true)}>
-                <img src="/volume.svg" alt="volume" className="mr-3 mb-1" width="16px" />
+              <Button
+                isBtn
+                isSecondary
+                onClick={() => this.handleAddBlock(true)}
+              >
+                <img
+                  src="/volume.svg"
+                  alt="volume"
+                  className="mr-3 mb-1"
+                  width="16px"
+                />
                 Add Audio
               </Button>
             </div>

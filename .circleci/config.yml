@@ -186,8 +186,8 @@ jobs:
             # curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
             # unzip awscli-bundle.zip
             # sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
-            sudo apt-get install -y python-pip python-dev
-            sudo pip install awscli
+            sudo apt-get install -y python3-pip python3-dev
+            sudo pip3 install awscli
       - run: 
           name: Get credentials
           command: | 
@@ -195,7 +195,7 @@ jobs:
       - run: 
           name: Update image
           command: |
-            kubectl set image --namespace voiceflow-v1 deployment/creator-app creator-app=voiceflow/creator-app:k8s-$CIRCLE_BUILD_NUM
+            kubectl set image --namespace voiceflow-v1 deployment/creator-app creator-app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM
 workflows:
   version: 2
   build-deploy:

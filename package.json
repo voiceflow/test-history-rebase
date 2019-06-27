@@ -167,6 +167,7 @@
     "@commitlint/config-conventional": "^8.0.0",
     "@voiceflow/commitlint-config": "^1.0.1",
     "@voiceflow/eslint-config": "2.0.1",
+    "@voiceflow/git-branch-check": "^1.0.2",
     "@voiceflow/prettier-config": "^1.0.4",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^24.8.0",

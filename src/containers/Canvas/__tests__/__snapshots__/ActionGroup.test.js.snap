@@ -138,6 +138,92 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       </div>
     </ModalBody>
   </Modal>
+  <Modal
+    autoFocus={true}
+    backdrop={true}
+    backdropTransition={
+      Object {
+        "mountOnEnter": true,
+        "timeout": 150,
+      }
+    }
+    centered={false}
+    className="ag__settings_modal"
+    fade={true}
+    isOpen={false}
+    keyboard={true}
+    modalTransition={
+      Object {
+        "timeout": 300,
+      }
+    }
+    onClosed={[Function]}
+    onOpened={[Function]}
+    role="dialog"
+    toggle={[Function]}
+    zIndex={1050}
+  >
+    <div
+      className="ag__settings_header"
+    >
+      Settings
+    </div>
+    <Connect(Settings)
+      page="basic"
+      platform="alexa"
+      skill={
+        Object {
+          "account_linking": null,
+          "alexa_events": null,
+          "amzn_id": null,
+          "created": "2019-02-15T22:25:56.687Z",
+          "diagram": "e9f52b0622f08ff1b21137bae05a242b",
+          "error_prompt": null,
+          "fulfillment": Object {},
+          "global": Array [
+            "sessions",
+            "user_id",
+            "timestamp",
+            "platform",
+            "locale",
+            "access_token",
+          ],
+          "google_publish_info": Object {},
+          "intents": Array [
+            Object {
+              "inputs": Array [],
+              "key": "M5s3gMETzsul",
+              "name": "intent_one",
+              "open": true,
+            },
+          ],
+          "inv_name": "Test Skill",
+          "last_save": "2019-02-15T22:25:57.304Z",
+          "live": false,
+          "locales": Array [
+            "en-US",
+          ],
+          "name": "Test Skill",
+          "platform": "alexa",
+          "preview": false,
+          "repeat": 100,
+          "restart": true,
+          "resume_prompt": null,
+          "review": false,
+          "skill_id": "L8mr69wm4K",
+          "slots": Array [],
+        }
+      }
+      user={
+        Object {
+          "email": "jdoe@gmail.com",
+          "id": 1,
+          "image": "26A69A|EBF7F5",
+          "name": "John Doe",
+        }
+      }
+    />
+  </Modal>
   <Connect(Header)
     centerRenderer={[Function]}
     leftRenderer={[Function]}

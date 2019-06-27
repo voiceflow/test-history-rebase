@@ -308,9 +308,7 @@ class IntentInput extends Component {
             ) : (
               <div>
                 <hr style={{ marginBottom: 0 }} />
-                <div className="pt-2">
-                  {this.renderUtterances(this.props.intent.inputs)}
-                </div>
+                <div className="pt-2">{this.renderUtterances(this.props.intent.inputs)}</div>
               </div>
             )}
           </div>

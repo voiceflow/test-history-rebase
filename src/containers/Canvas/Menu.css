@@ -24,6 +24,7 @@
 	height: 20px;
 	border-radius: 3px;
 	background-color: #6e849a;
+	background-image: -moz-linear-gradient(top,rgba(110,132,154,.85),#6e849a);
 	background-image: -webkit-gradient(linear,left top,left bottom,from(rgba(110,132,154,.85)),to(#6e849a));
 	background-image: -webkit-linear-gradient(top,rgba(110,132,154,.85),#6e849a);
 	background-image: -o-linear-gradient(top,rgba(110,132,154,.85),#6e849a);

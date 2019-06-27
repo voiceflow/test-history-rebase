@@ -4,3 +4,4 @@
 
 # TODO: remove to re-enable linting
 /src/components/SRD
+/config/webpack.config.js

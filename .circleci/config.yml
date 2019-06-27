@@ -55,6 +55,15 @@ jobs:
             - run:
                 name: (Code Style)
                 command: npm run lint:quiet
+  build:
+    executor: node_11
+    steps:
+      - run_tests:
+          tests:
+            - run:
+                name: (Build App)
+                command: npm run build
+
   deploy-staging:
     machine: true
     steps:
@@ -171,6 +180,15 @@ workflows:
   build-deploy:
     jobs:
       - test
+      - build:
+          requires:
+            - test
+          filters:
+            branches:
+              ignore:
+                - production
+                - master
+                - staging
       - deploy-staging:
           requires:
             - test

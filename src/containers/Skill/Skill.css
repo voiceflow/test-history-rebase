@@ -136,7 +136,7 @@ textarea::placeholder {
 }
 
 .settings {
-  overflow: auto;
+  overflow-y: hidden;
 }
 
 .stage_modal .modal-info>.form>.btn {
@@ -237,10 +237,6 @@ textarea::placeholder {
   background-repeat: no-repeat;
   transform: translateY(-30px);
   transition: transform 0.2s ease;
-}
-
-.settings {
-  overflow: auto;
 }
 
 .card .overlay .elispie .elispie-button {
@@ -646,4 +642,9 @@ p.loading-btn::after {
   -webkit-animation: ellipsis steps(4, end) 2000ms infinite;
   animation: ellipsis steps(4, end) 2000ms infinite;
   content: '\2026';
+}
+
+.s__modal_content {
+  height: 90%;
+  overflow-y: scroll;
 }

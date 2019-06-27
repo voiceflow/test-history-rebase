@@ -165,8 +165,8 @@ class GooglePublish extends Component {
         dialogflowToken(this.props.project_id).then((d_token) => {
           this.setState({
             credentials: !!d_token,
-            publish_modal_open: d_token && !g_token,
-            stage: g_token ? 2 : 0,
+            publish_modal_open: d_token && !g_token.token,
+            stage: g_token.token ? 2 : 0,
           });
         });
       });

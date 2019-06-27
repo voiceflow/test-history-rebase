@@ -28,8 +28,9 @@ import { updateVersion, updateIntents, setCanFulfill } from 'ducks/version';
 import { setVariables } from 'ducks/variable';
 import { renameDiagram, appendDiagrams, updateDiagrams } from 'ducks/diagram';
 import { setError, setConfirm } from 'ducks/modal';
-import { openTab, closeTab, setCanvasError } from 'ducks/user';
+import { openTab, closeTab, setCanvasError, clearCanvasMessage } from 'ducks/user';
 
+import Clipboard from './components/Clipboard';
 import ActionGroup from './components/ActionGroup/ActionGroup';
 import HelpModal from './HelpModal';
 import TestModal from './Test/TestModal';
@@ -84,6 +85,7 @@ export class Canvas extends Component {
     this.enterFlow = this.enterFlow.bind(this);
     this.deleteFlow = this.deleteFlow.bind(this);
     this.openTab = this.openTab.bind(this);
+    this.clipboard = React.createRef();
     const engine = new SRD.DiagramEngine();
     engine.registerLabelFactory(new SRD.DefaultLabelFactory());
     engine.registerNodeFactory(new BlockNodeFactory());
@@ -133,17 +135,7 @@ export class Canvas extends Component {
   }
 
   setMousetrap = () => {
-    Mousetrap.reset();
     Mousetrap.bind(['shift+/'], () => this.props.toggleKeyboard(!this.props.keyboardHelp));
-    Mousetrap.bind(['ctrl+c', 'command+c'], () =>
-      this.setState({
-        copy: this.state.engine
-          .getDiagramModel()
-          .getSelectedItems()
-          .filter((n) => n instanceof BlockNodeModel),
-      })
-    );
-    Mousetrap.bind(['ctrl+v', 'command+v'], this.paste);
     Mousetrap.bind(['ctrl+z', 'command+z'], this.undo);
     Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo);
     Mousetrap.bind(['ctrl+/', 'command+/'], this.addComment);
@@ -229,6 +221,7 @@ export class Canvas extends Component {
       this.trackCanvasTime();
     }
     localStorage.setItem('is_first_session', 'false');
+    this.props.clearCanvasMessage();
   }
 
   openTab(tab) {
@@ -288,19 +281,15 @@ export class Canvas extends Component {
     this.mouseY = clientY;
   };
 
-  paste = () => {
-    if (this.state.copy) {
-      const event = {
-        clientX: this.mouseX,
-        clientY: this.mouseY,
-      };
-      const point = this.state.engine.getRelativeMousePoint(event);
-      const centerX = _.maxBy(this.state.copy, 'x').x - (_.maxBy(this.state.copy, 'x').x - _.minBy(this.state.copy, 'x').x) / 2;
-      const centerY = _.maxBy(this.state.copy, 'y').y - (_.maxBy(this.state.copy, 'y').y - _.minBy(this.state.copy, 'y').y) / 2;
-      _.forEach(this.state.copy, (node) => {
-        this.copyNode(node, { x: point.x + (node.x - centerX), y: point.y + (node.y - centerY) });
-      });
+  onPaste = (nodes, engine) => {
+    if (this.props.undoEvents.length >= 10) {
+      this.props.shiftUndo();
     }
+    this.props.addUndo(nodes, 'copy');
+    this.props.clearRedo();
+    this.setState({
+      engine,
+    });
   };
 
   undo = (e) => {
@@ -544,12 +533,13 @@ export class Canvas extends Component {
     const removeNode = () => {
       const diagramEngine = this.state.engine;
       const combineBlock = node.parentCombine;
-      combineBlock.combines = _.without(combineBlock.combines, (c) => {
+      combineBlock.combines = _.filter(combineBlock.combines, (c) => {
         if (c.id === node.id) {
           diagramEngine.setSuperSelect(null);
           c.remove();
-          return true;
+          return false;
         }
+        return true;
       });
 
       if (combineBlock.extras.type !== 'god') return this.forceRepaint();
@@ -1361,11 +1351,8 @@ export class Canvas extends Component {
               )}
               <ListGroupItem
                 onClick={() => {
-                  if (combineNode) {
-                    this.appendCombineNode(combineNode);
-                  } else {
-                    this.copyNode(node);
-                  }
+                  this.clipboard.current.copy([combineNode || node]);
+
                   this.props.setBlockMenu(null);
                 }}
               >
@@ -1477,6 +1464,7 @@ export class Canvas extends Component {
 
   enterFlow(new_diagram_id, save = true) {
     if (new_diagram_id !== this.props.diagram_id) {
+      this.props.clearCanvasMessage();
       this.setState({ load_diagram: true });
       if (save && !this.props.preview) {
         this.saveCB = () => {
@@ -1737,6 +1725,19 @@ export class Canvas extends Component {
               />
             )}
             {this.props.blockMenu}
+            <Clipboard
+              engine={this.state.engine}
+              getEvent={() => ({
+                clientX: this.mouseX,
+                clientY: this.mouseY,
+              })}
+              onPaste={this.onPaste}
+              addDiagrams={(diagrams) => {
+                const subDiagrams = [...this.props.diagram.sub_diagrams, ...diagrams.map((diagram) => diagram.id)];
+                this.updateDiagrams(subDiagrams, diagrams);
+              }}
+              ref={this.clipboard}
+            />
             <SRD.DiagramWidget
               diagramEngine={this.state.engine}
               allowLooseLinks={false}
@@ -1812,6 +1813,7 @@ const mapDispatchToProps = (dispatch) => {
     updateDiagrams: (diagrams) => dispatch(updateDiagrams(diagrams)),
     setTab: (tab) => dispatch(openTab(tab)),
     closeTab: () => dispatch(closeTab()),
+    clearCanvasMessage: () => dispatch(clearCanvasMessage()),
   };
 };
 

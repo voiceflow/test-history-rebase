@@ -1,8 +1,11 @@
 import axios from 'axios';
+import { getAuth } from 'ducks/account';
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 import randomstring from 'randomstring';
 import socket from 'socket.io-client';
+
+import { getDevice } from 'Helper';
 
 import { LOGROCKET_ENABLED, LOGROCKET_PROJECT } from './config';
 
@@ -18,6 +21,13 @@ if (LOGROCKET_ENABLED) {
 }
 
 // setup socket.io
+
+if (!sessionStorage.getItem('tabId')) {
+  sessionStorage.setItem('tabId', randomstring.generate());
+}
+
+const tabId = sessionStorage.getItem('tabId');
+
 const getEndpoint = () => {
   let port = '';
   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -37,13 +47,9 @@ const socketFail = () => {
 
 window.CreatorSocket = socket(getEndpoint());
 
-if (!sessionStorage.getItem('tabId')) {
-  sessionStorage.setItem('tabId', randomstring.generate());
-}
+window.CreatorSocket.status = 'CONNECTING';
 
-window.CreatorSocket.tabId = sessionStorage.getItem('tabId');
-
-axios.defaults.headers.common.tabid = window.CreatorSocket.tabId;
+axios.defaults.headers.common.tabid = tabId;
 
 window.CreatorSocket.connectedCB = {};
 // catch error events
@@ -55,12 +61,14 @@ window.CreatorSocket.on('connect_error', socketFail);
 window.CreatorSocket.on('connect_failed', socketFail);
 // to catch connection events
 window.CreatorSocket.on('connect', () => {
+  window.CreatorSocket.emit('init', { auth: getAuth(), device: getDevice(), tabId });
+});
+window.CreatorSocket.on('init', () => {
   window.CreatorSocket.status = 'CONNECTED';
   // queued up events after reconnection
   Object.values(window.CreatorSocket.connectedCB).forEach((cb) => typeof cb === 'function' && cb());
 });
-
-window.addEventListener('beforeunload', function() {
+window.addEventListener('beforeunload', () => {
   if (window.CreatorSocket && window.CreatorSocket.disconnect) {
     window.CreatorSocket.disconnect();
   }

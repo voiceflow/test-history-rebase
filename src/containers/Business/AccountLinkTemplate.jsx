@@ -130,7 +130,7 @@ class AccountLinkTemplate extends Component {
 
   render() {
     if (this.state.loading) {
-      return <div className={'s__loading_symbol'}>Loading...</div>;
+      return <div className="s__loading_symbol">Loading...</div>;
     }
 
     return (

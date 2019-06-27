@@ -97,6 +97,29 @@ export const fetchBoards = (team_id) => {
   };
 };
 
+export const updateLists = (team_id) => async (dispatch, getState) => {
+  try {
+    const boards = getState().board;
+    const boards_array = unnormalize(boards);
+
+    if (boards.save === JSON.stringify(boards_array)) return;
+
+    await axios.patch(`/team/${team_id}/update_board`, {
+      boards: boards_array,
+    });
+
+    dispatch({
+      type: 'UPDATE_BOARD_SAVE',
+      payload: JSON.stringify(boards_array),
+    });
+  } catch (err) {
+    console.error(err);
+    // dispatch(setError("Unable to update lists"));
+    return Promise.reject();
+  }
+  return Promise.resolve();
+};
+
 export const addBoard = (team_id) => {
   return async (dispatch) => {
     try {
@@ -155,30 +178,6 @@ export const renameList = (board_id, new_name) => {
   };
 };
 
-export function updateLists(team_id) {
-  return async (dispatch, getState) => {
-    try {
-      const boards = getState().board;
-      const boards_array = unnormalize(boards);
-
-      if (boards.save === JSON.stringify(boards_array)) return;
-
-      await axios.patch(`/team/${team_id}/update_board`, {
-        boards: boards_array,
-      });
-
-      dispatch({
-        type: 'UPDATE_BOARD_SAVE',
-        payload: JSON.stringify(boards_array),
-      });
-    } catch (err) {
-      console.error(err);
-      // dispatch(setError("Unable to update lists"));
-      return Promise.reject();
-    }
-    return Promise.resolve();
-  };
-}
 export const deleteBoard = (board_id) => {
   return async (dispatch, getState) => {
     try {

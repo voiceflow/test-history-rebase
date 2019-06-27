@@ -27,7 +27,7 @@ class Code extends Component {
 
         callback(
           null,
-          wordList.map(function(word) {
+          wordList.map((word) => {
             return {
               caption: word,
               value: word,

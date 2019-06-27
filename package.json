@@ -1,5 +1,5 @@
 {
-  "name": "creator-app",
+  "name": "@voiceflow/creator-app",
   "version": "1.0.0",
   "Author": "Voiceflow",
   "private": true,
@@ -44,7 +44,7 @@
     "draft-js-mention-plugin": "github:DecathectZero/draft-js-mention",
     "draft-js-plugins-editor": "^2.1.1",
     "draft-js-single-line-plugin": "^2.0.2",
-    "eslint": "^5.16.0",
+    "eslint": "^6.0.0",
     "eslint-config-react-app": "^3.0.6",
     "eslint-plugin-flowtype": "2.50.1",
     "eslint-plugin-import": "2.14.0",
@@ -156,6 +156,9 @@
     "lint:js": "eslint \"src/**/*.{js,jsx}\"",
     "lint:css": "stylelint src/**/*.css"
   },
+  "release": {
+    "branch": "production"
+  },
   "proxy": "https://localhost:8080",
   "devDependencies": {
     "@babel/core": "^7.1.6",
@@ -213,6 +216,7 @@
   "scripts": {
     "commit": "git-cz",
     "build": "patch-package && GENERATE_SOURCEMAP=false node scripts/build.js",
+    "gen-certs": "scripts/generate_certs.sh",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:css": "stylelint src/**/*.css",
     "lint:js": "eslint \"src/**/*.{js,jsx}\"",

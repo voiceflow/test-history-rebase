@@ -309,9 +309,20 @@ const createCombineNode = (node, type, parent) => {
     node.extras = {
       expressions: [
         {
-          type: 'value',
-          value: '',
+          type: 'equals',
           depth: 0,
+          value: [
+            {
+              type: 'variable',
+              value: null,
+              depth: 1,
+            },
+            {
+              type: 'value',
+              value: '',
+              depth: 1,
+            },
+          ],
         },
       ],
       type: 'if',
@@ -412,12 +423,10 @@ const createCombineNode = (node, type, parent) => {
   }
 };
 
-function buildKeyValue(i) {
-  return {
-    key: i,
-    val: '',
-  };
-}
+const buildKeyValue = (i) => ({
+  key: i,
+  val: '',
+});
 
 const createDropNode = (event, engine, type, name) => {
   const node = new BlockNodeModel(name, null, toolkit.UID());
@@ -541,9 +550,20 @@ const createDropNode = (event, engine, type, name) => {
       node.extras = {
         expressions: [
           {
-            type: 'value',
-            value: '',
+            type: 'equals',
             depth: 0,
+            value: [
+              {
+                type: 'variable',
+                value: null,
+                depth: 1,
+              },
+              {
+                type: 'value',
+                value: '',
+                depth: 1,
+              },
+            ],
           },
         ],
       };

@@ -7,8 +7,8 @@ import Textarea from 'react-textarea-autosize';
 
 import ContainedTextarea from './ContainedTextArea';
 
-function synonymsToBadges(synonyms) {
-  return synonyms
+const synonymsToBadges = (synonyms) =>
+  synonyms
     .split(',')
     .map((e) => e.trim())
     .map((s, i) => {
@@ -25,7 +25,6 @@ function synonymsToBadges(synonyms) {
         </span>
       );
     });
-}
 
 const SlotOption = (props) => {
   const is_alexa = /AMAZON/.test(props.data.value);

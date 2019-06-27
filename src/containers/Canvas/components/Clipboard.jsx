@@ -70,7 +70,7 @@ class Clipboard extends React.Component {
       flatNodes.map((n) => n.serialize())
     )).data;
 
-    intents = intents.map((k) => dintents[k]);
+    intents = intents.map((k) => dintents[k]).filter((v) => v);
     displays = displays.map((k) => ddisplays[k]);
     products = products.map((k) => dproducts[k]);
     diagrams = diagrams.map((k) => ddiagrams[k]);

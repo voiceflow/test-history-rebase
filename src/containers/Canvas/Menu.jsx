@@ -231,7 +231,7 @@ export class Menu extends Component {
           </div>
         </div>
         <label
-          className={cn({ 'canvas-sidebar-closed': !this.props.open }, { 'canvas-sidebar-open': this.props.open }, 'canvas-sidebar-expand')}
+          className={cn(`canvas-sidebar-${this.props.open ? 'open' : 'closed'}`, 'canvas-sidebar-expand')}
           onClick={() => this.toggleTab()}
           htmlFor="canvas-sidebar"
         />

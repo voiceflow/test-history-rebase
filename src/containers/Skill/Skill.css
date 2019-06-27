@@ -648,3 +648,7 @@ p.loading-btn::after {
   height: 90%;
   overflow-y: scroll;
 }
+
+.s__loading_symbol {
+  text-align: center;
+}

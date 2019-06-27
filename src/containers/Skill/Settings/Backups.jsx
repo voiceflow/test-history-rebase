@@ -85,7 +85,7 @@ class BackupSettings extends Component {
 
   render() {
     if (this.state.loading) {
-      return React.createElement(Spinner, { name: 'Backups' });
+      return <div className={'s__loading_symbol'}>Loading...</div>;
     }
 
     if ((!Array.isArray(this.state.versions) || this.state.versions.length === 0) && !this.state.live_version) {

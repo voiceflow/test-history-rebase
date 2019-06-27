@@ -29,6 +29,8 @@ module.exports = {
     'lodash/prefer-lodash-chain': 'off',
     'import/no-named-as-default': 'off',
     'require-jsdoc': 'off',
+    'filenames/match-regex': 'off',
+    'filenames/match-exported': 'off',
 
     // disabled temporarily by setting as warnings
     'max-len': 'warn',
@@ -37,8 +39,6 @@ module.exports = {
     'import/no-unresolved': 'warn',
     'react/jsx-curly-brace-presence': 'warn',
     'react/destructuring-assignment': 'warn',
-    'filenames/match-regex': 'off',
-    'filenames/match-exported': 'warn',
     'optimize-regex/optimize-regex': 'warn',
     'lodash/prefer-lodash-typecheck': 'warn',
     'simple-import-sort/sort': 'warn',

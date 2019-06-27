@@ -5,12 +5,27 @@ import { ModalHeader } from 'components/Modals/ModalHeader';
 import Image from 'components/Uploads/Image';
 import { User } from 'components/User/User';
 import { setConfirm, setError } from 'ducks/modal';
-import { deleteTeam, leaveTeam, updateCurrentTeamItem, updateMembers } from 'ducks/team';
+import {
+  deleteTeam,
+  leaveTeam,
+  updateTeamName,
+  updateCurrentTeamItem,
+  updateMembers,
+} from 'ducks/team';
 import update from 'immutability-helper';
 import { cloneDeep } from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Input, Modal, ModalBody, UncontrolledDropdown } from 'reactstrap';
+import {
+  Alert,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Input,
+  Modal,
+  ModalBody,
+  UncontrolledDropdown,
+} from 'reactstrap';
 
 import Billing from './Billing';
 import { PLANS_ID } from './PLANS';
@@ -51,7 +66,8 @@ const MemberRow = (props) => {
     remove_action = () =>
       props.confirm({
         text: 'Are you sure you want to remove this member?',
-        confirm: () => props.update({ creator_id: null, email: null, invite: '' }),
+        confirm: () =>
+          props.update({ creator_id: null, email: null, invite: '' }),
       });
     // HAS CREATOR ID ASSOCIATED: ACCEPTED INVITE FULL MEMBERSHIP
     info = (
@@ -75,7 +91,12 @@ const MemberRow = (props) => {
     info = (
       <>
         <div className="member-icon lg solid">
-          <img src="/pending.svg" width="17" style={{ marginTop: -5 }} alt="pending" />
+          <img
+            src="/pending.svg"
+            width="17"
+            style={{ marginTop: -5 }}
+            alt="pending"
+          />
         </div>
         <div className="ml-3">
           <span>{m.email}</span>
@@ -92,7 +113,12 @@ const MemberRow = (props) => {
     info = (
       <>
         <div className="member-icon lg solid">
-          <img src="/add-teammate.svg" width="18" style={{ marginTop: -4 }} alt="add" />
+          <img
+            src="/add-teammate.svg"
+            width="18"
+            style={{ marginTop: -4 }}
+            alt="add"
+          />
         </div>
         <div className="ml-3">
           <Input
@@ -117,13 +143,25 @@ const MemberRow = (props) => {
               <i className="far fa-ellipsis-h" />
             </DropdownToggle>
             <DropdownMenu right className="no-select py-1">
-              {type === 'FILLED' && <DropdownItem onClick={remove_action}>Remove Member</DropdownItem>}
-              {type === 'INVITE' && <DropdownItem onClick={remove_action}>Cancel Invite</DropdownItem>}
-              {type === 'EMPTY' && <DropdownItem onClick={remove_action}>Remove Seat</DropdownItem>}
+              {type === 'FILLED' && (
+                <DropdownItem onClick={remove_action}>
+                  Remove Member
+                </DropdownItem>
+              )}
+              {type === 'INVITE' && (
+                <DropdownItem onClick={remove_action}>
+                  Cancel Invite
+                </DropdownItem>
+              )}
+              {type === 'EMPTY' && (
+                <DropdownItem onClick={remove_action}>Remove Seat</DropdownItem>
+              )}
             </DropdownMenu>
           </UncontrolledDropdown>
         )}
-        {props.member.status === 100 && <label className="text-muted mr-2">OWNER</label>}
+        {props.member.status === 100 && (
+          <label className="text-muted mr-2">OWNER</label>
+        )}
       </div>
     </div>
   );
@@ -154,7 +192,11 @@ class TeamSettings extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!prevProps.open && this.props.open && typeof this.props.open === 'string') {
+    if (
+      !prevProps.open &&
+      this.props.open &&
+      typeof this.props.open === 'string'
+    ) {
       this.setState({
         name: this.props.team.name,
         stage: this.props.open,
@@ -165,7 +207,10 @@ class TeamSettings extends Component {
       });
     }
 
-    if (prevState.members !== this.state.members && prevState.diff === this.state.diff) {
+    if (
+      prevState.members !== this.state.members &&
+      prevState.diff === this.state.diff
+    ) {
       this.checkDiff();
     }
   }
@@ -178,7 +223,11 @@ class TeamSettings extends Component {
     const empty_members = members.filter(empty);
 
     // 3 conditions to check for: total length of members changed, number of invites changed, invites updated
-    if (diff.length !== members.length || empty_diff.length !== empty_members.length || empty_members.filter((m) => !!m.invite).length !== 0) {
+    if (
+      diff.length !== members.length ||
+      empty_diff.length !== empty_members.length ||
+      empty_members.filter((m) => !!m.invite).length !== 0
+    ) {
       this.setState({ is_diff: true });
     } else {
       this.setState({ is_diff: false });
@@ -261,8 +310,18 @@ class TeamSettings extends Component {
         return (
           <div className="d-flex align-items-start justify-content-center mx--2 mt-5">
             <PricingCard plan="HOBBY" delay={300} team={this.props.team} />
-            <PricingCard plan="PROFESSIONAL" delay={600} team={this.props.team} upgrade={this.upgrade(1)} />
-            <PricingCard plan="BUSINESS" delay={900} team={this.props.team} upgrade={this.upgrade(2)} />
+            <PricingCard
+              plan="PROFESSIONAL"
+              delay={600}
+              team={this.props.team}
+              upgrade={this.upgrade(1)}
+            />
+            <PricingCard
+              plan="BUSINESS"
+              delay={900}
+              team={this.props.team}
+              upgrade={this.upgrade(2)}
+            />
           </div>
         );
       case 'SUCCESS':
@@ -321,19 +380,32 @@ class TeamSettings extends Component {
         );
       case 'DELETE':
         // eslint-disable-next-line no-case-declarations
-        const equal = this.state.input.trim().toLowerCase() === this.props.team.name.trim().toLowerCase();
+        const equal =
+          this.state.input.trim().toLowerCase() ===
+          this.props.team.name.trim().toLowerCase();
 
         return (
           <div>
             <Alert color="danger" className="mt-2">
               <b>Are you sure you want to delete this?</b>
               <br />
-              Deleting a Board will Permenantly Delete all of its Projects and Live Voice Applications
+              Deleting a Board will Permenantly Delete all of its Projects and
+              Live Voice Applications
             </Alert>
             <label>Enter this board's name to confirm</label>
-            <Input name="input" onChange={this.handleChange} value={this.state.input} placeholder="Board Name" />
+            <Input
+              name="input"
+              onChange={this.handleChange}
+              value={this.state.input}
+              placeholder="Board Name"
+            />
             <div className="my-3 text-center">
-              <Button isBtn isWarning disabled={!equal} onClick={this.deleteTeam}>
+              <Button
+                isBtn
+                isWarning
+                disabled={!equal}
+                onClick={this.deleteTeam}
+              >
                 Delete Board
               </Button>
             </div>
@@ -358,9 +430,16 @@ class TeamSettings extends Component {
             <label>Board Icon</label>
             {this.props.team.status === 0 ? (
               <div className="mb-3">
-                <img src="/images/icons/vf_logo.png" alt="Voiceflow" width={80} className="py-2 mb-1 no-select" />
+                <img
+                  src="/images/icons/vf_logo.png"
+                  alt="Voiceflow"
+                  width={80}
+                  className="py-2 mb-1 no-select"
+                />
                 <br />
-                <small className="text-muted">Upgrade this board under billing to add a custom image</small>
+                <small className="text-muted">
+                  Upgrade this board under billing to add a custom image
+                </small>
               </div>
             ) : (
               <Image
@@ -376,24 +455,40 @@ class TeamSettings extends Component {
             <Input
               name="name"
               placeholder="Board Name"
-              // onChange={this.handleChange}
+              onChange={(e) => {
+                this.props.updateTeamName(e.target.value);
+                this.handleChange(e);
+              }}
               value={this.state.name}
-              disabled
+              disabled={!this.props.isAdmin}
             />
             <hr />
             <label>Billing</label>
-            <Button isBtn isLinkLarge onClick={() => this.setState({ stage: 'BILLING' })}>
+            <Button
+              isBtn
+              isLinkLarge
+              onClick={() => this.setState({ stage: 'BILLING' })}
+            >
               Invoices
             </Button>
             <br />
-            <small className="text-muted">View invoices, update your payment options</small>
+            <small className="text-muted">
+              View invoices, update your payment options
+            </small>
             <hr />
             <label>Privacy</label>
-            <Button isBtn isLinkLarge onClick={() => this.setState({ stage: 'DELETE', input: '' })}>
+            <Button
+              isBtn
+              isLinkLarge
+              onClick={() => this.setState({ stage: 'DELETE', input: '' })}
+            >
               Delete Board
             </Button>
             <br />
-            <small className="text-muted">This action is irreversible. All team and project data will be removed</small>
+            <small className="text-muted">
+              This action is irreversible. All team and project data will be
+              removed
+            </small>
           </div>
         );
       default:
@@ -406,7 +501,8 @@ class TeamSettings extends Component {
           <div className={UPDATING ? 'disabled' : ''}>
             {this.IS_ADMIN && (
               <small className="d-flex text-muted mt-2 mb-2">
-                <span className="badge mr-2">{this.props.team.seats}</span> current seats
+                <span className="badge mr-2">{this.props.team.seats}</span>{' '}
+                current seats
               </small>
             )}
             {this.state.members.map((m, i) => {
@@ -437,12 +533,24 @@ class TeamSettings extends Component {
             {this.IS_ADMIN && (
               <div className="my-3">
                 <div className="text-center mb-3">
-                  <Button isBtn isLinkLarge className="pointer mt-4" onClick={this.addMember}>
+                  <Button
+                    isBtn
+                    isLinkLarge
+                    className="pointer mt-4"
+                    onClick={this.addMember}
+                  >
                     Add teammates
                   </Button>
                 </div>
                 <div className="text-center mt-3 position-relative">
-                  <Button isBtn isPrimary type="submit" disabled={DISABLED} style={{ width: 150 }} onClick={this.applyChanges}>
+                  <Button
+                    isBtn
+                    isPrimary
+                    type="submit"
+                    disabled={DISABLED}
+                    style={{ width: 150 }}
+                    onClick={this.applyChanges}
+                  >
                     {UPDATING ? <span className="loader" /> : 'Apply Changes'}
                   </Button>
                   <div
@@ -470,8 +578,14 @@ class TeamSettings extends Component {
 
   priceEstimate() {
     if (this.props.team.seats < this.state.members.length) {
-      const rate = PLANS_ID[this.props.team.status] ? PLANS_ID[this.props.team.status].rate : 29;
-      return <div className="text-center text-muted mt-2">+${(this.state.members.length - this.props.team.seats) * rate}/mo</div>;
+      const rate = PLANS_ID[this.props.team.status]
+        ? PLANS_ID[this.props.team.status].rate
+        : 29;
+      return (
+        <div className="text-center text-muted mt-2">
+          +${(this.state.members.length - this.props.team.seats) * rate}/mo
+        </div>
+      );
     }
     if (this.props.team.seats > this.state.members.length) {
       return null;
@@ -483,7 +597,8 @@ class TeamSettings extends Component {
     if (!this.props.team) return null;
     this.IS_ADMIN = this.props.user.creator_id === this.props.team.creator_id;
 
-    const fullscreen = this.state.stage in STAGES && STAGES[this.state.stage].fullscreen;
+    const fullscreen =
+      this.state.stage in STAGES && STAGES[this.state.stage].fullscreen;
 
     return (
       <>
@@ -492,17 +607,25 @@ class TeamSettings extends Component {
             <img src="/cog.svg" className="mr-3 ml-3" width={17} alt="cog" />
           </DropdownToggle>
           <DropdownMenu right className="no-select">
-            <DropdownItem onClick={() => this.props.update('MEMBERS')}>{this.IS_ADMIN ? 'Manage Members' : 'Team Members'}</DropdownItem>
+            <DropdownItem onClick={() => this.props.update('MEMBERS')}>
+              {this.IS_ADMIN ? 'Manage Members' : 'Team Members'}
+            </DropdownItem>
             {this.IS_ADMIN ? (
               <>
-                <DropdownItem onClick={() => this.props.update('SETTINGS')}>Board Settings</DropdownItem>
+                <DropdownItem onClick={() => this.props.update('SETTINGS')}>
+                  Board Settings
+                </DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem onClick={() => this.props.update('PLAN')}>Board Plan</DropdownItem>
+                <DropdownItem onClick={() => this.props.update('PLAN')}>
+                  Board Plan
+                </DropdownItem>
               </>
             ) : (
               <>
                 <DropdownItem divider />
-                <DropdownItem onClick={this.leaveTeam}>Leave Board</DropdownItem>
+                <DropdownItem onClick={this.leaveTeam}>
+                  Leave Board
+                </DropdownItem>
               </>
             )}
           </DropdownMenu>
@@ -517,7 +640,10 @@ class TeamSettings extends Component {
           <ModalHeader
             toggle={this.props.close}
             className="pb-2"
-            header={(STAGES[this.state.stage] && STAGES[this.state.stage].title) || 'Board Settings'}
+            header={
+              (STAGES[this.state.stage] && STAGES[this.state.stage].title) ||
+              'Board Settings'
+            }
           />
           <ModalBody className="px-45 pt-0 overflow-hidden">
             {['WARNING', 'LOCKED'].includes(this.props.team.state) &&
@@ -526,15 +652,22 @@ class TeamSettings extends Component {
               ) : (
                 <>
                   {this.props.team.state === 'WARNING' && (
-                    <Alert color="danger" onClick={() => this.setState({ stage: 'BILLING' })}>
+                    <Alert
+                      color="danger"
+                      onClick={() => this.setState({ stage: 'BILLING' })}
+                    >
                       We were unable to charge your last invoice
                       <br />
                       <br />
-                      If there is an issue with your current card please update your payment option
+                      If there is an issue with your current card please update
+                      your payment option
                     </Alert>
                   )}
                   {this.props.team.state === 'LOCKED' && (
-                    <Alert color="danger" onClick={() => this.setState({ stage: 'BILLING' })}>
+                    <Alert
+                      color="danger"
+                      onClick={() => this.setState({ stage: 'BILLING' })}
+                    >
                       Your subscription failed
                       <br />
                       Please update your payment option to continue
@@ -557,11 +690,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateMembers: (members, options) => dispatch(updateMembers(members, options)),
+    updateMembers: (members, options) =>
+      dispatch(updateMembers(members, options)),
     deleteTeam: (team_id) => dispatch(deleteTeam(team_id)),
     leaveTeam: (team_id) => dispatch(leaveTeam(team_id)),
     setConfirm: (confirm) => dispatch(setConfirm(confirm)),
     updateTeam: (payload) => dispatch(updateCurrentTeamItem(payload)),
+    updateTeamName: (name) => dispatch(updateTeamName(name)),
     setError: (error) => dispatch(setError(error)),
   };
 };

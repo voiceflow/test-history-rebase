@@ -1,3 +1,5 @@
+import './Menu.css';
+
 import cn from 'classnames';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -63,44 +65,11 @@ export class Menu extends Component {
     this.updateTree = this.updateTree.bind(this);
     this.openTab = this.openTab.bind(this);
     this.renderSideBar = this.renderSideBar.bind(this);
-    this.resize = this.resize.bind(this);
     this.visited = new Set();
-    this.m_pos = 0;
-    this.sidebar = React.createRef();
-  }
-
-  // eslint-disable-next-line react/no-deprecated
-  componentWillReceiveProps(nextProps) {
-    if (localStorage.getItem('sideWidth') && this.sidebar.current && nextProps.open) {
-      this.sidebar.current.style.width = localStorage.getItem('sideWidth');
-    }
-  }
-
-  resize(e) {
-    const dx = this.m_pos - e.x;
-    if (this.sidebar.current.style.width && (e.clientX < 280 || e.clientX > 960)) return;
-    this.m_pos = e.x;
-    this.sidebar.current.style.width = `${parseInt(getComputedStyle(this.sidebar.current, '').width, 10) - dx}px`;
-    localStorage.setItem('sideWidth', `${parseInt(getComputedStyle(this.sidebar.current, '').width, 10) - dx}px`);
   }
 
   componentDidMount() {
     this.props.build(this.updateTree);
-    if (this.sidebar.current) {
-      this.sidebar.current.addEventListener(
-        'mousedown',
-        (e) => {
-          if (e.srcElement.classList.contains('open')) {
-            this.m_pos = e.x;
-            document.addEventListener('mousemove', this.resize, false);
-          }
-        },
-        false
-      );
-      document.addEventListener('mouseup', () => {
-        document.removeEventListener('mousemove', this.resize, false);
-      });
-    }
   }
 
   buildTree(node, depth = 0) {
@@ -204,6 +173,14 @@ export class Menu extends Component {
     }
   }
 
+  toggleTab = () => {
+    if (this.props.open) {
+      this.props.closeTab();
+    } else {
+      this.props.openTab('blocks');
+    }
+  };
+
   render() {
     return (
       <div className="Menu" onFocus={this.props.unfocus} onMouseDown={this.props.unfocus} onKeyDown={this.props.unfocus}>
@@ -239,21 +216,13 @@ export class Menu extends Component {
             </div>
           </div>
         )}
-        <div id="sidebar" className={cn({ open: this.props.open })} ref={this.sidebar}>
+        <div id="sidebar" className={cn({ open: this.props.open }, 'canvas-sidebar')} ref={this.sidebar}>
           <div className={cn('sidebar-container', this.props.tab)}>
             {this.props.loading_diagram ? null : (
               <React.Fragment>
                 <div className="sidebar-header">
-                  <div
-                    className="block-title no-select mb-3"
-                    onClick={() => {
-                      this.props.closeTab();
-                      localStorage.setItem('sideWidth', this.sidebar.current.style.width);
-                      this.sidebar.current.style.width = '240px';
-                    }}
-                  >
+                  <div className="block-title no-select mb-3">
                     <h5 className="mb-0">{this.props.tab}</h5>
-                    <div className="close pl-3 py-3" />
                   </div>
                 </div>
                 <div className="sidebar-content">{this.renderSideBar()}</div>
@@ -261,6 +230,11 @@ export class Menu extends Component {
             )}
           </div>
         </div>
+        <label
+          className={cn(`canvas-sidebar-${this.props.open ? 'open' : 'closed'}`, 'canvas-sidebar-expand')}
+          onClick={() => this.toggleTab()}
+          htmlFor="canvas-sidebar"
+        />
       </div>
     );
   }

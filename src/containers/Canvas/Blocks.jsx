@@ -50,7 +50,8 @@ const BLOCK_TYPES = {
     text: 'Intent',
     type: 'intent',
     icon: <i className="fas fa-arrow-alt-from-left" />,
-    tip: 'Handle intents, from within the skill and upon skill launch with CanFulfillIntent)',
+    tip:
+      'Handle intents, from within the skill and upon skill launch with CanFulfillIntent)',
   },
   stream: {
     text: 'Stream',
@@ -68,7 +69,8 @@ const BLOCK_TYPES = {
     text: 'Flow',
     type: 'flow',
     icon: <i className="fas fa-clone" />,
-    tip: 'Organize your project into manageable sections or perform computations',
+    tip:
+      'Organize your project into manageable sections or perform computations',
   },
   code: {
     text: 'Code',
@@ -94,7 +96,12 @@ const BLOCK_TYPES = {
     icon: <i className="far fa-comment-alt" />,
     tip: 'Add notes to your diagram',
   },
-  card: { text: 'Card', type: 'card', icon: <i className="fas fa-poll-h" />, tip: 'Tell Alexa to show a card' },
+  card: {
+    text: 'Card',
+    type: 'card',
+    icon: <i className="fas fa-poll-h" />,
+    tip: 'Tell Alexa to show a card',
+  },
   display: {
     text: 'Display',
     type: 'display',
@@ -140,7 +147,12 @@ const SECTIONS = [
   },
   {
     title: 'logic',
-    items: [BLOCK_TYPES.set, BLOCK_TYPES.if, BLOCK_TYPES.capture, BLOCK_TYPES.random],
+    items: [
+      BLOCK_TYPES.set,
+      BLOCK_TYPES.if,
+      BLOCK_TYPES.capture,
+      BLOCK_TYPES.random,
+    ],
   },
   {
     title: 'advanced',
@@ -160,38 +172,18 @@ const SECTIONS = [
   },
   {
     title: 'user',
-    items: [BLOCK_TYPES.permission, BLOCK_TYPES.permissions, BLOCK_TYPES.payment, BLOCK_TYPES.cancel, BLOCK_TYPES.reminder],
+    items: [
+      BLOCK_TYPES.permission,
+      BLOCK_TYPES.permissions,
+      BLOCK_TYPES.payment,
+      BLOCK_TYPES.cancel,
+      BLOCK_TYPES.reminder,
+    ],
   },
 ];
 
-const getSections = (type_counter) => {
+const getSections = () => {
   const sections = cloneDeep(SECTIONS);
-
-  // Check whether we want a favourites section
-  let sortable = [];
-  // eslint-disable-next-line no-restricted-syntax
-  for (const type in type_counter) {
-    if (type !== 'god' && type !== 'comment' && type !== 'combine' && type !== 'command' && type_counter[type] >= 3) {
-      sortable.push([type, type_counter[type]]);
-    }
-  }
-
-  sortable.sort((a, b) => {
-    return b[1] - a[1];
-  });
-  sortable = sortable.slice(0, Math.min(FAVORITE_SECTION_MAX, sortable.length));
-
-  if (sortable.length > 0) {
-    const favorite_section = {
-      title: 'favorites',
-      items: [],
-    };
-
-    sortable.forEach(([key]) => BLOCK_TYPES[key]);
-
-    sections.unshift(favorite_section);
-  }
-
   return sections;
 };
 

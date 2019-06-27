@@ -29,6 +29,7 @@ exports[`Canvas render canvas 1`] = `
     toggle={[Function]}
   />
   <Connect(ActionGroup)
+    clearCanvasMessage={[MockFunction]}
     getIntegrationsUsers={
       [MockFunction] {
         "calls": Array [

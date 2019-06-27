@@ -14,7 +14,9 @@ import { VOICES } from 'Constants';
 import VariableText from './VariableText';
 
 // eslint-disable-next-line react/no-find-dom-node
-const getBoundingRect = (component) => memoizeOne(findDOMNode(component).getBoundingClientRect());
+const getBoundingRect = (component) =>
+  findDOMNode(component).getBoundingClientRect();
+const memoizeBoundingRect = memoizeOne(getBoundingRect);
 
 const style = {
   backgroundColor: 'white',
@@ -37,16 +39,12 @@ const target = {
     const hoverIndex = props.index;
     if (dragIndex === hoverIndex) return;
 
-    const hoverBoundingRect = getBoundingRect(component);
+    const hoverBoundingRect = memoizeBoundingRect(component);
     const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
     const clientOffset = monitor.getClientOffset();
 
     const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-    // eslint-disable-next-line no-console
-    console.log(hoverMiddleY);
-    // eslint-disable-next-line no-console
-    console.log(hoverClientY);
     if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
     if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
     props.reorder(dragIndex, hoverIndex);
@@ -57,14 +55,27 @@ const target = {
 class SpeakElement extends Component {
   render() {
     const i = this.props.index;
-    const { isDragging, connectDragSource, connectDropTarget, d, properties } = this.props;
+    const {
+      isDragging,
+      connectDragSource,
+      connectDropTarget,
+      d,
+      properties,
+    } = this.props;
     const opacity = isDragging ? 0 : 1;
     if (d.audio !== undefined) {
       return connectDragSource(
         connectDropTarget(
-          <div key={d.index} className="multiline" style={Object.assign({}, style, { opacity })}>
+          <div
+            key={d.index}
+            className="multiline"
+            style={Object.assign({}, style, { opacity })}
+          >
             <div className="multi-title-block">
-              <div className="multi-title" onClick={() => this.props.toggleOpen()}>
+              <div
+                className="multi-title"
+                onClick={() => this.props.toggleOpen()}
+              >
                 <span className="text-muted">
                   <i
                     className={cn('fas', {
@@ -72,7 +83,11 @@ class SpeakElement extends Component {
                       'fa-caret-right': !d.open,
                     })}
                   />
-                  {properties.randomize ? <i className="far fa-random" /> : i + 1}
+                  {properties.randomize ? (
+                    <i className="far fa-random" />
+                  ) : (
+                    i + 1
+                  )}
                 </span>
               </div>
               <div className="overflow-ellipsis flex-1 mr-2">
@@ -104,10 +119,17 @@ class SpeakElement extends Component {
     }
     return connectDragSource(
       connectDropTarget(
-        <div key={d.index} className="multiline" style={Object.assign({}, style, { opacity })}>
+        <div
+          key={d.index}
+          className="multiline"
+          style={Object.assign({}, style, { opacity })}
+        >
           <div className="multi-title-block mb-2">
             <div className="multi-title">
-              <span className="text-muted" onClick={() => this.props.toggleOpen()}>
+              <span
+                className="text-muted"
+                onClick={() => this.props.toggleOpen()}
+              >
                 <i
                   className={cn('fas', {
                     'fa-caret-down': d.open,
@@ -128,24 +150,43 @@ class SpeakElement extends Component {
                   d.voice = selected.value;
                   this.props.onUpdate();
                   if (localStorage.getItem('recent_speak')) {
-                    let recent_speaks = JSON.parse(localStorage.getItem('recent_speak'));
-                    if (!(recent_speaks instanceof Array)) recent_speaks = [recent_speaks];
-                    const idx = _.findIndex(recent_speaks, ['value', selected.value]);
+                    let recent_speaks = JSON.parse(
+                      localStorage.getItem('recent_speak')
+                    );
+                    if (!(recent_speaks instanceof Array))
+                      recent_speaks = [recent_speaks];
+                    const idx = _.findIndex(recent_speaks, [
+                      'value',
+                      selected.value,
+                    ]);
                     if (idx === -1) {
                       recent_speaks.push(selected);
                       if (recent_speaks.length > 3) {
                         recent_speaks.shift();
                       }
-                      localStorage.setItem('recent_speak', JSON.stringify(recent_speaks));
+                      localStorage.setItem(
+                        'recent_speak',
+                        JSON.stringify(recent_speaks)
+                      );
                     }
                   } else {
-                    localStorage.setItem('recent_speak', JSON.stringify([selected]));
+                    localStorage.setItem(
+                      'recent_speak',
+                      JSON.stringify([selected])
+                    );
                   }
                 }}
                 // options={VOICES}
                 options={
                   localStorage.getItem('recent_speak')
-                    ? [{ label: 'Recent', options: JSON.parse(localStorage.getItem('recent_speak')) }].concat(VOICES)
+                    ? [
+                        {
+                          label: 'Recent',
+                          options: JSON.parse(
+                            localStorage.getItem('recent_speak')
+                          ),
+                        },
+                      ].concat(VOICES)
                     : VOICES
                 }
               />
@@ -161,14 +202,18 @@ class SpeakElement extends Component {
             <VariableText
               className="editor form-control auto-height"
               raw={d.rawContent}
-              placeholder={<React.Fragment>{`Tell ${d.voice} what to say`}</React.Fragment>}
+              placeholder={
+                <React.Fragment>{`Tell ${d.voice} what to say`}</React.Fragment>
+              }
               variables={this.props.variables}
               updateRaw={(raw) => {
                 d.rawContent = raw;
                 this.props.onUpdate();
               }}
             />
-            <small className="text-muted pb-3 pt-2 d-block">{'Press "{" to add variables'}</small>
+            <small className="text-muted pb-3 pt-2 d-block">
+              {'Press "{" to add variables'}
+            </small>
           </Collapse>
           <hr />
         </div>

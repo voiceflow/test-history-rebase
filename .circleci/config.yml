@@ -143,6 +143,57 @@ jobs:
       - run:
           name: Push to Elastic Beanstalk
           command: eb deploy CreatorApp-production --staged -l $CIRCLE_BUILD_NUM --nohang
+  deploy-k8s:
+    machine: true
+    steps:
+      - checkout # special step to check out source code to working directory
+      - run:
+          name: Add token
+          command:  echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run: # Need this for --squash to work
+          name: set docker daemon to experimental
+          command: |
+            sudo sh -c 'echo '\''DOCKER_OPTS="--experimental=true"'\'' >> /etc/default/docker'
+            sudo service docker restart
+      - run:
+          name: 'Update Elastic Beanstalk Dockerrunfile.aws.json'
+          command: 'sed -i".json" "s/VERSION/$CIRCLE_BUILD_NUM/g" Dockerrun.aws.json'
+      - run: 
+          name: 'Build docker image'
+          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_APP_API_HOST=api.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=production --squash -t voiceflow/creator-app:$CIRCLE_BUILD_NUM .
+      - run:
+          name: 'Push docker image'
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push voiceflow/creator-app:k8s-$CIRCLE_BUILD_NUM
+      - run: 
+          name: Install aws-iam-authenticator
+          command: |
+            curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
+            chmod +x ./aws-iam-authenticator
+            sudo cp ./aws-iam-authenticator /usr/bin
+      - run: 
+          name: Install kubectl
+          command: | 
+            sudo apt-get update && sudo apt-get install -y apt-transport-https
+            curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+            echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+            sudo apt-get update
+            sudo apt-get install -y kubectl unzip
+      - run: 
+          name: Install aws-cli
+          command: |
+            curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+            unzip awscli-bundle.zip
+            sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+      - run: 
+          name: Get credentials
+          command: | 
+            aws eks --region us-east-1 update-kubeconfig --name blue
+      - run: 
+          name: Update image
+          command: |
+            kubectl set image --namespace voiceflow-v1 deployment/creator-app creator-app=voiceflow/creator-app:k8s-$CIRCLE_BUILD_NUM
 workflows:
   version: 2
   build-deploy:
@@ -166,6 +217,12 @@ workflows:
           filters:
             branches:
               only: production
+      - deploy-k8s:
+          requires:
+            - test
+          filters:
+            branches:
+              only: k8s
       - release:
           requires:
             - test

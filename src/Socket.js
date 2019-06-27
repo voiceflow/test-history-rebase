@@ -60,7 +60,7 @@ window.CreatorSocket.on('connect', () => {
   Object.values(window.CreatorSocket.connectedCB).forEach((cb) => typeof cb === 'function' && cb());
 });
 
-window.addEventListener('beforeunload', function() {
+window.addEventListener('beforeunload', () => {
   if (window.CreatorSocket && window.CreatorSocket.disconnect) {
     window.CreatorSocket.disconnect();
   }

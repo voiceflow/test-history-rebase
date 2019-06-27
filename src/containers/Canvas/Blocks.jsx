@@ -170,8 +170,7 @@ const SECTIONS = [
 ];
 
 const getSections = () => {
-  const sections = cloneDeep(SECTIONS);
-  return sections;
+  return cloneDeep(SECTIONS);
 };
 
 const getBlocks = () => {

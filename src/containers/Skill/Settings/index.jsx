@@ -101,7 +101,7 @@ class Settings extends Component {
             </ButtonGroup>
           </div>
         </div>
-        <div className={'s__modal_content'}>{this.modalContent()}</div>
+        <div className="s__modal_content">{this.modalContent()}</div>
       </div>
     );
   }

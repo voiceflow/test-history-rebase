@@ -1,3 +1,5 @@
+import './Menu.css';
+
 import cn from 'classnames';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -7,8 +9,6 @@ import Blocks from './Sidebars/Blocks';
 import Flows from './Sidebars/Flows';
 import Variables from './Sidebars/Variables';
 import FlowButton from './Sidebars/components/FlowButton';
-
-import './Menu.css';
 
 const tabs = {
   top: [
@@ -172,11 +172,8 @@ export class Menu extends Component {
         );
     }
   }
-  
+
   toggleTab = () => {
-    console.log('is open: ', this.props.open);
-    console.log('props: ', this.props);
-    console.log('tabs: ', tabs);
     if (this.props.open) {
       this.props.closeTab();
     } else {
@@ -224,9 +221,7 @@ export class Menu extends Component {
             {this.props.loading_diagram ? null : (
               <React.Fragment>
                 <div className="sidebar-header">
-                  <div
-                    className="block-title no-select mb-3"
-                  >
+                  <div className="block-title no-select mb-3">
                     <h5 className="mb-0">{this.props.tab}</h5>
                   </div>
                 </div>
@@ -235,10 +230,11 @@ export class Menu extends Component {
             )}
           </div>
         </div>
-        <label className={cn(
-          { 'canvas-sidebar-closed': !this.props.open },
-          { 'canvas-sidebar-open': this.props.open },
-          "canvas-sidebar-expand")} onClick={() => this.toggleTab()} htmlFor="canvas-sidebar" />
+        <label
+          className={cn({ 'canvas-sidebar-closed': !this.props.open }, { 'canvas-sidebar-open': this.props.open }, 'canvas-sidebar-expand')}
+          onClick={() => this.toggleTab()}
+          htmlFor="canvas-sidebar"
+        />
       </div>
     );
   }

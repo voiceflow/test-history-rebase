@@ -1,7 +1,5 @@
-import 'brace/mode/json';
-import 'brace/ext/language_tools';
-
 import axios from 'axios';
+import AceEditor from 'components/AceEditor';
 import Button from 'components/Button';
 import DefaultModal from 'components/Modals/DefaultModal';
 import Prompt from 'components/Uploads/Prompt';
@@ -10,7 +8,6 @@ import { deleteProject } from 'ducks/project';
 import { updateVersion, updateVersionMerge } from 'ducks/version';
 import _ from 'lodash';
 import React, { Component } from 'react';
-import AceEditor from 'react-ace';
 import { connect } from 'react-redux';
 import Toggle from 'react-toggle';
 import { Alert, Collapse, FormGroup, Input, Label } from 'reactstrap';

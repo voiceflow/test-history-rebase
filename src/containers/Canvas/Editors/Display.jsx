@@ -1,13 +1,7 @@
-/* eslint-disable simple-import-sort/sort */
 import './Display.css';
-import AceEditor from 'react-ace';
-import 'brace/mode/json_custom';
-import 'brace/theme/monokai';
-import 'brace/ext/language_tools';
-/* eslint-enable simple-import-sort/sort */
 
 import axios from 'axios';
-import { compose } from 'redux';
+import AceEditor from 'components/AceEditor';
 import { ModalHeader } from 'components/Modals/ModalHeader';
 import _ from 'lodash';
 import React, { Component } from 'react';
@@ -16,9 +10,10 @@ import { Link, withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import { Tooltip } from 'react-tippy';
 import { Button, Input, InputGroup, InputGroupAddon, Modal, ModalBody } from 'reactstrap';
+import { compose } from 'redux';
 
-import DisplayRender from './components/DisplayRender';
 import { selectStyles } from '../../../components/VariableSelect/VariableSelect';
+import DisplayRender from './components/DisplayRender';
 
 export class Display extends Component {
   constructor(props) {

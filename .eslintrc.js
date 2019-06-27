@@ -28,6 +28,7 @@ module.exports = {
     'no-unused-expressions': 'off',
     'lodash/prefer-lodash-chain': 'off',
     'import/no-named-as-default': 'off',
+    'require-jsdoc': 'off',
 
     // disabled temporarily by setting as warnings
     'max-len': 'warn',
@@ -47,7 +48,6 @@ module.exports = {
     'react/jsx-filename-extension': 'warn',
     'lodash/import-scope': 'warn',
     'import/prefer-default-export': 'warn',
-    'require-jsdoc': 'warn',
     'no-process-env': 'warn',
     'no-shadow': 'warn',
     'max-depth': 'warn',

@@ -4,135 +4,78 @@ import './TestModal.css';
 import cn from 'classnames';
 import { setError } from 'ducks/modal';
 import update from 'immutability-helper';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { Collapse } from 'reactstrap';
 import { compose } from 'recompose';
 
+import { useToggle } from 'hooks/toggle';
+
 import Conditions from './conditions';
-import { CONDITIONS, TIMELINE } from './constants';
 import Timeline from './timeline';
 
-const SECTIONS = {
-  [CONDITIONS]: Conditions,
-  [TIMELINE]: Timeline,
-};
+function Test(props) {
+  const { variables, open, testing_info, flow, diagramEngine, time, stop, enterFlow, resume, history, setTime, resetTest } = props;
 
-class Test extends Component {
-  state = {
-    reset: false,
-    conditionsOpen: true,
-    variableMapping: this.props.variables.reduce((key, val) => {
+  const [reset, toggleReset] = useToggle(false);
+  const [conditionsOpen, toggleConditionsOpen] = useToggle(true);
+
+  const [variableMapping, setVariableMapping] = useState(
+    variables.reduce((key, val) => {
       key[val] = val;
       return key;
-    }, {}),
+    }, {})
+  );
+
+  const handleVariableChange = (variable, value) => {
+    setVariableMapping(update(variableMapping, { [variable]: { $set: value } }));
   };
 
-  toggleSection = (section) => {
-    if (section === CONDITIONS) {
-      this.setState((state) => ({
-        conditionsOpen: !state.conditionsOpen,
-      }));
-    }
-  };
-
-  handleVariableChange = (variable, value) => {
-    const newState = update(this.state, {
-      variableMapping: {
-        [variable]: { $set: value },
-      },
-    });
-    this.setState(newState);
-  };
-
-  render() {
-    const { conditionsOpen } = this.state;
-    return (
-      <div
-        id="TestSidebar"
-        className={cn({
-          open: this.props.open,
-        })}
-      >
-        {Object.keys(SECTIONS).map((s, i) => {
-          let section;
-          switch (s) {
-            case CONDITIONS:
-              section = (
-                <Conditions
-                  testing_info={this.props.testing_info}
-                  flow={this.props.flow}
-                  handleVariableChange={this.handleVariableChange}
-                  variableMapping={this.state.variableMapping}
-                />
-              );
-
-              break;
-            case TIMELINE:
-              section = (
-                <Timeline
-                  testing_info={this.props.testing_info}
-                  reset={this.state.reset}
-                  setReset={(r) => this.setState({ reset: r })}
-                  flow={this.props.flow}
-                  diagramEngine={this.props.diagramEngine}
-                  time={this.props.time}
-                  enterFlow={this.props.enterFlow}
-                  stop={this.props.stop}
-                  resume={this.props.resume}
-                  history={this.props.history}
-                  setTime={this.props.setTime}
-                  resetTest={this.props.resetTest}
-                  variableMapping={this.state.variableMapping}
-                  open={this.props.open}
-                />
-              );
-              break;
-            default:
-              section = null;
-          }
-
-          return (
-            <div
-              key={i}
-              className={cn('sidebar_container', `${s === CONDITIONS ? 'variables' : 'dialog'}_container`, {
-                open: this.props.open,
-              })}
-            >
-              <div
-                className="condition-label"
-                onClick={() => {
-                  this.toggleSection(s);
-                }}
-              >
-                <label id={s} className="ml-3 mt-3 mb-3 text-left">
-                  {s === CONDITIONS ? 'Variables' : 'Dialog'}
-                </label>
-                {s === CONDITIONS && !this.props.testing_info && (
-                  <i
-                    className={cn('fas fa-caret-down fa-lg', 'light-grey', 'd-flex', 'align-items-center', {
-                      rotate: conditionsOpen,
-                      'fa-rotate--90': !conditionsOpen,
-                    })}
-                  />
-                )}
-                {s === TIMELINE && (
-                  <div onClick={() => this.setState({ reset: true })} className="d-flex align-items-center">
-                    <Tooltip title="Restart Test" position="bottom">
-                      <img src="/restart.svg" alt="restart" width="15" height="15" />
-                    </Tooltip>
-                  </div>
-                )}
-              </div>
-              <Collapse isOpen={s === CONDITIONS ? !this.props.testing_info && this.state.conditionsOpen : true}>{section}</Collapse>
-              {s === CONDITIONS && <div className="no-space__break" />}
-            </div>
-          );
-        })}
+  return (
+    <div id="TestSidebar" className={cn({ open })}>
+      <div className={cn('sidebar_container variables_container')}>
+        <div className="condition-label" onClick={toggleConditionsOpen}>
+          <label>Variables</label>
+          <i
+            className={cn('fas fa-caret-down fa-lg light-grey rotate', {
+              'fa-rotate--90': !conditionsOpen,
+            })}
+          />
+        </div>
+        <Collapse isOpen={!testing_info && conditionsOpen}>
+          <Conditions testing_info={testing_info} flow={flow} handleVariableChange={handleVariableChange} variableMapping={variableMapping} />
+        </Collapse>
       </div>
-    );
-  }
+      <div className="no-space__break" />
+      <div className={cn('sidebar_container dialog_container')}>
+        <div className="condition-label">
+          <label>Dialog</label>
+          <div onClick={toggleReset} className="d-flex align-items-center">
+            <Tooltip title="Restart Test" position="bottom">
+              <img src="/restart.svg" alt="restart" width="15" height="15" />
+            </Tooltip>
+          </div>
+        </div>
+        <Timeline
+          testing_info={testing_info}
+          reset={reset}
+          setReset={toggleReset}
+          flow={flow}
+          diagramEngine={diagramEngine}
+          time={time}
+          enterFlow={enterFlow}
+          stop={stop}
+          resume={resume}
+          history={history}
+          setTime={setTime}
+          resetTest={resetTest}
+          variableMapping={variableMapping}
+          open={open}
+        />
+      </div>
+    </div>
+  );
 }
 
 const mapStateToProps = (state) => ({

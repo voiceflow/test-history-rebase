@@ -47,7 +47,7 @@ const ConditionExpression = (props) => {
           <button className={cn('expression-button', { 'expression-add': first, invisible: !first })} onClick={() => addVariable()} />
         </div>
       </div>
-      {!last && <div className="break" />}
+      {!last && <div className="break-line mb-3" />}
     </>
   );
 };

@@ -1648,6 +1648,11 @@ body.modal-open {
   border-bottom: 1px solid #8da2b545;
 }
 
+.break-line {
+  width: 100%;
+  border-bottom: 1px solid #8da2b545;
+}
+
 .no-space__break {
   width: 100%;
   text-align: center;

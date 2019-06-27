@@ -146,26 +146,26 @@ jobs:
   deploy-k8s:
     machine: true
     steps:
-      # - checkout # special step to check out source code to working directory
-      # - run:
-      #     name: Add token
-      #     command:  echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-      # - run: # Need this for --squash to work
-      #     name: set docker daemon to experimental
-      #     command: |
-      #       sudo sh -c 'echo '\''DOCKER_OPTS="--experimental=true"'\'' >> /etc/default/docker'
-      #       sudo service docker restart
-      # - run:
-      #     name: 'Update Elastic Beanstalk Dockerrunfile.aws.json'
-      #     command: 'sed -i".json" "s/VERSION/$CIRCLE_BUILD_NUM/g" Dockerrun.aws.json'
-      # - run: 
-      #     name: 'Build docker image'
-      #     command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_APP_API_HOST=api.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=production --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM .
-      # - run:
-      #     name: 'Push docker image'
-      #     command: |
-      #       $(aws ecr get-login --no-include-email --region us-east-1)
-      #       docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM
+      - checkout # special step to check out source code to working directory
+      - run:
+          name: Add token
+          command:  echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run: # Need this for --squash to work
+          name: set docker daemon to experimental
+          command: |
+            sudo sh -c 'echo '\''DOCKER_OPTS="--experimental=true"'\'' >> /etc/default/docker'
+            sudo service docker restart
+      - run:
+          name: 'Update Elastic Beanstalk Dockerrunfile.aws.json'
+          command: 'sed -i".json" "s/VERSION/$CIRCLE_BUILD_NUM/g" Dockerrun.aws.json'
+      - run: 
+          name: 'Build docker image'
+          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_APP_API_HOST=api.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=production --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM .
+      - run:
+          name: 'Push docker image'
+          command: |
+            $(aws ecr get-login --no-include-email --region us-east-1)
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM
       - run: 
           name: Install aws-iam-authenticator
           command: |
@@ -215,8 +215,8 @@ workflows:
             branches:
               only: production
       - deploy-k8s:
-          # requires:
-          #   - test
+          requires:
+            - test
           filters:
             branches:
               only: k8s

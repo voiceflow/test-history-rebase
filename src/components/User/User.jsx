@@ -29,27 +29,22 @@ export const Members = (props) => {
     return null;
   }
 
-  if (members.length === 1) {
-    return (
-      <div style={{ color: '#CDAD32' }} className="mr-4 pointer" onClick={() => props.update('MEMBERS')}>
-        <img src="/images/icons/power.svg" alt="power" />
-        &nbsp;&nbsp;&nbsp;Add Collaborators
-      </div>
-    );
-  }
-
   return (
-    <div className="mr-3 super-center">
-      <div className="d-flex flex-row-reverse">
-        {accepted.slice(0, 8).map((m) => {
-          return (
-            <Tooltip key={m.creator_id} title={m.name} position="bottom">
-              <User user={m} />
-            </Tooltip>
-          );
-        })}
-      </div>
-      {accepted.length > 8 && <div className="ml-3 text-muted">+{accepted.length - 8}</div>}
+    <div className="mx-3 super-center">
+      {members.length > 1 && (
+        <div className="d-flex flex-row-reverse">
+          {accepted.slice(0, 8).map((m) => {
+            return (
+              <Tooltip key={m.creator_id} title={m.name} position="bottom">
+                <User user={m} />
+              </Tooltip>
+            );
+          })}
+        </div>
+      )}
+      {accepted.length > 8 && (
+        <div className="ml-3 text-muted">+{accepted.length - 8}</div>
+      )}
     </div>
   );
 };

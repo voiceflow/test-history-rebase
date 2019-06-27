@@ -7,7 +7,7 @@ import Select from "react-select";
 import { Alert } from "reactstrap";
 
 import MenuItem from "../Sidebars/components/MenuItem";
-import {selectStyles} from "../../../components/VariableSelect/VariableSelect";
+import { selectStyles } from "../../../components/VariableSelect/VariableSelect";
 
 const cancel = {
   text: "Cancel Payment",
@@ -93,7 +93,7 @@ class PaymentBlock extends Component {
       this.props.onUpdate
     );
   }
-  
+
   openProductPage = () => {
     this.props.history.push(`/tools/${this.props.skill_id}/products`);
   };
@@ -124,11 +124,11 @@ class PaymentBlock extends Component {
         </div>
       );
     }
-  
+
     const productOptions = _.cloneDeep(this.props.products);
     productOptions.push({
-      id: 'Create a new Product',
-      name: 'Create a new Product'
+      id: "Create a new Product",
+      name: "Create a new Product"
     });
 
     const options = productOptions.map((product, idx) => {
@@ -244,12 +244,14 @@ class PaymentBlock extends Component {
             <div className="d__or_text">OR</div>
           </div>
         </div>
-        <Link
-          className="d__new_visual_button"
-          to={`/tools/${this.props.skill_id}/products`}
+        <button
+          className={"btn-clear btn-block btn-lg"}
+          onClick={() =>
+            this.props.history.push(`/tools/${this.props.skill_id}/products`)
+          }
         >
-          Create new product
-        </Link>
+          Create new visual
+        </button>
       </React.Fragment>
     );
   }

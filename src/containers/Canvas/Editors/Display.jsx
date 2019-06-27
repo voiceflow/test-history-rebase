@@ -7,6 +7,7 @@ import 'brace/ext/language_tools';
 /* eslint-enable simple-import-sort/sort */
 
 import axios from 'axios';
+import { compose } from 'redux';
 import { ModalHeader } from 'components/Modals/ModalHeader';
 import _ from 'lodash';
 import React, { Component } from 'react';
@@ -306,7 +307,7 @@ export class Display extends Component {
               };
             })}
           />
-          {this.state.selected ? (
+          {this.state.selected && (
             <InputGroup className="my-3">
               <label className="input-group-text w-100 m-0 d-flex">
                 <Input
@@ -332,9 +333,9 @@ export class Display extends Component {
                 </div>
               </label>
             </InputGroup>
-          ) : null}
+          )}
 
-          {!this.state.selected ? (
+          {!this.state.selected && (
             <div>
               <div className="d__or_box">
                 <div className="d__or_text">OR</div>
@@ -344,9 +345,9 @@ export class Display extends Component {
                 Create new visual
               </button>
             </div>
-          ) : null}
+          )}
 
-          {this.state.selected ? (
+          {this.state.selected && (
             <div>
               <hr />
               <Button color="clear" onClick={this.openModal} size="sm" block>
@@ -419,7 +420,7 @@ export class Display extends Component {
                 }}
               />
             </div>
-          ) : null}
+          )}
         </div>
       </React.Fragment>
     );
@@ -431,5 +432,8 @@ const mapStateToProps = (state) => ({
   skill_id: state.skills.skill_id,
   displays: state.displays.displays,
 });
-const routeredDisplay = withRouter(Display);
-export default connect(mapStateToProps)(routeredDisplay);
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps)
+)(Display);

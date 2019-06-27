@@ -29,7 +29,6 @@ class Settings extends Component {
   switchTab(tab) {
     if (tab !== this.state.tab) {
       this.setState({ tab });
-      // this.props.history.push(`/settings/${this.props.skill_id}/${tab}`);
     }
   }
 

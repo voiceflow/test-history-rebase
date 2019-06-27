@@ -1112,7 +1112,7 @@ export class ActionGroup extends PureComponent {
 
         <Modal isOpen={this.state.settingsModal} toggle={() => this.setState({ settingsModal: false })} className="ag__settings_modal">
           <div className="ag__settings_header">Settings</div>
-          <Settings {...this.props} page="basic" live_mode={this.props.live_mode} toggleUpgrade={this.toggleUpgrade} />
+          <Settings {...this.props} page="basic" toggleUpgrade={this.toggleUpgrade} />
         </Modal>
 
         <Header
@@ -1196,7 +1196,6 @@ export class ActionGroup extends PureComponent {
                       unsaved: !this.props.saved,
                       saving: this.props.saving,
                     })}
-                    // onClick={() => this.props.history.push(`/settings/${this.props.skill.skill_id}/basic`)}
                     onClick={() => this.setState({ settingsModal: true })}
                   >
                     {this.props.saving && <span className="save-loader" />}

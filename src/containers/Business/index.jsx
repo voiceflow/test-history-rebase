@@ -2,6 +2,7 @@ import './Business.css';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import Home from './Home';
 import EditProduct from './Products/EditProduct';
 import Products from './Products/Products';

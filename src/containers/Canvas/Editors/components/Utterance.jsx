@@ -56,7 +56,11 @@ class Utterance extends React.PureComponent {
   render() {
     return (
       <div>
-        <div className={cn('interaction-utterance', { u__utterance_warning: this.props.showWarning })}>
+        <div
+          className={cn('interaction-utterance', {
+            u__utterance_warning: this.props.showWarning,
+          })}
+        >
           <Tooltip
             className="flex-hard"
             theme="warning"
@@ -85,31 +89,34 @@ class Utterance extends React.PureComponent {
                 data={this.props.slots.map((slot) => {
                   return { display: slot.name, id: slot.key.toString() };
                 })}
-                style={{ backgroundColor: '#DCEEFF', outline: '1px solid #DCEEFF' }}
+                style={{
+                  backgroundColor: '#DCEEFF',
+                  outline: '1px solid #DCEEFF',
+                }}
               />
             </MentionsInput>
+            {this.props.showWarning && (
+              <Tooltip
+                className="flex-hard ii__exclamation-triangle"
+                theme="warning"
+                arrow={true}
+                position="bottom-end"
+                html={
+                  'Having slots with the same type in different intents and using them in an utterance ' +
+                  'without any context (other words) may confuse your virtual assistant. Proceed with caution.'
+                }
+              >
+                <i className="fas fa-exclamation-triangle" />
+              </Tooltip>
+            )}
           </Tooltip>
           <i
             onClick={(e) => {
               this.props.deleteUtterance(e, this.props.index);
             }}
-            className="fas fa-backspace trash-icon ii__trash"
+            className="fas fa-minus-circle trash-icon ii__trash"
           />
         </div>
-        {this.props.showWarning && (
-          <Tooltip
-            className="flex-hard"
-            theme="warning"
-            arrow={true}
-            position="bottom-start"
-            html={
-              'Having slots with the same type in different intents and using them in an utterance ' +
-              'without any context (other words) may confuse your virtual assistant. Proceed with caution.'
-            }
-          >
-            <div className="u__warning_message">Warning: This type of slot is repeated in two intents without context.</div>
-          </Tooltip>
-        )}
       </div>
     );
   }

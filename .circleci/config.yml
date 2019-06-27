@@ -33,6 +33,7 @@ commands:
                 key: react-cache-{{ checksum "package.json" }}
                 paths:
                   - ./node_modules
+      - steps: << parameters.tests >>
 
 jobs:
   release:

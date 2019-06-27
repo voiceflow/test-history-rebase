@@ -16,6 +16,7 @@ import { copyProject, deleteProject, updateProjects } from 'ducks/project';
 import { getMembers } from 'ducks/team';
 import { useScrollHelpers } from 'hooks/scroll';
 import _ from 'lodash';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -120,17 +121,21 @@ export const DashBoard = (props) => {
 
   const updateButtonClick = () => {
     toggleUpdatesOpen(!updates_open);
-    const checkTime = Math.floor(Date.now() / 1000);
-    localStorage.setItem('voiceflowProductUpdateCheckTime', checkTime.toString());
+    axios.post(`/product_updates/${props.user.creator_id}`);
   };
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const updates = await axios.get('/product_updates');
-        if (updates.data.length > 0) {
-          const lastCheckedTime = localStorage.getItem('voiceflowProductUpdateCheckTime');
-          const newUpdates = updates.data.filter((update) => {
+        const updates = await axios.get(`/product_updates/${props.user.creator_id}`);
+        if (updates.data.rows.length > 0) {
+          let lastCheckedTime;
+          if (!updates.data.last_checked) {
+            lastCheckedTime = 0;
+          } else {
+            lastCheckedTime = moment(updates.data.last_checked).unix();
+          }
+          const newUpdates = updates.data.rows.filter((update) => {
             const updateTime = Math.floor(new Date(update.created) / 1000);
             return updateTime > lastCheckedTime;
           });
@@ -138,7 +143,7 @@ export const DashBoard = (props) => {
             setNewProductUpdates(newUpdates);
             setShowUpdateBubble(true);
           }
-          setProductUpdates(updates.data);
+          setProductUpdates(updates.data.rows);
         }
       } catch (err) {
         console.error('there was an error getting the product updates: ', err);

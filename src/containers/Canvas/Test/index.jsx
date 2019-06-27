@@ -16,7 +16,7 @@ import Conditions from './conditions';
 import Timeline from './timeline';
 
 function Test(props) {
-  const { variables, open, testing_info, flow, diagramEngine, time, stop, enterFlow, resume, history, setTime, resetTest } = props;
+  const { variables, open, testing_info, diagramEngine, time, stop, enterFlow, resume, history, setTime, resetTest } = props;
 
   const [reset, toggleReset] = useToggle(false);
   const [conditionsOpen, toggleConditionsOpen] = useToggle(true);
@@ -44,7 +44,7 @@ function Test(props) {
           />
         </div>
         <Collapse isOpen={!testing_info && conditionsOpen}>
-          <Conditions testing_info={testing_info} flow={flow} handleVariableChange={handleVariableChange} variableMapping={variableMapping} />
+          <Conditions testing_info={testing_info} handleVariableChange={handleVariableChange} variableMapping={variableMapping} />
         </Collapse>
       </div>
       <div className="no-space__break" />
@@ -61,7 +61,6 @@ function Test(props) {
           testing_info={testing_info}
           reset={reset}
           setReset={toggleReset}
-          flow={flow}
           diagramEngine={diagramEngine}
           time={time}
           enterFlow={enterFlow}

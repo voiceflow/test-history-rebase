@@ -313,7 +313,7 @@ export class Canvas extends Component {
   };
 
   paste = () => {
-    if (this.state.copy) {
+    if (this.state.copy && !this.state.engine.getDiagramModel().isLocked()) {
       const event = {
         clientX: this.mouseX,
         clientY: this.mouseY,
@@ -1712,7 +1712,6 @@ export class Canvas extends Component {
           <Test
             open={this.props.testing}
             testing_info={this.state.testing_info}
-            flow={this.props.diagram.name}
             onTest={this.onTest}
             history={this.props.history}
             enterFlow={this.enterFlow}

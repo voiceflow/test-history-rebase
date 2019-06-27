@@ -97,23 +97,51 @@ export const getUserTestOutputs = async (data, trace, res, variableMapping) => {
           };
         })
       );
+      let children = [];
+      if (parsed.children.length > 0) {
+        _.map(parsed.children, (c) => {
+          if (c.children.length > 0) {
+            children = children.concat(c.children);
+          } else {
+            children = children.concat(c);
+          }
+        });
+      }
       // eslint-disable-next-line lodash/collection-return, lodash/collection-method-value, no-loop-func
-      _.map(parsed.children, (child, idx) => {
+      let audioMappingIdx = 0;
+      let audioType = children[0].name === 'audio' ? 'audio' : 'speak';
+      _.map(children, (child, idx) => {
         const outputBlock = {};
         if (child.name === 'audio') {
           outputBlock.text = 'Audio File';
         } else {
-          const replaced = RegexVariables(block.line.speak, variableMapping);
+          const replaced = RegexVariables(child.content || child.name, variableMapping);
           outputBlock.text = replaced;
         }
-        outputBlock.audio = results[idx].audio;
-        outputBlock.node = block.line.id;
-        outputBlock.audioType = child.name;
-        const duration = results[idx].duration * 1000;
+        let duration = delay;
         outputBlock.delay = delay;
+        if (idx === 0) {
+          outputBlock.audio = results[audioMappingIdx].audio;
+          duration = results[audioMappingIdx].duration * 1000;
+          delay += duration;
+        }
+        if (audioType === 'audio' && child.name !== 'audio') {
+          audioType = 'speak';
+          audioMappingIdx++;
+          outputBlock.audio = results[audioMappingIdx].audio;
+          duration = results[audioMappingIdx].duration * 1000;
+          delay += duration;
+        } else if (audioType === 'speak' && child.name === 'audio') {
+          audioType = 'audio';
+          audioMappingIdx++;
+          outputBlock.audio = results[audioMappingIdx].audio;
+          duration = results[audioMappingIdx].duration * 1000;
+          delay += duration;
+        }
+        outputBlock.node = block.line.id;
+        outputBlock.audioType = child.type === 'text' || child.type === 'speak' || (child.name === 'audio' && 'audio');
         outputBlock.type = type;
         outputBlock.isLast = !block.line.nextId;
-        delay += duration;
         dom.push(outputBlock);
       });
     } else if (type === 'Stream') {

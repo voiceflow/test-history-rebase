@@ -86,7 +86,9 @@ class Timeline extends React.Component {
     }
     if (reset && started) {
       this.handleClose();
-      enterFlow(homeId, false);
+      if (homeId) {
+        enterFlow(homeId, false);
+      }
       setReset(false);
     }
     if (!open && started) {

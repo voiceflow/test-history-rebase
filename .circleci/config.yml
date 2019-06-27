@@ -26,12 +26,8 @@ commands:
       - run:
           name: yarn install packages
           command: yarn
-      <<# parameters.saveCache >>
-      - save_cache: # special step to save the dependency cache
-          key: react-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      <</ parameters.saveCache >>
+      - steps: [<<# parameters.saveCache >>{ key: 'react-cache-{{ checksum "package.json" }}', paths: [./node_modules] }<</ parameters.saveCache >>]
+      - steps: << parameters.tests >>
 
 jobs:
   release:

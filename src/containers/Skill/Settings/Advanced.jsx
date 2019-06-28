@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import AceEditor from 'react-ace';
 import Button from 'components/Button';
 import DefaultModal from 'components/Modals/DefaultModal';
 import Prompt from 'components/Uploads/Prompt';
-import { Alert, FormGroup, Label } from 'reactstrap';
-
+import { setConfirm, setError } from 'ducks/modal';
 import { deleteProject } from 'ducks/project';
 import { updateVersion, updateVersionMerge } from 'ducks/version';
-import { setConfirm, setError } from 'ducks/modal';
+import React, { Component } from 'react';
+import AceEditor from 'react-ace';
+import { connect } from 'react-redux';
+import { Alert, FormGroup, Label } from 'reactstrap';
 
 class AdvancedSettings extends Component {
   constructor(props) {
@@ -31,9 +30,7 @@ class AdvancedSettings extends Component {
   }
 
   overwriteSuccessModal = (result) => {
-    const msg = result
-      ? 'Devlopment version successfully overwritten'
-      : 'Overwrite failed.';
+    const msg = result ? 'Devlopment version successfully overwritten' : 'Overwrite failed.';
 
     this.setState({
       show_overwrite_modal: true,
@@ -46,8 +43,7 @@ class AdvancedSettings extends Component {
       warning: true,
       text: (
         <Alert color="danger" className="mb-0">
-          WARNING: This action can not be undone and will replace your
-          development version completely with your live version.
+          WARNING: This action can not be undone and will replace your development version completely with your live version.
         </Alert>
       ),
       confirm: this.props.onSwapVersions,
@@ -60,8 +56,7 @@ class AdvancedSettings extends Component {
       warning: true,
       text: (
         <Alert color="danger" className="mb-0">
-          WARNING: This action can not be undone, <i>{this.props.skill.name}</i>{' '}
-          and all flows can not be recovered
+          WARNING: This action can not be undone, <i>{this.props.skill.name}</i> and all flows can not be recovered
         </Alert>
       ),
       confirm: () =>
@@ -90,16 +85,12 @@ class AdvancedSettings extends Component {
         <div className="settings-content clearfix mt-4">
           <FormGroup>
             <Label>Error Prompt</Label>
-            <div className="helper-text mb-2">
-              What to say if the skill encounters an unexpected error
-            </div>
+            <div className="helper-text mb-2">What to say if the skill encounters an unexpected error</div>
             <Prompt
               placeholder="Sorry, this skill has encountered an error"
               voice={this.props.skill.error_prompt.voice}
               content={this.props.skill.error_prompt.content}
-              updatePrompt={(prompt) =>
-                this.props.updateSkillMerge('error_prompt', prompt)
-              }
+              updatePrompt={(prompt) => this.props.updateSkillMerge('error_prompt', prompt)}
             />
           </FormGroup>
         </div>

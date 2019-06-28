@@ -42,9 +42,7 @@ class BasicSettings extends Component {
 
     this.baseline = _.cloneDeep(props.skill);
 
-    this.state.resume_collapse = props.skill.resume_prompt
-      ? !!props.skill.resume_prompt.follow_content
-      : false;
+    this.state.resume_collapse = props.skill.resume_prompt ? !!props.skill.resume_prompt.follow_content : false;
   }
 
   componentWillUnmount() {
@@ -58,10 +56,7 @@ class BasicSettings extends Component {
   }
 
   toggleRepeat = (low, high) => {
-    this.props.updateSkill(
-      'repeat',
-      this.props.skill.repeat > low ? low : high
-    );
+    this.props.updateSkill('repeat', this.props.skill.repeat > low ? low : high);
   };
 
   handleUpdate = (e) => {
@@ -98,11 +93,9 @@ class BasicSettings extends Component {
       this.props.updateSkill('alexa_events', null);
     }
 
-    axios
-      .patch(`/skill/${this.props.skill.skill_id}?settings=1`, this.props.skill)
-      .catch(() => {
-        this.props.setError('Settings Save Error');
-      });
+    axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, this.props.skill).catch(() => {
+      this.props.setError('Settings Save Error');
+    });
   };
 
   render() {
@@ -112,12 +105,7 @@ class BasicSettings extends Component {
         <div className="settings-content clearfix mt-4">
           <FormGroup>
             <Label>Project Name</Label>
-            <Input
-              className="form-bg mb-4"
-              name="name"
-              value={name}
-              onChange={this.handleUpdate}
-            />
+            <Input className="form-bg mb-4" name="name" value={name} onChange={this.handleUpdate} />
             <Label>Invocation Name</Label>
             <Input
               className="form-bg"
@@ -134,16 +122,9 @@ class BasicSettings extends Component {
             <Label className="mb-1">Repeat</Label>
             <div className="helper-text mb-3">
               <div className="row mb-3 space-between">
-                <div className="helper-text col-10">
-                  Users will be able to say repeat at any choice/interaction and
-                  the dialog will repeat
-                </div>
+                <div className="helper-text col-10">Users will be able to say repeat at any choice/interaction and the dialog will repeat</div>
                 <div className="col-2">
-                  <Toggle
-                    icons={false}
-                    checked={this.props.skill.repeat > 0}
-                    onChange={() => this.toggleRepeat(0, 100)}
-                  />
+                  <Toggle icons={false} checked={this.props.skill.repeat > 0} onChange={() => this.toggleRepeat(0, 100)} />
                 </div>
               </div>
             </div>
@@ -158,11 +139,7 @@ class BasicSettings extends Component {
                       : 'When the user asks to repeat, only the last speak block before the choice/interaction will be repeated'}
                   </div>
                   <div className="col-2">
-                    <Toggle
-                      icons={false}
-                      checked={this.props.skill.repeat > 1}
-                      onChange={() => this.toggleRepeat(1, 100)}
-                    />
+                    <Toggle icons={false} checked={this.props.skill.repeat > 1} onChange={() => this.toggleRepeat(1, 100)} />
                   </div>
                 </div>
               </React.Fragment>
@@ -179,21 +156,14 @@ class BasicSettings extends Component {
                   : 'The project will resume from the last block the user was on before quitting'}
               </div>
               <div className="col-2">
-                <Toggle
-                  icons={false}
-                  name="restart"
-                  checked={this.props.skill.restart}
-                  onChange={this.toggleSwitch}
-                />
+                <Toggle icons={false} name="restart" checked={this.props.skill.restart} onChange={this.toggleSwitch} />
               </div>
             </div>
             {!this.props.skill.restart && (
               <React.Fragment>
                 <Label className="mb-1">Resume Prompt</Label>
                 <div className="row">
-                  <div className="helper-text mb-2 col-10">
-                    Give the user a YES/NO prompt whether to resume
-                  </div>
+                  <div className="helper-text mb-2 col-10">Give the user a YES/NO prompt whether to resume</div>
                   <div className="col-2">
                     <Toggle
                       name="restart"
@@ -213,37 +183,22 @@ class BasicSettings extends Component {
                       placeholder="Would you like to resume your current story, yes or no?"
                       voice={this.props.skill.resume_prompt.voice}
                       content={this.props.skill.resume_prompt.content}
-                      updatePrompt={(prompt) =>
-                        this.props.updateSkillMerge('resume_prompt', prompt)
-                      }
+                      updatePrompt={(prompt) => this.props.updateSkillMerge('resume_prompt', prompt)}
                     />
-                    <Collapse
-                      isOpen={this.state.resume_collapse}
-                      className="pt-3"
-                    >
+                    <Collapse isOpen={this.state.resume_collapse} className="pt-3">
                       <Label>Resume Follow Up</Label>
-                      <div className="helper-text mb-2">
-                        Add a response when the user wants to resume
-                      </div>
+                      <div className="helper-text mb-2">Add a response when the user wants to resume</div>
                       <Prompt
                         placeholder="Would you like to resume your current story, yes or no?"
                         voice_id="follow_voice"
                         content_id="follow_content"
                         voice={this.props.skill.resume_prompt.follow_voice}
                         content={this.props.skill.resume_prompt.follow_content}
-                        updatePrompt={(prompt) =>
-                          this.props.updateSkillMerge('resume_prompt', prompt)
-                        }
+                        updatePrompt={(prompt) => this.props.updateSkillMerge('resume_prompt', prompt)}
                       />
                     </Collapse>
-                    <Button
-                      isClear
-                      className="mt-3"
-                      onClick={this.toggleResumeFollowUp}
-                    >
-                      {this.state.resume_collapse
-                        ? 'Cancel Follow Up'
-                        : 'Resume Follow Up'}
+                    <Button isClear className="mt-3" onClick={this.toggleResumeFollowUp}>
+                      {this.state.resume_collapse ? 'Cancel Follow Up' : 'Resume Follow Up'}
                     </Button>
                   </React.Fragment>
                 )}

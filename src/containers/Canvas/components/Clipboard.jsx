@@ -26,11 +26,14 @@ function makeNode(selected, pos, portMap) {
     if (port.hidden) {
       newPort.setHidden(port.hidden);
     }
-    if (portMap[`${selected.id}:${port.id}`]) {
+    
+    const pKey = `${selected.id}:${port.id}`;
+    
+    if (portMap[pKey]) {
       if (!port.in) {
-        portMap[`${selected.id}:${port.id}`].setSourcePort(newPort);
+        portMap[pKey].setSourcePort(newPort);
       } else {
-        portMap[`${selected.id}:${port.id}`].forEach((p) => p.setTargetPort(newPort));
+        portMap[pKey].forEach((p) => p.setTargetPort(newPort));
       }
     }
   });
@@ -149,10 +152,12 @@ class Clipboard extends React.Component {
       newLink.setSelected(true);
 
       portMap[`${link.source}:${link.sourcePort}`] = newLink;
-      if (!portMap[`${link.target}:${link.targetPort}`]) {
-        portMap[`${link.target}:${link.targetPort}`] = [];
+      
+      const pKey = `${link.target}:${link.targetPort}`;
+      if (!portMap[pKey]) {
+        portMap[pKey] = [];
       }
-      portMap[`${link.target}:${link.targetPort}`].push(newLink);
+      portMap[pKey].push(newLink);
 
       return newLink;
     });

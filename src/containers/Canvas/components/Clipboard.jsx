@@ -149,7 +149,9 @@ class Clipboard extends React.Component {
       newLink.setSelected(true);
 
       portMap[`${link.source}:${link.sourcePort}`] = newLink;
-      if (!portMap[`${link.target}:${link.targetPort}`]) portMap[`${link.target}:${link.targetPort}`] = [];
+      if (!portMap[`${link.target}:${link.targetPort}`]) {
+        portMap[`${link.target}:${link.targetPort}`] = [];
+      }
       portMap[`${link.target}:${link.targetPort}`].push(newLink);
 
       return newLink;

@@ -36,7 +36,7 @@ const getEndpoint = () => {
   return `https://${process.env.APP_API_HOST}${port}`;
 };
 
-// Configure axios 
+// Configure axios
 axios.defaults.baseURL = getEndpoint();
 axios.defaults.withCredentials = true;
 axios.defaults.crossDomain = true;

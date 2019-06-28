@@ -1,8 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
-const FAVORITE_SECTION_MAX = 3;
-
 const BLOCK_TYPES = {
   speak: {
     text: 'Speak',
@@ -50,8 +48,7 @@ const BLOCK_TYPES = {
     text: 'Intent',
     type: 'intent',
     icon: <i className="fas fa-arrow-alt-from-left" />,
-    tip:
-      'Handle intents, from within the skill and upon skill launch with CanFulfillIntent)',
+    tip: 'Handle intents, from within the skill and upon skill launch with CanFulfillIntent)',
   },
   stream: {
     text: 'Stream',
@@ -69,8 +66,7 @@ const BLOCK_TYPES = {
     text: 'Flow',
     type: 'flow',
     icon: <i className="fas fa-clone" />,
-    tip:
-      'Organize your project into manageable sections or perform computations',
+    tip: 'Organize your project into manageable sections or perform computations',
   },
   code: {
     text: 'Code',
@@ -147,12 +143,7 @@ const SECTIONS = [
   },
   {
     title: 'logic',
-    items: [
-      BLOCK_TYPES.set,
-      BLOCK_TYPES.if,
-      BLOCK_TYPES.capture,
-      BLOCK_TYPES.random,
-    ],
+    items: [BLOCK_TYPES.set, BLOCK_TYPES.if, BLOCK_TYPES.capture, BLOCK_TYPES.random],
   },
   {
     title: 'advanced',
@@ -172,19 +163,12 @@ const SECTIONS = [
   },
   {
     title: 'user',
-    items: [
-      BLOCK_TYPES.permission,
-      BLOCK_TYPES.permissions,
-      BLOCK_TYPES.payment,
-      BLOCK_TYPES.cancel,
-      BLOCK_TYPES.reminder,
-    ],
+    items: [BLOCK_TYPES.permission, BLOCK_TYPES.permissions, BLOCK_TYPES.payment, BLOCK_TYPES.cancel, BLOCK_TYPES.reminder],
   },
 ];
 
 const getSections = () => {
-  const sections = cloneDeep(SECTIONS);
-  return sections;
+  return cloneDeep(SECTIONS);
 };
 
 const getBlocks = () => {

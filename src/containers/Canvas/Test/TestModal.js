@@ -17,7 +17,7 @@ if (process.env.REACT_APP_BUILD_ENV === 'staging') {
   test_endpoint = 'https://staging.voiceflow.app/state/test';
 } else if (process.env.NODE_ENV === 'development') {
   // dev code
-  test_endpoint = 'https://localhost:4000/state/test'
+  test_endpoint = 'https://localhost:4000/state/test';
 } else {
   // production code
   test_endpoint = 'https://voiceflow.app/state/test';
@@ -384,7 +384,7 @@ class TestModal extends React.Component {
     }
 
     axios
-      .post(test_endpoint, data, {withCredentials: false})
+      .post(test_endpoint, data, { withCredentials: false })
       .then(async ({ data: res }) => {
         if (res.line_id) {
           this.story_state = res;

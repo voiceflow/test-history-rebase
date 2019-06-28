@@ -12,6 +12,8 @@ import { connect } from 'react-redux';
 import Toggle from 'react-toggle';
 import { Collapse, FormGroup, Input, Label } from 'reactstrap';
 
+const disabled_stages = new Set([11, 12]);
+
 class BasicSettings extends Component {
   constructor(props) {
     super(props);
@@ -104,6 +106,7 @@ class BasicSettings extends Component {
   };
 
   render() {
+    const { name, inv_name } = this.props.skill;
     return (
       <React.Fragment>
         <div className="settings-content clearfix mt-4">
@@ -112,7 +115,17 @@ class BasicSettings extends Component {
             <Input
               className="form-bg mb-4"
               name="name"
-              value={this.props.skill.name}
+              value={name}
+              onChange={this.handleUpdate}
+            />
+            <Label>Invocation Name</Label>
+            <Input
+              className="form-bg"
+              type="text"
+              name="inv_name"
+              disabled={disabled_stages.has(this.state.stage)}
+              placeholder="Enter an invocation name that begins an interaction with your skill"
+              value={inv_name}
               onChange={this.handleUpdate}
             />
           </FormGroup>

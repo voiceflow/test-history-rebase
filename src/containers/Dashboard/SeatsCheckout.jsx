@@ -23,7 +23,9 @@ class SeatsCheckout extends Component {
   constructor(props) {
     super(props);
 
-    const plan = PLANS_ID[props.plan] ? PLANS_ID[props.plan] : undefined;
+    const { plan: propsPlan, team } = this.props;
+
+    const plan = PLANS_ID[propsPlan] ? PLANS_ID[propsPlan] : undefined;
     let stage = plan ? 'CHECKOUT' : 'PLAN';
 
     this.calculatePrice = this.calculatePrice.bind(this);
@@ -31,9 +33,9 @@ class SeatsCheckout extends Component {
     this.checkout = this.checkout.bind(this);
     this.checkSource = this.checkSource.bind(this);
 
-    if (props.team && props.team.status > 0 && props.team.stripe_id) {
+    if (team && team.status > 0 && team.stripe_id) {
       stage = 'CHECK';
-      this.checkSource(props.team);
+      this.checkSource(team);
     }
 
     this.state = {
@@ -46,6 +48,7 @@ class SeatsCheckout extends Component {
   }
 
   async checkSource(team) {
+    const { setError } = this.props;
     try {
       const source = (await axios.get(`/team/${team.team_id}/source`)).data;
       if (_.isEmpty(source)) throw new Error();
@@ -56,7 +59,7 @@ class SeatsCheckout extends Component {
         stage: 'CHECKOUT',
       });
     } catch (err) {
-      this.props.setError('Unable to retrieve card info');
+      setError('Unable to retrieve card info');
       this.setState({
         stage: 'CHECKOUT',
       });
@@ -70,73 +73,79 @@ class SeatsCheckout extends Component {
   }
 
   calculatePrice() {
-    const base = this.state.plan ? this.state.plan.rate : null;
+    const { plan } = this.state;
+    const { invites, members: planMembers } = this.props;
+    const base = plan ? plan.rate : null;
     let price = 0;
     let members = 0;
-    if (Array.isArray(this.props.invites)) {
-      members = this.props.invites.length + 1;
+    if (Array.isArray(invites)) {
+      members = invites.length + 1;
       price += members * base;
-    } else if (Array.isArray(this.props.members)) {
-      members = this.props.members.length;
+    } else if (Array.isArray(planMembers)) {
+      members = planMembers.length;
       price += members * base;
     }
     return { members, price };
   }
 
   async checkout() {
+    const { source, plan, coupon } = this.state;
+    const { updateMembers, members, next, stripe, team_name, user, checkChargeable, invites, createTeam, team: propsTeam, setError } = this.props;
     // A source already exists
-    if (this.state.source) {
+    if (source) {
       this.setState({ stage: 'CREATE' });
-      await this.props.updateMembers(this.props.members, { plan: this.state.plan.id });
-      this.props.next();
+      await updateMembers(members, { plan: plan.id });
+      next();
       return;
     }
 
     try {
       this.setState({ stage: 'SOURCE' });
 
-      const { source } = await this.props.stripe.createSource({
+      const { source } = await stripe.createSource({
         type: 'card',
         metadata: {
-          team: this.props.team_name,
+          team: team_name,
         },
         owner: {
-          name: this.props.user.name,
-          email: this.props.user.email,
+          name: user.name,
+          email: user.email,
         },
       });
 
       if (!source) throw new Error('Invalid Card Information');
 
-      await this.props.checkChargeable(source);
+      await checkChargeable(source);
 
       this.setState({ stage: 'CREATE' });
-      if (Array.isArray(this.props.invites)) {
-        const team = await this.props.createTeam({
+      if (Array.isArray(invites)) {
+        const team = await createTeam({
           source,
-          invites: this.props.invites,
-          name: this.props.team.name,
-          image: this.props.team.image,
-          plan: this.state.plan.id,
-          coupon: this.state.coupon,
+          invites,
+          name: propsTeam.name,
+          image: propsTeam.image,
+          plan: plan.id,
+          coupon,
         });
 
-        this.props.next(team);
-      } else if (Array.isArray(this.props.members)) {
+        next(team);
+      } else if (Array.isArray(members)) {
         // use the checkout to update existing members
-        await this.props.updateMembers(this.props.members, { source, plan: this.state.plan.id, coupon: this.state.coupon });
-        this.props.next();
+        await updateMembers(members, { source, plan: plan.id, coupon });
+        next();
       } else {
         throw new Error('Invalid Member Format');
       }
     } catch (err) {
-      if (err) this.props.setError(err);
+      if (err) setError(err);
       this.setState({ stage: 'CHECKOUT' });
     }
   }
 
   render() {
-    if (this.state.stage === 'PLAN') {
+    const { stage, loading, coupon, coupon_toggle, source } = this.state;
+    const { width, collab, status, modify, prompt } = this.props;
+    if (stage === 'PLAN') {
       return (
         <div className="d-flex align-items-start justify-content-center mb-4 mx--2 w-100">
           <PricingCard plan="PROFESSIONAL" upgrade={(plan) => this.setState({ plan, stage: 'CHECKOUT' })} delay={300} />
@@ -146,21 +155,21 @@ class SeatsCheckout extends Component {
     }
 
     let loader;
-    if (this.state.loading) {
+    if (loading) {
       loader = <span className="loader text-lg" />;
-    } else if (STAGES[this.state.stage] && STAGES[this.state.stage].loader) {
+    } else if (STAGES[stage] && STAGES[stage].loader) {
       loader = (
         <>
           <span className="loader text-lg mb-3" />
           <br />
-          {STAGES[this.state.stage].loader}
+          {STAGES[stage].loader}
         </>
       );
     }
 
     const { price, members } = this.calculatePrice();
     return (
-      <div style={{ width: this.props.width || 400 }}>
+      <div style={{ width: width || 400 }}>
         {loader && (
           <div className="w-100 position-relative">
             <div className="text-center mt-5 position-absolute w-100">{loader}</div>
@@ -168,7 +177,7 @@ class SeatsCheckout extends Component {
         )}
         <div style={{ visibility: loader ? 'hidden' : 'visible' }} className="text-left">
           <div>
-            <div className="upgrade-plan pointer" onClick={this.props.collab}>
+            <div className="upgrade-plan pointer" onClick={collab}>
               <div className="super-center">
                 <img alt="collab" src="/images/icons/collaborate-selected.svg" height={64} width={64} className="mr-4" />
                 <div>
@@ -184,21 +193,21 @@ class SeatsCheckout extends Component {
               </div>
             </div>
           </div>
-          {!this.props.status && (
+          {!status && (
             <>
-              <Collapse isOpen={this.state.coupon_toggle}>
-                <Input name="coupon" value={this.state.coupon} onChange={this.handleChange} placeholder="Coupon Code" />
+              <Collapse isOpen={coupon_toggle}>
+                <Input name="coupon" value={coupon} onChange={this.handleChange} placeholder="Coupon Code" />
               </Collapse>
-              {this.state.source ? (
+              {source ? (
                 <>
                   <div className="space-between">
                     <label>Payment Details</label>
-                    <small className="btn-link" onClick={this.props.modify}>
+                    <small className="btn-link" onClick={modify}>
                       Modify
                     </small>
                   </div>
                   <input
-                    value={`[${this.state.source.brand}] XXXX-XXXX-XXXX-${this.state.source.last4}`}
+                    value={`[${source.brand}] XXXX-XXXX-XXXX-${source.last4}`}
                     className="disabled form-control"
                     style={{ height: 40 }}
                     disabled
@@ -208,8 +217,8 @@ class SeatsCheckout extends Component {
                 <>
                   <div className="space-between">
                     <label>Payment Details</label>
-                    <small className="btn-link" onClick={() => this.setState({ coupon_toggle: !this.state.coupon_toggle })}>
-                      {this.state.coupon_toggle ? 'Cancel Coupon' : 'I Have Coupon'}
+                    <small className="btn-link" onClick={() => this.setState({ coupon_toggle: !coupon_toggle })}>
+                      {coupon_toggle ? 'Cancel Coupon' : 'I Have Coupon'}
                     </small>
                   </div>
                   <div style={{ height: 40 }}>
@@ -229,7 +238,7 @@ class SeatsCheckout extends Component {
                 this.checkout();
               }}
             >
-              {this.props.prompt || 'Start Free Trial'}
+              {prompt || 'Start Free Trial'}
             </Button>
           </div>
         </div>

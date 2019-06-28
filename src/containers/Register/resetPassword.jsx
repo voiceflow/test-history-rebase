@@ -23,8 +23,9 @@ class ResetPassword extends Component {
 
   // eslint-disable-next-line react/no-deprecated
   componentWillMount() {
+    const { match } = this.props;
     axios
-      .get(`/user/reset/${this.props.match.params.id}`)
+      .get(`/user/reset/${match.params.id}`)
       .then(() => {
         this.setState({
           stage: 1,
@@ -52,8 +53,11 @@ class ResetPassword extends Component {
   };
 
   resetPassword(e) {
+    const { confirm, password } = this.state;
+    const { match } = this.props;
+
     e.preventDefault();
-    if (this.state.password !== this.state.confirm) {
+    if (password !== confirm) {
       return this.setState({
         error: 'Passwords do not match',
       });
@@ -61,8 +65,8 @@ class ResetPassword extends Component {
 
     this.setState({ stage: 2 });
     axios
-      .post(`/user/reset/${this.props.match.params.id}`, {
-        password: this.state.password,
+      .post(`/user/reset/${match.params.id}`, {
+        password,
       })
       .then(() => {
         this.setState({
@@ -79,7 +83,9 @@ class ResetPassword extends Component {
   }
 
   renderStage() {
-    switch (this.state.stage) {
+    const { stage, error, confirm, password } = this.state;
+
+    switch (stage) {
       case 0:
         return (
           <div className="super-center text-center">
@@ -94,9 +100,9 @@ class ResetPassword extends Component {
       case 1:
         return (
           <form onSubmit={this.resetPassword} className="w-100">
-            {this.state.error && (
+            {error && (
               <Alert color="danger" className="text-center">
-                {this.state.error}
+                {error}
               </Alert>
             )}
             <h5 className="text-muted">Please Enter Your New Password</h5>
@@ -118,7 +124,7 @@ class ResetPassword extends Component {
                 required
                 minLength="8"
                 className={cn({
-                  invalid: this.state.password !== this.state.confirm,
+                  invalid: password !== confirm,
                 })}
               />
             </FormGroup>
@@ -148,7 +154,7 @@ class ResetPassword extends Component {
         return (
           <div>
             <Alert color="danger" className="text-center">
-              {this.state.error}
+              {error}
             </Alert>
           </div>
         );

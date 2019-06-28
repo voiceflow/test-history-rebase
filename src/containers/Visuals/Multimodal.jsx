@@ -24,30 +24,33 @@ class Multimodal extends Component {
   }
 
   deleteDisplay(id) {
-    this.props.setConfirm({
+    const { setConfirm } = this.props;
+    setConfirm({
       text: (
         <Alert color="warning" className="mb-0">
           Deleting this display will delete it from your project and all versions of it.
         </Alert>
       ),
-      confirm: () => this.props.deleteDisplay(id),
+      confirm: () => deleteDisplay(id),
     });
   }
 
   render() {
-    if (this.props.loading) {
+    const { loading, skill_id, displays, history } = this.props;
+
+    if (loading) {
       return React.createElement(Spinner, { name: 'Displays' });
     }
     return (
       <div className="h-100 w-100">
         <React.Fragment>
-          {this.props.displays.length === 0 ? (
+          {displays.length === 0 ? (
             <div className="super-center w-100 h-100">
               <div className="empty-container">
                 <img src="/images/desktop.svg" alt="open safe" width="100" />
                 <p className="empty">No Visual Templates Exist</p>
                 <p className="empty-desc">Add viduals to your project and create stunning visuals with Alexa Presentation Language</p>
-                <Link to={`/visuals/${this.props.skill_id}/display/new`} className="no-underline">
+                <Link to={`/visuals/${skill_id}/display/new`} className="no-underline">
                   <Button isPrimary varient="contained">
                     New Display
                   </Button>
@@ -59,12 +62,12 @@ class Multimodal extends Component {
               <div className="products-container position-relative">
                 <div className="space-between w-100 px-3">
                   <h5 className="text-muted mb-0">Visuals</h5>
-                  <Link to={`/visuals/${this.props.skill_id}/display/new`} className="no-underline btn btn-primary">
+                  <Link to={`/visuals/${skill_id}/display/new`} className="no-underline btn btn-primary">
                     New Display
                   </Link>
                 </div>
                 <Masonry elementType="div" imagesLoadedOptions={{ columnWidth: '200', itemSelector: '.grid-item' }}>
-                  {this.props.displays.map((display) => {
+                  {displays.map((display) => {
                     let name = display.title.match(/\b(\w)/g);
                     if (name) {
                       name = name.join('');
@@ -85,12 +88,12 @@ class Multimodal extends Component {
                         }
                         onDelete={this.deleteDisplay}
                         deleteLabel="Delete Visual"
-                        onClick={() => this.props.history.push(`/visuals/${this.props.skill_id}/display/${display.display_id}`)}
+                        onClick={() => history.push(`/visuals/${skill_id}/display/${display.display_id}`)}
                         buttonLabel="Edit Visual"
                       />
                     );
                   })}
-                  <EmptyCard onClick={() => this.props.history.push(`/visuals/${this.props.skill_id}/display/new`)} />
+                  <EmptyCard onClick={() => history.push(`/visuals/${skill_id}/display/new`)} />
                 </Masonry>
               </div>
             </div>

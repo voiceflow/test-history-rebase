@@ -63,6 +63,8 @@ class GooglePublish extends Component {
   constructor(props) {
     super(props);
 
+    const { skill } = this.props;
+
     this.state = {
       auth_error: null,
       invocations: [],
@@ -71,7 +73,7 @@ class GooglePublish extends Component {
       publish_modal_open: false,
       google_token: '',
       google_id: '',
-      name: this.props.skill.name,
+      name: skill.name,
       credentials: false,
       locales: [],
       main_locale: null,
@@ -95,8 +97,9 @@ class GooglePublish extends Component {
   }
 
   togglePublish() {
+    const { publish_modal_open } = this.state;
     this.setState({
-      publish_modal_open: !this.state.publish_modal_open,
+      publish_modal_open: !publish_modal_open,
     });
   }
 
@@ -106,13 +109,14 @@ class GooglePublish extends Component {
 
   onPublish() {
     this.save(true, () => {
-      const s = this.state;
+      const { google_id } = this.state;
+      const { setError, project_id } = this.props;
 
-      if (!s.google_id) {
+      if (!google_id) {
         this.setState({
           publish_modal_open: false,
         });
-        this.props.setError('Please fill all required fields before publishing');
+        setError('Please fill all required fields before publishing');
         this.scrollToTop();
         return;
       }
@@ -120,16 +124,16 @@ class GooglePublish extends Component {
       this.setState({ stage: 2 });
 
       axios
-        .post(`/project/${this.props.project_id}/render`, { platform: 'google', google_id: s.google_id })
+        .post(`/project/${project_id}/render`, { platform: 'google', google_id })
         .then((res) => {
           this.setState({ stage: 3 });
           const new_version_data = res.data;
           axios
-            .post(`/project/${this.props.project_id}/version/${new_version_data.new_skill.skill_id}/google`)
+            .post(`/project/${project_id}/version/${new_version_data.new_skill.skill_id}/google`)
             .then((res) => {
               this.setState({
                 stage: 4,
-                google_id: res.data.google_id || this.state.google_id,
+                google_id: res.data.google_id || google_id,
                 uploaded: true,
               });
             })
@@ -139,7 +143,7 @@ class GooglePublish extends Component {
                 publish_modal_open: false,
               });
               const error_msg = err.response && err.response.data ? err.response.data : err;
-              this.props.setError(error_msg);
+              setError(error_msg);
             });
         })
         .catch((err) => {
@@ -148,7 +152,7 @@ class GooglePublish extends Component {
             publish_modal_open: false,
           });
           const error_msg = err.response && err.response.data ? err.response.data : err;
-          this.props.setError(error_msg);
+          setError(error_msg);
         });
     });
   }
@@ -160,9 +164,10 @@ class GooglePublish extends Component {
   }
 
   componentDidMount() {
+    const { project_id, skill_id } = this.props;
     try {
       googleAccessToken().then((g_token) => {
-        dialogflowToken(this.props.project_id).then((d_token) => {
+        dialogflowToken(project_id).then((d_token) => {
           this.setState({
             credentials: !!d_token,
             publish_modal_open: d_token && !g_token.token,
@@ -175,7 +180,7 @@ class GooglePublish extends Component {
     }
 
     axios
-      .get(`/skill/google/${this.props.skill_id}`)
+      .get(`/skill/google/${skill_id}`)
       .then((res) => {
         if (!_.isObject(res.data.publish_info)) {
           res.data.publish_info = {};
@@ -220,12 +225,14 @@ class GooglePublish extends Component {
   }
 
   componentWillUnmount() {
-    if (this.state.loaded && this.state.credentials) {
+    const { loaded, credentials } = this.state;
+    if (loaded && credentials) {
       this.save(true);
     }
   }
 
   save(publish = false, cb) {
+    const { setError, skill_id } = this.props;
     const s = this.state;
 
     const publish_info = {
@@ -238,7 +245,7 @@ class GooglePublish extends Component {
     };
 
     axios
-      .patch(`/skill/${this.props.skill_id}?platform=google${publish === true ? '&publish=true' : ''}`, publish_info)
+      .patch(`/skill/${skill_id}?platform=google${publish === true ? '&publish=true' : ''}`, publish_info)
       .then(() => {
         // eslint-disable-next-line callback-return
         if (typeof cb === 'function') cb();
@@ -246,12 +253,13 @@ class GooglePublish extends Component {
       .catch((err) => {
         // eslint-disable-next-line no-console
         console.log(err);
-        this.props.setError('Save Error, updates not saved');
+        setError('Save Error, updates not saved');
       });
   }
 
   handleChange(event) {
-    if (this.state.stage !== 11) {
+    const { stage } = this.state;
+    if (stage !== 11) {
       this.setState({
         [event.target.name]: event.target.value,
       });
@@ -259,19 +267,21 @@ class GooglePublish extends Component {
   }
 
   async verifyGoogleToken() {
+    const { google_token, publish_clicked } = this.state;
+    const { setConfirm, setError } = this.props;
     this.setState({
       stage: 1,
     });
     try {
-      await verifyGoogleToken(this.state.google_token);
+      await verifyGoogleToken(google_token);
       this.setState({
         stage: 2,
-        publish_modal_open: this.state.publish_clicked,
+        publish_modal_open: publish_clicked,
       });
-      if (this.state.publish_clicked) {
+      if (publish_clicked) {
         this.onPublish();
       } else {
-        this.props.setConfirm({
+        setConfirm({
           warning: false,
           text: (
             <Alert color="success" className="mb-0">
@@ -285,16 +295,18 @@ class GooglePublish extends Component {
       this.setState({
         stage: 0,
       });
-      this.props.setError(e);
+      setError(e);
     }
   }
 
   onUnlinkClick() {
-    this.props.setConfirm({
+    const { setConfirm } = this.props;
+    const { google_id } = this.state;
+    setConfirm({
       warning: true,
       text: (
         <Alert color="warning" className="mb-0">
-          Are you sure you want to unlink the google project {this.state.google_id}? You will be able to link a new google project afterwards.
+          Are you sure you want to unlink the google project {google_id}? You will be able to link a new google project afterwards.
         </Alert>
       ),
       confirm: () => {
@@ -304,6 +316,7 @@ class GooglePublish extends Component {
   }
 
   async unlinkGoogle() {
+    const { project_id, setError } = this.props;
     this.setState({
       unlink_loading: true,
     });
@@ -311,7 +324,7 @@ class GooglePublish extends Component {
     try {
       await axios.delete('/session/google/dialogflow_access_token', {
         data: {
-          project_id: this.props.project_id,
+          project_id,
         },
       });
 
@@ -328,25 +341,11 @@ class GooglePublish extends Component {
         ...reset_google_publish_info,
       });
     } catch (e) {
-      this.props.setError(e);
+      setError(e);
     }
 
     this.setState({
       unlink_loading: false,
-    });
-  }
-
-  onLocaleBtnClick(locale) {
-    let locales = this.state.locales;
-
-    if (locales.includes(locale)) {
-      locales = _.without(locales, locale);
-    } else {
-      locales.push(locale);
-    }
-
-    this.setState({
-      locales,
     });
   }
 
@@ -357,6 +356,8 @@ class GooglePublish extends Component {
   }
 
   async onDrop(files) {
+    const { project_id, setError } = this.props;
+    const { stage } = this.state;
     if (files.length === 1) {
       this.setState({ loading_creds: true });
 
@@ -367,17 +368,17 @@ class GooglePublish extends Component {
         try {
           const res = await axios.post('/session/google/verify_dialogflow_token', {
             token: text,
-            project_id: this.props.project_id,
+            project_id,
           });
 
           this.setState({
             credentials: true,
             loading_creds: false,
             google_id: res.data.google_id,
-            publish_modal_open: this.state.stage === 0,
+            publish_modal_open: stage === 0,
           });
         } catch (e) {
-          this.props.setError(e.response.data || e);
+          setError(e.response.data || e);
           this.setState({
             loading_creds: false,
             publish_modal_open: false,
@@ -389,26 +390,30 @@ class GooglePublish extends Component {
   }
 
   onPublishClicked() {
+    const { stage } = this.state;
+
     this.setState({
       publish_modal_open: true,
       publish_clicked: true,
     });
-    if (this.state.stage === 2) {
+    if (stage === 2) {
       this.onPublish();
     }
   }
 
   googleAuthTokenContent() {
-    if (this.state.stage !== 0 && this.state.stage !== 1) {
+    const { stage, google_token } = this.state;
+
+    if (stage !== 0 && stage !== 1) {
       return null;
     }
-    return (
-      <GoogleAuth onVerify={this.verifyGoogleToken} token={this.state.google_token} onChange={this.handleChange} loading={this.state.stage === 1} />
-    );
+    return <GoogleAuth onVerify={this.verifyGoogleToken} token={google_token} onChange={this.handleChange} loading={stage === 1} />;
   }
 
   publishedContent() {
-    if (this.state.stage !== 4) {
+    const { stage, google_link_user, google_id } = this.state;
+
+    if (stage !== 4) {
       return null;
     }
     return (
@@ -421,7 +426,7 @@ class GooglePublish extends Component {
         </span>
         <div className="my-3">
           <a
-            href={`https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.google_id}/simulator`}
+            href={`https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/simulator`}
             className="btn btn-primary mr-4"
             target="_blank"
             rel="noopener noreferrer"
@@ -442,26 +447,44 @@ class GooglePublish extends Component {
   }
 
   render() {
+    const {
+      stage,
+      google_link_user,
+      google_id,
+      loaded,
+      publish_modal_open,
+      uploaded,
+      id_collapse,
+      modify_url,
+      credentials,
+      loading_creds,
+      unlink_loading,
+      main_locale,
+      privacy_policy,
+      terms_and_cond,
+      live,
+    } = this.state;
+
     let modal_content = null;
 
-    if (this.state.stage === 2 || this.state.stage === 3 || this.state.stage === 6 || this.state.stage === 7) {
+    if (stage === 2 || stage === 3 || stage === 6 || stage === 7) {
       modal_content = (
         <div>
           <h1>
             <span className="loader" />
           </h1>
-          <p className="loading">{GOOGLE_PUBLISH_STAGES[this.state.stage]}</p>
+          <p className="loading">{GOOGLE_PUBLISH_STAGES[stage]}</p>
         </div>
       );
-    } else if (this.state.stage === 0 || this.state.stage === 1) {
+    } else if (stage === 0 || stage === 1) {
       modal_content = this.googleAuthTokenContent();
-    } else if (this.state.stage === 4) {
+    } else if (stage === 4) {
       modal_content = this.publishedContent();
     }
 
-    const googleConsoleUrl = `https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.google_id}/overview`;
+    const googleConsoleUrl = `https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/overview`;
 
-    if (!this.state.loaded)
+    if (!loaded)
       return (
         <div className="super-center h-100 w-100">
           <div className="text-center">
@@ -476,11 +499,11 @@ class GooglePublish extends Component {
     return (
       <React.Fragment>
         <Modal
-          isOpen={this.state.publish_modal_open}
+          isOpen={publish_modal_open}
           toggle={this.togglePublish}
           className="stage_modal"
           centered
-          size={[0, 1].includes(this.state.stage) ? 'md' : 'lg'}
+          size={[0, 1].includes(stage) ? 'md' : 'lg'}
           onClosed={this.closePublish}
         >
           <ModalHeader
@@ -488,7 +511,7 @@ class GooglePublish extends Component {
             className="w-100"
             header={
               <div className="d-flex justify-content-between" ref={this.privacyTop}>
-                <div>{GOOGLE_PUBLISH_STAGES[this.state.stage]}</div>
+                <div>{GOOGLE_PUBLISH_STAGES[stage]}</div>
               </div>
             }
           />
@@ -506,7 +529,7 @@ class GooglePublish extends Component {
           <hr className="mt-0" />
           <div className="row">
             <div className="col-2">
-              {this.state.credentials ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
+              {credentials ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
             </div>
             <div className="col-10">
               <p>Credentials File</p>
@@ -514,7 +537,7 @@ class GooglePublish extends Component {
           </div>
           <div className="row">
             <div className="col-2">
-              {this.state.main_locale ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
+              {main_locale ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
             </div>
             <div className="col-10">
               <p>Main Language</p>
@@ -525,36 +548,36 @@ class GooglePublish extends Component {
         <div className="subheader-page-container">
           <div>
             <div className="container pt-3">
-              {this.state.live ? (
+              {live ? (
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <h5 className="mb-0">This Action currently has a live version in production</h5>
                   </div>
                 </div>
               ) : null}
-              {this.state.google_id && this.state.uploaded ? (
+              {google_id && uploaded ? (
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <span>This Action is linked on the Google Actions Console</span>
-                    <b onClick={() => this.setState({ id_collapse: !this.state.id_collapse })} className="pointer">
-                      {this.state.id_collapse ? 'Hide' : 'More Info'}{' '}
+                    <b onClick={() => this.setState({ id_collapse: !id_collapse })} className="pointer">
+                      {id_collapse ? 'Hide' : 'More Info'}{' '}
                       <span style={{ width: '9px', display: 'inline-block', textAlign: 'right' }}>
-                        <i className={`fas fa-caret-left rotate${this.state.id_collapse ? ' fa-rotate--90' : ''}`} />
+                        <i className={`fas fa-caret-left rotate${id_collapse ? ' fa-rotate--90' : ''}`} />
                       </span>
                     </b>
                   </div>
-                  <Collapse isOpen={this.state.id_collapse}>
+                  <Collapse isOpen={id_collapse}>
                     <hr />
                     <span>Project ID | </span>
                     <a
-                      href={`https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.google_id}/simulator`}
+                      href={`https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/simulator`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <b>{this.state.google_id} </b>
+                      <b>{google_id} </b>
                     </a>
 
-                    {!this.state.modify_url && (
+                    {!modify_url && (
                       <span
                         onClick={() => {
                           this.setState({ modify_url: true });
@@ -565,12 +588,10 @@ class GooglePublish extends Component {
                       </span>
                     )}
 
-                    {this.state.modify_url && (
+                    {modify_url && (
                       <span className="ml-2 google-link-publish">
                         <a
-                          href={`https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${
-                            this.state.google_id
-                          }/simulator`}
+                          href={`https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/simulator`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -579,12 +600,12 @@ class GooglePublish extends Component {
                             <Input
                               className="google-link-input"
                               name="google_link_user"
-                              value={this.state.google_link_user}
+                              value={google_link_user}
                               onChange={this.handleChange}
                               onClick={(e) => e.preventDefault()}
                             />
                           </span>
-                          {`/project/${this.state.google_id}/simulator`}
+                          {`/project/${google_id}/simulator`}
                         </a>
                         <Tooltip
                           target="tooltip"
@@ -600,7 +621,7 @@ class GooglePublish extends Component {
                   </Collapse>
                 </div>
               ) : null}
-              {DISALLOW_CHANGES_STAGES.has(this.state.stage) ? (
+              {DISALLOW_CHANGES_STAGES.has(stage) ? (
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <h5 className="mb-0">This Action is currently in review so you cannot edit it.</h5>
@@ -640,17 +661,17 @@ class GooglePublish extends Component {
                           <Label className="publish-label">Dialogflow Credentials File *</Label>
                           <div>
                             <Dropzone
-                              className={`dropzone google-upload ${this.state.credentials ? 'disabled' : ''}`}
+                              className={`dropzone google-upload ${credentials ? 'disabled' : ''}`}
                               activeClassName="active"
                               rejectClassName="reject"
                               multiple={false}
                               disableClick={false}
                               maxSize={MAX_SIZE}
                               onDrop={this.onDrop}
-                              disabled={this.state.credentials}
+                              disabled={credentials}
                             >
                               <div>
-                                {!this.state.credentials && !this.state.loading_creds && (
+                                {!credentials && !loading_creds && (
                                   <div className="drop-child">
                                     Drag and Drop your file here
                                     <br />
@@ -661,12 +682,12 @@ class GooglePublish extends Component {
                                     </div>
                                   </div>
                                 )}
-                                {this.state.loading_creds && (
+                                {loading_creds && (
                                   <div className="d-flex publish-loader">
                                     <span className="loader align-self-center" />
                                   </div>
                                 )}
-                                {this.state.credentials && (
+                                {credentials && (
                                   <div className="align-self-center mx-2 d-flex">
                                     <i className="fal fa-check-circle text-success align-self-center mx-2" />
                                     <span>
@@ -683,7 +704,7 @@ class GooglePublish extends Component {
                         </div>
                       </div>
                     </FormGroup>
-                    {this.state.credentials && (
+                    {credentials && (
                       <FormGroup>
                         <div className="row">
                           <div className="col-3 publish-info">
@@ -693,19 +714,12 @@ class GooglePublish extends Component {
                           </div>
                           <div className="col-9">
                             <Label className="publish-label">Google Project ID</Label>
-                            <Input
-                              className="form-bg"
-                              type="text"
-                              name="project_id"
-                              placeholder="No Project ID Found"
-                              value={this.state.google_id}
-                              readOnly
-                            />
+                            <Input className="form-bg" type="text" name="project_id" placeholder="No Project ID Found" value={google_id} readOnly />
                           </div>
                         </div>
                       </FormGroup>
                     )}
-                    {this.state.credentials && (
+                    {credentials && (
                       <div className="row">
                         <div className="col-3 publish-info">
                           <p className="helper-text">
@@ -714,14 +728,14 @@ class GooglePublish extends Component {
                         </div>
                         <div className="col-9">
                           <Button className="w-100" color="danger" onClick={this.onUnlinkClick}>
-                            {this.state.unlink_loading ? <span className="loader" /> : 'Unlink Google Project'}
+                            {unlink_loading ? <span className="loader" /> : 'Unlink Google Project'}
                           </Button>
                         </div>
                       </div>
                     )}
                   </div>
                 </div>
-                {this.state.credentials && (
+                {credentials && (
                   <div className="big-settings-alignment-div">
                     <div className="mb-4">
                       <b>Languages</b>
@@ -739,7 +753,7 @@ class GooglePublish extends Component {
                             <Label className="publish-label">Main Language *</Label>
                             <ButtonGroup className="locale-button-group">
                               {FORMATTED_LOCALES.map((locale, i) => {
-                                const active = this.state.main_locale === locale.value ? 'active' : '';
+                                const active = main_locale === locale.value ? 'active' : '';
                                 return (
                                   <Button
                                     outline
@@ -771,8 +785,8 @@ class GooglePublish extends Component {
                           <Label className="publish-label">Additional Languages</Label>
                           <ButtonGroup className="locale-button-group">
                             {FORMATTED_LOCALES.map((locale, i) => {
-                              const disabled = this.state.main_locale === locale.value
-                              const active = this.state.locales.includes(locale.value) && !disabled ? "active" : "";
+                              const disabled = main_locale === locale.value
+                              const active = locales.includes(locale.value) && !disabled ? "active" : "";
                               return <Button outline color="primary" className={`locale-button ${active} ${disabled ? 'disabled' : ''}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value) }}>{locale.name}</Button>
                             })}
                           </ButtonGroup>
@@ -783,7 +797,7 @@ class GooglePublish extends Component {
                   </div>
                 )}
 
-                {this.state.credentials && (
+                {credentials && (
                   <div className="big-settings-alignment-div">
                     <div className="mb-4">
                       <b>Legal</b>
@@ -805,7 +819,7 @@ class GooglePublish extends Component {
                               name="privacy_policy"
                               readOnly
                               placeholder="Privacy Policy"
-                              value={this.state.privacy_policy}
+                              value={privacy_policy}
                             />
                           </div>
                         </div>
@@ -827,7 +841,7 @@ class GooglePublish extends Component {
                               name="terms_and_cond"
                               readOnly
                               placeholder="Terms and Conditions"
-                              value={this.state.terms_and_cond}
+                              value={terms_and_cond}
                             />
                           </div>
                         </div>
@@ -836,7 +850,7 @@ class GooglePublish extends Component {
                   </div>
                 )}
               </Form>
-              {this.state.credentials && (
+              {credentials && (
                 <div className="text-center">
                   <button variant="contained" className="btn-primary" onClick={this.onPublishClicked}>
                     Publish Action

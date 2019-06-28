@@ -58,41 +58,45 @@ class BasicAdvancedSettings extends Component {
   }
 
   toggleResumeFollowUp() {
+    const { resume_collapse } = this.state;
     this.setState({
-      resume_collapse: !this.state.resume_collapse,
+      resume_collapse: !resume_collapse,
     });
   }
 
   toggleRepeat(low, high) {
-    this.props.updateSkill('repeat', this.props.skill.repeat > low ? low : high);
+    const { updateSkill, skill } = this.props;
+    updateSkill('repeat', skill.repeat > low ? low : high);
   }
 
   handleUpdate(e) {
-    this.props.updateSkill(e.target.name, e.target.value);
+    const { updateSkill } = this.props;
+    updateSkill(e.target.name, e.target.value);
   }
 
   confirmDelete() {
-    this.props.setConfirm({
+    const { setConfirm, skill, history, setError, deleteProject } = this.props;
+    setConfirm({
       warning: true,
       text: (
         <Alert color="danger" className="mb-0">
-          WARNING: This action can not be undone, <i>{this.props.skill.name}</i> and all flows can not be recovered
+          WARNING: This action can not be undone, <i>{skill.name}</i> and all flows can not be recovered
         </Alert>
       ),
       confirm: () =>
-        this.props
-          .deleteProject(this.props.skill.project_id)
-          .then(() => this.props.history.push('/dashboard'))
+        deleteProject(skill.project_id)
+          .then(() => history.push('/dashboard'))
           .catch((err) => {
             // eslint-disable-next-line no-console
             console.log(err);
-            this.props.setError('Error Deleting Skill');
+            setError('Error Deleting Skill');
           }),
     });
   }
 
   toggleSwitch(e) {
-    this.props.updateSkill(e.target.name, !this.props.skill[e.target.name]);
+    const { updateSkill, skill } = this.props;
+    updateSkill(e.target.name, !skill[e.target.name]);
   }
 
   componentWillUnmount() {
@@ -100,33 +104,35 @@ class BasicAdvancedSettings extends Component {
   }
 
   saveSettings() {
-    if (this.state.hide_resume || !this.props.skill.resume_prompt.content) {
-      this.props.updateSkill('resume_prompt', null);
-    } else if (!this.state.resume_collapse) {
-      delete this.props.skill.resume_prompt.follow_content;
-      delete this.props.skill.resume_prompt.follow_voice;
+    const { hide_resume, resume_collapse } = this.state;
+    const { skill, updateSkill, setError } = this.props;
+    if (hide_resume || !skill.resume_prompt.content) {
+      updateSkill('resume_prompt', null);
+    } else if (!resume_collapse) {
+      delete skill.resume_prompt.follow_content;
+      delete skill.resume_prompt.follow_voice;
     }
 
     // Don't save if nothing has changed - save me some HTTP calls
-    if (_.isEqual(this.baseline, this.props.skill)) return;
-    // this.baseline = _.cloneDeep(this.props.skill)
+    if (_.isEqual(this.baseline, skill)) return;
+    // this.baseline = _.cloneDeep(skill)
 
-    if (!this.props.skill.error_prompt.content) {
-      this.props.updateSkill('error_prompt', null);
+    if (!skill.error_prompt.content) {
+      updateSkill('error_prompt', null);
     }
-    if (this.props.skill.alexa_events.trim()) {
+    if (skill.alexa_events.trim()) {
       try {
-        JSON.parse(this.props.skill.alexa_events);
+        JSON.parse(skill.alexa_events);
       } catch (err) {
-        this.props.setError(`Invalid JSON For Skill Events: ${err.message}`);
+        setError(`Invalid JSON For Skill Events: ${err.message}`);
         return;
       }
     } else {
-      this.props.updateSkill('alexa_events', null);
+      updateSkill('alexa_events', null);
     }
 
-    axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, this.props.skill).catch(() => {
-      this.props.setError('Settings Save Error');
+    axios.patch(`/skill/${skill.skill_id}?settings=1`, skill).catch(() => {
+      setError('Settings Save Error');
     });
   }
 
@@ -140,30 +146,33 @@ class BasicAdvancedSettings extends Component {
   }
 
   confirmOverwrite() {
-    this.props.setConfirm({
+    const { setConfirm, onSwapVersions, skill } = this.props;
+    setConfirm({
       warning: true,
       text: (
         <Alert color="danger" className="mb-0">
           WARNING: This action can not be undone and will replace your development version completely with your live version.
         </Alert>
       ),
-      confirm: this.props.onSwapVersions,
-      params: [this.props.skill.skill_id, true, this.overwriteSuccessModal],
+      confirm: onSwapVersions,
+      params: [skill.skill_id, true, this.overwriteSuccessModal],
     });
   }
 
   renderSettings() {
+    const { page, skill, updateSkillMerge, updateSkill, live_mode } = this.props;
+    const { show_overwrite_modal, overwrite_status, hide_resume, resume_collapse } = this.state;
     // check to make sure there are actual differences before making a server call
-    if (this.props.page === 'advanced') {
+    if (page === 'advanced') {
       // ADVANCED SETTINGS
       return (
         <React.Fragment>
           <DefaultModal
-            open={this.state.show_overwrite_modal}
+            open={show_overwrite_modal}
             toggle={() => {
               this.setState({ show_overwrite_modal: false });
             }}
-            content={this.state.overwrite_status}
+            content={overwrite_status}
             header="Overwrite Status"
           />
           <div className="settings-content clearfix mt-4">
@@ -172,9 +181,9 @@ class BasicAdvancedSettings extends Component {
               <div className="helper-text mb-2">What to say if the skill encounters an unexpected error</div>
               <Prompt
                 placeholder="Sorry, this skill has encountered an error"
-                voice={this.props.skill.error_prompt.voice}
-                content={this.props.skill.error_prompt.content}
-                updatePrompt={(prompt) => this.props.updateSkillMerge('error_prompt', prompt)}
+                voice={skill.error_prompt.voice}
+                content={skill.error_prompt.content}
+                updatePrompt={(prompt) => updateSkillMerge('error_prompt', prompt)}
               />
             </FormGroup>
           </div>
@@ -187,13 +196,13 @@ class BasicAdvancedSettings extends Component {
                   className="datasource_editor"
                   mode="json"
                   onChange={(value) => {
-                    this.props.updateSkill('alexa_events', value);
+                    updateSkill('alexa_events', value);
                   }}
                   fontSize={14}
                   showPrintMargin={false}
                   showGutter={true}
                   highlightActiveLine={true}
-                  value={this.props.skill.alexa_events}
+                  value={skill.alexa_events}
                   editorProps={{ $blockScrolling: true }}
                   setOptions={{
                     enableBasicAutocompletion: true,
@@ -207,7 +216,7 @@ class BasicAdvancedSettings extends Component {
               </div>
             </FormGroup>
           </div>
-          {this.props.live_mode && (
+          {live_mode && (
             <div className="settings-content clearfix">
               <FormGroup>
                 <Label>Overwrite Development Version with Live Version</Label>
@@ -243,7 +252,7 @@ class BasicAdvancedSettings extends Component {
         <div className="settings-content clearfix mt-4">
           <FormGroup>
             <Label>Project Name</Label>
-            <Input className="form-bg mb-4" name="name" value={this.props.skill.name} onChange={this.handleUpdate} />
+            <Input className="form-bg mb-4" name="name" value={skill.name} onChange={this.handleUpdate} />
           </FormGroup>
           <hr />
           <FormGroup>
@@ -252,22 +261,22 @@ class BasicAdvancedSettings extends Component {
               <div className="row mb-3 space-between">
                 <div className="helper-text col-10">Users will be able to say repeat at any choice/interaction and the dialog will repeat</div>
                 <div className="col-2">
-                  <Toggle icons={false} checked={this.props.skill.repeat > 0} onChange={() => this.toggleRepeat(0, 100)} />
+                  <Toggle icons={false} checked={skill.repeat > 0} onChange={() => this.toggleRepeat(0, 100)} />
                 </div>
               </div>
             </div>
 
-            {this.props.skill.repeat > 0 && (
+            {skill.repeat > 0 && (
               <React.Fragment>
                 <Label className="mb-1">Complete Repeat</Label>
                 <div className="row">
                   <div className="helper-text col-10">
-                    {this.props.skill.repeat > 1
+                    {skill.repeat > 1
                       ? 'When the user asks to repeat, everything after the last choice/interaction block will repeat'
                       : 'When the user asks to repeat, only the last speak block before the choice/interaction will be repeated'}
                   </div>
                   <div className="col-2">
-                    <Toggle icons={false} checked={this.props.skill.repeat > 1} onChange={() => this.toggleRepeat(1, 100)} />
+                    <Toggle icons={false} checked={skill.repeat > 1} onChange={() => this.toggleRepeat(1, 100)} />
                   </div>
                 </div>
               </React.Fragment>
@@ -279,15 +288,15 @@ class BasicAdvancedSettings extends Component {
             <Label className="mb-1">Restart Every Session</Label>
             <div className="row">
               <div className="helper-text mb-2 col-10">
-                {this.props.skill.restart
+                {skill.restart
                   ? 'The project will restart from the beginning every time the user starts a session'
                   : 'The project will resume from the last block the user was on before quitting'}
               </div>
               <div className="col-2">
-                <Toggle icons={false} name="restart" checked={this.props.skill.restart} onChange={this.toggleSwitch} />
+                <Toggle icons={false} name="restart" checked={skill.restart} onChange={this.toggleSwitch} />
               </div>
             </div>
-            {!this.props.skill.restart && (
+            {!skill.restart && (
               <React.Fragment>
                 <Label className="mb-1">Resume Prompt</Label>
                 <div className="row">
@@ -295,38 +304,38 @@ class BasicAdvancedSettings extends Component {
                   <div className="col-2">
                     <Toggle
                       name="restart"
-                      checked={!this.state.hide_resume}
+                      checked={!hide_resume}
                       onChange={() =>
                         this.setState({
-                          hide_resume: !this.state.hide_resume,
+                          hide_resume: !hide_resume,
                         })
                       }
                       icons={false}
                     />
                   </div>
                 </div>
-                {!this.state.hide_resume && (
+                {!hide_resume && (
                   <React.Fragment>
                     <Prompt
                       placeholder="Would you like to resume your current story, yes or no?"
-                      voice={this.props.skill.resume_prompt.voice}
-                      content={this.props.skill.resume_prompt.content}
-                      updatePrompt={(prompt) => this.props.updateSkillMerge('resume_prompt', prompt)}
+                      voice={skill.resume_prompt.voice}
+                      content={skill.resume_prompt.content}
+                      updatePrompt={(prompt) => updateSkillMerge('resume_prompt', prompt)}
                     />
-                    <Collapse isOpen={this.state.resume_collapse} className="pt-3">
+                    <Collapse isOpen={resume_collapse} className="pt-3">
                       <Label>Resume Follow Up</Label>
                       <div className="helper-text mb-2">Add a response when the user wants to resume</div>
                       <Prompt
                         placeholder="Would you like to resume your current story, yes or no?"
                         voice_id="follow_voice"
                         content_id="follow_content"
-                        voice={this.props.skill.resume_prompt.follow_voice}
-                        content={this.props.skill.resume_prompt.follow_content}
-                        updatePrompt={(prompt) => this.props.updateSkillMerge('resume_prompt', prompt)}
+                        voice={skill.resume_prompt.follow_voice}
+                        content={skill.resume_prompt.follow_content}
+                        updatePrompt={(prompt) => updateSkillMerge('resume_prompt', prompt)}
                       />
                     </Collapse>
                     <Button isClear className="mt-3" onClick={this.toggleResumeFollowUp}>
-                      {this.state.resume_collapse ? 'Cancel Follow Up' : 'Resume Follow Up'}
+                      {resume_collapse ? 'Cancel Follow Up' : 'Resume Follow Up'}
                     </Button>
                   </React.Fragment>
                 )}

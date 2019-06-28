@@ -38,7 +38,7 @@ module.exports = {
     'react/prop-types': 'warn',
     'import/no-unresolved': 'warn',
     'react/jsx-curly-brace-presence': 'warn',
-    'react/destructuring-assignment': 'warn',
+    'react/destructuring-assignment': ['error', 'always', { ignoreClassFields: true }],
     'optimize-regex/optimize-regex': 'warn',
     'lodash/prefer-lodash-typecheck': 'warn',
     'simple-import-sort/sort': 'warn',

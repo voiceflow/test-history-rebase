@@ -8,7 +8,8 @@ import { Button, ButtonGroup } from 'reactstrap';
 
 import BackupSettings from './Backups';
 // SETTING PAGES
-import BasicAdvancedSettings from './BasicAdvanced';
+import BasicSettings from './Basic';
+import AdvancedSettings from './Advanced';
 import DiscoverySettings from './Discovery';
 
 const TABS = ['basic', 'advanced', 'discovery', 'backups'];
@@ -39,7 +40,9 @@ class Settings extends Component {
 
         if (!cb) {
           this.props.updateDiagramRoot(res.data.diagram);
-          this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`);
+          this.props.history.push(
+            `/canvas/${res.data.skill_id}/${res.data.diagram}`
+          );
         } else {
           // eslint-disable-next-line callback-return
           cb(true);
@@ -65,12 +68,25 @@ class Settings extends Component {
 
     switch (this.props.page) {
       case 'basic':
+        return (
+          <BasicSettings {...this.props} onSwapVersions={this.onSwapVersions} />
+        );
       case 'advanced':
-        return <BasicAdvancedSettings {...this.props} onSwapVersions={this.onSwapVersions} />;
+        return (
+          <AdvancedSettings
+            {...this.props}
+            onSwapVersions={this.onSwapVersions}
+          />
+        );
       case 'discovery':
         return <DiscoverySettings {...this.props} />;
       case 'backups':
-        return <BackupSettings {...this.props} onSwapVersions={this.onSwapVersions} />;
+        return (
+          <BackupSettings
+            {...this.props}
+            onSwapVersions={this.onSwapVersions}
+          />
+        );
       default:
         return null;
     }
@@ -88,7 +104,10 @@ class Settings extends Component {
                     key={tab}
                     onClick={() => this.switchTab(tab)}
                     outline={this.props.page !== tab}
-                    disabled={this.props.page === tab || (this.props.live_mode && tab === 'backups')}
+                    disabled={
+                      this.props.page === tab ||
+                      (this.props.live_mode && tab === 'backups')
+                    }
                   >
                     {_.startCase(tab)}
                   </Button>

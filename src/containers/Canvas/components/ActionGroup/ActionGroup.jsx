@@ -406,7 +406,7 @@ export class ActionGroup extends PureComponent {
     const { inv_name: stateInvName } = this.state;
     const { skill, updateSkill } = this.props;
 
-    const inv_name = stateInvName ? stateInvName : skill.inv_name;
+    const inv_name = stateInvName || skill.inv_name;
     try {
       await axios.patch(`/skill/${skill.skill_id}?inv_name=1`, { inv_name });
       updateSkill('inv_name', inv_name);
@@ -424,7 +424,7 @@ export class ActionGroup extends PureComponent {
     if (vendors.length === 0) {
       return this.updateAlexaStage(6);
     }
-    const inv_name = stateInvName ? stateInvName : skill.inv_name;
+    const inv_name = stateInvName || skill.inv_name;
     const error = invNameError(inv_name, skill.locales);
     if (error) {
       this.setState(
@@ -749,8 +749,8 @@ export class ActionGroup extends PureComponent {
   };
 
   renderAlexaBody = (modal) => {
-    const { skill, updateSkill, saveSkill } = this.props;
-    const { stage, amzn_error, upload_error, inv_name, flash, is_first_upload } = this.state;
+    const { skill, updateSkill, saveSkill, updateSkillLocale } = this.props;
+    const { stage, amzn_error, upload_error, inv_name, flash, is_first_upload, inv_name_error } = this.state;
     // I had to get this out really fast the states are all REALLY fucking wack
     if (!skill.locales) {
       return null;
@@ -1097,7 +1097,18 @@ export class ActionGroup extends PureComponent {
   };
 
   render() {
-    const { updateModal, should_pop_confetti, updateLiveModal, editName, share, togglingPreview, show_upload_prompt, vendors_open } = this.state;
+    const {
+      updateModal,
+      should_pop_confetti,
+      updateLiveModal,
+      editName,
+      share,
+      togglingPreview,
+      show_upload_prompt,
+      vendors_open,
+      stage,
+      is_first_upload,
+    } = this.state;
     const {
       skill,
       diagram_id,
@@ -1240,7 +1251,7 @@ export class ActionGroup extends PureComponent {
                     className={cn({
                       'btn-successful': saved,
                       unsaved: !saved,
-                      saving: saving,
+                      saving,
                     })}
                     onClick={onSave}
                   >

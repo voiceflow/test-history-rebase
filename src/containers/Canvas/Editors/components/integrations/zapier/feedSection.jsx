@@ -22,13 +22,15 @@ class FeedSection extends Component {
   }
 
   checkCompletion() {
+    const { integrationsUser } = this.props;
+    const { completed: stateCompleted } = this.state;
     let completed = false;
 
-    if (this.props.integrationsUser) {
+    if (integrationsUser) {
       completed = true;
     }
 
-    if (completed !== this.state.completed) {
+    if (completed !== stateCompleted) {
       this.setState({
         completed,
       });
@@ -36,10 +38,11 @@ class FeedSection extends Component {
   }
 
   selectUser(user) {
+    const { integration_data, userChanged: propsUserChanged, updateIntegrationData, showNextSection } = this.props;
     if (!user) return;
 
-    const userChanged = user.user_id !== (this.props.integration_data.user && this.props.integration_data.user.user_id);
-    const newIntegrationData = update(this.props.integration_data, {
+    const userChanged = user.user_id !== (integration_data.user && integration_data.user.user_id);
+    const newIntegrationData = update(integration_data, {
       user: {
         $set: user,
       },
@@ -48,51 +51,63 @@ class FeedSection extends Component {
     this.setState({
       completed: true,
     });
-    if (this.props.userChanged && userChanged) {
-      this.props.updateIntegrationData(newIntegrationData, () => this.props.userChanged());
+    if (propsUserChanged && userChanged) {
+      updateIntegrationData(newIntegrationData, () => propsUserChanged());
     } else {
-      this.props.updateIntegrationData(newIntegrationData);
+      updateIntegrationData(newIntegrationData);
     }
-    this.props.showNextSection();
+    showNextSection();
   }
 
   deleteUser(ev, user) {
+    const {
+      setConfirm,
+      clearModal,
+      deleteUser,
+      selected_integration,
+      user: propsUser,
+      skill_id,
+      integration_user_error,
+      setError,
+      integration_data,
+      updateIntegrationData,
+    } = this.props;
     // TODO: fix
     ev.stopPropagation();
 
-    this.props.setConfirm({
+    setConfirm({
       text: 'Are you sure you want to remove this trigger?',
       confirm: async () => {
-        this.props.clearModal();
+        clearModal();
 
         try {
-          await this.props.deleteUser(this.props.selected_integration, {
+          await deleteUser(selected_integration, {
             user,
-            creator_id: this.props.user.creator_id,
-            skill_id: this.props.skill_id,
+            creator_id: propsUser.creator_id,
+            skill_id: skill_id,
           });
-          if (this.props.integration_user_error) {
-            this.props.setError(this.props.integration_user_error);
+          if (integration_user_error) {
+            setError(integration_user_error);
           } else {
-            this.props.setConfirm({
+            setConfirm({
               text: 'Trigger deleted successfully.',
               confirm: () => {
-                this.props.clearModal();
+                clearModal();
                 this.forceUpdate();
               },
             });
-            const newIntegrationData = update(this.props.integration_data, {
+            const newIntegrationData = update(integration_data, {
               user: {
                 $set: null,
               },
             });
-            this.props.updateIntegrationData(newIntegrationData, () => {
+            updateIntegrationData(newIntegrationData, () => {
               this.forceUpdate();
               this.checkCompletion();
             });
           }
         } catch (e) {
-          this.props.setError(e);
+          setError(e);
         }
       },
     });
@@ -104,46 +119,64 @@ class FeedSection extends Component {
     });
   }
 
-  toggleAddUserModal = () =>
+  toggleAddUserModal = () => {
+    const { add_user_modal } = this.state;
     this.setState({
-      add_user_modal: !this.state.add_user_modal,
+      add_user_modal: !add_user_modal,
     });
+  };
 
   render() {
-    const integration = this.props.selected_integration;
-    const users = this.props.integration_users[integration];
-    const user = this.props.integrationsUser;
+    const {
+      selected_integration,
+      integration_users,
+      integrationsUser,
+      user_modal,
+      action_data,
+      setError,
+      integration_user_error,
+      updateIntegrationData,
+      skill_id,
+      toggleSection,
+      open,
+      integration_data,
+      integration_users_loading: props_integration_users_loading,
+    } = this.props;
+    const { add_user_modal, integration_users_loading, completed } = this.state;
+    const integration = selected_integration;
+    const users = integration_users[integration];
+    const user = integrationsUser;
 
-    const AddUserModal = this.props.user_modal;
+    const AddUserModal = user_modal;
 
-    if (!this.props.action_data) return null;
+    if (!action_data) return null;
 
     return (
       <>
         {AddUserModal && (
           <DefaultModal
-            open={this.state.add_user_modal && !this.state.integration_users_loading}
+            open={add_user_modal && !integration_users_loading}
             header="Create a New Trigger"
             toggle={this.toggleAddUserModal}
             content={
               <AddUserModal
                 toggle={this.toggleAddUserModal}
-                onError={(e) => this.props.setError(e)}
+                onError={(e) => setError(e)}
                 onSuccess={() => {
-                  if (this.props.integration_user_error) {
-                    this.props.setError(this.props.integration_user_error);
+                  if (integration_user_error) {
+                    setError(integration_user_error);
                     return;
                   }
 
-                  const integration = this.props.selected_integration;
-                  const users = this.props.integration_users[integration];
+                  const integration = selected_integration;
+                  const users = integration_users[integration];
 
-                  const newIntegrationData = update(this.props.integration_data, {
+                  const newIntegrationData = update(integration_data, {
                     user: {
                       $set: users[users.length - 1],
                     },
                   });
-                  this.props.updateIntegrationData(newIntegrationData);
+                  updateIntegrationData(newIntegrationData);
                   this.setState({
                     add_user_modal: false,
                     completed: true,
@@ -154,30 +187,30 @@ class FeedSection extends Component {
                     add_user_modal: false,
                   })
                 }
-                skill_id={this.props.skill_id}
+                skill_id={skill_id}
               />
             }
             hideFooter={true}
             noPadding={true}
           />
         )}
-        <div className="d-flex flex-column section-title-container" onClick={() => this.props.toggleSection()}>
+        <div className="d-flex flex-column section-title-container" onClick={() => toggleSection()}>
           <div className="integrations-section-title text-muted">
             Start Trigger
             <span
               className={cn('action-selected', {
                 'action-visible': _.get(user, ['user_data', 'name']),
               })}
-              onClick={() => this.props.toggleSection()}
+              onClick={() => toggleSection()}
             >
               {_.get(user, ['user_data', 'name'])}
             </span>
-            {this.state.completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
+            {completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
           </div>
         </div>
-        <Collapse isOpen={this.props.open} className="w-100">
+        <Collapse isOpen={open} className="w-100">
           <div className="d-flex align-items-center flex-column w-100 actions-section">
-            {!this.props.integration_users_loading &&
+            {!props_integration_users_loading &&
               users &&
               users.map((e, i) => {
                 return (
@@ -198,7 +231,7 @@ class FeedSection extends Component {
                   </div>
                 );
               })}
-            {this.props.integration_users_loading && (
+            {props_integration_users_loading && (
               <div className="text-center my-4">
                 <div className="loader text-lg" />
               </div>

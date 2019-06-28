@@ -113,10 +113,10 @@ class TestModal extends React.Component {
   }
 
   removeAudio() {
-    const { audio } = this.state;
+    const { audio: stateAudio } = this.state;
     return new Promise((resolve) => {
-      if (audio) {
-        const audio = audio;
+      if (stateAudio) {
+        const audio = stateAudio;
         audio.onended = null;
         audio.ontimeupdate = null;
         audio.onloadedmetadata = null;
@@ -154,8 +154,8 @@ class TestModal extends React.Component {
       testing: true,
       skill_id: 'TEST_SKILL',
       globals: [{}],
-      repeat: repeat ? repeat : 100,
-      platform: platform,
+      repeat: repeat || 100,
+      platform,
     };
 
     // Inject New Globals in if updated
@@ -305,7 +305,7 @@ class TestModal extends React.Component {
   }
 
   addDebugBlock(block) {
-    const { inputs, audio } = this.state;
+    const { inputs } = this.state;
 
     const text = block.children && block.children[0] && block.children[0].content ? block.children[0].content : '';
 
@@ -320,6 +320,7 @@ class TestModal extends React.Component {
 
   async updateState(start = false) {
     const { slots, testing_info } = this.props;
+    const { audio } = this.state;
 
     const data = this.story_state;
 
@@ -481,7 +482,6 @@ class TestModal extends React.Component {
         input: '',
       });
     } else {
-      const inputs = inputs;
       if (intent) {
         this.story_state.intent = intent;
       } else {
@@ -582,7 +582,7 @@ class TestModal extends React.Component {
   }
 
   render() {
-    const { started, inputs, debug, ended, audioplayer, selected_line, nodes } = this.state;
+    const { started, inputs, debug, ended, audioplayer, selected_line, nodes, input } = this.state;
     const { open, toggle, testing_info, flow } = this.props;
     return (
       <Modal isOpen={open} size="lg">

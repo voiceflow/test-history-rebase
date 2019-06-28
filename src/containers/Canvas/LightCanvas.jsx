@@ -26,6 +26,8 @@ class LightCanvas extends Component {
   constructor(props) {
     super(props);
 
+    const { preview } = this.props;
+
     this.repaint = this.repaint.bind(this);
     this.loadDiagram = this.loadDiagram.bind(this);
     this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this);
@@ -33,7 +35,7 @@ class LightCanvas extends Component {
     // build diagram tree function from child
     this.buildDiagrams = null;
     // preview mode
-    this.preview = !!this.props.preview;
+    this.preview = !!preview;
 
     const engine = new SRD.DiagramEngine();
     engine.registerLabelFactory(new SRD.DefaultLabelFactory());
@@ -72,7 +74,8 @@ class LightCanvas extends Component {
 
   // eslint-disable-next-line react/no-deprecated
   componentWillMount() {
-    this.onLoadId(this.props.diagram_id);
+    const { diagram_id } = this.props;
+    this.onLoadId(diagram_id);
   }
 
   zoom(delta) {
@@ -119,15 +122,18 @@ class LightCanvas extends Component {
   }
 
   onDiagramUnfocus() {
-    this.state.engine.getDiagramModel().clearSelection();
+    const { engine } = this.state;
+    engine.getDiagramModel().clearSelection();
   }
 
   repaint() {
-    this.state.engine.repaintCanvas();
+    const { engine } = this.state;
+    engine.repaintCanvas();
   }
 
   loadDiagram(diagram) {
-    const engine = this.state.engine;
+    const { engine, diagrams, global_variables } = this.state;
+    const { preview, setError } = this.props;
     const model = new SRD.DiagramModel();
     model.setLocked(true);
 
@@ -138,12 +144,12 @@ class LightCanvas extends Component {
       // eslint-disable-next-line no-console
       console.log(e);
     }
-    if (this.props.preview) {
+    if (preview) {
       model.setLocked(true);
     }
     if (diagram_json) {
       // CONVERT DEPRECATED BLOCKS
-      diagram_json = convertDiagram(diagram_json, this.state.diagrams);
+      diagram_json = convertDiagram(diagram_json, diagrams);
 
       // This should not happen
       if (diagram_json.nodes.length === 0) {
@@ -176,7 +182,7 @@ class LightCanvas extends Component {
       const variables = [];
       if (Array.isArray(diagram.variables)) {
         diagram.variables.forEach((v) => {
-          if (!variables.includes(v) && !this.state.global_variables.includes(v)) {
+          if (!variables.includes(v) && !global_variables.includes(v)) {
             variables.push(v);
           }
         });
@@ -192,13 +198,15 @@ class LightCanvas extends Component {
 
       this.setState({ saved: true });
     } else {
-      this.props.setError('Could Not Open Project - Corrupted File');
+      setError('Could Not Open Project - Corrupted File');
     }
   }
 
   onLoadDiagrams() {
+    const { skill } = this.state;
+    const { diagram_id, setError } = this.props;
     axios
-      .get(`/skill/${this.state.skill.skill_id}/diagrams`, {
+      .get(`/skill/${skill.skill_id}/diagrams`, {
         headers: { Pragma: 'no-cache' },
       })
       .then((res) => {
@@ -220,13 +228,13 @@ class LightCanvas extends Component {
             }),
           },
           () => {
-            this.onLoadId(this.props.diagram_id);
+            this.onLoadId(diagram_id);
           }
         );
       })
       .catch((err) => {
         console.error(err.response);
-        this.props.setError('Could Not Retrieve Project Diagrams');
+        setError('Could Not Retrieve Project Diagrams');
       });
   }
 
@@ -247,11 +255,13 @@ class LightCanvas extends Component {
   }
 
   render() {
-    const diagram = _.find(this.state.diagrams, ['id', this.props.diagram_id]);
+    const { diagram_id } = this.props;
+    const { diagrams, engine, loading_diagram } = this.state;
+    const diagram = _.find(diagrams, ['id', diagram_id]);
     return (
       <React.Fragment>
         <div id="lightcanvas">
-          {this.state.loading_diagram && (
+          {loading_diagram && (
             <div id="loading-diagram">
               <div className="text-center">
                 <h5 className="text-muted mb-2">Loading Preview</h5>
@@ -259,7 +269,7 @@ class LightCanvas extends Component {
               </div>
             </div>
           )}
-          <div key={this.props.diagram_id} id="diagram" onDrop={this.onDrop} onDragOver={(e) => e.preventDefault()} onClick={this.clickDiagram}>
+          <div key={diagram_id} id="diagram" onDrop={this.onDrop} onDragOver={(e) => e.preventDefault()} onClick={this.clickDiagram}>
             <div id="widget-bar">
               <ButtonGroup>
                 <Button isWhiteCirc onClick={() => this.zoom(1000)} className="round-left">
@@ -280,7 +290,7 @@ class LightCanvas extends Component {
                 addRemoveListener: _.noop,
                 disabled: true,
               }}
-              diagramEngine={this.state.engine}
+              diagramEngine={engine}
               clickDiagram={_.noop}
               allowLooseLinks={false}
               locked={true}

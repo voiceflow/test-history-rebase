@@ -26,9 +26,9 @@ function makeNode(selected, pos, portMap) {
     if (port.hidden) {
       newPort.setHidden(port.hidden);
     }
-    
+
     const pKey = `${selected.id}:${port.id}`;
-    
+
     if (portMap[pKey]) {
       if (!port.in) {
         portMap[pKey].setSourcePort(newPort);
@@ -152,7 +152,7 @@ class Clipboard extends React.Component {
       newLink.setSelected(true);
 
       portMap[`${link.source}:${link.sourcePort}`] = newLink;
-      
+
       const pKey = `${link.target}:${link.targetPort}`;
       if (!portMap[pKey]) {
         portMap[pKey] = [];

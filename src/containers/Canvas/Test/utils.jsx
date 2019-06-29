@@ -1,6 +1,5 @@
 import { parse } from 'html-parse-stringify';
 import _ from 'lodash';
-import { RegexVariables } from 'utils/variable';
 
 export const getDiagramIntents = (diagramEngine, results, testing_info) => {
   const detected_intents = [];
@@ -47,16 +46,9 @@ const getAudioMeta = (audio) => {
   });
 };
 
-export const getUserTestOutputs = async (data, trace, res, variableMapping) => {
+export const getUserTestOutputs = async (newState, trace) => {
   const dom = [];
   let delay = 0;
-  if (data.input) {
-    const outputBlock = {
-      self: data.input,
-      delay,
-    };
-    dom.push(outputBlock);
-  }
   let idx = 0;
   // eslint-disable-next-line no-restricted-syntax
   for (const block of trace) {
@@ -75,10 +67,10 @@ export const getUserTestOutputs = async (data, trace, res, variableMapping) => {
     if (!block.output) continue;
     const type = block.block;
     const parsed = parse(block.output)[0];
-    if (idx === 0 && type === 'Choice' && res.ending) {
+    if (idx === 0 && type === 'Choice' && newState.ending) {
       const outputBlock = {
         node: block.line.id,
-        diagram: !_.isEmpty(res.diagrams) && _.last(res.diagrams).id,
+        diagram: !_.isEmpty(newState.diagrams) && _.last(newState.diagrams).id,
         type,
         delay,
       };
@@ -115,8 +107,7 @@ export const getUserTestOutputs = async (data, trace, res, variableMapping) => {
         if (child.name === 'audio') {
           outputBlock.text = 'Audio File';
         } else {
-          const replaced = RegexVariables(child.content || child.name, variableMapping);
-          outputBlock.text = replaced;
+          outputBlock.text = child.content || child.name;
         }
         let duration = delay;
         outputBlock.delay = delay;
@@ -238,4 +229,48 @@ export const getUserTestOutputs = async (data, trace, res, variableMapping) => {
     idx++;
   }
   return dom;
+};
+
+const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text']);
+
+export const recurse = (tag, index = 0) => {
+  if (tag.type === 'text') {
+    if (!tag.content.trim()) {
+      return null;
+    }
+    return tag.content;
+  }
+  if (!valid_tags.has(tag.name)) {
+    return null;
+  }
+
+  if (tag.children && tag.children.length > 0) {
+    const returnString = [];
+    tag.children.forEach((t, i) => {
+      returnString.push(recurse(t, i));
+    });
+
+    if (tag.name === 's') {
+      return returnString;
+    }
+    if (tag.name === 'voice') {
+      return (
+        <React.Fragment key={index}>
+          <span className="text-muted">{tag.attrs.name}:</span>
+          <br />
+          {returnString}
+        </React.Fragment>
+      );
+    }
+    return (
+      <span key={index} className="tag-wrap">
+        <span className="tag-span">{tag.name}</span> {returnString}
+      </span>
+    );
+  }
+  return (
+    <span key={index} className="tag-wrap tag-span">
+      ({tag.name})
+    </span>
+  );
 };

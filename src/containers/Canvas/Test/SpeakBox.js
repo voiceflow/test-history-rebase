@@ -2,30 +2,28 @@ import cn from 'classnames';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
+import moment from 'moment';
 
 class SpeakBox extends React.Component {
   timer = null;
 
   state = {
     shouldRender: false,
-    renderTime: '00:00',
   };
 
   componentDidMount() {
-    const { chat, setAudio } = this.props;
+    const { chat } = this.props;
     const { audio, delay } = chat;
     this.timer = setTimeout(() => {
       this.centerNode();
       if (audio) {
         audio.play();
-        setAudio(audio);
       }
       if (chat.diagram) {
         this.props.enterFlow(chat.diagram, false);
       }
       this.setState({
         shouldRender: true,
-        renderTime: this.props.time,
       });
     }, delay);
   }
@@ -34,22 +32,22 @@ class SpeakBox extends React.Component {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if (this.props.lastNode) {
-      this.props.lastNode.setFocused(false);
-      this.props.lastNode.setSelected(false);
+    if (this.lastNode) {
+      this.lastNode.setFocused(false);
+      this.lastNode.setSelected(false);
     }
   }
 
   centerNode = () => {
-    const { diagramEngine, lastNode, setLastNode, node } = this.props;
+    const { diagramEngine, node } = this.props;
     const model = diagramEngine.getDiagramModel();
     const nodeModel = model.getNode(node);
     if (nodeModel) {
-      if (lastNode) {
+      if (this.lastNode) {
         lastNode.setSelected(false);
         lastNode.setFocused(false);
       }
-      setLastNode(nodeModel);
+      this.lastNode = nodeModel;
       nodeModel.setSelected(true);
       nodeModel.setFocused(true);
       model.setZoomLevel(80);
@@ -63,9 +61,9 @@ class SpeakBox extends React.Component {
   };
 
   render() {
-    const { chat } = this.props;
+    const { chat, submit } = this.props;
     const { text, audioType } = chat;
-    const { shouldRender, renderTime } = this.state;
+    const { shouldRender } = this.state;
     if (!shouldRender) {
       return null;
     }
@@ -84,7 +82,7 @@ class SpeakBox extends React.Component {
               ) : (
                 <img src="/images/icons/power.svg" height={18} width={18} alt="alexa" className="speak-box-icon mr-2" />
               )}
-              <Tooltip title={renderTime}>
+              <Tooltip title={chat.time}>
                 <div
                   className={cn('message border rounded p-2 align-self-start', {
                     'ml-4': !!chat.text,
@@ -107,13 +105,7 @@ class SpeakBox extends React.Component {
             <>
               <div className="choice-options p-2 align-self-start">
                 {chat.options.map((option, i) => (
-                  <div
-                    key={i}
-                    className="choice-option mb-1"
-                    onClick={(e) => {
-                      this.props.inputSubmit(e, option);
-                    }}
-                  >
+                  <div key={i} className="choice-option mb-1" onClick={() => submit(option)}>
                     {option && option.label ? option.label : option}
                   </div>
                 ))}
@@ -129,4 +121,5 @@ class SpeakBox extends React.Component {
 const mapStateToProps = (state) => ({
   skillId: state.skills.skill.skill_id,
 });
-export default connect(mapStateToProps)(SpeakBox);
+
+export default connect(mapStateToProps)(React.memo(SpeakBox));

@@ -55,10 +55,9 @@ import { BlockNodeFactory } from 'components/SRD/factories/BlockNodeFactory';
 /* eslint-enable no-secrets/no-secrets */
 import { Spinner } from 'components/Spinner/Spinner';
 
-import { SLOT_TYPES, ALLOWED_GOOGLE_BLOCKS } from 'Constants';
+import { ALLOWED_GOOGLE_BLOCKS } from 'Constants';
 
 import Linter from './linter';
-import { getUtterancesWithSlotNames, getSlotsForKeys } from 'intent_util';
 import randomstring from 'randomstring';
 import { checkBlockDisabledLive } from './Blocks';
 
@@ -67,10 +66,11 @@ import { Prompt } from 'react-router';
 import moment from 'moment';
 import Upgrade from 'components/Modals/MultiPlatformModalContent';
 import { fetchIntegrationUsers } from 'ducks/integration';
+import { initializeTest, renderTest } from 'ducks/test';
 /* eslint-enable simple-import-sort/sort */
 
-const NLC = require('natural-language-commander');
-const _ = require('lodash');
+import _ from 'lodash';
+import { CostExplorer } from 'aws-sdk';
 
 const toolkit = new Toolkit();
 
@@ -108,7 +108,6 @@ export class Canvas extends Component {
       diagram_name,
       saving: false,
       saved: true,
-      testing_info: false,
       help: null,
       helpOpen: false,
       copy: null,
@@ -132,23 +131,6 @@ export class Canvas extends Component {
     // SKILL IS LOADED HERE
     this.onLoadId(props.diagram_id);
   }
-
-  setTime = (time) => {
-    this.setState({
-      time,
-    });
-  };
-
-  countTime = () => {
-    clearInterval(this.timer);
-    this.timer = setInterval(() => {
-      this.setTime(this.state.time + 1);
-    }, 1000);
-  };
-
-  stopTime = () => {
-    clearInterval(this.timer);
-  };
 
   setMousetrap = () => {
     Mousetrap.reset();
@@ -287,8 +269,8 @@ export class Canvas extends Component {
     this.setTimeout();
   };
 
-  componentDidUpdate(previous_props) {
-    if (previous_props.diagram_id !== this.props.diagram_id) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.diagram_id !== this.props.diagram_id) {
       if (this.updateTree !== null) this.updateTree();
       this.props.setOpen(false);
       const nodes = _.values(this.state.engine.diagramModel.nodes);
@@ -299,11 +281,12 @@ export class Canvas extends Component {
       });
       this.onLoadId(this.props.diagram_id);
     }
-    if (
-      (this.props.testing && !this.state.engine.getDiagramModel().isLocked()) ||
-      (!this.props.testing && this.state.engine.getDiagramModel().isLocked())
-    ) {
-      this.state.engine.getDiagramModel().setLocked(!!this.props.testing);
+
+    // Unlock and lock the canvas switching between test
+    if (prevProps.test && !this.props.test && !this.props.preview) {
+      this.state.engine.getDiagramModel().setLocked(false);
+    } else if (this.props.test && !prevProps.test) {
+      this.state.engine.getDiagramModel().setLocked(true);
     }
   }
 
@@ -830,6 +813,10 @@ export class Canvas extends Component {
     updateDiagrams([...updatedDiagrams, ...newDiagram]);
   };
 
+  setSaveCB = (cb) => {
+    this.saveCB = cb;
+  };
+
   onSave(state = true) {
     if (this.saving) return;
     this.saving = true;
@@ -880,9 +867,7 @@ export class Canvas extends Component {
               saving: false,
               saved: true,
             });
-          if (typeof this.props.skillSaveCB === 'function') {
-            this.props.skillSaveCB(serialize.id);
-          } else if (typeof this.saveCB === 'function') {
+          if (typeof this.saveCB === 'function') {
             this.saveCB(serialize.id);
             this.saveCB = null;
           }
@@ -895,9 +880,7 @@ export class Canvas extends Component {
             }) &&
             this.props.setError('Error Saving Project');
 
-          if (typeof this.props.skillSaveCB === 'function') {
-            this.props.skillSaveCB(null);
-          } else if (typeof this.saveCB === 'function') {
+          if (typeof this.saveCB === 'function') {
             this.saveCB(null);
             this.saveCB = null;
           }
@@ -907,9 +890,7 @@ export class Canvas extends Component {
       // eslint-disable-next-line no-console
       console.log(e);
       state && this.props.setError('Error Saving - Project Structure (Check Logs)');
-      if (typeof this.props.skillSaveCB === 'function') {
-        this.props.skillSaveCB(null);
-      } else if (typeof this.saveCB === 'function') {
+      if (typeof this.saveCB === 'function') {
         this.saveCB(null);
         this.saveCB = null;
       }
@@ -1236,102 +1217,6 @@ export class Canvas extends Component {
     }
   };
 
-  runTest = () => {
-    const engine = this.state.engine;
-    const model = engine.getDiagramModel();
-    const data = model.serializeDiagram();
-
-    let nlc = this.state.testing_info ? this.state.testing_info.nlc : null;
-    let slot_mappings = this.state.testing_info ? this.state.testing_info.slot_mappings : {};
-
-    const nodes = [];
-    data.nodes.forEach((node) => {
-      if (node.extras && node.extras.type !== 'story') {
-        nodes.push({
-          value: node.id,
-          label: node.name,
-        });
-      }
-    });
-    if (!nlc) {
-      nlc = new NLC();
-
-      const built_in_slots = [];
-
-      SLOT_TYPES.forEach((s) => {
-        if (s.type.alexa) built_in_slots.push(s.type.alexa);
-        if (s.type.google) built_in_slots.push(s.type.google);
-      });
-      built_in_slots.forEach((s) => {
-        const matcher = /[\S\s]*/;
-        nlc.addSlotType({
-          type: s,
-          matcher,
-        });
-      });
-
-      slot_mappings = {};
-      this.props.skill.slots.forEach((slot) => {
-        if (slot.type.value && slot.type.value.toLowerCase() === 'custom') {
-          nlc.addSlotType({
-            type: slot.name,
-            matcher: slot.inputs,
-          });
-        }
-      });
-
-      this.props.skill.intents.forEach((intent) => {
-        let samples;
-        if (!intent.built_in) {
-          samples = getUtterancesWithSlotNames(intent.inputs, this.props.skill.slots);
-        }
-        const slots = getSlotsForKeys(intent.inputs.map((input) => input.slots), this.props.skill.slots, this.props.skill.platform);
-
-        nlc.registerIntent({
-          slots,
-          intent: intent.name,
-          utterances: samples,
-          callback: _.noop,
-        });
-
-        slot_mappings[intent.name] = slots;
-      });
-    }
-
-    this.setState({
-      testing_info: {
-        id: this.props.diagram_id,
-        nodes,
-        nlc,
-        slot_mappings,
-      },
-    });
-  };
-
-  onTest = () => {
-    this.state.engine.getDiagramModel().clearSelection();
-
-    if (this.props.preview) {
-      this.runTest();
-    } else {
-      this.saveCB = (diagram_id) => {
-        if (diagram_id !== null) {
-          axios
-            .post(`/diagram/${diagram_id}/test/publish`, {
-              intents: this.props.skill.intents,
-              slots: this.props.skill.slots,
-              platform: this.props.skill.platform,
-            })
-            .then(this.runTest)
-            .catch(() => {
-              this.props.setError('Could Not Render Your Project');
-            });
-        }
-      };
-      this.onSave();
-    }
-  };
-
   generateBlockMenu = (e, combineNode = null) => {
     if (this.props.preview) {
       this.props.setBlockMenu(null);
@@ -1478,7 +1363,6 @@ export class Canvas extends Component {
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
-        console.log(err.response);
         this.setState({ loading_diagram: false });
         this.props.setError('Unable to create new Flow');
       });
@@ -1635,22 +1519,19 @@ export class Canvas extends Component {
             onSave={this.onSave}
             saving={this.state.saving}
             saved={this.state.saved}
-            onTest={this.onTest}
             updateLinter={this.updateLinter}
             renderPlatformSwitch={this.renderPlatformSwitch}
             history={this.props.history}
             preview={this.props.preview}
           />
         )}
-        {!this.props.preview && this.props.page === 'test' && (
+        {!this.props.preview && !this.state.load_diagram && this.props.page === 'test' && (
           <UserTestHeader
             preview={this.props.preview}
             history={this.props.history}
-            onTest={this.onTest}
-            time={this.state.time}
-            testing_info={this.state.testing_info}
-            resetTest={() => this.setState({ testing_info: false })}
             page={this.props.page}
+            save={this.onSave}
+            setSaveCB={this.setSaveCB}
           />
         )}
         {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={() => this.setState({ spotlight: false })} />}
@@ -1709,19 +1590,7 @@ export class Canvas extends Component {
             setCanvasEvents={this.setMousetrap}
             updateLinter={this.updateLinter}
           />
-          <Test
-            open={this.props.testing}
-            testing_info={this.state.testing_info}
-            onTest={this.onTest}
-            history={this.props.history}
-            enterFlow={this.enterFlow}
-            diagramEngine={this.state.engine}
-            stop={this.stopTime}
-            resetTest={() => this.setState({ testing_info: false })}
-            resume={this.countTime}
-            time={this.state.time}
-            setTime={this.setTime}
-          />
+          <Test open={this.props.test} enterFlow={this.enterFlow} diagramEngine={this.state.engine} />
           <div
             key={this.props.diagram_id}
             id="diagram"
@@ -1731,9 +1600,7 @@ export class Canvas extends Component {
               e.stopPropagation();
               e.preventDefault();
             }}
-            onMouseLeave={() => {
-              this.diagram_focus = false;
-            }}
+            onMouseLeave={() => (this.diagram_focus = false)}
             onContextMenu={this.generateBlockMenu}
           >
             <div className="canvas-warnings">
@@ -1758,13 +1625,12 @@ export class Canvas extends Component {
                 preview={this.props.preview}
                 root_id={this.props.root_id}
                 setBlockMenu={this.props.setBlockMenu}
-                testing_info={this.state.testing_info}
                 engine={this.state.engine}
                 isCanvas={this.props.page === 'canvas'}
               />
             )}
             {this.props.blockMenu}
-            {this.props.page === 'test' && (
+            {(this.props.test || this.props.preview) && (
               <div className="read-only">
                 <div className="read-only-container">
                   <img className="mr-2" alt="eye" src="/eye.svg" width={15} height={15} />
@@ -1847,6 +1713,8 @@ const mapDispatchToProps = (dispatch) => {
     updateDiagrams: (diagrams) => dispatch(updateDiagrams(diagrams)),
     setTab: (tab) => dispatch(openTab(tab)),
     closeTab: () => dispatch(closeTab()),
+    initializeTest: () => dispatch(initializeTest()),
+    renderTest: () => dispatch(renderTest()),
   };
 };
 

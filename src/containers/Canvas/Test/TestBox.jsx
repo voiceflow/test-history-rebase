@@ -1,30 +1,28 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Alert, Form, Input } from 'reactstrap';
 
 import SpeakBox from './SpeakBox';
 
 const TestBox = (props) => {
   const containerRef = useRef(null);
-  const {
-    time,
-    input,
-    outputs,
-    ended,
-    history,
-    enterFlow,
-    lastNode,
-    setLastNode,
-    resetTest,
-    diagramEngine,
-    handleChange,
-    setAudio,
-    inputSubmit,
-    handleRestart,
-  } = props;
+  const { outputs, ended, enterFlow, resetTest, diagramEngine, setAudio, inputSubmit, handleRestart } = props;
+
+  const [input, setInput] = useState('');
+
+  const submit = (value) => {
+    setInput('');
+    inputSubmit(value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    submit(input);
+    return false;
+  };
 
   const onKeydown = (e) => {
     if (e.keyCode === 13 && !e.shiftKey) {
-      inputSubmit(e);
+      handleSubmit(e);
     }
   };
 
@@ -57,15 +55,11 @@ const TestBox = (props) => {
                 <SpeakBox
                   key={i}
                   chat={chat}
-                  lastNode={lastNode}
                   setAudio={setAudio}
-                  setLastNode={setLastNode}
                   resetTest={resetTest}
-                  time={time}
-                  history={history}
                   node={chat.node}
                   enterFlow={enterFlow}
-                  inputSubmit={inputSubmit}
+                  submit={submit}
                   diagramEngine={diagramEngine}
                 />
               );
@@ -80,7 +74,7 @@ const TestBox = (props) => {
       ) : (
         <>
           <div className="no-space__break" />
-          <Form onSubmit={inputSubmit} id="user__input" className="px-3 mb-3 mt-3">
+          <Form onSubmit={handleSubmit} id="user__input" className="px-3 mb-3 mt-3">
             <span className="light-grey">User Says</span>
             <Input
               className="form-bg response-input mt-3 mb-2 pt-2"
@@ -88,7 +82,7 @@ const TestBox = (props) => {
               type="textarea"
               placeholder="Enter response"
               value={input}
-              onChange={handleChange}
+              onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeydown}
             />
             <small className="float-left text-muted pb-3 pl-1 pt-1 d-block">Enter to send</small>

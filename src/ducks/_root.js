@@ -13,6 +13,7 @@ import team from 'ducks/team';
 import userSetting from 'ducks/user';
 import variables from 'ducks/variable';
 import skills from 'ducks/version';
+import test from 'ducks/test';
 import { combineReducers } from 'redux';
 
 export default (history) =>
@@ -32,4 +33,5 @@ export default (history) =>
     account,
     integrationUsers,
     admin,
+    test,
   });

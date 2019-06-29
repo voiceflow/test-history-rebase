@@ -7,7 +7,7 @@ import ConditionExpression from './ConditionExpression';
 
 const Conditions = (props) => {
   const [selectedVariables, setSelectedVariables] = useState(['']);
-  const { variables, testing_info, handleVariableChange } = props;
+  const { variableMapping, handleVariableChange } = props;
 
   const setSelected = (idx, variable = null) => {
     setSelectedVariables((prev) => (variable ? prev.splice(idx, 1, variable) : prev.filter((_, i2) => i2 !== idx)));
@@ -18,12 +18,7 @@ const Conditions = (props) => {
   };
 
   return (
-    <div
-      id="Conditions"
-      className={cn({
-        disabled: testing_info,
-      })}
-    >
+    <div id="Conditions">
       <div className="text-center">
         {selectedVariables.map((variable, i) => {
           return (
@@ -36,7 +31,7 @@ const Conditions = (props) => {
               onSelection={handleVariableChange}
               addVariable={addVariable}
               setSelected={setSelected}
-              variables={variables}
+              variables={Object.keys(variableMapping).map((variable) => ({ value: variable, label: variable }))}
             />
           );
         })}
@@ -45,13 +40,4 @@ const Conditions = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  variables: _.map(state.variables.localVariables.concat(state.skills.skill.global), (varMap) => {
-    return {
-      value: varMap,
-      label: varMap,
-    };
-  }),
-});
-
-export default connect(mapStateToProps)(Conditions);
+export default Conditions;

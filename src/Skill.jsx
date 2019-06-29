@@ -184,7 +184,7 @@ class Skill extends Component {
             ref={this.child_canvas}
             linter={this.state.linter}
             toggleUpgrade={this.toggleUpgrade}
-            testing={this.props.page === 'test'}
+            test={this.props.page === 'test'}
           />
         );
       case 'tools':

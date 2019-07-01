@@ -24,8 +24,9 @@ class OutputSection extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.action_data.mapping) {
-      this.props.updateActionData({
+    const { action_data, updateActionData } = this.props;
+    if (!action_data.mapping) {
+      updateActionData({
         mapping: [],
       });
     }
@@ -33,13 +34,15 @@ class OutputSection extends Component {
   }
 
   checkCompletion() {
-    const mapping = this.props.action_data.mapping;
+    const { action_data } = this.props;
+    const { completed: stateCompleted } = this.state;
+    const mapping = action_data.mapping;
     let completed = false;
     if (mapping && mapping.length > 0 && _.find(mapping, (v) => !_.isNil(v.arg1) && !_.isNil(v.arg2))) {
       completed = true;
     }
 
-    if (completed !== this.state.completed) {
+    if (completed !== stateCompleted) {
       this.setState({
         completed,
       });
@@ -47,8 +50,10 @@ class OutputSection extends Component {
   }
 
   handleAddMap() {
-    this.props.updateActionData({
-      mapping: update(this.props.action_data.mapping, {
+    const { action_data, updateActionData } = this.props;
+  
+    updateActionData({
+      mapping: update(action_data.mapping, {
         $push: [
           {
             arg1: null,
@@ -60,9 +65,11 @@ class OutputSection extends Component {
   }
 
   handleRemoveMap(i) {
-    this.props.updateActionData(
+    const { action_data, updateActionData } = this.props;
+  
+    updateActionData(
       {
-        mapping: update(this.props.action_data.mapping, {
+        mapping: update(action_data.mapping, {
           $splice: [[i, 1]],
         }),
       },
@@ -71,10 +78,12 @@ class OutputSection extends Component {
   }
 
   handleSelection(i, arg, value) {
+    const { action_data, updateActionData, openVarTab } = this.props;
+  
     if (value !== 'Create Variable') {
-      this.props.updateActionData(
+      updateActionData(
         {
-          mapping: update(this.props.action_data.mapping, {
+          mapping: update(action_data.mapping, {
             [i]: {
               [arg]: {
                 $set: value,
@@ -86,42 +95,44 @@ class OutputSection extends Component {
       );
     } else {
       localStorage.setItem('tab', 'variables');
-      this.props.openVarTab('variables');
+      openVarTab('variables');
     }
   }
 
   render() {
+    const { toggleSection, open, mapping_options, action_data, variables, loading, showNextSection } = this.props;
+    const { completed } = this.state;
     return (
       <>
-        <div className="d-flex flex-column section-title-container" onClick={() => this.props.toggleSection()}>
+        <div className="d-flex flex-column section-title-container" onClick={() => toggleSection()}>
           <div className="integrations-section-title text-muted">
             Mapping output
-            {this.state.completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
+            {completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
           </div>
         </div>
-        <Collapse isOpen={this.props.open} className="w-100 mb-4">
-          {this.props.mapping_options && this.props.action_data.mapping && !this.props.loading && (
+        <Collapse isOpen={open} className="w-100 mb-4">
+          {mapping_options && action_data.mapping && !loading && (
             <OutputMapping
               arg1_options={[
                 {
                   value: 'row_number',
                   label: 'Row Number',
                 },
-              ].concat(this.props.mapping_options)}
-              arg2_options={this.props.variables}
-              arguments={this.props.action_data.mapping}
+              ].concat(mapping_options)}
+              arg2_options={variables}
+              arguments={action_data.mapping}
               onAdd={() => this.handleAddMap()}
               onRemove={this.handleRemoveMap}
               handleSelection={(i, arg, value) => this.handleSelection(i, arg, value)}
             />
           )}
-          {this.props.loading && (
+          {loading && (
             <div className="text-center my-4">
               <div className="loader text-lg" />
             </div>
           )}
           <div className="text-center mt-3">
-            <Button isFlatVariable disabled={!this.state.completed} onClick={this.props.showNextSection}>
+            <Button isFlatVariable disabled={!completed} onClick={showNextSection}>
               Next
             </Button>
           </div>

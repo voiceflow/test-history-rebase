@@ -84,7 +84,7 @@ class FeedSection extends Component {
           await deleteUser(selected_integration, {
             user,
             creator_id: propsUser.creator_id,
-            skill_id: skill_id,
+            skill_id,
           });
           if (integration_user_error) {
             setError(integration_user_error);

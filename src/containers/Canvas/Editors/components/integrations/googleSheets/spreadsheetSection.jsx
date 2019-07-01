@@ -29,27 +29,29 @@ class SpreadsheetSection extends Component {
   }
 
   memoizedCompletion = memoize((initial_load, action_data, spreadsheet, sheet) => {
+    const { completed: stateCompleted } = this.state;
+    const { open, showNextSection } = this.props;
     let completed = false;
     if (action_data && spreadsheet && sheet) {
       completed = true;
     }
 
-    if (completed !== this.state.completed) {
+    if (completed !== stateCompleted) {
       this.setState({
         completed,
       });
     }
-    if (completed && !initial_load && this.props.open) this.props.showNextSection();
+    if (completed && !initial_load && open) showNextSection();
   });
 
   checkCompletion(initial_load = false) {
-    const action_data = this.props.action_data;
+    const { action_data } = this.props;
     if (!action_data) return;
     this.memoizedCompletion(initial_load, action_data, action_data.spreadsheet, action_data.sheet);
   }
 
   promiseOptions(rawInputValue) {
-    const integrationsUser = this.props.integrationsUser;
+    const { integrationsUser } = integrationsUser;
     let inputValue = rawInputValue;
 
     if (!integrationsUser) return Promise.resolve([]);
@@ -59,11 +61,12 @@ class SpreadsheetSection extends Component {
   }
 
   async updateSheets() {
+    const { action_data, integrationsUser, onError } = this.props;
     this.setState({
       sheets_list: [],
     });
 
-    const spreadsheet_id = this.props.action_data.spreadsheet && this.props.action_data.spreadsheet.value;
+    const spreadsheet_id = action_data.spreadsheet && action_data.spreadsheet.value;
     if (_.isNil(spreadsheet_id)) return;
 
     this.setState({
@@ -71,13 +74,13 @@ class SpreadsheetSection extends Component {
     });
 
     try {
-      const integrationsUser = this.props.integrationsUser;
+      const integrationsUser = integrationsUser;
       const sheets = await IntegrationsService.googleSheets.getSpreadsheetSheets(spreadsheet_id, integrationsUser);
       this.setState({
         sheets_list: sheets,
       });
     } catch (e) {
-      this.props.onError(e);
+      onError(e);
     }
     this.setState({
       sheets_loading: false,
@@ -85,8 +88,9 @@ class SpreadsheetSection extends Component {
   }
 
   openSpreadsheetLink = () => {
-    const spreadsheet_id = this.props.action_data.spreadsheet && this.props.action_data.spreadsheet.value;
-    const sheet_id = this.props.action_data.sheet && this.props.action_data.sheet.value;
+    const { action_data } = this.props;
+    const spreadsheet_id = action_data.spreadsheet && action_data.spreadsheet.value;
+    const sheet_id = action_data.sheet && action_data.sheet.value;
     if (_.isNil(spreadsheet_id) || _.isNil(sheet_id)) return;
     const url = `https://docs.google.com/spreadsheets/d/${spreadsheet_id}/edit#gid=${sheet_id}`;
     const win = window.open(url, '_blank');
@@ -94,26 +98,28 @@ class SpreadsheetSection extends Component {
   };
 
   render() {
+    const { completed, sheets_list, sheets_loading } = this.state;
+    const { toggleSection, action_data, open, integrationsUser, selected_action, updateActionData, updateHeaders, showNextSection } = this.props;
     return (
       <div>
-        <div className="d-flex flex-column section-title-container" onClick={() => this.props.toggleSection()}>
+        <div className="d-flex flex-column section-title-container" onClick={() => toggleSection()}>
           <div className="integrations-section-title text-muted">
             Using sheet
-            <span onClick={() => this.props.toggleSection()} className={`action-selected ${this.props.action_data.sheet ? 'action-visible' : ''}`}>
-              {this.props.action_data.sheet && this.props.action_data.sheet.label}
+            <span onClick={() => toggleSection()} className={`action-selected ${action_data.sheet ? 'action-visible' : ''}`}>
+              {action_data.sheet && action_data.sheet.label}
             </span>
-            {this.state.completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
+            {completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
           </div>
         </div>
-        <Collapse isOpen={this.props.open} className="w-100">
+        <Collapse isOpen={open} className="w-100">
           <div className="d-flex align-items-center mb-4">
             <div className="mr-2 text-muted">Spreadsheet </div>
             <div className="flex-fill">
               <AsyncSelect
                 key={
-                  JSON.stringify(this.props.integrationsUser) +
-                  JSON.stringify(this.props.integrationsUser && this.props.integrationsUser.user_id) +
-                  this.props.selected_action
+                  JSON.stringify(integrationsUser) +
+                  JSON.stringify(integrationsUser && integrationsUser.user_id) +
+                  selected_action
                 }
                 cacheOptions
                 defaultOptions
@@ -121,10 +127,10 @@ class SpreadsheetSection extends Component {
                 classNamePrefix="google-sheets-dropdown select-box"
                 loadOptions={this.promiseOptions}
                 className="auth-dropdown"
-                value={this.props.action_data.spreadsheet || null}
+                value={action_data.spreadsheet || null}
                 onChange={(v) => {
-                  if (!_.isEqual(v, this.props.action_data.spreadsheet)) {
-                    this.props.updateActionData(
+                  if (!_.isEqual(v, action_data.spreadsheet)) {
+                    updateActionData(
                       {
                         spreadsheet: v,
                         sheet: null,
@@ -133,10 +139,10 @@ class SpreadsheetSection extends Component {
                         row_values: null,
                         row_number: null,
                       },
-                      this.props.updateHeaders
+                      updateHeaders
                     );
-                  } else if (this.state.completed) {
-                    this.props.showNextSection();
+                  } else if (completed) {
+                    showNextSection();
                   }
                 }}
                 noOptionsMessage={({ inputValue }) => (inputValue ? 'No Options' : 'Type to search')}
@@ -149,12 +155,12 @@ class SpreadsheetSection extends Component {
               <Select
                 styles={selectStyles}
                 classNamePrefix="google-sheets-dropdown select-box"
-                options={this.state.sheets_list}
+                options={sheets_list}
                 className="auth-dropdown"
-                value={this.props.action_data.sheet || null}
+                value={action_data.sheet || null}
                 onChange={(v) => {
-                  if (!_.isEqual(v, this.props.action_data.sheet)) {
-                    this.props.updateActionData(
+                  if (!_.isEqual(v, action_data.sheet)) {
+                    updateActionData(
                       {
                         sheet: v,
                         header_column: null,
@@ -162,19 +168,19 @@ class SpreadsheetSection extends Component {
                         row_values: [],
                         row_number: null,
                       },
-                      this.props.updateHeaders
+                      updateHeaders
                     );
-                  } else if (this.state.completed) {
-                    this.props.showNextSection();
+                  } else if (completed) {
+                    showNextSection();
                   }
                 }}
-                isLoading={this.state.sheets_loading}
+                isLoading={sheets_loading}
                 onFocus={this.updateSheets}
-                isDisabled={!this.props.action_data.spreadsheet}
+                isDisabled={!action_data.spreadsheet}
               />
             </div>
             <div
-              className={`ml-3 text-muted spreadsheet-link ${this.props.action_data.spreadsheet && this.props.action_data.sheet ? '' : 'disabled'}`}
+              className={`ml-3 text-muted spreadsheet-link ${action_data.spreadsheet && action_data.sheet ? '' : 'disabled'}`}
               onClick={this.openSpreadsheetLink}
             />
           </div>

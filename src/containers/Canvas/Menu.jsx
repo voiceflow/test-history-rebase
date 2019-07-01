@@ -217,7 +217,7 @@ export class Menu extends Component {
             </div>
           </div>
         )}
-        <div id="sidebar" className={cn({ open: open }, 'canvas-sidebar')} ref={this.sidebar}>
+        <div id="sidebar" className={cn({ open }, 'canvas-sidebar')} ref={this.sidebar}>
           <div className={cn('sidebar-container', tab)}>
             {loading_diagram ? null : (
               <React.Fragment>

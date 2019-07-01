@@ -14,9 +14,9 @@ export class FlowBar extends Component {
     super(props);
     const { name } = this.props;
     this.state = {
-      name: name ? name : 'Flow',
+      name: name || 'Flow',
       edit: false,
-      newFlowName: name ? name : 'Flow',
+      newFlowName: name || 'Flow',
       leftDropdownOpen: false,
       rightDropdownOpen: false,
       parentDiagrams: this.getParentDiagramsWithNames(),
@@ -26,7 +26,7 @@ export class FlowBar extends Component {
 
   static getDerivedStateFromProps({ name }) {
     return {
-      name: name ? name : 'Flow',
+      name: name || 'Flow',
     };
   }
 

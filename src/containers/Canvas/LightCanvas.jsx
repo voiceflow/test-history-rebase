@@ -79,7 +79,7 @@ class LightCanvas extends Component {
   }
 
   zoom(delta) {
-    const engine = this.state.engine;
+    const { engine } = this.state;
     const diagramModel = engine.getDiagramModel();
     const oldZoomFactor = diagramModel.getZoomLevel() / 100;
     const scrollDelta = delta / 60;

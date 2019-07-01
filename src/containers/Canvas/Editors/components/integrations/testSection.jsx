@@ -66,7 +66,8 @@ class TestSection extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.integration_data.selected_action !== this.props.integration_data.selected_action) {
+    const { integration_data } = this.props;
+    if (prevProps.integration_data.selected_action !== integration_data.selected_action) {
       this.setState({
         completed: false,
         test_content: null,
@@ -75,20 +76,21 @@ class TestSection extends Component {
   }
 
   async runTest() {
-    const selected_integration = this.props.selected_integration;
-    const { user, selected_action, actions_data } = this.props.integration_data;
+    const { selected_integration, integration_data, setError } = this.props;
+    const { user, selected_action, actions_data } = integration_data;
+    const { variableValues } = this.state;
 
     if (!selected_integration) {
-      this.props.setError(new Error('Test failed! Please select an integration'));
+      setError(new Error('Test failed! Please select an integration'));
     } else if (!selected_action) {
-      this.props.setError(new Error('Test failed! Please select an action'));
+      setError(new Error('Test failed! Please select an action'));
     } else if (!(actions_data && actions_data[selected_action])) {
-      this.props.setError(new Error('Test failed! Please complete all required sections'));
+      setError(new Error('Test failed! Please complete all required sections'));
     } else {
       try {
         const test = SERVICES_MAP[selected_integration] && SERVICES_MAP[selected_integration][selected_action];
         if (!test) {
-          this.props.setError(new Error(`No test found for action "${selected_action}" and integration "${selected_integration}"`));
+          setError(new Error(`No test found for action "${selected_action}" and integration "${selected_integration}"`));
         } else {
           let params = _.cloneDeep(actions_data[selected_action]);
 
@@ -115,7 +117,7 @@ class TestSection extends Component {
               return;
             }
           }
-          params = deepVariableSubstitution(result, this.state.variableValues);
+          params = deepVariableSubstitution(result, variableValues);
           params.user = user;
 
           this.setState({
@@ -144,7 +146,7 @@ class TestSection extends Component {
           });
         }
       } catch (e) {
-        this.props.setError(e);
+        setError(e);
         this.setState({
           test_loading: false,
           test_content: null,
@@ -154,21 +156,23 @@ class TestSection extends Component {
   }
 
   handleVariableChange = (event) => {
+    const { variableValues } = this.state;
     this.setState({
-      variableValues: update(this.state.variableValues, { [event.target.name]: { $set: event.target.value } }),
+      variableValues: update(variableValues, { [event.target.name]: { $set: event.target.value } }),
     });
   };
 
   showConfirmModal = () => {
+    const { setConfirm, confirmWarningMessage } = this.props;
     this.setState({
       test_content: null,
     });
-    this.props.setConfirm({
+    setConfirm({
       text: (
         <Alert color="danger" className="mb-0">
           <i className="fas fa-exclamation-triangle fa-2x" />
           <br />
-          {this.props.confirmWarningMessage}
+          {confirmWarningMessage}
         </Alert>
       ),
       warning: true,
@@ -179,33 +183,34 @@ class TestSection extends Component {
   };
 
   renderTestContent() {
-    if (this.state.test_loading) {
+    const { test_loading, test_content } = this.state;
+    if (test_loading) {
       return (
         <div className="text-center">
           <div className="loader text-lg" />
         </div>
       );
     }
-    if (this.state.test_content) {
-      if (React.isValidElement(this.state.test_content)) {
-        return this.state.test_content;
+    if (test_content) {
+      if (React.isValidElement(test_content)) {
+        return test_content;
       }
-      if (Object.keys(this.state.test_content).length === 0) {
+      if (Object.keys(test_content).length === 0) {
         return (
           <div className="text-center mb-2 success">
             Action Performed Succesfully!<div className="small text-muted">(No Data Returned)</div>
           </div>
         );
       }
-      if (Object.keys(this.state.test_content).length > 0) {
+      if (Object.keys(test_content).length > 0) {
         return (
           <div className="mb-3">
             <ReactJson
-              src={this.state.test_content}
+              src={test_content}
               displayDataTypes={false}
               name="response"
               enableClipboard={copyJSONPath}
-              collapsed={JSON.stringify(this.state.test_content).length > 1000}
+              collapsed={JSON.stringify(test_content).length > 1000}
             />
           </div>
         );
@@ -215,21 +220,23 @@ class TestSection extends Component {
   }
 
   render() {
+    const { toggleSection, open, showConfirm } = this.props;
+    const { variables_modal, variables, completed } = this.state;
     return (
       <>
         <DefaultModal
-          open={this.state.variables_modal}
+          open={variables_modal}
           header="Set Variables"
           toggle={() =>
             this.setState({
-              variables_modal: !this.state.variables_modal,
+              variables_modal: !variables_modal,
               test_loading: false,
               test_content: null,
             })
           }
           content={
             <div style={{ padding: '0 2em 2em 2em' }}>
-              {!_.isEmpty(this.state.variables) && (
+              {!_.isEmpty(variables) && (
                 <React.Fragment>
                   <Button color="primary" onClick={() => this.resolveModalPromise()} className="mt-2 mb-2">
                     <i className="fas fa-play mr-2" /> Run
@@ -237,7 +244,7 @@ class TestSection extends Component {
                   <br />
                   <label>Your parameters for this action contain variables. Please provide them with values to proceed.</label>
                   <br />
-                  {_.map(this.state.variables, (val, key) => (
+                  {_.map(variables, (val, key) => (
                     <React.Fragment key={key}>
                       <InputGroup className="mb-2">
                         <InputGroupAddon addonType="prepend">{val}</InputGroupAddon>
@@ -257,17 +264,17 @@ class TestSection extends Component {
           hideFooter={true}
           noPadding={true}
         />
-        <div className="d-flex flex-column section-title-container" onClick={() => this.props.toggleSection()}>
+        <div className="d-flex flex-column section-title-container" onClick={() => toggleSection()}>
           <div className="integrations-section-title text-muted">
             Test Integration
-            {this.state.completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
+            {completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
           </div>
         </div>
-        <Collapse isOpen={this.props.open} className="w-100">
+        <Collapse isOpen={open} className="w-100">
           <Button
             className="mb-3 btn btn-lg btn-block"
             color="clear"
-            onClick={() => (this.props.showConfirm ? this.showConfirmModal() : this.runTest())}
+            onClick={() => (showConfirm ? this.showConfirmModal() : this.runTest())}
             size="sm"
             block
           >

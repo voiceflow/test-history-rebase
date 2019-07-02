@@ -384,7 +384,6 @@ export class Canvas extends Component {
     const { engine } = this.state;
     const selected = newNode || engine.getSuperSelect();
     if (selected.extras.type !== 'story') {
-      const engine = engine;
       engine.stopMove();
 
       const node = new BlockNodeModel(`${selected.name} copy`, null, toolkit.UID());
@@ -692,7 +691,7 @@ export class Canvas extends Component {
   };
 
   copyFlow = (flowId) => {
-    const { diagrams, updateDiagrams, preview } = this.props;
+    const { diagrams, updateDiagrams, preview, diagram_id } = this.props;
     const flow = diagrams.find((d) => d.id === flowId);
     if (!flow) {
       return;
@@ -1670,6 +1669,7 @@ export class Canvas extends Component {
       shiftUndo,
       clearRedo,
       closeTab,
+      addUndo,
     } = this.props;
     return (
       <React.Fragment>

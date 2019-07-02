@@ -202,7 +202,7 @@ export class Display extends Component {
 
   // Render entire modal
   renderDisplayTest() {
-    const { variables, modalContent, variables_error, current_request, rendered_datasource } = this.state;
+    const { variables, modalContent, variables_error, current_request, rendered_datasource, node } = this.state;
 
     const loading = (
       <div className="text-center mt-3">
@@ -258,7 +258,7 @@ export class Display extends Component {
 
   render() {
     const { displays, skill_id } = this.props;
-    const { modal, modal_error, node } = this.state;
+    const { modal, modal_error, node, selected } = this.state;
 
     if (displays.length === 0) {
       return (

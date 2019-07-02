@@ -128,11 +128,11 @@ class SeatsCheckout extends Component {
           coupon,
         });
 
-        next(team);
+        return next(team);
       } else if (Array.isArray(members)) {
         // use the checkout to update existing members
         await updateMembers(members, { source, plan: plan.id, coupon });
-        next();
+        return next();
       } else {
         throw new Error('Invalid Member Format');
       }

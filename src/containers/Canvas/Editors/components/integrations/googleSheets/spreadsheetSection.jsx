@@ -51,7 +51,7 @@ class SpreadsheetSection extends Component {
   }
 
   promiseOptions(rawInputValue) {
-    const { integrationsUser } = integrationsUser;
+    const { integrationsUser } = this.props;
     let inputValue = rawInputValue;
 
     if (!integrationsUser) return Promise.resolve([]);
@@ -74,7 +74,6 @@ class SpreadsheetSection extends Component {
     });
 
     try {
-      const integrationsUser = integrationsUser;
       const sheets = await IntegrationsService.googleSheets.getSpreadsheetSheets(spreadsheet_id, integrationsUser);
       this.setState({
         sheets_list: sheets,

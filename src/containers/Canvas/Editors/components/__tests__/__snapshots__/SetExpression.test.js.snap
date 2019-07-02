@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Set Expression render expression 1`] = `
+<Connect(SetExpression)
+  forwardedRef={null}
+  wrapperProps={Object {}}
+/>
+`;

@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Choice Inputs render choice input 1`] = `
+<div
+  className="w-100"
+>
+  <ChoiceInput
+    choice={
+      Object {
+        "value": "a",
+      }
+    }
+    index={0}
+    input={
+      Object {
+        "value": "a",
+      }
+    }
+    onChange={[Function]}
+    onChangeChoice={[Function]}
+    remove={[Function]}
+  />
+  <ChoiceInput
+    choice={
+      Object {
+        "value": "b",
+      }
+    }
+    index={1}
+    input={
+      Object {
+        "value": "b",
+      }
+    }
+    onChange={[Function]}
+    onChangeChoice={[Function]}
+    remove={[Function]}
+  />
+  <div
+    className="text-center"
+  >
+    <Button
+      className="mt-2"
+      iconPosition="right"
+      isFlat={true}
+      onRef={[Function]}
+      trackEvent="Button Click"
+    >
+      Add Choice
+    </Button>
+  </div>
+</div>
+`;

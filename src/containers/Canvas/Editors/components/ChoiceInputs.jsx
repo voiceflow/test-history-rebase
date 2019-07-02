@@ -4,42 +4,55 @@ import React, { Component } from 'react';
 import ChoiceInput from './ChoiceInput';
 
 class ChoiceInputs extends Component {
-  constructor(props) {
-    super(props);
-    this.choices_length = props.choices.length;
-  }
+  choicesLength = this.props.choices.length;
+
+  lastChoiceRef = React.createRef();
 
   shouldComponentUpdate(props) {
-    if (this.choices_length !== props.choices.length) {
-      this.choices_length = props.choices.length;
+    if (this.choicesLength !== props.choices.length) {
+      this.choicesLength = props.choices.length;
       return true;
     }
+
     return false;
   }
 
+  focusLastChoice() {
+    if (this.choicesLength && this.lastChoiceRef.current) {
+      this.lastChoiceRef.current.focus();
+    }
+  }
+
+  componentDidMount() {
+    this.focusLastChoice();
+  }
+
+  componentDidUpdate() {
+    this.focusLastChoice();
+  }
+
   render() {
+    const { choices, inputs, onChange, onAdd, onRemove, live_mode } = this.props;
+
     return (
       <div className="w-100">
-        {Array.isArray(this.props.choices)
-          ? this.props.choices.map((c, i) => {
-              return (
-                <ChoiceInput
-                  key={c.key}
-                  index={i}
-                  choice={c}
-                  input={this.props.inputs[i]}
-                  onChange={(text) => this.props.onChange(text, i)}
-                  onChangeChoice={(choice) => {
-                    const choices = this.props.choices;
-                    choices[i] = choice;
-                  }}
-                  remove={() => this.props.onRemove(i)}
-                />
-              );
-            })
-          : null}
+        {Array.isArray(choices) &&
+          choices.map((choice, index) => (
+            <ChoiceInput
+              key={choice.key}
+              index={index}
+              choice={choice}
+              input={inputs[index]}
+              onChange={(text) => onChange(text, index)}
+              onChangeChoice={(value) => {
+                choices[index] = value;
+              }}
+              remove={() => onRemove(index)}
+              ref={index === choices.length - 1 && this.lastChoiceRef}
+            />
+          ))}
         <div className="text-center">
-          <Button isFlat className="mt-2" onClick={this.props.onAdd} disabled={this.props.live_mode}>
+          <Button isFlat className="mt-2" onClick={onAdd} disabled={live_mode}>
             Add Choice
           </Button>
         </div>

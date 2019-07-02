@@ -3,7 +3,7 @@ import { shallow } from 'enzyme/build';
 import React from 'react';
 
 import { testSkill } from '../__mock__/MockSkill';
-import { ActionGroup } from '../components/ActionGroup/ActionGroup';
+import { ActionGroup } from '../components/ActionGroup';
 
 const account = {
   id: 1,

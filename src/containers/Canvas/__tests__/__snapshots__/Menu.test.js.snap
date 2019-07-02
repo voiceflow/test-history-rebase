@@ -308,7 +308,11 @@ exports[`Menu render menu 1`] = `
     </div>
   </div>
   <div
+<<<<<<< HEAD
     className="canvas-sidebar"
+=======
+    className=""
+>>>>>>> a812f36f6f0aea94666ce2d8ff5bca1d050df904
     id="sidebar"
   >
     <div
@@ -319,10 +323,20 @@ exports[`Menu render menu 1`] = `
       >
         <div
           className="block-title no-select mb-3"
+<<<<<<< HEAD
+=======
+          onClick={[Function]}
+>>>>>>> a812f36f6f0aea94666ce2d8ff5bca1d050df904
         >
           <h5
             className="mb-0"
           />
+<<<<<<< HEAD
+=======
+          <div
+            className="close pl-3 py-3"
+          />
+>>>>>>> a812f36f6f0aea94666ce2d8ff5bca1d050df904
         </div>
       </div>
       <div
@@ -332,10 +346,13 @@ exports[`Menu render menu 1`] = `
       </div>
     </div>
   </div>
+<<<<<<< HEAD
   <label
     className="canvas-sidebar-closed canvas-sidebar-expand"
     htmlFor="canvas-sidebar"
     onClick={[Function]}
   />
+=======
+>>>>>>> a812f36f6f0aea94666ce2d8ff5bca1d050df904
 </div>
 `;

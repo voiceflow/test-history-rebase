@@ -37,6 +37,9 @@ const allRoutes = (
     <PrivateRoute path="/preview/:skill_id" component={Skill} page="canvas" preview />
     <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas" />
     <PrivateRoute path="/canvas/:skill_id" component={Skill} page="canvas" />
+    {/* Testing routes */}
+    <PrivateRoute path="/test/:skill_id/:diagram_id" component={Skill} page="test" />
+    <PrivateRoute path="/test/:skill_id" component={Skill} page="test" />
     {/* Business routes */}
     <PrivateRoute path="/tools/:skill_id/link_account/templates" component={Skill} page="tools" secondaryPage="link_account" />
     <PrivateRoute path="/tools/:skill_id/product/:id" component={Skill} page="tools" secondaryPage="product" />

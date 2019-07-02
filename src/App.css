@@ -298,6 +298,10 @@ ul {
   overflow-x: hidden;
 }
 
+.light-grey{
+  color: #90a2b3;
+}
+
 .main-container-header {
   position: relative;
   z-index: 20;
@@ -328,6 +332,7 @@ ul {
   top: 111px;
 }
 
+#app.test,
 #app.canvas {
   position: fixed;
   top: 0;
@@ -1456,6 +1461,11 @@ textarea.form-control::placeholder,
   justify-content: space-between;
 }
 
+.input-clear {
+  border: none;
+  outline: none !important;
+}
+
 .subheader {
   /* position: absolute; */
   top: 0;
@@ -1637,8 +1647,26 @@ body.modal-open {
 .break {
   width: 100%;
   height: 15px;
-  margin-top: 15px;
-  margin-bottom: 22px;
+  margin-top: 10px;
+  margin-bottom: 25px;
+  text-align: center;
+  border-bottom: 1px solid #8da2b545;
+}
+
+.break-line {
+  width: 100%;
+  border-bottom: 1px solid #8da2b545;
+}
+
+.no-space__break {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #8da2b545;
+}
+
+.no-margin__break{
+  width: 100%;
+  height: 15px;
   text-align: center;
   border-bottom: 1px solid #8da2b545;
 }
@@ -1818,6 +1846,10 @@ body.modal-open {
 .tippy-tooltip.warning-theme .arrow-regular {
   left: 15px !important;
   border-bottom-color: #e23c61 !important;
+}
+
+.tippy-tooltip.warning-theme [x-circle] {
+  background: #e23c61 !important;
 }
 
 .tippy-tooltip.warning-theme {
@@ -2073,6 +2105,24 @@ kbd {
   overflow: hidden;
   border: 0;
   clip: rect(0 0 0 0);
+}
+
+.light-blue {
+  color: #5d9df5
+}
+
+.bg-light-turqoise {
+  background-color: #eef4f6;
+}
+
+.variable-color {
+  color: #4e6ff9
+}
+
+.update-modal-feature{
+  display: inline;
+  color: #5d9df5;
+  font-size: 13px;
 }
 
 .react-toggle--disabled {

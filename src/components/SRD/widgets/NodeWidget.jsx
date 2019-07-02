@@ -28,7 +28,7 @@ export class NodeWidget extends BaseWidget {
 	}
 
 	getClassName() {
-		return `node `+ super.getClassName() + (this.props.node.isSelected() ? this.bem("--selected") : "");
+		return `node `+ super.getClassName() + (this.props.node.isSelected() ? this.bem("--selected") : "") + (this.props.node.isFocused() && this.bem("--focused"));
 	}
 
 	render() {

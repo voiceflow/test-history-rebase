@@ -41,6 +41,8 @@ typings/
 
 # Optional npm cache directory
 .npm
+# production
+/build
 
 # Optional eslint cache
 .eslintcache
@@ -80,3 +82,5 @@ package-lock.json
 
 # Generated self-signed localhost certificates
 certs/
+
+/test.js

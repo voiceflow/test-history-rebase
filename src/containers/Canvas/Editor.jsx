@@ -50,35 +50,39 @@ const CMD_Y = 'command+y';
 const CTRL_Y = 'ctrl+y';
 const CMD_SHIFT_Z = 'command+shift+z';
 
-const ALEXA_BUILT_INS = BUILT_IN_INTENTS_ALEXA.map((intent) => {
-  return {
-    built_in: true,
-    platform: 'alexa',
-    name: intent.name,
-    key: intent.name,
-    inputs: [
-      {
-        text: '',
-        slots: intent.slots,
-      },
-    ],
-  };
-});
+const ALEXA_BUILT_INS =
+  BUILT_IN_INTENTS_ALEXA &&
+  BUILT_IN_INTENTS_ALEXA.map((intent) => {
+    return {
+      built_in: true,
+      platform: 'alexa',
+      name: intent.name,
+      key: intent.name,
+      inputs: [
+        {
+          text: '',
+          slots: intent.slots,
+        },
+      ],
+    };
+  });
 
-const GOOGLE_BUILT_INS = BUILT_IN_INTENTS_GOOGLE.map((intent) => {
-  return {
-    built_in: true,
-    platform: 'google',
-    name: intent.name,
-    key: intent.name,
-    inputs: [
-      {
-        text: '',
-        slots: intent.slots,
-      },
-    ],
-  };
-});
+const GOOGLE_BUILT_INS =
+  BUILT_IN_INTENTS_GOOGLE &&
+  BUILT_IN_INTENTS_GOOGLE.map((intent) => {
+    return {
+      built_in: true,
+      platform: 'google',
+      name: intent.name,
+      key: intent.name,
+      inputs: [
+        {
+          text: '',
+          slots: intent.slots,
+        },
+      ],
+    };
+  });
 
 class Editor extends Component {
   constructor(props) {
@@ -623,6 +627,7 @@ class Editor extends Component {
         id="Editor"
         className={cn({
           open: this.props.open && type && !this.state.modal,
+          testing: this.props.testing,
         })}
         onFocus={this.props.unfocus}
         onClickCapture={this.eventHandler}
@@ -637,13 +642,18 @@ class Editor extends Component {
           Mousetrap.bind([CTRL_Y, CMD_Y, CTRL_SHIFT_Z, CMD_SHIFT_Z], this.redo);
         }}
         onMouseLeave={() => {
-          this.props.diagramEngine.getDiagramModel().setLocked(false);
+          if (!this.props.testing) this.props.diagramEngine.getDiagramModel().setLocked(false);
           this.props.setCanvasEvents();
         }}
       >
         {type ? (
           <div className="controls" key={this.state.node.id}>
-            <div id="editor-section">
+            <div
+              id="editor-section"
+              className={cn({
+                disabled: this.props.testing,
+              })}
+            >
               {this.renderTitle()}
               {!this.state.expanded ? (
                 this.EditorRender()

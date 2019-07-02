@@ -105,14 +105,14 @@ class BasicSettings extends Component {
         <div className="settings-content clearfix mt-4">
           <FormGroup>
             <Label>Project Name</Label>
-            <Input className="form-bg mb-2" name="name" value={name} onChange={this.handleUpdate} />
+            <Input className="form-bg mb-3" name="name" value={name} onChange={this.handleUpdate} />
             <Label>Invocation Name</Label>
             <Input
               className="form-bg"
               type="text"
               name="inv_name"
               disabled={disabled_stages.has(this.state.stage)}
-              placeholder="Enter an invocation name that begins an interaction with your skill"
+              placeholder="Enter invocation name"
               value={inv_name}
               onChange={this.handleUpdate}
             />

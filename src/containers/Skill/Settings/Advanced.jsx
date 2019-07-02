@@ -1,3 +1,5 @@
+import 'brace/theme/github';
+
 import Button from 'components/Button';
 import DefaultModal from 'components/Modals/DefaultModal';
 import Prompt from 'components/Uploads/Prompt';
@@ -102,6 +104,7 @@ class AdvancedSettings extends Component {
                 name="datasource_editor"
                 className="datasource_editor"
                 mode="json"
+                theme="github"
                 onChange={(value) => {
                   this.props.updateSkill('alexa_events', value);
                 }}

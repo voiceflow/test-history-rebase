@@ -57,7 +57,8 @@ export class Display extends Component {
   }
 
   onChange(e) {
-    const { node, onUpdate } = this.state;
+    const { node } = this.state;
+    const { onUpdate } = this.props;
     node.extras[e.target.name] = e.target.value;
 
     this.setState(
@@ -69,7 +70,8 @@ export class Display extends Component {
   }
 
   onChangeEditor(value) {
-    const { node, onUpdate } = this.state;
+    const { node } = this.state;
+    const { onUpdate } = this.props;
     node.extras.datasource = value;
     this.setState(
       {
@@ -80,7 +82,8 @@ export class Display extends Component {
   }
 
   onChangeCommands(value) {
-    const { node, onUpdate } = this.state;
+    const { node } = this.state;
+    const { onUpdate } = this.props;
     node.extras.apl_commands = value;
     this.setState(
       {
@@ -91,7 +94,8 @@ export class Display extends Component {
   }
 
   updateOnChange() {
-    const { node, onUpdate } = this.state;
+    const { node } = this.state;
+    const { onUpdate } = this.props;
     node.extras.update_on_change = !node.extras.update_on_change;
     this.setState(
       {
@@ -102,8 +106,8 @@ export class Display extends Component {
   }
 
   selectDisplay(selected) {
-    const { node, onUpdate } = this.state;
-    const { displays } = this.props;
+    const { node } = this.state;
+    const { displays, onUpdate } = this.props;
     if (selected.value === node.extras.display_id) return;
 
     const find = displays.find((t) => t.display_id === selected.value);

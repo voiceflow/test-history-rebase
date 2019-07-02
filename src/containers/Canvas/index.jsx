@@ -1669,6 +1669,7 @@ export class Canvas extends Component {
       undoEvents,
       shiftUndo,
       clearRedo,
+      closeTab,
     } = this.props;
     return (
       <React.Fragment>

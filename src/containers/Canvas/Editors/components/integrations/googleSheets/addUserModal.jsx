@@ -14,7 +14,7 @@ class GoogleAddUserModal extends Component {
       await addUser({
         user_info: userProfile,
         creator_id: user.creator_id,
-        skill_id: skill_id,
+        skill_id,
       });
       onSuccess();
     } catch (e) {

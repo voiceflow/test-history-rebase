@@ -6,7 +6,7 @@ class IntegrationBase extends Component {
     const { node } = this.props;
 
     this.state = {
-      node: node,
+      node,
     };
 
     this.showSection = this.showSection.bind(this);

@@ -116,11 +116,7 @@ class SpreadsheetSection extends Component {
             <div className="mr-2 text-muted">Spreadsheet </div>
             <div className="flex-fill">
               <AsyncSelect
-                key={
-                  JSON.stringify(integrationsUser) +
-                  JSON.stringify(integrationsUser && integrationsUser.user_id) +
-                  selected_action
-                }
+                key={JSON.stringify(integrationsUser) + JSON.stringify(integrationsUser && integrationsUser.user_id) + selected_action}
                 cacheOptions
                 defaultOptions
                 styles={selectStyles}

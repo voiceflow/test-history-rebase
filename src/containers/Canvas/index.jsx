@@ -78,7 +78,7 @@ export class Canvas extends Component {
   constructor(props) {
     super(props);
     // preview mode
-    
+
     const { preview, user } = this.props;
 
     this.onSave = this.onSave.bind(this);
@@ -138,7 +138,7 @@ export class Canvas extends Component {
   setMousetrap = () => {
     const { toggleKeyboard, keyboardHelp, preview } = this.props;
     const { saved, spotlight } = this.state;
-    
+
     Mousetrap.bind(['shift+/'], () => toggleKeyboard(!keyboardHelp));
     Mousetrap.bind(['ctrl+z', 'command+z'], this.undo);
     Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo);
@@ -840,7 +840,7 @@ export class Canvas extends Component {
 
       const diagram = {
         title: diagram_name,
-        variables: variables,
+        variables,
         data,
         skill: skill.skill_id,
         sub_diagrams: JSON.stringify(subDiagrams),
@@ -1622,13 +1622,48 @@ export class Canvas extends Component {
     const { upgrade_modal } = this.state;
     this.setState({
       upgrade_modal: !upgrade_modal,
-    })
+    });
   };
 
   render() {
-    const { upgrade_modal, helpOpen, help, last_save, saving, saved, testing_modal, testing_info,
-      spotlight, type_counter, load_diagram: state_load_diagram, engine, diagram_level_intents } = this.state;
-    const { history, keyboardHelp, toggleKeyboard, preview, diagram, user, load_diagram, tab, tabOpen, toggleUpgrade, open, setOpen, diagram_id, canvasError, root_id, setBlockMenu, blockMenu, setConfirm, setCanvasError, renameFlow, live_mode } = this.props;
+    const {
+      upgrade_modal,
+      helpOpen,
+      help,
+      last_save,
+      saving,
+      saved,
+      testing_modal,
+      testing_info,
+      spotlight,
+      type_counter,
+      load_diagram: state_load_diagram,
+      engine,
+      diagram_level_intents,
+    } = this.state;
+    const {
+      history,
+      keyboardHelp,
+      toggleKeyboard,
+      preview,
+      diagram,
+      user,
+      load_diagram,
+      tab,
+      tabOpen,
+      toggleUpgrade,
+      open,
+      setOpen,
+      diagram_id,
+      canvasError,
+      root_id,
+      setBlockMenu,
+      blockMenu,
+      setConfirm,
+      setCanvasError,
+      renameFlow,
+      live_mode,
+    } = this.props;
     return (
       <React.Fragment>
         <Prompt
@@ -1647,18 +1682,8 @@ export class Canvas extends Component {
           hideFooter={true}
           noPadding={true}
         />
-        <DefaultModal
-          open={keyboardHelp}
-          header="Keyboard Shortcuts"
-          toggle={() => toggleKeyboard(!keyboardHelp)}
-          content={<ShortCuts />}
-        />
-        <HelpModal
-          open={helpOpen}
-          help={help}
-          toggle={() => this.setState({ helpOpen: !helpOpen })}
-          setHelp={(help) => this.setState({ help })}
-        />
+        <DefaultModal open={keyboardHelp} header="Keyboard Shortcuts" toggle={() => toggleKeyboard(!keyboardHelp)} content={<ShortCuts />} />
+        <HelpModal open={helpOpen} help={help} toggle={() => this.setState({ helpOpen: !helpOpen })} setHelp={(help) => this.setState({ help })} />
         <ActionGroup
           lastSave={last_save ? `Last saved ${moment(last_save).fromNow()}` : 'Save'}
           setCB={(cb) => {
@@ -1767,13 +1792,7 @@ export class Canvas extends Component {
               preview={preview}
             />
             {root_id !== diagram_id && (
-              <FlowBar
-                enterFlow={this.enterFlow}
-                preview={preview}
-                root_id={root_id}
-                setBlockMenu={setBlockMenu}
-                engine={engine}
-              />
+              <FlowBar enterFlow={this.enterFlow} preview={preview} root_id={root_id} setBlockMenu={setBlockMenu} engine={engine} />
             )}
             {blockMenu}
             <Clipboard
@@ -1798,15 +1817,15 @@ export class Canvas extends Component {
               nodeProps={{
                 hasFlow: (diagram_id) => diagram_set.has(diagram_id),
                 enterFlow: this.enterFlow,
-                setCanvasError: setCanvasError,
+                setCanvasError,
                 removeNode: this.removeNode,
-                diagram: diagram,
+                diagram,
                 removeCombineNode: this.removeCombineNode,
                 addCombineNode: this.addCombineNode,
                 generateBlockMenu: this.generateBlockMenu,
-                setBlockMenu: setBlockMenu,
+                setBlockMenu,
                 disabled: !!preview,
-                renameFlow: renameFlow,
+                renameFlow,
               }}
               removeHandler={(node) => {
                 if (undoEvents.length >= 10) {

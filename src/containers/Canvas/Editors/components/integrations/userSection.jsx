@@ -59,7 +59,18 @@ class UserSection extends Component {
   }
 
   deleteUser(ev, user) {
-    const { setConfirm, clearModal, deleteUser, selected_integration, user: propsUser, skill_id, setError, integration_user_error, integration_data, updateIntegrationData } = this.props;
+    const {
+      setConfirm,
+      clearModal,
+      deleteUser,
+      selected_integration,
+      user: propsUser,
+      skill_id,
+      setError,
+      integration_user_error,
+      integration_data,
+      updateIntegrationData,
+    } = this.props;
     // TODO: fix
     ev.stopPropagation();
 

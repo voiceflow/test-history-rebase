@@ -51,7 +51,7 @@ class OutputSection extends Component {
 
   handleAddMap() {
     const { action_data, updateActionData } = this.props;
-  
+
     updateActionData({
       mapping: update(action_data.mapping, {
         $push: [
@@ -66,7 +66,7 @@ class OutputSection extends Component {
 
   handleRemoveMap(i) {
     const { action_data, updateActionData } = this.props;
-  
+
     updateActionData(
       {
         mapping: update(action_data.mapping, {
@@ -79,7 +79,7 @@ class OutputSection extends Component {
 
   handleSelection(i, arg, value) {
     const { action_data, updateActionData, openVarTab } = this.props;
-  
+
     if (value !== 'Create Variable') {
       updateActionData(
         {

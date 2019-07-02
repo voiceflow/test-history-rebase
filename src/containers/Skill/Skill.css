@@ -646,7 +646,7 @@ p.loading-btn::after {
 }
 
 .s__modal_content {
-  height: 90%;
+  height: 100%;
   overflow-y: scroll;
 }
 
@@ -682,10 +682,6 @@ p.loading-btn::after {
 .settings-content .col-2 {
   padding-right: 0;
   text-align: right;
-}
-
-.settings hr {
-  margin-right: -32px;
 }
 
 .helper-text {

@@ -1,28 +1,23 @@
 import axios from 'axios';
-import AceEditor from 'components/AceEditor';
 import Button from 'components/Button';
-import DefaultModal from 'components/Modals/DefaultModal';
 import Prompt from 'components/Uploads/Prompt';
-import { setConfirm, setError } from 'ducks/modal';
-import { deleteProject } from 'ducks/project';
+import { setError } from 'ducks/modal';
 import { updateVersion, updateVersionMerge } from 'ducks/version';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import Toggle from 'react-toggle';
-import { Alert, Collapse, FormGroup, Input, Label } from 'reactstrap';
+import { Collapse, FormGroup, Input, Label } from 'reactstrap';
 
-import AccountLinkTemplate from '../../Business/AccountLinkTemplate';
+const disabled_stages = new Set([11, 12]);
 
-class BasicAdvancedSettings extends Component {
+class BasicSettings extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      saving: false,
       hide_resume: !props.skill.resume_prompt,
-      show_overwrite_modal: false,
     };
 
     if (!props.skill.error_prompt) {
@@ -46,60 +41,31 @@ class BasicAdvancedSettings extends Component {
     this.baseline = _.cloneDeep(props.skill);
 
     this.state.resume_collapse = props.skill.resume_prompt ? !!props.skill.resume_prompt.follow_content : false;
-
-    this.confirmDelete = this.confirmDelete.bind(this);
-    this.toggleSwitch = this.toggleSwitch.bind(this);
-    this.handleUpdate = this.handleUpdate.bind(this);
-    this.renderSettings = this.renderSettings.bind(this);
-    this.toggleRepeat = this.toggleRepeat.bind(this);
-    this.overwriteSuccessModal = this.overwriteSuccessModal.bind(this);
-    this.confirmOverwrite = this.confirmOverwrite.bind(this);
-    this.toggleResumeFollowUp = this.toggleResumeFollowUp.bind(this);
-  }
-
-  toggleResumeFollowUp() {
-    this.setState({
-      resume_collapse: !this.state.resume_collapse,
-    });
-  }
-
-  toggleRepeat(low, high) {
-    this.props.updateSkill('repeat', this.props.skill.repeat > low ? low : high);
-  }
-
-  handleUpdate(e) {
-    this.props.updateSkill(e.target.name, e.target.value);
-  }
-
-  confirmDelete() {
-    this.props.setConfirm({
-      warning: true,
-      text: (
-        <Alert color="danger" className="mb-0">
-          WARNING: This action can not be undone, <i>{this.props.skill.name}</i> and all flows can not be recovered
-        </Alert>
-      ),
-      confirm: () =>
-        this.props
-          .deleteProject(this.props.skill.project_id)
-          .then(() => this.props.history.push('/dashboard'))
-          .catch((err) => {
-            // eslint-disable-next-line no-console
-            console.log(err);
-            this.props.setError('Error Deleting Skill');
-          }),
-    });
-  }
-
-  toggleSwitch(e) {
-    this.props.updateSkill(e.target.name, !this.props.skill[e.target.name]);
   }
 
   componentWillUnmount() {
     this.saveSettings();
   }
 
-  saveSettings() {
+  toggleResumeFollowUp = () => {
+    this.setState({
+      resume_collapse: !this.state.resume_collapse,
+    });
+  };
+
+  toggleRepeat = (low, high) => {
+    this.props.updateSkill('repeat', this.props.skill.repeat > low ? low : high);
+  };
+
+  handleUpdate = (e) => {
+    this.props.updateSkill(e.target.name, e.target.value);
+  };
+
+  toggleSwitch = (e) => {
+    this.props.updateSkill(e.target.name, !this.props.skill[e.target.name]);
+  };
+
+  saveSettings = () => {
     if (this.state.hide_resume || !this.props.skill.resume_prompt.content) {
       this.props.updateSkill('resume_prompt', null);
     } else if (!this.state.resume_collapse) {
@@ -128,125 +94,26 @@ class BasicAdvancedSettings extends Component {
     axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, this.props.skill).catch(() => {
       this.props.setError('Settings Save Error');
     });
-  }
+  };
 
-  overwriteSuccessModal(result) {
-    const msg = result ? 'Devlopment version successfully overwritten' : 'Overwrite failed.';
-
-    this.setState({
-      show_overwrite_modal: true,
-      overwrite_status: msg,
-    });
-  }
-
-  confirmOverwrite() {
-    this.props.setConfirm({
-      warning: true,
-      text: (
-        <Alert color="danger" className="mb-0">
-          WARNING: This action can not be undone and will replace your development version completely with your live version.
-        </Alert>
-      ),
-      confirm: this.props.onSwapVersions,
-      params: [this.props.skill.skill_id, true, this.overwriteSuccessModal],
-    });
-  }
-
-  renderSettings() {
-    // check to make sure there are actual differences before making a server call
-    if (this.props.page === 'advanced') {
-      // ADVANCED SETTINGS
-      return (
-        <React.Fragment>
-          <DefaultModal
-            open={this.state.show_overwrite_modal}
-            toggle={() => {
-              this.setState({ show_overwrite_modal: false });
-            }}
-            content={this.state.overwrite_status}
-            header="Overwrite Status"
-          />
-          <div className="settings-content clearfix">
-            <FormGroup>
-              <Label>Error Prompt</Label>
-              <div className="helper-text mb-2">What to say if the skill encounters an unexpected error</div>
-              <Prompt
-                placeholder="Sorry, this skill has encountered an error"
-                voice={this.props.skill.error_prompt.voice}
-                content={this.props.skill.error_prompt.content}
-                updatePrompt={(prompt) => this.props.updateSkillMerge('error_prompt', prompt)}
-              />
-            </FormGroup>
-          </div>
-          <div className="settings-content clearfix">
-            <FormGroup>
-              <div className="mt-4">
-                <Label>Skill Events (events: {'{object}'})</Label>
-                <AceEditor
-                  name="datasource_editor"
-                  className="datasource_editor"
-                  mode="json"
-                  onChange={(value) => {
-                    this.props.updateSkill('alexa_events', value);
-                  }}
-                  fontSize={14}
-                  showPrintMargin={false}
-                  showGutter={true}
-                  highlightActiveLine={true}
-                  value={this.props.skill.alexa_events}
-                  editorProps={{ $blockScrolling: true }}
-                  setOptions={{
-                    enableBasicAutocompletion: true,
-                    enableLiveAutocompletion: false,
-                    enableSnippets: false,
-                    showLineNumbers: true,
-                    tabSize: 2,
-                    useWorker: false,
-                  }}
-                />
-              </div>
-            </FormGroup>
-          </div>
-          {this.props.live_mode && (
-            <div className="settings-content clearfix">
-              <FormGroup>
-                <Label>Overwrite Development Version with Live Version</Label>
-                <Alert color="danger between">
-                  <span>This action cannot be undone.</span>
-                  <br />
-                  <Button isWarning onClick={this.confirmOverwrite}>
-                    Overwrite
-                  </Button>
-                </Alert>
-              </FormGroup>
-            </div>
-          )}
-          <div className="settings-content clearfix">
-            <AccountLinkTemplate {...this.props} />
-          </div>
-          <div className="settings-content clearfix">
-            <FormGroup>
-              <Label>Delete Project</Label>
-              <Alert color="danger between">
-                <span>This action cannot be undone</span>
-                <br />
-                <Button isWarning onClick={this.confirmDelete}>
-                  Delete Project
-                </Button>
-              </Alert>
-            </FormGroup>
-          </div>
-        </React.Fragment>
-      );
-    }
-
-    // BASIC SETTINGS
+  render() {
+    const { name, inv_name } = this.props.skill;
     return (
       <React.Fragment>
         <div className="settings-content clearfix pb-11 no-bottom">
           <FormGroup>
             <Label>Project Name</Label>
-            <Input className="form-bg mb-4" name="name" value={this.props.skill.name} onChange={this.handleUpdate} />
+            <Input className="form-bg mb-3" name="name" value={name} onChange={this.handleUpdate} />
+            <Label>Invocation Name</Label>
+            <Input
+              className="form-bg"
+              type="text"
+              name="inv_name"
+              disabled={disabled_stages.has(this.state.stage)}
+              placeholder="Enter invocation name"
+              value={inv_name}
+              onChange={this.handleUpdate}
+            />
           </FormGroup>
           <hr />
           <FormGroup>
@@ -301,7 +168,7 @@ class BasicAdvancedSettings extends Component {
           </FormGroup>
           <hr />
         </div>
-        <div className="settings-content clearfix mb-5 no-bottom">
+        <div className="settings-content clearfix no-bottom">
           <FormGroup>
             {/* <Label className="mb-1">Restart Every Session</Label> */}
             <div className="helper-text">
@@ -384,10 +251,6 @@ class BasicAdvancedSettings extends Component {
       </React.Fragment>
     );
   }
-
-  render() {
-    return <React.Fragment>{this.renderSettings()}</React.Fragment>;
-  }
 }
 
 const mapStateToProps = (state) => ({
@@ -397,14 +260,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deleteProject: (p_id) => dispatch(deleteProject(p_id)),
     updateSkill: (type, val) => dispatch(updateVersion(type, val)),
     updateSkillMerge: (type, val) => dispatch(updateVersionMerge(type, val)),
-    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
     setError: (err) => dispatch(setError(err)),
   };
 };
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(BasicAdvancedSettings);
+)(BasicSettings);

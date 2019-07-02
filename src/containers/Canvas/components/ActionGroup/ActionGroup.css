@@ -148,10 +148,6 @@
   max-width: 500px;
 }
 
-.ag__settings_modal .modal-content {
-  height: 80vh;
-}
-
 .settings-content .content {
   min-width: 0;
 }

@@ -74,13 +74,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-build/
-
 package-lock.json
 
 .elasticbeanstalk
 
 # Generated self-signed localhost certificates
 certs/
-
-/test.js

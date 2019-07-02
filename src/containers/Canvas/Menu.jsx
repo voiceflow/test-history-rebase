@@ -74,7 +74,7 @@ export class Menu extends Component {
     if (localStorage.getItem('sideWidth') && this.sidebar && nextProps.open) {
       const width = localStorage.getItem('sideWidth');
       this.sidebar.current.style.width = `${width}px`;
-      this.sidebar.current.style.transform = `translateX(-${width.slice(0, -2) * 1 + 40}px)`;
+      this.sidebar.current.style.transform = `translateX(-${width * 1 + 40}px)`;
     }
   }
 
@@ -82,8 +82,8 @@ export class Menu extends Component {
     const dx = this.m_pos - e.x;
     if (this.sidebar.current.style.width && (e.clientX < 280 || e.clientX > 960)) return;
     this.m_pos = e.x;
-    this.sidebar.current.style.width = `${parseInt(getComputedStyle(this.sidebar.current, '').width, 10) - dx}px`;
-    localStorage.setItem('sideWidth', `${parseInt(getComputedStyle(this.sidebar.current, '').width, 10) - dx}px`);
+    const newWidth = this.sidebar.current.offsetWidth - dx;
+    this.sidebar.current.style.width = `${newWidth}px`;
   }
 
   componentDidMount() {
@@ -100,6 +100,7 @@ export class Menu extends Component {
         false
       );
       document.addEventListener('mouseup', () => {
+        localStorage.setItem('sideWidth', this.sidebar.current.offsetWidth);
         document.removeEventListener('mousemove', this.resize, false);
       });
     }
@@ -253,7 +254,7 @@ export class Menu extends Component {
                   <div
                     className="block-title no-select mb-3"
                     onClick={() => {
-                      localStorage.setItem('sideWidth', this.sidebar.current.style.width);
+                      localStorage.setItem('sideWidth', this.sidebar.current.offsetWidth);
                       this.props.closeTab();
                     }}
                   >

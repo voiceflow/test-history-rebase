@@ -899,13 +899,7 @@
 
   /* box-shadow: 0 0 0 1px rgba(144,164,174,.2); */
   border-right: 1px solid #e2e9ec;
-  -webkit-transform: translateX(-340px);
-  -moz-transform: translateX(-340px);
-  -ms-transform: translateX(-340px);
-  -o-transform: translateX(-340px);
-  transform: translateX(-340px);
-  -webkit-transition: -webkit-transform 0.3s;
-  -moz-transition: -moz-transform 0.3s;
+  transform: translateX(-800px);
   transition: transform 0.3s;
 
   /* smooth the scrolling on touch devices - webkit browsers */

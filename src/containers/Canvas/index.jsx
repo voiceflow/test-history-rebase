@@ -33,7 +33,7 @@ import { openTab, closeTab, setCanvasError, clearCanvasMessage } from 'ducks/use
 
 import UserTestHeader from './Test/UserTestHeader';
 import Clipboard from './components/Clipboard';
-import ActionGroup from './components/ActionGroup/ActionGroup';
+import ActionGroup from './components/ActionGroup';
 import HelpModal from './HelpModal';
 import new_template from 'assets/templates/new';
 import { Alert, ListGroup, ListGroupItem } from 'reactstrap';

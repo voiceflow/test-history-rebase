@@ -105,7 +105,7 @@ class BasicSettings extends Component {
         <div className="settings-content clearfix mt-4">
           <FormGroup>
             <Label>Project Name</Label>
-            <Input className="form-bg mb-4" name="name" value={name} onChange={this.handleUpdate} />
+            <Input className="form-bg mb-2" name="name" value={name} onChange={this.handleUpdate} />
             <Label>Invocation Name</Label>
             <Input
               className="form-bg"

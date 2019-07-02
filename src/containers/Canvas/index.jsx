@@ -155,7 +155,7 @@ export class Canvas extends Component {
     });
     Mousetrap.bind('esc', () => this.state.spotlight && this.setState({ spotlight: false }));
     Mousetrap.bind('space', (e) => {
-      if (this.diagram_focus) {
+      if (this.diagram_focus && !this.props.test) {
         this.onDiagramUnfocus();
         this.setState({ spotlight: true });
         e.preventDefault();
@@ -283,10 +283,11 @@ export class Canvas extends Component {
     }
 
     // Unlock and lock the canvas switching between test
-    if (prevProps.test && !this.props.test && !this.props.preview) {
-      this.state.engine.getDiagramModel().setLocked(false);
-    } else if (this.props.test && !prevProps.test) {
+    const locked = this.state.engine.getDiagramModel().isLocked();
+    if (this.props.test || (this.props.preview && !locked)) {
       this.state.engine.getDiagramModel().setLocked(true);
+    } else if (locked) {
+      this.state.engine.getDiagramModel().setLocked(false);
     }
   }
 
@@ -1525,14 +1526,8 @@ export class Canvas extends Component {
             preview={this.props.preview}
           />
         )}
-        {!this.props.preview && !this.state.load_diagram && this.props.page === 'test' && (
-          <UserTestHeader
-            preview={this.props.preview}
-            history={this.props.history}
-            page={this.props.page}
-            save={this.onSave}
-            setSaveCB={this.setSaveCB}
-          />
+        {!this.props.preview && this.props.page === 'test' && (
+          <UserTestHeader preview={this.props.preview} history={this.props.history} page={this.props.page} />
         )}
         {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={() => this.setState({ spotlight: false })} />}
         <div
@@ -1563,7 +1558,7 @@ export class Canvas extends Component {
               this.updateTree = fn;
             }}
           />
-          {this.state.load_diagram && React.createElement(Spinner, { name: 'Flow' })}
+          {this.state.load_diagram && <Spinner name="Flow" />}
 
           <Editor
             unfocus={this.onDiagramUnfocus}
@@ -1590,7 +1585,15 @@ export class Canvas extends Component {
             setCanvasEvents={this.setMousetrap}
             updateLinter={this.updateLinter}
           />
-          <Test open={this.props.test} enterFlow={this.enterFlow} diagramEngine={this.state.engine} />
+          <Test
+            loading={this.state.load_diagram}
+            open={this.props.test}
+            enterFlow={this.enterFlow}
+            diagramEngine={this.state.engine}
+            save={this.onSave}
+            preview={this.props.preview}
+            setSaveCB={this.setSaveCB}
+          />
           <div
             key={this.props.diagram_id}
             id="diagram"

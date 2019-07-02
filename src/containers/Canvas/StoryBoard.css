@@ -928,11 +928,11 @@
 }
 
 .Menu #sidebar.open {
-  -webkit-transform: translateX(0);
-  -moz-transform: translateX(0);
-  -ms-transform: translateX(0);
-  -o-transform: translateX(0);
-  transform: translateX(0);
+  -webkit-transform: translateX(0) !important;
+  -moz-transform: translateX(0) !important;
+  -ms-transform: translateX(0) !important;
+  -o-transform: translateX(0) !important;
+  transform: translateX(0) !important;
 }
 
 .cut-through {
@@ -3467,12 +3467,13 @@ button.close:hover{
   box-sizing: border-box;
   padding: 8px 12px;
   color: #0b1a38;
+  outline: none;
+  resize: none;
 
   /* margin-bottom: 1.2rem; */
   background: #fefefe;
   border: 1px solid rgba(141, 162, 181, 0.3);
   border-radius: 5px;
-  box-shadow: 0 0 1px 1px rgba(43, 57, 80, 0.06) !important;
   cursor: text;
   cursor: text;
 }

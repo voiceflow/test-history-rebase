@@ -44,11 +44,6 @@
   color: #ff3562 !important;
 }
 
-.Window.skill input::placeholder,
-textarea::placeholder {
-  color: #ccc !important;
-}
-
 .LoginWithAmazon {
   display: inline-block;
   cursor: pointer;

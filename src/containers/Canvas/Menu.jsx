@@ -71,7 +71,9 @@ class Menu extends Component {
   // eslint-disable-next-line react/no-deprecated
   componentWillReceiveProps(nextProps) {
     if (localStorage.getItem('sideWidth') && this.sidebar && nextProps.open) {
-      this.sidebar.style.width = localStorage.getItem('sideWidth');
+      const width = localStorage.getItem('sideWidth');
+      this.sidebar.style.width = `${width}px`;
+      this.sidebar.style.transform = `translateX(-${width.slice(0, -2) * 1 + 40}px)`;
     }
   }
 
@@ -254,9 +256,8 @@ class Menu extends Component {
                   <div
                     className="block-title no-select mb-3"
                     onClick={() => {
-                      this.props.closeTab();
                       localStorage.setItem('sideWidth', this.sidebar.style.width);
-                      this.sidebar.style.width = '240px';
+                      this.props.closeTab();
                     }}
                   >
                     <h5 className="mb-0">{this.props.tab}</h5>

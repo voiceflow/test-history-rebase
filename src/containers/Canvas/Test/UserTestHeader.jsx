@@ -6,24 +6,12 @@ import React, { useEffect } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { startTest, renderTest, leaveTest, TEST_STATUS } from 'ducks/test';
+import { startTest, leaveTest, TEST_STATUS } from 'ducks/test';
 
 const UserTestHeader = (props) => {
-  const { save, setSaveCB, rendered, renderTest, time, page, status, skill, history, dev_skill, startTest, resetTest, preview, leaveTest } = props;
+  const { time, page, status, skill, history, startTest, leaveTest, preview } = props;
 
-  const diagramId = dev_skill.diagram;
-
-  useEffect(() => {
-    if (!rendered) {
-      if (preview) {
-        renderTest(diagramId);
-      } else {
-        setSaveCB(renderTest);
-        save();
-      }
-    }
-    return leaveTest;
-  }, []);
+  const diagramId = skill.diagram;
 
   return (
     <Header
@@ -49,8 +37,8 @@ const UserTestHeader = (props) => {
               isSecondary
               className="mr-2"
               onClick={() => {
-                resetTest();
-                history.push(`/canvas/${dev_skill.skill_id}/${dev_skill.diagram}`);
+                history.push(`/canvas/${skill.skill_id}/${skill.diagram}`);
+                leaveTest();
               }}
             >
               Finish Test
@@ -75,12 +63,10 @@ const mapStateToProps = (state) => ({
   rendered: state.test.rendered,
   status: state.test.status,
   skill: state.skills.skill,
-  dev_skill: state.skills.dev_skill || state.skills.skill,
 });
 
 const mapDispatchToProps = {
   startTest,
-  renderTest,
   leaveTest,
 };
 

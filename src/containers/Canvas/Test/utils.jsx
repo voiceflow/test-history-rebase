@@ -46,17 +46,20 @@ const getAudioMeta = (audio) => {
   });
 };
 
+const newAudio = (src) => {
+  return new Audio(src);
+};
+
 export const getUserTestOutputs = async (newState, trace) => {
   const dom = [];
-  let delay = 0;
   let idx = 0;
   // eslint-disable-next-line no-restricted-syntax
   for (const block of trace) {
     if (block.isExitFlow) {
-      delay += 1000;
       const outputBlock = {
         node: trace[idx - 1].line.id,
-        delay,
+        delay: 1000,
+        type: 'EXIT_FLOW',
       };
       if (block.diagram) outputBlock.diagram = block.diagram;
       dom.push(outputBlock);
@@ -72,17 +75,15 @@ export const getUserTestOutputs = async (newState, trace) => {
         node: block.line.id,
         diagram: !_.isEmpty(newState.diagrams) && _.last(newState.diagrams).id,
         type,
-        delay,
+        delay: 500,
       };
-      delay += 500;
       dom.push(outputBlock);
     }
     if (type === 'Speak') {
-      delay += 1000;
       // eslint-disable-next-line no-await-in-loop
       const results = await Promise.all(
         block.audio.map(async (audioFile) => {
-          const audio = new Audio(audioFile);
+          const audio = newAudio(audioFile);
           return {
             duration: await getAudioMeta(audio),
             audio,
@@ -102,33 +103,25 @@ export const getUserTestOutputs = async (newState, trace) => {
       // eslint-disable-next-line lodash/collection-return, lodash/collection-method-value, no-loop-func
       let audioMappingIdx = 0;
       let audioType = children[0].name === 'audio' ? 'audio' : 'speak';
-      _.map(children, (child, idx) => {
+      _.map(children, (child) => {
         const outputBlock = {};
         if (child.name === 'audio') {
           outputBlock.text = 'Audio File';
         } else {
           outputBlock.text = child.content || child.name;
         }
-        let duration = delay;
-        outputBlock.delay = delay;
-        if (idx === 0) {
-          outputBlock.audio = results[audioMappingIdx].audio;
-          duration = results[audioMappingIdx].duration * 1000;
-          delay += duration;
-        }
+
         if (audioType === 'audio' && child.name !== 'audio') {
           audioType = 'speak';
           audioMappingIdx++;
-          outputBlock.audio = results[audioMappingIdx].audio;
-          duration = results[audioMappingIdx].duration * 1000;
-          delay += duration;
         } else if (audioType === 'speak' && child.name === 'audio') {
           audioType = 'audio';
           audioMappingIdx++;
-          outputBlock.audio = results[audioMappingIdx].audio;
-          duration = results[audioMappingIdx].duration * 1000;
-          delay += duration;
         }
+
+        outputBlock.audio = results[audioMappingIdx].audio;
+        outputBlock.delay = results[audioMappingIdx].duration * 1000;
+
         outputBlock.node = block.line.id;
         outputBlock.audioType = child.type === 'text' || child.type === 'speak' || (child.name === 'audio' && 'audio');
         outputBlock.type = type;
@@ -136,25 +129,22 @@ export const getUserTestOutputs = async (newState, trace) => {
         dom.push(outputBlock);
       });
     } else if (type === 'Stream') {
-      delay += 1000;
       // eslint-disable-next-line no-await-in-loop
       const results = await Promise.all(
         // eslint-disable-next-line sonarjs/no-identical-functions
         block.audio.map(async (audioFile) => {
-          const audio = new Audio(audioFile);
+          const audio = newAudio(audioFile);
           return {
             duration: await getAudioMeta(audio),
             audio,
           };
         })
       );
-      const duration = results[0].duration * 1000;
       const outputBlock = {
         audio: results[0].audio,
         text: 'Streaming',
         node: block.line.id,
         isLast: !block.line.nextId,
-        delay,
         type,
       };
       dom.push(outputBlock);
@@ -179,17 +169,14 @@ export const getUserTestOutputs = async (newState, trace) => {
         ],
         node: block.line.id,
         isLast: !block.line.nextId,
-        delay,
         type,
       };
-      delay += duration;
       dom.push(outputBlockChoices);
     } else if (type === 'Choice' && idx > 0) {
       const outputBlock = {
         options: _.map(block.line.inputs, _.head),
         node: block.line.id,
         type,
-        delay,
       };
       dom.push(outputBlock);
     } else if (type === 'Flow') {
@@ -198,18 +185,14 @@ export const getUserTestOutputs = async (newState, trace) => {
         diagram: block.line.diagram_id,
         isLast: !block.line.nextId,
         type,
-        delay,
       };
-      delay += 500;
       dom.push(outputBlock);
     } else if (type === 'One Shot Intent') {
       const outputBlock = {
         node: block.line.id,
         diagram: _.last(block.diagrams).id,
         type,
-        delay,
       };
-      delay += 500;
       dom.push(outputBlock);
     } else {
       if (!_.isEmpty(parsed.children)) {
@@ -218,7 +201,6 @@ export const getUserTestOutputs = async (newState, trace) => {
           const outputBlock = {
             text: child.children[0].children[0].content,
             node: block.line.id,
-            delay,
             type: 'system',
             isLast: !block.line.nextId,
           };

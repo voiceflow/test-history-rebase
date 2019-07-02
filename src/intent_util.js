@@ -1,8 +1,9 @@
-const { find } = require('lodash');
+const _ = require('lodash');
 const { SLOT_TYPES } = require('./Constants');
 const randomstring = require('randomstring');
 const { validSpokenCharacters, validLatinChars } = require('./services/Regex');
 const draftToMarkdown = require('./services/draftConvert');
+const NLC = require('natural-language-commander');
 
 // eslint-disable-next-line no-secrets/no-secrets
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
@@ -30,7 +31,7 @@ const getUtterancesWithSlotNames = (utterances, slots, square_brackets = false, 
           const replace = m[1];
           const slot_text = m[2];
           const key = m[3];
-          const slot = find(slots, {
+          const slot = _.find(slots, {
             key,
           });
           if (slot) {
@@ -60,7 +61,7 @@ const getUtterancesWithSlotNames = (utterances, slots, square_brackets = false, 
 const getSlotType = (slot, platform) => {
   let type = slot.name;
   if (slot.type.value && slot.type.value.toLowerCase() !== 'custom') {
-    const default_slot = find(SLOT_TYPES, (s) => s.label.toLowerCase() === slot.type.value.toLowerCase());
+    const default_slot = _.find(SLOT_TYPES, (s) => s.label.toLowerCase() === slot.type.value.toLowerCase());
     if (!default_slot) {
       type = slot.type.value; // Platform specific slot
     } else {
@@ -80,7 +81,7 @@ function unique(keys) {
 
 const getSlotsForKeysAndFormat = (keys, slots, platform) => {
   return unique(keys).map((key) => {
-    const slot = find(slots, {
+    const slot = _.find(slots, {
       key,
     });
 
@@ -95,13 +96,15 @@ const getSlotsForKeysAndFormat = (keys, slots, platform) => {
 
 const getSlotsForKeys = (keys, slots, platform) => {
   return unique(keys).map((key) => {
-    const slot = find(slots, { key });
+    const slot = _.find(slots, { key });
+    if (!slot) return null;
+
     const slot_type = slot.type.value;
     let formatted_type = slot.name;
 
     if (slot_type && slot_type.toLowerCase() !== 'custom') {
       formatted_type = slot.type.value;
-      const built_in_slot = find(SLOT_TYPES, { label: slot_type });
+      const built_in_slot = _.find(SLOT_TYPES, { label: slot_type });
       if (built_in_slot && platform && built_in_slot.type[platform]) {
         formatted_type = built_in_slot.type[platform];
       }
@@ -115,13 +118,13 @@ const getSlotsForKeys = (keys, slots, platform) => {
 };
 
 const findSlot = (slot_type, platform) => {
-  const built_in_slot = find(SLOT_TYPES, { label: slot_type });
+  const built_in_slot = _.find(SLOT_TYPES, { label: slot_type });
   if (built_in_slot) return built_in_slot.type[platform];
   return null;
 };
 
 const replacer = (match, inner, slots, extracted) => {
-  const slot = find(slots, { name: inner });
+  const slot = _.find(slots, { name: inner });
   if (slot) {
     slot.name = formatName(slot.name);
     extracted.push({
@@ -271,6 +274,36 @@ const deepVariableSubstitution = (object, variableMap) => {
   return recurse(object);
 };
 
+class VoiceflowNLC extends NLC {
+  handleNormalCommand(data, command) {
+    let foundMatchName;
+
+    // Handle a normal command.
+    _.forEach(this.matchers, (matcher) => {
+      /** The slots from the match or [], if the match was found. */
+      const orderedSlots = matcher.check(command);
+
+      // If orderedSlots is undefined, the match failed.
+      if (orderedSlots) {
+        if (data) {
+          // Add the data as the first arg, if specified.
+          orderedSlots.unshift(data);
+        }
+
+        // Call the callback with the slot values in order.
+        matcher.intent.callback.apply(null, orderedSlots);
+        // Flag that a match was found.
+        foundMatchName = matcher.intent.intent;
+        // Exit early.
+        return false;
+      }
+    });
+
+    return foundMatchName;
+  }
+}
+
+exports.VoiceflowNLC = VoiceflowNLC;
 exports.findSlot = findSlot;
 exports.getUtterancesWithSlotNames = getUtterancesWithSlotNames;
 exports.formatName = formatName;

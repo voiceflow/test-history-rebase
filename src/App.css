@@ -1461,6 +1461,11 @@ textarea.form-control::placeholder,
   justify-content: space-between;
 }
 
+.input-clear {
+  border: none;
+  outline: none !important;
+}
+
 .subheader {
   /* position: absolute; */
   top: 0;
@@ -1841,6 +1846,10 @@ body.modal-open {
 .tippy-tooltip.warning-theme .arrow-regular {
   left: 15px !important;
   border-bottom-color: #e23c61 !important;
+}
+
+.tippy-tooltip.warning-theme [x-circle] {
+  background: #e23c61 !important;
 }
 
 .tippy-tooltip.warning-theme {

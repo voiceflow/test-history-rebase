@@ -88,7 +88,7 @@ class Prompt extends PureComponent {
       <div className="multiline">
         <div className="multi-title-block mb-2">
           <div className="super-center flex-hard">
-            Speak As
+            Speaking As
             <Select
               className="speak-box ml-3"
               classNamePrefix="select-box"

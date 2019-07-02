@@ -42,9 +42,7 @@ export const Members = (props) => {
           })}
         </div>
       )}
-      {accepted.length > 8 && (
-        <div className="ml-3 text-muted">+{accepted.length - 8}</div>
-      )}
+      {accepted.length > 8 && <div className="ml-3 text-muted">+{accepted.length - 8}</div>}
     </div>
   );
 };

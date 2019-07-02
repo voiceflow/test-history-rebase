@@ -49,7 +49,7 @@ class Multimodal extends Component {
               <div className="empty-container">
                 <img src="/images/desktop.svg" alt="open safe" width="100" />
                 <p className="empty">No Visual Templates Exist</p>
-                <p className="empty-desc">Add viduals to your project and create stunning visuals with Alexa Presentation Language</p>
+                <p className="empty-desc">Add visuals to your project and create stunning visuals with Alexa Presentation Language</p>
                 <Link to={`/visuals/${skill_id}/display/new`} className="no-underline">
                   <Button isPrimary varient="contained">
                     New Display

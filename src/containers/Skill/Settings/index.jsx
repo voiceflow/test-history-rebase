@@ -82,7 +82,7 @@ class Settings extends Component {
 
   render() {
     return (
-      <div className="settings pt-4 pb-5">
+      <div className="settings pb-5">
         <div>
           <div className="nav-bar-top mb-4">
             <ButtonGroup className="toggle-group mb-2 toggle-group-settings">

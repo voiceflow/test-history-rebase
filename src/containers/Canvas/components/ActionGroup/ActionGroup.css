@@ -163,7 +163,5 @@
 }
 
 .ag__settings_header {
-  text-align: center;
-  margin: 2rem 0 0;
-  font-size: 24px;
+  margin: 1rem 16px 0 4px;
 }

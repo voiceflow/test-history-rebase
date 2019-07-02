@@ -1111,7 +1111,10 @@ export class ActionGroup extends PureComponent {
         </Modal>
 
         <Modal isOpen={this.state.settingsModal} toggle={() => this.setState({ settingsModal: false })} className="ag__settings_modal">
-          <div className="ag__settings_header">Settings</div>
+          {/* <div className="ag__settings_header">Settings</div> */}
+          <div className="ag__settings_header">
+            <ModalHeader toggle={this.props.close} className="pb-2" header="Board Settings" />
+          </div>
           <Settings {...this.props} page="basic" toggleUpgrade={this.toggleUpgrade} />
         </Modal>
 

@@ -165,7 +165,7 @@ class BasicAdvancedSettings extends Component {
             content={this.state.overwrite_status}
             header="Overwrite Status"
           />
-          <div className="settings-content clearfix mt-4">
+          <div className="settings-content clearfix">
             <FormGroup>
               <Label>Error Prompt</Label>
               <div className="helper-text mb-2">What to say if the skill encounters an unexpected error</div>
@@ -242,7 +242,7 @@ class BasicAdvancedSettings extends Component {
     // BASIC SETTINGS
     return (
       <React.Fragment>
-        <div className="settings-content clearfix mt-4">
+        <div className="settings-content clearfix">
           <FormGroup>
             <Label>Project Name</Label>
             <Input className="form-bg mb-4" name="name" value={this.props.skill.name} onChange={this.handleUpdate} />

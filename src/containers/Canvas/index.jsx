@@ -243,7 +243,7 @@ export class Canvas extends Component {
   };
 
   setTimeout = () => {
-    const { activityTiime } = this.state;
+    const { activityTime } = this.state;
     this.activityTimeout = setTimeout(this.pauseActivity, activityTime);
   };
 
@@ -1663,6 +1663,11 @@ export class Canvas extends Component {
       setCanvasError,
       renameFlow,
       live_mode,
+      skill,
+      diagram_set,
+      undoEvents,
+      shiftUndo,
+      clearRedo,
     } = this.props;
     return (
       <React.Fragment>

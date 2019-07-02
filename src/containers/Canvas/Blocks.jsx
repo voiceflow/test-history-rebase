@@ -1,8 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
-const FAVORITE_SECTION_MAX = 3;
-
 const BLOCK_TYPES = {
   speak: {
     text: 'Speak',

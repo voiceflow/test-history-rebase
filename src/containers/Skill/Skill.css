@@ -31,7 +31,7 @@
   margin-bottom: 5px !important;
 }
 
-.Window.skill>.container {
+.Window.skill > .container {
   padding-top: 80px;
   padding-bottom: 6rem;
 }
@@ -114,7 +114,7 @@ textarea::placeholder {
   }
 }
 
-.stage_modal .modal-info>div {
+.stage_modal .modal-info > div {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -122,15 +122,15 @@ textarea::placeholder {
   min-height: 80px;
 }
 
-.stage_modal .modal-info>h1 {
+.stage_modal .modal-info > h1 {
   font-size: 3rem;
 }
 
-.stage_modal .modal-body>.d-flex.justify-content-between {
+.stage_modal .modal-body > .d-flex.justify-content-between {
   margin-bottom: 10px;
 }
 
-.stage_modal .modal-info>.form>div {
+.stage_modal .modal-info > .form > div {
   width: 100%;
   margin: 5px 0 !important;
 }
@@ -140,7 +140,7 @@ textarea::placeholder {
   overflow-y: hidden;
 }
 
-.stage_modal .modal-info>.form>.btn {
+.stage_modal .modal-info > .form > .btn {
   margin-top: 10px !important;
 }
 
@@ -184,7 +184,7 @@ textarea::placeholder {
   padding: 13px;
 }
 
-.product-card>.card {
+.product-card > .card {
   overflow: hidden;
   background-image: linear-gradient(180deg, #fff, #fff);
 
@@ -281,11 +281,11 @@ textarea::placeholder {
   transition: all 0.2s ease;
 }
 
-.product-card>.card:hover {
+.product-card > .card:hover {
   transform: translateY(-5px);
 }
 
-.product-card>.card:hover .overlay {
+.product-card > .card:hover .overlay {
   visibility: visible;
   opacity: 1;
 }
@@ -317,11 +317,11 @@ textarea::placeholder {
   transform: translateY(-30px);
 }
 
-.product-card>.card:hover .overlay .edit-button {
+.product-card > .card:hover .overlay .edit-button {
   transform: translateY(0);
 }
 
-.product-card>.card:hover .overlay .elispie {
+.product-card > .card:hover .overlay .elispie {
   z-index: 10;
   transform: translateY(0);
 }
@@ -462,7 +462,7 @@ textarea::placeholder {
   padding: 14px;
 }
 
-.empty-card>div {
+.empty-card > div {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -473,7 +473,7 @@ textarea::placeholder {
   cursor: pointer;
 }
 
-.empty-card:hover>div:hover {
+.empty-card:hover > div:hover {
   background-color: rgba(0, 0, 0, 0.03);
 }
 
@@ -604,7 +604,7 @@ textarea::placeholder {
   margin-top: -2px;
 }
 
-.publish-loader>.loader {
+.publish-loader > .loader {
   width: 2.5em;
   height: 2.5em;
 }
@@ -657,6 +657,7 @@ p.loading-btn::after {
 .s__label_text {
   font-weight: 400;
   font-size: 15px;
+  padding-top: 3px;
 }
 
 .s__label_tooltip {
@@ -672,4 +673,21 @@ p.loading-btn::after {
 
 .settings-content.no-bottom {
   border-bottom: 0;
+}
+
+.settings-content .row {
+  margin-right: 0;
+}
+
+.settings-content .col-2 {
+  padding-right: 0;
+  text-align: right;
+}
+
+.settings hr {
+  margin-right: -32px;
+}
+
+.helper-text {
+  line-height: 0;
 }

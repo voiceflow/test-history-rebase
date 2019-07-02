@@ -275,23 +275,25 @@ class BasicAdvancedSettings extends Component {
             {this.props.skill.repeat > 0 && (
               <React.Fragment>
                 {/* <Label className="mb-1">Complete Repeat</Label> */}
-                <div className="row">
-                  <div className="s__label_text col-10">
-                    Complete Repeat
-                    <Tooltip
-                      html={
-                        this.props.skill.repeat > 1
-                          ? 'When the user asks to repeat, everything after the last choice/interaction block will repeat'
-                          : 'When the user asks to repeat, only the last speak block before the choice/interaction will be repeated'
-                      }
-                      className="s__label_tooltip"
-                      position="top"
-                    >
-                      <img alt="info" src="/info.svg" />
-                    </Tooltip>
-                  </div>
-                  <div className="col-2">
-                    <Toggle icons={false} checked={this.props.skill.repeat > 1} onChange={() => this.toggleRepeat(1, 100)} />
+                <div className="helper-text">
+                  <div className="row space-between">
+                    <div className="s__label_text col-10">
+                      Complete Repeat
+                      <Tooltip
+                        html={
+                          this.props.skill.repeat > 1
+                            ? 'When the user asks to repeat, everything after the last choice/interaction block will repeat'
+                            : 'When the user asks to repeat, only the last speak block before the choice/interaction will be repeated'
+                        }
+                        className="s__label_tooltip"
+                        position="top"
+                      >
+                        <img alt="info" src="/info.svg" />
+                      </Tooltip>
+                    </div>
+                    <div className="col-2">
+                      <Toggle icons={false} checked={this.props.skill.repeat > 1} onChange={() => this.toggleRepeat(1, 100)} />
+                    </div>
                   </div>
                 </div>
               </React.Fragment>
@@ -299,56 +301,61 @@ class BasicAdvancedSettings extends Component {
           </FormGroup>
           <hr />
         </div>
-        <div className="settings-content clearfix mb-5">
+        <div className="settings-content clearfix mb-5 no-bottom">
           <FormGroup>
             {/* <Label className="mb-1">Restart Every Session</Label> */}
-            <div className="row">
-              <div className="s__label_text col-10">
-                Restart Every Session
-                <Tooltip
-                  html={
-                    this.props.skill.restart
-                      ? 'The project will restart from the beginning every time the user starts a session'
-                      : 'The project will resume from the last block the user was on before quitting'
-                  }
-                  className="s__label_tooltip"
-                  position="top"
-                >
-                  <img alt="info" src="/info.svg" />
-                </Tooltip>
-              </div>
-              <div className="col-2">
-                <Toggle icons={false} name="restart" checked={this.props.skill.restart} onChange={this.toggleSwitch} />
+            <div className="helper-text">
+              <div className="row space-between">
+                <div className="s__label_text col-10">
+                  Restart Every Session
+                  <Tooltip
+                    html={
+                      this.props.skill.restart
+                        ? 'The project will restart from the beginning every time the user starts a session'
+                        : 'The project will resume from the last block the user was on before quitting'
+                    }
+                    className="s__label_tooltip"
+                    position="top"
+                  >
+                    <img alt="info" src="/info.svg" />
+                  </Tooltip>
+                </div>
+                <div className="col-2">
+                  <Toggle icons={false} name="restart" checked={this.props.skill.restart} onChange={this.toggleSwitch} />
+                </div>
               </div>
             </div>
             <hr />
             {!this.props.skill.restart && (
               <React.Fragment>
                 {/* <Label className="mb-1">Resume Prompt</Label> */}
-                <div className="row mb-2">
-                  <div className="s__label_text col-10">
-                    Allow Users to Resume
-                    <Tooltip html="Give the user a YES/NO prompt whether to resume" className="s__label_tooltip" position="top">
-                      <img alt="info" src="/info.svg" />{' '}
-                    </Tooltip>
-                  </div>
-                  <div className="col-2">
-                    <Toggle
-                      name="restart"
-                      checked={!this.state.hide_resume}
-                      onChange={() =>
-                        this.setState({
-                          hide_resume: !this.state.hide_resume,
-                        })
-                      }
-                      icons={false}
-                    />
+                <div className="helper-text">
+                  <div className="row space-between mb-3">
+                    <div className="s__label_text col-10">
+                      Allow Users to Resume
+                      <Tooltip html="Give the user a YES/NO prompt whether to resume" className="s__label_tooltip" position="top">
+                        <img alt="info" src="/info.svg" />{' '}
+                      </Tooltip>
+                    </div>
+                    <div className="col-2">
+                      <Toggle
+                        name="restart"
+                        checked={!this.state.hide_resume}
+                        onChange={() =>
+                          this.setState({
+                            hide_resume: !this.state.hide_resume,
+                          })
+                        }
+                        icons={false}
+                      />
+                    </div>
                   </div>
                 </div>
+                {this.state.hide_resume && <hr />}
                 {!this.state.hide_resume && (
                   <React.Fragment>
                     <Prompt
-                      placeholder="Would you like to resume your current story, yes or no?"
+                      placeholder="Welcome back, would you like to resume?"
                       voice={this.props.skill.resume_prompt.voice}
                       content={this.props.skill.resume_prompt.content}
                       updatePrompt={(prompt) => this.props.updateSkillMerge('resume_prompt', prompt)}
@@ -357,7 +364,7 @@ class BasicAdvancedSettings extends Component {
                       <Label>Resume Follow Up</Label>
                       <div className="helper-text mb-2">Add a response when the user wants to resume</div>
                       <Prompt
-                        placeholder="Would you like to resume your current story, yes or no?"
+                        placeholder="Welcome back, would you like to resume?"
                         voice_id="follow_voice"
                         content_id="follow_content"
                         voice={this.props.skill.resume_prompt.follow_voice}

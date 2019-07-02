@@ -308,7 +308,7 @@ exports[`Menu render menu 1`] = `
     </div>
   </div>
   <div
-    className=""
+    className="canvas-sidebar"
     id="sidebar"
   >
     <div
@@ -319,13 +319,9 @@ exports[`Menu render menu 1`] = `
       >
         <div
           className="block-title no-select mb-3"
-          onClick={[Function]}
         >
           <h5
             className="mb-0"
-          />
-          <div
-            className="close pl-3 py-3"
           />
         </div>
       </div>
@@ -336,5 +332,10 @@ exports[`Menu render menu 1`] = `
       </div>
     </div>
   </div>
+  <label
+    className="canvas-sidebar-closed canvas-sidebar-expand"
+    htmlFor="canvas-sidebar"
+    onClick={[Function]}
+  />
 </div>
 `;

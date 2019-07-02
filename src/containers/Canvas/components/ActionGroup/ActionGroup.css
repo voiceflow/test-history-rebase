@@ -163,5 +163,7 @@
 }
 
 .ag__settings_header {
-  margin: 1rem 16px 0 4px;
+  /*margin: 1rem 16px 0 4px;*/
+  margin-top: 5px;
+  margin-right: 8px;
 }

@@ -11,7 +11,7 @@ import BackupSettings from './Backups';
 import BasicAdvancedSettings from './BasicAdvanced';
 import DiscoverySettings from './Discovery';
 
-const TABS = ['basic', 'advanced', 'discovery', 'backups'];
+const TABS = ['basic', 'discovery', 'backups'];
 
 class Settings extends Component {
   state = {

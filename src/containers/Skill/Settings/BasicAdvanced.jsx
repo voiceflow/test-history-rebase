@@ -9,6 +9,7 @@ import { updateVersion, updateVersionMerge } from 'ducks/version';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Tooltip } from 'react-tippy';
 import Toggle from 'react-toggle';
 import { Alert, Collapse, FormGroup, Input, Label } from 'reactstrap';
 
@@ -242,31 +243,52 @@ class BasicAdvancedSettings extends Component {
     // BASIC SETTINGS
     return (
       <React.Fragment>
-        <div className="settings-content clearfix">
+        <div className="settings-content clearfix pb-11 no-bottom">
           <FormGroup>
             <Label>Project Name</Label>
             <Input className="form-bg mb-4" name="name" value={this.props.skill.name} onChange={this.handleUpdate} />
           </FormGroup>
           <hr />
           <FormGroup>
-            <Label className="mb-1">Repeat</Label>
-            <div className="helper-text mb-3">
-              <div className="row mb-3 space-between">
-                <div className="helper-text col-10">Users will be able to say repeat at any choice/interaction and the dialog will repeat</div>
+            {/* <Label className="mb-1">Repeat</Label> */}
+            <div className="helper-text">
+              <div className="row space-between">
+                {/* <div className="helper-text col-10">Users will be able to say repeat at any choice/interaction and the dialog will repeat</div> */}
+                <div className="col-10 s__label_text">
+                  Allow Users to Repeat
+                  <Tooltip
+                    html="Users will be able to say repeat at any choice/interaction and the dialog will repeat"
+                    className="s__label_tooltip"
+                    position="top"
+                  >
+                    <img alt="info" src="/info.svg" />
+                  </Tooltip>
+                </div>
                 <div className="col-2">
                   <Toggle icons={false} checked={this.props.skill.repeat > 0} onChange={() => this.toggleRepeat(0, 100)} />
                 </div>
               </div>
             </div>
 
+            <hr />
+
             {this.props.skill.repeat > 0 && (
               <React.Fragment>
-                <Label className="mb-1">Complete Repeat</Label>
+                {/* <Label className="mb-1">Complete Repeat</Label> */}
                 <div className="row">
-                  <div className="helper-text col-10">
-                    {this.props.skill.repeat > 1
-                      ? 'When the user asks to repeat, everything after the last choice/interaction block will repeat'
-                      : 'When the user asks to repeat, only the last speak block before the choice/interaction will be repeated'}
+                  <div className="s__label_text col-10">
+                    Complete Repeat
+                    <Tooltip
+                      html={
+                        this.props.skill.repeat > 1
+                          ? 'When the user asks to repeat, everything after the last choice/interaction block will repeat'
+                          : 'When the user asks to repeat, only the last speak block before the choice/interaction will be repeated'
+                      }
+                      className="s__label_tooltip"
+                      position="top"
+                    >
+                      <img alt="info" src="/info.svg" />
+                    </Tooltip>
                   </div>
                   <div className="col-2">
                     <Toggle icons={false} checked={this.props.skill.repeat > 1} onChange={() => this.toggleRepeat(1, 100)} />
@@ -275,25 +297,41 @@ class BasicAdvancedSettings extends Component {
               </React.Fragment>
             )}
           </FormGroup>
+          <hr />
         </div>
         <div className="settings-content clearfix mb-5">
           <FormGroup>
-            <Label className="mb-1">Restart Every Session</Label>
+            {/* <Label className="mb-1">Restart Every Session</Label> */}
             <div className="row">
-              <div className="helper-text mb-2 col-10">
-                {this.props.skill.restart
-                  ? 'The project will restart from the beginning every time the user starts a session'
-                  : 'The project will resume from the last block the user was on before quitting'}
+              <div className="s__label_text col-10">
+                Restart Every Session
+                <Tooltip
+                  html={
+                    this.props.skill.restart
+                      ? 'The project will restart from the beginning every time the user starts a session'
+                      : 'The project will resume from the last block the user was on before quitting'
+                  }
+                  className="s__label_tooltip"
+                  position="top"
+                >
+                  <img alt="info" src="/info.svg" />
+                </Tooltip>
               </div>
               <div className="col-2">
                 <Toggle icons={false} name="restart" checked={this.props.skill.restart} onChange={this.toggleSwitch} />
               </div>
             </div>
+            <hr />
             {!this.props.skill.restart && (
               <React.Fragment>
-                <Label className="mb-1">Resume Prompt</Label>
-                <div className="row">
-                  <div className="helper-text mb-2 col-10">Give the user a YES/NO prompt whether to resume</div>
+                {/* <Label className="mb-1">Resume Prompt</Label> */}
+                <div className="row mb-2">
+                  <div className="s__label_text col-10">
+                    Allow Users to Resume
+                    <Tooltip html="Give the user a YES/NO prompt whether to resume" className="s__label_tooltip" position="top">
+                      <img alt="info" src="/info.svg" />{' '}
+                    </Tooltip>
+                  </div>
                   <div className="col-2">
                     <Toggle
                       name="restart"

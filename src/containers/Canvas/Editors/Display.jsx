@@ -57,7 +57,7 @@ export class Display extends Component {
   }
 
   onChange(e) {
-    const node = node;
+    const { node, onUpdate } = this.state;
     node.extras[e.target.name] = e.target.value;
 
     this.setState(
@@ -69,7 +69,7 @@ export class Display extends Component {
   }
 
   onChangeEditor(value) {
-    const node = node;
+    const { node, onUpdate } = this.state;
     node.extras.datasource = value;
     this.setState(
       {
@@ -80,7 +80,7 @@ export class Display extends Component {
   }
 
   onChangeCommands(value) {
-    const node = node;
+    const { node, onUpdate } = this.state;
     node.extras.apl_commands = value;
     this.setState(
       {
@@ -91,7 +91,7 @@ export class Display extends Component {
   }
 
   updateOnChange() {
-    const node = node;
+    const { node, onUpdate } = this.state;
     node.extras.update_on_change = !node.extras.update_on_change;
     this.setState(
       {
@@ -102,10 +102,11 @@ export class Display extends Component {
   }
 
   selectDisplay(selected) {
+    const { node, onUpdate } = this.state;
+    const { displays } = this.props;
     if (selected.value === node.extras.display_id) return;
 
     const find = displays.find((t) => t.display_id === selected.value);
-    const node = node;
     node.extras.display_id = find.display_id;
     node.extras.datasource = find.datasource.trim() ? find.datasource : '';
 
@@ -120,7 +121,7 @@ export class Display extends Component {
   }
 
   handleVariableChange(e) {
-    const user_variables = user_variables;
+    const { user_variables } = this.state;
     user_variables[e.target.name] = e.target.value;
     this.setState({
       user_variables,
@@ -129,6 +130,8 @@ export class Display extends Component {
   }
 
   testDisplay() {
+    const { node, variables, user_variables, current_request } = this.state;
+
     let datasource = node.extras.datasource;
 
     for (let i = 0; i < variables.length; i++) {
@@ -173,6 +176,7 @@ export class Display extends Component {
   }
 
   openModal() {
+    const { node } = this.state;
     const datasource = node.extras.datasource;
     const variables = (datasource.match(/{\w+}/g) || []).map((s) => s.slice(1, -1));
 

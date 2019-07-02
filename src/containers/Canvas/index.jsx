@@ -216,7 +216,7 @@ export class Canvas extends Component {
   }
 
   componentWillUnmount() {
-    const { preview, skill, skill_id, diagram_id, clearCanvasMessage, tab, tabOpen, setTab } = this.props;
+    const { preview, skill, diagram_id, clearCanvasMessage } = this.props;
     if (!preview && skill && skill.skill_id && diagram_id && !window.error) {
       this.onSave(false);
     }
@@ -232,7 +232,8 @@ export class Canvas extends Component {
   }
 
   openTab(tab) {
-    if (tab !== tab || !tabOpen) {
+    const { tab: propTab, tabOpen, setTab } = this.props;
+    if (tab !== propTab || !tabOpen) {
       localStorage.setItem('tab', tab);
       setTab(tab);
     }

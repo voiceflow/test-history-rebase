@@ -129,13 +129,13 @@ class SeatsCheckout extends Component {
         });
 
         return next(team);
-      } else if (Array.isArray(members)) {
+      }
+      if (Array.isArray(members)) {
         // use the checkout to update existing members
         await updateMembers(members, { source, plan: plan.id, coupon });
         return next();
-      } else {
-        throw new Error('Invalid Member Format');
       }
+      throw new Error('Invalid Member Format');
     } catch (err) {
       if (err) setError(err);
       this.setState({ stage: 'CHECKOUT' });

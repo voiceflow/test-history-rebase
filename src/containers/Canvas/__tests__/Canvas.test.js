@@ -15,7 +15,13 @@ describe('Canvas', () => {
   it('render canvas', () => {
     const skill = testSkill;
     const component = shallow(
-      <Canvas skill={skill} setOnSave={setOnSave} diagram={diagram} resetSkill={jest.fn()} getIntegrationsUsers={jest.fn(() => Promise.resolve())} />
+      <Canvas
+        skill={skill}
+        setOnSave={setOnSave}
+        resetSkill={jest.fn()}
+        clearCanvasMessage={jest.fn()}
+        getIntegrationsUsers={jest.fn(() => Promise.resolve())}
+      />
     );
     expect(toJson(component)).toMatchSnapshot();
     component.unmount();
@@ -33,6 +39,7 @@ describe('Canvas', () => {
         diagram_id={diagram_id}
         onError={_.noop}
         updateSkill={_.noop}
+        clearCanvasMessage={jest.fn()}
         setOnSave={setOnSave}
         getIntegrationsUsers={jest.fn(() => Promise.resolve())}
         diagram={diagram}
@@ -55,6 +62,7 @@ describe('Canvas', () => {
         diagram_id={diagram_id}
         history={historyMock}
         updateSkill={jest.fn()}
+        clearCanvasMessage={jest.fn()}
         getIntegrationsUsers={jest.fn(() => Promise.resolve())}
         diagram={diagram}
       />

@@ -46,7 +46,7 @@ const tabs = {
   ],
 };
 
-class Menu extends Component {
+export class Menu extends Component {
   constructor(props) {
     super(props);
 
@@ -66,40 +66,43 @@ class Menu extends Component {
     this.resize = this.resize.bind(this);
     this.visited = new Set();
     this.m_pos = 0;
+    this.sidebar = React.createRef();
   }
 
   // eslint-disable-next-line react/no-deprecated
   componentWillReceiveProps(nextProps) {
     if (localStorage.getItem('sideWidth') && this.sidebar && nextProps.open) {
       const width = localStorage.getItem('sideWidth');
-      this.sidebar.style.width = `${width}px`;
-      this.sidebar.style.transform = `translateX(-${width.slice(0, -2) * 1 + 40}px)`;
+      this.sidebar.current.style.width = `${width}px`;
+      this.sidebar.current.style.transform = `translateX(-${width.slice(0, -2) * 1 + 40}px)`;
     }
   }
 
   resize(e) {
     const dx = this.m_pos - e.x;
-    if (this.sidebar.style.width && (e.clientX < 280 || e.clientX > 960)) return;
+    if (this.sidebar.current.style.width && (e.clientX < 280 || e.clientX > 960)) return;
     this.m_pos = e.x;
-    this.sidebar.style.width = `${parseInt(getComputedStyle(this.sidebar, '').width, 10) - dx}px`;
-    localStorage.setItem('sideWidth', `${parseInt(getComputedStyle(this.sidebar, '').width, 10) - dx}px`);
+    this.sidebar.current.style.width = `${parseInt(getComputedStyle(this.sidebar.current, '').width, 10) - dx}px`;
+    localStorage.setItem('sideWidth', `${parseInt(getComputedStyle(this.sidebar.current, '').width, 10) - dx}px`);
   }
 
   componentDidMount() {
     this.props.build(this.updateTree);
-    this.sidebar.addEventListener(
-      'mousedown',
-      (e) => {
-        if (e.srcElement.classList.contains('open')) {
-          this.m_pos = e.x;
-          document.addEventListener('mousemove', this.resize, false);
-        }
-      },
-      false
-    );
-    document.addEventListener('mouseup', () => {
-      document.removeEventListener('mousemove', this.resize, false);
-    });
+    if (this.sidebar.current) {
+      this.sidebar.current.addEventListener(
+        'mousedown',
+        (e) => {
+          if (e.srcElement.classList.contains('open')) {
+            this.m_pos = e.x;
+            document.addEventListener('mousemove', this.resize, false);
+          }
+        },
+        false
+      );
+      document.addEventListener('mouseup', () => {
+        document.removeEventListener('mousemove', this.resize, false);
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -242,13 +245,7 @@ class Menu extends Component {
             </div>
           </div>
         )}
-        <div
-          id="sidebar"
-          className={cn({ open: this.props.open })}
-          ref={(ref) => {
-            this.sidebar = ref;
-          }}
-        >
+        <div id="sidebar" className={cn({ open: this.props.open })} ref={this.sidebar}>
           <div className={cn('sidebar-container', this.props.tab)}>
             {this.props.loading_diagram ? null : (
               <React.Fragment>
@@ -256,7 +253,7 @@ class Menu extends Component {
                   <div
                     className="block-title no-select mb-3"
                     onClick={() => {
-                      localStorage.setItem('sideWidth', this.sidebar.style.width);
+                      localStorage.setItem('sideWidth', this.sidebar.current.style.width);
                       this.props.closeTab();
                     }}
                   >

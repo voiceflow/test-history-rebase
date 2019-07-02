@@ -168,7 +168,7 @@ class DiagramBlock extends Component {
           <img src="/flows.svg" alt="back" className="mr-2" /> Create New Flow
         </button>
         <div className="break">
-          <span className="or">OR</span>
+          <span className="break-text">OR</span>
         </div>
         {this.renderOptionsForNewFlow()}
       </>

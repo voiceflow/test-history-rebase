@@ -87,7 +87,7 @@ export class BlockNodeModel extends DefaultNodeModel {
 
 	serialize() {
 		return _.merge(super.serialize(), {
-			combines: !_.isEmpty(this.combines) ? this.combines : null
+			combines: !_.isEmpty(this.combines) ? this.combines.map(block=>block.serialize()) : null
 		});
 	}
 	setSelected(selected) {

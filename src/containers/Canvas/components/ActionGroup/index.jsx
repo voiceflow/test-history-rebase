@@ -36,6 +36,11 @@ const loading = (message) => {
   );
 };
 
+const matchesKeyword = (splitName) => (l) =>
+  splitName.find((split) => {
+    return split === l.toLowerCase();
+  });
+
 const GOOGLE_STAGES = {
   0: 'No Google Token Found',
   1: 'No Project ID Found',
@@ -180,7 +185,7 @@ export class ActionGroup extends PureComponent {
   async componentDidMount() {
     // perform google fetch async
     googleAccessToken(this.props.skill.skill_id).then((token) => {
-      this.google_token = token;
+      this.google_token = token.token;
       this.reset();
     });
 
@@ -1260,10 +1265,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ActionGroup);
-
-function matchesKeyword(splitName) {
-  return (l) =>
-    splitName.find((split) => {
-      return split === l.toLowerCase();
-    });
-}

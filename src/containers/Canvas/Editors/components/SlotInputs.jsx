@@ -7,13 +7,12 @@ import { Input } from 'reactstrap';
 
 import SlotInput from './SlotInput';
 
-function getIndex(index) {
-  return converter
+const getIndex = (index) =>
+  converter
     .toWords(index)
     .replace(/\s/g, '_')
     .replace(/,/g, '')
     .replace(/-/g, '_');
-}
 
 class SlotInputs extends Component {
   constructor(props) {

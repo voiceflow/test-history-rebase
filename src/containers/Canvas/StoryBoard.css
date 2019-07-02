@@ -2963,34 +2963,6 @@ button.close:hover{
   background-color: #007bff !important;
 }
 
-.expression-block.and {
-  padding: 10px;
-  background-color: #f7f9fb !important;
-  border: 1px solid #c5d3e09c !important;
-}
-
-.expression-block.greater,
-.expression-block.equals,
-.expression-block.less {
-  padding: 10px;
-  background-color: #f7f9fb !important;
-  border: 1px solid #c5d3e0ad !important;
-
-  /* box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 6px 9px 0 rgba(17,49,96,0.06); */
-}
-
-.expression-block.or {
-  padding: 10px;
-  background-color: #f7f9fb !important;
-  border: 1px solid #c5d3e09c !important;
-}
-
-.expression-block.not {
-  padding: 10px;
-  background-color: #f5f7f8 !important;
-  border: 1px solid #c5d3e09c !important;
-}
-
 .brackets > .variable {
   padding-right: 5px;
   padding-left: 5px;
@@ -3005,19 +2977,6 @@ button.close:hover{
   justify-content: space-between;
   width: 100%;
   margin-bottom: 10px;
-}
-
-.operator {
-  color: #8da2b5;
-}
-
-.expression-block.divide,
-.expression-block.times {
-  padding: 10px;
-  background-color: #f7f9fb !important;
-  border: 1px solid #c5d3e0ad !important;
-
-  /* box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 6px 9px 0 rgba(17,49,96,0.06); */
 }
 
 .number-bubble {
@@ -3055,15 +3014,6 @@ button.close:hover{
   flex: 1;
   color: #95a6bd;
   border: none;
-}
-
-.expression-block.plus,
-.expression-block.minus {
-  padding: 10px;
-  background-color: #f7f9fb !important;
-  border: 1px solid #c5d3e0ad !important;
-
-  /* box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 6px 9px 0 rgba(17,49,96,0.06); */
 }
 
 .choice-title input:focus {
@@ -3162,9 +3112,6 @@ button.close:hover{
   color: #2b3950;
 }
 
-/* .expression-block .dropdown {
-    max-height: 400px;
-} */
 .set-block > .close {
   line-height: 18px;
 }

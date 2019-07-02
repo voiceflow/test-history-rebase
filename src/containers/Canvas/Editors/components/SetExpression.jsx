@@ -13,7 +13,7 @@ class SetExpression extends Component {
     const show = !(block.expression.type === 'value' || block.expression.type === 'variable' || block.expression.type === 'advance');
 
     return (
-      <div className="solid-border set-block">
+      <div className="conditional-wrapper">
         <div className="close" onClick={this.props.onRemove} />
         <div className="variable-group">
           <span>Set</span>

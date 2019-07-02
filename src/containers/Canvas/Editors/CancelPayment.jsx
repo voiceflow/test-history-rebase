@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { Alert, Button } from 'reactstrap';
 
-class CancelPaymentBlock extends Component {
+export class CancelPayment extends Component {
   constructor(props) {
     super(props);
 
@@ -151,4 +151,4 @@ const mapStateToProps = (state) => ({
   skill_id: state.skills.skill.skill_id,
   products: state.products.products,
 });
-export default connect(mapStateToProps)(CancelPaymentBlock);
+export default connect(mapStateToProps)(CancelPayment);

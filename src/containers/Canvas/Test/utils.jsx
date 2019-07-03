@@ -51,30 +51,27 @@ const newAudio = (src) => {
   return new Audio(src);
 };
 
-export const getUserTestOutputs = async (newState, trace) => {
+export const getUserTestOutputs = async (trace, ending) => {
   const dom = [];
   let idx = 0;
   // eslint-disable-next-line no-restricted-syntax
   for (const block of trace) {
-    if (block.isExitFlow) {
-      const outputBlock = {
-        node: trace[idx - 1].line.id,
-        delay: 1000,
-        type: 'EXIT_FLOW',
-      };
-      if (block.diagram) outputBlock.diagram = block.diagram;
-      dom.push(outputBlock);
-      // eslint-disable-next-line no-continue
-      continue;
+    if (block.diagram) {
+      dom.push({
+        type: block.isExitFlow ? 'EXIT_FLOW' : 'ENTER_FLOW',
+        diagram: block.diagram,
+      });
+    } else if (block.debug) {
+      dom.push(block);
     }
+
     // eslint-disable-next-line no-continue
     if (!block.output) continue;
     const type = block.block;
     const parsed = parse(block.output)[0];
-    if (idx === 0 && type === 'Choice' && newState.ending) {
+    if (idx === 0 && type === 'Choice' && ending) {
       const outputBlock = {
         node: block.line.id,
-        diagram: !_.isEmpty(newState.diagrams) && _.last(newState.diagrams).id,
         type,
         delay: 500,
       };
@@ -127,6 +124,7 @@ export const getUserTestOutputs = async (newState, trace) => {
         outputBlock.audioType = child.type === 'text' || child.type === 'speak' || (child.name === 'audio' && 'audio');
         outputBlock.type = type;
         outputBlock.isLast = !block.line.nextId;
+
         dom.push(outputBlock);
       });
     } else if (type === 'Stream') {
@@ -148,7 +146,9 @@ export const getUserTestOutputs = async (newState, trace) => {
         isLast: !block.line.nextId,
         type,
       };
+
       dom.push(outputBlock);
+
       const outputBlockChoices = {
         options: [
           {
@@ -183,7 +183,6 @@ export const getUserTestOutputs = async (newState, trace) => {
     } else if (type === 'Flow') {
       const outputBlock = {
         node: block.line.id,
-        diagram: block.line.diagram_id,
         isLast: !block.line.nextId,
         type,
       };
@@ -191,7 +190,6 @@ export const getUserTestOutputs = async (newState, trace) => {
     } else if (type === 'One Shot Intent') {
       const outputBlock = {
         node: block.line.id,
-        diagram: _.last(block.diagrams).id,
         type,
       };
       dom.push(outputBlock);

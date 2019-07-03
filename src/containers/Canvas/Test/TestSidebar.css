@@ -27,14 +27,14 @@
 #TestSidebar .dialog_container {
   display: flex;
   flex: 1;
-  flex-direction: column
+  flex-direction: column;
 }
 
 #TestSidebar .dialog_container .collapse {
-  flex: 1
+  flex: 1;
 }
 
-#Timeline{
+#Timeline {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -42,49 +42,54 @@
 }
 
 #TestSidebar.open {
-  overflow:  hidden;
+  overflow: hidden;
+
   /* -webkit-transform: translateX(0);
   -moz-transform: translateX(0);
   -ms-transform: translateX(0);
-  -o-transform: translateX(0);*/
+  -o-transform: translateX(0); */
   transform: none;
 }
 
 #TestSettings {
+  position: absolute;
+  right: 0;
   z-index: 7;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
   height: 100%;
+  background: #fff;
   border-left: 1px solid #e2e9ec;
   transform: translateX(300px);
   transition: transform 0.6s;
-  position: absolute;
-  width: 300px;
-  right: 0px;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
 }
 
 #TestVariables {
-  padding: 15px 20px;
   flex: 1;
+  padding: 15px 20px;
   overflow-y: scroll;
 }
 
-.test-variable {
+.test-variable.editor {
   display: flex;
-  width: 100%;
   flex-grow: 0;
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  padding: 7px 8px;
+}
+
+.test-variable .variable_tag {
+  margin: 0;
+  padding: 2px 5px !important;
 }
 
 .test-variable input {
-  text-align: right;
-  min-width: 0;
   flex: 1;
-  color: #8da2b5;
-}
-
-#TestVariables .variable_tag {
-  padding-right: 7px;
+  min-width: 0;
+  margin-left: 8px;
+  color: #62778c;
 }
 
 #TestSettings.open {
@@ -92,18 +97,20 @@
 }
 
 #TestInputContainer {
-  padding: 20px 15px;
   width: 100%;
+
+  /* padding: 20px 15px; */
   text-align: left;
 }
 
 #TestInput {
-  padding: 20px 0 10px 0;
+  padding: 0 20px 20px 20px;
 }
 
-#TestInput>textarea {
+#TestInput > textarea {
   width: 100%;
   min-height: 63px;
+
   /* margin-bottom: 5px; */
 }
 
@@ -127,26 +134,16 @@
 
 .condition-label {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 62px;
   padding: 10px 25px 10px 20px;
   text-align: center;
-  justify-content: space-between;
-  align-items: center;
-  background:
-    -webkit-linear-gradient(rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%);
-  background-image:
-    -moz-linear-gradient(rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%);
-  background-image:
-    -o-linear-gradient(rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%);
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%);
-  background-image:
-    -ms-linear-gradient(rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%);
-    min-height: 62px;
+  background: -webkit-linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  background-image: -moz-linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  background-image: -o-linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  background-image: linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  background-image: -ms-linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
 }
 
 .condition-label label {
@@ -178,7 +175,7 @@
   bottom: 0;
 }
 
-.expression-add{
+.expression-add {
   font-weight: normal;
   background-image: url(/expression-add.svg);
   background-repeat: no-repeat;
@@ -217,23 +214,59 @@
 
 #SpeechBar {
   position: fixed;
-  width: 600px;
-  left: 0;
   right: 300px;
   bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  width: 600px;
   margin: 0 auto;
-  padding: 10px 15px;
+  padding: 10px 35px 10px 15px;
+  color: #fff9;
   background: linear-gradient(#344161, #263353);
   border-bottom: 1px solid #263353;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  display: flex;
-  align-items: center;
-  color: #fff9;
 }
 
 #SpeechBar > .speech-icon {
-  padding: 5px 10px;   
+  position: relative;
+  margin-right: 5px;
+  padding: 5px 10px;
+  color: inherit;
+  background-color: transparent;
+  border: none;
+}
+
+#SpeechBar > .speech-icon.listening {
+  color: #fff;
+}
+
+#SpeechBar > .speech-icon.listening::before {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border: 2px solid #263353;
+  border-radius: 10px;
+  animation: flickerAnimation 1s infinite;
+  content: ' ';
+}
+
+@keyframes flickerAnimation {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 td {
@@ -307,8 +340,8 @@ td {
   padding: 8px 0;
   font-size: 0.8rem;
   vertical-align: middle;
-  word-wrap: break-word;         /* All browsers since IE 5.5+ */
-  overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
+  word-wrap: break-word; /* All browsers since IE 5.5+ */
+  overflow-wrap: break-word; /* Renamed property in CSS3 draft spec */
 }
 
 .var-table td.v > span {

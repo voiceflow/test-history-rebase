@@ -1,11 +1,11 @@
+import NLC from '@voiceflow/natural-language-commander';
 import axios from 'axios';
 import setError from 'ducks/modal';
 import update from 'immutability-helper';
 import { getSlotsForKeys, getUtterancesWithSlotNames } from 'intent_util';
 import _ from 'lodash';
-import NLC from 'natural-language-commander';
 
-import { SLOT_TYPES } from 'Constants';
+import { DEFAULT_INTENTS, SLOT_TYPES } from 'Constants';
 
 export const UPDATE_TEST = 'test/UPDATE';
 export const UPDATE_TEST_STATE = 'test/state/UPDATE';
@@ -108,17 +108,34 @@ export const setupGlobals = () => (dispatch, getState) => {
 
 export const initializeTest = () => (dispatch, getState) => {
   const { skills } = getState();
-  const { intents, slots, platform } = skills.skill;
+  const { intents, slots, platform, locales } = skills.skill;
 
   const nlc = new NLC();
 
-  const built_in_slots = [];
+  // Load in built in slots and intents
+  try {
+    const language = locales[0].slice(0, 2);
+    const builtInIntents = DEFAULT_INTENTS[language].defaults;
+
+    builtInIntents.forEach((intent) => {
+      const { samples, name } = intent;
+      nlc.registerIntent({
+        intent: name,
+        utterances: samples,
+        callback: _.noop,
+      });
+    });
+  } catch (err) {
+    console.error(err);
+  }
+
+  const builtInSlots = [];
   SLOT_TYPES.forEach((s) => {
-    if (s.type.alexa) built_in_slots.push(s.type.alexa);
-    if (s.type.google) built_in_slots.push(s.type.google);
+    if (s.type.alexa) builtInSlots.push(s.type.alexa);
+    if (s.type.google) builtInSlots.push(s.type.google);
   });
 
-  built_in_slots.forEach((s) => {
+  builtInSlots.forEach((s) => {
     const matcher = /[\S\s]*/;
     nlc.addSlotType({
       type: s,
@@ -193,15 +210,15 @@ export const renderTest = (diagramId) => async (dispatch, getState) => {
 
 export const startTest = (diagramId, line = null) => (dispatch, getState) => {
   const { skills, test } = getState();
-  const { repeat, platform, skill_id } = skills.skill;
+  const { repeat, platform, skill_id: skillId, diagram } = skills.skill;
 
   const currentGlobals = test.state.globals[0];
-  localStorage.setItem(`TEST_VARIABLES_${skill_id}`, JSON.stringify(currentGlobals));
+  localStorage.setItem(`TEST_VARIABLES_${skillId}`, JSON.stringify(currentGlobals));
 
   const state = {
     diagrams: [
       {
-        id: diagramId,
+        id: diagramId || diagram,
       },
     ],
     input: '',
@@ -286,20 +303,35 @@ export const fetchState = (input) => async (dispatch, getState) => {
   //   }
   // });
 
-  if (nlc) {
+  delete state.intent;
+  delete state.slots;
+  delete state.input;
+
+  if (input && nlc) {
+    state.input = input;
     try {
-      // const results = await nlc.handleCommand(input);
-      // console.log(results);
-      // const { diagram_intents, detected_intents } = getDiagramIntents(diagramEngine, results, testing_info);
-      // data.diagram_intents = diagram_intents;
-      // data.detected_intents = detected_intents;
+      const result = await nlc.handleCommand(input);
+      const { intent, slots } = result;
+
+      if (slots) {
+        const formattedSlots = {};
+        slots.forEach((slot) => {
+          const { name, value } = slot;
+          formattedSlots[name] = {
+            name,
+            value,
+          };
+        });
+
+        state.slots = formattedSlots;
+      }
+
+      state.intent = intent;
     } catch (err) {
       // NLC No Match'
       console.error('NLC No Match');
     }
   }
-
-  state.intent = input;
 
   try {
     const { data: newState } = await axios.post('/test/interact', state);

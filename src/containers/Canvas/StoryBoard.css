@@ -2587,7 +2587,7 @@ button.close:hover{
   /* padding-bottom: 17px; */
 }
 
-.label-container {
+#label-container {
   display: flex;
   align-items: center !important;
   justify-content: center;
@@ -3431,6 +3431,7 @@ button.close:hover{
   min-height: 68px;
 }
 
+.editor:focus,
 .editor:focus-within {
   border: 1px solid #42a5ff !important;
 

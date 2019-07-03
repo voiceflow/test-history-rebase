@@ -1,5 +1,6 @@
+import Button from 'components/Button';
 import { setError } from 'ducks/modal';
-import { TEST_STATUS, endTest, fetchState, incrementTime, resetTest, updateState } from 'ducks/test';
+import { TEST_STATUS, endTest, fetchState, incrementTime, resetTest, startTest, updateState } from 'ducks/test';
 import _ from 'lodash';
 import moment from 'moment';
 import React, { Component } from 'react';
@@ -8,8 +9,6 @@ import { compose } from 'recompose';
 
 import TestBox from './TestBox';
 import { getUserTestOutputs } from './utils';
-
-const currentTime = () => moment().format('h:mm:ss A');
 
 class Timeline extends Component {
   state = {
@@ -107,13 +106,14 @@ class Timeline extends Component {
       }
       const diagram = diagrams.find((d) => d.id === newOutput.diagram);
       const diagramName = diagram && diagram.name;
+
       if (newOutput.type === 'EXIT_FLOW') {
         newOutput.text = (
           <>
             Exiting To Flow <b>{diagramName}</b>
           </>
         );
-      } else {
+      } else if (newOutput.type === 'ENTER_FLOW') {
         newOutput.text = (
           <>
             Entering Flow <b>{diagramName}</b>
@@ -130,6 +130,7 @@ class Timeline extends Component {
         .unix(0)
         .add(test.time, 'seconds')
         .format('mm:ss');
+
       const extras = {};
       if (newOutput.audioType) extras.loading = false;
 
@@ -169,13 +170,13 @@ class Timeline extends Component {
       return;
     }
 
-    const { trace, line_id } = newState;
+    const { trace, line_id: lineId } = newState;
 
     // update the state if there is another line to continue
-    if (line_id) this.props.updateState(newState);
+    if (lineId) this.props.updateState(newState);
     if (!trace) return;
 
-    const outputQueue = await getUserTestOutputs(newState, trace);
+    const outputQueue = await getUserTestOutputs(trace, newState.ending);
 
     this.emptyInterval();
     this.interval = {
@@ -190,7 +191,6 @@ class Timeline extends Component {
 
     const newInput = {
       self: input,
-      time: currentTime(),
     };
 
     this.addOutputs([newInput]);
@@ -198,7 +198,7 @@ class Timeline extends Component {
   };
 
   render() {
-    const { test, resetTest } = this.props;
+    const { test, resetTest, startTest } = this.props;
     const { outputs, loading, options } = this.state;
 
     if (test.status === TEST_STATUS.IDLE) {
@@ -206,7 +206,11 @@ class Timeline extends Component {
         <div className="text-center mb-3">
           <img className="mb-3 mt-5" src="/Testing.svg" alt="user" width="80" />
           <br />
-          <span className="text-muted">Start test to see the dialog transcription</span>
+          <div className="text-muted mb-4">Start test to see the dialog transcription</div>
+          <Button isPrimary onClick={() => startTest()}>
+            Start test
+            <i className="fas fa-play ml-2" />
+          </Button>
         </div>
       );
     }
@@ -240,6 +244,7 @@ const mapDispatchToProps = {
   fetchState,
   resetTest,
   setError,
+  startTest,
   updateState,
 };
 

@@ -10,9 +10,9 @@ function SpeechBar(props) {
   } else if (listening) {
     if (finalTranscript || interimTranscript) {
       text = (
-        <span className="text-white">
-          {finalTranscript} <span className="text-danger">{interimTranscript}</span>
-        </span>
+        <>
+          <span className="text-white">{finalTranscript}</span> {interimTranscript}
+        </>
       );
     } else {
       text = 'Say Something';
@@ -21,14 +21,14 @@ function SpeechBar(props) {
 
   return (
     <div id="SpeechBar">
-      <div className="speech-icon" onMouseDown={listenClick}>
-        <i
-          className={cn('fas fa-microphone', {
-            'text-danger': listening,
-            'text-dull': !listening,
-          })}
-        />
-      </div>
+      <button
+        className={cn('speech-icon', {
+          listening,
+        })}
+        onMouseDown={listenClick}
+      >
+        <i className="fas fa-microphone" />
+      </button>
       <div className="text-center flex-hard">{text}</div>
     </div>
   );

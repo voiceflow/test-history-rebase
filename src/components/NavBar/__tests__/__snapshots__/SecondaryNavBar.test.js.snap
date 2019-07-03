@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Secondary Nav Bar render secondary nav bar 1`] = `
+<Fragment>
+  <div
+    id="secondary-nav"
+  >
+    <styled.div>
+      <div
+        className="nav-item"
+        key="canvas"
+      >
+        canvas
+      </div>
+      <div
+        className="nav-item"
+        key="settings"
+      >
+        settings
+      </div>
+      <div
+        className="nav-item"
+        key="visuals"
+      >
+        visuals
+      </div>
+      <div
+        className="nav-item"
+        key="tools"
+      >
+        tools
+      </div>
+      <div
+        className="nav-item"
+        key="publish"
+      >
+        publish
+      </div>
+    </styled.div>
+    <div
+      id="secondary-nav-right-group"
+    />
+  </div>
+</Fragment>
+`;

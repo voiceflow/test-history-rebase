@@ -7,20 +7,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Toggle from 'react-toggle';
+import { NavBarTabs } from './styled';
 
 const PAGES = ['canvas', 'test', 'publish', 'analytics'];
 
-class SecondaryNavBar extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loading: false,
-    };
-
-    this.renderItem = this.renderItem.bind(this);
-    this.toggleLiveMode = this.toggleLiveMode.bind(this);
-  }
+export class SecondaryNavBar extends Component {
+  state = {
+    loading: false,
+  };
 
   toggleLiveMode() {
     if (this.props.live_mode) {
@@ -98,14 +92,14 @@ class SecondaryNavBar extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <div id="secondary-nav">
-          <div>{PAGES.map((page) => this.renderItem(page))}</div>
+          <NavBarTabs>{PAGES.map((page) => this.renderItem(page))}</NavBarTabs>
           <div id="secondary-nav-right-group">
             {this.props.amzn_id && (
-              <React.Fragment>
+              <>
                 {this.props.live_version ? (
-                  <React.Fragment>
+                  <>
                     {this.props.live_mode ? (
                       <div className="live-mode-text">
                         <p>Live</p>
@@ -124,7 +118,7 @@ class SecondaryNavBar extends Component {
                       }}
                       disabled={this.props.page !== 'canvas' || this.state.loading}
                     />
-                  </React.Fragment>
+                  </>
                 ) : null}
                 {this.props.page === 'logs' ? (
                   <div className="nav-item">
@@ -135,7 +129,7 @@ class SecondaryNavBar extends Component {
                     <img src="/logs.svg" alt="logs" width="16" height="16" />
                   </Link>
                 )}
-              </React.Fragment>
+              </>
             )}
           </div>
         </div>
@@ -147,7 +141,7 @@ class SecondaryNavBar extends Component {
             </div>
           </div>
         )}
-      </React.Fragment>
+      </>
     );
   }
 }
@@ -161,14 +155,13 @@ const mapStateToProps = (state) => ({
   dev_skill: state.skills.dev_skill ? state.skills.dev_skill : state.skills.skill,
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    toggleLive: (dev_skill, diagram, live_version, isLive) => dispatch(toggleLive(dev_skill, diagram, live_version, isLive)),
-    updateDiagramRoot: (root_id) => dispatch(updateDiagramRoot(root_id)),
-    fetchDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id)),
-    setLiveModal: (isLive) => dispatch(setLiveModeModal(isLive)),
-  };
+const mapDispatchToProps = {
+  toggleLive,
+  updateDiagramRoot,
+  fetchDiagrams,
+  setLiveModal: setLiveModeModal,
 };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

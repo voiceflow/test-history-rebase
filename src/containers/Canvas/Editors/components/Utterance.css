@@ -13,6 +13,8 @@ textarea .mentions-input__highlighter,
   padding-left: 13px !important;
   letter-spacing: normal;
   word-spacing: normal;
+  border: 1px solid rgb(226, 233, 236);
+  border-radius: 5px;
 }
 
 .slot-utterance {
@@ -22,22 +24,26 @@ textarea .mentions-input__highlighter,
 
 .interaction-utterance {
   display: flex;
+  margin-top: 5px;
   color: #8da2b5 !important;
-  border-bottom: 1px solid #e9eef3;
 }
 
-.interaction-utterance > div{
+.interaction-utterance > div {
+  position: relative;
   display: inline-block;
   flex: 1;
   word-break: break-word;
-}
-
-.interaction-utterance.u__utterance_warning {
-  border-bottom: 1px solid #ff2e58;
 }
 
 .u__warning_message {
   padding-left: 13px;
   color: #ff2e58;
   font-size: 11px;
+}
+
+.ii__exclamation-triangle {
+  position: absolute;
+  top: 13px;
+  right: 15px;
+  color: #5283e8;
 }

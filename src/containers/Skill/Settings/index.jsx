@@ -6,9 +6,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, ButtonGroup } from 'reactstrap';
 
+import AdvancedSettings from './Advanced';
 import BackupSettings from './Backups';
 // SETTING PAGES
-import BasicAdvancedSettings from './BasicAdvanced';
+import BasicSettings from './Basic';
 import DiscoverySettings from './Discovery';
 
 const TABS = ['basic', 'advanced', 'discovery', 'backups'];
@@ -65,8 +66,9 @@ class Settings extends Component {
 
     switch (this.props.page) {
       case 'basic':
+        return <BasicSettings {...this.props} onSwapVersions={this.onSwapVersions} />;
       case 'advanced':
-        return <BasicAdvancedSettings {...this.props} onSwapVersions={this.onSwapVersions} />;
+        return <AdvancedSettings {...this.props} onSwapVersions={this.onSwapVersions} />;
       case 'discovery':
         return <DiscoverySettings {...this.props} />;
       case 'backups':

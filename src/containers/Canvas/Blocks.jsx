@@ -1,8 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
-const FAVORITE_SECTION_MAX = 3;
-
 const BLOCK_TYPES = {
   speak: {
     text: 'Speak',
@@ -94,7 +92,12 @@ const BLOCK_TYPES = {
     icon: <i className="far fa-comment-alt" />,
     tip: 'Add notes to your diagram',
   },
-  card: { text: 'Card', type: 'card', icon: <i className="fas fa-poll-h" />, tip: 'Tell Alexa to show a card' },
+  card: {
+    text: 'Card',
+    type: 'card',
+    icon: <i className="fas fa-poll-h" />,
+    tip: 'Tell Alexa to show a card',
+  },
   display: {
     text: 'Display',
     type: 'display',
@@ -164,35 +167,8 @@ const SECTIONS = [
   },
 ];
 
-const getSections = (type_counter) => {
-  const sections = cloneDeep(SECTIONS);
-
-  // Check whether we want a favourites section
-  let sortable = [];
-  // eslint-disable-next-line no-restricted-syntax
-  for (const type in type_counter) {
-    if (type !== 'god' && type !== 'comment' && type !== 'combine' && type !== 'command' && type_counter[type] >= 3) {
-      sortable.push([type, type_counter[type]]);
-    }
-  }
-
-  sortable.sort((a, b) => {
-    return b[1] - a[1];
-  });
-  sortable = sortable.slice(0, Math.min(FAVORITE_SECTION_MAX, sortable.length));
-
-  if (sortable.length > 0) {
-    const favorite_section = {
-      title: 'favorites',
-      items: [],
-    };
-
-    sortable.forEach(([key]) => BLOCK_TYPES[key]);
-
-    sections.unshift(favorite_section);
-  }
-
-  return sections;
+const getSections = () => {
+  return cloneDeep(SECTIONS);
 };
 
 const getBlocks = () => {

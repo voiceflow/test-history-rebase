@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Variable Text render variable text input 1`] = `
+<Decorated(MentionSuggestions)
+  onAddMention={[Function]}
+  onSearchChange={[Function]}
+  suggestions={Array []}
+/>
+`;

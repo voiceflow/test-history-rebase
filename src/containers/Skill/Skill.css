@@ -368,7 +368,6 @@ textarea::placeholder {
   align-items: flex-start;
   width: 580px;
   padding: 20px 40px;
-  padding-left: 10px;
   overflow: visible !important;
   overflow: hidden;
   background: #fff;

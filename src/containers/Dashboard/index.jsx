@@ -10,35 +10,18 @@ import UpdatesModal from 'components/Modals/UpdatesModal';
 import { Members } from 'components/User/User';
 import { ScrollContextProvider } from 'contexts';
 import { unnormalize } from 'ducks/_normalize';
-import {
-  addBoard,
-  changeListPosition,
-  changeProjectPosition,
-  deleteBoard,
-  fetchBoards,
-  renameList,
-  updateBoards,
-  updateLists,
-} from 'ducks/board';
+import { addBoard, changeListPosition, changeProjectPosition, deleteBoard, fetchBoards, renameList, updateBoards, updateLists } from 'ducks/board';
 import { setConfirm, setError } from 'ducks/modal';
 import { copyProject, deleteProject, updateProjects } from 'ducks/project';
 import { getMembers } from 'ducks/team';
 import { useScrollHelpers } from 'hooks/scroll';
 import _ from 'lodash';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
-import {
-  Alert,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Input,
-  Popover,
-  PopoverBody,
-  UncontrolledDropdown,
-} from 'reactstrap';
+import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Input, Popover, PopoverBody, UncontrolledDropdown } from 'reactstrap';
 
 import ExpiryButton from './ExpiryButton';
 import TeamSettings from './TeamSettings';
@@ -47,8 +30,7 @@ import { Item as ListItem } from './components/Item';
 import List, { List as SimpleList } from './components/List';
 
 // eslint-disable-next-line no-secrets/no-secrets
-const YOUTUBE_CHANNEL =
-  'https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ/videos';
+const YOUTUBE_CHANNEL = 'https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ/videos';
 
 const filter_projects = (projects, filter) => {
   const filtered = {};
@@ -87,8 +69,7 @@ export const DashBoard = (props) => {
     props.setConfirm({
       text: (
         <Alert color="danger" className="mb-0">
-          WARNING: This action can not be undone, <i>{project_name}</i> and all
-          flows can not be recovered
+          WARNING: This action can not be undone, <i>{project_name}</i> and all flows can not be recovered
         </Alert>
       ),
       warning: true,
@@ -103,8 +84,7 @@ export const DashBoard = (props) => {
     props.setConfirm({
       text: (
         <Alert color="danger" className="mb-0">
-          WARNING: This action can not be undone, <i>{board.name}</i> and all{' '}
-          {!!board.projects && board.projects.length} projects can not be
+          WARNING: This action can not be undone, <i>{board.name}</i> and all {!!board.projects && board.projects.length} projects can not be
           recovered
         </Alert>
       ),
@@ -141,22 +121,21 @@ export const DashBoard = (props) => {
 
   const updateButtonClick = () => {
     toggleUpdatesOpen(!updates_open);
-    const checkTime = Math.floor(Date.now() / 1000);
-    localStorage.setItem(
-      'voiceflowProductUpdateCheckTime',
-      checkTime.toString()
-    );
+    axios.post(`/product_updates/${props.user.creator_id}`);
   };
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const updates = await axios.get('/product_updates');
-        if (updates.data.length > 0) {
-          const lastCheckedTime = localStorage.getItem(
-            'voiceflowProductUpdateCheckTime'
-          );
-          const newUpdates = updates.data.filter((update) => {
+        const updates = await axios.get(`/product_updates/${props.user.creator_id}`);
+        if (updates.data.rows.length > 0) {
+          let lastCheckedTime;
+          if (!updates.data.last_checked) {
+            lastCheckedTime = 0;
+          } else {
+            lastCheckedTime = moment(updates.data.last_checked).unix();
+          }
+          const newUpdates = updates.data.rows.filter((update) => {
             const updateTime = Math.floor(new Date(update.created) / 1000);
             return updateTime > lastCheckedTime;
           });
@@ -164,7 +143,7 @@ export const DashBoard = (props) => {
             setNewProductUpdates(newUpdates);
             setShowUpdateBubble(true);
           }
-          setProductUpdates(updates.data);
+          setProductUpdates(updates.data.rows);
         }
       } catch (err) {
         console.error('there was an error getting the product updates: ', err);
@@ -178,9 +157,7 @@ export const DashBoard = (props) => {
     if (props.projects.allIds.length >= props.team.projects) {
       setTeamSetting('CHECKOUT:PROJECTS');
     } else {
-      props.history.push(
-        id !== 'initial' ? `/team/template/${id}` : '/team/template'
-      );
+      props.history.push(id !== 'initial' ? `/team/template/${id}` : '/team/template');
     }
   };
 
@@ -189,43 +166,22 @@ export const DashBoard = (props) => {
 
   const filter = filter_text.trim().toLowerCase();
 
-  const filtered_projects = filter
-    ? filter_projects(props.projects, filter)
-    : props.projects.byId;
+  const filtered_projects = filter ? filter_projects(props.projects, filter) : props.projects.byId;
 
   const saveList = () => props.updateLists(props.team_id);
 
   const renderUpdatesButton = () => {
     if (!show_update_bubble) {
-      return (
-        <Button
-          className={cn('dropdown-button-border', { active: updates_open })}
-          type="button"
-          onClick={updateButtonClick}
-        />
-      );
+      return <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />;
     }
     return (
-      <div
-        className="dropdown-update-container"
-        onMouseEnter={() => toggleUpdatesHover(true)}
-        onMouseLeave={() => toggleUpdatesHover(false)}
-      >
+      <div className="dropdown-update-container" onMouseEnter={() => toggleUpdatesHover(true)} onMouseLeave={() => toggleUpdatesHover(false)}>
         <div className="dropdown-update-bubble" />
         {!updates_hover && !updates_open ? (
-          <Button
-            className={cn('dropdown-button-border', { active: updates_open })}
-            type="button"
-            onClick={updateButtonClick}
-          />
+          <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />
         ) : (
-          <div
-            className={cn('dropdown-button-numbered')}
-            onClick={updateButtonClick}
-          >
-            <div className="update-number-circle">
-              {new_product_updates.length}
-            </div>
+          <div className={cn('dropdown-button-numbered')} onClick={updateButtonClick}>
+            <div className="update-number-circle">{new_product_updates.length}</div>
           </div>
         )}
       </div>
@@ -234,10 +190,7 @@ export const DashBoard = (props) => {
 
   return (
     <>
-      <ExpiryButton
-        team={props.team}
-        upgrade={() => setTeamSetting('CHECKOUT')}
-      />
+      <ExpiryButton team={props.team} upgrade={() => setTeamSetting('CHECKOUT')} />
       <LoadingModal open={loading_modal} />
       <div id="app" className="dashboard">
         <UpdatesModal
@@ -274,10 +227,7 @@ export const DashBoard = (props) => {
                   }}
                 >
                   <PopoverBody>
-                    <UpdatesPopover
-                      product_updates={product_updates}
-                      new_product_updates={new_product_updates}
-                    />
+                    <UpdatesPopover product_updates={product_updates} new_product_updates={new_product_updates} />
                   </PopoverBody>
                 </Popover>
               </div>
@@ -285,39 +235,20 @@ export const DashBoard = (props) => {
                 <UncontrolledDropdown>
                   <DropdownToggle className="ml-1" tag="div">
                     <Tooltip distance={19} title="Resources" position="bottom">
-                      <Button
-                        className="dropdown-button-border info"
-                        type="submit"
-                      />
+                      <Button className="dropdown-button-border info" type="submit" />
                     </Tooltip>
                   </DropdownToggle>
                   <DropdownMenu className="mt-2">
-                    <a
-                      href="https://learn.voiceflow.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href="https://learn.voiceflow.com/" target="_blank" rel="noopener noreferrer">
                       <DropdownItem>University</DropdownItem>
                     </a>
-                    <a
-                      href={YOUTUBE_CHANNEL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
                       <DropdownItem>Youtube</DropdownItem>
                     </a>
-                    <a
-                      href="https://www.facebook.com/groups/voiceflowgroup/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href="https://www.facebook.com/groups/voiceflowgroup/" target="_blank" rel="noopener noreferrer">
                       <DropdownItem>Community</DropdownItem>
                     </a>
-                    <a
-                      href="https://forum.voiceflow.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href="https://forum.voiceflow.com/" target="_blank" rel="noopener noreferrer">
                       <DropdownItem>Forums</DropdownItem>
                     </a>
                   </DropdownMenu>
@@ -338,42 +269,26 @@ export const DashBoard = (props) => {
                     );
                   }
                   return (
-                    <Link
-                      key={team.team_id}
-                      className="nav-item"
-                      to={`/team/${team.team_id}`}
-                      onClick={() => fetchBoards && fetchBoards.abort()}
-                    >
+                    <Link key={team.team_id} className="nav-item" to={`/team/${team.team_id}`} onClick={() => fetchBoards && fetchBoards.abort()}>
                       {team.name}
                     </Link>
                   );
                 })}
                 {props.teams.allIds.length < 3 && (
                   <Link className="nav-item" to="/team/new">
-                    <img
-                      src="/add-board.svg"
-                      className="mr-1 mb-1"
-                      height={15}
-                      width={15}
-                      alt="add"
-                    />{' '}
-                    New Board
+                    <img src="/add-board.svg" className="mr-1 mb-1" height={15} width={15} alt="add" /> New Board
                   </Link>
                 )}
               </div>
               <div className="mr-4 super-center">
                 {props.team && (
                   <>
-                    <Members
-                      members={props.team.members}
-                      update={(setting) => setTeamSetting(setting)}
-                    />
-                    <TeamSettings
-                      open={team_setting}
-                      isAdmin={props.team.creator_id === props.user.creator_id}
-                      update={(setting) => setTeamSetting(setting)}
-                      close={() => setTeamSetting(false)}
-                    />
+                    <div style={{ color: '#CDAD32' }} className="mr-3 pointer" onClick={() => setTeamSetting('MEMBERS')}>
+                      <img src="/images/icons/power.svg" alt="power" className="px-2" />
+                      Add Collaborators
+                    </div>
+                    <Members members={props.team.members} />
+                    <TeamSettings open={team_setting} update={(setting) => setTeamSetting(setting)} close={() => setTeamSetting(false)} />
                   </>
                 )}
               </div>
@@ -390,11 +305,7 @@ export const DashBoard = (props) => {
         )}
         {LOCKED && (
           <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
-            <Alert
-              color="danger"
-              onClick={() => setTeamSetting('BILLING')}
-              className="pointer text-center py-3"
-            >
+            <Alert color="danger" onClick={() => setTeamSetting('BILLING')} className="pointer text-center py-3">
               <h1>
                 <i className="far fa-ban" />
               </h1>
@@ -408,14 +319,8 @@ export const DashBoard = (props) => {
           <div className="w-100 h-100 super-center text-center position-absolute z-hard pb-5">
             <div>
               <h3>Your free trial has expired</h3>
-              <div className="text-dull mt-3 mb-4">
-                Please Upgrade to continue using Voiceflow
-              </div>
-              <Button
-                isPrimary
-                className="mb-5"
-                onClick={() => setTeamSetting('CHECKOUT')}
-              >
+              <div className="text-dull mt-3 mb-4">Please Upgrade to continue using Voiceflow</div>
+              <Button isPrimary className="mb-5" onClick={() => setTeamSetting('CHECKOUT')}>
                 Upgrade Plan
               </Button>
             </div>
@@ -437,18 +342,10 @@ export const DashBoard = (props) => {
             <div className="h-100 d-flex justify-content-center">
               <div className="align-self-center">
                 <div className="text-center">
-                  <img
-                    src="/create.svg"
-                    alt="skill-icon"
-                    width="100"
-                    height="127"
-                    className="mb-1"
-                  />
+                  <img src="/create.svg" alt="skill-icon" width="100" height="127" className="mb-1" />
                 </div>
                 <label className="dark text-center">No Projects Found</label>
-                <div className="text-muted mt-3 mb-2">
-                  This board has no projects yet, create one.
-                </div>
+                <div className="text-muted mt-3 mb-2">This board has no projects yet, create one.</div>
                 <Link to="/team/template" className="no-underline super-center">
                   <Button isPrimary className="mt-3" id="createskill">
                     New Project
@@ -470,9 +367,7 @@ export const DashBoard = (props) => {
                           name={board.name}
                           onRename={props.renameBoard}
                           onRemove={() => deleteBoard(board.board_id)}
-                          projects={board.projects.map(
-                            (p) => filtered_projects[p]
-                          )}
+                          projects={board.projects.map((p) => filtered_projects[p])}
                           onCopyProject={copyProject}
                           onDeleteProject={deleteProject}
                           createSkill={newProject}
@@ -492,12 +387,7 @@ export const DashBoard = (props) => {
                         }}
                       </DragLayer>
                       <div className="main-list-add">
-                        <Tooltip
-                          distance={16}
-                          title="Add new list"
-                          position="bottom"
-                          className="ml-1 mr-4"
-                        >
+                        <Tooltip distance={16} title="Add new list" position="bottom" className="ml-1 mr-4">
                           <Button
                             onClick={() => {
                               props.addBoard(props.team_id);
@@ -531,21 +421,17 @@ const mapDispatchToProps = (dispatch) => {
     fetchBoards: (team_id) => dispatch(fetchBoards(team_id)),
     addBoard: (team_id) => dispatch(addBoard(team_id)),
     deleteProject: (project_id) => dispatch(deleteProject(project_id)),
-    copyProject: (project_id, team_id, board_id) =>
-      dispatch(copyProject(project_id, team_id, board_id)),
+    copyProject: (project_id, team_id, board_id) => dispatch(copyProject(project_id, team_id, board_id)),
     setConfirm: (confirm) => dispatch(setConfirm(confirm)),
     getMembers: (team_id) => dispatch(getMembers(team_id)),
     setError: (err) => dispatch(setError(err)),
     updateLists: (team_id) => dispatch(updateLists(team_id)),
     removeBoard: (board_id) => dispatch(deleteBoard(board_id)),
-    renameBoard: (board_id, new_name) =>
-      dispatch(renameList(board_id, new_name)),
+    renameBoard: (board_id, new_name) => dispatch(renameList(board_id, new_name)),
     updateBoards: (boards) => dispatch(updateBoards(boards)),
     updateProjects: (projects) => dispatch(updateProjects(projects)),
-    changeProjectPosition: (drag, hover) =>
-      dispatch(changeProjectPosition(drag, hover)),
-    changeListPosition: (drag, hover) =>
-      dispatch(changeListPosition(drag, hover)),
+    changeProjectPosition: (drag, hover) => dispatch(changeProjectPosition(drag, hover)),
+    changeListPosition: (drag, hover) => dispatch(changeListPosition(drag, hover)),
   };
 };
 

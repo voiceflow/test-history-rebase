@@ -14,7 +14,8 @@ import { VOICES } from 'Constants';
 import VariableText from './VariableText';
 
 // eslint-disable-next-line react/no-find-dom-node
-const getBoundingRect = (component) => memoizeOne(findDOMNode(component).getBoundingClientRect());
+const getBoundingRect = (component) => findDOMNode(component).getBoundingClientRect();
+const memoizeBoundingRect = memoizeOne(getBoundingRect);
 
 const style = {
   backgroundColor: 'white',
@@ -37,16 +38,12 @@ const target = {
     const hoverIndex = props.index;
     if (dragIndex === hoverIndex) return;
 
-    const hoverBoundingRect = getBoundingRect(component);
+    const hoverBoundingRect = memoizeBoundingRect(component);
     const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
     const clientOffset = monitor.getClientOffset();
 
     const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-    // eslint-disable-next-line no-console
-    console.log(hoverMiddleY);
-    // eslint-disable-next-line no-console
-    console.log(hoverClientY);
     if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
     if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
     props.reorder(dragIndex, hoverIndex);
@@ -145,7 +142,12 @@ class SpeakElement extends Component {
                 // options={VOICES}
                 options={
                   localStorage.getItem('recent_speak')
-                    ? [{ label: 'Recent', options: JSON.parse(localStorage.getItem('recent_speak')) }].concat(VOICES)
+                    ? [
+                        {
+                          label: 'Recent',
+                          options: JSON.parse(localStorage.getItem('recent_speak')),
+                        },
+                      ].concat(VOICES)
                     : VOICES
                 }
               />

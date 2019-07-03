@@ -89,7 +89,6 @@ export class Speak extends Component {
 
   render() {
     const properties = this.state.node.extras;
-
     return (
       <div>
         {properties.dialogs.map((d, i) => (

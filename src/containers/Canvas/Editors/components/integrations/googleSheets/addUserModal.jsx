@@ -8,14 +8,15 @@ import { GOOGLE_SHEETS } from './constants';
 
 class GoogleAddUserModal extends Component {
   googleLogin = async (userProfile) => {
+    const { onBegin, addUser, user, skill_id, onSuccess, onError } = this.props;
     try {
-      this.props.onBegin();
-      await this.props.addUser({
+      onBegin();
+      await addUser({
         user_info: userProfile,
-        creator_id: this.props.user.creator_id,
-        skill_id: this.props.skill_id,
+        creator_id: user.creator_id,
+        skill_id,
       });
-      this.props.onSuccess();
+      onSuccess();
     } catch (e) {
       let error = e;
       if (e.response && typeof e.response.data === 'string') {
@@ -25,7 +26,7 @@ class GoogleAddUserModal extends Component {
       } else if (e.response) {
         error = `Error occured: ${JSON.stringify(e.response.data)}`;
       }
-      this.props.onError(error);
+      onError(error);
     }
   };
 

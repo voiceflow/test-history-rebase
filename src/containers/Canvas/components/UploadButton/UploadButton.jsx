@@ -7,10 +7,23 @@ import VendorSelectList from '../VendorSelectList/VendorSelectList';
 
 class UploadButton extends Component {
   render() {
-    if (this.props.live_mode) {
+    const {
+      live_mode,
+      openUpdateLive,
+      toggle_upload_prompt,
+      isUploadLoading,
+      platform,
+      vendors,
+      vendors_open,
+      openUpdate,
+      toggleVendors,
+      project_id,
+    } = this.props;
+
+    if (live_mode) {
       return (
         <Tooltip html={<div style={{ width: 155 }}>Update your live version with your local changes</div>} position="bottom" distance={16}>
-          <Button variant="contained" className="publish-btn" onClick={this.props.openUpdateLive}>
+          <Button variant="contained" className="publish-btn" onClick={openUpdateLive}>
             Update Live{' '}
             <div className="launch">
               <div className="first">
@@ -24,9 +37,9 @@ class UploadButton extends Component {
         </Tooltip>
       );
     }
-    if (this.props.isUploadLoading()) {
+    if (isUploadLoading()) {
       return (
-        <Button variant="contained" className="publish-btn" onClick={() => this.props.toggle_upload_prompt()}>
+        <Button variant="contained" className="publish-btn" onClick={() => toggle_upload_prompt()}>
           <p className="loading-btn m-0 p-0">Uploading</p>
           <div className="launch">
             <div className="load-spinner pt-1">
@@ -36,13 +49,13 @@ class UploadButton extends Component {
         </Button>
       );
     }
-    const multiVendor = this.props.platform === 'alexa' && this.props.vendors && this.props.vendors.length > 1;
+    const multiVendor = platform === 'alexa' && vendors && vendors.length > 1;
     return (
       <div className={cn('upload-btn-container', { 'multi-vendor': multiVendor })}>
         <Tooltip
           html={
             <div style={{ width: 180 }}>
-              {this.props.platform === 'google'
+              {platform === 'google'
                 ? 'Test your Action on your own Google device, or in the Google Actions console'
                 : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}
             </div>
@@ -50,15 +63,15 @@ class UploadButton extends Component {
           position="bottom"
           distance={16}
           className={cn({ 'multi-vendor-tooltip': multiVendor })}
-          disabled={this.props.vendors_open}
+          disabled={vendors_open}
         >
           {multiVendor ? (
-            <Button variant="contained" className="publish-btn multi-vendor-btn" onClick={this.props.openUpdate}>
-              {this.props.platform === 'google' ? 'Upload to Google' : 'Upload to Alexa'}
+            <Button variant="contained" className="publish-btn multi-vendor-btn" onClick={openUpdate}>
+              {platform === 'google' ? 'Upload to Google' : 'Upload to Alexa'}
             </Button>
           ) : (
-            <Button variant="contained" className="publish-btn" onClick={this.props.openUpdate}>
-              {this.props.platform === 'google' ? 'Upload to Google' : 'Upload to Alexa'}
+            <Button variant="contained" className="publish-btn" onClick={openUpdate}>
+              {platform === 'google' ? 'Upload to Google' : 'Upload to Alexa'}
               <div className="launch">
                 <div className="first">
                   <img src="/up.svg" alt="upload" width="15" height="15" />
@@ -73,16 +86,14 @@ class UploadButton extends Component {
         {multiVendor && (
           <div
             className={cn('vendor-dropdown', {
-              active: this.props.vendors_open,
+              active: vendors_open,
             })}
-            onClick={this.props.toggleVendors}
+            onClick={toggleVendors}
           >
             {' '}
           </div>
         )}
-        {this.props.vendors_open && (
-          <VendorSelectList vendors={this.props.vendors} onBlur={this.props.toggleVendors} project_id={this.props.project_id} />
-        )}
+        {vendors_open && <VendorSelectList vendors={vendors} onBlur={toggleVendors} project_id={project_id} />}
       </div>
     );
   }

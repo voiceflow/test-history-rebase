@@ -37,18 +37,21 @@ class DiscoverySettings extends Component {
   }
 
   save() {
+    const { skill, setError } = this.props;
     axios
-      .patch(`/skill/${this.props.skill.skill_id}?fulfillment=1`, {
-        fulfillment: this.props.skill.fulfillment,
+      .patch(`/skill/${skill.skill_id}?fulfillment=1`, {
+        fulfillment: skill.fulfillment,
       })
       .catch(() => {
-        this.props.setError('Error Saving Fulfillment');
+        setError('Error Saving Fulfillment');
       });
   }
 
   fulfillmentButtons(intents_sorted) {
+    const { skill, history } = this.props;
+
     return intents_sorted.map((intent, i) => {
-      if (this.props.skill.fulfillment[intent.key]) {
+      if (skill.fulfillment[intent.key]) {
         return (
           <Button
             isBtn
@@ -56,7 +59,7 @@ class DiscoverySettings extends Component {
             className="w-100 my-2 d-flex space-between"
             key={i}
             onClick={() => {
-              this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery/canfulfill/${intent.key}`);
+              history.push(`/settings/${skill.skill_id}/discovery/canfulfill/${intent.key}`);
             }}
             disabled={!intentHasSlots(intent)}
           >
@@ -72,10 +75,12 @@ class DiscoverySettings extends Component {
   }
 
   render() {
-    const fullfillment_intent_key = this.props.computedMatch.params ? this.props.computedMatch.params.id : null;
+    const { computedMatch, skill, history } = this.props;
+
+    const fullfillment_intent_key = computedMatch.params ? computedMatch.params.id : null;
 
     // eslint-disable-next-line lodash/collection-ordering
-    const intents_sorted = _.orderBy(this.props.skill.intents.concat(BUILT_INS), ['name'], ['asc']);
+    const intents_sorted = _.orderBy(skill.intents.concat(BUILT_INS), ['name'], ['asc']);
     const fulfillment_intent = _.find(intents_sorted, { key: fullfillment_intent_key });
 
     return (
@@ -86,7 +91,7 @@ class DiscoverySettings extends Component {
             <div className="helper-text mb-2">Set the slot fulfillment values that your skill is able to understand</div>
             <hr />
             {!fullfillment_intent_key &&
-              (Object.keys(this.props.skill.fulfillment).length !== 0 ? (
+              (Object.keys(skill.fulfillment).length !== 0 ? (
                 <div className="selected-intent-label">Select an Intent Below to Customize Slot Fulfillment</div>
               ) : (
                 <Alert className="text-center">
@@ -96,11 +101,11 @@ class DiscoverySettings extends Component {
             {!fullfillment_intent_key && this.fulfillmentButtons(intents_sorted)}
             {fullfillment_intent_key && (
               <CanFulfill
-                slots={this.props.skill.slots}
-                fulfillment={this.props.skill.fulfillment}
+                slots={skill.slots}
+                fulfillment={skill.fulfillment}
                 selected_intent={fulfillment_intent}
-                history={this.props.history}
-                skill_id={this.props.skill.skill_id}
+                history={history}
+                skill_id={skill.skill_id}
                 save={this.save}
               />
             )}
@@ -112,7 +117,7 @@ class DiscoverySettings extends Component {
                 isClear
                 className="exit btn-thicc"
                 onClick={() => {
-                  this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery`);
+                  history.push(`/settings/${skill.skill_id}/discovery`);
                 }}
               >
                 <i className="far fa-chevron-left" /> Back

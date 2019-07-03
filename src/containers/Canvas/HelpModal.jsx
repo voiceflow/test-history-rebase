@@ -145,16 +145,17 @@ const blocks = [
 
 class HelpModal extends React.Component {
   render() {
+    const { help, open, toggle } = this.props;
     let result;
-    if (this.props.help && this.props.help.type) {
-      result = blocks.find((x) => x.type === this.props.help.type);
+    if (help && help.type) {
+      result = blocks.find((x) => x.type === help.type);
     }
 
     // {result.video ? <iframe width="560" height="315" src={result.video} frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen></iframe> : null }
 
     return (
-      <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader header={this.props.help && this.props.help.type ? this.props.help.type : 'Blocks'} toggle={this.props.toggle} />
+      <Modal isOpen={open} toggle={toggle}>
+        <ModalHeader header={help && help.type ? help.type : 'Blocks'} toggle={toggle} />
         <ModalBody>
           <div className="text-muted pl-3 pr-3 pb-3 pt-0">
             {result ? (

@@ -12,14 +12,16 @@ class FeedAddUserModal extends Component {
   }
 
   add = async () => {
+    const { name } = this.state;
+    const { onBegin, addUser, user, skill_id, onSuccess, onError } = this.props;
     try {
-      this.props.onBegin();
-      await this.props.addUser({
-        user_info: { name: this.state.name, email: '' },
-        creator_id: this.props.user.creator_id,
-        skill_id: this.props.skill_id,
+      onBegin();
+      await addUser({
+        user_info: { name, email: '' },
+        creator_id: user.creator_id,
+        skill_id,
       });
-      this.props.onSuccess();
+      onSuccess();
     } catch (e) {
       let error = e;
       if (e.response && typeof e.response.data === 'string') {
@@ -29,7 +31,7 @@ class FeedAddUserModal extends Component {
       } else if (e.response) {
         error = `Error occured: ${JSON.stringify(e.response.data)}`;
       }
-      this.props.onError(error);
+      onError(error);
     }
   };
 

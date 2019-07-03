@@ -19,12 +19,13 @@ class CreateDataSection extends Component {
   }
 
   checkCompletion() {
+    const { completed: stateCompleted } = this.state;
+    const { action_data } = this.props;
     let completed = false;
-    const action_data = this.props.action_data;
     if (!draftIsEmpty(action_data.value)) {
       completed = true;
     }
-    if (completed !== this.state.completed) {
+    if (completed !== stateCompleted) {
       this.setState({
         completed,
       });
@@ -32,24 +33,26 @@ class CreateDataSection extends Component {
   }
 
   render() {
+    const { completed } = this.state;
+    const { toggleSection, open, action_data, variables, updateActionData, headers_loading, showNextSection } = this.props;
     return (
       <>
-        <div className="d-flex flex-column section-title-container" onClick={() => this.props.toggleSection()}>
+        <div className="d-flex flex-column section-title-container" onClick={() => toggleSection()}>
           <div className="integrations-section-title text-muted">
             With message
-            {this.state.completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
+            {completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
           </div>
         </div>
-        <Collapse isOpen={this.props.open} className="w-100">
+        <Collapse isOpen={open} className="w-100">
           <div className="d-flex flex-column mb-3">
             <div className="d-flex flex-row w-100 mb-3 align-items-center">
               <div className="d-flex flex-fill" style={{ overflow: 'auto' }}>
                 <VariableText
                   className="form-control form-control auto-height"
-                  raw={this.props.action_data.value}
-                  variables={this.props.variables}
+                  raw={action_data.value}
+                  variables={variables}
                   updateRaw={(raw) => {
-                    this.props.updateActionData(
+                    updateActionData(
                       {
                         value: raw,
                       },
@@ -62,9 +65,9 @@ class CreateDataSection extends Component {
               </div>
             </div>
           </div>
-          {!this.props.headers_loading && (
+          {!headers_loading && (
             <div className="text-center my-3">
-              <Button isFlat disabled={!this.state.completed} onClick={this.props.showNextSection}>
+              <Button isFlat disabled={!completed} onClick={showNextSection}>
                 Next
               </Button>
             </div>

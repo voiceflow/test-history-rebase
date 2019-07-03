@@ -70,7 +70,8 @@ class Onboarding extends Component {
   }
 
   closeSurvey() {
-    this.props.history.push('/');
+    const { history } = this.props;
+    history.push('/');
   }
 
   handleChange(event) {
@@ -81,14 +82,16 @@ class Onboarding extends Component {
   }
 
   createSkill = () => {
+    const { templates } = this.state;
+    const { history, team_id } = this.props;
     // Onboarding Failsafe
-    if (!Array.isArray(this.state.templates) || !this.state.templates[0] || !this.state.templates[0].module_id) {
-      return this.props.history.push('/dashboard');
+    if (!Array.isArray(templates) || !templates[0] || !templates[0].module_id) {
+      return history.push('/dashboard');
     }
 
-    const module_id = this.state.templates[0].module_id;
+    const module_id = templates[0].module_id;
     axios
-      .post(`/team/${this.props.team_id}/copy/module/${module_id}`, {
+      .post(`/team/${team_id}/copy/module/${module_id}`, {
         name: 'My First Project',
         locales: ['en-US'],
         platform: 'alexa',
@@ -96,7 +99,7 @@ class Onboarding extends Component {
       .then((res) => {
         if (res.data.skill_id && res.data.diagram) {
           setTimeout(() => {
-            this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`);
+            history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`);
           }, 3000);
         } else {
           throw new Error('Invalid Response Format');
@@ -203,11 +206,14 @@ class Onboarding extends Component {
   }
 
   renderModalContent() {
-    if (this.state.loading) {
+    const { loading, stage, experience, design, company_name, company_role, company_size, type, build, new_company_role } = this.state;
+    const { user } = this.props;
+
+    if (loading) {
       return <Spinner message="Creating Project" transparent />;
     }
 
-    switch (this.state.stage) {
+    switch (stage) {
       case 'calendly':
         /* eslint-disable no-case-declarations */
         const head = document.querySelector('head');
@@ -219,7 +225,7 @@ class Onboarding extends Component {
         head.appendChild(script);
 
         return (
-          <React.Fragment key={this.state.stage}>
+          <React.Fragment key={stage}>
             <StepProgressBar num_stages={3} stage={2} classes="onboarding-progress" />
             <div className="calendly-outer mt-3">
               <div className="calendly-inline-widget" id="calendly" data-url="https://calendly.com/voiceflow" />
@@ -231,7 +237,7 @@ class Onboarding extends Component {
         );
       case 'code_stage':
         return (
-          <div key={this.state.stage} className="pb-5 mb-5">
+          <div key={stage} className="pb-5 mb-5">
             <StepProgressBar num_stages={3} stage={2} classes="onboarding-progress" />
             <p className="modal-bg-txt text-center mb-5 mt-4">How much experience do you have coding?</p>
             <div className="row justify-content-center mb-3">
@@ -246,10 +252,10 @@ class Onboarding extends Component {
                   <img
                     className="image-selector"
                     alt="beginner"
-                    src={this.state.experience === 'beginner' ? '/beginner-selected.png' : '/beginner-unselected.png'}
+                    src={experience === 'beginner' ? '/beginner-selected.png' : '/beginner-unselected.png'}
                   />
                 </Button>
-                <p className={this.state.experience === 'beginner' ? '' : CLASS_MUTED}>None</p>
+                <p className={experience === 'beginner' ? '' : CLASS_MUTED}>None</p>
               </div>
               <div className="col-s ml-4 mr-4">
                 <Button
@@ -262,10 +268,10 @@ class Onboarding extends Component {
                   <img
                     className="image-selector"
                     alt="intermediate"
-                    src={this.state.experience === 'intermediate' ? '/little-selected.png' : '/little-unselected.png'}
+                    src={experience === 'intermediate' ? '/little-selected.png' : '/little-unselected.png'}
                   />
                 </Button>
-                <p className={this.state.experience === 'intermediate' ? '' : CLASS_MUTED}>A little</p>
+                <p className={experience === 'intermediate' ? '' : CLASS_MUTED}>A little</p>
               </div>
               <div className="col-s ml-4">
                 <Button
@@ -275,28 +281,19 @@ class Onboarding extends Component {
                     this.setState({ experience: 'expert' });
                   }}
                 >
-                  <img
-                    className="image-selector"
-                    alt="alot"
-                    src={this.state.experience === 'expert' ? '/alot-selected.png' : '/alot-unselected.png'}
-                  />
+                  <img className="image-selector" alt="alot" src={experience === 'expert' ? '/alot-selected.png' : '/alot-unselected.png'} />
                 </Button>
-                <p className={this.state.experience === 'expert' ? '' : CLASS_MUTED}>A lot</p>
+                <p className={experience === 'expert' ? '' : CLASS_MUTED}>A lot</p>
               </div>
             </div>
-            <Button
-              isPrimary
-              isTransparent
-              disabled={!['beginner', 'intermediate', 'expert'].includes(this.state.experience)}
-              onClick={this.submitSurvey}
-            >
+            <Button isPrimary isTransparent disabled={!['beginner', 'intermediate', 'expert'].includes(experience)} onClick={this.submitSurvey}>
               Complete
             </Button>
           </div>
         );
       case 'work_plan':
         return (
-          <div key={this.state.stage} className="pb-5 mb-5">
+          <div key={stage} className="pb-5 mb-5">
             <StepProgressBar num_stages={3} stage={1} classes="onboarding-progress" />
             <p className="modal-bg-txt text-center mb-5 mt-4">What do you plan to use Voiceflow for?</p>
             <div className="row justify-content-center mb-3">
@@ -308,9 +305,9 @@ class Onboarding extends Component {
                     this.setState((prev_state) => ({ design: !prev_state.design }));
                   }}
                 >
-                  <img id="design-2" alt="design" src={this.state.design ? '/design-selected.png' : '/design-unselected.png'} />
+                  <img id="design-2" alt="design" src={design ? '/design-selected.png' : '/design-unselected.png'} />
                 </Button>
-                <p className={this.state.design ? '' : CLASS_MUTED}>Design & Prototype</p>
+                <p className={design ? '' : CLASS_MUTED}>Design & Prototype</p>
               </div>
               <div className="col-s ml-4">
                 <Button
@@ -320,31 +317,25 @@ class Onboarding extends Component {
                     this.setState((prev_state) => ({ build: !prev_state.build }));
                   }}
                 >
-                  <img id="design" alt="publish" src={this.state.build ? '/publish-selected.png' : '/publish-unselected.png'} />
+                  <img id="design" alt="publish" src={build ? '/publish-selected.png' : '/publish-unselected.png'} />
                 </Button>
-                <p className={this.state.build ? '' : CLASS_MUTED}>Build & Publish</p>
+                <p className={build ? '' : CLASS_MUTED}>Build & Publish</p>
               </div>
             </div>
-            <Button isPrimary disabled={!(this.state.design || this.state.build)} onClick={() => this.setState({ stage: 'code_stage' })}>
+            <Button isPrimary disabled={!(design || build)} onClick={() => this.setState({ stage: 'code_stage' })}>
               Next Step
             </Button>
           </div>
         );
       case 'work_name':
         return (
-          <div key={this.state.stage} className="pb-5 mb-5">
+          <div key={stage} className="pb-5 mb-5">
             <StepProgressBar num_stages={3} stage={1} classes="onboarding-progress" />
             <p className="modal-bg-txt text-center mb-4 mt-4">Tell us more about your company</p>
             <div className="d-flex justify-content-center mb-3">
               <Form className="w-100">
                 <FormGroup>
-                  <Input
-                    className="form-bg"
-                    name="company_name"
-                    onChange={this.handleChange}
-                    placeholder="Company Name"
-                    value={this.state.company_name}
-                  />
+                  <Input className="form-bg" name="company_name" onChange={this.handleChange} placeholder="Company Name" value={company_name} />
                 </FormGroup>
                 <FormGroup>
                   <Select
@@ -357,14 +348,14 @@ class Onboarding extends Component {
                     styles={selectStyle}
                   />
                 </FormGroup>
-                {this.state.company_role === 'others' && (
+                {company_role === 'others' && (
                   <FormGroup>
                     <Input
                       className="form-bg"
                       name="new_company_role"
                       onChange={this.handleChange}
                       placeholder="Your Role"
-                      value={this.state.new_company_role}
+                      value={new_company_role}
                     />
                   </FormGroup>
                 )}
@@ -375,16 +366,16 @@ class Onboarding extends Component {
                     name="company_size"
                     onChange={this.handleChange}
                     placeholder="Number of Employees"
-                    value={this.state.company_size}
+                    value={company_size}
                   />
                 </FormGroup>
               </Form>
             </div>
             <Button
               isPrimary
-              disabled={!(!!this.state.company_name && !!this.state.company_role && parseInt(this.state.company_size, 10) > 0)}
+              disabled={!(!!company_name && !!company_role && parseInt(company_size, 10) > 0)}
               onClick={() => {
-                if (this.state.company_size >= SHOW_CALENDLY_NUMBER) {
+                if (company_size >= SHOW_CALENDLY_NUMBER) {
                   this.setState({ stage: 'calendly' });
                 } else {
                   this.submitSurvey();
@@ -397,7 +388,7 @@ class Onboarding extends Component {
         );
       case 'work_type':
         return (
-          <div key={this.state.stage} className="pb-5 mb-5">
+          <div key={stage} className="pb-5 mb-5">
             <StepProgressBar num_stages={3} stage={0} classes="onboarding-progress" />
             <p className="modal-bg-txt text-center mb-5">What are you using Voiceflow for?</p>
             <div className="row justify-content-center mb-3">
@@ -409,11 +400,11 @@ class Onboarding extends Component {
                     this.setState({ type: 'PERSONAL' });
                   }}
                 >
-                  <img id="design" alt="selected" src={this.state.type === 'PERSONAL' ? '/selected.png' : '/unselected.png'} />
+                  <img id="design" alt="selected" src={type === 'PERSONAL' ? '/selected.png' : '/unselected.png'} />
                 </Button>
                 <p
                   className={cn({
-                    CLASS_MUTED: this.state.type !== 'PERSONAL',
+                    CLASS_MUTED: type !== 'PERSONAL',
                   })}
                 >
                   Personal
@@ -427,11 +418,11 @@ class Onboarding extends Component {
                     this.setState({ type: 'WORK' });
                   }}
                 >
-                  <img id="design" alt="work" src={this.state.type === 'WORK' ? '/selected-2.png' : '/unselected-2.png'} />
+                  <img id="design" alt="work" src={type === 'WORK' ? '/selected-2.png' : '/unselected-2.png'} />
                 </Button>
                 <p
                   className={cn({
-                    CLASS_MUTED: this.state.type !== 'WORK',
+                    CLASS_MUTED: type !== 'WORK',
                   })}
                 >
                   Work
@@ -440,11 +431,11 @@ class Onboarding extends Component {
             </div>
             <Button
               isPrimary
-              disabled={!['WORK', 'PERSONAL'].includes(this.state.type)}
+              disabled={!['WORK', 'PERSONAL'].includes(type)}
               onClick={() => {
-                if (this.state.type === 'WORK') {
+                if (type === 'WORK') {
                   this.setState({ stage: 'work_name' });
-                } else if (this.state.type === 'PERSONAL') {
+                } else if (type === 'PERSONAL') {
                   this.setState({ stage: 'work_plan' });
                 }
               }}
@@ -455,10 +446,10 @@ class Onboarding extends Component {
         );
       default:
         return (
-          <div key={this.state.stage} className="pb-5 mb-5">
+          <div key={stage} className="pb-5 mb-5">
             <div className="text-center">
               <img className="logo mb-3" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo" height="25" />
-              <p className="modal-bg-txt text-center mb-3">Hi, {this.props.user.name}</p>
+              <p className="modal-bg-txt text-center mb-3">Hi, {user.name}</p>
               <p className="onboarding-modal-txt text-center mb-2">
                 You just joined the worlds biggest community of VUI designer and developers building voice apps. We have a few questions to
                 personalize your experience!

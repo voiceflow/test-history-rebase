@@ -1,11 +1,6 @@
 import axios from 'axios';
-import Normalize, {
-  deleteNormalize,
-  normalize
-} from 'ducks/_normalize';
-import {
-  setError
-} from 'ducks/modal';
+import Normalize, { deleteNormalize, normalize } from 'ducks/_normalize';
+import { setError } from 'ducks/modal';
 import * as _ from 'lodash';
 
 export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid'];
@@ -31,21 +26,18 @@ export default function teamReducer(state = initialState, action) {
       return {
         ...state,
         byId: action.payload.byId,
-          allIds: action.payload.allIds,
+        allIds: action.payload.allIds,
       };
     default:
       return state;
   }
 }
 
-const updateTeams = ({
-  byId,
-  allIds
-}) => ({
+const updateTeams = ({ byId, allIds }) => ({
   type: 'UPDATE_TEAMS',
   payload: {
     byId,
-    allIds
+    allIds,
   },
 });
 
@@ -53,10 +45,12 @@ const Teams = new Normalize('team_id', 'team', updateTeams);
 
 export const updateTeam = (team_id, data) => {
   return async (dispatch) => {
-    dispatch(Teams.update({
-      id: team_id,
-      data
-    }));
+    dispatch(
+      Teams.update({
+        id: team_id,
+        data,
+      })
+    );
   };
 };
 
@@ -64,12 +58,14 @@ export const getMembers = (team_id) => {
   return async (dispatch) => {
     try {
       const members = (await axios.get(`/team/${team_id}/members`)).data;
-      dispatch(Teams.update({
-        id: team_id,
-        data: {
-          members
-        }
-      }));
+      dispatch(
+        Teams.update({
+          id: team_id,
+          data: {
+            members,
+          },
+        })
+      );
       Promise.resolve();
     } catch (err) {
       console.error(err);
@@ -225,20 +221,22 @@ export const updateMembers = (new_members, options) => {
 export const updateTeamName = (name) => {
   return async (dispatch, getState) => {
     try {
-      const team_id = getState().team.team_id
+      const team_id = getState().team.team_id;
       await axios.patch(`/team/${team_id}/update_name`, {
-        name
+        name,
       });
-      dispatch(updateTeam(team_id, {
-        name
-      }))
-      return Promise.resolve()
+      dispatch(
+        updateTeam(team_id, {
+          name,
+        })
+      );
+      return Promise.resolve();
     } catch (err) {
-      dispatch(setError(_.get(err, ['response', 'data']) || (err && JSON.stringify(err)) || 'Invalid Team Name'))
+      dispatch(setError(_.get(err, ['response', 'data']) || (err && JSON.stringify(err)) || 'Invalid Team Name'));
       return Promise.reject();
     }
-  }
-}
+  };
+};
 
 export const teamInvite = (invite) => {
   return async (dispatch) => {

@@ -29,18 +29,18 @@ const TYPE_OPTIONS = [
   },
 ];
 
-const WrapForm = (props) => (
+const WrapForm = ({ onChange, value, disabled, placeholder, type, index, children }) => (
   <div className="form-control input-wrap mt-3 form-bg">
     <input
-      onChange={props.onChange}
-      value={props.value}
-      disabled={props.disabled}
-      placeholder={props.placeholder}
+      onChange={onChange}
+      value={value}
+      disabled={disabled}
+      placeholder={placeholder}
       className="flex-hard"
-      type={props.type}
-      name={`${props.type}--${props.index}`}
+      type={type}
+      name={`${type}--${index}`}
     />
-    {props.children}
+    {children}
   </div>
 );
 
@@ -84,9 +84,10 @@ class NewTeam extends Component {
   // }
 
   nextStep(team) {
+    const { history, setModal } = this.props;
     if (team && team.team_id) {
-      this.props.history.push(`/team/${team.team_id}`);
-      this.props.setModal({
+      history.push(`/team/${team.team_id}`);
+      setModal({
         size: 'sm',
         header: true,
         body: (
@@ -99,28 +100,29 @@ class NewTeam extends Component {
         ),
       });
     } else {
-      this.props.history.push('/dashboard');
+      history.push('/dashboard');
     }
   }
 
   addInvite() {
+    const { invites } = this.state;
     this.setState({
-      invites: update(this.state.invites, { $push: [''] }),
+      invites: update(invites, { $push: [''] }),
     });
   }
 
   confirmInvite() {
-    if (this.state.invites.length > 1) {
+    const { invites, name, image_url } = this.state;
+    const { createTeam } = this.props;
+    if (invites.length > 1) {
       this.setState({ stage: 'CHECKOUT' });
     } else {
       this.setState({ stage: 'CREATING' });
-      this.props
-        .createTeam({
-          invites: this.state.invites,
-          name: this.state.name,
-          image: this.state.image_url,
-        })
-        .then((team) => this.nextStep(team));
+      createTeam({
+        invites,
+        name,
+        image: image_url,
+      }).then((team) => this.nextStep(team));
     }
   }
 
@@ -131,7 +133,8 @@ class NewTeam extends Component {
   }
 
   goBack() {
-    switch (this.state.stage) {
+    const { stage } = this.state;
+    switch (stage) {
       case 'NAME':
         this.setState({ stage: 'TYPE' });
         break;
@@ -147,18 +150,20 @@ class NewTeam extends Component {
   }
 
   saveTeam() {
+    const { type, name } = this.state;
+
     const resetError = () => {
       if (this.timeout) clearTimeout(this.timeout);
       this.timeout = setTimeout(() => this.setState({ error: null }), 3000);
     };
-    if (this.state.name.length > 32) {
+    if (name.length > 32) {
       this.setState({ error: 'Team Name Too Long - 32 Characters Max' });
       resetError();
-    } else if (!this.state.name.trim()) {
+    } else if (!name.trim()) {
       this.setState({ error: 'Please Fill in Team Name' });
       resetError();
     } else {
-      if (this.state.type === 'SOLO') {
+      if (type === 'SOLO') {
         this.setState({ invites: [] }, () => this.confirmInvite());
       } else {
         this.setState({ stage: 'INVITE' });
@@ -167,10 +172,13 @@ class NewTeam extends Component {
   }
 
   renderBody() {
-    const name = this.state.name || 'New Team';
-    const seats = this.state.invites.length + 1;
+    const { name: stateName, invites, stage, image_url, error, type } = this.state;
+    const { user } = this.props;
 
-    switch (this.state.stage) {
+    const name = stateName || 'New Team';
+    const seats = invites.length + 1;
+
+    switch (stage) {
       case 'CREATING':
         return React.createElement(Spinner, { message: 'Creating Board' });
       case 'CHECKOUT':
@@ -182,13 +190,13 @@ class NewTeam extends Component {
               <div className="super-center mt-4">
                 <SeatsCheckout
                   prompt="Start Free Trial"
-                  invites={this.state.invites}
+                  invites={invites}
                   team={{
-                    name: this.state.name,
-                    image: this.state.image_url,
+                    name: stateName,
+                    image: image_url,
                   }}
                   next={this.nextStep}
-                  user={this.props.user}
+                  user={user}
                   width={400}
                 />
               </div>
@@ -207,10 +215,10 @@ class NewTeam extends Component {
               {/* <small className="text-muted">up to 2 members free</small> */}
               <div className="super-center mt-4">
                 <div style={{ minWidth: 400 }}>
-                  <WrapForm value={this.props.user.email} disabled className="disabled">
+                  <WrapForm value={user.email} disabled className="disabled">
                     <label className="text-muted mr-3">OWNER</label>
                   </WrapForm>
-                  {this.state.invites.map((invite, i) => (
+                  {invites.map((invite, i) => (
                     <div key={i} className="input-wrap-wrap">
                       <WrapForm
                         value={invite}
@@ -220,7 +228,7 @@ class NewTeam extends Component {
                         index={i}
                         onChange={(e) =>
                           this.setState({
-                            invites: update(this.state.invites, {
+                            invites: update(invites, {
                               [i]: { $set: e.target.value },
                             }),
                           })
@@ -230,7 +238,7 @@ class NewTeam extends Component {
                         className="remove"
                         onClick={() =>
                           this.setState({
-                            invites: update(this.state.invites, {
+                            invites: update(invites, {
                               $splice: [[i, 1]],
                             }),
                           })
@@ -257,9 +265,9 @@ class NewTeam extends Component {
             <div className="mb-4">
               <h5 className="uppercase-header">Create Board</h5>
               <div style={{ minHeight: 45 }} className="mt-3 super-center">
-                {this.state.error && (
+                {error && (
                   <Alert color="danger small" className="m-0">
-                    {this.state.error}
+                    {error}
                   </Alert>
                 )}
               </div>
@@ -268,20 +276,20 @@ class NewTeam extends Component {
                 className="input-underline mt-0"
                 type="text"
                 name="name"
-                value={this.state.name}
+                value={stateName}
                 onChange={this.handleChange}
                 placeholder="Enter Board Name"
                 required
               />
             </div>
-            {this.state.type !== 'SOLO' && (
+            {type !== 'SOLO' && (
               <div className="super-center mt-5">
                 <div className="text-center">
                   <Image
                     replace
                     className="icon-image icon-image-sm text-center icon-image-square mb-2 mx-auto"
                     path="/image/large_icon"
-                    image={this.state.image_url}
+                    image={image_url}
                     update={(url) => this.setState({ image_url: url })}
                   />
                   <div className="text-muted mt-4">
@@ -305,7 +313,7 @@ class NewTeam extends Component {
               <div className="mt-5 pt-4">
                 <ImageOptions
                   question="Who's using this board?"
-                  state={this.state.type}
+                  state={type}
                   update={(type) => this.setState({ type })}
                   options={TYPE_OPTIONS}
                   next={() => this.setState({ stage: 'NAME' })}
@@ -318,10 +326,11 @@ class NewTeam extends Component {
   }
 
   render() {
+    const { stage } = this.state;
     return (
       <div id="template-box-container">
         <div className="card">
-          {['NAME', 'INVITE', 'CHECKOUT'].includes(this.state.stage) && <div className="mr-3 btn-icon back-btn-large" onClick={this.goBack} />}
+          {['NAME', 'INVITE', 'CHECKOUT'].includes(stage) && <div className="mr-3 btn-icon back-btn-large" onClick={this.goBack} />}
           <Link id="exit-template" to="/dashboard" className="btn-icon" />
           <div className="container">{this.renderBody()}</div>
         </div>

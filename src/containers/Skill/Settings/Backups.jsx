@@ -29,11 +29,12 @@ class BackupSettings extends Component {
   }
 
   componentDidMount() {
+    const { skill } = this.props;
     try {
       const load_promises = [];
 
-      load_promises.push(axios.get(`/project/${this.props.skill.project_id}/live_version`));
-      load_promises.push(axios.get(`/project/${this.props.skill.project_id}/versions`));
+      load_promises.push(axios.get(`/project/${skill.project_id}/live_version`));
+      load_promises.push(axios.get(`/project/${skill.project_id}/versions`));
 
       Promise.all(load_promises)
         .then((res) => {
@@ -70,7 +71,8 @@ class BackupSettings extends Component {
   }
 
   confirmRestore(skill_id) {
-    this.props.setConfirm({
+    const { setConfirm, onSwapVersions } = this.props;
+    setConfirm({
       warning: true,
       text: (
         <Alert color="danger" className="mb-0">
@@ -78,17 +80,18 @@ class BackupSettings extends Component {
           endpoint.
         </Alert>
       ),
-      confirm: this.props.onSwapVersions,
+      confirm: onSwapVersions,
       params: [skill_id],
     });
   }
 
   render() {
-    if (this.state.loading) {
+    const { loading, versions, live_version, curr_preview, preview } = this.state;
+    if (loading) {
       return React.createElement(Spinner, { name: 'Backups' });
     }
 
-    if ((!Array.isArray(this.state.versions) || this.state.versions.length === 0) && !this.state.live_version) {
+    if ((!Array.isArray(versions) || versions.length === 0) && !live_version) {
       return (
         <div className="settings-content clearfix">
           <Alert color="warning" className="mb-0">
@@ -103,17 +106,17 @@ class BackupSettings extends Component {
     return (
       <React.Fragment>
         {/* Modal for previewing backups */}
-        <Modal isOpen={this.state.preview} size="xl" toggle={() => this.setState({ preview: false })} className="light-canvas-modal">
+        <Modal isOpen={preview} size="xl" toggle={() => this.setState({ preview: false })} className="light-canvas-modal">
           <div id="light-canvas-wrap">
             <div className="no-select" id="PreviewBar">
-              <h3 className="font-weight-light">{moment(this.state.curr_preview.created).fromNow()}</h3>
+              <h3 className="font-weight-light">{moment(curr_preview.created).fromNow()}</h3>
             </div>
-            <LightCanvas diagram_id={this.state.curr_preview.diagram} />
+            <LightCanvas diagram_id={curr_preview.diagram} />
           </div>
           <Button className="goback-btn position-absolute" onClick={() => this.setState({ preview: false })} style={{ top: 320, left: -90 }} />
 
           <ModalFooter>
-            <Button isPrimary className="ml-auto mr-auto" onClick={() => this.confirmRestore(this.state.curr_preview.skill_id)}>
+            <Button isPrimary className="ml-auto mr-auto" onClick={() => this.confirmRestore(curr_preview.skill_id)}>
               Restore
             </Button>
           </ModalFooter>
@@ -145,32 +148,32 @@ class BackupSettings extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.live_version ? (
+                    {live_version ? (
                       <tr className="table-primary">
                         <td>
-                          {moment(this.state.live_version.created).fromNow()} <br /> (Current live version)
+                          {moment(live_version.created).fromNow()} <br /> (Current live version)
                         </td>
                         <td className="text-center">
                           <i
                             className={cn('fab', {
-                              'fa-google': this.state.live_version.published_platform === 'google',
-                              'fa-amazon': this.state.live_version.published_platform !== 'google',
+                              'fa-google': live_version.published_platform === 'google',
+                              'fa-amazon': live_version.published_platform !== 'google',
                             })}
                           />
                         </td>
                         <td>
-                          <Button isPrimary onClick={() => this.previewBackup(this.state.live_version)}>
+                          <Button isPrimary onClick={() => this.previewBackup(live_version)}>
                             Preview
                           </Button>
                         </td>
                         <td>
-                          <Button isPrimary onClick={() => this.confirmRestore(this.state.live_version.skill_id)}>
+                          <Button isPrimary onClick={() => this.confirmRestore(live_version.skill_id)}>
                             Restore
                           </Button>
                         </td>
                       </tr>
                     ) : null}
-                    {this.state.versions.map((version, i) => {
+                    {versions.map((version, i) => {
                       return (
                         <tr key={i}>
                           <td>{moment(version.created).fromNow()}</td>

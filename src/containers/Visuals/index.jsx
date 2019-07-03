@@ -23,9 +23,11 @@ const tabs = [
 
 class Business extends Component {
   render() {
+    const { page: propPage, skill_id } = this.props;
+
     let page;
 
-    if (this.props.page === 'display') {
+    if (propPage === 'display') {
       page = <Display {...this.props} />;
     } else {
       page = <Multimodal {...this.props} />;
@@ -35,7 +37,7 @@ class Business extends Component {
       <div id="business">
         <div md="3" className="sidebar-nav">
           {tabs.map((tab, i) => {
-            if (tab.match.includes(this.props.page)) {
+            if (tab.match.includes(propPage)) {
               return (
                 <div key={i} className="nav-item active">
                   {tab.display}
@@ -43,7 +45,7 @@ class Business extends Component {
               );
             }
             return (
-              <Link key={i} to={updateLink(tab.link, this.props.skill_id)} className="nav-item">
+              <Link key={i} to={updateLink(tab.link, skill_id)} className="nav-item">
                 {tab.display}
               </Link>
             );

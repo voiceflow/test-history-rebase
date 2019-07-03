@@ -5,7 +5,6 @@
 
 .input-select {
   flex: 1 1;
-
 }
 
 .map-box {
@@ -18,7 +17,7 @@
   font-size: 14px;
 }
 
-.slot-utterance{
+.slot-utterance {
   display: flex;
   padding: 7px 0 7px 13px;
   color: #8da2b5 !important;
@@ -32,13 +31,13 @@
   padding-bottom: 0.25rem !important;
 }
 
-.slot-utterance > div{
+.slot-utterance > div {
   display: inline-block;
   flex: 1;
   word-break: break-word;
 }
 
-.choice-utterance{
+.choice-utterance {
   display: flex;
   padding: 3px 0 3px 0;
   color: #8da2b5 !important;
@@ -66,7 +65,7 @@
   padding: 7px 7px;
   border: 1px solid #fff !important;
   border-radius: 5px;
-  box-shadow: 0 0 1px 1px rgba(17,49,96,0.06), 0 2px 4px 0 rgba(17,49,96,0.12) !important;
+  box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.06), 0 2px 4px 0 rgba(17, 49, 96, 0.12) !important;
 }
 
 .interaction-name-input {
@@ -77,19 +76,20 @@
   outline: none;
 }
 
-.interaction-title, .intent-title {
+.interaction-title,
+.intent-title {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
-.interaction-title input, .intent-title input{
+.interaction-title input,
+.intent-title input {
   flex: 1;
   border: none;
-
 }
 
-.interaction-title input:focus{
+.interaction-title input:focus {
   outline: none;
 }
 
@@ -127,7 +127,9 @@
   font-size: 12px;
 }
 
-.mentions-input, .mentions-input.blank, .slot-input {
+.mentions-input,
+.mentions-input.blank,
+.slot-input {
   display: block;
   flex: 1;
   -webkit-box-sizing: border-box;
@@ -139,16 +141,20 @@
   resize: none;
 }
 
-.mentions-input__highlighter, .mentions-input__input, .slot-input {
+.mentions-input__highlighter,
+.mentions-input__input,
+.slot-input {
   padding: 9px 0;
   overflow: visible !important;
 }
 
-.mentions-input:focus, .mentions-input.blank:focus {
+.mentions-input:focus,
+.mentions-input.blank:focus {
   outline: none;
 }
 
-.mentions-input::placeholder, .mentions-input.blank::placeholder{
+.mentions-input::placeholder,
+.mentions-input.blank::placeholder {
   color: #8da2b5 !important;
 }
 
@@ -159,7 +165,7 @@
   background-color: white;
   border: none;
   border-radius: 5px;
-  box-shadow: 0 0 0 1px rgba(17,49,96,0.06), 0 8px 16px 0 rgba(17,49,96,0.16);
+  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
 }
 
 .mentions-input__suggestions__item {

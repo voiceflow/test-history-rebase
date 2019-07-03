@@ -63,12 +63,27 @@ class Multimodal extends Component {
                 <div className="space-between w-100 px-3">
                   <h5 className="text-muted mb-0">Visuals</h5>
                   <div>
-                    <Link to={`/canvas/${this.props.skill_id}`} className="no-underline btn btn-secondary mr-2">
+                    <Button
+                      isFlat
+                      varient="contained"
+                      className="mr-2"
+                      onClick={() => {
+                        history.push(`/canvas/${this.props.skill_id}`);
+                      }}
+                    >
                       Back
-                    </Link>
-                    <Link to={`/visuals/${this.props.skill_id}/display/new`} className="no-underline btn btn-primary">
+                    </Button>
+                    <Button
+                      isPrimary
+                      variant="contained"
+                      color="publish"
+                      iconPosition="right"
+                      onClick={() => {
+                        history.push(`/visuals/${this.props.skill_id}/display/new`);
+                      }}
+                    >
                       New Display
-                    </Link>
+                    </Button>
                   </div>
                 </div>
                 <Masonry

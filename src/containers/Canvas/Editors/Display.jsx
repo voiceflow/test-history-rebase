@@ -281,10 +281,6 @@ export class Display extends Component {
       );
     }
     const displayOptions = _.cloneDeep(this.props.displays);
-    displayOptions.push({
-      display_id: 'Create a new Display',
-      title: 'Create a new Display',
-    });
 
     return (
       <React.Fragment>

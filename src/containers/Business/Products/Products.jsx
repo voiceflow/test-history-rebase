@@ -50,12 +50,27 @@ class Products extends Component {
                 <div className="space-between w-100 px-3">
                   <h5 className="text-muted mb-0">Products</h5>
                   <div>
-                    <Link to={`/canvas/${this.props.skill_id}`} className="no-underline btn btn-secondary mr-2">
+                    <Button
+                      isFlat
+                      varient="contained"
+                      className="mr-2"
+                      onClick={() => {
+                        this.props.history.push(`/canvas/${this.props.skill_id}`);
+                      }}
+                    >
                       Back
-                    </Link>
-                    <Link to={`/tools/${this.props.skill_id}/product/new`} className="no-underline btn btn-primary">
+                    </Button>
+                    <Button
+                      isPrimary
+                      variant="contained"
+                      color="publish"
+                      iconPosition="right"
+                      onClick={() => {
+                        this.props.history.push(`/tools/${this.props.skill_id}/product/new`);
+                      }}
+                    >
                       New Product
-                    </Link>
+                    </Button>
                   </div>
                 </div>
                 <Masonry

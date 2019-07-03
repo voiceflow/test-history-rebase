@@ -113,10 +113,6 @@ export class Payment extends Component {
     }
 
     const productOptions = _.cloneDeep(this.props.products);
-    productOptions.push({
-      id: 'Create a new Product',
-      name: 'Create a new Product',
-    });
 
     const options = productOptions.map((product, idx) => {
       if (idx === productOptions.length - 1) {
@@ -202,7 +198,7 @@ export class Payment extends Component {
           </div>
         </div>
         <button className="btn-clear btn-block btn-lg" onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/products`)}>
-          Create new visual
+          Create new product
         </button>
       </React.Fragment>
     );

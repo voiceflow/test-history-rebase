@@ -7,10 +7,11 @@ import Textarea from 'react-textarea-autosize';
 class FulfillInput extends PureComponent {
   constructor(props) {
     super(props);
+    const { slot, slot_config } = this.props;
 
     this.state = {
-      slot: this.props.slot,
-      slot_config: this.props.slot_config,
+      slot,
+      slot_config,
       text: '',
     };
 
@@ -36,31 +37,31 @@ class FulfillInput extends PureComponent {
   }
 
   addValue = async () => {
-    const slot_config = this.props.slot_config;
-    const newValue = this.state.text;
+    const { slot_config, setError, updateSlotConfig, onInputUpdate } = this.props;
+    const { text: newValue } = this.state;
 
     if (!Array.isArray(slot_config)) {
       throw new Error("Slot Array Doesn't Exist!");
     }
 
     if (slot_config.includes(newValue)) {
-      return this.props.setError('Duplicate value in slot');
+      return setError('Duplicate value in slot');
     }
 
     if (newValue) {
-      const newSlotConfig = update(this.props.slot_config, {
+      const newSlotConfig = update(slot_config, {
         $push: [newValue],
       });
       this.setState({
         text: '',
       });
-      await this.props.updateSlotConfig(newSlotConfig);
+      await updateSlotConfig(newSlotConfig);
     }
-    this.props.onInputUpdate();
+    onInputUpdate();
   };
 
   slotValues() {
-    const slot_values = this.props.slot_config;
+    const { slot_values } = this.props;
     if (slot_values) {
       return slot_values.map((value, i) => {
         return (
@@ -80,15 +81,18 @@ class FulfillInput extends PureComponent {
   }
 
   onRemoveSlotFulfillment = async (i) => {
-    const newSlotConfig = update(this.props.slot_config, {
+    const { slot_config, updateSlotConfig, onInputUpdate } = this.props;
+
+    const newSlotConfig = update(slot_config, {
       $splice: [[i, 1]],
     });
-    await this.props.updateSlotConfig(newSlotConfig);
-    this.props.onInputUpdate();
+    await updateSlotConfig(newSlotConfig);
+    onInputUpdate();
   };
 
   render() {
-    const slot = this.props.slot;
+    const { slot } = this.props;
+    const { text } = this.state;
 
     return (
       <div>
@@ -96,7 +100,7 @@ class FulfillInput extends PureComponent {
         <Textarea
           className="slot-input"
           name="inputs"
-          value={this.state.text}
+          value={text}
           onKeyPress={this.handleKeyPress}
           onChange={this.onTextChange}
           placeholder="Enter Slot Fulfillment Value"

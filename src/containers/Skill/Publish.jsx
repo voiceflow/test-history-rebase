@@ -49,8 +49,10 @@ class Publish extends Component {
   }
 
   render() {
+    const { page: propsPage, skill_id } = this.props;
+    const { tabs } = this.state;
     let page;
-    if (this.props.page === 'google') {
+    if (propsPage === 'google') {
       page = <PublishGoogle {...this.props} />;
     } else {
       page = <PublishAmazon {...this.props} />;
@@ -58,13 +60,13 @@ class Publish extends Component {
     return (
       <div id="business">
         <div md="3" className="sidebar-nav">
-          {this.state.tabs.map((tab, i) => {
+          {tabs.map((tab, i) => {
             let res;
-            if (tab.match.includes(this.props.page)) {
+            if (tab.match.includes(propsPage)) {
               res = <div className="nav-item active">{tab.display(i)}</div>;
             } else {
               res = (
-                <Link to={updateLink(tab.link, this.props.skill_id)} className="nav-item">
+                <Link to={updateLink(tab.link, skill_id)} className="nav-item">
                   {tab.display(i)}
                 </Link>
               );

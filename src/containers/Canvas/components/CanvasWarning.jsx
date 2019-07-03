@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 
 class CanvasWarning extends Component {
   componentDidMount() {
+    const { closeCanvasError } = this.props;
     const duration = 5000;
     this.timeout = setTimeout(() => {
-      this.props.closeCanvasError(0);
+      closeCanvasError(0);
     }, duration);
   }
 
@@ -15,11 +16,12 @@ class CanvasWarning extends Component {
   }
 
   render() {
+    const { err, closeCanvasError, idx } = this.props;
     return (
       <div className="canvas-warning">
-        <img className="mr-3" src={this.props.err.icon} alt="error" />
-        <div className="text-left w-100">{`${this.props.err.msg}`}</div>
-        <div className="close pl-1" onClick={() => this.props.closeCanvasError(this.props.idx)} />
+        <img className="mr-3" src={err.icon} alt="error" />
+        <div className="text-left w-100">{`${err.msg}`}</div>
+        <div className="close pl-1" onClick={() => closeCanvasError(idx)} />
       </div>
     );
   }

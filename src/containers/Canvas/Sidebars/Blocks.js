@@ -30,11 +30,11 @@ export class Blocks extends PureComponent {
 
     let tab = localStorage.getItem('block_tab');
     if (!tab) tab = 'blocks';
-
+    const { type_counter } = this.props;
     this.state = {
       tab,
       show,
-      sections: getSections(this.props.type_counter, this.props),
+      sections: getSections(type_counter, this.props),
     };
 
     this.toggleBlockSection = this.toggleBlockSection.bind(this);
@@ -42,7 +42,9 @@ export class Blocks extends PureComponent {
 
   // eslint-disable-next-line react/no-deprecated
   componentWillReceiveProps(props) {
-    if (props.type_counter !== this.props.type_counter || props.user_modules !== this.props.user_modules) {
+    const { type_counter, user_modules } = this.props;
+
+    if (props.type_counter !== type_counter || props.user_modules !== user_modules) {
       const sections = getSections(props.type_counter, props);
       this.setState({
         sections,
@@ -59,9 +61,11 @@ export class Blocks extends PureComponent {
   }
 
   render() {
+    const { tab, sections, show } = this.state;
+    const { user, live_mode } = this.props;
     let block_content;
-    if (this.state.tab === 'blocks') {
-      block_content = this.state.sections.map((section, i) => {
+    if (tab === 'blocks') {
+      block_content = sections.map((section, i) => {
         return (
           <div key={i} className="section no-select">
             <div
@@ -73,7 +77,7 @@ export class Blocks extends PureComponent {
               <span>
                 <i
                   className={cn('fas', 'fa-caret-down', 'mr-1', 'rotate', {
-                    'fa-rotate--90': !this.state.show[section.title],
+                    'fa-rotate--90': !show[section.title],
                   })}
                 />
                 {section.title}
@@ -84,8 +88,8 @@ export class Blocks extends PureComponent {
                 })}
               />
             </div>
-            <Collapse isOpen={this.state.show[section.title]}>
-              {section.title === 'business' && this.props.user.admin === 0 ? (
+            <Collapse isOpen={show[section.title]}>
+              {section.title === 'business' && user.admin === 0 ? (
                 <div className="premium-block">
                   <div>
                     <span>Upgrade to access these premium features</span>
@@ -95,7 +99,7 @@ export class Blocks extends PureComponent {
                   </div>
                 </div>
               ) : null}
-              <div className="mb-3 section-blocks" style={section.title === 'business' && this.props.user.admin === 0 ? { opacity: 0.3 } : null}>
+              <div className="mb-3 section-blocks" style={section.title === 'business' && user.admin === 0 ? { opacity: 0.3 } : null}>
                 {section.items.map((item, i) => {
                   if (item) {
                     return (
@@ -103,9 +107,7 @@ export class Blocks extends PureComponent {
                         item={item}
                         key={i}
                         data-tip={item.tip}
-                        draggable={
-                          !((section.title === 'business' && this.props.user.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type))
-                        }
+                        draggable={!((section.title === 'business' && user.admin === 0) || checkBlockDisabledLive(live_mode, item.type))}
                       />
                     );
                   }

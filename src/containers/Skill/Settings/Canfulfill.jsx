@@ -15,9 +15,11 @@ class Canfulfill extends PureComponent {
   constructor(props) {
     super(props);
 
+    const { intents, slots } = this.props;
+
     this.state = {
-      intents: this.props.intents,
-      slots: this.props.slots,
+      intents,
+      slots,
       text: '',
       open: [],
       selected_intent: null,
@@ -25,14 +27,16 @@ class Canfulfill extends PureComponent {
   }
 
   componentDidMount() {
-    const intent_slots = getIntentSlots(this.props.selected_intent, this.props.slots);
+    const { selected_intent, slots, fulfillment, updateFulfillment } = this.props;
+
+    const intent_slots = getIntentSlots(selected_intent, slots);
 
     intent_slots.forEach((slot) => {
-      const slot_config = this.props.fulfillment[this.props.selected_intent.key].slot_config[slot.key];
+      const slot_config = fulfillment[selected_intent.key].slot_config[slot.key];
       if (!slot_config) {
-        this.props.updateFulfillment(
-          this.props.selected_intent.key,
-          update(this.props.fulfillment[this.props.selected_intent.key].slot_config, {
+        updateFulfillment(
+          selected_intent.key,
+          update(fulfillment[selected_intent.key].slot_config, {
             [slot.key]: {
               $set: [],
             },
@@ -43,7 +47,7 @@ class Canfulfill extends PureComponent {
   }
 
   toggleCollapse(i) {
-    const open = this.state.open;
+    const { open } = this.state;
     open[i] = !open[i];
     this.setState({
       open,
@@ -52,9 +56,10 @@ class Canfulfill extends PureComponent {
   }
 
   updateSlotArray = (key, new_array) => {
-    this.props.updateFulfillment(
-      this.props.selected_intent.key,
-      update(this.props.fulfillment[this.props.selected_intent.key].slot_config, {
+    const { updateFulfillment, selected_intent, fulfillment } = this.props;
+    updateFulfillment(
+      selected_intent.key,
+      update(fulfillment[selected_intent.key].slot_config, {
         [key]: {
           $set: new_array,
         },
@@ -63,14 +68,17 @@ class Canfulfill extends PureComponent {
   };
 
   render() {
-    if (!this.props.fulfillment[this.props.selected_intent.key]) {
+    const { save, selected_intent, fulfillment, slots } = this.props;
+    const { open } = this.state;
+
+    if (!fulfillment[selected_intent.key]) {
       return <Alert color="danger">Slot Fulfillment not found - Check Canvas</Alert>;
     }
 
-    const intent_slots = getIntentSlots(this.props.selected_intent, this.props.slots);
+    const intent_slots = getIntentSlots(selected_intent, slots);
 
     const inputs = intent_slots.map((slot, i) => {
-      const slot_config = this.props.fulfillment[this.props.selected_intent.key].slot_config[slot.key];
+      const slot_config = fulfillment[selected_intent.key].slot_config[slot.key];
       return (
         <>
           {slot_config ? (
@@ -87,8 +95,8 @@ class Canfulfill extends PureComponent {
                   <span className="slot-fulfillment">
                     <i
                       className={cn('fas mr-2', {
-                        'fa-caret-down': this.state.open[i],
-                        'fa-caret-right': !this.state.open[i],
+                        'fa-caret-down': open[i],
+                        'fa-caret-right': !open[i],
                       })}
                     />
                     {slot.name}
@@ -104,11 +112,11 @@ class Canfulfill extends PureComponent {
                     </Tooltip>
                   )}
                 </Button>
-                <Collapse className="slot-collapse" isOpen={this.state.open[i]}>
+                <Collapse className="slot-collapse" isOpen={open[i]}>
                   <FulfillInput
                     onInputUpdate={() => {
                       this.forceUpdate();
-                      this.props.save();
+                      save();
                     }}
                     slot={slot}
                     slot_config={slot_config}
@@ -125,7 +133,7 @@ class Canfulfill extends PureComponent {
     return (
       <div>
         <Alert>
-          Setting Slot Fulfillment For Intent <b>{this.props.selected_intent.name}</b>
+          Setting Slot Fulfillment For Intent <b>{selected_intent.name}</b>
         </Alert>
         {inputs}
       </div>

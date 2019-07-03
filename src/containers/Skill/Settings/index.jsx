@@ -87,8 +87,6 @@ class Settings extends Component {
   }
 
   render() {
-    const { page, live_mode } = this.props;
-
     return (
       <div className="settings pb-5">
         <div>

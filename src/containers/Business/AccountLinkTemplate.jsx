@@ -1,6 +1,5 @@
 import axios from 'axios';
 import MultipleFields from 'components/Forms/MultipleFields';
-import { Spinner } from 'components/Spinner/Spinner';
 import { setError } from 'ducks/modal';
 import { updateVersion } from 'ducks/version';
 import update from 'immutability-helper';

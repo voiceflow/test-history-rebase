@@ -128,7 +128,7 @@ class Timeline extends Component {
     if (newOutput.text) {
       newOutput.time = moment
         .unix(0)
-        .add(test.time, 'seconds')
+        .add(test.startTime && Math.round(Date.now() / 1000 - test.startTime), 'seconds')
         .format('mm:ss');
       const extras = {};
       if (newOutput.audioType) extras.loading = false;

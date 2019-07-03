@@ -28,19 +28,6 @@ exports[`Canvas render canvas 1`] = `
     setHelp={[Function]}
     toggle={[Function]}
   />
-<<<<<<< HEAD
-  <Connect(ActionGroup)
-    lastSave="Save"
-    onSave={[Function]}
-    onTest={[Function]}
-    renderPlatformSwitch={[Function]}
-    saved={true}
-    saving={false}
-    setCB={[Function]}
-    updateLinter={[Function]}
-  />
-=======
->>>>>>> a812f36f6f0aea94666ce2d8ff5bca1d050df904
   <div
     id="canvas"
     onMouseDown={[Function]}
@@ -52,10 +39,7 @@ exports[`Canvas render canvas 1`] = `
       copyFlow={[Function]}
       deleteFlow={[Function]}
       enterFlow={[Function]}
-<<<<<<< HEAD
-=======
       isCanvas={false}
->>>>>>> a812f36f6f0aea94666ce2d8ff5bca1d050df904
       openTab={[Function]}
       type_counter={Object {}}
       unfocus={[Function]}
@@ -148,8 +132,6 @@ exports[`Canvas render canvas 1`] = `
       unfocus={[Function]}
       updateLinter={[Function]}
     />
-<<<<<<< HEAD
-=======
     <Connect(Test)
       diagramEngine={
         DiagramEngine {
@@ -214,15 +196,10 @@ exports[`Canvas render canvas 1`] = `
         }
       }
       enterFlow={[Function]}
-      onTest={[Function]}
-      resetTest={[Function]}
-      resume={[Function]}
-      setTime={[Function]}
-      stop={[Function]}
-      testing_info={false}
-      time={0}
+      loading={true}
+      save={[Function]}
+      setSaveCB={[Function]}
     />
->>>>>>> a812f36f6f0aea94666ce2d8ff5bca1d050df904
     <div
       className=""
       id="diagram"
@@ -306,10 +283,7 @@ exports[`Canvas render canvas 1`] = `
             "superSelect": null,
           }
         }
-<<<<<<< HEAD
-=======
         isCanvas={false}
->>>>>>> a812f36f6f0aea94666ce2d8ff5bca1d050df904
         update={[Function]}
       />
       <Connect(Clipboard)
@@ -457,11 +431,7 @@ exports[`Canvas render canvas 1`] = `
         nodeProps={
           Object {
             "addCombineNode": [Function],
-<<<<<<< HEAD
             "diagram": undefined,
-=======
-            "diagram": Object {},
->>>>>>> a812f36f6f0aea94666ce2d8ff5bca1d050df904
             "disabled": false,
             "enterFlow": [Function],
             "generateBlockMenu": [Function],

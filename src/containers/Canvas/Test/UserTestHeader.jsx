@@ -2,14 +2,15 @@ import Button from 'components/Button';
 import Header from 'components/Header';
 import SecondaryNavBar from 'components/NavBar/SecondaryNavBar';
 import { TEST_STATUS, leaveTest, startTest } from 'ducks/test';
-import moment from 'moment';
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import TestTimer from './TestTimer';
+
 const UserTestHeader = (props) => {
-  const { time, page, status, skill, history, startTest, leaveTest, preview } = props;
+  const { page, status, skill, history, startTest, leaveTest, preview } = props;
 
   const diagramId = skill.diagram;
 
@@ -26,7 +27,7 @@ const UserTestHeader = (props) => {
       )}
       centerRenderer={() => (
         <div id="middle-group">
-          <label>{moment.utc(time * 1000).format('mm:ss')}</label>
+          <TestTimer />
         </div>
       )}
       rightRenderer={() => (
@@ -59,7 +60,6 @@ const UserTestHeader = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  time: state.test.time,
   rendered: state.test.rendered,
   status: state.test.status,
   skill: state.skills.skill,

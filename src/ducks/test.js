@@ -23,8 +23,7 @@ const initialState = {
   nlc: null,
   id: null,
   status: TEST_STATUS.IDLE,
-  time: 0,
-  timer: null,
+  startTime: 0,
   state: {
     globals: [{}],
   },
@@ -50,7 +49,7 @@ export default function testReducer(state = initialState, action) {
     case UPDATE_TEST_TIME:
       return {
         ...state,
-        time: action.payload,
+        startTest: action.payload,
       };
     default:
       return state;
@@ -163,13 +162,6 @@ export const resetTime = () => ({
   payload: 0,
 });
 
-export const incrementTime = () => (dispatch, getState) => {
-  dispatch({
-    type: UPDATE_TEST_TIME,
-    payload: getState().test.time + 1,
-  });
-};
-
 export const renderTest = (diagramId) => async (dispatch, getState) => {
   if (diagramId === null) return;
 
@@ -213,14 +205,10 @@ export const startTest = (diagramId, line = null) => (dispatch, getState) => {
     platform,
   };
 
-  const timer = setInterval(() => {
-    dispatch(incrementTime());
-  }, 1000);
-
   dispatch(
     updateTest({
       status: TEST_STATUS.ACTIVE,
-      timer,
+      startTime: Date.now() / 1000,
       state,
     })
   );
@@ -240,9 +228,7 @@ export const updateGlobal = (name, value) => (dispatch, getState) => {
   );
 };
 
-export const endTest = () => (dispatch, getState) => {
-  const { timer } = getState().test;
-  clearInterval(timer);
+export const endTest = () => (dispatch) => {
   dispatch(
     updateTest({
       status: TEST_STATUS.ENDED,
@@ -250,9 +236,7 @@ export const endTest = () => (dispatch, getState) => {
   );
 };
 
-export const resetTest = () => (dispatch, getState) => {
-  const { timer } = getState().test;
-  clearInterval(timer);
+export const resetTest = () => (dispatch) => {
   dispatch(resetTime());
   dispatch(setupGlobals());
   dispatch(

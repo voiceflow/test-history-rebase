@@ -38,11 +38,14 @@ class Migrate extends Component {
   }
 
   updateSkill() {
-    if (!this.state.amzn_id) return;
+    const { amzn_id } = this.state;
+    const { skill, updateSkill } = this.props;
+
+    if (!amzn_id) return;
     axios
-      .patch(`/project/${this.props.skill.project_id}/amzn_id`, { id: this.state.amzn_id.trim() })
+      .patch(`/project/${skill.project_id}/amzn_id`, { id: amzn_id.trim() })
       .then((res) => {
-        this.props.updateSkill('amzn_id', res.data);
+        updateSkill('amzn_id', res.data);
         this.setState({
           stage: 2,
         });
@@ -58,11 +61,14 @@ class Migrate extends Component {
   }
 
   stageHandler() {
-    switch (this.state.stage) {
+    const { amzn_id, stage, error } = this.state;
+    const { skill } = this.props;
+
+    switch (stage) {
       case -1:
         return (
           <>
-            <Alert color="danger">{this.state.error}</Alert>
+            <Alert color="danger">{error}</Alert>
             <Button isPrimary onClick={() => this.setState({ stage: 1 })}>
               Reset
             </Button>
@@ -71,22 +77,16 @@ class Migrate extends Component {
       case 1:
         return (
           <>
-            {this.props.skill && this.props.skill.amzn_id && (
+            {skill && skill.amzn_id && (
               <Alert>
-                Current Skill ID: <b>{this.props.skill.amzn_id}</b>
+                Current Skill ID: <b>{skill.amzn_id}</b>
               </Alert>
             )}
             <Alert color="danger">
               Updating the Skill ID will cause Voiceflow to overwrite any existing content on the development version of the Skill on Alexa Developer
               Console
             </Alert>
-            <input
-              className="form-control my-3"
-              name="amzn_id"
-              value={this.state.amzn_id}
-              onChange={this.handleChange}
-              placeholder="Existing Skill ID"
-            />
+            <input className="form-control my-3" name="amzn_id" value={amzn_id} onChange={this.handleChange} placeholder="Existing Skill ID" />
             <Button isPrimary onClick={this.updateSkill}>
               Update Skill Id
             </Button>

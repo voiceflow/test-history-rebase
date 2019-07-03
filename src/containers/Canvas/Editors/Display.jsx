@@ -57,55 +57,60 @@ export class Display extends Component {
   }
 
   onChange(e) {
-    const node = this.state.node;
+    const { node } = this.state;
+    const { onUpdate } = this.props;
     node.extras[e.target.name] = e.target.value;
 
     this.setState(
       {
         node,
       },
-      () => this.props.onUpdate()
+      () => onUpdate()
     );
   }
 
   onChangeEditor(value) {
-    const node = this.state.node;
+    const { node } = this.state;
+    const { onUpdate } = this.props;
     node.extras.datasource = value;
     this.setState(
       {
         node,
       },
-      () => this.props.onUpdate()
+      () => onUpdate()
     );
   }
 
   onChangeCommands(value) {
-    const node = this.state.node;
+    const { node } = this.state;
+    const { onUpdate } = this.props;
     node.extras.apl_commands = value;
     this.setState(
       {
         node,
       },
-      () => this.props.onUpdate()
+      () => onUpdate()
     );
   }
 
   updateOnChange() {
-    const node = this.state.node;
+    const { node } = this.state;
+    const { onUpdate } = this.props;
     node.extras.update_on_change = !node.extras.update_on_change;
     this.setState(
       {
         node,
       },
-      () => this.props.onUpdate()
+      () => onUpdate()
     );
   }
 
   selectDisplay(selected) {
-    if (selected.value === this.state.node.extras.display_id) return;
+    const { node } = this.state;
+    const { displays, onUpdate } = this.props;
+    if (selected.value === node.extras.display_id) return;
 
-    const find = this.props.displays.find((t) => t.display_id === selected.value);
-    const node = this.state.node;
+    const find = displays.find((t) => t.display_id === selected.value);
     node.extras.display_id = find.display_id;
     node.extras.datasource = find.datasource.trim() ? find.datasource : '';
 
@@ -115,12 +120,12 @@ export class Display extends Component {
         node,
         modal_error: '',
       },
-      () => this.props.onUpdate()
+      () => onUpdate()
     );
   }
 
   handleVariableChange(e) {
-    const user_variables = this.state.user_variables;
+    const { user_variables } = this.state;
     user_variables[e.target.name] = e.target.value;
     this.setState({
       user_variables,
@@ -129,11 +134,13 @@ export class Display extends Component {
   }
 
   testDisplay() {
-    let datasource = this.state.node.extras.datasource;
+    const { node, variables, user_variables, current_request } = this.state;
 
-    for (let i = 0; i < this.state.variables.length; i++) {
-      const variable = this.state.variables[i];
-      const user_variable = this.state.user_variables[variable];
+    let datasource = node.extras.datasource;
+
+    for (let i = 0; i < variables.length; i++) {
+      const variable = variables[i];
+      const user_variable = user_variables[variable];
       if (_.isNil(user_variable) || user_variable === '') {
         this.setState({
           variables_error: 'Variables cannot be blank!',
@@ -142,20 +149,20 @@ export class Display extends Component {
       }
     }
 
-    if (!this.state.current_request) {
+    if (!current_request) {
       this.setState({
         current_request: true,
         modalContent: null,
       });
 
-      Object.entries(this.state.user_variables).forEach(([old_str, new_str]) => {
+      Object.entries(user_variables).forEach(([old_str, new_str]) => {
         const replacement = new_str;
         const re = new RegExp(`{${old_str}}`, 'g');
         datasource = datasource.replace(re, replacement);
       });
 
       axios
-        .get(`/multimodal/display/${this.state.node.extras.display_id}`)
+        .get(`/multimodal/display/${node.extras.display_id}`)
         .then((res) => {
           this.setState({
             modalContent: res.data.document,
@@ -173,10 +180,11 @@ export class Display extends Component {
   }
 
   openModal() {
-    const datasource = this.state.node.extras.datasource;
+    const { node } = this.state;
+    const datasource = node.extras.datasource;
     const variables = (datasource.match(/{\w+}/g) || []).map((s) => s.slice(1, -1));
 
-    if (!this.state.node.extras.display_id) {
+    if (!node.extras.display_id) {
       this.setState({
         modal_error: 'Select a display first from the drop down!',
       });
@@ -198,26 +206,28 @@ export class Display extends Component {
 
   // Render entire modal
   renderDisplayTest() {
+    const { variables, modalContent, variables_error, current_request, rendered_datasource, node } = this.state;
+
     const loading = (
       <div className="text-center mt-3">
         <div className="loader text-lg" />
       </div>
     );
-    if (_.isNil(this.state.modalContent) && _.isEmpty(this.state.variables)) {
+    if (_.isNil(modalContent) && _.isEmpty(variables)) {
       return loading;
     }
 
     return (
       <div>
-        {!_.isEmpty(this.state.variables) && (
+        {!_.isEmpty(variables) && (
           <React.Fragment>
-            <Button color="primary" onClick={() => this.testDisplay()} className="mt-2" disabled={this.state.variables_error}>
+            <Button color="primary" onClick={() => this.testDisplay()} className="mt-2" disabled={variables_error}>
               <i className="fas fa-play mr-2" /> Run
             </Button>
             <br />
             <label>We've detected you are using variables in your Data Source JSON, please set variables and run</label>
             <br />
-            {_.map(this.state.variables, (val, key) => (
+            {_.map(variables, (val, key) => (
               <React.Fragment key={key}>
                 <InputGroup className="mb-2">
                   <InputGroupAddon addonType="prepend">{val}</InputGroupAddon>
@@ -232,15 +242,15 @@ export class Display extends Component {
             ))}
           </React.Fragment>
         )}
-        {this.state.modalContent && this.state.variables_error && <div className="error-message text-center">{this.state.variables_error}</div>}
-        {this.state.current_request && loading}
-        {this.state.modalContent && <div className="space-between flex-hard" />}
+        {modalContent && variables_error && <div className="error-message text-center">{variables_error}</div>}
+        {current_request && loading}
+        {modalContent && <div className="space-between flex-hard" />}
 
-        {this.state.modalContent && (
+        {modalContent && (
           <DisplayRender
-            apl={this.state.modalContent}
-            data={this.state.rendered_datasource}
-            commands={this.state.node.extras.apl_commands}
+            apl={modalContent}
+            data={rendered_datasource}
+            commands={node.extras.apl_commands}
             error={(e) => this.setState({ variables_error: e })}
           />
         )}
@@ -251,13 +261,16 @@ export class Display extends Component {
   disableModal = () => this.setState({ modal: false });
 
   render() {
-    if (this.props.displays.length === 0) {
+    const { displays, skill_id } = this.props;
+    const { modal, modal_error, node, selected } = this.state;
+
+    if (displays.length === 0) {
       return (
         <div className="text-center">
           <img className="mb-3 mt-5" src="/images/desktop.svg" alt="user" width="80" />
           <br />
           <span className="text-muted">You currently have no Multimodal Displays</span>
-          <Link className="btn btn-secondary mt-3" to={`/visuals/${this.props.skill_id}`}>
+          <Link className="btn btn-secondary mt-3" to={`/visuals/${skill_id}`}>
             Add Displays
           </Link>
         </div>
@@ -266,18 +279,18 @@ export class Display extends Component {
 
     return (
       <React.Fragment>
-        <Modal size="lg" isOpen={this.state.modal} toggle={this.disableModal}>
+        <Modal size="lg" isOpen={modal} toggle={this.disableModal}>
           <ModalHeader toggle={this.disableModal} header="Multimodal Display Test" />
-          <ModalBody>{this.state.modal && this.renderDisplayTest()}</ModalBody>
+          <ModalBody>{modal && this.renderDisplayTest()}</ModalBody>
         </Modal>
         <div>
           <label>Multimodal Display</label>
           <Select
             classNamePrefix="select-box"
-            value={this.state.selected}
+            value={selected}
             onChange={this.selectDisplay}
             placeholder="Select Multimodal Display"
-            options={this.props.displays.map((t) => {
+            options={displays.map((t) => {
               return {
                 value: t.display_id,
                 label: t.title,
@@ -289,8 +302,8 @@ export class Display extends Component {
               <Input
                 addon
                 type="checkbox"
-                value={this.state.node.extras.update_on_change}
-                checked={this.state.node.extras.update_on_change}
+                value={node.extras.update_on_change}
+                checked={node.extras.update_on_change}
                 onChange={this.updateOnChange}
               />
               <div className="ml-2 space-between flex-hard">
@@ -313,7 +326,7 @@ export class Display extends Component {
             <i className="fas fa-power-off mr-1" />
             Test Display
           </Button>
-          {this.state.modal_error && <div className="error-message">{this.state.modal_error}</div>}
+          {modal_error && <div className="error-message">{modal_error}</div>}
           <label>Data Source JSON</label>
           <AceEditor
             name="datasource_editor"
@@ -325,7 +338,7 @@ export class Display extends Component {
             showPrintMargin={false}
             showGutter={true}
             highlightActiveLine={true}
-            value={this.state.node.extras.datasource}
+            value={node.extras.datasource}
             editorProps={{
               $blockScrolling: true,
               $rules: {
@@ -357,7 +370,7 @@ export class Display extends Component {
             showPrintMargin={false}
             showGutter={true}
             highlightActiveLine={true}
-            value={this.state.node.extras.apl_commands}
+            value={node.extras.apl_commands}
             editorProps={{
               $blockScrolling: true,
               $rules: {

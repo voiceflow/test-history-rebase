@@ -16,8 +16,9 @@ class VendorSelectList extends Component {
   };
 
   handleClickOutside = (event) => {
+    const { onBlur } = this.props;
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      this.props.onBlur();
+      onBlur();
     }
   };
 
@@ -26,14 +27,15 @@ class VendorSelectList extends Component {
   };
 
   renderVendorList = () => {
-    return this.props.vendors.map((vendor) => {
+    const { vendors, vendor_id, project_id, updateVendorId } = this.props;
+    return vendors.map((vendor) => {
       return (
         <Button
-          isActive={this.props.vendor_id === vendor.id}
+          isActive={vendor_id === vendor.id}
           className={cn('country-checkbox', 'vendor-button')}
           key={vendor.id}
           onClick={() => {
-            this.props.updateVendorId(this.props.project_id, vendor.id);
+            updateVendorId(project_id, vendor.id);
           }}
         >
           <span>{vendor.name}</span>

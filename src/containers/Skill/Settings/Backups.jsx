@@ -1,7 +1,6 @@
 import axios from 'axios';
 import cn from 'classnames';
 import Button from 'components/Button';
-import { Spinner } from 'components/Spinner/Spinner';
 import { setConfirm } from 'ducks/modal';
 import moment from 'moment';
 import React, { Component } from 'react';
@@ -120,7 +119,7 @@ class BackupSettings extends Component {
         </Modal>
 
         <React.Fragment>
-          <div className="settings-content clearfix">
+          <div className="settings-content settings-backups clearfix">
             <FormGroup>
               <Label>Backups</Label>
               <div className="helper-text mb-2">

@@ -1855,10 +1855,6 @@ body.modal-open {
   background-image: url('/resources.svg') !important;
 }
 
-#icon-share {
-  background-image: url('/share-gray.svg');
-}
-
 #icon-save.unsaved {
   background-image: url('/cog.svg');
   background-position: 50% 50% !important;

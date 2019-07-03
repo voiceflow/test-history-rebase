@@ -684,6 +684,18 @@ p.loading-btn::after {
   text-align: right;
 }
 
-.helper-text {
+.settings-content .helper-text {
   line-height: 0;
+}
+
+.settings-backups .helper-text {
+  line-height: inherit;
+}
+
+.settings-backups.settings-content {
+  border-bottom: 0;
+}
+
+.settings-discovery {
+  border-bottom: 0;
 }

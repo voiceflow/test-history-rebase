@@ -1111,9 +1111,8 @@ export class ActionGroup extends PureComponent {
         </Modal>
 
         <Modal isOpen={this.state.settingsModal} toggle={() => this.setState({ settingsModal: false })} className="ag__settings_modal">
-          {/* <div className="ag__settings_header">Settings</div> */}
           <div className="ag__settings_header">
-            <ModalHeader toggle={this.props.close} className="pb-2" header="Project Settings" />
+            <ModalHeader toggle={() => this.setState({ settingsModal: false })} className="pb-2" header="Project Settings" />
           </div>
           <Settings {...this.props} page="basic" toggleUpgrade={this.toggleUpgrade} />
         </Modal>
@@ -1190,15 +1189,11 @@ export class ActionGroup extends PureComponent {
           rightRenderer={() => (
             <div className="title-group no-select">
               <div className="align-icon">
-                <Tooltip distance={16} title="settings" position="bottom" className="mr-4">
+                <Tooltip distance={16} title="Settings" position="bottom" className="mr-4">
                   <Button
-                    id="icon-save"
-                    isNav
-                    className={cn({
-                      'icon-settings': this.props.saved,
-                      unsaved: !this.props.saved,
-                      saving: this.props.saving,
-                    })}
+                    className={cn('dropdown-button-border', { active: this.state.settingsModal })}
+                    id="settings-icon"
+                    type="button"
                     onClick={() => this.setState({ settingsModal: true })}
                   >
                     {this.props.saving && <span className="save-loader" />}
@@ -1207,7 +1202,12 @@ export class ActionGroup extends PureComponent {
               </div>
               <div className="title-group-sub">
                 <Tooltip className="top-nav-icon" title="Share" position="bottom" distance={16}>
-                  <Button isNavBordered id="icon-share" className="fas fa-share" onClick={this.toggleShare} />
+                  <Button
+                    className={cn('dropdown-button-border', { active: this.state.share })}
+                    id="icon-share"
+                    type="button"
+                    onClick={this.toggleShare}
+                  />
                 </Tooltip>
                 <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
                   <PopoverBody style={{ minWidth: '260px' }}>

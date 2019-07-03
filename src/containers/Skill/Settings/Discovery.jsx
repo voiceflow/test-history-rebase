@@ -80,7 +80,7 @@ class DiscoverySettings extends Component {
 
     return (
       <React.Fragment>
-        <div className="settings-content clearfix">
+        <div className="settings-content settings-discovery clearfix">
           <FormGroup>
             <Label>CanFulfill Intent</Label>
             <div className="helper-text mb-2">Set the slot fulfillment values that your skill is able to understand</div>

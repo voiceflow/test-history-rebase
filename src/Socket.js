@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAuth } from 'ducks/account';
+import { getAuthCookie } from 'cookies';
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 import randomstring from 'randomstring';
@@ -61,8 +61,11 @@ window.CreatorSocket.on('connect_error', socketFail);
 window.CreatorSocket.on('connect_failed', socketFail);
 // to catch connection events
 window.CreatorSocket.on('connect', () => {
-  window.CreatorSocket.emit('init', { auth: getAuth(), device: getDevice(), tabId });
+  window.CreatorSocket.emit('init', { auth: getAuthCookie(), device: getDevice(), tabId });
 });
+
+window.CreatorSocket.authCB = (token) => window.CreatorSocket.emit('init', { auth: token || getAuthCookie(), device: getDevice(), tabId });
+
 window.CreatorSocket.on('init', () => {
   window.CreatorSocket.status = 'CONNECTED';
   // queued up events after reconnection

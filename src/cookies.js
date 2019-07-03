@@ -20,7 +20,10 @@ const cookieOptions = { path: '/', domain: cookieDomain };
 
 export const removeAuthCookie = () => cookies.remove(AUTH_COOKIE, cookieOptions);
 
-export const setAuthCookie = (token) => cookies.set(AUTH_COOKIE, token, cookieOptions);
+export const setAuthCookie = (token) => {
+  cookies.set(AUTH_COOKIE, token, cookieOptions);
+  window.CreatorSocket.authCB && window.CreatorSocket.authCB(token);
+};
 
 export function getAuthCookie() {
   switch (window.location.host) {

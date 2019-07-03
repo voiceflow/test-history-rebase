@@ -34,17 +34,19 @@ class Settings extends Component {
   }
 
   onSwapVersions(skill_id, is_overwrite, cb) {
+    const { updateSkill, updateDiagramRoot, history } = this.props;
+
     axios
       .post(`/skill/${skill_id}/restore`)
       .then((res) => {
         if (!is_overwrite) {
-          this.props.updateSkill('skill_id', res.data.skill_id);
-          this.props.updateSkill('diagram', res.data.diagram);
+          updateSkill('skill_id', res.data.skill_id);
+          updateSkill('diagram', res.data.diagram);
         }
 
         if (!cb) {
-          this.props.updateDiagramRoot(res.data.diagram);
-          this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`);
+          updateDiagramRoot(res.data.diagram);
+          history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`);
         } else {
           // eslint-disable-next-line callback-return
           cb(true);
@@ -64,7 +66,9 @@ class Settings extends Component {
   }
 
   modalContent() {
-    if (!this.props.skill_id) {
+    const { skill_id } = this.props;
+
+    if (!skill_id) {
       return null;
     }
 
@@ -83,6 +87,8 @@ class Settings extends Component {
   }
 
   render() {
+    const { page, live_mode } = this.props;
+
     return (
       <div className="settings pb-5">
         <div>

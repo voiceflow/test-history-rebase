@@ -113,15 +113,16 @@ class TestModal extends React.Component {
   }
 
   removeAudio() {
+    const { audio: stateAudio } = this.state;
     return new Promise((resolve) => {
-      if (this.state.audio) {
-        const audio = this.state.audio;
+      if (stateAudio) {
+        const audio = stateAudio;
         audio.onended = null;
         audio.ontimeupdate = null;
         audio.onloadedmetadata = null;
-        this.state.audio.pause();
-        this.state.audio.removeAttribute('src');
-        this.state.audio.load();
+        audio.pause();
+        audio.removeAttribute('src');
+        audio.load();
         this.setState(
           {
             audio: null,
@@ -136,7 +137,8 @@ class TestModal extends React.Component {
 
   // eslint-disable-next-line react/no-deprecated
   componentWillReceiveProps(nextProps) {
-    if (this.props.testing_info === false && !!nextProps.testing_info) {
+    const { testing_info } = this.props;
+    if (testing_info === false && !!nextProps.testing_info) {
       this.setState({
         nodes: nextProps.testing_info.nodes,
       });
@@ -144,6 +146,7 @@ class TestModal extends React.Component {
   }
 
   initializeStory() {
+    const { repeat, platform, global } = this.props;
     this.story_state = {
       diagrams: null,
       input: '',
@@ -151,13 +154,13 @@ class TestModal extends React.Component {
       testing: true,
       skill_id: 'TEST_SKILL',
       globals: [{}],
-      repeat: this.props.repeat ? this.props.repeat : 100,
-      platform: this.props.platform,
+      repeat: repeat || 100,
+      platform,
     };
 
     // Inject New Globals in if updated
-    if (Array.isArray(this.props.global)) {
-      this.props.global.forEach((variable) => {
+    if (Array.isArray(global)) {
+      global.forEach((variable) => {
         this.story_state.globals[0][variable] = 0;
       });
     }
@@ -165,7 +168,7 @@ class TestModal extends React.Component {
     // stick in global variables
     this.story_state.globals[0].sessions = 1;
     this.story_state.globals[0].user_id = 'TEST_USER';
-    this.story_state.globals[0].platform = this.props.platform;
+    this.story_state.globals[0].platform = platform;
   }
 
   componentWillUnmount() {
@@ -192,6 +195,7 @@ class TestModal extends React.Component {
 
   // Super Janky recusive function to play audio
   recursivePlay(index, urls, ended) {
+    const { inputs: stateInputs } = this.state;
     // End of Audio
     if (index >= urls.length) {
       if (!this.pause) {
@@ -224,7 +228,7 @@ class TestModal extends React.Component {
       });
 
       audio.onerror = () => {
-        const inputs = this.state.inputs;
+        const inputs = stateInputs;
         inputs.push({
           text: (
             <span className="alert alert-warning mb-1 d-inline-block">
@@ -257,7 +261,7 @@ class TestModal extends React.Component {
         audio.load();
       };
       audio.onloadedmetadata = () => {
-        const inputs = this.state.inputs;
+        const inputs = stateInputs;
         const index = inputs.push({
           src: audio.src
             .split('/')
@@ -270,7 +274,7 @@ class TestModal extends React.Component {
         });
         this.setState({ inputs });
         audio.ontimeupdate = () => {
-          const inputs = this.state.inputs;
+          const inputs = stateInputs;
           inputs[index - 1].currentTime = audio.currentTime;
           this.setState({ inputs });
         };
@@ -287,10 +291,11 @@ class TestModal extends React.Component {
   }
 
   parseBlock(block) {
+    const { inputs: stateInputs } = this.state;
     // TEXT TYPE
     const text = recurse(block);
     if (text) {
-      const inputs = this.state.inputs;
+      const inputs = stateInputs;
       inputs.push({
         text,
         time: moment().format('h:mm:ss A'),
@@ -300,7 +305,7 @@ class TestModal extends React.Component {
   }
 
   addDebugBlock(block) {
-    const inputs = this.state.inputs;
+    const { inputs } = this.state;
 
     const text = block.children && block.children[0] && block.children[0].content ? block.children[0].content : '';
 
@@ -314,13 +319,16 @@ class TestModal extends React.Component {
   }
 
   async updateState(start = false) {
+    const { slots, testing_info } = this.props;
+    const { audio } = this.state;
+
     const data = this.story_state;
 
     if (!data.slots) {
-      data.slots = this.props.slots;
+      data.slots = slots;
     }
 
-    const nlc = this.props.testing_info.nlc;
+    const nlc = testing_info.nlc;
 
     if (nlc) {
       try {
@@ -332,7 +340,7 @@ class TestModal extends React.Component {
 
           const intent_name = result.name;
           const detected_slots = result.slots;
-          const slot_mapping = this.props.testing_info.slot_mappings[intent_name] ? this.props.testing_info.slot_mappings[intent_name] : [];
+          const slot_mapping = testing_info.slot_mappings[intent_name] ? testing_info.slot_mappings[intent_name] : [];
 
           const formatted_slots = {};
           slot_mapping.forEach((slot, i) => {
@@ -359,7 +367,7 @@ class TestModal extends React.Component {
       data.testing = {
         line: this.story_state.line_id ? this.story_state.line_id : 'START',
       };
-      data.diagrams = [{ id: this.props.testing_info.id }];
+      data.diagrams = [{ id: testing_info.id }];
     }
 
     if (this.next) {
@@ -411,10 +419,10 @@ class TestModal extends React.Component {
                 }
               } else if (res.play.action === 'PAUSE') {
                 this.pause = true;
-                if (this.state.audio) this.state.audio.pause();
+                if (audio) audio.pause();
               } else if (res.play.action === 'RESUME') {
-                if (this.state.audio) {
-                  this.state.audio.play();
+                if (audio) {
+                  audio.play();
                 }
                 return;
               }
@@ -463,23 +471,23 @@ class TestModal extends React.Component {
   }
 
   inputSubmit(e) {
+    const { input, audio, inputs, intent } = this.state;
     if (e) e.preventDefault();
 
-    if (this.state.input === 'SKIP LINE') {
-      if (this.state.audio !== null) {
-        this.state.audio.onended();
+    if (input === 'SKIP LINE') {
+      if (audio !== null) {
+        audio.onended();
       }
       this.setState({
         input: '',
       });
     } else {
-      const inputs = this.state.inputs;
-      if (this.state.intent) {
-        this.story_state.intent = this.state.intent;
+      if (intent) {
+        this.story_state.intent = intent;
       } else {
-        this.story_state.input = this.state.input;
+        this.story_state.input = input;
         inputs.push({
-          self: this.state.input,
+          self: input,
           time: moment().format('h:mm:ss A'),
         });
       }
@@ -511,9 +519,10 @@ class TestModal extends React.Component {
   }
 
   startline() {
-    if (!this.state.selected_line) return;
+    const { selected_line } = this.state;
+    if (!selected_line) return;
     this.initializeStory();
-    this.story_state.line_id = this.state.selected_line.value;
+    this.story_state.line_id = selected_line.value;
     this.setState(
       {
         started: true,
@@ -573,19 +582,21 @@ class TestModal extends React.Component {
   }
 
   render() {
+    const { started, inputs, debug, ended, audioplayer, selected_line, nodes, input } = this.state;
+    const { open, toggle, testing_info, flow } = this.props;
     return (
-      <Modal isOpen={this.props.open} size="lg">
-        <ModalHeader toggle={this.props.toggle} header="Project Testing" />
+      <Modal isOpen={open} size="lg">
+        <ModalHeader toggle={toggle} header="Project Testing" />
         <ModalBody className="text-center env-modal test-modal">
-          {this.props.testing_info !== false ? (
+          {testing_info !== false ? (
             <React.Fragment>
               <div className="row">
                 <div className="col-sm-8 p-0 test-main">
-                  {this.state.started ? (
+                  {started ? (
                     <React.Fragment>
                       <div className="chatbox px-3">
                         <div className="chats">
-                          {this.state.inputs.map((chat, i) => {
+                          {inputs.map((chat, i) => {
                             if (chat.self) {
                               return (
                                 <div className="mt-2 text-right" key={i}>
@@ -600,7 +611,7 @@ class TestModal extends React.Component {
                               );
                             }
                             if (chat.debug) {
-                              if (!this.state.debug) {
+                              if (!debug) {
                                 return null;
                               }
                               return (
@@ -647,13 +658,13 @@ class TestModal extends React.Component {
                           })}
                         </div>
                       </div>
-                      {this.state.ended ? (
+                      {ended ? (
                         <Alert onClick={this.handleRestart} color="warning" className="m-3">
                           Flow Ended - Reset <i className="far fa-sync-alt" />
                         </Alert>
                       ) : (
                         <React.Fragment>
-                          {this.state.audioplayer ? (
+                          {audioplayer ? (
                             <div className="audioplayer-options mb-2">
                               {this.pause ? (
                                 <Button outline color="primary" onClick={() => this.setState({ intent: 'AMAZON.ResumeIntent' }, this.inputSubmit)}>
@@ -679,7 +690,7 @@ class TestModal extends React.Component {
                                   name="input"
                                   type="text"
                                   placeholder="response"
-                                  value={this.state.input}
+                                  value={input}
                                   onChange={this.handleChange}
                                   onKeyDown={this.onKeyDown}
                                 />
@@ -708,9 +719,9 @@ class TestModal extends React.Component {
                       <Select
                         classNamePrefix="select-box"
                         className="text-left mb-3 w-75 ml-5 pl-4"
-                        value={this.state.selected_line}
+                        value={selected_line}
                         onChange={this.handleLineSelection}
-                        options={this.state.nodes}
+                        options={nodes}
                       />
                       <DefaultButton isPrimary onClick={this.startline}>
                         <i className="fas fa-fast-forward" />
@@ -720,22 +731,22 @@ class TestModal extends React.Component {
                   )}
                 </div>
                 <div className="col-sm-4 text-left test-sidebar">
-                  <b>{this.state.started && this.state.debug ? 'Variable State' : 'Test Tool'}</b>
+                  <b>{started && debug ? 'Variable State' : 'Test Tool'}</b>
                   <div className="debug-switch space-between mt-2">
                     <label>Debug Mode</label>
                     <Toggle
                       icons={false}
-                      checked={this.state.debug}
+                      checked={debug}
                       onChange={() => {
                         this.setState((prev_state) => ({ debug: !prev_state.debug }));
                       }}
-                      value={`${this.state.debug}`}
+                      value={`${debug}`}
                     />
                   </div>
-                  {this.state.started && this.state.debug ? (
+                  {started && debug ? (
                     <React.Fragment>
                       <small className="py-2">
-                        Current Flow: <b>{this.props.flow}</b>
+                        Current Flow: <b>{flow}</b>
                       </small>
                       <div className="sidebar-scroll">{this.getVariables()}</div>
                     </React.Fragment>
@@ -763,7 +774,7 @@ class TestModal extends React.Component {
           )}
         </ModalBody>
         <ModalFooter className="justify-content-center">
-          <DefaultButton isClear onClick={this.props.toggle}>
+          <DefaultButton isClear onClick={toggle}>
             Close
           </DefaultButton>
         </ModalFooter>

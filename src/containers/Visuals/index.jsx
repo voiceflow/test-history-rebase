@@ -6,9 +6,11 @@ import Multimodal from './Multimodal';
 
 class Business extends Component {
   render() {
+    const { page: propPage } = this.props;
+
     let page;
 
-    if (this.props.page === 'display') {
+    if (propPage === 'display') {
       page = <Display {...this.props} />;
     } else {
       page = <Multimodal {...this.props} />;

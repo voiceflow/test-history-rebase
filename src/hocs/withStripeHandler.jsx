@@ -50,10 +50,11 @@ const StripeHandler = (WrappedComponent) => {
     }
 
     checkChargeable(source) {
+      const { stripe } = this.state;
       return new Promise((resolve, reject) => {
         let pollCount = 0;
         const pollForSourceStatus = () => {
-          this.state.stripe
+          stripe
             .retrieveSource({
               id: source.id,
               client_secret: source.client_secret,
@@ -89,8 +90,9 @@ const StripeHandler = (WrappedComponent) => {
     }
 
     render() {
+      const { stripe } = this.state;
       return (
-        <StripeProvider stripe={this.state.stripe}>
+        <StripeProvider stripe={stripe}>
           <Elements>
             <StripeWrappedComponent {...this.props} checkChargeable={this.checkChargeable} />
           </Elements>

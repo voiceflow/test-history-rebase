@@ -6,17 +6,17 @@ import moment from 'moment';
 import React, { Component } from 'react';
 import { CardElement } from 'react-stripe-elements';
 
-const Invoice = (props) => {
-  if (!props.invoice) return null;
+const Invoice = ({ invoice }) => {
+  if (!invoice) return null;
   return (
     <div className="card px-4 py-3 mb-3">
       <span>
-        {moment.unix(props.invoice.timestamp).format('MMMM Do YYYY')}
-        {props.invoice.status && <b className="text-danger ml-2">({props.invoice.status})</b>}
+        {moment.unix(invoice.timestamp).format('MMMM Do YYYY')}
+        {invoice.status && <b className="text-danger ml-2">({invoice.status})</b>}
       </span>
-      <h2 className="my-2">${props.invoice.amount / 100}</h2>
+      <h2 className="my-2">${invoice.amount / 100}</h2>
       <small className="text-muted">
-        {props.invoice.items.map((item, i) => (
+        {invoice.items.map((item, i) => (
           <div key={i}>{item}</div>
         ))}
       </small>
@@ -40,10 +40,11 @@ class Billing extends Component {
   }
 
   async fetchInvoice() {
+    const { update, team, setError } = this.props;
     try {
-      const response = await axios.get(`/team/${this.props.team.team_id}/invoice`);
+      const response = await axios.get(`/team/${team.team_id}/invoice`);
       if (response.status === 204) {
-        setTimeout(() => this.props.update('CHECKOUT'), 500);
+        setTimeout(() => update('CHECKOUT'), 500);
         return;
       }
 
@@ -52,51 +53,53 @@ class Billing extends Component {
         invoices: response.data.invoices,
       });
 
-      const source = (await axios.get(`/team/${this.props.team.team_id}/source`)).data;
+      const source = (await axios.get(`/team/${team.team_id}/source`)).data;
       this.setState({
         source,
         stage: 'INVOICE',
       });
     } catch (err) {
-      this.props.setError(_.get(err, ['response', 'data']) || (err && JSON.stringify(err)) || 'Unable to Retrieve Information');
+      setError(_.get(err, ['response', 'data']) || (err && JSON.stringify(err)) || 'Unable to Retrieve Information');
     }
   }
 
   async updateSource() {
+    const { stripe, team, user, checkChargeable, update_pay, setError } = this.props;
     try {
       this.setState({ stage: 'UPDATE_SOURCE' });
 
-      const { source } = await this.props.stripe.createSource({
+      const { source } = await stripe.createSource({
         type: 'card',
         metadata: {
-          team: this.props.team.name,
+          team: team.name,
         },
         owner: {
-          name: this.props.user.name,
-          email: this.props.user.email,
+          name: user.name,
+          email: user.email,
         },
       });
 
       if (!source) throw new Error('Invalid Card Information');
 
-      await this.props.checkChargeable(source);
+      await checkChargeable(source);
 
-      const new_source = (await axios.patch(`/team/${this.props.team.team_id}/source`, { source })).data;
+      const new_source = (await axios.patch(`/team/${team.team_id}/source`, { source })).data;
 
       this.setState({
         source: new_source,
         stage: 'INVOICE',
       });
 
-      this.props.update_pay();
+      update_pay();
     } catch (err) {
-      this.props.setError(_.get(err, ['response', 'data']) || err || 'Unable to Retrieve Information');
+      setError(_.get(err, ['response', 'data']) || err || 'Unable to Retrieve Information');
       this.setState({ stage: 'STRIPE' });
     }
   }
 
   render() {
-    if (this.state.stage === 'LOADING') {
+    const { stage, source, upcoming, invoices } = this.state;
+    if (stage === 'LOADING') {
       return (
         <div className="text-center my-5 py-5">
           <span className="loader text-lg mb-3" />
@@ -107,17 +110,12 @@ class Billing extends Component {
 
     return (
       <div className="mb-4">
-        {this.state.source && (
+        {source && (
           <div className="position-relative">
             <label>Payment Option</label>
-            {this.state.stage === 'INVOICE' && (
+            {stage === 'INVOICE' && (
               <div className="position-absolute w-100" style={{ backgroundColor: '#FFF' }}>
-                <input
-                  value={`[${this.state.source.brand}] XXXX-XXXX-XXXX-${this.state.source.last4}`}
-                  className="disabled form-control"
-                  style={{ height: 40 }}
-                  disabled
-                />
+                <input value={`[${source.brand}] XXXX-XXXX-XXXX-${source.last4}`} className="disabled form-control" style={{ height: 40 }} disabled />
                 <div className="mt-2 px-1 space-between">
                   <Button isBtn isLink onClick={() => this.setState({ stage: 'STRIPE' })}>
                     Update
@@ -125,12 +123,12 @@ class Billing extends Component {
                 </div>
               </div>
             )}
-            {this.state.stage === 'UPDATE_SOURCE' && (
+            {stage === 'UPDATE_SOURCE' && (
               <div className="text-center position-absolute py-2 w-100">
                 <span className="loader text-lg" />
               </div>
             )}
-            <div style={{ visibility: this.state.stage === 'STRIPE' ? 'visible' : 'hidden' }}>
+            <div style={{ visibility: stage === 'STRIPE' ? 'visible' : 'hidden' }}>
               <div style={{ height: 40 }}>
                 <CardElement />
               </div>
@@ -147,10 +145,10 @@ class Billing extends Component {
         )}
         <hr />
         <label>Next Invoice</label>
-        <Invoice invoice={this.state.upcoming} />
+        <Invoice invoice={upcoming} />
         <hr />
         <label>Past Invoices</label>
-        {Array.isArray(this.state.invoices) && this.state.invoices.map((invoice, i) => <Invoice key={i} invoice={invoice} />)}
+        {Array.isArray(invoices) && invoices.map((invoice, i) => <Invoice key={i} invoice={invoice} />)}
       </div>
     );
   }

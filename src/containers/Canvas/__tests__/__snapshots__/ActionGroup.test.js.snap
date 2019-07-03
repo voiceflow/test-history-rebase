@@ -166,7 +166,11 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
     <div
       className="ag__settings_header"
     >
-      Settings
+      <ModalHeader
+        className="pb-2"
+        header="Project Settings"
+        toggle={[Function]}
+      />
     </div>
     <Connect(Settings)
       page="basic"

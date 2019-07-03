@@ -44,7 +44,12 @@ exports[`Canvas render canvas 1`] = `
       }
     }
     lastSave="Save"
+    onSave={[Function]}
+    onTest={[Function]}
+    renderPlatformSwitch={[Function]}
     resetSkill={[MockFunction]}
+    saved={true}
+    saving={false}
     setCB={[Function]}
     setOnSave={[MockFunction]}
     skill={
@@ -90,6 +95,7 @@ exports[`Canvas render canvas 1`] = `
         "slots": Array [],
       }
     }
+    updateLinter={[Function]}
   />
   <div
     id="canvas"

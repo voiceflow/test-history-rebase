@@ -40,7 +40,10 @@ export default function boardReducer(state = initialState, action) {
 
 export const updateBoards = ({ byId, allIds }) => ({
   type: 'UPDATE_BOARDS',
-  payload: { byId, allIds },
+  payload: {
+    byId,
+    allIds,
+  },
 });
 
 const Boards = new Normalize('board_id', 'board', updateBoards);
@@ -82,7 +85,11 @@ export const fetchBoards = (team_id) => {
       }
 
       // NORMALIZE
-      dispatch(Boards.create({ data: boards }));
+      dispatch(
+        Boards.create({
+          data: boards,
+        })
+      );
 
       dispatch({
         type: 'UPDATE_BOARD_SAVE',
@@ -122,21 +129,25 @@ export const updateLists = (team_id) => async (dispatch, getState) => {
 
 export const addBoard = (team_id) => {
   return async (dispatch) => {
+    const current_id = randomstring.generate(10);
     try {
-      const current_id = randomstring.generate(10);
       const empty_board = {
         board_id: current_id,
         name: 'New List',
         projects: [],
       };
-      dispatch(Boards.add({ data: empty_board }));
+      dispatch(
+        Boards.add({
+          data: empty_board,
+        })
+      );
       dispatch(updateLists(team_id));
     } catch (err) {
       console.error(err);
       dispatch(setError('Unable to add board'));
       return Promise.reject();
     }
-    return Promise.resolve();
+    return Promise.resolve(current_id);
   };
 };
 
@@ -148,8 +159,17 @@ export const addProjectToList = (board_id, project_id) => {
       let board = boards.byId[board_id];
       if (!board) throw new Error();
 
-      board = update(board, { projects: { $push: [project_id] } });
-      dispatch(Boards.update({ id: board_id, data: board }));
+      board = update(board, {
+        projects: {
+          $push: [project_id],
+        },
+      });
+      dispatch(
+        Boards.update({
+          id: board_id,
+          data: board,
+        })
+      );
       if (team_id) dispatch(updateLists(team_id));
     } catch (err) {
       console.error(err);
@@ -165,8 +185,17 @@ export const renameList = (board_id, new_name) => {
 
       let board = boards.byId[board_id];
       if (board) {
-        board = update(board, { name: { $set: new_name } });
-        dispatch(Boards.update({ id: board_id, data: board }));
+        board = update(board, {
+          name: {
+            $set: new_name,
+          },
+        });
+        dispatch(
+          Boards.update({
+            id: board_id,
+            data: board,
+          })
+        );
 
         const team_id = getState().team.team_id;
         if (team_id) dispatch(updateLists(team_id));
@@ -185,7 +214,11 @@ export const deleteBoard = (board_id) => {
       const boards = getState().board;
       const board = boards.byId[board_id];
       _.forEach(board.projects, (project) => dispatch(deleteProject(project)));
-      dispatch(Boards.delete({ id: board_id }));
+      dispatch(
+        Boards.delete({
+          id: board_id,
+        })
+      );
       if (team_id) dispatch(updateLists(team_id));
     } catch (err) {
       dispatch(setError('Problem Deleting List'));
@@ -214,7 +247,14 @@ export const changeProjectPosition = (drag, hover) => (dispatch, getState) => {
     if (hListId === dListId) {
       newDProjectIds.splice(dIndex, 1);
       newDProjectIds.splice(hIndex, 0, dProjectIds[dIndex]);
-      dispatch(Boards.update({ id: dListId, data: { projects: newDProjectIds } }));
+      dispatch(
+        Boards.update({
+          id: dListId,
+          data: {
+            projects: newDProjectIds,
+          },
+        })
+      );
       return;
     }
 
@@ -223,8 +263,22 @@ export const changeProjectPosition = (drag, hover) => (dispatch, getState) => {
     newDProjectIds.splice(dIndex, 1);
     newHProjectIds.splice(hIndex, 0, dProjectIds[dIndex]);
 
-    dispatch(Boards.update({ id: dListId, data: { projects: newDProjectIds } }));
-    dispatch(Boards.update({ id: hListId, data: { projects: newHProjectIds } }));
+    dispatch(
+      Boards.update({
+        id: dListId,
+        data: {
+          projects: newDProjectIds,
+        },
+      })
+    );
+    dispatch(
+      Boards.update({
+        id: hListId,
+        data: {
+          projects: newHProjectIds,
+        },
+      })
+    );
   } catch (err) {
     console.error(err);
   }
@@ -248,7 +302,12 @@ export const changeListPosition = (drag, hover) => (dispatch, getState) => {
     newAllIds.splice(dIndex, 1);
     newAllIds.splice(hIndex, 0, allIds[dIndex]);
 
-    dispatch(updateBoards({ byId, allIds: newAllIds }));
+    dispatch(
+      updateBoards({
+        byId,
+        allIds: newAllIds,
+      })
+    );
   } catch (err) {
     console.error(err);
   }

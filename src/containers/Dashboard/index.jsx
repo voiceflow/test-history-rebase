@@ -54,6 +54,7 @@ export const DashBoard = (props) => {
   const [new_product_updates, setNewProductUpdates] = useState([]);
   const [updates_hover, toggleUpdatesHover] = useState(false);
   const [show_update_bubble, setShowUpdateBubble] = useState(false);
+  const [focusedBoard, setFocusedBoard] = useState(null);
 
   const copyProject = (project_id, board_id = null) => {
     if (props.projects.allIds.length >= props.team.projects) {
@@ -363,6 +364,8 @@ export const DashBoard = (props) => {
                         <List
                           id={board.board_id}
                           key={board.board_id}
+                          focused={focusedBoard}
+                          setFocused={setFocusedBoard}
                           index={idx}
                           name={board.name}
                           onRename={props.renameBoard}
@@ -390,7 +393,9 @@ export const DashBoard = (props) => {
                         <Tooltip distance={16} title="Add new list" position="bottom" className="ml-1 mr-4">
                           <Button
                             onClick={() => {
-                              props.addBoard(props.team_id);
+                              props.addBoard(props.team_id).then((res) => {
+                                setFocusedBoard(res);
+                              });
                             }}
                             isNavBordered
                             className="mt-1 add-button"

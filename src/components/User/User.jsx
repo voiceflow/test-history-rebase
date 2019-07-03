@@ -25,7 +25,7 @@ export const User = (props) => {
 export const Members = (props) => {
   const members = props.members.filter((m) => !!m.email);
   const accepted = members.filter((m) => !!m.creator_id);
-  if (!accepted || accepted.length === 0) {
+  if (!accepted || accepted.length === 0 || members.length <= 1) {
     return null;
   }
 

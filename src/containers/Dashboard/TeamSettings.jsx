@@ -5,7 +5,7 @@ import { ModalHeader } from 'components/Modals/ModalHeader';
 import Image from 'components/Uploads/Image';
 import { User } from 'components/User/User';
 import { setConfirm, setError } from 'ducks/modal';
-import { deleteTeam, leaveTeam, updateCurrentTeamItem, updateMembers } from 'ducks/team';
+import { deleteTeam, leaveTeam, updateCurrentTeamItem, updateMembers, updateTeamName } from 'ducks/team';
 import update from 'immutability-helper';
 import { cloneDeep } from 'lodash';
 import React, { Component } from 'react';
@@ -130,28 +130,14 @@ const MemberRow = ({ member, admin, user, confirm, update, remove }) => {
 };
 
 class TeamSettings extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      stage: 'MEMBERS',
-      input: '',
-      name: '',
-      members: [],
-      diff: [],
-      is_diff: false,
-    };
-
-    this.renderBody = this.renderBody.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.deleteTeam = this.deleteTeam.bind(this);
-    this.addMember = this.addMember.bind(this);
-    this.priceEstimate = this.priceEstimate.bind(this);
-    this.applyChanges = this.applyChanges.bind(this);
-    this.teamUpdate = this.teamUpdate.bind(this);
-    this.leaveTeam = this.leaveTeam.bind(this);
-    this.upgrade = this.upgrade.bind(this);
-  }
+  state = {
+    stage: 'MEMBERS',
+    input: '',
+    name: '',
+    members: [],
+    diff: [],
+    is_diff: false,
+  };
 
   componentDidUpdate(prevProps, prevState) {
     const { open, team } = this.props;
@@ -172,7 +158,7 @@ class TeamSettings extends Component {
     }
   }
 
-  checkDiff() {
+  checkDiff = () => {
     const { diff, members } = this.state;
     const empty = (m) => !m.creator_id && !m.email;
 
@@ -185,15 +171,15 @@ class TeamSettings extends Component {
     } else {
       this.setState({ is_diff: false });
     }
-  }
+  };
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
-  }
+  };
 
-  deleteTeam() {
+  deleteTeam = () => {
     const { deleteTeam, team, close } = this.props;
     this.setState({ stage: 'DELETING' });
     deleteTeam(team.team_id)
@@ -203,16 +189,16 @@ class TeamSettings extends Component {
       .catch(() => {
         close();
       });
-  }
+  };
 
-  addMember() {
+  addMember = () => {
     const { members } = this.state;
     this.setState({
       members: update(members, { $push: [{}] }),
     });
-  }
+  };
 
-  applyChanges(e) {
+  applyChanges = (e) => {
     const { members } = this.state;
     const { team, updateMembers } = this.props;
 
@@ -229,9 +215,9 @@ class TeamSettings extends Component {
     }
 
     return false;
-  }
+  };
 
-  teamUpdate() {
+  teamUpdate = () => {
     const { team } = this.props;
     this.setState({
       stage: 'MEMBERS',
@@ -242,9 +228,9 @@ class TeamSettings extends Component {
     });
 
     if (this.check) this.check();
-  }
+  };
 
-  upgrade(plan) {
+  upgrade = (plan) => {
     const { team } = this.props;
     if (plan <= team.status) return null;
 
@@ -252,19 +238,19 @@ class TeamSettings extends Component {
       this.checkout_plan = plan;
       this.setState({ stage: 'CHECKOUT' });
     };
-  }
+  };
 
-  leaveTeam() {
+  leaveTeam = () => {
     const { setConfirm, leaveTeam, team } = this.props;
     setConfirm({
       text: 'Are you sure you want to leave this team?',
       confirm: () => leaveTeam(team.team_id),
     });
-  }
+  };
 
-  renderBody() {
+  renderBody = () => {
     const { stage, name, members, is_diff, input } = this.state;
-    const { team, user, setError, updateTeam, setConfirm } = this.props;
+    const { team, user, setError, updateTeam, setConfirm, updateTeamName } = this.props;
     switch (stage) {
       case 'PLAN':
         if (!this.IS_ADMIN) return Contact;
@@ -386,9 +372,12 @@ class TeamSettings extends Component {
             <Input
               name="name"
               placeholder="Board Name"
-              // onChange={this.handleChange}
+              onChange={(e) => {
+                updateTeamName(e.target.value);
+                this.handleChange(e);
+              }}
               value={name}
-              disabled
+              disabled={team.creator_id !== user.creator_id}
             />
             <hr />
             <label>Billing</label>
@@ -476,9 +465,9 @@ class TeamSettings extends Component {
           </div>
         );
     }
-  }
+  };
 
-  priceEstimate() {
+  priceEstimate = () => {
     const { members } = this.state;
     const { team } = this.props;
     if (team.seats < members.length) {
@@ -489,7 +478,7 @@ class TeamSettings extends Component {
       return null;
     }
     return null;
-  }
+  };
 
   render() {
     const { team, user, update, open, close } = this.props;
@@ -573,6 +562,7 @@ const mapDispatchToProps = (dispatch) => {
     leaveTeam: (team_id) => dispatch(leaveTeam(team_id)),
     setConfirm: (confirm) => dispatch(setConfirm(confirm)),
     updateTeam: (payload) => dispatch(updateCurrentTeamItem(payload)),
+    updateTeamName: (name) => dispatch(updateTeamName(name)),
     setError: (error) => dispatch(setError(error)),
   };
 };

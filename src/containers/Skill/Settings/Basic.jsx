@@ -1,6 +1,3 @@
-import 'brace/mode/json';
-import 'brace/ext/language_tools';
-
 import axios from 'axios';
 import Button from 'components/Button';
 import Prompt from 'components/Uploads/Prompt';
@@ -9,6 +6,7 @@ import { updateVersion, updateVersionMerge } from 'ducks/version';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Tooltip } from 'react-tippy';
 import Toggle from 'react-toggle';
 import { Collapse, FormGroup, Input, Label } from 'reactstrap';
 
@@ -49,12 +47,11 @@ class BasicSettings extends Component {
     this.saveSettings();
   }
 
-  toggleResumeFollowUp() {
-    const { resume_collapse } = this.state;
+  toggleResumeFollowUp = () => {
     this.setState({
-      resume_collapse: !resume_collapse,
+      resume_collapse: !this.state.resume_collapse,
     });
-  }
+  };
 
   toggleRepeat = (low, high) => {
     this.props.updateSkill('repeat', this.props.skill.repeat > low ? low : high);
@@ -77,25 +74,25 @@ class BasicSettings extends Component {
     }
 
     // Don't save if nothing has changed - save me some HTTP calls
-    if (_.isEqual(this.baseline, skill)) return;
-    // this.baseline = _.cloneDeep(skill)
+    if (_.isEqual(this.baseline, this.props.skill)) return;
+    // this.baseline = _.cloneDeep(this.props.skill)
 
-    if (!skill.error_prompt.content) {
-      updateSkill('error_prompt', null);
+    if (!this.props.skill.error_prompt.content) {
+      this.props.updateSkill('error_prompt', null);
     }
-    if (skill.alexa_events.trim()) {
+    if (this.props.skill.alexa_events.trim()) {
       try {
-        JSON.parse(skill.alexa_events);
+        JSON.parse(this.props.skill.alexa_events);
       } catch (err) {
-        setError(`Invalid JSON For Skill Events: ${err.message}`);
+        this.props.setError(`Invalid JSON For Skill Events: ${err.message}`);
         return;
       }
     } else {
-      updateSkill('alexa_events', null);
+      this.props.updateSkill('alexa_events', null);
     }
 
-    axios.patch(`/skill/${skill.skill_id}?settings=1`, skill).catch(() => {
-      setError('Settings Save Error');
+    axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, this.props.skill).catch(() => {
+      this.props.setError('Settings Save Error');
     });
   };
 
@@ -103,10 +100,10 @@ class BasicSettings extends Component {
     const { name, inv_name } = this.props.skill;
     return (
       <React.Fragment>
-        <div className="settings-content clearfix mt-4">
+        <div className="settings-content clearfix pb-11 no-bottom">
           <FormGroup>
             <Label>Project Name</Label>
-            <Input className="form-bg mb-4" name="name" value={skill.name} onChange={this.handleUpdate} />
+            <Input className="form-bg mb-3" name="name" value={name} onChange={this.handleUpdate} />
             <Label>Invocation Name</Label>
             <Input
               className="form-bg"
@@ -120,86 +117,130 @@ class BasicSettings extends Component {
           </FormGroup>
           <hr />
           <FormGroup>
-            <Label className="mb-1">Repeat</Label>
-            <div className="helper-text mb-3">
-              <div className="row mb-3 space-between">
-                <div className="helper-text col-10">Users will be able to say repeat at any choice/interaction and the dialog will repeat</div>
+            {/* <Label className="mb-1">Repeat</Label> */}
+            <div className="helper-text">
+              <div className="row space-between">
+                {/* <div className="helper-text col-10">Users will be able to say repeat at any choice/interaction and the dialog will repeat</div> */}
+                <div className="col-10 s__label_text">
+                  Allow Users to Repeat
+                  <Tooltip
+                    html="Users will be able to say repeat at any choice/interaction and the dialog will repeat"
+                    className="s__label_tooltip"
+                    position="top"
+                  >
+                    <img alt="info" src="/info.svg" />
+                  </Tooltip>
+                </div>
                 <div className="col-2">
-                  <Toggle icons={false} checked={skill.repeat > 0} onChange={() => this.toggleRepeat(0, 100)} />
+                  <Toggle icons={false} checked={this.props.skill.repeat > 0} onChange={() => this.toggleRepeat(0, 100)} />
                 </div>
               </div>
             </div>
 
-            {skill.repeat > 0 && (
+            <hr />
+
+            {this.props.skill.repeat > 0 && (
               <React.Fragment>
-                <Label className="mb-1">Complete Repeat</Label>
-                <div className="row">
-                  <div className="helper-text col-10">
-                    {skill.repeat > 1
-                      ? 'When the user asks to repeat, everything after the last choice/interaction block will repeat'
-                      : 'When the user asks to repeat, only the last speak block before the choice/interaction will be repeated'}
-                  </div>
-                  <div className="col-2">
-                    <Toggle icons={false} checked={skill.repeat > 1} onChange={() => this.toggleRepeat(1, 100)} />
+                {/* <Label className="mb-1">Complete Repeat</Label> */}
+                <div className="helper-text">
+                  <div className="row space-between">
+                    <div className="s__label_text col-10">
+                      Complete Repeat
+                      <Tooltip
+                        html={
+                          this.props.skill.repeat > 1
+                            ? 'When the user asks to repeat, everything after the last choice/interaction block will repeat'
+                            : 'When the user asks to repeat, only the last speak block before the choice/interaction will be repeated'
+                        }
+                        className="s__label_tooltip"
+                        position="top"
+                      >
+                        <img alt="info" src="/info.svg" />
+                      </Tooltip>
+                    </div>
+                    <div className="col-2">
+                      <Toggle icons={false} checked={this.props.skill.repeat > 1} onChange={() => this.toggleRepeat(1, 100)} />
+                    </div>
                   </div>
                 </div>
               </React.Fragment>
             )}
           </FormGroup>
+          <hr />
         </div>
-        <div className="settings-content clearfix mb-5">
+        <div className="settings-content clearfix no-bottom">
           <FormGroup>
-            <Label className="mb-1">Restart Every Session</Label>
-            <div className="row">
-              <div className="helper-text mb-2 col-10">
-                {skill.restart
-                  ? 'The project will restart from the beginning every time the user starts a session'
-                  : 'The project will resume from the last block the user was on before quitting'}
-              </div>
-              <div className="col-2">
-                <Toggle icons={false} name="restart" checked={skill.restart} onChange={this.toggleSwitch} />
+            {/* <Label className="mb-1">Restart Every Session</Label> */}
+            <div className="helper-text">
+              <div className="row space-between">
+                <div className="s__label_text col-10">
+                  Restart Every Session
+                  <Tooltip
+                    html={
+                      this.props.skill.restart
+                        ? 'The project will restart from the beginning every time the user starts a session'
+                        : 'The project will resume from the last block the user was on before quitting'
+                    }
+                    className="s__label_tooltip"
+                    position="top"
+                  >
+                    <img alt="info" src="/info.svg" />
+                  </Tooltip>
+                </div>
+                <div className="col-2">
+                  <Toggle icons={false} name="restart" checked={this.props.skill.restart} onChange={this.toggleSwitch} />
+                </div>
               </div>
             </div>
-            {!skill.restart && (
+            <hr />
+            {!this.props.skill.restart && (
               <React.Fragment>
-                <Label className="mb-1">Resume Prompt</Label>
-                <div className="row">
-                  <div className="helper-text mb-2 col-10">Give the user a YES/NO prompt whether to resume</div>
-                  <div className="col-2">
-                    <Toggle
-                      name="restart"
-                      checked={!hide_resume}
-                      onChange={() =>
-                        this.setState({
-                          hide_resume: !hide_resume,
-                        })
-                      }
-                      icons={false}
-                    />
+                {/* <Label className="mb-1">Resume Prompt</Label> */}
+                <div className="helper-text">
+                  <div className="row space-between mb-3">
+                    <div className="s__label_text col-10">
+                      Allow Users to Resume
+                      <Tooltip html="Give the user a YES/NO prompt whether to resume" className="s__label_tooltip" position="top">
+                        <img alt="info" src="/info.svg" />{' '}
+                      </Tooltip>
+                    </div>
+                    <div className="col-2">
+                      <Toggle
+                        name="restart"
+                        checked={!this.state.hide_resume}
+                        onChange={() =>
+                          this.setState({
+                            hide_resume: !this.state.hide_resume,
+                          })
+                        }
+                        icons={false}
+                      />
+                    </div>
                   </div>
                 </div>
-                {!hide_resume && (
+                {this.state.hide_resume && <hr />}
+                {!this.state.hide_resume && (
                   <React.Fragment>
                     <Prompt
-                      placeholder="Would you like to resume your current story, yes or no?"
-                      voice={skill.resume_prompt.voice}
-                      content={skill.resume_prompt.content}
-                      updatePrompt={(prompt) => updateSkillMerge('resume_prompt', prompt)}
+                      placeholder="Welcome back, would you like to resume?"
+                      voice={this.props.skill.resume_prompt.voice}
+                      content={this.props.skill.resume_prompt.content}
+                      updatePrompt={(prompt) => this.props.updateSkillMerge('resume_prompt', prompt)}
                     />
-                    <Collapse isOpen={resume_collapse} className="pt-3">
+                    <Collapse isOpen={this.state.resume_collapse} className="pt-3">
                       <Label>Resume Follow Up</Label>
                       <div className="helper-text mb-2">Add a response when the user wants to resume</div>
                       <Prompt
-                        placeholder="Would you like to resume your current story, yes or no?"
+                        placeholder="Welcome back, would you like to resume?"
                         voice_id="follow_voice"
                         content_id="follow_content"
-                        voice={skill.resume_prompt.follow_voice}
-                        content={skill.resume_prompt.follow_content}
-                        updatePrompt={(prompt) => updateSkillMerge('resume_prompt', prompt)}
+                        voice={this.props.skill.resume_prompt.follow_voice}
+                        content={this.props.skill.resume_prompt.follow_content}
+                        updatePrompt={(prompt) => this.props.updateSkillMerge('resume_prompt', prompt)}
                       />
                     </Collapse>
                     <Button isClear className="mt-3" onClick={this.toggleResumeFollowUp}>
-                      {resume_collapse ? 'Cancel Follow Up' : 'Resume Follow Up'}
+                      {this.state.resume_collapse ? 'Cancel Follow Up' : 'Resume Follow Up'}
                     </Button>
                   </React.Fragment>
                 )}

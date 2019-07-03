@@ -1120,10 +1120,6 @@ export class ActionGroup extends PureComponent {
       history,
       updateSkill,
       platform,
-      lastSave,
-      saved,
-      saving,
-      onSave,
       onTest,
       live_mode,
       vendors,
@@ -1256,19 +1252,13 @@ export class ActionGroup extends PureComponent {
           rightRenderer={() => (
             <div className="title-group no-select">
               <div className="align-icon">
-                <Tooltip distance={16} title={lastSave} position="bottom" className="mr-4">
+                <Tooltip distance={16} title="Settings" position="bottom" className="mr-4">
                   <Button
-                    id="icon-save"
-                    isNav
-                    className={cn({
-                      'btn-successful': saved,
-                      unsaved: !saved,
-                      saving,
-                    })}
-                    onClick={onSave}
-                  >
-                    {saving && <span className="save-loader" />}
-                  </Button>
+                    className={cn('dropdown-button-border', { active: this.state.settingsModal })}
+                    id="settings-icon"
+                    type="button"
+                    onClick={() => this.setState({ settingsModal: true })}
+                  />
                 </Tooltip>
               </div>
               <div className="title-group-sub">

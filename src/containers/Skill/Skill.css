@@ -655,9 +655,9 @@ p.loading-btn::after {
 }
 
 .s__label_text {
+  padding-top: 3px;
   font-weight: 400;
   font-size: 15px;
-  padding-top: 3px;
 }
 
 .s__label_tooltip {

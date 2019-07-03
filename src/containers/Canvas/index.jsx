@@ -1511,9 +1511,7 @@ export class Canvas extends Component {
     if (key && fulfillments[key]) {
       const confirm_info = {
         // eslint-disable-next-line prettier/prettier
-        text: `CanfulfillIntent is enabled for the "${
-          extras.intent.label
-        }" intent. Deleting this intent will also delete any slot fulfillment values you have set for this intent.`,
+        text: `CanfulfillIntent is enabled for the "${extras.intent.label}" intent. Deleting this intent will also delete any slot fulfillment values you have set for this intent.`,
         confirm: () => {
           this.updateFulfillmentOnDeletion(deleted_node);
           this.setState({
@@ -1622,6 +1620,12 @@ export class Canvas extends Component {
             this.saveCB = cb;
           }}
           {...this.props}
+          onSave={this.onSave}
+          saving={this.state.saving}
+          saved={this.state.saved}
+          onTest={this.onTest}
+          updateLinter={this.updateLinter}
+          renderPlatformSwitch={this.renderPlatformSwitch}
         />
         {this.state.testing_modal ? (
           <TestModal

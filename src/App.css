@@ -1873,7 +1873,7 @@ body.modal-open {
 }
 
 .icon-settings {
-  background-image: url("/cog.svg") !important
+  background-image: url('/cog.svg') !important;
 }
 
 .skill-name-top-left {

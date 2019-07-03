@@ -33,35 +33,35 @@
 }
 
 .d__new_visual_button {
+  display: block;
   width: 100%;
+  margin-top: 20px;
+  padding: 16px 0;
+  color: #8da2b5;
+  text-align: center;
   border: 1px solid #c1cedc;
   border-radius: 3px;
-  margin-top: 20px;
-  display: block;
-  text-align: center;
-  color: #8da2b5;
-  padding: 16px 0;
 }
 
 .d__new_visual_button:hover {
-  text-decoration: none;
   color: #8da2b5;
+  text-decoration: none;
 }
 
 .d__or_box {
-  border: 0.5px solid #c1cedc;
-  width: 100%;
   position: relative;
+  width: 100%;
   margin: 20px 0;
+  border: 0.5px solid #c1cedc;
 }
 
 .d__or_text {
   position: absolute;
-  left: 43%;
   top: -10px;
-  background-color: #fff;
+  left: 43%;
   padding: 0 15px;
-  font-size: 12px;
-  font-weight: 600;
   color: #8da2b5;
+  font-weight: 600;
+  font-size: 12px;
+  background-color: #fff;
 }

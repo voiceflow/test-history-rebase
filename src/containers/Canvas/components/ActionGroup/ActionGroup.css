@@ -7,7 +7,6 @@
  * PSD by Orman Clark: https://goo.gl/MNFHK
  */
 
-
 .switch {
   position: relative;
   width: 167px;
@@ -71,7 +70,7 @@
 }
 
 .btn-successful {
-  background-image: url("/saved.svg"), linear-gradient(-180deg, rgba(62, 207, 142, 0.09), rgba(62, 207, 142, 0.25) 98%) !important;
+  background-image: url('/saved.svg'), linear-gradient(-180deg, rgba(62, 207, 142, 0.09), rgba(62, 207, 142, 0.25) 98%) !important;
 }
 
 .switch-input.checked + .switch-label-on ~ .switch-selection {
@@ -153,13 +152,13 @@
 }
 
 .d__see_all {
-  color: #00b0e6;
   float: right;
+  color: #00b0e6;
   cursor: pointer;
 }
 
 .ag__settings_header {
-  /*margin: 1rem 16px 0 4px;*/
+  /* margin: 1rem 16px 0 4px; */
   margin-top: 5px;
   margin-right: 8px;
 }

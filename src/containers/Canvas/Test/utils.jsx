@@ -58,6 +58,7 @@ export const getUserTestOutputs = async (trace, ending) => {
   for (const block of trace) {
     if (block.diagram) {
       dom.push({
+        debug: 'diagram',
         type: block.isExitFlow ? 'EXIT_FLOW' : 'ENTER_FLOW',
         diagram: block.diagram,
       });
@@ -128,51 +129,47 @@ export const getUserTestOutputs = async (trace, ending) => {
         dom.push(outputBlock);
       });
     } else if (type === 'Stream') {
-      // eslint-disable-next-line no-await-in-loop
-      const results = await Promise.all(
-        // eslint-disable-next-line sonarjs/no-identical-functions
-        block.audio.map(async (audioFile) => {
-          const audio = newAudio(audioFile);
-          return {
-            duration: await getAudioMeta(audio),
-            audio,
-          };
-        })
-      );
-      const outputBlock = {
-        audio: results[0].audio,
-        text: 'Streaming',
+      dom.push({
+        debug: 'stream',
         node: block.line.id,
-        isLast: !block.line.nextId,
-        type,
-      };
-
-      dom.push(outputBlock);
-
-      const outputBlockChoices = {
-        options: [
-          {
-            label: 'Resume',
-            val: 'AMAZON.ResumeIntent',
-          },
-          {
-            label: 'Pause',
-            val: 'AMAZON.PauseIntent',
-          },
-          {
-            label: 'Next',
-            val: 'AMAZON.NextIntent',
-          },
-          {
-            label: 'Previous',
-            val: 'AMAZON.PreviousIntent',
-          },
-        ],
-        node: block.line.id,
-        isLast: !block.line.nextId,
-        type,
-      };
-      dom.push(outputBlockChoices);
+        text: 'Stream Blocks are currently unsupported for testing',
+        important: true,
+      });
+      // const audio = newAudio(block.line.play);
+      // // eslint-disable-next-line no-await-in-loop
+      // await getAudioMeta(audio);
+      // const outputBlock = {
+      //   audio,
+      //   text: 'Streaming',
+      //   node: block.line.id,
+      //   isLast: !block.line.nextId,
+      //   type,
+      // };
+      // dom.push(outputBlock);
+      // const outputBlockChoices = {
+      //   options: [
+      //     {
+      //       label: 'Resume',
+      //       val: 'AMAZON.ResumeIntent',
+      //     },
+      //     {
+      //       label: 'Pause',
+      //       val: 'AMAZON.PauseIntent',
+      //     },
+      //     {
+      //       label: 'Next',
+      //       val: 'AMAZON.NextIntent',
+      //     },
+      //     {
+      //       label: 'Previous',
+      //       val: 'AMAZON.PreviousIntent',
+      //     },
+      //   ],
+      //   node: block.line.id,
+      //   isLast: !block.line.nextId,
+      //   type,
+      // };
+      // dom.push(outputBlockChoices);
     } else if (type === 'Choice' && idx > 0) {
       const outputBlock = {
         options: _.map(block.line.inputs, _.head),

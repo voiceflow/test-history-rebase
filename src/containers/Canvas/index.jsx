@@ -1515,6 +1515,7 @@ export class Canvas extends Component {
         {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={() => this.setState({ spotlight: false })} />}
         <div
           id={this.props.preview ? 'canvas_preview' : 'canvas'}
+          className={this.props.page}
           onMouseMove={this.mouseMove}
           onMouseUp={this.combineNode}
           onMouseDown={() => {
@@ -1542,7 +1543,6 @@ export class Canvas extends Component {
             }}
           />
           {this.state.load_diagram && <Spinner name="Flow" />}
-
           <Editor
             unfocus={this.onDiagramUnfocus}
             open={this.props.open && this.props.page === 'canvas'}

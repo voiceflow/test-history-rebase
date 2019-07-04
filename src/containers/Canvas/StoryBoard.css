@@ -3504,12 +3504,8 @@ button.close:hover{
   z-index: 5;
 }
 
-#home-button.isCanvas {
-  left: 302px;
-}
-
-#home-button.isTest {
-  left: 55px;
+#canvas.test #home-button {
+  display: none;
 }
 
 #home-button.closed {
@@ -3537,6 +3533,10 @@ button.close:hover{
   background: url('/images/flowmenu.svg') no-repeat;
   background-position: center center;
   background-size: contain;
+}
+
+#canvas.test #flow-bar .dropdown{
+  visibility: hidden;
 }
 
 .flow-chevron {

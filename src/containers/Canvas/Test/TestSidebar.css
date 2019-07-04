@@ -80,6 +80,10 @@
   padding: 7px 8px;
 }
 
+.test-variable.editor:focus-within {
+  border-color: #4668f3 !important;
+}
+
 .test-variable .variable_tag {
   margin: 0;
   padding: 2px 5px !important;
@@ -89,7 +93,7 @@
   flex: 1;
   min-width: 0;
   margin-left: 8px;
-  color: #62778c;
+  color: #132144;
 }
 
 #TestSettings.open {

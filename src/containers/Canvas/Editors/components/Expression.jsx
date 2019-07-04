@@ -58,17 +58,11 @@ export class Expression extends Component {
     dropdownOpen: false,
   };
 
-  inputRef = React.createRef();
-
   // eslint-disable-next-line react/no-deprecated
   componentWillReceiveProps(nextProps) {
     this.setState({
       expression: nextProps.expression,
     });
-  }
-
-  focus() {
-    setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 200);
   }
 
   handleValue = (event) => {
@@ -239,7 +233,6 @@ export class Expression extends Component {
                     })
                   : null
               }
-              ref={this.inputRef}
             />
           </div>
         );
@@ -252,7 +245,7 @@ export class Expression extends Component {
                 {OPERATOR_SELECT}
               </OperatorDropdown>
             </div>
-            <Input placeholder="value" value={expression.value} onChange={this.handleValue} innerRef={this.inputRef} />
+            <Input placeholder="value" value={expression.value} onChange={this.handleValue} />
           </div>
         );
 
@@ -270,7 +263,6 @@ export class Expression extends Component {
               placeholder={<React.Fragment>Enter your expression here</React.Fragment>}
               variables={variables}
               updateRaw={this.handleAdvance}
-              ref={this.inputRef}
             />
           </div>
         );
@@ -288,7 +280,7 @@ export class Expression extends Component {
                 <i className="fas fa-trash" />
               </div>
             </OperatorDropdown>
-            <Expression expression={expression.value} variables={variables} onUpdate={onUpdate} ref={this.inputRef} />
+            <Expression expression={expression.value} variables={variables} onUpdate={onUpdate} />
           </div>
         );
 
@@ -299,14 +291,7 @@ export class Expression extends Component {
               same: levels[type] && levels[type].has(parentType),
             })}
           >
-            <Expression
-              expression={expression.value[0]}
-              openVarTab={openVarTab}
-              variables={variables}
-              onUpdate={onUpdate}
-              parentType={type}
-              ref={this.inputRef}
-            />
+            <Expression expression={expression.value[0]} openVarTab={openVarTab} variables={variables} onUpdate={onUpdate} parentType={type} />
             <OperatorDropdown update={this.handleType} className="operator">
               {symbols[type]}
               <div className="type-button" onClick={this.defaultTop}>

@@ -39,11 +39,11 @@ export const addNormalize = (id_type, data, structure) => {
   return { byId, allIds };
 };
 
-export const updateNormalize = (id, data, structure) => {
+export const updateNormalize = (id, data, structure, merge = true) => {
   return {
     byId: update(structure.byId, {
       [id]: {
-        $merge: data,
+        [merge ? '$merge' : '$set']: data,
       },
     }),
     allIds: structure.allIds,
@@ -83,9 +83,9 @@ export default class Normalize {
     };
   }
 
-  update(params) {
+  update(params, merge = true) {
     return (dispatch, getState) => {
-      const state = updateNormalize(params.id, params.data, getState()[this.reducer]);
+      const state = updateNormalize(params.id, params.data, getState()[this.reducer], merge);
       if (validState(state)) dispatch(this.action(state));
     };
   }

@@ -877,7 +877,6 @@
 
 .Menu #sidebar {
   position: absolute;
-  left: 40px;
   z-index: 8;
 
   /* opacity: 0.9; */
@@ -885,7 +884,7 @@
   /* text-align: center; */
   display: flex;
   flex-direction: column;
-  width: 250px;
+  width: 290px;
   min-width: 250px;
   max-width: 80vw;
   height: 100%;
@@ -908,17 +907,6 @@
 
 #canvas_preview .Menu #sidebar {
   left: 0;
-}
-
-.Menu #sidebar::after {
-  position: absolute;
-  right: 0;
-  z-index: 1500;
-  width: 1px;
-  height: 100%;
-  background-color: #eaeff3;
-  cursor: col-resize !important;
-  content: ' ';
 }
 
 .Menu #sidebar.open {
@@ -970,6 +958,7 @@
 
 .Menu #sidebar .sidebar-container {
   height: 100%;
+  margin-left: 40px;
   padding: 0 15px;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -1035,13 +1024,6 @@
 
 .section-title:hover {
   cursor: pointer;
-}
-
-.Menu #sidebar .blocks {
-  border: 1px solid #ddd;
-  border-left: none !important;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
 }
 
 .MenuItem {
@@ -2043,6 +2025,7 @@ label {
 }
 
 .add-button:hover {
+  background-color: #f7f9fb;
   background-image: url('/add-step-hover.svg');
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 6px 0 rgba(17, 49, 96, 0.26) !important;
   transform: scale(1.05);

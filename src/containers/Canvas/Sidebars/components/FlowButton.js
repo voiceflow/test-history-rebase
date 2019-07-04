@@ -9,9 +9,11 @@ class FlowButton extends Component {
   constructor(props) {
     super(props);
 
+    const { diagram } = props;
+
     this.state = {
       edit: false,
-      name: props.diagram.name ? props.diagram.name : '',
+      name: diagram.name ? diagram.name : '',
     };
 
     this.close = this.close.bind(this);
@@ -25,8 +27,11 @@ class FlowButton extends Component {
   }
 
   close() {
-    if (!this.props.preview) {
-      this.props.renameFlow(this.props.flow.id, this.state.name).then(() => {
+    const { preview, renameFlow, flow } = this.props;
+    const { name } = this.state;
+
+    if (!preview) {
+      renameFlow(flow.id, name).then(() => {
         this.setState({
           edit: false,
         });
@@ -35,22 +40,21 @@ class FlowButton extends Component {
   }
 
   render() {
-    if (!this.props.diagram) return null;
+    const { diagram, active: propActive, flow, enterFlow, depth, preview, copyFlow, deleteFlow } = this.props;
+    const { edit, name } = this.state;
 
-    const active = this.props.active === this.props.flow.id;
+    if (!diagram) return null;
+
+    const active = propActive === flow.id;
     return (
       <div className={cn('diagram-block', { active })}>
-        <button
-          className="diagram-button"
-          onClick={active ? null : () => this.props.enterFlow(this.props.flow.id)}
-          style={{ marginLeft: this.props.depth ? this.props.depth * 20 : 0 }}
-        >
+        <button className="diagram-button" onClick={active ? null : () => enterFlow(flow.id)} style={{ marginLeft: depth ? depth * 20 : 0 }}>
           <i className="flow-icon mr-3" />
-          {this.state.edit ? (
+          {edit ? (
             <Input
               name="name"
               className="diagram-text"
-              value={this.state.name}
+              value={name}
               onChange={this.handleChange}
               onKeyPress={(target) => (target.charCode === 13 ? this.close() : null)}
               onBlur={this.close}
@@ -60,31 +64,31 @@ class FlowButton extends Component {
           ) : (
             <span className="diagram-text">
               {/* eslint-disable no-nested-ternary */}
-              {this.props.flow.name === 'ROOT'
+              {flow.name === 'ROOT'
                 ? 'HOME'
-                : _.trim(this.props.diagram.name)
-                ? this.props.diagram.name.length > 15
-                  ? `${this.props.diagram.name.substring(0, 15)}...`
-                  : this.props.diagram.name
+                : _.trim(diagram.name)
+                ? diagram.name.length > 15
+                  ? `${diagram.name.substring(0, 15)}...`
+                  : diagram.name
                 : 'Flow'}
               {/* eslint-enable no-nested-ternary */}
             </span>
           )}
         </button>
-        {this.props.flow.name !== 'ROOT' && !this.props.preview && !this.state.edit && (
+        {flow.name !== 'ROOT' && !preview && !edit && (
           <UncontrolledDropdown inNavbar>
             <DropdownToggle className="diagram-edit" tag="button">
               <i className="fas fa-cog" />
             </DropdownToggle>
             <DropdownMenu right className="arrow arrow-right no-select" style={{ marginTop: -2 }}>
               <DropdownItem header>Flow Options</DropdownItem>
-              <DropdownItem onClick={() => this.setState({ edit: true, name: this.props.diagram.name })} className="pointer">
+              <DropdownItem onClick={() => this.setState({ edit: true, name: diagram.name })} className="pointer">
                 Edit Name
               </DropdownItem>
-              <DropdownItem onClick={this.props.copyFlow} className="pointer">
+              <DropdownItem onClick={copyFlow} className="pointer">
                 Copy
               </DropdownItem>
-              <DropdownItem onClick={this.props.deleteFlow} className="pointer">
+              <DropdownItem onClick={deleteFlow} className="pointer">
                 Delete
               </DropdownItem>
             </DropdownMenu>

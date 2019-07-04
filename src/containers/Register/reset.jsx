@@ -26,11 +26,12 @@ class Reset extends Component {
   };
 
   resetEmail(e) {
+    const { email } = this.state;
     e.preventDefault();
     this.setState({ stage: 1 });
     axios
       .post('/user/reset', {
-        email: this.state.email,
+        email,
       })
       .then(() => {
         this.setState({ stage: 2 });
@@ -52,13 +53,14 @@ class Reset extends Component {
   }
 
   renderStage() {
-    switch (this.state.stage) {
+    const { stage, error } = this.state;
+    switch (stage) {
       case 0:
         return (
           <form onSubmit={this.resetEmail} className="w-100">
-            {this.state.error && (
+            {error && (
               <Alert color="danger" className="text-center">
-                {this.state.error}
+                {error}
               </Alert>
             )}
             <h5 className="text-muted">Enter your account email</h5>

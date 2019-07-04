@@ -78,7 +78,8 @@ export class Canvas extends Component {
   constructor(props) {
     super(props);
     // preview mode
-    // this.preview = !!this.props.preview
+
+    const { preview, user } = this.props;
 
     this.onSave = this.onSave.bind(this);
     this.createDiagram = this.createDiagram.bind(this);
@@ -89,15 +90,15 @@ export class Canvas extends Component {
     const engine = new SRD.DiagramEngine();
     engine.registerLabelFactory(new SRD.DefaultLabelFactory());
     engine.registerNodeFactory(new BlockNodeFactory());
-    engine.registerLinkFactory(new BlockLinkFactory(null, null, this.props.preview));
+    engine.registerLinkFactory(new BlockLinkFactory(null, null, preview));
     engine.registerPortFactory(new BlockPortFactory());
 
     const diagram_name = '';
 
     if (window.Appcues) {
-      window.Appcues.identify(this.props.user.id, {
-        email: this.props.user.email,
-        name: this.props.user.name,
+      window.Appcues.identify(user.id, {
+        email: user.email,
+        name: user.name,
       });
     }
     this.loaded = false;
@@ -132,17 +133,20 @@ export class Canvas extends Component {
   }
 
   setMousetrap = () => {
-    Mousetrap.bind(['shift+/'], () => this.props.toggleKeyboard(!this.props.keyboardHelp));
+    const { toggleKeyboard, keyboardHelp, preview } = this.props;
+    const { saved, spotlight } = this.state;
+
+    Mousetrap.bind(['shift+/'], () => toggleKeyboard(!keyboardHelp));
     Mousetrap.bind(['ctrl+z', 'command+z'], this.undo);
     Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo);
     Mousetrap.bind(['ctrl+/', 'command+/'], this.addComment);
     Mousetrap.bind(['ctrl+s', 'command+s'], (e) => {
       e.preventDefault();
-      if (!this.state.saved && !this.props.preview) {
+      if (!saved && !preview) {
         this.onSave();
       }
     });
-    Mousetrap.bind('esc', () => this.state.spotlight && this.setState({ spotlight: false }));
+    Mousetrap.bind('esc', () => spotlight && this.setState({ spotlight: false }));
     Mousetrap.bind('space', (e) => {
       if (this.diagram_focus && !this.props.test) {
         this.onDiagramUnfocus();
@@ -167,6 +171,8 @@ export class Canvas extends Component {
   };
 
   componentDidMount() {
+    const { preview, skill, diagram_id, getIntegrationsUsers, integration_users_error, setError } = this.props;
+    const { engine } = this.state;
     if (window.Appcues) {
       window.Appcues.page();
     }
@@ -181,10 +187,10 @@ export class Canvas extends Component {
     this.setTimeout();
     this.setMousetrap();
     // AUTOSAVE EVERY 10 SECONDS
-    if (!this.props.preview && this.props.skill && this.props.skill.skill_id && this.props.diagram_id && !window.error) {
+    if (!preview && skill && skill.skill_id && diagram_id && !window.error) {
       this.interval = setInterval(() => {
         if (this.lastModel) {
-          const currentModel = JSON.stringify(util.serializeDiagram(this.state.engine));
+          const currentModel = JSON.stringify(util.serializeDiagram(engine));
           if (currentModel !== this.lastModel) {
             if (util.canSave(currentModel)) {
               this.tooBig = false;
@@ -192,39 +198,41 @@ export class Canvas extends Component {
             } else {
               if (!this.tooBig) {
                 this.tooBig = true;
-                this.props.setError('Your flow is too large to be saved - Delete blocks and use sub-flows to reduce size');
+                setError('Your flow is too large to be saved - Delete blocks and use sub-flows to reduce size');
               }
             }
           }
         }
       }, 10000);
     }
-    this.props.getIntegrationsUsers().then(() => {
-      if (this.props.integration_users_error) {
-        this.props.setError(this.props.integration_users_error);
+    getIntegrationsUsers().then(() => {
+      if (integration_users_error) {
+        setError(integration_users_error);
       }
     });
   }
 
   componentWillUnmount() {
-    if (!this.props.preview && this.props.skill && this.props.skill.skill_id && this.props.diagram_id && !window.error) {
+    const { preview, skill, diagram_id, clearCanvasMessage } = this.props;
+    if (!preview && skill && skill.skill_id && diagram_id && !window.error) {
       this.onSave(false);
     }
     Mousetrap.reset();
     if (this.interval) {
       clearInterval(this.interval);
     }
-    if (this.props.skill) {
+    if (skill) {
       this.trackCanvasTime();
     }
     localStorage.setItem('is_first_session', 'false');
-    this.props.clearCanvasMessage();
+    clearCanvasMessage();
   }
 
   openTab(tab) {
-    if (tab !== this.props.tab || !this.props.tabOpen) {
+    const { tab: propTab, tabOpen, setTab } = this.props;
+    if (tab !== propTab || !tabOpen) {
       localStorage.setItem('tab', tab);
-      this.props.setTab(tab);
+      setTab(tab);
     }
   }
 
@@ -233,7 +241,8 @@ export class Canvas extends Component {
   };
 
   setTimeout = () => {
-    this.activityTimeout = setTimeout(this.pauseActivity, this.state.activityTime);
+    const { activityTime } = this.state;
+    this.activityTimeout = setTimeout(this.pauseActivity, activityTime);
   };
 
   pauseActivity = () => {
@@ -242,11 +251,12 @@ export class Canvas extends Component {
   };
 
   trackCanvasTime = () => {
+    const { skill } = this.props;
     const time_unmounted = new Date();
-    if (!!this.props.skill && this.time_mounted) {
+    if (!!skill && this.time_mounted) {
       axios.post('/analytics/track_active_canvas', {
         duration: this.time_active ? time_unmounted - this.time_mounted + this.time_active : time_unmounted - this.time_mounted,
-        skill_id: this.props.skill.skill_id,
+        skill_id: skill.skill_id,
       });
     }
     this.time_mounted = null;
@@ -259,17 +269,19 @@ export class Canvas extends Component {
     this.setTimeout();
   };
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.diagram_id !== this.props.diagram_id) {
+  componentDidUpdate(previous_props) {
+    const { diagram_id, setOpen } = this.props;
+    const { engine } = this.state;
+    if (previous_props.diagram_id !== diagram_id) {
       if (this.updateTree !== null) this.updateTree();
-      this.props.setOpen(false);
-      const nodes = _.values(this.state.engine.diagramModel.nodes);
-      this.state.engine.enableRepaintEntities(nodes);
-      this.state.engine.repaintCanvas(false);
+      setOpen(false);
+      const nodes = _.values(engine.diagramModel.nodes);
+      engine.enableRepaintEntities(nodes);
+      engine.repaintCanvas(false);
       this.setState({
         load_diagram: true,
       });
-      this.onLoadId(this.props.diagram_id);
+      this.onLoadId(diagram_id);
     }
 
     // Unlock and lock the canvas switching between test
@@ -287,48 +299,53 @@ export class Canvas extends Component {
   };
 
   onPaste = (nodes, engine) => {
-    if (this.props.undoEvents.length >= 10) {
-      this.props.shiftUndo();
+    const { undoEvents, shiftUndo, addUndo, clearRedo } = this.props;
+    if (undoEvents.length >= 10) {
+      shiftUndo();
     }
-    this.props.addUndo(nodes, 'copy');
-    this.props.clearRedo();
+    addUndo(nodes, 'copy');
+    clearRedo();
     this.setState({
       engine,
     });
   };
 
   undo = (e) => {
-    if (!_.isEmpty(this.props.undoEvents) && !this.state.engine.getDiagramModel().locked) {
-      const recent = _.clone(_.last(this.props.undoEvents));
+    const { engine } = this.state;
+    const { undoEvents, addRedo, removeUndo } = this.props;
+    if (!_.isEmpty(undoEvents) && !engine.getDiagramModel().locked) {
+      const recent = _.clone(_.last(undoEvents));
       if (recent.eventType === 'remove') {
         _.forEach(recent.node, (n) => {
           if (n instanceof BlockNodeModel) {
             n.parentCombine = null;
-            this.state.engine.getDiagramModel().addNode(n);
+            engine.getDiagramModel().addNode(n);
           }
         });
       } else {
         _.forEach(recent.node, (n) => n instanceof BlockNodeModel && n.remove());
       }
-      this.state.engine.getDiagramModel().clearSelection();
-      this.props.addRedo(recent);
-      this.props.removeUndo();
+      engine.getDiagramModel().clearSelection();
+      addRedo(recent);
+      removeUndo();
     }
     e.preventDefault();
   };
 
   redo = (e) => {
-    if (!_.isEmpty(this.props.redoEvents) && !this.state.engine.getDiagramModel().locked) {
-      const recent = _.last(this.props.redoEvents);
+    const { redoEvents, addUndo, removeRedo } = this.props;
+    const { engine } = this.state;
+    if (!_.isEmpty(redoEvents) && !engine.getDiagramModel().locked) {
+      const recent = _.last(redoEvents);
       if (recent.eventType === 'remove') {
         _.forEach(recent.node, (n) => n instanceof BlockNodeModel && n.remove());
       } else {
-        this.state.engine.getDiagramModel().clearSelection();
-        _.forEach(recent.node, (n) => n instanceof BlockNodeModel && this.state.engine.getDiagramModel().addNode(n));
+        engine.getDiagramModel().clearSelection();
+        _.forEach(recent.node, (n) => n instanceof BlockNodeModel && engine.getDiagramModel().addNode(n));
       }
-      this.state.engine.getDiagramModel().clearSelection();
-      this.props.addUndo(recent.node, recent.eventType);
-      this.props.removeRedo();
+      engine.getDiagramModel().clearSelection();
+      addUndo(recent.node, recent.eventType);
+      removeRedo();
     }
     e.preventDefault();
   };
@@ -339,11 +356,13 @@ export class Canvas extends Component {
   };
 
   removeNode = (selectedNode = null) => {
-    const selected = selectedNode || this.state.engine.getSuperSelect();
-    if (!checkBlockDisabledLive(this.props.live_mode, selected.extras.type)) {
-      this.state.engine.stopMove();
+    const { engine } = this.state;
+    const { live_mode, setConfirm, undoEvents, shiftUndo, addUndo, clearRedo } = this.props;
+    const selected = selectedNode || engine.getSuperSelect();
+    if (!checkBlockDisabledLive(live_mode, selected.extras.type)) {
+      engine.stopMove();
       if (selected.extras && selected.extras.type === 'god') {
-        this.props.setConfirm({
+        setConfirm({
           warning: true,
           text: (
             <Alert color="danger" className="mb-0">
@@ -353,23 +372,23 @@ export class Canvas extends Component {
           confirm: () => selected.remove(),
         });
       } else if (selected) {
-        if (this.props.undoEvents.length >= 10) {
-          this.props.shiftUndo();
+        if (undoEvents.length >= 10) {
+          shiftUndo();
         }
-        this.props.addUndo([selected], 'remove');
-        this.props.clearRedo();
+        addUndo([selected], 'remove');
+        clearRedo();
         selected.remove();
       }
     } else {
-      this.props.setError('Cannot delete blocks that would alter the interaction model in live version editing');
+      setError('Cannot delete blocks that would alter the interaction model in live version editing');
     }
   };
 
   // copy individual node
   copyNode = (newNode = null, pos = null) => {
-    const selected = newNode || this.state.engine.getSuperSelect();
+    const { engine } = this.state;
+    const selected = newNode || engine.getSuperSelect();
     if (selected.extras.type !== 'story') {
-      const engine = this.state.engine;
       engine.stopMove();
 
       const node = new BlockNodeModel(`${selected.name} copy`, null, toolkit.UID());
@@ -427,11 +446,12 @@ export class Canvas extends Component {
       node.setSelected();
       engine.setSuperSelect(node);
       engine.getDiagramModel().addNode(node);
-      if (this.props.undoEvents.length >= 10) {
-        this.props.shiftUndo();
+      const { undoEvents, shiftUndo, addUndo, clearRedo } = this.props;
+      if (undoEvents.length >= 10) {
+        shiftUndo();
       }
-      this.props.addUndo([node], 'copy');
-      this.props.clearRedo();
+      addUndo([node], 'copy');
+      clearRedo();
       this.setState({
         engine,
       });
@@ -439,7 +459,7 @@ export class Canvas extends Component {
   };
 
   addCombineNode = (node, type) => {
-    const engine = this.state.engine;
+    const { engine } = this.state;
 
     const newNode = new BlockNodeModel(_.startCase(type), null, toolkit.UID());
     util.createCombineNode(newNode, type, node);
@@ -459,9 +479,9 @@ export class Canvas extends Component {
       node.remove('combine');
       newNode.remove('combine');
       combineNode.setSelected();
-      this.state.engine.setSuperSelect(combineNode);
-      this.state.engine.getDiagramModel().addNode(combineNode);
-      this.state.engine.enableRepaintEntities([combineNode]);
+      engine.setSuperSelect(combineNode);
+      engine.getDiagramModel().addNode(combineNode);
+      engine.enableRepaintEntities([combineNode]);
       this.forceRepaint();
     } else {
       newNode.parentCombine = node;
@@ -476,8 +496,8 @@ export class Canvas extends Component {
   };
 
   appendCombineNode = (node) => {
+    const { engine } = this.state;
     const idx = _.findIndex(node.parentCombine.combines, ['id', node.id]);
-    const engine = this.state.engine;
     if (idx !== -1 && combineAppendValidation(node)) {
       engine.stopMove();
 
@@ -523,7 +543,7 @@ export class Canvas extends Component {
           if (c.height) {
             totalHeight += c.height;
           } else {
-            const dimensions = this.state.engine.getNodeDimensions(c);
+            const dimensions = engine.getNodeDimensions(c);
             c.updateDimensions(dimensions);
             totalHeight += dimensions.height;
           }
@@ -535,8 +555,10 @@ export class Canvas extends Component {
   };
 
   removeCombineNode = (node) => {
+    const { engine } = this.state;
+    const { diagram_id, skill, setConfirm } = this.props;
     const removeNode = () => {
-      const diagramEngine = this.state.engine;
+      const diagramEngine = engine;
       const combineBlock = node.parentCombine;
       combineBlock.combines = _.filter(combineBlock.combines, (c) => {
         if (c.id === node.id) {
@@ -565,7 +587,7 @@ export class Canvas extends Component {
           if (c.height) {
             totalHeight += c.height;
           } else {
-            const dimensions = this.state.engine.getNodeDimensions(c);
+            const dimensions = engine.getNodeDimensions(c);
             c.updateDimensions(dimensions);
             totalHeight += dimensions.height;
           }
@@ -575,7 +597,7 @@ export class Canvas extends Component {
       this.forceRepaint();
     };
     if (node.extras.type === 'command') {
-      if (this.props.diagram_id === this.props.skill.diagram && node.parentCombine) {
+      if (diagram_id === skill.diagram && node.parentCombine) {
         // Do not allow help/stop be deleted
         try {
           const intents = ['AMAZON.HelpIntent', 'AMAZON.StopIntent'];
@@ -590,7 +612,7 @@ export class Canvas extends Component {
                 }
               }
               if (count < 2) {
-                this.props.setConfirm({
+                setConfirm({
                   text: (
                     <Alert className="mb-0">
                       <b>{intent}</b> is required by default
@@ -608,7 +630,7 @@ export class Canvas extends Component {
         }
       }
 
-      this.props.setConfirm({
+      setConfirm({
         warning: true,
         text: (
           <Alert color="danger" className="mb-0">
@@ -623,10 +645,11 @@ export class Canvas extends Component {
   };
 
   combineNode = (e = null) => {
-    const current = this.state.engine.getSuperSelect();
+    const { engine } = this.state;
+    const current = engine.getSuperSelect();
     const nodeElement = e ? toolkit.closest(e.target, '.node[data-nodeid]') : null;
-    const element = nodeElement ? this.state.engine.getDiagramModel().getNode(nodeElement.getAttribute('data-nodeid')) : null;
-    _.values(this.state.engine.getDiagramModel().getNodes()).forEach((target_node) => {
+    const element = nodeElement ? engine.getDiagramModel().getNode(nodeElement.getAttribute('data-nodeid')) : null;
+    _.values(engine.getDiagramModel().getNodes()).forEach((target_node) => {
       if (current && target_node) {
         if (target_node.id === current.id) {
           return;
@@ -655,17 +678,17 @@ export class Canvas extends Component {
                 if (c.height && current.id !== c.id) {
                   totalHeight += c.height;
                 } else {
-                  const dimensions = this.state.engine.getNodeDimensions(c);
+                  const dimensions = engine.getNodeDimensions(c);
                   c.updateDimensions(dimensions);
                   totalHeight += dimensions.height;
                 }
               }
             });
             current.remove(false);
-            this.state.engine.getDiagramModel().clearSelection();
-            this.state.engine.setSuperSelect(parent);
-            this.state.engine.enableRepaintEntities([parent]);
-            this.state.engine.repaintCanvas(false);
+            engine.getDiagramModel().clearSelection();
+            engine.setSuperSelect(parent);
+            engine.enableRepaintEntities([parent]);
+            engine.repaintCanvas(false);
           }
         }
       }
@@ -673,7 +696,8 @@ export class Canvas extends Component {
   };
 
   copyFlow = (flowId) => {
-    const flow = this.props.diagrams.find((d) => d.id === flowId);
+    const { diagrams, updateDiagrams, preview, diagram_id } = this.props;
+    const flow = diagrams.find((d) => d.id === flowId);
     if (!flow) {
       return;
     }
@@ -681,7 +705,7 @@ export class Canvas extends Component {
     const copy = (save = true) => {
       let newFlowName = `${flow.name} (COPY)`;
       let index = 1;
-      const exists = (name) => this.props.diagrams.find((d) => d.name === name);
+      const exists = (name) => diagrams.find((d) => d.name === name);
       while (exists(newFlowName)) {
         newFlowName = `${flow.name} (COPY ${index})`;
         index++;
@@ -696,7 +720,7 @@ export class Canvas extends Component {
             sub_diagrams: flow.sub_diagrams,
             module_id: null,
           };
-          this.props.updateDiagrams([...this.props.diagrams, newDiagram]);
+          updateDiagrams([...diagrams, newDiagram]);
           this.enterFlow(res.data, save);
         })
         .catch(() => {
@@ -711,7 +735,7 @@ export class Canvas extends Component {
         });
     };
 
-    if (flowId === this.props.diagram_id && !this.props.preview) {
+    if (flowId === diagram_id && !preview) {
       this.saveCB = () => {
         copy(false);
       };
@@ -722,7 +746,8 @@ export class Canvas extends Component {
   };
 
   deleteFlow(flowId) {
-    this.props.setConfirm({
+    const { setConfirm, diagrams, updateDiagrams, diagram_id, root_id } = this.props;
+    setConfirm({
       warning: true,
       text: (
         <Alert color="danger" className="mb-0">
@@ -741,7 +766,7 @@ export class Canvas extends Component {
         axios
           .delete(`/diagram/${flowId}`)
           .then(() => {
-            const updatedDiagrams = this.props.diagrams
+            const updatedDiagrams = diagrams
               .filter(({ id }) => id !== flowId)
               .map((diagram) => {
                 const updatedSubDiagrams = diagram.sub_diagrams.filter((id) => id !== flowId);
@@ -749,10 +774,10 @@ export class Canvas extends Component {
 
                 return diagram;
               });
-            this.props.updateDiagrams(updatedDiagrams);
+            updateDiagrams(updatedDiagrams);
             // If they are deleting the flow they are currently on, go back to ROOT
-            if (flowId === this.props.diagram_id) {
-              this.enterFlow(this.props.root_id, false);
+            if (flowId === diagram_id) {
+              this.enterFlow(root_id, false);
             }
           })
           .catch((err) => {
@@ -765,8 +790,9 @@ export class Canvas extends Component {
   }
 
   onDiagramUnfocus = () => {
+    const { engine } = this.state;
     this.diagram_focus = false;
-    this.state.engine.getDiagramModel().clearSelection();
+    engine.getDiagramModel().clearSelection();
   };
 
   forceRepaint = () => {
@@ -774,14 +800,15 @@ export class Canvas extends Component {
   };
 
   getSubDiagrams = (nodes) => {
+    const { skill } = this.props;
     const updatedSubDiagrams = nodes.filter((node) => !!node.extras.diagram_id).map((node) => node.extras.diagram_id);
 
     const updatedStorySubDiagrams = nodes
       .filter((node) => node.extras.type === 'story' && Array.isArray(node.combines))
       .reduce((acc, node) => {
         const combinedNodes = node.combines
-          .filter(({ extras }) => extras[this.props.skill.platform] && extras[this.props.skill.platform].diagram_id)
-          .map(({ extras }) => extras[this.props.skill.platform].diagram_id);
+          .filter(({ extras }) => extras[skill.platform] && extras[skill.platform].diagram_id)
+          .map(({ extras }) => extras[skill.platform].diagram_id);
 
         return [...acc, ...combinedNodes];
       }, []);
@@ -806,12 +833,14 @@ export class Canvas extends Component {
   };
 
   onSave(state = true) {
+    const { engine, diagram_name } = this.state;
+    const { preview, variables, skill, skillSaveCB, setError } = this.props;
     if (this.saving) return;
     this.saving = true;
     try {
-      if (this.props.preview) return;
+      if (preview) return;
       state && this.setState({ saving: true });
-      const serialize = util.serializeDiagram(this.state.engine);
+      const serialize = util.serializeDiagram(engine);
       const data = JSON.stringify(serialize);
       const subDiagrams = this.getSubDiagrams(serialize.nodes);
       if (state) this.updateDiagrams(subDiagrams);
@@ -819,14 +848,14 @@ export class Canvas extends Component {
       if (this.updateTree !== null) this.updateTree();
 
       const diagram = {
-        title: this.state.diagram_name,
-        variables: this.props.variables,
+        title: diagram_name,
+        variables,
         data,
-        skill: this.props.skill.skill_id,
+        skill: skill.skill_id,
         sub_diagrams: JSON.stringify(subDiagrams),
-        global: this.props.skill.global,
+        global: skill.global,
       };
-      const s = this.props.skill;
+      const s = skill;
 
       const save_skill_intents = new Promise((resolve, reject) => {
         axios
@@ -855,7 +884,9 @@ export class Canvas extends Component {
               saving: false,
               saved: true,
             });
-          if (typeof this.saveCB === 'function') {
+          if (typeof skillSaveCB === 'function') {
+            skillSaveCB(serialize.id);
+          } else if (typeof this.saveCB === 'function') {
             this.saveCB(serialize.id);
             this.saveCB = null;
           }
@@ -866,9 +897,11 @@ export class Canvas extends Component {
             this.setState({
               saving: false,
             }) &&
-            this.props.setError('Error Saving Project');
+            setError('Error Saving Project');
 
-          if (typeof this.saveCB === 'function') {
+          if (typeof skillSaveCB === 'function') {
+            skillSaveCB(null);
+          } else if (typeof this.saveCB === 'function') {
             this.saveCB(null);
             this.saveCB = null;
           }
@@ -877,8 +910,10 @@ export class Canvas extends Component {
       this.saving = false;
       // eslint-disable-next-line no-console
       console.log(e);
-      state && this.props.setError('Error Saving - Project Structure (Check Logs)');
-      if (typeof this.saveCB === 'function') {
+      state && setError('Error Saving - Project Structure (Check Logs)');
+      if (typeof skillSaveCB === 'function') {
+        skillSaveCB(null);
+      } else if (typeof this.saveCB === 'function') {
         this.saveCB(null);
         this.saveCB = null;
       }
@@ -886,7 +921,8 @@ export class Canvas extends Component {
   }
 
   loadDiagram = (diagram, diagram_id) => {
-    const engine = this.state.engine;
+    const { engine } = this.state;
+    const { preview, diagrams, skill, setVariables, setError, setOpen } = this.props;
     const model = new SRD.DiagramModel();
 
     const type_counter = {};
@@ -897,12 +933,12 @@ export class Canvas extends Component {
       // eslint-disable-next-line no-console
       console.log(e);
     }
-    if (this.props.preview) {
+    if (preview) {
       model.setLocked(true);
     }
     if (diagram_json) {
       // CONVERT DEPRECATED BLOCKS
-      diagram_json = util.convertDiagram(diagram_json, this.props.diagrams);
+      diagram_json = util.convertDiagram(diagram_json, diagrams);
       diagram_json.id = diagram_id;
       this.lastModel = JSON.stringify(diagram_json);
 
@@ -1011,7 +1047,7 @@ export class Canvas extends Component {
               type_counter[n.extras.type] += 1;
             }
 
-            if (this.props.skill.platform === 'google') {
+            if (skill.platform === 'google') {
               n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type);
             } else {
               n.fade = false;
@@ -1020,7 +1056,7 @@ export class Canvas extends Component {
             addMissingPorts(n.extras.type, n);
           });
         } else {
-          if (this.props.skill.platform === 'google') {
+          if (skill.platform === 'google') {
             nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type);
           } else {
             nodes[key].fade = false;
@@ -1036,13 +1072,13 @@ export class Canvas extends Component {
       const variables = [];
       if (Array.isArray(diagram.variables)) {
         diagram.variables.forEach((v) => {
-          if (!variables.includes(v) && !this.props.skill.global.includes(v)) {
+          if (!variables.includes(v) && !skill.global.includes(v)) {
             variables.push(v);
           }
         });
       }
-      this.props.setVariables(variables);
-      this.props.setOpen(false);
+      setVariables(variables);
+      setOpen(false);
       this.setState({
         load_diagram: false,
         type_counter,
@@ -1050,7 +1086,7 @@ export class Canvas extends Component {
         diagram_name: diagram.title ? diagram.title : 'New Flow',
         diagram_level_intents,
       });
-      // this.props.history.push(`/canvas/${this.props.skill.skill_id}/${this.props.skill.diagram}`)
+      // history.push(`/canvas/${skill.skill_id}/${skill.diagram}`)
       this.setState({ saved: true });
       this.updateLinter(true);
     } else {
@@ -1058,12 +1094,13 @@ export class Canvas extends Component {
         load_diagram: false,
         type_counter,
       });
-      this.props.setError('Could Not Open Project - Corrupted File');
+      setError('Could Not Open Project - Corrupted File');
     }
   };
 
   updateLinter = (force = true) => {
-    const engine = this.state.engine;
+    const { skill } = this.props;
+    const { engine } = this.state;
     const model = engine.getDiagramModel();
     const nodes = model.getNodes();
     let update = false;
@@ -1073,7 +1110,7 @@ export class Canvas extends Component {
       if (!n.linter) n.linter = [];
 
       if (Linter[n.extras.type] && n.linter) {
-        const res = Linter[n.extras.type](n, this.props.skill.platform);
+        const res = Linter[n.extras.type](n, skill.platform);
         if (res) update = true;
       }
     };
@@ -1087,7 +1124,7 @@ export class Canvas extends Component {
         if (!node.linter) node.linter = [];
 
         if (Linter[type] && node.linter) {
-          const res = Linter[type](node, this.props.skill.platform);
+          const res = Linter[type](node, skill.platform);
           if (res) update = true;
         }
       }
@@ -1103,8 +1140,10 @@ export class Canvas extends Component {
   };
 
   renderPlatformSwitch = () => {
+    const { engine } = this.state;
+    const { skill } = this.props;
     const updateGoogleFade = (type, key, node, nodes) => {
-      if (this.props.skill.platform === 'google') {
+      if (skill.platform === 'google') {
         if (type === 'god') {
           node.combines.forEach((n) => {
             n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type);
@@ -1133,24 +1172,23 @@ export class Canvas extends Component {
           if (port.in) continue;
 
           if (port.label === 'pause') {
-            port.setHidden(this.props.skill.platform === 'google');
+            port.setHidden(skill.platform === 'google');
           }
 
           if (port.label === 'previous') {
-            port.setHidden(this.props.skill.platform === 'google');
+            port.setHidden(skill.platform === 'google');
           }
 
           if (port.label === 'next') {
-            port.setHidden(this.props.skill.platform === 'google');
+            port.setHidden(skill.platform === 'google');
           }
           if (port.label.trim() === '') {
-            port.setHidden(this.props.skill.platform !== 'google');
+            port.setHidden(skill.platform !== 'google');
           }
         }
       }
     };
 
-    const engine = this.state.engine;
     const model = engine.getDiagramModel();
     const nodes = model.getNodes();
 
@@ -1176,48 +1214,52 @@ export class Canvas extends Component {
   };
 
   onLoadId = (diagram_id) => {
+    const { skill, preview, setError } = this.props;
     axios
       .get(`/diagram/${diagram_id}`)
       .then((res) => {
         this.loadDiagram(res.data, diagram_id);
-        // this.props.fetchDiagramSuccess(true)
-        if (!this.props.preview) {
-          localStorage.setItem('flow', `${this.props.skill.skill_id}/${diagram_id}`);
+        // fetchDiagramSuccess(true)
+        if (!preview) {
+          localStorage.setItem('flow', `${skill.skill_id}/${diagram_id}`);
         }
         if (this.updateTree !== null) this.updateTree();
       })
       .catch((err) => {
         console.error(err);
-        this.props.setError('Could Not Retrieve Project');
+        setError('Could Not Retrieve Project');
       });
   };
 
   unsave = (e) => {
+    const { engine, saved } = this.state;
+    const { setOpen } = this.props;
     if (e && e.node && !e.isCreated) {
-      const selected = this.state.engine.getSuperSelect();
+      const selected = engine.getSuperSelect();
       if (selected && e.node.id === selected.getID()) {
-        this.props.setOpen(false);
+        setOpen(false);
       }
     }
 
-    if (this.state.saved) {
+    if (saved) {
       this.setState({ saved: false });
     }
   };
 
   generateBlockMenu = (e, combineNode = null) => {
-    if (this.props.preview) {
-      this.props.setBlockMenu(null);
+    const { engine } = this.state;
+    const { preview, setBlockMenu } = this.props;
+    if (preview) {
+      setBlockMenu(null);
       return;
     }
     const nodeElement = toolkit.closest(e.target, '.node[data-nodeid]');
     e.preventDefault();
-    const engine = this.state.engine;
     if (nodeElement) {
-      const node = this.state.engine.getDiagramModel().getNode(nodeElement.getAttribute('data-nodeid'));
+      const node = engine.getDiagramModel().getNode(nodeElement.getAttribute('data-nodeid'));
       engine.getDiagramModel().clearSelection();
       engine.setSuperSelect(node);
-      this.props.setBlockMenu(
+      setBlockMenu(
         <React.Fragment>
           <div
             style={{
@@ -1235,7 +1277,7 @@ export class Canvas extends Component {
                     node.setLocked(true);
                     node.selected = true;
                     node.edit = true;
-                    this.props.setBlockMenu(null);
+                    setBlockMenu(null);
                   }}
                 >
                   Rename
@@ -1245,7 +1287,7 @@ export class Canvas extends Component {
                 onClick={() => {
                   this.clipboard.current.copy([combineNode || node]);
 
-                  this.props.setBlockMenu(null);
+                  setBlockMenu(null);
                 }}
               >
                 Copy Block
@@ -1257,7 +1299,7 @@ export class Canvas extends Component {
                   } else {
                     this.removeNode(node);
                   }
-                  this.props.setBlockMenu(null);
+                  setBlockMenu(null);
                 }}
               >
                 Delete Block
@@ -1267,7 +1309,7 @@ export class Canvas extends Component {
         </React.Fragment>
       );
     } else {
-      this.props.setBlockMenu(
+      setBlockMenu(
         <React.Fragment>
           <div
             style={{
@@ -1282,7 +1324,7 @@ export class Canvas extends Component {
               <ListGroupItem
                 onClick={() => {
                   this.addComment(e);
-                  this.props.setBlockMenu(null);
+                  setBlockMenu(null);
                 }}
               >
                 Add Comment
@@ -1296,6 +1338,7 @@ export class Canvas extends Component {
 
   // Create a new diagram from the flow block
   createDiagram(node, base_flow_name = 'New Flow', template = null, forCommand = false) {
+    const { skill, diagrams, setError } = this.props;
     this.setState({ load_diagram: true });
     const id = util.generateID();
 
@@ -1307,13 +1350,13 @@ export class Canvas extends Component {
       curr_template = template;
     }
     curr_template.id = id;
-    const skill_id = this.props.skill.skill_id;
+    const skill_id = skill.skill_id;
     const data = JSON.stringify(curr_template);
 
     // No Duplicate Flow Names
     let newFlowName = base_flow_name;
     let index = 1;
-    const exists = (name) => this.props.diagrams.find((d) => d.name === name);
+    const exists = (name) => diagrams.find((d) => d.name === name);
 
     while (exists(newFlowName)) {
       newFlowName = `${base_flow_name} ${index}`;
@@ -1332,11 +1375,11 @@ export class Canvas extends Component {
       .post('/diagram?new=1', diagram)
       .then(() => {
         if (forCommand) {
-          node.extras[this.props.skill.platform].diagram_id = id;
+          node.extras[skill.platform].diagram_id = id;
         } else {
           node.extras.diagram_id = id;
         }
-        const subDiagrams = [...this.props.diagram.sub_diagrams, id];
+        const subDiagrams = [...diagram.sub_diagrams, id];
         const newDiagram = {
           id,
           name: newFlowName,
@@ -1349,18 +1392,19 @@ export class Canvas extends Component {
       .catch((err) => {
         console.error(err);
         this.setState({ loading_diagram: false });
-        this.props.setError('Unable to create new Flow');
+        setError('Unable to create new Flow');
       });
   }
 
   enterFlow(new_diagram_id, save = true) {
-    if (new_diagram_id !== this.props.diagram_id) {
-      this.props.clearCanvasMessage();
+    const { diagram_id, clearCanvasMessage, preview, updateSkill, history, skill } = this.props;
+    if (new_diagram_id !== diagram_id) {
+      clearCanvasMessage();
       this.setState({ load_diagram: true });
-      if (save && !this.props.preview) {
+      if (save && !preview) {
         this.saveCB = () => {
-          this.props.updateSkill('diagram', new_diagram_id);
-          this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`);
+          updateSkill('diagram', new_diagram_id);
+          history.push(`/canvas/${skill.skill_id}/${new_diagram_id}`);
         };
         this.onSave();
       } else {
@@ -1371,19 +1415,21 @@ export class Canvas extends Component {
   }
 
   updateFulfillmentOnDeletion = (deleted_node) => {
-    const extras = deleted_node.extras[this.props.skill.platform];
+    const { skill, setCanFulfill } = this.props;
+    const { diagram_level_intents } = this.state;
+    const extras = deleted_node.extras[skill.platform];
 
     if (extras.intent && extras.intent.key) {
       const key = extras.intent.key;
       const new_value = false;
-      this.props.setCanFulfill(key, new_value);
-      this.state.diagram_level_intents[this.props.skill.platform].delete(key);
+      setCanFulfill(key, new_value);
+      diagram_level_intents[skill.platform].delete(key);
     }
     this.removeNode(deleted_node);
   };
 
   onDeleteIntentNode = (deleted_node) => {
-    const skill = this.props.skill;
+    const { skill, setConfirm } = this.props;
     const fulfillments = skill.fulfillment;
 
     const extras = deleted_node.extras[skill.platform];
@@ -1399,14 +1445,16 @@ export class Canvas extends Component {
           });
         },
       };
-      this.props.setConfirm(confirm_info);
+      setConfirm(confirm_info);
     } else {
       this.updateFulfillmentOnDeletion(deleted_node);
     }
   };
 
   onDrop = (rawEvent) => {
-    if (this.props.preview) return;
+    const { preview, diagrams, setOpen } = this.props;
+    const { engine, spotlight } = this.state;
+    if (preview) return;
     let event = rawEvent;
     let type;
     let name;
@@ -1417,7 +1465,7 @@ export class Canvas extends Component {
         clientX: this.mouseX,
         clientY: this.mouseY,
       };
-      if (this.state.spotlight) {
+      if (spotlight) {
         this.setState({ spotlight: false });
       }
     } else {
@@ -1432,7 +1480,7 @@ export class Canvas extends Component {
 
     if (diagram_id) {
       // Track which flow was used
-      const module = this.props.diagrams.find((diagram) => {
+      const module = diagrams.find((diagram) => {
         return diagram.id === diagram_id;
       });
       axios.post('/analytics/track_flow_used', {
@@ -1443,9 +1491,9 @@ export class Canvas extends Component {
     if (!name) {
       name = type.charAt(0).toUpperCase() + type.substr(1);
     }
-    util.createDropNode(event, this.state.engine, type, name);
+    util.createDropNode(event, engine, type, name);
     this.combineNode();
-    this.props.setOpen(type !== 'comment');
+    setOpen(type !== 'comment');
     this.setState({
       open: type !== 'comment',
     });
@@ -1458,12 +1506,35 @@ export class Canvas extends Component {
     this.unsave();
   };
 
-  toggleUpgradeModal = () =>
+  toggleUpgradeModal = () => {
+    const { upgrade_modal } = this.state;
     this.setState({
-      upgrade_modal: !this.state.upgrade_modal,
+      upgrade_modal: !upgrade_modal,
     });
+  };
 
   render() {
+    const { upgrade_modal, helpOpen, help, engine, diagram_level_intents } = this.state;
+    const {
+      history,
+      keyboardHelp,
+      toggleKeyboard,
+      preview,
+      diagram,
+      user,
+      load_diagram,
+      setOpen,
+      diagram_id,
+      canvasError,
+      setBlockMenu,
+      setCanvasError,
+      renameFlow,
+      diagram_set,
+      undoEvents,
+      shiftUndo,
+      clearRedo,
+      addUndo,
+    } = this.props;
     return (
       <React.Fragment>
         <Prompt
@@ -1475,26 +1546,16 @@ export class Canvas extends Component {
           }}
         />
         <DefaultModal
-          open={this.state.upgrade_modal}
+          open={upgrade_modal}
           header="Multi Platform Development"
           toggle={this.toggleUpgradeModal}
-          content={<Upgrade history={this.props.history} toggle={this.toggleUpgradeModal} />}
+          content={<Upgrade history={history} toggle={this.toggleUpgradeModal} />}
           hideFooter={true}
           noPadding={true}
         />
-        <DefaultModal
-          open={this.props.keyboardHelp}
-          header="Keyboard Shortcuts"
-          toggle={() => this.props.toggleKeyboard(!this.props.keyboardHelp)}
-          content={<ShortCuts />}
-        />
-        <HelpModal
-          open={this.state.helpOpen}
-          help={this.state.help}
-          toggle={() => this.setState({ helpOpen: !this.state.helpOpen })}
-          setHelp={(help) => this.setState({ help })}
-        />
-        {!this.props.preview && this.props.page === 'canvas' && (
+        <DefaultModal open={keyboardHelp} header="Keyboard Shortcuts" toggle={() => toggleKeyboard(!keyboardHelp)} content={<ShortCuts />} />
+        <HelpModal open={helpOpen} help={help} toggle={() => this.setState({ helpOpen: !helpOpen })} setHelp={(help) => this.setState({ help })} />
+        {!preview && this.props.page === 'canvas' && (
           <ActionGroup
             lastSave={this.state.last_save ? `Last saved ${moment(this.state.last_save).fromNow()}` : 'Save'}
             setCB={(cb) => {
@@ -1525,9 +1586,9 @@ export class Canvas extends Component {
           <Menu
             unfocus={this.onDiagramUnfocus}
             enterFlow={this.enterFlow}
-            history={this.props.history}
-            user={this.props.user}
-            loading_diagram={this.props.load_diagram}
+            history={history}
+            user={user}
+            loading_diagram={load_diagram}
             copyFlow={this.copyFlow}
             deleteFlow={this.deleteFlow}
             preview={this.props.preview}
@@ -1549,22 +1610,22 @@ export class Canvas extends Component {
             diagramEngine={this.state.engine}
             node={this.state.engine.getSuperSelect()}
             onUpdate={this.onUpdate}
-            close={() => this.props.setOpen(false)}
+            close={() => setOpen(false)}
             setHelp={(help) => this.setState({ help, helpOpen: true })}
             createDiagram={this.createDiagram}
             enterFlow={this.enterFlow}
             repaint={this.forceRepaint}
-            removeNode={!this.props.preview ? this.removeNode : _.noop()}
-            copyNode={!this.props.preview ? this.copyNode : _.noop()}
-            appendCombineNode={!this.props.preview ? this.appendCombineNode : _.noop()}
-            removeCombineNode={!this.props.preview ? this.removeCombineNode : _.noop()}
-            preview={this.props.preview}
+            removeNode={!preview ? this.removeNode : _.noop()}
+            copyNode={!preview ? this.copyNode : _.noop()}
+            appendCombineNode={!preview ? this.appendCombineNode : _.noop()}
+            removeCombineNode={!preview ? this.removeCombineNode : _.noop()}
+            preview={preview}
             onboarding={this.onboarding}
             finished={() => {
               this.onboarding = false;
             }}
-            history={this.props.history}
-            diagram_level_intents={this.state.diagram_level_intents}
+            history={history}
+            diagram_level_intents={diagram_level_intents}
             setCanvasEvents={this.setMousetrap}
             updateLinter={this.updateLinter}
           />
@@ -1578,9 +1639,9 @@ export class Canvas extends Component {
             setSaveCB={this.setSaveCB}
           />
           <div
-            key={this.props.diagram_id}
+            key={diagram_id}
             id="diagram"
-            className={cn({ 'no-padding': this.props.preview })}
+            className={cn({ 'no-padding': preview })}
             onDrop={this.onDrop}
             onDragOver={(e) => {
               e.stopPropagation();
@@ -1593,16 +1654,16 @@ export class Canvas extends Component {
           >
             <div className="canvas-warnings">
               <ReactCSSTransitionGroup transitionName="fade" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-                {_.map(this.props.canvasError, (err, idx) => (
+                {_.map(canvasError, (err, idx) => (
                   <CanvasWarning key={idx} idx={idx} err={err} />
                 ))}
               </ReactCSSTransitionGroup>
             </div>
             <WidgetBar
-              toggleKeyboard={this.props.toggleKeyboard}
-              keyboardHelp={this.props.keyboardHelp}
-              engine={this.state.engine}
-              setOpen={this.props.setOpen}
+              toggleKeyboard={toggleKeyboard}
+              keyboardHelp={keyboardHelp}
+              engine={engine}
+              setOpen={setOpen}
               update={(engine) => this.setState({ engine })}
               preview={this.props.preview}
               isCanvas={this.props.page === 'canvas'}
@@ -1627,42 +1688,42 @@ export class Canvas extends Component {
               </div>
             )}
             <Clipboard
-              engine={this.state.engine}
+              engine={engine}
               getEvent={() => ({
                 clientX: this.mouseX,
                 clientY: this.mouseY,
               })}
               onPaste={this.onPaste}
               addDiagrams={(diagrams) => {
-                const subDiagrams = [...this.props.diagram.sub_diagrams, ...diagrams.map((diagram) => diagram.id)];
+                const subDiagrams = [...diagram.sub_diagrams, ...diagrams.map((diagram) => diagram.id)];
                 this.updateDiagrams(subDiagrams, diagrams);
               }}
               ref={this.clipboard}
             />
             <SRD.DiagramWidget
-              diagramEngine={this.state.engine}
+              diagramEngine={engine}
               allowLooseLinks={false}
               onConfirm={this.props.setConfirm}
               onDeleteIntentNode={this.onDeleteIntentNode.bind(this)}
               nodeProps={{
-                hasFlow: (diagram_id) => this.props.diagram_set.has(diagram_id),
+                hasFlow: (diagram_id) => diagram_set.has(diagram_id),
                 enterFlow: this.enterFlow,
-                setCanvasError: this.props.setCanvasError,
+                setCanvasError,
                 removeNode: this.removeNode,
-                diagram: this.props.diagram,
+                diagram,
                 removeCombineNode: this.removeCombineNode,
                 addCombineNode: this.addCombineNode,
                 generateBlockMenu: this.generateBlockMenu,
-                setBlockMenu: this.props.setBlockMenu,
-                disabled: !!this.props.preview,
-                renameFlow: this.props.renameFlow,
+                setBlockMenu,
+                disabled: !!preview,
+                renameFlow,
               }}
               removeHandler={(node) => {
-                if (this.props.undoEvents.length >= 10) {
-                  this.props.shiftUndo();
+                if (undoEvents.length >= 10) {
+                  shiftUndo();
                 }
-                this.props.addUndo(node, 'remove');
-                this.props.clearRedo();
+                addUndo(node, 'remove');
+                clearRedo();
               }}
               forceRepaint={this.forceRepaint}
               live_mode={this.props.live_mode}

@@ -65,11 +65,6 @@ exports[`Expression render value expression 1`] = `
     </OperatorDropdown>
   </div>
   <Input
-    innerRef={
-      Object {
-        "current": null,
-      }
-    }
     onChange={[Function]}
     placeholder="value"
     type="text"

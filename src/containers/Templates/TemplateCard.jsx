@@ -8,7 +8,7 @@ class TemplateCard extends Component {
   }
 
   render() {
-    const t = this.props.template;
+    const { template: t, createProject, previewTemplate } = this.props;
 
     return (
       <div className="px-4 py-2 text-left project-card">
@@ -17,14 +17,14 @@ class TemplateCard extends Component {
             <div className="overlay">
               <div className="overlay-content">
                 <div>
-                  <div className="edit-button" style={{ color: '#fff' }} onClick={() => this.props.createProject(t.module_id)}>
+                  <div className="edit-button" style={{ color: '#fff' }} onClick={() => createProject(t.module_id)}>
                     Start
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="template-card-body btn-darken" onClick={() => this.props.previewTemplate(t)}>
+          <div className="template-card-body btn-darken" onClick={() => previewTemplate(t)}>
             <i className="far fa-bullseye-pointer" /> Preview
           </div>
         </div>

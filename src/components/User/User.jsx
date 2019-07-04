@@ -25,12 +25,12 @@ export const User = (props) => {
 export const Members = (props) => {
   const members = props.members.filter((m) => !!m.email);
   const accepted = members.filter((m) => !!m.creator_id);
-  if (!accepted || accepted.length === 0) {
+  if (!accepted || accepted.length === 0 || members.length <= 1) {
     return null;
   }
 
   return (
-    <div className="mx-3 super-center">
+    <div className="super-center" style={{ paddingLeft: 4, marginLeft: 15, marginRight: 15 }}>
       {members.length > 1 && (
         <div className="d-flex flex-row-reverse">
           {accepted.slice(0, 8).map((m) => {

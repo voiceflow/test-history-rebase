@@ -36,8 +36,6 @@ class ChoiceInput extends React.Component {
 
   sampleLength = this.state.samples.length;
 
-  inputRef = React.createRef();
-
   componentWillUnmount() {
     if (this.state.samples.length === 0 && this.state.text.trim()) {
       this.props.onChange(this.state.text.trim());
@@ -55,10 +53,6 @@ class ChoiceInput extends React.Component {
     }
 
     return false;
-  }
-
-  focus() {
-    setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 150);
   }
 
   handleKeyPress = (e) => {
@@ -191,7 +185,6 @@ class ChoiceInput extends React.Component {
               placeholder={samples.length ? 'Enter synonyms of the user reply' : 'Enter user reply'}
               disabled={live_mode}
               onKeyPress={this.handleKeyPress}
-              inputRef={this.inputRef}
             />
           </Tooltip>
           {!hasEntry && (

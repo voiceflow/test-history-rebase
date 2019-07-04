@@ -39,7 +39,8 @@ export class Variables extends PureComponent {
   }
 
   switchTab(tab) {
-    if (tab !== this.state.tab) {
+    const { tab: stateTab } = this.state;
+    if (tab !== stateTab) {
       this.setState(
         {
           tab,
@@ -56,11 +57,11 @@ export class Variables extends PureComponent {
   }
 
   addVariable(e) {
+    const { variables, global_variables, addVariable } = this.props;
+    const { new_var } = this.state;
     if (e) e.preventDefault();
-    const variables = this.props.variables;
-    const new_var = this.state.new_var;
-    if (isVarName(new_var) && !variables.includes(new_var) && !new_var.startsWith('_') && !this.props.global_variables.includes(new_var)) {
-      this.props.addVariable(new_var);
+    if (isVarName(new_var) && !variables.includes(new_var) && !new_var.startsWith('_') && !global_variables.includes(new_var)) {
+      addVariable(new_var);
       this.setState({
         new_var: '',
       });
@@ -71,17 +72,19 @@ export class Variables extends PureComponent {
   }
 
   addGlobalVariable(e) {
+    const { global_variables, updateSkill, setError, variables: propVariables } = this.props;
+    const { new_global } = this.state;
     if (e) e.preventDefault();
-    const variables = this.props.global_variables;
-    const new_var = this.state.new_global;
-    if (isVarName(new_var) && !variables.includes(new_var) && !new_var.startsWith('_') && !this.props.variables.includes(new_var)) {
+    const variables = global_variables;
+    const new_var = new_global;
+    if (isVarName(new_var) && !variables.includes(new_var) && !new_var.startsWith('_') && !propVariables.includes(new_var)) {
       variables.push(new_var);
-      this.props.updateSkill('globals', variables);
+      updateSkill('globals', variables);
       this.setState({
         new_global: '',
       });
     } else {
-      this.props.setError(
+      setError(
         "Invalid Variable: Variables can't have the same name and must start with a character and can not contain spaces or special characters or begin with an underscore."
       );
     }
@@ -89,25 +92,28 @@ export class Variables extends PureComponent {
   }
 
   deleteVariable(variable) {
-    const variables = this.props.variables;
+    const { variables, setVariables } = this.props;
     const index = variables.indexOf(variable);
     if (index !== -1) variables.splice(index, 1);
-    this.props.setVariables(variables);
+    setVariables(variables);
     this.forceUpdate();
   }
 
   deleteGlobalVariable(variable) {
-    const variables = this.props.global_variables;
+    const { global_variables, updateSkill } = this.props;
+    const variables = global_variables;
     const index = variables.indexOf(variable);
     if (index !== -1) variables.splice(index, 1);
-    this.props.updateSkill('globals', variables);
+    updateSkill('globals', variables);
     this.forceUpdate();
   }
 
   render() {
+    const { locked, variables, global_variables } = this.props;
+    const { tab, new_global, new_var } = this.state;
     return (
       <React.Fragment>
-        {this.state.tab !== 'local' ? (
+        {tab !== 'local' ? (
           <>
             <form id="variable-submit" onSubmit={this.addGlobalVariable}>
               <FormGroup className="mb-0 text-center">
@@ -121,9 +127,9 @@ export class Variables extends PureComponent {
                 </Label>
                 <div className="variable-box">
                   <Input
-                    readOnly={this.props.locked}
+                    readOnly={locked}
                     name="new_global"
-                    value={this.state.new_global}
+                    value={new_global}
                     onChange={this.handleChange}
                     maxLength="16"
                     placeholder="Variable Name"
@@ -151,9 +157,9 @@ export class Variables extends PureComponent {
                   <Input
                     // eslint-disable-next-line jsx-a11y/no-autofocus
                     autoFocus
-                    readOnly={this.props.locked}
+                    readOnly={locked}
                     name="new_var"
-                    value={this.state.new_var}
+                    value={new_var}
                     onChange={this.handleChange}
                     maxLength="16"
                     placeholder="Flow Variable Name"
@@ -168,11 +174,11 @@ export class Variables extends PureComponent {
         )}
         <hr />
         <div>
-          {this.props.variables.length > 0 && (
+          {variables.length > 0 && (
             <div className="mb-4">
               <Label>Flow Variables</Label>
               <div className="variables">
-                {this.props.variables.map((variable, i) => {
+                {variables.map((variable, i) => {
                   return (
                     <div key={variable} className="variable_tag">
                       {`{${variable}}`}{' '}
@@ -187,7 +193,7 @@ export class Variables extends PureComponent {
           )}
           <Label>Project Variables</Label>
           <div className="variables">
-            {this.props.global_variables.map((variable, i) => {
+            {global_variables.map((variable, i) => {
               if (variable in defaultVariables) {
                 return (
                   <Tooltip key={variable} position="bottom" html={<div style={{ width: 165 }}>{defaultVariables[variable]}</div>}>

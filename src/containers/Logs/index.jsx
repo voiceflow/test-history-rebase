@@ -10,19 +10,23 @@ import { Table } from 'reactstrap';
 
 class TablePagination extends React.Component {
   handleFirstPageButtonClick = (event) => {
-    this.props.onChangePage(event, 0);
+    const { onChangePage } = this.props;
+    onChangePage(event, 0);
   };
 
   handleBackButtonClick = (event) => {
-    this.props.onChangePage(event, this.props.page - 1);
+    const { onChangePage, page } = this.props;
+    onChangePage(event, page - 1);
   };
 
   handleNextButtonClick = (event) => {
-    this.props.onChangePage(event, this.props.page + 1);
+    const { onChangePage, page } = this.props;
+    onChangePage(event, page + 1);
   };
 
   handleLastPageButtonClick = (event) => {
-    this.props.onChangePage(event, Math.max(0, Math.ceil(this.props.count / this.props.rowsPerPage) - 1));
+    const { onChangePage, count, rowsPerPage } = this.props;
+    onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
   render() {
@@ -78,8 +82,9 @@ export class LogTable extends Component {
   };
 
   render() {
-    const empty_rows =
-      this.state.rows_per_page - Math.min(this.state.rows_per_page, this.props.logs.length - this.state.page * this.state.rows_per_page);
+    const { rows_per_page, page } = this.state;
+    const { logs } = this.props;
+    const empty_rows = rows_per_page - Math.min(rows_per_page, logs.length - page * rows_per_page);
     return (
       <Table>
         <colgroup>
@@ -97,15 +102,13 @@ export class LogTable extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.logs
-            .slice(this.state.page * this.state.rows_per_page, this.state.page * this.state.rows_per_page + this.state.rows_per_page)
-            .map((log, i) => (
-              <tr key={i + this.state.page * this.state.rows_per_page}>
-                <td>{moment(log.timestamp).format('LTS')}</td>
-                <td>{log.user_id.slice(0, 11)}</td>
-                {parseRequest(log.request)}
-              </tr>
-            ))}
+          {logs.slice(page * rows_per_page, page * rows_per_page + rows_per_page).map((log, i) => (
+            <tr key={i + page * rows_per_page}>
+              <td>{moment(log.timestamp).format('LTS')}</td>
+              <td>{log.user_id.slice(0, 11)}</td>
+              {parseRequest(log.request)}
+            </tr>
+          ))}
           {empty_rows > 0 && (
             <tr style={{ height: 48 * empty_rows }}>
               <td colSpan={6} />
@@ -116,10 +119,10 @@ export class LogTable extends Component {
           <tr>
             <TablePagination
               rowsPerPageOptions={[5, 10, 15]}
-              count={this.props.logs.length}
+              count={logs.length}
               colSpan={3}
-              rowsPerPage={this.state.rows_per_page}
-              page={this.state.page}
+              rowsPerPage={rows_per_page}
+              page={page}
               onChangePage={this.handleChangePage}
               onChangeRowsPerPage={this.handleChangeRowsPerPage}
             />
@@ -145,8 +148,9 @@ class Logs extends Component {
   }
 
   onLoad() {
+    const { skill_id } = this.props;
     axios
-      .get(`/logs/${this.props.skill_id}`)
+      .get(`/logs/${skill_id}`)
       .then((res) => {
         this.setState({
           logs: res.data,
@@ -164,14 +168,16 @@ class Logs extends Component {
   }
 
   render() {
+    const { logs } = this.state;
+    const { name } = this.props;
     return (
       <div className="px-5 justify-content-start">
         <h5 className="pt-4">
-          <b>{this.props.name}</b> Error Logs
+          <b>{name}</b> Error Logs
         </h5>
         <hr />
-        {this.state.logs.length > 0 ? (
-          <LogTable logs={this.state.logs} />
+        {logs.length > 0 ? (
+          <LogTable logs={logs} />
         ) : (
           <div className="alert alert-primary" role="alert">
             Your skill hasn't encountered any errors yet

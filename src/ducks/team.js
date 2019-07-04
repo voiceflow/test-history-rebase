@@ -35,14 +35,22 @@ export default function teamReducer(state = initialState, action) {
 
 const updateTeams = ({ byId, allIds }) => ({
   type: 'UPDATE_TEAMS',
-  payload: { byId, allIds },
+  payload: {
+    byId,
+    allIds,
+  },
 });
 
 const Teams = new Normalize('team_id', 'team', updateTeams);
 
 export const updateTeam = (team_id, data) => {
   return async (dispatch) => {
-    dispatch(Teams.update({ id: team_id, data }));
+    dispatch(
+      Teams.update({
+        id: team_id,
+        data,
+      })
+    );
   };
 };
 
@@ -50,7 +58,14 @@ export const getMembers = (team_id) => {
   return async (dispatch) => {
     try {
       const members = (await axios.get(`/team/${team_id}/members`)).data;
-      dispatch(Teams.update({ id: team_id, data: { members } }));
+      dispatch(
+        Teams.update({
+          id: team_id,
+          data: {
+            members,
+          },
+        })
+      );
       Promise.resolve();
     } catch (err) {
       console.error(err);
@@ -198,6 +213,26 @@ export const updateMembers = (new_members, options) => {
       return Promise.resolve();
     } catch (err) {
       dispatch(setError(_.get(err, ['response', 'data']) || (err && JSON.stringify(err)) || MEMBER_UPDATE_ERR));
+      return Promise.reject();
+    }
+  };
+};
+
+export const updateTeamName = (name) => {
+  return async (dispatch, getState) => {
+    try {
+      const team_id = getState().team.team_id;
+      await axios.patch(`/team/${team_id}/update_name`, {
+        name,
+      });
+      dispatch(
+        updateTeam(team_id, {
+          name,
+        })
+      );
+      return Promise.resolve();
+    } catch (err) {
+      dispatch(setError(_.get(err, ['response', 'data']) || (err && JSON.stringify(err)) || 'Invalid Team Name'));
       return Promise.reject();
     }
   };

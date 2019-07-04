@@ -72,12 +72,13 @@ class Skill extends Component {
   }
 
   componentDidMount() {
+    const { skill_id } = this.props;
     AmazonAccessToken()
       .then(() => this.setState({ stage: 2 }))
       .catch(() => this.setState({ stage: 0 }));
 
     axios
-      .get(`/skill/${this.props.skill_id}?verbose=1&review_check=1`)
+      .get(`/skill/${skill_id}?verbose=1&review_check=1`)
       .then((res) => {
         if (res.data.category) {
           // eslint-disable-next-line no-restricted-syntax
@@ -127,6 +128,7 @@ class Skill extends Component {
   }
 
   handleError(err, default_error) {
+    const { setError } = this.props;
     console.error(err);
 
     let error_message = '';
@@ -144,12 +146,13 @@ class Skill extends Component {
       publish: false,
       stage: 2,
     });
-    this.props.setError(_.has(err, ['response', 'data', 'message']) ? error_message : default_error);
+    setError(_.has(err, ['response', 'data', 'message']) ? error_message : default_error);
   }
 
   onWithdraw() {
+    const { amzn_id } = this.state;
     axios
-      .post(`/amazon/${this.state.amzn_id}/withdraw`)
+      .post(`/amazon/${amzn_id}/withdraw`)
       .then(() => {
         this.setState({
           stage: 0,
@@ -165,10 +168,11 @@ class Skill extends Component {
   }
 
   onDelete() {
+    const { skill_id, history } = this.props;
     axios
-      .delete(`/skill/${this.props.skill_id}`)
+      .delete(`/skill/${skill_id}`)
       .then(() => {
-        this.props.history.push('/dashboard');
+        history.push('/dashboard');
       })
       .catch((err) => {
         this.handleError(err, 'Deletion Error');
@@ -179,11 +183,14 @@ class Skill extends Component {
   }
 
   onCertify() {
+    const { skill_id } = this.props;
+    const { amzn_id } = this.state;
+
     this.setState({
       stage: 7,
     });
     axios
-      .post(`/amazon/${this.props.skill_id}/${this.state.amzn_id}/certify`)
+      .post(`/amazon/${skill_id}/${amzn_id}/certify`)
       .then(() => {
         this.setState({
           stage: 11,
@@ -212,6 +219,7 @@ class Skill extends Component {
   }
 
   onPublish() {
+    const { project_id } = this.props;
     this.save(true, () => {
       const s = this.state;
       const category = s.category && s.category.value ? s.category.value : null;
@@ -272,12 +280,12 @@ class Skill extends Component {
       }
 
       axios
-        .post(`/project/${this.props.project_id}/render`, { platform: 'alexa' })
+        .post(`/project/${project_id}/render`, { platform: 'alexa' })
         .then((res) => {
           this.setState({ stage: 4 });
           const new_version_data = res.data;
           axios
-            .post(`/project/${this.props.project_id}/version/${new_version_data.new_skill.skill_id}/alexa`)
+            .post(`/project/${project_id}/version/${new_version_data.new_skill.skill_id}/alexa`)
             .then((res) => {
               this.setState({
                 stage: 8,
@@ -317,28 +325,32 @@ class Skill extends Component {
   }
 
   componentWillUnmount() {
-    if (this.state.loaded) {
+    const { loaded } = this.state;
+    if (loaded) {
       this.save(true);
     }
   }
 
   validateForm() {
+    const { setError } = this.props;
+
     const s = this.state;
     const split_keywords = s.keywords.split(',');
     if (s.privacy_policy && !validUrl.isUri(s.privacy_policy)) {
-      this.props.setError('Privacy policy must be a url');
+      setError('Privacy policy must be a url');
     } else if (s.terms_and_cond && !validUrl.isUri(s.terms_and_cond)) {
-      this.props.setError('Terms and conditions must be a url');
+      setError('Terms and conditions must be a url');
     } else if (split_keywords.length > 30) {
-      this.props.setError('Limited to 30 keywords');
+      setError('Limited to 30 keywords');
     } else if (s.keywords.length - split_keywords.length + 1 > 500) {
-      this.props.setError('The total length of all keywords must be less than or equal to 150');
+      setError('The total length of all keywords must be less than or equal to 150');
     } else {
       this.setState({ publish: true });
     }
   }
 
   save(publish = false, cb) {
+    const { setError, skill_id, updateEntireSkill } = this.props;
     const s = this.state;
     const category = s.category && s.category.value ? s.category.value : null;
 
@@ -372,16 +384,16 @@ class Skill extends Component {
     };
 
     if (!properties.name) {
-      return this.props.setError('Publish Settings not Saved: No Project Name');
+      return setError('Publish Settings not Saved: No Project Name');
     }
 
     axios
-      .patch(`/skill/${this.props.skill_id}${publish === true ? '?publish=true' : ''}`, {
+      .patch(`/skill/${skill_id}${publish === true ? '?publish=true' : ''}`, {
         ...properties,
         locales: JSON.stringify(properties.locales),
       })
       .then(() => {
-        this.props.updateEntireSkill(properties);
+        updateEntireSkill(properties);
 
         // eslint-disable-next-line callback-return
         if (typeof cb === 'function') cb();
@@ -389,12 +401,13 @@ class Skill extends Component {
       .catch((err) => {
         // eslint-disable-next-line no-console
         console.log(err);
-        this.props.setError('Save Error, Publish Settings not Saved');
+        setError('Save Error, Publish Settings not Saved');
       });
   }
 
   handleChange(event) {
-    if (this.state.stage !== 11) {
+    const { stage } = this.state;
+    if (stage !== 11) {
       this.setState({
         [event.target.name]: event.target.value,
       });
@@ -408,19 +421,22 @@ class Skill extends Component {
   }
 
   toggle() {
+    const { dropdown } = this.state;
     this.setState({
-      dropdown: !this.state.dropdown,
+      dropdown: !dropdown,
     });
   }
 
   togglePublish() {
+    const { publish } = this.state;
     this.setState({
-      publish: !this.state.publish,
+      publish: !publish,
     });
   }
 
   closePublish() {
-    if (this.state.stage === 1) {
+    const { stage } = this.state;
+    if (stage === 1) {
       this.setState({
         stage: 0,
       });
@@ -428,7 +444,7 @@ class Skill extends Component {
   }
 
   onLocaleBtnClick(locale) {
-    let locales = this.state.locales;
+    let { locales } = this.state;
 
     if (locales.includes(locale)) {
       if (locales.length > 1) {
@@ -444,8 +460,32 @@ class Skill extends Component {
   }
 
   render() {
+    const {
+      stage,
+      amzn_id,
+      stage_error,
+      instructions,
+      locales,
+      loaded,
+      publish,
+      small_icon,
+      large_icon,
+      summary,
+      description,
+      category,
+      inv_name,
+      invocations,
+      live,
+      id_collapse,
+      keywords,
+      privacy_policy,
+      terms_and_cond,
+      copa,
+      name,
+    } = this.state;
+    const { onConfirm } = this.props;
     // Success Screen
-    if (this.state.stage === 10) {
+    if (stage === 10) {
       return (
         <div className="super-center h-100">
           <div className="success-page d-flex">
@@ -476,11 +516,11 @@ class Skill extends Component {
     }
 
     let content;
-    const alexaDashboardUrl = `https://developer.amazon.com/alexa/console/ask/build/custom/${this.state.amzn_id}/development/en_US/dashboard`;
-    if (this.state.stage === 0 || this.state.stage === -1) {
+    const alexaDashboardUrl = `https://developer.amazon.com/alexa/console/ask/build/custom/${amzn_id}/development/en_US/dashboard`;
+    if (stage === 0 || stage === -1) {
       content = (
         <div className="my-5">
-          {this.state.stage === -1 ? <Alert color="danger">Login With Amazon Failed - Try Again.</Alert> : null}
+          {stage === -1 ? <Alert color="danger">Login With Amazon Failed - Try Again.</Alert> : null}
           <AmazonLogin
             updateLogin={(stage) => {
               if (stage === 2) {
@@ -492,19 +532,19 @@ class Skill extends Component {
           />
         </div>
       );
-    } else if (this.state.stage === 1 || this.state.stage === 3 || this.state.stage === 4 || this.state.stage === 6 || this.state.stage === 7) {
+    } else if (stage === 1 || stage === 3 || stage === 4 || stage === 6 || stage === 7) {
       content = (
         <div>
           <h1>
             <span className="loader" />
           </h1>
-          <p className="loading">{stage_title[this.state.stage]}</p>
+          <p className="loading">{stage_title[stage]}</p>
         </div>
       );
-    } else if (this.state.stage === 2) {
+    } else if (stage === 2) {
       content = (
         <div className="form">
-          {this.state.stage_error && this.state.stage_error.stage === 2 ? <Alert color="danger">{this.state.stage_error.message}</Alert> : null}
+          {stage_error && stage_error.stage === 2 ? <Alert color="danger">{stage_error.message}</Alert> : null}
           {[
             {
               value: 'purchase',
@@ -550,7 +590,7 @@ class Skill extends Component {
             <Textarea
               name="instructions"
               className="blank"
-              value={this.state.instructions}
+              value={instructions}
               onChange={this.handleChange}
               minRows={3}
               placeholder="Any Particular Testing Instructions for Amazon Approval Process"
@@ -561,7 +601,7 @@ class Skill extends Component {
           </DefaultButton>
         </div>
       );
-    } else if (this.state.stage === 5) {
+    } else if (stage === 5) {
       content = (
         <div>
           Your Amazon Account needs to set up developer settings to Upload Skills
@@ -576,7 +616,7 @@ class Skill extends Component {
           </div>
         </div>
       );
-    } else if (this.state.stage === 8) {
+    } else if (stage === 8) {
       content = (
         <div>
           <img src="/images/preview.svg" alt="Success" height="160" />
@@ -585,10 +625,7 @@ class Skill extends Component {
           <span className="text-muted text-center">You may test on the Alexa Simulator or Submit your Skill for review</span>
           <div className="my-3">
             <a
-              href={`https://developer.amazon.com/alexa/console/ask/test/${this.state.amzn_id}/development/${this.state.locales[0].replace(
-                '-',
-                '_'
-              )}/`}
+              href={`https://developer.amazon.com/alexa/console/ask/test/${amzn_id}/development/${locales[0].replace('-', '_')}/`}
               className="btn btn-primary mr-2"
               target="_blank"
               rel="noopener noreferrer"
@@ -603,7 +640,7 @@ class Skill extends Component {
       );
     }
 
-    if (!this.state.loaded)
+    if (!loaded)
       return (
         <div className="super-center h-100 w-100">
           <div className="text-center">
@@ -617,10 +654,10 @@ class Skill extends Component {
 
     return (
       <React.Fragment>
-        <Modal isOpen={this.state.publish} toggle={this.togglePublish} className="stage_modal" centered size="lg" onClosed={this.closePublish}>
+        <Modal isOpen={publish} toggle={this.togglePublish} className="stage_modal" centered size="lg" onClosed={this.closePublish}>
           <ModalBody>
             <div className="d-flex justify-content-between" ref={this.privacyTop}>
-              <b>{stage_title[this.state.stage]}</b>
+              <b>{stage_title[stage]}</b>
               <DefaultButton isClose type="button" onClick={this.togglePublish} />
             </div>
             <div className="modal-info">{content}</div>
@@ -634,7 +671,7 @@ class Skill extends Component {
           <hr className="mt-0" />
           <div className="row">
             <div className="col-2">
-              {this.state.name ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
+              {name ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
             </div>
             <div className="col-10">
               <p>Display Name</p>
@@ -643,11 +680,7 @@ class Skill extends Component {
           <hr className="mt-0" />
           <div className="row">
             <div className="col-2">
-              {this.state.small_icon && this.state.large_icon ? (
-                <i className="fal fa-check-circle text-success" />
-              ) : (
-                <i className="fal fa-times-circle text-danger" />
-              )}
+              {small_icon && large_icon ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
             </div>
             <div className="col-10">
               <p>Icons</p>
@@ -656,7 +689,7 @@ class Skill extends Component {
           <hr className="mt-0" />
           <div className="row">
             <div className="col-2">
-              {this.state.summary ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
+              {summary ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
             </div>
             <div className="col-10">
               <p>Summary</p>
@@ -665,7 +698,7 @@ class Skill extends Component {
           <hr className="mt-0" />
           <div className="row">
             <div className="col-2">
-              {this.state.description ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
+              {description ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
             </div>
             <div className="col-10">
               <p>Description</p>
@@ -674,7 +707,7 @@ class Skill extends Component {
           <hr className="mt-0" />
           <div className="row">
             <div className="col-2">
-              {this.state.category ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
+              {category ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
             </div>
             <div className="col-10">
               <p>Category</p>
@@ -683,7 +716,7 @@ class Skill extends Component {
           <hr className="mt-0" />
           <div className="row">
             <div className="col-2">
-              {this.state.inv_name ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
+              {inv_name ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
             </div>
             <div className="col-10">
               <p>Invocation Name</p>
@@ -692,7 +725,7 @@ class Skill extends Component {
           <hr className="mt-0" />
           <div className="row">
             <div className="col-2">
-              {this.state.invocations[0] ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
+              {invocations[0] ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
             </div>
             <div className="col-10">
               <p>Invocations</p>
@@ -703,19 +736,19 @@ class Skill extends Component {
         <div className="subheader-page-container">
           <div>
             <div className="container pt-3">
-              {this.state.live ? (
+              {live ? (
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <h5 className="mb-0">This skill currently has a live version in production</h5>
                   </div>
                 </div>
               ) : null}
-              {this.state.amzn_id ? (
+              {amzn_id ? (
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <span>This skill is linked on Amazon Developer Console</span>
-                    <div onClick={() => this.setState({ id_collapse: !this.state.id_collapse })} className="pointer">
-                      {this.state.id_collapse ? 'Hide' : 'More Info'}{' '}
+                    <div onClick={() => this.setState({ id_collapse: !id_collapse })} className="pointer">
+                      {id_collapse ? 'Hide' : 'More Info'}{' '}
                       <span
                         style={{
                           width: '9px',
@@ -723,27 +756,24 @@ class Skill extends Component {
                           textAlign: 'right',
                         }}
                       >
-                        <i className={`fas fa-caret-left rotate${this.state.id_collapse ? ' fa-rotate--90' : ''}`} />
+                        <i className={`fas fa-caret-left rotate${id_collapse ? ' fa-rotate--90' : ''}`} />
                       </span>
                     </div>
                   </div>
-                  <Collapse isOpen={this.state.id_collapse}>
+                  <Collapse isOpen={id_collapse}>
                     <hr />
                     <span>Skill ID | </span>
                     <a
-                      href={`https://developer.amazon.com/alexa/console/ask/test/${this.state.amzn_id}/development/${this.state.locales[0].replace(
-                        '-',
-                        '_'
-                      )}/`}
+                      href={`https://developer.amazon.com/alexa/console/ask/test/${amzn_id}/development/${locales[0].replace('-', '_')}/`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <b>{this.state.amzn_id}</b>
+                      <b>{amzn_id}</b>
                     </a>
                   </Collapse>
                 </div>
               ) : null}
-              {disabled_stages.has(this.state.stage) ? (
+              {disabled_stages.has(stage) ? (
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <h5 className="mb-0">This skill is currently in review so you cannot edit it.</h5>
@@ -756,7 +786,7 @@ class Skill extends Component {
                         variant="contained"
                         className="ml-3"
                         onClick={() => {
-                          this.props.onConfirm({
+                          onConfirm({
                             text: 'Are you sure you want to withdraw this Skill?',
                             confirm: this.onWithdraw,
                           });
@@ -788,9 +818,9 @@ class Skill extends Component {
                             className="form-bg"
                             type="text"
                             name="name"
-                            disabled={disabled_stages.has(this.state.stage)}
+                            disabled={disabled_stages.has(stage)}
                             placeholder="Storyflow - Interactive Story Adventures"
-                            value={this.state.name}
+                            value={name}
                             onChange={this.handleChange}
                           />
                         </div>
@@ -807,9 +837,9 @@ class Skill extends Component {
                         <div>
                           <Image
                             className="icon-image large-icon text-center mr-xl-5 mr-4"
-                            isDisabled={disabled_stages.has(this.state.stage)}
+                            isDisabled={disabled_stages.has(stage)}
                             path="/image/large_icon"
-                            image={this.state.large_icon}
+                            image={large_icon}
                             update={(url) => this.setState({ large_icon: url })}
                             title="Large Icon *"
                           />
@@ -817,9 +847,9 @@ class Skill extends Component {
                         <div>
                           <Image
                             className="icon-image small-icon text-center"
-                            isDisabled={disabled_stages.has(this.state.stage)}
+                            isDisabled={disabled_stages.has(stage)}
                             path="/image/small_icon"
-                            image={this.state.small_icon}
+                            image={small_icon}
                             update={(url) => this.setState({ small_icon: url })}
                             title="Small Icon *"
                           />
@@ -847,9 +877,9 @@ class Skill extends Component {
                             className="form-bg"
                             type="text"
                             name="summary"
-                            disabled={disabled_stages.has(this.state.stage)}
+                            disabled={disabled_stages.has(stage)}
                             placeholder="One Sentence Skill Summary"
-                            value={this.state.summary}
+                            value={summary}
                             onChange={this.handleChange}
                           />
                         </div>
@@ -868,8 +898,8 @@ class Skill extends Component {
                           <Textarea
                             name="description"
                             className="form-control"
-                            disabled={disabled_stages.has(this.state.stage)}
-                            value={this.state.description}
+                            disabled={disabled_stages.has(stage)}
+                            value={description}
                             onChange={this.handleChange}
                             minRows={3}
                             placeholder="Skill Description"
@@ -890,8 +920,8 @@ class Skill extends Component {
                           <Select
                             classNamePrefix="select-box"
                             name="category"
-                            isDisabled={disabled_stages.has(this.state.stage)}
-                            value={this.state.category}
+                            isDisabled={disabled_stages.has(stage)}
+                            value={category}
                             onChange={this.handleSelection}
                             options={AMAZON_CATEGORIES}
                           />
@@ -914,9 +944,9 @@ class Skill extends Component {
                             className="form-bg"
                             type="text"
                             name="keywords"
-                            disabled={disabled_stages.has(this.state.stage)}
+                            disabled={disabled_stages.has(stage)}
                             placeholder="Keywords (Separated By Commas) e.g. Game, Space, Adventure"
-                            value={this.state.keywords}
+                            value={keywords}
                             onChange={this.handleChange}
                           />
                         </div>
@@ -943,9 +973,9 @@ class Skill extends Component {
                             className="form-bg"
                             type="text"
                             name="inv_name"
-                            disabled={disabled_stages.has(this.state.stage)}
+                            disabled={disabled_stages.has(stage)}
                             placeholder="Enter an invocation name that begins an interaction with your skill"
-                            value={this.state.inv_name}
+                            value={inv_name}
                             onChange={this.handleChange}
                           />
                         </div>
@@ -963,12 +993,12 @@ class Skill extends Component {
                           <Label className="publish-label">Invocations *</Label>
                           <Multiple
                             className="mt-0 input-group-text"
-                            list={this.state.invocations}
+                            list={invocations}
                             max={3}
                             prepend="Alexa,"
                             update={(list) => this.setState({ invocations: list })}
-                            isDisabled={disabled_stages.has(this.state.stage)}
-                            placeholder={`open/start/launch ${this.state.name}`}
+                            isDisabled={disabled_stages.has(stage)}
+                            placeholder={`open/start/launch ${name}`}
                             add={
                               <span>
                                 <i className="fas fa-plus" /> Add Invocation
@@ -997,7 +1027,7 @@ class Skill extends Component {
                           <Label className="publish-label">Location(s)</Label>
                           <ButtonGroup className="locale-button-group">
                             {LOCALE_MAP.map((locale, i) => {
-                              const active = this.state.locales.includes(locale.value) ? 'active' : '';
+                              const active = locales.includes(locale.value) ? 'active' : '';
                               return (
                                 <Button
                                   outline
@@ -1037,9 +1067,9 @@ class Skill extends Component {
                             className="form-bg"
                             type="text"
                             name="privacy_policy"
-                            disabled={disabled_stages.has(this.state.stage)}
+                            disabled={disabled_stages.has(stage)}
                             placeholder="Privacy Policy"
-                            value={this.state.privacy_policy}
+                            value={privacy_policy}
                             onChange={this.handleChange}
                           />
                         </div>
@@ -1059,9 +1089,9 @@ class Skill extends Component {
                             className="form-bg"
                             type="text"
                             name="terms_and_cond"
-                            disabled={disabled_stages.has(this.state.stage)}
+                            disabled={disabled_stages.has(stage)}
                             placeholder="Terms and Conditions"
-                            value={this.state.terms_and_cond}
+                            value={terms_and_cond}
                             onChange={this.handleChange}
                           />
                         </div>
@@ -1084,8 +1114,8 @@ class Skill extends Component {
                         <div className="col-9">
                           <Label className="publish-label">Is this skill directed to children under the age of 13?</Label>
                           <div className="d-flex">
-                            <u className="font-weight-bold mr-2">{this.state.copa ? 'YES' : 'NO'}</u>
-                            <Toggle checked={this.state.copa} icons={false} onChange={() => this.setState({ copa: !this.state.copa })} />
+                            <u className="font-weight-bold mr-2">{copa ? 'YES' : 'NO'}</u>
+                            <Toggle checked={copa} icons={false} onChange={() => this.setState({ copa: !copa })} />
                           </div>
                         </div>
                       </div>
@@ -1094,7 +1124,7 @@ class Skill extends Component {
                 </div>
               </Form>
               <div className="text-center">
-                {disabled_stages.has(this.state.stage) ? null : (
+                {disabled_stages.has(stage) ? null : (
                   <DefaultButton
                     isPrimary
                     onClick={() => {

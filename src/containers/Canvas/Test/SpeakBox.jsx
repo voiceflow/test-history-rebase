@@ -6,7 +6,7 @@ function SpeakBox(props) {
   const { chat, playAudio, debug } = props;
   const { text, audioType } = chat;
 
-  if (debug && chat.debug) {
+  if ((debug && chat.debug) || chat.important) {
     return (
       <div className="mt-2 position-relative text-left">
         <img src="/images/icons/power.svg" height={18} width={18} alt="alexa" className="speak-box-icon mr-2" />

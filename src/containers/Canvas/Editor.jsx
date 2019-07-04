@@ -627,7 +627,6 @@ class Editor extends Component {
         id="Editor"
         className={cn({
           open: this.props.open && type && !this.state.modal,
-          testing: this.props.testing,
         })}
         onFocus={this.props.unfocus}
         onClickCapture={this.eventHandler}

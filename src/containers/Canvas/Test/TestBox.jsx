@@ -1,8 +1,9 @@
 import cn from 'classnames';
+import Button from 'components/Button';
 import React, { PureComponent } from 'react';
 import SpeechRecognition from 'react-speech-recognition';
 import Textarea from 'react-textarea-autosize';
-import { Alert, Collapse } from 'reactstrap';
+import { Collapse } from 'reactstrap';
 
 import SpeakBox from './SpeakBox';
 import SpeechBar from './SpeechBar';
@@ -154,9 +155,16 @@ class TestBox extends PureComponent {
                 </div>
               )}
               {ended && (
-                <Alert onClick={handleRestart} color="warning" className="mt-3 mb-0 pointer">
-                  Test Ended - Reset <i className="far fa-sync-alt" />
-                </Alert>
+                <>
+                  <div className="break mt-4">
+                    <span className="break-text">Session Ended</span>
+                  </div>
+                  <div className="super-center">
+                    <Button onClick={handleRestart} isBtn isSecondary className="super-center w-100">
+                      Reset Test <img src="/restart.svg" alt="restart" width="15" height="15" className="ml-2" />
+                    </Button>
+                  </div>
+                </>
               )}
             </div>
           </div>

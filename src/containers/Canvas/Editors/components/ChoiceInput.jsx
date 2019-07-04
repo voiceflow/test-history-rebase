@@ -58,7 +58,7 @@ class ChoiceInput extends React.Component {
   }
 
   focus() {
-    setTimeout(() => this.inputRef.current.focus(), 150);
+    setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 150);
   }
 
   handleKeyPress = (e) => {

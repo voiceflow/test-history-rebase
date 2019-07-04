@@ -105,6 +105,7 @@ class Timeline extends Component {
         this.props.enterFlow(newOutput.diagram, false);
         newOutput.delay = 800;
       }
+
       const diagram = diagrams.find((d) => d.id === newOutput.diagram);
       const diagramName = diagram && diagram.name;
 

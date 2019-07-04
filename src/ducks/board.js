@@ -228,28 +228,24 @@ export const deleteBoard = (board_id) => {
   };
 };
 
-export const clearNewList = (board_id) => {
-  return async (dispatch, getState) => {
-    try {
-      const boards = getState().board;
+export const clearNewList = (board_id) => (dispatch, getState) => {
+  const boards = getState().board;
 
-      let board = boards.byId[board_id];
-      if (board) {
-        board = update(board, {
-          $unset: ['isNew'],
-        });
-        dispatch(
-          Boards.update({
-            id: board_id,
-            data: board,
-          })
-        );
-      }
-    } catch (err) {
-      dispatch(setError('Problem clearing new board'));
-      console.error(err);
-    }
-  };
+  let board = boards.byId[board_id];
+  if (board) {
+    board = update(board, {
+      $unset: ['isNew'],
+    });
+    dispatch(
+      Boards.update(
+        {
+          id: board_id,
+          data: board,
+        },
+        false
+      )
+    );
+  }
 };
 
 export const changeProjectPosition = (drag, hover) => (dispatch, getState) => {

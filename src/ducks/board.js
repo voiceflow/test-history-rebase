@@ -135,6 +135,7 @@ export const addBoard = (team_id) => {
         board_id: current_id,
         name: 'New List',
         projects: [],
+        isNew: true,
       };
       dispatch(
         Boards.add({
@@ -147,7 +148,7 @@ export const addBoard = (team_id) => {
       dispatch(setError('Unable to add board'));
       return Promise.reject();
     }
-    return Promise.resolve(current_id);
+    return Promise.resolve();
   };
 };
 
@@ -222,6 +223,28 @@ export const deleteBoard = (board_id) => {
       if (team_id) dispatch(updateLists(team_id));
     } catch (err) {
       dispatch(setError('Problem Deleting List'));
+      console.error(err);
+    }
+  };
+};
+
+export const clearNewList = (board_id) => {
+  return async (dispatch, getState) => {
+    try {
+      const boards = getState().board;
+
+      const board = boards.byId[board_id];
+      if (board) {
+        delete board.isNew;
+        dispatch(
+          Boards.update({
+            id: board_id,
+            data: board,
+          })
+        );
+      }
+    } catch (err) {
+      dispatch(setError('Problem clearing new board'));
       console.error(err);
     }
   };

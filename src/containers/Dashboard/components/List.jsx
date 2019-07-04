@@ -36,13 +36,13 @@ export function List(props) {
   const {
     id,
     name,
+    isNew,
     projects,
-    focused,
     onRename,
     onRemove,
-    setFocused,
     isCreated,
     isDragging,
+    clearNewBoard,
     onDeleteProject,
     onMoveProject,
     onDropProject,
@@ -69,11 +69,11 @@ export function List(props) {
   const [moving, setMoving] = useState(false);
 
   useEffect(() => {
-    if (focused === id) {
+    if (isNew) {
       inputRef.current.focus();
-      setFocused(null);
+      clearNewBoard(id);
     }
-  });
+  }, []);
 
   const list = (
     <div

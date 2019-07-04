@@ -7,6 +7,7 @@ exports[`Choice Inputs render choice input 1`] = `
   <ChoiceInput
     choice={
       Object {
+        "key": 1,
         "value": "a",
       }
     }
@@ -16,6 +17,7 @@ exports[`Choice Inputs render choice input 1`] = `
         "value": "a",
       }
     }
+    key="1"
     onChange={[Function]}
     onChangeChoice={[Function]}
     remove={[Function]}
@@ -23,6 +25,7 @@ exports[`Choice Inputs render choice input 1`] = `
   <ChoiceInput
     choice={
       Object {
+        "key": 2,
         "value": "b",
       }
     }
@@ -32,6 +35,7 @@ exports[`Choice Inputs render choice input 1`] = `
         "value": "b",
       }
     }
+    key="2"
     onChange={[Function]}
     onChangeChoice={[Function]}
     remove={[Function]}

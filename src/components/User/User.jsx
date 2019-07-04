@@ -30,7 +30,7 @@ export const Members = (props) => {
   }
 
   return (
-    <div className="mx-3 super-center">
+    <div className="super-center" style={{ paddingLeft: 4 }}>
       {members.length > 1 && (
         <div className="d-flex flex-row-reverse">
           {accepted.slice(0, 8).map((m) => {

@@ -6,8 +6,6 @@ import ChoiceInput from './ChoiceInput';
 class ChoiceInputs extends Component {
   choicesLength = this.props.choices.length;
 
-  lastChoiceRef = React.createRef();
-
   shouldComponentUpdate(props) {
     if (this.choicesLength !== props.choices.length) {
       this.choicesLength = props.choices.length;
@@ -15,20 +13,6 @@ class ChoiceInputs extends Component {
     }
 
     return false;
-  }
-
-  focusLastChoice() {
-    if (this.choicesLength && this.lastChoiceRef.current) {
-      this.lastChoiceRef.current.focus();
-    }
-  }
-
-  componentDidMount() {
-    this.focusLastChoice();
-  }
-
-  componentDidUpdate() {
-    this.focusLastChoice();
   }
 
   render() {
@@ -48,7 +32,6 @@ class ChoiceInputs extends Component {
                 choices[index] = value;
               }}
               remove={() => onRemove(index)}
-              ref={index === choices.length - 1 && this.lastChoiceRef}
             />
           ))}
         <div className="text-center">

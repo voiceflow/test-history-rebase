@@ -7,7 +7,7 @@ import Select from 'react-select';
 import Expression from './Expression';
 import Expressionfy from './Expressionfy';
 
-const SetExpression = React.forwardRef(({ block, variables, onSelection, onRemove, onUpdate, openVarTab }, ref) => {
+const SetExpression = ({ block, variables, onSelection, onRemove, onUpdate, openVarTab }) => {
   const show = !(block.expression.type === 'value' || block.expression.type === 'variable' || block.expression.type === 'advance');
 
   return (
@@ -40,12 +40,10 @@ const SetExpression = React.forwardRef(({ block, variables, onSelection, onRemov
 
       {show && <Expressionfy expression={block.expression} />}
 
-      <Expression expression={block.expression} variables={variables} onUpdate={onUpdate} ref={ref} />
+      <Expression expression={block.expression} variables={variables} onUpdate={onUpdate} />
     </div>
   );
-});
-
-SetExpression.displayName = 'SetExpression';
+};
 
 const mapDispatchToProps = {
   openVarTab: openTab,

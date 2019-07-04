@@ -6,7 +6,7 @@ import ClipBoard from 'components/ClipBoard/ClipBoard';
 import Header from 'components/Header';
 import Test from 'containers/Canvas/Test';
 import { initializeTest, startTest, updateTest } from 'ducks/test';
-import { fetchVersionSuccess, updateVersion } from 'ducks/version';
+import { fetchVersionSuccess } from 'ducks/version';
 import _ from 'lodash';
 import React from 'react';
 import { IntercomAPI } from 'react-intercom';
@@ -36,29 +36,23 @@ class UserTesting extends React.Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevProps.skill.diagram && this.props.skill.diagram) {
-      this.setState({ loading: 0 });
-    }
-    if (prevState.loading !== 0 && this.state.loading === 0) {
-      this.props.initializeTest();
-      this.props.updateTest({ rendered: 2 });
-      this.props.startTest(this.props.skill.diagram);
-    }
-  }
-
   async fetchInformation() {
-    const res = await axios.get(`/test/getInfo/${this.props.match.params.skill_id}`);
-    const skill = res.data;
+    const { fetchVersionSuccess, initializeTest, updateTest, startTest, skill } = this.props;
+    const { data: skillData } = await axios.get(`/test/getInfo/${this.props.match.params.skill_id}`);
 
-    const globals = Array.isArray(skill.global) ? skill.global : [];
-    skill.global = [...new Set(['sessions', 'user_id', 'timestamp', 'platform', 'locale', ...globals])];
-    if (!skill.fulfillment) {
-      skill.fulfillment = {};
+    const globals = Array.isArray(skillData.global) ? skillData.global : [];
+    skillData.global = [...new Set(['sessions', 'user_id', 'timestamp', 'platform', 'locale', ...globals])];
+    if (!skillData.fulfillment) {
+      skillData.fulfillment = {};
     }
-    skill.platform = skill.platform === 'google' ? 'google' : 'alexa';
+    skillData.platform = skillData.platform === 'google' ? 'google' : 'alexa';
 
-    this.props.fetchVersionSuccess(skill, {});
+    fetchVersionSuccess(skillData, {});
+
+    this.setState({ loading: 0 });
+    initializeTest();
+    updateTest({ rendered: 2 });
+    startTest(skill.diagram);
   }
 
   toggleShare = () => {
@@ -99,13 +93,7 @@ class UserTesting extends React.Component {
         />
         {!this.state.loading && (
           <div className="PublicUserTesting">
-            <Test
-              open={true}
-              enterFlow={(new_diagram_id) => this.props.updateSkill('diagram', new_diagram_id)}
-              loading={this.state.loading}
-              setSaveCB={_.noop}
-              save={_.noop}
-            />
+            <Test open={true} enterFlow={_.noop} loading={this.state.loading} setSaveCB={_.noop} save={_.noop} />
           </div>
         )}
       </>
@@ -122,7 +110,6 @@ const mapDispatchToProps = {
   updateTest,
   startTest,
   fetchVersionSuccess,
-  updateVersion,
 };
 
 export default connect(

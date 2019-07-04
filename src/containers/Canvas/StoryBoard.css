@@ -1411,6 +1411,10 @@
   transform: translateX(0);
 }
 
+#canvas.test #Editor {
+  position: fixed;
+}
+
 #Editor label {
   display: inline-block;
   margin-bottom: 10px;
@@ -1574,10 +1578,6 @@ textarea.blank:focus {
 #Editor textarea::placeholder,
 textarea.blank::placeholder {
   color: #8da2b5 !important;
-}
-
-#Editor.testing {
-  right: 400px;
 }
 
 .select-box {

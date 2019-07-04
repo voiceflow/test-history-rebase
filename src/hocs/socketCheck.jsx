@@ -46,6 +46,7 @@ export const socketCheck = lifecycle({
     } else {
       // SKILL SOCKET STATUS
       if (window.CreatorSocket.status !== 'FAIL') {
+        window.CreatorSocket.authCB();
         window.CreatorSocket.emit('project', {
           skill_id,
         });

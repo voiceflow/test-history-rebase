@@ -49,7 +49,7 @@ export default function testReducer(state = initialState, action) {
     case UPDATE_TEST_TIME:
       return {
         ...state,
-        startTest: action.payload,
+        startTime: action.payload,
       };
     default:
       return state;

@@ -5,8 +5,9 @@ import Button from 'components/Button';
 import ClipBoard from 'components/ClipBoard/ClipBoard';
 import Header from 'components/Header';
 import Test from 'containers/Canvas/Test';
-import { startTest } from 'ducks/test';
+import { initializeTest, startTest, updateTest } from 'ducks/test';
 import { fetchVersionSuccess, updateVersion } from 'ducks/version';
+import _ from 'lodash';
 import React from 'react';
 import { IntercomAPI } from 'react-intercom';
 import { connect } from 'react-redux';
@@ -40,6 +41,8 @@ class UserTesting extends React.Component {
       this.setState({ loading: 0 });
     }
     if (prevState.loading !== 0 && this.state.loading === 0) {
+      this.props.initializeTest();
+      this.props.updateTest({ rendered: 2 });
       this.props.startTest(this.props.skill.diagram);
     }
   }
@@ -98,9 +101,10 @@ class UserTesting extends React.Component {
           <div className="PublicUserTesting">
             <Test
               open={true}
-              preview={true}
               enterFlow={(new_diagram_id) => this.props.updateSkill('diagram', new_diagram_id)}
               loading={this.state.loading}
+              setSaveCB={_.noop}
+              save={_.noop}
             />
           </div>
         )}
@@ -114,6 +118,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+  initializeTest,
+  updateTest,
   startTest,
   fetchVersionSuccess,
   updateVersion,

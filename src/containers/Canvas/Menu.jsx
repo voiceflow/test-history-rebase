@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 
+import { showHelp } from '../../ducks/alerts';
 import Blocks from './Sidebars/Blocks';
 import Flows from './Sidebars/Flows';
 import Variables from './Sidebars/Variables';
@@ -249,5 +250,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  null
+  { showHelp }
 )(Menu);

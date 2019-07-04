@@ -73,7 +73,7 @@ export class Menu extends Component {
 
   // eslint-disable-next-line react/no-deprecated
   componentWillReceiveProps(nextProps) {
-    if (localStorage.getItem('sideWidth') && this.sidebar && nextProps.open) {
+    if (localStorage.getItem('sideWidth') && this.sidebar.current && nextProps.open) {
       const width = localStorage.getItem('sideWidth');
       this.sidebar.current.style.width = `${width}px`;
       this.sidebar.current.style.transform = `translateX(-${width * 1 + 40}px)`;
@@ -224,56 +224,58 @@ export class Menu extends Component {
     const { unfocus, preview, tab, open, openTab, loading_diagram } = this.props;
     return (
       <div className="Menu" onFocus={unfocus} onMouseDown={unfocus} onKeyDown={unfocus}>
-        {!preview && this.props.isCanvas && (
-          <div className="toolbar">
-            <div className="top-down">
-              {tabs.top.map((tab, i) => {
-                return (
-                  <Tooltip key={i} title={tab.tip} position="right" disabled={tab.tab === tab && open}>
-                    <div
-                      className={cn('tool', {
-                        active: tab.tab === tab && open,
-                      })}
-                      onClick={() => openTab(tab.tab)}
-                    >
-                      {tab.icon}
-                    </div>
-                  </Tooltip>
-                );
-              })}
-            </div>
-            <div className="spacer" />
-            <div className="bottom-up">
-              {tabs.bottom.map((tab, i) => {
-                return (
-                  <Tooltip key={i} title={tab.tip} position="right">
-                    <a className="tool no-underline" href={tab.link} target="_blank" rel="noopener noreferrer">
-                      {tab.icon}
-                    </a>
-                  </Tooltip>
-                );
-              })}
-            </div>
-          </div>
-        )}
-        <div className={cn('sidebar-container', tab)}>
-          {loading_diagram ? null : (
-            <React.Fragment>
-              <div className="sidebar-header">
-                <div
-                  className="block-title no-select mb-3"
-                  onClick={() => {
-                    localStorage.setItem('sideWidth', this.sidebar.current.offsetWidth);
-                    this.props.closeTab();
-                  }}
-                >
-                  <h5 className="mb-0">{this.props.tab}</h5>
-                  <div className="close pl-3 py-3" />
-                </div>
+        <div id="sidebar" className={cn({ open }, 'canvas-sidebar')} ref={this.sidebar}>
+          {!preview && this.props.isCanvas && (
+            <div className="toolbar">
+              <div className="top-down">
+                {tabs.top.map((tab, i) => {
+                  return (
+                    <Tooltip key={i} title={tab.tip} position="right" disabled={tab.tab === tab && open}>
+                      <div
+                        className={cn('tool', {
+                          active: tab.tab === tab && open,
+                        })}
+                        onClick={() => openTab(tab.tab)}
+                      >
+                        {tab.icon}
+                      </div>
+                    </Tooltip>
+                  );
+                })}
               </div>
-              <div className="sidebar-content">{this.renderSideBar()}</div>
-            </React.Fragment>
+              <div className="spacer" />
+              <div className="bottom-up">
+                {tabs.bottom.map((tab, i) => {
+                  return (
+                    <Tooltip key={i} title={tab.tip} position="right">
+                      <a className="tool no-underline" href={tab.link} target="_blank" rel="noopener noreferrer">
+                        {tab.icon}
+                      </a>
+                    </Tooltip>
+                  );
+                })}
+              </div>
+            </div>
           )}
+          <div className={cn('sidebar-container', tab)}>
+            {loading_diagram ? null : (
+              <React.Fragment>
+                <div className="sidebar-header">
+                  <div
+                    className="block-title no-select mb-3"
+                    onClick={() => {
+                      localStorage.setItem('sideWidth', this.sidebar.current.offsetWidth);
+                      this.props.closeTab();
+                    }}
+                  >
+                    <h5 className="mb-0">{this.props.tab}</h5>
+                    <div className="close pl-3 py-3" />
+                  </div>
+                </div>
+                <div className="sidebar-content">{this.renderSideBar()}</div>
+              </React.Fragment>
+            )}
+          </div>
         </div>
         <label
           className={cn(`canvas-sidebar-${open ? 'open' : 'closed'}`, 'canvas-sidebar-expand')}

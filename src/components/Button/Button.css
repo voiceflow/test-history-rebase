@@ -199,6 +199,7 @@ button {
 .btn-link:hover {
   color: #4e8be0;
   background-color: none;
+  cursor: pointer;
 }
 
 .btn-link.__large {

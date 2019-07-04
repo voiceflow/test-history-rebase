@@ -6,16 +6,16 @@ import React from 'react';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 
-const Account = (props) => (
+const Account = ({ page, history, location }) => (
   <div className="d-flex flex-row align-items-center justify-content-center" id="main">
     <div
       className={cn('login-card', {
-        'open-register': props.page !== 'login',
+        'open-register': page !== 'login',
       })}
     >
       <div id="side-form">
-        <LoginForm history={props.history} location={props.location} />
-        <SignupForm history={props.history} location={props.location} />
+        <LoginForm history={history} location={location} />
+        <SignupForm history={history} location={location} />
       </div>
     </div>
   </div>

@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Expression render not expression 1`] = `
+<div
+  className="expression-block not"
+>
+  <OperatorDropdown
+    className="operator"
+    update={[Function]}
+  >
+    NOT
+    <div
+      className="type-button"
+      onClick={[Function]}
+    >
+      <i
+        className="fas fa-trash"
+      />
+    </div>
+  </OperatorDropdown>
+  <Expression />
+</div>
+`;
+
+exports[`Expression render other expression 1`] = `
+<div
+  className="expression-block other"
+>
+  <Expression
+    parentType="other"
+  />
+  <OperatorDropdown
+    className="operator"
+    update={[Function]}
+  >
+    <div
+      className="type-button"
+      onClick={[Function]}
+    >
+      <i
+        className="fas fa-trash"
+      />
+    </div>
+  </OperatorDropdown>
+  <Expression
+    parentType="other"
+  />
+</div>
+`;
+
+exports[`Expression render value expression 1`] = `
+<div
+  className="expression-block value"
+>
+  <div
+    className="type-button-container"
+  >
+    <OperatorDropdown
+      className="type-button"
+      update={[Function]}
+    >
+      <i
+        className="fas fa-code"
+      />
+    </OperatorDropdown>
+  </div>
+  <Input
+    onChange={[Function]}
+    placeholder="value"
+    type="text"
+  />
+</div>
+`;
+
+exports[`Expression render variable expression 1`] = `
+<div
+  className="expression-block variable"
+>
+  <div
+    className="type-button-container"
+  >
+    <OperatorDropdown
+      className="type-button"
+      update={[Function]}
+    >
+      <i
+        className="fas fa-code"
+      />
+    </OperatorDropdown>
+  </div>
+  <StateManager
+    className="variable-box"
+    classNamePrefix="variable-box"
+    components={
+      Object {
+        "Option": [Function],
+      }
+    }
+    defaultInputValue=""
+    defaultMenuIsOpen={false}
+    defaultValue={null}
+    onChange={[Function]}
+    options={Array []}
+    placeholder="No Variables Exist [!]"
+    styles={
+      Object {
+        "control": [Function],
+        "option": [Function],
+      }
+    }
+    value={null}
+  />
+</div>
+`;

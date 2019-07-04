@@ -22,13 +22,14 @@ class SetupSection extends Component {
   }
 
   render() {
-    const feed = this.props.integrationsUser && this.props.integrationsUser.user_id;
+    const { integrationsUser, toggleSection, open, apiKey, showNextSection, headers_loading } = this.props;
+    const feed = integrationsUser && integrationsUser.user_id;
     return (
       <>
-        <div className="d-flex flex-column section-title-container" onClick={() => this.props.toggleSection()}>
+        <div className="d-flex flex-column section-title-container" onClick={() => toggleSection()}>
           <div className="integrations-section-title text-muted">Zapier Setup</div>
         </div>
-        <Collapse isOpen={this.props.open} className="w-100">
+        <Collapse isOpen={open} className="w-100">
           <div className="d-flex flex-column mb-3 text-dark">
             <div className="d-flex flex-row w-100 align-items-center">
               <div className="d-flex flex-fill" style={{ overflow: 'auto' }}>
@@ -46,11 +47,11 @@ class SetupSection extends Component {
                     Connect your account with this API key
                     <InputGroup className="mt-1">
                       <InputGroupAddon addonType="prepend">
-                        <ClipBoard component="button" className="btn btn-clear copy-link" value={this.props.apiKey} id="shareKey">
+                        <ClipBoard component="button" className="btn btn-clear copy-link" value={apiKey} id="shareKey">
                           <i className="fas fa-copy" />
                         </ClipBoard>
                       </InputGroupAddon>
-                      <Input readOnly value={this.props.apiKey} className="form-control-border right" />
+                      <Input readOnly value={apiKey} className="form-control-border right" />
                     </InputGroup>
                   </li>
                   <li>
@@ -60,9 +61,9 @@ class SetupSection extends Component {
               </div>
             </div>
           </div>
-          {!this.props.headers_loading && (
+          {!headers_loading && (
             <div className="text-center my-3">
-              <Button isFlat onClick={this.props.showNextSection}>
+              <Button isFlat onClick={showNextSection}>
                 Next
               </Button>
             </div>

@@ -26,8 +26,15 @@ function makeNode(selected, pos, portMap) {
     if (port.hidden) {
       newPort.setHidden(port.hidden);
     }
-    if (portMap[`${selected.id}:${port.id}`]) {
-      portMap[`${selected.id}:${port.id}`][port.in ? 'setTargetPort' : 'setSourcePort'](newPort);
+
+    const pKey = `${selected.id}:${port.id}`;
+
+    if (portMap[pKey]) {
+      if (!port.in) {
+        portMap[pKey].setSourcePort(newPort);
+      } else {
+        portMap[pKey].forEach((p) => p.setTargetPort(newPort));
+      }
     }
   });
 
@@ -53,7 +60,8 @@ class Clipboard extends React.Component {
   }
 
   async copy(singleBlock) {
-    const blocks = singleBlock || this.props.engine.getDiagramModel().getSelectedItems();
+    const { engine, skill, dintents, dslots, ddisplays, dproducts, ddiagrams, setCanvasInfo } = this.props;
+    const blocks = singleBlock || engine.getDiagramModel().getSelectedItems();
     const nodes = blocks.filter((block) => block instanceof BlockNodeModel && block.extras.type !== 'story');
 
     const flatNodes = nodes.map((n) => (_.isEmpty(n.combines) ? n : n.combines)).flat();
@@ -63,10 +71,8 @@ class Clipboard extends React.Component {
       (block) => block instanceof BlockLinkModel && nodeset.has(block.sourcePort.parent.id) && nodeset.has(block.targetPort.parent.id)
     );
 
-    const { dintents, dslots, ddisplays, dproducts, ddiagrams } = this.props;
-
     let { intents, displays, products, diagrams } = (await axios.post(
-      `/skill/${this.props.skill.skill_id}/clipboard/copy`,
+      `/skill/${skill.skill_id}/clipboard/copy`,
       flatNodes.map((n) => n.serialize())
     )).data;
 
@@ -85,7 +91,7 @@ class Clipboard extends React.Component {
     ).map((id) => dslots[id]);
 
     const payload = {
-      skill: this.props.skill.skill_id,
+      skill: skill.skill_id,
       nodes: nodes.map((n) => n.serialize()),
       links: links.map((n) => n.serialize()),
       slots,
@@ -95,11 +101,11 @@ class Clipboard extends React.Component {
       diagrams,
     };
     localStorage.clipboard = JSON.stringify(payload);
-    this.props.setCanvasInfo(`${nodes.length} block(s) copied to clipboard`);
+    setCanvasInfo(`${nodes.length} block(s) copied to clipboard`);
   }
 
   async importExtra(payload) {
-    const { skill, dintents, dslots } = this.props;
+    const { skill, dintents, dslots, updateIntents, fetchProducts, fetchDisplays, addDiagrams } = this.props;
     const { slots, intents, products, displays, diagrams, nodes } = payload;
 
     slots.forEach((slot) => {
@@ -110,7 +116,7 @@ class Clipboard extends React.Component {
       if (!dintents[intent.key]) skill.intents.push(intent);
     });
 
-    this.props.updateIntents();
+    updateIntents();
 
     const { newNodes, newDiagrams } = (await axios.post(`/skill/${skill.skill_id}/clipboard/paste`, {
       nodes,
@@ -118,15 +124,15 @@ class Clipboard extends React.Component {
       displays,
       diagrams,
     })).data;
-    this.props.fetchProducts(skill.skill_id);
-    this.props.fetchDisplays(skill.skill_id);
-    this.props.addDiagrams(diagrams.map((diagram) => ({ ...diagram, sub_diagrams: [], id: newDiagrams[diagram.id] })));
+    fetchProducts(skill.skill_id);
+    fetchDisplays(skill.skill_id);
+    addDiagrams(diagrams.map((diagram) => ({ ...diagram, sub_diagrams: [], id: newDiagrams[diagram.id] })));
     return newNodes;
   }
 
   async paste() {
-    const { engine, skill } = this.props;
-    const point = engine.getRelativeMousePoint(this.props.getEvent());
+    const { engine, skill, getEvent, onPaste } = this.props;
+    const point = engine.getRelativeMousePoint(getEvent());
     engine.stopMove();
     engine.getDiagramModel().clearSelection();
     if (!localStorage.clipboard || JSON.parse(localStorage.clipboard).nodes.length === 0) return;
@@ -145,7 +151,12 @@ class Clipboard extends React.Component {
       newLink.setSelected(true);
 
       portMap[`${link.source}:${link.sourcePort}`] = newLink;
-      portMap[`${link.target}:${link.targetPort}`] = newLink;
+
+      const pKey = `${link.target}:${link.targetPort}`;
+      if (!portMap[pKey]) {
+        portMap[pKey] = [];
+      }
+      portMap[pKey].push(newLink);
 
       return newLink;
     });
@@ -154,7 +165,7 @@ class Clipboard extends React.Component {
     const newObjs = [...newNodes, ...newLinks];
 
     engine.getDiagramModel().addAll(...newObjs);
-    this.props.onPaste(newObjs, engine);
+    onPaste(newObjs, engine);
   }
 
   // eslint-disable-next-line lodash/prefer-constant

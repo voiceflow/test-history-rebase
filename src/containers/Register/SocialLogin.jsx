@@ -1,4 +1,3 @@
-import { googleClient, devGoogleClient, fbId } from './social-id';
 import { fbLogin, googleLogin } from 'ducks/account';
 import React, { Fragment, useEffect, useState } from 'react';
 import FacebookLogin from 'react-facebook-login';
@@ -6,6 +5,7 @@ import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
 
 import ErrorWidget from './ErrorWidget';
+import { devGoogleClient, fbId, googleClient } from './social-id';
 
 const SocialLogin = ({ entryText, googleLogin, fbLogin }) => {
   const [authError, setAuthError] = useState(null);

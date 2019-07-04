@@ -6,9 +6,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, ButtonGroup } from 'reactstrap';
 
+import AdvancedSettings from './Advanced';
 import BackupSettings from './Backups';
 // SETTING PAGES
-import BasicAdvancedSettings from './BasicAdvanced';
+import BasicSettings from './Basic';
 import DiscoverySettings from './Discovery';
 
 const TABS = ['basic', 'advanced', 'discovery', 'backups'];
@@ -23,23 +24,27 @@ class Settings extends Component {
   }
 
   switchTab(tab) {
-    if (tab !== this.props.page) {
-      this.props.history.push(`/settings/${this.props.skill_id}/${tab}`);
+    const { page, history, skill_id } = this.props;
+
+    if (tab !== page) {
+      history.push(`/settings/${skill_id}/${tab}`);
     }
   }
 
   onSwapVersions(skill_id, is_overwrite, cb) {
+    const { updateSkill, updateDiagramRoot, history } = this.props;
+
     axios
       .post(`/skill/${skill_id}/restore`)
       .then((res) => {
         if (!is_overwrite) {
-          this.props.updateSkill('skill_id', res.data.skill_id);
-          this.props.updateSkill('diagram', res.data.diagram);
+          updateSkill('skill_id', res.data.skill_id);
+          updateSkill('diagram', res.data.diagram);
         }
 
         if (!cb) {
-          this.props.updateDiagramRoot(res.data.diagram);
-          this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`);
+          updateDiagramRoot(res.data.diagram);
+          history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`);
         } else {
           // eslint-disable-next-line callback-return
           cb(true);
@@ -59,14 +64,17 @@ class Settings extends Component {
   }
 
   modalContent() {
-    if (!this.props.skill_id) {
+    const { skill_id, page } = this.props;
+
+    if (!skill_id) {
       return null;
     }
 
-    switch (this.props.page) {
+    switch (page) {
       case 'basic':
+        return <BasicSettings {...this.props} onSwapVersions={this.onSwapVersions} />;
       case 'advanced':
-        return <BasicAdvancedSettings {...this.props} onSwapVersions={this.onSwapVersions} />;
+        return <AdvancedSettings {...this.props} onSwapVersions={this.onSwapVersions} />;
       case 'discovery':
         return <DiscoverySettings {...this.props} />;
       case 'backups':
@@ -77,6 +85,8 @@ class Settings extends Component {
   }
 
   render() {
+    const { page, live_mode } = this.props;
+
     return (
       <div className="settings pt-4 pb-5">
         <div>
@@ -87,8 +97,8 @@ class Settings extends Component {
                   <Button
                     key={tab}
                     onClick={() => this.switchTab(tab)}
-                    outline={this.props.page !== tab}
-                    disabled={this.props.page === tab || (this.props.live_mode && tab === 'backups')}
+                    outline={page !== tab}
+                    disabled={page === tab || (live_mode && tab === 'backups')}
                   >
                     {_.startCase(tab)}
                   </Button>

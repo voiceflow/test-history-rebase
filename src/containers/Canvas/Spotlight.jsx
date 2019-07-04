@@ -14,15 +14,17 @@ export class Spotlight extends Component {
   }
 
   render() {
+    const { cancel, addBlock } = this.props;
+    const { blocks } = this.state;
     return (
       <div id="spotlight">
         <Select
-          onBlur={this.props.cancel}
+          onBlur={cancel}
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
           classNamePrefix="spotlight"
-          onChange={(selected) => this.props.addBlock(selected.value)}
-          options={this.state.blocks.map((block) => ({
+          onChange={(selected) => addBlock(selected.value)}
+          options={blocks.map((block) => ({
             label: block.text,
             value: block.type,
           }))}

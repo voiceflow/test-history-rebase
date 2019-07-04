@@ -1,3 +1,5 @@
+import './Menu.css';
+
 import cn from 'classnames';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -63,47 +65,17 @@ export class Menu extends Component {
     this.updateTree = this.updateTree.bind(this);
     this.openTab = this.openTab.bind(this);
     this.renderSideBar = this.renderSideBar.bind(this);
-    this.resize = this.resize.bind(this);
     this.visited = new Set();
-    this.m_pos = 0;
-    this.sidebar = React.createRef();
-  }
-
-  // eslint-disable-next-line react/no-deprecated
-  componentWillReceiveProps(nextProps) {
-    if (localStorage.getItem('sideWidth') && this.sidebar.current && nextProps.open) {
-      this.sidebar.current.style.width = localStorage.getItem('sideWidth');
-    }
-  }
-
-  resize(e) {
-    const dx = this.m_pos - e.x;
-    if (this.sidebar.current.style.width && (e.clientX < 280 || e.clientX > 960)) return;
-    this.m_pos = e.x;
-    this.sidebar.current.style.width = `${parseInt(getComputedStyle(this.sidebar.current, '').width, 10) - dx}px`;
-    localStorage.setItem('sideWidth', `${parseInt(getComputedStyle(this.sidebar.current, '').width, 10) - dx}px`);
   }
 
   componentDidMount() {
-    this.props.build(this.updateTree);
-    if (this.sidebar.current) {
-      this.sidebar.current.addEventListener(
-        'mousedown',
-        (e) => {
-          if (e.srcElement.classList.contains('open')) {
-            this.m_pos = e.x;
-            document.addEventListener('mousemove', this.resize, false);
-          }
-        },
-        false
-      );
-      document.addEventListener('mouseup', () => {
-        document.removeEventListener('mousemove', this.resize, false);
-      });
-    }
+    const { build } = this.props;
+    build(this.updateTree);
   }
 
   buildTree(node, depth = 0) {
+    const { diagrams, enterFlow, copyFlow, preview, deleteFlow } = this.props;
+
     if (depth < 5) {
       this.visited.add(node.id);
 
@@ -118,7 +90,7 @@ export class Menu extends Component {
         tree = sub_diagrams.map((diagram_id, i) => {
           if (!visited_sub_diagrams.has(diagram_id)) {
             visited_sub_diagrams.add(diagram_id);
-            const block = this.props.diagrams.find((d) => d.id === diagram_id);
+            const block = diagrams.find((d) => d.id === diagram_id);
 
             if (block) {
               return (
@@ -136,10 +108,10 @@ export class Menu extends Component {
           <FlowButton
             flow={node}
             depth={depth}
-            enterFlow={this.props.enterFlow}
-            copyFlow={() => this.props.copyFlow(node.id)}
-            preview={this.props.preview}
-            deleteFlow={() => this.props.deleteFlow(node.id)}
+            enterFlow={enterFlow}
+            copyFlow={() => copyFlow(node.id)}
+            preview={preview}
+            deleteFlow={() => deleteFlow(node.id)}
           />
           {tree}
         </React.Fragment>
@@ -155,105 +127,103 @@ export class Menu extends Component {
   }
 
   updateTree() {
+    const { diagrams } = this.props;
     // eslint-disable-next-line guard-for-in, no-restricted-syntax
-    for (const diagram of this.props.diagrams) {
+    for (const diagram of diagrams) {
       if (diagram.name === 'ROOT') {
         this.visited = new Set();
         this.setState({
           tree: this.buildTree(diagram),
-          depth: this.props.diagrams.length,
+          depth: diagrams.length,
         });
       }
     }
   }
 
   openTab(tab) {
-    if (tab !== this.props.tab || !this.props.open) {
+    const { tab: propsTab, open, setTab } = this.props;
+    if (tab !== propsTab || !open) {
       localStorage.setItem('tab', tab);
-      this.props.setTab(tab);
+      setTab(tab);
     }
   }
 
   renderSideBar() {
-    switch (this.props.tab) {
+    const { tab, preview, enterFlow, copyFlow, deleteFlow, user_modules, user, toggleUpgrade, type_counter, history } = this.props;
+    const { tree } = this.state;
+    switch (tab) {
       case 'variables':
-        return <Variables locked={this.props.preview} />;
+        return <Variables locked={preview} />;
       case 'flows':
         return (
           <Flows
-            tree={this.state.tree}
+            tree={tree}
             visited={this.visited}
-            enterFlow={this.props.enterFlow}
-            copyFlow={this.props.copyFlow}
+            enterFlow={enterFlow}
+            copyFlow={copyFlow}
             deleteFlow={(diagram_id) => {
-              this.props.deleteFlow(diagram_id);
+              deleteFlow(diagram_id);
               this.updateTree();
             }}
           />
         );
       default:
-        return (
-          <Blocks
-            user_modules={this.props.user_modules}
-            user={this.props.user}
-            toggleUpgrade={this.props.toggleUpgrade}
-            type_counter={this.props.type_counter}
-            history={this.props.history}
-          />
-        );
+        return <Blocks user_modules={user_modules} user={user} toggleUpgrade={toggleUpgrade} type_counter={type_counter} history={history} />;
     }
   }
 
+  toggleTab = () => {
+    const { open, closeTab, openTab } = this.props;
+    if (open) {
+      closeTab();
+    } else {
+      openTab('blocks');
+    }
+  };
+
   render() {
+    const { unfocus, preview, tab, open, openTab, loading_diagram } = this.props;
     return (
-      <div className="Menu" onFocus={this.props.unfocus} onMouseDown={this.props.unfocus} onKeyDown={this.props.unfocus}>
-        {!this.props.preview && (
-          <div className="toolbar">
-            <div className="top-down">
-              {tabs.top.map((tab, i) => {
-                return (
-                  <Tooltip key={i} title={tab.tip} position="right" disabled={tab.tab === this.props.tab && this.props.open}>
-                    <div
-                      className={cn('tool', {
-                        active: tab.tab === this.props.tab && this.props.open,
-                      })}
-                      onClick={() => this.props.openTab(tab.tab)}
-                    >
-                      {tab.icon}
-                    </div>
-                  </Tooltip>
-                );
-              })}
+      <div className="Menu" onFocus={unfocus} onMouseDown={unfocus} onKeyDown={unfocus}>
+        <div id="sidebar" className={cn({ open }, 'canvas-sidebar')} ref={this.sidebar}>
+          {!preview && (
+            <div className="toolbar">
+              <div className="top-down">
+                {tabs.top.map((tab, i) => {
+                  return (
+                    <Tooltip key={i} title={tab.tip} position="right" disabled={tab.tab === tab && open}>
+                      <div
+                        className={cn('tool', {
+                          active: tab.tab === tab && open,
+                        })}
+                        onClick={() => openTab(tab.tab)}
+                      >
+                        {tab.icon}
+                      </div>
+                    </Tooltip>
+                  );
+                })}
+              </div>
+              <div className="spacer" />
+              <div className="bottom-up">
+                {tabs.bottom.map((tab, i) => {
+                  return (
+                    <Tooltip key={i} title={tab.tip} position="right">
+                      <a className="tool no-underline" href={tab.link} target="_blank" rel="noopener noreferrer">
+                        {tab.icon}
+                      </a>
+                    </Tooltip>
+                  );
+                })}
+              </div>
             </div>
-            <div className="spacer" />
-            <div className="bottom-up">
-              {tabs.bottom.map((tab, i) => {
-                return (
-                  <Tooltip key={i} title={tab.tip} position="right">
-                    <a className="tool no-underline" href={tab.link} target="_blank" rel="noopener noreferrer">
-                      {tab.icon}
-                    </a>
-                  </Tooltip>
-                );
-              })}
-            </div>
-          </div>
-        )}
-        <div id="sidebar" className={cn({ open: this.props.open })} ref={this.sidebar}>
-          <div className={cn('sidebar-container', this.props.tab)}>
-            {this.props.loading_diagram ? null : (
+          )}
+          <div className={cn('sidebar-container', tab)}>
+            {loading_diagram ? null : (
               <React.Fragment>
                 <div className="sidebar-header">
-                  <div
-                    className="block-title no-select mb-3"
-                    onClick={() => {
-                      this.props.closeTab();
-                      localStorage.setItem('sideWidth', this.sidebar.current.style.width);
-                      this.sidebar.current.style.width = '240px';
-                    }}
-                  >
-                    <h5 className="mb-0">{this.props.tab}</h5>
-                    <div className="close pl-3 py-3" />
+                  <div className="block-title no-select mb-3">
+                    <h5 className="mb-0">{tab}</h5>
                   </div>
                 </div>
                 <div className="sidebar-content">{this.renderSideBar()}</div>
@@ -261,6 +231,11 @@ export class Menu extends Component {
             )}
           </div>
         </div>
+        <label
+          className={cn(`canvas-sidebar-${open ? 'open' : 'closed'}`, 'canvas-sidebar-expand')}
+          onClick={() => this.toggleTab()}
+          htmlFor="canvas-sidebar"
+        />
       </div>
     );
   }

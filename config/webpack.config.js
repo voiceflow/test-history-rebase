@@ -534,19 +534,20 @@ module.exports = function(webpackEnv) {
           silent: true,
           formatter: typescriptFormatter,
         }),
-      new CircularDependencyPlugin({
-        exclude: /node_modules/,
-        allowAsyncCycles: true,
-        cwd: process.cwd(),
-        failOnError: true,
+      !isEnvProduction &&
+        new CircularDependencyPlugin({
+          exclude: /node_modules/,
+          allowAsyncCycles: true,
+          cwd: process.cwd(),
+          failOnError: true,
 
-        onDetected({ paths, compilation }) {
-          // ignore self-referencing modules
-          if (paths.length > 2) {
-            compilation.warnings.push(new Error(`Circular dependency detected:\n${paths.join(' -> ')}`));
-          }
-        },
-      }),
+          onDetected({ paths, compilation }) {
+            // ignore self-referencing modules
+            if (paths.length > 2) {
+              compilation.warnings.push(new Error(`Circular dependency detected:\n${paths.join(' -> ')}`));
+            }
+          },
+        }),
       new UnusedFilesWebpackPlugin({
         // failOnUnused: true,
         globOptions: {

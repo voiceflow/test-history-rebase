@@ -8,7 +8,7 @@ class SetBlock extends Component {
   constructor(props) {
     super(props);
 
-    const node = this.props.node;
+    const { node } = props;
 
     if (!Array.isArray(node.extras.sets) || node.extras.sets.length === 0) {
       node.extras.sets = [
@@ -23,29 +23,17 @@ class SetBlock extends Component {
       ];
     }
 
-    this.state = {
-      node,
-    };
-
-    this.onUpdate = this.onUpdate.bind(this);
-    this.handleAddBlock = this.handleAddBlock.bind(this);
-    this.handleRemoveBlock = this.handleRemoveBlock.bind(this);
-    this.handleSelection = this.handleSelection.bind(this);
+    this.state = { node };
   }
 
-  onUpdate() {
-    this.setState(
-      {
-        node: this.state.node,
-      },
-      this.props.onUpdate
-    );
-  }
+  onUpdate = () => this.setState({ node: this.state.node }, this.props.onUpdate);
 
-  handleAddBlock() {
-    const node = this.state.node;
+  handleAddBlock = () => {
+    const { node } = this.state;
+
     this.props.clearRedo();
     this.props.updateEvents(_.cloneDeep(node).extras, _.cloneDeep(node).ports);
+
     if (node.extras.sets.length < 20) {
       node.extras.sets.push({
         variable: null,
@@ -56,64 +44,52 @@ class SetBlock extends Component {
         },
       });
 
-      this.setState(
-        {
-          node,
-        },
-        this.props.onUpdate
-      );
+      this.onUpdate();
     }
-  }
+  };
 
-  handleRemoveBlock(i) {
-    const node = this.state.node;
+  handleRemoveBlock(index) {
+    const { node } = this.state;
+
     this.props.clearRedo();
     this.props.updateEvents(_.cloneDeep(node).extras, _.cloneDeep(node).ports);
-    if (node.extras.sets.length > 1) {
-      node.extras.sets.splice(i, 1);
 
-      this.setState(
-        {
-          node,
-        },
-        this.props.onUpdate
-      );
+    if (node.extras.sets.length > 1) {
+      node.extras.sets.splice(index, 1);
+
+      this.onUpdate();
     }
   }
 
-  handleSelection(i, value) {
-    const node = this.state.node;
+  handleSelection(index, value) {
+    const { node } = this.state;
 
-    if (node.extras.sets[i].variable !== value) {
-      node.extras.sets[i].variable = value;
+    if (node.extras.sets[index].variable !== value) {
+      node.extras.sets[index].variable = value;
 
-      this.setState(
-        {
-          node,
-        },
-        this.props.onUpdate
-      );
+      this.onUpdate();
     }
   }
 
   render() {
+    const { variables } = this.props;
+    const { node } = this.state;
+
     return (
       <>
         <div id="set-container">
-          {this.state.node.extras.sets.map((block, i) => {
-            return (
-              <SetExpression
-                key={i}
-                block={block}
-                onRemove={() => this.handleRemoveBlock(i)}
-                onSelection={(selected) => this.handleSelection(i, selected.value)}
-                onUpdate={this.onUpdate}
-                variables={this.props.variables}
-              />
-            );
-          })}
+          {node.extras.sets.map((block, index) => (
+            <SetExpression
+              key={index}
+              block={block}
+              onRemove={() => this.handleRemoveBlock(index)}
+              onSelection={(selected) => this.handleSelection(index, selected.value)}
+              onUpdate={this.onUpdate}
+              variables={variables}
+            />
+          ))}
         </div>
-        {this.state.node.extras.sets.length < 20 && (
+        {node.extras.sets.length < 20 && (
           <div className="text-center mt-3">
             <Button isBtn isFlatVariable onClick={this.handleAddBlock}>
               Add Variable Set

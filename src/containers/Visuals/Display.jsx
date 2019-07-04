@@ -17,8 +17,9 @@ import { Col, FormGroup, Input, Row } from 'reactstrap';
 class Display extends Component {
   constructor(props) {
     super(props);
+    const { computedMatch } = this.props;
 
-    const id = this.props.computedMatch.params.id;
+    const id = computedMatch.params.id;
     const is_new = id === 'new';
 
     this.state = {
@@ -47,9 +48,11 @@ class Display extends Component {
   }
 
   componentDidMount() {
-    if (this.state.display_id !== 'new') {
+    const { display_id } = this.state;
+    const { setError } = this.props;
+    if (display_id !== 'new') {
       axios
-        .get(`/multimodal/display/${this.state.display_id}`)
+        .get(`/multimodal/display/${display_id}`)
         .then((res) => {
           this.setState({
             document: res.data.document,
@@ -61,7 +64,7 @@ class Display extends Component {
         })
         .catch((err) => {
           console.error(err);
-          this.props.setError({
+          setError({
             message: 'Unable to Retrieve Display',
           });
         });
@@ -87,8 +90,11 @@ class Display extends Component {
   }
 
   save() {
-    if (this.state.saved) return;
-    if (!this.state.title) {
+    const { saved, title, document, datasource, description, display_id } = this.state;
+    const { skill_id, history, dispatch, setError } = this.props;
+
+    if (saved) return;
+    if (!title) {
       this.setState({
         error: {
           message: 'Empty Display Title',
@@ -102,20 +108,20 @@ class Display extends Component {
     });
 
     const payload = {
-      document: this.state.document,
-      datasource: this.state.datasource,
-      title: this.state.title,
-      description: this.state.description,
+      document,
+      datasource,
+      title,
+      description,
     };
 
-    if (this.state.display_id === 'new') {
+    if (display_id === 'new') {
       axios
-        .post(`/multimodal/display?skill_id=${this.props.skill_id}`, payload)
+        .post(`/multimodal/display?skill_id=${skill_id}`, payload)
         .then((res) => {
           // get display id back
-          this.props.history.push(`/visuals/${this.props.skill_id}/display/${res.data}`);
+          history.push(`/visuals/${skill_id}/display/${res.data}`);
           payload.display_id = res.data;
-          this.props.dispatch(addDisplay(payload));
+          dispatch(addDisplay(payload));
           this.setState({
             display_id: res.data,
             saved: true,
@@ -124,7 +130,7 @@ class Display extends Component {
         })
         .catch((err) => {
           console.error(err);
-          this.props.setError({
+          setError({
             message: 'Unable to save new display',
           });
           this.setState({
@@ -133,10 +139,10 @@ class Display extends Component {
         });
     } else {
       axios
-        .patch(`/multimodal/display/${this.state.display_id}?skill_id=${this.props.skill_id}`, payload)
+        .patch(`/multimodal/display/${display_id}?skill_id=${skill_id}`, payload)
         .then(() => {
-          payload.display_id = this.state.display_id;
-          this.props.dispatch(updateDisplay(payload));
+          payload.display_id = display_id;
+          dispatch(updateDisplay(payload));
           this.setState({
             saved: true,
             saving: false,
@@ -144,7 +150,7 @@ class Display extends Component {
         })
         .catch((err) => {
           console.error(err);
-          this.props.setError({
+          setError({
             message: 'Unable to save display',
           });
           this.setState({
@@ -155,6 +161,7 @@ class Display extends Component {
   }
 
   onDropJSON(accepted, rejected) {
+    const { setError } = this.props;
     if (Array.isArray(accepted) && accepted.length === 1) {
       // eslint-disable-next-line compat/compat
       const fileReader = new FileReader();
@@ -183,21 +190,23 @@ class Display extends Component {
             datasource: JSON.stringify(datasource, null, '\t'),
           });
         } catch (err) {
-          return this.props.setError('Invalid JSON Format');
+          return setError('Invalid JSON Format');
         }
       };
 
       fileReader.onloadend = handleFileRead;
       fileReader.readAsText(accepted[0]);
     } else if (Array.isArray(rejected) && rejected.length > 0) {
-      this.props.setError('APL JSON Files Only');
+      setError('APL JSON Files Only');
     }
   }
 
   render() {
+    const { loading, saving, saved, title, description, document, datasource } = this.state;
+    const { history, skill_id } = this.props;
     return (
       <div className="business-page-inner">
-        {this.state.loading ? (
+        {loading ? (
           React.createElement(Spinner, { name: 'Displays' })
         ) : (
           <Dropzone
@@ -246,24 +255,24 @@ class Display extends Component {
                         varient="contained"
                         className="mr-2"
                         onClick={() => {
-                          this.props.history.push(`/visuals/${this.props.skill_id}`);
+                          history.push(`/visuals/${skill_id}`);
                         }}
                       >
                         Back
                       </Button>
                       <Button isPrimary varient="contained" onClick={this.save} style={{ width: 100 }}>
-                        {this.state.saving ? <span className="loader" /> : <React.Fragment>Save{this.state.saved ? '' : '*'}</React.Fragment>}
+                        {saving ? <span className="loader" /> : <React.Fragment>Save{saved ? '' : '*'}</React.Fragment>}
                       </Button>
                     </div>
                   </div>
                   <hr />
                   <FormGroup className="mt-0">
                     <label>Display Name</label>
-                    <Input name="title" placeholder="Name of Display" value={this.state.title} onChange={this.onChange} />
+                    <Input name="title" placeholder="Name of Display" value={title} onChange={this.onChange} />
                   </FormGroup>
                   <FormGroup>
                     <label>Description</label>
-                    <Input name="description" placeholder="Description of Display" value={this.state.description} onChange={this.onChange} />
+                    <Input name="description" placeholder="Description of Display" value={description} onChange={this.onChange} />
                   </FormGroup>
                   <hr />
                   <Button isClear block onClick={() => open()} className="mb-4 w-100">
@@ -283,7 +292,7 @@ class Display extends Component {
                           showPrintMargin={false}
                           showGutter={true}
                           highlightActiveLine={true}
-                          value={this.state.document}
+                          value={document}
                           editorProps={{ $blockScrolling: true }}
                           setOptions={{
                             enableBasicAutocompletion: true,
@@ -307,7 +316,7 @@ class Display extends Component {
                           showPrintMargin={false}
                           showGutter={true}
                           highlightActiveLine={true}
-                          value={this.state.datasource}
+                          value={datasource}
                           editorProps={{ $blockScrolling: true }}
                           setOptions={{
                             enableBasicAutocompletion: true,

@@ -1,21 +1,22 @@
-import GoogleLogin from 'react-google-login';
-import { googleClient, devGoogleClient } from 'containers/Register/social-id';
+import { devGoogleClient, googleClient } from 'containers/Register/social-id';
 import { addIntegrationUser } from 'ducks/integration';
 import React, { Component } from 'react';
+import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
 
 import { GOOGLE_SHEETS } from './constants';
 
 class GoogleAddUserModal extends Component {
   googleLogin = async (userProfile) => {
+    const { onBegin, addUser, user, skill_id, onSuccess, onError } = this.props;
     try {
-      this.props.onBegin();
-      await this.props.addUser({
+      onBegin();
+      await addUser({
         user_info: userProfile,
-        creator_id: this.props.user.creator_id,
-        skill_id: this.props.skill_id,
+        creator_id: user.creator_id,
+        skill_id,
       });
-      this.props.onSuccess();
+      onSuccess();
     } catch (e) {
       let error = e;
       if (e.response && typeof e.response.data === 'string') {
@@ -25,7 +26,7 @@ class GoogleAddUserModal extends Component {
       } else if (e.response) {
         error = `Error occured: ${JSON.stringify(e.response.data)}`;
       }
-      this.props.onError(error);
+      onError(error);
     }
   };
 
@@ -40,7 +41,7 @@ class GoogleAddUserModal extends Component {
         </div>
         <div className="d-flex justify-content-center mx-5 my-3">
           <GoogleLogin
-            clientId={process.env.REACT_APP_BUILD_ENV === 'production' ? googleClient : devGoogleClient }
+            clientId={process.env.REACT_APP_BUILD_ENV === 'production' ? googleClient : devGoogleClient}
             className="social-button class-ggl mb-4"
             buttonText="Login with Google"
             onSuccess={this.googleLogin}

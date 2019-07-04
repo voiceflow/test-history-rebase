@@ -490,7 +490,7 @@ class TeamSettings extends Component {
     const fullscreen = stage in STAGES && STAGES[stage].fullscreen;
 
     return (
-      <div style={{ marginRight: 30, marginLeft: 30 }}>
+      <div style={{ marginRight: 30, marginLeft: 15 }}>
         <UncontrolledDropdown inNavbar>
           <DropdownToggle tag="div" className="pointer">
             <img src="/cog.svg" width={17} alt="cog" />

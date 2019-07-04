@@ -283,7 +283,7 @@ export const DashBoard = (props) => {
               <div className="super-center">
                 {props.team && (
                   <>
-                    <div style={{ color: '#CDAD32', marginRight: 30 }} className="pointer" onClick={() => setTeamSetting('MEMBERS')}>
+                    <div style={{ color: '#CDAD32', marginRight: 15 }} className="pointer" onClick={() => setTeamSetting('MEMBERS')}>
                       <img src="/images/icons/power.svg" alt="power" className="px-2" />
                       Add Collaborators
                     </div>

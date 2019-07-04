@@ -22,7 +22,7 @@ export const removeAuthCookie = () => cookies.remove(AUTH_COOKIE, cookieOptions)
 
 export const setAuthCookie = (token) => {
   cookies.set(AUTH_COOKIE, token, cookieOptions);
-  window.CreatorSocket.authCB && window.CreatorSocket.authCB(token);
+  window.CreatorSocket && window.CreatorSocket.authCB && window.CreatorSocket.authCB(token);
 };
 
 export function getAuthCookie() {

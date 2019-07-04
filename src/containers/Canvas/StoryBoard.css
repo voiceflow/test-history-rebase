@@ -1035,8 +1035,6 @@
 .Menu #sidebar .blocks {
   border: 1px solid #ddd;
   border-left: none !important;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
 }
 
 .MenuItem {

@@ -111,22 +111,14 @@ export const initializeTest = () => (dispatch, getState) => {
 
   const nlc = new NLC();
 
-  // Load in built in slots and intents
-  try {
-    const language = locales[0].slice(0, 2);
-    const builtInIntents = DEFAULT_INTENTS[language].defaults;
-
-    builtInIntents.forEach((intent) => {
-      const { samples, name } = intent;
-      nlc.registerIntent({
-        intent: name,
-        utterances: samples,
-        callback: _.noop,
+  slots.forEach((slot) => {
+    if (slot.type.value && slot.type.value.toLowerCase() === 'custom') {
+      nlc.addSlotType({
+        type: slot.name,
+        matcher: slot.inputs,
       });
-    });
-  } catch (err) {
-    console.error(err);
-  }
+    }
+  });
 
   const builtInSlots = [];
   SLOT_TYPES.forEach((s) => {
@@ -140,15 +132,6 @@ export const initializeTest = () => (dispatch, getState) => {
       type: s,
       matcher,
     });
-  });
-
-  slots.forEach((slot) => {
-    if (slot.type.value && slot.type.value.toLowerCase() === 'custom') {
-      nlc.addSlotType({
-        type: slot.name,
-        matcher: slot.inputs,
-      });
-    }
   });
 
   intents.forEach((intent) => {
@@ -165,6 +148,23 @@ export const initializeTest = () => (dispatch, getState) => {
       callback: _.noop,
     });
   });
+
+  // Load in built in slots and intents
+  try {
+    const language = locales[0].slice(0, 2);
+    const builtInIntents = DEFAULT_INTENTS[language].defaults;
+
+    builtInIntents.forEach((intent) => {
+      const { samples, name } = intent;
+      nlc.registerIntent({
+        intent: name,
+        utterances: samples,
+        callback: _.noop,
+      });
+    });
+  } catch (err) {
+    console.error(err);
+  }
 
   dispatch(
     updateTest({

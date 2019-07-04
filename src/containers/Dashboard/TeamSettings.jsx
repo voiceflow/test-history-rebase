@@ -493,7 +493,7 @@ class TeamSettings extends Component {
       <>
         <UncontrolledDropdown inNavbar>
           <DropdownToggle tag="div" className="pointer">
-            <img src="/cog.svg" className="mr-3 ml-3" width={17} alt="cog" />
+            <img src="/cog.svg" width={17} alt="cog" style={{ marginRight: 29, marginLeft: 16 }} />
           </DropdownToggle>
           <DropdownMenu right className="no-select">
             <DropdownItem onClick={() => update('MEMBERS')}>{this.IS_ADMIN ? 'Manage Members' : 'Team Members'}</DropdownItem>

@@ -280,7 +280,7 @@ export const DashBoard = (props) => {
                   </Link>
                 )}
               </div>
-              <div className="mr-4 super-center">
+              <div className="super-center">
                 {props.team && (
                   <>
                     <div style={{ color: '#CDAD32' }} className="mr-3 pointer" onClick={() => setTeamSetting('MEMBERS')}>

@@ -46,43 +46,6 @@ export const recurse = (tag, index = 0) => {
   );
 };
 
-export const getDiagramIntents = (diagramEngine, results, testing_info) => {
-  const detected_intents = [];
-  const diagram_intents = _.some(diagramEngine.getDiagramModel().getNodes(), (node) => {
-    if (node.extras.type === 'intent') {
-      return {
-        id: node.id,
-        google_intent: node.extras.google,
-        alexa_intent: node.extras.alexa,
-      };
-    }
-  });
-  _.forEach(results, (result) => {
-    const intent_name = result.name;
-    const detected_slots = result.slots;
-    const slot_mapping = testing_info.slot_mappings[intent_name] || [];
-    const formatted_slots = {};
-
-    slot_mapping.forEach((slot, i) => {
-      if (detected_slots) {
-        formatted_slots[slot.name] = {
-          value: detected_slots[i],
-        };
-      }
-    });
-    if (intent_name) {
-      detected_intents.push({
-        intent: intent_name,
-        slots: formatted_slots,
-      });
-    }
-  });
-  return {
-    detected_intents,
-    diagram_intents,
-  };
-};
-
 const getAudioMeta = (audio) => {
   return new Promise((resolve) => {
     audio.addEventListener('loadedmetadata', (e) => {

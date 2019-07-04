@@ -490,10 +490,10 @@ class TeamSettings extends Component {
     const fullscreen = stage in STAGES && STAGES[stage].fullscreen;
 
     return (
-      <>
+      <div style={{ marginRight: 30, marginLeft: 30 }}>
         <UncontrolledDropdown inNavbar>
           <DropdownToggle tag="div" className="pointer">
-            <img src="/cog.svg" width={17} alt="cog" style={{ marginRight: 29, marginLeft: 16 }} />
+            <img src="/cog.svg" width={17} alt="cog" />
           </DropdownToggle>
           <DropdownMenu right className="no-select">
             <DropdownItem onClick={() => update('MEMBERS')}>{this.IS_ADMIN ? 'Manage Members' : 'Team Members'}</DropdownItem>
@@ -545,7 +545,7 @@ class TeamSettings extends Component {
             {this.renderBody()}
           </ModalBody>
         </Modal>
-      </>
+      </div>
     );
   }
 }

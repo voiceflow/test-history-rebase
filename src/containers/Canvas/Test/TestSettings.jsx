@@ -23,15 +23,15 @@ function TestSettings(props) {
           const isDefault = name in defaultVariables;
 
           return (
-            <div key={name} className="test-variable">
-              <div className={cn('variable_tag', { default: isDefault })}>{`{${name}}`}</div>
-              <input className="input-clear" value={value} onChange={(e) => updateGlobal(name, e.target.value)} />
+            <div key={name} className="test-variable editor">
+              <div className={cn('variable_tag', { default: isDefault })}>{name}</div>
+              <input className="input-clear" value={value} onChange={(e) => updateGlobal(name, e.target.value)} placeholder="Variable Value" />
             </div>
           );
         })}
       </div>
       <div className="no-space__break" />
-      <div style={{ padding: 20 }} className="py-5">
+      <div style={{ padding: 20 }}>
         <div className="space-between">
           <span className="text-dull">Debug Mode</span>
           <Toggle checked={debug} icons={false} onChange={() => setDebug(!debug)} />

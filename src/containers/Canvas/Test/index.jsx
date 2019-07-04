@@ -48,7 +48,7 @@ function Test(props) {
       {open && <TestSettings open={conditionsOpen} />}
       <div id="TestSidebar" className={cn({ open })}>
         <div className={cn('sidebar_container variables_container', { open: conditionsOpen })}>
-          <div className="condition-label" onClick={toggleConditionsOpen}>
+          <div className="condition-label pointer" onClick={toggleConditionsOpen}>
             <label>Settings</label>
             <i
               className={cn('fas fa-caret-up fa-lg light-grey rotate', {
@@ -62,7 +62,7 @@ function Test(props) {
           <div className="condition-label">
             <label>Dialog</label>
             <div onClick={resetTest} className={cn('d-flex align-items-center', { disabled: !active })}>
-              <Tooltip title="Restart Test" position="bottom">
+              <Tooltip title="Reset Test" position="bottom">
                 <img src="/restart.svg" alt="restart" width="15" height="15" />
               </Tooltip>
             </div>

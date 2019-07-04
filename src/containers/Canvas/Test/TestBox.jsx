@@ -114,7 +114,7 @@ class TestBox extends PureComponent {
           <div className="chatbox px-3">
             <div className="chats">
               <div className="break" style={{ top: -20 }}>
-                <span className="or">New Session Started</span>
+                <span className="break-text">New Session Started</span>
               </div>
               {outputs.map((chat, i) => {
                 if (chat.self) {
@@ -124,7 +124,6 @@ class TestBox extends PureComponent {
                         <p className="mb-0 px-1 text-left">
                           {chat.self}
                           <br />
-                          <small className="text-muted">{chat.time}</small>
                         </p>
                       </div>
                       <img src="/user_reply.svg" height={18} width={18} alt="user" className="speak-box-icon ml-2" />
@@ -164,7 +163,7 @@ class TestBox extends PureComponent {
         </div>
         <div className="no-space__break" />
         <div id="TestInputContainer" className={cn({ disabled: ended })}>
-          <div className="space-between pointer" onClick={this.toggleInputOpen}>
+          <div className="condition-label space-between pointer" onClick={this.toggleInputOpen}>
             <span className="light-grey">{listening ? '(Listening)' : 'User Says'}</span>
             <i
               className={cn('fas fa-caret-left fa-lg light-grey rotate', {

@@ -102,7 +102,7 @@ export class Menu extends Component {
         false
       );
       document.addEventListener('mouseup', () => {
-        localStorage.setItem('sideWidth', this.sidebar.current.offsetWidth);
+        if (this.sidebar.current) localStorage.setItem('sideWidth', this.sidebar.current.offsetWidth);
         document.removeEventListener('mousemove', this.resize, false);
       });
     }

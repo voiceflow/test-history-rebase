@@ -98,11 +98,7 @@ exports[`Choice Input render choice input 1`] = `
     >
       <TextareaAutosize
         className="form-control mb-1"
-        inputRef={
-          Object {
-            "current": null,
-          }
-        }
+        inputRef={[Function]}
         onChange={[Function]}
         onHeightChange={[Function]}
         onKeyPress={[Function]}

@@ -5,8 +5,6 @@ import React, { Component } from 'react';
 import SetExpression from './components/SetExpression';
 
 class SetBlock extends Component {
-  lastExpressionRef = React.createRef();
-
   constructor(props) {
     super(props);
 
@@ -26,20 +24,6 @@ class SetBlock extends Component {
     }
 
     this.state = { node };
-  }
-
-  focusLastChoice() {
-    if (this.state.node.extras.sets.length && this.lastExpressionRef.current) {
-      this.lastExpressionRef.current.focus();
-    }
-  }
-
-  componentDidMount() {
-    this.focusLastChoice();
-  }
-
-  componentDidUpdate() {
-    this.focusLastChoice();
   }
 
   onUpdate = () => this.setState({ node: this.state.node }, this.props.onUpdate);
@@ -102,7 +86,6 @@ class SetBlock extends Component {
               onSelection={(selected) => this.handleSelection(index, selected.value)}
               onUpdate={this.onUpdate}
               variables={variables}
-              ref={index === node.extras.sets.length - 1 && this.lastExpressionRef}
             />
           ))}
         </div>

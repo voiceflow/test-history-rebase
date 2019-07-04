@@ -6,7 +6,7 @@ import ChoiceInputs from '../ChoiceInputs';
 
 describe('Choice Inputs', () => {
   it('render choice input', () => {
-    const component = shallow(<ChoiceInputs choices={[{ value: 'a' }, { value: 'b' }]} inputs={[{ value: 'a' }, { value: 'b' }]} />);
+    const component = shallow(<ChoiceInputs choices={[{ value: 'a', key: 1 }, { value: 'b', key: 2 }]} inputs={[{ value: 'a' }, { value: 'b' }]} />);
 
     expect(toJson(component)).toMatchSnapshot();
   });

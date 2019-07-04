@@ -877,7 +877,6 @@
 
 .Menu #sidebar {
   position: absolute;
-  left: 40px;
   z-index: 8;
 
   /* opacity: 0.9; */
@@ -885,7 +884,7 @@
   /* text-align: center; */
   display: flex;
   flex-direction: column;
-  width: 250px;
+  width: 290px;
   min-width: 250px;
   max-width: 80vw;
   height: 100%;
@@ -965,6 +964,7 @@
 
 .Menu #sidebar .sidebar-container {
   height: 100%;
+  margin-left: 40px;
   padding: 0 15px;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -1030,11 +1030,6 @@
 
 .section-title:hover {
   cursor: pointer;
-}
-
-.Menu #sidebar .blocks {
-  border: 1px solid #ddd;
-  border-left: none !important;
 }
 
 .MenuItem {

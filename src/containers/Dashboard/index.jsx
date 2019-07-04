@@ -10,7 +10,17 @@ import UpdatesModal from 'components/Modals/UpdatesModal';
 import { Members } from 'components/User/User';
 import { ScrollContextProvider } from 'contexts';
 import { unnormalize } from 'ducks/_normalize';
-import { addBoard, changeListPosition, changeProjectPosition, deleteBoard, fetchBoards, renameList, updateBoards, updateLists } from 'ducks/board';
+import {
+  addBoard,
+  changeListPosition,
+  changeProjectPosition,
+  clearNewList,
+  deleteBoard,
+  fetchBoards,
+  renameList,
+  updateBoards,
+  updateLists,
+} from 'ducks/board';
 import { setConfirm, setError } from 'ducks/modal';
 import { copyProject, deleteProject, updateProjects } from 'ducks/project';
 import { getMembers } from 'ducks/team';
@@ -363,6 +373,7 @@ export const DashBoard = (props) => {
                         <List
                           id={board.board_id}
                           key={board.board_id}
+                          isNew={board.isNew}
                           index={idx}
                           name={board.name}
                           onRename={props.renameBoard}
@@ -374,6 +385,7 @@ export const DashBoard = (props) => {
                           onMove={props.changeListPosition}
                           onDrop={saveList}
                           onMoveProject={props.changeProjectPosition}
+                          clearNewBoard={props.clearIsNewBoard}
                           onDropProject={saveList}
                           disableDragging={!!filter}
                         />
@@ -428,6 +440,7 @@ const mapDispatchToProps = (dispatch) => {
     updateLists: (team_id) => dispatch(updateLists(team_id)),
     removeBoard: (board_id) => dispatch(deleteBoard(board_id)),
     renameBoard: (board_id, new_name) => dispatch(renameList(board_id, new_name)),
+    clearIsNewBoard: (board_id) => dispatch(clearNewList(board_id)),
     updateBoards: (boards) => dispatch(updateBoards(boards)),
     updateProjects: (projects) => dispatch(updateProjects(projects)),
     changeProjectPosition: (drag, hover) => dispatch(changeProjectPosition(drag, hover)),

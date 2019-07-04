@@ -9,7 +9,7 @@ import { useToggle } from 'hooks/toggle';
 import * as _ from 'lodash';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Item from './Item';
 
@@ -36,11 +36,13 @@ export function List(props) {
   const {
     id,
     name,
+    isNew,
     projects,
     onRename,
     onRemove,
     isCreated,
     isDragging,
+    clearNewBoard,
     onDeleteProject,
     onMoveProject,
     onDropProject,
@@ -54,6 +56,7 @@ export function List(props) {
   const isEmpty = !projects || !projects.length;
 
   const listRef = useRef(null);
+  const inputRef = useRef(null);
 
   const [isCreatingSkill] = useToggle(false);
 
@@ -64,6 +67,13 @@ export function List(props) {
   const [onScroll, isHeaderShadowShown, isFooterShadowShown] = useScrollShadows(bodyRef, [projects]);
 
   const [moving, setMoving] = useState(false);
+
+  useEffect(() => {
+    if (isNew) {
+      inputRef.current.focus();
+      clearNewBoard(id);
+    }
+  }, []);
 
   const list = (
     <div
@@ -107,6 +117,7 @@ export function List(props) {
               >
                 <div className="main-list-header__main">
                   <input
+                    ref={inputRef}
                     className="borderless-input main-list-header__title"
                     value={values.name}
                     onBlur={onInputNameBlur}

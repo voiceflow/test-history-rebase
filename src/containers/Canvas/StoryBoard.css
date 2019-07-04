@@ -2025,6 +2025,7 @@ label {
 }
 
 .add-button:hover {
+  background-color: #f7f9fb;
   background-image: url('/add-step-hover.svg');
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 6px 0 rgba(17, 49, 96, 0.26) !important;
   transform: scale(1.05);

@@ -26,6 +26,7 @@ class Timeline extends Component {
 
   componentWillUnmount = () => {
     this.endCurrentAudio();
+    if (this.interval && this.interval.timeout) clearTimeout(this.interval.timeout);
   };
 
   componentDidUpdate = (prevProps) => {

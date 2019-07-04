@@ -332,6 +332,8 @@ workflows:
                 - master
                 - staging
                 - k8s-master
+                - k8s-staging
+                - k8s-production
       - deploy-staging:
           requires:
             - test

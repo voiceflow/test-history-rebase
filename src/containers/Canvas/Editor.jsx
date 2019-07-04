@@ -9,6 +9,7 @@ import Mousetrap from 'mousetrap';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CreatableSelect from 'react-select/lib/Creatable';
+import { Tooltip } from 'react-tippy';
 import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Modal, ModalBody, UncontrolledDropdown } from 'reactstrap';
 import { compose } from 'recompose';
 
@@ -434,10 +435,14 @@ class Editor extends Component {
     return (
       <div id="label-container" className="d-flex mb-3 pl-2">
         <div className="w-100 text-left">{this.titleInput()}</div>
-        <i className="more-info d-flex align-items-center" onClick={() => this.props.setHelp({ type: this.state.node.extras.type })} />
+        <Tooltip html="Learn more" position="left" distance={10}>
+          <i className="more-info d-flex align-items-center" onClick={() => this.props.setHelp({ type: this.state.node.extras.type })} />
+        </Tooltip>
         <UncontrolledDropdown nav inNavbar>
           <DropdownToggle nav tag="div">
-            <div className="cog" />
+            <Tooltip html="Settings" position="left" distance={10}>
+              <div className="cog" />
+            </Tooltip>
           </DropdownToggle>
           <DropdownMenu right className="arrow arrow-right no-select" style={{ right: 2, marginTop: -10 }}>
             <DropdownItem header>Block Options</DropdownItem>

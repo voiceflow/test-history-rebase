@@ -233,9 +233,11 @@ export const clearNewList = (board_id) => {
     try {
       const boards = getState().board;
 
-      const board = boards.byId[board_id];
+      let board = boards.byId[board_id];
       if (board) {
-        delete board.isNew;
+        board = update(board, {
+          $unset: ['isNew'],
+        });
         dispatch(
           Boards.update({
             id: board_id,

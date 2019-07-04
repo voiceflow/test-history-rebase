@@ -190,14 +190,14 @@ jobs:
             sudo service docker restart
       - run: 
           name: 'Build docker image'
-          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_APP_API_HOST=api.master.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=staging --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM .
+          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_APP_API_HOST=api.master.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=staging --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-master-$CIRCLE_BUILD_NUM .
       - run:
           name: 'Push docker images'
           command: |
             $(aws ecr get-login --no-include-email --region us-east-1)
-            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest
+            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-master-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-master
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-master-$CIRCLE_BUILD_NUM
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-master
       - run: 
           name: Install aws-iam-authenticator
           command: |
@@ -222,7 +222,7 @@ jobs:
       - run: 
           name: Update image
           command: |
-            kubectl set image --namespace voiceflow-v1 deployment/creator-app-master app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM
+            kubectl set image --namespace voiceflow-v1 deployment/creator-app-master app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-master-$CIRCLE_BUILD_NUM
   deploy-k8s-staging:
     machine: true
     steps:
@@ -237,14 +237,14 @@ jobs:
             sudo service docker restart
       - run: 
           name: 'Build docker image'
-          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_APP_API_HOST=api.staging.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=staging --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM .
+          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_APP_API_HOST=api.staging.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=staging --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-staging-$CIRCLE_BUILD_NUM .
       - run:
           name: 'Push docker images'
           command: |
             $(aws ecr get-login --no-include-email --region us-east-1)
-            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest
+            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-staging-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-staging
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-staging-$CIRCLE_BUILD_NUM
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-staging
       - run: 
           name: Install aws-iam-authenticator
           command: |
@@ -269,7 +269,7 @@ jobs:
       - run: 
           name: Update image
           command: |
-            kubectl set image --namespace voiceflow-v1 deployment/creator-app-staging app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM
+            kubectl set image --namespace voiceflow-v1 deployment/creator-app-staging app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-staging-$CIRCLE_BUILD_NUM
   deploy-k8s-production:
     machine: true
     steps:
@@ -284,14 +284,14 @@ jobs:
             sudo service docker restart
       - run: 
           name: 'Build docker image'
-          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_APP_API_HOST=api.k8s.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=production --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM .
+          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_APP_API_HOST=api.k8s.voiceflow.com --build-arg build_REACT_APP_BUILD_ENV=production --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-production-$CIRCLE_BUILD_NUM .
       - run:
           name: 'Push docker images'
           command: |
             $(aws ecr get-login --no-include-email --region us-east-1)
-            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest
+            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-production-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-production
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-production-$CIRCLE_BUILD_NUM
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-production
       - run: 
           name: Install aws-iam-authenticator
           command: |
@@ -316,7 +316,7 @@ jobs:
       - run: 
           name: Update image
           command: |
-            kubectl set image --namespace voiceflow-v1 deployment/creator-app-production app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BUILD_NUM
+            kubectl set image --namespace voiceflow-v1 deployment/creator-app-production app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-production-$CIRCLE_BUILD_NUM
 workflows:
   version: 2
   build-deploy:

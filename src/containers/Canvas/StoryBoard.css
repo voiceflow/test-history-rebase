@@ -964,8 +964,8 @@
 
 .Menu #sidebar .sidebar-container {
   height: 100%;
-  padding: 0 15px;
   margin-left: 40px;
+  padding: 0 15px;
   overflow-x: hidden;
   overflow-y: scroll;
 }

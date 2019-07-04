@@ -7,6 +7,7 @@ import NewTeam from 'containers/Dashboard/NewTeam';
 import Register from 'containers/Register';
 import Reset from 'containers/Register/reset';
 import ResetPassword from 'containers/Register/resetPassword';
+import UserTesting from 'containers/UserTesting';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -40,6 +41,7 @@ const allRoutes = (
     {/* Testing routes */}
     <PrivateRoute path="/test/:skill_id/:diagram_id" component={Skill} page="test" />
     <PrivateRoute path="/test/:skill_id" component={Skill} page="test" />
+    <Route path="/user_testing/:skill_id/:config_id" component={UserTesting} />
     {/* Business routes */}
     <PrivateRoute path="/tools/:skill_id/link_account/templates" component={Skill} page="tools" secondaryPage="link_account" />
     <PrivateRoute path="/tools/:skill_id/product/:id" component={Skill} page="tools" secondaryPage="product" />

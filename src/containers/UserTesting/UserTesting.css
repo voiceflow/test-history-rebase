@@ -1,0 +1,21 @@
+.PublicUserTesting {
+  position: relative;
+  height: 87%;
+}
+
+.PublicUserTesting .variables_container {
+  height: 0;
+  visibility: hidden;
+}
+
+.PublicUserTesting #TestSidebar {
+  right:0;
+  left:0;
+  margin: auto;
+}
+
+.PublicUserTesting #SpeechBar {
+  right: 0;
+  left: 0;
+  margin: auto;
+}

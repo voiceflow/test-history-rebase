@@ -2,13 +2,14 @@ import Button from 'components/Button';
 import Header from 'components/Header';
 import SecondaryNavBar from 'components/NavBar/SecondaryNavBar';
 import { leaveTest } from 'ducks/test';
-import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import TestTimer from './TestTimer';
+
 const UserTestHeader = (props) => {
-  const { time, page, skill, history, leaveTest, preview } = props;
+  const { page, skill, history, leaveTest, preview } = props;
 
   return (
     <Header
@@ -23,7 +24,7 @@ const UserTestHeader = (props) => {
       )}
       centerRenderer={() => (
         <div id="middle-group">
-          <label>{moment.utc(time * 1000).format('mm:ss')}</label>
+          <TestTimer />
         </div>
       )}
       rightRenderer={() => (
@@ -47,7 +48,6 @@ const UserTestHeader = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  time: state.test.time,
   skill: state.skills.skill,
 });
 

@@ -2,10 +2,7 @@
 
 exports[`Widget Bar render canvas widget bar 1`] = `
 <div
-<<<<<<< HEAD
-=======
   className="isTest"
->>>>>>> a812f36f6f0aea94666ce2d8ff5bca1d050df904
   id="widget-bar"
 >
   <ButtonGroup

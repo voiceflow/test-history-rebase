@@ -23,8 +23,7 @@ const initialState = {
   nlc: null,
   id: null,
   status: TEST_STATUS.IDLE,
-  time: 0,
-  timer: null,
+  startTime: 0,
   state: {
     globals: [{}],
   },
@@ -50,7 +49,7 @@ export default function testReducer(state = initialState, action) {
     case UPDATE_TEST_TIME:
       return {
         ...state,
-        time: action.payload,
+        startTime: action.payload,
       };
     default:
       return state;
@@ -112,22 +111,14 @@ export const initializeTest = () => (dispatch, getState) => {
 
   const nlc = new NLC();
 
-  // Load in built in slots and intents
-  try {
-    const language = locales[0].slice(0, 2);
-    const builtInIntents = DEFAULT_INTENTS[language].defaults;
-
-    builtInIntents.forEach((intent) => {
-      const { samples, name } = intent;
-      nlc.registerIntent({
-        intent: name,
-        utterances: samples,
-        callback: _.noop,
+  slots.forEach((slot) => {
+    if (slot.type.value && slot.type.value.toLowerCase() === 'custom') {
+      nlc.addSlotType({
+        type: slot.name,
+        matcher: slot.inputs,
       });
-    });
-  } catch (err) {
-    console.error(err);
-  }
+    }
+  });
 
   const builtInSlots = [];
   SLOT_TYPES.forEach((s) => {
@@ -141,15 +132,6 @@ export const initializeTest = () => (dispatch, getState) => {
       type: s,
       matcher,
     });
-  });
-
-  slots.forEach((slot) => {
-    if (slot.type.value && slot.type.value.toLowerCase() === 'custom') {
-      nlc.addSlotType({
-        type: slot.name,
-        matcher: slot.inputs,
-      });
-    }
   });
 
   intents.forEach((intent) => {
@@ -167,6 +149,23 @@ export const initializeTest = () => (dispatch, getState) => {
     });
   });
 
+  // Load in built in slots and intents
+  try {
+    const language = locales[0].slice(0, 2);
+    const builtInIntents = DEFAULT_INTENTS[language].defaults;
+
+    builtInIntents.forEach((intent) => {
+      const { samples, name } = intent;
+      nlc.registerIntent({
+        intent: name,
+        utterances: samples,
+        callback: _.noop,
+      });
+    });
+  } catch (err) {
+    console.error(err);
+  }
+
   dispatch(
     updateTest({
       nlc,
@@ -179,13 +178,6 @@ export const resetTime = () => ({
   type: UPDATE_TEST_TIME,
   payload: 0,
 });
-
-export const incrementTime = () => (dispatch, getState) => {
-  dispatch({
-    type: UPDATE_TEST_TIME,
-    payload: getState().test.time + 1,
-  });
-};
 
 export const renderTest = (diagramId) => async (dispatch, getState) => {
   if (diagramId === null) return;
@@ -230,14 +222,10 @@ export const startTest = (diagramId, line = null) => (dispatch, getState) => {
     platform,
   };
 
-  const timer = setInterval(() => {
-    dispatch(incrementTime());
-  }, 1000);
-
   dispatch(
     updateTest({
       status: TEST_STATUS.ACTIVE,
-      timer,
+      startTime: Date.now() / 1000,
       state,
     })
   );
@@ -257,9 +245,7 @@ export const updateGlobal = (name, value) => (dispatch, getState) => {
   );
 };
 
-export const endTest = () => (dispatch, getState) => {
-  const { timer } = getState().test;
-  clearInterval(timer);
+export const endTest = () => (dispatch) => {
   dispatch(
     updateTest({
       status: TEST_STATUS.ENDED,
@@ -267,9 +253,7 @@ export const endTest = () => (dispatch, getState) => {
   );
 };
 
-export const resetTest = () => (dispatch, getState) => {
-  const { timer } = getState().test;
-  clearInterval(timer);
+export const resetTest = () => (dispatch) => {
   dispatch(resetTime());
   dispatch(setupGlobals());
   dispatch(

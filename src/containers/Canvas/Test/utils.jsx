@@ -2,6 +2,50 @@ import { parse } from 'html-parse-stringify';
 import _ from 'lodash';
 import React from 'react';
 
+const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text']);
+
+export const recurse = (tag, index = 0) => {
+  if (tag.type === 'text') {
+    if (!tag.content.trim()) {
+      return null;
+    }
+    return tag.content;
+  }
+  if (!valid_tags.has(tag.name)) {
+    return null;
+  }
+
+  if (tag.children && tag.children.length > 0) {
+    const returnString = [];
+    tag.children.forEach((t, i) => {
+      returnString.push(recurse(t, i));
+    });
+
+    if (tag.name === 's') {
+      return returnString;
+    }
+    if (tag.name === 'voice') {
+      return (
+        <React.Fragment key={index}>
+          <span className="text-muted">{tag.attrs.name}:</span>
+          <br />
+          {returnString}
+        </React.Fragment>
+      );
+    }
+    return (
+      <span key={index} className="tag-wrap">
+        <span className="tag-span">{tag.name}</span> {returnString}
+      </span>
+    );
+  }
+  return (
+    <span key={index} className="tag-wrap tag-span">
+      ({tag.name})
+    </span>
+  );
+};
+
 export const getDiagramIntents = (diagramEngine, results, testing_info) => {
   const detected_intents = [];
   const diagram_intents = _.some(diagramEngine.getDiagramModel().getNodes(), (node) => {
@@ -89,40 +133,19 @@ export const getUserTestOutputs = async (trace, ending) => {
           };
         })
       );
-      let children = [];
-      if (parsed.children.length > 0) {
-        parsed.children.forEach((c) => {
-          if (c.children.length > 0) {
-            children = children.concat(c.children);
-          } else {
-            children = children.concat(c);
-          }
-        });
-      }
-
-      let audioMappingIdx = 0;
-      let audioType = children[0].name === 'audio' ? 'audio' : 'speak';
-      children.forEach((child) => {
+      parsed.children.forEach((child, idx) => {
         const outputBlock = {};
         if (child.name === 'audio') {
           outputBlock.text = 'Audio File';
         } else {
-          outputBlock.text = child.content || child.name;
+          outputBlock.text = recurse(child) || child.name;
         }
 
-        if (audioType === 'audio' && child.name !== 'audio') {
-          audioType = 'speak';
-          audioMappingIdx++;
-        } else if (audioType === 'speak' && child.name === 'audio') {
-          audioType = 'audio';
-          audioMappingIdx++;
-        }
-
-        outputBlock.audio = results[audioMappingIdx].audio;
-        outputBlock.delay = results[audioMappingIdx].duration * 1000;
+        outputBlock.audio = results[idx].audio;
+        outputBlock.delay = results[idx].duration * 1000;
 
         outputBlock.node = block.line.id;
-        outputBlock.audioType = child.type === 'text' || child.type === 'speak' || (child.name === 'audio' && 'audio');
+        outputBlock.audioType = child.name === 'voice' || (child.name === 'audio' && 'audio');
         outputBlock.type = type;
         outputBlock.isLast = !block.line.nextId;
 
@@ -207,48 +230,4 @@ export const getUserTestOutputs = async (trace, ending) => {
     idx++;
   }
   return dom;
-};
-
-const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text']);
-
-export const recurse = (tag, index = 0) => {
-  if (tag.type === 'text') {
-    if (!tag.content.trim()) {
-      return null;
-    }
-    return tag.content;
-  }
-  if (!valid_tags.has(tag.name)) {
-    return null;
-  }
-
-  if (tag.children && tag.children.length > 0) {
-    const returnString = [];
-    tag.children.forEach((t, i) => {
-      returnString.push(recurse(t, i));
-    });
-
-    if (tag.name === 's') {
-      return returnString;
-    }
-    if (tag.name === 'voice') {
-      return (
-        <React.Fragment key={index}>
-          <span className="text-muted">{tag.attrs.name}:</span>
-          <br />
-          {returnString}
-        </React.Fragment>
-      );
-    }
-    return (
-      <span key={index} className="tag-wrap">
-        <span className="tag-span">{tag.name}</span> {returnString}
-      </span>
-    );
-  }
-  return (
-    <span key={index} className="tag-wrap tag-span">
-      ({tag.name})
-    </span>
-  );
 };

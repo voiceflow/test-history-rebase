@@ -220,7 +220,11 @@ class GooglePublish extends Component {
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
-        console.log(err);
+        console.log('ERROR WHEN TRYING TO GET GOOGLE STUFF', err);
+        this.setState({
+          loaded: true,
+          auth_error: 'There was an error with your google certificate. Please try again with a different one.',
+        });
       });
   }
 
@@ -640,6 +644,7 @@ class GooglePublish extends Component {
                 <div className="big-settings-alignment-div">
                   <div className="mb-4 mt-5">
                     <label className="dark">Credentials</label>
+                    <div className="pb__auth_error">{this.state.auth_error}</div>
                   </div>
                   <div className="big-settings-content">
                     <FormGroup>

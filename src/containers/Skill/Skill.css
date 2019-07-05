@@ -647,3 +647,9 @@ p.loading-btn::after {
   animation: ellipsis steps(4, end) 2000ms infinite;
   content: '\2026';
 }
+
+.pb__auth_error {
+  color: #e91e63;
+  font-size: 13px;
+  line-height: 18px;
+}

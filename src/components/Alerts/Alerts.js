@@ -7,14 +7,14 @@ import { clearHelp } from '../../ducks/alerts';
 
 class Alerts extends React.Component {
   render() {
-    const { showHelp, helpHeader, helpMessage, helpLink, helpVideo } = this.props;
+    const { showHelp, helpHeader, helpMessage, helpLink, helpVideo, clearHelp } = this.props;
 
     return (
       <div>
         <Modal isOpen={showHelp} toggle={() => clearHelp()}>
           <ModalHeader header={helpHeader} toggle={() => clearHelp()} />
           <ModalBody>
-            <div className="text-muted pl-3 pr-3 pb-3 pt-0">
+            <div className="text-muted pl-3 pr-3 pt-0">
               <React.Fragment>
                 <p className="mb-4">{helpMessage}</p>
                 {helpLink && (

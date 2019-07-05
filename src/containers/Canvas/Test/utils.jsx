@@ -48,6 +48,7 @@ export const recurse = (tag, index = 0) => {
 
 const getAudioMeta = (audio) => {
   return new Promise((resolve) => {
+    audio.addEventListener('error', () => resolve(0));
     audio.addEventListener('loadedmetadata', (e) => {
       resolve(e.target.duration);
     });

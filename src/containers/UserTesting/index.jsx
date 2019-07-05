@@ -38,8 +38,8 @@ class UserTesting extends React.Component {
 
   async fetchInformation() {
     const { fetchVersionSuccess, initializeTest, updateTest, startTest, skill } = this.props;
-    const { data: skillData } = await axios.get(`/test/getInfo/${this.props.match.params.skill_id}`);
-
+    const { data } = await axios.get(`/test/getInfo/${this.props.match.params.skill_id}`);
+    const skillData = data.skill;
     const globals = Array.isArray(skillData.global) ? skillData.global : [];
     skillData.global = [...new Set(['sessions', 'user_id', 'timestamp', 'platform', 'locale', ...globals])];
     if (!skillData.fulfillment) {
@@ -48,6 +48,8 @@ class UserTesting extends React.Component {
     skillData.platform = skillData.platform === 'google' ? 'google' : 'alexa';
 
     fetchVersionSuccess(skillData, {});
+
+    localStorage.setItem(`TEST_VARIABLES_${skillData.skill_id}`, JSON.stringify(data.globals));
 
     this.setState({ loading: 0 });
     initializeTest();
@@ -92,7 +94,7 @@ class UserTesting extends React.Component {
           )}
         />
         {!this.state.loading && (
-          <div className="PublicUserTesting">
+          <div id="PublicUserTesting">
             <Test open={true} enterFlow={_.noop} loading={this.state.loading} setSaveCB={_.noop} save={_.noop} />
           </div>
         )}

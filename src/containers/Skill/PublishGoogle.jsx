@@ -219,8 +219,7 @@ class GooglePublish extends Component {
         });
       })
       .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log('ERROR WHEN TRYING TO GET GOOGLE STUFF', err);
+        console.error('There was an error with the google certificate: ', err);
         this.setState({
           loaded: true,
           auth_error: 'There was an error with your google certificate. Please try again with a different one.',

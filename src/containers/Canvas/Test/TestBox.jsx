@@ -12,20 +12,55 @@ class TestBox extends PureComponent {
   state = {
     input: '',
     listening: false,
-    speechSupport: false,
+    microphone: false,
     inputOpen: true,
   };
 
   async componentDidMount() {
-    if (!this.props.browserSupportsSpeechRecognition) return;
+    if (this.props.browserSupportsSpeechRecognition) {
+      await this.checkMicrophone();
+      this.bindSpaceKeySpeech();
+    }
 
-    // check if microphone enabled
-    const permissionStatus = await navigator.permissions.query({ name: 'microphone' });
-    if (permissionStatus.state !== 'granted') return;
+    this.intercomContainer = document.getElementById('intercom-container');
+    if (this.intercomContainer) this.intercomContainer.style.visibility = 'hidden';
+  }
 
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.spaceDownBind);
+    this.props.stopListening();
+    if (this.intercomContainer) this.intercomContainer.style.visibility = 'visible';
+  }
+
+  checkMicrophone = () =>
+    new Promise(async (resolve) => {
+      if (!this.state.microphone) {
+        const permissionStatus = await navigator.permissions.query({ name: 'microphone' });
+        if (permissionStatus.state === 'granted') {
+          this.setState({ microphone: true });
+          this.props.startListening();
+        } else if (!this.microphonePrompt) {
+          // prompts stack on top of each other (i.e. the moment they close it another will pop up)
+          // this tracks the state of the prompt so we're sure we are not invoking more than one concurrently
+          this.microphonePrompt = true;
+          // eslint-disable-next-line compat/compat
+          navigator.mediaDevices
+            .getUserMedia({ audio: true })
+            .then(() => {
+              this.microphonePrompt = false;
+              this.setState({ microphone: true });
+              this.props.startListening();
+            })
+            .catch(() => {
+              this.microphonePrompt = false;
+            });
+        }
+        resolve();
+      }
+    });
+
+  bindSpaceKeySpeech = () => {
     // bind space key to start listening only if microphone enabled
-    this.props.startListening();
-    this.setState({ speechSupport: true });
     this.spaceDownBind = (e) => {
       if (e.which === 32) {
         switch (e.target.tagName.toLowerCase()) {
@@ -50,16 +85,7 @@ class TestBox extends PureComponent {
       }
     };
     document.addEventListener('keydown', this.spaceDownBind);
-
-    this.intercomContainer = document.getElementById('intercom-container');
-    if (this.intercomContainer) this.intercomContainer.style.visibility = 'hidden';
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.spaceDownBind);
-    this.props.stopListening();
-    if (this.intercomContainer) this.intercomContainer.style.visibility = 'visible';
-  }
+  };
 
   toggleInputOpen = (value) => this.setState({ inputOpen: value === true || value === false ? value : !this.state.inputOpen });
 
@@ -97,8 +123,9 @@ class TestBox extends PureComponent {
   };
 
   listen = () => {
-    if (!this.state.speechSupport || this.props.ended || this.state.listening) return false;
-    // this.props.startListening();
+    if (this.props.ended || this.state.listening) return false;
+
+    this.checkMicrophone();
     this.props.resetTranscript();
     this.setState({ listening: true, inputOpen: false });
 
@@ -106,13 +133,33 @@ class TestBox extends PureComponent {
   };
 
   render() {
-    const { outputs, debug, options, ended, playAudio, handleRestart, loading, interimTranscript, finalTranscript } = this.props;
-    const { input, listening, inputOpen } = this.state;
+    const {
+      outputs,
+      debug,
+      options,
+      ended,
+      playAudio,
+      handleRestart,
+      loading,
+      interimTranscript,
+      finalTranscript,
+      browserSupportsSpeechRecognition,
+    } = this.props;
+
+    const { input, listening, inputOpen, microphone } = this.state;
     return (
       <div className="dialog">
-        <SpeechBar listening={listening} interimTranscript={interimTranscript} finalTranscript={finalTranscript} listenClick={this.listenClick} />
+        <SpeechBar
+          ended={ended}
+          listening={listening}
+          interimTranscript={interimTranscript}
+          finalTranscript={finalTranscript}
+          listenClick={this.listenClick}
+          browserSupport={browserSupportsSpeechRecognition}
+          microphone={microphone}
+        />
         <div className="chat-container">
-          <div className="chatbox px-3">
+          <div className="chatbox">
             <div className="chats">
               <div className="break" style={{ top: -20 }}>
                 <span className="break-text">New Session Started</span>
@@ -120,25 +167,24 @@ class TestBox extends PureComponent {
               {outputs.map((chat, i) => {
                 if (chat.self) {
                   return (
-                    <div className="mt-2 position-relative text-right mr-4" key={i}>
-                      <div className="self-message message border rounded p-2 align-self-start">
+                    <div className="self-message" key={i}>
+                      <div className="message">
                         <p className="mb-0 px-1 text-left">
                           {chat.self}
                           <br />
                         </p>
                       </div>
-                      <img src="/user_reply.svg" height={18} width={18} alt="user" className="speak-box-icon ml-2" />
+                      <img src="/user_reply.svg" height={18} width={18} alt="user" className="speak-box-icon" />
                     </div>
                   );
                 }
                 return <SpeakBox key={i} debug={debug} chat={chat} playAudio={playAudio} />;
               })}
               {loading && (
-                <div
-                  className="message pointer border rounded p-2 align-self-start mt-2"
-                  style={{ minWidth: 100, marginLeft: 24, justifyContent: 'center', alignItems: 'center', minHeight: 40 }}
-                >
-                  <span className="save-loader" />
+                <div className="message-container">
+                  <div className="message pointer align-self-start super-center" style={{ minWidth: 100, marginLeft: 26, minHeight: 40 }}>
+                    <span className="save-loader" />
+                  </div>
                 </div>
               )}
               {!loading && options && (
@@ -159,28 +205,31 @@ class TestBox extends PureComponent {
                   <div className="break mt-4">
                     <span className="break-text">Session Ended</span>
                   </div>
-                  <div className="super-center">
-                    <Button onClick={handleRestart} isBtn isSecondary className="super-center w-100">
-                      Reset Test <img src="/restart.svg" alt="restart" width="15" height="15" className="ml-2" />
-                    </Button>
-                  </div>
                 </>
               )}
             </div>
           </div>
         </div>
         <div className="no-space__break" />
-        <div id="TestInputContainer" className={cn({ disabled: ended })}>
-          <div className="condition-label space-between pointer" onClick={this.toggleInputOpen}>
-            <span className="light-grey">{listening ? '(Listening)' : 'User Says'}</span>
-            <i
-              className={cn('fas fa-caret-left fa-lg light-grey rotate', {
-                'fa-rotate--90': inputOpen,
-              })}
-            />
-          </div>
-          <Collapse isOpen={inputOpen}>
-            <div id="TestInput">
+        <div id="TestInputContainer">
+          {ended ? (
+            <div className="condition-label centered">
+              <Button isBtn isLink onClick={handleRestart}>
+                Reset Test
+              </Button>
+            </div>
+          ) : (
+            <div className="condition-label pointer" onClick={this.toggleInputOpen}>
+              <span className="light-grey">{listening ? '(Listening)' : 'User Says'}</span>
+              <i
+                className={cn('fas fa-caret-left fa-lg light-grey rotate', {
+                  'fa-rotate--90': inputOpen,
+                })}
+              />
+            </div>
+          )}
+          <Collapse isOpen={inputOpen && !ended}>
+            <div id="TestInput" className={cn({ disabled: ended })}>
               <Textarea
                 className="editor"
                 placeholder="Enter response"

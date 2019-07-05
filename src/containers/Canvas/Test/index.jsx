@@ -61,7 +61,7 @@ function Test(props) {
         <div className={cn('sidebar_container dialog_container')}>
           <div className="condition-label">
             <label>Dialog</label>
-            <div onClick={resetTest} className={cn('d-flex align-items-center', { disabled: !active })}>
+            <div onClick={resetTest} className={cn('d-flex align-items-center pointer', { disabled: !active })}>
               <Tooltip title="Reset Test" position="bottom">
                 <img src="/restart.svg" alt="restart" width="15" height="15" />
               </Tooltip>

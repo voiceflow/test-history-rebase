@@ -1538,7 +1538,7 @@ textarea.form-control::placeholder,
 
 .super-center {
   display: flex;
-  align-items: center;
+  align-items: center !important;
   justify-content: center;
 }
 

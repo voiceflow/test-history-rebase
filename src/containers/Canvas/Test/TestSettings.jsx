@@ -31,7 +31,7 @@ function TestSettings(props) {
         })}
       </div>
       <div className="no-space__break" />
-      <div style={{ padding: 20 }}>
+      <div style={{ padding: '19px 20px' }}>
         <div className="space-between">
           <span className="text-dull">Debug Mode</span>
           <Toggle checked={debug} icons={false} onChange={() => setDebug(!debug)} />

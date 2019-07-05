@@ -38,7 +38,7 @@ const UserTestHeader = (props) => {
               leaveTest();
             }}
           >
-            Back To Canvas
+            Back to Canvas
           </Button>
         </div>
       )}

@@ -42,7 +42,7 @@ const UserTestHeader = (props) => {
       )}
       rightRenderer={() => (
         <>
-          <div className="align-icon title-group">
+          <div className="align-icon title-group px-3 mx-0">
             <Tooltip className="top-nav-icon" title="Share" position="bottom" distance={16}>
               <Button isNavBordered id="icon-share" className="fas fa-share" onClick={makeConfig} />
             </Tooltip>

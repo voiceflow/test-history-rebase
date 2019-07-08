@@ -1266,7 +1266,7 @@ export class ActionGroup extends PureComponent {
                 <Tooltip className="top-nav-icon" title="Share" position="bottom" distance={16}>
                   <RoundButton
                     id="icon-share"
-                    type="shadow"
+                    type="plain"
                     width={44}
                     height={44}
                     icon="/share.svg"

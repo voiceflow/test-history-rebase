@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Multiple Field Test multiple fields 1`] = `
+<div>
+  <AvForm
+    method="get"
+    model={Object {}}
+    onInvalidSubmit={[Function]}
+    onKeyDown={[Function]}
+    onSubmit={[Function]}
+    onValidSubmit={[Function]}
+    tag={[Function]}
+    validationEvent={
+      Array [
+        "onChange",
+        "onInput",
+      ]
+    }
+  >
+    <div>
+      <label>
+         
+        <Tooltip
+          animateFill={true}
+          animation="shift"
+          arrow={false}
+          arrowSize="regular"
+          className="menu-tip"
+          content="ENTER HERE"
+          delay={0}
+          disabled={false}
+          distance={10}
+          duration={375}
+          followCursor={false}
+          hideDelay={0}
+          hideDuration={375}
+          hideOnClick={true}
+          html={null}
+          inertia={false}
+          interactive={false}
+          interactiveBorder={2}
+          multiple={false}
+          offset={0}
+          onHidden={[Function]}
+          onHide={[Function]}
+          onRequestClose={[Function]}
+          onShow={[Function]}
+          onShown={[Function]}
+          popperOptions={Object {}}
+          position="bottom"
+          size="regular"
+          sticky={false}
+          stickyDuration={200}
+          style={Object {}}
+          target="tooltip"
+          theme="menu"
+          touchHold={false}
+          trigger="mouseenter focus"
+          unmountHTMLWhenHide={false}
+        >
+          <i
+            className="fas fa-question-circle mr-1"
+            id="tooltip"
+          />
+        </Tooltip>
+      </label>
+      <div
+        className="text-center"
+      >
+        <Button
+          iconPosition="right"
+          isFlatGray={true}
+          onClick={[Function]}
+          onRef={[Function]}
+          trackEvent="Button Click"
+        >
+          Add 
+          <i
+            className="far fa-long-arrow-right ml-2"
+          />
+        </Button>
+      </div>
+    </div>
+  </AvForm>
+</div>
+`;

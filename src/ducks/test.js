@@ -1,6 +1,6 @@
 import NLC from '@voiceflow/natural-language-commander';
 import axios from 'axios';
-import setError from 'ducks/modal';
+import { setError } from 'ducks/modal';
 import update from 'immutability-helper';
 import { getSlotsForKeys, getUtterancesWithSlotNames } from 'intent_util';
 import _ from 'lodash';
@@ -17,6 +17,7 @@ export const TEST_STATUS = {
   ENDED: 'ENDED',
 };
 
+// load in previous test setting
 const params = JSON.parse(localStorage.getItem('testParams')) || {};
 
 const initialState = {
@@ -27,6 +28,8 @@ const initialState = {
   state: {
     globals: [{}],
   },
+  configId: null,
+  configObject: null,
   rendered: 0,
   debug: !!params.debug,
 };
@@ -68,7 +71,7 @@ export const setDebug = (value) =>
 
 export const setupGlobals = () => (dispatch, getState) => {
   const { skills, test } = getState();
-  const { skill_id, global, platform } = skills.skill;
+  const { project_id: projectId, global, platform } = skills.skill;
 
   let currentGlobals = {};
   if (global)
@@ -83,7 +86,7 @@ export const setupGlobals = () => (dispatch, getState) => {
     platform,
   };
 
-  const store = localStorage.getItem(`TEST_VARIABLES_${skill_id}`);
+  const store = localStorage.getItem(`TEST_VARIABLES_${projectId}`);
   if (store) {
     try {
       const savedGlobals = JSON.parse(store);
@@ -202,10 +205,10 @@ export const renderTest = (diagramId) => async (dispatch, getState) => {
 
 export const startTest = (diagramId, line = null) => (dispatch, getState) => {
   const { skills, test } = getState();
-  const { repeat, platform, skill_id: skillId, diagram } = skills.skill;
+  const { repeat, platform, diagram, project_id: projectId } = skills.skill;
 
   const currentGlobals = test.state.globals[0];
-  localStorage.setItem(`TEST_VARIABLES_${skillId}`, JSON.stringify(currentGlobals));
+  localStorage.setItem(`TEST_VARIABLES_${projectId}`, JSON.stringify(currentGlobals));
 
   const state = {
     diagrams: [
@@ -245,6 +248,40 @@ export const updateGlobal = (name, value) => (dispatch, getState) => {
   );
 };
 
+export const shareTest = () => async (dispatch, getState) => {
+  try {
+    const { skills, test } = getState();
+    const { project_id: projectId, diagram } = skills.skill;
+    const { configId, configObject, state, status } = test.state;
+
+    let globals;
+    const store = localStorage.getItem(`TEST_VARIABLES_${projectId}`);
+    if (status !== TEST_STATUS.IDLE && store) {
+      globals = JSON.parse(store);
+    } else {
+      globals = state.globals[0];
+    }
+
+    const currentConfigObject = projectId + JSON.stringify(globals);
+
+    // if nothing has changed, just send back the original config
+    if (currentConfigObject === configObject && configId) return configId;
+
+    const { data: newConfigId } = await axios.post(`/test/makeInfo/${projectId}`, { diagram, globals });
+
+    dispatch(
+      updateTest({
+        configId: newConfigId,
+        configObject: currentConfigObject,
+      })
+    );
+    return newConfigId;
+  } catch (err) {
+    dispatch(setError('Unable to generate share link'));
+    return null;
+  }
+};
+
 export const endTest = () => (dispatch) => {
   dispatch(
     updateTest({
@@ -275,18 +312,6 @@ export const leaveTest = () => (dispatch) => {
 export const fetchState = (input) => async (dispatch, getState) => {
   const { nlc, state } = getState().test;
 
-  // const defaultIntents = DEFAULT_INTENTS[skill.locales[0].substring(0, 2)];
-  // _.forEach(defaultIntents.defaults.concat(defaultIntents.built_ins), (dIntent) => {
-  //   if (_.some(dIntent.samples, (s) => s.toLowerCase() === data.input.toLowerCase())) {
-  //     data.detected_intents = [
-  //       {
-  //         intent: dIntent.name,
-  //         slots: dIntent.slots,
-  //       },
-  //     ];
-  //   }
-  // });
-
   delete state.intent;
   delete state.slots;
   delete state.input;
@@ -306,13 +331,11 @@ export const fetchState = (input) => async (dispatch, getState) => {
             value,
           };
         });
-
         state.slots = formattedSlots;
       }
 
       state.intent = intent;
     } catch (err) {
-      // NLC No Match'
       console.error('NLC No Match');
     }
   }

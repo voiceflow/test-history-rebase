@@ -1,9 +1,8 @@
-import axios from 'axios';
 import Button from 'components/Button';
 import ClipBoard from 'components/ClipBoard/ClipBoard';
 import Header from 'components/Header';
 import SecondaryNavBar from 'components/NavBar/SecondaryNavBar';
-import { leaveTest } from 'ducks/test';
+import { leaveTest, shareTest } from 'ducks/test';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -13,17 +12,18 @@ import { Input, InputGroup, InputGroupAddon, Popover, PopoverBody } from 'reacts
 import TestTimer from './TestTimer';
 
 const UserTestHeader = (props) => {
-  const { page, skill, history, leaveTest, preview, globals } = props;
+  const { page, skill, history, leaveTest, preview, shareTest, rendered } = props;
 
   const [share, setShare] = useState(false);
-  const [link, setLink] = useState({ url: 'Loading...', globals: null });
+  const [link, setLink] = useState('Loading...');
 
   const makeConfig = async () => {
     setShare(!share);
-    if (link.globals === globals || share === true) return;
-    const result = await axios.post(`/test/makeInfo/${skill.project_id}`, { diagram: skill.diagram, globals });
-    setLink({ url: `https://creator.voiceflow.com/demo/${result.data}`, globals });
+    if (!share) {
+      setLink(`${window.location.origin}/demo/${await shareTest()}`);
+    }
   };
+
   return (
     <Header
       history={history}
@@ -48,14 +48,23 @@ const UserTestHeader = (props) => {
             </Tooltip>
             <Popover placement="bottom" isOpen={share} target="icon-share" toggle={makeConfig} className="mt-3">
               <PopoverBody style={{ minWidth: '260px' }}>
-                <InputGroup>
-                  <InputGroupAddon addonType="prepend">
-                    <ClipBoard component="button" className="btn btn-clear copy-link" value={link.url} id="shareLink">
-                      <i className="fas fa-copy" />
-                    </ClipBoard>
-                  </InputGroupAddon>
-                  <Input readOnly value={link.url} className="form-control-border right" />
-                </InputGroup>
+                {rendered ? (
+                  <>
+                    <InputGroup>
+                      <InputGroupAddon addonType="prepend">
+                        <ClipBoard component="button" className="btn btn-clear copy-link" value={link} id="shareLink">
+                          <i className="fas fa-copy" />
+                        </ClipBoard>
+                      </InputGroupAddon>
+                      <Input readOnly value={link} className="form-control-border right" />
+                    </InputGroup>
+                    <div className="text-center text-dull p-2 mt-1">Share test for anyone on browser</div>
+                  </>
+                ) : (
+                  <div className="text-center pt-2 pb-1">
+                    <div className="loader text-md" />
+                  </div>
+                )}
               </PopoverBody>
             </Popover>
           </div>
@@ -81,11 +90,12 @@ const UserTestHeader = (props) => {
 
 const mapStateToProps = (state) => ({
   skill: state.skills.skill,
-  globals: state.test.state.globals[0],
+  rendered: state.test.rendered,
 });
 
 const mapDispatchToProps = {
   leaveTest,
+  shareTest,
 };
 
 export default connect(

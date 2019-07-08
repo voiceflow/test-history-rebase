@@ -13,7 +13,22 @@ import TestSettings from './TestSettings';
 import Timeline from './timeline';
 
 function Test(props) {
-  const { open, status, preview, renderTest, leaveTest, setSaveCB, save, skill, rendered, resetTest, enterFlow, diagramEngine, loading } = props;
+  const {
+    open,
+    status,
+    preview,
+    renderTest,
+    leaveTest,
+    setSaveCB,
+    save,
+    skill,
+    rendered,
+    resetTest,
+    enterFlow,
+    diagramEngine,
+    loading,
+    userTest,
+  } = props;
 
   const diagramId = skill.diagram;
   const active = status !== TEST_STATUS.IDLE;
@@ -47,19 +62,23 @@ function Test(props) {
     <>
       {open && <TestSettings open={conditionsOpen} />}
       <div id="TestSidebar" className={cn({ open })}>
-        <div className={cn('sidebar_container variables_container', { open: conditionsOpen })}>
-          <div className="condition-label pointer" onClick={toggleConditionsOpen}>
-            <label>Settings</label>
-            <i
-              className={cn('fas fa-caret-up fa-lg light-grey rotate', {
-                'fa-rotate--90': conditionsOpen,
-              })}
-            />
-          </div>
-        </div>
-        <div className="no-space__break" />
+        {!userTest && (
+          <>
+            <div className={cn('sidebar_container variables_container', { open: conditionsOpen })}>
+              <div className="condition-label pointer" onClick={toggleConditionsOpen}>
+                <label>Settings</label>
+                <i
+                  className={cn('fas fa-caret-up fa-lg light-grey rotate', {
+                    'fa-rotate--90': conditionsOpen,
+                  })}
+                />
+              </div>
+            </div>
+            <div className="no-space__break" />
+          </>
+        )}
         <div className={cn('sidebar_container dialog_container')}>
-          <div className="condition-label">
+          <div className="condition-label" id="TestDialog">
             <label>Dialog</label>
             <div onClick={resetTest} className={cn('d-flex align-items-center', { disabled: !active })}>
               <Tooltip title="Reset Test" position="bottom">

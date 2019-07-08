@@ -3,10 +3,11 @@ const InterpolateHtmlPlugin = require('interpolate-html-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const merge = require('webpack-merge');
 const commonConfig = require('./common');
 const paths = require('../paths');
-const { ENV, IS_PRODUCTION } = require('./config');
+const { ENV, IS_PRODUCTION, IS_SERVING } = require('./config');
 
 module.exports = merge(commonConfig, {
   plugins: [
@@ -31,8 +32,9 @@ module.exports = merge(commonConfig, {
     }),
     new BaseHrefWebpackPlugin({ baseHref: '/' }),
     new InterpolateHtmlPlugin({
-      PUBLIC_URL: JSON.stringify(ENV.API_HOST)
-    })
+      PUBLIC_URL: JSON.stringify(ENV.API_HOST),
+    }),
+    ...(IS_SERVING ? [] : [new CopyPlugin([{ from: paths.publicDir, to: paths.buildDir }])]),
   ],
 
   module: {
@@ -49,7 +51,7 @@ module.exports = merge(commonConfig, {
             options: {
               customize: require.resolve('babel-preset-react-app/webpack-overrides'),
 
-               plugins: [
+              plugins: [
                 [
                   'babel-plugin-named-asset-import',
                   {
@@ -105,8 +107,8 @@ module.exports = merge(commonConfig, {
               name: `${paths.staticMedia}[name].[hash:8].[ext]`,
             },
           },
-        ]
-      }
-    ]
-  }
+        ],
+      },
+    ],
+  },
 });

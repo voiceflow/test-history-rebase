@@ -1251,19 +1251,29 @@ export class ActionGroup extends PureComponent {
                       'save-loader': saving,
                     })}
                     type="color"
-                    width={43}
-                    height={43}
+                    width={44}
+                    height={44}
                     // eslint-disable-next-line no-nested-ternary
                     icon={saving ? '/loader.svg' : saved ? '/saved.svg' : '/save-dark.svg'}
                     onClick={onSave}
                     color="#3ecf8e"
                     imgAlt="save"
+                    imgSize={18}
                   />
                 </Tooltip>
               </div>
               <div className="title-group-sub">
                 <Tooltip className="top-nav-icon" title="Share" position="bottom" distance={16}>
-                  <RoundButton id="icon-share" type="shadow" width={43} height={43} icon="/share.svg" imgAlt="share" onClick={this.toggleShare} />
+                  <RoundButton
+                    id="icon-share"
+                    type="shadow"
+                    width={44}
+                    height={44}
+                    icon="/share.svg"
+                    imgAlt="share"
+                    onClick={this.toggleShare}
+                    imgSize={15}
+                  />
                 </Tooltip>
                 <Popover placement="bottom" isOpen={share} target="icon-share" toggle={this.toggleShare} className="mt-3">
                   <PopoverBody style={{ minWidth: '260px' }}>
@@ -1286,7 +1296,7 @@ export class ActionGroup extends PureComponent {
               </div>
               <div className="align-icon">
                 <Tooltip distance={16} title="Test" position="bottom" className="ml-4 mr-4">
-                  <RoundButton type="color" color="#5b9dfa" icon="/play.svg" imgAlt="test" width={43} height={43} onClick={onTest} />
+                  <RoundButton type="color" color="#5b9dfa" icon="/play.svg" imgAlt="test" imgSize={15} width={44} height={44} onClick={onTest} />
                 </Tooltip>
               </div>
 

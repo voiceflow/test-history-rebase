@@ -7,9 +7,9 @@ export const SvgIconContainer = styled.span`
   display: inline-block;
   color: ${({ color }) => color};
 
-  ${({ size }) => css`
-    height: ${size}px;
-    width: ${size}px;
+  ${({ height, width }) => css`
+    height: ${height}px;
+    width: ${width}px;
   `};
 
   & > svg {
@@ -31,13 +31,14 @@ function SvgIcon({ icon: Icon, ...props }) {
 
 SvgIcon.propTypes = {
   icon: PropTypes.elementType,
-  size: PropTypes.number,
+  height: PropTypes.number,
+  width: PropTypes.number,
   color: PropTypes.string,
-  className: PropTypes.string,
 };
 
 SvgIcon.defaultProps = {
-  size: 16,
+  height: 16,
+  width: 16,
   color: '#6E849A',
 };
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>home</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="currentColor" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="currentColor" offset="100%"></stop>
+        </linearGradient>
+        <path d="M8.84629133,0.289244953 L15.5549598,5.49387687 C15.8355675,5.71158813 16,6.04659687 16,6.4011552 L16,14.8492405 C16,15.4846019 15.4816801,16 14.8427167,16 L11.6255585,16 C10.9865952,16 10.4682752,15.4846019 10.4682752,14.8492405 L10.4682752,10.9473217 C10.4682752,10.3119602 9.94995532,9.79656216 9.3100983,9.79656216 L6.66845398,9.79656216 C6.02949062,9.79656216 5.51117069,10.3119602 5.51117069,10.9473217 L5.51117069,14.8492405 C5.51117069,15.4846019 4.99285076,16 4.35299374,16 L1.15728329,16 C0.518319929,16 0,15.4846019 0,14.8492405 L0,6.4011552 C0,6.04659687 0.164432529,5.71158813 0.445040214,5.49387687 L7.15370867,0.289244953 C7.65147453,-0.0964149843 8.34852547,-0.0964149843 8.84629133,0.289244953" id="path-2"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/Editor/Home">
+            <g id="Group">
+                <g id="home">
+                    fill="currentColor" xlink:href="#path-2"></use>
+                    <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

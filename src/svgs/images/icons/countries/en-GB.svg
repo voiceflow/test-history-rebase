@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 26 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>GB</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-66.7%" y="-85.7%" width="233.3%" height="271.4%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.0745098039   0 0 0 0 0.129411765   0 0 0 0 0.266666667  0 0 0 0.129812047 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <rect id="path-2" x="0" y="0" width="18" height="14" rx="2"></rect>
+    </defs>
+    <g id="Team-Mode" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Skills_dashboard_create-team_1-step" transform="translate(-580.000000, -348.000000)">
+            <g id="GB" filter="url(#filter-1)" transform="translate(584.000000, 350.000000)">
+                <mask id="mask-3" fill="white">
+                    <use xlink:href="#path-2"></use>
+                </mask>
+                <use id="Mask" fill="#FFFFFF" xlink:href="#path-2"></use>
+                <rect id="Mask-Copy" fill="#0A17A7" mask="url(#mask-3)" x="0" y="0" width="18" height="14"></rect>
+                <path d="M4.07332312,9.67484569 L-0.21693911,9.67484569 L-0.21693911,5.00817903 L4.07332312,5.00817903 L-2,0.547536802 L-1.04138359,-1 L6.64020375,4.64185574 L6.64020375,-0.591820972 L10.925918,-0.591820972 L10.925918,4.64185574 L18.6075054,-1 L19.5661218,0.547536802 L13.4927987,5.00817903 L17.7830609,5.00817903 L17.7830609,9.67484569 L13.4927987,9.67484569 L19.5661218,14.1354879 L18.6075054,15.6830247 L10.925918,10.041169 L10.925918,15.2748457 L6.64020375,15.2748457 L6.64020375,10.041169 L-1.04138359,15.6830247 L-2,14.1354879 L4.07332312,9.67484569 Z" id="Rectangle-2" fill="#FFFFFF" mask="url(#mask-3)"></path>
+                <path d="M12,4.83253581 L20.1420201,-1" id="Line" stroke="#DB1F35" stroke-width="0.666666667" stroke-linecap="round" mask="url(#mask-3)"></path>
+                <path d="M13,15.3569824 L20.2988979,10" id="Line-Copy-2" stroke="#DB1F35" stroke-width="0.666666667" stroke-linecap="round" mask="url(#mask-3)" transform="translate(16.649449, 12.678491) scale(1, -1) translate(-16.649449, -12.678491) "></path>
+                <path d="M5.61336844,4.58701172 L-2,-1" id="Line-Copy" stroke="#DB1F35" stroke-width="0.666666667" stroke-linecap="round" mask="url(#mask-3)"></path>
+                <path d="M6.43912179,15.0938965 L-2,9" id="Line-Copy-3" stroke="#DB1F35" stroke-width="0.666666667" stroke-linecap="round" mask="url(#mask-3)" transform="translate(2.219561, 12.046948) scale(1, -1) translate(-2.219561, -12.046948) "></path>
+                <polygon id="Rectangle-2-Copy-3" fill="#E6273E" mask="url(#mask-3)" points="0 8.4 7.71428571 8.4 7.71428571 14 10.2857143 14 10.2857143 8.4 18 8.4 18 5.6 10.2857143 5.6 10.2857143 0 7.71428571 0 7.71428571 5.6 0 5.6"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

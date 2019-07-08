@@ -4,6 +4,7 @@ import 'react-sweet-progress/lib/style.css';
 import axios from 'axios';
 import cn from 'classnames';
 import Button from 'components/Button';
+import RoundButton from 'components/Button/RoundButton';
 import ClipBoard from 'components/ClipBoard/ClipBoard';
 import AmazonLogin from 'components/Forms/AmazonLogin';
 import Header from 'components/Header';
@@ -1245,23 +1246,24 @@ export class ActionGroup extends PureComponent {
             <div className="title-group no-select">
               <div className="align-icon">
                 <Tooltip distance={16} title={lastSave} position="bottom" className="mr-4">
-                  <Button
-                    id="icon-save"
-                    isNav
+                  <RoundButton
                     className={cn({
-                      'btn-successful': saved,
-                      unsaved: !saved,
-                      saving,
+                      'save-loader': saving,
                     })}
+                    type="color"
+                    width={43}
+                    height={43}
+                    // eslint-disable-next-line no-nested-ternary
+                    icon={saving ? '/loader.svg' : saved ? '/saved.svg' : '/save-dark.svg'}
                     onClick={onSave}
-                  >
-                    {saving && <span className="save-loader" />}
-                  </Button>
+                    color="#3ecf8e"
+                    imgAlt="save"
+                  />
                 </Tooltip>
               </div>
               <div className="title-group-sub">
                 <Tooltip className="top-nav-icon" title="Share" position="bottom" distance={16}>
-                  <Button isNavBordered id="icon-share" className="fas fa-share" onClick={this.toggleShare} />
+                  <RoundButton id="icon-share" type="shadow" width={43} height={43} icon="/share.svg" imgAlt="share" onClick={this.toggleShare} />
                 </Tooltip>
                 <Popover placement="bottom" isOpen={share} target="icon-share" toggle={this.toggleShare} className="mt-3">
                   <PopoverBody style={{ minWidth: '260px' }}>
@@ -1284,9 +1286,7 @@ export class ActionGroup extends PureComponent {
               </div>
               <div className="align-icon">
                 <Tooltip distance={16} title="Test" position="bottom" className="ml-4 mr-4">
-                  <Button isNav onClick={onTest}>
-                    <i className="fas fa-play" />
-                  </Button>
+                  <RoundButton type="color" color="#5b9dfa" icon="/play.svg" imgAlt="test" width={43} height={43} onClick={onTest} />
                 </Tooltip>
               </div>
 

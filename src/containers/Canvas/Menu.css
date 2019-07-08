@@ -54,7 +54,3 @@
   transform: translateX(0);
   cursor: e-resize;
 }
-
-.pb__auth_error {
-  color: #e91e63;
-}

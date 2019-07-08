@@ -1,4 +1,4 @@
-const { action, logrocket } = require('webpack-nano/argv');
+const { action, env, logrocket } = require('webpack-nano/argv');
 
 const { NODE_ENV } = process.env;
 const ENV_PREFIX = 'VF_APP_';
@@ -10,16 +10,15 @@ module.exports = {
 
   ENV: {
     NODE_ENV,
+    BUILD_ENV: env || process.env.BUILD_ENV || 'local',
     LOGROCKET_ENABLED: logrocket && 'true',
     API_HOST: 'localhost',
-    ...Object.keys(process.env).reduce(
-      (acc, key) => {
-        if (key.startsWith(ENV_PREFIX)) {
-          acc[key.slice(ENV_PREFIX.length)] = process.env[key];
-        }
+    ...Object.keys(process.env).reduce((acc, key) => {
+      if (key.startsWith(ENV_PREFIX)) {
+        acc[key.slice(ENV_PREFIX.length)] = process.env[key];
+      }
 
-        return acc;
-      }, {}
-    )
-  }
+      return acc;
+    }, {}),
+  },
 };

@@ -58,7 +58,7 @@
     "closest": "0.0.1",
     "connected-react-router": "^6.3.2",
     "css-loader": "1.0.0",
-    "dotenv": "6.0.0",
+    "dotenv": "^8.0.0",
     "dotenv-expand": "4.2.0",
     "draft-js": "^0.10.5",
     "draft-js-mention-plugin": "github:DecathectZero/draft-js-mention",

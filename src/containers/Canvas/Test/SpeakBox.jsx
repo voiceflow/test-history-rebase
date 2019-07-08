@@ -8,22 +8,9 @@ function SpeakBox(props) {
 
   if ((debug && chat.debug) || chat.important) {
     return (
-      <div className="mt-2 position-relative text-left">
-        <img src="/images/icons/power.svg" height={18} width={18} alt="alexa" className="speak-box-icon mr-2" />
-        <div className="message border rounded p-2 align-self-start ml-4 bg-light-turqoise">
-          <p className="mb-0 px-1 text-left">
-            {text}
-            <br />
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  if (chat.options) {
-    return (
-      <div className="mt-2 position-relative text-right">
-        <div className="message pointer border rounded p-2 align-self-start mr-4">
+      <div className="message-container">
+        <img src="/images/icons/power.svg" height={18} width={18} alt="alexa" className="speak-box-icon" />
+        <div className="message align-self-start bg-light-turqoise">
           <p className="mb-0 px-1 text-left">
             {text}
             <br />
@@ -35,11 +22,11 @@ function SpeakBox(props) {
 
   if (audioType) {
     return (
-      <div className="mt-2 position-relative text-left">
-        <img src={audioType === 'audio' ? '/audio.svg' : '/alexa.svg'} height={18} width={18} alt="alexa" className="speak-box-icon mr-2" />
+      <div className="message-container">
+        <img src={audioType === 'audio' ? '/audio.svg' : '/alexa.svg'} height={18} width={18} alt="alexa" className="speak-box-icon" />
         <Tooltip title={chat.time} position="right">
           <button
-            className="message border rounded p-2 align-self-start ml-4"
+            className="message align-self-start"
             onClick={() => {
               playAudio(chat.audio);
             }}

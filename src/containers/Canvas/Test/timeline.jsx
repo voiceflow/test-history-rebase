@@ -34,6 +34,7 @@ class Timeline extends Component {
       switch (this.props.test.status) {
         case TEST_STATUS.IDLE:
           this.endCurrentAudio();
+          this.cacheOutputs = null;
           this.setState({
             outputs: [],
             inputs: [],
@@ -68,9 +69,11 @@ class Timeline extends Component {
     }
   };
 
-  addOutputs = (newOutputs = [], extra) => {
+  addOutput = (newOutput, extra) => {
+    if (!newOutput) return;
+    this.cacheOutputs = [...(this.cacheOutputs || this.state.outputs), newOutput];
     this.setState({
-      outputs: [...this.state.outputs, ...newOutputs],
+      outputs: this.cacheOutputs,
       ...extra,
     });
   };
@@ -87,11 +90,11 @@ class Timeline extends Component {
     this.audio.play();
   };
 
-  popInterval = (end) => {
+  popInterval = (options = {}) => {
     const { test, endTest, diagrams } = this.props;
     if (!_.get(this.interval, ['queue', 'length'])) {
       this.setState({ loading: false });
-      if (end) endTest();
+      if (this.interval.end) endTest();
       return;
     }
 
@@ -124,8 +127,10 @@ class Timeline extends Component {
       }
     }
 
-    this.centerNode(newOutput.node);
-    this.playAudio(newOutput.audio);
+    if (!options.dump) {
+      this.centerNode(newOutput.node);
+      this.playAudio(newOutput.audio);
+    }
 
     if (newOutput.text) {
       newOutput.time = moment
@@ -139,17 +144,17 @@ class Timeline extends Component {
       if (test.debug && !newOutput.delay) {
         newOutput.delay = 500;
       }
-      this.addOutputs([newOutput], extras);
+
+      this.addOutput(newOutput, extras);
     }
 
-    if (Array.isArray(newOutput.options)) {
+    if (!options.dump && Array.isArray(newOutput.options)) {
       this.setState({ options: newOutput.options });
     }
-
-    if (newOutput.delay) {
-      this.interval.timeout = setTimeout(() => this.popInterval(end), newOutput.delay);
+    if (newOutput.delay && !options.dump) {
+      this.interval.timeout = setTimeout(() => this.popInterval(options), newOutput.delay);
     } else {
-      this.popInterval(end);
+      this.popInterval(options);
     }
   };
 
@@ -157,7 +162,7 @@ class Timeline extends Component {
     if (this.interval) {
       // Add everything remaining in the queue to the output without playing them
       this.endCurrentAudio();
-      this.addOutputs([this.interval.queue]);
+      this.popInterval({ dump: true });
       clearTimeout(this.interval.timeout);
       this.interval = null;
     }
@@ -180,12 +185,12 @@ class Timeline extends Component {
 
     const outputQueue = await getUserTestOutputs(trace, newState.ending);
 
-    this.emptyInterval();
     this.interval = {
       queue: outputQueue,
+      end: newState.end,
     };
 
-    this.popInterval(newState.end);
+    this.popInterval();
   };
 
   inputSubmit = (input) => {
@@ -195,7 +200,8 @@ class Timeline extends Component {
       self: input,
     };
 
-    this.addOutputs([newInput]);
+    this.emptyInterval();
+    this.addOutput(newInput);
     this.nextState(input);
   };
 

@@ -27,8 +27,12 @@ export const recurse = (tag, index = 0) => {
     if (tag.name === 'voice') {
       return (
         <React.Fragment key={index}>
-          <span className="text-muted">{tag.attrs.name}:</span>
-          <br />
+          {tag.attrs.name !== 'Joanna' && (
+            <>
+              <span className="text-muted">{tag.attrs.name}</span>
+              <br />
+            </>
+          )}
           {returnString}
         </React.Fragment>
       );
@@ -47,8 +51,8 @@ export const recurse = (tag, index = 0) => {
 };
 
 const getAudioMeta = (audio) => {
-  return new Promise((resolve) => {
-    audio.addEventListener('error', () => resolve(0));
+  return new Promise((resolve, reject) => {
+    audio.addEventListener('error', reject);
     audio.addEventListener('loadedmetadata', (e) => {
       resolve(e.target.duration);
     });
@@ -91,13 +95,35 @@ export const getUserTestOutputs = async (trace, ending) => {
       const results = await Promise.all(
         block.audio.map(async (audioFile) => {
           const audio = newAudio(audioFile);
-          return {
-            duration: await getAudioMeta(audio),
-            audio,
-          };
+          try {
+            return {
+              duration: await getAudioMeta(audio),
+              audio,
+            };
+          } catch (err) {
+            return {
+              audioFile,
+              duration: -1,
+            };
+          }
         })
       );
       parsed.children.forEach((child, idx) => {
+        const audioData = results[idx];
+
+        if (audioData.duration === -1) {
+          dom.push({
+            debug: 'audio',
+            text: (
+              <>
+                Unable to play audio <b>{audioData.audioFile}</b>
+              </>
+            ),
+            important: true,
+          });
+          return;
+        }
+
         const outputBlock = {};
         if (child.name === 'audio') {
           outputBlock.text = 'Audio File';
@@ -105,8 +131,8 @@ export const getUserTestOutputs = async (trace, ending) => {
           outputBlock.text = recurse(child) || child.name;
         }
 
-        outputBlock.audio = results[idx].audio;
-        outputBlock.delay = results[idx].duration * 1000;
+        outputBlock.audio = audioData.audio;
+        outputBlock.delay = audioData.duration * 1000;
 
         outputBlock.node = block.line.id;
         outputBlock.audioType = child.name === 'voice' || (child.name === 'audio' && 'audio');

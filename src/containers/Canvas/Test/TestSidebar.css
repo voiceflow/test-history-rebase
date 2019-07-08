@@ -96,7 +96,7 @@
 }
 
 #TestInput {
-  padding: 0 20px 20px 20px;
+  padding: 0 20px 25px 20px;
 }
 
 #TestInput > textarea {
@@ -138,6 +138,11 @@
   background-image: -ms-linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
 }
 
+.condition-label.centered {
+  justify-content: center;
+  padding-right: 20px;
+}
+
 .condition-label label {
   display: inline-block;
   text-transform: uppercase;
@@ -160,11 +165,6 @@
 .choice-option:hover {
   color: #5d9df5;
   cursor: pointer;
-}
-
-.speak-box-icon {
-  position: absolute;
-  bottom: 0;
 }
 
 .expression-add {
@@ -213,28 +213,34 @@
   align-items: center;
   width: 600px;
   margin: 0 auto;
-  padding: 10px 35px 10px 15px;
+  padding: 15px 55px 15px 55px;
   color: #fff9;
   background: linear-gradient(#344161, #263353);
-  border-bottom: 1px solid #263353;
+  border-bottom: 1px solid #000 !important;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  transition: transform 0.2s;
+}
+
+#SpeechBar.listening {
+  transform: scale(1.02);
 }
 
 #SpeechBar > .speech-icon {
-  position: relative;
-  margin-right: 5px;
+  position: absolute;
+  top: 10px;
+  left: 20px;
   padding: 5px 10px;
   color: inherit;
   background-color: transparent;
   border: none;
 }
 
-#SpeechBar > .speech-icon.listening {
+#SpeechBar.listening > .speech-icon {
   color: #fff;
 }
 
-#SpeechBar > .speech-icon.listening::before {
+#SpeechBar.listening.microphone > .speech-icon::before {
   position: absolute;
   top: 3px;
   right: 5px;
@@ -245,6 +251,14 @@
   border-radius: 10px;
   animation: flickerAnimation 1s infinite;
   content: ' ';
+}
+
+@media screen and (max-width: 1760px) {
+  #SpeechBar {
+    right: 730px;
+    left: auto;
+    margin: 0;
+  }
 }
 
 @keyframes flickerAnimation {
@@ -276,6 +290,13 @@ td {
   height: 100%;
 }
 
+.message-container,
+.self-message {
+  display: flex;
+  align-items: flex-end;
+  margin-top: 10px;
+}
+
 .message {
   position: relative;
   display: -webkit-box;
@@ -284,19 +305,37 @@ td {
   display: inline-flex;
   align-items: flex-start;
   max-width: 100%;
-  padding-right: 18px;
-  padding-left: 0;
+  padding: 0.5rem;
   overflow: hidden;
+  text-align: left;
   word-break: break-word;
+  border: 1px solid #dee2e6;
   border-radius: 15px 15px 15px 5px !important;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
 }
 
+.speak-box-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  margin-bottom: 2px;
+}
+
 .self-message {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.self-message > .speak-box-icon {
+  margin-right: 0;
+  margin-left: 8px;
+}
+
+.self-message > .message {
   align-items: flex-end;
+  text-align: right;
   background-color: #fff;
-  border: 1px solid #3a5999;
   border-radius: 15px 15px 5px 15px !important;
   -webkit-box-align: end;
   -ms-flex-align: end;
@@ -310,7 +349,7 @@ td {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding: 0 15px;
+  padding: 0 20px;
   overflow-y: auto;
 }
 
@@ -415,18 +454,6 @@ td {
 .chats {
   width: 100%;
   padding-bottom: 20px;
-}
-
-.message-container {
-  z-index: 10;
-}
-
-.message-container p {
-  font-weight: bold;
-}
-
-.message-container p > i {
-  margin-right: 5px;
 }
 
 .tag-span {

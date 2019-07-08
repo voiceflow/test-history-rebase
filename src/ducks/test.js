@@ -277,8 +277,9 @@ export const shareTest = () => async (dispatch, getState) => {
     );
     return newConfigId;
   } catch (err) {
+    console.error(err);
     dispatch(setError('Unable to generate share link'));
-    return null;
+    return 'INVALID';
   }
 };
 

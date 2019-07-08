@@ -233,6 +233,7 @@
   "scripts": {
     "build": "patch-package && GENERATE_SOURCEMAP=false node scripts/build.js",
     "commit": "git-cz",
+    "deploy:staging": "git branch -D staging && git branch staging && git push origin staging:staging -f",
     "gen-certs": "scripts/generate_certs.sh",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:css": "stylelint src/**/*.css",

@@ -431,7 +431,7 @@ export class Display extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.account,
-  skill_id: state.skills.skill_id,
+  skill_id: state.skills.skill.skill_id,
   displays: state.displays.displays,
 });
 

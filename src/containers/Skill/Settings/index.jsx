@@ -12,7 +12,7 @@ import BackupSettings from './Backups';
 import BasicSettings from './Basic';
 import DiscoverySettings from './Discovery';
 
-const TABS = ['basic', 'discovery', 'backups'];
+const TABS = ['basic', 'advanced', 'discovery', 'backups'];
 
 class Settings extends Component {
   state = {
@@ -107,7 +107,7 @@ class Settings extends Component {
             </ButtonGroup>
           </div>
         </div>
-        <div className="s__modal_content">{this.modalContent()}</div>
+        <div className="h-100">{this.modalContent()}</div>
       </div>
     );
   }

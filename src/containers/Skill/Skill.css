@@ -692,6 +692,14 @@ p.loading-btn::after {
   line-height: inherit;
 }
 
+.settings-basic .helper-text {
+  line-height: inherit;
+}
+
+.settings-advanced .helper-text {
+  line-height: inherit;
+}
+
 .settings-backups.settings-content {
   border-bottom: 0;
 }

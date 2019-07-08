@@ -219,11 +219,13 @@ class GooglePublish extends Component {
         });
       })
       .catch((err) => {
-        console.error('There was an error with the google certificate: ', err);
-        this.setState({
-          loaded: true,
-          auth_error: 'There was an error with your google certificate. Please try again with a different one.',
-        });
+        console.error('There was an error with the google certificate: ', err.response.data);
+        if (err.response.data.error === 'Invalid Google Certificate.') {
+          this.setState({
+            loaded: true,
+            auth_error: 'There was an error with your google certificate. Please try again or contact support.',
+          });
+        }
       });
   }
 
@@ -377,11 +379,12 @@ class GooglePublish extends Component {
           this.setState({
             credentials: true,
             loading_creds: false,
+            auth_error: '',
             google_id: res.data.google_id,
             publish_modal_open: stage === 0,
           });
         } catch (e) {
-          setError(e.response.data || e);
+          setError(e.response.data.data || e);
           this.setState({
             loading_creds: false,
             publish_modal_open: false,
@@ -644,7 +647,7 @@ class GooglePublish extends Component {
                 <div className="big-settings-alignment-div">
                   <div className="mb-4 mt-5">
                     <label className="dark">Credentials</label>
-                    <div className="pb__auth_error">{this.state.auth_error}</div>
+                    <div className="pb__auth_error">{auth_error}</div>
                   </div>
                   <div className="big-settings-content">
                     <FormGroup>
@@ -666,14 +669,14 @@ class GooglePublish extends Component {
                           <Label className="publish-label">Dialogflow Credentials File *</Label>
                           <div>
                             <Dropzone
-                              className={`dropzone google-upload ${credentials ? 'disabled' : ''}`}
+                              className={`dropzone google-upload ${credentials && !auth_error ? 'disabled' : ''}`}
                               activeClassName="active"
                               rejectClassName="reject"
                               multiple={false}
                               disableClick={false}
                               maxSize={MAX_SIZE}
                               onDrop={this.onDrop}
-                              disabled={credentials}
+                              disabled={credentials && !auth_error}
                             >
                               <div>
                                 {!credentials && !loading_creds && (
@@ -703,15 +706,14 @@ class GooglePublish extends Component {
                                     </div>
                                   </div>
                                 )}
-                                {credentials &&
-                                  !auth_error(
-                                    <div className="align-self-center mx-2 d-flex">
-                                      <i className="fal fa-check-circle text-success align-self-center mx-2" />
-                                      <span>
-                                        <Label>File uploaded</Label>
-                                      </span>
-                                    </div>
-                                  )}
+                                {credentials && !auth_error && (
+                                  <div className="align-self-center mx-2 d-flex">
+                                    <i className="fal fa-check-circle text-success align-self-center mx-2" />
+                                    <span>
+                                      <Label>File uploaded</Label>
+                                    </span>
+                                  </div>
+                                )}
                                 <div className="rejected-file text-danger">
                                   <b>File not Accepted</b>
                                 </div>

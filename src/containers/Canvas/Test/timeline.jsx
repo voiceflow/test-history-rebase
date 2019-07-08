@@ -24,21 +24,31 @@ class Timeline extends Component {
 
   interval = null;
 
-  componentWillUnmount = () => {
+  reset = (state = true) => {
     this.endCurrentAudio();
     if (this.interval && this.interval.timeout) clearTimeout(this.interval.timeout);
+
+    if (this.node) {
+      this.node.setSelected(false);
+      this.node.setFocused(false);
+    }
+    this.cacheOutputs = null;
+
+    if (!state) return;
+
+    this.setState({
+      outputs: [],
+      inputs: [],
+    });
   };
+
+  componentWillUnmount = () => this.reset(false);
 
   componentDidUpdate = (prevProps) => {
     if (prevProps.test.status !== this.props.test.status) {
       switch (this.props.test.status) {
         case TEST_STATUS.IDLE:
-          this.endCurrentAudio();
-          this.cacheOutputs = null;
-          this.setState({
-            outputs: [],
-            inputs: [],
-          });
+          this.reset();
           break;
         case TEST_STATUS.ACTIVE:
           this.nextState();
@@ -60,8 +70,8 @@ class Timeline extends Component {
         this.node.setFocused(false);
       }
       this.node = nodeModel;
-      nodeModel.setSelected(true);
-      nodeModel.setFocused(true);
+      this.node.setSelected(true);
+      this.node.setFocused(true);
       model.setZoomLevel(80);
       const xOffset = window.innerWidth / 2 - 320;
       const yOffset = window.innerHeight / 2 - 150;
@@ -149,7 +159,7 @@ class Timeline extends Component {
     }
 
     if (!options.dump && Array.isArray(newOutput.options)) {
-      this.setState({ options: newOutput.options });
+      this.setState({ options: newOutput.options.filter((option) => option && option.trim()) });
     }
     if (newOutput.delay && !options.dump) {
       this.interval.timeout = setTimeout(() => this.popInterval(options), newOutput.delay);
@@ -211,14 +221,15 @@ class Timeline extends Component {
 
     if (test.status === TEST_STATUS.IDLE) {
       return (
-        <div className="text-center mb-3">
-          <img className="mb-3 mt-5" src="/Testing.svg" alt="user" width="80" />
-          <br />
-          <div className="text-muted mb-4">Start test to see the dialog transcription</div>
-          <Button isPrimary onClick={() => startTest()}>
-            Start test
-            <i className="fas fa-play ml-2" />
-          </Button>
+        <div id="TestReset">
+          <div>
+            <img src="/Testing.svg" alt="user" width="80" />
+            <div className="text-muted mb-4 mt-3">Start test to see the dialog transcription</div>
+            <Button isPrimary onClick={() => startTest()}>
+              Start test
+              <i className="fas fa-play ml-2" />
+            </Button>
+          </div>
         </div>
       );
     }

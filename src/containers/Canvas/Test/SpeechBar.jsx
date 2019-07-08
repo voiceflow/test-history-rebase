@@ -15,7 +15,7 @@ function SpeechBar(props) {
 
   let text;
   if (!listening) {
-    text = 'Hold the Microphone or Spacebar for Voice Input';
+    text = 'Hold Spacebar or the Microphone Icon for Voice Input';
   } else if (!microphone) {
     text = <span className="text-white">Please enable Voiceflow access to the microphone</span>;
   } else if (listening) {
@@ -26,21 +26,22 @@ function SpeechBar(props) {
         </>
       );
     } else {
-      text = 'Say Something';
+      text = 'Say Something...';
     }
   }
 
   return (
     <div
       id="SpeechBar"
-      className={cn({
+      className={cn('pointer', {
         listening,
         microphone,
       })}
+      onMouseDown={listenClick}
     >
-      <button className="speech-icon" onMouseDown={listenClick}>
+      <div className="speech-icon">
         <i className="fas fa-microphone" />
-      </button>
+      </div>
       <div className="text-center flex-hard">{text}</div>
     </div>
   );

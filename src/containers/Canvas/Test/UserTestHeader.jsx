@@ -71,14 +71,14 @@ const UserTestHeader = (props) => {
           <div className="align-icon title-group no-select">
             <Button
               isBtn
-              isSecondary
+              isPrimary
               className="mr-2"
               onClick={() => {
                 history.push(`/canvas/${skill.skill_id}/${skill.diagram}`);
                 leaveTest();
               }}
             >
-              Back To Canvas
+              Back to Canvas
             </Button>
           </div>
         </>

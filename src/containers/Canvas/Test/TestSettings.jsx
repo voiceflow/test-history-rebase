@@ -2,6 +2,7 @@ import cn from 'classnames';
 import { setDebug, updateGlobal } from 'ducks/test';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Tooltip } from 'react-tippy';
 import Toggle from 'react-toggle';
 
 import { defaultVariables } from '../Sidebars/Variables';
@@ -31,12 +32,12 @@ function TestSettings(props) {
         })}
       </div>
       <div className="no-space__break" />
-      <div style={{ padding: '19px 20px' }}>
-        <div className="space-between">
+      <Tooltip title="Debug mode shows you the paths, variables, and flows you’re using as you’re testing your project" position="left">
+        <div style={{ padding: '19px 20px' }} className="space-between pointer" onClick={() => setDebug(!debug)}>
           <span className="text-dull">Debug Mode</span>
-          <Toggle checked={debug} icons={false} onChange={() => setDebug(!debug)} />
+          <Toggle checked={debug} icons={false} readOnly />
         </div>
-      </div>
+      </Tooltip>
     </div>
   );
 }

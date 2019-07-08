@@ -18,7 +18,7 @@ export const TEST_STATUS = {
 };
 
 // load in previous test setting
-const params = JSON.parse(localStorage.getItem('testParams')) || {};
+const params = JSON.parse(localStorage.getItem('testParams')) || { debug: true };
 
 const initialState = {
   nlc: null,
@@ -31,6 +31,7 @@ const initialState = {
   configId: null,
   configObject: null,
   rendered: 0,
+  userTest: false,
   debug: !!params.debug,
 };
 
@@ -108,7 +109,7 @@ export const setupGlobals = () => (dispatch, getState) => {
   );
 };
 
-export const initializeTest = () => (dispatch, getState) => {
+export const initializeTest = (options = {}) => (dispatch, getState) => {
   const { skills } = getState();
   const { intents, slots, platform, locales } = skills.skill;
 
@@ -175,6 +176,15 @@ export const initializeTest = () => (dispatch, getState) => {
     })
   );
   dispatch(setupGlobals());
+
+  if (options.userTest) {
+    dispatch(
+      updateTest({
+        debug: false,
+        userTest: true,
+      })
+    );
+  }
 };
 
 export const resetTime = () => ({

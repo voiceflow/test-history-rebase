@@ -211,7 +211,7 @@ class TestBox extends PureComponent {
             </div>
           ) : (
             <div className="condition-label pointer" onClick={this.toggleInputOpen}>
-              <span className="light-grey">{listening ? '(Listening)' : 'User Says'}</span>
+              <span className="light-grey">{listening ? 'Listening...' : 'User Says'}</span>
               <i
                 className={cn('fas fa-caret-left fa-lg light-grey rotate', {
                   'fa-rotate--90': inputOpen,

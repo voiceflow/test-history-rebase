@@ -98,6 +98,7 @@ const mapStateToProps = (state) => ({
   diagram_id: state.skills.skill.diagram,
   status: state.test.status,
   rendered: state.test.rendered,
+  userTest: state.test.userTest,
 });
 
 const mapDispatchToProps = {

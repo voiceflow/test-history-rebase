@@ -52,7 +52,7 @@ class UserTesting extends React.Component {
     localStorage.setItem(`TEST_VARIABLES_${skillData.skill_id}`, JSON.stringify(data.globals));
 
     this.setState({ loading: 0 });
-    initializeTest();
+    initializeTest({ userTest: true });
     updateTest({ rendered: 2 });
     startTest(skill.diagram);
   }
@@ -66,6 +66,10 @@ class UserTesting extends React.Component {
   render() {
     return (
       <>
+        <a id="MadeInVoiceflow" href="https://voiceflow.com" target="_blank" rel="noopener noreferrer">
+          <img src="/favicon.png" alt="Voiceflow" />
+          <span>Made In Voiceflow</span>
+        </a>
         <Header
           leftRenderer={() => (
             <a href="https://www.voiceflow.com" className="mx-2">
@@ -95,7 +99,7 @@ class UserTesting extends React.Component {
         />
         {!this.state.loading && (
           <div id="PublicUserTesting">
-            <Test open={true} enterFlow={_.noop} loading={this.state.loading} setSaveCB={_.noop} save={_.noop} userTest={true} />
+            <Test open={true} enterFlow={_.noop} loading={this.state.loading} setSaveCB={_.noop} save={_.noop} />
           </div>
         )}
       </>

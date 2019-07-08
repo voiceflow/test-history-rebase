@@ -251,7 +251,7 @@ export const updateGlobal = (name, value) => (dispatch, getState) => {
 export const shareTest = () => async (dispatch, getState) => {
   try {
     const { skills, test } = getState();
-    const { project_id: projectId, diagram } = skills.skill;
+    const { project_id: projectId, diagram, skill_id: skillId } = skills.skill;
     const { configId, configObject, state, status } = test;
 
     let globals;
@@ -267,7 +267,7 @@ export const shareTest = () => async (dispatch, getState) => {
     // if nothing has changed, just send back the original config
     if (currentConfigObject === configObject && configId) return configId;
 
-    const { data: newConfigId } = await axios.post(`/test/makeInfo/${projectId}`, { diagram, globals });
+    const { data: newConfigId } = await axios.post(`/test/makeInfo/${skillId}`, { diagram, globals });
 
     dispatch(
       updateTest({

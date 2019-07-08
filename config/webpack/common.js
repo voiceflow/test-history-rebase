@@ -1,7 +1,8 @@
 const { action } = require('webpack-nano/argv');
 const WebpackBar = require('webpackbar');
+const webpack = require('webpack');
 const paths = require('../paths');
-const { IS_PRODUCTION } = require('./config');
+const { IS_PRODUCTION, ENV } = require('./config');
 
 module.exports = {
   entry: [paths.entrypoint],
@@ -12,11 +13,20 @@ module.exports = {
   },
 
   resolve: {
-    modules: [paths.modules, paths.sourceDir],
+    modules: [paths.sourceDir, paths.modules],
     extensions: ['.js', '.json', '.jsx', '.css']
   },
   
   plugins: [
+    new webpack.DefinePlugin(
+      {
+        'process.env': Object.keys(ENV).reduce((acc, key) => {
+          acc[key] = JSON.stringify(ENV[key]);
+
+          return acc;
+        }, {})
+      }
+    ),
     new WebpackBar({ name: `webpack - ${action}` })
   ],
 

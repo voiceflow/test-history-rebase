@@ -11,6 +11,7 @@ module.exports = {
   ENV: {
     NODE_ENV,
     LOGROCKET_ENABLED: logrocket && 'true',
+    API_HOST: 'localhost',
     ...Object.keys(process.env).reduce(
       (acc, key) => {
         if (key.startsWith(ENV_PREFIX)) {

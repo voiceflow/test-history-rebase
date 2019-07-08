@@ -30,10 +30,10 @@ const tabId = sessionStorage.getItem('tabId');
 
 const getEndpoint = () => {
   let port = '';
-  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     port = ':8080';
   }
-  return `https://${process.env.APP_API_HOST}${port}`;
+  return `https://${process.env.API_HOST}${port}`;
 };
 
 // Configure axios

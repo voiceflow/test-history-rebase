@@ -1,11 +1,39 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const InterpolateHtmlPlugin = require('interpolate-html-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const merge = require('webpack-merge');
 const commonConfig = require('./common');
 const paths = require('../paths');
-const { IS_PRODUCTION } = require('./config');
+const { ENV, IS_PRODUCTION } = require('./config');
 
 module.exports = merge(commonConfig, {
-  plugins: [],
+  plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      inject: true,
+      template: paths.indexHTML,
+      ...(IS_PRODUCTION && {
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          keepClosingSlash: true,
+          minifyJS: true,
+          minifyCSS: true,
+          minifyURLs: true,
+        },
+      }),
+    }),
+    new BaseHrefWebpackPlugin({ baseHref: '/' }),
+    new InterpolateHtmlPlugin({
+      PUBLIC_URL: JSON.stringify(ENV.API_HOST)
+    })
+  ],
 
   module: {
     strictExportPresence: true,

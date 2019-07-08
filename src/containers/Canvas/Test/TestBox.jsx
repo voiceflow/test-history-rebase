@@ -149,15 +149,6 @@ class TestBox extends PureComponent {
     const { input, listening, inputOpen, microphone } = this.state;
     return (
       <div className="dialog">
-        <SpeechBar
-          ended={ended}
-          listening={listening}
-          interimTranscript={interimTranscript}
-          finalTranscript={finalTranscript}
-          listenClick={this.listenClick}
-          browserSupport={browserSupportsSpeechRecognition}
-          microphone={microphone}
-        />
         <div className="chat-container">
           <div className="chatbox">
             <div className="chats">
@@ -241,6 +232,15 @@ class TestBox extends PureComponent {
             </div>
           </Collapse>
         </div>
+        <SpeechBar
+          ended={ended}
+          listening={listening}
+          interimTranscript={interimTranscript}
+          finalTranscript={finalTranscript}
+          listenClick={this.listenClick}
+          browserSupport={browserSupportsSpeechRecognition}
+          microphone={microphone}
+        />
       </div>
     );
   }

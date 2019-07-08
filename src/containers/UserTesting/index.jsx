@@ -38,8 +38,8 @@ class UserTesting extends React.Component {
 
   async fetchInformation() {
     const { fetchVersionSuccess, initializeTest, updateTest, startTest, skill } = this.props;
-    const { data: skillData } = await axios.get(`/test/getInfo/${this.props.match.params.skill_id}`);
-
+    const { data } = await axios.get(`/test/getInfo/${this.props.match.params.skill_id}`);
+    const skillData = data.skill;
     const globals = Array.isArray(skillData.global) ? skillData.global : [];
     skillData.global = [...new Set(['sessions', 'user_id', 'timestamp', 'platform', 'locale', ...globals])];
     if (!skillData.fulfillment) {
@@ -48,6 +48,8 @@ class UserTesting extends React.Component {
     skillData.platform = skillData.platform === 'google' ? 'google' : 'alexa';
 
     fetchVersionSuccess(skillData, {});
+
+    localStorage.setItem(`TEST_VARIABLES_${skillData.skill_id}`, JSON.stringify(data.globals));
 
     this.setState({ loading: 0 });
     initializeTest();
@@ -72,11 +74,11 @@ class UserTesting extends React.Component {
           )}
           centerRenderer={() => (this.props.skill && this.props.skill.name) || 'Loading...'}
           rightRenderer={() => (
-            <>
+            <div className="mr-3">
               <Tooltip className="top-nav-icon" title="Share" position="bottom" distance={16}>
-                <Button isNavBordered id="icon-link" className="fas fa-link" onClick={this.toggleShare} />
+                <Button isNavBordered id="icon-share" className="fas fa-share" onClick={this.toggleShare} />
               </Tooltip>
-              <Popover placement="bottom" isOpen={this.state.share} target="icon-link" toggle={this.toggleShare} className="mt-3">
+              <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
                 <PopoverBody style={{ minWidth: '260px' }}>
                   <InputGroup>
                     <InputGroupAddon addonType="prepend">
@@ -88,12 +90,12 @@ class UserTesting extends React.Component {
                   </InputGroup>
                 </PopoverBody>
               </Popover>
-            </>
+            </div>
           )}
         />
         {!this.state.loading && (
-          <div className="PublicUserTesting">
-            <Test open={true} enterFlow={_.noop} loading={this.state.loading} setSaveCB={_.noop} save={_.noop} />
+          <div id="PublicUserTesting">
+            <Test open={true} enterFlow={_.noop} loading={this.state.loading} setSaveCB={_.noop} save={_.noop} userTest={true} />
           </div>
         )}
       </>

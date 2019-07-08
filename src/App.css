@@ -509,6 +509,10 @@ button:focus {
   color: #8da2b5 !important;
 }
 
+.text-md {
+  font-size: 2rem;
+}
+
 .text-lg {
   font-size: 3rem;
 }

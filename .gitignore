@@ -80,3 +80,5 @@ package-lock.json
 
 # Generated self-signed localhost certificates
 certs/
+
+scratch.js

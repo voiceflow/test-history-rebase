@@ -76,6 +76,13 @@ button {
   box-shadow: 0 6px 12px rgba(17, 49, 96, 0.2), 0 0 6px rgba(17, 49, 96, 0.1);
 }
 
+.btn-primary:active,
+.btn-primary:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 .btn-primary.__small {
   display: inline-block;
   padding: 8px 22px 10px;

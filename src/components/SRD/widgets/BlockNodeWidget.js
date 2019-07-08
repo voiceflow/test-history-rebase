@@ -51,37 +51,40 @@ export class BlockNodeWidget extends BaseWidget {
     }
   }
 
-  addCommand(e) {
-    e.preventDefault()
-    e.stopPropagation()
-    if (this.props.nodeProps.disabled) return
-    const engine = this.props.diagramEngine
-    const node = new BlockNodeModel('New Command', null, toolkit.UID())
-    node.parentCombine = this.props.node
-    node.extras = {
-      alexa: {
-        intent: null,
-        mappings: [],
-        resume: true
-      },
-      google: {
-        intent: null,
-        mappings: [],
-        resume: true
-      },
-      type: 'command'
-    }
-    engine.setSuperSelect(node)
-    node.setSelected()
-    this.props.node.combines.push(node)
-    engine.enableRepaintEntities([this.props.node]);
-    engine.repaintCanvas(false)
-  }
+	addCommand(e){
+		e.preventDefault()
+		e.stopPropagation()
+		if (this.props.nodeProps.disabled || this.props.diagramEngine.getDiagramModel().isLocked()) return
 
-  addBlocks = (e) => {
-    const engine = this.props.diagramEngine
-    let getNodeRef = findDOMNode(this.nodeRef.current).getBoundingClientRect()
-    let newX = getNodeRef.width / 2 + getNodeRef.x
+		const engine = this.props.diagramEngine
+		const node = new BlockNodeModel('New Command', null, toolkit.UID())
+		node.parentCombine = this.props.node
+		node.extras = {
+			alexa: {
+					intent: null,
+					mappings: [],
+					resume: true
+			},
+			google: {
+					intent: null,
+					mappings: [],
+					resume: true
+			},
+			type: 'command'
+		}
+		engine.setSuperSelect(node)
+		node.setSelected()
+		this.props.node.combines.push(node)
+		engine.enableRepaintEntities([this.props.node]);
+		engine.repaintCanvas(false)
+	}
+
+	addBlocks = (e) => {
+		if (this.props.diagramEngine.getDiagramModel().isLocked()) return
+		
+		const engine = this.props.diagramEngine
+		let getNodeRef = findDOMNode(this.nodeRef.current).getBoundingClientRect()
+		let newX = getNodeRef.width/2 + getNodeRef.x
 
     this.props.nodeProps.setBlockMenu(
       <React.Fragment>
@@ -485,7 +488,7 @@ export class BlockNodeWidget extends BaseWidget {
                     diagramEngine: this.props.diagramEngine,
                     key: node.id,
                     isLast: idx === this.props.node.combines.length - 1,
-                    selected: this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().id === node.id,
+                    selected: ((this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().id === node.id) || node.selected),
                     node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter, keepLink),
                     nodeProps: this.props.nodeProps,
                     onClick: () => {

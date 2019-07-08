@@ -1120,7 +1120,6 @@ export class ActionGroup extends PureComponent {
       saved,
       saving,
       onSave,
-      onTest,
       live_mode,
       vendors,
       show_upload_prompt: props_show_upload_prompt,
@@ -1284,7 +1283,7 @@ export class ActionGroup extends PureComponent {
               </div>
               <div className="align-icon">
                 <Tooltip distance={16} title="Test" position="bottom" className="ml-4 mr-4">
-                  <Button isNav onClick={onTest}>
+                  <Button isNav onClick={() => this.props.history.push(`/test/${this.props.skill.skill_id}`)}>
                     <i className="fas fa-play" />
                   </Button>
                 </Tooltip>

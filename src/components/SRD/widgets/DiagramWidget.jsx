@@ -298,7 +298,7 @@ export class DiagramWidget extends BaseWidget {
 		} else if (this.state.action instanceof MoveItemsAction && !this.props.locked) {
 			let amountX = event.clientX - this.state.action.mouseX;
 			let amountY = event.clientY - this.state.action.mouseY;
-			if (amountX === 0 && amountY === 0) return;
+			if ((amountX === 0 && amountY === 0) || this.props.locked) return;
 			let amountZoom = diagramModel.getZoomLevel() / 100;
 			// console.log(this.state.action.selectionModels)
 			_.forEach(this.state.action.selectionModels, model => {
@@ -542,6 +542,7 @@ export class DiagramWidget extends BaseWidget {
 					if (!model.model.isMoving || this.props.editorOpen) {
 						this.clickDiagram()
 					}
+					if (this.props.locked) return;
 					model.element.style.pointerEvents = 'all';
 					model.model.isMoving = false;
 					if (model.model.extras.type === 'god') {
@@ -561,6 +562,7 @@ export class DiagramWidget extends BaseWidget {
 						});
 					}
 				}
+				if (this.props.locked) return;
 				if (!(model.model instanceof PointModel)) {
 					return;
 				}
@@ -600,7 +602,7 @@ export class DiagramWidget extends BaseWidget {
 				}
 			});
 			//check for / remove any loose links in any models which have been moved
-			if (!this.props.allowLooseLinks) {
+			if (!this.props.allowLooseLinks && !this.props.locked) {
 				_.forEach(this.state.action.selectionModels, model => {
 					//only care about points connecting to things
 					if (!(model.model instanceof PointModel)) {
@@ -616,31 +618,33 @@ export class DiagramWidget extends BaseWidget {
 			}
 
 			//remove any invalid links
-			_.forEach(this.state.action.selectionModels, model => {
-				//only care about points connecting to things
-				if (!(model.model instanceof PointModel)) {
-					return;
-				}
-
-				let link = model.model.getLink();
-				let sourcePort = link.getSourcePort();
-				let targetPort = link.getTargetPort();
-				if (sourcePort !== null && targetPort !== null) {
-					if (!sourcePort.canLinkToPort(targetPort)) {
-						//link not allowed
-						link.remove();
-					} else if (
-						_.some(
-							_.values(targetPort.getLinks()),
-							(l) =>
-								l !== link && (l.getSourcePort() === sourcePort || l.getTargetPort() === sourcePort)
-						)
-					) {
-						//link is a duplicate
-						link.remove();
+			if (!this.props.locked) {
+				_.forEach(this.state.action.selectionModels, model => {
+					//only care about points connecting to things
+					if (!(model.model instanceof PointModel)) {
+						return;
 					}
-				}
-			});
+
+					let link = model.model.getLink();
+					let sourcePort = link.getSourcePort();
+					let targetPort = link.getTargetPort();
+					if (sourcePort !== null && targetPort !== null) {
+						if (!sourcePort.canLinkToPort(targetPort)) {
+							//link not allowed
+							link.remove();
+						} else if (
+							_.some(
+								_.values(targetPort.getLinks()),
+								(l) =>
+									l !== link && (l.getSourcePort() === sourcePort || l.getTargetPort() === sourcePort)
+							)
+						) {
+							//link is a duplicate
+							link.remove();
+						}
+					}
+				});
+			}
 			this.stopFiringAction(!this.state.wasMoved);
 		} else {
 			this.stopFiringAction();

@@ -176,6 +176,7 @@ class Skill extends Component {
   renderPage() {
     switch (this.props.page) {
       case 'canvas':
+      case 'test':
         return (
           <Canvas
             {...this.props}
@@ -183,6 +184,7 @@ class Skill extends Component {
             ref={this.child_canvas}
             linter={this.state.linter}
             toggleUpgrade={this.toggleUpgrade}
+            test={this.props.page === 'test'}
           />
         );
       case 'tools':
@@ -320,7 +322,7 @@ class Skill extends Component {
         ) : (
           <>
             <div id="app" className={this.props.page}>
-              {this.props.page !== 'canvas' && (
+              {this.props.page !== 'canvas' && this.props.page !== 'test' && (
                 <div className="main-container-header">
                   <Header
                     // title={this.props.skill.name}

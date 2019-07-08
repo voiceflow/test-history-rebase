@@ -1,9 +1,16 @@
+import cn from 'classnames';
 import Button from 'components/Button';
 import React from 'react';
 import { ButtonGroup } from 'reactstrap';
 
-export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update, preview }) => (
-  <div id="widget-bar">
+export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update, preview, isCanvas }) => (
+  <div
+    id="widget-bar"
+    className={cn({
+      isCanvas,
+      isTest: !isCanvas,
+    })}
+  >
     <ButtonGroup>
       <Button isWhiteCirc onClick={() => zoom(1000, engine, update)} className="round-left">
         <i className="far fa-plus" />
@@ -34,7 +41,7 @@ function centerDiagram(engine, setOpen) {
       nodes[key].setSelected();
       setOpen(true);
       model.setZoomLevel(80);
-      model.setOffset(300 - nodes[key].x * 0.8, 300 - nodes[key].y * 0.8);
+      model.setOffset(300 - nodes[key].x * 0.8, 300 - nodes[key].y * 0.8, true, engine);
       return;
     }
   }

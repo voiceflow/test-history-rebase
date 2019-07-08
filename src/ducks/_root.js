@@ -11,6 +11,7 @@ import modal from 'ducks/modal';
 import products from 'ducks/product';
 import project from 'ducks/project';
 import team from 'ducks/team';
+import test from 'ducks/test';
 import userSetting from 'ducks/user';
 import variables from 'ducks/variable';
 import skills from 'ducks/version';
@@ -33,5 +34,6 @@ export default (history) =>
     account,
     integrationUsers,
     admin,
+    test,
     alerts,
   });

@@ -1,4 +1,10 @@
 // Regex'd from https://developer.amazon.com/docs/custom-skills/slot-type-reference.html#availability
+const AMAZON_CANCEL_INTENT = 'AMAZON.CancelIntent';
+const AMAZON_HELP_INTENT = 'AMAZON.HelpIntent';
+const AMAZON_STOP_INTENT = 'AMAZON.StopIntent';
+const AMAZON_YES_INTENT = 'AMAZON.YesIntent';
+const AMAZON_NO_INTENT = 'AMAZON.NoIntent';
+const AMAZON_REPEAT_INTENT = 'AMAZON.RepeatIntent';
 
 const LOCALES = {
   US: 'en-US',
@@ -45,6 +51,373 @@ const GOOGLE_LOCALES = {
 
 const L = LOCALES;
 const GL = GOOGLE_LOCALES;
+
+const DEFAULT_INTENTS = {
+  // English (AU,CA,US,UK,IN)
+  en: {
+    defaults: [
+      {
+        name: AMAZON_CANCEL_INTENT,
+        samples: ['cancel', 'never mind', 'forget it'],
+        slots: [],
+      },
+      {
+        name: AMAZON_HELP_INTENT,
+        samples: ['help', 'help me', 'can you help me'],
+        slots: [],
+      },
+      {
+        name: AMAZON_STOP_INTENT,
+        samples: ['stop', 'off', 'shut up'],
+        slots: [],
+      },
+      {
+        name: AMAZON_YES_INTENT,
+        samples: ['yes', 'yea', 'yeah', 'I do', 'yes please', 'you know it', 'ok', 'okay', 'yup', 'ya', 'sure'],
+        keep: ['yes'],
+        slots: [],
+      },
+      {
+        name: AMAZON_NO_INTENT,
+        samples: ['no', 'no thanks', 'nope', 'I do not', 'no thank you', 'nay', 'nah', 'no way', 'negative'],
+        slots: [],
+      },
+    ],
+    built_ins: [
+      {
+        name: AMAZON_REPEAT_INTENT,
+        samples: ['repeat', 'say that again', 'repeat that', 'again', 'say again'],
+        slots: [],
+      },
+    ],
+  },
+  // French (CA,FR)
+  fr: {
+    defaults: [
+      {
+        name: AMAZON_CANCEL_INTENT,
+        samples: ['annuler', 'annule'],
+        slots: [],
+      },
+      {
+        name: AMAZON_HELP_INTENT,
+        samples: ['aidez-moi', 'aider', 'aide', 'aide moi', 'assistance', "j'ai besoin d'aide", 'je ne comprends pas'],
+        slots: [],
+      },
+      {
+        name: AMAZON_STOP_INTENT,
+        samples: ["s'arrêter", 'arrêter', 'arrête', 'stop', 'fin', 'cesser', 'mettre fin', 'stopper', 'mettre un terme', 'interrompre'],
+        slots: [],
+      },
+      {
+        name: AMAZON_YES_INTENT,
+        samples: ['oui', 'yep', 'ok', 'bien sûr', 'ouais', 'ouaip', 'exactement', 'correct', 'okay', "d'accord"],
+        keep: ['oui'],
+        slots: [],
+      },
+      {
+        name: AMAZON_NO_INTENT,
+        samples: ['non', 'nan', 'absolument pas', 'hors de question', 'bien sûr que non'],
+        slots: [],
+      },
+    ],
+    built_ins: [
+      {
+        name: AMAZON_REPEAT_INTENT,
+        samples: [
+          'repeat',
+          'est-ce que tu peux répéter',
+          'répète',
+          'tu peux répéter',
+          'dis-le à nouveau',
+          'tu peux le redire',
+          'redire ça',
+          'répéter ça',
+        ],
+        slots: [],
+      },
+    ],
+  },
+  // Japanese (JA)
+  ja: {
+    defaults: [
+      {
+        name: AMAZON_CANCEL_INTENT,
+        samples: ['取り消す', 'キャンセル', '取り消し', '取消'],
+        slots: [],
+      },
+      {
+        name: AMAZON_HELP_INTENT,
+        samples: [
+          '助ける',
+          '手伝う',
+          'アシスト',
+          '裏付ける',
+          '手助け',
+          '手伝い',
+          '救済',
+          '応援',
+          '助',
+          '手伝',
+          '救い',
+          '力添え',
+          '扶助',
+          '加勢',
+          '援護',
+          '佐',
+          '介添え',
+        ],
+        slots: [],
+      },
+      {
+        name: AMAZON_STOP_INTENT,
+        samples: [
+          '止める',
+          '立ち止まる',
+          '止む',
+          '打ち切る',
+          '停める',
+          '留める',
+          '阻む',
+          '途絶える',
+          '句切る',
+          '停まる',
+          'ストップ',
+          '終止',
+          '停留',
+          '止まること',
+        ],
+        slots: [],
+      },
+      {
+        name: AMAZON_YES_INTENT,
+        samples: ['yes', 'はい', 'ええ', 'そうです'],
+        keep: ['はい'],
+        slots: [],
+      },
+      {
+        name: AMAZON_NO_INTENT,
+        samples: ['no', 'いいえ', 'そうだはない', 'いやそれどころか', 'ノン', '否', '否や'],
+        slots: [],
+      },
+    ],
+    built_ins: [
+      {
+        name: AMAZON_REPEAT_INTENT,
+        samples: ['repeat', '繰り返す', '引き返す', '折れ返る', '返す'],
+        slots: [],
+      },
+    ],
+  },
+  // Italian (IT)
+  it: {
+    defaults: [
+      {
+        name: AMAZON_CANCEL_INTENT,
+        samples: ['cancellare', 'annullare', 'disdire', 'sopprimere', 'rescindre', 'chiudere', 'abrogare', 'obliterare'],
+        slots: [],
+      },
+      {
+        name: AMAZON_HELP_INTENT,
+        samples: [
+          'la assistenza',
+          'il aiuto',
+          'il soccorso',
+          'lo manforte',
+          'la persona di servizio',
+          'aiutare',
+          'fare a meno di',
+          'contribuire a',
+          'assistere',
+          'servire',
+        ],
+        slots: [],
+      },
+      {
+        name: AMAZON_STOP_INTENT,
+        samples: [
+          'la fermata',
+          'il fermo',
+          'lo stop',
+          'la sosta',
+          'la tappa',
+          'fermare',
+          'interrompere',
+          'smettere',
+          'fermarsi',
+          'arrestare',
+          'cessare',
+          'sostare',
+          'finire',
+          'stoppare',
+          'fare una fermata',
+        ],
+        slots: [],
+      },
+      {
+        name: AMAZON_YES_INTENT,
+        samples: ['yes', 'si', 'certo'],
+        keep: ['si'],
+        slots: [],
+      },
+      {
+        name: AMAZON_NO_INTENT,
+        samples: ['il no', 'no', 'il rifiuto', 'la negazione', 'nessuno'],
+        slots: [],
+      },
+    ],
+    built_ins: [
+      {
+        name: AMAZON_REPEAT_INTENT,
+        samples: ['repeat', '繰り返す', '引き返す', '折れ返る', '返す'],
+        slots: [],
+      },
+    ],
+  },
+  // Spanish (ES,MX)
+  es: {
+    defaults: [
+      {
+        name: AMAZON_CANCEL_INTENT,
+        samples: [
+          'cancelar',
+          'anular',
+          'suprimir',
+          'abolir',
+          'dar anulación',
+          'realizar anulación',
+          'hacer anulación',
+          'hacer dar anulación',
+          'noun la cancelación',
+          'la anulación',
+        ],
+        slots: [],
+      },
+      {
+        name: AMAZON_HELP_INTENT,
+        samples: ['la ayuda', 'el favor', 'ei auxilio', 'el socorro', 'el empleado', 'la criada', 'ayudar', 'servir', 'auxiliar', 'socorrer'],
+        slots: [],
+      },
+      {
+        name: AMAZON_STOP_INTENT,
+        samples: ['detener', 'dejar', 'parar', 'suspender', 'cesar', 'pararse', 'terminar', 'de alto'],
+        slots: [],
+      },
+      {
+        name: AMAZON_YES_INTENT,
+        samples: ['yes', 'si', 'sí', 'decir si'],
+        keep: ['sí'],
+        slots: [],
+      },
+      {
+        name: AMAZON_NO_INTENT,
+        samples: ['no', 'ninguno', 'imposible', 'prohibido', 'la negativa', 'el voto negativo', 'el voto en contra'],
+        slots: [],
+      },
+    ],
+    built_ins: [
+      {
+        name: AMAZON_REPEAT_INTENT,
+        samples: ['repeat', 'repetir', 'repetirse', 'reiterar', 'recitar', 'volver a dar'],
+        slots: [],
+      },
+    ],
+  },
+  // German (DE)
+  de: {
+    defaults: [
+      {
+        name: AMAZON_CANCEL_INTENT,
+        samples: ['stornieren', 'aufheben', 'kündigen', 'annullieren', 'beenden', 'absagen', 'abbestellen', 'abmelden', 'auflösen', 'zurücknehmen'],
+        slots: [],
+      },
+      {
+        name: AMAZON_HELP_INTENT,
+        samples: ['die hilfe', 'der beistand', 'die aushilfe', 'helfen', 'beitragen', 'behilflich sein', 'hilfe leisten'],
+        slots: [],
+      },
+      {
+        name: AMAZON_STOP_INTENT,
+        samples: [
+          'der stopp',
+          'der anschlag',
+          'die haltestelle',
+          'der registerzug',
+          'stoppen',
+          'aufhören',
+          'beenden',
+          'anhalten',
+          'halten',
+          'verhindern',
+          'aufhalten',
+          'unterbrechen',
+          'abbrechen',
+          'unterbinden',
+          'einstellen',
+          'abbestellen',
+          'absetzen',
+        ],
+        slots: [],
+      },
+      {
+        name: AMAZON_YES_INTENT,
+        samples: ['yes', 'ja', 'doch', 'jawohl'],
+        keep: ['ja'],
+        slots: [],
+      },
+      {
+        name: AMAZON_NO_INTENT,
+        samples: ['no', 'nein', 'kein', 'nicht'],
+        slots: [],
+      },
+    ],
+    built_ins: [
+      {
+        name: AMAZON_REPEAT_INTENT,
+        samples: ['repeat', 'wiederholen', 'wiedergeben', 'repetieren', 'weitersagen'],
+        slots: [],
+      },
+    ],
+  },
+  // Portuguese (PT)
+  pt: {
+    defaults: [
+      {
+        name: AMAZON_CANCEL_INTENT,
+        samples: ['cancelar', 'anular', 'suspender'],
+        slots: [],
+      },
+      {
+        name: AMAZON_HELP_INTENT,
+        samples: ['ajudar', 'socorrer', 'auxiliar'],
+        slots: [],
+      },
+      {
+        name: AMAZON_STOP_INTENT,
+        samples: ['parar', 'terminar', 'impedir', 'fazer parar'],
+        slots: [],
+      },
+      {
+        name: AMAZON_YES_INTENT,
+        samples: ['yes', 'sim', 'o sim', 'dizer sim'],
+        keep: ['sim'],
+        slots: [],
+      },
+      {
+        name: AMAZON_NO_INTENT,
+        samples: ['no', 'não', 'negativa'],
+        slots: [],
+      },
+    ],
+    built_ins: [
+      {
+        name: AMAZON_REPEAT_INTENT,
+        samples: ['repeat', 'repetir', 'reiterar', 'refazer', 'amiudar', 'recitar de cor'],
+        slots: [],
+      },
+    ],
+  },
+};
 
 const SLOT_TYPES = [
   { label: 'Custom', type: { alexa: null, google: null }, locales: { alexa: null, google: null } },
@@ -2303,3 +2676,4 @@ exports.BUILT_IN_INTENTS_ALEXA = BUILT_IN_INTENTS_ALEXA;
 exports.BUILT_IN_INTENTS_GOOGLE = BUILT_IN_INTENTS_GOOGLE;
 exports.ALLOWED_GOOGLE_BLOCKS = ALLOWED_GOOGLE_BLOCKS;
 exports.GOOGLE_LOCALES = GOOGLE_LOCALES;
+exports.DEFAULT_INTENTS = DEFAULT_INTENTS;

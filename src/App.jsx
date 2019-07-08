@@ -25,6 +25,7 @@ import { history } from 'store/store';
 
 import { evaluateMaintenance } from './MAINTENANCE';
 import allRoutes from './Routes/allRoutes';
+import Alerts from './components/Alerts/Alerts';
 
 ReactGA.initialize('UA-124745244-3');
 toast.configure({
@@ -110,6 +111,7 @@ class App extends Component {
           <ConfirmModal />
           <ErrorModal />
           <Modal />
+          <Alerts />
           <ToastContainer />
           {allRoutes}
         </ConnectedRouter>

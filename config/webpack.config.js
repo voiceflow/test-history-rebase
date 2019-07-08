@@ -577,6 +577,9 @@ module.exports = function(webpackEnv) {
             '**/*.stories.js',
             'components/SRD/sass/**/*',
             'setupTests.js',
+            // TODO: To be removed once SvgIcon component is being used in the app
+            'components/SvgIcon/*',
+            'svgs/**/*',
           ],
         },
       }),

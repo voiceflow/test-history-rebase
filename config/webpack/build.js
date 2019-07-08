@@ -15,26 +15,20 @@ module.exports = merge(commonConfig, {
     new HtmlWebpackPlugin({
       inject: true,
       template: paths.indexHTML,
-      ...(IS_PRODUCTION && {
-        minify: {
-          removeComments: true,
-          collapseWhitespace: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          keepClosingSlash: true,
-          minifyJS: true,
-          minifyCSS: true,
-          minifyURLs: true,
-        },
-      }),
     }),
     new BaseHrefWebpackPlugin({ baseHref: '/' }),
     new InterpolateHtmlPlugin({
       PUBLIC_URL: JSON.stringify(ENV.API_HOST),
     }),
     ...(IS_SERVING ? [] : [new CopyPlugin([{ from: paths.publicDir, to: paths.buildDir }])]),
+    ...(IS_PRODUCTION
+      ? [
+          new MiniCssExtractPlugin({
+            filename: `${paths.staticCSS}[name].[contenthash:8].css`,
+            chunkFilename: `${paths.staticCSS}[name].[contenthash:8].chunk.css`,
+          }),
+        ]
+      : []),
   ],
 
   module: {

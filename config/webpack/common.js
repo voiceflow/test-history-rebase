@@ -25,7 +25,7 @@ module.exports = {
         return acc;
       }, {}),
     }),
-    new WebpackBar({ name: `webpack - ${action || 'build'}` }),
+    new WebpackBar({ name: `Voiceflow Creator - ${action || 'build'}` }),
   ],
 
   mode: IS_PRODUCTION ? 'production' : 'development',

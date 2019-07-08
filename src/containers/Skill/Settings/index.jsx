@@ -15,6 +15,10 @@ import DiscoverySettings from './Discovery';
 const TABS = ['basic', 'advanced', 'discovery', 'backups'];
 
 class Settings extends Component {
+  state = {
+    tab: 'basic',
+  };
+
   constructor(props) {
     super(props);
 
@@ -24,10 +28,8 @@ class Settings extends Component {
   }
 
   switchTab(tab) {
-    const { page, history, skill_id } = this.props;
-
-    if (tab !== page) {
-      history.push(`/settings/${skill_id}/${tab}`);
+    if (tab !== this.state.tab) {
+      this.setState({ tab });
     }
   }
 
@@ -64,13 +66,13 @@ class Settings extends Component {
   }
 
   modalContent() {
-    const { skill_id, page } = this.props;
+    const { skill_id } = this.props;
 
     if (!skill_id) {
       return null;
     }
 
-    switch (page) {
+    switch (this.state.tab) {
       case 'basic':
         return <BasicSettings {...this.props} onSwapVersions={this.onSwapVersions} />;
       case 'advanced':
@@ -85,10 +87,8 @@ class Settings extends Component {
   }
 
   render() {
-    const { page, live_mode } = this.props;
-
     return (
-      <div className="settings pt-4 pb-5">
+      <div className="settings pb-5">
         <div>
           <div className="nav-bar-top mb-4">
             <ButtonGroup className="toggle-group mb-2 toggle-group-settings">
@@ -97,8 +97,8 @@ class Settings extends Component {
                   <Button
                     key={tab}
                     onClick={() => this.switchTab(tab)}
-                    outline={page !== tab}
-                    disabled={page === tab || (live_mode && tab === 'backups')}
+                    outline={this.state.tab !== tab}
+                    disabled={this.state.tab === tab || (this.props.live_mode && tab === 'backups')}
                   >
                     {_.startCase(tab)}
                   </Button>
@@ -107,7 +107,7 @@ class Settings extends Component {
             </ButtonGroup>
           </div>
         </div>
-        {this.modalContent()}
+        <div className="h-100">{this.modalContent()}</div>
       </div>
     );
   }

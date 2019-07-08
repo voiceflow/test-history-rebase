@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { Alert } from 'reactstrap';
 
+import { selectStyles } from '../../../components/VariableSelect/VariableSelect';
 import MenuItem from '../Sidebars/components/MenuItem';
 
 const cancel = {
@@ -93,6 +94,10 @@ export class Payment extends Component {
     );
   }
 
+  openProductPage = () => {
+    this.props.history.push(`/tools/${this.props.skill_id}/products`);
+  };
+
   render() {
     if (!Array.isArray(this.props.products) || this.props.products.length === 0) {
       return (
@@ -107,7 +112,16 @@ export class Payment extends Component {
       );
     }
 
-    const options = _.map(this.props.products, (product) => {
+    const productOptions = _.cloneDeep(this.props.products);
+
+    const options = productOptions.map((product, idx) => {
+      if (idx === productOptions.length - 1) {
+        return {
+          value: product.id,
+          label: product.name,
+          openProductPage: this.openProductPage,
+        };
+      }
       return {
         value: product.id,
         label: product.name,
@@ -159,9 +173,16 @@ export class Payment extends Component {
     return (
       <React.Fragment>
         <label>Select Existing Product</label>
+        <div onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/products`)} className="d__see_all">
+          See all
+        </div>
         <Select
           classNamePrefix="select-box"
+          styles={selectStyles}
           onChange={(selected) => {
+            if (selected.openProductPage) {
+              return selected.openProductPage();
+            }
             const node = this.state.node;
             node.extras.product_id = selected.value;
             this.setState({
@@ -171,6 +192,14 @@ export class Payment extends Component {
           }}
           options={options}
         />
+        <div>
+          <div className="d__or_box">
+            <div className="d__or_text">OR</div>
+          </div>
+        </div>
+        <button className="btn-clear btn-block btn-lg" onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/products`)}>
+          Create new product
+        </button>
       </React.Fragment>
     );
   }

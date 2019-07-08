@@ -168,7 +168,7 @@ class BasicSettings extends Component {
           </FormGroup>
           <hr />
         </div>
-        <div className="settings-content clearfix no-bottom">
+        <div className="settings-content settings-basic clearfix no-bottom">
           <FormGroup>
             {/* <Label className="mb-1">Restart Every Session</Label> */}
             <div className="helper-text">

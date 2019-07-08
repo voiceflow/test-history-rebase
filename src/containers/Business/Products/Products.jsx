@@ -49,11 +49,37 @@ class Products extends Component {
               <div className="products-container position-relative">
                 <div className="space-between w-100 px-3">
                   <h5 className="text-muted mb-0">Products</h5>
-                  <Link to={`/tools/${this.props.skill_id}/product/new`} className="no-underline btn btn-primary">
-                    New Product
-                  </Link>
+                  <div>
+                    <Button
+                      isFlat
+                      varient="contained"
+                      className="mr-2"
+                      onClick={() => {
+                        this.props.history.push(`/canvas/${this.props.skill_id}`);
+                      }}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      isPrimary
+                      variant="contained"
+                      color="publish"
+                      iconPosition="right"
+                      onClick={() => {
+                        this.props.history.push(`/tools/${this.props.skill_id}/product/new`);
+                      }}
+                    >
+                      New Product
+                    </Button>
+                  </div>
                 </div>
-                <Masonry elementType="div" imagesLoadedOptions={{ columnWidth: '200', itemSelector: '.grid-item' }}>
+                <Masonry
+                  elementType="div"
+                  imagesLoadedOptions={{
+                    columnWidth: '200',
+                    itemSelector: '.grid-item',
+                  }}
+                >
                   {_.map(this.props.products, (product) => {
                     let icon;
                     const smallIcon = product.data.publishingInformation.locales['en-US'].smallIconUri;

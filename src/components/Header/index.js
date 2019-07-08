@@ -63,10 +63,18 @@ const Header = (props) => {
   };
 
   const renderRight = () => {
-    if (!preview) {
-      return (
-        <>
-          {rightRenderer && rightRenderer()}
+    return (
+      <>
+        {rightRenderer && rightRenderer()}
+
+        {preview && (
+          <div className="title-group no-select">
+            <span className="text-blue" id="preview-title">
+              <span className="dot" /> PREVIEW MODE
+            </span>
+          </div>
+        )}
+        {user && (
           <UncontrolledDropdown className="account-dropdown">
             <DropdownToggle className="account hover" nav tag="div">
               <User user={user} className="pointer" />
@@ -87,15 +95,8 @@ const Header = (props) => {
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
-        </>
-      );
-    }
-    return (
-      <div className="title-group no-select">
-        <span className="text-blue" id="preview-title">
-          <span className="dot" /> PREVIEW MODE
-        </span>
-      </div>
+        )}
+      </>
     );
   };
 

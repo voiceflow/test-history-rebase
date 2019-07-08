@@ -1120,7 +1120,6 @@ export class ActionGroup extends PureComponent {
       history,
       updateSkill,
       platform,
-      onTest,
       live_mode,
       vendors,
       show_upload_prompt: props_show_upload_prompt,
@@ -1251,8 +1250,8 @@ export class ActionGroup extends PureComponent {
           }}
           rightRenderer={() => (
             <div className="title-group no-select">
-              <div className="align-icon">
-                <Tooltip distance={16} title="Settings" position="bottom" className="mr-4">
+              <div className="title-group-sub">
+                <Tooltip title="Settings" position="bottom">
                   <Button
                     className={cn('dropdown-button-border', { active: this.state.settingsModal })}
                     id="settings-icon"
@@ -1262,7 +1261,7 @@ export class ActionGroup extends PureComponent {
                 </Tooltip>
               </div>
               <div className="title-group-sub">
-                <Tooltip className="top-nav-icon" title="Share" position="bottom" distance={16}>
+                <Tooltip title="Share" position="bottom">
                   <Button
                     className={cn('dropdown-button-border', { active: this.state.share })}
                     id="icon-share"
@@ -1289,14 +1288,6 @@ export class ActionGroup extends PureComponent {
                   </PopoverBody>
                 </Popover>
               </div>
-              <div className="align-icon">
-                <Tooltip distance={16} title="Test" position="bottom" className="ml-4 mr-4">
-                  <Button isNav onClick={onTest}>
-                    <i className="fas fa-play" />
-                  </Button>
-                </Tooltip>
-              </div>
-
               <UploadButton
                 live_mode={live_mode}
                 show_upload_prompt={show_upload_prompt}

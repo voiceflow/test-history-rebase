@@ -10,6 +10,7 @@ const setOnSave = jest.fn();
 const historyMock = { push: jest.fn() };
 const error = jest.fn();
 
+const diagram = {};
 describe('Canvas', () => {
   it('render canvas', () => {
     const skill = testSkill;
@@ -41,6 +42,7 @@ describe('Canvas', () => {
         clearCanvasMessage={jest.fn()}
         setOnSave={setOnSave}
         getIntegrationsUsers={jest.fn(() => Promise.resolve())}
+        diagram={diagram}
       />
     );
     component.unmount();
@@ -54,6 +56,7 @@ describe('Canvas', () => {
     const enterFlow = jest.spyOn(Canvas.prototype, 'enterFlow');
     const component = shallow(
       <Canvas
+        page="canvas"
         skill={skill}
         setOnSave={setOnSave}
         diagram_id={diagram_id}
@@ -61,6 +64,7 @@ describe('Canvas', () => {
         updateSkill={jest.fn()}
         clearCanvasMessage={jest.fn()}
         getIntegrationsUsers={jest.fn(() => Promise.resolve())}
+        diagram={diagram}
       />
     );
     component.instance().enterFlow('12345', false);
@@ -86,6 +90,7 @@ describe('Canvas', () => {
         history={historyMock}
         setError={error}
         getIntegrationsUsers={jest.fn(() => Promise.resolve())}
+        diagram={diagram}
       />
     );
     component.instance().createDiagram(node);
@@ -106,6 +111,7 @@ describe('Canvas', () => {
         updateSkill={jest.fn()}
         setError={error}
         updateDiagrams={_.noop}
+        diagram={diagram}
         getIntegrationsUsers={jest.fn(() => Promise.resolve())}
       />
     );

@@ -28,6 +28,7 @@ exports[`Canvas render canvas 1`] = `
     setHelp={[Function]}
     toggle={[Function]}
   />
+<<<<<<< HEAD
   <Connect(ActionGroup)
     clearCanvasMessage={[MockFunction]}
     getIntegrationsUsers={
@@ -97,6 +98,8 @@ exports[`Canvas render canvas 1`] = `
     }
     updateLinter={[Function]}
   />
+=======
+>>>>>>> master
   <div
     id="canvas"
     onMouseDown={[Function]}
@@ -108,6 +111,7 @@ exports[`Canvas render canvas 1`] = `
       copyFlow={[Function]}
       deleteFlow={[Function]}
       enterFlow={[Function]}
+      isCanvas={false}
       openTab={[Function]}
       type_counter={Object {}}
       unfocus={[Function]}
@@ -200,6 +204,74 @@ exports[`Canvas render canvas 1`] = `
       unfocus={[Function]}
       updateLinter={[Function]}
     />
+    <Connect(Test)
+      diagramEngine={
+        DiagramEngine {
+          "canvas": null,
+          "combineCanvas": null,
+          "diagramModel": DiagramModel {
+            "gridSize": 0,
+            "id": undefined,
+            "links": Object {},
+            "listeners": Object {},
+            "locked": false,
+            "nodes": Object {},
+            "offsetX": 0,
+            "offsetY": 0,
+            "rendered": false,
+            "zoom": 100,
+          },
+          "id": undefined,
+          "labelFactories": Object {
+            "default": DefaultLabelFactory {
+              "type": "default",
+            },
+          },
+          "linkFactories": Object {
+            "default": BlockLinkFactory {
+              "color": null,
+              "extras": Object {},
+              "hidden": false,
+              "id": undefined,
+              "labels": Array [],
+              "listeners": Object {},
+              "locked": false,
+              "points": null,
+              "preview": undefined,
+              "selected": false,
+              "sourcePort": null,
+              "targetPort": null,
+              "type": "default",
+              "width": null,
+            },
+          },
+          "linksThatHaveInitiallyRendered": Object {},
+          "listeners": Object {},
+          "locked": false,
+          "moving": false,
+          "nodeFactories": Object {
+            "default": BlockNodeFactory {
+              "id": undefined,
+              "listeners": Object {},
+              "locked": false,
+              "selected": false,
+              "type": "default",
+            },
+          },
+          "paintableWidgets": null,
+          "portFactories": Object {
+            "default": BlockPortFactory {
+              "type": "default",
+            },
+          },
+          "superSelect": null,
+        }
+      }
+      enterFlow={[Function]}
+      loading={true}
+      save={[Function]}
+      setSaveCB={[Function]}
+    />
     <div
       className=""
       id="diagram"
@@ -283,6 +355,7 @@ exports[`Canvas render canvas 1`] = `
             "superSelect": null,
           }
         }
+        isCanvas={false}
         update={[Function]}
       />
       <Connect(Clipboard)

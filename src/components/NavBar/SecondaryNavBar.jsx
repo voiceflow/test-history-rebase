@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Toggle from 'react-toggle';
 
-const PAGES = ['canvas', 'publish', 'analytics'];
+const PAGES = ['canvas', 'test', 'publish', 'analytics'];
 
 class SecondaryNavBar extends Component {
   constructor(props) {
@@ -71,12 +71,9 @@ class SecondaryNavBar extends Component {
     }
     if (this.props.skill_id) {
       let suffix = '';
-      if (page === 'settings') {
-        suffix = 'basic';
-      } else if (page === 'publish') {
+      if (page === 'publish') {
         suffix = this.props.platform === 'alexa' ? '' : this.props.platform;
-      }
-      if (page === 'analytics') {
+      } else if (page === 'analytics') {
         if (this.props.live_mode) {
           return (
             <Link to={`/tools/${this.props.skill_id}`} key={page} className="nav-item">

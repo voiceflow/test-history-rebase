@@ -9,7 +9,7 @@ const Alerts = ({ showHelp, helpHeader, helpMessage, helpLink, helpVideo, clearH
   return (
     <div>
       <Modal isOpen={showHelp} toggle={clearHelp}>
-        <ModalHeader header={helpHeader} toggle={() => clearHelp()} />
+        <ModalHeader header={helpHeader} toggle={clearHelp} />
         <ModalBody>
           <div className="text-muted pl-3 pr-3 pt-0">
             <>

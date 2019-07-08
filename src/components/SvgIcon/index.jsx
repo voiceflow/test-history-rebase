@@ -17,7 +17,7 @@ export const SvgIconContainer = styled.span`
   }
 
   &:hover {
-    color: ${({ hoverColor }) => hoverColor};
+    color: ${({ hoverColor, color }) => hoverColor || color};
   }
 `;
 

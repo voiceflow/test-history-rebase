@@ -1,6 +1,7 @@
 import { connectRouter } from 'connected-react-router';
 import account from 'ducks/account';
 import admin from 'ducks/admin';
+import alerts from 'ducks/alerts';
 import board from 'ducks/board';
 import diagrams from 'ducks/diagram';
 import diagramVariables from 'ducks/diagram_variable';
@@ -34,4 +35,5 @@ export default (history) =>
     integrationUsers,
     admin,
     test,
+    alerts,
   });

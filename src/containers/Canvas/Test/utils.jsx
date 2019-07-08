@@ -27,7 +27,7 @@ export const recurse = (tag, index = 0) => {
     if (tag.name === 'voice') {
       return (
         <React.Fragment key={index}>
-          {tag.attrs.name !== 'Joanna' && (
+          {tag.attrs.name !== '_DEFAULT' && (
             <>
               <span className="text-muted">{tag.attrs.name}</span>
               <br />

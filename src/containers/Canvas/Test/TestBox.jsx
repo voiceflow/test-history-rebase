@@ -26,19 +26,26 @@ class TestBox extends PureComponent {
     if (this.intercomContainer) this.intercomContainer.style.visibility = 'hidden';
   }
 
-  componentWillUnmount() {
+  componentWillUnmount = () => {
     document.removeEventListener('keydown', this.spaceDownBind);
     this.props.stopListening();
     if (this.intercomContainer) this.intercomContainer.style.visibility = 'visible';
-  }
+  };
+
+  startListening = () => {
+    if (this.props.locale && this.props.locale.length === 5) {
+      this.props.recognition.lang = this.props.locale;
+    }
+    this.setState({ microphone: true });
+    this.props.startListening();
+  };
 
   checkMicrophone = () =>
     new Promise(async (resolve) => {
       if (!this.state.microphone) {
         const permissionStatus = await navigator.permissions.query({ name: 'microphone' });
         if (permissionStatus.state === 'granted') {
-          this.setState({ microphone: true });
-          this.props.startListening();
+          this.startListening();
         } else if (!this.microphonePrompt) {
           // prompts stack on top of each other (i.e. the moment they close it another will pop up)
           // this tracks the state of the prompt so we're sure we are not invoking more than one concurrently
@@ -48,8 +55,7 @@ class TestBox extends PureComponent {
             .getUserMedia({ audio: true })
             .then(() => {
               this.microphonePrompt = false;
-              this.setState({ microphone: true });
-              this.props.startListening();
+              this.startListening();
             })
             .catch(() => {
               this.microphonePrompt = false;
@@ -96,7 +102,6 @@ class TestBox extends PureComponent {
     this.props.inputSubmit(value);
 
     if (reset) this.setInput('');
-    // this.props.stopListening();
   };
 
   onKeydown = (e) => {

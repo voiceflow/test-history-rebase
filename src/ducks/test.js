@@ -215,7 +215,7 @@ export const renderTest = (diagramId) => async (dispatch, getState) => {
 
 export const startTest = (diagramId, line = null) => (dispatch, getState) => {
   const { skills, test } = getState();
-  const { repeat, platform, diagram, project_id: projectId } = skills.skill;
+  const { repeat, platform, diagram, project_id: projectId, locales } = skills.skill;
 
   const currentGlobals = test.state.globals[0];
   localStorage.setItem(`TEST_VARIABLES_${projectId}`, JSON.stringify(currentGlobals));
@@ -229,6 +229,7 @@ export const startTest = (diagramId, line = null) => (dispatch, getState) => {
     input: '',
     line,
     testing: true,
+    locale: locales && locales[0],
     skill_id: 'TEST_SKILL',
     globals: [currentGlobals],
     repeat: repeat || 100,

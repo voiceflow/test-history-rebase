@@ -216,7 +216,7 @@ class Timeline extends Component {
   };
 
   render() {
-    const { test, resetTest, startTest } = this.props;
+    const { test, resetTest, startTest, skill } = this.props;
     const { outputs, loading, options } = this.state;
 
     if (test.status === TEST_STATUS.IDLE) {
@@ -245,6 +245,7 @@ class Timeline extends Component {
           options={options}
           handleRestart={resetTest}
           playAudio={this.playAudio}
+          locale={Array.isArray(skill.locales) && skill.locales[0]}
         />
       </div>
     );

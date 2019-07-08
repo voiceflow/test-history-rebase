@@ -42,44 +42,46 @@ const UserTestHeader = (props) => {
       )}
       rightRenderer={() => (
         <>
-          <div className="align-icon title-group px-3 mx-0">
-            <Tooltip className="top-nav-icon" title="Share" position="bottom" distance={16}>
-              <Button isNavBordered id="icon-share" className="fas fa-share" onClick={makeConfig} />
-            </Tooltip>
-            <Popover placement="bottom" isOpen={share} target="icon-share" toggle={makeConfig} className="mt-3">
-              <PopoverBody style={{ minWidth: '260px' }}>
-                {rendered ? (
-                  <>
-                    <InputGroup>
-                      <InputGroupAddon addonType="prepend">
-                        <ClipBoard component="button" className="btn btn-clear copy-link" value={link} id="shareLink">
-                          <i className="fas fa-copy" />
-                        </ClipBoard>
-                      </InputGroupAddon>
-                      <Input readOnly value={link} className="form-control-border right" />
-                    </InputGroup>
-                    <div className="text-center text-dull p-2 mt-1">Share test for anyone on browser</div>
-                  </>
-                ) : (
-                  <div className="text-center pt-2 pb-1">
-                    <div className="loader text-md" />
-                  </div>
-                )}
-              </PopoverBody>
-            </Popover>
-          </div>
-          <div className="align-icon title-group no-select">
-            <Button
-              isBtn
-              isPrimary
-              className="mr-2"
-              onClick={() => {
-                history.push(`/canvas/${skill.skill_id}/${skill.diagram}`);
-                leaveTest();
-              }}
-            >
-              Back to Canvas
-            </Button>
+          <div className="title-group">
+            <div className="title-group-sub">
+              <Tooltip title="Share Test" position="bottom">
+                <Button className="dropdown-button-border" id="icon-share" type="button" onClick={makeConfig} />
+              </Tooltip>
+              <Popover placement="bottom" isOpen={share} target="icon-share" toggle={makeConfig} className="mt-3">
+                <PopoverBody style={{ minWidth: '260px' }}>
+                  {rendered ? (
+                    <>
+                      <InputGroup>
+                        <InputGroupAddon addonType="prepend">
+                          <ClipBoard component="button" className="btn btn-clear copy-link" value={link} id="shareLink">
+                            <i className="fas fa-copy" />
+                          </ClipBoard>
+                        </InputGroupAddon>
+                        <Input readOnly value={link} className="form-control-border right" />
+                      </InputGroup>
+                      <div className="text-center text-dull p-2 mt-1">Share test for anyone on browser</div>
+                    </>
+                  ) : (
+                    <div className="text-center pt-2 pb-1">
+                      <div className="loader text-md" />
+                    </div>
+                  )}
+                </PopoverBody>
+              </Popover>
+            </div>
+            <div className="align-icon no-select">
+              <Button
+                isBtn
+                isPrimary
+                className="mr-2"
+                onClick={() => {
+                  history.push(`/canvas/${skill.skill_id}/${skill.diagram}`);
+                  leaveTest();
+                }}
+              >
+                Back to Canvas
+              </Button>
+            </div>
           </div>
         </>
       )}

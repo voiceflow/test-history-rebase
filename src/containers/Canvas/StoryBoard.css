@@ -409,7 +409,6 @@
   height: 100%;
   padding-right: 1.5rem;
   padding-left: 1.5rem;
-  border-right: 1px solid #e2e9ec;
   border-left: 1px solid #e2e9ec;
 }
 
@@ -442,8 +441,6 @@
   align-items: center;
   height: 65px;
   margin-right: 10px;
-  padding-left: 1.5rem;
-  border-left: 1px solid #e2e9ec;
 }
 
 .modal-img {
@@ -1138,7 +1135,6 @@
 }
 
 .toggle-group-settings {
-  width: 525px;
   margin-right: auto;
   margin-left: auto;
 }

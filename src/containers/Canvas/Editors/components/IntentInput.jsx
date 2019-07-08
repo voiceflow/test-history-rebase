@@ -231,8 +231,10 @@ class IntentInput extends Component {
           })}
         >
           <span onClick={this.toggleCollapse}>
-            <i
-              className={cn('fas', 'fa-caret-right', 'rotate', {
+            <img
+              alt="dropdown arrow"
+              src="/arrow-right.svg"
+              className={cn('rotate ii__caret', {
                 'fa-rotate-90': this.props.intent.open,
               })}
             />
@@ -271,7 +273,7 @@ class IntentInput extends Component {
               This Intent is Unavailable on {this.props.platform === 'google' ? 'Google Assistant' : 'Alexa'}
             </div>
           )}
-          <div className={cn({ faded: disabled })}>
+          <div className={cn({ faded: disabled })} style={{ marginTop: '12px' }}>
             <Tooltip
               className="flex-hard"
               theme="warning"
@@ -303,9 +305,10 @@ class IntentInput extends Component {
                 />
               </MentionsInput>
             </Tooltip>
-            {this.props.intent.inputs.length === 0 ? (
-              <div className="ii__enter-helper-text">Enter to add</div>
-            ) : (
+            {this.props.intent.inputs.length === 0 && this.state.text && (
+              <div className="ii__enter-helper-text text-muted tiny-txt">Enter to add</div>
+            )}
+            {this.props.intent.inputs.length > 0 && (
               <div>
                 <hr style={{ marginBottom: 0 }} />
                 <div className="pt-2">{this.renderUtterances(this.props.intent.inputs)}</div>

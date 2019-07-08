@@ -24,6 +24,7 @@ import { Alert, Input, InputGroup, InputGroupAddon, Modal, ModalBody, Popover, P
 import LOCALE_MAP from 'services/LocaleMap';
 import InvRegex from 'services/Regex';
 
+import Settings from '../../../Skill/Settings';
 import UploadButton from '../UploadButton/UploadButton';
 
 const loading = (message) => {
@@ -177,6 +178,7 @@ export class ActionGroup extends PureComponent {
       percentage: 0,
       upload_button_loading: true,
       selected_vendor: props.vendor_id,
+      settingsModal: false,
     };
 
     this.token = null;
@@ -411,7 +413,9 @@ export class ActionGroup extends PureComponent {
       await axios.patch(`/skill/${skill.skill_id}?inv_name=1`, { inv_name });
       updateSkill('inv_name', inv_name);
     } catch (err) {
-      this.updateAlexaStage(9, undefined, { upload_error: 'Unable to save Invocation Name' });
+      this.updateAlexaStage(9, undefined, {
+        upload_error: 'Unable to save Invocation Name',
+      });
     }
   };
 
@@ -1116,10 +1120,6 @@ export class ActionGroup extends PureComponent {
       history,
       updateSkill,
       platform,
-      lastSave,
-      saved,
-      saving,
-      onSave,
       live_mode,
       vendors,
       show_upload_prompt: props_show_upload_prompt,
@@ -1171,6 +1171,14 @@ export class ActionGroup extends PureComponent {
             <div>{this.renderLiveStage()}</div>
           </ModalBody>
         </Modal>
+
+        <Modal isOpen={this.state.settingsModal} toggle={() => this.setState({ settingsModal: false })} className="ag__settings_modal">
+          <div className="ag__settings_header">
+            <ModalHeader toggle={() => this.setState({ settingsModal: false })} className="pb-2" header="Project Settings" />
+          </div>
+          <Settings {...this.props} page="basic" toggleUpgrade={this.toggleUpgrade} />
+        </Modal>
+
         <Header
           preview={preview}
           history={history}
@@ -1242,25 +1250,24 @@ export class ActionGroup extends PureComponent {
           }}
           rightRenderer={() => (
             <div className="title-group no-select">
-              <div className="align-icon">
-                <Tooltip distance={16} title={lastSave} position="bottom" className="mr-4">
+              <div className="title-group-sub">
+                <Tooltip title="Settings" position="bottom">
                   <Button
-                    id="icon-save"
-                    isNav
-                    className={cn({
-                      'btn-successful': saved,
-                      unsaved: !saved,
-                      saving,
-                    })}
-                    onClick={onSave}
-                  >
-                    {saving && <span className="save-loader" />}
-                  </Button>
+                    className={cn('dropdown-button-border', { active: this.state.settingsModal })}
+                    id="settings-icon"
+                    type="button"
+                    onClick={() => this.setState({ settingsModal: true })}
+                  />
                 </Tooltip>
               </div>
               <div className="title-group-sub">
-                <Tooltip className="top-nav-icon" title="Share" position="bottom" distance={16}>
-                  <Button isNavBordered id="icon-share" className="fas fa-share" onClick={this.toggleShare} />
+                <Tooltip title="Share" position="bottom">
+                  <Button
+                    className={cn('dropdown-button-border', { active: this.state.share })}
+                    id="icon-share"
+                    type="button"
+                    onClick={this.toggleShare}
+                  />
                 </Tooltip>
                 <Popover placement="bottom" isOpen={share} target="icon-share" toggle={this.toggleShare} className="mt-3">
                   <PopoverBody style={{ minWidth: '260px' }}>
@@ -1281,14 +1288,6 @@ export class ActionGroup extends PureComponent {
                   </PopoverBody>
                 </Popover>
               </div>
-              <div className="align-icon">
-                <Tooltip distance={16} title="Test" position="bottom" className="ml-4 mr-4">
-                  <Button isNav onClick={() => this.props.history.push(`/test/${this.props.skill.skill_id}`)}>
-                    <i className="fas fa-play" />
-                  </Button>
-                </Tooltip>
-              </div>
-
               <UploadButton
                 live_mode={live_mode}
                 show_upload_prompt={show_upload_prompt}

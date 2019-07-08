@@ -1,5 +1,5 @@
+import AceEditor from 'components/AceEditor';
 import React, { Component } from 'react';
-import AceEditor from 'react-ace';
 
 class Code extends Component {
   constructor(props) {

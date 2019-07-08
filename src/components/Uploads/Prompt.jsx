@@ -88,13 +88,15 @@ class Prompt extends PureComponent {
       <div className="multiline">
         <div className="multi-title-block mb-2">
           <div className="super-center flex-hard">
-            Speak As
+            <img src="/comment-blue.svg" alt="" className="mr-2" />
+            Speaking As
             <Select
               className="speak-box ml-3"
               classNamePrefix="select-box"
               value={{ label: this.props.voice, value: this.props.voice }}
               onChange={this.selectVoice}
               options={VOICES}
+              maxMenuHeight={120}
             />
           </div>
         </div>

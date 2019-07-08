@@ -530,7 +530,10 @@ export class Canvas extends Component {
             const pointIdx = _.findIndex(_.first(_.values(port.links)).points, (p) => p.parent.sourcePort.id === port.id);
             const point = _.first(_.values(port.links)).points[pointIdx];
             if (point instanceof PointModel) {
-              _.first(_.values(port.links)).points[pointIdx].updateLocation({ x: point.x, y: point.y + 40 });
+              _.first(_.values(port.links)).points[pointIdx].updateLocation({
+                x: point.x,
+                y: point.y + 40,
+              });
             }
           }
         });
@@ -964,7 +967,12 @@ export class Canvas extends Component {
 
               let g_choices = _.cloneDeep(node.extras.alexa.choices);
               g_choices = g_choices.map(() => {
-                return { intent: null, mappings: [], key: randomstring.generate(12), open: true };
+                return {
+                  intent: null,
+                  mappings: [],
+                  key: randomstring.generate(12),
+                  open: true,
+                };
               });
 
               node.extras.google = {
@@ -1437,9 +1445,7 @@ export class Canvas extends Component {
     if (key && fulfillments[key]) {
       const confirm_info = {
         // eslint-disable-next-line prettier/prettier
-        text: `CanfulfillIntent is enabled for the "${
-          extras.intent.label
-        }" intent. Deleting this intent will also delete any slot fulfillment values you have set for this intent.`,
+        text: `CanfulfillIntent is enabled for the "${extras.intent.label}" intent. Deleting this intent will also delete any slot fulfillment values you have set for this intent.`,
         confirm: () => {
           this.updateFulfillmentOnDeletion(deleted_node);
           this.setState({
@@ -1516,7 +1522,7 @@ export class Canvas extends Component {
   };
 
   render() {
-    const { upgrade_modal, helpOpen, help, engine, diagram_level_intents } = this.state;
+    const { upgrade_modal, helpOpen, help, engine, diagram_level_intents, saving, saved } = this.state;
     const {
       history,
       keyboardHelp,
@@ -1563,13 +1569,12 @@ export class Canvas extends Component {
             setCB={(cb) => {
               this.saveCB = cb;
             }}
+            {...this.props}
             onSave={this.onSave}
-            saving={this.state.saving}
-            saved={this.state.saved}
+            saving={saving}
+            saved={saved}
             updateLinter={this.updateLinter}
             renderPlatformSwitch={this.renderPlatformSwitch}
-            history={this.props.history}
-            preview={this.props.preview}
           />
         )}
         {!this.props.preview && this.props.page === 'test' && (

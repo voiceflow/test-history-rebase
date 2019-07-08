@@ -1,8 +1,8 @@
+import AceEditor from 'components/AceEditor';
 import Button from 'components/Button';
 import update from 'immutability-helper';
 import randomstring from 'randomstring';
 import React, { Component } from 'react';
-import AceEditor from 'react-ace';
 import { Collapse, Nav, NavItem, NavLink } from 'reactstrap';
 
 import APIInputs from '../../../APIInputs';

@@ -1,4 +1,4 @@
-import AceEditor from 'components/AceEditor';
+// import AceEditor from 'components/AceEditor';
 import Button from 'components/Button';
 import DefaultModal from 'components/Modals/DefaultModal';
 import Prompt from 'components/Uploads/Prompt';
@@ -84,7 +84,7 @@ class AdvancedSettings extends Component {
           content={this.state.overwrite_status}
           header="Overwrite Status"
         />
-        <div className="settings-content settings-advanced clearfix mt-4">
+        <div className="settings-advanced clearfix mt-4">
           <FormGroup>
             <Label>Error Prompt</Label>
             <div className="helper-text mb-2">What to say if the skill encounters an unexpected error</div>
@@ -96,7 +96,7 @@ class AdvancedSettings extends Component {
             />
           </FormGroup>
         </div>
-        <div className="settings-content clearfix">
+        {/* <div className="settings-content clearfix">
           <FormGroup>
             <div className="mt-4">
               <Label>Skill Events (events: {'{object}'})</Label>
@@ -125,9 +125,9 @@ class AdvancedSettings extends Component {
               />
             </div>
           </FormGroup>
-        </div>
+        </div> */}
         {this.props.live_mode && (
-          <div className="settings-content no-bottom clearfix">
+          <div className="no-bottom clearfix">
             <FormGroup>
               <Label>Overwrite Development Version with Live Version</Label>
               <Alert color="danger between">
@@ -140,7 +140,7 @@ class AdvancedSettings extends Component {
             </FormGroup>
           </div>
         )}
-        <div className="settings-content mt-3 no-bottom clearfix">
+        <div className="settings-content mt-5 no-bottom clearfix">
           <AccountLinkTemplate {...this.props} />
         </div>
         <div className="settings-content no-bottom clearfix">

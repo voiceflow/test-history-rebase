@@ -699,3 +699,7 @@ p.loading-btn::after {
 .settings-discovery {
   border-bottom: 0;
 }
+
+.pb__auth_error {
+  color: #e91e63;
+}

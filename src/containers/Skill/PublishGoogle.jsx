@@ -466,6 +466,7 @@ class GooglePublish extends Component {
       privacy_policy,
       terms_and_cond,
       live,
+      auth_error,
     } = this.state;
 
     let modal_content = null;
@@ -691,14 +692,26 @@ class GooglePublish extends Component {
                                     <span className="loader align-self-center" />
                                   </div>
                                 )}
-                                {credentials && (
-                                  <div className="align-self-center mx-2 d-flex">
-                                    <i className="fal fa-check-circle text-success align-self-center mx-2" />
-                                    <span>
-                                      <Label>File uploaded</Label>
-                                    </span>
+                                {auth_error && credentials && !loading_creds && (
+                                  <div className="drop-child">
+                                    Drag and Drop your file here
+                                    <br />
+                                    <small className="d-inline-block mt-2">OR</small>
+                                    <br />
+                                    <div>
+                                      <div className="btn-primary-small mt-2">Add File</div>
+                                    </div>
                                   </div>
                                 )}
+                                {credentials &&
+                                  !auth_error(
+                                    <div className="align-self-center mx-2 d-flex">
+                                      <i className="fal fa-check-circle text-success align-self-center mx-2" />
+                                      <span>
+                                        <Label>File uploaded</Label>
+                                      </span>
+                                    </div>
+                                  )}
                                 <div className="rejected-file text-danger">
                                   <b>File not Accepted</b>
                                 </div>

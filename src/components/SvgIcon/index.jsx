@@ -24,7 +24,7 @@ export const SvgIconContainer = styled.span`
 function SvgIcon({ icon: Icon, ...props }) {
   return (
     <SvgIconContainer {...props}>
-      <Icon key="Icon" />
+      <Icon />
     </SvgIconContainer>
   );
 }

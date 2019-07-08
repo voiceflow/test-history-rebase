@@ -252,7 +252,7 @@ export const shareTest = () => async (dispatch, getState) => {
   try {
     const { skills, test } = getState();
     const { project_id: projectId, diagram } = skills.skill;
-    const { configId, configObject, state, status } = test.state;
+    const { configId, configObject, state, status } = test;
 
     let globals;
     const store = localStorage.getItem(`TEST_VARIABLES_${projectId}`);

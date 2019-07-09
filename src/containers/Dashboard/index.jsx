@@ -3,6 +3,7 @@ import './DashBoard.css';
 import axios from 'axios';
 import cn from 'classnames';
 import Button from 'components/Button';
+import RoundButton from 'components/Button/RoundButton';
 import DragLayer from 'components/DragLayer';
 import Header from 'components/Header';
 import LoadingModal from 'components/Modals/LoadingModal';
@@ -32,6 +33,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
 import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Input, Popover, PopoverBody, UncontrolledDropdown } from 'reactstrap';
+import NotificationsIcon from 'svgs/Notifications.svg';
+import AddIcon from 'svgs/add-step.svg';
+import InformationIcon from 'svgs/information.svg';
 
 import ExpiryButton from './ExpiryButton';
 import TeamSettings from './TeamSettings';
@@ -182,13 +186,13 @@ export const DashBoard = (props) => {
 
   const renderUpdatesButton = () => {
     if (!show_update_bubble) {
-      return <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />;
+      return <RoundButton type="plain" width={42} height={42} icon={NotificationsIcon} onClick={updateButtonClick} imgSize={18} />;
     }
     return (
       <div className="dropdown-update-container" onMouseEnter={() => toggleUpdatesHover(true)} onMouseLeave={() => toggleUpdatesHover(false)}>
         <div className="dropdown-update-bubble" />
         {!updates_hover && !updates_open ? (
-          <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />
+          <RoundButton type="plain" width={42} height={42} icon={NotificationsIcon} onClick={updateButtonClick} imgSize={18} />
         ) : (
           <div className={cn('dropdown-button-numbered')} onClick={updateButtonClick}>
             <div className="update-number-circle">{new_product_updates.length}</div>
@@ -245,7 +249,7 @@ export const DashBoard = (props) => {
                 <UncontrolledDropdown>
                   <DropdownToggle className="ml-1" tag="div">
                     <Tooltip distance={19} title="Resources" position="bottom">
-                      <Button className="dropdown-button-border info" type="submit" />
+                      <RoundButton type="plain" width={42} height={42} icon={InformationIcon} imgSize={18} />
                     </Tooltip>
                   </DropdownToggle>
                   <DropdownMenu className="mt-2">
@@ -400,12 +404,15 @@ export const DashBoard = (props) => {
                       </DragLayer>
                       <div className="main-list-add">
                         <Tooltip distance={16} title="Add new list" position="bottom" className="ml-1 mr-4">
-                          <Button
+                          <RoundButton
+                            type="shadow"
+                            width={42}
+                            height={42}
+                            icon={AddIcon}
                             onClick={() => {
                               props.addBoard(props.team_id);
                             }}
-                            isNavBordered
-                            className="mt-1 add-button"
+                            imgSize={15}
                           />
                         </Tooltip>
                       </div>

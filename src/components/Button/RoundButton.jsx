@@ -1,6 +1,7 @@
 import SvgIcon from 'components/SvgIcon';
+import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const Button = styled.button`
   position: relative;
@@ -27,15 +28,21 @@ const Button = styled.button`
     background-color: ${({ color }) => color}15;
     border-style: double;
     box-shadow: ${({ type }) => (type !== 'plain' ? '0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16)' : 'none')};
-    color: ${({ type }) => (type === 'plain' ? '#979797' : 'initial')};
+    ${({ type }) =>
+      type !== 'color' &&
+      css`
+        color: #6e849a;
+      `}
   }
 
   &:active {
     ${({ type }) => {
       if (type !== 'plain') {
-        return `border: 1px solid #fff !important;
+        return css`border: 1px solid #fff !important;
         -webkit-box-shadow: 0 0 0 1px rgba(184, 218, 255, 1);
         -moz-box-shadow: 0 0 0 1px rgba(184, 218, 255, 1);
+        background-color: ${({ type }) => (type === 'shadow' ? '#5b9dfa30' : 'initial')}
+        color: ${({ type }) => (type === 'shadow' ? '#5b9dfa' : 'initial')}
         box-shadow: ${({ color, type }) => {
           if (color) {
             return `0 0 0 1px ${color}99`;
@@ -44,17 +51,18 @@ const Button = styled.button`
             return '0 0 0 1px 5b9dfa99';
           }
           return '0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16)';
-        }};
-        background-color: ${({ type }) => (type === 'shadow' ? '#5b9dfa30' : 'initial')};`;
+        }}`;
       }
-      return `background-color: #DFE3ED;
-          color: #113160;`;
+      return css`
+        background-color: #eef4f6cc;
+        color: #113160;
+      `;
     }}
   }
 `;
 
 const RoundButton = (props) => {
-  const { icon, imgAlt, imgSize, className, innerRef, onClick, disabled, ...attributes } = props;
+  const { icon, color, imgSize, className, innerRef, onClick, disabled, ...attributes } = props;
 
   const onBtnClick = (e) => {
     if (disabled) {
@@ -65,12 +73,31 @@ const RoundButton = (props) => {
       onClick(e);
     }
   };
-
   return (
     <Button {...props} {...attributes} className={className} ref={innerRef} onClick={onBtnClick}>
-      <SvgIcon icon={icon} width={imgSize || 18} height={imgSize || 18} alt={imgAlt || 'button'} />
+      <SvgIcon icon={icon} width={imgSize} height={imgSize} color={color} />
     </Button>
   );
+};
+
+RoundButton.propTypes = {
+  className: PropTypes.string,
+  disabled: PropTypes.boolean,
+  onClick: PropTypes.func,
+  type: PropTypes.string,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  icon: PropTypes.elementType,
+  imgSize: PropTypes.number,
+  color: PropTypes.string,
+};
+
+RoundButton.defaultProps = {
+  type: 'plain',
+  imgSize: 18,
+  width: 42,
+  height: 42,
+  disabled: false,
 };
 
 export default RoundButton;

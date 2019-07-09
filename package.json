@@ -98,6 +98,7 @@
     "postcss-safe-parser": "4.0.1",
     "pretty-ms": "^5.0.0",
     "prettysize": "^2.0.0",
+    "prop-types": "^15.7.2",
     "query-string": "^6.4.2",
     "randomstring": "^1.1.5",
     "react": "^16.8.6",

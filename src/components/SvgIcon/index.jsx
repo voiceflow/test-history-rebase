@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components';
 
 export const SvgIconContainer = styled.span`
   display: inline-block;
-  color: ${({ color }) => color};
+  color: ${({ color }) => color || 'inherit'};
 
   ${({ height, width }) => css`
     height: ${height}px;
@@ -39,7 +39,6 @@ SvgIcon.propTypes = {
 SvgIcon.defaultProps = {
   height: 16,
   width: 16,
-  color: '#6E849A',
 };
 
 export default SvgIcon;

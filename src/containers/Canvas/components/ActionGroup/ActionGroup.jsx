@@ -24,6 +24,8 @@ import Toggle from 'react-toggle';
 import { Alert, Input, InputGroup, InputGroupAddon, Modal, ModalBody, Popover, PopoverBody } from 'reactstrap';
 import LOCALE_MAP from 'services/LocaleMap';
 import InvRegex from 'services/Regex';
+import CogIcon from 'svgs/cog.svg';
+import ShareIcon from 'svgs/share.svg';
 
 import Settings from '../../../Skill/Settings';
 import UploadButton from '../UploadButton/UploadButton';
@@ -1255,13 +1257,11 @@ export class ActionGroup extends PureComponent {
                 <Tooltip distance={16} title="Settings" position="bottom" className="mr-4">
                   <RoundButton
                     type="plain"
-                    width={44}
-                    height={44}
-                    // eslint-disable-next-line no-nested-ternary
-                    icon="/cog.svg"
+                    width={42}
+                    height={42}
+                    icon={CogIcon}
                     onClick={() => this.setState({ settingsModal: true })}
-                    imgAlt="settings"
-                    imgSize={18}
+                    imgSize={15}
                   />
                 </Tooltip>
               </div>
@@ -1269,11 +1269,11 @@ export class ActionGroup extends PureComponent {
                 <Tooltip className="top-nav-icon" title="Share" position="bottom" distance={16}>
                   <RoundButton
                     id="icon-share"
-                    type="plain"
-                    width={44}
-                    height={44}
-                    icon="/share.svg"
-                    imgAlt="share"
+                    type="color"
+                    color="#5b9dfa"
+                    width={42}
+                    height={42}
+                    icon={ShareIcon}
                     onClick={this.toggleShare}
                     imgSize={15}
                   />

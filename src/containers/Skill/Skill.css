@@ -44,11 +44,6 @@
   color: #ff3562 !important;
 }
 
-.Window.skill input::placeholder,
-textarea::placeholder {
-  color: #ccc !important;
-}
-
 .LoginWithAmazon {
   display: inline-block;
   cursor: pointer;
@@ -136,7 +131,8 @@ textarea::placeholder {
 }
 
 .settings {
-  overflow: auto;
+  padding: 0 32px;
+  overflow-y: hidden;
 }
 
 .stage_modal .modal-info > .form > .btn {
@@ -237,10 +233,6 @@ textarea::placeholder {
   background-repeat: no-repeat;
   transform: translateY(-30px);
   transition: transform 0.2s ease;
-}
-
-.settings {
-  overflow: auto;
 }
 
 .card .overlay .elispie .elispie-button {
@@ -646,6 +638,69 @@ p.loading-btn::after {
   -webkit-animation: ellipsis steps(4, end) 2000ms infinite;
   animation: ellipsis steps(4, end) 2000ms infinite;
   content: '\2026';
+}
+
+.s__modal_content {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.s__loading_symbol {
+  text-align: center;
+}
+
+.s__label_text {
+  padding-top: 3px;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.s__label_tooltip {
+  margin: 0 6px;
+  color: #8da2b5;
+  border-radius: 100%;
+  transition: all 0.15s ease;
+}
+
+.settings-content .form-group {
+  margin: 0;
+}
+
+.settings-content.no-bottom {
+  border-bottom: 0;
+}
+
+.settings-content .row {
+  margin-right: 0;
+}
+
+.settings-content .col-2 {
+  padding-right: 0;
+  text-align: right;
+}
+
+.settings-content .helper-text {
+  line-height: 0;
+}
+
+.settings-backups .helper-text {
+  line-height: inherit;
+}
+
+.settings-basic .helper-text {
+  line-height: inherit;
+}
+
+.settings-advanced .helper-text {
+  line-height: inherit;
+}
+
+.settings-backups.settings-content {
+  border-bottom: 0;
+}
+
+.settings-discovery {
+  border-bottom: 0;
 }
 
 .pb__auth_error {

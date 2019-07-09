@@ -1,5 +1,4 @@
-import 'brace/theme/github';
-
+// import AceEditor from 'components/AceEditor';
 import Button from 'components/Button';
 import DefaultModal from 'components/Modals/DefaultModal';
 import Prompt from 'components/Uploads/Prompt';
@@ -7,9 +6,10 @@ import { setConfirm, setError } from 'ducks/modal';
 import { deleteProject } from 'ducks/project';
 import { updateVersion, updateVersionMerge } from 'ducks/version';
 import React, { Component } from 'react';
-import AceEditor from 'react-ace';
 import { connect } from 'react-redux';
 import { Alert, FormGroup, Label } from 'reactstrap';
+
+import AccountLinkTemplate from '../../Business/AccountLinkTemplate';
 
 class AdvancedSettings extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class AdvancedSettings extends Component {
   }
 
   overwriteSuccessModal = (result) => {
-    const msg = result ? 'Devlopment version successfully overwritten' : 'Overwrite failed.';
+    const msg = result ? 'Development version successfully overwritten' : 'Overwrite failed.';
 
     this.setState({
       show_overwrite_modal: true,
@@ -84,19 +84,19 @@ class AdvancedSettings extends Component {
           content={this.state.overwrite_status}
           header="Overwrite Status"
         />
-        <div className="settings-content clearfix mt-4">
+        <div className="settings-advanced clearfix mt-4">
           <FormGroup>
             <Label>Error Prompt</Label>
             <div className="helper-text mb-2">What to say if the skill encounters an unexpected error</div>
             <Prompt
               placeholder="Sorry, this skill has encountered an error"
-              voice={this.props.skill.error_prompt.voice}
-              content={this.props.skill.error_prompt.content}
+              voice={this.props.skill.error_prompt ? this.props.skill.error_prompt.voice : null}
+              content={this.props.skill.error_prompt ? this.props.skill.error_prompt.content : null}
               updatePrompt={(prompt) => this.props.updateSkillMerge('error_prompt', prompt)}
             />
           </FormGroup>
         </div>
-        <div className="settings-content clearfix">
+        {/* <div className="settings-content clearfix">
           <FormGroup>
             <div className="mt-4">
               <Label>Skill Events (events: {'{object}'})</Label>
@@ -125,9 +125,9 @@ class AdvancedSettings extends Component {
               />
             </div>
           </FormGroup>
-        </div>
+        </div> */}
         {this.props.live_mode && (
-          <div className="settings-content clearfix">
+          <div className="no-bottom clearfix">
             <FormGroup>
               <Label>Overwrite Development Version with Live Version</Label>
               <Alert color="danger between">
@@ -140,10 +140,13 @@ class AdvancedSettings extends Component {
             </FormGroup>
           </div>
         )}
-        <div className="settings-content clearfix">
+        <div className="settings-content mt-5 no-bottom clearfix">
+          <AccountLinkTemplate {...this.props} />
+        </div>
+        <div className="settings-content no-bottom clearfix">
           <FormGroup>
             <Label>Delete Project</Label>
-            <Alert color="danger between">
+            <Alert color="danger between" className="mb-0">
               <span>This action cannot be undone</span>
               <br />
               <Button isWarning onClick={this.confirmDelete}>

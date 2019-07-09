@@ -1,15 +1,12 @@
-import 'brace/mode/json';
-import 'brace/theme/monokai';
-import 'brace/ext/language_tools';
 import './Display.css';
 
 import axios from 'axios';
+import AceEditor from 'components/AceEditor';
 import Button from 'components/Button';
 import { Spinner } from 'components/Spinner/Spinner';
 import { addDisplay, updateDisplay } from 'ducks/display';
 import { setError } from 'ducks/modal';
 import React, { Component } from 'react';
-import AceEditor from 'react-ace';
 import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
 import { Col, FormGroup, Input, Row } from 'reactstrap';

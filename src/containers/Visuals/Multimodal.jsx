@@ -62,12 +62,38 @@ class Multimodal extends Component {
               <div className="products-container position-relative">
                 <div className="space-between w-100 px-3">
                   <h5 className="text-muted mb-0">Visuals</h5>
-                  <Link to={`/visuals/${skill_id}/display/new`} className="no-underline btn btn-primary">
-                    New Display
-                  </Link>
+                  <div>
+                    <Button
+                      isFlat
+                      varient="contained"
+                      className="mr-2"
+                      onClick={() => {
+                        history.push(`/canvas/${this.props.skill_id}`);
+                      }}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      isPrimary
+                      variant="contained"
+                      color="publish"
+                      iconPosition="right"
+                      onClick={() => {
+                        history.push(`/visuals/${this.props.skill_id}/display/new`);
+                      }}
+                    >
+                      New Display
+                    </Button>
+                  </div>
                 </div>
-                <Masonry elementType="div" imagesLoadedOptions={{ columnWidth: '200', itemSelector: '.grid-item' }}>
-                  {displays.map((display) => {
+                <Masonry
+                  elementType="div"
+                  imagesLoadedOptions={{
+                    columnWidth: '200',
+                    itemSelector: '.grid-item',
+                  }}
+                >
+                  {this.props.displays.map((display) => {
                     let name = display.title.match(/\b(\w)/g);
                     if (name) {
                       name = name.join('');

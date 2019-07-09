@@ -17,7 +17,12 @@ describe('DisplayEditor', () => {
       update_on_change: false,
     };
     const display = [];
-    const component = shallow(<Display node={node} displays={display} skill={testSkill} />);
+    const params = {
+      params: {
+        skill_id: 'abc',
+      },
+    };
+    const component = shallow(<Display node={node} displays={display} skill={testSkill} match={params} />);
     expect(component.state().node).toEqual(node);
     expect(toJson(component)).toMatchSnapshot();
   });

@@ -54,17 +54,12 @@
 }
 
 .settings-content {
-  min-width: 500px;
-  max-width: 40%;
+  max-width: 99%;
   height: auto;
   margin-right: auto;
-  margin-bottom: 30px;
   margin-left: auto;
-  padding: 24px 32px;
   background-color: #fff;
-  border: 1px solid rgba(141, 162, 181, 0.28);
-  border-radius: 10px;
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(141, 162, 181, 0.28);
 }
 
 #business .sidebar > .sidebar-option {

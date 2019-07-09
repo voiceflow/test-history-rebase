@@ -65,12 +65,51 @@ export class Menu extends Component {
     this.updateTree = this.updateTree.bind(this);
     this.openTab = this.openTab.bind(this);
     this.renderSideBar = this.renderSideBar.bind(this);
+    this.resize = this.resize.bind(this);
     this.visited = new Set();
+    this.m_pos = 0;
+    this.sidebar = React.createRef();
+  }
+
+  // eslint-disable-next-line react/no-deprecated
+  componentWillReceiveProps(nextProps) {
+    if (localStorage.getItem('sideWidth') && this.sidebar.current && nextProps.open) {
+      const width = localStorage.getItem('sideWidth');
+      this.sidebar.current.style.width = `${width}px`;
+      this.sidebar.current.style.transform = `translateX(-${width * 1 + 40}px)`;
+    }
+  }
+
+  resize(e) {
+    const dx = this.m_pos - e.x;
+    if (this.sidebar.current.style.width && (e.clientX < 280 || e.clientX > 960)) return;
+    this.m_pos = e.x;
+    const newWidth = this.sidebar.current.offsetWidth - dx;
+    this.sidebar.current.style.width = `${newWidth}px`;
   }
 
   componentDidMount() {
-    const { build } = this.props;
-    build(this.updateTree);
+    this.props.build(this.updateTree);
+    if (this.sidebar.current) {
+      this.sidebar.current.addEventListener(
+        'mousedown',
+        (e) => {
+          if (e.srcElement.classList.contains('open')) {
+            this.m_pos = e.x;
+            document.addEventListener('mousemove', this.resize, false);
+          }
+        },
+        false
+      );
+      document.addEventListener('mouseup', () => {
+        if (this.sidebar.current) localStorage.setItem('sideWidth', this.sidebar.current.offsetWidth);
+        document.removeEventListener('mousemove', this.resize, false);
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousemove', this.resize, false);
   }
 
   buildTree(node, depth = 0) {
@@ -186,7 +225,7 @@ export class Menu extends Component {
     return (
       <div className="Menu" onFocus={unfocus} onMouseDown={unfocus} onKeyDown={unfocus}>
         <div id="sidebar" className={cn({ open }, 'canvas-sidebar')} ref={this.sidebar}>
-          {!preview && (
+          {!preview && this.props.isCanvas && (
             <div className="toolbar">
               <div className="top-down">
                 {tabs.top.map((tab, i) => {
@@ -222,8 +261,15 @@ export class Menu extends Component {
             {loading_diagram ? null : (
               <React.Fragment>
                 <div className="sidebar-header">
-                  <div className="block-title no-select mb-3">
-                    <h5 className="mb-0">{tab}</h5>
+                  <div
+                    className="block-title no-select mb-3"
+                    onClick={() => {
+                      localStorage.setItem('sideWidth', this.sidebar.current.offsetWidth);
+                      this.props.closeTab();
+                    }}
+                  >
+                    <h5 className="mb-0">{this.props.tab}</h5>
+                    <div className="close pl-3 py-3" />
                   </div>
                 </div>
                 <div className="sidebar-content">{this.renderSideBar()}</div>

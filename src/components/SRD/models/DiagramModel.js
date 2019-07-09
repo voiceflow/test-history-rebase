@@ -162,9 +162,36 @@ export class DiagramModel extends BaseEntity {
 		});
 	}
 
-	setOffset(offsetX, offsetY) {
-		this.offsetX = offsetX;
-		this.offsetY = offsetY;
+	setOffset(offsetX, offsetY, translate = false, diagramEngine = null) {
+		clearInterval(this.offsetInterval)
+		if (translate) {
+			const deltaX = offsetX - this.offsetX;
+			const deltaY = offsetY - this.offsetY;
+
+			const accelerationX = 0.004 * deltaX;
+			const accelerationY = 0.004 * deltaY;
+			let vX = deltaX/100;
+			let vY = deltaY/100;
+			let counter = 20;
+			this.offsetInterval = setInterval(() => {
+				this.offsetX += vX;
+				this.offsetY += vY;
+				diagramEngine.repaintCanvas(false)
+				counter -= 1;
+				if (Math.abs(vX) < Math.abs(deltaX)) {
+					vX += accelerationX;
+				}
+				if (Math.abs(vY) < Math.abs(deltaY)) {
+					vY += accelerationY;
+				}
+				if ((this.offsetX === offsetX && this.offsetY === offsetY) || counter <= 0) {
+					clearInterval(this.offsetInterval)
+				}
+			}, 1)
+		} else {
+			this.offsetX = offsetX;
+			this.offsetY = offsetY
+		}
 		this.iterateListeners((listener, event) => {
 			if (listener.offsetUpdated) {
 				listener.offsetUpdated({ ...event, offsetX: offsetX, offsetY: offsetY });
@@ -202,6 +229,10 @@ export class DiagramModel extends BaseEntity {
 		return this.zoom;
 	}
 
+	isLocked() {
+		return this.locked;
+	}
+	
 	getNode(node) {
 		if (node instanceof NodeModel) {
 			return node;

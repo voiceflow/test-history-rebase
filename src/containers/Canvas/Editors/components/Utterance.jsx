@@ -106,15 +106,18 @@ class Utterance extends React.PureComponent {
                   'without any context (other words) may confuse your virtual assistant. Proceed with caution.'
                 }
               >
-                <i className="fas fa-exclamation-triangle" />
+                <img className="u__warning_svg" src="/warning.svg" alt="warning symbol" />
               </Tooltip>
             )}
           </Tooltip>
-          <i
+          {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+          <img
+            src="/minus.svg"
+            alt="delete utterance"
             onClick={(e) => {
               this.props.deleteUtterance(e, this.props.index);
             }}
-            className="fas fa-minus-circle trash-icon ii__trash"
+            className="trash-icon ii__trash"
           />
         </div>
       </div>

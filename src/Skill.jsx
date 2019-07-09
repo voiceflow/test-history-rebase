@@ -176,6 +176,7 @@ class Skill extends Component {
   renderPage() {
     switch (this.props.page) {
       case 'canvas':
+      case 'test':
         return (
           <Canvas
             {...this.props}
@@ -183,6 +184,7 @@ class Skill extends Component {
             ref={this.child_canvas}
             linter={this.state.linter}
             toggleUpgrade={this.toggleUpgrade}
+            test={this.props.page === 'test'}
           />
         );
       case 'tools':
@@ -304,14 +306,6 @@ class Skill extends Component {
           header="Live Mode Disclaimer"
           close_button_text="Confirm"
         />
-        {/* <div className="skill-name-top-left fixed-top" onDoubleClick={() => this.setState({ editName: true })}>
-            <Link to="/" className="mx-3">
-                <img src={"/back.svg"} alt="back" className="mr-3" />
-            </Link>
-                {this.state.editName ? <input autoFocus className="edit-input" value={this.props.skill.name} onChange={e => { this.props.updateSkill('name', e.target.value); this.props.updateSkill('inv_name', e.target.value) }} onBlur={() => this.setState({ editName: false })} /> :
-            this.props.skill && this.props.skill.name ? this.props.skill.name : "Loading Skill"
-            }
-          </div> */}
         {this.state.load_skill ||
         this.props.load_diagram ||
         this.props.loadSession ||
@@ -320,7 +314,7 @@ class Skill extends Component {
         ) : (
           <>
             <div id="app" className={this.props.page}>
-              {this.props.page !== 'canvas' && (
+              {this.props.page !== 'canvas' && this.props.page !== 'test' && (
                 <div className="main-container-header">
                   <Header
                     // title={this.props.skill.name}

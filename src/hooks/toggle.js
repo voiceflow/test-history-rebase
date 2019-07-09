@@ -3,7 +3,7 @@ import { useReducer, useState } from 'react';
 export const useToggle = (defaultValue = false) => {
   const [value, toggleValue] = useState(defaultValue);
 
-  return [value, () => toggleValue((v) => !v)];
+  return [value, (input) => toggleValue((v) => (typeof input === 'boolean' ? input : !v))];
 };
 
 export const useEnableDisable = (defaultValue = false) => {

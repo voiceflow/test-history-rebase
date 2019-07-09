@@ -1,11 +1,8 @@
-const { find } = require('lodash');
+const _ = require('lodash');
 const { SLOT_TYPES } = require('./Constants');
 const randomstring = require('randomstring');
 const { validSpokenCharacters, validLatinChars } = require('./services/Regex');
 const draftToMarkdown = require('./services/draftConvert');
-
-// eslint-disable-next-line no-secrets/no-secrets
-const ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
 
 const formatName = (name) => {
   let formatted_name = name.replace(' ', '_');
@@ -30,7 +27,7 @@ const getUtterancesWithSlotNames = (utterances, slots, square_brackets = false, 
           const replace = m[1];
           const slot_text = m[2];
           const key = m[3];
-          const slot = find(slots, {
+          const slot = _.find(slots, {
             key,
           });
           if (slot) {
@@ -60,7 +57,7 @@ const getUtterancesWithSlotNames = (utterances, slots, square_brackets = false, 
 const getSlotType = (slot, platform) => {
   let type = slot.name;
   if (slot.type.value && slot.type.value.toLowerCase() !== 'custom') {
-    const default_slot = find(SLOT_TYPES, (s) => s.label.toLowerCase() === slot.type.value.toLowerCase());
+    const default_slot = _.find(SLOT_TYPES, (s) => s.label.toLowerCase() === slot.type.value.toLowerCase());
     if (!default_slot) {
       type = slot.type.value; // Platform specific slot
     } else {
@@ -71,16 +68,12 @@ const getSlotType = (slot, platform) => {
 };
 
 function unique(keys) {
-  const keySet = new Set();
-
-  keys.forEach((keyArr) => keyArr.forEach((key) => keySet.add(key)));
-
-  return Array.from(keySet);
+  return [...new Set(keys.flat())];
 }
 
 const getSlotsForKeysAndFormat = (keys, slots, platform) => {
   return unique(keys).map((key) => {
-    const slot = find(slots, {
+    const slot = _.find(slots, {
       key,
     });
 
@@ -95,13 +88,15 @@ const getSlotsForKeysAndFormat = (keys, slots, platform) => {
 
 const getSlotsForKeys = (keys, slots, platform) => {
   return unique(keys).map((key) => {
-    const slot = find(slots, { key });
+    const slot = _.find(slots, { key });
+    if (!slot) return null;
+
     const slot_type = slot.type.value;
     let formatted_type = slot.name;
 
     if (slot_type && slot_type.toLowerCase() !== 'custom') {
       formatted_type = slot.type.value;
-      const built_in_slot = find(SLOT_TYPES, { label: slot_type });
+      const built_in_slot = _.find(SLOT_TYPES, { label: slot_type });
       if (built_in_slot && platform && built_in_slot.type[platform]) {
         formatted_type = built_in_slot.type[platform];
       }
@@ -115,13 +110,13 @@ const getSlotsForKeys = (keys, slots, platform) => {
 };
 
 const findSlot = (slot_type, platform) => {
-  const built_in_slot = find(SLOT_TYPES, { label: slot_type });
+  const built_in_slot = _.find(SLOT_TYPES, { label: slot_type });
   if (built_in_slot) return built_in_slot.type[platform];
   return null;
 };
 
 const replacer = (match, inner, slots, extracted) => {
-  const slot = find(slots, { name: inner });
+  const slot = _.find(slots, { name: inner });
   if (slot) {
     slot.name = formatName(slot.name);
     extracted.push({
@@ -166,7 +161,7 @@ exports.utteranceToIntentName = (utterance, existing) => {
     .substring(0, 170);
 
   // make sure the first letter is valid alphanumeric
-  while (!ALPHABET.includes(name.charAt(0)) && name.length > 0) {
+  while (!/[A-Za-z]/.test(name.charAt(0)) && name.length > 0) {
     name = name.substring(1);
   }
 

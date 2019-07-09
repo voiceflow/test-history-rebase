@@ -32,12 +32,21 @@ export class BlockNodeModel extends DefaultNodeModel {
 			this.fade = fade;
 			this.linter = linter;
 			return this;
-	}
+  }
 
 	setLocked(locked) {
 		this.locked = locked;
 		return this;
-	}
+  }
+
+	setFocused(focused){
+		this.focused = focused
+		return this;
+  }
+
+	isFocused(){
+		return this.focused;
+  }
 
 	centerLinks(diagramEngine) {
 		_.forEach(this.ports, port => {

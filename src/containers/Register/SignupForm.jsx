@@ -1,3 +1,5 @@
+import './Account.css';
+
 import Button from 'components/Button';
 import { signup } from 'ducks/account';
 import queryString from 'query-string/index';
@@ -7,8 +9,6 @@ import { Form, FormGroup, Input } from 'reactstrap';
 
 import ErrorWidget from './ErrorWidget';
 import SocialLogin from './SocialLogin';
-
-import './Account.css';
 
 export const SignupForm = ({ signup, history }) => {
   const query = queryString.parse(location.search);
@@ -20,7 +20,7 @@ export const SignupForm = ({ signup, history }) => {
 
   const openLogin = (e) => {
     e.preventDefault();
-    history.push(`/login`);
+    history.push('/login');
     return false;
   };
 

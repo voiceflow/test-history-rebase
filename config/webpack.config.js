@@ -283,6 +283,23 @@ module.exports = function(webpackEnv) {
                 name: 'static/media/[name].[hash:8].[ext]',
               },
             },
+            {
+              test: /\.svg$/,
+              use: ({ resource }) => ({
+                loader: '@svgr/webpack',
+                options: {
+                  svgoConfig: {
+                    plugins: [
+                      {
+                        cleanupIDs: {
+                          prefix: `ID-${resource}`,
+                        },
+                      },
+                    ],
+                  },
+                },
+              }),
+            },
             // Process application JS with Babel.
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
             {
@@ -560,6 +577,9 @@ module.exports = function(webpackEnv) {
             '**/*.stories.js',
             'components/SRD/sass/**/*',
             'setupTests.js',
+            // TODO: To be removed once SvgIcon component is being used in the app
+            'components/SvgIcon/*',
+            'svgs/**/*',
           ],
         },
       }),

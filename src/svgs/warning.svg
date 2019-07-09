@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 16 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>alert</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="currentColor" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="currentColor" offset="100%"></stop>
+        </linearGradient>
+        <path d="M15.8819094,13.7018508 L8.75427036,1.43256318 C8.41876498,0.855812274 7.58123502,0.855812274 7.24572964,1.43256318 L0.118090585,13.7018508 C-0.217414792,14.2786017 0.20196693,15 0.872360946,15 L15.1276391,15 C15.7980331,15 16.2174148,14.2786017 15.8819094,13.7018508 L15.8819094,13.7018508 Z M7.96114552,5.44714175 C8.45145209,5.42446397 8.86219948,5.83756717 8.81717762,6.31809078 L8.44405123,10.2903784 C8.42369889,10.5116399 8.23621059,10.6808038 8.01233476,10.6808038 C7.78907566,10.6808038 7.59356977,10.5116399 7.57321742,10.2903784 L7.20255799,6.34260729 C7.15938634,5.88537437 7.49982562,5.46859369 7.96114552,5.44714175 L7.96114552,5.44714175 Z M7.99876652,12.808224 C7.54608096,12.808224 7.17912195,12.4441538 7.17912195,11.9942758 C7.17912195,11.5443979 7.54608096,11.1797148 7.99876652,11.1797148 C8.45145209,11.1797148 8.81841109,11.5443979 8.81841109,11.9942758 C8.81841109,12.4441538 8.45145209,12.808224 7.99876652,12.808224 L7.99876652,12.808224 Z" id="path-2"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/System/User-reply_Warning" transform="translate(0.000000, -1.000000)" fill-rule="nonzero">
+            <g id="alert">
+                <use fill="currentColor" xlink:href="#path-2"></use>
+                <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+            </g>
+        </g>
+    </g>
+</svg>

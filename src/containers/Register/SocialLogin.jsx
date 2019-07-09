@@ -1,11 +1,12 @@
 import { fbLogin, googleLogin } from 'ducks/account';
 import React, { Fragment, useEffect, useState } from 'react';
-import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
 
 import ErrorWidget from './ErrorWidget';
 import { devGoogleClient, fbId, googleClient } from './social-id';
+import { SocialLoginContainer } from './SignupContainer';
 
 const SocialLogin = ({ entryText, googleLogin, fbLogin }) => {
   const [authError, setAuthError] = useState(null);
@@ -44,28 +45,36 @@ const SocialLogin = ({ entryText, googleLogin, fbLogin }) => {
     return () => clearTimeout(timeout);
   });
 
+  console.log('auth error: ', authError);
+
   return (
     <Fragment>
-      <ErrorWidget error={authError} color="danger" />
-      <div className="social-login">
+      {/*<ErrorWidget error={authError} color="danger" />*/}
+      <div>error</div>
+      <SocialLoginContainer>
+        <div className="helperText">Or sign up with</div>
         <GoogleLogin
           clientId={process.env.REACT_APP_BUILD_ENV === 'production' ? googleClient : devGoogleClient}
-          className="social-button class-ggl mb-2"
-          buttonText={`${entryText} with Google`}
+          render={(renderProps) => (
+            <div onClick={renderProps.onClick} className="social-button">
+              <img src="/google.svg" alt="" />
+              Google
+            </div>
+          )}
           onSuccess={triggerGoogleLogin}
         />
         <FacebookLogin
           appId={fbId}
-          cssClass="social-button class-fb"
-          icon="fa-facebook"
           fields="name,email"
-          buttonText={`${entryText} with Facebook`}
+          render={(renderProps) => (
+            <div onClick={renderProps.onClick} className="social-button">
+              <img src="/facebook.svg" alt="" />
+              Facebook
+            </div>
+          )}
           callback={triggerFbLogin}
         />
-        <div className="break">
-          <span className="break-text">OR</span>
-        </div>
-      </div>
+      </SocialLoginContainer>
     </Fragment>
   );
 };

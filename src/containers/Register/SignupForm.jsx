@@ -10,6 +10,9 @@ import { Form, FormGroup, Input } from 'reactstrap';
 import ErrorWidget from './ErrorWidget';
 import SocialLogin from './SocialLogin';
 
+import AuthenticationContainer from './AuthenticationWrapper';
+import { SignupContainer } from './SignupContainer';
+
 export const SignupForm = ({ signup, history }) => {
   const query = queryString.parse(location.search);
   const [signupError, setSignupError] = useState(null);
@@ -17,6 +20,8 @@ export const SignupForm = ({ signup, history }) => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   let timeout;
+
+  console.log('signup: ', signup);
 
   const openLogin = (e) => {
     e.preventDefault();
@@ -46,62 +51,64 @@ export const SignupForm = ({ signup, history }) => {
 
   return (
     <>
-      <div id="signup-form">
-        <Form onSubmit={signupSubmit} className="signup-form auth-form">
-          <img className="login-logo" src="/logo-white.svg" alt="logo" />
-          <div className="signup-form-wrapper">
-            <ErrorWidget color="danger" error={signupError} />
-            <FormGroup>
-              <Input
-                className="form-bg"
-                type="text"
-                name="name"
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Full name"
-                required
-                minLength="3"
-                value={name}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Input
-                className="form-bg"
-                type="email"
-                name="email"
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email address"
-                required
-                minLength="6"
-                value={email}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Input
-                className="form-bg"
-                type="password"
-                name="password"
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                required
-                minLength="8"
-                value={password}
-              />
-            </FormGroup>
-            <div className="row">
-              <div className="col-6 auth__link">
-                <a onClick={openLogin}>Have an account?</a>
-              </div>
-              <div className="col-6">
-                <Button isPrimary isLarge isBlock type="submit">
-                  Create Account
-                </Button>
+      <AuthenticationContainer dark>
+        <SignupContainer>
+          <Form onSubmit={signupSubmit} className="signup-form auth-form">
+            <img className="login-logo" src="/logo-white.svg" alt="logo" />
+            <div className="signup-form-wrapper">
+              <ErrorWidget color="danger" error={signupError} />
+              <FormGroup>
+                <Input
+                  className="form-bg"
+                  type="text"
+                  name="name"
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Full name"
+                  required
+                  minLength="3"
+                  value={name}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Input
+                  className="form-bg"
+                  type="email"
+                  name="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email address"
+                  required
+                  minLength="6"
+                  value={email}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Input
+                  className="form-bg"
+                  type="password"
+                  name="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  required
+                  minLength="8"
+                  value={password}
+                />
+              </FormGroup>
+              <div className="row">
+                <div className="col-6 auth__link">
+                  <a onClick={openLogin}>Have an account?</a>
+                </div>
+                <div className="col-6">
+                  <Button isPrimary isLarge isBlock type="submit">
+                    Create Account
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        </Form>
+          </Form>
 
-        <SocialLogin entryText="Sign up" />
-      </div>
+          <SocialLogin entryText="Sign up" />
+        </SignupContainer>
+      </AuthenticationContainer>
     </>
   );
 };

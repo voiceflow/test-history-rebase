@@ -12,8 +12,8 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Skill from '../Skill';
 import Team from '../Team';
-import { LoginForm } from '../containers/Register/LoginForm';
-import { SignupForm } from '../containers/Register/SignupForm';
+import LoginForm from '../containers/Register/LoginForm';
+import SignupForm from '../containers/Register/SignupForm';
 import { getAuth } from '../ducks/account';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';

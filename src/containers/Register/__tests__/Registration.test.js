@@ -1,12 +1,10 @@
 import axios from 'axios';
 import { fbLogin, googleLogin } from 'ducks/account';
-import toJson from 'enzyme-to-json';
 import { shallow } from 'enzyme/build';
 import React from 'react';
 
 import { LoginForm } from '../LoginForm';
 import { SignupForm } from '../SignupForm';
-import Account from '..';
 
 const TEST_EMAIL = 'tests@getvoiceflow.com';
 
@@ -39,14 +37,6 @@ describe('Onboarding', () => {
     search: '',
   };
   const formWrapperClass = '.auth-form-wrapper';
-  it('renders without crashing', () => {
-    const component = shallow(<Account location={location} />);
-    expect(toJson(component)).toMatchSnapshot();
-  });
-  it('redirects to signup if unauthenticated', () => {
-    const app = shallow(<Account location={location} />);
-    expect(app.exists('.open-register')).toBe(true);
-  });
   it('creates accounts on signup', () => {
     const app = shallow(<SignupForm location={location} />);
     app.find(`${formWrapperClass} Input[name="name"]`).simulate('change', { target: { value: 'Voiceflow Tester' } });

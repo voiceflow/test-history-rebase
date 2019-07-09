@@ -22,6 +22,7 @@ import { keyboardModal } from 'hocs/withModalHandlers';
 
 import { WidgetBar } from './components/WidgetBar';
 import CanvasWarning from './components/CanvasWarning';
+import Header from './components/CanvasHeader';
 // Helpers
 import { combineAppendValidation, appendValidator } from 'utils/combineHelper';
 
@@ -1564,18 +1565,20 @@ export class Canvas extends Component {
         <DefaultModal open={keyboardHelp} header="Keyboard Shortcuts" toggle={() => toggleKeyboard(!keyboardHelp)} content={<ShortCuts />} />
         <HelpModal open={helpOpen} help={help} toggle={() => this.setState({ helpOpen: !helpOpen })} setHelp={(help) => this.setState({ help })} />
         {!preview && this.props.page === 'canvas' && (
-          <ActionGroup
-            lastSave={this.state.last_save ? `Last saved ${moment(this.state.last_save).fromNow()}` : 'Save'}
-            setCB={(cb) => {
-              this.saveCB = cb;
-            }}
-            {...this.props}
-            onSave={this.onSave}
-            saving={saving}
-            saved={saved}
-            updateLinter={this.updateLinter}
-            renderPlatformSwitch={this.renderPlatformSwitch}
-          />
+          <Header updateLinter={this.updateLinter} renderPlatformSwitch={this.renderPlatformSwitch} history={history} preview={preview}>
+            <ActionGroup
+              lastSave={this.state.last_save ? `Last saved ${moment(this.state.last_save).fromNow()}` : 'Save'}
+              setCB={(cb) => {
+                this.saveCB = cb;
+              }}
+              {...this.props}
+              onSave={this.onSave}
+              saving={saving}
+              saved={saved}
+              history={history}
+              preview={preview}
+            />
+          </Header>
         )}
         {!this.props.preview && this.props.page === 'test' && (
           <UserTestHeader preview={this.props.preview} history={this.props.history} page={this.props.page} />

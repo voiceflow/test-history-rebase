@@ -1,37 +1,17 @@
 import './Header.css';
 
 import cn from 'classnames';
-// Components
-import { User } from 'components/User/User';
-import { LOGROCKET_PROJECT } from 'config';
-// Actions
-import { logout } from 'ducks/account';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React from 'react';
-import Intercom from 'react-intercom';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
-const NUM_TO_PLAN = (plan) => {
-  switch (plan) {
-    case 0:
-      return 'COMMUNITY';
-    case 1:
-      return 'BASIC';
-    case 10:
-      return 'ADMIN';
-    default:
-      return 'UNKNOWN';
-  }
-};
+import IntercomChat from './components/IntercomChat';
+import UserMenu from './components/UserMenu';
 
 const Header = (props) => {
   const {
-    user,
     title,
-    logout,
     preview,
     history,
     withLogo,
@@ -44,61 +24,6 @@ const Header = (props) => {
     centerRenderer,
     subHeaderRenderer,
   } = props;
-
-  const intercom_user = user.creator_id
-    ? {
-        user_id: user.creator_id,
-        name: user.name,
-        email: user.email,
-        plan: NUM_TO_PLAN(user.admin),
-        logrocketURL: `https://app.logrocket.com/${LOGROCKET_PROJECT}/sessions?u=${user.creator_id}`,
-      }
-    : {};
-  const userLogout = (e) => {
-    e.preventDefault();
-    logout().then(() => {
-      history.push('/login');
-    });
-    return false;
-  };
-
-  const renderRight = () => {
-    return (
-      <>
-        {rightRenderer && rightRenderer()}
-
-        {preview && (
-          <div className="title-group no-select">
-            <span className="text-blue" id="preview-title">
-              <span className="dot" /> PREVIEW MODE
-            </span>
-          </div>
-        )}
-        {user && (
-          <UncontrolledDropdown className="account-dropdown">
-            <DropdownToggle className="account hover" nav tag="div">
-              <User user={user} className="pointer" />
-            </DropdownToggle>
-            <DropdownMenu right className="arrow arrow-right no-select">
-              <DropdownItem header>{user.email}</DropdownItem>
-              <DropdownItem divider />
-              <Link className="dropdown-item" to="/account">
-                Account
-              </Link>
-              {user.admin >= 100 && (
-                <Link className="dropdown-item" to="/admin">
-                  Admin
-                </Link>
-              )}
-              <DropdownItem onClick={userLogout} tag="a" href="#">
-                Logout
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
-        )}
-      </>
-    );
-  };
 
   return (
     <div className={cn('header', className)}>
@@ -118,12 +43,15 @@ const Header = (props) => {
 
           {centerRenderer && <div className="header-grid__center">{centerRenderer()}</div>}
 
-          <div className={cn('header-grid__right', rightClassName)}>{renderRight()}</div>
+          <div className={cn('header-grid__right', rightClassName)}>
+            {!preview && rightRenderer && rightRenderer()}
+            <UserMenu history={history} preview={preview} />
+          </div>
         </div>
       </div>
 
       {subHeaderRenderer && subHeaderRenderer()}
-      <Intercom appID="vw911b0m" {...intercom_user} />
+      <IntercomChat />
     </div>
   );
 };
@@ -140,17 +68,4 @@ Header.propTypes = {
   subHeaderRenderer: PropTypes.func,
 };
 
-const mapStateToProps = (state) => ({
-  user: state.account,
-});
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    logout: () => dispatch(logout()),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Header);
+export default Header;

@@ -7,11 +7,10 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Form, FormGroup, Input } from 'reactstrap';
 
-import ErrorWidget from './ErrorWidget';
-import SocialLogin from './SocialLogin';
-
 import AuthenticationContainer from './AuthenticationWrapper';
+import ErrorWidget from './ErrorWidget';
 import { SignupContainer } from './SignupContainer';
+import SocialLogin from './SocialLogin';
 
 export const SignupForm = ({ signup, history }) => {
   const query = queryString.parse(location.search);

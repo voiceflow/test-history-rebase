@@ -15,13 +15,9 @@ import { deleteDisplay } from '@/ducks/display';
 import { setConfirm } from '@/ducks/modal';
 
 class Multimodal extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      confirm: null,
-    };
-  }
+  state = {
+    confirm: null,
+  };
 
   onDelete = (id) => {
     const { setConfirm, deleteDisplay } = this.props;

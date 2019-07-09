@@ -1,5 +1,4 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const InterpolateHtmlPlugin = require('interpolate-html-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -19,9 +18,6 @@ module.exports = merge(commonConfig, {
       template: paths.indexHTML,
     }),
     new BaseHrefWebpackPlugin({ baseHref: '/' }),
-    new InterpolateHtmlPlugin({
-      PUBLIC_URL: JSON.stringify(ENV.API_HOST),
-    }),
     ...(IS_SERVING ? [] : [new CopyPlugin([{ from: paths.publicDir, to: paths.buildDir }])]),
     ...(IS_PRODUCTION
       ? [

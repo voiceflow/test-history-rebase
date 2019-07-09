@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Combined Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="currentColor" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="currentColor" offset="100%"></stop>
+        </linearGradient>
+        <path d="M1.68421053,0 L14.3157895,0 C15.2459533,0 16,0.754046737 16,1.68421053 L16,14.3157895 C16,15.2459533 15.2459533,16 14.3157895,16 L1.68421053,16 C0.754046737,16 0,15.2459533 0,14.3157895 L0,1.68421053 C0,0.754046737 0.754046737,0 1.68421053,0 Z M5.89473684,10.4573185 C5.89473684,10.910337 6.22554799,11.079936 6.63458476,10.8355546 L10.6407521,8.44204604 C11.0493588,8.19792152 11.0497889,7.80237441 10.6407521,7.55799296 L6.63458476,5.16448445 C6.22597804,4.92035993 5.89473684,5.0889359 5.89473684,5.54272049 L5.89473684,10.4573185 Z" id="path-2"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/FB/Video">
+            <g id="Group">
+                <g id="Combined-Shape">
+                    <use fill="currentColor" xlink:href="#path-2"></use>
+                    <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

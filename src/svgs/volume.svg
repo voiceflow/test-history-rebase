@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg  viewBox="0 0 14 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Combined Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="currentColor" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="currentColor" offset="100%"></stop>
+        </linearGradient>
+        <path d="M4.63623692,11.1542166 L4.63623692,6.25764575 C4.63623692,4.37946941 5.83807182,2.71201257 7.61986634,2.11808106 L13.8604771,0.0378774688 C14.3313924,-0.119094301 14.8177003,0.231416596 14.8177003,0.727804916 L14.8177003,10.5456446 C14.8177003,11.9514114 13.6781012,13.0910105 12.2723345,13.0910105 C10.8665677,13.0910105 9.72696862,11.9514114 9.72696862,10.5456446 C9.72696862,9.13987787 10.8665677,8.00027877 12.2723345,8.00027877 C12.6627199,8.00027877 13.0325787,8.08816336 13.3632055,8.24522702 L13.3632055,4.78667354 C13.3632055,4.58584972 13.2004057,4.42304984 12.9995819,4.42304984 C12.9604988,4.42304984 12.9216714,4.42935067 12.8845939,4.44170981 L8.07981797,6.0433018 C6.89195496,6.43925614 6.09073169,7.55089404 6.09073169,8.80301159 L6.09073169,13.4546342 C6.09073169,14.8604009 4.95113259,16 3.54536585,16 C2.13959911,16 1,14.8604009 1,13.4546342 C1,12.0488674 2.13959911,10.9092683 3.54536585,10.9092683 C3.93575126,10.9092683 4.30561012,10.9971529 4.63623692,11.1542166 Z" id="path-2"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/Editor/Audio_empty-block" transform="translate(-1.000000, 0.000000)">
+            <g id="Group-16">
+                <g id="Combined-Shape">
+                    <use fill="currentColor" xlink:href="#path-2"></use>
+                    <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -259,11 +259,13 @@ export const updateGlobal = (name, value) => (dispatch, getState) => {
   );
 };
 
-export const shareTest = () => async (dispatch, getState) => {
+export const shareTest = (render) => async (dispatch, getState) => {
   try {
     const { skills, test } = getState();
     const { project_id: projectId, diagram, skill_id: skillId } = skills.skill;
     const { configId, configObject, state, status } = test;
+
+    if (render) await dispatch(renderTest(diagram));
 
     let globals;
     const store = localStorage.getItem(`TEST_VARIABLES_${projectId}`);

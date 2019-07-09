@@ -285,6 +285,7 @@ module.exports = function(webpackEnv) {
             },
             {
               test: /\.svg$/,
+              include: path.resolve(paths.appSrc, 'svgs'),
               use: ({ resource }) => ({
                 loader: '@svgr/webpack',
                 options: {

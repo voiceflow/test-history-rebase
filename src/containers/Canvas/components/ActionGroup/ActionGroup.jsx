@@ -1127,7 +1127,10 @@ export class ActionGroup extends PureComponent {
               className={cn('dropdown-button-border', { active: this.state.settingsModal })}
               id="settings-icon"
               type="button"
-              onClick={() => this.setState({ settingsModal: true })}
+              onClick={() => {
+                this.props.unfocus();
+                this.setState({ settingsModal: true });
+              }}
             />
           </Tooltip>
         </div>

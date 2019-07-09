@@ -1577,6 +1577,7 @@ export class Canvas extends Component {
               saved={saved}
               history={history}
               preview={preview}
+              unfocus={this.onDiagramUnfocus}
             />
           </Header>
         )}

@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`User Menu render user menu 1`] = `
+<UncontrolledDropdown
+  className="account-dropdown"
+>
+  <DropdownToggle
+    aria-haspopup={true}
+    className="account hover"
+    color="secondary"
+    nav={true}
+    tag="div"
+  >
+    <User
+      className="pointer"
+      user={
+        Object {
+          "creator_id": "123",
+        }
+      }
+    />
+  </DropdownToggle>
+  <DropdownMenu
+    className="arrow arrow-right no-select"
+    flip={true}
+    right={true}
+    tag="div"
+  >
+    <DropdownItem
+      header={true}
+      tag="button"
+      toggle={true}
+    />
+    <DropdownItem
+      divider={true}
+      tag="button"
+      toggle={true}
+    />
+    <Link
+      className="dropdown-item"
+      to="/account"
+    >
+      Account
+    </Link>
+    <DropdownItem
+      href="#"
+      onClick={[Function]}
+      tag="a"
+      toggle={true}
+    >
+      Logout
+    </DropdownItem>
+  </DropdownMenu>
+</UncontrolledDropdown>
+`;

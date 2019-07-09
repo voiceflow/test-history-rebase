@@ -1,22 +1,22 @@
 import cn from 'classnames';
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-const LoadContainer = styled.div`
-  box-shadow: 0 1px 2px 0 rgba(17, 49, 96, 0.24);
+const spinnerStyles = css`
   width: 1em;
   height: 1em;
   border-radius: 50%;
   display: inline-flex;
 `;
+const LoadContainer = styled.div`
+  ${spinnerStyles}
+  box-shadow: 0 1px 2px 0 rgba(17, 49, 96, 0.24);
+`;
 
 const Loader = styled.span`
-  display: inline-flex;
-  width: 1em;
-  height: 1em;
+  ${spinnerStyles}
   line-height: 1;
   background-color: #fff;
-  border-radius: 50%;
   background-image: url('/loader-2.svg');
   background-repeat: no-repeat;
   background-position: center;

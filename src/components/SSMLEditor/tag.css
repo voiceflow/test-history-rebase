@@ -1,0 +1,22 @@
+.editor .DraftEditor-root div{
+  display: inline-block;
+}
+
+.editor .DraftEditor-root figure {
+  margin: 0;
+  display: inline-block;
+}
+.editor .tag{
+}
+
+.tag.WHISPER{
+  color: grey
+}
+
+.tag.SCREAM{
+  color: red
+}
+
+.tag.BREAK{
+  color: black
+}

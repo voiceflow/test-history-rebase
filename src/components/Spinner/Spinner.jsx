@@ -12,7 +12,7 @@ const Loader = styled.span`
   background-image: url('/loader-2.svg');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 75%;
+  background-size: 80%;
   animation: spin 1s linear infinite;
 `;
 

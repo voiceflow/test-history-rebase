@@ -1,5 +1,3 @@
-'use strict';
-
 const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
 const evalSourceMapMiddleware = require('react-dev-utils/evalSourceMapMiddleware');
 const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
@@ -8,10 +6,13 @@ const paths = require('./paths');
 const fs = require('fs');
 
 const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
-const httpsConfig = protocol === 'https' ? {
-  key: fs.readFileSync('./certs/localhost.key'),
-  cert: fs.readFileSync('./certs/localhost.crt'),
-} : false; 
+const httpsConfig =
+  protocol === 'https'
+    ? {
+        key: fs.readFileSync('./certs/localhost.key'),
+        cert: fs.readFileSync('./certs/localhost.crt'),
+      }
+    : false;
 const host = process.env.HOST || '0.0.0.0';
 
 module.exports = function(proxy, allowedHost) {
@@ -32,8 +33,7 @@ module.exports = function(proxy, allowedHost) {
     // So we will disable the host check normally, but enable it if you have
     // specified the `proxy` setting. Finally, we let you override it if you
     // really know what you're doing with a special environment variable.
-    disableHostCheck:
-      !proxy || process.env.DANGEROUSLY_DISABLE_HOST_CHECK === 'true',
+    disableHostCheck: !proxy || process.env.DANGEROUSLY_DISABLE_HOST_CHECK === 'true',
     // Enable gzip compression of generated files.
     compress: true,
     // Silence WebpackDevServer's own logs since they're generally not useful.

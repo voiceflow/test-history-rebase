@@ -76,6 +76,13 @@ button {
   box-shadow: 0 6px 12px rgba(17, 49, 96, 0.2), 0 0 6px rgba(17, 49, 96, 0.1);
 }
 
+.btn-primary:active,
+.btn-primary:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 .btn-primary.__small {
   display: inline-block;
   padding: 8px 22px 10px;
@@ -368,10 +375,7 @@ button {
   color: #5b9dfad9;
   line-height: 40px;
   text-align: center;
-  background-color: #fff;
-  background-image: linear-gradient(#5d9df515, #5d9df530);
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
+  background: #fff linear-gradient(#5d9df515, #5d9df530) no-repeat 50% 50%;
   border: 1px solid #fff !important;
   border-radius: 50%;
   -webkit-box-shadow: 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);

@@ -1,3 +1,4 @@
+import SvgIcon from 'components/SvgIcon';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -67,7 +68,7 @@ const RoundButton = (props) => {
 
   return (
     <Button {...props} {...attributes} className={className} ref={innerRef} onClick={onBtnClick}>
-      <img src={icon} alt={imgAlt || 'button'} width={imgSize || 18} height={imgSize || 18} />
+      <SvgIcon icon={icon} width={imgSize || 18} height={imgSize || 18} alt={imgAlt || 'button'} />
     </Button>
   );
 };

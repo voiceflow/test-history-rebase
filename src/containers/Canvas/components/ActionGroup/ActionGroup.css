@@ -7,7 +7,6 @@
  * PSD by Orman Clark: https://goo.gl/MNFHK
  */
 
-
 .switch {
   position: relative;
   width: 167px;
@@ -50,9 +49,9 @@
 
 /*
     Note: using adjacent or general sibling selectors
-    combined with pseudo classes doesn't work in Safari 
+    combined with pseudo classes doesn't work in Safari
     5.0 and Chrome 12.
-    See this article for more info and a potential fix: 
+    See this article for more info and a potential fix:
     https://css-tricks.com/webkit-sibling-bug/
   */
 
@@ -60,7 +59,7 @@
   display: none;
 }
 
-.switch-input.checked + .switch-label {
+.switch-input.checked+.switch-label {
   color: rgba(0, 0, 0, 0.65);
   font-weight: bold;
   text-shadow: 0 1px rgba(255, 255, 255, 0.25);
@@ -71,10 +70,10 @@
 }
 
 .btn-successful {
-  background-image: url("/saved.svg"), linear-gradient(-180deg, rgba(62, 207, 142, 0.09), rgba(62, 207, 142, 0.25) 98%) !important;
+  background-image: url('/saved.svg'), linear-gradient(-180deg, rgba(62, 207, 142, 0.09), rgba(62, 207, 142, 0.25) 98%) !important;
 }
 
-.switch-input.checked + .switch-label-on ~ .switch-selection {
+.switch-input.checked+.switch-label-on~.switch-selection {
   /* Note: right: 50% doesn't transition in WebKit */
   right: 80px;
 }
@@ -142,4 +141,24 @@
 
 .react-sweet-progress-symbol {
   color: #0b1a38;
+}
+
+.ag__settings_modal {
+  max-width: 700px;
+}
+
+.settings-content .content {
+  min-width: 0;
+}
+
+.d__see_all {
+  float: right;
+  color: #5d9df5;
+  cursor: pointer;
+}
+
+.ag__settings_header {
+  /* margin: 1rem 16px 0 4px; */
+  margin-top: 5px;
+  margin-right: 8px;
 }

@@ -25,6 +25,7 @@ import { Alert, Input, InputGroup, InputGroupAddon, Modal, ModalBody, Popover, P
 import LOCALE_MAP from 'services/LocaleMap';
 import InvRegex from 'services/Regex';
 
+import Settings from '../../../Skill/Settings';
 import UploadButton from '../UploadButton/UploadButton';
 
 const loading = (message) => {
@@ -178,6 +179,7 @@ export class ActionGroup extends PureComponent {
       percentage: 0,
       upload_button_loading: true,
       selected_vendor: props.vendor_id,
+      settingsModal: false,
     };
 
     this.token = null;
@@ -412,7 +414,9 @@ export class ActionGroup extends PureComponent {
       await axios.patch(`/skill/${skill.skill_id}?inv_name=1`, { inv_name });
       updateSkill('inv_name', inv_name);
     } catch (err) {
-      this.updateAlexaStage(9, undefined, { upload_error: 'Unable to save Invocation Name' });
+      this.updateAlexaStage(9, undefined, {
+        upload_error: 'Unable to save Invocation Name',
+      });
     }
   };
 
@@ -1117,11 +1121,6 @@ export class ActionGroup extends PureComponent {
       history,
       updateSkill,
       platform,
-      lastSave,
-      saved,
-      saving,
-      onSave,
-      onTest,
       live_mode,
       vendors,
       show_upload_prompt: props_show_upload_prompt,
@@ -1173,6 +1172,14 @@ export class ActionGroup extends PureComponent {
             <div>{this.renderLiveStage()}</div>
           </ModalBody>
         </Modal>
+
+        <Modal isOpen={this.state.settingsModal} toggle={() => this.setState({ settingsModal: false })} className="ag__settings_modal">
+          <div className="ag__settings_header">
+            <ModalHeader toggle={() => this.setState({ settingsModal: false })} className="pb-2" header="Project Settings" />
+          </div>
+          <Settings {...this.props} page="basic" toggleUpgrade={this.toggleUpgrade} />
+        </Modal>
+
         <Header
           preview={preview}
           history={history}
@@ -1245,19 +1252,15 @@ export class ActionGroup extends PureComponent {
           rightRenderer={() => (
             <div className="title-group no-select">
               <div className="align-icon">
-                <Tooltip distance={16} title={lastSave} position="bottom" className="mr-4">
+                <Tooltip distance={16} title="Settings" position="bottom" className="mr-4">
                   <RoundButton
-                    className={cn({
-                      'save-loader': saving,
-                    })}
-                    type="color"
+                    type="plain"
                     width={44}
                     height={44}
                     // eslint-disable-next-line no-nested-ternary
-                    icon={saving ? '/loader.svg' : saved ? '/saved.svg' : '/save-dark.svg'}
-                    onClick={onSave}
-                    color="#3ecf8e"
-                    imgAlt="save"
+                    icon="/cog.svg"
+                    onClick={() => this.setState({ settingsModal: true })}
+                    imgAlt="settings"
                     imgSize={18}
                   />
                 </Tooltip>
@@ -1294,12 +1297,6 @@ export class ActionGroup extends PureComponent {
                   </PopoverBody>
                 </Popover>
               </div>
-              <div className="align-icon">
-                <Tooltip distance={16} title="Test" position="bottom" className="ml-4 mr-4">
-                  <RoundButton type="color" color="#5b9dfa" icon="/play.svg" imgAlt="test" imgSize={15} width={44} height={44} onClick={onTest} />
-                </Tooltip>
-              </div>
-
               <UploadButton
                 live_mode={live_mode}
                 show_upload_prompt={show_upload_prompt}

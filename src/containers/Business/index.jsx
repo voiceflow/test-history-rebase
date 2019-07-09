@@ -2,54 +2,15 @@ import './Business.css';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
-import AccountLinkTemplate from './AccountLinkTemplate';
 import Home from './Home';
 import EditProduct from './Products/EditProduct';
 import Products from './Products/Products';
-
-const updateLink = (link, skill_id) => {
-  return link.replace(':skill_id', skill_id);
-};
-
-const tabs = [
-  {
-    display: (
-      <React.Fragment>
-        <i className="far fa-tachometer-alt mr-2" /> Dashboard
-      </React.Fragment>
-    ),
-    match: ['home'],
-    link: '/tools/:skill_id',
-  },
-  {
-    display: (
-      <React.Fragment>
-        <i className="far fa-cube mr-2" /> Products
-      </React.Fragment>
-    ),
-    match: ['products'],
-    link: '/tools/:skill_id/products',
-  },
-  {
-    display: (
-      <React.Fragment>
-        <i className="far fa-link mr-2" /> Link Account
-      </React.Fragment>
-    ),
-    match: ['link_account', 'link_template'],
-    link: '/tools/:skill_id/link_account/templates',
-  },
-];
 
 class Business extends Component {
   render() {
     let page;
     switch (this.props.page) {
-      case 'link_account':
-        page = <AccountLinkTemplate {...this.props} />;
-        break;
       case 'products':
         page = <Products {...this.props} />;
         break;
@@ -62,25 +23,7 @@ class Business extends Component {
 
     return (
       <div id="business">
-        <div md="3" className="sidebar-nav">
-          {tabs.map((tab, i) => {
-            if (tab.match.includes(this.props.page)) {
-              return (
-                <div key={i} className="nav-item active">
-                  {tab.display}
-                </div>
-              );
-            }
-            return (
-              <Link key={i} to={updateLink(tab.link, this.props.skill_id)} className="nav-item">
-                {tab.display}
-              </Link>
-            );
-          })}
-        </div>
-        <div md="9" className="business-page">
-          {page}
-        </div>
+        <div className="business-page">{page}</div>
       </div>
     );
   }

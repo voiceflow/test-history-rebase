@@ -1,6 +1,5 @@
 import axios from 'axios';
 import MultipleFields from 'components/Forms/MultipleFields';
-import { Spinner } from 'components/Spinner/Spinner';
 import { setError } from 'ducks/modal';
 import { updateVersion } from 'ducks/version';
 import update from 'immutability-helper';
@@ -130,165 +129,163 @@ class AccountLinkTemplate extends Component {
 
   render() {
     if (this.state.loading) {
-      return <Spinner name="Account Linking" />;
+      return <div>Loading</div>;
     }
 
     return (
       <div className="business-page-inner">
-        <div className="content">
-          <div className="space-between">
-            <h5 className="text-muted mb-0">Account Linking Template</h5>
-          </div>
-          <hr />
-          {this.state.loading ? (
-            <div id="loading-diagram">
-              <div className="text-center">
-                <h5 className="text-muted mb-2">Loading Template</h5>
-                <span className="loader" />
-              </div>
-            </div>
-          ) : (
-            <React.Fragment>
-              <label>URL Authorization</label>
-              <Input
-                name="form-control-border form-control mb-3"
-                value={this.state.accountLinkingRequest.authorizationUrl || ''}
-                placeholder="URL Authorization"
-                onChange={(e) => {
-                  const accountLinkingRequest = this.state.accountLinkingRequest;
-                  accountLinkingRequest.authorizationUrl = e.target.value;
-                  this.setState({
-                    accountLinkingRequest,
-                  });
-                }}
-              />
-              <label>Access Token URL</label>
-              <Input
-                className="form-control-border form-control mb-3"
-                value={this.state.accountLinkingRequest.accessTokenUrl || ''}
-                placeholder="Access Token URL"
-                onChange={(e) => {
-                  const accountLinkingRequest = this.state.accountLinkingRequest;
-                  accountLinkingRequest.accessTokenUrl = e.target.value;
-                  this.setState({
-                    accountLinkingRequest,
-                  });
-                }}
-              />
-
-              <hr />
-
-              <Nav tabs className="mb-3">
-                <NavItem className="mr-2" onClick={() => this.setState({ type: 'client' })}>
-                  <NavLink href="#" active={this.state.type === 'client'}>
-                    Client
-                  </NavLink>
-                </NavItem>
-                <NavItem
-                  className="mr-2"
-                  onClick={() => {
-                    this.setState({ type: 'scope' });
-                  }}
-                >
-                  <NavLink href="#" active={this.state.type === 'scope'}>
-                    Scope
-                  </NavLink>
-                </NavItem>
-                <NavItem className="mr-2" onClick={() => this.setState({ type: 'domain' })}>
-                  <NavLink href="#" active={this.state.type === 'domain'}>
-                    Domain
-                  </NavLink>
-                </NavItem>
-              </Nav>
-              {this.state.type === 'client' && (
-                <React.Fragment>
-                  <label>Client ID</label>
-                  <Input
-                    className="form-control-border form-control mb-3"
-                    value={this.state.accountLinkingRequest.clientId || ''}
-                    placeholder="Client ID"
-                    onChange={(e) => {
-                      const accountLinkingRequest = this.state.accountLinkingRequest;
-                      accountLinkingRequest.clientId = e.target.value;
-                      this.setState({
-                        accountLinkingRequest,
-                      });
-                    }}
-                  />
-                  <label>Client Secret</label>
-                  <Input
-                    className="form-control-border form-control mb-3"
-                    type="password"
-                    value={this.state.accountLinkingRequest.clientSecret || ''}
-                    placeholder="Client Secret"
-                    onChange={(e) => {
-                      const accountLinkingRequest = this.state.accountLinkingRequest;
-                      accountLinkingRequest.clientSecret = e.target.value;
-                      this.setState({
-                        accountLinkingRequest,
-                      });
-                    }}
-                  />
-                </React.Fragment>
-              )}
-              {this.state.type === 'scope' && (
-                <MultipleFields
-                  handleChange={this.handleChange}
-                  handleAdd={this.handleAdd}
-                  handleRemove={this.handleRemove}
-                  fields={this.state.accountLinkingRequest.scopes}
-                  label="Scopes"
-                  type="scopes"
-                />
-              )}
-              {this.state.type === 'domain' && (
-                <MultipleFields
-                  label="Domains"
-                  type="domains"
-                  handleChange={this.handleChange}
-                  handleAdd={this.handleAdd}
-                  handleRemove={this.handleRemove}
-                  fields={this.state.accountLinkingRequest.domains}
-                />
-              )}
-              <hr />
-
-              <label>Access Token Expiration</label>
-              <Input
-                type="number"
-                className="form-control-border form-control right mb-3"
-                value={this.state.accountLinkingRequest.defaultTokenExpirationInSeconds || ''}
-                placeholder="3600"
-                onChange={(e) => {
-                  const accountLinkingRequest = this.state.accountLinkingRequest;
-                  accountLinkingRequest.defaultTokenExpirationInSeconds = e.target.value;
-                  this.setState({
-                    accountLinkingRequest,
-                  });
-                }}
-              />
-              <label>Client Authentication Scheme</label>
-              <Select
-                classNamePrefix="select-box"
-                className="map-box"
-                onChange={(e) => {
-                  const accountLinkingRequest = this.state.accountLinkingRequest;
-                  accountLinkingRequest.accessTokenScheme = e.value;
-                  this.setState({
-                    accountLinkingRequest,
-                  });
-                }}
-                placeholder={
-                  _.find(clientAuthScheme, {
-                    value: this.state.accountLinkingRequest.accessTokenScheme,
-                  }).label
-                }
-                options={clientAuthScheme}
-              />
-              <br />
-            </React.Fragment>
-          )}
+        <div className="space-between">
+          <h5 className="text-muted mb-0">Account Linking Template</h5>
         </div>
+        <hr />
+        {this.state.loading ? (
+          <div id="loading-diagram">
+            <div className="text-center">
+              <h5 className="text-muted mb-2">Loading Template</h5>
+              <span className="loader" />
+            </div>
+          </div>
+        ) : (
+          <React.Fragment>
+            <label>URL Authorization</label>
+            <Input
+              name="form-control-border form-control mb-3"
+              value={this.state.accountLinkingRequest.authorizationUrl || ''}
+              placeholder="URL Authorization"
+              onChange={(e) => {
+                const accountLinkingRequest = this.state.accountLinkingRequest;
+                accountLinkingRequest.authorizationUrl = e.target.value;
+                this.setState({
+                  accountLinkingRequest,
+                });
+              }}
+            />
+            <label>Access Token URL</label>
+            <Input
+              className="form-control-border form-control mb-3"
+              value={this.state.accountLinkingRequest.accessTokenUrl || ''}
+              placeholder="Access Token URL"
+              onChange={(e) => {
+                const accountLinkingRequest = this.state.accountLinkingRequest;
+                accountLinkingRequest.accessTokenUrl = e.target.value;
+                this.setState({
+                  accountLinkingRequest,
+                });
+              }}
+            />
+
+            <hr />
+
+            <Nav tabs className="mb-3">
+              <NavItem className="mr-2" onClick={() => this.setState({ type: 'client' })}>
+                <NavLink href="#" active={this.state.type === 'client'}>
+                  Client
+                </NavLink>
+              </NavItem>
+              <NavItem
+                className="mr-2"
+                onClick={() => {
+                  this.setState({ type: 'scope' });
+                }}
+              >
+                <NavLink href="#" active={this.state.type === 'scope'}>
+                  Scope
+                </NavLink>
+              </NavItem>
+              <NavItem className="mr-2" onClick={() => this.setState({ type: 'domain' })}>
+                <NavLink href="#" active={this.state.type === 'domain'}>
+                  Domain
+                </NavLink>
+              </NavItem>
+            </Nav>
+            {this.state.type === 'client' && (
+              <React.Fragment>
+                <label>Client ID</label>
+                <Input
+                  className="form-control-border form-control mb-3"
+                  value={this.state.accountLinkingRequest.clientId || ''}
+                  placeholder="Client ID"
+                  onChange={(e) => {
+                    const accountLinkingRequest = this.state.accountLinkingRequest;
+                    accountLinkingRequest.clientId = e.target.value;
+                    this.setState({
+                      accountLinkingRequest,
+                    });
+                  }}
+                />
+                <label>Client Secret</label>
+                <Input
+                  className="form-control-border form-control mb-3"
+                  type="password"
+                  value={this.state.accountLinkingRequest.clientSecret || ''}
+                  placeholder="Client Secret"
+                  onChange={(e) => {
+                    const accountLinkingRequest = this.state.accountLinkingRequest;
+                    accountLinkingRequest.clientSecret = e.target.value;
+                    this.setState({
+                      accountLinkingRequest,
+                    });
+                  }}
+                />
+              </React.Fragment>
+            )}
+            {this.state.type === 'scope' && (
+              <MultipleFields
+                handleChange={this.handleChange}
+                handleAdd={this.handleAdd}
+                handleRemove={this.handleRemove}
+                fields={this.state.accountLinkingRequest.scopes}
+                label="Scopes"
+                type="scopes"
+              />
+            )}
+            {this.state.type === 'domain' && (
+              <MultipleFields
+                label="Domains"
+                type="domains"
+                handleChange={this.handleChange}
+                handleAdd={this.handleAdd}
+                handleRemove={this.handleRemove}
+                fields={this.state.accountLinkingRequest.domains}
+              />
+            )}
+            <hr />
+
+            <label>Access Token Expiration</label>
+            <Input
+              type="number"
+              className="form-control-border form-control right mb-3"
+              value={this.state.accountLinkingRequest.defaultTokenExpirationInSeconds || ''}
+              placeholder="3600"
+              onChange={(e) => {
+                const accountLinkingRequest = this.state.accountLinkingRequest;
+                accountLinkingRequest.defaultTokenExpirationInSeconds = e.target.value;
+                this.setState({
+                  accountLinkingRequest,
+                });
+              }}
+            />
+            <label>Client Authentication Scheme</label>
+            <Select
+              classNamePrefix="select-box"
+              className="map-box"
+              onChange={(e) => {
+                const accountLinkingRequest = this.state.accountLinkingRequest;
+                accountLinkingRequest.accessTokenScheme = e.value;
+                this.setState({
+                  accountLinkingRequest,
+                });
+              }}
+              placeholder={
+                _.find(clientAuthScheme, {
+                  value: this.state.accountLinkingRequest.accessTokenScheme,
+                }).label
+              }
+              options={clientAuthScheme}
+            />
+            <br />
+          </React.Fragment>
+        )}
       </div>
     );
   }

@@ -1,21 +1,18 @@
-/* eslint-disable simple-import-sort/sort */
 import './Display.css';
-import AceEditor from 'react-ace';
-import 'brace/mode/json_custom';
-import 'brace/theme/monokai';
-import 'brace/ext/language_tools';
-/* eslint-enable simple-import-sort/sort */
 
 import axios from 'axios';
+import AceEditor from 'components/AceEditor';
 import { ModalHeader } from 'components/Modals/ModalHeader';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import { Tooltip } from 'react-tippy';
 import { Button, Input, InputGroup, InputGroupAddon, Modal, ModalBody } from 'reactstrap';
+import { compose } from 'redux';
 
+import { selectStyles } from '../../../components/VariableSelect/VariableSelect';
 import DisplayRender from './components/DisplayRender';
 
 export class Display extends Component {
@@ -106,6 +103,9 @@ export class Display extends Component {
   }
 
   selectDisplay(selected) {
+    if (selected.openVar) {
+      return selected.openVar();
+    }
     const { node } = this.state;
     const { displays, onUpdate } = this.props;
     if (selected.value === node.extras.display_id) return;
@@ -260,9 +260,13 @@ export class Display extends Component {
 
   disableModal = () => this.setState({ modal: false });
 
+  goToSidebar = () => {
+    this.props.history.push(`/visuals/${this.props.match.params.skill_id}`);
+  };
+
   render() {
     const { displays, skill_id } = this.props;
-    const { modal, modal_error, node, selected } = this.state;
+    const { modal, selected } = this.state;
 
     if (displays.length === 0) {
       return (
@@ -276,6 +280,7 @@ export class Display extends Component {
         </div>
       );
     }
+    const displayOptions = _.cloneDeep(this.props.displays);
 
     return (
       <React.Fragment>
@@ -285,112 +290,139 @@ export class Display extends Component {
         </Modal>
         <div>
           <label>Multimodal Display</label>
+          <div onClick={() => this.props.history.push(`/visuals/${skill_id}`)} className="d__see_all">
+            See all
+          </div>
           <Select
             classNamePrefix="select-box"
             value={selected}
             onChange={this.selectDisplay}
+            styles={selectStyles}
             placeholder="Select Multimodal Display"
-            options={displays.map((t) => {
+            options={displayOptions.map((display, idx) => {
+              if (idx === displayOptions.length - 1) {
+                return { label: display.display_id, value: display.title, openVar: this.goToSidebar };
+              }
               return {
-                value: t.display_id,
-                label: t.title,
+                value: display.display_id,
+                label: display.title,
               };
             })}
           />
-          <InputGroup className="my-3">
-            <label className="input-group-text w-100 m-0 d-flex">
-              <Input
-                addon
-                type="checkbox"
-                value={node.extras.update_on_change}
-                checked={node.extras.update_on_change}
-                onChange={this.updateOnChange}
-              />
-              <div className="ml-2 space-between flex-hard">
-                <span>Update on Variable Changes</span>
-                <span>
-                  <Tooltip
-                    className="menu-tip"
-                    title="When this option is checked, the multimodal display will update whenever a change is detected in any of the variables used in the Data Source JSON"
-                    position="bottom"
-                    theme="block"
-                  >
-                    ?
-                  </Tooltip>
-                </span>
+          {this.state.selected && (
+            <InputGroup className="my-3">
+              <label className="input-group-text w-100 m-0 d-flex">
+                <Input
+                  addon
+                  type="checkbox"
+                  value={this.state.node.extras.update_on_change}
+                  checked={this.state.node.extras.update_on_change}
+                  onChange={this.updateOnChange}
+                />
+
+                <div className="ml-2 space-between flex-hard">
+                  <span>Update on Variable Changes</span>
+                  <span>
+                    <Tooltip
+                      className="menu-tip"
+                      title="When this option is checked, the multimodal display will update whenever a change is detected in any of the variables used in the Data Source JSON"
+                      position="bottom"
+                      theme="block"
+                    >
+                      ?
+                    </Tooltip>
+                  </span>
+                </div>
+              </label>
+            </InputGroup>
+          )}
+
+          {!this.state.selected && (
+            <div>
+              <div className="d__or_box">
+                <div className="d__or_text">OR</div>
               </div>
-            </label>
-          </InputGroup>
-          <hr />
-          <Button color="clear" onClick={this.openModal} size="sm" block>
-            <i className="fas fa-power-off mr-1" />
-            Test Display
-          </Button>
-          {modal_error && <div className="error-message">{modal_error}</div>}
-          <label>Data Source JSON</label>
-          <AceEditor
-            name="datasource_editor"
-            className="datasource_editor"
-            mode="json_custom"
-            theme="monokai"
-            onChange={this.onChangeEditor}
-            fontSize={14}
-            showPrintMargin={false}
-            showGutter={true}
-            highlightActiveLine={true}
-            value={node.extras.datasource}
-            editorProps={{
-              $blockScrolling: true,
-              $rules: {
-                start: [
-                  {
-                    token: 'highlightWords',
-                    regex: 'word1|word2|word3|phrase one|phrase number two|etc',
+
+              <button className="btn-clear btn-block btn-lg" onClick={() => this.props.history.push(`/visuals/${this.props.skill_id}`)}>
+                Create new visual
+              </button>
+            </div>
+          )}
+
+          {this.state.selected && (
+            <div>
+              <hr />
+              <Button color="clear" onClick={this.openModal} size="sm" block>
+                <i className="fas fa-power-off mr-1" />
+                Test Display
+              </Button>
+              {this.state.modal_error && <div className="error-message">{this.state.modal_error}</div>}
+              <label>Data Source JSON</label>
+              <AceEditor
+                name="datasource_editor"
+                className="datasource_editor"
+                mode="json_custom"
+                theme="monokai"
+                onChange={this.onChangeEditor}
+                fontSize={14}
+                showPrintMargin={false}
+                showGutter={true}
+                highlightActiveLine={true}
+                value={this.state.node.extras.datasource}
+                editorProps={{
+                  $blockScrolling: true,
+                  $rules: {
+                    start: [
+                      {
+                        token: 'highlightWords',
+                        regex: 'word1|word2|word3|phrase one|phrase number two|etc',
+                      },
+                    ],
                   },
-                ],
-              },
-            }}
-            setOptions={{
-              enableBasicAutocompletion: true,
-              enableLiveAutocompletion: false,
-              enableSnippets: false,
-              showLineNumbers: true,
-              tabSize: 2,
-              useWorker: false,
-            }}
-          />
-          <label>APL Commands</label>
-          <AceEditor
-            name="apl_commands_editor"
-            className="datasource_editor"
-            mode="json_custom"
-            theme="monokai"
-            onChange={this.onChangeCommands}
-            fontSize={14}
-            showPrintMargin={false}
-            showGutter={true}
-            highlightActiveLine={true}
-            value={node.extras.apl_commands}
-            editorProps={{
-              $blockScrolling: true,
-              $rules: {
-                start: [
-                  {
-                    token: 'highlightWords',
-                    regex: 'word1|word2|word3|phrase one|phrase number two|etc',
+                }}
+                setOptions={{
+                  enableBasicAutocompletion: true,
+                  enableLiveAutocompletion: false,
+                  enableSnippets: false,
+                  showLineNumbers: true,
+                  tabSize: 2,
+                  useWorker: false,
+                }}
+              />
+              <label>APL Commands</label>
+              <AceEditor
+                name="apl_commands_editor"
+                className="datasource_editor"
+                mode="json_custom"
+                theme="monokai"
+                onChange={this.onChangeCommands}
+                fontSize={14}
+                showPrintMargin={false}
+                showGutter={true}
+                highlightActiveLine={true}
+                value={this.state.node.extras.apl_commands}
+                editorProps={{
+                  $blockScrolling: true,
+                  $rules: {
+                    start: [
+                      {
+                        token: 'highlightWords',
+                        regex: 'word1|word2|word3|phrase one|phrase number two|etc',
+                      },
+                    ],
                   },
-                ],
-              },
-            }}
-            setOptions={{
-              enableBasicAutocompletion: true,
-              enableLiveAutocompletion: false,
-              enableSnippets: false,
-              showLineNumbers: true,
-              tabSize: 2,
-              useWorker: false,
-            }}
-          />
+                }}
+                setOptions={{
+                  enableBasicAutocompletion: true,
+                  enableLiveAutocompletion: false,
+                  enableSnippets: false,
+                  showLineNumbers: true,
+                  tabSize: 2,
+                  useWorker: false,
+                }}
+              />
+            </div>
+          )}
         </div>
       </React.Fragment>
     );
@@ -399,7 +431,11 @@ export class Display extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.account,
-  skill_id: state.skills.skill_id,
+  skill_id: state.skills.skill.skill_id,
   displays: state.displays.displays,
 });
-export default connect(mapStateToProps)(Display);
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps)
+)(Display);

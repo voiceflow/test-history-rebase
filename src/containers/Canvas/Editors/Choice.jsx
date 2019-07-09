@@ -78,7 +78,6 @@ export class Choice extends Component {
     if (node.parentCombine) {
       bestNode = _.findIndex(node.parentCombine.combines, ['id', node.id]);
     }
-
     // eslint-disable-next-line no-restricted-syntax, guard-for-in
     for (const name in node.getPorts()) {
       const port = node.getPort(name);
@@ -122,5 +121,4 @@ export class Choice extends Component {
 const mapStateToProps = (state) => ({
   live_mode: state.skills.live_mode,
 });
-
 export default connect(mapStateToProps)(Choice);

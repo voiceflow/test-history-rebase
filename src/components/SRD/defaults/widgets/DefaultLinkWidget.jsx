@@ -238,7 +238,7 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 			<g key={"link-" + id} style={styleObj}>
 				{Bottom}
 				{Top}
-				{svgPosition && this.state.selected && !this.props.preview ? (
+				{svgPosition && this.state.selected && !this.props.diagramEngine.getDiagramModel().isLocked() ? (
 				<foreignObject
 					x={svgPosition.x - 20}
 					y={svgPosition.y - 15}

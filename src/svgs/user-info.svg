@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 14 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="-2.48949813e-15%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="currentColor" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="currentColor" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/System/Locked_Selected" transform="translate(-1.000000, 0.000000)" fill="url(#linearGradient-1)" fill-rule="nonzero">
+            <g id="user-solid-(1)" transform="translate(1.000000, 0.000000)">
+                <path d="M7,8 C9.209375,8 11,6.209375 11,4 C11,1.790625 9.209375,0 7,0 C4.790625,0 3,1.790625 3,4 C3,6.209375 4.790625,8 7,8 Z M9.8,9 L9.278125,9 C8.584375,9.31875 7.8125,9.5 7,9.5 C6.1875,9.5 5.41875,9.31875 4.721875,9 L4.2,9 C1.88125,9 0,10.88125 0,13.2 L0,14.5 C0,15.328125 0.671875,16 1.5,16 L12.5,16 C13.328125,16 14,15.328125 14,14.5 L14,13.2 C14,10.88125 12.11875,9 9.8,9 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

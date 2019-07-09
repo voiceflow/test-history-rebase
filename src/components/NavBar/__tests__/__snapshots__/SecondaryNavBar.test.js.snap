@@ -14,27 +14,21 @@ exports[`Secondary Nav Bar render secondary nav bar 1`] = `
       </div>
       <div
         className="nav-item"
-        key="settings"
+        key="test"
       >
-        settings
-      </div>
-      <div
-        className="nav-item"
-        key="visuals"
-      >
-        visuals
-      </div>
-      <div
-        className="nav-item"
-        key="tools"
-      >
-        tools
+        test
       </div>
       <div
         className="nav-item"
         key="publish"
       >
         publish
+      </div>
+      <div
+        className="nav-item"
+        key="analytics"
+      >
+        analytics
       </div>
     </styled.div>
     <div

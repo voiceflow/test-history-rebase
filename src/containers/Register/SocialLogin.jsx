@@ -1,3 +1,4 @@
+import { BUILD_ENV } from 'config';
 import { fbLogin, googleLogin } from 'ducks/account';
 import React, { Fragment, useEffect, useState } from 'react';
 import FacebookLogin from 'react-facebook-login';
@@ -49,7 +50,7 @@ const SocialLogin = ({ entryText, googleLogin, fbLogin }) => {
       <ErrorWidget error={authError} color="danger" />
       <div className="social-login">
         <GoogleLogin
-          clientId={process.env.REACT_APP_BUILD_ENV === 'production' ? googleClient : devGoogleClient}
+          clientId={BUILD_ENV === 'production' ? googleClient : devGoogleClient}
           className="social-button class-ggl mb-2"
           buttonText={`${entryText} with Google`}
           onSuccess={triggerGoogleLogin}

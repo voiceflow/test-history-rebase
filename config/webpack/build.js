@@ -9,6 +9,8 @@ const commonConfig = require('./common');
 const paths = require('../paths');
 const { ENV, IS_PRODUCTION, IS_SERVING } = require('./config');
 
+console.log({ ENV });
+
 module.exports = merge(commonConfig, {
   plugins: [
     new CleanWebpackPlugin(),

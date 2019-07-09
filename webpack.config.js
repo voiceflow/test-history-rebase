@@ -8,7 +8,7 @@ process.env.NODE_ENV = prod ? 'production' : 'development';
 
 dotenv.config();
 
-const environment = env || process.env.BUILD_ENV || 'local';
+const environment = env || process.env.VF_APP_BUILD_ENV || 'local';
 const envFile = path.resolve(process.cwd(), `.env${environment ? `.${environment}` : ''}`);
 if (fs.existsSync(envFile)) {
   dotenv.config({ path: envFile });

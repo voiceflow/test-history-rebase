@@ -1,10 +1,11 @@
 import Button from 'components/Button';
 import ClipBoard from 'components/ClipBoard/ClipBoard';
+import { BUILD_ENV, IS_PRODUCTION } from 'config';
 import React, { Component } from 'react';
 import { Collapse, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
 let zapierInviteEndpoint;
-if (process.env.REACT_APP_BUILD_ENV === 'staging' || process.env.NODE_ENV !== 'production') {
+if (BUILD_ENV === 'staging' || !IS_PRODUCTION) {
   // eslint-disable-next-line no-secrets/no-secrets
   zapierInviteEndpoint = 'https://zapier.com/developer/public-invite/21201/642d361378b287979f713057f57e5473/';
 } else {

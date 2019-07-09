@@ -5,7 +5,7 @@ import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props
 import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
 
-import { SocialLoginContainer } from './SignupContainer';
+import { SocialLoginContainer } from './AuthBoxes';
 import { devGoogleClient, fbId, googleClient } from './social-id';
 
 const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {

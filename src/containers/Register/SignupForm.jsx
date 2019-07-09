@@ -7,12 +7,12 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Form, FormGroup, Input } from 'reactstrap';
 
+import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
-import ErrorWidget from './ErrorWidget';
-import { SignupContainer } from './SignupContainer';
 import SocialLogin from './SocialLogin';
 
 export const SignupForm = ({ signup, history }) => {
+  // eslint-disable-next-line no-restricted-globals
   const query = queryString.parse(location.search);
   const [signupError, setSignupError] = useState(null);
   const [email, setEmail] = useState(query.email ? query.email : '');
@@ -48,10 +48,10 @@ export const SignupForm = ({ signup, history }) => {
 
   return (
     <AuthenticationContainer dark>
-      <SignupContainer>
-        <Form onSubmit={signupSubmit} className="signup-form auth-form">
-          <img className="login-logo" src="/logo-white.svg" alt="logo" />
-          <div className="signup-form-wrapper">
+      <AuthBox>
+        <Form onSubmit={signupSubmit}>
+          <img className="auth-logo" src="/logo-white.svg" alt="logo" />
+          <div className="auth-form-wrapper">
             <FormGroup>
               <Input
                 className="form-bg"
@@ -90,6 +90,7 @@ export const SignupForm = ({ signup, history }) => {
             </FormGroup>
             <div className="row">
               <div className="col-6 auth__link">
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a onClick={openLogin}>Have an account?</a>
               </div>
               <div className="col-6">
@@ -111,7 +112,7 @@ export const SignupForm = ({ signup, history }) => {
             <div className="col-11">{signupError}</div>
           </div>
         )}
-      </SignupContainer>
+      </AuthBox>
     </AuthenticationContainer>
   );
 };

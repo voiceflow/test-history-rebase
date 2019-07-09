@@ -38,6 +38,7 @@ describe('Onboarding', () => {
     pathname: '/login',
     search: '',
   };
+  const formWrapperClass = '.auth-form-wrapper';
   it('renders without crashing', () => {
     const component = shallow(<Account location={location} />);
     expect(toJson(component)).toMatchSnapshot();
@@ -48,29 +49,29 @@ describe('Onboarding', () => {
   });
   it('creates accounts on signup', () => {
     const app = shallow(<SignupForm location={location} />);
-    app.find('#signup-form Input[name="name"]').simulate('change', { target: { value: 'Voiceflow Tester' } });
-    app.find('#signup-form Input[name="email"]').simulate('change', { target: { value: TEST_EMAIL } });
-    app.find('#signup-form Input[name="password"]').simulate('change', { target: { value: 'password' } });
-    app.find('#signup-form Button[type="submit"]').simulate('click');
+    app.find(`${formWrapperClass} Input[name="name"]`).simulate('change', { target: { value: 'Voiceflow Tester' } });
+    app.find(`${formWrapperClass} Input[name="email"]`).simulate('change', { target: { value: TEST_EMAIL } });
+    app.find(`${formWrapperClass} Input[name="password"]`).simulate('change', { target: { value: 'password' } });
+    app.find(`${formWrapperClass} Button[type="submit"]`).simulate('click');
     setTimeout(() => {
       expect(app.exists('.onboarding-survey')).toBe(true);
     }, 500);
   });
   it('disallows duplicate accounts', () => {
     const app = shallow(<SignupForm location={location} />);
-    app.find('#signup-form Input[name="name"]').simulate('change', { target: { value: 'Voiceflow Tester' } });
-    app.find('#signup-form Input[name="email"]').simulate('change', { target: { value: TEST_EMAIL } });
-    app.find('#signup-form Input[name="password"]').simulate('change', { target: { value: 'password' } });
-    app.find('#signup-form Button[type="submit"]').simulate('click');
+    app.find(`${formWrapperClass} Input[name="name"]`).simulate('change', { target: { value: 'Voiceflow Tester' } });
+    app.find(`${formWrapperClass} Input[name="email"]`).simulate('change', { target: { value: TEST_EMAIL } });
+    app.find(`${formWrapperClass} Input[name="password"]`).simulate('change', { target: { value: 'password' } });
+    app.find(`${formWrapperClass} Button[type="submit"]`).simulate('click');
     setTimeout(() => {
-      expect(app.exists('#signup-form .alert-danger')).toBe(true);
+      expect(app.exists(`${formWrapperClass} .errorContainer`)).toBe(true);
     }, 500);
   });
   it('onboards on first login', () => {
     const app = shallow(<LoginForm location={location} />);
-    app.find('#login-form Input[name="email"]').simulate('change', { target: { value: TEST_EMAIL } });
-    app.find('#login-form Input[name="password"]').simulate('change', { target: { value: 'password' } });
-    app.find('#login-form Button[type="submit"]').simulate('click');
+    app.find(`${formWrapperClass} Input[name="email"]`).simulate('change', { target: { value: TEST_EMAIL } });
+    app.find(`${formWrapperClass} Input[name="password"]`).simulate('change', { target: { value: 'password' } });
+    app.find(`${formWrapperClass} Button[type="submit"]`).simulate('click');
     setTimeout(() => {
       expect(app.exists('.onboarding-survey')).toBe(true);
       app

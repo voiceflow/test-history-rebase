@@ -1,7 +1,13 @@
 import styled from 'styled-components';
 
-export const SignupContainer = styled.div`
-  .signup-form-wrapper {
+export const AuthBox = styled.div`
+  text-align: center;
+
+  #login-container {
+    background: linear-gradient(180deg, rgba(19, 33, 68, 0.85) 0%, #132144 100%), #fff;
+  }
+
+  .auth-form-wrapper {
     width: 404px;
     max-width: 404px;
     padding: 32px;
@@ -10,8 +16,21 @@ export const SignupContainer = styled.div`
     box-shadow: 0 2px 4px 0 rgba(14, 30, 37, 0.12);
   }
 
-  .signup-form {
-    text-align: center;
+  .auth-logo {
+    width: 140px;
+    margin-bottom: 32px;
+  }
+
+  .auth__link {
+    padding-top: 10px;
+    text-align: left;
+  }
+
+  .auth__link > a {
+    color: #5d9df5 !important;
+    font-size: 15px;
+    line-height: 18px;
+    cursor: pointer;
   }
 
   .passwordInput {
@@ -72,36 +91,34 @@ export const SocialLoginContainer = styled.div`
     font-size: 15px;
     color: #8da2b5;
     float: left;
-    margin-top: 15px;
+    margin-top: 13px;
   }
 
   .social-button {
     display: inline-flex;
     align-items: center;
     width: fit-content;
-    height: 50px;
     font-weight: 500;
     font-size: 15px;
     text-align: center;
     box-shadow: 0 2px 5px 0 rgba(14, 30, 37, 0.15);
     cursor: pointer;
     transition: transform 0.25s ease;
-    padding: 12px 22px;
-    background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #ffffff;
+    padding: 10px 22px;
+    //background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #ffffff;
+    background-color: #fff;
     border: 1px solid #dfe3ed;
     border-radius: 90px;
     margin-left: 8px;
+    &:hover {
+      background-image: linear-gradient(-180deg, rgba(238, 244, 246, 0.85), #eef4f6);
+    }
   }
 
   .social-button-light {
     background: transparent;
     border: 1px solid #dfe3ed;
     box-shadow: none;
-  }
-
-  .social-button:hover {
-    box-shadow: 0 4px 8px 0 rgba(14, 30, 37, 0.15) !important;
-    transform: translateY(-3px);
   }
 
   img {

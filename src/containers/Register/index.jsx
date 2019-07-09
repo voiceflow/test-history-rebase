@@ -7,7 +7,6 @@ import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 
 const Account = ({ page, history, location }) => {
-  console.log('location: ', location);
   return (
     <div className="d-flex flex-row align-items-center justify-content-center" id="main">
       <div

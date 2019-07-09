@@ -7,9 +7,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
 
+import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
-import ErrorWidget from './ErrorWidget';
-import { SignupContainer } from './SignupContainer';
 import SocialLogin from './SocialLogin';
 
 export const LoginForm = ({ login, history, location }) => {
@@ -49,10 +48,10 @@ export const LoginForm = ({ login, history, location }) => {
 
   return (
     <AuthenticationContainer>
-      <SignupContainer>
-        <Form onSubmit={loginSubmit} className="login-form">
-          <img className="login-logo" src="/logo.png" alt="logo" />
-          <div className="login-form-wrapper">
+      <AuthBox>
+        <Form onSubmit={loginSubmit}>
+          <img className="auth-logo" src="/logo.png" alt="logo" />
+          <div className="auth-form-wrapper">
             <FormGroup>
               <Input
                 className="form-bg"
@@ -71,7 +70,13 @@ export const LoginForm = ({ login, history, location }) => {
                   Forgot?
                 </Link>
               ) : (
-                <img onClick={() => setShowPassword(!showPassword)} className="viewPassword" src="/eye.svg" alt="" />
+                // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+                <img
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="viewPassword"
+                  src={showPassword ? '/eye-hide.svg' : '/eye.svg'}
+                  alt=""
+                />
               )}
               <Input
                 className="form-bg"
@@ -86,6 +91,7 @@ export const LoginForm = ({ login, history, location }) => {
             </FormGroup>
             <div className="row">
               <div className="col-8 auth__link">
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a onClick={openRegister}>Don't have an account?</a>
               </div>
               <div className="col-4">
@@ -105,7 +111,7 @@ export const LoginForm = ({ login, history, location }) => {
             <div className="col-11">{loginError}</div>
           </div>
         )}
-      </SignupContainer>
+      </AuthBox>
     </AuthenticationContainer>
   );
 };

@@ -5,8 +5,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, FormGroup, Input } from 'reactstrap';
 
+import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
-import { SignupContainer } from './SignupContainer';
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -170,8 +170,8 @@ class ResetPassword extends Component {
   render() {
     return (
       <AuthenticationContainer>
-        <SignupContainer>
-          <div className="login-form-wrapper">{this.renderStage()}</div>
+        <AuthBox>
+          <div className="auth-form-wrapper">{this.renderStage()}</div>
           {this.state.error && (
             <div className="errorContainer row">
               <div className="col-1">
@@ -180,7 +180,7 @@ class ResetPassword extends Component {
               <div className="col-11">{this.state.error}</div>
             </div>
           )}
-        </SignupContainer>
+        </AuthBox>
       </AuthenticationContainer>
     );
   }

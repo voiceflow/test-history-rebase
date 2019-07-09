@@ -1,5 +1,5 @@
-import { fbLogin, googleLogin } from 'ducks/account';
 import cn from 'classnames';
+import { fbLogin, googleLogin } from 'ducks/account';
 import React, { Fragment, useEffect, useState } from 'react';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import GoogleLogin from 'react-google-login';

@@ -7,10 +7,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
 
-import ErrorWidget from './ErrorWidget';
-import SocialLogin from './SocialLogin';
 import AuthenticationContainer from './AuthenticationWrapper';
+import ErrorWidget from './ErrorWidget';
 import { SignupContainer } from './SignupContainer';
+import SocialLogin from './SocialLogin';
 
 export const LoginForm = ({ login, history, location }) => {
   const query = queryString.parse(location.search);

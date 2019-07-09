@@ -3,8 +3,9 @@ import Button from 'components/Button';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { FormGroup, Input } from 'reactstrap';
-import { SignupContainer } from './SignupContainer';
+
 import AuthenticationContainer from './AuthenticationWrapper';
+import { SignupContainer } from './SignupContainer';
 
 class Reset extends Component {
   constructor(props) {

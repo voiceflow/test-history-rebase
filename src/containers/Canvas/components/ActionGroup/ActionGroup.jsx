@@ -1065,14 +1065,7 @@ export class ActionGroup extends PureComponent {
       stage,
       is_first_upload,
     } = this.state;
-    const {
-      skill,
-      diagram_id,
-      platform,
-      live_mode,
-      vendors,
-      show_upload_prompt: props_show_upload_prompt,
-    } = this.props;
+    const { skill, diagram_id, platform, live_mode, vendors, show_upload_prompt: props_show_upload_prompt } = this.props;
 
     const link = `https://creator.voiceflow.com/preview/${skill.skill_id}/${diagram_id}`;
 
@@ -1140,12 +1133,7 @@ export class ActionGroup extends PureComponent {
         </div>
         <div className="title-group-sub">
           <Tooltip title="Share" position="bottom">
-            <Button
-              className={cn('dropdown-button-border', { active: this.state.share })}
-              id="icon-share"
-              type="button"
-              onClick={this.toggleShare}
-            />
+            <Button className={cn('dropdown-button-border', { active: this.state.share })} id="icon-share" type="button" onClick={this.toggleShare} />
           </Tooltip>
           <Popover placement="bottom" isOpen={share} target="icon-share" toggle={this.toggleShare} className="mt-3">
             <PopoverBody style={{ minWidth: '260px' }}>

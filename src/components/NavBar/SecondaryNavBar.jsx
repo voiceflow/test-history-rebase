@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Toggle from 'react-toggle';
+
 import { NavBarTabs } from './styled';
 
 const PAGES = ['canvas', 'test', 'publish', 'analytics'];

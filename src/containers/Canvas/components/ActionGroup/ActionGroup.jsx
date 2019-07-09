@@ -4,24 +4,23 @@ import 'react-sweet-progress/lib/style.css';
 import axios from 'axios';
 import cn from 'classnames';
 import Button from 'components/Button';
-import ClipBoard from 'components/ClipBoard/ClipBoard';
 import AmazonLogin from 'components/Forms/AmazonLogin';
 import { ModalHeader } from 'components/Modals/ModalHeader';
 import { AmazonAccessToken, getVendors, googleAccessToken } from 'ducks/account';
 import { setError } from 'ducks/modal';
 import { updateVendorId } from 'ducks/project';
-import { togglePreview, updateLocales, updateSkillDB, updateVersion } from 'ducks/version';
+import { updateLocales, updateSkillDB, updateVersion } from 'ducks/version';
 import React, { PureComponent } from 'react';
 import Confetti from 'react-dom-confetti';
 import { connect } from 'react-redux';
 import { Progress } from 'react-sweet-progress';
 import { Tooltip } from 'react-tippy';
-import Toggle from 'react-toggle';
-import { Alert, Input, InputGroup, InputGroupAddon, Modal, ModalBody, Popover, PopoverBody } from 'reactstrap';
+import { Alert, Modal, ModalBody } from 'reactstrap';
 import LOCALE_MAP from 'services/LocaleMap';
 import InvRegex from 'services/Regex';
 
 import Settings from '../../../Skill/Settings';
+import ShareTest from '../../Test/ShareTest';
 import UploadButton from '../UploadButton/UploadButton';
 
 const loading = (message) => {
@@ -533,25 +532,6 @@ export class ActionGroup extends PureComponent {
     }));
   };
 
-  togglePreview = () => {
-    const { togglingPreview } = this.state;
-    const { togglePreview, skill } = this.props;
-    if (togglingPreview) return;
-
-    this.setState({
-      togglingPreview: true,
-    });
-
-    togglePreview(!skill.preview).then(() => this.setState({ togglingPreview: false }));
-  };
-
-  toggleShare = () => {
-    const { share } = this.state;
-    this.setState({
-      share: !share,
-    });
-  };
-
   toggleVendors = () => {
     const { vendors_open } = this.state;
     this.setState({ vendors_open: !vendors_open });
@@ -1054,20 +1034,8 @@ export class ActionGroup extends PureComponent {
   };
 
   render() {
-    const {
-      updateModal,
-      should_pop_confetti,
-      updateLiveModal,
-      share,
-      togglingPreview,
-      show_upload_prompt,
-      vendors_open,
-      stage,
-      is_first_upload,
-    } = this.state;
-    const { skill, diagram_id, platform, live_mode, vendors, show_upload_prompt: props_show_upload_prompt } = this.props;
-
-    const link = `https://creator.voiceflow.com/preview/${skill.skill_id}/${diagram_id}`;
+    const { updateModal, should_pop_confetti, updateLiveModal, show_upload_prompt, vendors_open, stage, is_first_upload } = this.state;
+    const { skill, platform, live_mode, vendors, show_upload_prompt: props_show_upload_prompt } = this.props;
 
     return (
       <>
@@ -1135,27 +1103,7 @@ export class ActionGroup extends PureComponent {
           </Tooltip>
         </div>
         <div className="title-group-sub">
-          <Tooltip title="Share" position="bottom">
-            <Button className={cn('dropdown-button-border', { active: this.state.share })} id="icon-share" type="button" onClick={this.toggleShare} />
-          </Tooltip>
-          <Popover placement="bottom" isOpen={share} target="icon-share" toggle={this.toggleShare} className="mt-3">
-            <PopoverBody style={{ minWidth: '260px' }}>
-              <div className="space-between">
-                <label>Allow preview sharing</label>
-                <Toggle checked={skill.preview} disabled={togglingPreview} icons={false} onChange={this.togglePreview} />
-              </div>
-              {skill.preview && (
-                <InputGroup className="mb-3">
-                  <InputGroupAddon addonType="prepend">
-                    <ClipBoard component="button" className="btn btn-clear copy-link" value={link} id="shareLink">
-                      <i className="fas fa-copy" />
-                    </ClipBoard>
-                  </InputGroupAddon>
-                  <Input readOnly value={link} className="form-control-border right" />
-                </InputGroup>
-              )}
-            </PopoverBody>
-          </Popover>
+          <ShareTest render />
         </div>
         <UploadButton
           live_mode={live_mode}
@@ -1190,7 +1138,6 @@ const mapDispatchToProps = (dispatch) => ({
   updateSkill: (type, val) => dispatch(updateVersion(type, val)),
   setError: (err) => dispatch(setError(err)),
   updateSkillLocale: (val) => dispatch(updateLocales(val)),
-  togglePreview: (preview) => dispatch(togglePreview(preview)),
   saveSkill: (publish, cb) => dispatch(updateSkillDB(publish, cb)),
   updateVendorId: (projectId, vendorId) => dispatch(updateVendorId(projectId, vendorId)),
   getVendors: () => dispatch(getVendors()),

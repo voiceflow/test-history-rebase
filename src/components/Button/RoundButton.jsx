@@ -18,7 +18,16 @@ const Button = styled.button`
   text-align: center;
   padding: 0;
   transition: all 0.15s linear;
-  box-shadow: ${({ type }) => type !== 'plain' && '0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.18)'};
+  ${({ type }) => {
+    if (type === 'color') {
+      return css`'box-shadow: 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.18)'`;
+    }
+    if (type === 'shadow') {
+      return css`
+        box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
+      `;
+    }
+  }};
   width: ${({ width }) => `${width}px` || '15px'};
   height: ${({ height }) => `${height}px` || '15px'};
   color: ${({ color }) => color || '#8da2b5'};
@@ -27,12 +36,23 @@ const Button = styled.button`
   &:hover {
     background-color: ${({ color }) => color}15;
     border-style: double;
-    box-shadow: ${({ type }) => (type !== 'plain' ? '0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16)' : 'none')};
-    ${({ type }) =>
-      type !== 'color' &&
-      css`
-        color: #6e849a;
-      `}
+    ${({ type }) => {
+      if (type === 'color') {
+        return css`'0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16)'`;
+      }
+      if (type === 'shadow') {
+        return css`
+          box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 6px 0 rgba(17, 49, 96, 0.24);
+        `;
+      }
+    }};
+    ${({ type }) => {
+      if (type !== 'color') {
+        return css`
+          color: #6e849a;
+        `;
+      }
+    }}
   }
 
   &:active {

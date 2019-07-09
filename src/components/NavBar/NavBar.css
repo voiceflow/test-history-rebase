@@ -46,15 +46,18 @@
   transition: all 0.25s ease;
 }
 
-#secondary-nav .nav-item:hover, #app .sidebar-nav .nav-item:hover {
+#secondary-nav .nav-item:hover,
+#app .sidebar-nav .nav-item:hover {
   color: #62778c;
 }
 
-#secondary-nav .nav-item:active, #app .sidebar-nav .nav-item:active {
+#secondary-nav .nav-item:active,
+#app .sidebar-nav .nav-item:active {
   border-color: #e2e9ec;
 }
 
-#secondary-nav .nav-item.active, #app .sidebar-nav .nav-item.active {
+#secondary-nav .nav-item.active,
+#app .sidebar-nav .nav-item.active {
   color: #5d9df5;
   border-color: #5d9df5 !important;
 }
@@ -96,12 +99,6 @@ div.nav-item {
   transition: background-color 800ms ease;
 }
 
-#update-popup {
-  background: url(/Notifications.svg);
-  background-repeat: no-repeat;
-  background-position: 50%;
-}
-
 #navbar .account-dropdown .account {
   display: flex;
   align-items: center;
@@ -140,7 +137,8 @@ div.nav-item {
   color: #42a5ff !important;
 }
 
-.dropdown-menu, .popover {
+.dropdown-menu,
+.popover {
   border: none !important;
   box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.06), 0 2px 4px 0 rgba(17, 49, 96, 0.12);
 }
@@ -286,15 +284,17 @@ div.nav-item {
   background-position: center;
 }
 
-.dropdown .dropdown-button .standard, .dropdown.show .dropdown-button .active {
+.dropdown .dropdown-button .standard,
+.dropdown.show .dropdown-button .active {
   display: block;
 }
 
-.dropdown .dropdown-button .active, .dropdown.show .dropdown-button .standard {
+.dropdown .dropdown-button .active,
+.dropdown.show .dropdown-button .standard {
   display: none;
 }
 
-.dropdown .dropdown-button:hover > .flow-arrow {
+.dropdown .dropdown-button:hover>.flow-arrow {
   opacity: 1;
 }
 
@@ -313,7 +313,8 @@ div.nav-item {
   left: auto !important;
 }
 
-.dropdown-menu.arrow::after, .dropdown-menu.arrow::before {
+.dropdown-menu.arrow::after,
+.dropdown-menu.arrow::before {
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -348,7 +349,9 @@ div.nav-item {
   border-bottom-color: #e2e9ec;
 }
 
-.dropdown-header, .dropdown-item.disabled, .dropdown-item:disabled {
+.dropdown-header,
+.dropdown-item.disabled,
+.dropdown-item:disabled {
   cursor: default !important;
 }
 
@@ -381,7 +384,8 @@ div.nav-item {
     cursor: default !important;
   }
 
-  #navbar .nav-link:focus, #navbar .nav-link:hover {
+  #navbar .nav-link:focus,
+  #navbar .nav-link:hover {
     color: #2b3950;
     background-color: rgba(255, 255, 255, 0.1);
     border-color: #ffffff5e;

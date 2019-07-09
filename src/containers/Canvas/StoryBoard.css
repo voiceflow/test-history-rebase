@@ -3436,6 +3436,7 @@ button.close:hover{
   font-size: 15px !important;
   background-color: #f1f4f7 !important;
   cursor: pointer;
+  font-family: 'Open Sans';
 }
 
 #widget-bar {

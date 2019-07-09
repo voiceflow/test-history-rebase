@@ -35,7 +35,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.2.0",
     "@svgr/webpack": "2.4.1",
     "@voiceflow/apl-renderer": "^1.0.0",
-    "@voiceflow/common": "^4.3.2",
+    "@voiceflow/common": "^5.0.0",
     "@voiceflow/natural-language-commander": "^0.3.0",
     "availity-reactstrap-validation": "^2.4.0",
     "axios": "^0.18.0",

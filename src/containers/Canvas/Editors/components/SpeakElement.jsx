@@ -1,3 +1,4 @@
+import { constants } from '@voiceflow/common';
 import cn from 'classnames';
 import Button from 'components/Button';
 import AudioDrop from 'components/Uploads/AudioDrop';
@@ -9,9 +10,9 @@ import { findDOMNode } from 'react-dom';
 import Select from 'react-select';
 import { Collapse } from 'reactstrap';
 
-import { VOICES } from 'Constants';
-
 import VariableText from './VariableText';
+
+const VOICES = constants.voices;
 
 // eslint-disable-next-line react/no-find-dom-node
 const getBoundingRect = (component) => findDOMNode(component).getBoundingClientRect();

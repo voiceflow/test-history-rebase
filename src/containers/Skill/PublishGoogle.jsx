@@ -1,5 +1,6 @@
 import './Skill.css';
 
+import { constants } from '@voiceflow/common';
 import axios from 'axios';
 import DefaultButton from 'components/Button';
 import GoogleAuth from 'components/Modals/GoogleAuthenticationModalContent';
@@ -13,7 +14,7 @@ import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { Alert, Button, ButtonGroup, Collapse, Form, FormGroup, Input, Label, Modal, ModalBody } from 'reactstrap';
 
-import { GOOGLE_LOCALES } from 'Constants';
+const { GOOGLE_LOCALES } = constants.locales;
 
 const MAX_SIZE = 10 * 1024 * 1024;
 

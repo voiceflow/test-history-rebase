@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 const Loader = styled.span`
   display: inline-flex;
-  width: 1.2em;
-  height: 1.2em;
+  width: 1em;
+  height: 1em;
   line-height: 1;
   background-color: #fff;
   border-radius: 50%;
@@ -16,12 +16,17 @@ const Loader = styled.span`
   animation: spin 1s linear infinite;
 `;
 
+const Text = styled.div`
+  color: #132144;
+  font-weight: 400;
+  font-size: 18px;
+`;
 export const Spinner = (props) => {
   return (
     <div id="loading-diagram" className={cn({ transparent: props.transparent })}>
       <div className="text-center">
         <Loader />
-        <h5 className="text-muted mb-2">{props.message || `Loading ${props.name}...`}</h5>
+        <Text className="mb-2">{props.message || `Loading ${props.name}...`}</Text>
       </div>
     </div>
   );

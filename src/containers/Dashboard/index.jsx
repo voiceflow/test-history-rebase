@@ -7,6 +7,7 @@ import DragLayer from 'components/DragLayer';
 import Header from 'components/Header';
 import LoadingModal from 'components/Modals/LoadingModal';
 import UpdatesModal from 'components/Modals/UpdatesModal';
+import { Spinner } from 'components/Spinner/Spinner';
 import { Members } from 'components/User/User';
 import { ScrollContextProvider } from 'contexts';
 import { unnormalize } from 'ducks/_normalize';
@@ -305,14 +306,7 @@ export const DashBoard = (props) => {
             </div>
           )}
         />
-        {loading && (
-          <div id="loading-diagram">
-            <div className="text-center">
-              <h5 className="text-muted mb-2">Loading Projects...</h5>
-              <span className="loader" />
-            </div>
-          </div>
-        )}
+        {loading && <Spinner name="Projects" />}
         {LOCKED && (
           <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
             <Alert color="danger" onClick={() => setTeamSetting('BILLING')} className="pointer text-center py-3">

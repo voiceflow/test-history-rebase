@@ -4,6 +4,8 @@ import Button from 'components/Button';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, FormGroup, Input } from 'reactstrap';
+import AuthenticationContainer from './AuthenticationWrapper';
+import { SignupContainer } from './SignupContainer';
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -100,12 +102,6 @@ class ResetPassword extends Component {
       case 1:
         return (
           <form onSubmit={this.resetPassword} className="w-100">
-            {error && (
-              <Alert color="danger" className="text-center">
-                {error}
-              </Alert>
-            )}
-            <h5 className="text-muted">Please Enter Your New Password</h5>
             <FormGroup>
               <Input
                 type="password"
@@ -128,9 +124,16 @@ class ResetPassword extends Component {
                 })}
               />
             </FormGroup>
-            <Button block className="login-btn" type="submit">
-              Reset Password
-            </Button>
+            <div style={{ height: '45px' }}>
+              <div className="float-left auth__link">
+                <Link to="/login">Back to Signing in</Link>
+              </div>
+              <div className="float-right">
+                <Button isPrimary isBlock type="submit">
+                  Update Password
+                </Button>
+              </div>
+            </div>
           </form>
         );
       case 2:
@@ -165,20 +168,19 @@ class ResetPassword extends Component {
 
   render() {
     return (
-      <div className="d-flex flex-row align-items-center justify-content-center" id="main">
-        <div id="side-form">
-          <div id="reset-form">
-            <img className="login-logo" src="/logo.png" alt="logo" />
-            <div className="p-4 p-md-5">
-              <div className="reset-div">{this.renderStage()}</div>
-              <hr />
-              <div className="text-center mt-3">
-                <Link to="/login">Return to Login</Link>
+      <AuthenticationContainer>
+        <SignupContainer>
+          <div className="login-form-wrapper">{this.renderStage()}</div>
+          {this.state.error && (
+            <div className="errorContainer row">
+              <div className="col-1">
+                <img src="/error.svg" alt="" />
               </div>
+              <div className="col-11">{this.state.error}</div>
             </div>
-          </div>
-        </div>
-      </div>
+          )}
+        </SignupContainer>
+      </AuthenticationContainer>
     );
   }
 }

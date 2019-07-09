@@ -9,14 +9,16 @@ import { Form, FormGroup, Input } from 'reactstrap';
 
 import ErrorWidget from './ErrorWidget';
 import SocialLogin from './SocialLogin';
+import AuthenticationContainer from './AuthenticationWrapper';
+import { SignupContainer } from './SignupContainer';
 
 export const LoginForm = ({ login, history, location }) => {
   const query = queryString.parse(location.search);
   const [loginError, setLoginError] = useState(null);
   const [email, setEmail] = useState(query.email ? query.email : '');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [unverified] = useState(false);
-  const [errorColor, setErrorColor] = useState('danger');
   let timeout;
 
   const openRegister = (e) => {
@@ -32,9 +34,7 @@ export const LoginForm = ({ login, history, location }) => {
       password,
     }).catch((err) => {
       const errText = _.get(err, ['response', 'data', 'data']) || (unverified ? 'Please verify your email to use Facebook login' : false);
-      const errColor = unverified ? 'success' : 'danger';
       setLoginError(errText);
-      setErrorColor(errColor);
     });
     return false;
   };
@@ -48,55 +48,65 @@ export const LoginForm = ({ login, history, location }) => {
   });
 
   return (
-    <div id="login-container">
-      <Form onSubmit={loginSubmit} className="login-form">
-        <img className="login-logo" src="/logo-white.svg" alt="logo" />
-        <div className="login-form-wrapper">
-          <ErrorWidget color={errorColor} error={loginError} />
-          <FormGroup>
-            <Input
-              className="form-bg"
-              type="email"
-              name="email"
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              required
-              minLength="6"
-              value={email}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Input
-              className="form-bg"
-              type="password"
-              name="password"
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              required
-              minLength="8"
-              value={password}
-            />
-          </FormGroup>
-          <Button isPrimary isLarge isBlock type="submit">
-            Login
-          </Button>
-          <div className="text-center small mt-2">
-            <Link style={{ color: '#8da2b5' }} to="/reset">
-              Forgot your password?
-            </Link>
+    <AuthenticationContainer>
+      <SignupContainer>
+        <Form onSubmit={loginSubmit} className="login-form">
+          <img className="login-logo" src="/logo.png" alt="logo" />
+          <div className="login-form-wrapper">
+            <FormGroup>
+              <Input
+                className="form-bg"
+                type="email"
+                name="email"
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                required
+                minLength="6"
+                value={email}
+              />
+            </FormGroup>
+            <FormGroup className="passwordInput">
+              {password.length === 0 ? (
+                <Link className="forgotLink" to="/reset">
+                  Forgot?
+                </Link>
+              ) : (
+                <img onClick={() => setShowPassword(!showPassword)} className="viewPassword" src="/eye.svg" alt="" />
+              )}
+              <Input
+                className="form-bg"
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                minLength="8"
+                value={password}
+              />
+            </FormGroup>
+            <div className="row">
+              <div className="col-8 auth__link">
+                <a onClick={openRegister}>Don't have an account?</a>
+              </div>
+              <div className="col-4">
+                <Button isPrimary isBlock type="submit">
+                  Sign in
+                </Button>
+              </div>
+            </div>
           </div>
-          <hr />
-          <div className="text-center">
-            Dont have an account?
-            <a href="/signup" onClick={openRegister}>
-              {' '}
-              Sign Up
-            </a>
+        </Form>
+        <SocialLogin entryText="Or sign in with" light />
+        {loginError && (
+          <div className="errorContainer row">
+            <div className="col-1">
+              <img src="/error.svg" alt="" />
+            </div>
+            <div className="col-11">{loginError}</div>
           </div>
-        </div>
-      </Form>
-      <SocialLogin entryText="Login" />
-    </div>
+        )}
+      </SignupContainer>
+    </AuthenticationContainer>
   );
 };
 

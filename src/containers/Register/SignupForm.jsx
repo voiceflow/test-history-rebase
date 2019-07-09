@@ -20,8 +20,6 @@ export const SignupForm = ({ signup, history }) => {
   const [name, setName] = useState('');
   let timeout;
 
-  console.log('signup: ', signup);
-
   const openLogin = (e) => {
     e.preventDefault();
     history.push('/login');
@@ -49,66 +47,72 @@ export const SignupForm = ({ signup, history }) => {
   });
 
   return (
-    <>
-      <AuthenticationContainer dark>
-        <SignupContainer>
-          <Form onSubmit={signupSubmit} className="signup-form auth-form">
-            <img className="login-logo" src="/logo-white.svg" alt="logo" />
-            <div className="signup-form-wrapper">
-              <ErrorWidget color="danger" error={signupError} />
-              <FormGroup>
-                <Input
-                  className="form-bg"
-                  type="text"
-                  name="name"
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Full name"
-                  required
-                  minLength="3"
-                  value={name}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Input
-                  className="form-bg"
-                  type="email"
-                  name="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email address"
-                  required
-                  minLength="6"
-                  value={email}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Input
-                  className="form-bg"
-                  type="password"
-                  name="password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Password"
-                  required
-                  minLength="8"
-                  value={password}
-                />
-              </FormGroup>
-              <div className="row">
-                <div className="col-6 auth__link">
-                  <a onClick={openLogin}>Have an account?</a>
-                </div>
-                <div className="col-6">
-                  <Button isPrimary isLarge isBlock type="submit">
-                    Create Account
-                  </Button>
-                </div>
+    <AuthenticationContainer dark>
+      <SignupContainer>
+        <Form onSubmit={signupSubmit} className="signup-form auth-form">
+          <img className="login-logo" src="/logo-white.svg" alt="logo" />
+          <div className="signup-form-wrapper">
+            <FormGroup>
+              <Input
+                className="form-bg"
+                type="text"
+                name="name"
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Full name"
+                required
+                minLength="3"
+                value={name}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Input
+                className="form-bg"
+                type="email"
+                name="email"
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email address"
+                required
+                minLength="6"
+                value={email}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Input
+                className="form-bg"
+                type="password"
+                name="password"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                minLength="8"
+                value={password}
+              />
+            </FormGroup>
+            <div className="row">
+              <div className="col-6 auth__link">
+                <a onClick={openLogin}>Have an account?</a>
+              </div>
+              <div className="col-6">
+                <Button isPrimary isLarge isBlock type="submit">
+                  Create Account
+                </Button>
               </div>
             </div>
-          </Form>
+          </div>
+        </Form>
 
-          <SocialLogin entryText="Sign up" />
-        </SignupContainer>
-      </AuthenticationContainer>
-    </>
+        <SocialLogin entryText="Or sign up with" />
+
+        {signupError && (
+          <div className="errorContainer row">
+            <div className="col-1">
+              <img src="/error.svg" alt="" />
+            </div>
+            <div className="col-11">{signupError}</div>
+          </div>
+        )}
+      </SignupContainer>
+    </AuthenticationContainer>
   );
 };
 

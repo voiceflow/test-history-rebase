@@ -2,7 +2,9 @@ import axios from 'axios';
 import Button from 'components/Button';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Alert, FormGroup, Input } from 'reactstrap';
+import { FormGroup, Input } from 'reactstrap';
+import { SignupContainer } from './SignupContainer';
+import AuthenticationContainer from './AuthenticationWrapper';
 
 class Reset extends Component {
   constructor(props) {
@@ -53,23 +55,24 @@ class Reset extends Component {
   }
 
   renderStage() {
-    const { stage, error } = this.state;
+    const { stage } = this.state;
     switch (stage) {
       case 0:
         return (
           <form onSubmit={this.resetEmail} className="w-100">
-            {error && (
-              <Alert color="danger" className="text-center">
-                {error}
-              </Alert>
-            )}
-            <h5 className="text-muted">Enter your account email</h5>
             <FormGroup>
-              <Input type="email" name="email" onChange={this.handleChange} placeholder="jeff@amazon.com" required minLength="6" />
+              <Input type="email" name="email" onChange={this.handleChange} placeholder="Email address" required minLength="6" />
             </FormGroup>
-            <Button block className="login-btn" type="submit">
-              Send Reset Email
-            </Button>
+            <div style={{ height: '45px' }}>
+              <div className="float-left auth__link">
+                <Link to="/login">Back to Signing in</Link>
+              </div>
+              <div className="float-right">
+                <Button isPrimary isBlock type="submit">
+                  Reset Password
+                </Button>
+              </div>
+            </div>
           </form>
         );
       case 1:
@@ -85,9 +88,14 @@ class Reset extends Component {
         );
       case 2:
         return (
-          <div className="text-center">
-            <Alert color="success">If an Account is associated with the Email, a reset link has been sent</Alert>
-          </div>
+          <>
+            <div className="confirm-helper">
+              The confirmation link has been sent to name@domain.com. If it doesn't appear within a few minutes, check your span folder.
+            </div>
+            <div className="auth__link">
+              <Link to="/login">Back to Signing in</Link>
+            </div>
+          </>
         );
       default:
         return null;
@@ -96,20 +104,19 @@ class Reset extends Component {
 
   render() {
     return (
-      <div className="d-flex flex-row align-items-center justify-content-center" id="main">
-        <div id="side-form">
-          <div id="reset-form">
-            <img className="login-logo" src="/logo.png" alt="logo" />
-            <div className="p-4 p-md-5">
-              <div className="reset-div">{this.renderStage()}</div>
-              <hr />
-              <div className="text-center mt-3">
-                <Link to="/login">Return to Login</Link>
+      <AuthenticationContainer>
+        <SignupContainer>
+          <div className="login-form-wrapper">{this.renderStage()}</div>
+          {this.state.error && (
+            <div className="errorContainer row">
+              <div className="col-1">
+                <img src="/error.svg" alt="" />
               </div>
+              <div className="col-11">{this.state.error}</div>
             </div>
-          </div>
-        </div>
-      </div>
+          )}
+        </SignupContainer>
+      </AuthenticationContainer>
     );
   }
 }

@@ -24,7 +24,7 @@ const AuthenticationContainer = styled.div`
           background: linear-gradient(180deg, rgba(19, 33, 68, 0.85) 0%, #132144 100%), #fff;
         `
       : css`
-          background: #fff;
+          background: #f8f9fb;
         `}
 `;
 

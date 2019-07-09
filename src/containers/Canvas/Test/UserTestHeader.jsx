@@ -78,6 +78,7 @@ const UserTestHeader = (props) => {
                   history.push(`/canvas/${skill.skill_id}/${skill.diagram}`);
                   leaveTest();
                 }}
+                style={{ whiteSpace: 'nowrap' }}
               >
                 Back to Canvas
               </Button>

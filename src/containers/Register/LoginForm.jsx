@@ -48,56 +48,55 @@ export const LoginForm = ({ login, history, location }) => {
   });
 
   return (
-    <Form id="login-form" onSubmit={loginSubmit}>
-      <img className="login-logo" src="/logo.png" alt="logo" />
-      <div className="px-5 pb-5 pt-4">
-        <div className="text-center">
-          <h4 className="mb-4">Login</h4>
+    <div id="login-container">
+      <Form onSubmit={loginSubmit} className="login-form">
+        <img className="login-logo" src="/logo-white.svg" alt="logo" />
+        <div className="login-form-wrapper">
+          <ErrorWidget color={errorColor} error={loginError} />
+          <FormGroup>
+            <Input
+              className="form-bg"
+              type="email"
+              name="email"
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+              minLength="6"
+              value={email}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Input
+              className="form-bg"
+              type="password"
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+              minLength="8"
+              value={password}
+            />
+          </FormGroup>
+          <Button isPrimary isLarge isBlock type="submit">
+            Login
+          </Button>
+          <div className="text-center small mt-2">
+            <Link style={{ color: '#8da2b5' }} to="/reset">
+              Forgot your password?
+            </Link>
+          </div>
+          <hr />
+          <div className="text-center">
+            Dont have an account?
+            <a href="/signup" onClick={openRegister}>
+              {' '}
+              Sign Up
+            </a>
+          </div>
         </div>
-        <SocialLogin entryText="Login" />
-        <ErrorWidget color={errorColor} error={loginError} />
-        <FormGroup>
-          <Input
-            className="form-bg"
-            type="email"
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-            minLength="6"
-            value={email}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            className="form-bg"
-            type="password"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-            minLength="8"
-            value={password}
-          />
-        </FormGroup>
-        <Button isPrimary isLarge isBlock type="submit">
-          Login
-        </Button>
-        <div className="text-center small mt-2">
-          <Link style={{ color: '#8da2b5' }} to="/reset">
-            Forgot your password?
-          </Link>
-        </div>
-        <hr />
-        <div className="text-center">
-          Dont have an account?
-          <a href="/signup" onClick={openRegister}>
-            {' '}
-            Sign Up
-          </a>
-        </div>
-      </div>
-    </Form>
+      </Form>
+      <SocialLogin entryText="Login" />
+    </div>
   );
 };
 

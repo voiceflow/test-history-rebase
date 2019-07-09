@@ -3,13 +3,14 @@ import { signup } from 'ducks/account';
 import queryString from 'query-string/index';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import ErrorWidget from './ErrorWidget';
 import SocialLogin from './SocialLogin';
 
-export const SignupForm = ({ signup, history, location }) => {
+import './Account.css';
+
+export const SignupForm = ({ signup, history }) => {
   const query = queryString.parse(location.search);
   const [signupError, setSignupError] = useState(null);
   const [email, setEmail] = useState(query.email ? query.email : '');
@@ -19,7 +20,7 @@ export const SignupForm = ({ signup, history, location }) => {
 
   const openLogin = (e) => {
     e.preventDefault();
-    history.push(`/login${location.search}`);
+    history.push(`/login`);
     return false;
   };
 
@@ -44,68 +45,64 @@ export const SignupForm = ({ signup, history, location }) => {
   });
 
   return (
-    <Form id="signup-form" onSubmit={signupSubmit}>
-      <img className="login-logo" src="/logo.png" alt="logo" />
-      <div className="px-5 pb-5 pt-4">
-        <div className="text-center">
-          <h4 className="mb-4">Sign Up</h4>
-        </div>
+    <>
+      <div id="signup-form">
+        <Form onSubmit={signupSubmit} className="signup-form auth-form">
+          <img className="login-logo" src="/logo-white.svg" alt="logo" />
+          <div className="signup-form-wrapper">
+            <ErrorWidget color="danger" error={signupError} />
+            <FormGroup>
+              <Input
+                className="form-bg"
+                type="text"
+                name="name"
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Full name"
+                required
+                minLength="3"
+                value={name}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Input
+                className="form-bg"
+                type="email"
+                name="email"
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email address"
+                required
+                minLength="6"
+                value={email}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Input
+                className="form-bg"
+                type="password"
+                name="password"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                minLength="8"
+                value={password}
+              />
+            </FormGroup>
+            <div className="row">
+              <div className="col-6 auth__link">
+                <a onClick={openLogin}>Have an account?</a>
+              </div>
+              <div className="col-6">
+                <Button isPrimary isLarge isBlock type="submit">
+                  Create Account
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Form>
+
         <SocialLogin entryText="Sign up" />
-        <ErrorWidget color="danger" error={signupError} />
-        <FormGroup>
-          <Input
-            className="form-bg"
-            type="text"
-            name="name"
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Full Name"
-            required
-            minLength="3"
-            value={name}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            className="form-bg"
-            type="email"
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-            minLength="6"
-            value={email}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            className="form-bg"
-            type="password"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-            minLength="8"
-            value={password}
-          />
-        </FormGroup>
-        <Button isPrimary isLarge isBlock type="submit">
-          Create Account
-        </Button>
-        <div className="text-center small mt-2">
-          <Link style={{ color: '#8da2b5' }} to="/reset">
-            Forgot your password?
-          </Link>
-        </div>
-        <hr />
-        <div className="text-center">
-          Already have an account?
-          <a href="/signup" onClick={openLogin}>
-            {' '}
-            Login
-          </a>
-        </div>
       </div>
-    </Form>
+    </>
   );
 };
 

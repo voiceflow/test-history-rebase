@@ -1,6 +1,6 @@
 import Button from 'components/Button';
 import ImageOptions from 'components/Forms/ImageOptions';
-import { Spinner } from 'components/Spinner/Spinner';
+import { Spinner } from 'components/Spinner';
 import Image from 'components/Uploads/Image';
 import { setError, setModal } from 'ducks/modal';
 import { createTeam } from 'ducks/team';

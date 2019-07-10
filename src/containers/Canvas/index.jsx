@@ -55,7 +55,7 @@ import { BlockLinkFactory } from 'components/SRD/factories/BlockLinkFactory';
 import { BlockPortFactory } from 'components/SRD/factories/BlockPortFactory';
 import { BlockNodeFactory } from 'components/SRD/factories/BlockNodeFactory';
 /* eslint-enable no-secrets/no-secrets */
-import { Spinner } from 'components/Spinner/Spinner';
+import { Spinner } from 'components/Spinner';
 
 import { ALLOWED_GOOGLE_BLOCKS } from './Constants';
 

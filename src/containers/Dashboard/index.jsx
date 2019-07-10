@@ -7,7 +7,7 @@ import DragLayer from 'components/DragLayer';
 import Header from 'components/Header';
 import LoadingModal from 'components/Modals/LoadingModal';
 import UpdatesModal from 'components/Modals/UpdatesModal';
-import { Spinner } from 'components/Spinner/Spinner';
+import { Spinner } from 'components/Spinner';
 import { Members } from 'components/User/User';
 import { ScrollContextProvider } from 'contexts';
 import { unnormalize } from 'ducks/_normalize';

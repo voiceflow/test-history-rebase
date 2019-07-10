@@ -1,7 +1,7 @@
 import Button from 'components/Button';
 import EmptyCard from 'components/Cards/EmptyCard';
 import VoiceCards from 'components/Cards/VoiceCards';
-import { Spinner } from 'components/Spinner/Spinner';
+import { Spinner } from 'components/Spinner';
 import { copyProduct, deleteProduct } from 'ducks/product';
 import _ from 'lodash';
 import React, { Component } from 'react';

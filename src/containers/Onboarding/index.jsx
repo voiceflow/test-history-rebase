@@ -3,7 +3,7 @@ import './onboarding.css';
 import axios from 'axios';
 import cn from 'classnames';
 import Button from 'components/Button';
-import { Spinner } from 'components/Spinner/Spinner';
+import { Spinner } from 'components/Spinner';
 import StepProgressBar from 'components/StepProgressBar/StepProgressBar';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';

@@ -3,7 +3,7 @@ import './Display.css';
 import axios from 'axios';
 import AceEditor from 'components/AceEditor';
 import Button from 'components/Button';
-import { Spinner } from 'components/Spinner/Spinner';
+import { Spinner } from 'components/Spinner';
 import { addDisplay, updateDisplay } from 'ducks/display';
 import { setError } from 'ducks/modal';
 import React, { Component } from 'react';

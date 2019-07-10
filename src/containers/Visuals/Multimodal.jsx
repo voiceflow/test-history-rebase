@@ -3,7 +3,7 @@ import './Display.css';
 import Button from 'components/Button';
 import EmptyCard from 'components/Cards/EmptyCard';
 import VoiceCards from 'components/Cards/VoiceCards';
-import { Spinner } from 'components/Spinner/Spinner';
+import { Spinner } from 'components/Spinner';
 import { deleteDisplay } from 'ducks/display';
 import { setConfirm } from 'ducks/modal';
 import React, { Component } from 'react';

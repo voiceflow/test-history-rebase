@@ -11,6 +11,7 @@ import 'react-day-picker/lib/style.css';
 import ConfirmModal from 'components/Modals/ConfirmModal';
 import ErrorModal from 'components/Modals/ErrorModal';
 import Modal from 'components/Modals/Modal';
+import Spinner from 'components/Spinner';
 import { ConnectedRouter } from 'connected-react-router';
 import { getAuth, getUser } from 'ducks/account';
 import React, { Component } from 'react';
@@ -95,16 +96,8 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.loading) {
-      return (
-        <div id="loading-diagram">
-          <div className="text-center">
-            <h5 className="text-muted mb-2">Loading Account...</h5>
-            <span className="loader" />
-          </div>
-        </div>
-      );
-    }
+    if (this.state.loading) return <Spinner name="Account" />;
+
     return (
       <div id="body">
         <ConnectedRouter history={history}>

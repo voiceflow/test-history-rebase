@@ -1,6 +1,6 @@
 // Components
 import Button from 'components/Button';
-import { Spinner } from 'components/Spinner/Spinner';
+import { Spinner } from 'components/Spinner';
 import Dashboard from 'containers/Dashboard';
 // Views
 import Onboarding from 'containers/Onboarding';

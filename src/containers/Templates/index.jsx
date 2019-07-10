@@ -2,7 +2,7 @@ import './Template.css';
 
 import axios from 'axios';
 import Button from 'components/Button';
-import { Spinner } from 'components/Spinner/Spinner';
+import { Spinner } from 'components/Spinner';
 import { addProjectToList } from 'ducks/board';
 import _ from 'lodash';
 import React, { Component } from 'react';

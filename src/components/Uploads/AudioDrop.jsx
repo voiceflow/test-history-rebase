@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Button from 'components/Button';
+import Loader from 'components/Loader';
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { Input } from 'reactstrap';
@@ -102,7 +103,7 @@ class AudioDrop extends Component {
         <div className="audio-box">
           <div className="h-100 super-center">
             <h1 className="mb-0">
-              <span className="loader" />
+              <Loader />
             </h1>
           </div>
         </div>

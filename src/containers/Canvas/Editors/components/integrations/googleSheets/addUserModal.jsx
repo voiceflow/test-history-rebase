@@ -18,6 +18,7 @@ class GoogleAddUserModal extends Component {
       });
       onSuccess();
     } catch (e) {
+      console.error(e);
       let error = e;
       if (e.response && typeof e.response.data === 'string') {
         error = e.response.data;

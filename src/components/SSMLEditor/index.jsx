@@ -1,19 +1,14 @@
 import 'draft-js-mention-plugin/lib/plugin.css';
+import './ssmlEditor.css';
 
 import { EditorState, convertFromRaw } from 'draft-js';
-// import createSingleLinePlugin from 'draft-js-single-line-plugin';
-// import createMentionPlugin, { defaultSuggestionsFilter } from './../../../../../assets/draft-js-mention/lib';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
 import Editor from 'draft-js-plugins-editor';
 import _ from 'lodash';
 import React, { Component } from 'react';
 
-import es from './entityStore';
-import plugin from './plugin.jsx';
-
-// const singleLinePlugin = createSingleLinePlugin({
-//     stripEntities: false
-// });
+import createEntityStore from './entityStore';
+import createTagPlugin from './tagPlugin.jsx';
 
 class VariableText extends Component {
   constructor(props) {
@@ -40,6 +35,9 @@ class VariableText extends Component {
         return { name: v };
       }),
     };
+
+    this.entityStore = createEntityStore();
+    this.tagPlugin = createTagPlugin(this.entityStore);
   }
 
   onSearchChange = ({ value }) => {
@@ -61,7 +59,7 @@ class VariableText extends Component {
 
   render() {
     const { MentionSuggestions } = this.mentionPlugin;
-    const plugins = [es.first, this.mentionPlugin, plugin, es.last];
+    const plugins = [this.entityStore.first, this.mentionPlugin, this.tagPlugin, this.entityStore.last];
 
     return (
       <div className="editor">
@@ -73,9 +71,9 @@ class VariableText extends Component {
           stripPastedStyles={true}
         />
         <MentionSuggestions onSearchChange={this.onSearchChange} suggestions={this.state.suggestions} onAddMention={_.noop} />
-        <button onClick={() => plugin.insertEntity('BREAK')}>BREAK</button>
-        <button onClick={() => plugin.addEntity('WHISPER')}>WHISPER</button>
-        <button onClick={() => plugin.addEntity('SCREAM')}>SCREAM</button>
+        <button onClick={() => this.tagPlugin.insertEntity('BREAK')}>BREAK</button>
+        <button onClick={() => this.tagPlugin.addEntity('WHISPER')}>WHISPER</button>
+        <button onClick={() => this.tagPlugin.addEntity('SCREAM')}>SCREAM</button>
       </div>
     );
   }

@@ -8,6 +8,8 @@ const paths = require('../paths');
 module.exports = merge(buildConfig, {
   entry: ['webpack-plugin-serve/client'],
 
+  devtool: 'cheap-eval-source-map',
+
   plugins: [
     new WebpackPluginServe({
       port: 3000,

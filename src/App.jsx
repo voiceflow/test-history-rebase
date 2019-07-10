@@ -7,7 +7,6 @@ import './assets/fontawesome/css/all.min.css';
 import './App.css';
 import 'react-day-picker/lib/style.css';
 
-import { maintenance } from '@voiceflow/common';
 // GLOBAL MODALS
 import ConfirmModal from 'components/Modals/ConfirmModal';
 import ErrorModal from 'components/Modals/ErrorModal';
@@ -23,11 +22,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Alert } from 'reactstrap';
 import { compose } from 'recompose';
 import { history } from 'store/store';
+import { evaluateMaintenance } from 'utils/maintenance';
 
 import allRoutes from './Routes/allRoutes';
 import Alerts from './components/Alerts/Alerts';
-
-const { evaluateMaintenance } = maintenance;
 
 ReactGA.initialize('UA-124745244-3');
 toast.configure({

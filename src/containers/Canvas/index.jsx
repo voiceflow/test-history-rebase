@@ -22,6 +22,7 @@ import { keyboardModal } from 'hocs/withModalHandlers';
 
 import { WidgetBar } from './components/WidgetBar';
 import CanvasWarning from './components/CanvasWarning';
+import Header from './components/CanvasHeader';
 // Helpers
 import { combineAppendValidation, appendValidator } from 'utils/combineHelper';
 
@@ -1346,7 +1347,7 @@ export class Canvas extends Component {
 
   // Create a new diagram from the flow block
   createDiagram(node, base_flow_name = 'New Flow', template = null, forCommand = false) {
-    const { skill, diagrams, setError } = this.props;
+    const { skill, diagrams, setError, diagram } = this.props;
     this.setState({ load_diagram: true });
     const id = util.generateID();
 
@@ -1371,16 +1372,14 @@ export class Canvas extends Component {
       index++;
     }
 
-    const diagram = {
-      id,
-      title: newFlowName,
-      variables: [],
-      data,
-      skill: skill_id,
-    };
-
     axios
-      .post('/diagram?new=1', diagram)
+      .post('/diagram?new=1', {
+        id,
+        title: newFlowName,
+        variables: [],
+        data,
+        skill: skill_id,
+      })
       .then(() => {
         if (forCommand) {
           node.extras[skill.platform].diagram_id = id;
@@ -1388,6 +1387,8 @@ export class Canvas extends Component {
           node.extras.diagram_id = id;
         }
         const subDiagrams = [...diagram.sub_diagrams, id];
+
+        // insert new diagram into redux diagrams
         const newDiagram = {
           id,
           name: newFlowName,
@@ -1564,18 +1565,21 @@ export class Canvas extends Component {
         <DefaultModal open={keyboardHelp} header="Keyboard Shortcuts" toggle={() => toggleKeyboard(!keyboardHelp)} content={<ShortCuts />} />
         <HelpModal open={helpOpen} help={help} toggle={() => this.setState({ helpOpen: !helpOpen })} setHelp={(help) => this.setState({ help })} />
         {!preview && this.props.page === 'canvas' && (
-          <ActionGroup
-            lastSave={this.state.last_save ? `Last saved ${moment(this.state.last_save).fromNow()}` : 'Save'}
-            setCB={(cb) => {
-              this.saveCB = cb;
-            }}
-            {...this.props}
-            onSave={this.onSave}
-            saving={saving}
-            saved={saved}
-            updateLinter={this.updateLinter}
-            renderPlatformSwitch={this.renderPlatformSwitch}
-          />
+          <Header updateLinter={this.updateLinter} renderPlatformSwitch={this.renderPlatformSwitch} history={history} preview={preview}>
+            <ActionGroup
+              lastSave={this.state.last_save ? `Last saved ${moment(this.state.last_save).fromNow()}` : 'Save'}
+              setCB={(cb) => {
+                this.saveCB = cb;
+              }}
+              {...this.props}
+              onSave={this.onSave}
+              saving={saving}
+              saved={saved}
+              history={history}
+              preview={preview}
+              unfocus={this.onDiagramUnfocus}
+            />
+          </Header>
         )}
         {!this.props.preview && this.props.page === 'test' && (
           <UserTestHeader preview={this.props.preview} history={this.props.history} page={this.props.page} />

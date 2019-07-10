@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg  viewBox="0 0 26 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>CA</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-66.7%" y="-85.7%" width="233.3%" height="271.4%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.0745098039   0 0 0 0 0.129411765   0 0 0 0 0.266666667  0 0 0 0.129812047 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <rect id="path-2" x="0" y="0" width="18" height="14" rx="2"></rect>
+    </defs>
+    <g id="Team-Mode" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Skills_dashboard_create-team_1-step" transform="translate(-978.000000, -309.000000)">
+            <g id="CA" filter="url(#filter-1)" transform="translate(982.000000, 311.000000)">
+                <mask id="mask-3" fill="white">
+                    <use xlink:href="#path-2"></use>
+                </mask>
+                <rect stroke="#F5F5F5" stroke-width="0.5" x="0.25" y="0.25" width="17.5" height="13.5" rx="2"></rect>
+                <rect id="Mask" fill="#FF3131" mask="url(#mask-3)" x="13" y="0" width="5.14285714" height="14"></rect>
+                <rect id="Rectangle-2" fill="#FF3131" mask="url(#mask-3)" x="0" y="0" width="5.14285714" height="14"></rect>
+                <path d="M10.0823471,7.02144432 C9.95797021,7.15687688 9.88526263,7.11357015 9.91673388,6.94222666 L10.2857143,4.93333333 L9.42857143,5.4 L9,4 L8.57142857,5.4 L7.71428571,4.93333333 L8.08326612,6.94222666 C8.11617733,7.12140993 8.0377546,7.15222168 7.91765295,7.02144432 L7.51091848,6.57855568 C7.38654164,6.44312312 7.18631417,6.44156901 7.0613872,6.57760061 L6.85714286,6.8 L6,6.33333333 L6.42857143,7.26666667 L6.22432709,7.48906606 C6.10043466,7.62397115 6.10088784,7.84318899 6.22395434,7.97719472 L7.28571429,9.13333333 L8.57142857,9.13333333 L8.78571429,10.5333333 L9.21428571,10.5333333 L9.42857143,9.13333333 L10.7142857,9.13333333 L11.7760457,7.97719472 C11.8997322,7.8425138 11.9005999,7.62509766 11.7756729,7.48906606 L11.5714286,7.26666667 L12,6.33333333 L11.1428571,6.8 L10.9386128,6.57760061 C10.8147204,6.44269552 10.6091832,6.44777832 10.4890815,6.57855568 L10.0823471,7.02144432 Z" id="Rectangle-66" fill="#FF3131" mask="url(#mask-3)"></path>
+            </g>
+        </g>
+    </g>
+</svg>

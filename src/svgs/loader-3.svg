@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 68 68" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="64" height="64" rx="32"></rect>
+        <filter x="-5.5%" y="-3.9%" width="110.9%" height="110.9%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.0666666667   0 0 0 0 0.192156863   0 0 0 0 0.376470588  0 0 0 0.16 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <path d="M3.36740039,20.0685067 C3.33566498,20.0759604 3.2979477,20.1134752 3.25424858,20.181051 C2.79170748,20.8963079 1.83691511,21.1011818 1.1216547,20.6386462 C0.729478436,20.3850385 0.473343457,19.9673828 0.425105983,19.5028484 C0.431513219,19.4692605 0.437988608,19.4357002 0.44453199,19.4021676 C2.64262527,8.13768164 12.5134847,2.49800181e-15 24,2.49800181e-15 C24.8055243,0.241657294 25.2626289,1.09056572 25.0209716,1.89609003 C24.8936222,2.32058778 24.5876532,2.66854142 24.1829265,2.84913054 C24.0609802,2.9035806 24,2.95385996 24,3 C13.7457296,3 5.20805943,10.3496392 3.36740039,20.0685067 Z" id="path-3"></path>
+    </defs>
+    <g id="Sign-Up/In" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Loader-3" transform="translate(-686.000000, -459.000000)">
+            <g id="Group-2" transform="translate(652.000000, 460.000000)">
+                <g id="Group" transform="translate(36.000000, 0.000000)">
+                    <g id="Rectangle-2">
+                        fill="currentColor" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="currentColor" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    </g>
+                    <g id="Icon/System/Progress-bar_circle" transform="translate(8.000000, 8.000000)">
+                        <g id="Group-15" transform="translate(24.000000, 24.000000) scale(-1, 1) translate(-24.000000, -24.000000) ">
+                            <path d="M24,48 C10.745166,48 0,37.254834 0,24 C0,10.745166 10.745166,0 24,0 C37.254834,0 48,10.745166 48,24 C48,37.254834 37.254834,48 24,48 Z M24,45 C35.5979797,45 45,35.5979797 45,24 C45,12.4020203 35.5979797,3 24,3 C12.4020203,3 3,12.4020203 3,24 C3,35.5979797 12.4020203,45 24,45 Z" id="Combined-Shape" fill="#EAEFF4"></path>
+                            <g id="Combined-Shape">
+                                <use fill="currentColor" xlink:href="#path-3"></use>
+                                fill="currentColor" xlink:href="#path-3"></use>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

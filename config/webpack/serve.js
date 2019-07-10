@@ -6,9 +6,17 @@ const buildConfig = require('./build');
 const paths = require('../paths');
 
 module.exports = merge(buildConfig, {
-  entry: ['webpack-plugin-serve/client'],
+  entry: {
+    app: ['webpack-plugin-serve/client']
+  },
 
   devtool: 'cheap-eval-source-map',
+
+  resolve: {
+    alias: {
+      'react-dom': '@hot-loader/react-dom',
+    },
+  },
 
   plugins: [
     new WebpackPluginServe({
@@ -17,6 +25,7 @@ module.exports = merge(buildConfig, {
       open: true,
       compress: true,
       historyFallback: true,
+      progress: 'minimal',
 
        // serve generated files, fallback to public
       static: [paths.buildDir, paths.publicDir],

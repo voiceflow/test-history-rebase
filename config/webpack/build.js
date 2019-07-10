@@ -2,28 +2,102 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const safePostCssParser = require('postcss-safe-parser');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const InlineManifestPlugin = require('inline-manifest-webpack-plugin');
+const Md5HashPlugin = require('webpack-md5-hash');
 const merge = require('webpack-merge');
+const path = require('path');
 const commonConfig = require('./common');
 const paths = require('../paths');
-const { ENV, IS_PRODUCTION, IS_SERVING } = require('./config');
-
-console.log({ ENV });
+const { BASE_HREF, IS_PRODUCTION, IS_SERVING } = require('./config');
 
 module.exports = merge(commonConfig, {
+  output: {
+    filename: `${paths.staticJS}${IS_PRODUCTION ? '[name].[hash:8]' : 'bundle'}.js`,
+    chunkFilename: `${paths.staticJS}[name]${IS_PRODUCTION ? '.[chunkhash:8]' : ''}.chunk.js`,
+  },
+
+  ...(IS_PRODUCTION && { stats: 'minimal' }),
+
+  optimization: {
+    minimize: IS_PRODUCTION,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          parse: {
+            ecma: 8,
+          },
+          compress: {
+            ecma: 5,
+            warnings: false,
+            comparisons: false,
+            inline: 2,
+          },
+          mangle: {
+            safari10: true,
+          },
+          output: {
+            ecma: 5,
+            comments: false,
+            ascii_only: true,
+          },
+        },
+
+        parallel: true,
+        cache: true,
+        sourceMap: true,
+      }),
+      new OptimizeCSSAssetsPlugin({
+        cssProcessorOptions: {
+          parser: safePostCssParser,
+          map: { inline: false, annotation: true },
+        },
+      }),
+    ],
+
+    splitChunks: {
+      chunks: 'all',
+      name: false,
+      minChunks: 2
+    },
+
+    runtimeChunk: {
+      name: 'runtime'
+    },
+  },
+
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       inject: true,
       template: paths.indexHTML,
     }),
-    new BaseHrefWebpackPlugin({ baseHref: '/' }),
+    new InlineManifestPlugin(),
+    new BaseHrefWebpackPlugin({ baseHref: BASE_HREF }),
     ...(IS_SERVING ? [] : [new CopyPlugin([{ from: paths.publicDir, to: paths.buildDir }])]),
     ...(IS_PRODUCTION
       ? [
+          new Md5HashPlugin(),
           new MiniCssExtractPlugin({
             filename: `${paths.staticCSS}[name].[contenthash:8].css`,
             chunkFilename: `${paths.staticCSS}[name].[contenthash:8].chunk.css`,
+          }),
+          new WorkboxWebpackPlugin.GenerateSW({
+            clientsClaim: true,
+            exclude: [/\.map$/, /asset-manifest\.json$/],
+            importWorkboxFrom: 'cdn',
+            navigateFallback: `${BASE_HREF}index.html`,
+            navigateFallbackBlacklist: [
+              // Exclude URLs starting with /_, as they're likely an API call
+              new RegExp('^/_'),
+              // Exclude URLs containing a dot, as they're likely a resource in
+              // public/ and not a SPA route
+              new RegExp('/[^/]+\\.[^/]+$'),
+            ],
           }),
         ]
       : []),
@@ -59,6 +133,24 @@ module.exports = merge(commonConfig, {
               cacheCompression: IS_PRODUCTION,
               compact: IS_PRODUCTION,
             },
+          },
+          {
+            test: /\.svg$/,
+            include: path.resolve(paths.sourceDir, 'svgs'),
+            use: ({ resource }) => ({
+              loader: '@svgr/webpack',
+              options: {
+                svgoConfig: {
+                  plugins: [
+                    {
+                      cleanupIDs: {
+                        prefix: `ID-${resource}`,
+                      },
+                    },
+                  ],
+                },
+              },
+            }),
           },
           {
             test: /\.css$/,

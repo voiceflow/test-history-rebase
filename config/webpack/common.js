@@ -5,7 +5,9 @@ const paths = require('../paths');
 const { BASE_HREF, IS_PRODUCTION, ENV } = require('./config');
 
 module.exports = {
-  entry: [paths.entrypoint],
+  entry: {
+    app:['react-hot-loader/patch', paths.entrypoint]
+  },
 
   output: {
     path: paths.buildDir,

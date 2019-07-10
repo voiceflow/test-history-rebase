@@ -20,7 +20,6 @@ describe('MultiModal not loading', () => {
     },
   ];
 
-  /* eslint lodash/prefer-constant: [2, true] */
   it('renders MultiModal', () => {
     const component = shallow(
       <MultiModal.WrappedComponent

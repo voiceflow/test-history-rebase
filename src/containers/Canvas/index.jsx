@@ -57,7 +57,7 @@ import { BlockNodeFactory } from 'components/SRD/factories/BlockNodeFactory';
 /* eslint-enable no-secrets/no-secrets */
 import { Spinner } from 'components/Spinner/Spinner';
 
-import { ALLOWED_GOOGLE_BLOCKS } from 'Constants';
+import { ALLOWED_GOOGLE_BLOCKS } from './Constants';
 
 import Linter from './linter';
 import randomstring from 'randomstring';

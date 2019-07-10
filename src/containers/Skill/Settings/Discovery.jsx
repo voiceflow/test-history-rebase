@@ -1,3 +1,4 @@
+import { constants } from '@voiceflow/common';
 import axios from 'axios';
 import Button from 'components/Button';
 import { setError } from 'ducks/modal';
@@ -6,10 +7,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert, FormGroup, Label } from 'reactstrap';
 
-import { BUILT_IN_INTENTS_ALEXA } from 'Constants';
 import { intentHasSlots } from 'Helper';
 
 import CanFulfill from './Canfulfill';
+
+const { BUILT_IN_INTENTS_ALEXA } = constants.intents;
 
 const BUILT_INS = BUILT_IN_INTENTS_ALEXA.map((intent) => {
   return {

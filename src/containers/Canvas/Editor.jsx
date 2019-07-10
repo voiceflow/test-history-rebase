@@ -1,3 +1,4 @@
+import { constants } from '@voiceflow/common';
 import cn from 'classnames';
 import Button from 'components/Button';
 import { ModalHeader } from 'components/Modals/ModalHeader';
@@ -12,8 +13,6 @@ import CreatableSelect from 'react-select/lib/Creatable';
 import { Tooltip } from 'react-tippy';
 import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Modal, ModalBody, UncontrolledDropdown } from 'reactstrap';
 import { compose } from 'recompose';
-
-import { BUILT_IN_INTENTS_ALEXA, BUILT_IN_INTENTS_GOOGLE, SLOT_TYPES } from 'Constants';
 
 import API from './Editors/API';
 import CancelPayment from './Editors/CancelPayment';
@@ -43,6 +42,9 @@ import SetBlock from './Editors/Set';
 import Speak from './Editors/Speak';
 import Stream from './Editors/Stream';
 import Variable from './Editors/Variable';
+
+const { BUILT_IN_INTENTS_ALEXA, BUILT_IN_INTENTS_GOOGLE } = constants.intents;
+const SLOT_TYPES = constants.slots;
 
 const CMD_Z = 'command+z';
 const CTRL_Z = 'ctrl+z';

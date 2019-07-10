@@ -21,7 +21,7 @@ module.exports = merge(commonConfig, {
     chunkFilename: `${paths.staticJS}[name]${IS_PRODUCTION ? '.[chunkhash:8]' : ''}.chunk.js`,
   },
 
-  ...(IS_PRODUCTION && { stats: 'minimal' }),
+  ...(IS_PRODUCTION && { stats: 'minimal', devtool: 'none' }),
 
   optimization: {
     minimize: IS_PRODUCTION,

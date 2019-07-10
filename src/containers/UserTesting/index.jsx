@@ -5,7 +5,7 @@ import Button from 'components/Button';
 import ClipBoard from 'components/ClipBoard/ClipBoard';
 import Header from 'components/Header';
 import Test from 'containers/Canvas/Test';
-import { initializeTest, startTest, updateTest } from 'ducks/test';
+import { initializeTest, updateTest } from 'ducks/test';
 import { fetchVersionSuccess } from 'ducks/version';
 import _ from 'lodash';
 import React from 'react';
@@ -37,7 +37,7 @@ class UserTesting extends React.Component {
   }
 
   async fetchInformation() {
-    const { fetchVersionSuccess, initializeTest, updateTest, startTest, skill } = this.props;
+    const { fetchVersionSuccess, initializeTest, updateTest } = this.props;
     const { data } = await axios.get(`/test/getInfo/${this.props.match.params.skill_id}`);
     const skillData = data.skill;
     const globals = Array.isArray(skillData.global) ? skillData.global : [];
@@ -54,7 +54,6 @@ class UserTesting extends React.Component {
     this.setState({ loading: 0 });
     initializeTest({ userTest: true });
     updateTest({ rendered: 2 });
-    startTest(skill.diagram);
   }
 
   toggleShare = () => {
@@ -114,7 +113,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   initializeTest,
   updateTest,
-  startTest,
   fetchVersionSuccess,
 };
 

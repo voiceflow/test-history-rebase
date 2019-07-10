@@ -6,7 +6,7 @@ import './tag.css';
 import { AtomicBlockUtils, EditorState } from 'draft-js';
 import React from 'react';
 
-import { fromStable, makeCollapsed, makeStable } from './selectUtil';
+import { fromStable, makeCollapsed, makeStable, selectBetween } from './selectUtil';
 import Tag from './tag';
 
 let getEditorState = null;
@@ -26,15 +26,29 @@ function insertAtomic(editorState, key, offset, entity, text) {
 }
 
 function linkTags(contentState, entityKeyA, entityKeyB) {
-  const a = contentState.getEntity(entityKeyA).getData().otherKeyStack || [];
-  const b = contentState.getEntity(entityKeyB).getData().otherKeyStack || [];
-
-  contentState = contentState.mergeEntityData(entityKeyA, { key: entityKeyA, otherKey: entityKeyB, otherKeyStack: [...a, entityKeyB] });
-  contentState = contentState.mergeEntityData(entityKeyB, { key: entityKeyB, otherKey: entityKeyA, otherKeyStack: [...b, entityKeyA] });
+  contentState = contentState.mergeEntityData(entityKeyA, { key: entityKeyA, otherKey: entityKeyB });
+  contentState = contentState.mergeEntityData(entityKeyB, { key: entityKeyB, otherKey: entityKeyA });
   return contentState;
 }
 
 let oldBlock = null;
+let storePlugin = null;
+let store = null;
+
+let storeState = {
+  getEntity(key) {
+    if (!store[key]) return null;
+    return {
+      getData() {
+        return store[key];
+      },
+    };
+  },
+  mergeEntityData(key, data) {
+    store[key] = { ...store[key], ...data };
+    return storeState;
+  },
+};
 
 const obj = {
   decorators: [
@@ -61,17 +75,23 @@ const obj = {
   initialize(functions) {
     getEditorState = functions.getEditorState;
     setEditorState = functions.setEditorState;
+    storePlugin = functions.getPlugins()[0];
   },
   blockRendererFn(block) {
     if (block.getType() === 'atomic') {
       return {
         component: Tag,
         editable: false,
+        props: {
+          store,
+        },
       };
     }
     return null;
   },
   onChange(editorState) {
+    store = storePlugin.getStore();
+
     const contentState = editorState.getCurrentContent();
     let depth = 0;
     let blockMap = contentState.getBlockMap();
@@ -81,8 +101,9 @@ const obj = {
         .filter((block, key) => !blockMap.has(key) && block.getType() === 'atomic')
         .forEach((block) => {
           const key = block.getEntityAt(0);
-          if (!key) return;
-          const otherKey = contentState.getEntity(key).getData().otherKey;
+          const entity = storeState.getEntity(key);
+          if (!key || !entity) return;
+          const otherKey = entity.getData().otherKey;
           toRemove.add(otherKey);
         });
       blockMap = blockMap.filter((block) => {
@@ -115,9 +136,10 @@ const obj = {
     let selectionState;
     editorState = getEditorState();
 
+    store = storePlugin.getStore();
+
     const undoStack = editorState.getUndoStack().push(editorState.getCurrentContent());
     editorState = EditorState.set(editorState, { allowUndo: false });
-    const stable = makeStable(editorState);
 
     selectionState = editorState.getSelection();
     contentState = editorState.getCurrentContent();
@@ -133,7 +155,7 @@ const obj = {
           if (entity.getType() === 'OPEN') {
             open.add(key);
           } else if (entity.getType() === 'CLOSE') {
-            const otherKey = entity.getData().otherKey;
+            const otherKey = storeState.getEntity(key).getData().otherKey;
             if (open.has(otherKey)) {
               open.delete(otherKey);
             } else {
@@ -162,7 +184,7 @@ const obj = {
       key: keyB,
       text: `</${type}>`,
     };
-    contentState = linkTags(contentState, keyA, keyB);
+    storeState = linkTags(storeState, keyA, keyB);
 
     const closeList = [
       ...openArr.reverse().map((id) => {
@@ -170,7 +192,7 @@ const obj = {
         const { type } = entity.getData();
         contentState = contentState.createEntity('CLOSE', 'IMMUTABLE', { type });
         const newKey = contentState.getLastCreatedEntityKey();
-        contentState = linkTags(contentState, id, newKey);
+        storeState = linkTags(storeState, id, newKey);
         return {
           key: newKey,
           text: `</${type}>`,
@@ -179,10 +201,10 @@ const obj = {
       closeTag,
       ...openArr.map((id) => {
         const entity = contentState.getEntity(id);
-        const { type, otherKey } = entity.getData();
+        const { type, otherKey } = { ...entity.getData(), ...store[id] };
         contentState = contentState.createEntity('OPEN', 'IMMUTABLE', { type });
         const newKey = contentState.getLastCreatedEntityKey();
-        contentState = linkTags(contentState, otherKey, newKey);
+        storeState = linkTags(storeState, otherKey, newKey);
         return {
           key: newKey,
           text: `<${type}>`,
@@ -192,10 +214,10 @@ const obj = {
     const openList = [
       ...closeArr.map((id) => {
         const entity = contentState.getEntity(id);
-        const { type, otherKey } = entity.getData();
+        const { type, otherKey } = { ...entity.getData(), ...store[id] };
         contentState = contentState.createEntity('CLOSE', 'IMMUTABLE', { type });
         const newKey = contentState.getLastCreatedEntityKey();
-        contentState = linkTags(contentState, otherKey, newKey);
+        storeState = linkTags(storeState, otherKey, newKey);
         return {
           key: newKey,
           text: `</${type}>`,
@@ -207,7 +229,7 @@ const obj = {
         const { type } = entity.getData();
         contentState = contentState.createEntity('OPEN', 'IMMUTABLE', { type });
         const newKey = contentState.getLastCreatedEntityKey();
-        contentState = linkTags(contentState, id, newKey);
+        storeState = linkTags(storeState, id, newKey);
         return {
           key: newKey,
           text: `<${type}>`,
@@ -224,12 +246,10 @@ const obj = {
       editorState = insertAtomic(editorState, selectionState.getStartKey(), selectionState.getStartOffset(), key, text);
     });
 
-    stable.startTags += closeArr.length + 1;
-    stable.deltaTags += closeArr.length + openArr.length;
-
     contentState = editorState.getCurrentContent();
-    selectionState = fromStable(stable, contentState);
+    selectionState = selectBetween(contentState, keyA, keyB, selectionState);
 
+    storePlugin.captureChange(contentState);
     editorState = EditorState.forceSelection(editorState, selectionState);
     editorState = EditorState.set(editorState, {
       undoStack,

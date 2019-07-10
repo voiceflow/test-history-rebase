@@ -8,6 +8,7 @@ import Editor from 'draft-js-plugins-editor';
 import _ from 'lodash';
 import React, { Component } from 'react';
 
+import es from './entityStore';
 import plugin from './plugin.jsx';
 
 // const singleLinePlugin = createSingleLinePlugin({
@@ -60,7 +61,7 @@ class VariableText extends Component {
 
   render() {
     const { MentionSuggestions } = this.mentionPlugin;
-    const plugins = [this.mentionPlugin, plugin];
+    const plugins = [es.first, this.mentionPlugin, plugin, es.last];
 
     return (
       <div className="editor">

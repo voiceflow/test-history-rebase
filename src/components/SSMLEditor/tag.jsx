@@ -1,11 +1,12 @@
 import React from 'react';
 
 function Tag(props) {
-  const { block, contentState } = props;
+  const { block, contentState, blockProps } = props;
+  const { store } = blockProps;
   const key = block.getEntityAt(0);
   if (!key) return false;
   const entity = contentState.getEntity(key);
-  const data = entity.getData();
+  const data = { ...entity.getData(), ...store[key] };
   console.log(data);
   return (
     <div className={`tag mx-1 ${data.type}`}>

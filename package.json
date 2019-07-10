@@ -1,27 +1,7 @@
 {
   "name": "@voiceflow/creator-app",
   "version": "1.0.0",
-  "Author": "Voiceflow",
-  "babel": {
-    "presets": [
-      "react-app"
-    ],
-    "plugins": [
-      [
-        "@babel/plugin-proposal-decorators",
-        {
-          "legacy": true
-        }
-      ],
-      [
-        "@babel/plugin-proposal-class-properties",
-        {
-          "loose": true
-        }
-      ],
-      "@babel/plugin-transform-modules-commonjs"
-    ]
-  },
+  "author": "Voiceflow",
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
@@ -214,10 +194,6 @@
     "webpack-plugin-serve": "^0.11.0",
     "webpackbar": "^3.2.0"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "homepage": "/",
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
@@ -241,7 +217,6 @@
   },
   "prettier": "@voiceflow/prettier-config",
   "private": true,
-  "proxy": "http://localhost:8080",
   "release": {
     "branch": "production"
   },
@@ -257,7 +232,6 @@
     "lint:quiet": "npm run lint:js -- --quiet && npm run lint:css -- --quiet",
     "prepublish": "patch-package",
     "start": "wp --action=serve",
-    "test": "node scripts/test.js --env=jsdom --watchAll=false",
-    "test:all": "react-scripts test --verbose"
+    "test": "jest"
   }
 }

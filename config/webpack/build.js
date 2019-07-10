@@ -21,6 +21,8 @@ module.exports = merge(commonConfig, {
     chunkFilename: `${paths.staticJS}[name]${IS_PRODUCTION ? '.[chunkhash:8]' : ''}.chunk.js`,
   },
 
+  devtool: IS_PRODUCTION ? 'nosources-source-map' : 'cheap-eval-source-map',
+
   ...(IS_PRODUCTION && { stats: 'minimal' }),
 
   optimization: {
@@ -88,7 +90,7 @@ module.exports = merge(commonConfig, {
           }),
           new WorkboxWebpackPlugin.GenerateSW({
             clientsClaim: true,
-            exclude: [/\.map$/, /asset-manifest\.json$/],
+            exclude: [/\.map$/],
             importWorkboxFrom: 'cdn',
             navigateFallback: `${BASE_HREF}index.html`,
             navigateFallbackBlacklist: [

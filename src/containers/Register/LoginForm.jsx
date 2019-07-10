@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import Button from 'components/Button';
 import { login } from 'ducks/account';
 import * as _ from 'lodash';
@@ -73,7 +74,7 @@ export const LoginForm = ({ login, history, location }) => {
                 // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
                 <img
                   onClick={() => setShowPassword(!showPassword)}
-                  className="viewPassword"
+                  className={cn('viewPassword', { hiddenEye: showPassword })}
                   src={showPassword ? '/eye-hide.svg' : '/eye.svg'}
                   alt=""
                 />

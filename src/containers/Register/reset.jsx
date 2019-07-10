@@ -1,7 +1,6 @@
 import axios from 'axios';
 import Button from 'components/Button';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { FormGroup, Input } from 'reactstrap';
 
 import { AuthBox } from './AuthBoxes';
@@ -62,11 +61,12 @@ class Reset extends Component {
         return (
           <form onSubmit={this.resetEmail} className="w-100">
             <FormGroup>
-              <Input type="email" name="email" onChange={this.handleChange} placeholder="Email address" required minLength="6" />
+              <Input className="form-bg" type="email" name="email" onChange={this.handleChange} placeholder="Email address" required minLength="6" />
             </FormGroup>
-            <div style={{ height: '45px' }}>
+            <div style={{ height: '45px', marginTop: '32px' }}>
               <div className="float-left auth__link">
-                <Link to="/login">Back to Signing in</Link>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <a onClick={() => this.props.history.push('/login')}>Back to Signing in</a>
               </div>
               <div className="float-right">
                 <Button isPrimary isBlock type="submit">
@@ -94,7 +94,8 @@ class Reset extends Component {
               The confirmation link has been sent to name@domain.com. If it doesn't appear within a few minutes, check your span folder.
             </div>
             <div className="auth__link">
-              <Link to="/login">Back to Signing in</Link>
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+              <a onClick={() => this.props.history.push('/login')}>Back to Signing in</a>
             </div>
           </>
         );

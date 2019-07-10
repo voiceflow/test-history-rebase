@@ -13,7 +13,13 @@ export const AuthBox = styled.div`
     padding: 32px;
     background-color: #fff;
     border-radius: 5px;
-    box-shadow: 0 2px 4px 0 rgba(14, 30, 37, 0.12);
+    box-shadow: 0px 1px 3px rgba(17, 49, 96, 0.08), 0px 0px 1px rgba(17, 49, 96, 0.08);
+    .form-group {
+      margin-bottom: 23px;
+    }
+    .row {
+      margin-top: 32px;
+    }
   }
 
   .auth-logo {
@@ -27,10 +33,16 @@ export const AuthBox = styled.div`
   }
 
   .auth__link > a {
-    color: #5d9df5 !important;
+    color: #5d9df5;
     font-size: 15px;
     line-height: 18px;
     cursor: pointer;
+    &:hover {
+      color: #5d9df5;
+    }
+    &:active {
+      color: #326fc3;
+    }
   }
 
   .passwordInput {
@@ -51,13 +63,18 @@ export const AuthBox = styled.div`
       right: 16px;
       cursor: pointer;
     }
+
+    .hiddenEye {
+      top: 15px;
+    }
   }
 
   .confirm-helper {
     font-size: 15px;
     line-height: 22px;
     color: #62778c;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
+    text-align: left;
   }
 
   .errorContainer {

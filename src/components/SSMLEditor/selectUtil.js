@@ -39,7 +39,6 @@ function getPoint(startKey, offset, contentState, tags, start = false) {
   let curTags = tags;
 
   while (curOffset > block.getLength() || ((start || block.getType() === 'atomic') && curTags > 0)) {
-    // while (curOffset > block.getLength() || (block.getType() === 'atomic' && curTags > 0)) {
     if (block.getType() === 'atomic') {
       curTags--;
     } else {
@@ -48,26 +47,11 @@ function getPoint(startKey, offset, contentState, tags, start = false) {
     curKey = contentState.getKeyAfter(curKey);
     block = contentState.getBlockForKey(curKey);
   }
-  // if (start && contentState.getKeyAfter(curKey)) {
-  //   curKey = contentState.getKeyAfter(curKey);
-  //   block = contentState.getBlockForKey(curKey);
-  //
-  //   while (block.getType() === 'atomic' && curTags > 0) {
-  //     curKey = contentState.getKeyAfter(curKey);
-  //     block = contentState.getBlockForKey(curKey);
-  //     curTags--;
-  //     if (block.getLength() === 0) {
-  //       curKey = contentState.getKeyAfter(curKey);
-  //       block = contentState.getBlockForKey(curKey);
-  //     }
-  //   }
-  //   curOffset = 0;
-  // }
+
   return [curKey, curOffset];
 }
 
 export function fromStable(stable, contentState) {
-  console.log(stable);
   const [startKey, startOffset] = getPoint(stable.startKey, stable.startOffset, contentState, stable.startTags, true);
   if (stable.startOffset === stable.endOffset) return makeSelection(startKey, startOffset, startKey, startOffset, stable.isBackward);
 

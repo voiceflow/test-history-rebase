@@ -122,9 +122,6 @@ const obj = {
     selectionState = editorState.getSelection();
     contentState = editorState.getCurrentContent();
 
-    console.log(selectionState.serialize());
-    dump(contentState);
-
     const close = new Set();
     const open = new Set();
     for (let curKey = selectionState.getStartKey(); curKey !== selectionState.getEndKey(); curKey = contentState.getKeyAfter(curKey)) {
@@ -232,8 +229,7 @@ const obj = {
 
     contentState = editorState.getCurrentContent();
     selectionState = fromStable(stable, contentState);
-    console.log(selectionState.serialize());
-    dump(contentState);
+
     editorState = EditorState.forceSelection(editorState, selectionState);
     editorState = EditorState.set(editorState, {
       undoStack,

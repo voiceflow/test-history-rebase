@@ -282,90 +282,9 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
   <div
     className="title-group-sub"
   >
-    <Tooltip
-      animateFill={true}
-      animation="shift"
-      arrow={false}
-      arrowSize="regular"
-      className=""
-      delay={0}
-      disabled={false}
-      distance={10}
-      duration={375}
-      followCursor={false}
-      hideDelay={0}
-      hideDuration={375}
-      hideOnClick={true}
-      html={null}
-      inertia={false}
-      interactive={false}
-      interactiveBorder={2}
-      multiple={false}
-      offset={0}
-      onHidden={[Function]}
-      onHide={[Function]}
-      onRequestClose={[Function]}
-      onShow={[Function]}
-      onShown={[Function]}
-      popperOptions={Object {}}
-      position="bottom"
-      size="regular"
-      sticky={false}
-      stickyDuration={200}
-      style={Object {}}
-      theme="dark"
-      title="Share"
-      touchHold={false}
-      trigger="mouseenter focus"
-      unmountHTMLWhenHide={false}
-    >
-      <Button
-        className="dropdown-button-border"
-        iconPosition="right"
-        id="icon-share"
-        onClick={[Function]}
-        onRef={[Function]}
-        trackEvent="Button Click"
-        type="button"
-      />
-    </Tooltip>
-    <Popover
-      className="mt-3"
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="icon-share"
-      toggle={[Function]}
-    >
-      <PopoverBody
-        style={
-          Object {
-            "minWidth": "260px",
-          }
-        }
-        tag="div"
-      >
-        <div
-          className="space-between"
-        >
-          <label>
-            Allow preview sharing
-          </label>
-          <Toggle
-            checked={false}
-            icons={false}
-            onChange={[Function]}
-          />
-        </div>
-      </PopoverBody>
-    </Popover>
+    <Connect(UserTestHeader)
+      render={true}
+    />
   </div>
   <UploadButton
     isUploadLoading={[Function]}

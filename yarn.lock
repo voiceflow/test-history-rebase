@@ -1905,6 +1905,15 @@
   resolved "https://registry.yarnpkg.com/@voiceflow/commitlint-config/-/commitlint-config-1.0.1.tgz#e9513aa348d5e88ff064022e2dae8d0d7e227f6a"
   integrity sha512-7amH9jUarcsB5CXmYNOeejQXtCs7kdyETjPp6q2x0y1mNGWfhqzWZ/FySP+wkvFytXyu46PADH29rBw3p2zGdw==
 
+"@voiceflow/common@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-5.0.0.tgz#db7b8e72844d4dff15aa5859e49617640b950634"
+  integrity sha512-/+2oGtzBU6H4GXid86aT0PLwmJjumLd7g9B2puNUw43a85soG4ikXxv1LKz1wKXkJIxtw0VvtbnHxMai1x7Spw==
+  dependencies:
+    lodash "^4.17.11"
+    moment "^2.24.0"
+    randomstring "^1.1.5"
+
 "@voiceflow/eslint-config@2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@voiceflow/eslint-config/-/eslint-config-2.0.1.tgz#230a55e2161d49cf5fe2dff067e4f55b8d303e66"
@@ -10801,7 +10810,7 @@ moment-timezone@^0.5.14:
   dependencies:
     moment ">= 2.9.0"
 
-"moment@>= 2.9.0", moment@^2.10.2, moment@^2.22.0, moment@^2.22.2:
+"moment@>= 2.9.0", moment@^2.10.2, moment@^2.22.0, moment@^2.22.2, moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==

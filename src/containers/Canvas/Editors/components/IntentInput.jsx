@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import './IntentInput.css';
 
+import { utils } from '@voiceflow/common';
 import cn from 'classnames';
 import { setError } from 'ducks/modal';
 import React, { Component } from 'react';
@@ -10,8 +11,9 @@ import { Tooltip } from 'react-tippy';
 import { Collapse } from 'reactstrap';
 import { sampleUtteranceRegex } from 'services/Regex';
 
-import { getUtterancesWithSlotNames } from '../../../../intent_util';
 import Utterance from './Utterance';
+
+const { getUtterancesWithSlotNames } = utils.intent;
 
 function getSlotKeys(input) {
   const re = /{{\[[^[\]{}]+]\.([\dA-Za-z]+)}}/g;

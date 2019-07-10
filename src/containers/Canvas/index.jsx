@@ -57,7 +57,7 @@ import { BlockNodeFactory } from 'components/SRD/factories/BlockNodeFactory';
 /* eslint-enable no-secrets/no-secrets */
 import { Spinner } from 'components/Spinner/Spinner';
 
-import { ALLOWED_GOOGLE_BLOCKS } from 'Constants';
+import { ALLOWED_GOOGLE_BLOCKS } from './Constants';
 
 import Linter from './linter';
 import randomstring from 'randomstring';
@@ -1347,7 +1347,7 @@ export class Canvas extends Component {
 
   // Create a new diagram from the flow block
   createDiagram(node, base_flow_name = 'New Flow', template = null, forCommand = false) {
-    const { skill, diagrams, setError } = this.props;
+    const { skill, diagrams, setError, diagram } = this.props;
     this.setState({ load_diagram: true });
     const id = util.generateID();
 
@@ -1372,16 +1372,14 @@ export class Canvas extends Component {
       index++;
     }
 
-    const diagram = {
-      id,
-      title: newFlowName,
-      variables: [],
-      data,
-      skill: skill_id,
-    };
-
     axios
-      .post('/diagram?new=1', diagram)
+      .post('/diagram?new=1', {
+        id,
+        title: newFlowName,
+        variables: [],
+        data,
+        skill: skill_id,
+      })
       .then(() => {
         if (forCommand) {
           node.extras[skill.platform].diagram_id = id;
@@ -1389,6 +1387,8 @@ export class Canvas extends Component {
           node.extras.diagram_id = id;
         }
         const subDiagrams = [...diagram.sub_diagrams, id];
+
+        // insert new diagram into redux diagrams
         const newDiagram = {
           id,
           name: newFlowName,

@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import { constants } from '@voiceflow/common';
 import DefaultButton from 'components/Button';
 import PlatformTooltip from 'components/Tooltips/PlatformTooltip';
 import { setError } from 'ducks/modal';
@@ -9,10 +10,11 @@ import { connect } from 'react-redux';
 import Select, { components } from 'react-select';
 import { Alert, Button, ButtonGroup } from 'reactstrap';
 
-import { PLATFORMS } from '../../../Constants';
 import IntentInputs from './components/IntentInputs';
 import SlotInputs from './components/SlotInputs';
 import SlotMappings from './components/SlotMappings';
+
+const PLATFORMS = constants.platforms;
 
 export class Command extends Component {
   constructor(props) {

@@ -21,8 +21,6 @@ module.exports = merge(commonConfig, {
     chunkFilename: `${paths.staticJS}[name]${IS_PRODUCTION ? '.[chunkhash:8]' : ''}.chunk.js`,
   },
 
-  devtool: IS_PRODUCTION ? 'nosources-source-map' : 'cheap-eval-source-map',
-
   ...(IS_PRODUCTION && { stats: 'minimal' }),
 
   optimization: {

@@ -2,13 +2,14 @@ const { action } = require('webpack-nano/argv');
 const WebpackBar = require('webpackbar');
 const webpack = require('webpack');
 const paths = require('../paths');
-const { IS_PRODUCTION, ENV } = require('./config');
+const { BASE_HREF, IS_PRODUCTION, ENV } = require('./config');
 
 module.exports = {
   entry: [paths.entrypoint],
 
   output: {
     path: paths.buildDir,
+    publicPath: BASE_HREF,
     pathinfo: !IS_PRODUCTION,
   },
 
@@ -25,6 +26,7 @@ module.exports = {
         return acc;
       }, {}),
     }),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new WebpackBar({ name: `Voiceflow Creator - ${action || 'build'}` }),
   ],
 

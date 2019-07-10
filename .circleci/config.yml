@@ -52,7 +52,7 @@ jobs:
           tests:
             - run:
                 name: (React Tests)
-                command: CIRCLECI=TRUE npm run test
+                command: npm run test -- --detectOpenHandles --runInBand
             - run:
                 name: (Code Style)
                 command: npm run lint:quiet

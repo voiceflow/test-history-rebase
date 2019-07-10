@@ -323,7 +323,7 @@ class Onboarding extends Component {
               </div>
             </div>
             <Button isPrimary disabled={!(design || build)} onClick={() => this.setState({ stage: 'code_stage' })}>
-              Next Step
+              Continue
             </Button>
           </div>
         );
@@ -382,7 +382,7 @@ class Onboarding extends Component {
                 }
               }}
             >
-              Next Step
+              Continue
             </Button>
           </div>
         );
@@ -448,7 +448,6 @@ class Onboarding extends Component {
         return (
           <div key={stage} className="pb-5 mb-5">
             <div className="text-center">
-              <img className="logo mb-3" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo" height="25" />
               <p className="modal-bg-txt text-center mb-3">Hi, {user.name}</p>
               <p className="onboarding-modal-txt text-center mb-2">
                 You just joined the worlds biggest community of VUI designer and developers building voice apps. We have a few questions to

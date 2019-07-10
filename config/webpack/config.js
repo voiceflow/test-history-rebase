@@ -4,6 +4,7 @@ const { NODE_ENV } = process.env;
 const ENV_PREFIX = 'VF_APP_';
 
 module.exports = {
+  USE_SOURCEMAPS: false,
   IS_PRODUCTION: NODE_ENV === 'production',
   IS_SERVING: action === 'serve',
   BASE_HREF: '/',

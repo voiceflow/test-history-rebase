@@ -13,7 +13,7 @@ const merge = require('webpack-merge');
 const path = require('path');
 const commonConfig = require('./common');
 const paths = require('../paths');
-const { BASE_HREF, IS_PRODUCTION, IS_SERVING } = require('./config');
+const { BASE_HREF, IS_PRODUCTION, IS_SERVING, USE_SOURCEMAPS } = require('./config');
 
 module.exports = merge(commonConfig, {
   output: {
@@ -21,7 +21,7 @@ module.exports = merge(commonConfig, {
     chunkFilename: `${paths.staticJS}[name]${IS_PRODUCTION ? '.[chunkhash:8]' : ''}.chunk.js`,
   },
 
-  ...(IS_PRODUCTION && { stats: 'minimal', devtool: 'none' }),
+  devtool: USE_SOURCEMAPS && (IS_PRODUCTION ? 'nosources-source-map' : 'cheap-eval-source-map'),
 
   optimization: {
     minimize: IS_PRODUCTION,
@@ -49,7 +49,7 @@ module.exports = merge(commonConfig, {
 
         parallel: true,
         cache: true,
-        sourceMap: true,
+        sourceMap: USE_SOURCEMAPS,
       }),
       new OptimizeCSSAssetsPlugin({
         cssProcessorOptions: {
@@ -160,7 +160,7 @@ module.exports = merge(commonConfig, {
                 loader: 'css-loader',
                 options: {
                   importLoaders: 1,
-                  sourceMap: IS_PRODUCTION,
+                  sourceMap: USE_SOURCEMAPS,
                 },
               },
               {
@@ -178,7 +178,7 @@ module.exports = merge(commonConfig, {
                       stage: 3,
                     }),
                   ],
-                  sourceMap: IS_PRODUCTION,
+                  sourceMap: USE_SOURCEMAPS,
                 },
               },
             ],

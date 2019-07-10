@@ -6,7 +6,7 @@ import './tag.css';
 import { AtomicBlockUtils, EditorState } from 'draft-js';
 import React from 'react';
 
-import { fromStable, makeCollapsed, makeStable, selectBetween } from './selectUtil';
+import { makeCollapsed, reselect, selectBetween } from './selectUtil';
 import Tag from './tag';
 
 let getEditorState = null;
@@ -266,8 +266,6 @@ const obj = {
     const undoStack = editorState.getUndoStack().push(editorState.getCurrentContent());
     editorState = EditorState.set(editorState, { allowUndo: false });
     selectionState = editorState.getSelection();
-    const stable = makeStable(editorState);
-    stable.startTags += 1;
 
     contentState = editorState.getCurrentContent();
     contentState = contentState.createEntity('VOID', 'IMMUTABLE', { type });
@@ -276,7 +274,8 @@ const obj = {
     editorState = insertAtomic(editorState, selectionState.getStartKey(), selectionState.getStartOffset(), entityKey, `<${type}/>`);
 
     contentState = editorState.getCurrentContent();
-    selectionState = fromStable(stable, contentState);
+    selectionState = reselect(selectionState, contentState, entityKey);
+
     editorState = EditorState.forceSelection(editorState, selectionState);
     editorState = EditorState.set(editorState, {
       undoStack,

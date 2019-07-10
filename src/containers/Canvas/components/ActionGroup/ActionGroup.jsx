@@ -4,27 +4,23 @@ import 'react-sweet-progress/lib/style.css';
 import axios from 'axios';
 import cn from 'classnames';
 import Button from 'components/Button';
-import ClipBoard from 'components/ClipBoard/ClipBoard';
 import AmazonLogin from 'components/Forms/AmazonLogin';
-import Header from 'components/Header';
 import { ModalHeader } from 'components/Modals/ModalHeader';
-import SecondaryNavBar from 'components/NavBar/SecondaryNavBar';
 import { AmazonAccessToken, getVendors, googleAccessToken } from 'ducks/account';
 import { setError } from 'ducks/modal';
 import { updateVendorId } from 'ducks/project';
-import { togglePreview, updateLocales, updateSkillDB, updateVersion } from 'ducks/version';
+import { updateLocales, updateSkillDB, updateVersion } from 'ducks/version';
 import React, { PureComponent } from 'react';
 import Confetti from 'react-dom-confetti';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Progress } from 'react-sweet-progress';
 import { Tooltip } from 'react-tippy';
-import Toggle from 'react-toggle';
-import { Alert, Input, InputGroup, InputGroupAddon, Modal, ModalBody, Popover, PopoverBody } from 'reactstrap';
+import { Alert, Modal, ModalBody } from 'reactstrap';
 import LOCALE_MAP from 'services/LocaleMap';
 import InvRegex from 'services/Regex';
 
 import Settings from '../../../Skill/Settings';
+import ShareTest from '../../Test/ShareTest';
 import UploadButton from '../UploadButton/UploadButton';
 
 const loading = (message) => {
@@ -536,63 +532,9 @@ export class ActionGroup extends PureComponent {
     }));
   };
 
-  handleChange = (e) => {
-    const { story } = this.state;
-    const node = story;
-    const name = e.target.getAttribute('name');
-    const value = e.target.value;
-
-    node.extras[name] = value;
-  };
-
-  toggle = () => {
-    const { dropdownOpen } = this.state;
-    this.setState({
-      dropdownOpen: !dropdownOpen,
-    });
-  };
-
-  togglePreview = () => {
-    const { togglingPreview } = this.state;
-    const { togglePreview, skill } = this.props;
-    if (togglingPreview) return;
-
-    this.setState({
-      togglingPreview: true,
-    });
-
-    togglePreview(!skill.preview).then(() => this.setState({ togglingPreview: false }));
-  };
-
-  toggleShare = () => {
-    const { share } = this.state;
-    this.setState({
-      share: !share,
-    });
-  };
-
   toggleVendors = () => {
     const { vendors_open } = this.state;
     this.setState({ vendors_open: !vendors_open });
-  };
-
-  selectVendor = async (vendor) => {
-    const { updateVendorId, skill } = this.props;
-    if (!(vendor && vendor.id)) return;
-    // save to database
-
-    try {
-      await updateVendorId(skill.project_id, vendor.id);
-
-      this.setState({
-        vendors_open: false,
-        selected_vendor: vendor.id,
-      });
-    } catch (e) {
-      this.setState({
-        vendors_open: false,
-      });
-    }
   };
 
   showUploadPrompt = () => {
@@ -648,24 +590,15 @@ export class ActionGroup extends PureComponent {
     });
   };
 
-  toggleGoogle = () => {
-    const { platform: propPlatform, updateSkill, renderPlatformSwitch, updateLinter } = this.props;
-    const platform = propPlatform === 'google' ? 'alexa' : 'google';
-    updateSkill('platform', platform).then(() => {
-      renderPlatformSwitch();
-      updateLinter();
-    });
-  };
-
   renderLiveStage = () => {
     const { live_update_stage } = this.state;
     if (live_update_stage === 2) {
       return (
-        <React.Fragment>
+        <>
           <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live-success.svg" alt="Upload" />
           <div className="modal-bg-txt text-center mt-2"> Live Version Updated</div>
           <div className="modal-txt text-center mt-2 mb-3">This may take a few minutes to be reflected on your device.</div>
-        </React.Fragment>
+        </>
       );
     }
     if (live_update_stage === 1) {
@@ -679,7 +612,7 @@ export class ActionGroup extends PureComponent {
       );
     }
     return (
-      <React.Fragment>
+      <>
         <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live.svg" alt="Upload" />
         <div className="modal-bg-txt text-center mt-2"> Confirm Live Update</div>
         <div className="modal-txt text-center mt-2 mb-3">
@@ -688,7 +621,7 @@ export class ActionGroup extends PureComponent {
         <Button isPrimary className="mb-3" onClick={this.updateLiveVersion}>
           Confirm Update
         </Button>
-      </React.Fragment>
+      </>
     );
   };
 
@@ -698,7 +631,7 @@ export class ActionGroup extends PureComponent {
 
     if (saving) {
       return (
-        <React.Fragment>
+        <>
           <div
             // eslint-disable-next-line sonarjs/no-duplicate-string
             className={cn('mb-3', 'text-center', {
@@ -708,12 +641,12 @@ export class ActionGroup extends PureComponent {
             <Progress type="circle" strokeWidth={5} theme={{ default: { color: '#42a5ff' } }} percent={percent} />
           </div>
           {loading('Saving Project')}
-        </React.Fragment>
+        </>
       );
     }
     if (platform === 'google') {
       return (
-        <React.Fragment>
+        <>
           {![0].includes(google_stage) && !ENDING_STAGES.google.includes(google_stage) && (
             <div
               className={cn('mb-3', 'text-center', {
@@ -724,11 +657,11 @@ export class ActionGroup extends PureComponent {
             </div>
           )}
           {this.renderGoogleBody(modal)}
-        </React.Fragment>
+        </>
       );
     }
     return (
-      <React.Fragment>
+      <>
         {(STAGE_PERCENTAGES.alexa[stage] && (
           <div
             className={cn('mb-3', 'text-center', {
@@ -748,7 +681,7 @@ export class ActionGroup extends PureComponent {
             </div>
           ))}
         {this.renderAlexaBody(modal)}
-      </React.Fragment>
+      </>
     );
   };
 
@@ -789,7 +722,7 @@ export class ActionGroup extends PureComponent {
           );
         }
         return (
-          <React.Fragment>
+          <>
             {/* eslint-disable-next-line sonarjs/no-duplicate-string */}
             <div className="d-flex align-items-center justify-content-center">
               <span className="pass-icon mr-2" /> Upload Successful
@@ -811,7 +744,7 @@ export class ActionGroup extends PureComponent {
                 Test on Alexa Simulator
               </a>
             </div>
-          </React.Fragment>
+          </>
         );
 
       case 4:
@@ -908,14 +841,14 @@ export class ActionGroup extends PureComponent {
               <label className="mr-1">Invocation Name</label>
               <Tooltip
                 html={
-                  <React.Fragment>
+                  <>
                     Alexa listens for the Invocation Name
                     <br /> to launch your Skill
                     <br /> e.g.{' '}
                     <i>
                       Alexa, open <b>Invocation Name</b>
                     </i>
-                  </React.Fragment>
+                  </>
                 }
                 position="bottom"
               >
@@ -1045,7 +978,7 @@ export class ActionGroup extends PureComponent {
         );
       } else {
         modal_content = (
-          <React.Fragment>
+          <>
             <img src="/images/clipboard-icon.svg" alt="Success" height="160" />
             <br />
             <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Google Actions </span>
@@ -1063,7 +996,7 @@ export class ActionGroup extends PureComponent {
                 Test on Google Actions Simulator
               </a>
             </div>
-          </React.Fragment>
+          </>
         );
       }
     } else {
@@ -1101,34 +1034,11 @@ export class ActionGroup extends PureComponent {
   };
 
   render() {
-    const {
-      updateModal,
-      should_pop_confetti,
-      updateLiveModal,
-      editName,
-      share,
-      togglingPreview,
-      show_upload_prompt,
-      vendors_open,
-      stage,
-      is_first_upload,
-    } = this.state;
-    const {
-      skill,
-      diagram_id,
-      preview,
-      history,
-      updateSkill,
-      platform,
-      live_mode,
-      vendors,
-      show_upload_prompt: props_show_upload_prompt,
-    } = this.props;
-
-    const link = `https://creator.voiceflow.com/preview/${skill.skill_id}/${diagram_id}`;
+    const { updateModal, should_pop_confetti, updateLiveModal, show_upload_prompt, vendors_open, stage, is_first_upload } = this.state;
+    const { skill, platform, live_mode, vendors, show_upload_prompt: props_show_upload_prompt } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         {updateModal && (
           <div id="confetti-positioner">
             <Confetti
@@ -1179,134 +1089,37 @@ export class ActionGroup extends PureComponent {
           <Settings {...this.props} page="basic" toggleUpgrade={this.toggleUpgrade} />
         </Modal>
 
-        <Header
-          preview={preview}
-          history={history}
-          leftRenderer={() => (
-            <div onDoubleClick={() => this.setState({ editName: true })}>
-              <Link to="/" className="mx-3">
-                <img src="/back.svg" alt="back" className="mr-3" />
-              </Link>
-              {/* eslint-disable-next-line no-nested-ternary */}
-              {editName ? (
-                <input
-                  // eslint-disable-next-line jsx-a11y/no-autofocus
-                  autoFocus
-                  className="edit-input"
-                  value={skill.name}
-                  onChange={(e) => {
-                    updateSkill('name', e.target.value);
-                    updateSkill('inv_name', e.target.value);
-                  }}
-                  onBlur={() => this.setState({ editName: false })}
-                />
-              ) : skill && skill.name ? (
-                skill.name
-              ) : (
-                'Loading Skill'
-              )}
-            </div>
-          )}
-          centerRenderer={() => {
-            if (!preview) {
-              return (
-                <div id="middle-group">
-                  <Tooltip
-                    distance={16}
-                    title={platform === 'google' ? 'Switch to Amazon View' : 'Switch to Google View'}
-                    position="bottom"
-                    className="switch switch-blue"
-                    tag="div"
-                  >
-                    <input
-                      onClick={() => {
-                        if (platform !== 'alexa') this.toggleGoogle();
-                      }}
-                      type="radio"
-                      className={`switch-input ${platform === 'alexa' ? 'checked' : ''}`}
-                      value="alexa_toggle"
-                      id="alexa_toggle"
-                    />
-                    <label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">
-                      Alexa
-                    </label>
-                    <input
-                      onClick={() => {
-                        if (platform !== 'google') this.toggleGoogle();
-                      }}
-                      type="radio"
-                      className={`switch-input ${platform === 'google' ? 'checked' : ''}`}
-                      value="google_toggle"
-                      id="google_toggle"
-                    />
-                    <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">
-                      Google
-                    </label>
-                    <span className="switch-selection" />
-                  </Tooltip>
-                </div>
-              );
-            }
-          }}
-          rightRenderer={() => (
-            <div className="title-group no-select">
-              <div className="title-group-sub">
-                <Tooltip title="Settings" position="bottom">
-                  <Button
-                    className={cn('dropdown-button-border', { active: this.state.settingsModal })}
-                    id="settings-icon"
-                    type="button"
-                    onClick={() => this.setState({ settingsModal: true })}
-                  />
-                </Tooltip>
-              </div>
-              <div className="title-group-sub">
-                <Tooltip title="Share" position="bottom">
-                  <Button
-                    className={cn('dropdown-button-border', { active: this.state.share })}
-                    id="icon-share"
-                    type="button"
-                    onClick={this.toggleShare}
-                  />
-                </Tooltip>
-                <Popover placement="bottom" isOpen={share} target="icon-share" toggle={this.toggleShare} className="mt-3">
-                  <PopoverBody style={{ minWidth: '260px' }}>
-                    <div className="space-between">
-                      <label>Allow preview sharing</label>
-                      <Toggle checked={skill.preview} disabled={togglingPreview} icons={false} onChange={this.togglePreview} />
-                    </div>
-                    {skill.preview && (
-                      <InputGroup className="mb-3">
-                        <InputGroupAddon addonType="prepend">
-                          <ClipBoard component="button" className="btn btn-clear copy-link" value={link} id="shareLink">
-                            <i className="fas fa-copy" />
-                          </ClipBoard>
-                        </InputGroupAddon>
-                        <Input readOnly value={link} className="form-control-border right" />
-                      </InputGroup>
-                    )}
-                  </PopoverBody>
-                </Popover>
-              </div>
-              <UploadButton
-                live_mode={live_mode}
-                show_upload_prompt={show_upload_prompt}
-                vendors={vendors}
-                platform={platform}
-                vendors_open={vendors_open}
-                project_id={skill.project_id}
-                openUpdateLive={() => this.openUpdateLive()}
-                toggle_upload_prompt={() => this.setState({ show_upload_prompt: !props_show_upload_prompt })}
-                isUploadLoading={() => this.isUploadLoading()}
-                openUpdate={() => this.openUpdate()}
-                toggleVendors={() => this.toggleVendors()}
-              />
-              {this.displayUploadPrompt()}
-            </div>
-          )}
-          subHeaderRenderer={() => !preview && <SecondaryNavBar page="canvas" history={history} />}
+        <div className="title-group-sub">
+          <Tooltip title="Settings" position="bottom">
+            <Button
+              className={cn('dropdown-button-border', { active: this.state.settingsModal })}
+              id="settings-icon"
+              type="button"
+              onClick={() => {
+                this.props.unfocus();
+                this.setState({ settingsModal: true });
+              }}
+            />
+          </Tooltip>
+        </div>
+        <div className="title-group-sub">
+          <ShareTest render />
+        </div>
+        <UploadButton
+          live_mode={live_mode}
+          show_upload_prompt={show_upload_prompt}
+          vendors={vendors}
+          platform={platform}
+          vendors_open={vendors_open}
+          project_id={skill.project_id}
+          openUpdateLive={() => this.openUpdateLive()}
+          toggle_upload_prompt={() => this.setState({ show_upload_prompt: !props_show_upload_prompt })}
+          isUploadLoading={() => this.isUploadLoading()}
+          openUpdate={() => this.openUpdate()}
+          toggleVendors={() => this.toggleVendors()}
         />
-      </React.Fragment>
+        {this.displayUploadPrompt()}
+      </>
     );
   }
 }
@@ -1325,11 +1138,11 @@ const mapDispatchToProps = (dispatch) => ({
   updateSkill: (type, val) => dispatch(updateVersion(type, val)),
   setError: (err) => dispatch(setError(err)),
   updateSkillLocale: (val) => dispatch(updateLocales(val)),
-  togglePreview: (preview) => dispatch(togglePreview(preview)),
   saveSkill: (publish, cb) => dispatch(updateSkillDB(publish, cb)),
   updateVendorId: (projectId, vendorId) => dispatch(updateVendorId(projectId, vendorId)),
   getVendors: () => dispatch(getVendors()),
 });
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

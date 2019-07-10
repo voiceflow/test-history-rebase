@@ -23,7 +23,7 @@ exports[`Dashboard render dashboard 1`] = `
       show_update_modal={false}
       toggle={[Function]}
     />
-    <Connect(Header)
+    <Header
       leftRenderer={[Function]}
       rightRenderer={[Function]}
       subHeaderRenderer={[Function]}

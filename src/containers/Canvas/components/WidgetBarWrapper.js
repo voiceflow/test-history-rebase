@@ -46,16 +46,6 @@ const WidgetBarWrapper = styled.div`
     min-width: 0;
   }
 
-  .zoom-in-icon {
-    margin-left: 2px;
-    margin-top: 0.5px;
-  }
-
-  .zoom-out-icon {
-    margin-right: 2px;
-    margin-top: 1.2px;
-  }
-
   .home-icon {
     margin-top: 2px;
   }
@@ -93,6 +83,9 @@ const WidgetBarWrapper = styled.div`
       width: 34px;
       height: 34px;
       padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       &:hover {
         transform: none;
       }
@@ -133,10 +126,6 @@ const WidgetBarWrapper = styled.div`
     height: 34px;
     width: 34px;
     box-shadow: 0px 2px 4px rgba(17, 49, 96, 0.16), 0px 0px 0px rgba(17, 49, 96, 0.04);
-    img {
-      height: 15px;
-      width: 15px;
-    }
     .home {
       margin-top: -3px;
     }

@@ -6,6 +6,7 @@ import { EditorState } from 'draft-js';
 import Tag from './Tag';
 import depthDecorator from './depthDecorator';
 import { reselect, selectBetween } from './selectUtil';
+import { makeEndTag, makeStartTag } from './tagUtil';
 import { findTagsBetween, insertAtomic, linkTags } from './util';
 
 function createTagPlugin(storePlugin) {
@@ -71,7 +72,7 @@ function createTagPlugin(storePlugin) {
       }
       return editorState;
     },
-    addEntity(type) {
+    addEntity(data) {
       let editorState;
       let contentState;
       let selectionState;
@@ -87,19 +88,19 @@ function createTagPlugin(storePlugin) {
 
       const [open, close] = findTagsBetween(contentState, store, selectionState.getStartKey(), selectionState.getEndKey());
 
-      contentState = contentState.createEntity('OPEN', 'IMMUTABLE', { type });
+      contentState = contentState.createEntity('OPEN', 'IMMUTABLE', data);
       const keyA = contentState.getLastCreatedEntityKey();
 
-      contentState = contentState.createEntity('CLOSE', 'IMMUTABLE', { type });
+      contentState = contentState.createEntity('CLOSE', 'IMMUTABLE', data);
       const keyB = contentState.getLastCreatedEntityKey();
 
       const openTag = {
         key: keyA,
-        text: `<${type}>`,
+        text: makeStartTag(data),
       };
       const closeTag = {
         key: keyB,
-        text: `</${type}>`,
+        text: makeEndTag(data),
       };
       linkTags(store, keyA, keyB);
 
@@ -107,48 +108,48 @@ function createTagPlugin(storePlugin) {
 
       const openList = [
         ...close.map((id) => {
-          const { type } = contentState.getEntity(id).getData();
-          contentState = contentState.createEntity('CLOSE', 'IMMUTABLE', { type });
+          const data = contentState.getEntity(id).getData();
+          contentState = contentState.createEntity('CLOSE', 'IMMUTABLE', data);
           const newKey = contentState.getLastCreatedEntityKey();
           linkTags(store, storeCopy[id].otherKey, newKey);
           return {
             key: newKey,
-            text: `</${type}>`,
+            text: makeEndTag(data),
           };
         }),
         openTag,
         ...close.reverse().map((id) => {
-          const { type } = contentState.getEntity(id).getData();
-          contentState = contentState.createEntity('OPEN', 'IMMUTABLE', { type });
+          const data = contentState.getEntity(id).getData();
+          contentState = contentState.createEntity('OPEN', 'IMMUTABLE', data);
           const newKey = contentState.getLastCreatedEntityKey();
           linkTags(store, id, newKey);
           return {
             key: newKey,
-            text: `<${type}>`,
+            text: makeStartTag(data),
           };
         }),
       ].reverse();
 
       const closeList = [
         ...open.reverse().map((id) => {
-          const { type } = contentState.getEntity(id).getData();
-          contentState = contentState.createEntity('CLOSE', 'IMMUTABLE', { type });
+          const data = contentState.getEntity(id).getData();
+          contentState = contentState.createEntity('CLOSE', 'IMMUTABLE', data);
           const newKey = contentState.getLastCreatedEntityKey();
           linkTags(store, id, newKey);
           return {
             key: newKey,
-            text: `</${type}>`,
+            text: makeEndTag(data),
           };
         }),
         closeTag,
         ...open.map((id) => {
-          const { type } = contentState.getEntity(id).getData();
-          contentState = contentState.createEntity('OPEN', 'IMMUTABLE', { type });
+          const data = contentState.getEntity(id).getData();
+          contentState = contentState.createEntity('OPEN', 'IMMUTABLE', data);
           const newKey = contentState.getLastCreatedEntityKey();
           linkTags(store, storeCopy[id].otherKey, newKey);
           return {
             key: newKey,
-            text: `<${type}>`,
+            text: makeStartTag(data),
           };
         }),
       ].reverse();
@@ -176,7 +177,7 @@ function createTagPlugin(storePlugin) {
       setEditorState(editorState);
     },
 
-    insertEntity(type) {
+    insertEntity(data) {
       let editorState;
       let contentState;
       let selectionState;
@@ -188,10 +189,10 @@ function createTagPlugin(storePlugin) {
       const undoStack = editorState.getUndoStack().push(contentState);
       editorState = EditorState.set(editorState, { allowUndo: false });
 
-      contentState = contentState.createEntity('VOID', 'IMMUTABLE', { type });
+      contentState = contentState.createEntity('VOID', 'IMMUTABLE', data);
       const entityKey = contentState.getLastCreatedEntityKey();
       editorState = EditorState.push(editorState, contentState, 'apply-entity');
-      editorState = insertAtomic(editorState, selectionState.getStartKey(), selectionState.getStartOffset(), entityKey, `<${type}/>`);
+      editorState = insertAtomic(editorState, selectionState.getStartKey(), selectionState.getStartOffset(), entityKey, makeStartTag(data));
 
       contentState = editorState.getCurrentContent();
       selectionState = reselect(selectionState, contentState, entityKey);

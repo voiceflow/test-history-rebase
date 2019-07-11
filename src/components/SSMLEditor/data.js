@@ -31,9 +31,9 @@ export default {
         attribute: 'time',
       },
       data: {
-        tag: 'break',
-        type: 'BREAK',
-        void: true,
+        VF_tag: 'break',
+        VF_type: 'BREAK',
+        VF_void: true,
       },
     },
     {
@@ -47,7 +47,7 @@ export default {
           },
         },
         {
-          name: 'Extra-Soft',
+          name: 'Very Soft',
           children: [],
           data: {
             volume: 'x-soft',
@@ -75,27 +75,23 @@ export default {
           },
         },
         {
-          name: 'Extra-Loud',
+          name: 'Very Loud',
           children: [],
           data: {
             volume: 'x-loud',
           },
         },
       ],
-      prompt: {
-        placeholder: 'Volume',
-        attribute: 'volume',
-      },
       data: {
-        tag: 'prosody',
-        type: 'VOLUME',
+        VF_tag: 'prosody',
+        VF_type: 'VOLUME',
       },
     },
     {
       name: 'Speech Rate',
       children: [
         {
-          name: 'Extra-Slow',
+          name: 'Very Slow',
           children: [],
           data: {
             rate: 'x-slow',
@@ -123,27 +119,23 @@ export default {
           },
         },
         {
-          name: 'Extra-Fast',
+          name: 'Very Fast',
           children: [],
           data: {
             rate: 'x-fast',
           },
         },
       ],
-      prompt: {
-        placeholder: 'Rate',
-        attribute: 'rate',
-      },
       data: {
-        tag: 'prosody',
-        type: 'RATE',
+        VF_tag: 'prosody',
+        VF_type: 'RATE',
       },
     },
     {
       name: 'Speech Tone (Pitch)',
       children: [
         {
-          name: 'Extra-Low',
+          name: 'Very Low',
           children: [],
           data: {
             pitch: 'x-low',
@@ -171,20 +163,16 @@ export default {
           },
         },
         {
-          name: 'Extra-High',
+          name: 'Very High',
           children: [],
           data: {
             pitch: 'x-high',
           },
         },
       ],
-      prompt: {
-        placeholder: 'Pitch',
-        attribute: 'pitch',
-      },
       data: {
-        tag: 'prosody',
-        type: 'PITCH',
+        VF_tag: 'prosody',
+        VF_type: 'PITCH',
       },
     },
     {
@@ -213,58 +201,109 @@ export default {
         },
       ],
       data: {
-        tag: 'emphasis',
-        type: 'EMPHASIS',
+        VF_tag: 'emphasis',
+        VF_type: 'EMPHASIS',
       },
     },
     {
       name: 'Interpretation',
       children: [
         {
-          name: 'Characters',
-          children: [],
-          data: {
-            'interpret-as': 'characters',
-          },
-        },
-        {
-          name: 'Number',
-          children: [],
-          data: {
-            'interpret-as': 'cardinal',
-          },
-        },
-        {
-          name: 'Ordinal',
-          children: [],
-          data: {
-            'interpret-as': 'ordinal',
-          },
-        },
-        {
-          name: 'Digits',
-          children: [],
-          data: {
-            'interpret-as': 'digits',
-          },
-        },
-        {
-          name: 'Fraction',
-          children: [],
-          data: {
-            'interpret-as': 'fraction',
-          },
-        },
-        {
-          name: 'Unit',
-          children: [],
-          data: {
-            'interpret-as': 'unit',
-          },
-        },
-        {
-          name: 'Date',
+          name: 'Words',
           children: [
+            {
+              name: 'Characters',
+              children: [],
+              data: {
+                'interpret-as': 'characters',
+              },
+            },
+            {
+              name: 'Verb',
+              children: [],
+              data: {
+                VF_tag: 'w',
+                role: 'amazon:VB',
+              },
+            },
+            {
+              name: 'Past Participle',
+              children: [],
+              data: {
+                VF_tag: 'w',
+                role: 'amazon:VBD',
+              },
+            },
+            {
+              name: 'Noun',
+              children: [],
+              data: {
+                VF_tag: 'w',
+                role: 'amazon:NN',
+              },
+            },
+            {
+              name: 'Non-default Sense',
+              children: [],
+              data: {
+                VF_tag: 'w',
+                role: 'amazon:SENSE_1',
+              },
+            },
+          ],
+          data: {},
+        },
+        {
+          name: 'Numbers',
+          children: [
+            {
+              name: 'Number',
+              children: [],
+              data: {
+                'interpret-as': 'cardinal',
+              },
+            },
+            {
+              name: 'Ordinal',
+              children: [],
+              data: {
+                'interpret-as': 'ordinal',
+              },
+            },
+            {
+              name: 'Digits',
+              children: [],
+              data: {
+                'interpret-as': 'digits',
+              },
+            },
+            {
+              name: 'Fraction',
+              children: [],
+              data: {
+                'interpret-as': 'fraction',
+              },
+            },
+            {
+              name: 'Unit',
+              children: [],
+              data: {
+                'interpret-as': 'unit',
+              },
+            },
+          ],
+          data: {},
+        },
+        {
+          name: 'Date and Time',
+          children: [
+            {
+              name: 'Time',
+              children: [],
+              data: {
+                'interpret-as': 'time',
+              },
+            },
             {
               name: 'Month-Day-Year',
               children: [],
@@ -341,76 +380,49 @@ export default {
           },
         },
         {
-          name: 'Time',
-          children: [],
-          data: {
-            'interpret-as': 'time',
-          },
+          name: 'Contacts',
+          children: [
+            {
+              name: 'Telephone',
+              children: [],
+              data: {
+                'interpret-as': 'telephone',
+              },
+            },
+            {
+              name: 'Address',
+              children: [],
+              data: {
+                'interpret-as': 'address',
+              },
+            },
+          ],
+          data: {},
         },
         {
-          name: 'Telephone',
-          children: [],
-          data: {
-            'interpret-as': 'telephone',
-          },
-        },
-        {
-          name: 'Address',
-          children: [],
-          data: {
-            'interpret-as': 'address',
-          },
-        },
-        {
-          name: 'Interjection',
-          children: [],
-          data: {
-            'interpret-as': 'interjection',
-          },
-        },
-        {
-          name: 'Expletive',
-          children: [],
-          data: {
-            'interpret-as': 'expletive',
-          },
-        },
-        {
-          name: 'Verb',
-          children: [],
-          data: {
-            tag: 'w',
-            role: 'amazon:VB',
-          },
-        },
-        {
-          name: 'Past Participle',
-          children: [],
-          data: {
-            tag: 'w',
-            role: 'amazon:VBD',
-          },
-        },
-        {
-          name: 'Noun',
-          children: [],
-          data: {
-            tag: 'w',
-            role: 'amazon:NN',
-          },
-        },
-        {
-          name: 'Non-default Sense',
-          children: [],
-          data: {
-            tag: 'w',
-            role: 'amazon:SENSE_1',
-          },
+          name: 'Expressions',
+          children: [
+            {
+              name: 'Interjection',
+              children: [],
+              data: {
+                'interpret-as': 'interjection',
+              },
+            },
+            {
+              name: 'Expletive',
+              children: [],
+              data: {
+                'interpret-as': 'expletive',
+              },
+            },
+          ],
+          data: {},
         },
       ],
       data: {
-        tag: 'say-as',
-        type: 'INTERPRETATION',
+        VF_tag: 'say-as',
+        VF_type: 'INTERPRETATION',
       },
     },
     {
@@ -440,8 +452,8 @@ export default {
         },
       ],
       data: {
-        tag: 'phoneme',
-        type: 'PHONEME',
+        VF_tag: 'phoneme',
+        VF_type: 'PHONEME',
       },
     },
     {
@@ -452,17 +464,17 @@ export default {
         target: 'alias',
       },
       data: {
-        tag: 'sub',
-        type: 'ALIAS',
+        VF_tag: 'sub',
+        VF_type: 'ALIAS',
       },
     },
     {
       name: 'Whisper',
       children: [],
       data: {
-        tag: 'amazon:effect',
+        VF_tag: 'amazon:effect',
         name: 'whispered',
-        type: 'WHISPER',
+        VF_type: 'WHISPER',
       },
     },
   ],

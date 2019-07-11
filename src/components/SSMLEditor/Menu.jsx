@@ -1,6 +1,5 @@
 import './menu.css';
 
-import Select from 'components/Dropdowns/Searchable';
 import React, { useState } from 'react';
 import { Form, Input } from 'reactstrap';
 
@@ -13,7 +12,7 @@ function Prompt(props) {
 
   const submit = (e) => {
     e.preventDefault();
-    onClick({ ...data, [attribute]: input });
+    onClick({ ...data, [attribute]: input, VF_path: [...data.VF_path, input], VF_custom: true });
     setInput('');
   };
 
@@ -26,7 +25,7 @@ function Prompt(props) {
       {options.length > 0 &&
         options
           .map((option, i) => (
-            <span key={i} className="option" onClick={() => onClick(...data, ...option.data)}>
+            <span key={i} className="option" onClick={() => onClick({ ...data, ...option.data, VF_path: [...data.VF_path, option.name] })}>
               {option.name}
             </span>
           ))
@@ -39,7 +38,7 @@ function Prompt(props) {
 function SubMenu(props) {
   const { options, data: pdata, onClick } = props;
   const { name, children, prompt, data: odata } = options;
-  const data = { ...pdata, ...odata };
+  const data = { ...pdata, ...odata, VF_path: [...pdata.VF_path, name] };
   const canClick = () => {
     if (!prompt && children.length === 0) onClick(data);
   };
@@ -59,11 +58,22 @@ function SubMenu(props) {
   );
 }
 
-function Menu() {
+function Menu(props) {
+  const { onClick, className } = props;
   return (
-    <span className="menu">
-      <SubMenu options={DATA} data={{}} onClick={console.log} />
-    </span>
+    <div className={`d-inline-block ${className}`}>
+      <span className="menu">
+        <span className="item">
+          EFFECT
+          <span className="menu">
+            <Input placeholder="Search" />
+            {DATA.children.map((val, i) => (
+              <SubMenu key={i} options={val} data={{ VF_path: [] }} onClick={onClick} />
+            ))}
+          </span>
+        </span>
+      </span>
+    </div>
   );
 }
 

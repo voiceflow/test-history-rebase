@@ -1,15 +1,19 @@
 import 'draft-js-mention-plugin/lib/plugin.css';
 import './ssmlEditor.css';
 
-import { EditorState, convertFromRaw } from 'draft-js';
+import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
 import Editor from 'draft-js-plugins-editor';
 import _ from 'lodash';
 import React, { Component } from 'react';
 
 import Menu from './Menu';
+import Recent from './Recent';
+import Speaker from './Speaker';
+import Voice from './Voice';
 import createEntityStore from './entityStore';
 import createTagPlugin from './tagPlugin.jsx';
+import { wrapVoice } from './tagUtil';
 
 class VariableText extends Component {
   constructor(props) {
@@ -30,14 +34,18 @@ class VariableText extends Component {
       mentionComponent: (mentionProps) => <span className="variable-block">{mentionProps.children}</span>,
     });
 
+    const { raw, store, voice } = props.content || {};
+
     this.state = {
-      editorState: props.content ? EditorState.createWithContent(convertFromRaw(props.content)) : EditorState.createEmpty(),
+      editorState: props.content ? EditorState.createWithContent(convertFromRaw(raw)) : EditorState.createEmpty(),
       suggestions: this.props.variables.map((v) => {
         return { name: v };
       }),
+      recent: [],
+      voice: voice || 'Alexa',
     };
 
-    this.entityStore = createEntityStore();
+    this.entityStore = createEntityStore(store);
     this.tagPlugin = createTagPlugin(this.entityStore);
   }
 
@@ -52,10 +60,50 @@ class VariableText extends Component {
     });
   };
 
+  forwardChange = () => {
+    const { editorState, voice } = this.state;
+    const payload = {
+      raw: convertToRaw(editorState.getCurrentContent()),
+      store: this.entityStore.exportStore(),
+      voice,
+      text: wrapVoice(voice, editorState.getCurrentContent().getPlainText()),
+    };
+    this.props.onChange && this.props.onChange(payload);
+  };
+
   onChange = (editorState) => {
-    this.setState({
-      editorState,
-    });
+    this.setState(
+      {
+        editorState,
+      },
+      this.forwardChange
+    );
+  };
+
+  changeVoice = (voice) => {
+    this.setState(
+      {
+        voice,
+      },
+      this.forwardChange
+    );
+  };
+
+  useTag = (data, skip = false) => {
+    if (!skip) {
+      this.setState((state) => {
+        const history = [data, ...state.recent];
+        if (history.length > 9) history.pop();
+        return {
+          recent: history,
+        };
+      });
+    }
+    if (data.VF_void) {
+      this.tagPlugin.insertEntity(data);
+    } else {
+      this.tagPlugin.addEntity(data);
+    }
   };
 
   render() {
@@ -73,11 +121,11 @@ class VariableText extends Component {
         />
         <MentionSuggestions onSearchChange={this.onSearchChange} suggestions={this.state.suggestions} onAddMention={_.noop} />
         <hr />
-        <div>
-          <button onClick={() => this.tagPlugin.insertEntity('BREAK')}>BREAK</button>
-          <button onClick={() => this.tagPlugin.addEntity('WHISPER')}>WHISPER</button>
-          <button onClick={() => this.tagPlugin.addEntity('SCREAM')}>SCREAM</button>
-          <Menu />
+        <div className="clearfix w-100">
+          <Speaker className="float-left" />
+          <Voice className="float-left" voice={this.state.voice} onChange={this.changeVoice} />
+          <Menu className="float-right" onClick={this.useTag} />
+          <Recent className="float-right" history={this.state.recent} onClick={this.useTag} />
         </div>
       </div>
     );

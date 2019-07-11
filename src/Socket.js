@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAuthCookie } from 'cookies';
+import { API_HOST, IS_DEVELOPMENT } from 'config';
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 import randomstring from 'randomstring';
@@ -8,6 +8,7 @@ import socket from 'socket.io-client';
 import { getDevice } from 'Helper';
 
 import { LOGROCKET_ENABLED, LOGROCKET_PROJECT } from './config';
+import { getAuthCookie } from './cookies';
 
 // setup LogRocket
 if (LOGROCKET_ENABLED) {
@@ -30,10 +31,10 @@ const tabId = sessionStorage.getItem('tabId');
 
 const getEndpoint = () => {
   let port = '';
-  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  if (IS_DEVELOPMENT) {
     port = ':8080';
   }
-  return `https://${process.env.APP_API_HOST}${port}`;
+  return `https://${API_HOST}${port}`;
 };
 
 // Configure axios

@@ -32,7 +32,7 @@ class UpdatesPopover extends React.Component {
                   )}
                   {/* eslint-disable-next-line xss/no-mixed-html */}
                   <p className="d-inline-block mb-1" dangerouslySetInnerHTML={{ __html: entry.details }} />
-                  <p className="text-secondary mb-0">{moment(entry.created).fromNow()}</p>
+                  <p className="text-secondary mb-0">{entry.created ? moment(entry.created).fromNow() : ''}</p>
                 </div>
                 {i !== product_updates.length - 1 && <hr className="w-100" />}
               </React.Fragment>

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AMAZON_APP_ID } from 'config';
 import React, { Component } from 'react';
 
 const AmazonLoad = () =>
@@ -15,10 +16,8 @@ const AmazonLoad = () =>
     js.id = 'amazon-sdk';
     js.async = true;
 
-    // eslint-disable-next-line no-secrets/no-secrets
-    const appId = 'amzn1.application-oa2-client.582f261a95e1447894d13a4fe2a1c72e';
     window.onAmazonLoginReady = () => {
-      window.amazon.Login.setClientId(appId);
+      window.amazon.Login.setClientId(AMAZON_APP_ID);
 
       return resolve();
     };

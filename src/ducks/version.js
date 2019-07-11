@@ -1,3 +1,4 @@
+import { utils } from '@voiceflow/common';
 import axios from 'axios';
 import { setError } from 'ducks/modal';
 import update from 'immutability-helper';
@@ -5,7 +6,8 @@ import _ from 'lodash';
 
 // eslint-disable-next-line import/named
 import { getIntentSlots } from '../Helper';
-import { getSlotsForKeys } from '../intent_util';
+
+const { getSlotsForKeys } = utils.intent;
 
 export const FETCH_VERSION_BEGIN = 'FETCH_VERSION_BEGIN';
 export const FETCH_VERSION_SUCCESS = 'FETCH_VERSION_SUCCESS';

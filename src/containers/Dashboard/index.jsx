@@ -8,6 +8,7 @@ import Header from 'components/Header';
 import LoadingModal from 'components/Modals/LoadingModal';
 import UpdatesModal from 'components/Modals/UpdatesModal';
 import { Members } from 'components/User/User';
+import { YOUTUBE_CHANNEL_ID } from 'config';
 import { ScrollContextProvider } from 'contexts';
 import { unnormalize } from 'ducks/_normalize';
 import {
@@ -39,8 +40,7 @@ import UpdatesPopover from './UpdatesPopover';
 import { Item as ListItem } from './components/Item';
 import List, { List as SimpleList } from './components/List';
 
-// eslint-disable-next-line no-secrets/no-secrets
-const YOUTUBE_CHANNEL = 'https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ/videos';
+const YOUTUBE_CHANNEL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
 
 const filter_projects = (projects, filter) => {
   const filtered = {};
@@ -154,6 +154,15 @@ export const DashBoard = (props) => {
             setShowUpdateBubble(true);
           }
           setProductUpdates(updates.data.rows);
+        } else {
+          // For when there are no updates
+          setProductUpdates([
+            {
+              details: 'There are no new updates available.',
+              type: 'empty',
+              created: 0,
+            },
+          ]);
         }
       } catch (err) {
         console.error('there was an error getting the product updates: ', err);

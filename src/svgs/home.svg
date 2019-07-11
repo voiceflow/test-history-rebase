@@ -14,7 +14,7 @@
         <g id="Icon/Editor/Home">
             <g id="Group">
                 <g id="home">
-                    fill="currentColor" xlink:href="#path-2"></use>
+                    <use fill="currentColor" xlink:href="#path-2"></use>
                     <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
                 </g>
             </g>

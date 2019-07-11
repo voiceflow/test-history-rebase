@@ -15,6 +15,10 @@ const class_mapping = {
     class: 'update-modal-change',
     label: 'Change',
   },
+  empty: {
+    class: 'update-modal-change',
+    label: '',
+  },
 };
 
 const UpdatesModal = ({ show_update_modal, toggle, product_updates }) => {

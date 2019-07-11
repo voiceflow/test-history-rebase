@@ -4,7 +4,7 @@ import * as SRD from 'components/SRD/main';
 import cn from 'classnames';
 import Menu from './Menu';
 import Editor from './Editor';
-import Test from './Test';
+import Test from 'containers/Testing';
 import axios from 'axios';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -32,7 +32,7 @@ import { renameDiagram, appendDiagrams, updateDiagrams } from 'ducks/diagram';
 import { setError, setConfirm } from 'ducks/modal';
 import { openTab, closeTab, setCanvasError, clearCanvasMessage } from 'ducks/user';
 
-import UserTestHeader from './Test/UserTestHeader';
+import TestingHeader from 'containers/Testing/TestingHeader';
 import Clipboard from './components/Clipboard';
 import ActionGroup from './components/ActionGroup/ActionGroup';
 import HelpModal from './HelpModal';
@@ -57,7 +57,7 @@ import { BlockNodeFactory } from 'components/SRD/factories/BlockNodeFactory';
 /* eslint-enable no-secrets/no-secrets */
 import { Spinner } from 'components/Spinner/Spinner';
 
-import { ALLOWED_GOOGLE_BLOCKS } from 'Constants';
+import { ALLOWED_GOOGLE_BLOCKS } from './Constants';
 
 import Linter from './linter';
 import randomstring from 'randomstring';
@@ -1347,7 +1347,7 @@ export class Canvas extends Component {
 
   // Create a new diagram from the flow block
   createDiagram(node, base_flow_name = 'New Flow', template = null, forCommand = false) {
-    const { skill, diagrams, setError } = this.props;
+    const { skill, diagrams, setError, diagram } = this.props;
     this.setState({ load_diagram: true });
     const id = util.generateID();
 
@@ -1372,16 +1372,14 @@ export class Canvas extends Component {
       index++;
     }
 
-    const diagram = {
-      id,
-      title: newFlowName,
-      variables: [],
-      data,
-      skill: skill_id,
-    };
-
     axios
-      .post('/diagram?new=1', diagram)
+      .post('/diagram?new=1', {
+        id,
+        title: newFlowName,
+        variables: [],
+        data,
+        skill: skill_id,
+      })
       .then(() => {
         if (forCommand) {
           node.extras[skill.platform].diagram_id = id;
@@ -1389,6 +1387,8 @@ export class Canvas extends Component {
           node.extras.diagram_id = id;
         }
         const subDiagrams = [...diagram.sub_diagrams, id];
+
+        // insert new diagram into redux diagrams
         const newDiagram = {
           id,
           name: newFlowName,
@@ -1577,11 +1577,12 @@ export class Canvas extends Component {
               saved={saved}
               history={history}
               preview={preview}
+              unfocus={this.onDiagramUnfocus}
             />
           </Header>
         )}
         {!this.props.preview && this.props.page === 'test' && (
-          <UserTestHeader preview={this.props.preview} history={this.props.history} page={this.props.page} />
+          <TestingHeader preview={this.props.preview} history={this.props.history} page={this.props.page} />
         )}
         {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={() => this.setState({ spotlight: false })} />}
         <div

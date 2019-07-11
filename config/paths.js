@@ -6,7 +6,7 @@ const staticDir = 'static/';
 
 const PATHS = {
   pkg: 'package.json',
-  entrypoint: `${sourceDir}index.js`,
+  entrypoint: `${sourceDir}index.jsx`,
   indexHTML: `${publicDir}index.html`,
   sourceDir,
   publicDir,

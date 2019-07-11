@@ -154,6 +154,15 @@ export const DashBoard = (props) => {
             setShowUpdateBubble(true);
           }
           setProductUpdates(updates.data.rows);
+        } else {
+          // For when there are no updates
+          setProductUpdates([
+            {
+              details: 'There are no new updates available.',
+              type: 'empty',
+              created: 0,
+            },
+          ]);
         }
       } catch (err) {
         console.error('there was an error getting the product updates: ', err);

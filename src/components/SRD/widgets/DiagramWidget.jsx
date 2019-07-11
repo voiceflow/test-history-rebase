@@ -1,3 +1,4 @@
+import { NODE_ENV } from 'config';
 import React from "react";
 import _ from "lodash";
 import { Alert } from 'reactstrap';
@@ -108,7 +109,7 @@ export class DiagramWidget extends BaseWidget {
 		window.addEventListener("keyup", this.onKeyUpPointer, false);
 
 		// dont focus the window when in test mode - jsdom fails
-		if (process.env.NODE_ENV !== "test") {
+		if (NODE_ENV !== "test") {
 			window.focus();
 		}
 	}

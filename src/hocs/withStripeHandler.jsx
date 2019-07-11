@@ -1,3 +1,4 @@
+import { BUILD_ENV, IS_PRODUCTION } from 'config';
 import * as _ from 'lodash';
 import React, { Component } from 'react';
 import { Elements, StripeProvider, injectStripe } from 'react-stripe-elements';
@@ -10,7 +11,7 @@ const POLL_INTERVAL = 1000;
 const STRIPE_LIVE_KEY = 'pk_live_9QXjJjWc0sjk8VSwbQT3viub';
 const STRIPE_TEST_KEY = 'pk_test_G3o7CC0pvrW2cIbIU1bLkMSR';
 /* eslint-enable no-secrets/no-secrets */
-const STRIPE_KEY = process.env.NODE_ENV === 'production' && process.env.REACT_APP_BUILD_ENV !== 'staging' ? STRIPE_LIVE_KEY : STRIPE_TEST_KEY;
+const STRIPE_KEY = IS_PRODUCTION && BUILD_ENV !== 'staging' ? STRIPE_LIVE_KEY : STRIPE_TEST_KEY;
 
 const StripeHandler = (WrappedComponent) => {
   const StripeWrappedComponent = injectStripe(WrappedComponent);

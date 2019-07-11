@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { setError } from 'ducks/modal';
 import { TEST_STATUS, leaveTest, renderTest, resetTest } from 'ducks/test';
 import { useToggle } from 'hooks/toggle';
+import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
@@ -39,12 +40,13 @@ function Test(props) {
       if (preview) {
         renderTest(diagramId);
       } else {
-        setSaveCB(renderTest);
-        save();
+        _.isFunction(setSaveCB) && setSaveCB(renderTest);
+        _.isFunction(save) && save();
       }
     }
   };
 
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     if (open && !loading) render();
     if (open)
@@ -86,7 +88,7 @@ function Test(props) {
               </Tooltip>
             </div>
           </div>
-          <Timeline diagramEngine={diagramEngine} enterFlow={enterFlow} open={open} toggleConditions={toggleConditionsOpen} />
+          <Timeline diagramEngine={diagramEngine} enterFlow={enterFlow || _.noop} open={open} toggleConditions={toggleConditionsOpen} />
         </div>
       </div>
     </>

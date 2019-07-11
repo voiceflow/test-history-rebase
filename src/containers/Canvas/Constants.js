@@ -1,4 +1,4 @@
-exports.ALLOWED_GOOGLE_BLOCKS = [
+export const ALLOWED_GOOGLE_BLOCKS = [
   'choice',
   'speak',
   'start',
@@ -21,3 +21,11 @@ exports.ALLOWED_GOOGLE_BLOCKS = [
   'integrations',
   'stream',
 ];
+
+export const defaultVariables = {
+  sessions: 'The Number of times a particular user has opened the app',
+  user_id: "The user's Amazon/Google unique id",
+  timestamp: 'UNIX timestamp (number of seconds since January 1st, 1970 at UTC.)',
+  platform: 'The platform your skill is running on ("alexa" or "google")',
+  locale: 'The locale of the user (eg en-US, en-CA, it-IT, fr-FR ...)',
+};

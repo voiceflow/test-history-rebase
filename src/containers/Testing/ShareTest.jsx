@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { Input, InputGroup, InputGroupAddon, Popover, PopoverBody } from 'reactstrap';
 
-const UserTestHeader = (props) => {
+const TestingHeader = (props) => {
   const { shareTest, rendered, render } = props;
 
   const [share, setShare] = useState(false);
@@ -60,4 +60,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UserTestHeader);
+)(TestingHeader);

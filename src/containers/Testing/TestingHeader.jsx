@@ -7,9 +7,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import ShareTest from './ShareTest';
-import TestTimer from './TestTimer';
+import TestTimer from './TestingTimer';
 
-const UserTestHeader = (props) => {
+const TestingHeader = (props) => {
   const { page, skill, history, leaveTest, preview } = props;
 
   return (
@@ -67,4 +67,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UserTestHeader);
+)(TestingHeader);

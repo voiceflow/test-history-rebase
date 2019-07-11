@@ -1,9 +1,10 @@
 import axios from 'axios';
-import Input from 'components/Input';
 import React from 'react';
 import { toast } from 'react-toastify';
 import Toggle from 'react-toggle';
 import { Button, Col, Form, FormGroup, Label, Table } from 'reactstrap';
+
+import Input from '@/components/Input';
 
 class Template extends React.Component {
   constructor(props) {

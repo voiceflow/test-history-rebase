@@ -1,10 +1,11 @@
-import Button from 'components/Button';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { Alert } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 import { selectStyles } from '../../../components/VariableSelect/VariableSelect';
 import MenuItem from '../Sidebars/components/MenuItem';

@@ -1,13 +1,14 @@
-import Button from 'components/Button';
-import EmptyCard from 'components/Cards/EmptyCard';
-import VoiceCards from 'components/Cards/VoiceCards';
-import { Spinner } from 'components/Spinner/Spinner';
-import { copyProduct, deleteProduct } from 'ducks/product';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import Masonry from 'react-masonry-component';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import Button from '@/components/Button';
+import EmptyCard from '@/components/Cards/EmptyCard';
+import VoiceCards from '@/components/Cards/VoiceCards';
+import { Spinner } from '@/components/Spinner/Spinner';
+import { copyProduct, deleteProduct } from '@/ducks/product';
 
 class Products extends Component {
   constructor(props) {

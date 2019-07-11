@@ -1,5 +1,6 @@
-import Button from 'components/Button';
 import React from 'react';
+
+import Button from '@/components/Button';
 
 export const ModalHeader = ({ header, toggle }) => (
   <div className="modal-header">

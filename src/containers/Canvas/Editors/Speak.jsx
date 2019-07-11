@@ -1,8 +1,9 @@
-import Button from 'components/Button';
 import _ from 'lodash';
 import randomstring from 'randomstring';
 import React, { Component } from 'react';
 import { Input, InputGroup } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 import SpeakElement from './components/SpeakElement';
 

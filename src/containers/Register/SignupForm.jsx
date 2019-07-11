@@ -1,10 +1,11 @@
-import Button from 'components/Button';
-import { signup } from 'ducks/account';
 import queryString from 'query-string/index';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { signup } from '@/ducks/account';
 
 import ErrorWidget from './ErrorWidget';
 import SocialLogin from './SocialLogin';

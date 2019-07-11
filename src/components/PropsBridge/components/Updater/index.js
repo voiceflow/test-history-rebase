@@ -1,7 +1,8 @@
-import { PropsBridgeContextConsumer } from 'contexts';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+
+import { PropsBridgeContextConsumer } from '@/contexts';
 
 class Updater extends PureComponent {
   static propTypes = {

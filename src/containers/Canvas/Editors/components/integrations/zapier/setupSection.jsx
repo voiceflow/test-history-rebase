@@ -1,8 +1,9 @@
-import Button from 'components/Button';
-import ClipBoard from 'components/ClipBoard/ClipBoard';
-import { ZAPIER_PATH } from 'config';
 import React, { Component } from 'react';
 import { Collapse, Input, InputGroup, InputGroupAddon } from 'reactstrap';
+
+import Button from '@/components/Button';
+import ClipBoard from '@/components/ClipBoard/ClipBoard';
+import { ZAPIER_PATH } from '@/config';
 
 const ZAPIER_INVITE_ENDPOINT = `https://zapier.com/developer/public-invite/${ZAPIER_PATH}/`;
 

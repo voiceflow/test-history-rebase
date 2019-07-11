@@ -1,10 +1,11 @@
 import axios from 'axios';
-import Normalize, { unnormalize } from 'ducks/_normalize';
-import { setError } from 'ducks/modal';
-import { fetchProjects } from 'ducks/project';
 import update from 'immutability-helper';
 import _ from 'lodash';
 import randomstring from 'randomstring';
+
+import Normalize, { unnormalize } from '@/ducks/_normalize';
+import { setError } from '@/ducks/modal';
+import { fetchProjects } from '@/ducks/project';
 
 import { deleteProject } from './project';
 

@@ -1,9 +1,10 @@
-import Button from 'components/Button';
-import AudioDrop from 'components/Uploads/AudioDrop';
 import React, { Component } from 'react';
 import Select from 'react-select';
 import Textarea from 'react-textarea-autosize';
 import { Collapse } from 'reactstrap';
+
+import Button from '@/components/Button';
+import AudioDrop from '@/components/Uploads/AudioDrop';
 
 function onGenerate() {
   alert('Text to Speech is Deprecated - Please Use the Speak Block');

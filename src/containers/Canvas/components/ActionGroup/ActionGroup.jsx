@@ -3,22 +3,23 @@ import 'react-sweet-progress/lib/style.css';
 
 import axios from 'axios';
 import cn from 'classnames';
-import Button from 'components/Button';
-import AmazonLogin from 'components/Forms/AmazonLogin';
-import { ModalHeader } from 'components/Modals/ModalHeader';
-import ShareTest from 'containers/Testing/ShareTest';
-import { AmazonAccessToken, getVendors, googleAccessToken } from 'ducks/account';
-import { setError } from 'ducks/modal';
-import { updateVendorId } from 'ducks/project';
-import { updateLocales, updateSkillDB, updateVersion } from 'ducks/version';
 import React, { PureComponent } from 'react';
 import Confetti from 'react-dom-confetti';
 import { connect } from 'react-redux';
 import { Progress } from 'react-sweet-progress';
 import { Tooltip } from 'react-tippy';
 import { Alert, Modal, ModalBody } from 'reactstrap';
-import LOCALE_MAP from 'services/LocaleMap';
-import InvRegex from 'services/Regex';
+
+import Button from '@/components/Button';
+import AmazonLogin from '@/components/Forms/AmazonLogin';
+import { ModalHeader } from '@/components/Modals/ModalHeader';
+import ShareTest from '@/containers/Testing/ShareTest';
+import { AmazonAccessToken, getVendors, googleAccessToken } from '@/ducks/account';
+import { setError } from '@/ducks/modal';
+import { updateVendorId } from '@/ducks/project';
+import { updateLocales, updateSkillDB, updateVersion } from '@/ducks/version';
+import LOCALE_MAP from '@/services/LocaleMap';
+import InvRegex from '@/services/Regex';
 
 import Settings from '../../../Skill/Settings';
 import UploadButton from '../UploadButton/UploadButton';

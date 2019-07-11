@@ -1,11 +1,12 @@
-import { fetchDiagramVariables } from 'ducks/diagram_variable';
-import { setConfirm } from 'ducks/modal';
-import { openTab } from 'ducks/user';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Tooltip } from 'react-tippy';
 import { Alert, Input } from 'reactstrap';
+
+import { fetchDiagramVariables } from '@/ducks/diagram_variable';
+import { setConfirm } from '@/ducks/modal';
+import { openTab } from '@/ducks/user';
 
 import DiagramVariables from './components/DiagramVariables';
 

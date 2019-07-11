@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { fbLogin, googleLogin } from 'ducks/account';
 import toJson from 'enzyme-to-json';
 import { shallow } from 'enzyme/build';
 import React from 'react';
+
+import { fbLogin, googleLogin } from '@/ducks/account';
 
 import { LoginForm } from '../LoginForm';
 import { SignupForm } from '../SignupForm';

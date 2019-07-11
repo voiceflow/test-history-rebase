@@ -1,7 +1,8 @@
 import axios from 'axios';
-import Normalize from 'ducks/_normalize';
-import { setError } from 'ducks/modal';
-import { fetchLiveVersion, updateVersion } from 'ducks/version';
+
+import Normalize from '@/ducks/_normalize';
+import { setError } from '@/ducks/modal';
+import { fetchLiveVersion, updateVersion } from '@/ducks/version';
 
 import { addProjectToList } from './board';
 

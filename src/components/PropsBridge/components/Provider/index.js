@@ -1,9 +1,10 @@
 /* eslint-disable react/no-unused-state */
 
-import { PropsBridgeContextProvider } from 'contexts';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+
+import { PropsBridgeContextProvider } from '@/contexts';
 
 export default class Provider extends Component {
   static propTypes = {

@@ -16,8 +16,10 @@ module.exports = {
   },
 
   resolve: {
-    modules: [paths.sourceDir, paths.modules],
     extensions: ['.js', '.json', '.jsx', '.css'],
+    alias: {
+      '@': paths.sourceDir,
+    },
   },
 
   plugins: [

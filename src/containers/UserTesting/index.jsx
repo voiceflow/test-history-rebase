@@ -1,17 +1,18 @@
 import './UserTesting.css';
 
 import axios from 'axios';
-import Button from 'components/Button';
-import ClipBoard from 'components/ClipBoard/ClipBoard';
-import Header from 'components/Header';
-import Test from 'containers/Testing';
-import { initializeTest, updateTest } from 'ducks/test';
-import { fetchVersionSuccess } from 'ducks/version';
 import React from 'react';
 import { IntercomAPI } from 'react-intercom';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { Input, InputGroup, InputGroupAddon, Popover, PopoverBody } from 'reactstrap';
+
+import Button from '@/components/Button';
+import ClipBoard from '@/components/ClipBoard/ClipBoard';
+import Header from '@/components/Header';
+import Test from '@/containers/Testing';
+import { initializeTest, updateTest } from '@/ducks/test';
+import { fetchVersionSuccess } from '@/ducks/version';
 
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["componentDidMount","componentWillUnmount","render"] }] */
 

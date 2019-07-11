@@ -1,8 +1,9 @@
 import axios from 'axios';
-import Button from 'components/Button';
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { Input } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 const MAX_SIZE = 5 * 1024 * 1024;
 

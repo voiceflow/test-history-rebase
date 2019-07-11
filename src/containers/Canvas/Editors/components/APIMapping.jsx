@@ -1,10 +1,11 @@
-import Button from 'components/Button';
-import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect';
-import { openTab } from 'ducks/user';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { selectStyles, variableComponent } from '@/components/VariableSelect/VariableSelect';
+import { openTab } from '@/ducks/user';
 
 import VariableInput from './VariableInput';
 

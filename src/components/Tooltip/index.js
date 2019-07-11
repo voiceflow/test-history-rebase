@@ -2,7 +2,8 @@ import classNames from 'classnames';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { findScrollableParent, getCursorPosition, getNodePosition, getNodeSize } from 'utils/dom';
+
+import { findScrollableParent, getCursorPosition, getNodePosition, getNodeSize } from '@/utils/dom';
 
 import Overlay from './components/Overlay';
 

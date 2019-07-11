@@ -1,6 +1,7 @@
-import Button from 'components/Button';
 import _ from 'lodash';
 import React, { Component } from 'react';
+
+import Button from '@/components/Button';
 
 import Expression from './components/Expression';
 import Expressionfy from './components/Expressionfy';

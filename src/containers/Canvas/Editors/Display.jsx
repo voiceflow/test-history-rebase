@@ -299,10 +299,7 @@ export class Display extends Component {
             onChange={this.selectDisplay}
             styles={selectStyles}
             placeholder="Select Multimodal Display"
-            options={displayOptions.map((display, idx) => {
-              if (idx === displayOptions.length - 1) {
-                return { label: display.display_id, value: display.title, openVar: this.goToSidebar };
-              }
+            options={displayOptions.map((display) => {
               return {
                 value: display.display_id,
                 label: display.title,

@@ -122,7 +122,6 @@ export const SocialLoginContainer = styled.div`
     cursor: pointer;
     transition: transform 0.25s ease;
     padding: 10px 22px;
-    //background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #ffffff;
     background-color: #fff;
     border: 1px solid #dfe3ed;
     border-radius: 90px;

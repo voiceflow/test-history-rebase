@@ -4,7 +4,7 @@ import axios from 'axios';
 import Button from 'components/Button';
 import ClipBoard from 'components/ClipBoard/ClipBoard';
 import Header from 'components/Header';
-import Test from 'containers/Test';
+import Test from 'containers/Testing';
 import { initializeTest, updateTest } from 'ducks/test';
 import { fetchVersionSuccess } from 'ducks/version';
 import React from 'react';

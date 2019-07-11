@@ -1,4 +1,4 @@
-import './TestSidebar.css';
+import './TestingSidebar.css';
 
 import cn from 'classnames';
 import { setError } from 'ducks/modal';
@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { compose } from 'recompose';
 
-import TestSettings from './TestSettings';
+import TestSettings from './TestingSettings';
 import Timeline from './timeline';
 
 function Test(props) {

@@ -6,7 +6,7 @@ import cn from 'classnames';
 import Button from 'components/Button';
 import AmazonLogin from 'components/Forms/AmazonLogin';
 import { ModalHeader } from 'components/Modals/ModalHeader';
-import ShareTest from 'containers/Test/ShareTest';
+import ShareTest from 'containers/Testing/ShareTest';
 import { AmazonAccessToken, getVendors, googleAccessToken } from 'ducks/account';
 import { setError } from 'ducks/modal';
 import { updateVendorId } from 'ducks/project';

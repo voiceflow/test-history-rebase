@@ -7,17 +7,45 @@
   display: inline-block;
 }
 
+.editor .search__dropdown_content {
+  min-width: 150px
+}
+
 .editor .tag{
 }
 
-.tag.WHISPER{
-  color: grey
-}
-
-.tag.SCREAM{
-  color: red
-}
-
 .tag.BREAK{
-  color: black
+  color: #132144
+}
+
+.tag.VOLUME{
+  color: #5891FB
+}
+
+.tag.RATE{
+  color: #F86683
+}
+
+.tag.PITCH{
+  color: #E29C42
+}
+
+.tag.EMPHASIS{
+  color: #36B4D2
+}
+
+.tag.INTERPRETATION{
+  color: #42B761
+}
+
+.tag.PHONEME{
+  color: #E760D4
+}
+
+.tag.ALIAS{
+  color: #26A69A
+}
+
+.tag.WHISPER{
+  color: #8DA2B5
 }

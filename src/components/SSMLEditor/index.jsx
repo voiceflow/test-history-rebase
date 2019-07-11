@@ -7,6 +7,7 @@ import Editor from 'draft-js-plugins-editor';
 import _ from 'lodash';
 import React, { Component } from 'react';
 
+import Menu from './Menu';
 import createEntityStore from './entityStore';
 import createTagPlugin from './tagPlugin.jsx';
 
@@ -71,9 +72,13 @@ class VariableText extends Component {
           stripPastedStyles={true}
         />
         <MentionSuggestions onSearchChange={this.onSearchChange} suggestions={this.state.suggestions} onAddMention={_.noop} />
-        <button onClick={() => this.tagPlugin.insertEntity('BREAK')}>BREAK</button>
-        <button onClick={() => this.tagPlugin.addEntity('WHISPER')}>WHISPER</button>
-        <button onClick={() => this.tagPlugin.addEntity('SCREAM')}>SCREAM</button>
+        <hr />
+        <div>
+          <button onClick={() => this.tagPlugin.insertEntity('BREAK')}>BREAK</button>
+          <button onClick={() => this.tagPlugin.addEntity('WHISPER')}>WHISPER</button>
+          <button onClick={() => this.tagPlugin.addEntity('SCREAM')}>SCREAM</button>
+          <Menu />
+        </div>
       </div>
     );
   }

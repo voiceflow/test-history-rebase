@@ -1,0 +1,54 @@
+.prompt {
+  position: absolute;
+  width: fit-content;
+  display: none;
+  transform: translateX(-100%);
+  top:0;
+  background: white;
+  white-space: nowrap;
+  border: 1px solid black;
+}
+
+.menu {
+  padding: 0;
+  margin: 0;
+  background: #fff;
+  float: right;
+}
+
+.item {
+  float: left;
+  display: block;
+  position: relative;
+  width: 150px;
+  white-space: nowrap;
+  border: 1px solid black;
+}
+
+.menu .menu {
+  position: absolute;
+  top: 100%;
+  width:100%;
+  background: #ccc;
+  display: none;
+}
+
+.menu .menu .menu {
+  transform: translateX(-100%);
+  top: 0;
+  background: #999;
+}
+
+.menu .menu .menu .menu{
+  background: #777;
+}
+
+.item:hover > .menu {
+  display: block;
+}
+.item:hover > .prompt {
+  display: block;
+}
+.option{
+  color: blue;
+}

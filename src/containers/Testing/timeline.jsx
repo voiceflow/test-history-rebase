@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import TestBox from './TestBox';
+import TestBox from './TestingBox';
 import { getUserTestOutputs } from './utils';
 
 class Timeline extends Component {

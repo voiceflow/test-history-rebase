@@ -118,7 +118,7 @@ export const initializeTest = (options = {}) => (dispatch, getState) => {
   const nlc = new NLC();
 
   slots.forEach((slot) => {
-    if (slot.type.value && slot.type.value.toLowerCase() === 'custom') {
+    if (_.get(slot, ['type', 'value']) === 'Custom') {
       nlc.addSlotType({
         type: slot.name,
         matcher: slot.inputs,

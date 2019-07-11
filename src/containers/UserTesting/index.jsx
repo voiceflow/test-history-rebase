@@ -4,10 +4,9 @@ import axios from 'axios';
 import Button from 'components/Button';
 import ClipBoard from 'components/ClipBoard/ClipBoard';
 import Header from 'components/Header';
-import Test from 'containers/Canvas/Test';
+import Test from 'containers/Testing';
 import { initializeTest, updateTest } from 'ducks/test';
 import { fetchVersionSuccess } from 'ducks/version';
-import _ from 'lodash';
 import React from 'react';
 import { IntercomAPI } from 'react-intercom';
 import { connect } from 'react-redux';
@@ -98,7 +97,7 @@ class UserTesting extends React.Component {
         />
         {!this.state.loading && (
           <div id="PublicUserTesting">
-            <Test open={true} enterFlow={_.noop} loading={this.state.loading} setSaveCB={_.noop} save={_.noop} />
+            <Test open={true} loading={this.state.loading} />
           </div>
         )}
       </>

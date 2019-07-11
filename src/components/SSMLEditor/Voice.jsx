@@ -18,4 +18,4 @@ function Voice(props) {
   );
 }
 
-export default Voice;
+export default React.memo(Voice);

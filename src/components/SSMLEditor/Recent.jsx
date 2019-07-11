@@ -22,4 +22,4 @@ function Recent(props) {
   );
 }
 
-export default Recent;
+export default React.memo(Recent);

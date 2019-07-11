@@ -63,15 +63,7 @@ function Menu(props) {
   return (
     <div className={`d-inline-block ${className}`}>
       <span className="menu">
-        <span className="item">
-          EFFECT
-          <span className="menu">
-            <Input placeholder="Search" />
-            {DATA.children.map((val, i) => (
-              <SubMenu key={i} options={val} data={{ VF_path: [] }} onClick={onClick} />
-            ))}
-          </span>
-        </span>
+        <SubMenu options={DATA} data={{ VF_path: [] }} onClick={onClick} />
       </span>
     </div>
   );

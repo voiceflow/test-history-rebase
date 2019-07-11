@@ -10,4 +10,4 @@ function Speaker(props) {
   );
 }
 
-export default Speaker;
+export default React.memo(Speaker);

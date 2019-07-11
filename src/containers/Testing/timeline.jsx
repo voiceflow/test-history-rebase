@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 
 import Button from '@/components/Button';
 import { setError } from '@/ducks/modal';
-import { TEST_STATUS, endTest, fetchState, incrementTime, resetTest, startTest, updateState } from '@/ducks/test';
+import { TEST_STATUS, endTest, fetchState, resetTest, startTest, updateState } from '@/ducks/test';
 
 import TestBox from './TestingBox';
 import { getUserTestOutputs } from './utils';
@@ -261,7 +261,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   endTest,
-  incrementTime,
   fetchState,
   resetTest,
   setError,

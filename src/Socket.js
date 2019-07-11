@@ -5,10 +5,8 @@ import randomstring from 'randomstring';
 import socket from 'socket.io-client';
 
 import { getDevice } from '@/Helper';
-import { API_HOST, IS_DEVELOPMENT } from '@/config';
-
-import { LOGROCKET_ENABLED, LOGROCKET_PROJECT } from './config';
-import { getAuthCookie } from './cookies';
+import { API_HOST, IS_DEVELOPMENT, LOGROCKET_ENABLED, LOGROCKET_PROJECT } from '@/config';
+import { getAuthCookie } from '@/cookies';
 
 // setup LogRocket
 if (LOGROCKET_ENABLED) {

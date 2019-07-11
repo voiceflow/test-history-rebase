@@ -5,9 +5,8 @@ import randomstring from 'randomstring';
 
 import Normalize, { unnormalize } from '@/ducks/_normalize';
 import { setError } from '@/ducks/modal';
-import { fetchProjects } from '@/ducks/project';
 
-import { deleteProject } from './project';
+import { deleteProject, fetchProjects } from './project';
 
 const initialState = {
   byId: {},

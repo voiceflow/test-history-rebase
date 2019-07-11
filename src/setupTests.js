@@ -2,5 +2,5 @@
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-process.env.REACT_APP_LOGROCKET_PROJECT = 'eource/voiceflow';
+process.env.LOGROCKET_PROJECT = '<LOGROCKET_PROJECT>';
 configure({ adapter: new Adapter() });

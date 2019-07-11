@@ -43,6 +43,7 @@ class VariableText extends Component {
       }),
       recent: [],
       voice: voice || 'Alexa',
+      text: '',
     };
 
     this.entityStore = createEntityStore(store);
@@ -61,12 +62,12 @@ class VariableText extends Component {
   };
 
   forwardChange = () => {
-    const { editorState, voice } = this.state;
+    const { editorState, voice, text } = this.state;
     const payload = {
       raw: convertToRaw(editorState.getCurrentContent()),
       store: this.entityStore.exportStore(),
       voice,
-      text: wrapVoice(voice, editorState.getCurrentContent().getPlainText()),
+      text: wrapVoice(voice, text),
     };
     this.props.onChange && this.props.onChange(payload);
   };
@@ -75,6 +76,13 @@ class VariableText extends Component {
     this.setState(
       {
         editorState,
+        text: editorState
+          .getCurrentContent()
+          .getBlockMap()
+          .map((block) => {
+            return block ? block.getText() : '';
+          })
+          .join(''),
       },
       this.forwardChange
     );
@@ -122,7 +130,7 @@ class VariableText extends Component {
         <MentionSuggestions onSearchChange={this.onSearchChange} suggestions={this.state.suggestions} onAddMention={_.noop} />
         <hr />
         <div className="clearfix w-100">
-          <Speaker className="float-left" />
+          <Speaker className="float-left" ssml={this.state.text} voice={this.state.voice} />
           <Voice className="float-left" voice={this.state.voice} onChange={this.changeVoice} />
           <Menu className="float-right" onClick={this.useTag} />
           <Recent className="float-right" history={this.state.recent} onClick={this.useTag} />

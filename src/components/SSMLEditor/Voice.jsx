@@ -6,7 +6,7 @@ import { VOICES } from 'Constants';
 function Voice(props) {
   const { voice, onChange, className } = props;
   return (
-    <div className={`d-inline-block ${className}`} style={{ 'min-width': '125px' }}>
+    <div className={`d-inline-block ${className}`} style={{ minWidth: '125px' }}>
       <Select
         className="speak-box"
         classNamePrefix="select-box"

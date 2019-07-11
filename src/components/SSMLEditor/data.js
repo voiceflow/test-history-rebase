@@ -461,7 +461,7 @@ export default {
       children: [],
       prompt: {
         placeholder: 'Alias',
-        target: 'alias',
+        attribute: 'alias',
       },
       data: {
         VF_tag: 'sub',

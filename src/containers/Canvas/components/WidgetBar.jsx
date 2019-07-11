@@ -2,28 +2,37 @@ import Button from 'components/Button';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
+import HomeIcon from 'svgs/home.svg';
+import StarIcon from 'svgs/nav-star.svg';
+import ZoomInIcon from 'svgs/zoom-in.svg';
+import ZoomOutIcon from 'svgs/zoom-out.svg';
 
+import SvgIcon from '../../../components/SvgIcon';
 import WidgetBarWrapper from './WidgetBarWrapper';
 
 const BaseWidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update, preview, isCanvas, menuOpen }) => (
   <WidgetBarWrapper isCanvas isTest={!isCanvas} menuOpen={menuOpen}>
     <div className="canvas-controls__action __type-dual">
       <Button isWhiteCirc onClick={() => zoom(1000, engine, update)} className="round-left zoom-btn">
-        <img src="/zoom-in.svg" alt="" />
+        {/* <img src="/zoom-in.svg" alt="" /> */}
+        <SvgIcon className="zoom-in-icon" icon={ZoomInIcon} height={14} width={14} />
       </Button>
       <Button isWhiteCirc onClick={() => zoom(-1000, engine, update)} className="round-right zoom-btn">
-        <img src="/zoom-out.svg" alt="" />
+        {/* <img src="/zoom-out.svg" alt="" /> */}
+        <SvgIcon className="zoom-out-icon" icon={ZoomOutIcon} height={14} width={14} />
       </Button>
     </div>
     <Tooltip title="Go to home" position="top" distance={8}>
       <Button isWhiteCirc className="__type-single" onClick={() => centerDiagram(engine, setOpen)}>
-        <img src="/home.svg" className="home" alt="" />
+        {/* <img src="/home.svg" className="home" alt="" /> */}
+        <SvgIcon className="home-icon" icon={HomeIcon} height={14} width={14} />
       </Button>
     </Tooltip>
     {!preview && (
       <Tooltip title="See Shortcuts" position="top" distance={8}>
         <Button isWhiteCirc className="__type-single" onClick={() => toggleKeyboard(!keyboardHelp)}>
-          <img src="/star-plain.svg" className="star" alt="" />
+          {/* <img src="/star-plain.svg" className="star" alt="" /> */}
+          <SvgIcon className="star-icon" icon={StarIcon} height={14} width={14} />
         </Button>
       </Tooltip>
     )}

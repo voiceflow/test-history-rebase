@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 
+import { SvgIconContainer } from '../../../components/SvgIcon';
+
 const WidgetBarWrapper = styled.div`
   position: absolute;
   bottom: 13px;
@@ -7,25 +9,22 @@ const WidgetBarWrapper = styled.div`
   display: flex;
   transition: transform 0.3s, -webkit-transform 0.3s;
 
-  left: 50%;
-  margin-left: -50px;
-
   ${({ isCanvas }) =>
     isCanvas
       ? css`
-          transform: translateX(-334px);
+          transform: translateX(290px);
         `
       : ''}
   ${({ isTest }) =>
     isTest
       ? css`
-          transform: translateX(-334px);
+          transform: translateX(41px);
         `
       : ''};
   ${({ menuOpen }) =>
     !menuOpen
       ? css`
-          transform: translateX(-604px);
+          transform: translateX(17px);
         `
       : ''}
 
@@ -47,9 +46,27 @@ const WidgetBarWrapper = styled.div`
     min-width: 0;
   }
 
+  .zoom-in-icon {
+    margin-left: 2px;
+    margin-top: 0.5px;
+  }
+
+  .zoom-out-icon {
+    margin-right: 2px;
+    margin-top: 1.2px;
+  }
+
+  .home-icon {
+    margin-top: 2px;
+  }
+
+  .star-icon {
+    margin-top: 4px;
+  }
+
   .canvas-controls__action.__type-dual {
     background-color: #fff;
-    box-shadow: -1px 0px 4px rgba(17, 49, 96, 0.16), 0px 0px 0px rgba(17, 49, 96, 0.04);
+    box-shadow: 0px 1px 4px rgba(17, 49, 96, 0.16), 0px 0px 0px rgba(17, 49, 96, 0.04);
     border-radius: 42px;
     display: -ms-flexbox;
     display: flex;
@@ -71,7 +88,6 @@ const WidgetBarWrapper = styled.div`
     .zoom-btn {
       flex: 0 0 auto;
       min-width: 0;
-      margin-left: 0;
       -webkit-box-shadow: none;
       box-shadow: none;
       width: 34px;
@@ -82,7 +98,15 @@ const WidgetBarWrapper = styled.div`
       }
       img {
         margin-top: -6px;
-        margin-left: 1px;
+      }
+      &:active {
+        border: 1px solid rgba(93, 157, 245, 0.59);
+        background: linear-gradient(180deg, rgba(93, 157, 245, 0.12) 0%, rgba(44, 133, 255, 0.16) 100%), #ffffff;
+        box-shadow: inset 0 0 0 1px #fff;
+
+        ${SvgIconContainer} {
+          color: #5d9df5;
+        }
       }
     }
   }
@@ -91,11 +115,14 @@ const WidgetBarWrapper = styled.div`
     background-repeat: no-repeat;
     background-position: center;
     border-radius: 30px 0 0 30px;
+    img {
+      margin-left: 2px;
+    }
   }
 
   .round-right {
     border-radius: 0 30px 30px 0;
-    margin-left: 1px;
+    margin-left: 3px;
     img {
       margin-left: -1px;
     }
@@ -119,6 +146,15 @@ const WidgetBarWrapper = styled.div`
     &:hover {
       transform: none;
       box-shadow: 0px 2px 4px rgba(17, 49, 96, 0.210739), 0px 0px 0px rgba(17, 49, 96, 0.04);
+    }
+    &:active {
+      border: 1px solid rgba(93, 157, 245, 0.59);
+      background: linear-gradient(180deg, rgba(93, 157, 245, 0.12) 0%, rgba(44, 133, 255, 0.16) 100%), #ffffff;
+      box-shadow: inset 0 0 0 1px #fff;
+
+      ${SvgIconContainer} {
+        color: #5d9df5;
+      }
     }
   }
 `;

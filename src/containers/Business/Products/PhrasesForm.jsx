@@ -1,9 +1,10 @@
 import { AvForm } from 'availity-reactstrap-validation';
-import Button from 'components/Button';
 import _ from 'lodash';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 import { Input } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 class PhrasesForm extends React.Component {
   render() {

@@ -1,10 +1,11 @@
 import cn from 'classnames';
-import Button from 'components/Button';
-import { openTab } from 'ducks/user';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { openTab } from '@/ducks/user';
 
 import Permission from './components/Permission';
 

@@ -1,6 +1,7 @@
-import Button from 'components/Button';
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 const class_mapping = {
   FEATURE: {

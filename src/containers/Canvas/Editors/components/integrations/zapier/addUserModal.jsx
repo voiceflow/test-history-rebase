@@ -1,7 +1,8 @@
-import { addIntegrationUser } from 'ducks/integration';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FormGroup, Input, Label } from 'reactstrap';
+
+import { addIntegrationUser } from '@/ducks/integration';
 
 import { ZAPIER } from './constants';
 

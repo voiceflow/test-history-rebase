@@ -1,13 +1,13 @@
 import { constants } from '@voiceflow/common';
 import axios from 'axios';
-import Button from 'components/Button';
-import { setError } from 'ducks/modal';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert, FormGroup, Label } from 'reactstrap';
 
-import { intentHasSlots } from 'Helper';
+import { intentHasSlots } from '@/Helper';
+import Button from '@/components/Button';
+import { setError } from '@/ducks/modal';
 
 import CanFulfill from './Canfulfill';
 

@@ -1,13 +1,14 @@
 import axios from 'axios';
-import MultipleFields from 'components/Forms/MultipleFields';
-import { setError } from 'ducks/modal';
-import { updateVersion } from 'ducks/version';
 import update from 'immutability-helper';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Nav, NavItem, NavLink } from 'reactstrap';
+
+import MultipleFields from '@/components/Forms/MultipleFields';
+import { setError } from '@/ducks/modal';
+import { updateVersion } from '@/ducks/version';
 
 const clientAuthScheme = [
   { value: 'HTTP_BASIC', label: 'HTTP Basic(recommended)' },

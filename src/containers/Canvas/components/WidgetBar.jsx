@@ -1,7 +1,8 @@
 import cn from 'classnames';
-import Button from 'components/Button';
 import React from 'react';
 import { ButtonGroup } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update, preview, isCanvas }) => (
   <div

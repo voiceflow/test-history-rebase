@@ -1,11 +1,12 @@
-import Button from 'components/Button';
-import { setError } from 'ducks/modal';
-import { TEST_STATUS, endTest, fetchState, incrementTime, resetTest, startTest, updateState } from 'ducks/test';
 import _ from 'lodash';
 import moment from 'moment';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+
+import Button from '@/components/Button';
+import { setError } from '@/ducks/modal';
+import { TEST_STATUS, endTest, fetchState, resetTest, startTest, updateState } from '@/ducks/test';
 
 import TestBox from './TestingBox';
 import { getUserTestOutputs } from './utils';
@@ -260,7 +261,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   endTest,
-  incrementTime,
   fetchState,
   resetTest,
   setError,

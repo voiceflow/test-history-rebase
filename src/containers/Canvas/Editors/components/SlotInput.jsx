@@ -1,11 +1,12 @@
 import cn from 'classnames';
-import Button from 'components/Button';
-import { setError } from 'ducks/modal';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Tooltip } from 'react-tippy';
 import { Collapse } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { setError } from '@/ducks/modal';
 
 import SlotSynonyms, { SingleValueOption, SlotDiabled, SlotOption } from './SlotComponents';
 

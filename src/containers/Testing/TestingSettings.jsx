@@ -1,10 +1,11 @@
 import cn from 'classnames';
-import { defaultVariables } from 'containers/Canvas/Constants';
-import { setDebug, updateGlobal } from 'ducks/test';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import Toggle from 'react-toggle';
+
+import { defaultVariables } from '@/containers/Canvas/Constants';
+import { setDebug, updateGlobal } from '@/ducks/test';
 
 function TestSettings(props) {
   const { open, debug, setDebug, globals, updateGlobal } = props;

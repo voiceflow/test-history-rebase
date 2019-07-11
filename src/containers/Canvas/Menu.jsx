@@ -1,10 +1,11 @@
 import './Menu.css';
 
 import cn from 'classnames';
-import { FACEBOOK_GROUP_ID } from 'config';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
+
+import { FACEBOOK_GROUP_ID } from '@/config';
 
 import Blocks from './Sidebars/Blocks';
 import Flows from './Sidebars/Flows';

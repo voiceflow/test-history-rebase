@@ -1,9 +1,10 @@
 import { constants, utils } from '@voiceflow/common';
 import NLC from '@voiceflow/natural-language-commander';
 import axios from 'axios';
-import { setError } from 'ducks/modal';
 import update from 'immutability-helper';
 import _ from 'lodash';
+
+import { setError } from '@/ducks/modal';
 
 const { DEFAULT_INTENTS } = constants.intents;
 const SLOT_TYPES = constants.slots;

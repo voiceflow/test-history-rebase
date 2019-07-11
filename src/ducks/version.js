@@ -1,8 +1,9 @@
 import { utils } from '@voiceflow/common';
 import axios from 'axios';
-import { setError } from 'ducks/modal';
 import update from 'immutability-helper';
 import _ from 'lodash';
+
+import { setError } from '@/ducks/modal';
 
 // eslint-disable-next-line import/named
 import { getIntentSlots } from '../Helper';

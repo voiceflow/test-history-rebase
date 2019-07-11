@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import serializeError from 'serialize-error';
 
-import { getDevice } from 'Helper';
+import { getDevice } from '@/Helper';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {

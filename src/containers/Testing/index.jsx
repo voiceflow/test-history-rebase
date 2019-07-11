@@ -1,14 +1,15 @@
 import './TestingSidebar.css';
 
 import cn from 'classnames';
-import { setError } from 'ducks/modal';
-import { TEST_STATUS, leaveTest, renderTest, resetTest } from 'ducks/test';
-import { useToggle } from 'hooks/toggle';
 import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { compose } from 'recompose';
+
+import { setError } from '@/ducks/modal';
+import { TEST_STATUS, leaveTest, renderTest, resetTest } from '@/ducks/test';
+import { useToggle } from '@/hooks/toggle';
 
 import TestSettings from './TestingSettings';
 import Timeline from './timeline';

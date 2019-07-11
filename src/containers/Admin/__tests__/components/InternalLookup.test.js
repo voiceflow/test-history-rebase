@@ -1,7 +1,8 @@
 import { ConnectedRouter } from 'connected-react-router';
 import { mount } from 'enzyme';
 import React from 'react';
-import Root, { history } from 'store/store';
+
+import Root, { history } from '@/store/store';
 
 import InternalLookup from '../../components/InternalLookup/InternalLookup';
 import SkillDetail from '../../components/SkillDetail/SkillDetail';

@@ -6,6 +6,7 @@ import cn from 'classnames';
 import Button from 'components/Button';
 import AmazonLogin from 'components/Forms/AmazonLogin';
 import { ModalHeader } from 'components/Modals/ModalHeader';
+import ShareTest from 'containers/Testing/ShareTest';
 import { AmazonAccessToken, getVendors, googleAccessToken } from 'ducks/account';
 import { setError } from 'ducks/modal';
 import { updateVendorId } from 'ducks/project';
@@ -20,7 +21,6 @@ import LOCALE_MAP from 'services/LocaleMap';
 import InvRegex from 'services/Regex';
 
 import Settings from '../../../Skill/Settings';
-import ShareTest from '../../Test/ShareTest';
 import UploadButton from '../UploadButton/UploadButton';
 
 const loading = (message) => {

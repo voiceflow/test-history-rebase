@@ -4,7 +4,7 @@ import * as SRD from 'components/SRD/main';
 import cn from 'classnames';
 import Menu from './Menu';
 import Editor from './Editor';
-import Test from './Test';
+import Test from 'containers/Testing';
 import axios from 'axios';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -32,7 +32,7 @@ import { renameDiagram, appendDiagrams, updateDiagrams } from 'ducks/diagram';
 import { setError, setConfirm } from 'ducks/modal';
 import { openTab, closeTab, setCanvasError, clearCanvasMessage } from 'ducks/user';
 
-import UserTestHeader from './Test/UserTestHeader';
+import TestingHeader from 'containers/Testing/TestingHeader';
 import Clipboard from './components/Clipboard';
 import ActionGroup from './components/ActionGroup/ActionGroup';
 import HelpModal from './HelpModal';
@@ -1582,7 +1582,7 @@ export class Canvas extends Component {
           </Header>
         )}
         {!this.props.preview && this.props.page === 'test' && (
-          <UserTestHeader preview={this.props.preview} history={this.props.history} page={this.props.page} />
+          <TestingHeader preview={this.props.preview} history={this.props.history} page={this.props.page} />
         )}
         {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={() => this.setState({ spotlight: false })} />}
         <div

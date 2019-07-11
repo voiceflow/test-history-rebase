@@ -220,7 +220,7 @@ exports[`Canvas render canvas 1`] = `
           transitionName="fade"
         />
       </div>
-      <WidgetBar
+      <Connect(BaseWidgetBar)
         engine={
           DiagramEngine {
             "canvas": null,

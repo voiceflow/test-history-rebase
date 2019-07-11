@@ -289,9 +289,11 @@ export class Display extends Component {
           <ModalBody>{modal && this.renderDisplayTest()}</ModalBody>
         </Modal>
         <div>
-          <label>Multimodal Display</label>
-          <div onClick={() => this.props.history.push(`/visuals/${skill_id}`)} className="d__see_all">
-            See all
+          <div className="d__label-title">
+            <label>Multimodal Display</label>
+            <div onClick={() => this.props.history.push(`/visuals/${skill_id}`)} className="d__see_all">
+              See all
+            </div>
           </div>
           <Select
             classNamePrefix="select-box"

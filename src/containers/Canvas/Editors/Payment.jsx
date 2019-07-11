@@ -172,9 +172,11 @@ export class Payment extends Component {
     }
     return (
       <React.Fragment>
-        <label>Select Existing Product</label>
-        <div onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/products`)} className="d__see_all">
-          See all
+        <div className="d__label-title">
+          <label>Select Existing Product</label>
+          <div className="d__see_all" onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/products`)}>
+            See all
+          </div>
         </div>
         <Select
           classNamePrefix="select-box"

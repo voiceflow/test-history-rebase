@@ -151,12 +151,6 @@
   min-width: 0;
 }
 
-.d__see_all {
-  float: right;
-  color: #5d9df5;
-  cursor: pointer;
-}
-
 .ag__settings_header {
   /* margin: 1rem 16px 0 4px; */
   margin-top: 5px;

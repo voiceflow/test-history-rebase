@@ -49,6 +49,7 @@ import ShortCuts from 'components/ShortCuts/ShortCuts';
 import Mousetrap from 'mousetrap';
 
 import { BlockNodeModel } from 'components/SRD/models/BlockNodeModel';
+import { BlockLinkModel } from 'components/SRD/models/BlockLinkModel';
 import { PointModel } from 'components/SRD/models/PointModel';
 /* eslint-disable no-secrets/no-secrets */
 import { BlockLinkFactory } from 'components/SRD/factories/BlockLinkFactory';
@@ -323,6 +324,19 @@ export class Canvas extends Component {
             engine.getDiagramModel().addNode(n);
           }
         });
+      } else if (recent.eventType === 'copy') {
+        const linkSet = new Set(recent.node.filter((n) => n instanceof BlockLinkModel));
+        _.forEach(recent.node, (n) => {
+          if (n instanceof BlockNodeModel) {
+            _.forEach(n.ports, (port) => {
+              _.forEach(port.getLinks(), (link) => {
+                if (!linkSet.has(link)) link.remove();
+              });
+            });
+            engine.getDiagramModel().removeNode(n);
+          }
+          if (n instanceof BlockLinkModel) engine.getDiagramModel().removeLink(n);
+        });
       } else {
         _.forEach(recent.node, (n) => n instanceof BlockNodeModel && n.remove());
       }
@@ -340,6 +354,11 @@ export class Canvas extends Component {
       const recent = _.last(redoEvents);
       if (recent.eventType === 'remove') {
         _.forEach(recent.node, (n) => n instanceof BlockNodeModel && n.remove());
+      } else if (recent.eventType === 'copy') {
+        _.forEach(recent.node, (n) => {
+          if (n instanceof BlockNodeModel) engine.getDiagramModel().addNode(n);
+          if (n instanceof BlockLinkModel) engine.getDiagramModel().addLink(n);
+        });
       } else {
         engine.getDiagramModel().clearSelection();
         _.forEach(recent.node, (n) => n instanceof BlockNodeModel && engine.getDiagramModel().addNode(n));

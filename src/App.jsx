@@ -17,6 +17,8 @@ import React, { Component } from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import ReactGA from 'react-ga';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { hot } from 'react-hot-loader/root';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { Alert } from 'reactstrap';
@@ -124,6 +126,7 @@ class App extends Component {
 global.__isReactDndBackendSetUp = false; // eslint-disable-line no-underscore-dangle
 
 export default compose(
+  hot,
   connect(
     null,
     {

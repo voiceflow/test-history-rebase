@@ -20,4 +20,5 @@ module.exports = {
     '\\.(css|less)$': 'identity-obj-proxy',
   },
   moduleFileExtensions: ['web.js', 'js', 'web.ts', 'ts', 'web.tsx', 'tsx', 'json', 'web.jsx', 'jsx', 'node'],
+  snapshotSerializers: ['enzyme-to-json/serializer'],
 };

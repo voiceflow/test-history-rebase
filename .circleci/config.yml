@@ -67,6 +67,9 @@ jobs:
             - run:
                 name: (Build App)
                 command: npm run build
+            - run:
+                name: (Build Storybook)
+                command: npm run storybook:build
   deploy-production:
     machine: true
     steps:

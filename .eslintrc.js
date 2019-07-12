@@ -79,4 +79,12 @@ module.exports = {
       },
     },
   },
+  overrides: [
+    {
+      files: ['*.story.jsx'],
+      rules: {
+        'import/no-extraneous-dependencies': 'off',
+      },
+    },
+  ],
 };

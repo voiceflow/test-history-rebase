@@ -296,7 +296,7 @@ jobs:
       - run:
           name: Update image
           command: |
-            kubectl set image --namespace voiceflow-v1 deployment/storybook-staging app=168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-staging-$CIRCLE_BUILD_NUM
+            kubectl set image --namespace voiceflow-v1 deployment/storybook-staging storybook=168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-staging-$CIRCLE_BUILD_NUM
   deploy-k8s-production:
     machine: true
     steps:

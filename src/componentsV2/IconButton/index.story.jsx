@@ -2,9 +2,10 @@ import { action } from '@storybook/addon-actions';
 import { boolean } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import EllipsisIcon from 'svgs/elipsis.svg';
 
-import { FlexAround } from '../Flex';
+import Variant from '@/../.storybook/Variant';
+import EllipsisIcon from '@/svgs/elipsis.svg';
+
 import IconButton from '.';
 
 storiesOf('Icon Button', module).add('variants', () => {
@@ -12,10 +13,16 @@ storiesOf('Icon Button', module).add('variants', () => {
   const onClick = action('click');
 
   return (
-    <FlexAround>
-      <IconButton icon={EllipsisIcon} disabled={disabled} onClick={onClick} />
-      <IconButton icon={EllipsisIcon} variant="flat" disabled={disabled} onClick={onClick} />
-      <IconButton icon={EllipsisIcon} variant="action" disabled={disabled} onClick={onClick} />
-    </FlexAround>
+    <>
+      <Variant label="normal">
+        <IconButton icon={EllipsisIcon} disabled={disabled} onClick={onClick} />
+      </Variant>
+      <Variant label="flat">
+        <IconButton icon={EllipsisIcon} variant="flat" disabled={disabled} onClick={onClick} />
+      </Variant>
+      <Variant label="action">
+        <IconButton icon={EllipsisIcon} variant="action" disabled={disabled} onClick={onClick} />
+      </Variant>
+    </>
   );
 });

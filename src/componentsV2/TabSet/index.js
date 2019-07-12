@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { FlexCenter } from 'componentsV2/Flex';
+import { FlexCenter } from '@/componentsV2/Flex';
 
 import Tab from './components/Tab';
 

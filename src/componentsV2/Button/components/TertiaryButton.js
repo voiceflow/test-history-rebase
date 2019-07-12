@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import ButtonContainer from 'componentsV2/Button/components/ButtonContainer';
+import ButtonContainer from '@/componentsV2/Button/components/ButtonContainer';
 
 const TertiaryButton = styled(ButtonContainer)`
   border: 0;

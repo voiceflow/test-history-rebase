@@ -1,9 +1,9 @@
-import SvgIcon from 'components/SvgIcon';
 import React from 'react';
-import CaretDownIcon from 'svgs/solid/caret-down.svg';
 
-import PrimaryButton from 'componentsV2/Button/components/PrimaryButton';
-import PrimaryButtonContainer from 'componentsV2/Button/components/PrimaryButton/components/PrimaryButtonContainer';
+import SvgIcon from '@/components/SvgIcon';
+import PrimaryButton from '@/componentsV2/Button/components/PrimaryButton';
+import PrimaryButtonContainer from '@/componentsV2/Button/components/PrimaryButton/components/PrimaryButtonContainer';
+import CaretDownIcon from '@/svgs/solid/caret-down.svg';
 
 import { Container, Toggle } from './components';
 

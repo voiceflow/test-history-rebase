@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
-import ButtonContainer from 'componentsV2/Button/components/ButtonContainer';
-import { BUTTON_HEIGHT } from 'componentsV2/Button/styles';
+import ButtonContainer from '@/componentsV2/Button/components/ButtonContainer';
+import { BUTTON_HEIGHT } from '@/componentsV2/Button/styles';
 
 import { importantStyles } from '../styles';
 

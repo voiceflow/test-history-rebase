@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import SecondaryButton from 'componentsV2/Button/components/SecondaryButton';
+import SecondaryButton from '@/componentsV2/Button/components/SecondaryButton';
 
 const OverflowMenuContainer = styled(SecondaryButton)`
   color: rgba(110, 132, 154, 0.85);

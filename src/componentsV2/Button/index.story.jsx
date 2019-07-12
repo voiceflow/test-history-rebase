@@ -2,10 +2,10 @@ import { action } from '@storybook/addon-actions';
 import { boolean, text } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import PlusIcon from 'svgs/plus.svg';
-import SyncIcon from 'svgs/sync.svg';
 
-import { FlexAround } from 'componentsV2/Flex';
+import Variant from '@/../.storybook/Variant';
+import PlusIcon from '@/svgs/plus.svg';
+import SyncIcon from '@/svgs/sync.svg';
 
 import Button from '.';
 
@@ -16,17 +16,23 @@ storiesOf('Button', module)
     const onClick = action('click');
 
     return (
-      <FlexAround>
-        <Button disabled={disabled} onClick={onClick}>
-          {label}
-        </Button>
-        <Button variant="secondary" disabled={disabled} onClick={onClick}>
-          {label}
-        </Button>
-        <Button variant="tertiary" disabled={disabled} onClick={onClick}>
-          {label}
-        </Button>
-      </FlexAround>
+      <>
+        <Variant label="primary">
+          <Button disabled={disabled} onClick={onClick}>
+            {label}
+          </Button>
+        </Variant>
+        <Variant label="secondary">
+          <Button variant="secondary" disabled={disabled} onClick={onClick}>
+            {label}
+          </Button>
+        </Variant>
+        <Variant label="tertiary">
+          <Button variant="tertiary" disabled={disabled} onClick={onClick}>
+            {label}
+          </Button>
+        </Variant>
+      </>
     );
   })
   .add('variants - with icon', () => {
@@ -35,13 +41,17 @@ storiesOf('Button', module)
     const onClick = action('click');
 
     return (
-      <FlexAround>
-        <Button icon={PlusIcon} disabled={disabled} onClick={onClick}>
-          {label}
-        </Button>
-        <Button variant="secondary" icon={SyncIcon} disabled={disabled} onClick={onClick}>
-          {label}
-        </Button>
-      </FlexAround>
+      <>
+        <Variant label="primary">
+          <Button icon={PlusIcon} disabled={disabled} onClick={onClick}>
+            {label}
+          </Button>
+        </Variant>
+        <Variant label="secondary">
+          <Button variant="secondary" icon={SyncIcon} disabled={disabled} onClick={onClick}>
+            {label}
+          </Button>
+        </Variant>
+      </>
     );
   });

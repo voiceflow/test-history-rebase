@@ -47,6 +47,8 @@ module.exports = {
           'setupTests.js',
           // TODO: To be removed once SvgIcon component is being used in the app
           'components/SvgIcon/*',
+          // TODO: To be removed once V2 components are being used
+          'componentsV2/**/*',
           'svgs/**/*',
         ],
       },

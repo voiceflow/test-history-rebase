@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import BaseButton from 'componentsV2/Button/components/BaseButton';
+import BaseButton from '@/componentsV2/Button/components/BaseButton';
 
 const Tab = styled(BaseButton)`
   padding: 0 24px;

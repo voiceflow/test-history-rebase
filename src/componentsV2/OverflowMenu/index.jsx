@@ -1,6 +1,7 @@
-import SvgIcon from 'components/SvgIcon';
 import React from 'react';
-import EllipsisIcon from 'svgs/elipsis.svg';
+
+import SvgIcon from '@/components/SvgIcon';
+import EllipsisIcon from '@/svgs/elipsis.svg';
 
 import Container from './components/OverflowMenuContainer';
 

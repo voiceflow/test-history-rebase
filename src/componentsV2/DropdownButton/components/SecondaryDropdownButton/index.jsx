@@ -1,6 +1,7 @@
-import SvgIcon from 'components/SvgIcon';
 import React from 'react';
-import CaretDownIcon from 'svgs/solid/caret-down.svg';
+
+import SvgIcon from '@/components/SvgIcon';
+import CaretDownIcon from '@/svgs/solid/caret-down.svg';
 
 import { Container, Toggle } from './components';
 

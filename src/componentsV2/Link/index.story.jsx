@@ -3,7 +3,7 @@ import { boolean, text } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { FlexAround } from 'componentsV2/Flex';
+import Variant from '@/../.storybook/Variant';
 
 import Link from '.';
 
@@ -13,16 +13,22 @@ storiesOf('Link', module).add('variants', () => {
   const onClick = action('click');
 
   return (
-    <FlexAround>
-      <Link disabled={disabled} onClick={onClick}>
-        {label}
-      </Link>
-      <Link variant="secondary" disabled={disabled} onClick={onClick}>
-        {label}
-      </Link>
-      <Link variant="hidden" disabled={disabled} onClick={onClick}>
-        {label}
-      </Link>
-    </FlexAround>
+    <>
+      <Variant label="primary">
+        <Link disabled={disabled} onClick={onClick}>
+          {label}
+        </Link>
+      </Variant>
+      <Variant label="secondary">
+        <Link variant="secondary" disabled={disabled} onClick={onClick}>
+          {label}
+        </Link>
+      </Variant>
+      <Variant label="hidden">
+        <Link variant="hidden" disabled={disabled} onClick={onClick}>
+          {label}
+        </Link>
+      </Variant>
+    </>
   );
 });

@@ -1,8 +1,8 @@
 import { withProps } from 'recompose';
 import styled from 'styled-components';
 
-import PrimaryButtonContainer from 'componentsV2/Button/components/PrimaryButton/components/PrimaryButtonContainer';
-import { FlexCenter } from 'componentsV2/Flex';
+import PrimaryButtonContainer from '@/componentsV2/Button/components/PrimaryButton/components/PrimaryButtonContainer';
+import { FlexCenter } from '@/componentsV2/Flex';
 
 const PrimaryDropdownButtonContainer = styled(FlexCenter)`
   & ${PrimaryButtonContainer} {

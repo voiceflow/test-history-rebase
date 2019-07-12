@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { flexCenterStyles } from 'componentsV2/Flex';
+import { flexCenterStyles } from '@/componentsV2/Flex';
 
 import { clickableStyles } from '../styles';
 

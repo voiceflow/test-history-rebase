@@ -334,8 +334,9 @@ export class Canvas extends Component {
               });
             });
             engine.getDiagramModel().removeNode(n);
+          } else if (n instanceof BlockLinkModel) {
+            engine.getDiagramModel().removeLink(n);
           }
-          if (n instanceof BlockLinkModel) engine.getDiagramModel().removeLink(n);
         });
       } else {
         _.forEach(recent.node, (n) => n instanceof BlockNodeModel && n.remove());
@@ -356,8 +357,11 @@ export class Canvas extends Component {
         _.forEach(recent.node, (n) => n instanceof BlockNodeModel && n.remove());
       } else if (recent.eventType === 'copy') {
         _.forEach(recent.node, (n) => {
-          if (n instanceof BlockNodeModel) engine.getDiagramModel().addNode(n);
-          if (n instanceof BlockLinkModel) engine.getDiagramModel().addLink(n);
+          if (n instanceof BlockNodeModel) {
+            engine.getDiagramModel().addNode(n);
+          } else if (n instanceof BlockLinkModel) {
+            engine.getDiagramModel().addLink(n);
+          }
         });
       } else {
         engine.getDiagramModel().clearSelection();

@@ -1,5 +1,6 @@
-import Button from 'components/Button';
 import React, { Component } from 'react';
+
+import Button from '@/components/Button';
 
 import ChoiceInput from './ChoiceInput';
 

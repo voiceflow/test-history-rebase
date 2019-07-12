@@ -1,15 +1,16 @@
-import Page404 from 'components/404';
-import Legal from 'components/Legal';
-// import ModuleAdminPage from 'containers/ModuleAdminPage';
-import Account from 'containers/Account';
-import Admin from 'containers/Admin';
-import NewTeam from 'containers/Dashboard/NewTeam';
-import Register from 'containers/Register';
-import Reset from 'containers/Register/reset';
-import ResetPassword from 'containers/Register/resetPassword';
-import UserTesting from 'containers/UserTesting';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+
+import Page404 from '@/components/404';
+import Legal from '@/components/Legal';
+// import ModuleAdminPage from '@/containers/ModuleAdminPage';
+import Account from '@/containers/Account';
+import Admin from '@/containers/Admin';
+import NewTeam from '@/containers/Dashboard/NewTeam';
+import Register from '@/containers/Register';
+import Reset from '@/containers/Register/reset';
+import ResetPassword from '@/containers/Register/resetPassword';
+import UserTesting from '@/containers/UserTesting';
 
 import Skill from '../Skill';
 import Team from '../Team';

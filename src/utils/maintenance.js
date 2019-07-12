@@ -1,6 +1,7 @@
 import { maintenance } from '@voiceflow/common';
-import { BUILD_ENV, IS_PRODUCTION } from 'config';
 import moment from 'moment';
+
+import { BUILD_ENV, IS_PRODUCTION } from '@/config';
 
 const { MAINTENANCE_START, MAINTENANCE_START_DATE, MAINTENANCE_TIME_MS } = maintenance;
 const WARNING_INTERVALS = [60, 30, 10, 5, 1];

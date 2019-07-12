@@ -6,7 +6,8 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { track } from 'utils/tracker';
+
+import { track } from '@/utils/tracker';
 
 import Icon from '../Icon';
 import Loader from '../Loader';

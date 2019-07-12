@@ -1,9 +1,10 @@
-import IntercomChat from 'components/Header/components/IntercomChat';
-import UserMenu from 'components/Header/components/UserMenu';
-import SecondaryNavBar from 'components/NavBar/SecondaryNavBar';
-import { updateVersion } from 'ducks/version';
 import React from 'react';
 import { connect } from 'react-redux';
+
+import IntercomChat from '@/components/Header/components/IntercomChat';
+import UserMenu from '@/components/Header/components/UserMenu';
+import SecondaryNavBar from '@/components/NavBar/SecondaryNavBar';
+import { updateVersion } from '@/ducks/version';
 
 import PlatformToggle from './components/PlatformToggle';
 import ProjectTitle from './components/ProjectTitle';

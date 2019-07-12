@@ -1,6 +1,8 @@
 const { action } = require('webpack-nano/argv');
 const WebpackBar = require('webpackbar');
 const webpack = require('webpack');
+const { UnusedFilesWebpackPlugin } = require('unused-files-webpack-plugin');
+const CircularDependencyPlugin = require('circular-dependency-plugin');
 const paths = require('../paths');
 const { BASE_HREF, IS_PRODUCTION, ENV } = require('./config');
 
@@ -16,8 +18,10 @@ module.exports = {
   },
 
   resolve: {
-    modules: [paths.sourceDir, paths.modules],
     extensions: ['.js', '.json', '.jsx', '.css'],
+    alias: {
+      '@': paths.sourceDir,
+    },
   },
 
   plugins: [
@@ -30,6 +34,36 @@ module.exports = {
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new WebpackBar({ name: `Voiceflow Creator - ${action || 'build'}` }),
+    new UnusedFilesWebpackPlugin({
+      failOnUnused: IS_PRODUCTION,
+      globOptions: {
+        cwd: paths.sourceDir,
+        ignore: [
+          'assets/**/*',
+          '**/__tests__/**/*',
+          '**/__mock__/**/*',
+          '**/__mocks__/**/*',
+          'components/SRD/sass/**/*',
+          'setupTests.js',
+          // TODO: To be removed once SvgIcon component is being used in the app
+          'components/SvgIcon/*',
+          'svgs/**/*',
+        ],
+      },
+    }),
+    new CircularDependencyPlugin({
+      exclude: /node_modules/,
+      allowAsyncCycles: true,
+      cwd: process.cwd(),
+      failOnError: true,
+
+      onDetected({ paths, compilation }) {
+        // ignore self-referencing modules
+        if (paths.length > 2) {
+          compilation.warnings.push(new Error(`Circular dependency detected:\n${paths.join(' -> ')}`));
+        }
+      },
+    }),
   ],
 
   mode: IS_PRODUCTION ? 'production' : 'development',

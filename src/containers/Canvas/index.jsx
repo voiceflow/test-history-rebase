@@ -1,10 +1,10 @@
 /* eslint-disable guard-for-in, no-restricted-syntax, simple-import-sort/sort */
 import React, { Component } from 'react';
-import * as SRD from 'components/SRD/main';
+import * as SRD from '@/components/SRD/main';
 import cn from 'classnames';
 import Menu from './Menu';
 import Editor from './Editor';
-import Test from 'containers/Testing';
+import Test from '@/containers/Testing';
 import axios from 'axios';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -12,51 +12,52 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 // import Loader from './Loader'
 import 'draft-js/dist/Draft.css';
-import 'components/SRD/sass/main.css';
+import '@/components/SRD/sass/main.css';
 import './StoryBoard.css';
 
 // HOCs
-import { undo, redo } from 'hocs/withUndoRedo';
-import { open, blockMenu } from 'hocs/withCanvasHelper';
-import { keyboardModal } from 'hocs/withModalHandlers';
+import { undo, redo } from '@/hocs/withUndoRedo';
+import { open, blockMenu } from '@/hocs/withCanvasHelper';
+import { keyboardModal } from '@/hocs/withModalHandlers';
 
 import { WidgetBar } from './components/WidgetBar';
 import CanvasWarning from './components/CanvasWarning';
 import Header from './components/CanvasHeader';
 // Helpers
-import { combineAppendValidation, appendValidator } from 'utils/combineHelper';
+import { combineAppendValidation, appendValidator } from '@/utils/combineHelper';
 
-import { updateVersion, updateIntents, setCanFulfill } from 'ducks/version';
-import { setVariables } from 'ducks/variable';
-import { renameDiagram, appendDiagrams, updateDiagrams } from 'ducks/diagram';
-import { setError, setConfirm } from 'ducks/modal';
-import { openTab, closeTab, setCanvasError, clearCanvasMessage } from 'ducks/user';
+import { updateVersion, updateIntents, setCanFulfill } from '@/ducks/version';
+import { setVariables } from '@/ducks/variable';
+import { renameDiagram, appendDiagrams, updateDiagrams } from '@/ducks/diagram';
+import { setError, setConfirm } from '@/ducks/modal';
+import { openTab, closeTab, setCanvasError, clearCanvasMessage } from '@/ducks/user';
 
-import TestingHeader from 'containers/Testing/TestingHeader';
+import TestingHeader from '@/containers/Testing/TestingHeader';
 import Clipboard from './components/Clipboard';
 import ActionGroup from './components/ActionGroup/ActionGroup';
 import HelpModal from './HelpModal';
-import new_template from 'assets/templates/new';
+import new_template from '@/assets/templates/new';
 import { Alert, ListGroup, ListGroupItem } from 'reactstrap';
 
 import cloneDeep from 'lodash/cloneDeep';
 import * as util from './util';
 import Spotlight from './Spotlight';
-import { Toolkit } from 'components/SRD/Toolkit';
+import { Toolkit } from '@/components/SRD/Toolkit';
 import FlowBar from './FlowBar';
-import DefaultModal from 'components/Modals/DefaultModal';
-import ShortCuts from 'components/ShortCuts/ShortCuts';
+import DefaultModal from '@/components/Modals/DefaultModal';
+import ShortCuts from '@/components/ShortCuts/ShortCuts';
 import Mousetrap from 'mousetrap';
 
-import { BlockNodeModel } from 'components/SRD/models/BlockNodeModel';
-import { BlockLinkModel } from 'components/SRD/models/BlockLinkModel';
-import { PointModel } from 'components/SRD/models/PointModel';
+import { BlockNodeModel } from '@/components/SRD/models/BlockNodeModel';
+import { BlockLinkModel } from '@/components/SRD/models/BlockLinkModel';
+import { PointModel } from '@/components/SRD/models/PointModel';
+
 /* eslint-disable no-secrets/no-secrets */
-import { BlockLinkFactory } from 'components/SRD/factories/BlockLinkFactory';
-import { BlockPortFactory } from 'components/SRD/factories/BlockPortFactory';
-import { BlockNodeFactory } from 'components/SRD/factories/BlockNodeFactory';
+import { BlockLinkFactory } from '@/components/SRD/factories/BlockLinkFactory';
+import { BlockPortFactory } from '@/components/SRD/factories/BlockPortFactory';
+import { BlockNodeFactory } from '@/components/SRD/factories/BlockNodeFactory';
 /* eslint-enable no-secrets/no-secrets */
-import { Spinner } from 'components/Spinner/Spinner';
+import { Spinner } from '@/components/Spinner/Spinner';
 
 import { ALLOWED_GOOGLE_BLOCKS } from './Constants';
 
@@ -67,9 +68,9 @@ import { checkBlockDisabledLive } from './Blocks';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Prompt } from 'react-router';
 import moment from 'moment';
-import Upgrade from 'components/Modals/MultiPlatformModalContent';
-import { fetchIntegrationUsers } from 'ducks/integration';
-import { initializeTest, renderTest } from 'ducks/test';
+import Upgrade from '@/components/Modals/MultiPlatformModalContent';
+import { fetchIntegrationUsers } from '@/ducks/integration';
+import { initializeTest, renderTest } from '@/ducks/test';
 /* eslint-enable simple-import-sort/sort */
 
 import _ from 'lodash';

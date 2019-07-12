@@ -1,8 +1,9 @@
-import AudioDrop from 'components/Uploads/AudioDrop';
-import Image from 'components/Uploads/Image';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import Toggle from 'react-toggle';
+
+import AudioDrop from '@/components/Uploads/AudioDrop';
+import Image from '@/components/Uploads/Image';
 
 import VariableInput from './components/VariableInput';
 

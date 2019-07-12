@@ -6,6 +6,6 @@ exports[`SvgIcon renders SvgIcon 1`] = `
   height={16}
   width={16}
 >
-  <test-file-stub />
+  <home.svg />
 </styled.span>
 `;

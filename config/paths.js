@@ -20,7 +20,6 @@ module.exports = Object.entries(PATHS).reduce(
     return acc;
   },
   {
-    modules: 'node_modules/',
     staticJS: `${staticDir}js/`,
     staticCSS: `${staticDir}css/`,
     staticMedia: `${staticDir}media/`,

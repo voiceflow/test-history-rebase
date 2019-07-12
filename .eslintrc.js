@@ -1,3 +1,5 @@
+const { default: webpackConfig } = require('./config/webpack/common');
+
 module.exports = {
   extends: '@voiceflow/eslint-config/frontend',
   parser: 'babel-eslint',
@@ -38,7 +40,6 @@ module.exports = {
     // disabled temporarily by setting as warnings
     'max-len': 'warn',
     camelcase: 'warn',
-    'import/no-unresolved': 'warn',
     'react/jsx-curly-brace-presence': 'warn',
     'optimize-regex/optimize-regex': 'warn',
     'lodash/prefer-lodash-typecheck': 'warn',
@@ -72,5 +73,10 @@ module.exports = {
       'window.performance',
       'performance',
     ],
+    'import/resolver': {
+      webpack: {
+        config: webpackConfig,
+      },
+    },
   },
 };

@@ -1,11 +1,12 @@
-import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect';
 import { ContentState, convertToRaw } from 'draft-js';
-import { openTab } from 'ducks/user';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { Button } from 'reactstrap';
+
+import { selectStyles, variableComponent } from '@/components/VariableSelect/VariableSelect';
+import { openTab } from '@/ducks/user';
 
 import VariableInput from './components/VariableInput';
 

@@ -1,11 +1,12 @@
 import './Admin.css';
 
-import Header from 'components/Header';
-import { fetchTeams } from 'ducks/team';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ButtonGroup } from 'reactstrap';
+
+import Header from '@/components/Header';
+import { fetchTeams } from '@/ducks/team';
 
 import Copy from './Copy';
 import FinanceBoard from './FinanceBoard';

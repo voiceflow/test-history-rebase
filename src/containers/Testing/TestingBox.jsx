@@ -1,9 +1,10 @@
 import cn from 'classnames';
-import Button from 'components/Button';
 import React, { PureComponent } from 'react';
 import SpeechRecognition from 'react-speech-recognition';
 import Textarea from 'react-textarea-autosize';
 import { Collapse } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 import SpeakBox from './SpeakBox';
 import SpeechBar from './SpeechBar';

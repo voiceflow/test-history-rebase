@@ -1,7 +1,8 @@
-import Button from 'components/Button';
-import { ModalHeader } from 'components/Modals/ModalHeader';
 import React from 'react';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { ModalHeader } from '@/components/Modals/ModalHeader';
 
 const DefaultModal = ({ open, toggle, header, content, noPadding, hideFooter, close_button_text }) => {
   return (

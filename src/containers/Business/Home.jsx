@@ -1,12 +1,13 @@
 import './react-table.css';
 
 import axios from 'axios';
-import LineBar from 'components/LineBar/LineBar';
-import TimeInterval from 'components/TimeInterval/TimeInterval';
 import moment from 'moment';
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import { Table } from 'reactstrap';
+
+import LineBar from '@/components/LineBar/LineBar';
+import TimeInterval from '@/components/TimeInterval/TimeInterval';
 
 const addDays = function(date, days) {
   date.setDate(date.getDate() + days);

@@ -51,7 +51,7 @@ module.exports = merge(commonConfig, {
 
         parallel: true,
         cache: true,
-        sourceMap: USE_SOURCEMAPS,
+        sourceMap: IS_PRODUCTION,
       }),
       new OptimizeCSSAssetsPlugin({
         cssProcessorOptions: {

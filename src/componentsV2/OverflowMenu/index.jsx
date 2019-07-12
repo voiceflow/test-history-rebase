@@ -1,15 +1,20 @@
 import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
+import DropdownMenu from '@/componentsV2/DropdownMenu';
 import EllipsisIcon from '@/svgs/elipsis.svg';
 
 import Container from './components/OverflowMenuContainer';
 
-function OverflowMenu(props) {
+function OverflowMenu({ options, onSelect, disabled }) {
   return (
-    <Container {...props}>
-      <SvgIcon icon={EllipsisIcon} />
-    </Container>
+    <DropdownMenu options={options} onSelect={onSelect}>
+      {(ref, onToggle) => (
+        <Container disabled={disabled} onClick={onToggle} ref={ref}>
+          <SvgIcon icon={EllipsisIcon} />
+        </Container>
+      )}
+    </DropdownMenu>
   );
 }
 

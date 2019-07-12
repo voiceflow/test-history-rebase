@@ -64,6 +64,7 @@
     "react-masonry-component": "^6.2.1",
     "react-mentions": "^2.4.1",
     "react-overlays": "^1.2.0",
+    "react-popper": "^1.3.3",
     "react-redux": "^6.0.1",
     "react-router-dom": "^5.0.0",
     "react-select": "^2.1.0",
@@ -97,11 +98,11 @@
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@hot-loader/react-dom": "^16.8.6",
-    "@svgr/webpack": "2.4.1",
     "@sambego/storybook-state": "^1.3.6",
     "@storybook/addon-actions": "^5.1.9",
     "@storybook/addon-knobs": "^5.1.9",
     "@storybook/react": "^5.1.9",
+    "@svgr/webpack": "2.4.1",
     "@voiceflow/commitlint-config": "^1.0.1",
     "@voiceflow/eslint-config": "2.0.1",
     "@voiceflow/git-branch-check": "^1.0.2",
@@ -209,6 +210,7 @@
     "prepublish": "patch-package",
     "start": "wp --action=serve",
     "storybook": "start-storybook --https --ssl-cert=certs/localhost.crt --ssl-key=certs/localhost.key",
+    "storybook:build": "build-storybook --output-dir storybook_build",
     "test": "jest",
     "test:dependencies": "depcheck $(exargs .depcheckrc)"
   }

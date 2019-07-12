@@ -1,4 +1,3 @@
-import { withProps } from 'recompose';
 import styled from 'styled-components';
 
 import PrimaryButtonContainer from '@/componentsV2/Button/components/PrimaryButton/components/PrimaryButtonContainer';
@@ -25,4 +24,4 @@ const PrimaryDropdownButtonContainer = styled(FlexCenter)`
   }
 `;
 
-export default withProps({ inline: true })(PrimaryDropdownButtonContainer);
+export default PrimaryDropdownButtonContainer;

@@ -38,3 +38,13 @@ export const flexAroundStyles = css`
 export const FlexAround = styled.div`
   ${flexAroundStyles}
 `;
+
+export const flexLabelStyles = css`
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+export const FlexLabel = styled.div`
+  ${flexLabelStyles}
+`;

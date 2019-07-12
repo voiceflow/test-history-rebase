@@ -7,20 +7,24 @@ import Variant from '@/../.storybook/Variant';
 
 import DropdownButton from '.';
 
+const MENU_OPTIONS = Array(4)
+  .fill(0)
+  .map((_, index) => ({ value: { id: `opt${index + 1}` }, label: `Option ${index + 1}` }));
+
 storiesOf('Dropdown Button', module).add('variants', () => {
   const disabled = boolean('Disabled', false);
   const label = text('Label', 'Dropdown Button');
-  const onClick = action('click');
+  const onSelect = action('select');
 
   return (
     <>
       <Variant label="primary">
-        <DropdownButton options={[]} disabled={disabled} onClick={onClick}>
+        <DropdownButton options={MENU_OPTIONS} disabled={disabled} onSelect={onSelect}>
           {label}
         </DropdownButton>
       </Variant>
       <Variant label="secondary">
-        <DropdownButton variant="secondary" options={[]} disabled={disabled} onClick={onClick}>
+        <DropdownButton variant="secondary" options={MENU_OPTIONS} disabled={disabled} onSelect={onSelect}>
           {label}
         </DropdownButton>
       </Variant>

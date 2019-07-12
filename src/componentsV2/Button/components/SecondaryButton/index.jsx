@@ -4,9 +4,9 @@ import SvgIcon from '@/components/SvgIcon';
 
 import { Container, Icon } from './components';
 
-function SecondaryButton({ icon, children, ...props }) {
+function SecondaryButton({ icon, children, ...props }, ref) {
   return (
-    <Container {...props}>
+    <Container {...props} ref={ref}>
       {icon && (
         <Icon>
           <SvgIcon icon={icon} />
@@ -17,4 +17,4 @@ function SecondaryButton({ icon, children, ...props }) {
   );
 }
 
-export default SecondaryButton;
+export default React.forwardRef(SecondaryButton);

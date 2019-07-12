@@ -7,13 +7,13 @@ import CaretDownIcon from '@/svgs/solid/caret-down.svg';
 
 import { Container, Toggle } from './components';
 
-function DropdownButton({ options, children, ...props }) {
+function DropdownButton({ disabled, onToggle, children }, ref) {
   return (
-    <Container>
-      <PrimaryButton {...props} canHover={false}>
+    <Container ref={ref} inline>
+      <PrimaryButton disabled={disabled} canHover={false}>
         {children}
       </PrimaryButton>
-      <PrimaryButtonContainer disabled={props.disabled} canHover={false}>
+      <PrimaryButtonContainer disabled={disabled} canHover={false} onClick={onToggle}>
         <Toggle>
           <SvgIcon icon={CaretDownIcon} width={12} />
         </Toggle>
@@ -22,4 +22,4 @@ function DropdownButton({ options, children, ...props }) {
   );
 }
 
-export default DropdownButton;
+export default React.forwardRef(DropdownButton);

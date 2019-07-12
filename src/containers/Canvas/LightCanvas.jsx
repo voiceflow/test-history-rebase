@@ -1,20 +1,21 @@
 import 'draft-js/dist/Draft.css';
-import 'components/SRD/sass/main.css';
+import '@/components/SRD/sass/main.css';
 import './StoryBoard.css';
 
 import axios from 'axios';
-import Button from 'components/Button';
-/* eslint-disable no-secrets/no-secrets */
-import { BlockLinkFactory } from 'components/SRD/factories/BlockLinkFactory';
-import { BlockNodeFactory } from 'components/SRD/factories/BlockNodeFactory';
-import { BlockPortFactory } from 'components/SRD/factories/BlockPortFactory';
-/* eslint-enable no-secrets/no-secrets */
-import * as SRD from 'components/SRD/main';
-import { setError } from 'ducks/modal';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ButtonGroup } from 'reactstrap';
+
+import Button from '@/components/Button';
+/* eslint-disable no-secrets/no-secrets */
+import { BlockLinkFactory } from '@/components/SRD/factories/BlockLinkFactory';
+import { BlockNodeFactory } from '@/components/SRD/factories/BlockNodeFactory';
+import { BlockPortFactory } from '@/components/SRD/factories/BlockPortFactory';
+/* eslint-enable no-secrets/no-secrets */
+import * as SRD from '@/components/SRD/main';
+import { setError } from '@/ducks/modal';
 
 import new_template from '../../assets/templates/new';
 import { convertDiagram } from './util';

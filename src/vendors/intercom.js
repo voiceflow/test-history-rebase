@@ -1,5 +1,5 @@
-import { LOGROCKET_PROJECT } from 'config';
-import { getUserPlanName } from 'utils/admin';
+import { LOGROCKET_PROJECT } from '@/config';
+import { getUserPlanName } from '@/utils/admin';
 
 export function createIntercomUser(user) {
   return user.creator_id

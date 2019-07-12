@@ -1,7 +1,8 @@
-import { STRIPE_KEY } from 'config';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import React, { Component } from 'react';
 import { Elements, StripeProvider, injectStripe } from 'react-stripe-elements';
+
+import { STRIPE_KEY } from '@/config';
 
 const MAX_POLL_COUNT = 30;
 const POLL_INTERVAL = 1000;

@@ -1,7 +1,5 @@
 import { constants } from '@voiceflow/common';
 import cn from 'classnames';
-import Button from 'components/Button';
-import AudioDrop from 'components/Uploads/AudioDrop';
 import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import React, { Component } from 'react';
@@ -9,6 +7,9 @@ import { DragSource, DropTarget } from 'react-dnd/lib/cjs';
 import { findDOMNode } from 'react-dom';
 import Select from 'react-select';
 import { Collapse } from 'reactstrap';
+
+import Button from '@/components/Button';
+import AudioDrop from '@/components/Uploads/AudioDrop';
 
 import VariableText from './VariableText';
 

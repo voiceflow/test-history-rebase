@@ -1,6 +1,4 @@
-import { LOGROCKET_ENABLED } from 'config';
 import { routerMiddleware } from 'connected-react-router';
-import rootReducer from 'ducks/_root';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createBrowserHistory } from 'history';
 import LogRocket from 'logrocket';
@@ -8,6 +6,9 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
+
+import { LOGROCKET_ENABLED } from '@/config';
+import rootReducer from '@/ducks/_root';
 
 export const history = createBrowserHistory();
 // eslint-disable-next-line no-underscore-dangle

@@ -1,11 +1,12 @@
 /* eslint-disable no-underscore-dangle */
-import Button from 'components/Button';
-import { setError } from 'ducks/modal';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select, { components } from 'react-select';
 import { Alert, Collapse } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { setError } from '@/ducks/modal';
 
 import SlotMappings from './SlotMappings';
 

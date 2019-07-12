@@ -1,8 +1,9 @@
-import { GOOGLE_CLIENT_ID } from 'config';
-import { addIntegrationUser } from 'ducks/integration';
 import React, { Component } from 'react';
 import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
+
+import { GOOGLE_CLIENT_ID } from '@/config';
+import { addIntegrationUser } from '@/ducks/integration';
 
 import { GOOGLE_SHEETS } from './constants';
 

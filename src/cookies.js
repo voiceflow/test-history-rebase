@@ -1,5 +1,6 @@
-import { IS_DEVELOPMENT } from 'config';
 import Cookies from 'universal-cookie';
+
+import { IS_DEVELOPMENT } from '@/config';
 
 export const AUTH_COOKIE = 'auth_vf';
 

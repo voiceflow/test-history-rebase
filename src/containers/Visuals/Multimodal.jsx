@@ -1,16 +1,17 @@
 import './Display.css';
 
-import Button from 'components/Button';
-import EmptyCard from 'components/Cards/EmptyCard';
-import VoiceCards from 'components/Cards/VoiceCards';
-import { Spinner } from 'components/Spinner/Spinner';
-import { deleteDisplay } from 'ducks/display';
-import { setConfirm } from 'ducks/modal';
 import React, { Component } from 'react';
 import Masonry from 'react-masonry-component';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
+
+import Button from '@/components/Button';
+import EmptyCard from '@/components/Cards/EmptyCard';
+import VoiceCards from '@/components/Cards/VoiceCards';
+import { Spinner } from '@/components/Spinner/Spinner';
+import { deleteDisplay } from '@/ducks/display';
+import { setConfirm } from '@/ducks/modal';
 
 class Multimodal extends Component {
   constructor(props) {

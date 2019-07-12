@@ -1,9 +1,10 @@
-import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from 'config';
-import { fbLogin, googleLogin } from 'ducks/account';
 import React, { Fragment, useEffect, useState } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
+
+import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from '@/config';
+import { fbLogin, googleLogin } from '@/ducks/account';
 
 import ErrorWidget from './ErrorWidget';
 

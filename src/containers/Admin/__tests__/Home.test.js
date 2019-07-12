@@ -1,6 +1,7 @@
-import Home from 'containers/Admin/Home';
 import { shallow } from 'enzyme';
 import React from 'react';
+
+import Home from '@/containers/Admin/Home';
 
 import InternalLookup from '../components/InternalLookup/InternalLookup';
 

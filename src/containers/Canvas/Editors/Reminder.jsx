@@ -6,13 +6,13 @@ import { formatDate, parseDate } from 'react-day-picker/moment';
 import Select from 'react-select';
 import { Alert, Button, ButtonGroup } from 'reactstrap';
 
+import { TIMEZONES } from '@/assets/timezones';
+
 import VariableInput from './components/VariableInput';
 import VariableText from './components/VariableText';
 
 const FORMAT = 'DD/MM/YYYY';
 const USER_TIMEZONE = 'User Timezone';
-
-const { TIMEZONES } = require('assets/timezones');
 
 const timezones = [{ label: USER_TIMEZONE, value: USER_TIMEZONE }, ...TIMEZONES.map((zone) => ({ label: zone.value, value: zone.value }))];
 

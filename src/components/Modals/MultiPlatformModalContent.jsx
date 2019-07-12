@@ -1,7 +1,8 @@
 import './Modals.css';
 
-import Button from 'components/Button';
 import React from 'react';
+
+import Button from '@/components/Button';
 
 const MultiPlatformModalContent = ({ toggle, history }) => {
   return (

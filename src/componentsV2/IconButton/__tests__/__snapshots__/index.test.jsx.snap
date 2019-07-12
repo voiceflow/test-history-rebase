@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Icon Button renders 1`] = `
+<Styled(Styled(styled.button))>
+  <SvgIcon
+    color="#6E849A"
+    icon="plus.svg"
+    size={16}
+  />
+</Styled(Styled(styled.button))>
+`;

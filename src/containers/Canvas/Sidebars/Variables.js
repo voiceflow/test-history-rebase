@@ -1,11 +1,12 @@
-import { setError } from 'ducks/modal';
-import { pushVariable, setVariables } from 'ducks/variable';
-import { updateVersion } from 'ducks/version';
 import isVarName from 'is-var-name';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { FormGroup, Input, Label } from 'reactstrap';
+
+import { setError } from '@/ducks/modal';
+import { pushVariable, setVariables } from '@/ducks/variable';
+import { updateVersion } from '@/ducks/version';
 
 import { defaultVariables } from '../Constants';
 

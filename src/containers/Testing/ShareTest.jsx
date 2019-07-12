@@ -1,10 +1,11 @@
-import Button from 'components/Button';
-import ClipBoard from 'components/ClipBoard/ClipBoard';
-import { shareTest } from 'ducks/test';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { Input, InputGroup, InputGroupAddon, Popover, PopoverBody } from 'reactstrap';
+
+import Button from '@/components/Button';
+import ClipBoard from '@/components/ClipBoard/ClipBoard';
+import { shareTest } from '@/ducks/test';
 
 const TestingHeader = (props) => {
   const { shareTest, rendered, render } = props;

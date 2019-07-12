@@ -1,8 +1,9 @@
-import { setError } from 'ducks/modal';
 import update from 'immutability-helper';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import Textarea from 'react-textarea-autosize';
+
+import { setError } from '@/ducks/modal';
 
 class FulfillInput extends PureComponent {
   constructor(props) {

@@ -706,3 +706,14 @@ p.loading-btn::after {
 .pb__auth_error {
   color: #e91e63;
 }
+
+.pa__locale-limited {
+  max-width: 627px;
+}
+
+.pa__icon {
+  margin-right: auto;
+  margin-left: auto;
+  width: 160px;
+  height: 160px;
+}

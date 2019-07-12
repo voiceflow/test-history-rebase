@@ -17,6 +17,7 @@ const VariantGroup = styled(FlexCenter)`
 `;
 
 const VariantContent = styled.div`
+  position: relative;
   margin: 8px;
 `;
 

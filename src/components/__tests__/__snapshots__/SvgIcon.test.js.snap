@@ -3,8 +3,7 @@
 exports[`SvgIcon renders SvgIcon 1`] = `
 <styled.span
   color="#6E849A"
-  height={16}
-  width={16}
+  size={16}
 >
   <home.svg />
 </styled.span>

@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Primary Button renders 1`] = `
+<Styled(Styled(styled.button))
+  canHover={true}
+>
+  <styled.span>
+    Button
+  </styled.span>
+</Styled(Styled(styled.button))>
+`;
+
+exports[`Primary Button renders with icon 1`] = `
+<Styled(Styled(styled.button))
+  canHover={true}
+>
+  <styled.span>
+    Button
+  </styled.span>
+  <styled.span>
+    <SvgIcon
+      color="#6E849A"
+      icon="plus.svg"
+      size={16}
+    />
+  </styled.span>
+</Styled(Styled(styled.button))>
+`;

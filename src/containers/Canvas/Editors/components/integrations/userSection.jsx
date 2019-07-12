@@ -163,14 +163,14 @@ class UserSection extends Component {
               <AddUserModal
                 toggle={this.toggleAddUserModal}
                 onError={(e) => setError(e)}
-                onSuccess={() => {
+                onSuccess={(newUsers) => {
                   if (integration_user_error) {
                     setError(integration_user_error);
                     return;
                   }
 
                   const integration = selected_integration;
-                  const users = integration_users[integration];
+                  const users = newUsers[integration];
 
                   const newIntegrationData = update(integration_data, {
                     user: {

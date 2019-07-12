@@ -7,6 +7,7 @@ const MenuItem = styled.li`
 
   height: ${({ theme }) => theme.components.menuItem.height}px;
   padding: 0 24px;
+  background: #fff;
   user-select: none;
   cursor: pointer;
 

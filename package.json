@@ -49,6 +49,7 @@
     "react-animate-height": "^2.0.7",
     "react-app-polyfill": "^0.2.0",
     "react-chartjs-2": "^2.7.4",
+    "react-custom-scrollbars": "^4.2.1",
     "react-day-picker": "^7.2.4",
     "react-dnd": "^7.3.2",
     "react-dnd-html5-backend": "^7.4.4",
@@ -210,7 +211,7 @@
     "prepublish": "patch-package",
     "start": "wp --action=serve",
     "storybook": "start-storybook --https --ssl-cert=certs/localhost.crt --ssl-key=certs/localhost.key",
-    "storybook:build": "build-storybook --output-dir storybook_build",
+    "storybook:build": "build-storybook --output-dir storybook_build --quiet",
     "tdd": "npm run test -- --watchAll=true",
     "test": "jest",
     "test:dependencies": "depcheck $(exargs .depcheckrc)"

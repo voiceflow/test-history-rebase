@@ -19,7 +19,6 @@ const MenuContainer = styled.ul`
   font-size: 15px;
   line-height: 18px;
   list-style: none;
-  overflow-y: scroll;
 `;
 
 export default MenuContainer;

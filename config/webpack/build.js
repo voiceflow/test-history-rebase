@@ -23,7 +23,7 @@ module.exports = merge(commonConfig, {
 
   ...(IS_PRODUCTION && { stats: 'minimal' }),
 
-  devtool: USE_SOURCEMAPS && (IS_PRODUCTION ? 'nosources-source-map' : 'cheap-eval-source-map'),
+  devtool: IS_PRODUCTION ? 'nosources-source-map' : 'cheap-eval-source-map',
 
   optimization: {
     minimize: IS_PRODUCTION,

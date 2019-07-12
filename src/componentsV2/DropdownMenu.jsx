@@ -5,8 +5,19 @@ import Menu from '@/componentsV2/Menu';
 import { useEnableDisable } from '@/hooks/toggle';
 
 function DropwdownMenu({ options, onSelect, placement = 'bottom-start', children }) {
-  const [isOpen, onOpen, onClose] = useEnableDisable();
-  const onToggle = isOpen ? onClose : onOpen;
+  const [isOpen, setOpen, setClose] = useEnableDisable();
+
+  function onClose() {
+    document.removeEventListener('click', onClose);
+    setClose();
+  }
+
+  const onToggle = isOpen
+    ? onClose
+    : () => {
+        document.addEventListener('click', onClose);
+        setOpen();
+      };
 
   return (
     <Manager>

@@ -262,9 +262,8 @@ workflows:
             branches:
               ignore:
                 - production
-                - k8s-master
-                - k8s-staging
-                - k8s-production
+                - master
+                - staging
       - deploy-production:
           requires:
             - test

@@ -13,7 +13,7 @@ const merge = require('webpack-merge');
 const path = require('path');
 const commonConfig = require('./common');
 const paths = require('../paths');
-const { BASE_HREF, IS_PRODUCTION, IS_SERVING, USE_SOURCEMAPS } = require('./config');
+const { BASE_HREF, IS_PRODUCTION, IS_SERVING } = require('./config');
 
 module.exports = merge(commonConfig, {
   output: {
@@ -162,7 +162,7 @@ module.exports = merge(commonConfig, {
                 loader: 'css-loader',
                 options: {
                   importLoaders: 1,
-                  sourceMap: USE_SOURCEMAPS,
+                  sourceMap: IS_PRODUCTION,
                 },
               },
               {
@@ -180,7 +180,7 @@ module.exports = merge(commonConfig, {
                       stage: 3,
                     }),
                   ],
-                  sourceMap: USE_SOURCEMAPS,
+                  sourceMap: IS_PRODUCTION,
                 },
               },
             ],

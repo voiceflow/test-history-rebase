@@ -375,7 +375,7 @@ workflows:
             - test
           filters:
             branches:
-              only: k8s-master
+              only: master
       - deploy-creator-staging:
           requires:
             - test
@@ -387,7 +387,7 @@ workflows:
             - test
           filters:
             branches:
-              only: k8s-staging
+              only: staging
       - deploy-k8s-production:
           requires:
             - test

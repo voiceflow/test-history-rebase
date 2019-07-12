@@ -5,6 +5,8 @@ executors:
     working_directory: ~/voiceflow # directory where steps will run
     docker: # run the steps with Docker
       - image: circleci/node:11 # ...with this image as the primary container; this is where all `steps` will run
+    environment:
+      NODE_OPTIONS: --max-old-space-size=2048
 
 commands:
   run_tests:

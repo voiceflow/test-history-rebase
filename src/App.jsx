@@ -18,8 +18,8 @@ import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { Alert } from 'reactstrap';
 import { compose } from 'recompose';
+import { ThemeProvider } from 'styled-components';
 
-// GLOBAL MODALS
 import ConfirmModal from '@/components/Modals/ConfirmModal';
 import ErrorModal from '@/components/Modals/ErrorModal';
 import Modal from '@/components/Modals/Modal';
@@ -29,6 +29,7 @@ import { evaluateMaintenance } from '@/utils/maintenance';
 
 import allRoutes from './Routes/allRoutes';
 import Alerts from './components/Alerts/Alerts';
+import theme from './styles/theme';
 
 ReactGA.initialize('UA-124745244-3');
 toast.configure({
@@ -109,16 +110,18 @@ class App extends Component {
       );
     }
     return (
-      <div id="body">
-        <ConnectedRouter history={history}>
-          <ConfirmModal />
-          <ErrorModal />
-          <Modal />
-          <Alerts />
-          <ToastContainer />
-          {allRoutes}
-        </ConnectedRouter>
-      </div>
+      <ThemeProvider theme={theme}>
+        <div id="body">
+          <ConnectedRouter history={history}>
+            <ConfirmModal />
+            <ErrorModal />
+            <Modal />
+            <Alerts />
+            <ToastContainer />
+            {allRoutes}
+          </ConnectedRouter>
+        </div>
+      </ThemeProvider>
     );
   }
 }

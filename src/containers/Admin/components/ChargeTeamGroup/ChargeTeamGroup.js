@@ -2,13 +2,14 @@
 import './ChargeTeamGroup.css';
 import '../AdminAdvancedModal/AdminAdvancedModal.css';
 
-import Button from 'components/Button';
-import Input from 'components/Input';
-import { cancelSubscription, editTrial, refundCharge } from 'ducks/admin';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Alert, Card, CardBody, Collapse, Modal, ModalBody, ModalFooter } from 'reactstrap';
+
+import Button from '@/components/Button';
+import Input from '@/components/Input';
+import { cancelSubscription, editTrial, refundCharge } from '@/ducks/admin';
 
 import ChargeItem from '../ChargeItem/ChargeItem';
 import TrialModal from '../TrialModal/TrialModal';

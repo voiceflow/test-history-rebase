@@ -5,6 +5,8 @@ executors:
     working_directory: ~/voiceflow # directory where steps will run
     docker: # run the steps with Docker
       - image: circleci/node:11 # ...with this image as the primary container; this is where all `steps` will run
+    environment:
+      NODE_OPTIONS: --max-old-space-size=2048
 
 commands:
   run_tests:
@@ -56,6 +58,9 @@ jobs:
             - run:
                 name: (Code Style)
                 command: npm run lint:quiet
+            - run:
+                name: (Dependency Tests)
+                command: npm run test:dependencies
   build:
     executor: node_11
     steps:
@@ -64,6 +69,9 @@ jobs:
             - run:
                 name: (Build App)
                 command: npm run build
+            - run:
+                name: (Build Storybook)
+                command: npm run storybook:build
   deploy-production:
     machine: true
     steps:
@@ -101,7 +109,7 @@ jobs:
       - run:
           name: Push to Elastic Beanstalk
           command: eb deploy CreatorApp-production --staged -l $CIRCLE_BUILD_NUM --nohang
-  deploy-k8s-master:
+  deploy-creator-master:
     machine: true
     steps:
       - checkout # special step to check out source code to working directory
@@ -114,10 +122,10 @@ jobs:
             sudo sh -c 'echo '\''DOCKER_OPTS="--experimental=true"'\'' >> /etc/default/docker'
             sudo service docker restart
       - run:
-          name: 'Build docker image'
+          name: 'Build creator-app docker image'
           command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_VF_APP_API_HOST=api.master.voiceflow.com --build-arg build_VF_APP_BUILD_ENV=staging --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-master-$CIRCLE_BUILD_NUM .
       - run:
-          name: 'Push docker images'
+          name: 'Push creator-app docker images'
           command: |
             $(aws ecr get-login --no-include-email --region us-east-1)
             docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-master-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-master
@@ -145,10 +153,57 @@ jobs:
           command: |
             aws eks --region us-east-1 update-kubeconfig --name development
       - run:
-          name: Update image
+          name: Update creator-app image
           command: |
             kubectl set image --namespace voiceflow-v1 deployment/creator-app-master app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-master-$CIRCLE_BUILD_NUM
-  deploy-k8s-staging:
+  deploy-storybook-master:
+    machine: true
+    steps:
+      - checkout # special step to check out source code to working directory
+      - run:
+          name: Add token
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run: # Need this for --squash to work
+          name: set docker daemon to experimental
+          command: |
+            sudo sh -c 'echo '\''DOCKER_OPTS="--experimental=true"'\'' >> /etc/default/docker'
+            sudo service docker restart
+      - run:
+          name: 'Build storybook docker image'
+          command: docker build -f Dockerfile-storybook --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-master-$CIRCLE_BUILD_NUM .
+      - run:
+          name: 'Push storybook docker images'
+          command: |
+            $(aws ecr get-login --no-include-email --region us-east-1)
+            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-master-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-master
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-master-$CIRCLE_BUILD_NUM
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-master
+      - run:
+          name: Install aws-iam-authenticator
+          command: |
+            curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
+            chmod +x ./aws-iam-authenticator
+            sudo cp ./aws-iam-authenticator /usr/bin
+      - run:
+          name: Install kubectl
+          command: |
+            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+            chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin/kubectl
+      - run:
+          name: Install aws-cli
+          command: |
+            sudo apt-get install -y python3-pip python3-dev
+            sudo pip3 install awscli
+      - run:
+          name: Get credentials
+          command: |
+            aws eks --region us-east-1 update-kubeconfig --name development
+      - run:
+          name: Update storybook image
+          command: |
+            kubectl set image --namespace voiceflow-v1 deployment/storybook-master storybook=168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-master-$CIRCLE_BUILD_NUM
+  deploy-creator-staging:
     machine: true
     steps:
       - checkout # special step to check out source code to working directory
@@ -209,7 +264,7 @@ jobs:
             sudo service docker restart
       - run:
           name: 'Build docker image'
-          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_VF_APP_API_HOST=api.k8s.voiceflow.com --build-arg build_VF_APP_BUILD_ENV=production --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-production-$CIRCLE_BUILD_NUM .
+          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_VF_APP_API_HOST=api.voiceflow.com --build-arg build_VF_APP_BUILD_ENV=production --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-production-$CIRCLE_BUILD_NUM .
       - run:
           name: 'Push docker images'
           command: |
@@ -254,22 +309,27 @@ workflows:
             branches:
               ignore:
                 - production
-                - k8s-master
-                - k8s-staging
-                - k8s-production
+                - master
+                - staging
       - deploy-production:
           requires:
             - test
           filters:
             branches:
               only: production
-      - deploy-k8s-master:
+      - deploy-creator-master:
           requires:
             - test
           filters:
             branches:
               only: master
-      - deploy-k8s-staging:
+      - deploy-storybook-master:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
+      - deploy-creator-staging:
           requires:
             - test
           filters:

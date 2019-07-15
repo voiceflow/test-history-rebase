@@ -1,6 +1,6 @@
 import { find } from 'lodash';
 
-const intentHasSlots = (intent) => {
+export const intentHasSlots = (intent) => {
   for (let i = 0; i < intent.inputs.length; i++) {
     const input = intent.inputs[i];
     if (input.slots && input.slots.length > 0) {
@@ -10,22 +10,22 @@ const intentHasSlots = (intent) => {
   return false;
 };
 
-const getIntentSlots = (intent, slots_set) => {
+export const getIntentSlots = (intent, slotsSet) => {
   if (!intent) {
     return [];
   }
-  const slot_keys = new Set();
+  const slotKeys = new Set();
   const slots = [];
   for (let i = 0; i < intent.inputs.length; i++) {
     const input = intent.inputs[i];
     if (input.slots && input.slots.length > 0) {
-      input.slots.forEach((slot_key) => {
-        if (!slot_keys.has(slot_key)) {
-          slot_keys.add(slot_key);
-          const slot_obj = find(slots_set, {
-            key: slot_key,
+      input.slots.forEach((slotKey) => {
+        if (!slotKeys.has(slotKey)) {
+          slotKeys.add(slotKey);
+          const slotObj = find(slotsSet, {
+            key: slotKey,
           });
-          if (slot_obj) slots.push(slot_obj);
+          if (slotObj) slots.push(slotObj);
         }
       });
     }
@@ -33,7 +33,7 @@ const getIntentSlots = (intent, slots_set) => {
   return slots;
 };
 
-const getDevice = () => {
+export const getDevice = () => {
   const module = {
     options: [],
     header: [navigator.platform, navigator.userAgent, navigator.appVersion, navigator.vendor, window.opera],
@@ -202,7 +202,3 @@ const getDevice = () => {
     browser: e.browser.name,
   };
 };
-
-exports.intentHasSlots = intentHasSlots;
-exports.getIntentSlots = getIntentSlots;
-exports.getDevice = getDevice;

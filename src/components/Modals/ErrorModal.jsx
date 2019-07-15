@@ -1,8 +1,9 @@
-import Button from 'components/Button';
-import { clearModal } from 'ducks/modal';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Alert, Modal, ModalBody } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { clearModal } from '@/ducks/modal';
 
 export const ErrorModal = ({ error, dismiss }) => {
   if (!error) {

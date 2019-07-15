@@ -1,10 +1,11 @@
-import Button from 'components/Button';
-import Header from 'components/Header';
-import SecondaryNavBar from 'components/NavBar/SecondaryNavBar';
-import { leaveTest } from 'ducks/test';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import Button from '@/components/Button';
+import Header from '@/components/Header';
+import SecondaryNavBar from '@/components/NavBar/SecondaryNavBar';
+import { leaveTest } from '@/ducks/test';
 
 import ShareTest from './ShareTest';
 import TestTimer from './TestingTimer';

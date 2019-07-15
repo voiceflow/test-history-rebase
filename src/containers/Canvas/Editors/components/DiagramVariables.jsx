@@ -1,8 +1,9 @@
 import cn from 'classnames';
-import Button from 'components/Button';
-import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect';
 import React from 'react';
 import Select from 'react-select';
+
+import Button from '@/components/Button';
+import { selectStyles, variableComponent } from '@/components/VariableSelect/VariableSelect';
 
 const DiagramVariables = (props) => (
   <>

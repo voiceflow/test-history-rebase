@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "lodash";
 
-import Button from 'components/Button'
+import Button from '@/components/Button'
 
 import { DiagramEngine } from "../../DiagramEngine";
 import { PointModel } from "../../models/PointModel";

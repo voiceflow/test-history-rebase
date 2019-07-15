@@ -1,0 +1,30 @@
+{
+  "$": {
+    "combine": ["specials", "ignores"]
+  },
+  "specials": ["bin", "eslint", "webpack", "jest", "babel"],
+  "ignores": [
+    "@svgr/webpack",
+    "@hot-loader/react-dom",
+    "@commitlint/*",
+    "@voiceflow/*",
+    "stylelint*",
+    "babel-*",
+    "eslint-*",
+    "css-loader",
+    "postcss-loader",
+    "file-loader",
+    "style-loader",
+    "pathfinding",
+    "jest-pnp-resolver",
+    "identity-obj-proxy",
+    "fixpack",
+    "husky",
+    "lint-staged",
+    "cz-conventional-changelog",
+    "prettier-eslint-cli",
+    "prettier-stylelint",
+    "react-router",
+    "exargs"
+  ]
+}

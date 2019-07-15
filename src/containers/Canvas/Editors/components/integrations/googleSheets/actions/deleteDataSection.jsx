@@ -1,6 +1,7 @@
-import Button from 'components/Button';
 import React, { Component } from 'react';
 import { Collapse } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 import VariableInput from '../../../VariableInput';
 import { draftIsEmpty } from '../../util';

@@ -1,6 +1,4 @@
 import cn from 'classnames';
-import Button from 'components/Button';
-import { login } from 'ducks/account';
 import * as _ from 'lodash';
 import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
@@ -10,6 +8,9 @@ import { Form, FormGroup, Input } from 'reactstrap';
 
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
+import Button from '@/components/Button';
+import { login } from '@/ducks/account';
+
 import SocialLogin from './SocialLogin';
 
 export const LoginForm = ({ login, history, location }) => {

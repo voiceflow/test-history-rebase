@@ -1,11 +1,12 @@
 import cn from 'classnames';
-import Button from 'components/Button';
 import randomstring from 'randomstring';
 import React from 'react';
 import Textarea from 'react-textarea-autosize';
 import { Tooltip } from 'react-tippy';
 import { Collapse } from 'reactstrap';
-import { sampleUtteranceRegex } from 'services/Regex';
+
+import Button from '@/components/Button';
+import { sampleUtteranceRegex } from '@/services/Regex';
 
 // so we don't need to rerender the entire choiceinput component
 class ContainedTextarea extends React.PureComponent {

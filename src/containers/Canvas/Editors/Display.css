@@ -65,3 +65,17 @@
   font-size: 12px;
   background-color: #fff;
 }
+
+.d__see_all {
+  color: #5d9df5;
+  cursor: pointer;
+}
+
+
+.d__label-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+

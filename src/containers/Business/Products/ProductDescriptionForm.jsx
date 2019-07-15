@@ -1,6 +1,7 @@
 import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
-import Button from 'components/Button';
 import React from 'react';
+
+import Button from '@/components/Button';
 
 class ProductDescriptionForm extends React.Component {
   render() {

@@ -2,12 +2,13 @@
 
 import axios from 'axios';
 import cn from 'classnames';
-import Button from 'components/Button';
 import React, { Component } from 'react';
 import { FormGroup, Input } from 'reactstrap';
 
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
+
+import Button from '@/components/Button';
 
 class ResetPassword extends Component {
   constructor(props) {

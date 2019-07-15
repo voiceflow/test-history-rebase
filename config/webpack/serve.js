@@ -7,7 +7,7 @@ const paths = require('../paths');
 
 module.exports = merge(buildConfig, {
   entry: {
-    app: ['webpack-plugin-serve/client']
+    app: ['webpack-plugin-serve/client'],
   },
 
   devtool: 'cheap-eval-source-map',
@@ -27,15 +27,15 @@ module.exports = merge(buildConfig, {
       historyFallback: true,
       progress: 'minimal',
 
-       // serve generated files, fallback to public
+      // serve generated files, fallback to public
       static: [paths.buildDir, paths.publicDir],
 
-       https: {
+      https: {
         key: fs.readFileSync(path.resolve(__dirname, '../../certs/localhost.key')),
         cert: fs.readFileSync(path.resolve(__dirname, '../../certs/localhost.crt')),
       },
     }),
   ],
 
-  watch: true
+  watch: true,
 });

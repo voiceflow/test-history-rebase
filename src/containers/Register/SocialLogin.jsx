@@ -1,13 +1,12 @@
 import cn from 'classnames';
-import { BUILD_ENV } from 'config';
-import { fbLogin, googleLogin } from 'ducks/account';
 import React, { Fragment, useEffect, useState } from 'react';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
 
 import { SocialLoginContainer } from './AuthBoxes';
-import { devGoogleClient, fbId, googleClient } from './social-id';
+import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from '@/config';
+import { fbLogin, googleLogin } from '@/ducks/account';
 
 const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
   const [authError, setAuthError] = useState(null);
@@ -51,7 +50,7 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
       <SocialLoginContainer>
         <div className="helperText">{entryText}</div>
         <GoogleLogin
-          clientId={BUILD_ENV === 'production' ? googleClient : devGoogleClient}
+          clientId={GOOGLE_CLIENT_ID}
           render={(renderProps) => (
             <div onClick={renderProps.onClick} className={cn('social-button', { 'social-button-light': light })}>
               <img src="/google.svg" alt="" />
@@ -61,7 +60,7 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
           onSuccess={triggerGoogleLogin}
         />
         <FacebookLogin
-          appId={fbId}
+          appId={FACEBOOK_APP_ID}
           fields="name,email"
           render={(renderProps) => (
             <div onClick={renderProps.onClick} className={cn('social-button', { 'social-button-light': light })}>

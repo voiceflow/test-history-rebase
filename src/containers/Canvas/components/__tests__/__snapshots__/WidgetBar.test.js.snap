@@ -1,62 +1,157 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Widget Bar render canvas widget bar 1`] = `
-<div
-  className="isTest"
-  id="widget-bar"
+<styled.div
+  isCanvas={true}
+  isTest={true}
 >
-  <ButtonGroup
-    role="group"
-    tag="div"
+  <div
+    className="canvas-controls__action __type-dual"
   >
     <Button
-      className="round-left"
+      className="round-left zoom-btn"
       iconPosition="right"
       isWhiteCirc={true}
       onClick={[Function]}
       onRef={[Function]}
       trackEvent="Button Click"
     >
-      <i
-        className="far fa-plus"
+      <SvgIcon
+        className="zoom-in-icon"
+        color="#6E849A"
+        height={14}
+        icon="zoom-in.svg"
+        size={16}
+        width={14}
       />
     </Button>
     <Button
-      className="round-right"
+      className="round-right zoom-btn"
       iconPosition="right"
       isWhiteCirc={true}
       onClick={[Function]}
       onRef={[Function]}
       trackEvent="Button Click"
     >
-      <i
-        className="far fa-minus"
+      <SvgIcon
+        className="zoom-out-icon"
+        color="#6E849A"
+        height={14}
+        icon="zoom-out.svg"
+        size={16}
+        width={14}
       />
     </Button>
-  </ButtonGroup>
-  <Button
-    className="ml-2"
-    iconPosition="right"
-    isWhiteCirc={true}
-    onClick={[Function]}
-    onRef={[Function]}
-    trackEvent="Button Click"
+  </div>
+  <Tooltip
+    animateFill={true}
+    animation="shift"
+    arrow={false}
+    arrowSize="regular"
+    className=""
+    delay={0}
+    disabled={false}
+    distance={8}
+    duration={375}
+    followCursor={false}
+    hideDelay={0}
+    hideDuration={375}
+    hideOnClick={true}
+    html={null}
+    inertia={false}
+    interactive={false}
+    interactiveBorder={2}
+    multiple={false}
+    offset={0}
+    onHidden={[Function]}
+    onHide={[Function]}
+    onRequestClose={[Function]}
+    onShow={[Function]}
+    onShown={[Function]}
+    popperOptions={Object {}}
+    position="top"
+    size="regular"
+    sticky={false}
+    stickyDuration={200}
+    style={Object {}}
+    theme="dark"
+    title="Go to home"
+    touchHold={false}
+    trigger="mouseenter focus"
+    unmountHTMLWhenHide={false}
   >
-    <i
-      className="fas fa-map-marker-alt"
-    />
-  </Button>
-  <Button
-    className="ml-2"
-    iconPosition="right"
-    isWhiteCirc={true}
-    onClick={[Function]}
-    onRef={[Function]}
-    trackEvent="Button Click"
+    <Button
+      className="__type-single"
+      iconPosition="right"
+      isWhiteCirc={true}
+      onClick={[Function]}
+      onRef={[Function]}
+      trackEvent="Button Click"
+    >
+      <SvgIcon
+        className="home-icon"
+        color="#6E849A"
+        height={14}
+        icon="home.svg"
+        size={16}
+        width={14}
+      />
+    </Button>
+  </Tooltip>
+  <Tooltip
+    animateFill={true}
+    animation="shift"
+    arrow={false}
+    arrowSize="regular"
+    className=""
+    delay={0}
+    disabled={false}
+    distance={8}
+    duration={375}
+    followCursor={false}
+    hideDelay={0}
+    hideDuration={375}
+    hideOnClick={true}
+    html={null}
+    inertia={false}
+    interactive={false}
+    interactiveBorder={2}
+    multiple={false}
+    offset={0}
+    onHidden={[Function]}
+    onHide={[Function]}
+    onRequestClose={[Function]}
+    onShow={[Function]}
+    onShown={[Function]}
+    popperOptions={Object {}}
+    position="top"
+    size="regular"
+    sticky={false}
+    stickyDuration={200}
+    style={Object {}}
+    theme="dark"
+    title="See Shortcuts"
+    touchHold={false}
+    trigger="mouseenter focus"
+    unmountHTMLWhenHide={false}
   >
-    <i
-      className="fas fa-keyboard"
-    />
-  </Button>
-</div>
+    <Button
+      className="__type-single"
+      iconPosition="right"
+      isWhiteCirc={true}
+      onClick={[Function]}
+      onRef={[Function]}
+      trackEvent="Button Click"
+    >
+      <SvgIcon
+        className="star-icon"
+        color="#6E849A"
+        height={14}
+        icon="nav-star.svg"
+        size={16}
+        width={14}
+      />
+    </Button>
+  </Tooltip>
+</styled.div>
 `;

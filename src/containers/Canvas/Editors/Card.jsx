@@ -1,8 +1,9 @@
-import DefaultButton from 'components/Button';
-import Image from 'components/Uploads/Image';
 import React, { Component } from 'react';
 import { Tooltip } from 'react-tippy';
 import { Button, ButtonGroup } from 'reactstrap';
+
+import DefaultButton from '@/components/Button';
+import Image from '@/components/Uploads/Image';
 
 import VariableInput from './components/VariableInput';
 import VariableText from './components/VariableText';

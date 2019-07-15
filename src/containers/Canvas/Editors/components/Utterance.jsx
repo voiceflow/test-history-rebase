@@ -4,7 +4,8 @@ import cn from 'classnames';
 import React from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { Tooltip } from 'react-tippy';
-import { sampleUtteranceRegex } from 'services/Regex';
+
+import { sampleUtteranceRegex } from '@/services/Regex';
 
 class Utterance extends React.PureComponent {
   constructor(props) {

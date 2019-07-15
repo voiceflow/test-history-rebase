@@ -46,14 +46,6 @@ const WidgetBarWrapper = styled.div`
     min-width: 0;
   }
 
-  .home-icon {
-    margin-top: 2px;
-  }
-
-  .star-icon {
-    margin-top: 4px;
-  }
-
   .canvas-controls__action.__type-dual {
     background-color: #fff;
     box-shadow: 0px 1px 4px rgba(17, 49, 96, 0.16), 0px 0px 0px rgba(17, 49, 96, 0.04);
@@ -122,6 +114,9 @@ const WidgetBarWrapper = styled.div`
   }
 
   .__type-single {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-left: 13px;
     height: 34px;
     width: 34px;

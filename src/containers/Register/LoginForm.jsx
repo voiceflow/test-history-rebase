@@ -6,11 +6,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
 
-import { AuthBox } from './AuthBoxes';
-import AuthenticationContainer from './AuthenticationWrapper';
 import Button from '@/components/Button';
 import { login } from '@/ducks/account';
 
+import { AuthBox } from './AuthBoxes';
+import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
 
 export const LoginForm = ({ login, history, location }) => {

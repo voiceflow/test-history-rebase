@@ -2,10 +2,10 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { FormGroup, Input } from 'reactstrap';
 
+import Button from '@/components/Button';
+
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
-
-import Button from '@/components/Button';
 
 class Reset extends Component {
   constructor(props) {

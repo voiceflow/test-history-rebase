@@ -4,9 +4,10 @@ import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props
 import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
 
-import { SocialLoginContainer } from './AuthBoxes';
 import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from '@/config';
 import { fbLogin, googleLogin } from '@/ducks/account';
+
+import { SocialLoginContainer } from './AuthBoxes';
 
 const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
   const [authError, setAuthError] = useState(null);

@@ -3,8 +3,8 @@ import './Modals.css';
 import React from 'react';
 import { Input } from 'reactstrap';
 
-import { GOOGLE_OAUTH_ID } from '@/config';
 import Button from '@/components/Button';
+import { GOOGLE_OAUTH_ID } from '@/config';
 
 // eslint-disable-next-line no-secrets/no-secrets
 const OAUTH_URL = `https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=${GOOGLE_OAUTH_ID}&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state=state`;

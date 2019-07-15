@@ -1,11 +1,11 @@
 import './Display.css';
 
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Masonry from 'react-masonry-component';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
-import PropTypes from 'prop-types';
 
 import Button from '@/components/Button';
 import EmptyCard from '@/components/Cards/EmptyCard';

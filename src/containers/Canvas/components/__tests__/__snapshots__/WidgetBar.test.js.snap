@@ -1,7 +1,153 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Widget Bar render canvas widget bar 1`] = `
-<ContextConsumer>
-  <Component />
-</ContextConsumer>
+<styled.div
+  isCanvas={true}
+  isTest={true}
+>
+  <div
+    className="canvas-controls__action __type-dual"
+  >
+    <Button
+      className="round-left zoom-btn"
+      iconPosition="right"
+      isWhiteCirc={true}
+      onClick={[Function]}
+      onRef={[Function]}
+      trackEvent="Button Click"
+    >
+      <SvgIcon
+        className="zoom-in-icon"
+        color="#6E849A"
+        height={14}
+        icon="test-file-stub"
+        width={14}
+      />
+    </Button>
+    <Button
+      className="round-right zoom-btn"
+      iconPosition="right"
+      isWhiteCirc={true}
+      onClick={[Function]}
+      onRef={[Function]}
+      trackEvent="Button Click"
+    >
+      <SvgIcon
+        className="zoom-out-icon"
+        color="#6E849A"
+        height={14}
+        icon="test-file-stub"
+        width={14}
+      />
+    </Button>
+  </div>
+  <Tooltip
+    animateFill={true}
+    animation="shift"
+    arrow={false}
+    arrowSize="regular"
+    className=""
+    delay={0}
+    disabled={false}
+    distance={8}
+    duration={375}
+    followCursor={false}
+    hideDelay={0}
+    hideDuration={375}
+    hideOnClick={true}
+    html={null}
+    inertia={false}
+    interactive={false}
+    interactiveBorder={2}
+    multiple={false}
+    offset={0}
+    onHidden={[Function]}
+    onHide={[Function]}
+    onRequestClose={[Function]}
+    onShow={[Function]}
+    onShown={[Function]}
+    popperOptions={Object {}}
+    position="top"
+    size="regular"
+    sticky={false}
+    stickyDuration={200}
+    style={Object {}}
+    theme="dark"
+    title="Go to home"
+    touchHold={false}
+    trigger="mouseenter focus"
+    unmountHTMLWhenHide={false}
+  >
+    <Button
+      className="__type-single"
+      iconPosition="right"
+      isWhiteCirc={true}
+      onClick={[Function]}
+      onRef={[Function]}
+      trackEvent="Button Click"
+    >
+      <SvgIcon
+        className="home-icon"
+        color="#6E849A"
+        height={14}
+        icon="test-file-stub"
+        width={14}
+      />
+    </Button>
+  </Tooltip>
+  <Tooltip
+    animateFill={true}
+    animation="shift"
+    arrow={false}
+    arrowSize="regular"
+    className=""
+    delay={0}
+    disabled={false}
+    distance={8}
+    duration={375}
+    followCursor={false}
+    hideDelay={0}
+    hideDuration={375}
+    hideOnClick={true}
+    html={null}
+    inertia={false}
+    interactive={false}
+    interactiveBorder={2}
+    multiple={false}
+    offset={0}
+    onHidden={[Function]}
+    onHide={[Function]}
+    onRequestClose={[Function]}
+    onShow={[Function]}
+    onShown={[Function]}
+    popperOptions={Object {}}
+    position="top"
+    size="regular"
+    sticky={false}
+    stickyDuration={200}
+    style={Object {}}
+    theme="dark"
+    title="See Shortcuts"
+    touchHold={false}
+    trigger="mouseenter focus"
+    unmountHTMLWhenHide={false}
+  >
+    <Button
+      className="__type-single"
+      iconPosition="right"
+      isWhiteCirc={true}
+      onClick={[Function]}
+      onRef={[Function]}
+      trackEvent="Button Click"
+    >
+      <SvgIcon
+        className="star-icon"
+        color="#6E849A"
+        height={14}
+        icon="test-file-stub"
+        width={14}
+      />
+    </Button>
+  </Tooltip>
+</styled.div>
 `;

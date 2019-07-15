@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import cn from 'classnames';
+import { IS_DEVELOPMENT } from 'config';
 import cloneDeep from 'lodash/cloneDeep';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
@@ -324,7 +325,7 @@ export default class Form extends Component {
           validationsInProgress,
         })}
 
-        {process.env.NODE_ENV === 'development' &&
+        {IS_DEVELOPMENT &&
           Object.keys(errors).map((key) => {
             const value = errors[key];
             const isObject = typeof value === 'object';

@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import { BUILD_ENV } from 'config';
 import { fbLogin, googleLogin } from 'ducks/account';
 import React, { Fragment, useEffect, useState } from 'react';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
@@ -50,7 +51,7 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
       <SocialLoginContainer>
         <div className="helperText">{entryText}</div>
         <GoogleLogin
-          clientId={process.env.REACT_APP_BUILD_ENV === 'production' ? googleClient : devGoogleClient}
+          clientId={BUILD_ENV === 'production' ? googleClient : devGoogleClient}
           render={(renderProps) => (
             <div onClick={renderProps.onClick} className={cn('social-button', { 'social-button-light': light })}>
               <img src="/google.svg" alt="" />

@@ -1,0 +1,13 @@
+{
+  "extends": "../.eslintrc.js",
+  "rules": {
+    "no-secrets/no-secrets": "off",
+    "xss/no-mixed-html": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ]
+  }
+}

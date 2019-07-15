@@ -8,7 +8,7 @@ const { BASE_HREF, IS_PRODUCTION, ENV } = require('./config');
 
 module.exports = {
   entry: {
-    app:['react-hot-loader/patch', paths.entrypoint]
+    app: ['react-hot-loader/patch', paths.entrypoint],
   },
 
   output: {

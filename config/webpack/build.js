@@ -64,11 +64,11 @@ module.exports = merge(commonConfig, {
     splitChunks: {
       chunks: 'all',
       name: false,
-      minChunks: 2
+      minChunks: 2,
     },
 
     runtimeChunk: {
-      name: 'runtime'
+      name: 'runtime',
     },
   },
 

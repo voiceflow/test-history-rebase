@@ -250,53 +250,6 @@ jobs:
           name: Update image
           command: |
             kubectl set image --namespace voiceflow-v1 deployment/creator-app-staging app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-staging-$CIRCLE_BUILD_NUM
-  deploy-storybook-staging:
-    machine: true
-    steps:
-      - checkout # special step to check out source code to working directory
-      - run:
-          name: Add token
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-      - run: # Need this for --squash to work
-          name: set docker daemon to experimental
-          command: |
-            sudo sh -c 'echo '\''DOCKER_OPTS="--experimental=true"'\'' >> /etc/default/docker'
-            sudo service docker restart
-      - run:
-          name: 'Build docker image'
-          command: docker build -f Dockerfile-storybook --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-staging-$CIRCLE_BUILD_NUM .
-      - run:
-          name: 'Push docker images'
-          command: |
-            $(aws ecr get-login --no-include-email --region us-east-1)
-            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-staging-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-staging
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-staging-$CIRCLE_BUILD_NUM
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-staging
-      - run:
-          name: Install aws-iam-authenticator
-          command: |
-            curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
-            chmod +x ./aws-iam-authenticator
-            sudo cp ./aws-iam-authenticator /usr/bin
-      - run:
-          name: Install kubectl
-          command: |
-            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-            chmod +x ./kubectl
-            sudo mv ./kubectl /usr/local/bin/kubectl
-      - run:
-          name: Install aws-cli
-          command: |
-            sudo apt-get install -y python3-pip python3-dev
-            sudo pip3 install awscli
-      - run:
-          name: Get credentials
-          command: |
-            aws eks --region us-east-1 update-kubeconfig --name development
-      - run:
-          name: Update image
-          command: |
-            kubectl set image --namespace voiceflow-v1 deployment/storybook-staging storybook=168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-staging-$CIRCLE_BUILD_NUM
   deploy-k8s-production:
     machine: true
     steps:
@@ -377,12 +330,6 @@ workflows:
             branches:
               only: master
       - deploy-creator-staging:
-          requires:
-            - test
-          filters:
-            branches:
-              only: staging
-      - deploy-storybook-staging:
           requires:
             - test
           filters:

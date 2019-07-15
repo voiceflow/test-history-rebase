@@ -1,9 +1,10 @@
-import { setError } from 'ducks/modal';
 import converter from 'number-to-words/src';
 import randomstring from 'randomstring';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Input } from 'reactstrap';
+
+import { setError } from '@/ducks/modal';
 
 import SlotInput from './SlotInput';
 

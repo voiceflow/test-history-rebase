@@ -1,10 +1,11 @@
 import './VendorSelectList.css';
 
 import cn from 'classnames';
-import Button from 'components/Button';
-import { updateVendorId } from 'ducks/project';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import Button from '@/components/Button';
+import { updateVendorId } from '@/ducks/project';
 
 class VendorSelectList extends Component {
   componentDidMount = () => {

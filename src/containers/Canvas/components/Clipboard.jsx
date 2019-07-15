@@ -1,15 +1,16 @@
 import axios from 'axios';
-import { Toolkit } from 'components/SRD/Toolkit';
-import { BlockLinkModel } from 'components/SRD/models/BlockLinkModel';
-import { BlockNodeModel } from 'components/SRD/models/BlockNodeModel';
-import { fetchDisplays } from 'ducks/display';
-import { fetchProducts } from 'ducks/product';
-import { setCanvasInfo } from 'ducks/user';
-import { updateIntents } from 'ducks/version';
 import _ from 'lodash';
 import Mousetrap from 'mousetrap';
 import React from 'react';
 import { connect } from 'react-redux';
+
+import { Toolkit } from '@/components/SRD/Toolkit';
+import { BlockLinkModel } from '@/components/SRD/models/BlockLinkModel';
+import { BlockNodeModel } from '@/components/SRD/models/BlockNodeModel';
+import { fetchDisplays } from '@/ducks/display';
+import { fetchProducts } from '@/ducks/product';
+import { setCanvasInfo } from '@/ducks/user';
+import { updateIntents } from '@/ducks/version';
 
 const toolkit = new Toolkit();
 

@@ -1,11 +1,12 @@
-import Button from 'components/Button';
-import { openTab } from 'ducks/user';
 import update from 'immutability-helper';
 import _ from 'lodash';
 import randomstring from 'randomstring';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Collapse } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { openTab } from '@/ducks/user';
 
 import APIMapping from '../APIMapping';
 import { draftIsEmpty } from './util';

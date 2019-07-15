@@ -1,11 +1,12 @@
-import { selectStyles } from 'components/VariableSelect/VariableSelect';
 import _ from 'lodash';
 import memoize from 'memoize-one';
 import React, { Component } from 'react';
 import Select from 'react-select';
 import AsyncSelect from 'react-select/lib/Async';
 import { Collapse } from 'reactstrap';
-import IntegrationsService from 'services/Integrations';
+
+import { selectStyles } from '@/components/VariableSelect/VariableSelect';
+import IntegrationsService from '@/services/Integrations';
 
 // props
 // action_data, integrationsUser, skill_id, onError, updateActionData, updateHeaders

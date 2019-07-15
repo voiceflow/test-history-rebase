@@ -1,10 +1,5 @@
 import { constants } from '@voiceflow/common';
 import cn from 'classnames';
-import Button from 'components/Button';
-import { ModalHeader } from 'components/Modals/ModalHeader';
-import Prompt from 'components/Uploads/Prompt';
-// HOCs
-import { redo, undo } from 'hocs/withUndoRedo';
 import _ from 'lodash';
 import Mousetrap from 'mousetrap';
 import React, { Component } from 'react';
@@ -13,6 +8,12 @@ import CreatableSelect from 'react-select/lib/Creatable';
 import { Tooltip } from 'react-tippy';
 import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Modal, ModalBody, UncontrolledDropdown } from 'reactstrap';
 import { compose } from 'recompose';
+
+import Button from '@/components/Button';
+import { ModalHeader } from '@/components/Modals/ModalHeader';
+import Prompt from '@/components/Uploads/Prompt';
+// HOCs
+import { redo, undo } from '@/hocs/withUndoRedo';
 
 import API from './Editors/API';
 import CancelPayment from './Editors/CancelPayment';

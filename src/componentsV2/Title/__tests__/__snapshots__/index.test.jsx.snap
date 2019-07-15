@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Title renders heading 1`] = `
+<styled.span
+  as="h1"
+>
+  heading
+</styled.span>
+`;
+
+exports[`Title renders label 1`] = `
+<styled.span
+  as="h4"
+  variant="label"
+>
+  label
+</styled.span>
+`;
+
+exports[`Title renders subheading 1`] = `
+<styled.span
+  as="h2"
+  variant="subheading"
+>
+  subheading
+</styled.span>
+`;
+
+exports[`Title renders subtitle 1`] = `
+<styled.span
+  as="h3"
+  variant="subtitle"
+>
+  subtitle
+</styled.span>
+`;

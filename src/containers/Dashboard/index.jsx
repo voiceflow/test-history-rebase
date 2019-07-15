@@ -2,14 +2,23 @@ import './DashBoard.css';
 
 import axios from 'axios';
 import cn from 'classnames';
-import Button from 'components/Button';
-import DragLayer from 'components/DragLayer';
-import Header from 'components/Header';
-import LoadingModal from 'components/Modals/LoadingModal';
-import UpdatesModal from 'components/Modals/UpdatesModal';
-import { Members } from 'components/User/User';
-import { ScrollContextProvider } from 'contexts';
-import { unnormalize } from 'ducks/_normalize';
+import _ from 'lodash';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Tooltip } from 'react-tippy';
+import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Input, Popover, PopoverBody, UncontrolledDropdown } from 'reactstrap';
+
+import { YOUTUBE_CHANNEL_ID } from '@/config';
+import Button from '@/components/Button';
+import DragLayer from '@/components/DragLayer';
+import Header from '@/components/Header';
+import LoadingModal from '@/components/Modals/LoadingModal';
+import UpdatesModal from '@/components/Modals/UpdatesModal';
+import { Members } from '@/components/User/User';
+import { ScrollContextProvider } from '@/contexts';
+import { unnormalize } from '@/ducks/_normalize';
 import {
   addBoard,
   changeListPosition,
@@ -20,18 +29,11 @@ import {
   renameList,
   updateBoards,
   updateLists,
-} from 'ducks/board';
-import { setConfirm, setError } from 'ducks/modal';
-import { copyProject, deleteProject, updateProjects } from 'ducks/project';
-import { getMembers } from 'ducks/team';
-import { useScrollHelpers } from 'hooks/scroll';
-import _ from 'lodash';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Tooltip } from 'react-tippy';
-import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Input, Popover, PopoverBody, UncontrolledDropdown } from 'reactstrap';
+} from '@/ducks/board';
+import { setConfirm, setError } from '@/ducks/modal';
+import { copyProject, deleteProject, updateProjects } from '@/ducks/project';
+import { getMembers } from '@/ducks/team';
+import { useScrollHelpers } from '@/hooks/scroll';
 
 import ExpiryButton from './ExpiryButton';
 import TeamSettings from './TeamSettings';
@@ -39,8 +41,7 @@ import UpdatesPopover from './UpdatesPopover';
 import { Item as ListItem } from './components/Item';
 import List, { List as SimpleList } from './components/List';
 
-// eslint-disable-next-line no-secrets/no-secrets
-const YOUTUBE_CHANNEL = 'https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ/videos';
+const YOUTUBE_CHANNEL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
 
 const filter_projects = (projects, filter) => {
   const filtered = {};

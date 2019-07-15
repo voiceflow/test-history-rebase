@@ -1,6 +1,7 @@
-import Button from 'components/Button';
 import React, { Component } from 'react';
 import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 import VariableInput from './VariableInput';
 

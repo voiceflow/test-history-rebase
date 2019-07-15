@@ -1,7 +1,8 @@
 import cn from 'classnames';
-import Button from 'components/Button';
 import React, { Component } from 'react';
 import { Tooltip } from 'react-tippy';
+
+import Button from '@/components/Button';
 
 import VendorSelectList from '../VendorSelectList/VendorSelectList';
 

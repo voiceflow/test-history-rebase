@@ -1,17 +1,11 @@
-import Button from 'components/Button';
-import ClipBoard from 'components/ClipBoard/ClipBoard';
-import { BUILD_ENV, IS_PRODUCTION } from 'config';
 import React, { Component } from 'react';
 import { Collapse, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
-let zapierInviteEndpoint;
-if (BUILD_ENV === 'staging' || !IS_PRODUCTION) {
-  // eslint-disable-next-line no-secrets/no-secrets
-  zapierInviteEndpoint = 'https://zapier.com/developer/public-invite/21201/642d361378b287979f713057f57e5473/';
-} else {
-  // eslint-disable-next-line no-secrets/no-secrets
-  zapierInviteEndpoint = 'https://zapier.com/developer/public-invite/20085/7eccd63d8c656ef77db11cdc63c42fa4/';
-}
+import Button from '@/components/Button';
+import ClipBoard from '@/components/ClipBoard/ClipBoard';
+import { ZAPIER_PATH } from '@/config';
+
+const ZAPIER_INVITE_ENDPOINT = `https://zapier.com/developer/public-invite/${ZAPIER_PATH}/`;
 
 // props
 // action_data, open, headers_loading, sheet_headers, toggleSection, variables, showNextSection
@@ -37,7 +31,7 @@ class SetupSection extends Component {
                 <ol>
                   <li className="mb-3">
                     Join the Voiceflow Zapier Beta{' '}
-                    <a href={zapierInviteEndpoint} target="_blank" rel="noopener noreferrer">
+                    <a href={ZAPIER_INVITE_ENDPOINT} target="_blank" rel="noopener noreferrer">
                       here
                     </a>
                   </li>

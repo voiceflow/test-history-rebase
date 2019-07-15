@@ -1,11 +1,12 @@
 import cn from 'classnames';
-import PlatformTooltip from 'components/Tooltips/PlatformTooltip';
-import { setCanFulfill, updateIntents } from 'ducks/version';
 import _ from 'lodash';
 import randomstring from 'randomstring';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, ButtonGroup } from 'reactstrap';
+
+import PlatformTooltip from '@/components/Tooltips/PlatformTooltip';
+import { setCanFulfill, updateIntents } from '@/ducks/version';
 
 import ChoiceDropdownInputs from './components/ChoiceDropdownInputs';
 import IntentInputs from './components/IntentInputs';

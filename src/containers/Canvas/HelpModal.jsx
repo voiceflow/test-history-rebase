@@ -1,7 +1,8 @@
 /* eslint-disable no-secrets/no-secrets */
-import { ModalHeader } from 'components/Modals/ModalHeader';
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
+
+import { ModalHeader } from '@/components/Modals/ModalHeader';
 
 const blocks = [
   {

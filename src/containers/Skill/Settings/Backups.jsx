@@ -1,11 +1,12 @@
 import axios from 'axios';
 import cn from 'classnames';
-import Button from 'components/Button';
-import { setConfirm } from 'ducks/modal';
 import moment from 'moment';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert, FormGroup, Label, Modal, ModalFooter, Table } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { setConfirm } from '@/ducks/modal';
 
 import LightCanvas from '../../Canvas/LightCanvas';
 

@@ -1,9 +1,10 @@
-import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect';
-import { openTab } from 'ducks/user';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Label } from 'reactstrap';
+
+import { selectStyles, variableComponent } from '@/components/VariableSelect/VariableSelect';
+import { openTab } from '@/ducks/user';
 
 class Module extends Component {
   constructor(props) {

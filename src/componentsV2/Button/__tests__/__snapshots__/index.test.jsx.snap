@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button renders primary 1`] = `
+<PrimaryButton>
+  Primary Button
+</PrimaryButton>
+`;
+
+exports[`Button renders secondary 1`] = `
+<ForwardRef(SecondaryButton)>
+  Secondary Button
+</ForwardRef(SecondaryButton)>
+`;
+
+exports[`Button renders tertiary 1`] = `
+<Styled(Styled(styled.button))>
+  Tertiary Button
+</Styled(Styled(styled.button))>
+`;

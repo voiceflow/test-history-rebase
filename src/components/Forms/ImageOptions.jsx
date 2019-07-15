@@ -1,5 +1,6 @@
-import Button from 'components/Button';
 import React from 'react';
+
+import Button from '@/components/Button';
 
 export default (props) => {
   const option_map = props.options.map((o) => o.type);

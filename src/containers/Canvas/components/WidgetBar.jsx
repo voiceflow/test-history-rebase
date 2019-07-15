@@ -1,13 +1,13 @@
-import Button from '@/components/Button';
-import SvgIcon from 'components/SvgIcon';
-import cn from 'classnames';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
-import HomeIcon from 'svgs/home.svg';
-import StarIcon from 'svgs/nav-star.svg';
-import ZoomInIcon from 'svgs/zoom-in.svg';
-import ZoomOutIcon from 'svgs/zoom-out.svg';
+
+import Button from '@/components/Button';
+import SvgIcon from '@/components/SvgIcon';
+import HomeIcon from '@/svgs/home.svg';
+import StarIcon from '@/svgs/nav-star.svg';
+import ZoomInIcon from '@/svgs/zoom-in.svg';
+import ZoomOutIcon from '@/svgs/zoom-out.svg';
 
 import WidgetBarWrapper from './WidgetBarWrapper';
 

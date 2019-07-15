@@ -20,7 +20,7 @@ exports[`Widget Bar render canvas widget bar 1`] = `
         className="zoom-in-icon"
         color="#6E849A"
         height={14}
-        icon="test-file-stub"
+        icon="zoom-in.svg"
         size={16}
         width={14}
       />
@@ -37,7 +37,7 @@ exports[`Widget Bar render canvas widget bar 1`] = `
         className="zoom-out-icon"
         color="#6E849A"
         height={14}
-        icon="test-file-stub"
+        icon="zoom-out.svg"
         size={16}
         width={14}
       />
@@ -92,7 +92,7 @@ exports[`Widget Bar render canvas widget bar 1`] = `
         className="home-icon"
         color="#6E849A"
         height={14}
-        icon="test-file-stub"
+        icon="home.svg"
         size={16}
         width={14}
       />
@@ -147,7 +147,7 @@ exports[`Widget Bar render canvas widget bar 1`] = `
         className="star-icon"
         color="#6E849A"
         height={14}
-        icon="test-file-stub"
+        icon="nav-star.svg"
         size={16}
         width={14}
       />

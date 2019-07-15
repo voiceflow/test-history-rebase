@@ -60,7 +60,11 @@ const getAudioMeta = (audio) => {
 };
 
 const newAudio = (src) => {
-  return new Audio(src);
+  let newSrc = src;
+  if (newSrc.startsWith('soundbank://soundlibrary/')) {
+    newSrc = `${src.replace('soundbank://soundlibrary/', 'https://d3qhmae9zx9eb.cloudfront.net/')}.mp3`;
+  }
+  return new Audio(newSrc);
 };
 
 export const getUserTestOutputs = async (trace, ending) => {

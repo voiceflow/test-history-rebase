@@ -1,8 +1,9 @@
-import MultiModal from 'containers/Visuals/Multimodal';
 import toJson from 'enzyme-to-json';
 import { shallow } from 'enzyme/build';
 import * as _ from 'lodash';
 import React from 'react';
+
+import MultiModal from '@/containers/Visuals/Multimodal';
 
 describe('MultiModal not loading', () => {
   const DISPLAYS = [

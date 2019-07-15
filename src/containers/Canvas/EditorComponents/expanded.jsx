@@ -1,8 +1,8 @@
-import { ModalHeader } from 'components/Modals/ModalHeader';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { Modal, ModalBody } from 'reactstrap';
+
+import { ModalHeader } from '@/components/Modals/ModalHeader';
 
 class ExpandedEditorView extends PureComponent {
   render() {

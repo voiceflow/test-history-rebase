@@ -1,5 +1,4 @@
 import Mousetrap from 'mousetrap';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 

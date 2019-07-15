@@ -9,10 +9,9 @@ import { Tooltip } from 'react-tippy';
 import { Alert, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import { compose } from 'recompose';
 
-import { redo, undo } from '@/hocs/withUndoRedo';
-
 import Button from '@/components/Button';
 import Prompt from '@/components/Uploads/Prompt';
+import { redo, undo } from '@/hocs/withUndoRedo';
 
 import * as EditorConstants from './EditorComponents/constants';
 import ExpandedEditorView from './EditorComponents/expanded';
@@ -51,21 +50,14 @@ class Editor extends Component {
     node: this.props.node || null,
     chipsInput: '',
     expanded: false,
-
-    // not being used anywhere is the file
-
-    // templates: [],
-    // account_linking: {},
-    // error: null,
-    // confirm: null,
   };
 
   render() {
     const { unfocus, open, setCanvasEvents, diagramEngine } = this.props;
     const { node, expanded } = this.state;
-    const TYPE = node && node.extras.type;
+    const type = node && node.extras.type;
 
-    if (TYPE === 'god' || TYPE === 'story') {
+    if (type === 'god' || type === 'story') {
       return null;
     }
 
@@ -77,10 +69,10 @@ class Editor extends Component {
         setCanvasEvents={setCanvasEvents}
         diagramEngine={diagramEngine}
         className={cn({
-          open: open && TYPE && !expanded,
+          open: open && type && !expanded,
         })}
       >
-        {TYPE ? (
+        {type && (
           <div className="controls" key={node.id}>
             <div
               id="editor-section"
@@ -107,7 +99,7 @@ class Editor extends Component {
               )}
             </div>
           </div>
-        ) : null}
+        )}
       </EditorWrapper>
     );
   }
@@ -652,11 +644,6 @@ Editor.propTypes = {
 
   platform: PropTypes.string,
   open: PropTypes.bool,
-
-  // following props does not exist
-
-  // testing
-  // preview
 };
 
 const mapStateToProps = (state) => ({

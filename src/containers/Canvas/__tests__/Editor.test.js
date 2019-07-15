@@ -1,4 +1,3 @@
-import toJson from 'enzyme-to-json';
 import { shallow } from 'enzyme/build';
 import _ from 'lodash';
 import React from 'react';
@@ -40,6 +39,6 @@ describe('Editor', () => {
       />
     );
 
-    expect(toJson(component)).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
   });
 });

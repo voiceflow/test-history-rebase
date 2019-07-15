@@ -1,4 +1,3 @@
-import toJson from 'enzyme-to-json';
 import { shallow } from 'enzyme/build';
 import _ from 'lodash';
 import React from 'react';
@@ -17,6 +16,6 @@ describe('EditorWrapper', () => {
       <EditorWrapper unfocus={_.noop()} setCanvasEvents={_.noop()} diagramEngine={diagramEngine} undo={_.noop()} redo={_.noop()} />
     );
 
-    expect(toJson(component)).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
   });
 });

@@ -1,6 +1,4 @@
 import axios from 'axios';
-import AceEditor from 'components/AceEditor';
-import { ModalHeader } from 'components/Modals/ModalHeader';
 import { ContentState, convertToRaw } from 'draft-js';
 import update from 'immutability-helper';
 import isVarName from 'is-var-name';
@@ -26,6 +24,9 @@ import {
   NavLink,
 } from 'reactstrap';
 import serializeError from 'serialize-error';
+
+import AceEditor from '@/components/AceEditor';
+import { ModalHeader } from '@/components/Modals/ModalHeader';
 
 import draftToMarkdown from '../../../services/draftConvert';
 import APIInputs from './components/APIInputs';

@@ -282,7 +282,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
   <div
     className="title-group-sub"
   >
-    <Connect(UserTestHeader)
+    <Connect(TestingHeader)
       render={true}
     />
   </div>

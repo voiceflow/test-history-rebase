@@ -1,14 +1,15 @@
 import './Template.css';
 
 import axios from 'axios';
-import Button from 'components/Button';
-import { Spinner } from 'components/Spinner/Spinner';
-import { addProjectToList } from 'ducks/board';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Alert, Modal } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner/Spinner';
+import { addProjectToList } from '@/ducks/board';
 
 import LOCALE_MAP from '../../services/LocaleMap';
 import LightCanvas from '../Canvas/LightCanvas';

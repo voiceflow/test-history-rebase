@@ -1,12 +1,13 @@
 import './Integrations.css';
 
 import cn from 'classnames';
-import { clearModal, setConfirm, setError } from 'ducks/modal';
 import update from 'immutability-helper';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
+
+import { clearModal, setConfirm, setError } from '@/ducks/modal';
 
 import Custom from './components/integrations/custom';
 import GoogleSheets from './components/integrations/googleSheets';

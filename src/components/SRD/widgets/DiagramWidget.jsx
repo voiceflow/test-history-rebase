@@ -1,3 +1,4 @@
+import { NODE_ENV } from '@/config';
 import React from "react";
 import _ from "lodash";
 import { Alert } from 'reactstrap';
@@ -12,7 +13,7 @@ import { BlockNodeModel } from '../models/BlockNodeModel';
 import { PointModel } from "../models/PointModel";
 import { PortModel } from "../models/PortModel";
 import { BaseWidget } from "./BaseWidget";
-import { checkBlockDisabledLive } from "containers/Canvas/Blocks"
+import { checkBlockDisabledLive } from "@/containers/Canvas/Blocks"
 
 const toolkit = new Toolkit();
 
@@ -108,7 +109,7 @@ export class DiagramWidget extends BaseWidget {
 		window.addEventListener("keyup", this.onKeyUpPointer, false);
 
 		// dont focus the window when in test mode - jsdom fails
-		if (process.env.NODE_ENV !== "test") {
+		if (NODE_ENV !== "test") {
 			window.focus();
 		}
 	}

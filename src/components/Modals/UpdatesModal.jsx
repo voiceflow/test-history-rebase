@@ -1,6 +1,7 @@
-import Button from 'components/Button';
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 const class_mapping = {
   FEATURE: {
@@ -14,6 +15,10 @@ const class_mapping = {
   CHANGE: {
     class: 'update-modal-change',
     label: 'Change',
+  },
+  empty: {
+    class: 'update-modal-change',
+    label: '',
   },
 };
 

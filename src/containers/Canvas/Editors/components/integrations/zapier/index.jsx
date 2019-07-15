@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { clearModal, setConfirm, setError } from 'ducks/modal';
 import update from 'immutability-helper';
 import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
+
+import { clearModal, setConfirm, setError } from '@/ducks/modal';
 
 import IntegrationBase from '../integrationBase';
 import TestSection from '../testSection';

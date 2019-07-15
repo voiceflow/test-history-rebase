@@ -1,12 +1,13 @@
 import './NavBar.css';
 
 import axios from 'axios';
-import { fetchDiagrams, updateDiagramRoot } from 'ducks/diagram';
-import { setLiveModeModal, toggleLive } from 'ducks/version';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Toggle from 'react-toggle';
+
+import { fetchDiagrams, updateDiagramRoot } from '@/ducks/diagram';
+import { setLiveModeModal, toggleLive } from '@/ducks/version';
 
 import { NavBarTabs } from './styled';
 

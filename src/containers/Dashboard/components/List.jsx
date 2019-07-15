@@ -1,15 +1,16 @@
 import cn from 'classnames';
-import Button from 'components/Button';
-import Dropdown from 'components/Dropdown';
-import Form from 'components/Form';
-import { ScrollContextProvider } from 'contexts';
-import withDraggable from 'hocs/withDraggable';
-import { useHorizontalScrollToNode, useScrollHelpers, useScrollShadows } from 'hooks/scroll';
-import { useToggle } from 'hooks/toggle';
 import * as _ from 'lodash';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
+
+import Button from '@/components/Button';
+import Dropdown from '@/components/Dropdown';
+import Form from '@/components/Form';
+import { ScrollContextProvider } from '@/contexts';
+import withDraggable from '@/hocs/withDraggable';
+import { useHorizontalScrollToNode, useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
+import { useToggle } from '@/hooks/toggle';
 
 import Item from './Item';
 

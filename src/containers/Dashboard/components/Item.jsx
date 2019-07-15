@@ -1,8 +1,4 @@
 import cn from 'classnames';
-import Dropdown from 'components/Dropdown';
-import Link from 'components/Link';
-import withDraggable from 'hocs/withDraggable';
-import { useToggle } from 'hooks/toggle';
 import * as _ from 'lodash';
 import map from 'lodash/map';
 import upperCase from 'lodash/upperCase';
@@ -10,8 +6,13 @@ import upperCase from 'lodash/upperCase';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
-import { colors } from 'utils/colors';
-import { getHumanLanguageName } from 'utils/languages';
+
+import Dropdown from '@/components/Dropdown';
+import Link from '@/components/Link';
+import withDraggable from '@/hocs/withDraggable';
+import { useToggle } from '@/hooks/toggle';
+import { colors } from '@/utils/colors';
+import { getHumanLanguageName } from '@/utils/languages';
 
 const DROPDOWN_OPTIONS = [
   {

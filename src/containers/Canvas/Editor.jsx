@@ -1,9 +1,5 @@
+import { constants } from '@voiceflow/common';
 import cn from 'classnames';
-import Button from 'components/Button';
-import { ModalHeader } from 'components/Modals/ModalHeader';
-import Prompt from 'components/Uploads/Prompt';
-// HOCs
-import { redo, undo } from 'hocs/withUndoRedo';
 import _ from 'lodash';
 import Mousetrap from 'mousetrap';
 import React, { Component } from 'react';
@@ -13,7 +9,11 @@ import { Tooltip } from 'react-tippy';
 import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Modal, ModalBody, UncontrolledDropdown } from 'reactstrap';
 import { compose } from 'recompose';
 
-import { BUILT_IN_INTENTS_ALEXA, BUILT_IN_INTENTS_GOOGLE, SLOT_TYPES } from 'Constants';
+import Button from '@/components/Button';
+import { ModalHeader } from '@/components/Modals/ModalHeader';
+import Prompt from '@/components/Uploads/Prompt';
+// HOCs
+import { redo, undo } from '@/hocs/withUndoRedo';
 
 import API from './Editors/API';
 import CancelPayment from './Editors/CancelPayment';
@@ -43,6 +43,9 @@ import SetBlock from './Editors/Set';
 import Speak from './Editors/Speak';
 import Stream from './Editors/Stream';
 import Variable from './Editors/Variable';
+
+const { BUILT_IN_INTENTS_ALEXA, BUILT_IN_INTENTS_GOOGLE } = constants.intents;
+const SLOT_TYPES = constants.slots;
 
 const CMD_Z = 'command+z';
 const CTRL_Z = 'ctrl+z';

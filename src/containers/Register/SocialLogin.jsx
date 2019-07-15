@@ -1,11 +1,12 @@
-import { fbLogin, googleLogin } from 'ducks/account';
 import React, { Fragment, useEffect, useState } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
 
+import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from '@/config';
+import { fbLogin, googleLogin } from '@/ducks/account';
+
 import ErrorWidget from './ErrorWidget';
-import { devGoogleClient, fbId, googleClient } from './social-id';
 
 const SocialLogin = ({ entryText, googleLogin, fbLogin }) => {
   const [authError, setAuthError] = useState(null);
@@ -49,13 +50,13 @@ const SocialLogin = ({ entryText, googleLogin, fbLogin }) => {
       <ErrorWidget error={authError} color="danger" />
       <div className="social-login">
         <GoogleLogin
-          clientId={process.env.REACT_APP_BUILD_ENV === 'production' ? googleClient : devGoogleClient}
+          clientId={GOOGLE_CLIENT_ID}
           className="social-button class-ggl mb-2"
           buttonText={`${entryText} with Google`}
           onSuccess={triggerGoogleLogin}
         />
         <FacebookLogin
-          appId={fbId}
+          appId={FACEBOOK_APP_ID}
           cssClass="social-button class-fb"
           icon="fa-facebook"
           fields="name,email"

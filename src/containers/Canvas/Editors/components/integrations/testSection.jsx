@@ -1,15 +1,18 @@
-import DefaultModal from 'components/Modals/DefaultModal';
-import { setConfirm, setError } from 'ducks/modal';
+import { utils } from '@voiceflow/common';
 import update from 'immutability-helper';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import ReactJson from 'react-json-view';
 import { connect } from 'react-redux';
 import { Alert, Button, Collapse, Input, InputGroup, InputGroupAddon } from 'reactstrap';
-import IntegrationsService from 'services/Integrations';
 
-import { deepDraftToMarkdown, deepVariableSubstitution } from '../../../../../intent_util';
+import DefaultModal from '@/components/Modals/DefaultModal';
+import { setConfirm, setError } from '@/ducks/modal';
+import IntegrationsService from '@/services/Integrations';
+
 import C from './constants';
+
+const { deepDraftToMarkdown, deepVariableSubstitution } = utils.intent;
 
 const SERVICES_MAP = {
   [C.GS.GOOGLE_SHEETS]: {

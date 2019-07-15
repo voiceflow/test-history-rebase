@@ -1,20 +1,4 @@
 import axios from 'axios';
-import Button from 'components/Button';
-// Components
-import Header from 'components/Header';
-import DefaultModal from 'components/Modals/DefaultModal';
-import SecondaryNavBar from 'components/NavBar/SecondaryNavBar';
-import { Spinner } from 'components/Spinner/Spinner';
-import Migrate from 'containers/Skill/Migrate';
-// Ducks
-import { unnormalize } from 'ducks/_normalize';
-import { getVendors } from 'ducks/account';
-import { fetchDiagrams } from 'ducks/diagram';
-import { fetchDisplays } from 'ducks/display';
-import { fetchProducts } from 'ducks/product';
-import { fetchVersion, resetVersion, setLiveModeModal, updateVersion } from 'ducks/version';
-// HOCs
-import { errorScreen, loadSession, socketCheck } from 'hocs/socketCheck';
 import * as _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -22,6 +6,23 @@ import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
 import { Alert } from 'reactstrap';
 import { compose } from 'recompose';
+
+import Button from '@/components/Button';
+// Components
+import Header from '@/components/Header';
+import DefaultModal from '@/components/Modals/DefaultModal';
+import SecondaryNavBar from '@/components/NavBar/SecondaryNavBar';
+import { Spinner } from '@/components/Spinner/Spinner';
+import Migrate from '@/containers/Skill/Migrate';
+// Ducks
+import { unnormalize } from '@/ducks/_normalize';
+import { getVendors } from '@/ducks/account';
+import { fetchDiagrams } from '@/ducks/diagram';
+import { fetchDisplays } from '@/ducks/display';
+import { fetchProducts } from '@/ducks/product';
+import { fetchVersion, resetVersion, setLiveModeModal, updateVersion } from '@/ducks/version';
+// HOCs
+import { errorScreen, loadSession, socketCheck } from '@/hocs/socketCheck';
 
 import Business from './containers/Business';
 // Views

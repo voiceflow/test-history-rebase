@@ -3,7 +3,7 @@ import cn from 'classnames'
 import {findDOMNode} from 'react-dom'
 import * as _ from "lodash";
 //Helpers
-import {combineValidation, combineAppendValidation, appendValidator} from 'utils/combineHelper'
+import {combineValidation, combineAppendValidation, appendValidator} from '@/utils/combineHelper'
 import {Toolkit} from './../Toolkit'
 import {BlockNodeModel} from "./../models/BlockNodeModel";
 import {BlockPortLabel} from "./BlockPortLabelWidget";
@@ -12,9 +12,9 @@ import Textarea from 'react-textarea-autosize';
 import AnimateHeight from 'react-animate-height'
 import {Tooltip} from 'react-tippy'
 // import Select from 'react-select'
-import Select from 'components/Dropdowns/Searchable'
-import {getBlocks} from 'containers/Canvas/Blocks'
-import Button from 'components/Button'
+import Select from '@/components/Dropdowns/Searchable'
+import {getBlocks} from '@/containers/Canvas/Blocks'
+import Button from '@/components/Button'
 
 const toolkit = new Toolkit()
 

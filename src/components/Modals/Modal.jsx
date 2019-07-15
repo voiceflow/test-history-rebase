@@ -1,8 +1,9 @@
-import { ModalHeader } from 'components/Modals/ModalHeader';
-import { clearModal } from 'ducks/modal';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
+
+import { ModalHeader } from '@/components/Modals/ModalHeader';
+import { clearModal } from '@/ducks/modal';
 
 export const StandardModal = ({ modal, toggle }) => {
   // TODO this class is pure cancer

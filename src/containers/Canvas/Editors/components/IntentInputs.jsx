@@ -1,6 +1,6 @@
 import './IntentInputs.css';
 
-import { setConfirm } from 'ducks/modal';
+import { utils } from '@voiceflow/common';
 import _ from 'lodash';
 import converter from 'number-to-words';
 import randomstring from 'randomstring';
@@ -8,8 +8,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert, Input } from 'reactstrap';
 
-import { getUtterancesWithSlotNames } from '../../../../intent_util';
+import { setConfirm } from '@/ducks/modal';
+
 import IntentInput from './IntentInput';
+
+const { getUtterancesWithSlotNames } = utils.intent;
 
 const getIndex = (index) =>
   converter

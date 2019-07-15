@@ -4,7 +4,8 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
-import { findScrollableParents } from 'utils/dom';
+
+import { findScrollableParents } from '@/utils/dom';
 
 import Input from '../Input';
 import Transition from '../Transition';

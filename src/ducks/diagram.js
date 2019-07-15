@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { setConfirm, setError } from 'ducks/modal';
 import update from 'immutability-helper';
 import _ from 'lodash';
+
+import { setConfirm, setError } from '@/ducks/modal';
 
 export const FETCH_DIAGRAMS_BEGIN = 'FETCH_DIAGRAMS_BEGIN';
 export const FETCH_DIAGRAMS_SUCCESS = 'FETCH_DIAGRAMS_SUCCESS';

@@ -1,20 +1,22 @@
-import { constants } from '@voiceflow/common';
 import cn from 'classnames';
 import _ from 'lodash';
 import Mousetrap from 'mousetrap';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CreatableSelect from 'react-select/lib/Creatable';
 import { Tooltip } from 'react-tippy';
-import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Modal, ModalBody, UncontrolledDropdown } from 'reactstrap';
+import { Alert, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import { compose } from 'recompose';
 
-import Button from '@/components/Button';
-import { ModalHeader } from '@/components/Modals/ModalHeader';
-import Prompt from '@/components/Uploads/Prompt';
-// HOCs
 import { redo, undo } from '@/hocs/withUndoRedo';
 
+import Button from '@/components/Button';
+import Prompt from '@/components/Uploads/Prompt';
+
+import * as EditorConstants from './EditorComponents/constants';
+import ExpandedEditorView from './EditorComponents/expanded';
+import EditorWrapper from './EditorComponents/wrapper';
 import API from './Editors/API';
 import CancelPayment from './Editors/CancelPayment';
 import Capture from './Editors/Capture';
@@ -44,80 +46,76 @@ import Speak from './Editors/Speak';
 import Stream from './Editors/Stream';
 import Variable from './Editors/Variable';
 
-const { BUILT_IN_INTENTS_ALEXA, BUILT_IN_INTENTS_GOOGLE } = constants.intents;
-const SLOT_TYPES = constants.slots;
-
-const CMD_Z = 'command+z';
-const CTRL_Z = 'ctrl+z';
-const CTRL_SHIFT_Z = 'ctrl+shift+z';
-const CMD_Y = 'command+y';
-const CTRL_Y = 'ctrl+y';
-const CMD_SHIFT_Z = 'command+shift+z';
-
-const ALEXA_BUILT_INS =
-  BUILT_IN_INTENTS_ALEXA &&
-  BUILT_IN_INTENTS_ALEXA.map((intent) => {
-    return {
-      built_in: true,
-      platform: 'alexa',
-      name: intent.name,
-      key: intent.name,
-      inputs: [
-        {
-          text: '',
-          slots: intent.slots,
-        },
-      ],
-    };
-  });
-
-const GOOGLE_BUILT_INS =
-  BUILT_IN_INTENTS_GOOGLE &&
-  BUILT_IN_INTENTS_GOOGLE.map((intent) => {
-    return {
-      built_in: true,
-      platform: 'google',
-      name: intent.name,
-      key: intent.name,
-      inputs: [
-        {
-          text: '',
-          slots: intent.slots,
-        },
-      ],
-    };
-  });
-
 class Editor extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    node: this.props.node || null,
+    chipsInput: '',
+    expanded: false,
 
-    this.state = {
-      node: props.node,
-      templates: [],
-      account_linking: {},
-      modal: false,
-      expanded: false,
-      error: null,
-      confirm: null,
-      chipsInput: '',
-    };
+    // not being used anywhere is the file
 
-    this.eventHandler = this.eventHandler.bind(this);
-    this.getSlotTypes = this.getSlotTypes.bind(this);
-    this.BlockViewer = this.BlockViewer.bind(this);
-    this.renderTitle = this.renderTitle.bind(this);
-    this.toggleReprompt = this.toggleReprompt.bind(this);
-    this.undo = this.undo.bind(this);
-    this.redo = this.redo.bind(this);
-    this.EditorRender = this.EditorRender.bind(this);
-    this.updateExtras = this.updateExtras.bind(this);
+    // templates: [],
+    // account_linking: {},
+    // error: null,
+    // confirm: null,
+  };
+
+  render() {
+    const { unfocus, open, setCanvasEvents, diagramEngine } = this.props;
+    const { node, expanded } = this.state;
+    const TYPE = node && node.extras.type;
+
+    if (TYPE === 'god' || TYPE === 'story') {
+      return null;
+    }
+
+    return (
+      <EditorWrapper
+        unfocus={unfocus}
+        testing={this.props.testing}
+        preview={this.props.preview}
+        setCanvasEvents={setCanvasEvents}
+        diagramEngine={diagramEngine}
+        className={cn({
+          open: open && TYPE && !expanded,
+        })}
+      >
+        {TYPE ? (
+          <div className="controls" key={node.id}>
+            <div
+              id="editor-section"
+              className={cn({
+                disabled: this.props.testing,
+                // don't think this will ever be true since Testing is moved to a tab instead
+              })}
+            >
+              {this.renderTitle()}
+              {expanded ? (
+                <div className="text-center mt-5">
+                  <span className="loader text-lg" />
+                </div>
+              ) : (
+                this.EditorRender()
+              )}
+              {this.state.expanded && (
+                <ExpandedEditorView
+                  isOpen={this.state.expanded}
+                  updateState={this.updateState}
+                  nodeName={node.name}
+                  editorRender={this.EditorRender}
+                />
+              )}
+            </div>
+          </div>
+        ) : null}
+      </EditorWrapper>
+    );
   }
 
   componentDidMount() {
     Mousetrap.reset();
-    Mousetrap.bind([CTRL_Z, CMD_Z], this.undo);
-    Mousetrap.bind([CTRL_Y, CMD_Y, CTRL_SHIFT_Z, CMD_SHIFT_Z], this.redo);
+    Mousetrap.bind([EditorConstants.CTRL_Z, EditorConstants.CMD_Z], this.undo);
+    Mousetrap.bind([EditorConstants.CTRL_Y, EditorConstants.CMD_Y, EditorConstants.CTRL_SHIFT_Z, EditorConstants.CMD_SHIFT_Z], this.redo);
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -130,7 +128,9 @@ class Editor extends Component {
     };
   }
 
-  undo() {
+  updateState = (type, value) => this.setState({ [type]: value });
+
+  undo = () => {
     if (!_.isEmpty(this.props.undoEvents) && this.state.node) {
       const recent = _.last(this.props.undoEvents);
       this.props.addRedo({
@@ -157,9 +157,9 @@ class Editor extends Component {
     }
     // e.stopPropagation();
     // e.preventDefault()
-  }
+  };
 
-  redo(e) {
+  redo = (e) => {
     if (!_.isEmpty(this.props.redoEvents) && this.state.node) {
       const recent = _.last(this.props.redoEvents);
       this.props.addUndo(_.cloneDeep(this.state.node.extras), _.cloneDeep(this.state.node.ports));
@@ -182,9 +182,9 @@ class Editor extends Component {
     }
     e.stopPropagation();
     e.preventDefault();
-  }
+  };
 
-  handleChange(e) {
+  handleChange = (e) => {
     const node = this.state.node;
     const name = e.target.getAttribute('name');
     const value = e.target.value;
@@ -203,12 +203,12 @@ class Editor extends Component {
         }
       }
     );
-  }
+  };
 
-  getSlotTypes(locales, filter) {
-    let slots = [SLOT_TYPES[0]]; // Custom Slot
+  getSlotTypes = (locales, filter) => {
+    let slots = [EditorConstants.SLOT_TYPES[0]]; // Custom Slot
     // eslint-disable-next-line no-restricted-syntax
-    for (const slot of Object.values(SLOT_TYPES)) {
+    for (const slot of Object.values(EditorConstants.SLOT_TYPES)) {
       // eslint-disable-next-line no-continue
       if (filter && filter === slot.label) continue;
       // eslint-disable-next-line no-continue
@@ -255,9 +255,9 @@ class Editor extends Component {
 
       return { label: type.label, value };
     });
-  }
+  };
 
-  BlockViewer(variables) {
+  BlockViewer = (variables) => {
     switch (this.state.node.extras.type) {
       case 'story':
         return;
@@ -270,7 +270,7 @@ class Editor extends Component {
             diagramEngine={this.props.diagramEngine}
             updateLinter={this.props.updateLinter}
             slot_types={this.getSlotTypes(this.props.locales)}
-            built_ins={this.props.platform === 'google' ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
+            built_ins={this.props.platform === 'google' ? EditorConstants.GOOGLE_BUILT_INS : EditorConstants.ALEXA_BUILT_INS}
             history={this.props.history}
             diagram_level_intents={this.props.diagram_level_intents}
             platform={this.props.platform}
@@ -285,7 +285,7 @@ class Editor extends Component {
           <Command
             slot_types={this.getSlotTypes(this.props.locales)}
             updateLinter={this.props.updateLinter}
-            built_ins={this.props.platform === 'google' ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
+            built_ins={this.props.platform === 'google' ? EditorConstants.GOOGLE_BUILT_INS : EditorConstants.ALEXA_BUILT_INS}
             repaint={this.props.repaint}
             createDiagram={this.props.createDiagram}
             enterFlow={this.props.enterFlow}
@@ -307,7 +307,7 @@ class Editor extends Component {
             onIntent={this.props.onIntent}
             diagramEngine={this.props.diagramEngine}
             slot_types={this.getSlotTypes(this.props.locales)}
-            built_ins={this.props.platform === 'google' ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
+            built_ins={this.props.platform === 'google' ? EditorConstants.GOOGLE_BUILT_INS : EditorConstants.ALEXA_BUILT_INS}
             onConfirm={this.props.onConfirm}
             platform={this.props.platform}
           />
@@ -401,9 +401,9 @@ class Editor extends Component {
       default:
         return null;
     }
-  }
+  };
 
-  titleInput() {
+  titleInput = () => {
     switch (this.state.node.extras.type) {
       case 'story':
         return <div id="label">Start Block</div>;
@@ -422,6 +422,7 @@ class Editor extends Component {
       default:
         return (
           <input
+            autoComplete="off"
             id="label"
             placeholder="Block Label"
             type="text"
@@ -436,9 +437,9 @@ class Editor extends Component {
           />
         );
     }
-  }
+  };
 
-  renderTitle() {
+  renderTitle = () => {
     return (
       <div id="label-container" className="d-flex mb-3 pl-2">
         <div className="w-100 text-left">{this.titleInput()}</div>
@@ -463,7 +464,7 @@ class Editor extends Component {
               onClick={() =>
                 this.setState({
                   expanded: true,
-                  modal: true,
+                  // modal: true,
                 })
               }
               className="pointer"
@@ -486,16 +487,9 @@ class Editor extends Component {
         </UncontrolledDropdown>
       </div>
     );
-  }
+  };
 
-  eventHandler(e) {
-    if (this.props.preview) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  }
-
-  toggleReprompt() {
+  toggleReprompt = () => {
     const node = this.state.node;
     if (node.extras.reprompt) {
       delete node.extras.reprompt;
@@ -506,7 +500,7 @@ class Editor extends Component {
       };
     }
     this.setState({ node });
-  }
+  };
 
   toggleChips = () => {
     const node = this.state.node;
@@ -544,7 +538,7 @@ class Editor extends Component {
     }
   };
 
-  updateExtras(extras, callback) {
+  updateExtras = (extras, callback) => {
     const node = this.state.node;
     node.extras = extras;
     if (node.parentCombine) {
@@ -552,9 +546,9 @@ class Editor extends Component {
       node.parentCombine.combines[bestNode] = node;
     }
     this.forceUpdate(callback);
-  }
+  };
 
-  EditorRender() {
+  EditorRender = () => {
     let variables = this.props.global_variables.concat(this.props.variables);
     variables = variables.concat(['Create Variable']);
     return (
@@ -623,72 +617,47 @@ class Editor extends Component {
         )}
       </React.Fragment>
     );
-  }
-
-  render() {
-    const type = this.state.node ? this.state.node.extras.type : null;
-    if (type === 'god' || type === 'story') {
-      return null;
-    }
-    return (
-      <div
-        id="Editor"
-        className={cn({
-          open: this.props.open && type && !this.state.modal,
-        })}
-        onFocus={this.props.unfocus}
-        onClickCapture={this.eventHandler}
-        onKeyDownCapture={this.eventHandler}
-        onMouseDown={this.props.unfocus}
-        onKeyDown={this.props.unfocus}
-        onMouseEnter={() => {
-          this.props.diagramEngine.getDiagramModel().setLocked();
-          Mousetrap.unbind([CTRL_Z, CMD_Z]);
-          Mousetrap.unbind([CTRL_Y, CMD_Y, CTRL_SHIFT_Z, CMD_SHIFT_Z]);
-          Mousetrap.bind([CTRL_Z, CMD_Z], this.undo);
-          Mousetrap.bind([CTRL_Y, CMD_Y, CTRL_SHIFT_Z, CMD_SHIFT_Z], this.redo);
-        }}
-        onMouseLeave={() => {
-          if (!this.props.testing) this.props.diagramEngine.getDiagramModel().setLocked(false);
-          this.props.setCanvasEvents();
-        }}
-      >
-        {type ? (
-          <div className="controls" key={this.state.node.id}>
-            <div
-              id="editor-section"
-              className={cn({
-                disabled: this.props.testing,
-              })}
-            >
-              {this.renderTitle()}
-              {!this.state.expanded ? (
-                this.EditorRender()
-              ) : (
-                <div className="text-center mt-5">
-                  <span className="loader text-lg" />
-                </div>
-              )}
-              {this.state.expanded && (
-                <React.Fragment>
-                  <Modal
-                    isOpen={this.state.modal}
-                    toggle={() => this.setState({ modal: false })}
-                    onClosed={() => this.setState({ expanded: false })}
-                    size="lg"
-                  >
-                    <ModalHeader toggle={() => this.setState({ modal: false })} header={`${this.state.node.name} Settings`} />
-                    <ModalBody className="pb-4 px-4">{this.EditorRender()}</ModalBody>
-                  </Modal>
-                </React.Fragment>
-              )}
-            </div>
-          </div>
-        ) : null}
-      </div>
-    );
-  }
+  };
 }
+
+Editor.propTypes = {
+  variables: PropTypes.array,
+  redoEvents: PropTypes.array,
+  undoEvents: PropTypes.array,
+  locals: PropTypes.arrayOf(PropTypes.string),
+  diagrams: PropTypes.arrayOf(PropTypes.object),
+  global_variables: PropTypes.arrayOf(PropTypes.string),
+
+  unfocus: PropTypes.func,
+  addRedo: PropTypes.func,
+  addUndo: PropTypes.func,
+  repaint: PropTypes.func,
+  setHelp: PropTypes.func,
+  onUpdate: PropTypes.func,
+  copyNode: PropTypes.func,
+  clearUndo: PropTypes.func,
+  clearRedo: PropTypes.func,
+  enterFlow: PropTypes.func,
+  removeNode: PropTypes.func,
+  removeUndo: PropTypes.func,
+  updateLinter: PropTypes.func,
+  setCanvasEvents: PropTypes.func,
+  appendCombineNode: PropTypes.func,
+  removeCombineNode: PropTypes.func,
+
+  node: PropTypes.object,
+  history: PropTypes.object,
+  google_publish_info: PropTypes.object,
+  diagram_level_intents: PropTypes.object,
+
+  platform: PropTypes.string,
+  open: PropTypes.bool,
+
+  // following props does not exist
+
+  // testing
+  // preview
+};
 
 const mapStateToProps = (state) => ({
   locales: state.skills.skill.locales,
@@ -698,6 +667,7 @@ const mapStateToProps = (state) => ({
   google_publish_info: state.skills.skill.google_publish_info,
   diagrams: state.diagrams.diagrams,
 });
+
 export default compose(
   connect(mapStateToProps),
   undo,

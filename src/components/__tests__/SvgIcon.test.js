@@ -1,6 +1,5 @@
 import { shallow } from 'enzyme/build';
 import React from 'react';
-import HomeIcon from 'svgs/home.svg';
 
 import HomeIcon from '@/svgs/home.svg';
 

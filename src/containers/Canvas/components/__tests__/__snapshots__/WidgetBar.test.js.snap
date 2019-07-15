@@ -21,6 +21,7 @@ exports[`Widget Bar render canvas widget bar 1`] = `
         color="#6E849A"
         height={14}
         icon="test-file-stub"
+        size={16}
         width={14}
       />
     </Button>
@@ -37,6 +38,7 @@ exports[`Widget Bar render canvas widget bar 1`] = `
         color="#6E849A"
         height={14}
         icon="test-file-stub"
+        size={16}
         width={14}
       />
     </Button>
@@ -91,6 +93,7 @@ exports[`Widget Bar render canvas widget bar 1`] = `
         color="#6E849A"
         height={14}
         icon="test-file-stub"
+        size={16}
         width={14}
       />
     </Button>
@@ -145,6 +148,7 @@ exports[`Widget Bar render canvas widget bar 1`] = `
         color="#6E849A"
         height={14}
         icon="test-file-stub"
+        size={16}
         width={14}
       />
     </Button>

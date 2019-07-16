@@ -147,7 +147,7 @@ class IntentInputs extends Component {
   checkUtterances = (utterance) => {
     const all_utterances = [];
     this.props.intents.forEach((intent) => {
-      intent.inputs.forEach((input, idx) => {
+      intent.inputs.forEach((input) => {
         all_utterances.push(input.text.toLowerCase());
       });
     });

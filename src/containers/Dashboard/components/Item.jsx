@@ -31,6 +31,7 @@ const DROPDOWN_BUTTON_PROPS = {
 
 export function Item(props) {
   const {
+    id,
     name,
     created,
     diagram,
@@ -44,10 +45,11 @@ export function Item(props) {
     connectDragSource,
     connectDropTarget,
     isDraggingPreview,
+    isReference,
   } = props;
 
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
-  const pathTo = `/canvas/${version_id}/${diagram}`;
+  const pathTo = isReference ? `/reference/${id}` : `/canvas/${version_id}/${diagram}`;
 
   const color = colors[new Date(created).getTime() % colors.length];
 

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Toggle from 'react-toggle';
 import { Alert, Button, ButtonGroup } from 'reactstrap';
+
 import { showSettingsModal } from '@/ducks/modal';
 
 const PERMISSIONS = [

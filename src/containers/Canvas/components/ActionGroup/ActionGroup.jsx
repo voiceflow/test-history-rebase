@@ -16,6 +16,7 @@ import { ModalHeader } from '@/components/Modals/ModalHeader';
 import ShareTest from '@/containers/Testing/ShareTest';
 import { AmazonAccessToken, getVendors, googleAccessToken } from '@/ducks/account';
 import { setError } from '@/ducks/modal';
+import { showSettingsModal } from '@/ducks/modal';
 import { updateVendorId } from '@/ducks/project';
 import { updateLocales, updateSkillDB, updateVersion } from '@/ducks/version';
 import LOCALE_MAP from '@/services/LocaleMap';
@@ -23,7 +24,6 @@ import InvRegex from '@/services/Regex';
 
 import Settings from '../../../Skill/Settings';
 import UploadButton from '../UploadButton/UploadButton';
-import { showSettingsModal } from '@/ducks/modal';
 
 const loading = (message) => {
   return (

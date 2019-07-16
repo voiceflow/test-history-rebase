@@ -3,6 +3,7 @@ import 'react-sweet-progress/lib/style.css';
 
 import axios from 'axios';
 import cn from 'classnames';
+import _ from 'lodash';
 import React, { PureComponent } from 'react';
 import Confetti from 'react-dom-confetti';
 import { connect } from 'react-redux';
@@ -464,18 +465,25 @@ export class ActionGroup extends PureComponent {
               } else if (err.status === 401 || err.response.status === 401) {
                 this.updateAlexaStage(5);
               } else {
-                let error_message = '';
-                if (err.response && err.response.data && err.response.data.message) {
-                  error_message += err.response.data.message;
+                let errorMessage = '';
+                const errorData = _.get(err, ['response', 'data']);
+                if (errorData) {
+                  const { message, violations } = errorData;
+                  if (message) {
+                    errorMessage += err.response.data.message;
+                  }
 
-                  if (err.response.data.violations) {
-                    for (let i = 0; i < err.response.data.violations.length; i++) {
-                      error_message += `\n${err.response.data.violations[i].message}`;
+                  if (violations) {
+                    for (let i = 0; i < violations.length; i++) {
+                      errorMessage += `\n${violations[i].message}`;
                     }
                   }
+
+                  if (!errorMessage && _.isString(errorData)) errorMessage = errorData;
                 }
+
                 this.updateAlexaStage(9, undefined, {
-                  upload_error: err.response && err.response.data && err.response.data.message ? error_message : 'Error Encountered',
+                  upload_error: errorMessage || 'Error Encountered',
                 });
               }
             });

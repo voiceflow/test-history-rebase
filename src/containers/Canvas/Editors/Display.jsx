@@ -1,8 +1,6 @@
 import './Display.css';
 
 import axios from 'axios';
-import AceEditor from 'components/AceEditor';
-import { ModalHeader } from 'components/Modals/ModalHeader';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -11,6 +9,9 @@ import Select from 'react-select';
 import { Tooltip } from 'react-tippy';
 import { Button, Input, InputGroup, InputGroupAddon, Modal, ModalBody } from 'reactstrap';
 import { compose } from 'redux';
+
+import AceEditor from '@/components/AceEditor';
+import { ModalHeader } from '@/components/Modals/ModalHeader';
 
 import { selectStyles } from '../../../components/VariableSelect/VariableSelect';
 import DisplayRender from './components/DisplayRender';
@@ -289,9 +290,11 @@ export class Display extends Component {
           <ModalBody>{modal && this.renderDisplayTest()}</ModalBody>
         </Modal>
         <div>
-          <label>Multimodal Display</label>
-          <div onClick={() => this.props.history.push(`/visuals/${skill_id}`)} className="d__see_all">
-            See all
+          <div className="d__label-title">
+            <label>Multimodal Display</label>
+            <div onClick={() => this.props.history.push(`/visuals/${skill_id}`)} className="d__see_all">
+              See all
+            </div>
           </div>
           <Select
             classNamePrefix="select-box"

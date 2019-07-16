@@ -1,6 +1,7 @@
-import { closeCanvasError } from 'ducks/user';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import { closeCanvasError } from '@/ducks/user';
 
 class CanvasWarning extends Component {
   componentDidMount() {

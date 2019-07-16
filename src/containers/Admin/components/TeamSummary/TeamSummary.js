@@ -1,9 +1,10 @@
 import './TeamSummary.css';
 
-import Button from 'components/Button';
 import moment from 'moment';
 import React from 'react';
 import { Card, CardBody, Collapse, ListGroup } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 import SkillDetail from '../SkillDetail/SkillDetail';
 import TrialModal from '../TrialModal/TrialModal';

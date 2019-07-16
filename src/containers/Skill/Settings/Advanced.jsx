@@ -1,13 +1,14 @@
-// import AceEditor from 'components/AceEditor';
-import Button from 'components/Button';
-import DefaultModal from 'components/Modals/DefaultModal';
-import Prompt from 'components/Uploads/Prompt';
-import { setConfirm, setError } from 'ducks/modal';
-import { deleteProject } from 'ducks/project';
-import { updateVersion, updateVersionMerge } from 'ducks/version';
+// import AceEditor from '@/components/AceEditor';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert, FormGroup, Label } from 'reactstrap';
+
+import Button from '@/components/Button';
+import DefaultModal from '@/components/Modals/DefaultModal';
+import Prompt from '@/components/Uploads/Prompt';
+import { setConfirm, setError } from '@/ducks/modal';
+import { deleteProject } from '@/ducks/project';
+import { updateVersion, updateVersionMerge } from '@/ducks/version';
 
 import AccountLinkTemplate from '../../Business/AccountLinkTemplate';
 

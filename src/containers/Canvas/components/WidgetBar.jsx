@@ -1,34 +1,46 @@
-import cn from 'classnames';
-import Button from 'components/Button';
 import React from 'react';
-import { ButtonGroup } from 'reactstrap';
+import { connect } from 'react-redux';
+import { Tooltip } from 'react-tippy';
 
-export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update, preview, isCanvas }) => (
-  <div
-    id="widget-bar"
-    className={cn({
-      isCanvas,
-      isTest: !isCanvas,
-    })}
-  >
-    <ButtonGroup>
-      <Button isWhiteCirc onClick={() => zoom(1000, engine, update)} className="round-left">
-        <i className="far fa-plus" />
+import Button from '@/components/Button';
+import SvgIcon from '@/components/SvgIcon';
+import HomeIcon from '@/svgs/home.svg';
+import StarIcon from '@/svgs/nav-star.svg';
+import ZoomInIcon from '@/svgs/zoom-in.svg';
+import ZoomOutIcon from '@/svgs/zoom-out.svg';
+
+import WidgetBarWrapper from './WidgetBarWrapper';
+
+const BaseWidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update, preview, isCanvas, menuOpen }) => (
+  <WidgetBarWrapper isCanvas isTest={!isCanvas} menuOpen={menuOpen}>
+    <div className="canvas-controls__action __type-dual">
+      <Button isWhiteCirc onClick={() => zoom(1000, engine, update)} className="round-left zoom-btn">
+        <SvgIcon className="zoom-in-icon" icon={ZoomInIcon} height={14} width={14} />
       </Button>
-      <Button isWhiteCirc onClick={() => zoom(-1000, engine, update)} className="round-right">
-        <i className="far fa-minus" />
+      <Button isWhiteCirc onClick={() => zoom(-1000, engine, update)} className="round-right zoom-btn">
+        <SvgIcon className="zoom-out-icon" icon={ZoomOutIcon} height={14} width={14} />
       </Button>
-    </ButtonGroup>
-    <Button isWhiteCirc className="ml-2" onClick={() => centerDiagram(engine, setOpen)}>
-      <i className="fas fa-map-marker-alt" />
-    </Button>
+    </div>
+    <Tooltip title="Go to home" position="top" distance={8}>
+      <Button isWhiteCirc className="__type-single" onClick={() => centerDiagram(engine, setOpen)}>
+        <SvgIcon className="home-icon" icon={HomeIcon} height={14} width={14} />
+      </Button>
+    </Tooltip>
     {!preview && (
-      <Button isWhiteCirc className="ml-2" onClick={() => toggleKeyboard(!keyboardHelp)}>
-        <i className="fas fa-keyboard" />
-      </Button>
+      <Tooltip title="See Shortcuts" position="top" distance={8}>
+        <Button isWhiteCirc className="__type-single" onClick={() => toggleKeyboard(!keyboardHelp)}>
+          <SvgIcon className="star-icon" icon={StarIcon} height={14} width={14} />
+        </Button>
+      </Tooltip>
     )}
-  </div>
+  </WidgetBarWrapper>
 );
+
+const mapStateToProps = (state) => ({
+  menuOpen: state.userSetting.menuOpen,
+});
+
+export const WidgetBar = connect(mapStateToProps)(BaseWidgetBar);
 
 function centerDiagram(engine, setOpen) {
   const model = engine.getDiagramModel();

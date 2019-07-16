@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Button from 'components/Button';
 import moment from 'moment';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
@@ -7,6 +6,8 @@ import React, { Component } from 'react';
 import ReactJson from 'react-json-view';
 import { connect } from 'react-redux';
 import { Table } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 class TablePagination extends React.Component {
   handleFirstPageButtonClick = (event) => {

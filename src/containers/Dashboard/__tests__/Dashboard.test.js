@@ -2,7 +2,7 @@ import toJson from 'enzyme-to-json';
 import { shallow } from 'enzyme/build';
 import React from 'react';
 
-import { DashBoard } from '../index.jsx';
+import { DashBoard } from '..';
 
 const clickFn = jest.fn();
 

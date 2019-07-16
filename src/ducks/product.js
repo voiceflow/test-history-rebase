@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { setError } from 'ducks/modal';
 import update from 'immutability-helper';
+
+import { setError } from '@/ducks/modal';
 
 export const FETCH_PRODUCT_BEGIN = 'FETCH_PRODUCT_BEGIN';
 export const SET_PRODUCTS = 'SET_PRODUCTS';

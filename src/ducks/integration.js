@@ -137,6 +137,7 @@ export const addIntegrationUser = (integration, body) => {
         dictByPlatform[user.platform].push(user);
       });
       dispatch(addIntegrationUserSuccess(dictByPlatform));
+      return dictByPlatform;
     } catch (e) {
       dispatch(addIntegrationUserFailure(e));
     }

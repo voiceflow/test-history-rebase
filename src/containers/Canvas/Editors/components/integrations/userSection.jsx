@@ -1,11 +1,12 @@
 import cn from 'classnames';
-import DefaultModal from 'components/Modals/DefaultModal';
-import { deleteIntegrationUser } from 'ducks/integration';
-import { clearModal, setConfirm, setError } from 'ducks/modal';
 import update from 'immutability-helper';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Collapse } from 'reactstrap';
+
+import DefaultModal from '@/components/Modals/DefaultModal';
+import { deleteIntegrationUser } from '@/ducks/integration';
+import { clearModal, setConfirm, setError } from '@/ducks/modal';
 
 // props
 // selected_integration, user, integration_data, updateIntegrationData, showNextSection, user_modal, action_data, toggleSection, open
@@ -162,14 +163,14 @@ class UserSection extends Component {
               <AddUserModal
                 toggle={this.toggleAddUserModal}
                 onError={(e) => setError(e)}
-                onSuccess={() => {
+                onSuccess={(newUsers) => {
                   if (integration_user_error) {
                     setError(integration_user_error);
                     return;
                   }
 
                   const integration = selected_integration;
-                  const users = integration_users[integration];
+                  const users = newUsers[integration];
 
                   const newIntegrationData = update(integration_data, {
                     user: {

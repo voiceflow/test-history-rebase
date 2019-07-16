@@ -1,14 +1,15 @@
 import axios from 'axios';
-import Button from 'components/Button';
-import Prompt from 'components/Uploads/Prompt';
-import { setError } from 'ducks/modal';
-import { updateVersion, updateVersionMerge } from 'ducks/version';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import Toggle from 'react-toggle';
 import { Collapse, FormGroup, Input, Label } from 'reactstrap';
+
+import Button from '@/components/Button';
+import Prompt from '@/components/Uploads/Prompt';
+import { setError } from '@/ducks/modal';
+import { updateVersion, updateVersionMerge } from '@/ducks/version';
 
 const disabled_stages = new Set([11, 12]);
 

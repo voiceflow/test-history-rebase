@@ -1,11 +1,12 @@
 import './InternalLookup.css';
 
-import Button from 'components/Button';
-import { findCreator } from 'ducks/admin';
 import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Input } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { findCreator } from '@/ducks/admin';
 
 import TeamSummary from '../TeamSummary/TeamSummary';
 import UserCard from '../UserCard/UserCard';

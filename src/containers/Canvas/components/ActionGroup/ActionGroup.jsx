@@ -16,7 +16,7 @@ import AmazonLogin from '@/components/Forms/AmazonLogin';
 import { ModalHeader } from '@/components/Modals/ModalHeader';
 import ShareTest from '@/containers/Testing/ShareTest';
 import { AmazonAccessToken, getVendors, googleAccessToken } from '@/ducks/account';
-import { setError } from '@/ducks/modal';
+import { setError, showSettingsModal } from '@/ducks/modal';
 import { updateVendorId } from '@/ducks/project';
 import { updateLocales, updateSkillDB, updateVersion } from '@/ducks/version';
 import LOCALE_MAP from '@/services/LocaleMap';
@@ -1044,7 +1044,7 @@ export class ActionGroup extends PureComponent {
 
   render() {
     const { updateModal, should_pop_confetti, updateLiveModal, show_upload_prompt, vendors_open, stage, is_first_upload } = this.state;
-    const { skill, platform, live_mode, vendors, show_upload_prompt: props_show_upload_prompt } = this.props;
+    const { skill, platform, live_mode, vendors, show_upload_prompt: props_show_upload_prompt, showSettings, showSettingsModal } = this.props;
 
     return (
       <>
@@ -1091,11 +1091,11 @@ export class ActionGroup extends PureComponent {
           </ModalBody>
         </Modal>
 
-        <Modal isOpen={this.state.settingsModal} toggle={() => this.setState({ settingsModal: false })} className="ag__settings_modal">
+        <Modal isOpen={showSettings.show} toggle={() => showSettingsModal(!showSettings.show)} className="ag__settings_modal">
           <div className="ag__settings_header">
             <ModalHeader toggle={() => this.setState({ settingsModal: false })} className="pb-2" header="Project Settings" />
           </div>
-          <Settings {...this.props} page="basic" toggleUpgrade={this.toggleUpgrade} />
+          <Settings {...this.props} tag={showSettings.tag} toggleUpgrade={this.toggleUpgrade} />
         </Modal>
 
         <div className="title-group-sub">
@@ -1106,7 +1106,7 @@ export class ActionGroup extends PureComponent {
               type="button"
               onClick={() => {
                 this.props.unfocus();
-                this.setState({ settingsModal: true });
+                this.props.showSettingsModal(true);
               }}
             />
           </Tooltip>
@@ -1141,6 +1141,7 @@ const mapStateToProps = (state) => ({
   live_mode: state.skills.live_mode,
   vendor_id: state.skills.skill.vendor_id,
   vendors: state.account.vendors,
+  showSettings: state.modal.showSettings,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1150,6 +1151,7 @@ const mapDispatchToProps = (dispatch) => ({
   saveSkill: (publish, cb) => dispatch(updateSkillDB(publish, cb)),
   updateVendorId: (projectId, vendorId) => dispatch(updateVendorId(projectId, vendorId)),
   getVendors: () => dispatch(getVendors()),
+  showSettingsModal: (showSettings, tab) => dispatch(showSettingsModal(showSettings, tab)),
 });
 
 export default connect(

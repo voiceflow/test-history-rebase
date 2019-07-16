@@ -17,10 +17,11 @@ const TABS = ['basic', 'advanced', 'discovery', 'backups'];
 
 class Settings extends Component {
   state = {
-    tab: 'basic',
+    tab: this.props.tag ? this.props.tag : 'basic',
   };
 
   constructor(props) {
+    console.log('tab: ', props.tab);
     super(props);
 
     this.modalContent = this.modalContent.bind(this);

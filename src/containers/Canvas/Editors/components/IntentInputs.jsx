@@ -147,9 +147,26 @@ class IntentInputs extends Component {
   checkUtterances = (utterance) => {
     const all_utterances = [];
     this.props.intents.forEach((intent) => {
-      intent.inputs.forEach((input) => {
+      intent.inputs.forEach((input, idx) => {
         all_utterances.push(input.text.toLowerCase());
       });
+    });
+
+    return all_utterances.includes(utterance.toLowerCase());
+  };
+
+  checkEditUtterances = (utterance, intentKey, index) => {
+    const all_utterances = [];
+    this.props.intents.forEach((intent) => {
+      if (intent.key !== intentKey) {
+        intent.inputs.forEach((input) => {
+          all_utterances.push(input.text.toLowerCase());
+        });
+      } else {
+        intent.inputs.forEach((input, idx) => {
+          if (idx !== index) all_utterances.push(input.text.toLowerCase());
+        });
+      }
     });
 
     return all_utterances.includes(utterance.toLowerCase());
@@ -182,6 +199,7 @@ class IntentInputs extends Component {
               slots={this.props.slots}
               intent={intent}
               utteranceExists={this.checkUtterances}
+              checkEditUtterances={this.checkEditUtterances}
               nameExists={this.checkName}
               removeIntent={this.handleRemoveIntent}
               update={this.props.update}

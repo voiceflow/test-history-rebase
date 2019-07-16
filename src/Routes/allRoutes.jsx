@@ -8,13 +8,14 @@ import Reference from '@/components/Reference';
 import Account from '@/containers/Account';
 import Admin from '@/containers/Admin';
 import NewTeam from '@/containers/Dashboard/NewTeam';
-import Register from '@/containers/Register';
 import Reset from '@/containers/Register/reset';
 import ResetPassword from '@/containers/Register/resetPassword';
 import UserTesting from '@/containers/UserTesting';
 
 import Skill from '../Skill';
 import Team from '../Team';
+import LoginForm from '../containers/Register/LoginForm';
+import SignupForm from '../containers/Register/SignupForm';
 import { getAuth } from '../ducks/account';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
@@ -24,8 +25,8 @@ const allRoutes = (
     {/* User routes */}
     <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
     <PublicRoute exact path="/reset" name="Reset" component={Reset} />
-    <PublicRoute exact path="/login" name="Login" page="login" component={Register} />
-    <PublicRoute exact path="/signup" name="SignUp" page="signup" component={Register} />
+    <PublicRoute exact path="/login" name="Login" page="login" component={LoginForm} />
+    <PublicRoute exact path="/signup" name="SignUp" page="signup" component={SignupForm} />
     <Route exact path="/creator/privacy_policy" name="Privacy Policy" component={Legal} />
     <Route exact path="/creator/terms" name="Terms" component={Legal} />
     {/* Team routes */}

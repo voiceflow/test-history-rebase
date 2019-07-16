@@ -17,7 +17,7 @@ const TABS = ['basic', 'advanced', 'discovery', 'backups'];
 
 class Settings extends Component {
   state = {
-    tab: 'basic',
+    tab: this.props.tag ? this.props.tag : 'basic',
   };
 
   constructor(props) {

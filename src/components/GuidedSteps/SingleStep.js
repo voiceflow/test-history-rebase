@@ -15,6 +15,10 @@ class SingleStep extends React.PureComponent {
     this.setState({ height: this.containerRef.current.scrollHeight });
   }
 
+  componentDidUpdate() {
+    this.setState({ height: this.containerRef.current.scrollHeight });
+  }
+
   render() {
     const { children } = this.props;
 

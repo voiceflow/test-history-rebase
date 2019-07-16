@@ -3,7 +3,7 @@ import './Modals.css';
 import React from 'react';
 import { Input } from 'reactstrap';
 
-import Button from '@/components/Button';
+import Button from '@/componentsV2/Button';
 import { GOOGLE_OAUTH_ID } from '@/config';
 
 // eslint-disable-next-line no-secrets/no-secrets
@@ -19,7 +19,7 @@ const MultiPlatformModalContent = ({ token, onChange, loading, onVerify }) => {
             Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.
           </div>
           <a href={OAUTH_URL} target="_blank" rel="noopener noreferrer">
-            <Button type="button" className="btn btn-clear">
+            <Button type="button" variant="secondary" className="btn btn-clear">
               Log In
             </Button>
           </a>
@@ -43,7 +43,7 @@ const MultiPlatformModalContent = ({ token, onChange, loading, onVerify }) => {
       </div>
       <div className="d-flex justify-content-center pt-1 mb-4 w-100">
         {!loading && (
-          <Button isPrimary className="mr-4" onClick={onVerify}>
+          <Button className="mr-4" onClick={onVerify}>
             Verify
           </Button>
         )}

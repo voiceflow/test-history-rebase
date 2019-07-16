@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import Textarea from 'react-textarea-autosize';
 import Toggle from 'react-toggle';
-import { Alert, Button, ButtonGroup, Collapse, Form, FormGroup, Input, Label, Modal, ModalBody } from 'reactstrap';
+import { Alert, Button, ButtonGroup, Collapse, Form, FormFeedback, FormGroup, Input, Label, Modal, ModalBody } from 'reactstrap';
 import validUrl from 'valid-url';
 
 import DefaultButton from '@/components/Button';
@@ -55,6 +55,7 @@ class Skill extends Component {
       id_collapse: false,
       amzn_id: null,
       stage_error: null,
+      validate: {},
     };
     // this.transferIcon = this.transferIcon.bind(this)
     this.privacyTop = React.createRef();
@@ -497,6 +498,7 @@ class Skill extends Component {
               <Label className="publish-label">Display Name *</Label>
               <Input
                 className="form-bg"
+                invalid={this.state.validate.displayName}
                 type="text"
                 name="name"
                 disabled={disabled_stages.has(stage)}
@@ -504,6 +506,7 @@ class Skill extends Component {
                 value={name}
                 onChange={this.handleChange}
               />
+              <FormFeedback>Uh oh! Looks like there is an issue with your email. Please input a correct email.</FormFeedback>
             </div>
           </FormGroup>
 
@@ -776,7 +779,7 @@ class Skill extends Component {
           </div>
           <div className="publish-info">
             <p className="helper-text">
-              Please indicate if this skill is directed to children under the age of 13 (for the United States, as determined under the
+              Please indicate if this skill is directed to children under the age of 13 (for the United States, as determined under the&nbsp;
               <a
                 // eslint-disable-next-line no-secrets/no-secrets
                 href="https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children%27s-privacy"
@@ -796,25 +799,7 @@ class Skill extends Component {
   };
 
   render() {
-    const {
-      stage,
-      amzn_id,
-      stage_error,
-      instructions,
-      locales,
-      loaded,
-      publish,
-      small_icon,
-      large_icon,
-      summary,
-      description,
-      category,
-      inv_name,
-      invocations,
-      live,
-      id_collapse,
-      name,
-    } = this.state;
+    const { stage, amzn_id, stage_error, instructions, locales, loaded, publish, live, id_collapse } = this.state;
     const { onConfirm } = this.props;
     // Success Screen
     if (stage === 10) {
@@ -995,75 +980,6 @@ class Skill extends Component {
             <div className="modal-info">{content}</div>
           </ModalBody>
         </Modal>
-
-        <span className="container position-fixed bg-white mt-3 ml-2 mr-2 border p-3 pb-0 rounded" id="publish-status">
-          <div className="row justify-content-center">
-            <h3>Status</h3>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {name ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Display Name</p>
-            </div>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {small_icon && large_icon ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Icons</p>
-            </div>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {summary ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Summary</p>
-            </div>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {description ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Description</p>
-            </div>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {category ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Category</p>
-            </div>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {inv_name ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Invocation Name</p>
-            </div>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {invocations[0] ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Invocations</p>
-            </div>
-          </div>
-        </span>
 
         <div className="subheader-page-container">
           <div>

@@ -15,6 +15,10 @@ const GuidedStepsWrapper = styled.div`
     padding-inline-start: 40px;
   }
 
+  textarea {
+    resize: none;
+  }
+
   .gs__steps-list {
     list-style-type: none;
     margin: 0;
@@ -26,6 +30,14 @@ const GuidedStepsWrapper = styled.div`
 
     .gs__steps-list__title {
       font-weight: 600;
+    }
+
+    &:before {
+      -webkit-box-shadow: 0 2px 4px 0 rgba(17, 49, 96, 0.16);
+      box-shadow: 0 2px 4px 0 rgba(17, 49, 96, 0.16);
+      border: 8px solid #fff;
+      background-image: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
+      background-origin: content-box;
     }
   }
 
@@ -75,7 +87,7 @@ const GuidedStepsWrapper = styled.div`
       background-size: 8px 8px;
       background-repeat: no-repeat;
       background-position: 50% 50%;
-      background-color: #5d7af1;
+      background-color: #5d9df5;
       border-width: 0;
       display: inline-block;
       vertical-align: top;
@@ -86,7 +98,7 @@ const GuidedStepsWrapper = styled.div`
       box-shadow: none;
     }
     &:after {
-      background-color: #5d7af1;
+      background-color: #5d9df5;
     }
   }
 
@@ -125,6 +137,7 @@ const GuidedStepsWrapper = styled.div`
     display: inline-block;
     vertical-align: top;
     font-size: 15px;
+    color: #62778c;
   }
 
   .gs__clickable-step {
@@ -137,16 +150,13 @@ const GuidedStepsWrapper = styled.div`
     }
   }
 
-  .gs__is-active {
-    .gs__steps-list__content {
-      //display: flex;
-      //align-items: flex-start;
-      //min-width: 0;
-    }
+  .gs__non-clickable-step {
+    color: #62778b75;
   }
 
   .gs__steps-list__content {
     margin-top: 23px;
+    margin-bottom: 2px;
     overflow-y: hidden;
     display: flex;
 

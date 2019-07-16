@@ -15,7 +15,7 @@ const account = {
 describe('ActionGroup', () => {
   it('render action group/top nav bar', () => {
     const skill = testSkill;
-    const component = shallow(<ActionGroup skill={skill} user={account} platform="alexa" />);
+    const component = shallow(<ActionGroup skill={skill} user={account} showSettings={{ show: false, tag: 'basic' }} platform="alexa" />);
     expect(toJson(component)).toMatchSnapshot();
   });
 });

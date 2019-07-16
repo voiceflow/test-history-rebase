@@ -712,8 +712,8 @@ p.loading-btn::after {
 }
 
 .pa__icon {
-  margin-right: auto;
-  margin-left: auto;
   width: 160px;
   height: 160px;
+  margin-right: auto;
+  margin-left: auto;
 }

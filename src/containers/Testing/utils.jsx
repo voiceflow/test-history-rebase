@@ -139,54 +139,28 @@ export const getUserTestOutputs = async (trace, ending) => {
         outputBlock.delay = audioData.duration * 1000;
 
         outputBlock.node = block.line.id;
-        outputBlock.audioType = child.name === 'voice' || (child.name === 'audio' && 'audio');
+        outputBlock.audioType = child.name;
         outputBlock.type = type;
         outputBlock.isLast = !block.line.nextId;
 
         dom.push(outputBlock);
       });
     } else if (type === 'Stream') {
-      dom.push({
-        debug: 'stream',
+      const audio = newAudio(block.line.play);
+      const text = block.line.play.length > 40 ? `...${block.line.play.substr(-33)}` : block.line.play;
+      // eslint-disable-next-line no-await-in-loop
+      const duration = await getAudioMeta(audio);
+      const outputBlock = {
+        audio,
+        delay: duration * 1000,
+        audioType: 'stream',
+        text,
         node: block.line.id,
-        text: 'Stream Blocks are currently unsupported for testing',
-        important: true,
-      });
-      // const audio = newAudio(block.line.play);
-      // // eslint-disable-next-line no-await-in-loop
-      // await getAudioMeta(audio);
-      // const outputBlock = {
-      //   audio,
-      //   text: 'Streaming',
-      //   node: block.line.id,
-      //   isLast: !block.line.nextId,
-      //   type,
-      // };
-      // dom.push(outputBlock);
-      // const outputBlockChoices = {
-      //   options: [
-      //     {
-      //       label: 'Resume',
-      //       val: 'AMAZON.ResumeIntent',
-      //     },
-      //     {
-      //       label: 'Pause',
-      //       val: 'AMAZON.PauseIntent',
-      //     },
-      //     {
-      //       label: 'Next',
-      //       val: 'AMAZON.NextIntent',
-      //     },
-      //     {
-      //       label: 'Previous',
-      //       val: 'AMAZON.PreviousIntent',
-      //     },
-      //   ],
-      //   node: block.line.id,
-      //   isLast: !block.line.nextId,
-      //   type,
-      // };
-      // dom.push(outputBlockChoices);
+        isLast: true,
+        options: ['Previous', 'Pause', 'Next'],
+        type,
+      };
+      dom.push(outputBlock);
     } else if (type === 'Choice' && idx > 0) {
       const outputBlock = {
         options: _.map(block.line.inputs, _.head),

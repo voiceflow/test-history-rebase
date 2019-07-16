@@ -56,17 +56,10 @@ function copyJSONPath(copy_event) {
 // selected_integration, selected_action, integration_data, setError, open, toggleSection
 
 class TestSection extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      completed: false,
-      variableValues: {},
-    };
-
-    this.runTest = this.runTest.bind(this);
-    this.renderTestContent = this.renderTestContent.bind(this);
-  }
+  state = {
+    completed: false,
+    variableValues: {},
+  };
 
   componentDidUpdate(prevProps) {
     const { integration_data } = this.props;
@@ -78,12 +71,46 @@ class TestSection extends Component {
     }
   }
 
-  async runTest() {
-    const { selected_integration, integration_data, setError } = this.props;
-    const { user, selected_action, actions_data } = integration_data;
+  checkVariables = async () => {
+    const {
+      integration_data: { selected_action, actions_data },
+    } = this.props;
+
+    const params = _.cloneDeep(actions_data[selected_action]);
+    const { variables } = deepDraftToMarkdown(params);
+
+    if (variables && variables.length > 0) {
+      try {
+        await new Promise((resolve) => {
+          this.resolveModalPromise = resolve;
+          this.setState({
+            variables_modal: true,
+            variables,
+            variableValues: {},
+          });
+        });
+        this.setState({
+          variables_modal: false,
+        });
+      } catch (e) {
+        this.setState({
+          test_loading: false,
+          test_content: null,
+        });
+      }
+    }
+  };
+
+  makeRequest = async () => {
+    const {
+      selected_integration,
+      integration_data: { user, selected_action, actions_data },
+      setError,
+    } = this.props;
     const { variableValues } = this.state;
 
     if (!selected_integration) {
+      // this case is not valid since runTest is only available when integration type has been selected | leaving it until confirmed with Ty okay to remove
       setError(new Error('Test failed! Please select an integration'));
     } else if (!selected_action) {
       setError(new Error('Test failed! Please select an action'));
@@ -92,34 +119,13 @@ class TestSection extends Component {
     } else {
       try {
         const test = SERVICES_MAP[selected_integration] && SERVICES_MAP[selected_integration][selected_action];
+
         if (!test) {
           setError(new Error(`No test found for action "${selected_action}" and integration "${selected_integration}"`));
         } else {
           let params = _.cloneDeep(actions_data[selected_action]);
+          const { result } = deepDraftToMarkdown(params);
 
-          const { result, variables } = deepDraftToMarkdown(params);
-
-          if (variables && variables.length > 0) {
-            try {
-              await new Promise((resolve) => {
-                this.resolveModalPromise = resolve;
-                this.setState({
-                  variables_modal: true,
-                  variables,
-                  variableValues: {},
-                });
-              });
-              this.setState({
-                variables_modal: false,
-              });
-            } catch (e) {
-              this.setState({
-                test_loading: false,
-                test_content: null,
-              });
-              return;
-            }
-          }
           params = deepVariableSubstitution(result, variableValues);
           params.user = user;
 
@@ -156,7 +162,12 @@ class TestSection extends Component {
         });
       }
     }
-  }
+  };
+
+  runTest = async () => {
+    await this.checkVariables();
+    this.makeRequest();
+  };
 
   handleVariableChange = (event) => {
     const { variableValues } = this.state;
@@ -185,7 +196,7 @@ class TestSection extends Component {
     });
   };
 
-  renderTestContent() {
+  renderTestContent = () => {
     const { test_loading, test_content } = this.state;
     if (test_loading) {
       return (
@@ -220,7 +231,7 @@ class TestSection extends Component {
       }
     }
     return null;
-  }
+  };
 
   render() {
     const { toggleSection, open, showConfirm } = this.props;

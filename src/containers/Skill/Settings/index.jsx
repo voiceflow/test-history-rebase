@@ -21,7 +21,6 @@ class Settings extends Component {
   };
 
   constructor(props) {
-    console.log('tab: ', props.tab);
     super(props);
 
     this.modalContent = this.modalContent.bind(this);

@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const { UnusedFilesWebpackPlugin } = require('unused-files-webpack-plugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const paths = require('../paths');
-const { BASE_HREF, IS_PRODUCTION, ENV } = require('./config');
+const { BASE_HREF, IS_PRODUCTION, IS_SERVING, ENV } = require('./config');
 
 module.exports = {
   entry: {
@@ -53,19 +53,21 @@ module.exports = {
         ],
       },
     }),
-    new CircularDependencyPlugin({
-      exclude: /node_modules/,
-      allowAsyncCycles: true,
-      cwd: process.cwd(),
-      failOnError: true,
-
-      onDetected({ paths, compilation }) {
-        // ignore self-referencing modules
-        if (paths.length > 2) {
-          compilation.warnings.push(new Error(`Circular dependency detected:\n${paths.join(' -> ')}`));
-        }
-      },
-    }),
+    ...(IS_SERVING ? [] : [
+      new CircularDependencyPlugin({
+        exclude: /node_modules/,
+        allowAsyncCycles: true,
+        cwd: process.cwd(),
+        failOnError: true,
+        
+        onDetected({ paths, compilation }) {
+          // ignore self-referencing modules
+          if (paths.length > 2) {
+            compilation.warnings.push(new Error(`Circular dependency detected:\n${paths.join(' -> ')}`));
+          }
+        },
+      }),
+    ]),
   ],
 
   mode: IS_PRODUCTION ? 'production' : 'development',

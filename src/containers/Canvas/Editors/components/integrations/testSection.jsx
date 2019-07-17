@@ -61,6 +61,74 @@ class TestSection extends Component {
     variableValues: {},
   };
 
+  render() {
+    const { toggleSection, open, showConfirm } = this.props;
+    const { variables_modal, variables, completed } = this.state;
+    return (
+      <>
+        <DefaultModal
+          open={variables_modal}
+          header="Set Variables"
+          toggle={() =>
+            this.setState({
+              variables_modal: !variables_modal,
+              test_loading: false,
+              test_content: null,
+            })
+          }
+          content={
+            <div style={{ padding: '0 2em 2em 2em' }}>
+              {!_.isEmpty(variables) && (
+                <React.Fragment>
+                  <Button color="primary" onClick={() => this.resolveModalPromise()} className="mt-2 mb-2">
+                    <i className="fas fa-play mr-2" /> Run
+                  </Button>
+                  <br />
+                  <label>Your parameters for this action contain variables. Please provide them with values to proceed.</label>
+                  <br />
+                  {_.map(variables, (val, key) => (
+                    <React.Fragment key={key}>
+                      <InputGroup className="mb-2">
+                        <InputGroupAddon addonType="prepend">{val}</InputGroupAddon>
+                        <Input
+                          className="form-control form-control-border right"
+                          name={val}
+                          placeholder="set variable"
+                          onChange={this.handleVariableChange}
+                        />
+                      </InputGroup>
+                    </React.Fragment>
+                  ))}
+                </React.Fragment>
+              )}
+            </div>
+          }
+          hideFooter={true}
+          noPadding={true}
+        />
+        <div className="d-flex flex-column section-title-container" onClick={() => toggleSection()}>
+          <div className="integrations-section-title text-muted">
+            Test Integration
+            {completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
+          </div>
+        </div>
+        <Collapse isOpen={open} className="w-100">
+          <Button
+            className="mb-3 btn btn-lg btn-block"
+            color="clear"
+            onClick={() => (showConfirm ? this.showConfirmModal() : this.runTest())}
+            size="sm"
+            block
+          >
+            <i className="fas fa-power-off mr-2" />
+            Test Integration
+          </Button>
+          {this.renderTestContent()}
+        </Collapse>
+      </>
+    );
+  }
+
   componentDidUpdate(prevProps) {
     const { integration_data } = this.props;
     if (prevProps.integration_data.selected_action !== integration_data.selected_action) {
@@ -135,24 +203,20 @@ class TestSection extends Component {
           });
 
           const resp = await test(params);
+          const data = this.checkResult(resp);
 
-          let display;
-          if (!resp) display = {};
-          else if (JSON.stringify(resp).length > 100000) {
-            display = {
-              message: 'Response contents are too large to display!',
-            };
-          } else if (typeof resp === 'object') display = resp;
-          else
-            display = {
-              message: resp,
-            };
-
-          this.setState({
-            test_content: display,
-            test_loading: false,
-            completed: true,
-          });
+          if (data.message) {
+            this.setState({
+              test_content: data,
+              test_loading: false,
+              completed: true,
+            });
+          } else {
+            this.setState({
+              test_loading: false,
+              test_content: null,
+            });
+          }
         }
       } catch (e) {
         setError(e);
@@ -162,6 +226,23 @@ class TestSection extends Component {
         });
       }
     }
+  };
+
+  checkResult = (result) => {
+    if (typeof result === 'object' && result.VF_STATUS_CODE >= 400) {
+      this.props.setError(`Error: Request failed 
+      due to ${result.error}.
+      Status Code: ${result.VF_STATUS_CODE}`);
+
+      return { message: `Error: Request failed due to ${result.error} with status code ${result.VF_STATUS_CODE}` };
+    }
+    if (typeof result === 'string' && result.length > 10000) {
+      return { message: `${result.substring(0, Math.min(result.length, 10000))}...` };
+    }
+    if (typeof result === 'object' && JSON.stringify(result).length > 10000) {
+      return { message: 'Response contents are too large to display!' };
+    }
+    return { message: result };
   };
 
   runTest = async () => {
@@ -232,74 +313,6 @@ class TestSection extends Component {
     }
     return null;
   };
-
-  render() {
-    const { toggleSection, open, showConfirm } = this.props;
-    const { variables_modal, variables, completed } = this.state;
-    return (
-      <>
-        <DefaultModal
-          open={variables_modal}
-          header="Set Variables"
-          toggle={() =>
-            this.setState({
-              variables_modal: !variables_modal,
-              test_loading: false,
-              test_content: null,
-            })
-          }
-          content={
-            <div style={{ padding: '0 2em 2em 2em' }}>
-              {!_.isEmpty(variables) && (
-                <React.Fragment>
-                  <Button color="primary" onClick={() => this.resolveModalPromise()} className="mt-2 mb-2">
-                    <i className="fas fa-play mr-2" /> Run
-                  </Button>
-                  <br />
-                  <label>Your parameters for this action contain variables. Please provide them with values to proceed.</label>
-                  <br />
-                  {_.map(variables, (val, key) => (
-                    <React.Fragment key={key}>
-                      <InputGroup className="mb-2">
-                        <InputGroupAddon addonType="prepend">{val}</InputGroupAddon>
-                        <Input
-                          className="form-control form-control-border right"
-                          name={val}
-                          placeholder="set variable"
-                          onChange={this.handleVariableChange}
-                        />
-                      </InputGroup>
-                    </React.Fragment>
-                  ))}
-                </React.Fragment>
-              )}
-            </div>
-          }
-          hideFooter={true}
-          noPadding={true}
-        />
-        <div className="d-flex flex-column section-title-container" onClick={() => toggleSection()}>
-          <div className="integrations-section-title text-muted">
-            Test Integration
-            {completed && <div className="completed-badge">&nbsp;&nbsp;&nbsp;&nbsp;</div>}
-          </div>
-        </div>
-        <Collapse isOpen={open} className="w-100">
-          <Button
-            className="mb-3 btn btn-lg btn-block"
-            color="clear"
-            onClick={() => (showConfirm ? this.showConfirmModal() : this.runTest())}
-            size="sm"
-            block
-          >
-            <i className="fas fa-power-off mr-2" />
-            Test Integration
-          </Button>
-          {this.renderTestContent()}
-        </Collapse>
-      </>
-    );
-  }
 }
 
 const mapDispatchToProps = (dispatch) => {

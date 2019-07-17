@@ -6,7 +6,7 @@ import Button from '@/components/Button';
 import Expression from './components/Expression';
 import Expressionfy from './components/Expressionfy';
 
-const BLOCK_LIMIT = 50;
+const BLOCK_LIMIT = 100;
 
 class IfBlock extends Component {
   constructor(props) {

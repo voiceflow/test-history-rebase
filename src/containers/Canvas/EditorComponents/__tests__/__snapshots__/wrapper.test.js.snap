@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditorWrapper render 1`] = `
+<div
+  id="Editor"
+  onClickCapture={[Function]}
+  onKeyDownCapture={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+/>
+`;

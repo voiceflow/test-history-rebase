@@ -1,5 +1,4 @@
 import 'draft-js-mention-plugin/lib/plugin.css';
-import './ssmlEditor.css';
 
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';

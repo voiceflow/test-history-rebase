@@ -1,5 +1,5 @@
 export default {
-  name: 'Effects',
+  name: 'ADD EFFECT',
   children: [
     {
       name: 'Break',
@@ -27,7 +27,7 @@ export default {
         },
       ],
       prompt: {
-        placeholder: 'Pause Duration',
+        placeholder: '0.5s',
         attribute: 'time',
       },
       data: {

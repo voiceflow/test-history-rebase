@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon/System/History</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="currentColor" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="currentColor" offset="100%"></stop>
+        </linearGradient>
+        <path d="M8,16 C3.581722,16 0,12.418278 0,8 C0,3.581722 3.581722,0 8,0 C12.418278,0 16,3.581722 16,8 C16,12.418278 12.418278,16 8,16 Z M8,9.45454545 C8.80332327,9.45454545 9.45454545,8.80332327 9.45454545,8 L9.45454545,2.90909091 C9.45454545,2.50742927 9.32893464,2.18181818 8.927273,2.18181818 C8.50996703,2.18181818 8.35616398,2.48866962 8.297148,2.90178145 L7.815007,6.27676965 C7.72939561,6.87604939 6.88156407,7.75965212 6.29061561,7.890974 L4.70995423,8.242232 C4.29513702,8.3344136 4,8.50233681 4,8.927273 C4,9.32893464 4.32561109,9.45454545 4.72727273,9.45454545 L8,9.45454545 Z" id="path-2"></path>
+    </defs>
+    <g id="Icon/System/History" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/System/Fullscreen-Copy-2">
+            <g id="Group-4">
+                <rect id="Rectangle" x="0" y="0" width="16" height="16"></rect>
+                <g id="Combined-Shape">
+                    <use fill="currentColor" xlink:href="#path-2"></use>
+                    <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

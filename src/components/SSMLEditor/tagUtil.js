@@ -25,7 +25,7 @@ export function makeETag(data) {
 export function makeDescription(data) {
   const { VF_path } = data;
   if (VF_path.length === 1) return VF_path[0];
-  return `${VF_path[0]}: ${VF_path[VF_path.length - 1]}`;
+  return `${VF_path[VF_path.length - 2]}: ${VF_path[VF_path.length - 1]}`;
 }
 
 export function wrapVoice(voice, ssml) {

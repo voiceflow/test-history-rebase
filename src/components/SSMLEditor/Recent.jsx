@@ -1,22 +1,50 @@
+import SvgIcon from 'components/SvgIcon';
 import React, { useState } from 'react';
+import { Tooltip } from 'react-tippy';
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
+import styled from 'styled-components';
+import Clock from 'svgs/clock.svg';
 
 import { makeDescription } from './tagUtil';
 
+const RecentButton = styled(DropdownToggle)`
+  padding: 0px 0px 0px 0px;
+  margin: 5px 25px 0px 0px;
+  border: none;
+  background-color: #fff !important;
+  border-color: #fff !important;
+
+  &:hover {
+    background-color: #fff;
+    border: 1px solid transparent;
+  }
+
+  &:active {
+    background-color: #fff !important;
+    border: 1px solid transparent !important;
+  }
+`;
+
 function Recent(props) {
-  const { history, onClick, className } = props;
+  const { history, onClick } = props;
   const [open, setOpen] = useState(false);
   return (
-    <div className={`d-inline-block ${className}`}>
+    <div>
       <Dropdown isOpen={open} toggle={() => setOpen(!open)}>
-        <DropdownToggle>RECENT</DropdownToggle>
-        <DropdownMenu>
-          {history.map((val, i) => (
-            <DropdownItem key={i} onClick={() => onClick(val, true)}>
-              {makeDescription(val)}
-            </DropdownItem>
-          ))}
-        </DropdownMenu>
+        <RecentButton>
+          <Tooltip title="Recent Effects" position="top">
+            <SvgIcon icon={Clock} />
+          </Tooltip>
+        </RecentButton>
+        {history.length === 0 ? null : (
+          <DropdownMenu>
+            {history.map((val, i) => (
+              <DropdownItem key={i} onClick={() => onClick(val, true)}>
+                {makeDescription(val)}
+              </DropdownItem>
+            ))}
+          </DropdownMenu>
+        )}
       </Dropdown>
     </div>
   );

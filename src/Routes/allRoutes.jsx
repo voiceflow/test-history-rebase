@@ -1,5 +1,6 @@
 import Page404 from 'components/404';
 import Legal from 'components/Legal';
+import Ssml from 'components/SSMLEditor';
 // import ModuleAdminPage from 'containers/ModuleAdminPage';
 import Account from 'containers/Account';
 import Admin from 'containers/Admin';
@@ -24,6 +25,7 @@ const allRoutes = (
     <PublicRoute exact path="/reset" name="Reset" component={Reset} />
     <PublicRoute exact path="/login" name="Login" page="login" component={Register} />
     <PublicRoute exact path="/signup" name="SignUp" page="signup" component={Register} />
+    <PrivateRoute exact path="/ssml" name="Ssml" component={() => <Ssml variables={[]} />} />
     <Route exact path="/creator/privacy_policy" name="Privacy Policy" component={Legal} />
     <Route exact path="/creator/terms" name="Terms" component={Legal} />
     {/* Team routes */}

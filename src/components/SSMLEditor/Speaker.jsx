@@ -1,9 +1,11 @@
 import axios from 'axios';
+import SvgIcon from 'components/SvgIcon';
 import React from 'react';
-import { Button } from 'reactstrap';
+import { Tooltip } from 'react-tippy';
+import Sound from 'svgs/sound.svg';
 
 function Speaker(props) {
-  const { className, ssml, voice } = props;
+  const { ssml, voice } = props;
 
   const speak = async () => {
     const res = await axios.post('/test/speak', { ssml, voice: voice === 'Alexa' ? '_DEFAULT' : voice });
@@ -11,9 +13,9 @@ function Speaker(props) {
   };
 
   return (
-    <div className={`d-inline-block ${className}`}>
-      <Button onClick={speak}>S</Button>
-    </div>
+    <Tooltip title="Play" position="top">
+      <SvgIcon style={{ cursor: 'pointer', marginRight: '7px', marginTop: '7px' }} onClick={speak} icon={Sound} />
+    </Tooltip>
   );
 }
 

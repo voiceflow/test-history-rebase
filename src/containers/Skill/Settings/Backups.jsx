@@ -3,7 +3,7 @@ import cn from 'classnames';
 import moment from 'moment';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Alert, FormGroup, Label, Modal, ModalFooter, Table } from 'reactstrap';
+import { Alert, FormGroup, Label, Modal, Table } from 'reactstrap';
 
 import Button from '@/components/Button';
 import { setConfirm } from '@/ducks/modal';
@@ -115,11 +115,11 @@ class BackupSettings extends Component {
           </div>
           <Button className="goback-btn position-absolute" onClick={() => this.setState({ preview: false })} style={{ top: 320, left: -90 }} />
 
-          {/*<ModalFooter>*/}
-          {/*  <Button isPrimary className="ml-auto mr-auto" onClick={() => this.confirmRestore(curr_preview.skill_id)}>*/}
-          {/*    Restore*/}
-          {/*  </Button>*/}
-          {/*</ModalFooter>*/}
+          {/* <ModalFooter> */}
+          {/*  <Button isPrimary className="ml-auto mr-auto" onClick={() => this.confirmRestore(curr_preview.skill_id)}> */}
+          {/*    Restore */}
+          {/*  </Button> */}
+          {/* </ModalFooter> */}
         </Modal>
 
         <React.Fragment>
@@ -139,12 +139,12 @@ class BackupSettings extends Component {
                       <th>
                         <label className="text-left">Platform</label>
                       </th>
-                      {/*<th>*/}
-                      {/*  <label className="text-left ml-4">Preview</label>*/}
-                      {/*</th>*/}
-                      {/*<th>*/}
-                      {/*  <label className="text-left">Restore</label>*/}
-                      {/*</th>*/}
+                      {/* <th> */}
+                      {/*  <label className="text-left ml-4">Preview</label> */}
+                      {/* </th> */}
+                      {/* <th> */}
+                      {/*  <label className="text-left">Restore</label> */}
+                      {/* </th> */}
                     </tr>
                   </thead>
                   <tbody>
@@ -161,16 +161,16 @@ class BackupSettings extends Component {
                             })}
                           />
                         </td>
-                        {/*<td>*/}
-                        {/*  <Button isPrimary onClick={() => this.previewBackup(live_version)}>*/}
-                        {/*    Preview*/}
-                        {/*  </Button>*/}
-                        {/*</td>*/}
-                        {/*<td>*/}
-                        {/*  <Button isPrimary onClick={() => this.confirmRestore(live_version.skill_id)}>*/}
-                        {/*    Restore*/}
-                        {/*  </Button>*/}
-                        {/*</td>*/}
+                        {/* <td> */}
+                        {/*  <Button isPrimary onClick={() => this.previewBackup(live_version)}> */}
+                        {/*    Preview */}
+                        {/*  </Button> */}
+                        {/* </td> */}
+                        {/* <td> */}
+                        {/*  <Button isPrimary onClick={() => this.confirmRestore(live_version.skill_id)}> */}
+                        {/*    Restore */}
+                        {/*  </Button> */}
+                        {/* </td> */}
                       </tr>
                     ) : null}
                     {versions.map((version, i) => {
@@ -185,16 +185,16 @@ class BackupSettings extends Component {
                               })}
                             />
                           </td>
-                          {/*<td>*/}
-                          {/*  <Button isFlat onClick={() => this.previewBackup(version)}>*/}
-                          {/*    Preview*/}
-                          {/*  </Button>*/}
-                          {/*</td>*/}
-                          {/*<td>*/}
-                          {/*  <Button isPrimarySmall onClick={() => this.confirmRestore(version.skill_id)}>*/}
-                          {/*    Restore*/}
-                          {/*  </Button>*/}
-                          {/*</td>*/}
+                          {/* <td> */}
+                          {/*  <Button isFlat onClick={() => this.previewBackup(version)}> */}
+                          {/*    Preview */}
+                          {/*  </Button> */}
+                          {/* </td> */}
+                          {/* <td> */}
+                          {/*  <Button isPrimarySmall onClick={() => this.confirmRestore(version.skill_id)}> */}
+                          {/*    Restore */}
+                          {/*  </Button> */}
+                          {/* </td> */}
                         </tr>
                       );
                     })}

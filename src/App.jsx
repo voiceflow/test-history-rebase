@@ -23,7 +23,7 @@ import { ThemeProvider } from 'styled-components';
 import ConfirmModal from '@/components/Modals/ConfirmModal';
 import ErrorModal from '@/components/Modals/ErrorModal';
 import Modal from '@/components/Modals/Modal';
-import Spinner from '@/components/Spinner';
+import FullSpinner from '@/components/Spinner/FullPageSpinner';
 import { getAuth, getUser } from '@/ducks/account';
 import { history } from '@/store/store';
 import { evaluateMaintenance } from '@/utils/maintenance';
@@ -100,7 +100,7 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.loading) return <Spinner name="Account" />;
+    if (this.state.loading) return <FullSpinner name="Account" />;
 
     return (
       <ThemeProvider theme={theme}>

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 // Components
 import Button from '@/components/Button';
-import { Spinner } from '@/components/Spinner';
+import FullSpinner from '@/components/Spinner/FullPageSpinner';
 import Stepper from '@/components/Stepper';
 // Ducks
 import { setError } from '@/ducks/modal';
@@ -343,7 +343,7 @@ class EditProduct extends React.Component {
 
   render() {
     if (this.state.loading) {
-      return <Spinner name="Products" />;
+      return <FullSpinner name="Products" />;
     }
 
     return (

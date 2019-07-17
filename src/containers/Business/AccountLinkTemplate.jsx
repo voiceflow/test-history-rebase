@@ -7,7 +7,7 @@ import Select from 'react-select';
 import { Input, Nav, NavItem, NavLink } from 'reactstrap';
 
 import MultipleFields from '@/components/Forms/MultipleFields';
-import { Spinner } from '@/components/Spinner';
+import FullSpinner from '@/components/Spinner/FullPageSpinner';
 import { setError } from '@/ducks/modal';
 import { updateVersion } from '@/ducks/version';
 
@@ -141,7 +141,7 @@ class AccountLinkTemplate extends Component {
         </div>
         <hr />
         {this.state.loading ? (
-          <Spinner name="Template" />
+          <FullSpinner name="Template" />
         ) : (
           <React.Fragment>
             <label>URL Authorization</label>

@@ -1,4 +1,3 @@
-import cn from 'classnames';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -11,13 +10,11 @@ const Text = styled.div`
   padding-bottom: 14px;
 `;
 
-export const Spinner = ({ transparent, isEmpty, message, name }) => {
+export const Spinner = ({ isEmpty, message, name }) => {
   return (
-    <div id="loading-diagram" className={cn({ transparent })}>
-      <div className="text-center">
-        <Loader />
-        {!isEmpty && <Text>{message || `Loading ${name}...`}</Text>}
-      </div>
+    <div className="text-center">
+      <Loader />
+      {!isEmpty && <Text>{message || `Loading ${name}...`}</Text>}
     </div>
   );
 };

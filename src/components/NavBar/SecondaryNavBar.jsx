@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Toggle from 'react-toggle';
 
-import { Spinner } from '@/components/Spinner';
+import FullSpinner from '@/components/Spinner/FullPageSpinner';
 import { fetchDiagrams, updateDiagramRoot } from '@/ducks/diagram';
 import { setLiveModeModal, toggleLive } from '@/ducks/version';
 
@@ -136,7 +136,7 @@ export class SecondaryNavBar extends Component {
             )}
           </div>
         </div>
-        {this.state.loading && <Spinner name="Version" />}
+        {this.state.loading && <FullSpinner name="Version" />}
       </>
     );
   }

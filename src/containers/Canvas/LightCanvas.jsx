@@ -15,7 +15,7 @@ import { BlockNodeFactory } from '@/components/SRD/factories/BlockNodeFactory';
 import { BlockPortFactory } from '@/components/SRD/factories/BlockPortFactory';
 /* eslint-enable no-secrets/no-secrets */
 import * as SRD from '@/components/SRD/main';
-import { Spinner } from '@/components/Spinner';
+import Spinner from '@/components/Spinner/FullPageSpinner';
 import { setError } from '@/ducks/modal';
 
 import new_template from '../../assets/templates/new';

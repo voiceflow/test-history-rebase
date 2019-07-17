@@ -1,18 +1,19 @@
 // Components
-import Button from 'components/Button';
-import { Spinner } from 'components/Spinner';
-import Dashboard from 'containers/Dashboard';
-// Views
-import Onboarding from 'containers/Onboarding';
-import Templates from 'containers/Templates';
-import { setConfirm, setError, setModal } from 'ducks/modal';
-// Actions
-import { fetchTeams, teamInvite, updateCurrentTeam } from 'ducks/team';
 import * as _ from 'lodash';
 import queryString from 'query-string';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
+import Dashboard from '@/containers/Dashboard';
+// Views
+import Onboarding from '@/containers/Onboarding';
+import Templates from '@/containers/Templates';
+import { setConfirm, setError, setModal } from '@/ducks/modal';
+// Actions
+import { fetchTeams, teamInvite, updateCurrentTeam } from '@/ducks/team';
 
 const DASHBOARD_PATH = '/dashboard';
 

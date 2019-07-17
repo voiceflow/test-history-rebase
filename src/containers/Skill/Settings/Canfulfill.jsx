@@ -1,13 +1,13 @@
 import cn from 'classnames';
-import Button from 'components/Button';
-import { updateFulfillment } from 'ducks/version';
 import update from 'immutability-helper';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { Alert, Collapse } from 'reactstrap';
 
-import { getIntentSlots } from 'Helper';
+import { getIntentSlots } from '@/Helper';
+import Button from '@/components/Button';
+import { updateFulfillment } from '@/ducks/version';
 
 import FulfillInput from './FulfillInput';
 

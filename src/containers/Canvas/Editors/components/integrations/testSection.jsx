@@ -1,14 +1,15 @@
 import { utils } from '@voiceflow/common';
-import DefaultModal from 'components/Modals/DefaultModal';
-import { Spinner } from 'components/Spinner';
-import { setConfirm, setError } from 'ducks/modal';
 import update from 'immutability-helper';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import ReactJson from 'react-json-view';
 import { connect } from 'react-redux';
 import { Alert, Button, Collapse, Input, InputGroup, InputGroupAddon } from 'reactstrap';
-import IntegrationsService from 'services/Integrations';
+
+import DefaultModal from '@/components/Modals/DefaultModal';
+import { Spinner } from '@/components/Spinner';
+import { setConfirm, setError } from '@/ducks/modal';
+import IntegrationsService from '@/services/Integrations';
 
 import C from './constants';
 

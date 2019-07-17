@@ -1,9 +1,10 @@
-import { setError } from 'ducks/modal';
 import randomstring from 'randomstring';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { components } from 'react-select';
 import Textarea from 'react-textarea-autosize';
+
+import { setError } from '@/ducks/modal';
 
 import ContainedTextarea from './ContainedTextArea';
 

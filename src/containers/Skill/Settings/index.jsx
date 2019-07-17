@@ -1,10 +1,11 @@
 import axios from 'axios';
-import { updateDiagramRoot } from 'ducks/diagram';
-import { updateVersion } from 'ducks/version';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, ButtonGroup } from 'reactstrap';
+
+import { updateDiagramRoot } from '@/ducks/diagram';
+import { updateVersion } from '@/ducks/version';
 
 import AdvancedSettings from './Advanced';
 import BackupSettings from './Backups';
@@ -16,7 +17,7 @@ const TABS = ['basic', 'advanced', 'discovery', 'backups'];
 
 class Settings extends Component {
   state = {
-    tab: 'basic',
+    tab: this.props.tag ? this.props.tag : 'basic',
   };
 
   constructor(props) {

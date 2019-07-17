@@ -1,17 +1,18 @@
 import cn from 'classnames';
-import Button from 'components/Button';
-import CheckMark from 'components/CheckMark';
-import { ModalHeader } from 'components/Modals/ModalHeader';
-import { Spinner } from 'components/Spinner';
-import Image from 'components/Uploads/Image';
-import { User } from 'components/User/User';
-import { setConfirm, setError } from 'ducks/modal';
-import { deleteTeam, leaveTeam, updateCurrentTeamItem, updateMembers, updateTeamName } from 'ducks/team';
 import update from 'immutability-helper';
 import { cloneDeep } from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Input, Modal, ModalBody, UncontrolledDropdown } from 'reactstrap';
+
+import Button from '@/components/Button';
+import CheckMark from '@/components/CheckMark';
+import { ModalHeader } from '@/components/Modals/ModalHeader';
+import { Spinner } from '@/components/Spinner';
+import Image from '@/components/Uploads/Image';
+import { User } from '@/components/User/User';
+import { setConfirm, setError } from '@/ducks/modal';
+import { deleteTeam, leaveTeam, updateCurrentTeamItem, updateMembers, updateTeamName } from '@/ducks/team';
 
 import Billing from './Billing';
 import { PLANS_ID } from './PLANS';

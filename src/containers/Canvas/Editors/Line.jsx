@@ -1,8 +1,9 @@
 import axios from 'axios';
-import Button from 'components/Button';
-import { Spinner } from 'components/Spinner';
 import React, { Component } from 'react';
 import { Collapse } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
 
 import MultiLineInput from './components/MultiLineInput';
 

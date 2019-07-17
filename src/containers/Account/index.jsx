@@ -1,16 +1,17 @@
 import './Account.css';
 
 import axios from 'axios';
-import Button from 'components/Button';
-import Header from 'components/Header';
-import { Spinner } from 'components/Spinner';
-import Image from 'components/Uploads/Image';
-import { AmazonAccessToken, googleAccessToken, updateAccount } from 'ducks/account';
-import { setConfirm, setError } from 'ducks/modal';
 import moment from 'moment';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert } from 'reactstrap';
+
+import Button from '@/components/Button';
+import Header from '@/components/Header';
+import { Spinner } from '@/components/Spinner';
+import Image from '@/components/Uploads/Image';
+import { AmazonAccessToken, googleAccessToken, updateAccount } from '@/ducks/account';
+import { setConfirm, setError } from '@/ducks/modal';
 
 const UNLINKED = 0;
 const LOADING = 1;

@@ -1,7 +1,8 @@
-import { addIntegrationUser } from 'ducks/integration';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FormGroup, Input, Label } from 'reactstrap';
+
+import { addIntegrationUser } from '@/ducks/integration';
 
 import { ZAPIER } from './constants';
 
@@ -16,12 +17,12 @@ class FeedAddUserModal extends Component {
     const { onBegin, addUser, user, skill_id, onSuccess, onError } = this.props;
     try {
       onBegin();
-      await addUser({
+      const newUsers = await addUser({
         user_info: { name, email: '' },
         creator_id: user.creator_id,
         skill_id,
       });
-      onSuccess();
+      onSuccess(newUsers);
     } catch (e) {
       console.error(e);
       let error = e;

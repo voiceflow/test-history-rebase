@@ -1,13 +1,14 @@
 import './NavBar.css';
 
 import axios from 'axios';
-import { Spinner } from 'components/Spinner';
-import { fetchDiagrams, updateDiagramRoot } from 'ducks/diagram';
-import { setLiveModeModal, toggleLive } from 'ducks/version';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Toggle from 'react-toggle';
+
+import { Spinner } from '@/components/Spinner';
+import { fetchDiagrams, updateDiagramRoot } from '@/ducks/diagram';
+import { setLiveModeModal, toggleLive } from '@/ducks/version';
 
 import { NavBarTabs } from './styled';
 

@@ -1,13 +1,14 @@
 import cn from 'classnames';
-import DefaultModal from 'components/Modals/DefaultModal';
-import { Spinner } from 'components/Spinner';
-import { deleteIntegrationUser } from 'ducks/integration';
-import { clearModal, setConfirm, setError } from 'ducks/modal';
 import update from 'immutability-helper';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Collapse } from 'reactstrap';
+
+import DefaultModal from '@/components/Modals/DefaultModal';
+import { Spinner } from '@/components/Spinner';
+import { deleteIntegrationUser } from '@/ducks/integration';
+import { clearModal, setConfirm, setError } from '@/ducks/modal';
 
 // props
 // selected_integration, user, integration_data, updateIntegrationData, showNextSection, user_modal, action_data, toggleSection, open

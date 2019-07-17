@@ -1,10 +1,11 @@
 import axios from 'axios';
-import Button from 'components/Button';
-import { Spinner } from 'components/Spinner';
-import { AmazonAccessToken } from 'ducks/account';
 import * as _ from 'lodash';
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
+import { AmazonAccessToken } from '@/ducks/account';
 
 class Migrate extends Component {
   constructor(props) {

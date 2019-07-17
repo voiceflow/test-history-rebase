@@ -1,9 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import './Intent.css';
 
-import PlatformTooltip from 'components/Tooltips/PlatformTooltip';
-import { setConfirm, setError } from 'ducks/modal';
-import { setCanFulfill, updateIntents } from 'ducks/version';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -11,6 +8,10 @@ import Select, { components } from 'react-select';
 import { Tooltip } from 'react-tippy';
 import Toggle from 'react-toggle';
 import { Button, ButtonGroup } from 'reactstrap';
+
+import PlatformTooltip from '@/components/Tooltips/PlatformTooltip';
+import { setConfirm, setError } from '@/ducks/modal';
+import { setCanFulfill, updateIntents } from '@/ducks/version';
 
 import IntentInputs from './components/IntentInputs';
 import SlotInputs from './components/SlotInputs';

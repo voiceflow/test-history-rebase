@@ -1,6 +1,7 @@
-import Button from 'components/Button';
-import Image from 'components/Uploads/Image';
 import React, { Component } from 'react';
+
+import Button from '@/components/Button';
+import Image from '@/components/Uploads/Image';
 
 class IconsForm extends Component {
   render() {

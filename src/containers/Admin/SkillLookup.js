@@ -1,6 +1,5 @@
 /* eslint no-restricted-globals: ["error", "isFinite"] */
 import axios from 'axios';
-import { Spinner } from 'components/Spinner';
 import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
@@ -8,6 +7,8 @@ import ReactTable from 'react-table';
 import { toast } from 'react-toastify';
 import Toggle from 'react-toggle';
 import { Button, Input } from 'reactstrap';
+
+import { Spinner } from '@/components/Spinner';
 
 import { LogTable } from '../Logs';
 

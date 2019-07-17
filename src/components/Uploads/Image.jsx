@@ -1,9 +1,10 @@
 import axios from 'axios';
-import Button from 'components/Button';
-import { Spinner } from 'components/Spinner';
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { Input } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
 
 const MAX_SIZE = 5 * 1024 * 1024;
 

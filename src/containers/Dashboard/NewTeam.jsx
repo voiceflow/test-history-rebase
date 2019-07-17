@@ -1,9 +1,3 @@
-import Button from 'components/Button';
-import ImageOptions from 'components/Forms/ImageOptions';
-import { Spinner } from 'components/Spinner';
-import Image from 'components/Uploads/Image';
-import { setError, setModal } from 'ducks/modal';
-import { createTeam } from 'ducks/team';
 import update from 'immutability-helper';
 import _ from 'lodash';
 import React, { Component } from 'react';
@@ -11,6 +5,13 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 import { compose } from 'recompose';
+
+import Button from '@/components/Button';
+import ImageOptions from '@/components/Forms/ImageOptions';
+import { Spinner } from '@/components/Spinner';
+import Image from '@/components/Uploads/Image';
+import { setError, setModal } from '@/ducks/modal';
+import { createTeam } from '@/ducks/team';
 
 import SeatsCheckout from './SeatsCheckout';
 

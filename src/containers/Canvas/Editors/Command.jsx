@@ -1,14 +1,15 @@
 /* eslint-disable no-underscore-dangle */
 import { constants } from '@voiceflow/common';
-import DefaultButton from 'components/Button';
-import PlatformTooltip from 'components/Tooltips/PlatformTooltip';
-import { setError } from 'ducks/modal';
-import { setCanFulfill, updateIntents } from 'ducks/version';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select, { components } from 'react-select';
 import { Alert, Button, ButtonGroup } from 'reactstrap';
+
+import DefaultButton from '@/components/Button';
+import PlatformTooltip from '@/components/Tooltips/PlatformTooltip';
+import { setError } from '@/ducks/modal';
+import { setCanFulfill, updateIntents } from '@/ducks/version';
 
 import IntentInputs from './components/IntentInputs';
 import SlotInputs from './components/SlotInputs';

@@ -1,8 +1,4 @@
 import cn from 'classnames';
-import Dropdown from 'components/Dropdown';
-import Link from 'components/Link';
-import withDraggable from 'hocs/withDraggable';
-import { useToggle } from 'hooks/toggle';
 import * as _ from 'lodash';
 import map from 'lodash/map';
 import upperCase from 'lodash/upperCase';
@@ -10,8 +6,13 @@ import upperCase from 'lodash/upperCase';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
-import { colors } from 'utils/colors';
-import { getHumanLanguageName } from 'utils/languages';
+
+import Dropdown from '@/components/Dropdown';
+import Link from '@/components/Link';
+import withDraggable from '@/hocs/withDraggable';
+import { useToggle } from '@/hooks/toggle';
+import { colors } from '@/utils/colors';
+import { getHumanLanguageName } from '@/utils/languages';
 
 const DROPDOWN_OPTIONS = [
   {
@@ -30,6 +31,7 @@ const DROPDOWN_BUTTON_PROPS = {
 
 export function Item(props) {
   const {
+    id,
     name,
     created,
     diagram,
@@ -43,10 +45,11 @@ export function Item(props) {
     connectDragSource,
     connectDropTarget,
     isDraggingPreview,
+    isReference,
   } = props;
 
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
-  const pathTo = `/canvas/${version_id}/${diagram}`;
+  const pathTo = isReference ? `/reference/${id}` : `/canvas/${version_id}/${diagram}`;
 
   const color = colors[new Date(created).getTime() % colors.length];
 

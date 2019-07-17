@@ -1,8 +1,9 @@
-import Button from 'components/Button';
-import { Spinner } from 'components/Spinner';
 import update from 'immutability-helper';
 import React, { Component } from 'react';
 import { Collapse } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
 
 import VariableInput from '../../../VariableInput';
 import { draftIsEmpty } from '../../util';

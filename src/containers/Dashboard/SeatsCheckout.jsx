@@ -1,14 +1,15 @@
 import axios from 'axios';
-import Button from 'components/Button';
-import { Spinner } from 'components/Spinner';
-import { setError } from 'ducks/modal';
-import { createTeam, updateMembers } from 'ducks/team';
-import StripeHandler from 'hocs/withStripeHandler';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { CardElement } from 'react-stripe-elements';
 import { Collapse, Input } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
+import { setError } from '@/ducks/modal';
+import { createTeam, updateMembers } from '@/ducks/team';
+import StripeHandler from '@/hocs/withStripeHandler';
 
 import { PLANS_ID } from './PLANS';
 import PricingCard from './PricingCard';

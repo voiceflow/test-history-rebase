@@ -1,6 +1,7 @@
-import { Spinner } from 'components/Spinner';
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
+
+import { Spinner } from '@/components/Spinner';
 
 const LoadingModal = ({ open }) => {
   return (

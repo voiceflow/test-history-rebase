@@ -1,9 +1,10 @@
 import { constants, utils } from '@voiceflow/common';
 import NLC from '@voiceflow/natural-language-commander';
 import axios from 'axios';
-import { setError } from 'ducks/modal';
 import update from 'immutability-helper';
 import _ from 'lodash';
+
+import { setError } from '@/ducks/modal';
 
 const { DEFAULT_INTENTS } = constants.intents;
 const SLOT_TYPES = constants.slots;
@@ -118,7 +119,7 @@ export const initializeTest = (options = {}) => (dispatch, getState) => {
   const nlc = new NLC();
 
   slots.forEach((slot) => {
-    if (slot.type.value && slot.type.value.toLowerCase() === 'custom') {
+    if (_.get(slot, ['type', 'value']) === 'Custom') {
       nlc.addSlotType({
         type: slot.name,
         matcher: slot.inputs,

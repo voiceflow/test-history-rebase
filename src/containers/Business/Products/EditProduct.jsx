@@ -1,15 +1,16 @@
 import axios from 'axios';
-// Components
-import Button from 'components/Button';
-import { Spinner } from 'components/Spinner';
-import Stepper from 'components/Stepper';
-import { setError } from 'ducks/modal';
-// Ducks
-import { addProduct, updateProduct } from 'ducks/product';
 import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
+
+// Components
+import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
+import Stepper from '@/components/Stepper';
+// Ducks
+import { setError } from '@/ducks/modal';
+import { addProduct, updateProduct } from '@/ducks/product';
 
 // Constants
 import { TAX_CATEGORY } from './Constants';

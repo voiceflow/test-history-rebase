@@ -1,11 +1,12 @@
 import axios from 'axios';
-import Button from 'components/Button';
-import { Spinner } from 'components/Spinner';
-import StripeHandler from 'hocs/withStripeHandler';
 import * as _ from 'lodash';
 import moment from 'moment';
 import React, { Component } from 'react';
 import { CardElement } from 'react-stripe-elements';
+
+import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
+import StripeHandler from '@/hocs/withStripeHandler';
 
 const Invoice = ({ invoice }) => {
   if (!invoice) return null;

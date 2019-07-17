@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Page404 from '@/components/404';
 import Legal from '@/components/Legal';
+import Reference from '@/components/Reference';
 // import ModuleAdminPage from '@/containers/ModuleAdminPage';
 import Account from '@/containers/Account';
 import Admin from '@/containers/Admin';
@@ -40,6 +41,7 @@ const allRoutes = (
     <PrivateRoute path="/preview/:skill_id" component={Skill} page="canvas" preview />
     <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas" />
     <PrivateRoute path="/canvas/:skill_id" component={Skill} page="canvas" />
+    <PrivateRoute path="/reference/:project_id" component={Reference} page="canvas" />
     {/* Testing routes */}
     <PrivateRoute path="/test/:skill_id/:diagram_id" component={Skill} page="test" />
     <PrivateRoute path="/test/:skill_id" component={Skill} page="test" />

@@ -161,7 +161,7 @@ export function List(props) {
                         } else if (smallIcon) {
                           icon = smallIcon;
                         }
-                        return !project ? null : (
+                        return (
                           <li key={project.project_id} className="projects-list__list-item">
                             <Item
                               index={i}
@@ -170,6 +170,7 @@ export function List(props) {
                               listId={id}
                               created={project.created}
                               isFB={false}
+                              isReference={project.reference}
                               avatarUrl={icon}
                               name={project.name}
                               diagram={project.diagram}

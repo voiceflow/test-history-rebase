@@ -156,11 +156,14 @@ export const getUserTestOutputs = async (trace, ending) => {
         audioType: 'stream',
         text,
         node: block.line.id,
-        isLast: true,
+        isLast: !block.line.NEXT,
         options: ['Previous', 'Pause', 'Next'],
         type,
       };
       dom.push(outputBlock);
+      dom.push({
+        forceInput: 'Next',
+      });
     } else if (type === 'Choice' && idx > 0) {
       const outputBlock = {
         options: _.map(block.line.inputs, _.head),

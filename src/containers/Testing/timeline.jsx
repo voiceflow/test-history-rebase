@@ -113,6 +113,11 @@ class Timeline extends Component {
 
     const newOutput = this.interval.queue.shift();
 
+    if (newOutput.forceInput && !options.dump) {
+      this.nextState(newOutput.forceInput);
+      return;
+    }
+
     if (newOutput.diagram) {
       if (!_.get(this.interval.queue[0], ['diagram'])) {
         this.setState({ loading: true });

@@ -10,13 +10,13 @@ import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
 import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Input, Popover, PopoverBody, UncontrolledDropdown } from 'reactstrap';
 
-import { YOUTUBE_CHANNEL_ID } from '@/config';
 import Button from '@/components/Button';
 import DragLayer from '@/components/DragLayer';
 import Header from '@/components/Header';
 import LoadingModal from '@/components/Modals/LoadingModal';
 import UpdatesModal from '@/components/Modals/UpdatesModal';
 import { Members } from '@/components/User/User';
+import { YOUTUBE_CHANNEL_ID } from '@/config';
 import { ScrollContextProvider } from '@/contexts';
 import { unnormalize } from '@/ducks/_normalize';
 import {

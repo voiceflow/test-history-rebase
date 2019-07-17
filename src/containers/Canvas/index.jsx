@@ -1362,6 +1362,17 @@ export class Canvas extends Component {
               >
                 Add Comment
               </ListGroupItem>
+              {localStorage.clipboard && (
+                <ListGroupItem
+                  onClick={() => {
+                    this.clipboard.current.paste();
+
+                    setBlockMenu(null);
+                  }}
+                >
+                  Paste Block
+                </ListGroupItem>
+              )}
             </ListGroup>
           </div>
         </React.Fragment>

@@ -18,7 +18,7 @@ import GuidedSteps from '@/components/GuidedSteps';
 import RadioButtons, { YES_NO_RADIO_BUTTONS } from '@/components/RadioButtons';
 import Image from '@/components/Uploads/Image';
 import { AmazonAccessToken } from '@/ducks/account';
-import { setConfirm, setError } from '@/ducks/modal';
+import { setError } from '@/ducks/modal';
 import { updateEntireVersion, updateSkillDB, updateVersion } from '@/ducks/version';
 
 import { AMAZON_CATEGORIES } from '../../services/Categories';
@@ -276,11 +276,8 @@ class Skill extends Component {
           const new_version_data = res.data;
           axios
             .post(`/project/${project_id}/version/${new_version_data.new_skill.skill_id}/alexa`)
-            .then((res) => {
-              this.setState({
-                stage: 8,
-                amzn_id: res.data,
-              });
+            .then(() => {
+              this.onCertify();
             })
             .catch((err) => {
               if (err.status === 403 || err.response.status === 403) {
@@ -484,7 +481,7 @@ class Skill extends Component {
     const blocks = [];
     const enterText = (
       <>
-        Publish Skill
+        Submit for Review
         <i className="fab fa-amazon ml-2" />
       </>
     );
@@ -647,7 +644,7 @@ class Skill extends Component {
               type="text"
               name="inv_name"
               disabled={disabled_stages.has(stage)}
-              placeholder="Enter an invocation name that begins an interaction with your skill"
+              placeholder="Enter an invocation name"
               value={inv_name}
               onChange={this.handleChange}
             />
@@ -800,7 +797,7 @@ class Skill extends Component {
 
   render() {
     const { stage, amzn_id, stage_error, instructions, locales, loaded, publish, live, id_collapse } = this.state;
-    const { onConfirm } = this.props;
+    // const { setConfirm } = this.props;
     // Success Screen
     if (stage === 10) {
       return (
@@ -833,7 +830,7 @@ class Skill extends Component {
     }
 
     let content;
-    const alexaDashboardUrl = `https://developer.amazon.com/alexa/console/ask/build/custom/${amzn_id}/development/en_US/dashboard`;
+    // const alexaDashboardUrl = `https://developer.amazon.com/alexa/console/ask/build/custom/${amzn_id}/development/en_US/dashboard`;
     if (stage === 0 || stage === -1) {
       content = (
         <div className="my-5">
@@ -1021,31 +1018,32 @@ class Skill extends Component {
                   </Collapse>
                 </div>
               ) : null}
-              {disabled_stages.has(stage) ? (
-                <div className="alert alert-success mb-4" role="alert">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0">This skill is currently in review so you cannot edit it.</h5>
-                    <div>
-                      <DefaultButton isWhite variant="contained" href={alexaDashboardUrl} target="_blank">
-                        Visit Dashboard
-                      </DefaultButton>
-                      <DefaultButton
-                        isPrimary
-                        variant="contained"
-                        className="ml-3"
-                        onClick={() => {
-                          onConfirm({
-                            text: 'Are you sure you want to withdraw this Skill?',
-                            confirm: this.onWithdraw,
-                          });
-                        }}
-                      >
-                        Withdraw Skill
-                      </DefaultButton>
-                    </div>
-                  </div>
-                </div>
-              ) : null}
+              {/* We might want to bring this back one day */}
+              {/* {disabled_stages.has(stage) ? ( */}
+              {/*  <div className="alert alert-success mb-4" role="alert"> */}
+              {/*    <div className="d-flex justify-content-between align-items-center"> */}
+              {/*      <h5 className="mb-0">This skill is currently in review so you cannot edit it.</h5> */}
+              {/*      <div> */}
+              {/*        <DefaultButton isWhite variant="contained" href={alexaDashboardUrl} target="_blank"> */}
+              {/*          Visit Dashboard */}
+              {/*        </DefaultButton> */}
+              {/*        <DefaultButton */}
+              {/*          isPrimary */}
+              {/*          variant="contained" */}
+              {/*          className="ml-3" */}
+              {/*          onClick={() => { */}
+              {/*            setConfirm({ */}
+              {/*              text: 'Are you sure you want to withdraw this Skill?', */}
+              {/*              confirm: this.onWithdraw, */}
+              {/*            }); */}
+              {/*          }} */}
+              {/*        > */}
+              {/*          Withdraw Skill */}
+              {/*        </DefaultButton> */}
+              {/*      </div> */}
+              {/*    </div> */}
+              {/*  </div> */}
+              {/* ) : null} */}
 
               <Form>{this.renderBlocks()}</Form>
             </div>
@@ -1064,7 +1062,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateSkill: (type, val) => dispatch(updateVersion(type, val)),
     updateEntireSkill: (val) => dispatch(updateEntireVersion(val)),
-    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
+    // setConfirm: (confirm) => dispatch(setConfirm(confirm)),
     setError: (err) => dispatch(setError(err)),
     save: (publish, cb) => dispatch(updateSkillDB(publish, cb)),
   };

@@ -229,20 +229,24 @@ class TestSection extends Component {
   };
 
   checkResult = (result) => {
-    if (typeof result === 'object' && result.VF_STATUS_CODE >= 400) {
-      this.props.setError(`Error: Request failed 
+    if (result) {
+      if (typeof result === 'object' && result.VF_STATUS_CODE >= 400) {
+        this.props.setError(`Error: Request failed 
       due to ${result.error}.
       Status Code: ${result.VF_STATUS_CODE}`);
 
-      return { message: `Error: Request failed due to ${result.error} with status code ${result.VF_STATUS_CODE}` };
+        return { message: `Error: Request failed due to ${result.error} with status code ${result.VF_STATUS_CODE}` };
+      }
+      if (typeof result === 'string' && result.length > 10000) {
+        return { message: `${result.substring(0, Math.min(result.length, 10000))}...` };
+      }
+      if (typeof result === 'object' && JSON.stringify(result).length > 10000) {
+        return { message: 'Response contents are too large to display!' };
+      }
+      return { message: result };
     }
-    if (typeof result === 'string' && result.length > 10000) {
-      return { message: `${result.substring(0, Math.min(result.length, 10000))}...` };
-    }
-    if (typeof result === 'object' && JSON.stringify(result).length > 10000) {
-      return { message: 'Response contents are too large to display!' };
-    }
-    return { message: result };
+    this.props.setError('Something went wrong. Please check your request.');
+    return { message: 'Something went wrong. Please check your request.' };
   };
 
   runTest = async () => {

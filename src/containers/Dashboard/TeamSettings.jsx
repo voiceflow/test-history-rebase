@@ -2,6 +2,7 @@ import cn from 'classnames';
 import Button from 'components/Button';
 import CheckMark from 'components/CheckMark';
 import { ModalHeader } from 'components/Modals/ModalHeader';
+import { Spinner } from 'components/Spinner';
 import Image from 'components/Uploads/Image';
 import { User } from 'components/User/User';
 import { setConfirm, setError } from 'ducks/modal';
@@ -308,13 +309,7 @@ class TeamSettings extends Component {
           </div>
         );
       case 'DELETING':
-        return (
-          <div className="text-center p-5">
-            <span className="loader text-lg" />
-            <br />
-            Deleting Board
-          </div>
-        );
+        return <Spinner message="Deleting Board" />;
       case 'DELETE':
         // eslint-disable-next-line no-case-declarations
         const equal = input.trim().toLowerCase() === team.name.trim().toLowerCase();
@@ -442,7 +437,7 @@ class TeamSettings extends Component {
                 </div>
                 <div className="text-center mt-3 position-relative">
                   <Button isBtn isPrimary type="submit" disabled={DISABLED} style={{ width: 150 }} onClick={this.applyChanges}>
-                    {UPDATING ? <span className="loader" /> : 'Apply Changes'}
+                    {UPDATING ? <Spinner isEmpty /> : 'Apply Changes'}
                   </Button>
                   <div
                     style={{

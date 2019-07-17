@@ -1,5 +1,6 @@
 import axios from 'axios';
 import MultipleFields from 'components/Forms/MultipleFields';
+import { Spinner } from 'components/Spinner';
 import { setError } from 'ducks/modal';
 import { updateVersion } from 'ducks/version';
 import update from 'immutability-helper';
@@ -139,12 +140,7 @@ class AccountLinkTemplate extends Component {
         </div>
         <hr />
         {this.state.loading ? (
-          <div id="loading-diagram">
-            <div className="text-center">
-              <h5 className="text-muted mb-2">Loading Template</h5>
-              <span className="loader" />
-            </div>
-          </div>
+          <Spinner name="Template" />
         ) : (
           <React.Fragment>
             <label>URL Authorization</label>

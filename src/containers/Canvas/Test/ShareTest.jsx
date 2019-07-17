@@ -1,5 +1,6 @@
 import Button from 'components/Button';
 import ClipBoard from 'components/ClipBoard/ClipBoard';
+import { Spinner } from 'components/Spinner';
 import { shareTest } from 'ducks/test';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
@@ -39,9 +40,7 @@ const UserTestHeader = (props) => {
               <div className="text-center text-dull p-2 mt-1">Share and test your project in the browser</div>
             </>
           ) : (
-            <div className="text-center pt-2 pb-1">
-              <div className="loader text-md" />
-            </div>
+            <Spinner isEmpty />
           )}
         </PopoverBody>
       </Popover>

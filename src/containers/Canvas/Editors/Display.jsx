@@ -3,6 +3,7 @@ import './Display.css';
 import axios from 'axios';
 import AceEditor from 'components/AceEditor';
 import { ModalHeader } from 'components/Modals/ModalHeader';
+import { Spinner } from 'components/Spinner';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -207,14 +208,8 @@ export class Display extends Component {
   // Render entire modal
   renderDisplayTest() {
     const { variables, modalContent, variables_error, current_request, rendered_datasource, node } = this.state;
-
-    const loading = (
-      <div className="text-center mt-3">
-        <div className="loader text-lg" />
-      </div>
-    );
     if (_.isNil(modalContent) && _.isEmpty(variables)) {
-      return loading;
+      return <Spinner isEmpty />;
     }
 
     return (
@@ -243,7 +238,7 @@ export class Display extends Component {
           </React.Fragment>
         )}
         {modalContent && variables_error && <div className="error-message text-center">{variables_error}</div>}
-        {current_request && loading}
+        {current_request && <Spinner isEmpty />}
         {modalContent && <div className="space-between flex-hard" />}
 
         {modalContent && (

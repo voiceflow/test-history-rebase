@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Button from 'components/Button';
+import { Spinner } from 'components/Spinner';
 import StripeHandler from 'hocs/withStripeHandler';
 import * as _ from 'lodash';
 import moment from 'moment';
@@ -100,12 +101,7 @@ class Billing extends Component {
   render() {
     const { stage, source, upcoming, invoices } = this.state;
     if (stage === 'LOADING') {
-      return (
-        <div className="text-center my-5 py-5">
-          <span className="loader text-lg mb-3" />
-          <div>Fetching Status</div>
-        </div>
-      );
+      return <Spinner message="Fetching Status" />;
     }
 
     return (
@@ -123,11 +119,7 @@ class Billing extends Component {
                 </div>
               </div>
             )}
-            {stage === 'UPDATE_SOURCE' && (
-              <div className="text-center position-absolute py-2 w-100">
-                <span className="loader text-lg" />
-              </div>
-            )}
+            {stage === 'UPDATE_SOURCE' && <Spinner isEmpty />}
             <div style={{ visibility: stage === 'STRIPE' ? 'visible' : 'hidden' }}>
               <div style={{ height: 40 }}>
                 <CardElement />

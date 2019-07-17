@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Button from 'components/Button';
+import { Spinner } from 'components/Spinner';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, FormGroup, Input } from 'reactstrap';
@@ -73,16 +74,7 @@ class Reset extends Component {
           </form>
         );
       case 1:
-        return (
-          <div className="super-center text-center">
-            <div>
-              <h5 className="pb-3">Sending Email</h5>
-              <h1>
-                <span className="loader" />
-              </h1>
-            </div>
-          </div>
-        );
+        return <Spinner message="Sending Email" />;
       case 2:
         return (
           <div className="text-center">

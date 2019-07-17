@@ -1,6 +1,7 @@
 import './NavBar.css';
 
 import axios from 'axios';
+import { Spinner } from 'components/Spinner';
 import { fetchDiagrams, updateDiagramRoot } from 'ducks/diagram';
 import { setLiveModeModal, toggleLive } from 'ducks/version';
 import React, { Component } from 'react';
@@ -134,14 +135,7 @@ export class SecondaryNavBar extends Component {
             )}
           </div>
         </div>
-        {this.state.loading && (
-          <div id="loading-diagram" style={{ zIndex: 100 }}>
-            <div className="text-center">
-              <h5 className="text-muted mb-2">Loading Version</h5>
-              <span className="loader" />
-            </div>
-          </div>
-        )}
+        {this.state.loading && <Spinner name="Version" />}
       </>
     );
   }

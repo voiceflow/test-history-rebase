@@ -1,6 +1,7 @@
 import axios from 'axios';
 // Components
 import Button from 'components/Button';
+import { Spinner } from 'components/Spinner';
 import Stepper from 'components/Stepper';
 import { setError } from 'ducks/modal';
 // Ducks
@@ -341,14 +342,7 @@ class EditProduct extends React.Component {
 
   render() {
     if (this.state.loading) {
-      return (
-        <div id="loading-diagram">
-          <div className="text-center">
-            <h5 className="text-muted mb-2">Loading Products</h5>
-            <span className="loader" />
-          </div>
-        </div>
-      );
+      return <Spinner name="Products" />;
     }
 
     return (

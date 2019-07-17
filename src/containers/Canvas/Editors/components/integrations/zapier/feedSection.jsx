@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import DefaultModal from 'components/Modals/DefaultModal';
+import { Spinner } from 'components/Spinner';
 import { deleteIntegrationUser } from 'ducks/integration';
 import { clearModal, setConfirm, setError } from 'ducks/modal';
 import update from 'immutability-helper';
@@ -231,11 +232,7 @@ class FeedSection extends Component {
                   </div>
                 );
               })}
-            {props_integration_users_loading && (
-              <div className="text-center my-4">
-                <div className="loader text-lg" />
-              </div>
-            )}
+            {props_integration_users_loading && <Spinner isEmpty />}
             <div className="btn btn-clear btn-lg btn-block" onClick={() => this.addUser()}>
               <span>
                 <i className="far fa-plus mr-2" />

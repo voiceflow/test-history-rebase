@@ -1,5 +1,6 @@
 import { utils } from '@voiceflow/common';
 import DefaultModal from 'components/Modals/DefaultModal';
+import { Spinner } from 'components/Spinner';
 import { setConfirm, setError } from 'ducks/modal';
 import update from 'immutability-helper';
 import _ from 'lodash';
@@ -187,11 +188,7 @@ class TestSection extends Component {
   renderTestContent() {
     const { test_loading, test_content } = this.state;
     if (test_loading) {
-      return (
-        <div className="text-center">
-          <div className="loader text-lg" />
-        </div>
-      );
+      return <Spinner isEmpty />;
     }
     if (test_content) {
       if (React.isValidElement(test_content)) {

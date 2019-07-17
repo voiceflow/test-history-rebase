@@ -1,5 +1,6 @@
 /* eslint no-restricted-globals: ["error", "isFinite"] */
 import axios from 'axios';
+import { Spinner } from 'components/Spinner';
 import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
@@ -131,9 +132,7 @@ class SkillLookup extends React.Component {
         </h3>
         <h5>Projects/Versions</h5>
         {this.state.loading ? (
-          <div className="text-center py-3">
-            <div className="loader text-lg" />
-          </div>
+          <Spinner isEmpty />
         ) : (
           <div className="">
             <label className="d-flex align-items-center">

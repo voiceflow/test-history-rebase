@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Button from 'components/Button';
+import { Spinner } from 'components/Spinner';
 import React, { Component } from 'react';
 import { Collapse } from 'reactstrap';
 
@@ -116,9 +117,7 @@ class Line extends Component {
             <div>
               {this.state.loading ? (
                 <div className="combined-box">
-                  <h1>
-                    <span className="loader" />
-                  </h1>
+                  <Spinner isEmpty />
                 </div>
               ) : (
                 <div className="combined-box">

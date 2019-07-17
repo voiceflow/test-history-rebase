@@ -258,7 +258,7 @@ class Display extends Component {
                         Back
                       </Button>
                       <Button isPrimary varient="contained" onClick={this.save} style={{ width: 100 }}>
-                        {saving ? <span className="loader" /> : <React.Fragment>Save{saved ? '' : '*'}</React.Fragment>}
+                        {saving ? <Spinner isEmpty /> : <React.Fragment>Save{saved ? '' : '*'}</React.Fragment>}
                       </Button>
                     </div>
                   </div>

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Button from 'components/Button';
+import { Spinner } from 'components/Spinner';
 import { AmazonAccessToken } from 'ducks/account';
 import * as _ from 'lodash';
 import React, { Component } from 'react';
@@ -95,7 +96,7 @@ class Migrate extends Component {
       case 2:
         return <Alert>Your Project Has Been Successfully Updated</Alert>;
       default:
-        return <div className="loader text-lg" />;
+        return <Spinner isEmpty />;
     }
   }
 

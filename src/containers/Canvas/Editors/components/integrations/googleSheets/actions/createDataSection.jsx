@@ -1,4 +1,5 @@
 import Button from 'components/Button';
+import { Spinner } from 'components/Spinner';
 import update from 'immutability-helper';
 import React, { Component } from 'react';
 import { Collapse } from 'reactstrap';
@@ -94,11 +95,7 @@ class CreateDataSection extends Component {
             {!this.props.headers_loading && this.props.sheet_headers && this.props.sheet_headers.length === 0 && (
               <div className="text-center">No Sheet Headers Found</div>
             )}
-            {this.props.headers_loading && (
-              <div className="text-center my-4">
-                <div className="loader text-lg" />
-              </div>
-            )}
+            {this.props.headers_loading && <Spinner isEmpty />}
             {!this.props.headers_loading && (
               <div className="text-center my-3">
                 <Button isFlat disabled={!this.state.completed} onClick={this.props.showNextSection}>

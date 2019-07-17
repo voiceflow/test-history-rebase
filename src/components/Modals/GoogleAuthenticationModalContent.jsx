@@ -1,6 +1,7 @@
 import './Modals.css';
 
 import Button from 'components/Button';
+import { Spinner } from 'components/Spinner';
 import React from 'react';
 import { Input } from 'reactstrap';
 
@@ -46,7 +47,7 @@ const MultiPlatformModalContent = ({ token, onChange, loading, onVerify }) => {
             Verify
           </Button>
         )}
-        {loading && <span style={{ height: '44px' }} className="loader" />}
+        {loading && <Spinner isEmpty />}
       </div>
     </div>
   );

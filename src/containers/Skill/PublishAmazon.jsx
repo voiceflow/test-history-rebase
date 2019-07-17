@@ -5,6 +5,7 @@ import DefaultButton from 'components/Button';
 import AmazonLogin from 'components/Forms/AmazonLogin';
 import Multiple from 'components/Forms/Multiple';
 import RadioButtons, { YES_NO_RADIO_BUTTONS } from 'components/RadioButtons';
+import { Spinner } from 'components/Spinner';
 import Image from 'components/Uploads/Image';
 import { AmazonAccessToken } from 'ducks/account';
 import { setConfirm, setError } from 'ducks/modal';
@@ -535,10 +536,7 @@ class Skill extends Component {
     } else if (stage === 1 || stage === 3 || stage === 4 || stage === 6 || stage === 7) {
       content = (
         <div>
-          <h1>
-            <span className="loader" />
-          </h1>
-          <p className="loading">{stage_title[stage]}</p>
+          <Spinner message={`Loading ${stage_title[stage]}`} />
         </div>
       );
     } else if (stage === 2) {
@@ -643,12 +641,7 @@ class Skill extends Component {
     if (!loaded)
       return (
         <div className="super-center h-100 w-100">
-          <div className="text-center">
-            <h1>
-              <span className="loader" />
-            </h1>
-            Getting Skill Status
-          </div>
+          <Spinner message="Getting Skill Status" />
         </div>
       );
 

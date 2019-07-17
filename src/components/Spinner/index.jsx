@@ -11,12 +11,12 @@ const Text = styled.div`
   padding-bottom: 14px;
 `;
 
-export const Spinner = (props) => {
+export const Spinner = ({ transparent, isEmpty, message, name }) => {
   return (
-    <div id="loading-diagram" className={cn({ transparent: props.transparent })}>
+    <div id="loading-diagram" className={cn({ transparent })}>
       <div className="text-center">
         <Loader />
-        <Text>{props.message || `Loading ${props.name}...`}</Text>
+        {!isEmpty && <Text>{message || `Loading ${name}...`}</Text>}
       </div>
     </div>
   );

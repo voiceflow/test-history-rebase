@@ -2,6 +2,7 @@ import { constants } from '@voiceflow/common';
 import cn from 'classnames';
 import Button from 'components/Button';
 import { ModalHeader } from 'components/Modals/ModalHeader';
+import { Spinner } from 'components/Spinner';
 import Prompt from 'components/Uploads/Prompt';
 // HOCs
 import { redo, undo } from 'hocs/withUndoRedo';
@@ -661,13 +662,7 @@ class Editor extends Component {
               })}
             >
               {this.renderTitle()}
-              {!this.state.expanded ? (
-                this.EditorRender()
-              ) : (
-                <div className="text-center mt-5">
-                  <span className="loader text-lg" />
-                </div>
-              )}
+              {!this.state.expanded ? this.EditorRender() : <Spinner isEmpty />}
               {this.state.expanded && (
                 <React.Fragment>
                   <Modal

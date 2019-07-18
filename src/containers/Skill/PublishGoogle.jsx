@@ -2,7 +2,7 @@ import './Skill.css';
 
 import { constants } from '@voiceflow/common';
 import axios from 'axios';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
@@ -224,8 +224,8 @@ class GooglePublish extends Component {
         });
       })
       .catch((err) => {
-        console.error('There was an error with the google certificate: ', err.response.data);
-        if (err.response.data.error === 'Invalid Google Certificate.') {
+        const message = _.get(err, ['response', 'data', 'data']) || _.get(err, ['response', 'data']);
+        if (message === 'Invalid Google Certificate.') {
           this.setState({
             loaded: true,
             auth_error: 'There was an error with your google certificate. Please try again or contact support.',

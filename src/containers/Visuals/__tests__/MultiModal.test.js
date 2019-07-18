@@ -53,7 +53,7 @@ describe('MultiModal not loading', () => {
 
   it('renders MultiModal no existing displays', () => {
     const component = shallow(
-      <MultiModal.WrappedComponent deleteDisplay={_.noop()} setConfirm={_.noop()} loading={true} displays={[]} history={[]} skill_id="mockId3" />
+      <MultiModal.WrappedComponent deleteDisplay={_.noop()} setConfirm={_.noop()} loading={true} displays={[]} history={{}} skill_id="mockId3" />
     );
 
     expect(toJson(component)).toMatchSnapshot();

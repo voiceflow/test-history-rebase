@@ -233,7 +233,7 @@ class FeedSection extends Component {
                   </div>
                 );
               })}
-            {props_integration_users_loading && <Spinner isEmpty />}
+            {props_integration_users_loading && <Spinner isEmpty isLg />}
             <div className="btn btn-clear btn-lg btn-block" onClick={() => this.addUser()}>
               <span>
                 <i className="far fa-plus mr-2" />

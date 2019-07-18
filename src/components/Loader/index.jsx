@@ -6,6 +6,7 @@ const spinnerStyles = css`
   height: 1em;
   border-radius: 50%;
   display: inline-flex;
+  font-size: ${(props) => (props.isMd ? '2rem' : '3rem')};
 `;
 const LoadContainer = styled.div`
   ${spinnerStyles}

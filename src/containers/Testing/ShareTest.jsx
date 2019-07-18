@@ -41,7 +41,7 @@ const TestingHeader = (props) => {
               <div className="text-center text-dull p-2 mt-1">Share and test your project in the browser</div>
             </>
           ) : (
-            <Spinner isEmpty />
+            <Spinner isEmpty isMd />
           )}
         </PopoverBody>
       </Popover>

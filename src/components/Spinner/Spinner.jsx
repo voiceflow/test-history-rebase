@@ -10,10 +10,10 @@ const Text = styled.div`
   padding-bottom: 14px;
 `;
 
-const Spinner = ({ isEmpty, message, name }) => {
+const Spinner = ({ isEmpty, message, name, isLg, isMd }) => {
   return (
     <div className="text-center">
-      <Loader />
+      <Loader isLg={isLg} isMd={isMd} />
       {!isEmpty && <Text>{message || `Loading ${name}...`}</Text>}
     </div>
   );

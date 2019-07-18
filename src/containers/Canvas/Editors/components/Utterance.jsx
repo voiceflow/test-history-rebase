@@ -12,7 +12,7 @@ class Utterance extends React.PureComponent {
     super(props);
 
     this.state = {
-      text: props.intent,
+      text: props.utterance,
       text_error: '',
     };
   }
@@ -44,8 +44,8 @@ class Utterance extends React.PureComponent {
 
   onEdit = (targetInput = null) => {
     const newValue = this.state.text.trim();
-    if (this.props.intent.trim() === newValue) return;
-    if (this.props.utteranceExists(newValue)) {
+    if (this.props.utterance.trim() === newValue) return;
+    if (this.props.checkEditUtterances(newValue, this.props.intent_id, this.props.index)) {
       return this.setState({
         text_error: 'Duplicate utterances are not allowed',
       });

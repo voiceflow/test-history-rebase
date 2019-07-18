@@ -114,25 +114,16 @@ class FeedSection extends Component {
     });
   }
 
-  addUser() {
-    this.setState({
-      add_user_modal: true,
-    });
-  }
+  addUser = () => this.setState({ add_user_modal: true });
 
-  toggleAddUserModal = () => {
-    const { add_user_modal } = this.state;
-    this.setState({
-      add_user_modal: !add_user_modal,
-    });
-  };
+  toggleAddUserModal = () => this.setState({ add_user_modal: !this.state.add_user_modal });
 
   render() {
     const {
+      integrationsUser: user,
+      user_modal: AddUserModal,
       selected_integration,
       integration_users,
-      integrationsUser,
-      user_modal,
       action_data,
       setError,
       integration_user_error,
@@ -144,57 +135,52 @@ class FeedSection extends Component {
       integration_users_loading: props_integration_users_loading,
     } = this.props;
     const { add_user_modal, integration_users_loading, completed } = this.state;
-    const integration = selected_integration;
-    const users = integration_users[integration];
-    const user = integrationsUser;
 
-    const AddUserModal = user_modal;
+    const users = integration_users[selected_integration] || [];
 
-    if (!action_data) return null;
+    if (!action_data) {
+      return null;
+    }
 
     return (
       <>
-        {AddUserModal && (
-          <DefaultModal
-            open={add_user_modal && !integration_users_loading}
-            header="Create a New Trigger"
-            toggle={this.toggleAddUserModal}
-            content={
-              <AddUserModal
-                toggle={this.toggleAddUserModal}
-                onError={(e) => setError(e)}
-                onSuccess={() => {
-                  if (integration_user_error) {
-                    setError(integration_user_error);
-                    return;
-                  }
-
-                  const integration = selected_integration;
-                  const users = integration_users[integration];
-
-                  const newIntegrationData = update(integration_data, {
-                    user: {
-                      $set: users[users.length - 1],
-                    },
-                  });
-                  updateIntegrationData(newIntegrationData);
-                  this.setState({
-                    add_user_modal: false,
-                    completed: true,
-                  });
-                }}
-                onBegin={() =>
-                  this.setState({
-                    add_user_modal: false,
-                  })
+        <DefaultModal
+          open={add_user_modal && !integration_users_loading}
+          header="Create a New Trigger"
+          toggle={this.toggleAddUserModal}
+          content={
+            <AddUserModal
+              toggle={this.toggleAddUserModal}
+              onError={(e) => setError(e)}
+              onSuccess={() => {
+                if (integration_user_error) {
+                  setError(integration_user_error);
+                  return;
                 }
-                skill_id={skill_id}
-              />
-            }
-            hideFooter={true}
-            noPadding={true}
-          />
-        )}
+
+                const newIntegrationData = update(integration_data, {
+                  user: {
+                    $set: users[users.length - 1],
+                  },
+                });
+
+                updateIntegrationData(newIntegrationData);
+                this.setState({
+                  add_user_modal: false,
+                  completed: true,
+                });
+              }}
+              onBegin={() =>
+                this.setState({
+                  add_user_modal: false,
+                })
+              }
+              skill_id={skill_id}
+            />
+          }
+          hideFooter={true}
+          noPadding={true}
+        />
         <div className="d-flex flex-column section-title-container" onClick={() => toggleSection()}>
           <div className="integrations-section-title text-muted">
             Start Trigger

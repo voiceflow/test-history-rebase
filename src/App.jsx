@@ -109,6 +109,7 @@ class App extends Component {
         </div>
       );
     }
+
     return (
       <ThemeProvider theme={theme}>
         <div id="body">

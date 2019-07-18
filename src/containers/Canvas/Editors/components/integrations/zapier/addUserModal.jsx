@@ -15,6 +15,7 @@ class FeedAddUserModal extends Component {
   add = async () => {
     const { name } = this.state;
     const { onBegin, addUser, user, skill_id, onSuccess, onError } = this.props;
+
     try {
       onBegin();
       const newUsers = await addUser({

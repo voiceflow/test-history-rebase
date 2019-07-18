@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExpandedEditorView render when not open 1`] = `
+<div
+  id="Editor"
+  onClickCapture={[Function]}
+  onKeyDownCapture={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+/>
+`;
+
+exports[`ExpandedEditorView render when open 1`] = `
+<div
+  id="Editor"
+  onClickCapture={[Function]}
+  onKeyDownCapture={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+/>
+`;

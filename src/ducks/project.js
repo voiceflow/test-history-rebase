@@ -65,8 +65,13 @@ export const copyProject = (project_id, team_id, board_id) => {
       const projects = getState().project;
       const project = projects.byId[project_id];
       if (!project) throw new Error();
+      let new_project = null;
+      if (project.module) {
+        new_project = (await axios.post(`/team/${team_id}/insert/reference/${project.module}`)).data;
+      } else {
+        new_project = (await axios.post(`/version/${project.skill_id}/copy/team/${team_id}`)).data;
+      }
 
-      const new_project = (await axios.post(`/version/${project.skill_id}/copy/team/${team_id}`)).data;
       if (board_id) dispatch(addProjectToList(board_id, new_project.project_id));
       dispatch(Projects.add({ data: new_project }));
     } catch (err) {

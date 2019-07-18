@@ -39,16 +39,27 @@ const INTEGRATIONS = {
 };
 
 class Integrations extends Component {
-  constructor(props) {
-    super(props);
+  state = {};
 
-    this.state = {};
+  editorOpen = true;
 
-    this.integrationSelected = this.integrationSelected.bind(this);
-    this.startingView = this.startingView.bind(this);
-    this.getIntegrationView = this.getIntegrationView.bind(this);
+  render() {
+    const {
+      extras: { selected_integration },
+    } = this.props;
 
-    this.editorOpen = true;
+    return selected_integration ? (
+      <div className="d-flex align-items-center flex-column integrations-container">
+        <div className="actions-back back-btn-large btn-icon" onClick={() => this.deselectIntegration()} />
+        <div>
+          <img className="title-image" src={INTEGRATIONS[selected_integration].image} alt="empty" />
+        </div>
+        <hr className="mb-0" />
+        {this.getIntegrationView()}
+      </div>
+    ) : (
+      this.startingView()
+    );
   }
 
   trimIntegrationsData = () => {
@@ -95,7 +106,7 @@ class Integrations extends Component {
     this.trimIntegrationsData();
   }
 
-  integrationSelected(integration) {
+  integrationSelected = (integration) => {
     if (integration.component) {
       const extras = this.props.extras;
       const new_selected_integration = integration.name;
@@ -118,9 +129,9 @@ class Integrations extends Component {
 
       this.updateIntegrationsData(new_integrations_data, new_selected_integration);
     }
-  }
+  };
 
-  startingView() {
+  startingView = () => {
     return (
       <div className="integrations-editor">
         <div className="text-center my-3 text-muted">Choose an integration</div>
@@ -153,9 +164,9 @@ class Integrations extends Component {
         </div>
       </div>
     );
-  }
+  };
 
-  getIntegrationView() {
+  getIntegrationView = () => {
     const extras = this.props.extras;
     const integration = extras.selected_integration;
     const integrationInfo = INTEGRATIONS[integration];
@@ -183,7 +194,7 @@ class Integrations extends Component {
         }}
       />
     );
-  }
+  };
 
   deselectIntegration() {
     this.updateIntegrationsData(undefined, null);
@@ -218,31 +229,6 @@ class Integrations extends Component {
 
     if (newExtras) this.props.updateExtras(newExtras, callback);
   };
-
-  render() {
-    const extras = this.props.extras;
-    let view;
-
-    if (!extras.selected_integration) {
-      view = this.startingView();
-    } else {
-      const integration = this.props.extras.selected_integration;
-      const integrationInfo = INTEGRATIONS[integration];
-
-      view = (
-        <div className="d-flex align-items-center flex-column integrations-container">
-          <div className="actions-back back-btn-large btn-icon" onClick={() => this.deselectIntegration()} />
-          <div>
-            <img className="title-image" src={integrationInfo.image} alt="empty" />
-          </div>
-          <hr className="mb-0" />
-          {this.getIntegrationView()}
-        </div>
-      );
-    }
-
-    return <div>{view}</div>;
-  }
 }
 
 const mapStateToProps = (state) => ({

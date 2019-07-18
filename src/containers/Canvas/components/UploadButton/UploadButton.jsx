@@ -3,64 +3,59 @@ import React, { Component } from 'react';
 import { Tooltip } from 'react-tippy';
 
 import Button from '@/components/Button';
+import SvgIcon from '@/components/SvgIcon';
+import PublishSpinnerIcon from '@/svgs/publish-spin.svg';
 
 import VendorSelectList from '../VendorSelectList/VendorSelectList';
+import UploadButtonWrapper from './UploadButtonWrapper';
 
 class UploadButton extends Component {
-  render() {
-    const {
-      live_mode,
-      openUpdateLive,
-      toggle_upload_prompt,
-      isUploadLoading,
-      platform,
-      vendors,
-      vendors_open,
-      openUpdate,
-      toggleVendors,
-      project_id,
-    } = this.props;
+  onButtonClick = () => {
+    const { isUploadLoading, toggle_upload_prompt, openUpdate, openUpdateLive, live_mode } = this.props;
+    if (live_mode) {
+      openUpdateLive();
+    }
+    const spin = isUploadLoading();
+    if (spin) {
+      toggle_upload_prompt();
+    } else {
+      openUpdate();
+    }
+  };
+
+  renderButtonText = () => {
+    const { isUploadLoading, platform, live_mode } = this.props;
 
     if (live_mode) {
-      return (
-        <Tooltip html={<div style={{ width: 155 }}>Update your live version with your local changes</div>} position="bottom" distance={16}>
-          <Button variant="contained" className="publish-btn" onClick={openUpdateLive}>
-            Update Live{' '}
-            <div className="launch">
-              <div className="first">
-                <img src="/up.svg" alt="upload" width="16" height="16" />
-              </div>
-              <div className="second">
-                <img src="/rocket.svg" alt="check" width="16" height="16" />
-              </div>
-            </div>
-          </Button>
-        </Tooltip>
-      );
+      return 'Update Live';
     }
-    if (isUploadLoading()) {
-      return (
-        <Button variant="contained" className="publish-btn" onClick={() => toggle_upload_prompt()}>
-          <p className="loading-btn m-0 p-0">Uploading</p>
-          <div className="launch">
-            <div className="load-spinner pt-1">
-              <span className="save-loader-white" />
-            </div>
-          </div>
-        </Button>
-      );
+
+    const spin = isUploadLoading();
+    if (!spin) {
+      return platform === 'google' ? 'Upload to Google' : 'Upload to Alexa';
     }
+    return 'Uploading';
+  };
+
+  renderTooltipText = () => {
+    const { live_mode, platform } = this.props;
+
+    if (live_mode) return 'Update your live version with your local changes';
+    if (platform === 'google') {
+      return 'Test your Action on your own Google device, or in the Google Actions console';
+    }
+    return 'Test your Skill on your own Alexa device, or in the Alexa developer console';
+  };
+
+  render() {
+    const { isUploadLoading, platform, vendors, vendors_open, openUpdate, toggleVendors, project_id } = this.props;
+
     const multiVendor = platform === 'alexa' && vendors && vendors.length > 1;
+    const spin = isUploadLoading();
     return (
-      <div className={cn('upload-btn-container', { 'multi-vendor': multiVendor })}>
+      <UploadButtonWrapper multiVendor={multiVendor} isGoogle={platform === 'google'}>
         <Tooltip
-          html={
-            <div style={{ width: 180 }}>
-              {platform === 'google'
-                ? 'Test your Action on your own Google device, or in the Google Actions console'
-                : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}
-            </div>
-          }
+          html={<div style={{ width: 180 }}>{this.renderTooltipText()}</div>}
           position="bottom"
           distance={16}
           className={cn({ 'multi-vendor-tooltip': multiVendor })}
@@ -71,14 +66,11 @@ class UploadButton extends Component {
               {platform === 'google' ? 'Upload to Google' : 'Upload to Alexa'}
             </Button>
           ) : (
-            <Button variant="contained" className="publish-btn" onClick={openUpdate}>
-              {platform === 'google' ? 'Upload to Google' : 'Upload to Alexa'}
-              <div className="launch">
-                <div className="first">
-                  <img src="/up.svg" alt="upload" width="15" height="15" />
-                </div>
-                <div className="second">
-                  <img src="/check-white.svg" alt="check" width="15" height="15" />
+            <Button variant="contained" className={cn('publish-btn', { 'spinning-publish': spin })} onClick={this.onButtonClick}>
+              {this.renderButtonText()}
+              <div className="publish-spinner">
+                <div className="spinner-icon">
+                  <SvgIcon icon={PublishSpinnerIcon} width={16} height={16} color="#fff" />
                 </div>
               </div>
             </Button>
@@ -95,7 +87,7 @@ class UploadButton extends Component {
           </div>
         )}
         {vendors_open && <VendorSelectList vendors={vendors} onBlur={toggleVendors} project_id={project_id} />}
-      </div>
+      </UploadButtonWrapper>
     );
   }
 }

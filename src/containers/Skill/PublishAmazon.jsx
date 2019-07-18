@@ -4,7 +4,6 @@ import axios from 'axios';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import Textarea from 'react-textarea-autosize';
 import Toggle from 'react-toggle';
@@ -14,7 +13,7 @@ import validUrl from 'valid-url';
 import DefaultButton from '@/components/Button';
 import AmazonLogin from '@/components/Forms/AmazonLogin';
 import Multiple from '@/components/Forms/Multiple';
-import GuidedSteps from '@/components/GuidedSteps';
+import GuidedSteps, { GuidedStepsWrapper } from '@/components/GuidedSteps';
 import RadioButtons, { YES_NO_RADIO_BUTTONS } from '@/components/RadioButtons';
 import Image from '@/components/Uploads/Image';
 import { AmazonAccessToken } from '@/ducks/account';
@@ -33,7 +32,6 @@ const stage_title = {
   4: 'Publishing',
   5: 'Developer Account',
   6: 'Checking Vendor',
-  8: 'Submit For Review',
   7: 'Building and Submitting',
   9: 'Privacy & Compliance Ext.',
   10: 'Submitted for Review',
@@ -68,7 +66,7 @@ class Skill extends Component {
       .catch(() => this.setState({ stage: 0 }));
 
     axios
-      .get(`/skill/${skill_id}?verbose=1&review_check=1`)
+      .get(`/skill/${skill_id}?verbose=1`)
       .then((res) => {
         if (res.data.category) {
           // eslint-disable-next-line no-restricted-syntax
@@ -183,8 +181,9 @@ class Skill extends Component {
       .post(`/amazon/${skill_id}/${amzn_id}/certify`)
       .then(() => {
         this.setState({
-          stage: 11,
+          stage: 10,
           publish: false,
+          review: true,
         });
       })
       .catch((err) => {
@@ -276,8 +275,13 @@ class Skill extends Component {
           const new_version_data = res.data;
           axios
             .post(`/project/${project_id}/version/${new_version_data.new_skill.skill_id}/alexa`)
-            .then(() => {
-              this.onCertify();
+            .then(({ data: amzn_id }) => {
+              this.setState(
+                {
+                  amzn_id,
+                },
+                this.onCertify
+              );
             })
             .catch((err) => {
               if (err.status === 403 || err.response.status === 403) {
@@ -323,7 +327,9 @@ class Skill extends Component {
 
     const s = this.state;
     const split_keywords = s.keywords.split(',');
-    if (s.privacy_policy && !validUrl.isUri(s.privacy_policy)) {
+    if (s.review) {
+      setError('This skill is currently under review and can not be resubmitted');
+    } else if (s.privacy_policy && !validUrl.isUri(s.privacy_policy)) {
       setError('Privacy policy must be a url');
     } else if (s.terms_and_cond && !validUrl.isUri(s.terms_and_cond)) {
       setError('Terms and conditions must be a url');
@@ -796,7 +802,7 @@ class Skill extends Component {
   };
 
   render() {
-    const { stage, amzn_id, stage_error, instructions, locales, loaded, publish, live, id_collapse } = this.state;
+    const { stage, amzn_id, stage_error, instructions, locales, loaded, publish, live, review, id_collapse } = this.state;
     // const { setConfirm } = this.props;
     // Success Screen
     if (stage === 10) {
@@ -804,22 +810,12 @@ class Skill extends Component {
         <div className="super-center h-100">
           <div className="success-page d-flex">
             <div className="success-text">
-              <h1>
-                Congrats!{' '}
-                <span role="img" aria-label="happy">
-                  ☺️
-                </span>
-              </h1>
+              <h1>Congrats!</h1>
               <p className="text-muted">
                 Your skill has been successfully submitted for review to the Amazon Skill store. You will be updated on the status of your skill via
                 email.
               </p>
-              <Link to="/dashboard">
-                <DefaultButton isPrimary variant="contained">
-                  Dashboard
-                </DefaultButton>
-              </Link>
-              <DefaultButton isWhite variant="contained" className="ml-3" onClick={() => this.setState({ stage: 2 })}>
+              <DefaultButton isSecondary onClick={() => this.setState({ stage: 2 })}>
                 Return to Project
               </DefaultButton>
             </div>
@@ -930,28 +926,6 @@ class Skill extends Component {
           </div>
         </div>
       );
-    } else if (stage === 8) {
-      content = (
-        <div>
-          <img src="/images/preview.svg" alt="Success" height="160" />
-          <br />
-          Your Skill Has been uploaded to Alexa Development!
-          <span className="text-muted text-center">You may test on the Alexa Simulator or Submit your Skill for review</span>
-          <div className="my-3">
-            <a
-              href={`https://developer.amazon.com/alexa/console/ask/test/${amzn_id}/development/${locales[0].replace('-', '_')}/`}
-              className="btn btn-primary mr-2"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Test on Alexa Simulator
-            </a>
-            <DefaultButton isClear onClick={this.onCertify}>
-              Submit for Review
-            </DefaultButton>
-          </div>
-        </div>
-      );
     }
 
     if (!loaded)
@@ -968,11 +942,10 @@ class Skill extends Component {
 
     return (
       <React.Fragment>
-        <Modal isOpen={publish} toggle={this.togglePublish} className="stage_modal" centered size="lg" onClosed={this.closePublish}>
+        <Modal isOpen={publish} className="stage_modal" centered size="lg" onClosed={this.closePublish}>
           <ModalBody>
             <div className="d-flex justify-content-between" ref={this.privacyTop}>
               <b>{stage_title[stage]}</b>
-              <DefaultButton isClose type="button" onClick={this.togglePublish} />
             </div>
             <div className="modal-info">{content}</div>
           </ModalBody>
@@ -980,16 +953,21 @@ class Skill extends Component {
 
         <div className="subheader-page-container">
           <div>
-            <div className="pt-3">
-              {live ? (
-                <div className="alert alert-success mb-4" role="alert">
+            <GuidedStepsWrapper className="pb-0">
+              {review && (
+                <div className="alert alert-success" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0">This skill currently has a live version in production</h5>
+                    This skill currently under review and can not be submitted again
                   </div>
                 </div>
-              ) : null}
-              {amzn_id ? (
-                <div className="alert alert-success mb-4" role="alert">
+              )}
+              {live && (
+                <div className="alert alert-success" role="alert">
+                  <div className="d-flex justify-content-between align-items-center">This skill currently has a live version in production</div>
+                </div>
+              )}
+              {amzn_id && (
+                <div className="alert alert-success" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <span>This skill is linked on Amazon Developer Console</span>
                     <div onClick={() => this.setState({ id_collapse: !id_collapse })} className="pointer">
@@ -1017,36 +995,9 @@ class Skill extends Component {
                     </a>
                   </Collapse>
                 </div>
-              ) : null}
-              {/* We might want to bring this back one day */}
-              {/* {disabled_stages.has(stage) ? ( */}
-              {/*  <div className="alert alert-success mb-4" role="alert"> */}
-              {/*    <div className="d-flex justify-content-between align-items-center"> */}
-              {/*      <h5 className="mb-0">This skill is currently in review so you cannot edit it.</h5> */}
-              {/*      <div> */}
-              {/*        <DefaultButton isWhite variant="contained" href={alexaDashboardUrl} target="_blank"> */}
-              {/*          Visit Dashboard */}
-              {/*        </DefaultButton> */}
-              {/*        <DefaultButton */}
-              {/*          isPrimary */}
-              {/*          variant="contained" */}
-              {/*          className="ml-3" */}
-              {/*          onClick={() => { */}
-              {/*            setConfirm({ */}
-              {/*              text: 'Are you sure you want to withdraw this Skill?', */}
-              {/*              confirm: this.onWithdraw, */}
-              {/*            }); */}
-              {/*          }} */}
-              {/*        > */}
-              {/*          Withdraw Skill */}
-              {/*        </DefaultButton> */}
-              {/*      </div> */}
-              {/*    </div> */}
-              {/*  </div> */}
-              {/* ) : null} */}
-
-              <Form>{this.renderBlocks()}</Form>
-            </div>
+              )}
+            </GuidedStepsWrapper>
+            <Form>{this.renderBlocks()}</Form>
           </div>
         </div>
       </React.Fragment>

@@ -128,4 +128,5 @@ class GuidedSteps extends React.Component {
   }
 }
 
+export { GuidedStepsWrapper };
 export default GuidedSteps;

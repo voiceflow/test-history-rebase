@@ -6,6 +6,14 @@ const GuidedStepsWrapper = styled.div`
   margin-right: auto;
   padding: 32px;
 
+  .alert {
+    margin-bottom: 15px;
+  }
+
+  .alert:last-child {
+    margin-bottom: 0px;
+  }
+
   ul {
     display: block;
     margin-block-start: 1em;

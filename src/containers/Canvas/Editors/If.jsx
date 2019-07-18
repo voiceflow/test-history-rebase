@@ -144,7 +144,7 @@ class IfBlock extends Component {
             </Button>
           </div>
         ) : (
-          <div className="text-center mt-4">Maximum options reached</div>
+          <div className="text-center text-dull mt-4">Maximum options reached</div>
         )}
       </>
     );

@@ -1093,7 +1093,7 @@ export class ActionGroup extends PureComponent {
 
         <Modal isOpen={showSettings.show} toggle={() => showSettingsModal(!showSettings.show)} className="ag__settings_modal">
           <div className="ag__settings_header">
-            <ModalHeader toggle={() => this.setState({ settingsModal: false })} className="pb-2" header="Project Settings" />
+            <ModalHeader toggle={() => showSettingsModal(false)} className="pb-2" header="Project Settings" />
           </div>
           <Settings {...this.props} tag={showSettings.tag} toggleUpgrade={this.toggleUpgrade} />
         </Modal>

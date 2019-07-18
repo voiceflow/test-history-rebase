@@ -1,14 +1,6 @@
 import './Skill.css';
 
 import axios from 'axios';
-import DefaultButton from 'components/Button';
-import AmazonLogin from 'components/Forms/AmazonLogin';
-import Multiple from 'components/Forms/Multiple';
-import RadioButtons, { YES_NO_RADIO_BUTTONS } from 'components/RadioButtons';
-import Image from 'components/Uploads/Image';
-import { AmazonAccessToken } from 'ducks/account';
-import { setConfirm, setError } from 'ducks/modal';
-import { updateEntireVersion, updateSkillDB, updateVersion } from 'ducks/version';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -18,6 +10,15 @@ import Textarea from 'react-textarea-autosize';
 import Toggle from 'react-toggle';
 import { Alert, Button, ButtonGroup, Collapse, Form, FormGroup, Input, Label, Modal, ModalBody } from 'reactstrap';
 import validUrl from 'valid-url';
+
+import DefaultButton from '@/components/Button';
+import AmazonLogin from '@/components/Forms/AmazonLogin';
+import Multiple from '@/components/Forms/Multiple';
+import RadioButtons, { YES_NO_RADIO_BUTTONS } from '@/components/RadioButtons';
+import Image from '@/components/Uploads/Image';
+import { AmazonAccessToken } from '@/ducks/account';
+import { setConfirm, setError } from '@/ducks/modal';
+import { updateEntireVersion, updateSkillDB, updateVersion } from '@/ducks/version';
 
 import { AMAZON_CATEGORIES } from '../../services/Categories';
 import LOCALE_MAP from '../../services/LocaleMap';

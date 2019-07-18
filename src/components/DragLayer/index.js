@@ -1,8 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-import withRootPortal from 'hocs/withRootPortal';
 import React, { useMemo } from 'react';
 import { DragLayer } from 'react-dnd';
 import compose from 'recompose/compose';
+
+import withRootPortal from '@/hocs/withRootPortal';
 
 function CustomDragLayer(props) {
   const { _diff, _item, _offset, children, _initSourceClientOffset, ...ownProps } = props;

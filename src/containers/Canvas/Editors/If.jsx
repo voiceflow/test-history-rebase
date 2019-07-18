@@ -1,11 +1,12 @@
-import Button from 'components/Button';
 import _ from 'lodash';
 import React, { Component } from 'react';
+
+import Button from '@/components/Button';
 
 import Expression from './components/Expression';
 import Expressionfy from './components/Expressionfy';
 
-const BLOCK_LIMIT = 50;
+const BLOCK_LIMIT = 22;
 
 class IfBlock extends Component {
   constructor(props) {
@@ -136,12 +137,14 @@ class IfBlock extends Component {
           );
         })}
 
-        {this.state.node.extras.expressions.length < BLOCK_LIMIT && (
+        {this.state.node.extras.expressions.length < BLOCK_LIMIT ? (
           <div className="text-center mt-3">
             <Button isFlatVariable onClick={this.handleAddBlock}>
               Add If Statement
             </Button>
           </div>
+        ) : (
+          <div className="text-center text-dull mt-4">Maximum options reached</div>
         )}
       </>
     );

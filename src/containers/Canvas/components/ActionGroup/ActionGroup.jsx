@@ -3,24 +3,26 @@ import 'react-sweet-progress/lib/style.css';
 
 import axios from 'axios';
 import cn from 'classnames';
-import Button from 'components/Button';
-import AmazonLogin from 'components/Forms/AmazonLogin';
-import { ModalHeader } from 'components/Modals/ModalHeader';
-import { AmazonAccessToken, getVendors, googleAccessToken } from 'ducks/account';
-import { setError } from 'ducks/modal';
-import { updateVendorId } from 'ducks/project';
-import { updateLocales, updateSkillDB, updateVersion } from 'ducks/version';
+import _ from 'lodash';
 import React, { PureComponent } from 'react';
 import Confetti from 'react-dom-confetti';
 import { connect } from 'react-redux';
 import { Progress } from 'react-sweet-progress';
 import { Tooltip } from 'react-tippy';
 import { Alert, Modal, ModalBody } from 'reactstrap';
-import LOCALE_MAP from 'services/LocaleMap';
-import InvRegex from 'services/Regex';
+
+import Button from '@/components/Button';
+import AmazonLogin from '@/components/Forms/AmazonLogin';
+import { ModalHeader } from '@/components/Modals/ModalHeader';
+import ShareTest from '@/containers/Testing/ShareTest';
+import { AmazonAccessToken, getVendors, googleAccessToken } from '@/ducks/account';
+import { setError, showSettingsModal } from '@/ducks/modal';
+import { updateVendorId } from '@/ducks/project';
+import { updateLocales, updateSkillDB, updateVersion } from '@/ducks/version';
+import LOCALE_MAP from '@/services/LocaleMap';
+import InvRegex from '@/services/Regex';
 
 import Settings from '../../../Skill/Settings';
-import ShareTest from '../../Test/ShareTest';
 import UploadButton from '../UploadButton/UploadButton';
 
 const loading = (message) => {
@@ -463,18 +465,25 @@ export class ActionGroup extends PureComponent {
               } else if (err.status === 401 || err.response.status === 401) {
                 this.updateAlexaStage(5);
               } else {
-                let error_message = '';
-                if (err.response && err.response.data && err.response.data.message) {
-                  error_message += err.response.data.message;
+                let errorMessage = '';
+                const errorData = _.get(err, ['response', 'data']);
+                if (errorData) {
+                  const { message, violations } = errorData;
+                  if (message) {
+                    errorMessage += err.response.data.message;
+                  }
 
-                  if (err.response.data.violations) {
-                    for (let i = 0; i < err.response.data.violations.length; i++) {
-                      error_message += `\n${err.response.data.violations[i].message}`;
+                  if (violations) {
+                    for (let i = 0; i < violations.length; i++) {
+                      errorMessage += `\n${violations[i].message}`;
                     }
                   }
+
+                  if (!errorMessage && _.isString(errorData)) errorMessage = errorData;
                 }
+
                 this.updateAlexaStage(9, undefined, {
-                  upload_error: err.response && err.response.data && err.response.data.message ? error_message : 'Error Encountered',
+                  upload_error: errorMessage || 'Error Encountered',
                 });
               }
             });
@@ -1035,7 +1044,7 @@ export class ActionGroup extends PureComponent {
 
   render() {
     const { updateModal, should_pop_confetti, updateLiveModal, show_upload_prompt, vendors_open, stage, is_first_upload } = this.state;
-    const { skill, platform, live_mode, vendors, show_upload_prompt: props_show_upload_prompt } = this.props;
+    const { skill, platform, live_mode, vendors, show_upload_prompt: props_show_upload_prompt, showSettings, showSettingsModal } = this.props;
 
     return (
       <>
@@ -1082,11 +1091,11 @@ export class ActionGroup extends PureComponent {
           </ModalBody>
         </Modal>
 
-        <Modal isOpen={this.state.settingsModal} toggle={() => this.setState({ settingsModal: false })} className="ag__settings_modal">
+        <Modal isOpen={showSettings.show} toggle={() => showSettingsModal(!showSettings.show)} className="ag__settings_modal">
           <div className="ag__settings_header">
-            <ModalHeader toggle={() => this.setState({ settingsModal: false })} className="pb-2" header="Project Settings" />
+            <ModalHeader toggle={() => showSettingsModal(false)} className="pb-2" header="Project Settings" />
           </div>
-          <Settings {...this.props} page="basic" toggleUpgrade={this.toggleUpgrade} />
+          <Settings {...this.props} tag={showSettings.tag} toggleUpgrade={this.toggleUpgrade} />
         </Modal>
 
         <div className="title-group-sub">
@@ -1097,7 +1106,7 @@ export class ActionGroup extends PureComponent {
               type="button"
               onClick={() => {
                 this.props.unfocus();
-                this.setState({ settingsModal: true });
+                this.props.showSettingsModal(true);
               }}
             />
           </Tooltip>
@@ -1132,6 +1141,7 @@ const mapStateToProps = (state) => ({
   live_mode: state.skills.live_mode,
   vendor_id: state.skills.skill.vendor_id,
   vendors: state.account.vendors,
+  showSettings: state.modal.showSettings,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1141,6 +1151,7 @@ const mapDispatchToProps = (dispatch) => ({
   saveSkill: (publish, cb) => dispatch(updateSkillDB(publish, cb)),
   updateVendorId: (projectId, vendorId) => dispatch(updateVendorId(projectId, vendorId)),
   getVendors: () => dispatch(getVendors()),
+  showSettingsModal: (showSettings, tab) => dispatch(showSettingsModal(showSettings, tab)),
 });
 
 export default connect(

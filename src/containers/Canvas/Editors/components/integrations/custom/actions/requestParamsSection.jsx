@@ -1,9 +1,10 @@
-import AceEditor from 'components/AceEditor';
-import Button from 'components/Button';
 import update from 'immutability-helper';
 import randomstring from 'randomstring';
 import React, { Component } from 'react';
 import { Collapse, Nav, NavItem, NavLink } from 'reactstrap';
+
+import AceEditor from '@/components/AceEditor';
+import Button from '@/components/Button';
 
 import APIInputs from '../../../APIInputs';
 import VariableInput from '../../../VariableInput';

@@ -173,8 +173,13 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       />
     </div>
     <Connect(Settings)
-      page="basic"
       platform="alexa"
+      showSettings={
+        Object {
+          "show": false,
+          "tag": "basic",
+        }
+      }
       skill={
         Object {
           "account_linking": null,
@@ -218,6 +223,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
           "slots": Array [],
         }
       }
+      tag="basic"
       user={
         Object {
           "email": "jdoe@gmail.com",
@@ -282,7 +288,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
   <div
     className="title-group-sub"
   >
-    <Connect(UserTestHeader)
+    <Connect(TestingHeader)
       render={true}
     />
   </div>

@@ -1,7 +1,8 @@
 import axios from 'axios';
-import Normalize, { deleteNormalize, normalize } from 'ducks/_normalize';
-import { setError } from 'ducks/modal';
 import * as _ from 'lodash';
+
+import Normalize, { deleteNormalize, normalize } from '@/ducks/_normalize';
+import { setError } from '@/ducks/modal';
 
 export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid'];
 export const WARNING_STATES = ['past_due'];

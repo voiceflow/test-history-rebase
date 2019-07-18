@@ -1,6 +1,7 @@
 import cn from 'classnames';
-import Button from 'components/Button';
 import React from 'react';
+
+import Button from '@/components/Button';
 
 import PLANS from './PLANS';
 

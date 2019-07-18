@@ -1,11 +1,12 @@
-import Button from 'components/Button';
-// Components
-import { ModalHeader } from 'components/Modals/ModalHeader';
-// Actions
-import { clearModal } from 'ducks/modal';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
+
+import Button from '@/components/Button';
+// Components
+import { ModalHeader } from '@/components/Modals/ModalHeader';
+// Actions
+import { clearModal } from '@/ducks/modal';
 
 export const ConfirmModal = ({ toggle, confirm }) => {
   // TODO this class is pure cancer

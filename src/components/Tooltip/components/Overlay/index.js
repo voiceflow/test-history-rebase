@@ -3,7 +3,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { createPortal, findDOMNode } from 'react-dom';
-import { createStrategyFromFunction, strategies } from 'utils/position';
+
+import { createStrategyFromFunction, strategies } from '@/utils/position';
 
 import Transition from '../../../Transition';
 

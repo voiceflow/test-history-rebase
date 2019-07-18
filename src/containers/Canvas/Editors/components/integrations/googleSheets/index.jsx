@@ -1,18 +1,18 @@
 import './googleSheets.css';
 
-import { clearModal, setConfirm, setError } from 'ducks/modal';
 import update from 'immutability-helper';
 import _ from 'lodash';
 import randomstring from 'randomstring';
 import React from 'react';
 import { connect } from 'react-redux';
-import IntegrationsService from 'services/Integrations';
+
+import { clearModal, setConfirm, setError } from '@/ducks/modal';
+import IntegrationsService from '@/services/Integrations';
 
 import ActionSection from '../actionSection';
 import IntegrationBase from '../integrationBase';
 import OutputSection from '../outputSection';
 import TestSection from '../testSection';
-import UserSection from '../userSection';
 import CreateDataSection from './actions/createDataSection';
 import DeleteDataSection from './actions/deleteDataSection';
 import RetrieveDataSection from './actions/retrieveDataSection';
@@ -20,6 +20,7 @@ import UpdateDataSection from './actions/updateDataSection';
 import GoogleAddUserModal from './addUserModal';
 import C from './constants';
 import SpreadsheetSection from './spreadsheetSection';
+import UserSection from './userSection';
 
 class GoogleSheets extends IntegrationBase {
   constructor(props) {

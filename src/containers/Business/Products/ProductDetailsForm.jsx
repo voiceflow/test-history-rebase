@@ -1,8 +1,9 @@
 import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
-import Button from 'components/Button';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 import { Input } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 class ProductDetailsForm extends React.Component {
   render() {

@@ -1,5 +1,7 @@
 import Cookies from 'universal-cookie';
 
+import { IS_DEVELOPMENT } from '@/config';
+
 export const AUTH_COOKIE = 'auth_vf';
 
 const cookies = new Cookies();
@@ -7,7 +9,7 @@ const cookies = new Cookies();
 const creatorUrl = 'creator.voiceflow.com';
 const legacyUrl = 'creator.getvoiceflow.com';
 let cookieDomain;
-if (process.env.NODE_ENV !== 'development') {
+if (!IS_DEVELOPMENT) {
   if (window.location.host === legacyUrl) {
     cookieDomain = window.location.host;
   } else {

@@ -225,7 +225,7 @@ class GooglePublish extends Component {
       })
       .catch((err) => {
         const message = _.get(err, ['response', 'data', 'data']) || _.get(err, ['response', 'data']);
-        if (message === 'Invalid Google Certificate.') {
+        if (message === 'Invalid Google Certificate') {
           this.setState({
             loaded: true,
             auth_error: 'There was an error with your google certificate. Please try again or contact support.',

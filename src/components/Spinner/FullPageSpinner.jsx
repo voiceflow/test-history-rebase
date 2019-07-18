@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React from 'react';
 
-import Spinner from './index';
+import Spinner from './Spinner';
 
 const FullSpinner = (props) => {
   const { transparent } = props;

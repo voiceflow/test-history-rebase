@@ -29,7 +29,7 @@ exports[`Dashboard render dashboard 1`] = `
       subHeaderRenderer={[Function]}
       withLogo={true}
     />
-    <Spinner
+    <FullSpinner
       name="Projects"
     />
     <div

@@ -23,7 +23,7 @@ import { ThemeProvider } from 'styled-components';
 import ConfirmModal from '@/components/Modals/ConfirmModal';
 import ErrorModal from '@/components/Modals/ErrorModal';
 import Modal from '@/components/Modals/Modal';
-import FullSpinner from '@/components/Spinner/FullPageSpinner';
+import { FullSpinner } from '@/components/Spinner';
 import { getAuth, getUser } from '@/ducks/account';
 import { history } from '@/store/store';
 import { evaluateMaintenance } from '@/utils/maintenance';

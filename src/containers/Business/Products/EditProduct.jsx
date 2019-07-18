@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 // Components
 import Button from '@/components/Button';
-import FullSpinner from '@/components/Spinner/FullPageSpinner';
+import { FullSpinner } from '@/components/Spinner';
 import Stepper from '@/components/Stepper';
 // Ducks
 import { setError } from '@/ducks/modal';

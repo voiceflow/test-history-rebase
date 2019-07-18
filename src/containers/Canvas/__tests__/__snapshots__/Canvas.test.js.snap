@@ -44,7 +44,7 @@ exports[`Canvas render canvas 1`] = `
       type_counter={Object {}}
       unfocus={[Function]}
     />
-    <Spinner
+    <FullSpinner
       name="Flow"
     />
     <Connect(withStateHandlers(withStateHandlers(Editor)))

@@ -15,7 +15,7 @@ import { BlockNodeFactory } from '@/components/SRD/factories/BlockNodeFactory';
 import { BlockPortFactory } from '@/components/SRD/factories/BlockPortFactory';
 /* eslint-enable no-secrets/no-secrets */
 import * as SRD from '@/components/SRD/main';
-import Spinner from '@/components/Spinner/FullPageSpinner';
+import { FullSpinner } from '@/components/Spinner';
 import { setError } from '@/ducks/modal';
 
 import new_template from '../../assets/templates/new';
@@ -263,7 +263,7 @@ class LightCanvas extends Component {
     return (
       <React.Fragment>
         <div id="lightcanvas">
-          {loading_diagram && <Spinner name="Preview" />}
+          {loading_diagram && <FullSpinner name="Preview" />}
           <div key={diagram_id} id="diagram" onDrop={this.onDrop} onDragOver={(e) => e.preventDefault()} onClick={this.clickDiagram}>
             <div id="widget-bar">
               <ButtonGroup>

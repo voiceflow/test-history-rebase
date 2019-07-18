@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Button from '@/components/Button';
-import FullSpinner from '@/components/Spinner/FullPageSpinner';
+import { FullSpinner } from '@/components/Spinner';
 import Dashboard from '@/containers/Dashboard';
 // Views
 import Onboarding from '@/containers/Onboarding';

@@ -10,7 +10,7 @@ const Text = styled.div`
   padding-bottom: 14px;
 `;
 
-export const Spinner = ({ isEmpty, message, name }) => {
+const Spinner = ({ isEmpty, message, name }) => {
   return (
     <div className="text-center">
       <Loader />

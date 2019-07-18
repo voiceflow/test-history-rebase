@@ -12,7 +12,7 @@ import Button from '@/components/Button';
 import Header from '@/components/Header';
 import DefaultModal from '@/components/Modals/DefaultModal';
 import SecondaryNavBar from '@/components/NavBar/SecondaryNavBar';
-import FullSpinner from '@/components/Spinner/FullPageSpinner';
+import { FullSpinner } from '@/components/Spinner';
 import Migrate from '@/containers/Skill/Migrate';
 // Ducks
 import { unnormalize } from '@/ducks/_normalize';

@@ -7,7 +7,7 @@ import Select from 'react-select';
 import { Input, Nav, NavItem, NavLink } from 'reactstrap';
 
 import MultipleFields from '@/components/Forms/MultipleFields';
-import FullSpinner from '@/components/Spinner/FullPageSpinner';
+import { FullSpinner } from '@/components/Spinner';
 import { setError } from '@/ducks/modal';
 import { updateVersion } from '@/ducks/version';
 

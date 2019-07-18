@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Toggle from 'react-toggle';
 
-import FullSpinner from '@/components/Spinner/FullPageSpinner';
+import { FullSpinner } from '@/components/Spinner';
 import { fetchDiagrams, updateDiagramRoot } from '@/ducks/diagram';
 import { setLiveModeModal, toggleLive } from '@/ducks/version';
 

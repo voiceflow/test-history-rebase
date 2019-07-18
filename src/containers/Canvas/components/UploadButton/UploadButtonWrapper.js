@@ -25,43 +25,38 @@ const UploadButtonWrapper = styled.div`
             width: 192px;
           `};
     height: 42px;
-    padding: 11px 58px 12px 22px !important;
+    padding: 11px 58px 12px 22px;
     color: #fff !important;
-    font-weight: normal !important;
-    font-weight: 500 !important;
-    font-size: 15px !important;
-    font-family: 'Open Sans', sans-serif !important;
-    text-transform: none !important;
+    font-weight: 500;
+    font-size: 15px;
+    text-transform: none;
     background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
-    border: none !important;
-    border-radius: 50px !important;
-    box-shadow: inset 0 0 0 10px #ddd;
+    border: none;
+    border-radius: 50px;
 
-    /*    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08) !important; */
     box-shadow: 0 0 4px 0 rgba(17, 49, 96, 0.08), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
     cursor: pointer;
-    transition: all 0.2s ease !important;
-  }
+    transition: all 0.2s ease;
 
-  .publish-btn:hover {
-    color: #fff !important;
-    background: linear-gradient(0deg, #2c85ff, #2c85ff);
-    border: none !important;
-    box-shadow: 0 4px 8px rgba(17, 49, 96, 0.16), 0 0 4px rgba(17, 49, 96, 0.08) !important;
-  }
+    &:hover {
+      background: linear-gradient(0deg, #2c85ff, #2c85ff);
+      border: none !important;
+      box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+    }
 
-  .publish-btn:active {
-    background: linear-gradient(0deg, #2c85ff, #2c85ff);
-    border: none !important;
-    box-shadow: 0 6px 12px rgba(17, 49, 96, 0.2), 0 0 6px rgba(17, 49, 96, 0.1) !important;
+    &:active {
+      background: linear-gradient(0deg, #2c85ff, #2c85ff);
+      border: none !important;
+      box-shadow: 0px 7px 12px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+    }
   }
 
   .publish-btn.multi-vendor-btn {
     width: 165px;
-    padding-right: 15px !important;
-    padding-left: 15px !important;
-    border-top-right-radius: 8px !important;
-    border-bottom-right-radius: 8px !important;
+    padding-right: 15px;
+    padding-left: 15px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
   }
 
   .vendor-dropdown {
@@ -76,17 +71,13 @@ const UploadButtonWrapper = styled.div`
     background-position: center;
     background-position-x: 45%;
     background-size: 10px, auto;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
-    border-bottom-left-radius: 8px;
-    box-shadow: inset 0 0 0 10px #ddd;
+    border-radius: 8px 50px 50px 8px;
     box-shadow: 0 0 4px 0 rgba(17, 49, 96, 0.08), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
     cursor: pointer;
-  }
 
-  .vendor-dropdown:hover {
-    background-image: url('/caret-down-white.svg'), linear-gradient(180deg, rgba(95, 162, 255, 0.85) 0%, rgb(6, 109, 253) 100%);
+    &:hover {
+      background-image: url('/caret-down-white.svg'), linear-gradient(180deg, rgba(95, 162, 255, 0.85) 0%, rgb(6, 109, 253) 100%);
+    }
   }
 
   .vendor-dropdown.active {

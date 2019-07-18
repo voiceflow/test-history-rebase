@@ -176,6 +176,10 @@ export const initializeTest = (options = {}) => (dispatch, getState) => {
         intent: 'AMAZON.PauseIntent',
       },
       {
+        name: 'Resume',
+        intent: 'AMAZON.ResumeIntent',
+      },
+      {
         name: 'Next',
         intent: 'AMAZON.NextIntent',
       },

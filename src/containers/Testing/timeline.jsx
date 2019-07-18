@@ -34,6 +34,7 @@ class Timeline extends Component {
       this.node.setFocused(false);
     }
     this.cacheOutputs = null;
+    this.streamAudio = null;
 
     if (!state) return;
 
@@ -145,7 +146,26 @@ class Timeline extends Component {
 
     if (!options.dump) {
       this.centerNode(newOutput.node);
-      this.playAudio(newOutput.audio);
+
+      if (newOutput.type === 'Stream') {
+        let play = 'Pause';
+        if (test.state.play.action === 'START') {
+          this.streamAudio = newOutput.audio;
+          this.playAudio(this.streamAudio);
+        } else if (this.streamAudio) {
+          if (test.state.play.action === 'PAUSE') {
+            this.streamAudio.pause();
+            play = 'Resume';
+          } else if (test.state.play.action === 'RESUME') {
+            newOutput.delay -= this.streamAudio.currentTime * 1000;
+            this.playAudio(this.streamAudio);
+          }
+        }
+        if (test.state.play.action !== 'END') this.setState({ options: ['Previous', play, 'Next'] });
+      } else {
+        this.playAudio(newOutput.audio);
+        if (Array.isArray(newOutput.options)) this.setState({ options: newOutput.options.filter((option) => option && option.trim()) });
+      }
     }
 
     if (newOutput.text) {
@@ -161,12 +181,9 @@ class Timeline extends Component {
         newOutput.delay = 500;
       }
 
-      this.addOutput(newOutput, extras);
+      if (newOutput.type !== 'Stream' || test.state.play.action === 'START') this.addOutput(newOutput, extras);
     }
 
-    if (!options.dump && Array.isArray(newOutput.options)) {
-      this.setState({ options: newOutput.options.filter((option) => option && option.trim()) });
-    }
     if (newOutput.delay && !options.dump) {
       this.interval.timeout = setTimeout(() => this.popInterval(options), newOutput.delay);
     } else {
@@ -196,7 +213,7 @@ class Timeline extends Component {
     const { trace, line_id: lineId } = newState;
 
     // update the state if there is another line to continue
-    if (lineId) this.props.updateState(newState);
+    if (lineId || newState.play) this.props.updateState(newState);
     if (!trace) return;
 
     const outputQueue = await getUserTestOutputs(trace, newState.ending);

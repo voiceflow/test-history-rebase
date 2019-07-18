@@ -28,7 +28,7 @@ describe('MultiModal not loading', () => {
         setConfirm={_.noop()}
         loading={false}
         displays={DISPLAYS}
-        history={[]}
+        history={null}
         skill_id="mockId"
       />
     );
@@ -43,7 +43,7 @@ describe('MultiModal not loading', () => {
         setConfirm={_.noop()}
         loading={true}
         displays={DISPLAYS}
-        history={[]}
+        history={null}
         skill_id="mockId2"
       />
     );

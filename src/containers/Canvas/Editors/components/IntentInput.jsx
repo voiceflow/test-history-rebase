@@ -187,11 +187,13 @@ class IntentInput extends Component {
           return (
             <Utterance
               key={u}
-              intent={u}
+              utterance={u}
+              intent_id={this.props.intent_id}
               live_mode={this.props.live_mode}
               slots={this.props.slots}
               index={i}
               editUtterance={this.editUtterance}
+              checkEditUtterances={this.props.checkEditUtterances}
               deleteUtterance={this.deleteUtterance}
               utteranceExists={this.props.utteranceExists}
               showWarning={this.props.intent_warning_slots.includes(slot_name[2])}
@@ -202,11 +204,13 @@ class IntentInput extends Component {
         return (
           <Utterance
             key={u}
-            intent={u}
+            utterance={u}
+            intent_id={this.props.intent_id}
             live_mode={this.props.live_mode}
             slots={this.props.slots}
             index={i}
             editUtterance={this.editUtterance}
+            checkEditUtterances={this.props.checkEditUtterances}
             deleteUtterance={this.deleteUtterance}
             utteranceExists={this.props.utteranceExists}
             showWarning={false}

@@ -105,7 +105,7 @@ export class LogTable extends Component {
         <tbody>
           {logs.slice(page * rows_per_page, page * rows_per_page + rows_per_page).map((log, i) => (
             <tr key={i + page * rows_per_page}>
-              <td>{moment(log.timestamp).format('LTS')}</td>
+              <td>{moment(log.timestamp).format('LLL')}</td>
               <td>{log.user_id.slice(0, 11)}</td>
               {parseRequest(log.request)}
             </tr>

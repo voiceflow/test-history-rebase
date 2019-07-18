@@ -18,7 +18,7 @@ const WidgetBarWrapper = styled.div`
   ${({ isTest }) =>
     isTest
       ? css`
-          transform: translateX(41px);
+          transform: translateX(17px);
         `
       : ''};
   ${({ menuOpen }) =>

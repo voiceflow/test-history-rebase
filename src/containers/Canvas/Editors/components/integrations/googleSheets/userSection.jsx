@@ -12,16 +12,13 @@ import { clearModal, setConfirm, setError } from '@/ducks/modal';
 // selected_integration, user, integration_data, updateIntegrationData, showNextSection, user_modal, action_data, toggleSection, open
 
 class UserSection extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+  state = {};
 
   componentDidMount() {
     this.checkCompletion();
   }
 
-  checkCompletion() {
+  checkCompletion = () => {
     const { completed: stateCompleted } = this.state;
     const { integrationsUser } = this.props;
     let completed = false;
@@ -35,7 +32,7 @@ class UserSection extends Component {
         completed,
       });
     }
-  }
+  };
 
   selectUser(user) {
     const { integration_data, updateIntegrationData, userChanged: propsUserChanged, showNextSection } = this.props;
@@ -51,6 +48,7 @@ class UserSection extends Component {
     this.setState({
       completed: true,
     });
+
     if (propsUserChanged && userChanged) {
       updateIntegrationData(newIntegrationData, () => propsUserChanged());
     } else {
@@ -113,25 +111,16 @@ class UserSection extends Component {
     });
   }
 
-  addUser() {
-    this.setState({
-      add_user_modal: true,
-    });
-  }
+  addUser = () => this.setState({ add_user_modal: true });
 
-  toggleAddUserModal = () => {
-    const { add_user_modal } = this.state;
-    this.setState({
-      add_user_modal: !add_user_modal,
-    });
-  };
+  toggleAddUserModal = () => this.setState({ add_user_modal: !this.state.add_user_modal });
 
   render() {
     const {
+      integrationsUser: user,
+      user_modal: AddUserModal,
       selected_integration,
       integration_users,
-      integrationsUser,
-      user_modal,
       action_data,
       setError,
       integration_users_loading,
@@ -144,61 +133,55 @@ class UserSection extends Component {
       open,
     } = this.props;
     const { add_user_modal, integration_users_loading: state_integration_users_loading, completed } = this.state;
-    const integration = selected_integration;
-    const users = integration_users[integration];
-    const user = integrationsUser;
 
-    const AddUserModal = user_modal;
+    const users = integration_users[selected_integration] || [];
 
-    if (!action_data) return null;
+    if (!action_data) {
+      return null;
+    }
 
     return (
       <>
-        {AddUserModal && (
-          <DefaultModal
-            open={add_user_modal && !state_integration_users_loading}
-            header="Connect Google Account"
-            toggle={this.toggleAddUserModal}
-            content={
-              <AddUserModal
-                toggle={this.toggleAddUserModal}
-                onError={(e) => setError(e)}
-                onSuccess={(newUsers) => {
-                  if (integration_user_error) {
-                    setError(integration_user_error);
-                    return;
-                  }
-
-                  const integration = selected_integration;
-                  const users = newUsers[integration];
-
-                  const newIntegrationData = update(integration_data, {
-                    user: {
-                      $set: users[users.length - 1],
-                    },
-                  });
-                  updateIntegrationData(newIntegrationData);
-                  this.setState({
-                    add_user_modal: false,
-                    completed: true,
-                  });
-                  setConfirm({
-                    text: 'Your new user has been added successfully!',
-                    confirm: () => clearModal(),
-                  });
-                }}
-                onBegin={() =>
-                  this.setState({
-                    add_user_modal: false,
-                  })
+        <DefaultModal
+          open={add_user_modal && !state_integration_users_loading}
+          header="Connect Google Account"
+          toggle={this.toggleAddUserModal}
+          content={
+            <AddUserModal
+              toggle={this.toggleAddUserModal}
+              onError={(e) => setError(e)}
+              onSuccess={() => {
+                if (integration_user_error) {
+                  setError(integration_user_error);
+                  return;
                 }
-                skill_id={skill_id}
-              />
-            }
-            hideFooter={true}
-            noPadding={true}
-          />
-        )}
+
+                const newIntegrationData = update(integration_data, {
+                  user: {
+                    $set: users[users.length - 1],
+                  },
+                });
+                updateIntegrationData(newIntegrationData);
+                this.setState({
+                  add_user_modal: false,
+                  completed: true,
+                });
+                setConfirm({
+                  text: 'Your new user has been added successfully!',
+                  confirm: () => clearModal(),
+                });
+              }}
+              onBegin={() =>
+                this.setState({
+                  add_user_modal: false,
+                })
+              }
+              skill_id={skill_id}
+            />
+          }
+          hideFooter={true}
+          noPadding={true}
+        />
         <div className="d-flex flex-column section-title-container" onClick={() => toggleSection()}>
           <div className="integrations-section-title text-muted">
             As user

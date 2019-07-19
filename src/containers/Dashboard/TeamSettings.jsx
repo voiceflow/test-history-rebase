@@ -203,7 +203,7 @@ class TeamSettings extends Component {
     const { members } = this.state;
     const { team, updateMembers } = this.props;
 
-    e ? e.preventDefault() : null;
+    e && e.preventDefault();
     if (!this.IS_ADMIN) return false;
 
     if (team.status === 0 && members.length > 2) {

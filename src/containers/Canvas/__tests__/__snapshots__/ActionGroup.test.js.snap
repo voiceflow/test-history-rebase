@@ -277,12 +277,11 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       <RoundButton
         active={false}
         disabled={false}
-        height={42}
         icon="cog.svg"
         imgSize={15}
         onClick={[Function]}
+        size={42}
         type="plain"
-        width={42}
       />
     </Tooltip>
   </div>

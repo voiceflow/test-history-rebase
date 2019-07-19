@@ -118,12 +118,11 @@ exports[`Dashboard render dashboard 1`] = `
                   >
                     <RoundButton
                       disabled={false}
-                      height={42}
                       icon="add-step.svg"
                       imgSize={15}
                       onClick={[Function]}
+                      size={42}
                       type="shadow"
-                      width={42}
                     />
                   </Tooltip>
                 </div>

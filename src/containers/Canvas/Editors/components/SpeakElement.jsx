@@ -54,10 +54,94 @@ const target = {
 };
 
 class SpeakElement extends Component {
+  state = {
+    isEditing: false,
+  };
+
   render() {
     const i = this.props.index;
     const { isDragging, connectDragSource, connectDropTarget, d, properties } = this.props;
     const opacity = isDragging ? 0 : 1;
+    const { isEditing } = this.state;
+
+    const component = (
+      <div key={d.index} className="multiline" style={Object.assign({}, style, { opacity })}>
+        <div className="multi-title-block mb-2">
+          <div className="multi-title">
+            <span className="text-muted" onClick={() => this.props.toggleOpen()}>
+              <i
+                className={cn('fas', {
+                  'fa-caret-down': d.open,
+                  'fa-caret-right': !d.open,
+                })}
+              />
+              {properties.randomize ? <i className="far fa-random" /> : i + 1}
+            </span>
+          </div>
+          <div className="super-center flex-hard mr-2">
+            <img src="/comment-blue.svg" alt="comment" />
+            <div className="mx-3">Speaking as</div>
+            <Select
+              className="speak-box"
+              classNamePrefix="select-box"
+              value={{ label: d.voice, value: d.voice }}
+              onChange={(selected) => {
+                d.voice = selected.value;
+                this.props.onUpdate();
+                if (localStorage.getItem('recent_speak')) {
+                  let recent_speaks = JSON.parse(localStorage.getItem('recent_speak'));
+                  if (!(recent_speaks instanceof Array)) recent_speaks = [recent_speaks];
+                  const idx = _.findIndex(recent_speaks, ['value', selected.value]);
+                  if (idx === -1) {
+                    recent_speaks.push(selected);
+                    if (recent_speaks.length > 3) {
+                      recent_speaks.shift();
+                    }
+                    localStorage.setItem('recent_speak', JSON.stringify(recent_speaks));
+                  }
+                } else {
+                  localStorage.setItem('recent_speak', JSON.stringify([selected]));
+                }
+              }}
+              // options={VOICES}
+              options={
+                localStorage.getItem('recent_speak')
+                  ? [
+                      {
+                        label: 'Recent',
+                        options: JSON.parse(localStorage.getItem('recent_speak')),
+                      },
+                    ].concat(VOICES)
+                  : VOICES
+              }
+            />
+          </div>
+          <Button
+            isClose
+            onClick={() => {
+              this.props.handleRemoveBlock(i);
+            }}
+          />
+        </div>
+        <Collapse isOpen={d.open}>
+          <VariableText
+            className="editor form-control auto-height"
+            raw={d.rawContent}
+            placeholder={<React.Fragment>{`Tell ${d.voice} what to say`}</React.Fragment>}
+            variables={this.props.variables}
+            updateRaw={(raw) => {
+              d.rawContent = raw;
+              this.props.onUpdate();
+            }}
+            onFocus={this.onEditing}
+            onBlur={this.doneEditing}
+          />
+          <small className="text-muted pb-3 pt-2 d-block">{'Press "{" to add variables'}</small>
+        </Collapse>
+        <hr />
+      </div>
+    );
+
     if (d.audio !== undefined) {
       return connectDragSource(
         connectDropTarget(
@@ -101,84 +185,15 @@ class SpeakElement extends Component {
         )
       );
     }
-    return connectDragSource(
-      connectDropTarget(
-        <div key={d.index} className="multiline" style={Object.assign({}, style, { opacity })}>
-          <div className="multi-title-block mb-2">
-            <div className="multi-title">
-              <span className="text-muted" onClick={() => this.props.toggleOpen()}>
-                <i
-                  className={cn('fas', {
-                    'fa-caret-down': d.open,
-                    'fa-caret-right': !d.open,
-                  })}
-                />
-                {properties.randomize ? <i className="far fa-random" /> : i + 1}
-              </span>
-            </div>
-            <div className="super-center flex-hard mr-2">
-              <img src="/comment-blue.svg" alt="comment" />
-              <div className="mx-3">Speaking as</div>
-              <Select
-                className="speak-box"
-                classNamePrefix="select-box"
-                value={{ label: d.voice, value: d.voice }}
-                onChange={(selected) => {
-                  d.voice = selected.value;
-                  this.props.onUpdate();
-                  if (localStorage.getItem('recent_speak')) {
-                    let recent_speaks = JSON.parse(localStorage.getItem('recent_speak'));
-                    if (!(recent_speaks instanceof Array)) recent_speaks = [recent_speaks];
-                    const idx = _.findIndex(recent_speaks, ['value', selected.value]);
-                    if (idx === -1) {
-                      recent_speaks.push(selected);
-                      if (recent_speaks.length > 3) {
-                        recent_speaks.shift();
-                      }
-                      localStorage.setItem('recent_speak', JSON.stringify(recent_speaks));
-                    }
-                  } else {
-                    localStorage.setItem('recent_speak', JSON.stringify([selected]));
-                  }
-                }}
-                // options={VOICES}
-                options={
-                  localStorage.getItem('recent_speak')
-                    ? [
-                        {
-                          label: 'Recent',
-                          options: JSON.parse(localStorage.getItem('recent_speak')),
-                        },
-                      ].concat(VOICES)
-                    : VOICES
-                }
-              />
-            </div>
-            <Button
-              isClose
-              onClick={() => {
-                this.props.handleRemoveBlock(i);
-              }}
-            />
-          </div>
-          <Collapse isOpen={d.open}>
-            <VariableText
-              className="editor form-control auto-height"
-              raw={d.rawContent}
-              placeholder={<React.Fragment>{`Tell ${d.voice} what to say`}</React.Fragment>}
-              variables={this.props.variables}
-              updateRaw={(raw) => {
-                d.rawContent = raw;
-                this.props.onUpdate();
-              }}
-            />
-            <small className="text-muted pb-3 pt-2 d-block">{'Press "{" to add variables'}</small>
-          </Collapse>
-          <hr />
-        </div>
-      )
-    );
+    if (isEditing) {
+      return component;
+    }
+    return connectDragSource(connectDropTarget(component));
   }
+
+  onEditing = () => this.setState({ isEditing: true });
+
+  doneEditing = () => this.setState({ isEditing: false });
 }
 
 export default DropTarget('speak', target, (connect) => ({

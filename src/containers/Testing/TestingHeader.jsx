@@ -1,24 +1,23 @@
 import React from 'react';
-import cn from 'classnames';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import SecondaryNavBar from '@/components/NavBar/SecondaryNavBar';
-import { leaveTest, TEST_STATUS } from '@/ducks/test';
+import SvgIcon from '@/components/SvgIcon';
+import NewButton from '@/componentsV2/Button';
+import { TEST_STATUS, leaveTest, resetTest, startTest } from '@/ducks/test';
+import LeftIcon from '@/svgs/arrow-left.svg';
+import StartTestIcon from '@/svgs/forward.svg';
 
 import ShareTest from './ShareTest';
-import TestTimer from './TestingTimer';
 import TestingHeaderWrapper from './TestingHeaderWrapper';
-import SvgIcon from '@/components/SvgIcon';
-import StartTestIcon from '@/svgs/forward.svg';
-import LeftIcon from '@/svgs/arrow-left.svg';
-import { startTest, resetTest } from '@/ducks/test';
+import TestTimer from './TestingTimer';
 
 const TestingHeader = (props) => {
   const { page, skill, history, leaveTest, preview, startTest, status, resetTest } = props;
   const active = status !== TEST_STATUS.IDLE;
+  const running = status === TEST_STATUS.ACTIVE;
 
   const renderLeftHeader = () => {
     if (active) {
@@ -34,14 +33,13 @@ const TestingHeader = (props) => {
           Back
         </div>
       );
-    } else {
-      return (
-        <div className="testing-back-named">
-          <SvgIcon icon={LeftIcon} className="icon-back" onClick={() => history.push('/')} />
-          {(skill && skill.name) || 'Loading Skill'}
-        </div>
-      );
     }
+    return (
+      <div className="testing-back-named">
+        <SvgIcon icon={LeftIcon} className="icon-back" onClick={() => history.push('/')} />
+        {(skill && skill.name) || 'Loading Skill'}
+      </div>
+    );
   };
 
   return (
@@ -51,7 +49,7 @@ const TestingHeader = (props) => {
         leftRenderer={() => renderLeftHeader()}
         centerRenderer={() => (
           <div id="middle-group">
-            {active === TEST_STATUS.ENDED && <div>Completed •</div>}
+            {status === TEST_STATUS.ENDED && <div>Completed •&nbsp;</div>}
             <TestTimer />
           </div>
         )}
@@ -62,33 +60,25 @@ const TestingHeader = (props) => {
                 <ShareTest />
               </div>
               <div className="align-icon no-select">
-                {/*<Button*/}
-                {/*  isBtn*/}
-                {/*  isPrimary*/}
-                {/*  className="mr-2"*/}
-                {/*  onClick={() => {*/}
-                {/*    history.push(`/canvas/${skill.skill_id}/${skill.diagram}`);*/}
-                {/*    leaveTest();*/}
-                {/*  }}*/}
-                {/*  style={{ whiteSpace: 'nowrap' }}*/}
-                {/*>*/}
-                {/*  Back to Canvas*/}
-                {/*</Button>*/}
-                <Button
-                  variant="contained"
-                  className={cn('publish-btn')}
-                  onClick={async () => {
-                    await resetTest();
-                    await startTest();
-                  }}
-                >
-                  Start Test
-                  <div className="publish-spinner">
-                    <div className="spinner-icon">
+                {running ? (
+                  <NewButton variant="secondary" onClick={leaveTest}>
+                    Finish Test
+                  </NewButton>
+                ) : (
+                  <Button
+                    variant="contained"
+                    className="start-test-btn"
+                    onClick={async () => {
+                      await resetTest();
+                      await startTest();
+                    }}
+                  >
+                    Start Test
+                    <div className="start-sub-btn">
                       <SvgIcon icon={StartTestIcon} width={16} height={16} color="#fff" />
                     </div>
-                  </div>
-                </Button>
+                  </Button>
+                )}
               </div>
             </div>
           </>

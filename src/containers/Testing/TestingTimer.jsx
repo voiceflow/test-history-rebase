@@ -2,9 +2,17 @@ import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { TEST_STATUS } from '../../ducks/test';
+
 class TestTimer extends React.Component {
   componentDidMount() {
     this.interval = setInterval(() => this.forceUpdate(), 1000);
+  }
+
+  componentDidUpdate() {
+    if (this.props.status === TEST_STATUS.ENDED) {
+      clearInterval(this.interval);
+    }
   }
 
   componentWillUnmount() {
@@ -17,6 +25,7 @@ class TestTimer extends React.Component {
 }
 const mapStateToProps = (state) => ({
   time: state.test.startTime,
+  status: state.test.status,
 });
 
 export default connect(mapStateToProps)(TestTimer);

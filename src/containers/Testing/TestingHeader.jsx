@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -9,51 +10,65 @@ import { leaveTest } from '@/ducks/test';
 
 import ShareTest from './ShareTest';
 import TestTimer from './TestingTimer';
+import TestingHeaderWrapper from './TestingHeaderWrapper';
+import SvgIcon from '@/components/SvgIcon';
+import StartTestIcon from '@/svgs/forward.svg';
+import { startTest } from '@/ducks/test';
 
 const TestingHeader = (props) => {
-  const { page, skill, history, leaveTest, preview } = props;
+  const { page, skill, history, leaveTest, preview, startTest } = props;
 
   return (
-    <Header
-      history={history}
-      leftRenderer={() => (
-        <div>
-          <Link to="/" className="mx-3">
-            <img src="/back.svg" alt="back" className="mr-3" />
-          </Link>
-          {(skill && skill.name) || 'Loading Skill'}
-        </div>
-      )}
-      centerRenderer={() => (
-        <div id="middle-group">
-          <TestTimer />
-        </div>
-      )}
-      rightRenderer={() => (
-        <>
-          <div className="title-group">
-            <div className="title-group-sub">
-              <ShareTest />
-            </div>
-            <div className="align-icon no-select">
-              <Button
-                isBtn
-                isPrimary
-                className="mr-2"
-                onClick={() => {
-                  history.push(`/canvas/${skill.skill_id}/${skill.diagram}`);
-                  leaveTest();
-                }}
-                style={{ whiteSpace: 'nowrap' }}
-              >
-                Back to Canvas
-              </Button>
-            </div>
+    <TestingHeaderWrapper>
+      <Header
+        history={history}
+        leftRenderer={() => (
+          <div>
+            <Link to="/" className="mx-3">
+              <img src="/back.svg" alt="back" className="mr-3" />
+            </Link>
+            {(skill && skill.name) || 'Loading Skill'}
           </div>
-        </>
-      )}
-      subHeaderRenderer={() => !preview && <SecondaryNavBar page={page} history={history} />}
-    />
+        )}
+        centerRenderer={() => (
+          <div id="middle-group">
+            <TestTimer />
+          </div>
+        )}
+        rightRenderer={() => (
+          <>
+            <div className="title-group">
+              <div className="title-group-sub">
+                <ShareTest />
+              </div>
+              <div className="align-icon no-select">
+                {/*<Button*/}
+                {/*  isBtn*/}
+                {/*  isPrimary*/}
+                {/*  className="mr-2"*/}
+                {/*  onClick={() => {*/}
+                {/*    history.push(`/canvas/${skill.skill_id}/${skill.diagram}`);*/}
+                {/*    leaveTest();*/}
+                {/*  }}*/}
+                {/*  style={{ whiteSpace: 'nowrap' }}*/}
+                {/*>*/}
+                {/*  Back to Canvas*/}
+                {/*</Button>*/}
+                <Button variant="contained" className={cn('publish-btn')} onClick={startTest}>
+                  Start Test
+                  <div className="publish-spinner">
+                    <div className="spinner-icon">
+                      <SvgIcon icon={StartTestIcon} width={16} height={16} color="#fff" />
+                    </div>
+                  </div>
+                </Button>
+              </div>
+            </div>
+          </>
+        )}
+        subHeaderRenderer={() => !preview && <SecondaryNavBar page={page} history={history} />}
+      />
+    </TestingHeaderWrapper>
   );
 };
 
@@ -63,6 +78,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   leaveTest,
+  startTest,
 };
 
 export default connect(

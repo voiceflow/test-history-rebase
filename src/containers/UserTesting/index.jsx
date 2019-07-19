@@ -82,7 +82,7 @@ class UserTesting extends React.Component {
                 <RoundButton
                   id="icon-share"
                   type="color"
-                  color="#4e6ff9"
+                  color="#5b9dfa"
                   width={44}
                   height={44}
                   icon={ShareIcon}

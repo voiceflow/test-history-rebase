@@ -29,6 +29,28 @@ const activeStyles = css`
   }}
 `;
 
+const hoverStyles = css`
+  background-color: ${({ color }) => color}15;
+  border-style: double;
+  ${({ type }) => {
+    if (type === 'color') {
+      return css`0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16)`;
+    }
+    if (type === 'shadow') {
+      return css`
+        box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 6px 0 rgba(17, 49, 96, 0.24);
+      `;
+    }
+  }};
+  ${({ type }) => {
+    if (type !== 'color') {
+      return css`
+        color: #6e849a;
+      `;
+    }
+  }}
+`;
+
 const Button = styled.button`
   position: relative;
   display: flex;
@@ -56,31 +78,13 @@ const Button = styled.button`
       `;
     }
   }};
-  width: ${({ width }) => `${width}px` || '15px'};
-  height: ${({ height }) => `${height}px` || '15px'};
+  width: ${({ width }) => `${width}px`};
+  height: ${({ height }) => `${height}px`};
   color: ${({ color }) => color || '#8da2b5'};
   background-image: ${({ color }) => (color ? `linear-gradient(${color}15, ${color}30)` : 'none')};
 
   &:hover {
-    background-color: ${({ color }) => color}15;
-    border-style: double;
-    ${({ type }) => {
-      if (type === 'color') {
-        return css`0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16)`;
-      }
-      if (type === 'shadow') {
-        return css`
-          box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 6px 0 rgba(17, 49, 96, 0.24);
-        `;
-      }
-    }};
-    ${({ type }) => {
-      if (type !== 'color') {
-        return css`
-          color: #6e849a;
-        `;
-      }
-    }}
+    ${hoverStyles}
   }
   ${({ active }) => active && activeStyles}
   &:active {

@@ -21,7 +21,9 @@ const Button = styled.button`
   transition: all 0.15s linear;
   ${({ type }) => {
     if (type === 'color') {
-      return css`'box-shadow: 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.18)'`;
+      return css`
+        box-shadow: 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.18);
+      `;
     }
     if (type === 'shadow') {
       return css`
@@ -39,7 +41,7 @@ const Button = styled.button`
     border-style: double;
     ${({ type }) => {
       if (type === 'color') {
-        return css`'0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16)'`;
+        return css`0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16)`;
       }
       if (type === 'shadow') {
         return css`

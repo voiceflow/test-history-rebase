@@ -30,8 +30,7 @@ class UploadButton extends Component {
       return 'Update Live';
     }
 
-    const spin = isUploadLoading();
-    if (!spin) {
+    if (!isUploadLoading()) {
       return platform === 'google' ? 'Upload to Google' : 'Upload to Alexa';
     }
     return 'Uploading';
@@ -51,7 +50,6 @@ class UploadButton extends Component {
     const { isUploadLoading, platform, vendors, vendors_open, openUpdate, toggleVendors, project_id } = this.props;
 
     const multiVendor = platform === 'alexa' && vendors && vendors.length > 1;
-    const spin = isUploadLoading();
     return (
       <UploadButtonWrapper multiVendor={multiVendor} isGoogle={platform === 'google'}>
         <Tooltip
@@ -66,11 +64,11 @@ class UploadButton extends Component {
               {platform === 'google' ? 'Upload to Google' : 'Upload to Alexa'}
             </Button>
           ) : (
-            <Button variant="contained" className={cn('publish-btn', { 'spinning-publish': spin })} onClick={this.onButtonClick}>
+            <Button variant="contained" className={cn('publish-btn', { 'spinning-publish': isUploadLoading() })} onClick={this.onButtonClick}>
               {this.renderButtonText()}
               <div className="publish-spinner">
                 <div className="spinner-icon">
-                  <SvgIcon icon={PublishSpinnerIcon} width={16} height={16} color="#fff" />
+                  <SvgIcon icon={PublishSpinnerIcon} color="#fff" />
                 </div>
               </div>
             </Button>

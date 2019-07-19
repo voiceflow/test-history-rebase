@@ -79,6 +79,9 @@ module.exports = {
         config: webpackConfig,
       },
     },
+    react: {
+      version: 'detect',
+    },
   },
   overrides: [
     {

@@ -90,9 +90,9 @@ class ReminderBlock extends Component {
           </Button>
         </ButtonGroup>
         {type === 'SCHEDULED_RELATIVE' ? (
-          <React.Fragment>
+          <>
             <label>Time From Now</label>
-          </React.Fragment>
+          </>
         ) : (
           <label>Time</label>
         )}
@@ -129,7 +129,7 @@ class ReminderBlock extends Component {
           </div>
         </div>
         {type === 'SCHEDULED_ABSOLUTE' && (
-          <React.Fragment>
+          <>
             <div className="grid-col-2-skew grid-col-2 text-muted mb-2">
               <div>Date</div>
               <div>Timezone</div>
@@ -169,7 +169,7 @@ class ReminderBlock extends Component {
                 />
               </div>
             </div>
-          </React.Fragment>
+          </>
         )}
         <label>Reminder</label>
         <VariableText

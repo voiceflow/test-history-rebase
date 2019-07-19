@@ -654,7 +654,7 @@ class Skill extends Component {
       );
 
     return (
-      <React.Fragment>
+      <>
         <Modal isOpen={publish} toggle={this.togglePublish} className="stage_modal" centered size="lg" onClosed={this.closePublish}>
           <ModalBody>
             <div className="d-flex justify-content-between" ref={this.privacyTop}>
@@ -1140,7 +1140,7 @@ class Skill extends Component {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

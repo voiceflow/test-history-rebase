@@ -99,7 +99,7 @@ export class CancelPayment extends Component {
 
     if (current) {
       return (
-        <React.Fragment>
+        <>
           <label className="space-between mb-3">
             <span>{current.name}</span>
             <span>
@@ -124,11 +124,11 @@ export class CancelPayment extends Component {
               ? 'The user will have their subscription cancelled'
               : 'The user will be refunded their product purchase'}
           </Alert>
-        </React.Fragment>
+        </>
       );
     }
     return (
-      <React.Fragment>
+      <>
         <label>Select Existing Product</label>
         <Select
           classNamePrefix="select-box"
@@ -142,7 +142,7 @@ export class CancelPayment extends Component {
           }}
           options={options}
         />
-      </React.Fragment>
+      </>
     );
   }
 }

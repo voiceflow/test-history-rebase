@@ -119,7 +119,7 @@ export class Blocks extends PureComponent {
         );
       });
     }
-    return <React.Fragment>{block_content}</React.Fragment>;
+    return <>{block_content}</>;
   }
 }
 

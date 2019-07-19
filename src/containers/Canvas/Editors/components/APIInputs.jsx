@@ -23,7 +23,7 @@ class APIInputs extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <div>
           {Array.isArray(this.state.pairs)
             ? this.state.pairs.map((pair, i) => {
@@ -59,7 +59,7 @@ class APIInputs extends Component {
             <i className="far fa-plus mr-2" /> Add Pair
           </Button>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

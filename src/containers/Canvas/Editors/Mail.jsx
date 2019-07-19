@@ -167,7 +167,7 @@ export class Mail extends Component {
           </Button>
         </div>
         {!user ? (
-          <React.Fragment>
+          <>
             <VariableInput
               className="form-control"
               raw={this.state.node.extras.to}
@@ -182,7 +182,7 @@ export class Mail extends Component {
                 });
               }}
             />
-          </React.Fragment>
+          </>
         ) : (
           <span className="text-muted font-italic">This Message Will Only Be Sent If the User Consents to Sharing Their Email</span>
         )}
@@ -190,7 +190,7 @@ export class Mail extends Component {
         <label>Email Variable Map</label>
         <div>
           {this.state.node.extras.mapping.length !== 0 ? (
-            <React.Fragment>
+            <>
               {this.state.node.extras.mapping.map((v, i) => {
                 return (
                   <div key={i} className="variable_map mb-2">
@@ -215,7 +215,7 @@ export class Mail extends Component {
                   </div>
                 );
               })}
-            </React.Fragment>
+            </>
           ) : (
             <i className="text-muted">No Variables Exist For This Email</i>
           )}

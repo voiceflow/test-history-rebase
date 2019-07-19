@@ -12,7 +12,7 @@ import VariableInput from './VariableInput';
 class APIMapping extends Component {
   render() {
     return (
-      <React.Fragment>
+      <>
         <div>
           {this.props.addButtonOrientation === 'top' && (
             <Button isBtn isClear isBlock isLarge className="mb-2" onClick={this.props.onAdd}>
@@ -62,7 +62,7 @@ class APIMapping extends Component {
             </Button>
           )}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

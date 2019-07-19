@@ -326,7 +326,7 @@ class API extends Component {
     return (
       <div className="projects-menu">
         {!_.isEmpty(this.state.variables) && (
-          <React.Fragment>
+          <>
             <Button color="primary" onClick={() => this.getEndpoint(false)} className="mt-2">
               <i className="fas fa-play mr-2" /> Run
             </Button>
@@ -346,7 +346,7 @@ class API extends Component {
                 </InputGroup>
               </React.Fragment>
             ))}
-          </React.Fragment>
+          </>
         )}
         {/* eslint-disable-next-line no-nested-ternary */}
         {!_.isNull(this.state.modalContent) ? (
@@ -565,7 +565,7 @@ class API extends Component {
     );
 
     return (
-      <React.Fragment>
+      <>
         <Modal size="lg" isOpen={this.state.modal} toggle={this.disableModal}>
           <ModalHeader toggle={this.disableModal} header="API Test" />
           <ModalBody>{this.renderAPITest()}</ModalBody>
@@ -635,7 +635,7 @@ class API extends Component {
         </Nav>
 
         {this.state.type === 'body' ? (
-          <React.Fragment>
+          <>
             <Nav tabs className="mb-3">
               <NavItem
                 onClick={() => {
@@ -696,7 +696,7 @@ class API extends Component {
             ) : (
               pairContent
             )}
-          </React.Fragment>
+          </>
         ) : (
           pairContent
         )}
@@ -711,7 +711,7 @@ class API extends Component {
           onChange={this.handleKVMappingChange}
           variables={this.props.variables}
         />
-      </React.Fragment>
+      </>
     );
   }
 }

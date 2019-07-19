@@ -173,7 +173,7 @@ class GetRequestSection extends Component {
             </div>
 
             {this.state.type === 'body' ? (
-              <React.Fragment>
+              <>
                 <div className="align-self-center">
                   <Nav tabs className="mb-3">
                     <NavItem
@@ -236,7 +236,7 @@ class GetRequestSection extends Component {
                 ) : (
                   pairContent
                 )}
-              </React.Fragment>
+              </>
             ) : (
               pairContent
             )}

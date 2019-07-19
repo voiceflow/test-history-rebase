@@ -104,7 +104,7 @@ class BackupSettings extends Component {
     }
 
     return (
-      <React.Fragment>
+      <>
         {/* Modal for previewing backups */}
         <Modal isOpen={preview} size="xl" toggle={() => this.setState({ preview: false })} className="light-canvas-modal">
           <div id="light-canvas-wrap">
@@ -122,7 +122,7 @@ class BackupSettings extends Component {
           </ModalFooter>
         </Modal>
 
-        <React.Fragment>
+        <>
           <div className="settings-content settings-backups clearfix">
             <FormGroup>
               <Label>Backups</Label>
@@ -203,8 +203,8 @@ class BackupSettings extends Component {
               </div>
             </FormGroup>
           </div>
-        </React.Fragment>
-      </React.Fragment>
+        </>
+      </>
     );
   }
 }

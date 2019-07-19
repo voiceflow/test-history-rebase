@@ -1293,7 +1293,7 @@ export class Canvas extends Component {
       engine.getDiagramModel().clearSelection();
       engine.setSuperSelect(node);
       setBlockMenu(
-        <React.Fragment>
+        <>
           <div
             style={{
               top: engine.getDiagramModel().getGridPosition(e.clientY - 100),
@@ -1339,11 +1339,11 @@ export class Canvas extends Component {
               </ListGroupItem>
             </ListGroup>
           </div>
-        </React.Fragment>
+        </>
       );
     } else {
       setBlockMenu(
-        <React.Fragment>
+        <>
           <div
             style={{
               top: engine.getDiagramModel().getGridPosition(e.clientY - 110),
@@ -1375,7 +1375,7 @@ export class Canvas extends Component {
               )}
             </ListGroup>
           </div>
-        </React.Fragment>
+        </>
       );
     }
   };
@@ -1580,7 +1580,7 @@ export class Canvas extends Component {
       addUndo,
     } = this.props;
     return (
-      <React.Fragment>
+      <>
         <Prompt
           message={() => {
             if (!util.canSave()) {
@@ -1781,7 +1781,7 @@ export class Canvas extends Component {
             />
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

@@ -260,7 +260,7 @@ class LightCanvas extends Component {
     const { diagrams, engine, loading_diagram } = this.state;
     const diagram = _.find(diagrams, ['id', diagram_id]);
     return (
-      <React.Fragment>
+      <>
         <div id="lightcanvas">
           {loading_diagram && (
             <div id="loading-diagram">
@@ -298,7 +298,7 @@ class LightCanvas extends Component {
             />
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

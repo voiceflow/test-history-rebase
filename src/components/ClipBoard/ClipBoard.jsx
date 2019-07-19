@@ -31,7 +31,7 @@ class ClipBoard extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <Clipboard
           id={this.props.id}
           style={{ cursor: 'pointer' }}
@@ -45,7 +45,7 @@ class ClipBoard extends Component {
         <Tooltip placement="bottom" isOpen={this.state.tooltipOpen} target={this.props.id} toggle={this.toggle}>
           {this.state.copied ? 'Copied!' : 'Copy to Clipboard'}
         </Tooltip>
-      </React.Fragment>
+      </>
     );
   }
 }

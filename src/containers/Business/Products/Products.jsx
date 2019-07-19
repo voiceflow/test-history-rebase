@@ -31,7 +31,7 @@ class Products extends Component {
     }
     return (
       <div className="h-100 w-100">
-        <React.Fragment>
+        <>
           {this.props.products.length === 0 ? (
             <div className="super-center w-100 h-100">
               <div className="empty-container">
@@ -128,7 +128,7 @@ class Products extends Component {
               </div>
             </div>
           )}
-        </React.Fragment>
+        </>
       </div>
     );
   }

@@ -43,13 +43,13 @@ class Module extends Component {
     }
 
     return (
-      <React.Fragment>
+      <>
         <Label>Module Description</Label>
         {this.state.module.descr ? <div className="module-desc">{this.state.module.descr}</div> : null}
         <Label>Input Mapping</Label>
         <div>
           {this.state.node.extras.mapping.inputs.length > 0 ? (
-            <React.Fragment>
+            <>
               {this.state.node.extras.mapping.inputs.map((v, i) => {
                 return (
                   <div key={i} className="variable_map mb-2">
@@ -72,7 +72,7 @@ class Module extends Component {
                   </div>
                 );
               })}
-            </React.Fragment>
+            </>
           ) : (
             <i className="text-muted">No input variables exist for this module</i>
           )}
@@ -81,7 +81,7 @@ class Module extends Component {
         <Label>Output Mapping</Label>
         <div>
           {this.state.node.extras.mapping.outputs.length > 0 ? (
-            <React.Fragment>
+            <>
               {this.state.node.extras.mapping.outputs.map((v, i) => {
                 return (
                   <div key={i} className="variable_map mb-2 reverse">
@@ -109,12 +109,12 @@ class Module extends Component {
                   </div>
                 );
               })}
-            </React.Fragment>
+            </>
           ) : (
             <i className="text-muted">No output variables exist for this module</i>
           )}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

@@ -60,23 +60,23 @@ export class Flows extends PureComponent {
         }
       });
       flow_tab = (
-        <React.Fragment>
+        <>
           <label className="search-section section-title mt-3">Project Flows</label>
           {tree}
           {unused.length === 0 ? null : (
-            <React.Fragment>
+            <>
               <hr className="mb-2 mt-4" />
               <label className="search-section section-title mt-3">Other Flows</label>
               {unused.map((diagram) => {
                 return diagram;
               })}
-            </React.Fragment>
+            </>
           )}
-        </React.Fragment>
+        </>
       );
     } else if (tab === 'flows') {
       flow_tab = (
-        <React.Fragment>
+        <>
           <div className="search-section">
             <label className="section-title mt-3">All Flows</label>
             <Input
@@ -102,11 +102,11 @@ export class Flows extends PureComponent {
               );
             })}
           </div>
-        </React.Fragment>
+        </>
       );
     }
     return (
-      <React.Fragment>
+      <>
         <div className="search-section">
           <ButtonGroup className="toggle-group w-100">
             {TABS.map((tabIdx) => {
@@ -119,7 +119,7 @@ export class Flows extends PureComponent {
           </ButtonGroup>
         </div>
         {flow_tab}
-      </React.Fragment>
+      </>
     );
   }
 }

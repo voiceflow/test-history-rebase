@@ -107,7 +107,7 @@ export class Variables extends PureComponent {
     const { locked, variables, global_variables } = this.props;
     const { tab, new_global, new_var } = this.state;
     return (
-      <React.Fragment>
+      <>
         {tab !== 'local' ? (
           <>
             <form id="variable-submit" onSubmit={this.addGlobalVariable}>
@@ -207,7 +207,7 @@ export class Variables extends PureComponent {
             })}
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

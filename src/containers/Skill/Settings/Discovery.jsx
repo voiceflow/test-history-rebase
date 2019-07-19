@@ -86,7 +86,7 @@ class DiscoverySettings extends Component {
     const fulfillment_intent = _.find(intents_sorted, { key: fullfillment_intent_key });
 
     return (
-      <React.Fragment>
+      <>
         <div className="settings-content settings-discovery clearfix">
           <FormGroup>
             <Label>CanFulfill Intent</Label>
@@ -127,7 +127,7 @@ class DiscoverySettings extends Component {
             )}
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

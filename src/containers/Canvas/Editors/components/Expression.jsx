@@ -261,7 +261,7 @@ export class Expression extends Component {
             <VariableText
               className={`editor form-control auto-height oneline ${expression.value.error ? 'is-invalid' : ''}`}
               raw={expression.value}
-              placeholder={<React.Fragment>Enter your expression here</React.Fragment>}
+              placeholder={<>Enter your expression here</>}
               variables={variables}
               updateRaw={this.handleAdvance}
             />

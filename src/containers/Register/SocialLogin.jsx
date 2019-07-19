@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
@@ -47,7 +47,7 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
   });
 
   return (
-    <Fragment>
+    <>
       <SocialLoginContainer>
         <div className="helperText">{entryText}</div>
         <GoogleLogin
@@ -80,7 +80,7 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
           </div>
         )}
       </SocialLoginContainer>
-    </Fragment>
+    </>
   );
 };
 

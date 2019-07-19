@@ -6,30 +6,44 @@ import { Link } from 'react-router-dom';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import SecondaryNavBar from '@/components/NavBar/SecondaryNavBar';
-import { leaveTest } from '@/ducks/test';
+import { leaveTest, TEST_STATUS } from '@/ducks/test';
 
 import ShareTest from './ShareTest';
 import TestTimer from './TestingTimer';
 import TestingHeaderWrapper from './TestingHeaderWrapper';
 import SvgIcon from '@/components/SvgIcon';
 import StartTestIcon from '@/svgs/forward.svg';
+import LeftIcon from '@/svgs/arrow-left.svg';
 import { startTest } from '@/ducks/test';
 
 const TestingHeader = (props) => {
-  const { page, skill, history, leaveTest, preview, startTest } = props;
+  const { page, skill, history, leaveTest, preview, startTest, status } = props;
+  const active = status !== TEST_STATUS.IDLE;
 
+  const renderLeftHeader = () => {
+    if (active) {
+      return (
+        <div className="testing-back" onClick={history.push('/')}>
+          <SvgIcon icon={LeftIcon} className="icon-back" />
+          Back
+        </div>
+      );
+    } else {
+      return (
+        <div className="testing-back-named">
+          <Link to="/" className="mx-3">
+            <SvgIcon icon={LeftIcon} className="icon-back" />
+          </Link>
+          {(skill && skill.name) || 'Loading Skill'}
+        </div>
+      );
+    }
+  };
   return (
     <TestingHeaderWrapper>
       <Header
         history={history}
-        leftRenderer={() => (
-          <div>
-            <Link to="/" className="mx-3">
-              <img src="/back.svg" alt="back" className="mr-3" />
-            </Link>
-            {(skill && skill.name) || 'Loading Skill'}
-          </div>
-        )}
+        leftRenderer={renderLeftHeader}
         centerRenderer={() => (
           <div id="middle-group">
             <TestTimer />
@@ -74,6 +88,7 @@ const TestingHeader = (props) => {
 
 const mapStateToProps = (state) => ({
   skill: state.skills.skill,
+  status: state.test.status,
 });
 
 const mapDispatchToProps = {

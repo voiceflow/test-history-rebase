@@ -5,28 +5,27 @@ import styled, { css } from 'styled-components';
 import SvgIcon from '@/components/SvgIcon';
 
 const activeStyles = css`
-  ${({ type }) => {
-    if (type !== 'plain') {
-      return css`border: 1px solid #fff !important;
-        -webkit-box-shadow: 0 0 0 1px rgba(184, 218, 255, 1);
-        -moz-box-shadow: 0 0 0 1px rgba(184, 218, 255, 1);
-        background-color: ${({ type }) => (type === 'shadow' ? '#5b9dfa30' : 'initial')}
-        color: ${({ type }) => (type === 'shadow' ? '#5b9dfa' : 'initial')}
-        box-shadow: ${({ color, type }) => {
-          if (color) {
-            return `0 0 0 1px ${color}99`;
-          }
-          if (type === 'shadow') {
-            return '0 0 0 1px 5b9dfa99';
-          }
-          return '0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16)';
-        }}`;
-    }
-    return css`
-      background-color: #eef4f6cc;
-      color: #113160;
-    `;
-  }}
+  background-color: #eef4f6cc;
+  color: #113160;
+
+  ${({ type, color }) =>
+    type !== 'plain' &&
+    css`
+      border: 1px solid #fff !important;
+      box-shadow: 0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16);
+
+      ${type === 'shadow' &&
+        css`
+          background-color: #5b9dfa30;
+          color: #5b9dfa;
+          box-shadow: 0 0 0 1px 5b9dfa99;
+        `}
+
+      ${color &&
+        css`
+          box-shadow: 0 0 0 1px ${color}99;
+        `}
+    `}
 `;
 
 const hoverStyles = css`
@@ -34,7 +33,9 @@ const hoverStyles = css`
   border-style: double;
   ${({ type }) => {
     if (type === 'color') {
-      return css`0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16)`;
+      return css`
+        box-shadow: 0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16);
+      `;
     }
     if (type === 'shadow') {
       return css`
@@ -57,10 +58,7 @@ const Button = styled.button`
   justify-content: center;
   cursor: pointer;
   z-index: 1;
-  background-color: #fff;
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  background-size: auto;
+  background: ${({ color }) => (color ? `linear-gradient(${color}15, ${color}30)` : '#fff')};
   border: ${({ type }) => (type === 'plain' ? '1px solid #e2e9ec' : '1px solid #fff')};
   border-radius: 50%;
   text-align: center;
@@ -78,8 +76,10 @@ const Button = styled.button`
       `;
     }
   }};
-  width: ${({ width }) => `${width}px`};
-  height: ${({ height }) => `${height}px`};
+  ${({ size }) => css`
+    width: ${size}px;
+    height: ${size}px;
+  `}
   color: ${({ color }) => color || '#8da2b5'};
   background-image: ${({ color }) => (color ? `linear-gradient(${color}15, ${color}30)` : 'none')};
 
@@ -126,8 +126,7 @@ RoundButton.propTypes = {
 RoundButton.defaultProps = {
   type: 'plain',
   imgSize: 18,
-  width: 42,
-  height: 42,
+  size: 42,
   disabled: false,
 };
 

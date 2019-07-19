@@ -1103,9 +1103,6 @@ export class ActionGroup extends PureComponent {
         <div className="title-group-sub">
           <Tooltip title="Settings" position="bottom">
             <RoundButton
-              type="plain"
-              width={42}
-              height={42}
               active={showSettings.show}
               icon={CogIcon}
               onClick={() => {

@@ -24,17 +24,7 @@ const TestingHeader = (props) => {
   return (
     <>
       <Tooltip title="Share Test" position="bottom">
-        <RoundButton
-          id="icon-share"
-          active={share}
-          type="color"
-          color="#5b9dfa"
-          width={42}
-          height={42}
-          icon={ShareIcon}
-          onClick={makeConfig}
-          imgSize={15}
-        />
+        <RoundButton id="icon-share" active={share} type="color" color="#5b9dfa" icon={ShareIcon} onClick={makeConfig} imgSize={15} />
       </Tooltip>
       <Popover placement="bottom" isOpen={share} target="icon-share" toggle={makeConfig} className="mt-3 share">
         <PopoverBody>

@@ -84,8 +84,7 @@ class UserTesting extends React.Component {
                   type="color"
                   color="#5b9dfa"
                   active={this.state.share}
-                  width={44}
-                  height={44}
+                  size={44}
                   icon={ShareIcon}
                   onClick={this.toggleShare}
                   imgSize={15}

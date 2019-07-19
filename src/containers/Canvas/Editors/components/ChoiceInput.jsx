@@ -116,26 +116,26 @@ class ChoiceInput extends React.Component {
   };
 
   renderUtterances(utterances) {
-    if (Array.isArray(utterances)) {
-      return utterances.map((utterance, index) => {
-        if (index === 0) {
-          return null;
-        }
-
-        return (
-          <div className="choice-utterance" key={utterance.key}>
-            <ContainedTextarea value={utterance.text} index={index} onChange={this.updateSample} />
-            <i
-              onClick={(e) => {
-                this.deleteUtterance(e, index);
-              }}
-              className="fas fa-backspace trash-icon mt-2"
-            />
-          </div>
-        );
-      });
+    if (!Array.isArray(utterances)) {
+      return null;
     }
-    return null;
+    return utterances.map((utterance, index) => {
+      if (index === 0) {
+        return null;
+      }
+
+      return (
+        <div className="choice-utterance" key={utterance.key}>
+          <ContainedTextarea value={utterance.text} index={index} onChange={this.updateSample} />
+          <i
+            onClick={(e) => {
+              this.deleteUtterance(e, index);
+            }}
+            className="fas fa-backspace trash-icon mt-2"
+          />
+        </div>
+      );
+    });
   }
 
   toggleOpen = () => {

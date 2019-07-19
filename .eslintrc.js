@@ -6,6 +6,7 @@ module.exports = {
   rules: {
     // errors
     'no-param-reassign': ['error', { props: false }],
+    'react/jsx-fragments': 'error',
     'no-console': ['error', { allow: ['error'] }],
     quotes: ['error', 'single', 'avoid-escape'],
     'no-secrets/no-secrets': ['error', { tolerance: 4.2 }],

@@ -14,16 +14,22 @@ import TestingHeaderWrapper from './TestingHeaderWrapper';
 import SvgIcon from '@/components/SvgIcon';
 import StartTestIcon from '@/svgs/forward.svg';
 import LeftIcon from '@/svgs/arrow-left.svg';
-import { startTest } from '@/ducks/test';
+import { startTest, resetTest } from '@/ducks/test';
 
 const TestingHeader = (props) => {
-  const { page, skill, history, leaveTest, preview, startTest, status } = props;
+  const { page, skill, history, leaveTest, preview, startTest, status, resetTest } = props;
   const active = status !== TEST_STATUS.IDLE;
 
   const renderLeftHeader = () => {
     if (active) {
       return (
-        <div className="testing-back" onClick={history.push('/')}>
+        <div
+          className="testing-back"
+          onClick={() => {
+            history.push(`/canvas/${skill.skill_id}/${skill.diagram}`);
+            leaveTest();
+          }}
+        >
           <SvgIcon icon={LeftIcon} className="icon-back" />
           Back
         </div>
@@ -31,21 +37,21 @@ const TestingHeader = (props) => {
     } else {
       return (
         <div className="testing-back-named">
-          <Link to="/" className="mx-3">
-            <SvgIcon icon={LeftIcon} className="icon-back" />
-          </Link>
+          <SvgIcon icon={LeftIcon} className="icon-back" onClick={() => history.push('/')} />
           {(skill && skill.name) || 'Loading Skill'}
         </div>
       );
     }
   };
+
   return (
     <TestingHeaderWrapper>
       <Header
         history={history}
-        leftRenderer={renderLeftHeader}
+        leftRenderer={() => renderLeftHeader()}
         centerRenderer={() => (
           <div id="middle-group">
+            {active === TEST_STATUS.ENDED && <div>Completed •</div>}
             <TestTimer />
           </div>
         )}
@@ -68,7 +74,14 @@ const TestingHeader = (props) => {
                 {/*>*/}
                 {/*  Back to Canvas*/}
                 {/*</Button>*/}
-                <Button variant="contained" className={cn('publish-btn')} onClick={startTest}>
+                <Button
+                  variant="contained"
+                  className={cn('publish-btn')}
+                  onClick={async () => {
+                    await resetTest();
+                    await startTest();
+                  }}
+                >
                   Start Test
                   <div className="publish-spinner">
                     <div className="spinner-icon">
@@ -94,6 +107,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   leaveTest,
   startTest,
+  resetTest,
 };
 
 export default connect(

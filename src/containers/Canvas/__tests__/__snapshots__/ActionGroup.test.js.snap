@@ -275,6 +275,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       unmountHTMLWhenHide={false}
     >
       <RoundButton
+        active={false}
         disabled={false}
         height={42}
         icon="cog.svg"

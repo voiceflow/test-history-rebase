@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
-import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Input, Popover, PopoverBody, UncontrolledDropdown } from 'reactstrap';
+import { Alert, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input, Popover, PopoverBody } from 'reactstrap';
 
 import Button from '@/components/Button';
 import RoundButton from '@/components/Button/RoundButton';
@@ -60,6 +60,7 @@ const filter_projects = (projects, filter) => {
 export const DashBoard = (props) => {
   const [loading, toggleLoading] = useState(true);
   const [filter_text, handleFilterText] = useState('');
+  const [showInfo, setShowInfo] = useState(false);
   const [loading_modal, toggleLoadingModal] = useState(false);
   const [show_updates_modal, toggleShowUpdatesModal] = useState(false);
   const [team_setting, setTeamSetting] = useState(null);
@@ -196,13 +197,15 @@ export const DashBoard = (props) => {
 
   const renderUpdatesButton = () => {
     if (!show_update_bubble) {
-      return <RoundButton type="plain" width={42} height={42} icon={NotificationsIcon} onClick={updateButtonClick} imgSize={15} />;
+      return (
+        <RoundButton type="plain" active={updates_open} width={42} height={42} icon={NotificationsIcon} onClick={updateButtonClick} imgSize={15} />
+      );
     }
     return (
       <div className="dropdown-update-container" onMouseEnter={() => toggleUpdatesHover(true)} onMouseLeave={() => toggleUpdatesHover(false)}>
         <div className="dropdown-update-bubble" />
         {!updates_hover && !updates_open ? (
-          <RoundButton type="plain" width={42} height={42} icon={NotificationsIcon} onClick={updateButtonClick} imgSize={15} />
+          <RoundButton type="plain" active={updates_open} width={42} height={42} icon={NotificationsIcon} onClick={updateButtonClick} imgSize={15} />
         ) : (
           <div className={cn('dropdown-button-numbered')} onClick={updateButtonClick}>
             <div className="update-number-circle">{new_product_updates.length}</div>
@@ -256,10 +259,10 @@ export const DashBoard = (props) => {
                 </Popover>
               </div>
               <div className="subheader-right ml-2">
-                <UncontrolledDropdown>
+                <Dropdown isOpen={showInfo} toggle={() => setShowInfo(!showInfo)}>
                   <DropdownToggle className="ml-1" tag="div">
                     <Tooltip distance={19} title="Resources" position="bottom">
-                      <RoundButton type="plain" width={42} height={42} icon={InformationIcon} imgSize={15} />
+                      <RoundButton type="plain" width={42} height={42} icon={InformationIcon} imgSize={15} active={showInfo} />
                     </Tooltip>
                   </DropdownToggle>
                   <DropdownMenu className="mt-2">
@@ -276,7 +279,7 @@ export const DashBoard = (props) => {
                       <DropdownItem>Forums</DropdownItem>
                     </a>
                   </DropdownMenu>
-                </UncontrolledDropdown>
+                </Dropdown>
               </div>
             </div>
           )}

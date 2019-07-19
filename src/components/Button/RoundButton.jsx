@@ -4,6 +4,31 @@ import styled, { css } from 'styled-components';
 
 import SvgIcon from '@/components/SvgIcon';
 
+const activeStyles = css`
+  ${({ type }) => {
+    if (type !== 'plain') {
+      return css`border: 1px solid #fff !important;
+        -webkit-box-shadow: 0 0 0 1px rgba(184, 218, 255, 1);
+        -moz-box-shadow: 0 0 0 1px rgba(184, 218, 255, 1);
+        background-color: ${({ type }) => (type === 'shadow' ? '#5b9dfa30' : 'initial')}
+        color: ${({ type }) => (type === 'shadow' ? '#5b9dfa' : 'initial')}
+        box-shadow: ${({ color, type }) => {
+          if (color) {
+            return `0 0 0 1px ${color}99`;
+          }
+          if (type === 'shadow') {
+            return '0 0 0 1px 5b9dfa99';
+          }
+          return '0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16)';
+        }}`;
+    }
+    return css`
+      background-color: #eef4f6cc;
+      color: #113160;
+    `;
+  }}
+`;
+
 const Button = styled.button`
   position: relative;
   display: flex;
@@ -57,30 +82,9 @@ const Button = styled.button`
       }
     }}
   }
-
+  ${({ active }) => active && activeStyles}
   &:active {
-    ${({ type }) => {
-      if (type !== 'plain') {
-        return css`border: 1px solid #fff !important;
-        -webkit-box-shadow: 0 0 0 1px rgba(184, 218, 255, 1);
-        -moz-box-shadow: 0 0 0 1px rgba(184, 218, 255, 1);
-        background-color: ${({ type }) => (type === 'shadow' ? '#5b9dfa30' : 'initial')}
-        color: ${({ type }) => (type === 'shadow' ? '#5b9dfa' : 'initial')}
-        box-shadow: ${({ color, type }) => {
-          if (color) {
-            return `0 0 0 1px ${color}99`;
-          }
-          if (type === 'shadow') {
-            return '0 0 0 1px 5b9dfa99';
-          }
-          return '0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16)';
-        }}`;
-      }
-      return css`
-        background-color: #eef4f6cc;
-        color: #113160;
-      `;
-    }}
+    ${activeStyles}
   }
 `;
 

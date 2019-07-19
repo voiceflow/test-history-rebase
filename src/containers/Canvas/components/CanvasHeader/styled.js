@@ -38,4 +38,12 @@ export const ProjectTitleContainer = styled.div`
   overflow-x: hidden;
   text-overflow: ellipsis;
   font-size: 18px;
+  display: flex;
+  align-items: center;
+  .icon-back {
+    margin-right: 30px;
+    margin-left: 4px;
+    line-height: inherit;
+    cursor: pointer;
+  }
 `;

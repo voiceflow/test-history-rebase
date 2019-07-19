@@ -10,13 +10,9 @@ const TestingHeaderWrapper = styled.div`
     padding-right: 32px;
     border-right: 1px solid #eaeff4;
     padding-left: 6px;
-  }
-
-  .testing-back-named {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-left: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 18px;
   }
 
   .icon-back {
@@ -70,6 +66,12 @@ const TestingHeaderWrapper = styled.div`
       justify-content: center;
       align-items: center;
     }
+  }
+
+  .separator-dot {
+    color: #8da2b5;
+    margin-left: 12px;
+    margin-right: 12px;
   }
 `;
 

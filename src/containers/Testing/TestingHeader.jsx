@@ -10,12 +10,14 @@ import { TEST_STATUS, leaveTest, resetTest, startTest } from '@/ducks/test';
 import LeftIcon from '@/svgs/arrow-left.svg';
 import StartTestIcon from '@/svgs/forward.svg';
 
+import { updateVersion } from '../../ducks/version';
+import ProjectTitle from '../Canvas/components/CanvasHeader/components/ProjectTitle';
 import ShareTest from './ShareTest';
 import TestingHeaderWrapper from './TestingHeaderWrapper';
 import TestTimer from './TestingTimer';
 
 const TestingHeader = (props) => {
-  const { page, skill, history, leaveTest, preview, startTest, status, resetTest } = props;
+  const { page, skill, history, leaveTest, preview, startTest, status, resetTest, updateSkill } = props;
   const active = status !== TEST_STATUS.IDLE;
   const running = status === TEST_STATUS.ACTIVE;
 
@@ -34,12 +36,7 @@ const TestingHeader = (props) => {
         </div>
       );
     }
-    return (
-      <div className="testing-back-named">
-        <SvgIcon icon={LeftIcon} className="icon-back" onClick={() => history.push('/')} />
-        {(skill && skill.name) || 'Loading Skill'}
-      </div>
-    );
+    return <ProjectTitle onChange={updateSkill} />;
   };
 
   return (
@@ -49,7 +46,11 @@ const TestingHeader = (props) => {
         leftRenderer={() => renderLeftHeader()}
         centerRenderer={() => (
           <div id="middle-group">
-            {status === TEST_STATUS.ENDED && <div>Completed •&nbsp;</div>}
+            {status === TEST_STATUS.ENDED && (
+              <div>
+                Completed<span className="separator-dot">•</span>
+              </div>
+            )}
             <TestTimer />
           </div>
         )}
@@ -83,7 +84,7 @@ const TestingHeader = (props) => {
             </div>
           </>
         )}
-        subHeaderRenderer={() => !preview && <SecondaryNavBar page={page} history={history} />}
+        subHeaderRenderer={() => !preview && !active && <SecondaryNavBar page={page} history={history} />}
       />
     </TestingHeaderWrapper>
   );
@@ -98,6 +99,7 @@ const mapDispatchToProps = {
   leaveTest,
   startTest,
   resetTest,
+  updateSkill: updateVersion,
 };
 
 export default connect(

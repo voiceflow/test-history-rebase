@@ -20,7 +20,7 @@ class TestTimer extends React.Component {
   }
 
   render() {
-    return <label>{moment.utc(this.props.time && Date.now() - this.props.time * 1000).format('mm:ss')}</label>;
+    return <span className="tt__time">{moment.utc(this.props.time && Date.now() - this.props.time * 1000).format('mm:ss')}</span>;
   }
 }
 const mapStateToProps = (state) => ({

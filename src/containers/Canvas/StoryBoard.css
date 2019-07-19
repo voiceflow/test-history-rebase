@@ -1461,6 +1461,7 @@
   bottom: 0;
   left: 0;
   overflow-x: hidden;
+  transition: top 0.2s ease;
 }
 
 #app.secondary-padding > #canvas {
@@ -3715,4 +3716,8 @@ button.close:hover{
 
 .disabled {
   opacity: 0.3;
+}
+
+.testing_mode {
+  top: 66px !important;
 }

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Editor render 1`] = `
+<withStateHandlers(Editor)
+  addUndo={[Function]}
+  clearUndo={[Function]}
+  diagram_level_intents={Object {}}
+  diagrams={Array []}
+  global_variables={Array []}
+  google_publish_info={Object {}}
+  history={Object {}}
+  locals={Array []}
+  node={Object {}}
+  open={true}
+  platform="mockString"
+  redoEvents={Array []}
+  removeUndo={[Function]}
+  shiftUndo={[Function]}
+  undoEvents={Array []}
+  variables={Array []}
+/>
+`;

@@ -4,16 +4,15 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 
 export const SvgIconContainer = styled.span`
-  display: inline-block;
-  color: ${({ color }) => color || 'inherit'};
-
-  ${({ height, width }) => css`
-    height: ${height}px;
-    width: ${width}px;
-  `};
+  color: ${({ color }) => color};
 
   & > svg {
     display: block;
+
+    ${({ size, height = size, width = size }) => css`
+      height: ${height}px;
+      width: ${width}px;
+    `};
   }
 
   &:hover {
@@ -31,14 +30,15 @@ function SvgIcon({ icon: Icon, ...props }) {
 
 SvgIcon.propTypes = {
   icon: PropTypes.elementType,
+  size: PropTypes.number,
   height: PropTypes.number,
   width: PropTypes.number,
   color: PropTypes.string,
 };
 
 SvgIcon.defaultProps = {
-  height: 16,
-  width: 16,
+  size: 16,
+  color: '#6E849A',
 };
 
 export default SvgIcon;

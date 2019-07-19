@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MultiModal not loading renders MultiModal 1`] = `
+<div
+  className="px-4 mx-3 mb-5 pt-3"
+>
+  <div
+    className="products-container position-relative"
+  >
+    <div
+      className="space-between w-100 px-3"
+    >
+      <h5
+        className="text-muted mb-0"
+      >
+        Visuals
+      </h5>
+      <div>
+        <Button
+          className="mr-2"
+          iconPosition="right"
+          isFlat={true}
+          onClick={[Function]}
+          onRef={[Function]}
+          trackEvent="Button Click"
+          varient="contained"
+        >
+          Back
+        </Button>
+        <Button
+          color="publish"
+          iconPosition="right"
+          isPrimary={true}
+          onClick={[Function]}
+          onRef={[Function]}
+          trackEvent="Button Click"
+          variant="contained"
+        >
+          New Display
+        </Button>
+      </div>
+    </div>
+    <MasonryComponent
+      className=""
+      disableImagesLoaded={false}
+      elementType="div"
+      enableResizableChildren={false}
+      imagesLoadedOptions={
+        Object {
+          "columnWidth": "200",
+          "itemSelector": ".grid-item",
+        }
+      }
+      onLayoutComplete={[Function]}
+      onRemoveComplete={[Function]}
+      options={Object {}}
+      updateOnEachImageLoad={false}
+    >
+      <VoiceCards
+        buttonLabel="Edit Visual"
+        deleteLabel="Delete Visual"
+        id="displayMockId"
+        key="displayMockId"
+        name="VisualTmplateTest"
+        onClick={[Function]}
+        onDelete={[Function]}
+        placeholder={
+          <div
+            className="no-image card-image"
+          >
+            <h1>
+              V
+            </h1>
+          </div>
+        }
+      />
+      <VoiceCards
+        buttonLabel="Edit Visual"
+        deleteLabel="Delete Visual"
+        id="displayMockId2"
+        key="displayMockId2"
+        name="VisualTmplateTest2"
+        onClick={[Function]}
+        onDelete={[Function]}
+        placeholder={
+          <div
+            className="no-image card-image"
+          >
+            <h1>
+              V
+            </h1>
+          </div>
+        }
+      />
+      <VoiceCards
+        buttonLabel="Edit Visual"
+        deleteLabel="Delete Visual"
+        id="displayMockId3"
+        key="displayMockId3"
+        name="VisualTmplateTest3"
+        onClick={[Function]}
+        onDelete={[Function]}
+        placeholder={
+          <div
+            className="no-image card-image"
+          >
+            <h1>
+              V
+            </h1>
+          </div>
+        }
+      />
+      <EmptyCard
+        onClick={[Function]}
+      />
+    </MasonryComponent>
+  </div>
+</div>
+`;
+
+exports[`MultiModal not loading renders MultiModal loading 1`] = `
+<Spinner
+  name="Displays"
+/>
+`;
+
+exports[`MultiModal not loading renders MultiModal no existing displays 1`] = `
+<Spinner
+  name="Displays"
+/>
+`;

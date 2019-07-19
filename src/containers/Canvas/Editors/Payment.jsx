@@ -1,10 +1,11 @@
-import Button from 'components/Button';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { Alert } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 import { selectStyles } from '../../../components/VariableSelect/VariableSelect';
 import MenuItem from '../Sidebars/components/MenuItem';
@@ -114,14 +115,7 @@ export class Payment extends Component {
 
     const productOptions = _.cloneDeep(this.props.products);
 
-    const options = productOptions.map((product, idx) => {
-      if (idx === productOptions.length - 1) {
-        return {
-          value: product.id,
-          label: product.name,
-          openProductPage: this.openProductPage,
-        };
-      }
+    const options = productOptions.map((product) => {
       return {
         value: product.id,
         label: product.name,
@@ -172,9 +166,11 @@ export class Payment extends Component {
     }
     return (
       <React.Fragment>
-        <label>Select Existing Product</label>
-        <div onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/products`)} className="d__see_all">
-          See all
+        <div className="d__label-title">
+          <label>Select Existing Product</label>
+          <div className="d__see_all" onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/products`)}>
+            See all
+          </div>
         </div>
         <Select
           classNamePrefix="select-box"

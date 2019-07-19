@@ -2,15 +2,24 @@ import './DashBoard.css';
 
 import axios from 'axios';
 import cn from 'classnames';
-import Button from 'components/Button';
-import RoundButton from 'components/Button/RoundButton';
-import DragLayer from 'components/DragLayer';
-import Header from 'components/Header';
-import LoadingModal from 'components/Modals/LoadingModal';
-import UpdatesModal from 'components/Modals/UpdatesModal';
-import { Members } from 'components/User/User';
-import { ScrollContextProvider } from 'contexts';
-import { unnormalize } from 'ducks/_normalize';
+import _ from 'lodash';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Tooltip } from 'react-tippy';
+import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Input, Popover, PopoverBody, UncontrolledDropdown } from 'reactstrap';
+
+import Button from '@/components/Button';
+import RoundButton from '@/components/Button/RoundButton';
+import DragLayer from '@/components/DragLayer';
+import Header from '@/components/Header';
+import LoadingModal from '@/components/Modals/LoadingModal';
+import UpdatesModal from '@/components/Modals/UpdatesModal';
+import { Members } from '@/components/User/User';
+import { YOUTUBE_CHANNEL_ID } from '@/config';
+import { ScrollContextProvider } from '@/contexts';
+import { unnormalize } from '@/ducks/_normalize';
 import {
   addBoard,
   changeListPosition,
@@ -21,21 +30,14 @@ import {
   renameList,
   updateBoards,
   updateLists,
-} from 'ducks/board';
-import { setConfirm, setError } from 'ducks/modal';
-import { copyProject, deleteProject, updateProjects } from 'ducks/project';
-import { getMembers } from 'ducks/team';
-import { useScrollHelpers } from 'hooks/scroll';
-import _ from 'lodash';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Tooltip } from 'react-tippy';
-import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Input, Popover, PopoverBody, UncontrolledDropdown } from 'reactstrap';
-import NotificationsIcon from 'svgs/Notifications.svg';
-import AddIcon from 'svgs/add-step.svg';
-import InformationIcon from 'svgs/information.svg';
+} from '@/ducks/board';
+import { setConfirm, setError } from '@/ducks/modal';
+import { copyProject, deleteProject, updateProjects } from '@/ducks/project';
+import { getMembers } from '@/ducks/team';
+import { useScrollHelpers } from '@/hooks/scroll';
+import NotificationsIcon from '@/svgs/Notifications.svg';
+import AddIcon from '@/svgs/add-step.svg';
+import InformationIcon from '@/svgs/information.svg';
 
 import ExpiryButton from './ExpiryButton';
 import TeamSettings from './TeamSettings';
@@ -43,8 +45,7 @@ import UpdatesPopover from './UpdatesPopover';
 import { Item as ListItem } from './components/Item';
 import List, { List as SimpleList } from './components/List';
 
-// eslint-disable-next-line no-secrets/no-secrets
-const YOUTUBE_CHANNEL = 'https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ/videos';
+const YOUTUBE_CHANNEL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
 
 const filter_projects = (projects, filter) => {
   const filtered = {};
@@ -158,6 +159,15 @@ export const DashBoard = (props) => {
             setShowUpdateBubble(true);
           }
           setProductUpdates(updates.data.rows);
+        } else {
+          // For when there are no updates
+          setProductUpdates([
+            {
+              details: 'There are no new updates available.',
+              type: 'empty',
+              created: 0,
+            },
+          ]);
         }
       } catch (err) {
         console.error('there was an error getting the product updates: ', err);

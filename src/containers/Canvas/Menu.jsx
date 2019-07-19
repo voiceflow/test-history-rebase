@@ -5,6 +5,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 
+import { FACEBOOK_GROUP_ID } from '@/config';
+
 import Blocks from './Sidebars/Blocks';
 import Flows from './Sidebars/Flows';
 import Variables from './Sidebars/Variables';
@@ -40,8 +42,7 @@ const tabs = {
       tip: 'Access tutorials through Voiceflow University',
     },
     {
-      // eslint-disable-next-line no-secrets/no-secrets
-      link: 'https://www.facebook.com/groups/199476704186240/',
+      link: `https://www.facebook.com/groups/${FACEBOOK_GROUP_ID}/`,
       icon: <i className="fab fa-facebook-f" />,
       tip: 'Join the Voiceflow Facebook Community',
     },

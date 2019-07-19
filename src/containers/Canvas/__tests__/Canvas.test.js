@@ -4,7 +4,7 @@ import _ from 'lodash';
 import React from 'react';
 
 import { testSkill } from '../__mock__/MockSkill';
-import { Canvas } from '../index.jsx';
+import { Canvas } from '..';
 
 const setOnSave = jest.fn();
 const historyMock = { push: jest.fn() };

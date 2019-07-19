@@ -1,9 +1,10 @@
 import axios from 'axios';
-import Button from 'components/Button';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Form, FormGroup, Input, Label } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 class ProductUpdates extends Component {
   constructor(props) {

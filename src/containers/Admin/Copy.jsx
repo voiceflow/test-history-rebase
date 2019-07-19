@@ -1,11 +1,12 @@
 /* eslint no-restricted-globals: ["error", "isFinite"] */
 import axios from 'axios';
-import Button from 'components/Button';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
+
+import Button from '@/components/Button';
 
 function preventDefaultOnEnter(e) {
   if (e.charCode === 13) {

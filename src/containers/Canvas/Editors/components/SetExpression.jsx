@@ -1,8 +1,9 @@
-import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect';
-import { openTab } from 'ducks/user';
 import React from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
+
+import { selectStyles, variableComponent } from '@/components/VariableSelect/VariableSelect';
+import { openTab } from '@/ducks/user';
 
 import Expression from './Expression';
 import Expressionfy from './Expressionfy';

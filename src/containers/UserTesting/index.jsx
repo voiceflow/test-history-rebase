@@ -1,19 +1,19 @@
 import './UserTesting.css';
 
 import axios from 'axios';
-import RoundButton from 'components/Button/RoundButton';
-import ClipBoard from 'components/ClipBoard/ClipBoard';
-import Header from 'components/Header';
-import Test from 'containers/Canvas/Test';
-import { initializeTest, startTest, updateTest } from 'ducks/test';
-import { fetchVersionSuccess } from 'ducks/version';
-import _ from 'lodash';
 import React from 'react';
 import { IntercomAPI } from 'react-intercom';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { Input, InputGroup, InputGroupAddon, Popover, PopoverBody } from 'reactstrap';
-import ShareIcon from 'svgs/share.svg';
+
+import RoundButton from '@/components/Button/RoundButton';
+import ClipBoard from '@/components/ClipBoard/ClipBoard';
+import Header from '@/components/Header';
+import Test from '@/containers/Testing';
+import { initializeTest, updateTest } from '@/ducks/test';
+import { fetchVersionSuccess } from '@/ducks/version';
+import ShareIcon from '@/svgs/share.svg';
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["componentDidMount","componentWillUnmount","render"] }] */
 
 class UserTesting extends React.Component {
@@ -37,7 +37,7 @@ class UserTesting extends React.Component {
   }
 
   async fetchInformation() {
-    const { fetchVersionSuccess, initializeTest, updateTest, startTest, skill } = this.props;
+    const { fetchVersionSuccess, initializeTest, updateTest } = this.props;
     const { data } = await axios.get(`/test/getInfo/${this.props.match.params.skill_id}`);
     const skillData = data.skill;
     const globals = Array.isArray(skillData.global) ? skillData.global : [];
@@ -54,7 +54,6 @@ class UserTesting extends React.Component {
     this.setState({ loading: 0 });
     initializeTest({ userTest: true });
     updateTest({ rendered: 2 });
-    startTest(skill.diagram);
   }
 
   toggleShare = () => {
@@ -108,7 +107,7 @@ class UserTesting extends React.Component {
         />
         {!this.state.loading && (
           <div id="PublicUserTesting">
-            <Test open={true} enterFlow={_.noop} loading={this.state.loading} setSaveCB={_.noop} save={_.noop} />
+            <Test open={true} loading={this.state.loading} />
           </div>
         )}
       </>
@@ -123,7 +122,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   initializeTest,
   updateTest,
-  startTest,
   fetchVersionSuccess,
 };
 

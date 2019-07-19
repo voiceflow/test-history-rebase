@@ -1,9 +1,10 @@
 /* eslint-disable no-bitwise */
 // Convert older deprecated blocks to newer ones
-import { Toolkit } from 'components/SRD/Toolkit';
-import { BlockNodeModel } from 'components/SRD/models/BlockNodeModel';
 import _ from 'lodash';
 import randomstring from 'randomstring';
+
+import { Toolkit } from '@/components/SRD/Toolkit';
+import { BlockNodeModel } from '@/components/SRD/models/BlockNodeModel';
 
 const toolkit = new Toolkit();
 const generateID = () => {

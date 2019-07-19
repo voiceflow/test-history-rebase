@@ -7,8 +7,10 @@ import transform from 'lodash/transform';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import { autoFocusCreator, getTransform } from 'utils/forms';
-import { getIn, setIn } from 'utils/objects';
+
+import { IS_DEVELOPMENT } from '@/config';
+import { autoFocusCreator, getTransform } from '@/utils/forms';
+import { getIn, setIn } from '@/utils/objects';
 
 import { PropsBridgeUpdater } from '../PropsBridge';
 
@@ -324,7 +326,7 @@ export default class Form extends Component {
           validationsInProgress,
         })}
 
-        {process.env.NODE_ENV === 'development' &&
+        {IS_DEVELOPMENT &&
           Object.keys(errors).map((key) => {
             const value = errors[key];
             const isObject = typeof value === 'object';

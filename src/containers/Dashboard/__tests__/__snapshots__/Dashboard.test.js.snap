@@ -23,7 +23,7 @@ exports[`Dashboard render dashboard 1`] = `
       show_update_modal={false}
       toggle={[Function]}
     />
-    <Connect(Header)
+    <Header
       leftRenderer={[Function]}
       rightRenderer={[Function]}
       subHeaderRenderer={[Function]}
@@ -116,13 +116,14 @@ exports[`Dashboard render dashboard 1`] = `
                     trigger="mouseenter focus"
                     unmountHTMLWhenHide={false}
                   >
-                    <Button
-                      className="mt-1 add-button"
-                      iconPosition="right"
-                      isNavBordered={true}
+                    <RoundButton
+                      disabled={false}
+                      height={42}
+                      icon="add-step.svg"
+                      imgSize={15}
                       onClick={[Function]}
-                      onRef={[Function]}
-                      trackEvent="Button Click"
+                      type="shadow"
+                      width={42}
                     />
                   </Tooltip>
                 </div>

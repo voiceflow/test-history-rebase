@@ -59,7 +59,7 @@
   display: none;
 }
 
-.switch-input.checked+.switch-label {
+.switch-input.checked + .switch-label {
   color: rgba(0, 0, 0, 0.65);
   font-weight: bold;
   text-shadow: 0 1px rgba(255, 255, 255, 0.25);
@@ -73,7 +73,7 @@
   background-image: url('/saved.svg'), linear-gradient(-180deg, rgba(62, 207, 142, 0.09), rgba(62, 207, 142, 0.25) 98%) !important;
 }
 
-.switch-input.checked+.switch-label-on~.switch-selection {
+.switch-input.checked + .switch-label-on ~ .switch-selection {
   /* Note: right: 50% doesn't transition in WebKit */
   right: 80px;
 }
@@ -149,12 +149,6 @@
 
 .settings-content .content {
   min-width: 0;
-}
-
-.d__see_all {
-  float: right;
-  color: #5d9df5;
-  cursor: pointer;
 }
 
 .ag__settings_header {

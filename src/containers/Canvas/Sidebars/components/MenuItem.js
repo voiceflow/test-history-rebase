@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 
-import { ALLOWED_GOOGLE_BLOCKS } from 'Constants';
+import { ALLOWED_GOOGLE_BLOCKS } from '../../Constants';
 
 const MenuItem = ({ draggable, item, platform, data, name }) => (
   <div className="wrap" style={!draggable ? { opacity: 0.3 } : null}>

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { DefaultNodeModel,Toolkit } from './../main.js'
 import { BlockPortModel } from './BlockPortModel';
 import memoizeOne from 'memoize-one'
-import isEqual from 'utils/react-fast-compare';
+import isEqual from '@/utils/react-fast-compare';
 
 const toolkit = new Toolkit();
 

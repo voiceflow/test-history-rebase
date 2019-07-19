@@ -1,14 +1,15 @@
 import './Expression.css';
 
 import cn from 'classnames';
-import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect';
-import { openTab } from 'ducks/user';
-import { useToggle } from 'hooks/toggle';
 import { parse } from 'mathjs';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Dropdown, DropdownMenu, DropdownToggle, Input } from 'reactstrap';
+
+import { selectStyles, variableComponent } from '@/components/VariableSelect/VariableSelect';
+import { openTab } from '@/ducks/user';
+import { useToggle } from '@/hooks/toggle';
 
 import { groups, levels, symbols } from './Expression.config';
 import VariableText from './VariableText';

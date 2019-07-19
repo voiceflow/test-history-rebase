@@ -1,11 +1,7 @@
 import './Skill.css';
 
+import { constants } from '@voiceflow/common';
 import axios from 'axios';
-import DefaultButton from 'components/Button';
-import GoogleAuth from 'components/Modals/GoogleAuthenticationModalContent';
-import { ModalHeader } from 'components/Modals/ModalHeader';
-import { dialogflowToken, googleAccessToken, verifyGoogleToken } from 'ducks/account';
-import { setConfirm, setError } from 'ducks/modal';
 import * as _ from 'lodash';
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
@@ -13,7 +9,13 @@ import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { Alert, Button, ButtonGroup, Collapse, Form, FormGroup, Input, Label, Modal, ModalBody } from 'reactstrap';
 
-import { GOOGLE_LOCALES } from 'Constants';
+import DefaultButton from '@/components/Button';
+import GoogleAuth from '@/components/Modals/GoogleAuthenticationModalContent';
+import { ModalHeader } from '@/components/Modals/ModalHeader';
+import { dialogflowToken, googleAccessToken, verifyGoogleToken } from '@/ducks/account';
+import { setConfirm, setError } from '@/ducks/modal';
+
+const { GOOGLE_LOCALES } = constants.locales;
 
 const MAX_SIZE = 10 * 1024 * 1024;
 

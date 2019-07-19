@@ -1,13 +1,14 @@
-import AudioDrop from 'components/Uploads/AudioDrop';
-import VariableText from 'containers/Canvas/Editors/components/VariableText';
+import { constants } from '@voiceflow/common';
 import { clone } from 'lodash';
 import React, { PureComponent } from 'react';
 import Select from 'react-select';
 import Textarea from 'react-textarea-autosize';
 import { Button, ButtonGroup } from 'reactstrap';
 
-import { VOICES } from 'Constants';
+import AudioDrop from '@/components/Uploads/AudioDrop';
+import VariableText from '@/containers/Canvas/Editors/components/VariableText';
 
+const VOICES = constants.voices;
 const TABS = ['text', 'audio'];
 
 class Prompt extends PureComponent {

@@ -173,8 +173,13 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       />
     </div>
     <Connect(Settings)
-      page="basic"
       platform="alexa"
+      showSettings={
+        Object {
+          "show": false,
+          "tag": "basic",
+        }
+      }
       skill={
         Object {
           "account_linking": null,
@@ -218,6 +223,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
           "slots": Array [],
         }
       }
+      tag="basic"
       user={
         Object {
           "email": "jdoe@gmail.com",
@@ -228,11 +234,72 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       }
     />
   </Modal>
-  <Connect(Header)
-    centerRenderer={[Function]}
-    leftRenderer={[Function]}
-    rightRenderer={[Function]}
-    subHeaderRenderer={[Function]}
+  <div
+    className="title-group-sub"
+  >
+    <Tooltip
+      animateFill={true}
+      animation="shift"
+      arrow={false}
+      arrowSize="regular"
+      className=""
+      delay={0}
+      disabled={false}
+      distance={10}
+      duration={375}
+      followCursor={false}
+      hideDelay={0}
+      hideDuration={375}
+      hideOnClick={true}
+      html={null}
+      inertia={false}
+      interactive={false}
+      interactiveBorder={2}
+      multiple={false}
+      offset={0}
+      onHidden={[Function]}
+      onHide={[Function]}
+      onRequestClose={[Function]}
+      onShow={[Function]}
+      onShown={[Function]}
+      popperOptions={Object {}}
+      position="bottom"
+      size="regular"
+      sticky={false}
+      stickyDuration={200}
+      style={Object {}}
+      theme="dark"
+      title="Settings"
+      touchHold={false}
+      trigger="mouseenter focus"
+      unmountHTMLWhenHide={false}
+    >
+      <RoundButton
+        disabled={false}
+        height={42}
+        icon="cog.svg"
+        imgSize={15}
+        onClick={[Function]}
+        type="plain"
+        width={42}
+      />
+    </Tooltip>
+  </div>
+  <div
+    className="title-group-sub"
+  >
+    <Connect(TestingHeader)
+      render={true}
+    />
+  </div>
+  <UploadButton
+    isUploadLoading={[Function]}
+    openUpdate={[Function]}
+    openUpdateLive={[Function]}
+    platform="alexa"
+    show_upload_prompt={false}
+    toggleVendors={[Function]}
+    toggle_upload_prompt={[Function]}
   />
 </Fragment>
 `;

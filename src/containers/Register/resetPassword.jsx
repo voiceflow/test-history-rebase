@@ -1,9 +1,14 @@
+/* eslint-disable sonarjs/no-duplicate-string */
+
 import axios from 'axios';
 import cn from 'classnames';
-import Button from 'components/Button';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Alert, FormGroup, Input } from 'reactstrap';
+import { FormGroup, Input } from 'reactstrap';
+
+import Button from '@/components/Button';
+
+import { AuthBox } from './AuthBoxes';
+import AuthenticationContainer from './AuthenticationWrapper';
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -14,6 +19,7 @@ class ResetPassword extends Component {
       confirm: '',
       stage: 0,
       error: null,
+      email: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -35,7 +41,6 @@ class ResetPassword extends Component {
         if (err.response.status < 500) {
           this.setState({
             stage: 4,
-            error: 'This Reset Link is Invalid or Expired',
           });
         } else {
           this.setState({
@@ -82,8 +87,34 @@ class ResetPassword extends Component {
     return false;
   }
 
+  resetEmail = (e) => {
+    e.preventDefault();
+    const { email } = this.state;
+    axios
+      .post('/user/reset', {
+        email,
+      })
+      .then(() => {
+        this.setState({ stage: 5 });
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 409) {
+          this.setState({
+            error: 'Too many password reset attempts - Wait 24 hours before the next attempt',
+            stage: 4,
+          });
+        } else {
+          this.setState({
+            error: 'Something went wrong, please wait and retry or contact support',
+            stage: 4,
+          });
+        }
+      });
+    return false;
+  };
+
   renderStage() {
-    const { stage, error, confirm, password } = this.state;
+    const { stage, confirm, password } = this.state;
 
     switch (stage) {
       case 0:
@@ -100,22 +131,18 @@ class ResetPassword extends Component {
       case 1:
         return (
           <form onSubmit={this.resetPassword} className="w-100">
-            {error && (
-              <Alert color="danger" className="text-center">
-                {error}
-              </Alert>
-            )}
-            <h5 className="text-muted">Please Enter Your New Password</h5>
             <FormGroup>
               <Input
+                className="form-bg"
                 type="password"
                 name="password"
                 onChange={this.handleChange}
                 placeholder="New Password"
                 required
                 minLength="8"
-                className="mb-2"
               />
+            </FormGroup>
+            <FormGroup>
               <Input
                 type="password"
                 name="confirm"
@@ -123,14 +150,22 @@ class ResetPassword extends Component {
                 placeholder="Confirm Password"
                 required
                 minLength="8"
-                className={cn({
+                className={cn('form-bg', {
                   invalid: password !== confirm,
                 })}
               />
             </FormGroup>
-            <Button block className="login-btn" type="submit">
-              Reset Password
-            </Button>
+            <div style={{ height: '45px', marginTop: '32px' }}>
+              <div className="float-left auth__link">
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <a onClick={() => this.props.history.push('/login')}>Back to Signing in</a>
+              </div>
+              <div className="float-right">
+                <Button isPrimary isBlock type="submit">
+                  Update Password
+                </Button>
+              </div>
+            </div>
           </form>
         );
       case 2:
@@ -147,16 +182,56 @@ class ResetPassword extends Component {
       case 3:
         return (
           <div className="text-center">
-            <Alert color="success">Your Password Has Been Reset</Alert>
+            <div className="confirm-helper">Your Password Has Been Reset</div>
+            <div style={{ marginTop: '32px' }}>
+              <div className="auth__link">
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <a onClick={() => this.props.history.push('/login')}>Back to Signing in</a>
+              </div>
+            </div>
           </div>
         );
       case 4:
         return (
           <div>
-            <Alert color="danger" className="text-center">
-              {error}
-            </Alert>
+            <div className="confirm-helper">The password reset link has expired or is invalid. Please enter your email below to start again.</div>
+            <form onSubmit={this.resetEmail} className="w-100">
+              <FormGroup>
+                <Input
+                  className="form-bg"
+                  type="email"
+                  name="email"
+                  onChange={this.handleChange}
+                  placeholder="Email address"
+                  required
+                  minLength="6"
+                />
+              </FormGroup>
+              <div style={{ height: '45px', marginTop: '32px' }}>
+                <div className="float-left auth__link">
+                  {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                  <a onClick={() => this.props.history.push('/login')}>Back to Signing in</a>
+                </div>
+                <div className="float-right">
+                  <Button isPrimary isBlock type="submit">
+                    Reset Password
+                  </Button>
+                </div>
+              </div>
+            </form>
           </div>
+        );
+      case 5:
+        return (
+          <>
+            <div className="confirm-helper">
+              The confirmation link has been sent to name@domain.com. If it doesn't appear within a few minutes, check your span folder.
+            </div>
+            <div className="auth__link">
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+              <a onClick={() => this.props.history.push('/login')}>Back to Signing in</a>
+            </div>
+          </>
         );
       default:
         return null;
@@ -165,20 +240,19 @@ class ResetPassword extends Component {
 
   render() {
     return (
-      <div className="d-flex flex-row align-items-center justify-content-center" id="main">
-        <div id="side-form">
-          <div id="reset-form">
-            <img className="login-logo" src="/logo.png" alt="logo" />
-            <div className="p-4 p-md-5">
-              <div className="reset-div">{this.renderStage()}</div>
-              <hr />
-              <div className="text-center mt-3">
-                <Link to="/login">Return to Login</Link>
+      <AuthenticationContainer>
+        <AuthBox>
+          <div className="auth-form-wrapper">{this.renderStage()}</div>
+          {this.state.error && (
+            <div className="errorContainer row">
+              <div className="col-1">
+                <img src="/error.svg" alt="" />
               </div>
+              <div className="col-11">{this.state.error}</div>
             </div>
-          </div>
-        </div>
-      </div>
+          )}
+        </AuthBox>
+      </AuthenticationContainer>
     );
   }
 }

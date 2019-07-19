@@ -1,7 +1,8 @@
-import SvgIcon from 'components/SvgIcon';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled, { css } from 'styled-components';
+
+import SvgIcon from '@/components/SvgIcon';
 
 const Button = styled.button`
   position: relative;

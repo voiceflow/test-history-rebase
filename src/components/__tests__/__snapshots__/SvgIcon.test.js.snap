@@ -3,9 +3,8 @@
 exports[`SvgIcon renders SvgIcon 1`] = `
 <styled.span
   color="#6E849A"
-  height={16}
-  width={16}
+  size={16}
 >
-  <test-file-stub />
+  <home.svg />
 </styled.span>
 `;

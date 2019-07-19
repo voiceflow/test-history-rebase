@@ -1,10 +1,11 @@
 import './UserCard.css';
 
-import { User } from 'components/User/User';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import { User } from '@/components/User/User';
 
 class UserCard extends React.Component {
   render() {

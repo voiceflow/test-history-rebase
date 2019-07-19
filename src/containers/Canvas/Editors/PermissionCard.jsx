@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import Toggle from 'react-toggle';
 import { Alert, Button, ButtonGroup } from 'reactstrap';
 
+import { showSettingsModal } from '@/ducks/modal';
+
 const PERMISSIONS = [
   { name: 'Reminders', code: 'alexa::alerts:reminders:skill:readwrite' },
   { name: 'Notifications', code: 'alexa::devices:all:notifications:write' },
@@ -106,7 +108,7 @@ class PermissionCard extends Component {
                   <i className="far fa-exclamation-triangle mr-1" /> No Account Link found
                 </Alert>
               )}
-              <Link className="btn btn-clear btn-block" to={`/tools/${this.props.skill_id}/link_account/templates`}>
+              <Link className="btn btn-clear btn-block" onClick={() => this.props.showSettingsModal(true, 'advanced')}>
                 Edit Account Linking
               </Link>
               <hr />
@@ -147,4 +149,7 @@ const mapStateToProps = (state) => ({
   account_linking: state.skills.skill.account_linking,
   live_mode: state.skills.live_mode,
 });
-export default connect(mapStateToProps)(PermissionCard);
+export default connect(
+  mapStateToProps,
+  { showSettingsModal }
+)(PermissionCard);

@@ -79,13 +79,13 @@ ul {
   position: relative;
 }
 
-.input-wrap-wrap>.close {
+.input-wrap-wrap > .close {
   position: absolute;
   top: 6px;
   right: -24px;
 }
 
-.input-wrap-wrap>.remove {
+.input-wrap-wrap > .remove {
   position: absolute;
   top: 17px;
   right: -24px;
@@ -99,7 +99,7 @@ ul {
   text-align: left;
 }
 
-.input-wrap>input {
+.input-wrap > input {
   height: 100%;
   padding: 0.375rem 1rem;
   color: #132144;
@@ -303,15 +303,15 @@ ul {
   height: 100%;
 }
 
-.subheader-page-container>div {
+.subheader-page-container > div {
   width: 100%;
   height: 100%;
   padding-bottom: 120px;
   overflow-y: scroll;
 }
 
-#app>#canvas,
-#app>#dashboard {
+#app > #canvas,
+#app > #dashboard {
   position: absolute;
   top: 116px;
   right: 0;
@@ -319,7 +319,7 @@ ul {
   left: 0;
 }
 
-#app>#canvas {
+#app > #canvas {
   overflow-x: hidden;
 }
 
@@ -353,7 +353,7 @@ ul {
 }
 
 #app.secondary-padding,
-#app.secondary-padding>#canvas {
+#app.secondary-padding > #canvas {
   top: 111px;
 }
 
@@ -372,6 +372,7 @@ ul {
   min-width: 0;
   height: 100%;
   min-height: 0;
+  overflow: hidden;
 }
 
 .grid-col-3,
@@ -393,8 +394,8 @@ ul {
   grid-template-columns: 1fr 2fr !important;
 }
 
-.grid-col-3>*,
-.grid-col-2>* {
+.grid-col-3 > *,
+.grid-col-2 > * {
   width: 100%;
 }
 
@@ -627,14 +628,19 @@ audio {
 
 .no-select {
   -webkit-touch-callout: none;
+
   /* iOS Safari */
   -webkit-user-select: none;
+
   /* Safari */
   -khtml-user-select: none;
+
   /* Konqueror HTML */
   -moz-user-select: none;
+
   /* Firefox */
   -ms-user-select: none;
+
   /* Internet Explorer/Edge */
   user-select: none;
 
@@ -783,16 +789,16 @@ hr.full-width {
   text-overflow: ellipsis;
 }
 
-.exit>i,
-.forward>i {
+.exit > i,
+.forward > i {
   transition: transform 0.2s ease !important;
 }
 
-.forward:hover>i {
+.forward:hover > i {
   transform: translateX(2px);
 }
 
-.exit:hover>i {
+.exit:hover > i {
   transform: translateX(-2px);
 }
 
@@ -826,7 +832,7 @@ hr.full-width {
   margin: 0 !important;
 }
 
-.no-padding-row>div {
+.no-padding-row > div {
   padding: 0 !important;
 }
 
@@ -1088,7 +1094,7 @@ label {
   line-height: 1.4666666667 !important;
 }
 
-.input-select>div {
+.input-select > div {
   /* height: 45px !important; */
   min-height: 45px !important;
   color: #132144;
@@ -1318,11 +1324,11 @@ textarea.form-control::placeholder,
   height: 100px !important;
 }
 
-.icon-image.tiny>* {
+.icon-image.tiny > * {
   cursor: pointer !important;
 }
 
-.icon-image>.dropzone {
+.icon-image > .dropzone {
   height: 100%;
   background: url('/image-dropzone.svg') 50% 50%, linear-gradient(to bottom, rgba(212, 217, 230, 0.24) 0%, rgba(212, 217, 230, 0.4) 100%);
   background-repeat: no-repeat;
@@ -1332,25 +1338,25 @@ textarea.form-control::placeholder,
   box-shadow: 0 0 0 1px #fff, 0 0 0 2px #d4d9e6;
 }
 
-.icon-image>.image-box {
+.icon-image > .image-box {
   display: block;
   width: 100%;
   height: 100%;
   border-radius: 50%;
 }
 
-.icon-image.small-icon>.image-box {
+.icon-image.small-icon > .image-box {
   width: 150px;
   height: 150px;
   margin-left: 20px;
   padding: 10px;
 }
 
-.icon-image.large-icon>.image-box {
+.icon-image.large-icon > .image-box {
   padding: 10px;
 }
 
-.icon-image>.image-box>.image {
+.icon-image > .image-box > .image {
   width: 100%;
   height: 100%;
   background-position: center center;
@@ -1359,27 +1365,27 @@ textarea.form-control::placeholder,
   border-radius: 100px;
 }
 
-.icon-image-square>*,
-.icon-image-square>.image-box>.image {
+.icon-image-square > *,
+.icon-image-square > .image-box > .image {
   /* border-radius: 5px !important; */
   background-color: #fff !important;
 }
 
-.icon-image-square>.image-box {
+.icon-image-square > .image-box {
   border-color: transparent;
 }
 
-.icon-image-square>.image-box:hover {
+.icon-image-square > .image-box:hover {
   transform: scale(1.03) !important;
   cursor: pointer;
 }
 
-.icon-image-sm>.image-box {
+.icon-image-sm > .image-box {
   padding: 0 !important;
   border-width: 2px !important;
 }
 
-.icon-image-sm>.image-box>.image {
+.icon-image-sm > .image-box > .image {
   border: none;
 }
 
@@ -1391,7 +1397,7 @@ textarea.form-control::placeholder,
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
 }
 
-.disabled-image>.image-box {
+.disabled-image > .image-box {
   background-color: #e9ecef;
 }
 
@@ -1434,8 +1440,8 @@ textarea.form-control::placeholder,
   border: none !important;
 }
 
-.audio-box>button,
-.image-box>button {
+.audio-box > button,
+.image-box > button {
   position: absolute;
   top: -1px;
   right: -1px;
@@ -1445,12 +1451,12 @@ textarea.form-control::placeholder,
   border-radius: 0;
 }
 
-.icon-image .image-box>button {
+.icon-image .image-box > button {
   padding: 0 !important;
 }
 
-.audio-box>div,
-.combined-box>div {
+.audio-box > div,
+.combined-box > div {
   margin-bottom: 10px;
 }
 
@@ -1712,38 +1718,9 @@ body.modal-open {
   background-color: #fff;
 }
 
-.social-button {
-  display: inline-flex;
-  align-items: center;
-  width: 100%;
-  height: 50px;
-  font-weight: 500;
-  font-size: 15px !important;
-  font-family: 'Open Sans' !important;
-  text-align: center;
-  border: 1px solid transparent;
-  border-radius: 5px !important;
-  box-shadow: 0 2px 5px 0 rgba(14, 30, 37, 0.15) !important;
-  cursor: pointer;
-  transition: transform 0.25s ease;
-}
-
-.social-button:hover {
-  box-shadow: 0 4px 8px 0 rgba(14, 30, 37, 0.15) !important;
-  transform: translateY(-3px);
-}
-
 .fa-facebook {
   margin-right: 10px;
   padding: 10px;
-}
-
-.class-fb {
-  margin-top: 3px;
-  padding-top: 3px;
-  color: #fff;
-  font-size: 15px;
-  background-color: #4267b2;
 }
 
 #publish-status {
@@ -2297,10 +2274,11 @@ kbd {
 .upload-success-popup {
   position: absolute;
   top: 75px;
-  right: -15px;
+  right: 15px;
   min-width: 350px;
   max-width: 350px;
   padding: 20px;
+  white-space: normal;
   background-color: #fff;
   border: solid 1px;
   border: 1px solid rgba(141, 162, 181, 0.28);
@@ -2495,7 +2473,7 @@ kbd {
   cursor: pointer;
 }
 
-.vendor-button>span {
+.vendor-button > span {
   overflow-x: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -2513,20 +2491,26 @@ kbd {
 
 .sidenav {
   position: fixed;
+
   /* Fixed Sidebar (stay in place on scroll) */
   top: 0;
+
   /* Stay at the top */
   left: 0;
   z-index: 1;
+
   /* Stay on top */
   width: 160px;
+
   /* Set the width of the sidebar */
   height: 100%;
+
   /* Full-height: remove this if you want "auto" height */
 
   /*    overflow-x: hidden;  Disable horizontal scroll */
   padding-top: 60px;
   background-color: #fff;
+
   /* Black */
   box-shadow: 0 0 0 1px rgba(36, 35, 40, 0.1);
 }

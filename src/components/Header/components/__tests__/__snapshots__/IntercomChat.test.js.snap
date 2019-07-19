@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Intercom Chat render intercom chat 1`] = `
+<Intercom
+  appID="vw911b0m"
+  logrocketURL="https://app.logrocket.com/<LOGROCKET_PROJECT>/sessions?u=123"
+  plan="UNKNOWN"
+  user_id="123"
+/>
+`;

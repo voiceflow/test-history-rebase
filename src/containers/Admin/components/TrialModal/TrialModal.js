@@ -1,13 +1,14 @@
 import './TrialModal.css';
 
-import Button from 'components/Button';
-import { editTrial } from 'ducks/admin';
 import moment from 'moment';
 import React from 'react';
 import DayPicker from 'react-day-picker';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { editTrial } from '@/ducks/admin';
 
 class TrialModal extends React.Component {
   constructor(props) {

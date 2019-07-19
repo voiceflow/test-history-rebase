@@ -416,7 +416,7 @@ class TeamSettings extends Component {
                   user={user.creator_id}
                   admin={team.creator_id}
                   member={m}
-                  update={(payload) =>
+                  update={(payload) => {
                     this.setState(
                       {
                         members: update(members, {
@@ -424,10 +424,12 @@ class TeamSettings extends Component {
                         }),
                       },
                       () => {
-                        this.applyChanges();
+                        if (payload.email === null && payload.invite === '') {
+                          this.applyChanges();
+                        }
                       }
-                    )
-                  }
+                    );
+                  }}
                   remove={() =>
                     this.setState({
                       members: update(members, {

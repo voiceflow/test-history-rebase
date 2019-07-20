@@ -12,6 +12,7 @@ import { Alert, Button as ReactstrapButton, ButtonGroup, Collapse, Form, FormGro
 import DefaultButton from '@/components/Button';
 import GoogleAuth from '@/components/Modals/GoogleAuthenticationModalContent';
 import { ModalHeader } from '@/components/Modals/ModalHeader';
+import { Spinner } from '@/components/Spinner';
 import Button from '@/componentsV2/Button';
 import { dialogflowToken, googleAccessToken, verifyGoogleToken } from '@/ducks/account';
 import { setConfirm, setError } from '@/ducks/modal';
@@ -513,7 +514,7 @@ class GooglePublish extends Component {
                   )}
                   {loading_creds && (
                     <div className="d-flex publish-loader">
-                      <span className="loader align-self-center" />
+                      <Spinner isEmpty />
                     </div>
                   )}
                   {auth_error && credentials && !loading_creds && (
@@ -673,10 +674,7 @@ class GooglePublish extends Component {
     if (stage === 2 || stage === 3 || stage === 6 || stage === 7) {
       modal_content = (
         <div>
-          <h1>
-            <span className="loader" />
-          </h1>
-          <p className="loading">{GOOGLE_PUBLISH_STAGES[stage]}</p>
+          <Spinner message={`Loading ${GOOGLE_PUBLISH_STAGES[stage]}`} />
         </div>
       );
     } else if (stage === 0 || stage === 1) {
@@ -690,12 +688,7 @@ class GooglePublish extends Component {
     if (!loaded)
       return (
         <div className="super-center h-100 w-100">
-          <div className="text-center">
-            <h1>
-              <span className="loader" />
-            </h1>
-            Getting Action Status
-          </div>
+          <Spinner message="Getting Action Status" />
         </div>
       );
 

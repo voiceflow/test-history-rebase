@@ -3,6 +3,7 @@ import './Modals.css';
 import React from 'react';
 import { Input } from 'reactstrap';
 
+import { Spinner } from '@/components/Spinner';
 import Button from '@/componentsV2/Button';
 import { GOOGLE_OAUTH_ID } from '@/config';
 
@@ -47,7 +48,7 @@ const MultiPlatformModalContent = ({ token, onChange, loading, onVerify }) => {
             Verify
           </Button>
         )}
-        {loading && <span style={{ height: '44px' }} className="loader" />}
+        {loading && <Spinner isEmpty />}
       </div>
     </div>
   );

@@ -57,7 +57,7 @@ import { BlockLinkFactory } from '@/components/SRD/factories/BlockLinkFactory';
 import { BlockPortFactory } from '@/components/SRD/factories/BlockPortFactory';
 import { BlockNodeFactory } from '@/components/SRD/factories/BlockNodeFactory';
 /* eslint-enable no-secrets/no-secrets */
-import { Spinner } from '@/components/Spinner/Spinner';
+import { FullSpinner } from '@/components/Spinner';
 
 import { ALLOWED_GOOGLE_BLOCKS } from './Constants';
 
@@ -1649,7 +1649,7 @@ export class Canvas extends Component {
               this.updateTree = fn;
             }}
           />
-          {this.state.load_diagram && <Spinner name="Flow" />}
+          {this.state.load_diagram && <FullSpinner name="Flow" />}
           <Editor
             unfocus={this.onDiagramUnfocus}
             open={this.props.open && this.props.page === 'canvas'}

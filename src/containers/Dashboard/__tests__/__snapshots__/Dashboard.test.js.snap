@@ -29,22 +29,9 @@ exports[`Dashboard render dashboard 1`] = `
       subHeaderRenderer={[Function]}
       withLogo={true}
     />
-    <div
-      id="loading-diagram"
-    >
-      <div
-        className="text-center"
-      >
-        <h5
-          className="text-muted mb-2"
-        >
-          Loading Projects...
-        </h5>
-        <span
-          className="loader"
-        />
-      </div>
-    </div>
+    <FullSpinner
+      name="Projects"
+    />
     <div
       className=""
       id="dashboard"

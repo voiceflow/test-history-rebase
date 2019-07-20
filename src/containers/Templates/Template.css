@@ -52,7 +52,7 @@
   background-color: #f7f9fb;
 }
 
-#template-box-container>.card {
+#template-box-container > .card {
   width: 100%;
   min-height: 100%;
   padding: 40px;
@@ -139,7 +139,7 @@
   transform: translateY(0);
 }
 
-.project-card>.card {
+.project-card > .card {
   display: block;
   overflow: hidden;
 }

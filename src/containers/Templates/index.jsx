@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
-import { Spinner } from '@/components/Spinner/Spinner';
+import { Spinner } from '@/components/Spinner';
 import { addProjectToList } from '@/ducks/board';
 
 import LOCALE_MAP from '../../services/LocaleMap';

@@ -8,7 +8,7 @@ import Select from 'react-select';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/Button';
-import { Spinner } from '@/components/Spinner/Spinner';
+import { Spinner } from '@/components/Spinner';
 import StepProgressBar from '@/components/StepProgressBar/StepProgressBar';
 
 const CLASS_MUTED = 'text-muted';
@@ -324,7 +324,7 @@ class Onboarding extends Component {
               </div>
             </div>
             <Button isPrimary disabled={!(design || build)} onClick={() => this.setState({ stage: 'code_stage' })}>
-              Next Step
+              Continue
             </Button>
           </div>
         );
@@ -383,7 +383,7 @@ class Onboarding extends Component {
                 }
               }}
             >
-              Next Step
+              Continue
             </Button>
           </div>
         );

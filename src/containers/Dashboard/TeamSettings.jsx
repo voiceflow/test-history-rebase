@@ -8,6 +8,7 @@ import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Input, Modal, ModalB
 import Button from '@/components/Button';
 import CheckMark from '@/components/CheckMark';
 import { ModalHeader } from '@/components/Modals/ModalHeader';
+import { Spinner } from '@/components/Spinner';
 import Image from '@/components/Uploads/Image';
 import { User } from '@/components/User/User';
 import { setConfirm, setError } from '@/ducks/modal';
@@ -203,7 +204,7 @@ class TeamSettings extends Component {
     const { members } = this.state;
     const { team, updateMembers } = this.props;
 
-    e.preventDefault();
+    e && e.preventDefault();
     if (!this.IS_ADMIN) return false;
 
     if (team.status === 0 && members.length > 2) {
@@ -309,13 +310,7 @@ class TeamSettings extends Component {
           </div>
         );
       case 'DELETING':
-        return (
-          <div className="text-center p-5">
-            <span className="loader text-lg" />
-            <br />
-            Deleting Board
-          </div>
-        );
+        return <Spinner message="Deleting Board" />;
       case 'DELETE':
         // eslint-disable-next-line no-case-declarations
         const equal = input.trim().toLowerCase() === team.name.trim().toLowerCase();
@@ -416,13 +411,20 @@ class TeamSettings extends Component {
                   user={user.creator_id}
                   admin={team.creator_id}
                   member={m}
-                  update={(payload) =>
-                    this.setState({
-                      members: update(members, {
-                        [i]: { $merge: payload },
-                      }),
-                    })
-                  }
+                  update={(payload) => {
+                    this.setState(
+                      {
+                        members: update(members, {
+                          [i]: { $merge: payload },
+                        }),
+                      },
+                      () => {
+                        if (payload.email === null && payload.invite === '') {
+                          this.applyChanges();
+                        }
+                      }
+                    );
+                  }}
                   remove={() =>
                     this.setState({
                       members: update(members, {
@@ -443,7 +445,7 @@ class TeamSettings extends Component {
                 </div>
                 <div className="text-center mt-3 position-relative">
                   <Button isBtn isPrimary type="submit" disabled={DISABLED} style={{ width: 150 }} onClick={this.applyChanges}>
-                    {UPDATING ? <span className="loader" /> : 'Apply Changes'}
+                    {UPDATING ? <Spinner isEmpty /> : 'Apply Changes'}
                   </Button>
                   <div
                     style={{

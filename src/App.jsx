@@ -23,6 +23,7 @@ import { ThemeProvider } from 'styled-components';
 import ConfirmModal from '@/components/Modals/ConfirmModal';
 import ErrorModal from '@/components/Modals/ErrorModal';
 import Modal from '@/components/Modals/Modal';
+import { FullSpinner } from '@/components/Spinner';
 import { getAuth, getUser } from '@/ducks/account';
 import { history } from '@/store/store';
 import { evaluateMaintenance } from '@/utils/maintenance';
@@ -99,16 +100,8 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.loading) {
-      return (
-        <div id="loading-diagram">
-          <div className="text-center">
-            <h5 className="text-muted mb-2">Loading Account...</h5>
-            <span className="loader" />
-          </div>
-        </div>
-      );
-    }
+    if (this.state.loading) return <FullSpinner name="Account" />;
+
     return (
       <ThemeProvider theme={theme}>
         <div id="body">

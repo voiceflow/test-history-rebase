@@ -1,14 +1,15 @@
 import './Account.css';
+
 import queryString from 'query-string/index';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Form, FormGroup, Input } from 'reactstrap';
 
-import { AuthBox } from './AuthBoxes';
-import AuthenticationContainer from './AuthenticationWrapper';
 import Button from '@/components/Button';
 import { signup } from '@/ducks/account';
 
+import { AuthBox } from './AuthBoxes';
+import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
 
 export const SignupForm = ({ signup, history }) => {

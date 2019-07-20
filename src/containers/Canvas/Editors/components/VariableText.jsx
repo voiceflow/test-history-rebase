@@ -80,11 +80,11 @@ class VariableText extends React.Component {
   render() {
     const { MentionSuggestions } = this.mentionPlugin;
     const plugins = [this.mentionPlugin];
+    const { onFocus, onBlur, placeholder } = this.props;
 
     return (
       <div
         className={this.props.className}
-        draggable
         onDragStart={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -94,10 +94,10 @@ class VariableText extends React.Component {
           plugins={plugins}
           editorState={this.state.editorState}
           onChange={this.onChange}
-          onFocus={this.props.onFocus}
-          onBlur={this.props.onBlur}
-          placeholder={this.props.placeholder || 'Enter Text Here'}
+          placeholder={placeholder || 'Enter Text Here'}
           stripPastedStyles={true}
+          onFocus={onFocus}
+          onBlur={onBlur}
           ref={this.editorRef}
         />
         <MentionSuggestions onSearchChange={this.onSearchChange} suggestions={this.state.suggestions} onAddMention={_.noop} />

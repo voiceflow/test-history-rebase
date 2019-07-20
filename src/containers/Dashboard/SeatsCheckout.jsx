@@ -6,6 +6,7 @@ import { CardElement } from 'react-stripe-elements';
 import { Collapse, Input } from 'reactstrap';
 
 import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
 import { setError } from '@/ducks/modal';
 import { createTeam, updateMembers } from '@/ducks/team';
 import StripeHandler from '@/hocs/withStripeHandler';
@@ -157,25 +158,15 @@ class SeatsCheckout extends Component {
 
     let loader;
     if (loading) {
-      loader = <span className="loader text-lg" />;
+      loader = <Spinner isEmpty />;
     } else if (STAGES[stage] && STAGES[stage].loader) {
-      loader = (
-        <>
-          <span className="loader text-lg mb-3" />
-          <br />
-          {STAGES[stage].loader}
-        </>
-      );
+      loader = <Spinner message={STAGES[stage].loader} />;
     }
 
     const { price, members } = this.calculatePrice();
     return (
       <div style={{ width: width || 400 }}>
-        {loader && (
-          <div className="w-100 position-relative">
-            <div className="text-center mt-5 position-absolute w-100">{loader}</div>
-          </div>
-        )}
+        {loader && <div className="w-100 position-relative">{loader}</div>}
         <div style={{ visibility: loader ? 'hidden' : 'visible' }} className="text-left">
           <div>
             <div className="upgrade-plan pointer" onClick={collab}>

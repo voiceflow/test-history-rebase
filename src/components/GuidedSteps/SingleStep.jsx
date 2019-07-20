@@ -1,5 +1,3 @@
-import './SingleStep.css';
-
 import React from 'react';
 
 import SingleStepWrapper from './SingleStepWrapper';

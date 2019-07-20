@@ -8,6 +8,8 @@ import { toast } from 'react-toastify';
 import Toggle from 'react-toggle';
 import { Button, Input } from 'reactstrap';
 
+import { Spinner } from '@/components/Spinner';
+
 import { LogTable } from '../Logs';
 
 const COLUMNS = [
@@ -131,9 +133,7 @@ class SkillLookup extends React.Component {
         </h3>
         <h5>Projects/Versions</h5>
         {this.state.loading ? (
-          <div className="text-center py-3">
-            <div className="loader text-lg" />
-          </div>
+          <Spinner isEmpty />
         ) : (
           <div className="">
             <label className="d-flex align-items-center">

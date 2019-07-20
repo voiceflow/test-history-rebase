@@ -14,6 +14,7 @@ import { Alert, Modal, ModalBody } from 'reactstrap';
 import Button from '@/components/Button';
 import AmazonLogin from '@/components/Forms/AmazonLogin';
 import { ModalHeader } from '@/components/Modals/ModalHeader';
+import { Spinner } from '@/components/Spinner';
 import ShareTest from '@/containers/Testing/ShareTest';
 import { AmazonAccessToken, getVendors, googleAccessToken } from '@/ducks/account';
 import { setError, showSettingsModal } from '@/ducks/modal';
@@ -613,9 +614,7 @@ export class ActionGroup extends PureComponent {
     if (live_update_stage === 1) {
       return (
         <div className="pb-4 mb-2">
-          <div className="text-center my-3">
-            <div className="loader text-lg" />
-          </div>
+          <Spinner message="Rendering Flows" />
           {loading('Rendering Flows')}
         </div>
       );
@@ -686,7 +685,7 @@ export class ActionGroup extends PureComponent {
                 'mt-3': !modal,
               })}
             >
-              <div className="loader text-lg" />
+              <Spinner isEmpty />
             </div>
           ))}
         {this.renderAlexaBody(modal)}

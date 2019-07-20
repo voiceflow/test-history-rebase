@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Button from '@/components/Button';
-import { Spinner } from '@/components/Spinner/Spinner';
+import { FullSpinner } from '@/components/Spinner';
 import Dashboard from '@/containers/Dashboard';
 // Views
 import Onboarding from '@/containers/Onboarding';
@@ -90,7 +90,7 @@ class Team extends PureComponent {
   }
 
   render() {
-    if (this.state.loading) return <Spinner name="Team" />;
+    if (this.state.loading) return <FullSpinner name="Team" />;
 
     if (this.props.teams.allIds.length === 0) {
       return (

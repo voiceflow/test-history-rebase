@@ -626,11 +626,21 @@ audio {
 }
 
 .no-select {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
+  -webkit-touch-callout: none;
+
+  /* iOS Safari */
+  -webkit-user-select: none;
+
+  /* Safari */
+  -khtml-user-select: none;
+
+  /* Konqueror HTML */
+  -moz-user-select: none;
+
+  /* Firefox */
+  -ms-user-select: none;
+
+  /* Internet Explorer/Edge */
   user-select: none;
 
   /* Non-prefixed version, currently
@@ -1783,21 +1793,6 @@ body.modal-open {
   box-shadow: none !important;
 }
 
-.loader {
-  display: inline-flex;
-  width: 1em;
-  height: 1em;
-  line-height: 1;
-  background-image: url('/loader-2.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100%;
-  -webkit-animation: spin 1s linear infinite;
-  -moz-animation: spin 1s linear infinite;
-  -ms-animation: spin 1s linear infinite;
-  animation: spin 1s linear infinite;
-}
-
 .save-loader {
   display: inline-flex;
   width: 16px;
@@ -2442,16 +2437,28 @@ kbd {
 /* extra */
 
 .sidenav {
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  top: 0; /* Stay at the top */
+  position: fixed;
+
+  /* Fixed Sidebar (stay in place on scroll) */
+  top: 0;
+
+  /* Stay at the top */
   left: 0;
-  z-index: 1; /* Stay on top */
-  width: 160px; /* Set the width of the sidebar */
-  height: 100%; /* Full-height: remove this if you want "auto" height */
+  z-index: 1;
+
+  /* Stay on top */
+  width: 160px;
+
+  /* Set the width of the sidebar */
+  height: 100%;
+
+  /* Full-height: remove this if you want "auto" height */
 
   /*    overflow-x: hidden;  Disable horizontal scroll */
   padding-top: 60px;
-  background-color: #fff; /* Black */
+  background-color: #fff;
+
+  /* Black */
   box-shadow: 0 0 0 1px rgba(36, 35, 40, 0.1);
 }
 

@@ -1043,7 +1043,7 @@ export class ActionGroup extends PureComponent {
 
   render() {
     const { updateModal, should_pop_confetti, updateLiveModal, show_upload_prompt, vendors_open, stage, is_first_upload } = this.state;
-    const { skill, platform, live_mode, vendors, show_upload_prompt: props_show_upload_prompt, showSettings, showSettingsModal } = this.props;
+    const { skill, platform, live_mode, vendors, showSettings, showSettingsModal } = this.props;
 
     return (
       <>
@@ -1121,7 +1121,7 @@ export class ActionGroup extends PureComponent {
           vendors_open={vendors_open}
           project_id={skill.project_id}
           openUpdateLive={() => this.openUpdateLive()}
-          toggle_upload_prompt={() => this.setState({ show_upload_prompt: !props_show_upload_prompt })}
+          toggle_upload_prompt={() => this.setState({ show_upload_prompt: !show_upload_prompt })}
           isUploadLoading={() => this.isUploadLoading()}
           openUpdate={() => this.openUpdate()}
           toggleVendors={() => this.toggleVendors()}

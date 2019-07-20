@@ -324,7 +324,7 @@ class Onboarding extends Component {
               </div>
             </div>
             <Button isPrimary disabled={!(design || build)} onClick={() => this.setState({ stage: 'code_stage' })}>
-              Next Step
+              Continue
             </Button>
           </div>
         );
@@ -383,7 +383,7 @@ class Onboarding extends Component {
                 }
               }}
             >
-              Next Step
+              Continue
             </Button>
           </div>
         );

@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
+import { FullSpinner } from '@/components/Spinner';
+
 const Diagram = styled.div`
   position: fixed;
   top: 0;
@@ -22,10 +24,7 @@ function Reference(props) {
   }, [project_id]);
   return (
     <Diagram>
-      <div className="text-center">
-        <h5 className="text-muted mb-2">Loading Project...</h5>
-        <span className="loader" />
-      </div>
+      <FullSpinner name="Project" />
     </Diagram>
   );
 }

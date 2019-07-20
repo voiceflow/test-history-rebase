@@ -18,29 +18,27 @@ exports[`Choice Input render choice input 1`] = `
       trackEvent="Button Click"
     />
   </div>
-  <div>
-    <ContainedTextarea
-      className="form-control user-input mb-2"
-      index={0}
-      onChange={[Function]}
-      placeholder="Enter user reply"
-      value="some value "
-    />
+  <ContainedTextarea
+    className="form-control user-input mb-2"
+    index={0}
+    onChange={[Function]}
+    placeholder="Enter user reply"
+    value="some value "
+  />
+  <div
+    className="space-between pointer ml-1 mb-1"
+    onClick={[Function]}
+  >
     <div
-      className="space-between pointer ml-1 mb-1"
-      onClick={[Function]}
+      className="section-title"
     >
-      <div
-        className="section-title"
-      >
-        Synonyms (
-        0
-        )
-      </div>
-      <i
-        className="text-muted fas fa-caret-down rotate fa-rotate-90"
-      />
+      Synonyms (
+      0
+      )
     </div>
+    <i
+      className="text-muted fas fa-caret-down rotate fa-rotate-90"
+    />
   </div>
   <Collapse
     appear={false}

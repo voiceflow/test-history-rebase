@@ -204,7 +204,7 @@ class TeamSettings extends Component {
     const { members } = this.state;
     const { team, updateMembers } = this.props;
 
-    e.preventDefault();
+    e && e.preventDefault();
     if (!this.IS_ADMIN) return false;
 
     if (team.status === 0 && members.length > 2) {
@@ -411,13 +411,20 @@ class TeamSettings extends Component {
                   user={user.creator_id}
                   admin={team.creator_id}
                   member={m}
-                  update={(payload) =>
-                    this.setState({
-                      members: update(members, {
-                        [i]: { $merge: payload },
-                      }),
-                    })
-                  }
+                  update={(payload) => {
+                    this.setState(
+                      {
+                        members: update(members, {
+                          [i]: { $merge: payload },
+                        }),
+                      },
+                      () => {
+                        if (payload.email === null && payload.invite === '') {
+                          this.applyChanges();
+                        }
+                      }
+                    );
+                  }}
                   remove={() =>
                     this.setState({
                       members: update(members, {

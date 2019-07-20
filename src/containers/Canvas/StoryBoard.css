@@ -3679,6 +3679,11 @@ button.close:hover{
   border-radius: 10px;
 }
 
+.pg__add_file_button {
+  display: flex;
+  justify-content: center;
+}
+
 #confetti-positioner {
   position: fixed;
   right: 0;

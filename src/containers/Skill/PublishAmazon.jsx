@@ -4,20 +4,20 @@ import axios from 'axios';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import Textarea from 'react-textarea-autosize';
 import Toggle from 'react-toggle';
-import { Alert, Button, ButtonGroup, Collapse, Form, FormGroup, Input, Label, Modal, ModalBody } from 'reactstrap';
+import { Alert, Button, ButtonGroup, Collapse, Form, FormFeedback, FormGroup, Input, Label, Modal, ModalBody } from 'reactstrap';
 import validUrl from 'valid-url';
 
 import DefaultButton from '@/components/Button';
 import AmazonLogin from '@/components/Forms/AmazonLogin';
 import Multiple from '@/components/Forms/Multiple';
+import GuidedSteps, { GuidedStepsWrapper } from '@/components/GuidedSteps';
 import RadioButtons, { YES_NO_RADIO_BUTTONS } from '@/components/RadioButtons';
 import Image from '@/components/Uploads/Image';
 import { AmazonAccessToken } from '@/ducks/account';
-import { setConfirm, setError } from '@/ducks/modal';
+import { setError } from '@/ducks/modal';
 import { updateEntireVersion, updateSkillDB, updateVersion } from '@/ducks/version';
 
 import { AMAZON_CATEGORIES } from '../../services/Categories';
@@ -32,7 +32,6 @@ const stage_title = {
   4: 'Publishing',
   5: 'Developer Account',
   6: 'Checking Vendor',
-  8: 'Submit For Review',
   7: 'Building and Submitting',
   9: 'Privacy & Compliance Ext.',
   10: 'Submitted for Review',
@@ -54,20 +53,8 @@ class Skill extends Component {
       id_collapse: false,
       amzn_id: null,
       stage_error: null,
+      validate: {},
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSelection = this.handleSelection.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.togglePublish = this.togglePublish.bind(this);
-    this.closePublish = this.closePublish.bind(this);
-    this.save = this.save.bind(this);
-    this.onRadio = this.onRadio.bind(this);
-    this.onPublish = this.onPublish.bind(this);
-    this.onWithdraw = this.onWithdraw.bind(this);
-    this.checkVendor = this.checkVendor.bind(this);
-    this.onCertify = this.onCertify.bind(this);
-    this.onLocaleBtnClick = this.onLocaleBtnClick.bind(this);
     // this.transferIcon = this.transferIcon.bind(this)
     this.privacyTop = React.createRef();
   }
@@ -79,7 +66,7 @@ class Skill extends Component {
       .catch(() => this.setState({ stage: 0 }));
 
     axios
-      .get(`/skill/${skill_id}?verbose=1&review_check=1`)
+      .get(`/skill/${skill_id}?verbose=1`)
       .then((res) => {
         if (res.data.category) {
           // eslint-disable-next-line no-restricted-syntax
@@ -122,13 +109,13 @@ class Skill extends Component {
       });
   }
 
-  onRadio(type, value) {
+  onRadio = (type, value) => {
     this.setState({
       [type]: value,
     });
-  }
+  };
 
-  handleError(err, default_error) {
+  handleError = (err, default_error) => {
     const { setError } = this.props;
     console.error(err);
 
@@ -148,9 +135,9 @@ class Skill extends Component {
       stage: 2,
     });
     setError(_.has(err, ['response', 'data', 'message']) ? error_message : default_error);
-  }
+  };
 
-  onWithdraw() {
+  onWithdraw = () => {
     const { amzn_id } = this.state;
     axios
       .post(`/amazon/${amzn_id}/withdraw`)
@@ -166,9 +153,9 @@ class Skill extends Component {
           stage: 11,
         });
       });
-  }
+  };
 
-  onDelete() {
+  onDelete = () => {
     const { skill_id, history } = this.props;
     axios
       .delete(`/skill/${skill_id}`)
@@ -181,9 +168,9 @@ class Skill extends Component {
           stage: 0,
         });
       });
-  }
+  };
 
-  onCertify() {
+  onCertify = () => {
     const { skill_id } = this.props;
     const { amzn_id } = this.state;
 
@@ -194,8 +181,9 @@ class Skill extends Component {
       .post(`/amazon/${skill_id}/${amzn_id}/certify`)
       .then(() => {
         this.setState({
-          stage: 11,
+          stage: 10,
           publish: false,
+          review: true,
         });
       })
       .catch((err) => {
@@ -213,13 +201,13 @@ class Skill extends Component {
         }
         this.handleError(err, error_message);
       });
-  }
+  };
 
-  scrollToTop() {
+  scrollToTop = () => {
     this.privacyTop.current.scrollIntoView(true);
-  }
+  };
 
-  onPublish() {
+  onPublish = () => {
     const { project_id } = this.props;
     this.save(true, () => {
       const s = this.state;
@@ -287,11 +275,13 @@ class Skill extends Component {
           const new_version_data = res.data;
           axios
             .post(`/project/${project_id}/version/${new_version_data.new_skill.skill_id}/alexa`)
-            .then((res) => {
-              this.setState({
-                stage: 8,
-                amzn_id: res.data,
-              });
+            .then(({ data: amzn_id }) => {
+              this.setState(
+                {
+                  amzn_id,
+                },
+                this.onCertify
+              );
             })
             .catch((err) => {
               if (err.status === 403 || err.response.status === 403) {
@@ -309,9 +299,9 @@ class Skill extends Component {
         });
     });
     this.setState({ stage: 3 });
-  }
+  };
 
-  checkVendor() {
+  checkVendor = () => {
     this.setState({ stage: 6 });
 
     axios
@@ -323,7 +313,7 @@ class Skill extends Component {
         console.error(err);
         this.setState({ stage: 5 });
       });
-  }
+  };
 
   componentWillUnmount() {
     const { loaded } = this.state;
@@ -332,12 +322,14 @@ class Skill extends Component {
     }
   }
 
-  validateForm() {
+  validateForm = () => {
     const { setError } = this.props;
 
     const s = this.state;
     const split_keywords = s.keywords.split(',');
-    if (s.privacy_policy && !validUrl.isUri(s.privacy_policy)) {
+    if (s.review) {
+      setError('This skill is currently under review and can not be resubmitted');
+    } else if (s.privacy_policy && !validUrl.isUri(s.privacy_policy)) {
       setError('Privacy policy must be a url');
     } else if (s.terms_and_cond && !validUrl.isUri(s.terms_and_cond)) {
       setError('Terms and conditions must be a url');
@@ -348,9 +340,9 @@ class Skill extends Component {
     } else {
       this.setState({ publish: true });
     }
-  }
+  };
 
-  save(publish = false, cb) {
+  save = (publish = false, cb) => {
     const { setError, skill_id, updateEntireSkill } = this.props;
     const s = this.state;
     const category = s.category && s.category.value ? s.category.value : null;
@@ -404,47 +396,47 @@ class Skill extends Component {
         console.log(err);
         setError('Save Error, Publish Settings not Saved');
       });
-  }
+  };
 
-  handleChange(event) {
+  handleChange = (event) => {
     const { stage } = this.state;
     if (stage !== 11) {
       this.setState({
         [event.target.name]: event.target.value,
       });
     }
-  }
+  };
 
-  handleSelection(value) {
+  handleSelection = (value) => {
     this.setState({
       category: value,
     });
-  }
+  };
 
-  toggle() {
+  toggle = () => {
     const { dropdown } = this.state;
     this.setState({
       dropdown: !dropdown,
     });
-  }
+  };
 
-  togglePublish() {
+  togglePublish = () => {
     const { publish } = this.state;
     this.setState({
       publish: !publish,
     });
-  }
+  };
 
-  closePublish() {
+  closePublish = () => {
     const { stage } = this.state;
     if (stage === 1) {
       this.setState({
         stage: 0,
       });
     }
-  }
+  };
 
-  onLocaleBtnClick(locale) {
+  onLocaleBtnClick = (locale) => {
     let { locales } = this.state;
 
     if (locales.includes(locale)) {
@@ -458,17 +450,26 @@ class Skill extends Component {
     this.setState({
       locales,
     });
-  }
+  };
 
-  render() {
+  checkValidStep = (stepNumber) => {
+    const { small_icon, large_icon, summary, description, category, inv_name, invocations, name } = this.state;
+    switch (stepNumber) {
+      case 0:
+        return !!(name && small_icon && large_icon);
+      case 1:
+        return !!(summary && description && category);
+      case 2:
+        return !!(inv_name && invocations[0]);
+      default:
+        return true;
+    }
+  };
+
+  renderBlocks = () => {
     const {
       stage,
-      amzn_id,
-      stage_error,
-      instructions,
       locales,
-      loaded,
-      publish,
       small_icon,
       large_icon,
       summary,
@@ -476,37 +477,345 @@ class Skill extends Component {
       category,
       inv_name,
       invocations,
-      live,
-      id_collapse,
       keywords,
       privacy_policy,
       terms_and_cond,
       copa,
       name,
     } = this.state;
-    const { onConfirm } = this.props;
+
+    const blocks = [];
+    const enterText = (
+      <>
+        Submit for Review
+        <i className="fab fa-amazon ml-2" />
+      </>
+    );
+
+    blocks.push({
+      title: 'Basic Skill Info',
+      content: (
+        <>
+          <FormGroup className="mb-4">
+            <div className="mb-4">
+              <Label className="publish-label">Display Name *</Label>
+              <Input
+                className="form-bg"
+                invalid={this.state.validate.displayName}
+                type="text"
+                name="name"
+                disabled={disabled_stages.has(stage)}
+                placeholder="Storyflow - Interactive Story Adventures"
+                value={name}
+                onChange={this.handleChange}
+              />
+              <FormFeedback>Uh oh! Looks like there is an issue with your email. Please input a correct email.</FormFeedback>
+            </div>
+          </FormGroup>
+
+          <div className="d-flex mb-5">
+            <div style={{ width: '50%' }}>
+              <Image
+                className="icon-image large-icon text-center pa__icon"
+                isDisabled={disabled_stages.has(stage)}
+                path="/image/large_icon"
+                image={large_icon}
+                update={(url) => this.setState({ large_icon: url })}
+                title="Large Icon *"
+              />
+            </div>
+            <div style={{ width: '50%' }}>
+              <Image
+                className="icon-image small-icon text-center pa__icon"
+                isDisabled={disabled_stages.has(stage)}
+                path="/image/small_icon"
+                image={small_icon}
+                update={(url) => this.setState({ small_icon: url })}
+                title="Small Icon *"
+              />
+            </div>
+          </div>
+        </>
+      ),
+      description: (
+        <>
+          <div className="publish-info">
+            <p className="helper-text">
+              <b>Display Name</b> is what we display for your Skill on Voiceflow/Amazon
+            </p>
+          </div>
+          <div className="publish-info">
+            <p className="helper-text">
+              <b>Icons</b> are what will be displayed for your Skill in the Amazon web store.
+            </p>
+          </div>
+        </>
+      ),
+    });
+
+    blocks.push({
+      title: 'Skill Description',
+      content: (
+        <>
+          <FormGroup className="mt-0 mb-4">
+            <Label className="publish-label">Summary *</Label>
+            <Input
+              className="form-bg"
+              type="text"
+              name="summary"
+              disabled={disabled_stages.has(stage)}
+              placeholder="One Sentence Skill Summary"
+              value={summary}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+
+          <FormGroup className="mb-4">
+            <Label className="publish-label">Description *</Label>
+            <Textarea
+              name="description"
+              className="form-control"
+              disabled={disabled_stages.has(stage)}
+              value={description}
+              onChange={this.handleChange}
+              minRows={4}
+              maxRows={4}
+              placeholder="Skill Description"
+              style={{ minHeight: '94px', maxHeight: '94px' }}
+            />
+          </FormGroup>
+
+          <FormGroup className="mb-4">
+            <Label className="publish-label">Category *</Label>
+            <Select
+              classNamePrefix="select-box"
+              name="category"
+              isDisabled={disabled_stages.has(stage)}
+              value={category}
+              onChange={this.handleSelection}
+              options={AMAZON_CATEGORIES}
+            />
+          </FormGroup>
+
+          <FormGroup className="mb-4">
+            <Label className="publish-label">
+              Keywords (Search Tags) <small>optional</small>
+            </Label>
+            <Input
+              className="form-bg"
+              type="text"
+              name="keywords"
+              disabled={disabled_stages.has(stage)}
+              placeholder="Keywords (Separated By Commas) e.g. Game, Space, Adventure"
+              value={keywords}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+        </>
+      ),
+      description: (
+        <>
+          <div className="publish-info">
+            <p className="helper-text">
+              <b>Summary</b> is a one sentence description of your amazing Skill.
+            </p>
+          </div>
+          <div className="publish-info">
+            <p className="helper-text">
+              <b>Description</b> is where you can provide a more detailed explanation of your Skill.
+            </p>
+          </div>
+          <div className="publish-info">
+            <p className="helper-text">
+              <b>Category</b> is the type of your Skill. This helps users find your Skill in the store.
+            </p>
+          </div>
+          <div className="publish-info">
+            <p className="helper-text">
+              <b>Keywords</b> are words that will help your Skill be found when users are searching the Skill store.
+            </p>
+          </div>
+        </>
+      ),
+    });
+
+    blocks.push({
+      title: 'Skill Invocation',
+      content: (
+        <>
+          <FormGroup className="mb-4">
+            <Label className="publish-label">Invocation Name *</Label>
+            <Input
+              className="form-bg"
+              type="text"
+              name="inv_name"
+              disabled={disabled_stages.has(stage)}
+              placeholder="Enter an invocation name"
+              value={inv_name}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+
+          <FormGroup className="mb-4">
+            <Label className="publish-label">Invocations *</Label>
+            <Multiple
+              className="mt-0 input-group-text"
+              list={invocations}
+              max={3}
+              prepend="Alexa,"
+              update={(list) => this.setState({ invocations: list })}
+              isDisabled={disabled_stages.has(stage)}
+              placeholder={`open/start/launch ${name}`}
+              add={
+                <span>
+                  <i className="fas fa-plus" /> Add Invocation
+                </span>
+              }
+            />
+          </FormGroup>
+        </>
+      ),
+      description: (
+        <>
+          <div className="publish-info">
+            <p className="mb-0 helper-text">
+              <b>Invocation Name</b> is what users will use to open your Skill. For example, "<i>Tiny Tales</i>".
+            </p>
+          </div>
+          <div className="publish-info">
+            <p className="helper-text">
+              <b>Invocations</b> are the various phrases that will open your Skill.
+            </p>
+          </div>
+        </>
+      ),
+    });
+
+    blocks.push({
+      title: 'Locales',
+      content: (
+        <>
+          <FormGroup className="mb-4 pa__locale-limited">
+            <Label className="publish-label">Location(s)</Label>
+            <ButtonGroup className="locale-button-group">
+              {LOCALE_MAP.map((locale, i) => {
+                const active = locales.includes(locale.value) ? 'active' : '';
+                return (
+                  <Button
+                    outline
+                    color="primary"
+                    className={`locale-button ${active}`}
+                    key={i}
+                    onClick={() => {
+                      this.onLocaleBtnClick(locale.value);
+                    }}
+                  >
+                    {locale.name}
+                  </Button>
+                );
+              })}
+            </ButtonGroup>
+          </FormGroup>
+        </>
+      ),
+      description: (
+        <>
+          <div className="publish-info">
+            <p className="helper-text">
+              <b>Locale</b> determines your skill's availability. Your skill will be available in the regions you select here.
+            </p>
+          </div>
+        </>
+      ),
+    });
+
+    blocks.push({
+      title: 'Privacy and Terms',
+      content: (
+        <>
+          <FormGroup className="mb-4">
+            <Label className="publish-label">Privacy Policy URL</Label>
+            <Input
+              className="form-bg"
+              type="text"
+              name="privacy_policy"
+              disabled={disabled_stages.has(stage)}
+              placeholder="Privacy Policy"
+              value={privacy_policy}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+
+          <FormGroup className="mb-4">
+            <div className="mb-4">
+              <Label className="publish-label">Terms and Conditions URL</Label>
+              <Input
+                className="form-bg"
+                type="text"
+                name="terms_and_cond"
+                disabled={disabled_stages.has(stage)}
+                placeholder="Terms and Conditions"
+                value={terms_and_cond}
+                onChange={this.handleChange}
+              />
+            </div>
+
+            <Label className="publish-label">Is this skill directed to children under the age of 13?</Label>
+            <div className="d-flex">
+              <u className="font-weight-bold mr-2">{copa ? 'YES' : 'NO'}</u>
+              <Toggle checked={copa} icons={false} onChange={() => this.setState({ copa: !copa })} />
+            </div>
+          </FormGroup>
+        </>
+      ),
+      description: (
+        <>
+          <div className="publish-info">
+            <p className="helper-text">
+              The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Skill.
+            </p>
+          </div>
+          <div className="publish-info">
+            <p className="helper-text">
+              The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Skill.
+            </p>
+          </div>
+          <div className="publish-info">
+            <p className="helper-text">
+              Please indicate if this skill is directed to children under the age of 13 (for the United States, as determined under the&nbsp;
+              <a
+                // eslint-disable-next-line no-secrets/no-secrets
+                href="https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children%27s-privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Children's Online Privacy Protection Act (COPPA)
+              </a>
+              )
+            </p>
+          </div>
+        </>
+      ),
+    });
+
+    return <GuidedSteps blocks={blocks} checkStep={this.checkValidStep} onFinishSteps={this.validateForm} submitText={enterText} />;
+  };
+
+  render() {
+    const { stage, amzn_id, stage_error, instructions, locales, loaded, publish, live, review, id_collapse } = this.state;
+    // const { setConfirm } = this.props;
     // Success Screen
     if (stage === 10) {
       return (
         <div className="super-center h-100">
           <div className="success-page d-flex">
             <div className="success-text">
-              <h1>
-                Congrats!{' '}
-                <span role="img" aria-label="happy">
-                  ☺️
-                </span>
-              </h1>
+              <h1>Congrats!</h1>
               <p className="text-muted">
                 Your skill has been successfully submitted for review to the Amazon Skill store. You will be updated on the status of your skill via
                 email.
               </p>
-              <Link to="/dashboard">
-                <DefaultButton isPrimary variant="contained">
-                  Dashboard
-                </DefaultButton>
-              </Link>
-              <DefaultButton isWhite variant="contained" className="ml-3" onClick={() => this.setState({ stage: 2 })}>
+              <DefaultButton isSecondary onClick={() => this.setState({ stage: 2 })}>
                 Return to Project
               </DefaultButton>
             </div>
@@ -517,7 +826,7 @@ class Skill extends Component {
     }
 
     let content;
-    const alexaDashboardUrl = `https://developer.amazon.com/alexa/console/ask/build/custom/${amzn_id}/development/en_US/dashboard`;
+    // const alexaDashboardUrl = `https://developer.amazon.com/alexa/console/ask/build/custom/${amzn_id}/development/en_US/dashboard`;
     if (stage === 0 || stage === -1) {
       content = (
         <div className="my-5">
@@ -617,28 +926,6 @@ class Skill extends Component {
           </div>
         </div>
       );
-    } else if (stage === 8) {
-      content = (
-        <div>
-          <img src="/images/preview.svg" alt="Success" height="160" />
-          <br />
-          Your Skill Has been uploaded to Alexa Development!
-          <span className="text-muted text-center">You may test on the Alexa Simulator or Submit your Skill for review</span>
-          <div className="my-3">
-            <a
-              href={`https://developer.amazon.com/alexa/console/ask/test/${amzn_id}/development/${locales[0].replace('-', '_')}/`}
-              className="btn btn-primary mr-2"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Test on Alexa Simulator
-            </a>
-            <DefaultButton isClear onClick={this.onCertify}>
-              Submit for Review
-            </DefaultButton>
-          </div>
-        </div>
-      );
     }
 
     if (!loaded)
@@ -655,97 +942,32 @@ class Skill extends Component {
 
     return (
       <React.Fragment>
-        <Modal isOpen={publish} toggle={this.togglePublish} className="stage_modal" centered size="lg" onClosed={this.closePublish}>
+        <Modal isOpen={publish} className="stage_modal" centered size="lg" onClosed={this.closePublish}>
           <ModalBody>
             <div className="d-flex justify-content-between" ref={this.privacyTop}>
               <b>{stage_title[stage]}</b>
-              <DefaultButton isClose type="button" onClick={this.togglePublish} />
             </div>
             <div className="modal-info">{content}</div>
           </ModalBody>
         </Modal>
 
-        <span className="container position-fixed bg-white mt-3 ml-2 mr-2 border p-3 pb-0 rounded" id="publish-status">
-          <div className="row justify-content-center">
-            <h3>Status</h3>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {name ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Display Name</p>
-            </div>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {small_icon && large_icon ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Icons</p>
-            </div>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {summary ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Summary</p>
-            </div>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {description ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Description</p>
-            </div>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {category ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Category</p>
-            </div>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {inv_name ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Invocation Name</p>
-            </div>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {invocations[0] ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Invocations</p>
-            </div>
-          </div>
-        </span>
-
         <div className="subheader-page-container">
           <div>
-            <div className="container pt-3">
-              {live ? (
-                <div className="alert alert-success mb-4" role="alert">
+            <GuidedStepsWrapper className="pb-0">
+              {review && (
+                <div className="alert alert-success" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0">This skill currently has a live version in production</h5>
+                    This skill currently under review and can not be submitted again
                   </div>
                 </div>
-              ) : null}
-              {amzn_id ? (
-                <div className="alert alert-success mb-4" role="alert">
+              )}
+              {live && (
+                <div className="alert alert-success" role="alert">
+                  <div className="d-flex justify-content-between align-items-center">This skill currently has a live version in production</div>
+                </div>
+              )}
+              {amzn_id && (
+                <div className="alert alert-success" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <span>This skill is linked on Amazon Developer Console</span>
                     <div onClick={() => this.setState({ id_collapse: !id_collapse })} className="pointer">
@@ -773,371 +995,9 @@ class Skill extends Component {
                     </a>
                   </Collapse>
                 </div>
-              ) : null}
-              {disabled_stages.has(stage) ? (
-                <div className="alert alert-success mb-4" role="alert">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0">This skill is currently in review so you cannot edit it.</h5>
-                    <div>
-                      <DefaultButton isWhite variant="contained" href={alexaDashboardUrl} target="_blank">
-                        Visit Dashboard
-                      </DefaultButton>
-                      <DefaultButton
-                        isPrimary
-                        variant="contained"
-                        className="ml-3"
-                        onClick={() => {
-                          onConfirm({
-                            text: 'Are you sure you want to withdraw this Skill?',
-                            confirm: this.onWithdraw,
-                          });
-                        }}
-                      >
-                        Withdraw Skill
-                      </DefaultButton>
-                    </div>
-                  </div>
-                </div>
-              ) : null}
-
-              <Form>
-                <div className="big-settings-alignment-div">
-                  <div className="mb-3 mt-5">
-                    <label className="dark">Basic Skill Info</label>
-                  </div>
-                  <div className="big-settings-content">
-                    <FormGroup>
-                      <div className="row">
-                        <div className="col-3 publish-info">
-                          <p className="mb-0 helper-text">
-                            <b>Display Name</b> is what we display for your Skill on Voiceflow/Amazon
-                          </p>
-                        </div>
-                        <div className="col-9 mb-4">
-                          <Label className="publish-label">Display Name *</Label>
-                          <Input
-                            className="form-bg"
-                            type="text"
-                            name="name"
-                            disabled={disabled_stages.has(stage)}
-                            placeholder="Storyflow - Interactive Story Adventures"
-                            value={name}
-                            onChange={this.handleChange}
-                          />
-                        </div>
-                      </div>
-                    </FormGroup>
-
-                    <div className="d-flex row mb-5">
-                      <div className="col-3 publish-info">
-                        <p className="helper-text mt-5">
-                          <b>Icons</b> are what will be displayed for your Skill in the Amazon web store.
-                        </p>
-                      </div>
-                      <div className="col-9 d-flex">
-                        <div>
-                          <Image
-                            className="icon-image large-icon text-center mr-xl-5 mr-4"
-                            isDisabled={disabled_stages.has(stage)}
-                            path="/image/large_icon"
-                            image={large_icon}
-                            update={(url) => this.setState({ large_icon: url })}
-                            title="Large Icon *"
-                          />
-                        </div>
-                        <div>
-                          <Image
-                            className="icon-image small-icon text-center"
-                            isDisabled={disabled_stages.has(stage)}
-                            path="/image/small_icon"
-                            image={small_icon}
-                            update={(url) => this.setState({ small_icon: url })}
-                            title="Small Icon *"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="big-settings-alignment-div">
-                  <div className="mb-4">
-                    <label className="dark">Skill Description</label>
-                  </div>
-                  <div className="big-settings-content">
-                    <FormGroup className="mt-0">
-                      <div className="row">
-                        <div className="col-3 publish-info">
-                          <p className="helper-text">
-                            <b>Summary</b> is a one sentence description of your amazing Skill.
-                          </p>
-                        </div>
-                        <div className="col-9 mb-4">
-                          <Label className="publish-label">Summary *</Label>
-                          <Input
-                            className="form-bg"
-                            type="text"
-                            name="summary"
-                            disabled={disabled_stages.has(stage)}
-                            placeholder="One Sentence Skill Summary"
-                            value={summary}
-                            onChange={this.handleChange}
-                          />
-                        </div>
-                      </div>
-                    </FormGroup>
-
-                    <FormGroup>
-                      <div className="row">
-                        <div className="col-3 publish-info">
-                          <p className="helper-text">
-                            <b>Description</b> is where you can provide a more detailed explanation of your Skill.
-                          </p>
-                        </div>
-                        <div className="col-9 mb-4">
-                          <Label className="publish-label">Description *</Label>
-                          <Textarea
-                            name="description"
-                            className="form-control"
-                            disabled={disabled_stages.has(stage)}
-                            value={description}
-                            onChange={this.handleChange}
-                            minRows={3}
-                            placeholder="Skill Description"
-                          />
-                        </div>
-                      </div>
-                    </FormGroup>
-
-                    <FormGroup>
-                      <div className="row">
-                        <div className="col-3 publish-info">
-                          <p className="helper-text">
-                            <b>Category</b> is the type of your Skill. This helps users find your Skill in the store.
-                          </p>
-                        </div>
-                        <div className="col-9 mb-4">
-                          <Label className="publish-label">Category *</Label>
-                          <Select
-                            classNamePrefix="select-box"
-                            name="category"
-                            isDisabled={disabled_stages.has(stage)}
-                            value={category}
-                            onChange={this.handleSelection}
-                            options={AMAZON_CATEGORIES}
-                          />
-                        </div>
-                      </div>
-                    </FormGroup>
-
-                    <FormGroup className="mt-0">
-                      <div className="row">
-                        <div className="col-3 publish-info">
-                          <p className="helper-text">
-                            <b>Keywords</b> are words that will help your Skill be found when users are searching the Skill store.
-                          </p>
-                        </div>
-                        <div className="col-9">
-                          <Label className="publish-label">
-                            Keywords (Search Tags) <small>optional</small>
-                          </Label>
-                          <Input
-                            className="form-bg"
-                            type="text"
-                            name="keywords"
-                            disabled={disabled_stages.has(stage)}
-                            placeholder="Keywords (Separated By Commas) e.g. Game, Space, Adventure"
-                            value={keywords}
-                            onChange={this.handleChange}
-                          />
-                        </div>
-                      </div>
-                    </FormGroup>
-                  </div>
-                </div>
-
-                <div className="big-settings-alignment-div">
-                  <div className="mb-4">
-                    <label className="dark">Skill Invocation</label>
-                  </div>
-                  <div className="big-settings-content">
-                    <FormGroup>
-                      <div className="row">
-                        <div className="col-3 publish-info">
-                          <p className="mb-0 helper-text">
-                            <b>Invocation Name</b> is what users will use to open your Skill. For example, "<i>Tiny Tales</i>".
-                          </p>
-                        </div>
-                        <div className="col-9 mb-4">
-                          <Label className="publish-label">Invocation Name *</Label>
-                          <Input
-                            className="form-bg"
-                            type="text"
-                            name="inv_name"
-                            disabled={disabled_stages.has(stage)}
-                            placeholder="Enter an invocation name that begins an interaction with your skill"
-                            value={inv_name}
-                            onChange={this.handleChange}
-                          />
-                        </div>
-                      </div>
-                    </FormGroup>
-
-                    <FormGroup className="mt-0">
-                      <div className="row">
-                        <div className="col-3 publish-info">
-                          <p className="helper-text">
-                            <b>Invocations</b> are the various phrases that will open your Skill.
-                          </p>
-                        </div>
-                        <div className="col-9">
-                          <Label className="publish-label">Invocations *</Label>
-                          <Multiple
-                            className="mt-0 input-group-text"
-                            list={invocations}
-                            max={3}
-                            prepend="Alexa,"
-                            update={(list) => this.setState({ invocations: list })}
-                            isDisabled={disabled_stages.has(stage)}
-                            placeholder={`open/start/launch ${name}`}
-                            add={
-                              <span>
-                                <i className="fas fa-plus" /> Add Invocation
-                              </span>
-                            }
-                          />
-                        </div>
-                      </div>
-                    </FormGroup>
-                  </div>
-                </div>
-
-                <div className="big-settings-alignment-div">
-                  <div className="mb-4">
-                    <label className="dark">Locales</label>
-                  </div>
-                  <div className="big-settings-content">
-                    <FormGroup className="mt-0">
-                      <div className="row">
-                        <div className="col-3 publish-info">
-                          <p className="helper-text">
-                            <b>Locale</b> determines your skill's availability. Your skill will be available in the regions you select here.
-                          </p>
-                        </div>
-                        <div className="col-9">
-                          <Label className="publish-label">Location(s)</Label>
-                          <ButtonGroup className="locale-button-group">
-                            {LOCALE_MAP.map((locale, i) => {
-                              const active = locales.includes(locale.value) ? 'active' : '';
-                              return (
-                                <Button
-                                  outline
-                                  color="primary"
-                                  className={`locale-button ${active}`}
-                                  key={i}
-                                  onClick={() => {
-                                    this.onLocaleBtnClick(locale.value);
-                                  }}
-                                >
-                                  {locale.name}
-                                </Button>
-                              );
-                            })}
-                          </ButtonGroup>
-                        </div>
-                      </div>
-                    </FormGroup>
-                  </div>
-                </div>
-
-                <div className="big-settings-alignment-div">
-                  <div className="mb-4">
-                    <label className="dark">Privacy and Terms</label>
-                  </div>
-                  <div className="big-settings-content">
-                    <FormGroup>
-                      <div className="row mb-4">
-                        <div className="col-3 publish-info">
-                          <p className="helper-text">
-                            The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Skill.
-                          </p>
-                        </div>
-                        <div className="col-9">
-                          <Label className="publish-label">Privacy Policy URL</Label>
-                          <Input
-                            className="form-bg"
-                            type="text"
-                            name="privacy_policy"
-                            disabled={disabled_stages.has(stage)}
-                            placeholder="Privacy Policy"
-                            value={privacy_policy}
-                            onChange={this.handleChange}
-                          />
-                        </div>
-                      </div>
-                    </FormGroup>
-
-                    <FormGroup>
-                      <div className="row mb-4">
-                        <div className="col-3 publish-info">
-                          <p className="helper-text">
-                            The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Skill.
-                          </p>
-                        </div>
-                        <div className="col-9">
-                          <Label className="publish-label">Terms and Conditions URL</Label>
-                          <Input
-                            className="form-bg"
-                            type="text"
-                            name="terms_and_cond"
-                            disabled={disabled_stages.has(stage)}
-                            placeholder="Terms and Conditions"
-                            value={terms_and_cond}
-                            onChange={this.handleChange}
-                          />
-                        </div>
-                      </div>
-                      <div className="row mb-4">
-                        <div className="col-3 publish-info">
-                          <p className="helper-text">
-                            Please indicate if this skill is directed to children under the age of 13 (for the United States, as determined under the
-                            <a
-                              // eslint-disable-next-line no-secrets/no-secrets
-                              href="https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children%27s-privacy"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Children's Online Privacy Protection Act (COPPA)
-                            </a>
-                            )
-                          </p>
-                        </div>
-                        <div className="col-9">
-                          <Label className="publish-label">Is this skill directed to children under the age of 13?</Label>
-                          <div className="d-flex">
-                            <u className="font-weight-bold mr-2">{copa ? 'YES' : 'NO'}</u>
-                            <Toggle checked={copa} icons={false} onChange={() => this.setState({ copa: !copa })} />
-                          </div>
-                        </div>
-                      </div>
-                    </FormGroup>
-                  </div>
-                </div>
-              </Form>
-              <div className="text-center">
-                {disabled_stages.has(stage) ? null : (
-                  <DefaultButton
-                    isPrimary
-                    onClick={() => {
-                      this.validateForm();
-                    }}
-                  >
-                    Publish Skill
-                    <i className="fab fa-amazon ml-2" />
-                  </DefaultButton>
-                )}
-              </div>
-            </div>
+              )}
+            </GuidedStepsWrapper>
+            <Form>{this.renderBlocks()}</Form>
           </div>
         </div>
       </React.Fragment>
@@ -1153,7 +1013,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateSkill: (type, val) => dispatch(updateVersion(type, val)),
     updateEntireSkill: (val) => dispatch(updateEntireVersion(val)),
-    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
+    // setConfirm: (confirm) => dispatch(setConfirm(confirm)),
     setError: (err) => dispatch(setError(err)),
     save: (publish, cb) => dispatch(updateSkillDB(publish, cb)),
   };

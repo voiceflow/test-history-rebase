@@ -410,7 +410,7 @@ export const DashBoard = (props) => {
                       <div className="main-list-add">
                         <Tooltip distance={16} title="Add new list" position="bottom" className="ml-1 mr-4">
                           <RoundButton
-                            type="shadow"
+                            variant="shadow"
                             icon={AddIcon}
                             onClick={() => {
                               props.addBoard(props.team_id);

@@ -81,7 +81,7 @@ class UserTesting extends React.Component {
               <Tooltip className="top-nav-icon" title="Share" position="bottom" distance={16}>
                 <RoundButton
                   id="icon-share"
-                  type="color"
+                  variant="color"
                   color="#5b9dfa"
                   active={this.state.share}
                   size={44}

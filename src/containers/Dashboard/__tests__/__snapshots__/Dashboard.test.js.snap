@@ -109,7 +109,7 @@ exports[`Dashboard render dashboard 1`] = `
                       imgSize={15}
                       onClick={[Function]}
                       size={42}
-                      type="shadow"
+                      variant="shadow"
                     />
                   </Tooltip>
                 </div>

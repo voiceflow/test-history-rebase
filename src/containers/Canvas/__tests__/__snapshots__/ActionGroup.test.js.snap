@@ -281,7 +281,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
         imgSize={15}
         onClick={[Function]}
         size={42}
-        type="plain"
+        variant="plain"
       />
     </Tooltip>
   </div>

@@ -3,18 +3,19 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 
 import SvgIcon from '@/components/SvgIcon';
+import { clickableStyles } from '@/componentsV2/Button/styles';
 
 const activeStyles = css`
   background-color: #eef4f6cc;
   color: #113160;
 
-  ${({ type, color }) =>
-    type !== 'plain' &&
+  ${({ variant, color }) =>
+    variant !== 'plain' &&
     css`
       border: 1px solid #fff;
       box-shadow: 0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16);
 
-      ${type === 'shadow' &&
+      ${variant === 'shadow' &&
         css`
           background-color: #5b9dfa30;
           color: #5b9dfa;
@@ -31,20 +32,20 @@ const activeStyles = css`
 const hoverStyles = css`
   background-color: ${({ color }) => color}15;
   border-style: double;
-  ${({ type }) => {
-    if (type === 'color') {
+  ${({ variant }) => {
+    if (variant === 'color') {
       return css`
         box-shadow: 0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16);
       `;
     }
-    if (type === 'shadow') {
+    if (variant === 'shadow') {
       return css`
         box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 6px 0 rgba(17, 49, 96, 0.24);
       `;
     }
   }};
-  ${({ type }) => {
-    if (type !== 'color') {
+  ${({ variant }) => {
+    if (variant !== 'color') {
       return css`
         color: #6e849a;
       `;
@@ -53,24 +54,25 @@ const hoverStyles = css`
 `;
 
 const Button = styled.button`
+  ${clickableStyles}
   position: relative;
   display: flex;
   justify-content: center;
   cursor: pointer;
   z-index: 1;
   background: ${({ color }) => (color ? `linear-gradient(${color}15, ${color}30)` : '#fff')};
-  border: ${({ type }) => (type === 'plain' ? '1px solid #e2e9ec' : '1px solid #fff')};
+  border: ${({ variant }) => (variant === 'plain' ? '1px solid #e2e9ec' : '1px solid #fff')};
   border-radius: 50%;
   text-align: center;
   padding: 0;
   transition: all 0.15s linear;
-  ${({ type }) => {
-    if (type === 'color') {
+  ${({ variant }) => {
+    if (variant === 'color') {
       return css`
         box-shadow: 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.18);
       `;
     }
-    if (type === 'shadow') {
+    if (variant === 'shadow') {
       return css`
         box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
       `;
@@ -95,17 +97,8 @@ const Button = styled.button`
 const RoundButton = (props) => {
   const { icon, color, imgSize, className, innerRef, onClick, disabled, ...attributes } = props;
 
-  const onBtnClick = (e) => {
-    if (disabled) {
-      e.preventDefault();
-      return;
-    }
-    if (onClick) {
-      onClick(e);
-    }
-  };
   return (
-    <Button {...props} {...attributes} className={className} ref={innerRef} onClick={onBtnClick}>
+    <Button {...props} {...attributes} className={className} ref={innerRef} onClick={(e) => onClick(e)}>
       <SvgIcon icon={icon} width={imgSize} height={imgSize} color={color} />
     </Button>
   );
@@ -115,7 +108,7 @@ RoundButton.propTypes = {
   className: PropTypes.string,
   disabled: PropTypes.boolean,
   onClick: PropTypes.func,
-  type: PropTypes.string,
+  variant: PropTypes.string,
   width: PropTypes.number,
   height: PropTypes.number,
   icon: PropTypes.elementType,
@@ -124,7 +117,7 @@ RoundButton.propTypes = {
 };
 
 RoundButton.defaultProps = {
-  type: 'plain',
+  variant: 'plain',
   imgSize: 18,
   size: 42,
   disabled: false,

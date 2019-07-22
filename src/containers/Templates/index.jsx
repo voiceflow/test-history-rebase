@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
-import { Spinner } from '@/components/Spinner';
+import { FullSpinner } from '@/components/Spinner';
 import { addProjectToList } from '@/ducks/board';
 
 import LOCALE_MAP from '../../services/LocaleMap';
@@ -135,7 +135,7 @@ class Templates extends Component {
     const { loading, error, name, locales } = this.state;
 
     if (loading) {
-      return React.createElement(Spinner, { name: 'Template' });
+      return <FullSpinner name="Template" />;
     }
 
     return (

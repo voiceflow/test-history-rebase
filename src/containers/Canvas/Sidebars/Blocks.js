@@ -119,7 +119,7 @@ export class Blocks extends PureComponent {
         );
       });
     }
-    return <>{block_content}</>;
+    return block_content;
   }
 }
 

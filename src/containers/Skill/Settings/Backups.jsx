@@ -122,88 +122,86 @@ class BackupSettings extends Component {
           </ModalFooter>
         </Modal>
 
-        <>
-          <div className="settings-content settings-backups clearfix">
-            <FormGroup>
-              <Label>Backups</Label>
-              <div className="helper-text mb-2">
-                Restore your skill to previous versions. A version is saved every time you upload your skill to Alexa
-              </div>
-              <div id="backup">
-                <Table>
-                  <thead>
-                    <tr>
-                      <th>
-                        <label className="text-left">Saved</label>
-                      </th>
-                      <th>
-                        <label className="text-left">Platform</label>
-                      </th>
-                      <th>
-                        <label className="text-left ml-4">Preview</label>
-                      </th>
-                      <th>
-                        <label className="text-left">Restore</label>
-                      </th>
+        <div className="settings-content settings-backups clearfix">
+          <FormGroup>
+            <Label>Backups</Label>
+            <div className="helper-text mb-2">
+              Restore your skill to previous versions. A version is saved every time you upload your skill to Alexa
+            </div>
+            <div id="backup">
+              <Table>
+                <thead>
+                  <tr>
+                    <th>
+                      <label className="text-left">Saved</label>
+                    </th>
+                    <th>
+                      <label className="text-left">Platform</label>
+                    </th>
+                    <th>
+                      <label className="text-left ml-4">Preview</label>
+                    </th>
+                    <th>
+                      <label className="text-left">Restore</label>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {live_version ? (
+                    <tr className="table-primary">
+                      <td>
+                        {moment(live_version.created).fromNow()} <br /> (Current live version)
+                      </td>
+                      <td className="text-center">
+                        <i
+                          className={cn('fab', {
+                            'fa-google': live_version.published_platform === 'google',
+                            'fa-amazon': live_version.published_platform !== 'google',
+                          })}
+                        />
+                      </td>
+                      <td>
+                        <Button isPrimary onClick={() => this.previewBackup(live_version)}>
+                          Preview
+                        </Button>
+                      </td>
+                      <td>
+                        <Button isPrimary onClick={() => this.confirmRestore(live_version.skill_id)}>
+                          Restore
+                        </Button>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {live_version ? (
-                      <tr className="table-primary">
-                        <td>
-                          {moment(live_version.created).fromNow()} <br /> (Current live version)
-                        </td>
+                  ) : null}
+                  {versions.map((version, i) => {
+                    return (
+                      <tr key={i}>
+                        <td>{moment(version.created).fromNow()}</td>
                         <td className="text-center">
                           <i
                             className={cn('fab', {
-                              'fa-google': live_version.published_platform === 'google',
-                              'fa-amazon': live_version.published_platform !== 'google',
+                              'fa-google': version.published_platform === 'google',
+                              'fa-amazon': version.published_platform !== 'google',
                             })}
                           />
                         </td>
                         <td>
-                          <Button isPrimary onClick={() => this.previewBackup(live_version)}>
+                          <Button isFlat onClick={() => this.previewBackup(version)}>
                             Preview
                           </Button>
                         </td>
                         <td>
-                          <Button isPrimary onClick={() => this.confirmRestore(live_version.skill_id)}>
+                          <Button isPrimarySmall onClick={() => this.confirmRestore(version.skill_id)}>
                             Restore
                           </Button>
                         </td>
                       </tr>
-                    ) : null}
-                    {versions.map((version, i) => {
-                      return (
-                        <tr key={i}>
-                          <td>{moment(version.created).fromNow()}</td>
-                          <td className="text-center">
-                            <i
-                              className={cn('fab', {
-                                'fa-google': version.published_platform === 'google',
-                                'fa-amazon': version.published_platform !== 'google',
-                              })}
-                            />
-                          </td>
-                          <td>
-                            <Button isFlat onClick={() => this.previewBackup(version)}>
-                              Preview
-                            </Button>
-                          </td>
-                          <td>
-                            <Button isPrimarySmall onClick={() => this.confirmRestore(version.skill_id)}>
-                              Restore
-                            </Button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </Table>
-              </div>
-            </FormGroup>
-          </div>
-        </>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </div>
+          </FormGroup>
+        </div>
       </>
     );
   }

@@ -233,11 +233,9 @@ export class Command extends Component {
           {extras.diagram_id ? (
             <>
               {diagram_name ? (
-                <>
-                  <DefaultButton isPrimary isLarge isBlock onClick={() => this.props.enterFlow(extras.diagram_id)}>
-                    <img src="/flows-white.svg" alt="flows" className="mr-2" /> Enter {diagram_name} Flow
-                  </DefaultButton>
-                </>
+                <DefaultButton isPrimary isLarge isBlock onClick={() => this.props.enterFlow(extras.diagram_id)}>
+                  <img src="/flows-white.svg" alt="flows" className="mr-2" /> Enter {diagram_name} Flow
+                </DefaultButton>
               ) : (
                 <Alert color="danger" className="text-center">
                   <i className="fas fa-exclamation-triangle fa-2x mb-2" />

@@ -127,7 +127,7 @@ class SpeakElement extends Component {
           <VariableText
             className="editor form-control auto-height"
             raw={d.rawContent}
-            placeholder={<>{`Tell ${d.voice} what to say`}</>}
+            placeholder={`Tell ${d.voice} what to say`}
             variables={this.props.variables}
             updateRaw={(raw) => {
               d.rawContent = raw;

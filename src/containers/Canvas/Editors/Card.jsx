@@ -86,7 +86,7 @@ class Card extends Component {
                     Add Small Screen Image
                   </Tooltip>
                 ) : (
-                  <>Remove Small Image</>
+                  'Remove Small Image'
                 )}
               </DefaultButton>
             </div>
@@ -97,7 +97,7 @@ class Card extends Component {
           <VariableText
             className="editor"
             raw={this.state.node.extras.content}
-            placeholder={<>Add content to your card here</>}
+            placeholder="Add content to your card here"
             variables={this.props.variables}
             updateRaw={(raw) => this.updateContent('content', raw)}
           />

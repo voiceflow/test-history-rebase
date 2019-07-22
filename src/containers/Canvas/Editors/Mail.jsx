@@ -167,22 +167,20 @@ export class Mail extends Component {
           </Button>
         </div>
         {!user ? (
-          <>
-            <VariableInput
-              className="form-control"
-              raw={this.state.node.extras.to}
-              placeholder="E-mail Recipient"
-              variables={this.props.variables}
-              updateRaw={(raw) => {
-                const node = this.state.node;
-                node.extras.to = raw;
+          <VariableInput
+            className="form-control"
+            raw={this.state.node.extras.to}
+            placeholder="E-mail Recipient"
+            variables={this.props.variables}
+            updateRaw={(raw) => {
+              const node = this.state.node;
+              node.extras.to = raw;
 
-                this.setState({
-                  node,
-                });
-              }}
-            />
-          </>
+              this.setState({
+                node,
+              });
+            }}
+          />
         ) : (
           <span className="text-muted font-italic">This Message Will Only Be Sent If the User Consents to Sharing Their Email</span>
         )}
@@ -190,32 +188,30 @@ export class Mail extends Component {
         <label>Email Variable Map</label>
         <div>
           {this.state.node.extras.mapping.length !== 0 ? (
-            <>
-              {this.state.node.extras.mapping.map((v, i) => {
-                return (
-                  <div key={i} className="variable_map mb-2">
-                    <Select
-                      styles={selectStyles}
-                      components={{ Option: variableComponent }}
-                      className="map-box"
-                      classNamePrefix="variable-box"
-                      placeholder="Variable"
-                      value={v.val ? { label: `{${v.val}}`, value: v.val } : null}
-                      onChange={(select) => this.selectVariable(select, i)}
-                      options={
-                        Array.isArray(this.props.variables)
-                          ? this.props.variables.map((variable) => {
-                              return { label: `{${variable}}`, value: variable, openVar: this.props.openVarTab };
-                            })
-                          : null
-                      }
-                    />
-                    <i className="far fa-arrow-right" />
-                    <input readOnly className="map-box form-control" value={`{${v.key}}`} />
-                  </div>
-                );
-              })}
-            </>
+            this.state.node.extras.mapping.map((v, i) => {
+              return (
+                <div key={i} className="variable_map mb-2">
+                  <Select
+                    styles={selectStyles}
+                    components={{ Option: variableComponent }}
+                    className="map-box"
+                    classNamePrefix="variable-box"
+                    placeholder="Variable"
+                    value={v.val ? { label: `{${v.val}}`, value: v.val } : null}
+                    onChange={(select) => this.selectVariable(select, i)}
+                    options={
+                      Array.isArray(this.props.variables)
+                        ? this.props.variables.map((variable) => {
+                            return { label: `{${variable}}`, value: variable, openVar: this.props.openVarTab };
+                          })
+                        : null
+                    }
+                  />
+                  <i className="far fa-arrow-right" />
+                  <input readOnly className="map-box form-control" value={`{${v.key}}`} />
+                </div>
+              );
+            })
           ) : (
             <i className="text-muted">No Variables Exist For This Email</i>
           )}

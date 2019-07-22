@@ -95,10 +95,10 @@ const Button = styled.button`
 `;
 
 const RoundButton = (props) => {
-  const { icon, color, imgSize, className, innerRef, onClick, disabled, ...attributes } = props;
+  const { icon, color, imgSize, className, innerRef, onClick, disabled } = props;
 
   return (
-    <Button {...props} {...attributes} className={className} ref={innerRef} onClick={(e) => onClick(e)}>
+    <Button {...props} className={className} ref={innerRef} disabled={disabled} onClick={(e) => onClick(e)}>
       <SvgIcon icon={icon} width={imgSize} height={imgSize} color={color} />
     </Button>
   );

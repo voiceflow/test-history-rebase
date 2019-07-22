@@ -2,18 +2,22 @@ import './Skill.css';
 
 import { constants } from '@voiceflow/common';
 import axios from 'axios';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
-import { Alert, Button, ButtonGroup, Collapse, Form, FormGroup, Input, Label, Modal, ModalBody } from 'reactstrap';
+import { Alert, Button as ReactstrapButton, ButtonGroup, Collapse, Form, FormGroup, Input, Label, Modal, ModalBody } from 'reactstrap';
 
 import DefaultButton from '@/components/Button';
 import GoogleAuth from '@/components/Modals/GoogleAuthenticationModalContent';
 import { ModalHeader } from '@/components/Modals/ModalHeader';
+import { Spinner } from '@/components/Spinner';
+import Button from '@/componentsV2/Button';
 import { dialogflowToken, googleAccessToken, verifyGoogleToken } from '@/ducks/account';
 import { setConfirm, setError } from '@/ducks/modal';
+
+import GuidedSteps from '../../components/GuidedSteps';
 
 const { GOOGLE_LOCALES } = constants.locales;
 
@@ -52,8 +56,8 @@ const FORMATTED_LOCALES = Object.keys(GOOGLE_LOCALES).map((key) => {
 
 const GOOGLE_PUBLISH_STAGES = {
   '-1': 'Login Failed',
-  0: 'Last step: Authenticate with Google Actions',
-  1: 'Last step: Authenticate with Google Actions',
+  0: 'Authenticate with Google Actions',
+  1: 'Authenticate with Google Actions',
   2: 'Rendering',
   3: 'Publishing',
   4: 'Published',
@@ -221,10 +225,10 @@ class GooglePublish extends Component {
         });
       })
       .catch((err) => {
-        console.error('There was an error with the google certificate: ', err.response.data);
-        if (err.response.data.error === 'Invalid Google Certificate.') {
+        this.setState({ loaded: true });
+        const message = _.get(err, ['response', 'data', 'data']) || _.get(err, ['response', 'data']);
+        if (message === 'Invalid Google Certificate') {
           this.setState({
-            loaded: true,
             auth_error: 'There was an error with your google certificate. Please try again or contact support.',
           });
         }
@@ -454,35 +458,223 @@ class GooglePublish extends Component {
     );
   }
 
+  checkValidStep = (stepNumber) => {
+    const { credentials, main_locale } = this.state;
+    switch (stepNumber) {
+      case 0:
+        return !!credentials;
+      case 1:
+        return !!main_locale;
+      default:
+        return true;
+    }
+  };
+
+  renderBlocks = () => {
+    const { google_id, credentials, loading_creds, unlink_loading, main_locale, privacy_policy, terms_and_cond, auth_error } = this.state;
+
+    const blocks = [];
+    const enterText = (
+      <>
+        Publish Action
+        <i className="fab fa-google ml-2" />
+      </>
+    );
+
+    blocks.push({
+      title: 'Credentials',
+      content: (
+        <>
+          <FormGroup className="mb-4">
+            <Label className="publish-label">Dialogflow Credentials File *</Label>
+            <div>
+              <Dropzone
+                className={`dropzone google-upload ${credentials && !auth_error ? 'disabled' : ''}`}
+                activeClassName="active"
+                rejectClassName="reject"
+                multiple={false}
+                disableClick={false}
+                maxSize={MAX_SIZE}
+                onDrop={this.onDrop}
+                disabled={credentials && !auth_error}
+              >
+                <div>
+                  {!credentials && !loading_creds && (
+                    <div className="drop-child">
+                      Drag and Drop your file here
+                      <br />
+                      <small className="d-inline-block mt-2">OR</small>
+                      <br />
+                      <div className="pg__add_file_button">
+                        <Button variant="primary" type="button" className="mt-2">
+                          Add File
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                  {loading_creds && (
+                    <div className="d-flex publish-loader">
+                      <Spinner isEmpty />
+                    </div>
+                  )}
+                  {auth_error && credentials && !loading_creds && (
+                    <div className="drop-child">
+                      Drag and Drop your file here
+                      <br />
+                      <small className="d-inline-block mt-2">OR</small>
+                      <br />
+                      <div className="pg__add_file_button">
+                        <Button variant="primary" type="button" className="mt-2">
+                          Add File
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                  {credentials && !auth_error && (
+                    <div className="align-self-center mx-2 d-flex">
+                      <i className="fal fa-check-circle text-success align-self-center mx-2" />
+                      <span>
+                        <Label>File uploaded</Label>
+                      </span>
+                    </div>
+                  )}
+                  <div className="rejected-file text-danger">
+                    <b>File not Accepted</b>
+                  </div>
+                </div>
+              </Dropzone>
+            </div>
+          </FormGroup>
+          {credentials && (
+            <FormGroup>
+              <Label className="publish-label">Google Project ID</Label>
+              <Input className="form-bg" type="text" name="project_id" placeholder="No Project ID Found" value={google_id} readOnly />
+            </FormGroup>
+          )}
+          {credentials && (
+            <ReactstrapButton className="w-100" color="danger" onClick={this.onUnlinkClick}>
+              {unlink_loading ? <span className="loader" /> : 'Unlink Google Project'}
+            </ReactstrapButton>
+          )}
+        </>
+      ),
+      description: (
+        <>
+          <div className="publish-info">
+            <p className="helper-text">
+              Your <b>Dialogflow Credentials File</b> for publishing. Instructions can be found{' '}
+              <a
+                href="http://learn.voiceflow.com/advanced-voiceflow-tutorials/uploading-your-project-to-google-assistant"
+                target="_blank"
+                className="google-link"
+                rel="noopener noreferrer"
+              >
+                here
+              </a>
+            </p>
+          </div>
+          {credentials && (
+            <div className="publish-info">
+              <p className="helper-text">
+                <b>Google Project ID</b> is the ID of your project in the Google Actions Console (read-only).
+              </p>
+            </div>
+          )}
+          {credentials && (
+            <div className="publish-info">
+              <p className="helper-text">
+                <b>Unlink</b> the current Google Actions project.
+              </p>
+            </div>
+          )}
+        </>
+      ),
+    });
+
+    blocks.push({
+      title: 'Languages',
+      content: (
+        <>
+          <FormGroup className="mb-4 pa__locale-limited">
+            <Label className="publish-label">Main Language *</Label>
+            <ButtonGroup className="locale-button-group">
+              {FORMATTED_LOCALES.map((locale, i) => {
+                const active = main_locale === locale.value ? 'active' : '';
+                return (
+                  <ReactstrapButton
+                    outline
+                    color="primary"
+                    className={`locale-button ${active}`}
+                    key={i}
+                    onClick={() => {
+                      this.onMainLocaleBtnClick(locale.value);
+                    }}
+                  >
+                    {locale.name}
+                  </ReactstrapButton>
+                );
+              })}
+            </ButtonGroup>
+          </FormGroup>
+        </>
+      ),
+      description: (
+        <>
+          <div className="publish-info">
+            <p className="helper-text">
+              Your Action's <b>Main Language</b> determines its availability. Your Action will be available in regions which speak your selected
+              language.
+            </p>
+          </div>
+        </>
+      ),
+    });
+
+    blocks.push({
+      title: 'Legal',
+      content: (
+        <>
+          <FormGroup>
+            <Label className="publish-label">Privacy Policy URL</Label>
+            <Input className="form-bg" type="text" name="privacy_policy" readOnly placeholder="Privacy Policy" value={privacy_policy} />
+          </FormGroup>
+
+          <FormGroup className="mb-4">
+            <Label className="publish-label">Terms and Conditions URL</Label>
+            <Input className="form-bg" type="text" name="terms_and_cond" readOnly placeholder="Terms and Conditions" value={terms_and_cond} />
+          </FormGroup>
+        </>
+      ),
+      description: (
+        <>
+          <div className="publish-info">
+            <p className="helper-text">
+              The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Action (this field is for
+              reference only).
+            </p>
+          </div>
+          <div className="publish-info">
+            <p className="helper-text">
+              The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Action (this field is
+              for reference only).
+            </p>
+          </div>
+        </>
+      ),
+    });
+
+    return <GuidedSteps blocks={blocks} checkStep={this.checkValidStep} onFinishSteps={this.onPublishClicked} submitText={enterText} forceFollow />;
+  };
+
   render() {
-    const {
-      stage,
-      google_link_user,
-      google_id,
-      loaded,
-      publish_modal_open,
-      uploaded,
-      id_collapse,
-      modify_url,
-      credentials,
-      loading_creds,
-      unlink_loading,
-      main_locale,
-      privacy_policy,
-      terms_and_cond,
-      live,
-      auth_error,
-    } = this.state;
+    const { stage, google_link_user, google_id, loaded, publish_modal_open, uploaded, id_collapse, modify_url, live } = this.state;
 
     let modal_content = null;
 
     if (stage === 2 || stage === 3 || stage === 6 || stage === 7) {
       modal_content = (
         <div>
-          <h1>
-            <span className="loader" />
-          </h1>
-          <p className="loading">{GOOGLE_PUBLISH_STAGES[stage]}</p>
+          <Spinner message={`Loading ${GOOGLE_PUBLISH_STAGES[stage]}`} />
         </div>
       );
     } else if (stage === 0 || stage === 1) {
@@ -496,12 +688,7 @@ class GooglePublish extends Component {
     if (!loaded)
       return (
         <div className="super-center h-100 w-100">
-          <div className="text-center">
-            <h1>
-              <span className="loader" />
-            </h1>
-            Getting Action Status
-          </div>
+          <Spinner message="Getting Action Status" />
         </div>
       );
 
@@ -530,29 +717,6 @@ class GooglePublish extends Component {
             </div>
           </ModalBody>
         </Modal>
-
-        <span className="container position-fixed bg-white mt-3 ml-2 mr-2 border p-3 pb-0 rounded" id="publish-status">
-          <div className="row justify-content-center">
-            <h3>Status</h3>
-          </div>
-          <hr className="mt-0" />
-          <div className="row">
-            <div className="col-2">
-              {credentials ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Credentials File</p>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-2">
-              {main_locale ? <i className="fal fa-check-circle text-success" /> : <i className="fal fa-times-circle text-danger" />}
-            </div>
-            <div className="col-10">
-              <p>Main Language</p>
-            </div>
-          </div>
-        </span>
 
         <div className="subheader-page-container">
           <div>
@@ -645,240 +809,7 @@ class GooglePublish extends Component {
                   </div>
                 </div>
               ) : null}
-              <Form>
-                <div className="big-settings-alignment-div">
-                  <div className="mb-4 mt-5">
-                    <label className="dark">Credentials</label>
-                    <div className="pb__auth_error">{auth_error}</div>
-                  </div>
-                  <div className="big-settings-content">
-                    <FormGroup>
-                      <div className="row">
-                        <div className="col-3 publish-info">
-                          <p className="helper-text">
-                            Your <b>Dialogflow Credentials File</b> for publishing. Instructions can be found{' '}
-                            <a
-                              href="http://learn.voiceflow.com/advanced-voiceflow-tutorials/uploading-your-project-to-google-assistant"
-                              target="_blank"
-                              className="google-link"
-                              rel="noopener noreferrer"
-                            >
-                              here
-                            </a>
-                          </p>
-                        </div>
-                        <div className="col-9">
-                          <Label className="publish-label">Dialogflow Credentials File *</Label>
-                          <div>
-                            <Dropzone
-                              className={`dropzone google-upload ${credentials && !auth_error ? 'disabled' : ''}`}
-                              activeClassName="active"
-                              rejectClassName="reject"
-                              multiple={false}
-                              disableClick={false}
-                              maxSize={MAX_SIZE}
-                              onDrop={this.onDrop}
-                              disabled={credentials && !auth_error}
-                            >
-                              <div>
-                                {!credentials && !loading_creds && (
-                                  <div className="drop-child">
-                                    Drag and Drop your file here
-                                    <br />
-                                    <small className="d-inline-block mt-2">OR</small>
-                                    <br />
-                                    <div>
-                                      <div className="btn-primary-small mt-2">Add File</div>
-                                    </div>
-                                  </div>
-                                )}
-                                {loading_creds && (
-                                  <div className="d-flex publish-loader">
-                                    <span className="loader align-self-center" />
-                                  </div>
-                                )}
-                                {auth_error && credentials && !loading_creds && (
-                                  <div className="drop-child">
-                                    Drag and Drop your file here
-                                    <br />
-                                    <small className="d-inline-block mt-2">OR</small>
-                                    <br />
-                                    <div>
-                                      <div className="btn-primary-small mt-2">Add File</div>
-                                    </div>
-                                  </div>
-                                )}
-                                {credentials && !auth_error && (
-                                  <div className="align-self-center mx-2 d-flex">
-                                    <i className="fal fa-check-circle text-success align-self-center mx-2" />
-                                    <span>
-                                      <Label>File uploaded</Label>
-                                    </span>
-                                  </div>
-                                )}
-                                <div className="rejected-file text-danger">
-                                  <b>File not Accepted</b>
-                                </div>
-                              </div>
-                            </Dropzone>
-                          </div>
-                        </div>
-                      </div>
-                    </FormGroup>
-                    {credentials && (
-                      <FormGroup>
-                        <div className="row">
-                          <div className="col-3 publish-info">
-                            <p className="helper-text">
-                              <b>Google Project ID</b> is the ID of your project in the Google Actions Console (read-only).
-                            </p>
-                          </div>
-                          <div className="col-9">
-                            <Label className="publish-label">Google Project ID</Label>
-                            <Input className="form-bg" type="text" name="project_id" placeholder="No Project ID Found" value={google_id} readOnly />
-                          </div>
-                        </div>
-                      </FormGroup>
-                    )}
-                    {credentials && (
-                      <div className="row">
-                        <div className="col-3 publish-info">
-                          <p className="helper-text">
-                            <b>Unlink</b> the current Google Actions project.
-                          </p>
-                        </div>
-                        <div className="col-9">
-                          <Button className="w-100" color="danger" onClick={this.onUnlinkClick}>
-                            {unlink_loading ? <span className="loader" /> : 'Unlink Google Project'}
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                {credentials && (
-                  <div className="big-settings-alignment-div">
-                    <div className="mb-4">
-                      <b>Languages</b>
-                    </div>
-                    <div className="big-settings-content">
-                      <FormGroup>
-                        <div className="row">
-                          <div className="col-3 publish-info">
-                            <p className="helper-text">
-                              Your Action's <b>Main Language</b> determines its availability. Your Action will be available in regions which speak
-                              your selected language.
-                            </p>
-                          </div>
-                          <div className="col-9">
-                            <Label className="publish-label">Main Language *</Label>
-                            <ButtonGroup className="locale-button-group">
-                              {FORMATTED_LOCALES.map((locale, i) => {
-                                const active = main_locale === locale.value ? 'active' : '';
-                                return (
-                                  <Button
-                                    outline
-                                    color="primary"
-                                    className={`locale-button ${active}`}
-                                    key={i}
-                                    onClick={() => {
-                                      this.onMainLocaleBtnClick(locale.value);
-                                    }}
-                                  >
-                                    {locale.name}
-                                  </Button>
-                                );
-                              })}
-                            </ButtonGroup>
-                          </div>
-                        </div>
-                      </FormGroup>
-
-                      {/* Disabled for now, because Dialogflow listEntityTypes(...) is not working as expected */}
-                      {/* <FormGroup>
-                      <div className="row">
-                        <div className="col-3 publish-info">
-                          <p className="helper-text">
-                            <b>Additional languages</b> allow your skill to be adapted to support additional languages beyond your main language.
-                                    </p>
-                        </div>
-                        <div className="col-9">
-                          <Label className="publish-label">Additional Languages</Label>
-                          <ButtonGroup className="locale-button-group">
-                            {FORMATTED_LOCALES.map((locale, i) => {
-                              const disabled = main_locale === locale.value
-                              const active = locales.includes(locale.value) && !disabled ? "active" : "";
-                              return <Button outline color="primary" className={`locale-button ${active} ${disabled ? 'disabled' : ''}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value) }}>{locale.name}</Button>
-                            })}
-                          </ButtonGroup>
-                        </div>
-                      </div>
-                    </FormGroup> */}
-                    </div>
-                  </div>
-                )}
-
-                {credentials && (
-                  <div className="big-settings-alignment-div">
-                    <div className="mb-4">
-                      <b>Legal</b>
-                    </div>
-                    <div className="big-settings-content">
-                      <FormGroup>
-                        <div className="row">
-                          <div className="col-3 publish-info">
-                            <p className="helper-text">
-                              The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Action (this
-                              field is for reference only).
-                            </p>
-                          </div>
-                          <div className="col-9">
-                            <Label className="publish-label">Privacy Policy URL</Label>
-                            <Input
-                              className="form-bg"
-                              type="text"
-                              name="privacy_policy"
-                              readOnly
-                              placeholder="Privacy Policy"
-                              value={privacy_policy}
-                            />
-                          </div>
-                        </div>
-                      </FormGroup>
-
-                      <FormGroup>
-                        <div className="row">
-                          <div className="col-3 publish-info">
-                            <p className="helper-text">
-                              The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your
-                              Action (this field is for reference only).
-                            </p>
-                          </div>
-                          <div className="col-9">
-                            <Label className="publish-label">Terms and Conditions URL</Label>
-                            <Input
-                              className="form-bg"
-                              type="text"
-                              name="terms_and_cond"
-                              readOnly
-                              placeholder="Terms and Conditions"
-                              value={terms_and_cond}
-                            />
-                          </div>
-                        </div>
-                      </FormGroup>
-                    </div>
-                  </div>
-                )}
-              </Form>
-              {credentials && (
-                <div className="text-center">
-                  <button variant="contained" className="btn-primary" onClick={this.onPublishClicked}>
-                    Publish Action
-                    <i className="fab fa-google ml-2" />
-                  </button>
-                </div>
-              )}
+              <Form>{this.renderBlocks()}</Form>
             </div>
           </div>
         </div>

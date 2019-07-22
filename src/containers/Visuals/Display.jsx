@@ -8,7 +8,7 @@ import { Col, FormGroup, Input, Row } from 'reactstrap';
 
 import AceEditor from '@/components/AceEditor';
 import Button from '@/components/Button';
-import { Spinner } from '@/components/Spinner/Spinner';
+import { Spinner } from '@/components/Spinner';
 import { addDisplay, updateDisplay } from '@/ducks/display';
 import { setError } from '@/ducks/modal';
 
@@ -259,7 +259,7 @@ class Display extends Component {
                         Back
                       </Button>
                       <Button isPrimary varient="contained" onClick={this.save} style={{ width: 100 }}>
-                        {saving ? <span className="loader" /> : <>Save{saved ? '' : '*'}</>}
+                        {saving ? <Spinner isEmpty /> : <>Save{saved ? '' : '*'}</>}
                       </Button>
                     </div>
                   </div>

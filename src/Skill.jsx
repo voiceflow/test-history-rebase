@@ -12,7 +12,7 @@ import Button from '@/components/Button';
 import Header from '@/components/Header';
 import DefaultModal from '@/components/Modals/DefaultModal';
 import SecondaryNavBar from '@/components/NavBar/SecondaryNavBar';
-import { Spinner } from '@/components/Spinner/Spinner';
+import { FullSpinner } from '@/components/Spinner';
 import Migrate from '@/containers/Skill/Migrate';
 // Ducks
 import { unnormalize } from '@/ducks/_normalize';
@@ -296,6 +296,15 @@ class Skill extends Component {
       );
     }
 
+    if (
+      this.state.load_skill ||
+      this.props.load_diagram ||
+      this.props.loadSession ||
+      ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)
+    ) {
+      return <FullSpinner name="Project" />;
+    }
+
     return (
       <>
         <DefaultModal
@@ -307,51 +316,42 @@ class Skill extends Component {
           header="Live Mode Disclaimer"
           close_button_text="Confirm"
         />
-        {this.state.load_skill ||
-        this.props.load_diagram ||
-        this.props.loadSession ||
-        ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new) ? (
-          React.createElement(Spinner, { name: 'Project' })
-        ) : (
-          <>
-            <div id="app" className={this.props.page}>
-              {this.props.page !== 'canvas' && this.props.page !== 'test' && (
-                <div className="main-container-header">
-                  <Header
-                    // title={this.props.skill.name}
-                    history={this.props.history}
-                    leftRenderer={() => (
-                      <div onDoubleClick={() => this.setState({ editName: true })}>
-                        <Link to="/" className="mx-3">
-                          <img src="/back.svg" alt="back" className="mr-3" />
-                        </Link>
-                        {/* eslint-disable-next-line no-nested-ternary */}
-                        {this.state.editName ? (
-                          <input
-                            autoFocus // eslint-disable-line jsx-a11y/no-autofocus
-                            className="edit-input"
-                            value={this.props.skill.name}
-                            onChange={(e) => {
-                              this.props.updateSkill('name', e.target.value);
-                              this.props.updateSkill('inv_name', e.target.value);
-                            }}
-                            onBlur={() => this.setState({ editName: false })}
-                          />
-                        ) : this.props.skill && this.props.skill.name ? (
-                          this.props.skill.name
-                        ) : (
-                          'Loading Skill'
-                        )}
-                      </div>
+        <div id="app" className={this.props.page}>
+          {this.props.page !== 'canvas' && this.props.page !== 'test' && (
+            <div className="main-container-header">
+              <Header
+                // title={this.props.skill.name}
+                history={this.props.history}
+                leftRenderer={() => (
+                  <div onDoubleClick={() => this.setState({ editName: true })}>
+                    <Link to="/" className="mx-3">
+                      <img src="/back.svg" alt="back" className="mr-3" />
+                    </Link>
+                    {/* eslint-disable-next-line no-nested-ternary */}
+                    {this.state.editName ? (
+                      <input
+                        autoFocus // eslint-disable-line jsx-a11y/no-autofocus
+                        className="edit-input"
+                        value={this.props.skill.name}
+                        onChange={(e) => {
+                          this.props.updateSkill('name', e.target.value);
+                          this.props.updateSkill('inv_name', e.target.value);
+                        }}
+                        onBlur={() => this.setState({ editName: false })}
+                      />
+                    ) : this.props.skill && this.props.skill.name ? (
+                      this.props.skill.name
+                    ) : (
+                      'Loading Skill'
                     )}
-                    subHeaderRenderer={() => !this.props.preview && <SecondaryNavBar page={this.props.page} history={this.props.history} />}
-                  />
-                </div>
-              )}
-              {this.renderPage()}
+                  </div>
+                )}
+                subHeaderRenderer={() => !this.props.preview && <SecondaryNavBar page={this.props.page} history={this.props.history} />}
+              />
             </div>
-          </>
-        )}
+          )}
+          {this.renderPage()}
+        </div>
       </>
     );
   }

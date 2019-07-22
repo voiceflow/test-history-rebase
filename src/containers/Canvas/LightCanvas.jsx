@@ -15,6 +15,7 @@ import { BlockNodeFactory } from '@/components/SRD/factories/BlockNodeFactory';
 import { BlockPortFactory } from '@/components/SRD/factories/BlockPortFactory';
 /* eslint-enable no-secrets/no-secrets */
 import * as SRD from '@/components/SRD/main';
+import { FullSpinner } from '@/components/Spinner';
 import { setError } from '@/ducks/modal';
 
 import new_template from '../../assets/templates/new';
@@ -262,14 +263,7 @@ class LightCanvas extends Component {
     return (
       <>
         <div id="lightcanvas">
-          {loading_diagram && (
-            <div id="loading-diagram">
-              <div className="text-center">
-                <h5 className="text-muted mb-2">Loading Preview</h5>
-                <span className="loader" />
-              </div>
-            </div>
-          )}
+          {loading_diagram && <FullSpinner name="Preview" />}
           <div key={diagram_id} id="diagram" onDrop={this.onDrop} onDragOver={(e) => e.preventDefault()} onClick={this.clickDiagram}>
             <div id="widget-bar">
               <ButtonGroup>

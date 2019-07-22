@@ -27,6 +27,7 @@ import serializeError from 'serialize-error';
 
 import AceEditor from '@/components/AceEditor';
 import { ModalHeader } from '@/components/Modals/ModalHeader';
+import { Spinner } from '@/components/Spinner';
 
 import draftToMarkdown from '../../../services/draftConvert';
 import APIInputs from './components/APIInputs';
@@ -314,13 +315,8 @@ class API extends Component {
 
   // Render entire modal
   renderAPITest() {
-    const loading = (
-      <div className="text-center mt-3">
-        <div className="loader text-lg" />
-      </div>
-    );
     if (_.isNull(this.state.modalContent) && _.isEmpty(this.state.variables)) {
-      return loading;
+      return <Spinner isEmpty />;
     }
 
     return (
@@ -389,7 +385,7 @@ class API extends Component {
             )}
           </div>
         ) : this.state.loading ? (
-          loading
+          <Spinner isEmpty />
         ) : null}
       </div>
     );

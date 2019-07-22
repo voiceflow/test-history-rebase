@@ -169,6 +169,33 @@ export const initializeTest = (options = {}) => (dispatch, getState) => {
         callback: _.noop,
       });
     });
+
+    const AUDIO_INTENTS = [
+      {
+        name: 'Pause',
+        intent: 'AMAZON.PauseIntent',
+      },
+      {
+        name: 'Resume',
+        intent: 'AMAZON.ResumeIntent',
+      },
+      {
+        name: 'Next',
+        intent: 'AMAZON.NextIntent',
+      },
+      {
+        name: 'Previous',
+        intent: 'AMAZON.PreviousIntent',
+      },
+    ];
+
+    AUDIO_INTENTS.forEach(({ intent, name }) => {
+      nlc.registerIntent({
+        intent,
+        utterances: [name],
+        callback: _.noop,
+      });
+    });
   } catch (err) {
     console.error(err);
   }

@@ -8,7 +8,7 @@ import Select from 'react-select';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/Button';
-import { Spinner } from '@/components/Spinner/Spinner';
+import { Spinner } from '@/components/Spinner';
 import StepProgressBar from '@/components/StepProgressBar/StepProgressBar';
 
 const CLASS_MUTED = 'text-muted';

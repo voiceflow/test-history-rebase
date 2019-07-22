@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 
 // Components
 import Button from '@/components/Button';
+import { FullSpinner } from '@/components/Spinner';
 import Stepper from '@/components/Stepper';
-import { setError } from '@/ducks/modal';
 // Ducks
+import { setError } from '@/ducks/modal';
 import { addProduct, updateProduct } from '@/ducks/product';
 
 // Constants
@@ -342,14 +343,7 @@ class EditProduct extends React.Component {
 
   render() {
     if (this.state.loading) {
-      return (
-        <div id="loading-diagram">
-          <div className="text-center">
-            <h5 className="text-muted mb-2">Loading Products</h5>
-            <span className="loader" />
-          </div>
-        </div>
-      );
+      return <FullSpinner name="Products" />;
     }
 
     return (

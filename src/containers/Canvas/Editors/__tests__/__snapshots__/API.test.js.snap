@@ -34,13 +34,9 @@ exports[`API render api editor 1`] = `
     <ModalBody
       tag="div"
     >
-      <div
-        className="text-center mt-3"
-      >
-        <div
-          className="loader text-lg"
-        />
-      </div>
+      <Spinner
+        isEmpty={true}
+      />
     </ModalBody>
   </Modal>
   <label>

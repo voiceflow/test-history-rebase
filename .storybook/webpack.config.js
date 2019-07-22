@@ -5,7 +5,7 @@ module.exports = ({ config }) =>
   merge.strategy({ 'module.rules': 'replace' })(config, {
     resolve: {
       alias: {
-        '@': paths.sourceDir
+        '@': paths.sourceDir,
       },
     },
 

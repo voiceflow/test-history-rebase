@@ -67,6 +67,16 @@ export const LoginForm = ({ login, history, location }) => {
               />
             </FormGroup>
             <FormGroup className="passwordInput">
+              <Input
+                className="form-bg"
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                minLength="8"
+                value={password}
+              />
               {password.length === 0 ? (
                 <Link className="forgotLink" to="/reset">
                   Forgot?
@@ -80,16 +90,6 @@ export const LoginForm = ({ login, history, location }) => {
                   alt=""
                 />
               )}
-              <Input
-                className="form-bg"
-                type={showPassword ? 'text' : 'password'}
-                name="password"
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                required
-                minLength="8"
-                value={password}
-              />
             </FormGroup>
             <div className="row">
               <div className="col-8 auth__link">

@@ -259,7 +259,7 @@ class Display extends Component {
                         Back
                       </Button>
                       <Button isPrimary varient="contained" onClick={this.save} style={{ width: 100 }}>
-                        {saving ? <span className="loader" /> : <>Save{saved ? '' : '*'}</>}
+                        {saving ? <span className="loader" /> : `Save${saved ? '' : '*'}`}
                       </Button>
                     </div>
                   </div>

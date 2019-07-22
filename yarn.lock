@@ -2559,10 +2559,10 @@
   dependencies:
     current-git-branch "^1.1.0"
 
-"@voiceflow/natural-language-commander@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/natural-language-commander/-/natural-language-commander-0.3.0.tgz#a497c9af5c429b2bd9a718ef34d4189fe2082303"
-  integrity sha512-yy3YqHjrwCZ5ccsVBTzdmljQ+fhHOW1ZhlDWUFFEqcfHULA5Xfc5SA6P6Rr1juDxYaqN3dqeSwB1OPNqGDBB/A==
+"@voiceflow/natural-language-commander@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/natural-language-commander/-/natural-language-commander-0.3.1.tgz#89d79463a128199164efa37e09383fcba72f1b32"
+  integrity sha512-DfQQF8U9tDqs0w1aY+FVzxeZt0bsLdN9alx0IGYZ9aiv9xIbAiFT6mkKanlbwQDB39DecKqMPXZ9N7umX1Fn1g==
   dependencies:
     "@types/lodash" "^4.14.106"
     babel-runtime "^6.9.2"

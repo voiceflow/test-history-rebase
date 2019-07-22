@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import Button from '@/components/Button';
 import { setError } from '@/ducks/modal';
 import { TEST_STATUS, endTest, fetchState, resetTest, startTest, updateState } from '@/ducks/test';
 
@@ -257,10 +256,6 @@ class Timeline extends Component {
           <div>
             <img src="/Testing.svg" alt="user" width="80" />
             <div className="text-muted mb-4 mt-3">Start test to see the dialog transcription</div>
-            <Button isPrimary onClick={() => startTest()}>
-              Start test
-              <i className="fas fa-play ml-2" />
-            </Button>
           </div>
         </div>
       );
@@ -275,7 +270,10 @@ class Timeline extends Component {
           outputs={outputs}
           loading={loading}
           options={options}
-          handleRestart={resetTest}
+          handleRestart={async () => {
+            await resetTest();
+            await startTest();
+          }}
           playAudio={this.playAudio}
           locale={Array.isArray(skill.locales) && skill.locales[0]}
         />

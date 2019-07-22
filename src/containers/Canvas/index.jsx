@@ -70,7 +70,7 @@ import { Prompt } from 'react-router';
 import moment from 'moment';
 import Upgrade from '@/components/Modals/MultiPlatformModalContent';
 import { fetchIntegrationUsers } from '@/ducks/integration';
-import { initializeTest, renderTest } from '@/ducks/test';
+import { initializeTest, renderTest, TEST_STATUS } from '@/ducks/test';
 /* eslint-enable simple-import-sort/sort */
 
 import _ from 'lodash';
@@ -1618,7 +1618,7 @@ export class Canvas extends Component {
         {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={() => this.setState({ spotlight: false })} />}
         <div
           id={this.props.preview ? 'canvas_preview' : 'canvas'}
-          className={this.props.page}
+          className={cn(this.props.page, { testing_mode: this.props.status !== TEST_STATUS.IDLE })}
           onMouseMove={this.mouseMove}
           onMouseUp={this.combineNode}
           onMouseDown={() => {
@@ -1799,6 +1799,7 @@ const mapStateToProps = (state) => {
     integration_users_error: state.integrationUsers.error,
     tab: tab || state.userSetting.tab,
     tabOpen: state.userSetting.menuOpen,
+    status: state.test.status,
   };
 };
 

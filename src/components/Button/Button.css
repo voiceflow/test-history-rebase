@@ -775,66 +775,6 @@ button {
 }
 
 /* Publish Button */
-.publish-btn {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 207px;
-  height: 42px;
-  padding: 11px 58px 12px 22px !important;
-  color: #fff !important;
-  font-weight: normal !important;
-  font-weight: 500 !important;
-  font-size: 15px !important;
-  font-family: 'Open Sans', sans-serif !important;
-  text-transform: none !important;
-  background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
-  border: none !important;
-  border-radius: 50px !important;
-  box-shadow: inset 0 0 0 10px #ddd;
-
-  /*    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08) !important; */
-  box-shadow: 0 0 4px 0 rgba(17, 49, 96, 0.08), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
-  cursor: pointer;
-  transition: all 0.2s ease !important;
-}
-
-.publish-btn:hover {
-  color: #fff !important;
-  background: linear-gradient(180deg, rgba(93, 157, 245, 0.99) 0%, #2c85ff 100%);
-  border: none !important;
-  box-shadow: 0 4px 8px rgba(17, 49, 96, 0.16), 0 0 4px rgba(17, 49, 96, 0.08) !important;
-}
-
-.publish-btn:active {
-  background: linear-gradient(0deg, #3087fe, #3087fe) !important;
-  border: none !important;
-  box-shadow: 0 6px 12px rgba(17, 49, 96, 0.2), 0 0 6px rgba(17, 49, 96, 0.1) !important;
-}
-
-.publish-btn.btn-opaque {
-  opacity: 0.65;
-}
-
-.publish-btn .launch {
-  position: absolute;
-  right: 7px;
-  display: flex;
-  width: 30px;
-  height: 100%;
-  height: 30px;
-  margin: auto;
-  overflow: hidden;
-  color: #fff;
-  text-align: center;
-
-  /* margin-left: 5px; */
-  background-color: #ffffff30;
-  background-position: center;
-  border-radius: 100%;
-  transition: all 0.2s;
-}
 
 .publish-btn .launch > div {
   position: absolute;
@@ -865,12 +805,4 @@ button {
 
 .publish-btn .launch .second i {
   font-size: 13px;
-}
-
-.publish-btn.multi-vendor-btn {
-  width: 165px;
-  padding-right: 15px !important;
-  padding-left: 15px !important;
-  border-top-right-radius: 8px !important;
-  border-bottom-right-radius: 8px !important;
 }

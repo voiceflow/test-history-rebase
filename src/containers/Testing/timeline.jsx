@@ -33,6 +33,7 @@ class Timeline extends Component {
       this.node.setFocused(false);
     }
     this.cacheOutputs = null;
+    this.streamAudio = null;
 
     if (!state) return;
 
@@ -102,6 +103,7 @@ class Timeline extends Component {
 
   popInterval = (options = {}) => {
     const { test, endTest, diagrams } = this.props;
+
     if (!_.get(this.interval, ['queue', 'length'])) {
       this.setState({ loading: false });
       if (this.interval.end) endTest();
@@ -111,6 +113,11 @@ class Timeline extends Component {
     clearTimeout(this.interval.timeout);
 
     const newOutput = this.interval.queue.shift();
+
+    if (newOutput.forceInput && !options.dump) {
+      this.nextState(newOutput.forceInput);
+      return;
+    }
 
     if (newOutput.diagram) {
       if (!_.get(this.interval.queue[0], ['diagram'])) {
@@ -139,7 +146,34 @@ class Timeline extends Component {
 
     if (!options.dump) {
       this.centerNode(newOutput.node);
-      this.playAudio(newOutput.audio);
+
+      if (newOutput.type === 'Stream' && test.state.play) {
+        newOutput.delay = false;
+        let play = 'Pause';
+        if (test.state.play.action === 'START' && this.interval.queue.length === 0) {
+          this.streamAudio = newOutput.audio;
+          this.streamAudio.onended = () => this.nextState('Next');
+          this.playAudio(this.streamAudio);
+        } else {
+          newOutput.text = null;
+          if (this.streamAudio) {
+            // eslint-disable-next-line max-depth
+            if (test.state.play.action === 'PAUSE') {
+              this.streamAudio.pause();
+              play = 'Resume';
+            } else if (test.state.play.action === 'RESUME') {
+              this.playAudio(this.streamAudio);
+            } else if (test.state.play.action === 'END') {
+              this.streamAudio.onended = _.noop;
+              this.streamAudio = null;
+            }
+          }
+        }
+        if (test.state.play.action !== 'END') this.setState({ options: ['Previous', play, 'Next'] });
+      } else {
+        this.playAudio(newOutput.audio);
+        if (Array.isArray(newOutput.options)) this.setState({ options: newOutput.options.filter((option) => option && option.trim()) });
+      }
     }
 
     if (newOutput.text) {
@@ -158,9 +192,6 @@ class Timeline extends Component {
       this.addOutput(newOutput, extras);
     }
 
-    if (!options.dump && Array.isArray(newOutput.options)) {
-      this.setState({ options: newOutput.options.filter((option) => option && option.trim()) });
-    }
     if (newOutput.delay && !options.dump) {
       this.interval.timeout = setTimeout(() => this.popInterval(options), newOutput.delay);
     } else {
@@ -190,7 +221,7 @@ class Timeline extends Component {
     const { trace, line_id: lineId } = newState;
 
     // update the state if there is another line to continue
-    if (lineId) this.props.updateState(newState);
+    if (lineId || newState.play) this.props.updateState(newState);
     if (!trace) return;
 
     const outputQueue = await getUserTestOutputs(trace, newState.ending);

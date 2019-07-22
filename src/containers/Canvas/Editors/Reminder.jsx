@@ -89,13 +89,7 @@ class ReminderBlock extends Component {
             Scheduled
           </Button>
         </ButtonGroup>
-        {type === 'SCHEDULED_RELATIVE' ? (
-          <React.Fragment>
-            <label>Time From Now</label>
-          </React.Fragment>
-        ) : (
-          <label>Time</label>
-        )}
+        {type === 'SCHEDULED_RELATIVE' ? <label>Time From Now</label> : <label>Time</label>}
         <div className="grid-col-3 text-muted mb-2">
           <div>Hours</div>
           <div className="px-1">Minutes</div>
@@ -129,47 +123,45 @@ class ReminderBlock extends Component {
           </div>
         </div>
         {type === 'SCHEDULED_ABSOLUTE' && (
-          <React.Fragment>
-            <div className="grid-col-2-skew grid-col-2 text-muted mb-2">
-              <div>Date</div>
-              <div>Timezone</div>
-              <div className="pr-1">
-                <DayPickerInput
-                  formatDate={formatDate}
-                  format={FORMAT}
-                  parseDate={parseDate}
-                  placeholder="DD/MM/YYYY"
-                  dayPickerProps={{
-                    disabledDays: {
-                      before: new Date(),
-                    },
-                  }}
-                  // value={this.state.date}
-                  inputProps={{ className: 'form-control' }}
-                  value={this.state.date}
-                  onDayChange={(a, b, c) => {
-                    // eslint-disable-next-line no-console
-                    console.log(b);
-                    if (a) {
-                      this.updateContent('date', a);
-                    } else {
-                      setTimeout(() => {
-                        this.updateContent('date', c.state.value);
-                      }, 0);
-                    }
-                  }}
-                />
-              </div>
-              <div>
-                <Select
-                  classNamePrefix="select-box"
-                  value={{ value: this.state.timezone, label: this.state.timezone }}
-                  onChange={(t) => this.setState({ timezone: t.value })}
-                  options={timezones}
-                />
-              </div>
+          <div className="grid-col-2-skew grid-col-2 text-muted mb-2">
+            <div>Date</div>
+            <div>Timezone</div>
+            <div className="pr-1">
+              <DayPickerInput
+                formatDate={formatDate}
+                format={FORMAT}
+                parseDate={parseDate}
+                placeholder="DD/MM/YYYY"
+                dayPickerProps={{
+                  disabledDays: {
+                    before: new Date(),
+                  },
+                }}
+                // value={this.state.date}
+                inputProps={{ className: 'form-control' }}
+                value={this.state.date}
+                onDayChange={(a, b, c) => {
+                  // eslint-disable-next-line no-console
+                  console.log(b);
+                  if (a) {
+                    this.updateContent('date', a);
+                  } else {
+                    setTimeout(() => {
+                      this.updateContent('date', c.state.value);
+                    }, 0);
+                  }
+                }}
+              />
             </div>
-          </React.Fragment>
+            <div>
+              <Select
+                classNamePrefix="select-box"
+                value={{ value: this.state.timezone, label: this.state.timezone }}
+                onChange={(t) => this.setState({ timezone: t.value })}
+                options={timezones}
+              />
+            </div>
+          </div>
         )}
         <label>Reminder</label>
         <VariableText

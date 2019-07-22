@@ -1882,19 +1882,6 @@ body.modal-open {
   background-image: url('/resources.svg') !important;
 }
 
-#icon-save.unsaved {
-  background-image: url('/cog.svg');
-  background-position: 50% 50% !important;
-}
-
-#icon-save.saving {
-  background-image: linear-gradient(#5d9df515, #5d9df530) !important;
-}
-
-#icon-save .loader {
-  border-color: #fff;
-}
-
 .icon-settings {
   background-image: url('/cog.svg') !important;
 }

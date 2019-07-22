@@ -693,7 +693,7 @@ class GooglePublish extends Component {
       );
 
     return (
-      <React.Fragment>
+      <>
         <Modal
           isOpen={publish_modal_open}
           toggle={this.togglePublish}
@@ -813,7 +813,7 @@ class GooglePublish extends Component {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

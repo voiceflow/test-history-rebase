@@ -43,36 +43,34 @@ class Module extends Component {
     }
 
     return (
-      <React.Fragment>
+      <>
         <Label>Module Description</Label>
         {this.state.module.descr ? <div className="module-desc">{this.state.module.descr}</div> : null}
         <Label>Input Mapping</Label>
         <div>
           {this.state.node.extras.mapping.inputs.length > 0 ? (
-            <React.Fragment>
-              {this.state.node.extras.mapping.inputs.map((v, i) => {
-                return (
-                  <div key={i} className="variable_map mb-2">
-                    <Select
-                      className="map-box"
-                      classNamePrefix="variable-box"
-                      placeholder="Variable"
-                      value={v.val ? { label: `{${v.val}}`, value: v.val } : null}
-                      onChange={(select) => this.selectVariable(select, i, 'inputs')}
-                      options={
-                        Array.isArray(this.props.variables)
-                          ? this.props.variables.map((variable) => {
-                              return { label: `{${variable}}`, value: variable };
-                            })
-                          : null
-                      }
-                    />
-                    <i className="far fa-arrow-right" />
-                    <input readOnly className="map-box form-control" value={`{${v.key}}`} />
-                  </div>
-                );
-              })}
-            </React.Fragment>
+            this.state.node.extras.mapping.inputs.map((v, i) => {
+              return (
+                <div key={i} className="variable_map mb-2">
+                  <Select
+                    className="map-box"
+                    classNamePrefix="variable-box"
+                    placeholder="Variable"
+                    value={v.val ? { label: `{${v.val}}`, value: v.val } : null}
+                    onChange={(select) => this.selectVariable(select, i, 'inputs')}
+                    options={
+                      Array.isArray(this.props.variables)
+                        ? this.props.variables.map((variable) => {
+                            return { label: `{${variable}}`, value: variable };
+                          })
+                        : null
+                    }
+                  />
+                  <i className="far fa-arrow-right" />
+                  <input readOnly className="map-box form-control" value={`{${v.key}}`} />
+                </div>
+              );
+            })
           ) : (
             <i className="text-muted">No input variables exist for this module</i>
           )}
@@ -81,40 +79,38 @@ class Module extends Component {
         <Label>Output Mapping</Label>
         <div>
           {this.state.node.extras.mapping.outputs.length > 0 ? (
-            <React.Fragment>
-              {this.state.node.extras.mapping.outputs.map((v, i) => {
-                return (
-                  <div key={i} className="variable_map mb-2 reverse">
-                    <Select
-                      className="map-box"
-                      classNamePrefix="variable-box"
-                      placeholder="Variable"
-                      styles={selectStyles}
-                      components={{ Option: variableComponent }}
-                      value={v.val ? { label: `{${v.val}}`, value: v.val } : null}
-                      onChange={(select) => this.selectVariable(select, i, 'outputs')}
-                      options={
-                        Array.isArray(this.props.variables)
-                          ? this.props.variables.map((variable, idx) => {
-                              if (idx === this.props.variables.length - 1) {
-                                return { label: variable, value: variable, openVar: this.props.openVarTab };
-                              }
-                              return { label: `{${variable}}`, value: variable };
-                            })
-                          : null
-                      }
-                    />
-                    <i className="far fa-arrow-right" />
-                    <input readOnly className="map-box form-control" value={`{${v.key}}`} />
-                  </div>
-                );
-              })}
-            </React.Fragment>
+            this.state.node.extras.mapping.outputs.map((v, i) => {
+              return (
+                <div key={i} className="variable_map mb-2 reverse">
+                  <Select
+                    className="map-box"
+                    classNamePrefix="variable-box"
+                    placeholder="Variable"
+                    styles={selectStyles}
+                    components={{ Option: variableComponent }}
+                    value={v.val ? { label: `{${v.val}}`, value: v.val } : null}
+                    onChange={(select) => this.selectVariable(select, i, 'outputs')}
+                    options={
+                      Array.isArray(this.props.variables)
+                        ? this.props.variables.map((variable, idx) => {
+                            if (idx === this.props.variables.length - 1) {
+                              return { label: variable, value: variable, openVar: this.props.openVarTab };
+                            }
+                            return { label: `{${variable}}`, value: variable };
+                          })
+                        : null
+                    }
+                  />
+                  <i className="far fa-arrow-right" />
+                  <input readOnly className="map-box form-control" value={`{${v.key}}`} />
+                </div>
+              );
+            })
           ) : (
             <i className="text-muted">No output variables exist for this module</i>
           )}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

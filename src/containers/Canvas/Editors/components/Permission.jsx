@@ -35,7 +35,7 @@ class Permission extends Component {
         }
 
         return (
-          <React.Fragment>
+          <>
             <label>{label || null}</label>
             <Select
               classNamePrefix="variable-box"
@@ -48,7 +48,7 @@ class Permission extends Component {
               placeholder={this.props.variables.length > 0 ? 'Variable' : 'No Variables Exist [!]'}
               options={Array.isArray(this.props.variables) ? this.props.variables.map(this.buildOption) : null}
             />
-          </React.Fragment>
+          </>
         );
       }
 
@@ -62,7 +62,7 @@ class Permission extends Component {
         }
 
         return (
-          <React.Fragment>
+          <>
             <label>Check if Product Purchased</label>
             <Select
               classNamePrefix="select-box"
@@ -94,7 +94,7 @@ class Permission extends Component {
               </>
             )}
             {consumable && (
-              <React.Fragment>
+              <>
                 <label>Map Purchase Quantity To</label>
                 <Select
                   classNamePrefix="variable-box"
@@ -106,9 +106,9 @@ class Permission extends Component {
                   placeholder={this.props.variables.length > 0 ? 'Variable' : 'No Variables Exist [!]'}
                   options={Array.isArray(this.props.variables) ? this.props.variables.map(this.buildOption) : null}
                 />
-              </React.Fragment>
+              </>
             )}
-          </React.Fragment>
+          </>
         );
       }
       return null;

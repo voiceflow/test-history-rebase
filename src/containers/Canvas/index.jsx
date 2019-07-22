@@ -1293,89 +1293,85 @@ export class Canvas extends Component {
       engine.getDiagramModel().clearSelection();
       engine.setSuperSelect(node);
       setBlockMenu(
-        <React.Fragment>
-          <div
-            style={{
-              top: engine.getDiagramModel().getGridPosition(e.clientY - 100),
-              left: engine.getDiagramModel().getGridPosition(e.clientX),
-              cursor: 'pointer',
-              position: 'absolute',
-              zIndex: 10,
-            }}
-          >
-            <ListGroup>
-              {!combineNode && (
-                <ListGroupItem
-                  onClick={() => {
-                    node.setLocked(true);
-                    node.selected = true;
-                    node.edit = true;
-                    setBlockMenu(null);
-                  }}
-                >
-                  Rename
-                </ListGroupItem>
-              )}
+        <div
+          style={{
+            top: engine.getDiagramModel().getGridPosition(e.clientY - 100),
+            left: engine.getDiagramModel().getGridPosition(e.clientX),
+            cursor: 'pointer',
+            position: 'absolute',
+            zIndex: 10,
+          }}
+        >
+          <ListGroup>
+            {!combineNode && (
               <ListGroupItem
                 onClick={() => {
-                  this.clipboard.current.copy([combineNode || node]);
+                  node.setLocked(true);
+                  node.selected = true;
+                  node.edit = true;
+                  setBlockMenu(null);
+                }}
+              >
+                Rename
+              </ListGroupItem>
+            )}
+            <ListGroupItem
+              onClick={() => {
+                this.clipboard.current.copy([combineNode || node]);
 
-                  setBlockMenu(null);
-                }}
-              >
-                Copy Block
-              </ListGroupItem>
-              <ListGroupItem
-                onClick={() => {
-                  if (combineNode) {
-                    this.removeCombineNode(combineNode);
-                  } else {
-                    this.removeNode(node);
-                  }
-                  setBlockMenu(null);
-                }}
-              >
-                Delete Block
-              </ListGroupItem>
-            </ListGroup>
-          </div>
-        </React.Fragment>
+                setBlockMenu(null);
+              }}
+            >
+              Copy Block
+            </ListGroupItem>
+            <ListGroupItem
+              onClick={() => {
+                if (combineNode) {
+                  this.removeCombineNode(combineNode);
+                } else {
+                  this.removeNode(node);
+                }
+                setBlockMenu(null);
+              }}
+            >
+              Delete Block
+            </ListGroupItem>
+          </ListGroup>
+        </div>
       );
     } else {
       setBlockMenu(
-        <React.Fragment>
-          <div
-            style={{
-              top: engine.getDiagramModel().getGridPosition(e.clientY - 110),
-              left: engine.getDiagramModel().getGridPosition(e.clientX),
-              cursor: 'pointer',
-              position: 'absolute',
-              zIndex: 10,
-            }}
-          >
-            <ListGroup>
+        <div
+          style={{
+            top: engine.getDiagramModel().getGridPosition(e.clientY - 110),
+            left: engine.getDiagramModel().getGridPosition(e.clientX),
+            cursor: 'pointer',
+            position: 'absolute',
+            zIndex: 10,
+          }}
+        >
+          <ListGroup>
+            <ListGroupItem
+              onClick={() => {
+                this.addComment(e);
+                setBlockMenu(null);
+              }}
+            >
+              Add Comment
+            </ListGroupItem>
+            {localStorage.clipboard && (
               <ListGroupItem
                 onClick={() => {
-                  this.addComment(e);
+                  this.clipboard.current.paste();
+
                   setBlockMenu(null);
                 }}
               >
-                Add Comment
+                Paste Block
               </ListGroupItem>
-              {localStorage.clipboard && (
-                <ListGroupItem
-                  onClick={() => {
-                    this.clipboard.current.paste();
-
-                    setBlockMenu(null);
-                  }}
-                >
-                  Paste Block
-                </ListGroupItem>
-              )}
-            </ListGroup>
-          </div>
-        </React.Fragment>
+            )}
+          </ListGroup>
+        </div>
       );
     }
   };
@@ -1580,7 +1576,7 @@ export class Canvas extends Component {
       addUndo,
     } = this.props;
     return (
-      <React.Fragment>
+      <>
         <Prompt
           message={() => {
             if (!util.canSave()) {
@@ -1781,7 +1777,7 @@ export class Canvas extends Component {
             />
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

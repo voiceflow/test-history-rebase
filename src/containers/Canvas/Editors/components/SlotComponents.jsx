@@ -170,7 +170,7 @@ class SlotSynonyms extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <div>{this.renderUtterances(this.props.inputs, this.onDeleteExample)}</div>
         <Textarea
           className="slot-input"
@@ -185,7 +185,7 @@ class SlotSynonyms extends Component {
             <i className="far fa-long-arrow-right" />
           </span>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

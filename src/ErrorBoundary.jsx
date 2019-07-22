@@ -3,8 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { getDevice } from '@/Helper';
-
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -17,8 +15,7 @@ class ErrorBoundary extends React.Component {
     if (!rawError) return;
     LogRocket.captureException(rawError, {
       extra: {
-        componentTree: info.componentStack,
-        data: JSON.stringify({ browser: getDevice(), user_detail: this.props.user }),
+        stack: info.componentStack,
       },
     });
     this.setState({

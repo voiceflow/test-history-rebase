@@ -104,6 +104,7 @@ class Timeline extends Component {
 
   popInterval = (options = {}) => {
     const { test, endTest, diagrams } = this.props;
+
     if (!_.get(this.interval, ['queue', 'length'])) {
       this.setState({ loading: false });
       if (this.interval.end) endTest();
@@ -147,18 +148,26 @@ class Timeline extends Component {
     if (!options.dump) {
       this.centerNode(newOutput.node);
 
-      if (newOutput.type === 'Stream') {
+      if (newOutput.type === 'Stream' && test.state.play) {
+        newOutput.delay = false;
         let play = 'Pause';
-        if (test.state.play.action === 'START') {
+        if (test.state.play.action === 'START' && this.interval.queue.length === 0) {
           this.streamAudio = newOutput.audio;
+          this.streamAudio.onended = () => this.nextState('Next');
           this.playAudio(this.streamAudio);
-        } else if (this.streamAudio) {
-          if (test.state.play.action === 'PAUSE') {
-            this.streamAudio.pause();
-            play = 'Resume';
-          } else if (test.state.play.action === 'RESUME') {
-            newOutput.delay -= this.streamAudio.currentTime * 1000;
-            this.playAudio(this.streamAudio);
+        } else {
+          newOutput.text = null;
+          if (this.streamAudio) {
+            // eslint-disable-next-line max-depth
+            if (test.state.play.action === 'PAUSE') {
+              this.streamAudio.pause();
+              play = 'Resume';
+            } else if (test.state.play.action === 'RESUME') {
+              this.playAudio(this.streamAudio);
+            } else if (test.state.play.action === 'END') {
+              this.streamAudio.onended = _.noop;
+              this.streamAudio = null;
+            }
           }
         }
         if (test.state.play.action !== 'END') this.setState({ options: ['Previous', play, 'Next'] });
@@ -181,7 +190,7 @@ class Timeline extends Component {
         newOutput.delay = 500;
       }
 
-      if (newOutput.type !== 'Stream' || test.state.play.action === 'START') this.addOutput(newOutput, extras);
+      this.addOutput(newOutput, extras);
     }
 
     if (newOutput.delay && !options.dump) {

@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
+import SvgIcon from '@/components/SvgIcon';
 import { useEnableDisable } from '@/hooks/toggle';
+import { history } from '@/store/store';
+import LeftIcon from '@/svgs/arrow-left.svg';
 
 import { BackButton, ProjectTitleContainer } from '../styled';
 
@@ -12,9 +14,7 @@ export function ProjectTitle({ skill, onChange }) {
   return (
     <ProjectTitleContainer onDoubleClick={onStartEditing}>
       <BackButton className="mx-3">
-        <Link to="/">
-          <img src="/back.svg" alt="back" className="mr-3" />
-        </Link>
+        <SvgIcon icon={LeftIcon} className="icon-back" onClick={() => history.push('/')} />
       </BackButton>
       {/* eslint-disable-next-line no-nested-ternary */}
       {isEditing ? (

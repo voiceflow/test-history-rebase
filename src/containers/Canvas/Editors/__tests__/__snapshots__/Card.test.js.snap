@@ -45,11 +45,7 @@ exports[`Card render card block editor 1`] = `
   </label>
   <VariableText
     className="editor"
-    placeholder={
-      <React.Fragment>
-        Add content to your card here
-      </React.Fragment>
-    }
+    placeholder="Add content to your card here"
     raw={Object {}}
     updateRaw={[Function]}
   />

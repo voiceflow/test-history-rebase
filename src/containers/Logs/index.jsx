@@ -200,7 +200,7 @@ function parseRequest(rawRequest) {
   const request = JSON.parse(rawRequest);
 
   return (
-    <React.Fragment>
+    <>
       <td>
         <p className="mb-0 text-danger">{request.error.type}</p>
         <p className="mt-0">{request.error.message}</p>
@@ -208,6 +208,6 @@ function parseRequest(rawRequest) {
       <td>
         <ReactJson collapsed src={request} enableClipboard={false} collapseStringsAfterLength={40} />
       </td>
-    </React.Fragment>
+    </>
   );
 }

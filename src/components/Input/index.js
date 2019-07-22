@@ -294,7 +294,7 @@ export default class Input extends Component {
     );
 
     return (
-      <Fragment>
+      <>
         {!!label && !withAside && (
           <label htmlFor={id} className="form-label">
             {label}
@@ -376,7 +376,7 @@ export default class Input extends Component {
               : error}
           </small>
         )}
-      </Fragment>
+      </>
     );
   }
 }

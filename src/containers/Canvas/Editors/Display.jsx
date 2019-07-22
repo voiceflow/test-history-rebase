@@ -216,7 +216,7 @@ export class Display extends Component {
     return (
       <div>
         {!_.isEmpty(variables) && (
-          <React.Fragment>
+          <>
             <Button color="primary" onClick={() => this.testDisplay()} className="mt-2" disabled={variables_error}>
               <i className="fas fa-play mr-2" /> Run
             </Button>
@@ -236,7 +236,7 @@ export class Display extends Component {
                 </InputGroup>
               </React.Fragment>
             ))}
-          </React.Fragment>
+          </>
         )}
         {modalContent && variables_error && <div className="error-message text-center">{variables_error}</div>}
         {current_request && <Spinner isEmpty />}
@@ -279,7 +279,7 @@ export class Display extends Component {
     const displayOptions = _.cloneDeep(this.props.displays);
 
     return (
-      <React.Fragment>
+      <>
         <Modal size="lg" isOpen={modal} toggle={this.disableModal}>
           <ModalHeader toggle={this.disableModal} header="Multimodal Display Test" />
           <ModalBody>{modal && this.renderDisplayTest()}</ModalBody>
@@ -419,7 +419,7 @@ export class Display extends Component {
             </div>
           )}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

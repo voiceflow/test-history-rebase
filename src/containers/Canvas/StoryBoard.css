@@ -168,26 +168,6 @@
   text-align: center;
 }
 
-#loading-diagram {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  font-size: 4rem;
-  background-color: #f7f9fb;
-}
-
-#loading-diagram.transparent {
-  background-color: transparent;
-}
-
 #TitleBar,
 #PreviewBar {
   position: absolute;
@@ -433,6 +413,7 @@
   justify-content: center;
   width: 200px;
   height: 65px;
+  margin-left: -100px;
 }
 
 .title-group {
@@ -440,7 +421,6 @@
   align-items: center;
   height: 65px;
   margin-right: 10px;
-  background-color: #fff;
 }
 
 .modal-img {
@@ -692,10 +672,6 @@
 
 .toolbar > .spacer {
   flex: 1;
-}
-
-.block-icon {
-  background-image: url('/play.svg');
 }
 
 .tool .blocks-icon {
@@ -3425,6 +3401,7 @@ button.close:hover{
   padding: 0.65rem 1.5rem !important;
   color: #0b1a38 !important;
   font-size: 15px;
+  font-family: 'Open Sans';
   cursor: pointer;
   transition: all 0.1s ease !important;
 }
@@ -3436,7 +3413,6 @@ button.close:hover{
   background-color: #f1f4f7 !important;
   cursor: pointer;
 }
-
 
 
 #home-button {
@@ -3477,7 +3453,8 @@ button.close:hover{
   background-size: contain;
 }
 
-#canvas.test #flow-bar, #canvas.test #widget-bar{
+#canvas.test #flow-bar,
+#canvas.test #widget-bar {
   display: none;
 }
 
@@ -3677,6 +3654,11 @@ button.close:hover{
   margin-bottom: 60px;
   margin-left: auto;
   border-radius: 10px;
+}
+
+.pg__add_file_button {
+  display: flex;
+  justify-content: center;
 }
 
 #confetti-positioner {

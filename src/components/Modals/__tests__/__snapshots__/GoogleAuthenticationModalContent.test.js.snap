@@ -32,10 +32,8 @@ exports[`Render Google Auth Modal Test render default modal 1`] = `
       >
         <Button
           className="btn btn-clear"
-          iconPosition="right"
-          onRef={[Function]}
-          trackEvent="Button Click"
           type="button"
+          variant="secondary"
         >
           Log In
         </Button>
@@ -73,10 +71,6 @@ exports[`Render Google Auth Modal Test render default modal 1`] = `
   >
     <Button
       className="mr-4"
-      iconPosition="right"
-      isPrimary={true}
-      onRef={[Function]}
-      trackEvent="Button Click"
     >
       Verify
     </Button>

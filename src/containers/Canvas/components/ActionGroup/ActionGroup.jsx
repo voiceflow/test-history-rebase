@@ -12,8 +12,10 @@ import { Tooltip } from 'react-tippy';
 import { Alert, Modal, ModalBody } from 'reactstrap';
 
 import Button from '@/components/Button';
+import RoundButton from '@/components/Button/RoundButton';
 import AmazonLogin from '@/components/Forms/AmazonLogin';
 import { ModalHeader } from '@/components/Modals/ModalHeader';
+import { Spinner } from '@/components/Spinner';
 import ShareTest from '@/containers/Testing/ShareTest';
 import { AmazonAccessToken, getVendors, googleAccessToken } from '@/ducks/account';
 import { setError, showSettingsModal } from '@/ducks/modal';
@@ -21,6 +23,7 @@ import { updateVendorId } from '@/ducks/project';
 import { updateLocales, updateSkillDB, updateVersion } from '@/ducks/version';
 import LOCALE_MAP from '@/services/LocaleMap';
 import InvRegex from '@/services/Regex';
+import CogIcon from '@/svgs/cog.svg';
 
 import Settings from '../../../Skill/Settings';
 import UploadButton from '../UploadButton/UploadButton';
@@ -613,9 +616,7 @@ export class ActionGroup extends PureComponent {
     if (live_update_stage === 1) {
       return (
         <div className="pb-4 mb-2">
-          <div className="text-center my-3">
-            <div className="loader text-lg" />
-          </div>
+          <Spinner message="Rendering Flows" />
           {loading('Rendering Flows')}
         </div>
       );
@@ -686,7 +687,7 @@ export class ActionGroup extends PureComponent {
                 'mt-3': !modal,
               })}
             >
-              <div className="loader text-lg" />
+              <Spinner isEmpty />
             </div>
           ))}
         {this.renderAlexaBody(modal)}
@@ -1044,7 +1045,7 @@ export class ActionGroup extends PureComponent {
 
   render() {
     const { updateModal, should_pop_confetti, updateLiveModal, show_upload_prompt, vendors_open, stage, is_first_upload } = this.state;
-    const { skill, platform, live_mode, vendors, show_upload_prompt: props_show_upload_prompt, showSettings, showSettingsModal } = this.props;
+    const { skill, platform, live_mode, vendors, showSettings, showSettingsModal } = this.props;
 
     return (
       <>
@@ -1100,14 +1101,14 @@ export class ActionGroup extends PureComponent {
 
         <div className="title-group-sub">
           <Tooltip title="Settings" position="bottom">
-            <Button
-              className={cn('dropdown-button-border', { active: this.state.settingsModal })}
-              id="settings-icon"
-              type="button"
+            <RoundButton
+              active={showSettings.show}
+              icon={CogIcon}
               onClick={() => {
                 this.props.unfocus();
                 this.props.showSettingsModal(true);
               }}
+              imgSize={15}
             />
           </Tooltip>
         </div>
@@ -1122,7 +1123,7 @@ export class ActionGroup extends PureComponent {
           vendors_open={vendors_open}
           project_id={skill.project_id}
           openUpdateLive={() => this.openUpdateLive()}
-          toggle_upload_prompt={() => this.setState({ show_upload_prompt: !props_show_upload_prompt })}
+          toggle_upload_prompt={() => this.setState({ show_upload_prompt: !show_upload_prompt })}
           isUploadLoading={() => this.isUploadLoading()}
           openUpdate={() => this.openUpdate()}
           toggleVendors={() => this.toggleVendors()}

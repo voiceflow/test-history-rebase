@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
-<Fragment>
+Array [
   <div
     className="section no-select"
     key="0"
@@ -73,7 +73,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         />
       </div>
     </Collapse>
-  </div>
+  </div>,
   <div
     className="section no-select"
     key="1"
@@ -175,7 +175,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         />
       </div>
     </Collapse>
-  </div>
+  </div>,
   <div
     className="section no-select"
     key="2"
@@ -322,7 +322,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         />
       </div>
     </Collapse>
-  </div>
+  </div>,
   <div
     className="section no-select"
     key="3"
@@ -394,7 +394,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         />
       </div>
     </Collapse>
-  </div>
+  </div>,
   <div
     className="section no-select"
     key="4"
@@ -511,12 +511,12 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
         />
       </div>
     </Collapse>
-  </div>
-</Fragment>
+  </div>,
+]
 `;
 
 exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
-<Fragment>
+Array [
   <div
     className="section no-select"
     key="0"
@@ -588,7 +588,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         />
       </div>
     </Collapse>
-  </div>
+  </div>,
   <div
     className="section no-select"
     key="1"
@@ -690,7 +690,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         />
       </div>
     </Collapse>
-  </div>
+  </div>,
   <div
     className="section no-select"
     key="2"
@@ -837,7 +837,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         />
       </div>
     </Collapse>
-  </div>
+  </div>,
   <div
     className="section no-select"
     key="3"
@@ -909,7 +909,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         />
       </div>
     </Collapse>
-  </div>
+  </div>,
   <div
     className="section no-select"
     key="4"
@@ -1026,6 +1026,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
         />
       </div>
     </Collapse>
-  </div>
-</Fragment>
+  </div>,
+]
 `;

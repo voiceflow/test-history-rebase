@@ -34,10 +34,6 @@
   margin-left: -50px;
 }
 
-#lightcanvas #loading-diagram {
-  position: absolute;
-}
-
 #light-canvas-wrap {
   position: relative;
   width: 100%;

@@ -4,16 +4,18 @@ import { Link } from 'react-router-dom';
 
 import { useEnableDisable } from '@/hooks/toggle';
 
-import { ProjectTitleContainer } from '../styled';
+import { BackButton, ProjectTitleContainer } from '../styled';
 
 export function ProjectTitle({ skill, onChange }) {
   const [isEditing, onStartEditing, onStopEditing] = useEnableDisable();
 
   return (
     <ProjectTitleContainer onDoubleClick={onStartEditing}>
-      <Link to="/" className="mx-3">
-        <img src="/back.svg" alt="back" className="mr-3" />
-      </Link>
+      <BackButton className="mx-3">
+        <Link to="/">
+          <img src="/back.svg" alt="back" className="mr-3" />
+        </Link>
+      </BackButton>
       {/* eslint-disable-next-line no-nested-ternary */}
       {isEditing ? (
         <input

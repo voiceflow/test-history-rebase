@@ -129,7 +129,7 @@ export class Payment extends Component {
 
     if (current) {
       return (
-        <React.Fragment>
+        <>
           <label className="space-between mb-3">
             <span>{current.name}</span>
             <span>
@@ -146,26 +146,26 @@ export class Payment extends Component {
             Unlink Product
           </Button>
           {current.data.type === 'SUBSCRIPTION' ? (
-            <React.Fragment>
+            <>
               <h2 className="cut-through mt-5 mb-4">
                 <span>Subscription Settings</span>
               </h2>
               <Alert>Alexa requires an unsubscribe option, place a cancel payment block in an easily accessible part of your flow</Alert>
-            </React.Fragment>
+            </>
           ) : (
-            <React.Fragment>
+            <>
               <h2 className="cut-through mt-5 mb-4">
                 <span>Refund Settings</span>
               </h2>
               <Alert>Alexa requires users be able to refund a purchase, place a cancel payment block in an easily accessible part of your flow</Alert>
-            </React.Fragment>
+            </>
           )}
           <MenuItem item={cancel} data={current.id} />
-        </React.Fragment>
+        </>
       );
     }
     return (
-      <React.Fragment>
+      <>
         <div className="d__label-title">
           <label>Select Existing Product</label>
           <div className="d__see_all" onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/products`)}>
@@ -196,7 +196,7 @@ export class Payment extends Component {
         <button className="btn-clear btn-block btn-lg" onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/products`)}>
           Create new product
         </button>
-      </React.Fragment>
+      </>
     );
   }
 }

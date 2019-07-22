@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { Input, InputGroup, InputGroupAddon, Popover, PopoverBody } from 'reactstrap';
 
-import Button from '@/components/Button';
+import RoundButton from '@/components/Button/RoundButton';
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
+import { Spinner } from '@/components/Spinner';
 import { shareTest } from '@/ducks/test';
+import ShareIcon from '@/svgs/share.svg';
 
 const TestingHeader = (props) => {
   const { shareTest, rendered, render } = props;
@@ -23,7 +25,7 @@ const TestingHeader = (props) => {
   return (
     <>
       <Tooltip title="Share Test" position="bottom">
-        <Button className="dropdown-button-border" id="icon-share" type="button" onClick={makeConfig} />
+        <RoundButton id="icon-share" active={share} variant="color" color="#5b9dfa" icon={ShareIcon} onClick={makeConfig} imgSize={15} />
       </Tooltip>
       <Popover placement="bottom" isOpen={share} target="icon-share" toggle={makeConfig} className="mt-3 share">
         <PopoverBody>
@@ -40,9 +42,7 @@ const TestingHeader = (props) => {
               <div className="text-center text-dull p-2 mt-1">Share and test your project in the browser</div>
             </>
           ) : (
-            <div className="text-center pt-2 pb-1">
-              <div className="loader text-md" />
-            </div>
+            <Spinner isEmpty isMd />
           )}
         </PopoverBody>
       </Popover>

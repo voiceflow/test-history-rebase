@@ -111,7 +111,7 @@ class DiagramBlock extends Component {
 
     if (this.props.diagrams && this.props.diagrams.length > 0) {
       return (
-        <React.Fragment>
+        <>
           <label>Select Existing Flow</label>
           <Select
             placeholder={
@@ -133,7 +133,7 @@ class DiagramBlock extends Component {
             }}
             options={options}
           />
-        </React.Fragment>
+        </>
       );
     }
     return null;
@@ -178,7 +178,7 @@ class DiagramBlock extends Component {
 
   renderExistingDiagram() {
     return (
-      <React.Fragment>
+      <>
         <button className="mt-4 btn-primary btn-block mb-3 btn-lg" onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>
           <img src="/flows-white.svg" className="mr-2" alt="flow" /> Enter Flow
         </button>
@@ -224,7 +224,7 @@ class DiagramBlock extends Component {
           handleSelection={(i, arg, value) => this.handleSelection('outputs', i, arg, value)}
           openVarTab={this.props.openVarTab}
         />
-      </React.Fragment>
+      </>
     );
   }
 

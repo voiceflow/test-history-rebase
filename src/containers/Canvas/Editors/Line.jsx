@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Collapse } from 'reactstrap';
 
 import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
 
 import MultiLineInput from './components/MultiLineInput';
 
@@ -117,9 +118,7 @@ class Line extends Component {
             <div>
               {this.state.loading ? (
                 <div className="combined-box">
-                  <h1>
-                    <span className="loader" />
-                  </h1>
+                  <Spinner isEmpty />
                 </div>
               ) : (
                 <div className="combined-box">

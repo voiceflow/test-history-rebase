@@ -210,7 +210,7 @@ class ChoiceDropdownInputs extends Component {
                       />
                     </div>
                     {!!slots && (
-                      <React.Fragment>
+                      <>
                         <div className="diagram-title">Slot Mapping</div>
                         <SlotMappings
                           variables={this.props.variables}
@@ -219,7 +219,7 @@ class ChoiceDropdownInputs extends Component {
                           arguments={choice.mappings}
                           update={this.props.update}
                         />
-                      </React.Fragment>
+                      </>
                     )}
                   </Collapse>
                 </div>

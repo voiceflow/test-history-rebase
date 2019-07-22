@@ -7,6 +7,7 @@ import Select from 'react-select';
 import { Input, Nav, NavItem, NavLink } from 'reactstrap';
 
 import MultipleFields from '@/components/Forms/MultipleFields';
+import { FullSpinner } from '@/components/Spinner';
 import { setError } from '@/ducks/modal';
 import { updateVersion } from '@/ducks/version';
 
@@ -140,14 +141,9 @@ class AccountLinkTemplate extends Component {
         </div>
         <hr />
         {this.state.loading ? (
-          <div id="loading-diagram">
-            <div className="text-center">
-              <h5 className="text-muted mb-2">Loading Template</h5>
-              <span className="loader" />
-            </div>
-          </div>
+          <FullSpinner name="Template" />
         ) : (
-          <React.Fragment>
+          <>
             <label>URL Authorization</label>
             <Input
               name="form-control-border form-control mb-3"
@@ -200,7 +196,7 @@ class AccountLinkTemplate extends Component {
               </NavItem>
             </Nav>
             {this.state.type === 'client' && (
-              <React.Fragment>
+              <>
                 <label>Client ID</label>
                 <Input
                   className="form-control-border form-control mb-3"
@@ -228,7 +224,7 @@ class AccountLinkTemplate extends Component {
                     });
                   }}
                 />
-              </React.Fragment>
+              </>
             )}
             {this.state.type === 'scope' && (
               <MultipleFields
@@ -285,7 +281,7 @@ class AccountLinkTemplate extends Component {
               options={clientAuthScheme}
             />
             <br />
-          </React.Fragment>
+          </>
         )}
       </div>
     );

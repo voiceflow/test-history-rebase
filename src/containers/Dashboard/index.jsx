@@ -8,13 +8,15 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
-import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Input, Popover, PopoverBody, UncontrolledDropdown } from 'reactstrap';
+import { Alert, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input, Popover, PopoverBody } from 'reactstrap';
 
 import Button from '@/components/Button';
+import RoundButton from '@/components/Button/RoundButton';
 import DragLayer from '@/components/DragLayer';
 import Header from '@/components/Header';
 import LoadingModal from '@/components/Modals/LoadingModal';
 import UpdatesModal from '@/components/Modals/UpdatesModal';
+import { FullSpinner } from '@/components/Spinner';
 import { Members } from '@/components/User/User';
 import { YOUTUBE_CHANNEL_ID } from '@/config';
 import { ScrollContextProvider } from '@/contexts';
@@ -34,6 +36,9 @@ import { setConfirm, setError } from '@/ducks/modal';
 import { copyProject, deleteProject, updateProjects } from '@/ducks/project';
 import { getMembers } from '@/ducks/team';
 import { useScrollHelpers } from '@/hooks/scroll';
+import NotificationsIcon from '@/svgs/Notifications.svg';
+import AddIcon from '@/svgs/add-step.svg';
+import InformationIcon from '@/svgs/information.svg';
 
 import ExpiryButton from './ExpiryButton';
 import TeamSettings from './TeamSettings';
@@ -56,6 +61,7 @@ const filter_projects = (projects, filter) => {
 export const DashBoard = (props) => {
   const [loading, toggleLoading] = useState(true);
   const [filter_text, handleFilterText] = useState('');
+  const [showInfo, setShowInfo] = useState(false);
   const [loading_modal, toggleLoadingModal] = useState(false);
   const [show_updates_modal, toggleShowUpdatesModal] = useState(false);
   const [team_setting, setTeamSetting] = useState(null);
@@ -192,13 +198,13 @@ export const DashBoard = (props) => {
 
   const renderUpdatesButton = () => {
     if (!show_update_bubble) {
-      return <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />;
+      return <RoundButton active={updates_open} icon={NotificationsIcon} onClick={updateButtonClick} imgSize={15} />;
     }
     return (
       <div className="dropdown-update-container" onMouseEnter={() => toggleUpdatesHover(true)} onMouseLeave={() => toggleUpdatesHover(false)}>
         <div className="dropdown-update-bubble" />
         {!updates_hover && !updates_open ? (
-          <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />
+          <RoundButton active={updates_open} icon={NotificationsIcon} onClick={updateButtonClick} imgSize={15} />
         ) : (
           <div className={cn('dropdown-button-numbered')} onClick={updateButtonClick}>
             <div className="update-number-circle">{new_product_updates.length}</div>
@@ -252,10 +258,10 @@ export const DashBoard = (props) => {
                 </Popover>
               </div>
               <div className="subheader-right ml-2">
-                <UncontrolledDropdown>
+                <Dropdown isOpen={showInfo} toggle={() => setShowInfo(!showInfo)}>
                   <DropdownToggle className="ml-1" tag="div">
                     <Tooltip distance={19} title="Resources" position="bottom">
-                      <Button className="dropdown-button-border info" type="submit" />
+                      <RoundButton icon={InformationIcon} imgSize={15} active={showInfo} />
                     </Tooltip>
                   </DropdownToggle>
                   <DropdownMenu className="mt-2">
@@ -272,7 +278,7 @@ export const DashBoard = (props) => {
                       <DropdownItem>Forums</DropdownItem>
                     </a>
                   </DropdownMenu>
-                </UncontrolledDropdown>
+                </Dropdown>
               </div>
             </div>
           )}
@@ -315,14 +321,7 @@ export const DashBoard = (props) => {
             </div>
           )}
         />
-        {loading && (
-          <div id="loading-diagram">
-            <div className="text-center">
-              <h5 className="text-muted mb-2">Loading Projects...</h5>
-              <span className="loader" />
-            </div>
-          </div>
-        )}
+        {loading && <FullSpinner name="Projects" />}
         {LOCKED && (
           <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
             <Alert color="danger" onClick={() => setTeamSetting('BILLING')} className="pointer text-center py-3">
@@ -410,12 +409,13 @@ export const DashBoard = (props) => {
                       </DragLayer>
                       <div className="main-list-add">
                         <Tooltip distance={16} title="Add new list" position="bottom" className="ml-1 mr-4">
-                          <Button
+                          <RoundButton
+                            variant="shadow"
+                            icon={AddIcon}
                             onClick={() => {
                               props.addBoard(props.team_id);
                             }}
-                            isNavBordered
-                            className="mt-1 add-button"
+                            imgSize={15}
                           />
                         </Tooltip>
                       </div>

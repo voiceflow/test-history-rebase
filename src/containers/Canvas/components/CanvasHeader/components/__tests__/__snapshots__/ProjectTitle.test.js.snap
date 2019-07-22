@@ -30,16 +30,19 @@ exports[`Project Title render project title 1`] = `
   forwardedRef={null}
   onDoubleClick={[Function]}
 >
-  <Link
+  <styled.span
     className="mx-3"
-    to="/"
   >
-    <img
-      alt="back"
-      className="mr-3"
-      src="/back.svg"
-    />
-  </Link>
+    <Link
+      to="/"
+    >
+      <img
+        alt="back"
+        className="mr-3"
+        src="/back.svg"
+      />
+    </Link>
+  </styled.span>
   Loading Skill
 </StyledComponent>
 `;

@@ -8,7 +8,7 @@ import { Col, FormGroup, Input, Row } from 'reactstrap';
 
 import AceEditor from '@/components/AceEditor';
 import Button from '@/components/Button';
-import { Spinner } from '@/components/Spinner/Spinner';
+import { Spinner } from '@/components/Spinner';
 import { addDisplay, updateDisplay } from '@/ducks/display';
 import { setError } from '@/ducks/modal';
 
@@ -218,7 +218,7 @@ class Display extends Component {
             onDrop={this.onDropJSON}
           >
             {({ open }) => (
-              <React.Fragment>
+              <>
                 <div className="drop-overlay active">
                   <div>
                     <h1>
@@ -259,7 +259,7 @@ class Display extends Component {
                         Back
                       </Button>
                       <Button isPrimary varient="contained" onClick={this.save} style={{ width: 100 }}>
-                        {saving ? <span className="loader" /> : <React.Fragment>Save{saved ? '' : '*'}</React.Fragment>}
+                        {saving ? <Spinner isEmpty /> : <>Save{saved ? '' : '*'}</>}
                       </Button>
                     </div>
                   </div>
@@ -329,7 +329,7 @@ class Display extends Component {
                     </Row>
                   </FormGroup>
                 </div>
-              </React.Fragment>
+              </>
             )}
           </Dropzone>
         )}

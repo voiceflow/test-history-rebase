@@ -41,9 +41,16 @@ export const ProjectTitleContainer = styled.div`
   display: flex;
   align-items: center;
   .icon-back {
-    margin-right: 30px;
-    margin-left: 4px;
     line-height: inherit;
     cursor: pointer;
+  }
+`;
+
+export const BackButton = styled.span`
+  position: relative;
+  transition: right 0.2s ease;
+  right: 0px;
+  :hover {
+    right: 5px;
   }
 `;

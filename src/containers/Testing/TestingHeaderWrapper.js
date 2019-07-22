@@ -16,7 +16,7 @@ const TestingHeaderWrapper = styled.div`
   }
 
   .icon-back {
-    margin-right: 13px;
+    //margin-right: 13px;
     line-height: inherit;
   }
 

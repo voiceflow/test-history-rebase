@@ -17,8 +17,6 @@ exports[`Project Title render project title 1`] = `
   display: flex;
   align-items: center;
   .icon-back {
-    margin-right: 30px;
-    margin-left: 4px;
     line-height: inherit;
     cursor: pointer;
   }
@@ -38,13 +36,17 @@ exports[`Project Title render project title 1`] = `
   forwardedRef={null}
   onDoubleClick={[Function]}
 >
-  <SvgIcon
-    className="icon-back"
-    color="#6E849A"
-    icon="arrow-left.svg"
-    onClick={[Function]}
-    size={16}
-  />
+  <styled.span
+    className="mx-3"
+  >
+    <SvgIcon
+      className="icon-back"
+      color="#6E849A"
+      icon="arrow-left.svg"
+      onClick={[Function]}
+      size={16}
+    />
+  </styled.span>
   Loading Skill
 </StyledComponent>
 `;

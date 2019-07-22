@@ -29,6 +29,7 @@ exports[`Canvas render canvas 1`] = `
     toggle={[Function]}
   />
   <div
+    className="testing_mode"
     id="canvas"
     onMouseDown={[Function]}
     onMouseMove={[Function]}

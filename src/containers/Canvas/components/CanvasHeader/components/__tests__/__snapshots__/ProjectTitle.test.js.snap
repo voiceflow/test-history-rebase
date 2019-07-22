@@ -7,20 +7,28 @@ exports[`Project Title render project title 1`] = `
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-EHOje",
+        "componentId": "sc-bZQynM",
         "isStatic": true,
         "rules": Array [
           "
   overflow-x: hidden;
   text-overflow: ellipsis;
   font-size: 18px;
+  display: flex;
+  align-items: center;
+  .icon-back {
+    margin-right: 30px;
+    margin-left: 4px;
+    line-height: inherit;
+    cursor: pointer;
+  }
 ",
         ],
       },
       "displayName": "styled.div",
       "foldedComponentIds": Array [],
       "render": [Function],
-      "styledComponentId": "sc-EHOje",
+      "styledComponentId": "sc-bZQynM",
       "target": "div",
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -30,16 +38,13 @@ exports[`Project Title render project title 1`] = `
   forwardedRef={null}
   onDoubleClick={[Function]}
 >
-  <Link
-    className="mx-3"
-    to="/"
-  >
-    <img
-      alt="back"
-      className="mr-3"
-      src="/back.svg"
-    />
-  </Link>
+  <SvgIcon
+    className="icon-back"
+    color="#6E849A"
+    icon="arrow-left.svg"
+    onClick={[Function]}
+    size={16}
+  />
   Loading Skill
 </StyledComponent>
 `;

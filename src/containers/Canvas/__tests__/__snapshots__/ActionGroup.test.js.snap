@@ -274,14 +274,14 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       trigger="mouseenter focus"
       unmountHTMLWhenHide={false}
     >
-      <Button
-        className="dropdown-button-border"
-        iconPosition="right"
-        id="settings-icon"
+      <RoundButton
+        active={false}
+        disabled={false}
+        icon="cog.svg"
+        imgSize={15}
         onClick={[Function]}
-        onRef={[Function]}
-        trackEvent="Button Click"
-        type="button"
+        size={42}
+        variant="plain"
       />
     </Tooltip>
   </div>

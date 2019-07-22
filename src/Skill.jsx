@@ -306,7 +306,7 @@ class Skill extends Component {
     }
 
     return (
-      <React.Fragment>
+      <>
         <DefaultModal
           open={this.props.show_live_mode_modal}
           toggle={() => {
@@ -352,7 +352,7 @@ class Skill extends Component {
           )}
           {this.renderPage()}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

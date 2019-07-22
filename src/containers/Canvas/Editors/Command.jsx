@@ -194,7 +194,7 @@ export class Command extends Component {
     }
 
     return (
-      <React.Fragment>
+      <>
         <div className="d-flex justify-content-between">
           <label>Command Intent</label>
           <PlatformTooltip platform={this.props.platform} field="Command intents" />
@@ -216,7 +216,7 @@ export class Command extends Component {
           />
         </div>
         {!!slots && (
-          <React.Fragment>
+          <>
             <hr />
             <div className="diagram-title">Slot Mapping</div>
             <SlotMappings
@@ -226,18 +226,16 @@ export class Command extends Component {
               arguments={extras.mappings}
               update={this.update}
             />
-          </React.Fragment>
+          </>
         )}
         <hr />
         <div className="mt-1">
           {extras.diagram_id ? (
-            <React.Fragment>
+            <>
               {diagram_name ? (
-                <React.Fragment>
-                  <DefaultButton isPrimary isLarge isBlock onClick={() => this.props.enterFlow(extras.diagram_id)}>
-                    <img src="/flows-white.svg" alt="flows" className="mr-2" /> Enter {diagram_name} Flow
-                  </DefaultButton>
-                </React.Fragment>
+                <DefaultButton isPrimary isLarge isBlock onClick={() => this.props.enterFlow(extras.diagram_id)}>
+                  <img src="/flows-white.svg" alt="flows" className="mr-2" /> Enter {diagram_name} Flow
+                </DefaultButton>
               ) : (
                 <Alert color="danger" className="text-center">
                   <i className="fas fa-exclamation-triangle fa-2x mb-2" />
@@ -262,9 +260,9 @@ export class Command extends Component {
               >
                 Unlink Flow
               </DefaultButton>
-            </React.Fragment>
+            </>
           ) : (
-            <React.Fragment>
+            <>
               <label>Link Command Flow</label>
               <DefaultButton
                 isClear
@@ -278,7 +276,7 @@ export class Command extends Component {
                 <span className="break-text">OR</span>
               </div>
               {this.props.diagrams && this.props.diagrams.length > 0 ? (
-                <React.Fragment>
+                <>
                   <label>Select Existing Flow</label>
                   <Select
                     placeholder={
@@ -298,12 +296,12 @@ export class Command extends Component {
                     }}
                     options={options}
                   />
-                </React.Fragment>
+                </>
               ) : null}
-            </React.Fragment>
+            </>
           )}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -331,7 +329,7 @@ export class Command extends Component {
         return this.command(options);
       case 'intents':
         return (
-          <React.Fragment>
+          <>
             <label>Intents</label>
             <IntentInputs
               intents={this.props.intents}
@@ -343,11 +341,11 @@ export class Command extends Component {
               live_mode={this.props.live_mode}
               setCanFulfill={this.props.setCanFulfill}
             />
-          </React.Fragment>
+          </>
         );
       case 'slots':
         return (
-          <React.Fragment>
+          <>
             <label>Slots</label>
             <SlotInputs
               intents={this.props.intents}
@@ -357,7 +355,7 @@ export class Command extends Component {
               platform={this.props.platform}
               live_mode={this.props.live_mode}
             />
-          </React.Fragment>
+          </>
         );
       default:
         return null;
@@ -366,7 +364,7 @@ export class Command extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <ButtonGroup className="toggle-group mb-2">
           <Button
             outline={this.state.tab !== 'command'}
@@ -397,7 +395,7 @@ export class Command extends Component {
           </Button>
         </ButtonGroup>
         <div className={this.props.live_mode ? 'disabled-overlay' : ''}>{this.renderTab()}</div>
-      </React.Fragment>
+      </>
     );
   }
 }

@@ -80,7 +80,7 @@ class TestSection extends Component {
           content={
             <div style={{ padding: '0 2em 2em 2em' }}>
               {!_.isEmpty(variables) && (
-                <React.Fragment>
+                <>
                   <Button color="primary" onClick={() => this.resolveModalPromise()} className="mt-2 mb-2">
                     <i className="fas fa-play mr-2" /> Run
                   </Button>
@@ -100,7 +100,7 @@ class TestSection extends Component {
                       </InputGroup>
                     </React.Fragment>
                   ))}
-                </React.Fragment>
+                </>
               )}
             </div>
           }

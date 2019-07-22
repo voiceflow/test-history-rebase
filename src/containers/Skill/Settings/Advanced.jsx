@@ -76,7 +76,7 @@ class AdvancedSettings extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <DefaultModal
           open={this.state.show_overwrite_modal}
           toggle={() => {
@@ -156,7 +156,7 @@ class AdvancedSettings extends Component {
             </Alert>
           </FormGroup>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

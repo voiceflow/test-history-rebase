@@ -61,7 +61,7 @@ class PermissionCard extends Component {
             <Toggle checked={!!this.state.node.extras.custom} onChange={() => this.toggle('custom')} icons={false} />
           </div>
           {this.state.node.extras.custom && (
-            <React.Fragment>
+            <>
               <hr />
               {PERMISSIONS.map((permission) => (
                 <div className="space-between" key={permission.code}>
@@ -73,13 +73,13 @@ class PermissionCard extends Component {
                   />
                 </div>
               ))}
-            </React.Fragment>
+            </>
           )}
         </div>
       );
     }
     return (
-      <React.Fragment>
+      <>
         <ButtonGroup className="toggle-group mb-2">
           <Button
             outline={this.state.node.extras.a_l}
@@ -98,7 +98,7 @@ class PermissionCard extends Component {
         </ButtonGroup>
         <div className={this.props.live_mode ? 'text-center disabled-overlay' : 'text-center'}>
           {this.state.node.extras.a_l ? (
-            <React.Fragment>
+            <>
               {this.props.account_linking ? (
                 <label>
                   <b>{this.props.account_linking.authorizationUrl}</b>
@@ -120,9 +120,9 @@ class PermissionCard extends Component {
                   <img src="/images/account_linking.png" className="w-100" alt="sample account linking" />
                 </div>
               </div>
-            </React.Fragment>
+            </>
           ) : (
-            <React.Fragment>
+            <>
               <div className="px-4">
                 <label>Send a Permission Request Card to the user's phone/device</label>
               </div>
@@ -136,10 +136,10 @@ class PermissionCard extends Component {
                   Settings
                 </button>
               </div>
-            </React.Fragment>
+            </>
           )}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

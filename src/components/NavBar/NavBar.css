@@ -100,12 +100,6 @@ div.nav-item {
   transition: background-color 800ms ease;
 }
 
-#update-popup {
-  background: url(/Notifications.svg);
-  background-repeat: no-repeat;
-  background-position: 50%;
-}
-
 #navbar .account-dropdown .account {
   display: flex;
   align-items: center;

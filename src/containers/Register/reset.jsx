@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
 
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
@@ -78,16 +79,7 @@ class Reset extends Component {
           </form>
         );
       case 1:
-        return (
-          <div className="super-center text-center">
-            <div>
-              <h5 className="pb-3">Sending Email</h5>
-              <h1>
-                <span className="loader" />
-              </h1>
-            </div>
-          </div>
-        );
+        return <Spinner message="Sending Email" />;
       case 2:
         return (
           <>

@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import { FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
 
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
@@ -118,16 +119,7 @@ class ResetPassword extends Component {
 
     switch (stage) {
       case 0:
-        return (
-          <div className="super-center text-center">
-            <div>
-              <h5 className="pb-3">Checking Token</h5>
-              <h1>
-                <span className="loader" />
-              </h1>
-            </div>
-          </div>
-        );
+        return <Spinner message="Checking token" />;
       case 1:
         return (
           <form onSubmit={this.resetPassword} className="w-100">
@@ -169,16 +161,7 @@ class ResetPassword extends Component {
           </form>
         );
       case 2:
-        return (
-          <div className="super-center text-center">
-            <div>
-              <h5 className="pb-3">Resetting Password</h5>
-              <h1>
-                <span className="loader" />
-              </h1>
-            </div>
-          </div>
-        );
+        return <Spinner message="Reseting Password" />;
       case 3:
         return (
           <div className="text-center">

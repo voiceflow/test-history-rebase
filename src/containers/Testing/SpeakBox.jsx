@@ -2,6 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 
+function getIcon(audioType) {
+  if (audioType === 'stream') return '/audio-player.svg';
+  if (audioType === 'audio') return '/audio.svg';
+  return '/alexa.svg';
+}
+
 function SpeakBox(props) {
   const { chat, playAudio, debug } = props;
   const { text, audioType } = chat;
@@ -23,7 +29,7 @@ function SpeakBox(props) {
   if (audioType) {
     return (
       <div className="message-container">
-        <img src={audioType === 'audio' ? '/audio.svg' : '/alexa.svg'} height={18} width={18} alt="alexa" className="speak-box-icon" />
+        <img src={getIcon(audioType)} height={18} width={18} alt={audioType} className="speak-box-icon" />
         <Tooltip title={chat.time} position="right">
           <button
             className="message align-self-start"

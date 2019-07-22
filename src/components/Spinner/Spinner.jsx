@@ -1,13 +1,22 @@
-import cn from 'classnames';
 import React from 'react';
+import styled from 'styled-components';
 
-export const Spinner = (props) => {
+import Loader from '../Loader';
+
+const Text = styled.div`
+  color: #132144;
+  font-weight: 400;
+  font-size: 18px;
+  padding-bottom: 14px;
+`;
+
+const Spinner = ({ isEmpty, message, name, isLg, isMd }) => {
   return (
-    <div id="loading-diagram" className={cn({ transparent: props.transparent })}>
-      <div className="text-center">
-        <h5 className="text-muted mb-2">{props.message || `Loading ${props.name}`}</h5>
-        <span className="loader" />
-      </div>
+    <div className="text-center">
+      <Loader isLg={isLg} isMd={isMd} />
+      {!isEmpty && <Text>{message || `Loading ${name}...`}</Text>}
     </div>
   );
 };
+
+export default Spinner;

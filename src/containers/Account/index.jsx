@@ -8,6 +8,7 @@ import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
 import Header from '@/components/Header';
+import { Spinner } from '@/components/Spinner';
 import Image from '@/components/Uploads/Image';
 import { AmazonAccessToken, googleAccessToken, updateAccount } from '@/ducks/account';
 import { setConfirm, setError } from '@/ducks/modal';
@@ -258,7 +259,7 @@ function renderButton(stage, action) {
     case LOADING:
       return (
         <Button isPrimary disabled>
-          <span className="loader" />
+          <Spinner isEmpty />
         </Button>
       );
     case UNLINKED:

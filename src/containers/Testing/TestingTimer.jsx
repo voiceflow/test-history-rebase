@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { TEST_STATUS } from '../../ducks/test';
+import { Timer } from './TestingHeaderWrapper';
 
 class TestTimer extends React.Component {
   componentDidMount() {
@@ -20,7 +21,7 @@ class TestTimer extends React.Component {
   }
 
   render() {
-    return <span className="tt__time">{moment.utc(this.props.time && Date.now() - this.props.time * 1000).format('mm:ss')}</span>;
+    return <Timer>{moment.utc(this.props.time && Date.now() - this.props.time * 1000).format('mm:ss')}</Timer>;
   }
 }
 const mapStateToProps = (state) => ({

@@ -7,13 +7,13 @@ import SecondaryNavBar from '@/components/NavBar/SecondaryNavBar';
 import SvgIcon from '@/components/SvgIcon';
 import NewButton from '@/componentsV2/Button';
 import { TEST_STATUS, leaveTest, resetTest, startTest } from '@/ducks/test';
+import { updateVersion } from '@/ducks/version';
 import LeftIcon from '@/svgs/arrow-left.svg';
 import StartTestIcon from '@/svgs/forward.svg';
 
-import { updateVersion } from '../../ducks/version';
 import ProjectTitle from '../Canvas/components/CanvasHeader/components/ProjectTitle';
 import ShareTest from './ShareTest';
-import TestingHeaderWrapper from './TestingHeaderWrapper';
+import TestingHeaderWrapper, { SeparatorDot, StartSubButton, TestingBackButton } from './TestingHeaderWrapper';
 import TestTimer from './TestingTimer';
 
 const TestingHeader = (props) => {
@@ -24,8 +24,7 @@ const TestingHeader = (props) => {
   const renderLeftHeader = () => {
     if (active) {
       return (
-        <div
-          className="testing-back"
+        <TestingBackButton
           onClick={() => {
             history.push(`/canvas/${skill.skill_id}/${skill.diagram}`);
             leaveTest();
@@ -33,7 +32,7 @@ const TestingHeader = (props) => {
         >
           <SvgIcon icon={LeftIcon} className="icon-back" />
           Back
-        </div>
+        </TestingBackButton>
       );
     }
     return <ProjectTitle onChange={updateSkill} />;
@@ -48,41 +47,39 @@ const TestingHeader = (props) => {
           <div id="middle-group">
             {status === TEST_STATUS.ENDED && (
               <div>
-                Completed<span className="separator-dot">•</span>
+                Completed<SeparatorDot>•</SeparatorDot>
               </div>
             )}
             <TestTimer />
           </div>
         )}
         rightRenderer={() => (
-          <>
-            <div className="title-group">
-              <div className="title-group-sub">
-                <ShareTest />
-              </div>
-              <div className="align-icon no-select">
-                {running ? (
-                  <NewButton variant="secondary" onClick={leaveTest}>
-                    Finish Test
-                  </NewButton>
-                ) : (
-                  <Button
-                    variant="contained"
-                    className="start-test-btn"
-                    onClick={async () => {
-                      await resetTest();
-                      await startTest();
-                    }}
-                  >
-                    Start Test
-                    <div className="start-sub-btn">
-                      <SvgIcon icon={StartTestIcon} width={16} height={16} color="#fff" />
-                    </div>
-                  </Button>
-                )}
-              </div>
+          <div className="title-group">
+            <div className="title-group-sub">
+              <ShareTest />
             </div>
-          </>
+            <div className="align-icon no-select">
+              {running ? (
+                <NewButton variant="secondary" onClick={leaveTest}>
+                  Finish Test
+                </NewButton>
+              ) : (
+                <Button
+                  variant="contained"
+                  className="start-test-btn"
+                  onClick={async () => {
+                    await resetTest();
+                    await startTest();
+                  }}
+                >
+                  Start Test
+                  <StartSubButton>
+                    <SvgIcon icon={StartTestIcon} width={16} height={16} color="#fff" />
+                  </StartSubButton>
+                </Button>
+              )}
+            </div>
+          </div>
         )}
         subHeaderRenderer={() => !preview && !active && <SecondaryNavBar page={page} history={history} />}
       />

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Button from '@/components/Button';
 import Header from '@/components/Header';
 import SecondaryNavBar from '@/components/NavBar/SecondaryNavBar';
 import SvgIcon from '@/components/SvgIcon';
@@ -13,7 +12,7 @@ import StartTestIcon from '@/svgs/forward.svg';
 
 import ProjectTitle from '../Canvas/components/CanvasHeader/components/ProjectTitle';
 import ShareTest from './ShareTest';
-import TestingHeaderWrapper, { SeparatorDot, StartSubButton, TestingBackButton } from './TestingHeaderWrapper';
+import { BackButtonIcon, SeparatorDot, StartButton, StartSubButton, TestingBackButton } from './TestingHeaderWrapper';
 import TestTimer from './TestingTimer';
 
 const TestingHeader = (props) => {
@@ -30,7 +29,7 @@ const TestingHeader = (props) => {
             leaveTest();
           }}
         >
-          <SvgIcon icon={LeftIcon} className="icon-back" />
+          <BackButtonIcon icon={LeftIcon} />
           Back
         </TestingBackButton>
       );
@@ -39,51 +38,48 @@ const TestingHeader = (props) => {
   };
 
   return (
-    <TestingHeaderWrapper>
-      <Header
-        history={history}
-        leftRenderer={() => renderLeftHeader()}
-        centerRenderer={() => (
-          <div id="middle-group">
-            {status === TEST_STATUS.ENDED && (
-              <div>
-                Completed<SeparatorDot>•</SeparatorDot>
-              </div>
+    <Header
+      history={history}
+      leftRenderer={() => renderLeftHeader()}
+      centerRenderer={() => (
+        <div id="middle-group">
+          {status === TEST_STATUS.ENDED && (
+            <div>
+              Completed<SeparatorDot>•</SeparatorDot>
+            </div>
+          )}
+          <TestTimer />
+        </div>
+      )}
+      rightRenderer={() => (
+        <div className="title-group">
+          <div className="title-group-sub">
+            <ShareTest />
+          </div>
+          <div className="align-icon no-select">
+            {running ? (
+              <NewButton variant="secondary" onClick={leaveTest}>
+                Finish Test
+              </NewButton>
+            ) : (
+              <StartButton
+                variant="contained"
+                onClick={async () => {
+                  await resetTest();
+                  await startTest();
+                }}
+              >
+                Start Test
+                <StartSubButton>
+                  <SvgIcon icon={StartTestIcon} width={16} height={16} color="#fff" />
+                </StartSubButton>
+              </StartButton>
             )}
-            <TestTimer />
           </div>
-        )}
-        rightRenderer={() => (
-          <div className="title-group">
-            <div className="title-group-sub">
-              <ShareTest />
-            </div>
-            <div className="align-icon no-select">
-              {running ? (
-                <NewButton variant="secondary" onClick={leaveTest}>
-                  Finish Test
-                </NewButton>
-              ) : (
-                <Button
-                  variant="contained"
-                  className="start-test-btn"
-                  onClick={async () => {
-                    await resetTest();
-                    await startTest();
-                  }}
-                >
-                  Start Test
-                  <StartSubButton>
-                    <SvgIcon icon={StartTestIcon} width={16} height={16} color="#fff" />
-                  </StartSubButton>
-                </Button>
-              )}
-            </div>
-          </div>
-        )}
-        subHeaderRenderer={() => !preview && !active && <SecondaryNavBar page={page} history={history} />}
-      />
-    </TestingHeaderWrapper>
+        </div>
+      )}
+      subHeaderRenderer={() => !preview && !active && <SecondaryNavBar page={page} history={history} />}
+    />
   );
 };
 

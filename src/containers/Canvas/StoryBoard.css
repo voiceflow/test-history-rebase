@@ -3421,6 +3421,7 @@ button.close:hover{
   padding: 0.65rem 1.5rem !important;
   color: #0b1a38 !important;
   font-size: 15px;
+  font-family: 'Open Sans';
   cursor: pointer;
   transition: all 0.1s ease !important;
 }
@@ -3429,7 +3430,6 @@ button.close:hover{
   padding: 0.65rem 1.5rem !important;
   color: #0b1a38 !important;
   font-size: 15px !important;
-  font-family: 'Open Sans';
   background-color: #f1f4f7 !important;
   cursor: pointer;
 }

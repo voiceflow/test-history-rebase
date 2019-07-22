@@ -106,7 +106,7 @@ const RoundButton = (props) => {
 
 RoundButton.propTypes = {
   className: PropTypes.string,
-  disabled: PropTypes.boolean,
+  disabled: PropTypes.bool,
   onClick: PropTypes.func,
   variant: PropTypes.string,
   width: PropTypes.number,

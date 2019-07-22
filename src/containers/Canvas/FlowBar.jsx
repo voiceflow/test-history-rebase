@@ -77,7 +77,7 @@ export class FlowBar extends Component {
     if (!diagram) return null;
 
     return (
-      <React.Fragment>
+      <>
         <button id="home-button" className="btn-home pl-3" onClick={() => enterFlow(root_id)}>
           <span>Home</span>
         </button>
@@ -142,7 +142,7 @@ export class FlowBar extends Component {
             </DropdownMenu>
           </Dropdown>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

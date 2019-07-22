@@ -144,7 +144,7 @@ export class Menu extends Component {
         });
       }
       return (
-        <React.Fragment>
+        <>
           <FlowButton
             flow={node}
             depth={depth}
@@ -154,7 +154,7 @@ export class Menu extends Component {
             deleteFlow={() => deleteFlow(node.id)}
           />
           {tree}
-        </React.Fragment>
+        </>
       );
     }
     return (
@@ -260,7 +260,7 @@ export class Menu extends Component {
           )}
           <div className={cn('sidebar-container', tab)}>
             {loading_diagram ? null : (
-              <React.Fragment>
+              <>
                 <div className="sidebar-header">
                   <div
                     className="block-title no-select mb-3"
@@ -274,7 +274,7 @@ export class Menu extends Component {
                   </div>
                 </div>
                 <div className="sidebar-content">{this.renderSideBar()}</div>
-              </React.Fragment>
+              </>
             )}
           </div>
         </div>

@@ -178,7 +178,7 @@ class Account extends Component {
                 <div className="super-center">{renderButton(this.state.amzn, this.resetAmazon)}</div>
               </div>
               {this.state.profile && (
-                <React.Fragment>
+                <>
                   <hr />
                   <div className="pl-4 pb-4 pr-4 space-between helper-text">
                     <div className="col-0">
@@ -198,7 +198,7 @@ class Account extends Component {
                       <br />
                     </div>
                   </div>
-                </React.Fragment>
+                </>
               )}
             </div>
             <div className="card mb-5">
@@ -207,7 +207,7 @@ class Account extends Component {
                 <div className="super-center">{renderButton(this.state.google, this.resetGoogle)}</div>
               </div>
               {this.state.gprofile && (
-                <React.Fragment>
+                <>
                   <hr />
                   <div className="pl-4 pb-4 pr-4 space-between helper-text">
                     <div className="col-0">
@@ -227,7 +227,7 @@ class Account extends Component {
                       <br />
                     </div>
                   </div>
-                </React.Fragment>
+                </>
               )}
             </div>
           </div>

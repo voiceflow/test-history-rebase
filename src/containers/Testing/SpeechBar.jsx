@@ -15,7 +15,7 @@ function SpeechBar(props) {
 
   let text;
   if (!listening) {
-    text = 'Hold Spacebar or the Microphone Icon for Voice Input';
+    text = 'Hold Spacebar for Voice Input';
   } else if (!microphone) {
     text = <span className="text-white">Please enable Voiceflow access to the microphone</span>;
   } else if (listening) {

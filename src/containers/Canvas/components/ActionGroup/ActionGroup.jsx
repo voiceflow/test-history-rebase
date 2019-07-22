@@ -12,6 +12,7 @@ import { Tooltip } from 'react-tippy';
 import { Alert, Modal, ModalBody } from 'reactstrap';
 
 import Button from '@/components/Button';
+import RoundButton from '@/components/Button/RoundButton';
 import AmazonLogin from '@/components/Forms/AmazonLogin';
 import { ModalHeader } from '@/components/Modals/ModalHeader';
 import { Spinner } from '@/components/Spinner';
@@ -22,6 +23,7 @@ import { updateVendorId } from '@/ducks/project';
 import { updateLocales, updateSkillDB, updateVersion } from '@/ducks/version';
 import LOCALE_MAP from '@/services/LocaleMap';
 import InvRegex from '@/services/Regex';
+import CogIcon from '@/svgs/cog.svg';
 
 import Settings from '../../../Skill/Settings';
 import UploadButton from '../UploadButton/UploadButton';
@@ -1099,14 +1101,14 @@ export class ActionGroup extends PureComponent {
 
         <div className="title-group-sub">
           <Tooltip title="Settings" position="bottom">
-            <Button
-              className={cn('dropdown-button-border', { active: this.state.settingsModal })}
-              id="settings-icon"
-              type="button"
+            <RoundButton
+              active={showSettings.show}
+              icon={CogIcon}
               onClick={() => {
                 this.props.unfocus();
                 this.props.showSettingsModal(true);
               }}
+              imgSize={15}
             />
           </Tooltip>
         </div>

@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import Checkbox from '../Checkbox';
 import GroupFormInline from '../GroupFormInline';
@@ -19,7 +19,7 @@ export const YES_NO_RADIO_BUTTONS = [
 export default function RadioButtons(props) {
   const { label, checked, buttons, onChange, className, disabledAll } = props;
   return (
-    <Fragment>
+    <>
       {!!label && <label className="form-label">{label}</label>}
 
       <GroupFormInline
@@ -36,7 +36,7 @@ export default function RadioButtons(props) {
         }))}
         className={className}
       />
-    </Fragment>
+    </>
   );
 }
 

@@ -261,38 +261,36 @@ class LightCanvas extends Component {
     const { diagrams, engine, loading_diagram } = this.state;
     const diagram = _.find(diagrams, ['id', diagram_id]);
     return (
-      <React.Fragment>
-        <div id="lightcanvas">
-          {loading_diagram && <FullSpinner name="Preview" />}
-          <div key={diagram_id} id="diagram" onDrop={this.onDrop} onDragOver={(e) => e.preventDefault()} onClick={this.clickDiagram}>
-            <div id="widget-bar">
-              <ButtonGroup>
-                <Button isWhiteCirc onClick={() => this.zoom(1000)} className="round-left">
-                  <i className="far fa-plus" />
-                </Button>
-                <Button isWhiteCirc onClick={() => this.zoom(-1000)} className="round-right">
-                  <i className="far fa-minus" />
-                </Button>
-              </ButtonGroup>
-            </div>
-            <SRD.DiagramWidget
-              nodeProps={{
-                hasFlow: _.noop,
-                enterFlow: _.noop,
-                removeNode: _.noop,
-                diagram,
-                removeCombineNode: _.noop,
-                addRemoveListener: _.noop,
-                disabled: true,
-              }}
-              diagramEngine={engine}
-              clickDiagram={_.noop}
-              allowLooseLinks={false}
-              locked={true}
-            />
+      <div id="lightcanvas">
+        {loading_diagram && <FullSpinner name="Preview" />}
+        <div key={diagram_id} id="diagram" onDrop={this.onDrop} onDragOver={(e) => e.preventDefault()} onClick={this.clickDiagram}>
+          <div id="widget-bar">
+            <ButtonGroup>
+              <Button isWhiteCirc onClick={() => this.zoom(1000)} className="round-left">
+                <i className="far fa-plus" />
+              </Button>
+              <Button isWhiteCirc onClick={() => this.zoom(-1000)} className="round-right">
+                <i className="far fa-minus" />
+              </Button>
+            </ButtonGroup>
           </div>
+          <SRD.DiagramWidget
+            nodeProps={{
+              hasFlow: _.noop,
+              enterFlow: _.noop,
+              removeNode: _.noop,
+              diagram,
+              removeCombineNode: _.noop,
+              addRemoveListener: _.noop,
+              disabled: true,
+            }}
+            diagramEngine={engine}
+            clickDiagram={_.noop}
+            allowLooseLinks={false}
+            locked={true}
+          />
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

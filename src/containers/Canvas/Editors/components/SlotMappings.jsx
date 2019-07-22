@@ -85,7 +85,7 @@ class SlotMappings extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         {this.props.arguments.map((argument, i) => {
           return (
             <div key={i} className="super-center mb-2">
@@ -126,7 +126,7 @@ class SlotMappings extends Component {
         <Button isBtn isClear isBlock className="mb-2" onClick={this.handleAddMap}>
           <i className="far fa-plus" /> Add Variable Map
         </Button>
-      </React.Fragment>
+      </>
     );
   }
 }

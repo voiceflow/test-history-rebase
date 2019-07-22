@@ -80,6 +80,7 @@ class SpreadsheetSection extends Component {
         sheets_list: sheets,
       });
     } catch (e) {
+      console.error(e);
       onError(e);
     }
     this.setState({

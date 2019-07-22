@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
 import { AmazonAccessToken } from '@/ducks/account';
 
 class Migrate extends Component {
@@ -96,7 +97,7 @@ class Migrate extends Component {
       case 2:
         return <Alert>Your Project Has Been Successfully Updated</Alert>;
       default:
-        return <div className="loader text-lg" />;
+        return <Spinner isEmpty />;
     }
   }
 

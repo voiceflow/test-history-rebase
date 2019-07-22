@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { Alert, Button, Collapse, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
 import DefaultModal from '@/components/Modals/DefaultModal';
+import { Spinner } from '@/components/Spinner';
 import { setConfirm, setError } from '@/ducks/modal';
 import IntegrationsService from '@/services/Integrations';
 
@@ -284,11 +285,7 @@ class TestSection extends Component {
   renderTestContent = () => {
     const { test_loading, test_content } = this.state;
     if (test_loading) {
-      return (
-        <div className="text-center">
-          <div className="loader text-lg" />
-        </div>
-      );
+      return <Spinner isEmpty />;
     }
     if (test_content) {
       if (React.isValidElement(test_content)) {

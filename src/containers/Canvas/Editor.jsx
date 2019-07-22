@@ -10,6 +10,7 @@ import { Alert, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown
 import { compose } from 'recompose';
 
 import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
 import Prompt from '@/components/Uploads/Prompt';
 import { redo, undo } from '@/hocs/withUndoRedo';
 
@@ -82,13 +83,7 @@ class Editor extends Component {
               })}
             >
               {this.renderTitle()}
-              {expanded ? (
-                <div className="text-center mt-5">
-                  <span className="loader text-lg" />
-                </div>
-              ) : (
-                this.EditorRender()
-              )}
+              {expanded ? <Spinner isEmpty /> : this.EditorRender()}
               {this.state.expanded && (
                 <ExpandedEditorView
                   isOpen={this.state.expanded}

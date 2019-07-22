@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Collapse } from 'reactstrap';
 
 import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
 import { openTab } from '@/ducks/user';
 
 import OutputMapping from './outputMapping';
@@ -127,11 +128,7 @@ class OutputSection extends Component {
               handleSelection={(i, arg, value) => this.handleSelection(i, arg, value)}
             />
           )}
-          {loading && (
-            <div className="text-center my-4">
-              <div className="loader text-lg" />
-            </div>
-          )}
+          {loading && <Spinner isEmpty />}
           <div className="text-center mt-3">
             <Button isFlatVariable disabled={!completed} onClick={showNextSection}>
               Next

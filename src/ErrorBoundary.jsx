@@ -1,10 +1,7 @@
-import axios from 'axios';
+import LogRocket from 'logrocket';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import serializeError from 'serialize-error';
-
-import { getDevice } from '@/Helper';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -16,15 +13,10 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(rawError, info) {
     if (!rawError) return;
-
-    const error = serializeError(rawError);
-    axios.post('/errors', {
-      name: error.name,
-      message: error.message,
-      error: error.stack,
-      componentTree: info.componentStack,
-      browser: getDevice(),
-      user_detail: this.props.user,
+    LogRocket.captureException(rawError, {
+      extra: {
+        stack: info.componentStack,
+      },
     });
     this.setState({
       hasError: true,

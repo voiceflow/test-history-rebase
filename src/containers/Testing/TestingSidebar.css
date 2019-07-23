@@ -215,7 +215,7 @@
 
 #SpeechBar {
   position: fixed;
-  right: 300px;
+  right: 0;
   bottom: 0;
   left: 0;
   display: flex;
@@ -264,9 +264,20 @@
 
 @media screen and (max-width: 1760px) {
   #SpeechBar {
-    right: 730px;
+    width: 500px;
+    margin: 0 auto;
+    padding-left: 20px;
+  }
+
+  #SpeechBar .text-center {
+    margin-left: 30px;
+  }
+}
+
+@media screen and (max-width: 1360px) {
+  #SpeechBar {
+    right: 430px;
     left: auto;
-    margin: 0;
   }
 }
 

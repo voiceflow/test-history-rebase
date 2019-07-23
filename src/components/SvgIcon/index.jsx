@@ -25,8 +25,8 @@ export const SvgIconContainer = styled.span`
 
 function SvgIcon({ icon, ...props }) {
   let IconElement;
-
-  if (_.isString(icon) && icon in ICONS) {
+  if (ICONS && _.isString(icon)) {
+    if (!(icon in ICONS)) return null;
     IconElement = ICONS[icon];
   } else {
     IconElement = icon;

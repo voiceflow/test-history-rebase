@@ -386,13 +386,17 @@
   background-image: linear-gradient(-180deg, rgba(110, 132, 154, 0.85), #6e849a);
 }
 
+.projects-list__item-action {
+  margin-right: 16px;
+
+}
+
 .projects-list__item-image {
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
   width: 42px;
   min-width: 0;
   height: 42px;
-  margin-right: 16px;
   padding-top: 12px;
   padding-bottom: 11px;
   font-weight: 500;
@@ -404,6 +408,9 @@
   background-size: cover;
   border-radius: 50%;
   box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .projects-list__item-actions {
@@ -418,11 +425,11 @@
   box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.06), 0 2px 4px 0 rgba(17, 49, 96, 0.12);
 }
 
-.main-list-body.still .projects-list__item:hover .projects-list__item-image {
+.main-list-body.still .projects-list__item:hover .projects-list__item-image, .main-list-body.still .projects-list__item.__is-hovered .projects-list__item-image {
   display: none;
 }
 
-.main-list-body.still .projects-list__item:hover .projects-list__item-actions {
+.main-list-body.still .projects-list__item:hover .projects-list__item-actions, .main-list-body.still .projects-list__item.__is-hovered .projects-list__item-actions {
   display: block;
 }
 

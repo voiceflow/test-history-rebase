@@ -94,6 +94,7 @@
 }
 
 #TestSettings.open {
+  z-index: 10;
   transform: translateX(-400px);
 }
 

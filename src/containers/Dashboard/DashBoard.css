@@ -255,7 +255,6 @@
 
 .main-list-footer {
   position: relative;
-  z-index: 2;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

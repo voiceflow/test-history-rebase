@@ -32,6 +32,7 @@ export const StartSubButton = styled.div`
 
 export const BackButtonIcon = styled(SvgIcon)`
   line-height: inherit;
+  margin-right: 13px;
 `;
 
 export const SeparatorDot = styled.span`

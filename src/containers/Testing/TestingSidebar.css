@@ -42,6 +42,7 @@
 }
 
 #TestSidebar.open {
+  z-index: 20;
   overflow: hidden;
   transform: none !important;
 }

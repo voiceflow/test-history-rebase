@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 434 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
     <title>Rectangle 2</title>
-    <desc>Created with Sketch.</desc>
-    <defs>
+        <defs>
         <path d="M35.4632934,0 L392.536707,-2.13162821e-14 C403.691341,-3.55074322e-15 413.496385,7.38983957 416.569333,18.1128464 L428,58 L0,58 L11.4306674,18.1128464 C14.5036148,7.38983957 24.3086585,9.15450055e-15 35.4632934,7.10542736e-15 Z" id="path-1"></path>
         <filter x="-1.4%" y="-9.5%" width="102.7%" height="119.0%" filterUnits="objectBoundingBox" id="filter-2">
             <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
@@ -23,7 +21,7 @@
         <g id="Builder_interaction_blocks-selection_button-hover" transform="translate(-203.000000, -863.000000)">
             <g id="Group-9" transform="translate(206.000000, 866.000000)">
                 <g id="Rectangle-2">
-                    fill="currentColor" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="currentColor" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
                     <use fill="currentColor" fill-rule="evenodd" xlink:href="#path-1"></use>
                 </g>
             </g>

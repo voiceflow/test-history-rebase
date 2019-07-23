@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 68 68" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
     <title>Group</title>
-    <desc>Created with Sketch.</desc>
-    <defs>
+        <defs>
         <rect id="path-1" x="0" y="0" width="64" height="64" rx="32"></rect>
         <filter x="-5.5%" y="-3.9%" width="110.9%" height="110.9%" filterUnits="objectBoundingBox" id="filter-2">
             <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
@@ -17,7 +15,7 @@
             <g id="Group-2" transform="translate(652.000000, 460.000000)">
                 <g id="Group" transform="translate(36.000000, 0.000000)">
                     <g id="Rectangle-2">
-                        fill="currentColor" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="currentColor" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
                         <use fill="currentColor" fill-rule="evenodd" xlink:href="#path-1"></use>
                     </g>
                     <g id="Icon/System/Progress-bar_circle" transform="translate(8.000000, 8.000000)">
@@ -25,7 +23,7 @@
                             <path d="M24,48 C10.745166,48 0,37.254834 0,24 C0,10.745166 10.745166,0 24,0 C37.254834,0 48,10.745166 48,24 C48,37.254834 37.254834,48 24,48 Z M24,45 C35.5979797,45 45,35.5979797 45,24 C45,12.4020203 35.5979797,3 24,3 C12.4020203,3 3,12.4020203 3,24 C3,35.5979797 12.4020203,45 24,45 Z" id="Combined-Shape" fill="#EAEFF4"></path>
                             <g id="Combined-Shape">
                                 <use fill="currentColor" xlink:href="#path-3"></use>
-                                fill="currentColor" xlink:href="#path-3"></use>
+                                <use fill="currentColor" xlink:href="#path-3"></use>
                             </g>
                         </g>
                     </g>

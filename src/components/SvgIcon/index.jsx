@@ -1,7 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
+import _ from 'lodash';
 import PropTypes from 'prop-types';
-import * as React from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
+
+import ICONS from '@/svgs';
 
 export const SvgIconContainer = styled.span`
   color: ${({ color }) => color};
@@ -20,10 +23,18 @@ export const SvgIconContainer = styled.span`
   }
 `;
 
-function SvgIcon({ icon: Icon, ...props }) {
+function SvgIcon({ icon, ...props }) {
+  let IconElement;
+
+  if (_.isString(icon) && icon in ICONS) {
+    IconElement = ICONS[icon];
+  } else {
+    IconElement = icon;
+  }
+
   return (
     <SvgIconContainer {...props}>
-      <Icon />
+      <IconElement />
     </SvgIconContainer>
   );
 }

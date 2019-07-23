@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 239 255" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
     <title>Artwork</title>
-    <desc>Created with Sketch.</desc>
-    <defs>
+        <defs>
         <path d="M14.5,1.08466954 L156.021368,21.1718058 C163.477212,22.3127668 169.521368,27.523162 169.521368,32.8014368 L169.521368,68.0597461 C169.521368,73.3380209 163.477212,78.540779 156.021368,79.6723605 L15.5,94.5889628 C8.04415588,95.5412104 9.13077564e-16,89.283215 0,79.3858475 L0,16.2724946 C8.63279275e-16,6.37512713 7.04415588,0.123958883 14.5,1.08466954 Z" id="path-1"></path>
         <filter x="-36.6%" y="-45.9%" width="173.1%" height="232.3%" filterUnits="objectBoundingBox" id="filter-2">
             <feOffset dx="0" dy="19" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
@@ -32,7 +30,7 @@
                 </g>
                 <g id="1" transform="translate(0.739316, 0.669998)">
                     <g id="Rectangle-18">
-                        fill="currentColor" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="currentColor" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
                         <use fill="currentColor" fill-rule="evenodd" xlink:href="#path-1"></use>
                     </g>
                     <path d="M62.2916102,29.8688071 L150.658387,36.0131183 C152.476293,36.1458703 153.949997,37.388225 153.949997,38.7877636 C153.949997,40.1873021 152.476293,41.2522837 150.658387,41.1666158 L62.2916102,37.2011917 C60.4737041,37.1237039 59,35.4023604 59,33.3563142 C59,31.310268 60.4737041,29.7487541 62.2916102,29.8688071 Z" id="Rectangle" fill="#1B3554" opacity="0.300000012"></path>

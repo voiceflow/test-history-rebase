@@ -47,7 +47,7 @@ class UploadButton extends Component {
   };
 
   render() {
-    const { isUploadLoading, platform, vendors, vendors_open, openUpdate, toggleVendors, project_id } = this.props;
+    const { isUploadLoading, platform, vendors, vendors_open, toggleVendors, project_id } = this.props;
 
     const multiVendor = platform === 'alexa' && vendors && vendors.length > 1;
     return (
@@ -60,7 +60,7 @@ class UploadButton extends Component {
           disabled={vendors_open}
         >
           {multiVendor ? (
-            <Button variant="contained" className="publish-btn multi-vendor-btn" onClick={openUpdate}>
+            <Button variant="contained" className="publish-btn multi-vendor-btn" onClick={this.onButtonClick}>
               {platform === 'google' ? 'Upload to Google' : 'Upload to Alexa'}
             </Button>
           ) : (

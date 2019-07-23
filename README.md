@@ -1,5 +1,8 @@
 # creator-app
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0d8d6315726f4eb09e278701f739147d)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=storyflow/creator-app&amp;utm_campaign=Badge_Grade)
+[![CircleCI](https://circleci.com/gh/storyflow/creator-app.svg?style=svg&circle-token=d2fee4e418aa5f2a3499ac21cbc5f86c2e0fcdf4)](https://circleci.com/gh/storyflow/creator-app)
+
 ## Configuration
 
 ### LogRocket

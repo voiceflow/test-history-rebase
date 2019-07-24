@@ -86,7 +86,7 @@ const Button = styled.button`
   background-image: ${({ color }) => (color ? `linear-gradient(${color}15, ${color}30)` : 'none')};
 
   &:hover {
-    ${hoverStyles}
+    ${({ active }) => !active && hoverStyles}
   }
   ${({ active }) => active && activeStyles}
   &:active {

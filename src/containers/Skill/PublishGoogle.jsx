@@ -169,70 +169,68 @@ class GooglePublish extends Component {
     });
   }
 
-  componentDidMount() {
-    const { project_id, skill_id } = this.props;
+  async componentDidMount() {
+    const { project_id, skill_id, setError } = this.props;
     try {
-      googleAccessToken().then((g_token) => {
-        dialogflowToken(project_id).then((d_token) => {
-          this.setState({
-            credentials: !!d_token,
-            publish_modal_open: d_token && !g_token.token,
-            stage: g_token.token ? 2 : 0,
-          });
-        });
+      const g_token = await googleAccessToken();
+      const d_token = await dialogflowToken(project_id);
+      this.setState({
+        credentials: !!d_token,
+        publish_modal_open: d_token && !g_token.token,
+        stage: g_token.token ? 2 : 0,
       });
     } catch (e) {
       console.error('Error checking google access token', e);
     }
+    try {
+      const res = await axios.get(`/skill/google/${skill_id}`);
 
-    axios
-      .get(`/skill/google/${skill_id}`)
-      .then((res) => {
-        if (!_.isObject(res.data.publish_info)) {
-          res.data.publish_info = {};
-        }
+      if (!_.isObject(res.data.publish_info)) {
+        res.data.publish_info = {};
+      }
 
-        const publish_info = res.data.publish_info;
+      const publish_info = res.data.publish_info;
 
-        if (publish_info.review) {
-          publish_info.stage = 5;
-        } else {
-          delete publish_info.stage;
-        }
+      if (publish_info.review) {
+        publish_info.stage = 5;
+      } else {
+        delete publish_info.stage;
+      }
 
-        if (!publish_info.locales) {
-          publish_info.locales = [];
-        }
-        if (!publish_info.main_locale) {
-          publish_info.main_locale = 'en';
-        }
+      if (!publish_info.locales) {
+        publish_info.locales = [];
+      }
+      if (!publish_info.main_locale) {
+        publish_info.main_locale = 'en';
+      }
 
-        if (!publish_info.google_link_user) {
-          publish_info.google_link_user = '0';
-        }
+      if (!publish_info.google_link_user) {
+        publish_info.google_link_user = '0';
+      }
 
-        const { google_id, created, diagram, privacy_policy, terms_and_cond } = res.data;
+      const { google_id, created, diagram, privacy_policy, terms_and_cond } = res.data;
 
-        // TODO: Antipattern, fix this when we do redux
-        this.setState({
-          loaded: true,
-          ...publish_info,
-          google_id,
-          created,
-          diagram,
-          privacy_policy,
-          terms_and_cond,
-        });
-      })
-      .catch((err) => {
-        this.setState({ loaded: true });
-        const message = _.get(err, ['response', 'data', 'data']) || _.get(err, ['response', 'data']);
-        if (message === 'Invalid Google Certificate') {
-          this.setState({
-            auth_error: 'There was an error with your google certificate. Please try again or contact support.',
-          });
-        }
+      // TODO: Antipattern, fix this when we do redux
+      this.setState({
+        loaded: true,
+        ...publish_info,
+        google_id,
+        created,
+        diagram,
+        privacy_policy,
+        terms_and_cond,
       });
+    } catch (err) {
+      this.setState({ loaded: true });
+      const message = _.get(err, ['response', 'data', 'data']) || _.get(err, ['response', 'data']);
+      setError(err.response.data);
+      if (message === 'Invalid Google Certificate') {
+        this.setState({
+          auth_error: 'There was an error with your google certificate. Please try again or contact support.',
+        });
+        setError({ message: 'There was an error with your google certificate. Please try again or contact support.' });
+      }
+    }
   }
 
   componentWillUnmount() {

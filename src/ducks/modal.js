@@ -75,7 +75,7 @@ export const setError = (rawError) => {
   let error = rawError;
 
   if (typeof error === 'string') error = { message: error };
-
+  if (!error.message && error.data) error.message = error.data;
   return {
     type: SET_ERROR,
     payload: {

@@ -35,7 +35,7 @@ const SERVICES_MAP = {
 };
 
 function copyJSONPath(copy_event) {
-  const total_path = copy_event.namespace.slice();
+  const total_path = copy_event.namespace.slice(1);
 
   if (copy_event.name !== '') {
     total_path.push(copy_event.name);
@@ -80,7 +80,7 @@ class TestSection extends Component {
           content={
             <div style={{ padding: '0 2em 2em 2em' }}>
               {!_.isEmpty(variables) && (
-                <React.Fragment>
+                <>
                   <Button color="primary" onClick={() => this.resolveModalPromise()} className="mt-2 mb-2">
                     <i className="fas fa-play mr-2" /> Run
                   </Button>
@@ -100,7 +100,7 @@ class TestSection extends Component {
                       </InputGroup>
                     </React.Fragment>
                   ))}
-                </React.Fragment>
+                </>
               )}
             </div>
           }
@@ -204,9 +204,9 @@ class TestSection extends Component {
           });
 
           const resp = await test(params);
-          const data = this.checkResult(resp);
+          const data = React.isValidElement(resp) ? resp : this.checkResult(resp);
 
-          if (data.message) {
+          if (data) {
             this.setState({
               test_content: data,
               test_loading: false,
@@ -232,19 +232,15 @@ class TestSection extends Component {
   checkResult = (result) => {
     if (result) {
       if (typeof result === 'object' && result.VF_STATUS_CODE >= 400) {
-        this.props.setError(`Error: Request failed 
-      due to ${result.error}.
-      Status Code: ${result.VF_STATUS_CODE}`);
-
-        return { message: `Error: Request failed due to ${result.error} with status code ${result.VF_STATUS_CODE}` };
+        this.props.setError(`Error: Request failed with status Code: ${result.VF_STATUS_CODE}`);
       }
       if (typeof result === 'string' && result.length > 10000) {
-        return { message: `${result.substring(0, Math.min(result.length, 10000))}...` };
+        return { response: `${result.substring(0, Math.min(result.length, 10000))}...` };
       }
       if (typeof result === 'object' && JSON.stringify(result).length > 10000) {
         return { message: 'Response contents are too large to display!' };
       }
-      return { message: result };
+      return { response: result };
     }
     this.props.setError('Something went wrong. Please check your request.');
     return { message: 'Something went wrong. Please check your request.' };
@@ -291,26 +287,11 @@ class TestSection extends Component {
       if (React.isValidElement(test_content)) {
         return test_content;
       }
-      if (Object.keys(test_content).length === 0) {
-        return (
-          <div className="text-center mb-2 success">
-            Action Performed Succesfully!<div className="small text-muted">(No Data Returned)</div>
-          </div>
-        );
-      }
-      if (Object.keys(test_content).length > 0) {
-        return (
-          <div className="mb-3">
-            <ReactJson
-              src={test_content}
-              displayDataTypes={false}
-              name="response"
-              enableClipboard={copyJSONPath}
-              collapsed={JSON.stringify(test_content).length > 1000}
-            />
-          </div>
-        );
-      }
+      return (
+        <div className="mb-3">
+          <ReactJson src={test_content} displayDataTypes={false} name={false} enableClipboard={copyJSONPath} />
+        </div>
+      );
     }
     return null;
   };

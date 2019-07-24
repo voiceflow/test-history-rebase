@@ -674,10 +674,6 @@
   flex: 1;
 }
 
-.block-icon {
-  background-image: url('/play.svg');
-}
-
 .tool .blocks-icon {
   background-image: url('/blocks.svg');
 }
@@ -1441,6 +1437,7 @@
   bottom: 0;
   left: 0;
   overflow-x: hidden;
+  transition: top 0.2s ease;
 }
 
 #app.secondary-padding > #canvas {
@@ -3405,6 +3402,7 @@ button.close:hover{
   padding: 0.65rem 1.5rem !important;
   color: #0b1a38 !important;
   font-size: 15px;
+  font-family: 'Open Sans';
   cursor: pointer;
   transition: all 0.1s ease !important;
 }
@@ -3416,7 +3414,6 @@ button.close:hover{
   background-color: #f1f4f7 !important;
   cursor: pointer;
 }
-
 
 
 #home-button {
@@ -3701,4 +3698,8 @@ button.close:hover{
 
 .disabled {
   opacity: 0.3;
+}
+
+.testing_mode {
+  top: 66px !important;
 }

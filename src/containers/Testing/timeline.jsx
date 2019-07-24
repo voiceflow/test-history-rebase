@@ -4,11 +4,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import Button from '@/components/Button';
+import SvgIcon from '@/components/SvgIcon';
 import { setError } from '@/ducks/modal';
 import { TEST_STATUS, endTest, fetchState, resetTest, startTest, updateState } from '@/ducks/test';
+import StartTestIcon from '@/svgs/forward.svg';
 
 import TestBox from './TestingBox';
+import { StartButton, StartSubButton } from './TestingHeaderWrapper';
 import { getUserTestOutputs } from './utils';
 
 class Timeline extends Component {
@@ -248,7 +250,7 @@ class Timeline extends Component {
   };
 
   render() {
-    const { test, resetTest, startTest, skill } = this.props;
+    const { test, resetTest, startTest, userTest, skill } = this.props;
     const { outputs, loading, options } = this.state;
 
     if (test.status === TEST_STATUS.IDLE) {
@@ -257,10 +259,14 @@ class Timeline extends Component {
           <div>
             <img src="/Testing.svg" alt="user" width="80" />
             <div className="text-muted mb-4 mt-3">Start test to see the dialog transcription</div>
-            <Button isPrimary onClick={() => startTest()}>
-              Start test
-              <i className="fas fa-play ml-2" />
-            </Button>
+            {userTest && (
+              <StartButton className="d-inline-block" onClick={() => startTest()}>
+                Start Test
+                <StartSubButton>
+                  <SvgIcon icon={StartTestIcon} width={16} height={16} color="#fff" />
+                </StartSubButton>
+              </StartButton>
+            )}
           </div>
         </div>
       );
@@ -275,7 +281,10 @@ class Timeline extends Component {
           outputs={outputs}
           loading={loading}
           options={options}
-          handleRestart={resetTest}
+          handleRestart={async () => {
+            await resetTest();
+            await startTest();
+          }}
           playAudio={this.playAudio}
           locale={Array.isArray(skill.locales) && skill.locales[0]}
         />
@@ -288,6 +297,7 @@ const mapStateToProps = (state) => ({
   diagrams: state.diagrams.diagrams,
   skill: state.skills.skill,
   test: state.test,
+  userTest: state.test.userTest,
 });
 
 const mapDispatchToProps = {

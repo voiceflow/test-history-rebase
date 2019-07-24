@@ -10,7 +10,7 @@
   "dependencies": {
     "@voiceflow/apl-renderer": "^1.0.0",
     "@voiceflow/common": "^6.0.1",
-    "@voiceflow/natural-language-commander": "^0.3.0",
+    "@voiceflow/natural-language-commander": "^0.3.1",
     "availity-reactstrap-validation": "^2.4.0",
     "axios": "^0.18.0",
     "bootstrap": "^4.1.1",
@@ -133,7 +133,7 @@
     "eslint-plugin-flowtype": "2.50.1",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.2",
-    "eslint-plugin-react": "7.11.1",
+    "eslint-plugin-react": "^7.14.2",
     "eslint-plugin-react-hooks": "^1.6.0",
     "exargs": "^1.0.0",
     "file-loader": "2.0.0",

@@ -539,7 +539,7 @@ class Editor extends Component {
     let variables = this.props.global_variables.concat(this.props.variables);
     variables = variables.concat(['Create Variable']);
     return (
-      <React.Fragment>
+      <>
         {this.BlockViewer(variables) &&
           React.cloneElement(this.BlockViewer(variables), {
             node: this.state.node,
@@ -551,7 +551,7 @@ class Editor extends Component {
             updateExtras: this.updateExtras,
           })}
         {this.state.node.extras.reprompt && (
-          <React.Fragment>
+          <>
             <hr />
             <div className="space-between">
               <label>Custom Reprompt</label>
@@ -569,10 +569,10 @@ class Editor extends Component {
                 }
               }}
             />
-          </React.Fragment>
+          </>
         )}
         {this.state.node.extras.chips && this.props.platform === 'google' && (
-          <React.Fragment>
+          <>
             <hr />
             <div className="space-between">
               <label>Suggestion Chips</label>
@@ -600,9 +600,9 @@ class Editor extends Component {
               placeholder="Enter suggestion and press enter"
               value={this.state.node.extras.chips}
             />
-          </React.Fragment>
+          </>
         )}
-      </React.Fragment>
+      </>
     );
   };
 }

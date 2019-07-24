@@ -38,4 +38,19 @@ export const ProjectTitleContainer = styled.div`
   overflow-x: hidden;
   text-overflow: ellipsis;
   font-size: 18px;
+  display: flex;
+  align-items: center;
+  .icon-back {
+    line-height: inherit;
+    cursor: pointer;
+  }
+`;
+
+export const BackButton = styled.span`
+  position: relative;
+  transition: right 0.2s ease;
+  right: 0px;
+  :hover {
+    right: 5px;
+  }
 `;

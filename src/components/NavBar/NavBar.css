@@ -100,12 +100,6 @@ div.nav-item {
   transition: background-color 800ms ease;
 }
 
-#update-popup {
-  background: url(/Notifications.svg);
-  background-repeat: no-repeat;
-  background-position: 50%;
-}
-
 #navbar .account-dropdown .account {
   display: flex;
   align-items: center;
@@ -186,7 +180,7 @@ div.nav-item {
   box-shadow: 0 0 0 1px rgba(184, 218, 255, 1);
 }
 
-.dropdown-button.show {
+.dropdown-button.show, .dropdown-button.active {
   color: #5d9df5;
   background: linear-gradient(#5d9df515, #5d9df530);
   border: 1px solid #fff !important;

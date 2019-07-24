@@ -63,6 +63,7 @@ function Test(props) {
 
   return (
     <>
+      <div id="speech-bar-portal-element"></div>
       {open && <TestSettings open={conditionsOpen} />}
       <div id="TestSidebar" className={cn({ open })}>
         {!userTest && (

@@ -143,7 +143,7 @@ class AccountLinkTemplate extends Component {
         {this.state.loading ? (
           <FullSpinner name="Template" />
         ) : (
-          <React.Fragment>
+          <>
             <label>URL Authorization</label>
             <Input
               name="form-control-border form-control mb-3"
@@ -196,7 +196,7 @@ class AccountLinkTemplate extends Component {
               </NavItem>
             </Nav>
             {this.state.type === 'client' && (
-              <React.Fragment>
+              <>
                 <label>Client ID</label>
                 <Input
                   className="form-control-border form-control mb-3"
@@ -224,7 +224,7 @@ class AccountLinkTemplate extends Component {
                     });
                   }}
                 />
-              </React.Fragment>
+              </>
             )}
             {this.state.type === 'scope' && (
               <MultipleFields
@@ -281,7 +281,7 @@ class AccountLinkTemplate extends Component {
               options={clientAuthScheme}
             />
             <br />
-          </React.Fragment>
+          </>
         )}
       </div>
     );

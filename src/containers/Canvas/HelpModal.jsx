@@ -251,7 +251,7 @@ class HelpModal extends React.Component {
         <ModalBody>
           <div className="text-muted pl-3 pr-3 pb-3 pt-0">
             {result ? (
-              <React.Fragment>
+              <>
                 <p className="mb-4">{result.info}</p>
                 {result.link && (
                   <a href={result.link} rel="noopener noreferrer" target="_blank" className="btn-link">
@@ -263,7 +263,7 @@ class HelpModal extends React.Component {
                     <iframe src={result.video} allowFullScreen title="intro" />
                   </div>
                 )}
-              </React.Fragment>
+              </>
             ) : (
               "Information for this block doesn't exist yet. Check back again later"
             )}

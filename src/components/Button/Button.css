@@ -97,11 +97,11 @@ button {
 .btn-secondary {
   height: 45px;
   padding: 11px 22px 10px;
-  color: #8da2b5;
+  color: #132144;
   font-weight: 500 !important;
   font-size: 15px;
   line-height: 20px;
-  background-color: #fff;
+  background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #fff;
   border: 1px solid #e2e9ec;
   border-radius: 90px;
   cursor: pointer;
@@ -111,13 +111,13 @@ button {
 
 .btn-secondary:hover {
   color: #132144;
-  background-color: #f7f9fb;
+  background: linear-gradient(180deg, rgba(222, 233, 237, 0.85) 0%, #dee9ed 100%), #fff;
   border: 1px solid #e2e9ec;
 }
 
 .btn-secondary:active {
-  color: #8da2b5 !important;
-  background-color: #eff3f6 !important;
+  color: #132144 !important;
+  background: linear-gradient(180deg, rgba(222, 233, 237, 0.85) 0%, #dee9ed 100%), #fff;
   border: 1px solid #e2e9ec !important;
 }
 
@@ -495,6 +495,7 @@ button {
   padding: 10px 22px;
   font-weight: 500 !important;
   font-size: 15px;
+  font-family: 'Open Sans', sans-serif !important;
   letter-spacing: 0.2px;
   background: none;
   border: none;

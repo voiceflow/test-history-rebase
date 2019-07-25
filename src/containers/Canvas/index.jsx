@@ -1613,7 +1613,7 @@ export class Canvas extends Component {
           </Header>
         )}
         {!this.props.preview && this.props.page === 'test' && (
-          <TestingHeader preview={this.props.preview} history={this.props.history} page={this.props.page} />
+          <TestingHeader preview={this.props.preview} team_id={this.props.team_id} history={this.props.history} page={this.props.page} />
         )}
         {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={() => this.setState({ spotlight: false })} />}
         <div

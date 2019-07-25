@@ -10,7 +10,6 @@ import CheckMark from '@/components/CheckMark';
 import { ModalHeader } from '@/components/Modals/ModalHeader';
 import { Spinner } from '@/components/Spinner';
 import Image from '@/components/Uploads/Image';
-import { User } from '@/components/User/User';
 import { setConfirm, setError } from '@/ducks/modal';
 import { deleteTeam, leaveTeam, updateCurrentTeamItem, updateMembers, updateTeamName } from '@/ducks/team';
 
@@ -18,6 +17,8 @@ import Billing from './Billing';
 import { PLANS_ID } from './PLANS';
 import PricingCard from './PricingCard';
 import SeatsCheckout from './SeatsCheckout';
+import Contact from './components/Contact';
+import MemberRow from './components/MemberRow';
 
 // SETTING STATES: MEMBERS, SETTINGS, DELETE
 /* eslint-disable sonarjs/no-duplicate-string */
@@ -33,103 +34,6 @@ const STAGES = {
   SUCCESS: { title: 'Update Success' },
 };
 /* eslint-enable sonarjs/no-duplicate-string */
-
-const Contact = (
-  <Alert className="text-center py-3 mt-2">
-    <img src="/contact-owner.svg" alt="owner" width={65} />
-    Contact the owner of this board to upgrade
-  </Alert>
-);
-
-const MemberRow = ({ member, admin, user, confirm, update, remove }) => {
-  const m = member;
-  const IS_ADMIN = admin === user;
-
-  let info;
-  let type;
-  let remove_action;
-  if (m.creator_id) {
-    type = 'FILLED';
-    remove_action = () =>
-      confirm({
-        text: 'Are you sure you want to remove this member?',
-        confirm: () => update({ creator_id: null, email: null, invite: '' }),
-      });
-    // HAS CREATOR ID ASSOCIATED: ACCEPTED INVITE FULL MEMBERSHIP
-    info = (
-      <>
-        <User user={m} className="lg" />
-        <div className="ml-3">
-          <span>{m.name}</span>
-          <br />
-          <small className="text-muted">{m.email}</small>
-        </div>
-      </>
-    );
-  } else if (m.email) {
-    type = 'INVITE';
-    // ONLY HAS EMAIL: INVITE SENT OUT BUT NOT ACCEPTED
-    remove_action = () =>
-      confirm({
-        text: 'Are you sure you want to cancel this invite?',
-        confirm: () => update({ email: null, invite: '' }),
-      });
-    info = (
-      <>
-        <div className="member-icon lg solid">
-          <img src="/pending.svg" width="17" style={{ marginTop: -5 }} alt="pending" />
-        </div>
-        <div className="ml-3">
-          <span>{m.email}</span>
-          <br />
-          <small className="text-muted">Pending Confirmation</small>
-        </div>
-      </>
-    );
-  } else {
-    if (!IS_ADMIN) return null;
-    // NO INVITE: EMPTY SEAT
-    type = 'EMPTY';
-    remove_action = remove;
-    info = (
-      <>
-        <div className="member-icon lg solid">
-          <img src="/add-teammate.svg" width="18" style={{ marginTop: -4 }} alt="add" />
-        </div>
-        <div className="ml-3">
-          <Input
-            className="w-300 form-bg"
-            placeholder="Email"
-            value={m.invite || ''}
-            type="email"
-            onChange={(e) => update({ invite: e.target.value })}
-          />
-        </div>
-      </>
-    );
-  }
-
-  return (
-    <div className="member-row">
-      <div className="w-100 space-between">
-        <div className="horizontal-center">{info}</div>
-        {IS_ADMIN && user !== m.creator_id && (
-          <UncontrolledDropdown inNavbar>
-            <DropdownToggle tag="div" className="dropdown-button">
-              <i className="far fa-ellipsis-h" />
-            </DropdownToggle>
-            <DropdownMenu right className="no-select py-1">
-              {type === 'FILLED' && <DropdownItem onClick={remove_action}>Remove Member</DropdownItem>}
-              {type === 'INVITE' && <DropdownItem onClick={remove_action}>Cancel Invite</DropdownItem>}
-              {type === 'EMPTY' && <DropdownItem onClick={remove_action}>Remove Seat</DropdownItem>}
-            </DropdownMenu>
-          </UncontrolledDropdown>
-        )}
-        {member.status === 100 && <label className="text-muted mr-2">OWNER</label>}
-      </div>
-    </div>
-  );
-};
 
 class TeamSettings extends Component {
   state = {
@@ -484,7 +388,7 @@ class TeamSettings extends Component {
   };
 
   render() {
-    const { team, user, update, open, close } = this.props;
+    const { team, user, update, open, close, hideIcon } = this.props;
     const { update_pay, stage } = this.state;
 
     if (!team) return null;
@@ -494,26 +398,28 @@ class TeamSettings extends Component {
 
     return (
       <div style={{ marginRight: 30, marginLeft: 15 }}>
-        <UncontrolledDropdown inNavbar>
-          <DropdownToggle tag="div" className="pointer">
-            <img src="/cog.svg" width={17} alt="cog" />
-          </DropdownToggle>
-          <DropdownMenu right className="no-select">
-            <DropdownItem onClick={() => update('MEMBERS')}>{this.IS_ADMIN ? 'Manage Members' : 'Team Members'}</DropdownItem>
-            {this.IS_ADMIN ? (
-              <>
-                <DropdownItem onClick={() => update('SETTINGS')}>Board Settings</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem onClick={() => update('PLAN')}>Board Plan</DropdownItem>
-              </>
-            ) : (
-              <>
-                <DropdownItem divider />
-                <DropdownItem onClick={this.leaveTeam}>Leave Board</DropdownItem>
-              </>
-            )}
-          </DropdownMenu>
-        </UncontrolledDropdown>
+        {!hideIcon && (
+          <UncontrolledDropdown inNavbar>
+            <DropdownToggle tag="div" className="pointer">
+              <img src="/cog.svg" width={17} alt="cog" />
+            </DropdownToggle>
+            <DropdownMenu right className="no-select">
+              <DropdownItem onClick={() => update('MEMBERS')}>{this.IS_ADMIN ? 'Manage Members' : 'Team Members'}</DropdownItem>
+              {this.IS_ADMIN ? (
+                <>
+                  <DropdownItem onClick={() => update('SETTINGS')}>Board Settings</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={() => update('PLAN')}>Board Plan</DropdownItem>
+                </>
+              ) : (
+                <>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={this.leaveTeam}>Leave Board</DropdownItem>
+                </>
+              )}
+            </DropdownMenu>
+          </UncontrolledDropdown>
+        )}
         <Modal
           isOpen={!!open}
           toggle={close}

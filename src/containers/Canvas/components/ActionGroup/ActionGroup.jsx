@@ -1112,7 +1112,7 @@ export class ActionGroup extends PureComponent {
           </Tooltip>
         </div>
         <div className="title-group-sub">
-          <ShareTest render />
+          <ShareTest team_id={this.props.team_id} render />
         </div>
         <UploadButton
           live_mode={live_mode}

@@ -20,6 +20,7 @@ import { getVendors } from '@/ducks/account';
 import { fetchDiagrams } from '@/ducks/diagram';
 import { fetchDisplays } from '@/ducks/display';
 import { fetchProducts } from '@/ducks/product';
+import { fetchTeams, updateCurrentTeam } from '@/ducks/team';
 import { fetchVersion, resetVersion, setLiveModeModal, updateVersion } from '@/ducks/version';
 // HOCs
 import { errorScreen, loadSession, socketCheck } from '@/hocs/socketCheck';
@@ -31,6 +32,8 @@ import Logs from './containers/Logs';
 import Publish from './containers/Skill/Publish';
 import Settings from './containers/Skill/Settings';
 import Visuals from './containers/Visuals';
+
+const getTeamFromURL = (computedMatch) => _.get(computedMatch, ['params', 'team_id']);
 
 const live_modal_content = (
   <div className="text-center">
@@ -90,6 +93,10 @@ class Skill extends Component {
     }
   }
 
+  updateTeam = (team_id) => {
+    if (!this.props.page) this.props.history.push(`/team/${team_id}`);
+  };
+
   trackCanvasTime() {
     const time_unmounted = new Date();
     if (this.props.skill) {
@@ -135,6 +142,17 @@ class Skill extends Component {
         }
       });
       this.props.getDiagrams(this.props.computedMatch.params.skill_id);
+      if (!this.props.team) {
+        this.props.fetchTeams().then(() => {
+          if (this.props.teams.allIds.length > 0) {
+            const urlTeam = getTeamFromURL(this.props.computedMatch);
+            if (!this.props.team_id) {
+              this.props.updateCurrentTeam(urlTeam || this.props.teams.allIds[0]);
+            }
+            if (!urlTeam && this.props.page !== 'template') this.updateTeam(this.props.team_id);
+          }
+        });
+      }
     } else {
       this.setState({
         load_skill: false,
@@ -370,10 +388,14 @@ const mapStateToProps = (state) => ({
   user: state.account,
   boards_array: unnormalize(state.board),
   team_id: state.team.team_id,
+  team: state.team.byId[state.team.team_id],
+  teams: state.team,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    fetchTeams: () => dispatch(fetchTeams()),
+    updateCurrentTeam: (team_id) => dispatch(updateCurrentTeam(team_id)),
     getDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id)),
     getVersion: (version_id, preview, diagram_id) => dispatch(fetchVersion(version_id, preview, diagram_id)),
     setLiveModal: (isLive) => dispatch(setLiveModeModal(isLive)),

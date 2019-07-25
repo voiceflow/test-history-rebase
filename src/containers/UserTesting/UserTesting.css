@@ -19,8 +19,14 @@
 }
 
 .popover.share {
-  width: 340px;
-  max-width: 340px;
+  width: 440px;
+  max-width: 440px;
+  -webkit-box-shadow:
+    0 0 0 1px rgba(17, 49, 96, 0.06),
+    0 8px 16px 0 rgba(17, 49, 96, 0.16);
+  box-shadow:
+    0 0 0 1px rgba(17, 49, 96, 0.06),
+    0 8px 16px 0 rgba(17, 49, 96, 0.16);
 }
 
 #PublicUserTesting #SpeechBar {

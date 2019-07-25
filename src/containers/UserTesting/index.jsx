@@ -5,19 +5,27 @@ import React from 'react';
 import { IntercomAPI } from 'react-intercom';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
-import { Input, InputGroup, InputGroupAddon, Popover, PopoverBody } from 'reactstrap';
+import styled from 'styled-components';
 
 import RoundButton from '@/components/Button/RoundButton';
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import Header from '@/components/Header';
+import Popover from '@/components/Popover';
 import Test from '@/containers/Testing';
 import { initializeTest, updateTest } from '@/ducks/test';
 import { fetchVersionSuccess } from '@/ducks/version';
 import ShareIcon from '@/svgs/share.svg';
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["componentDidMount","componentWillUnmount","render"] }] */
 
+const BodyContainer = styled.div`
+  padding: 18px 24px;
+  font-family: 'Open Sans';
+`;
+
 class UserTesting extends React.Component {
   state = { loading: 1, share: false };
+
+  sharingButton = React.createRef();
 
   componentDidMount() {
     IntercomAPI('update', {
@@ -29,6 +37,20 @@ class UserTesting extends React.Component {
       this.fetchInformation();
     }
   }
+
+  renderBody = () => {
+    return (
+      <BodyContainer>
+        <div className="mb-3">
+          <h6 className="text-muted">Share testable link</h6>
+          <small className="text-dull">
+            Anyone with this link will be able to simulate this flow from within their browser by using their voice or text input.
+          </small>
+        </div>
+        <ClipBoard name="link" value={window.location.href} id="shareLink" />
+      </BodyContainer>
+    );
+  };
 
   componentWillUnmount() {
     IntercomAPI('update', {
@@ -77,7 +99,7 @@ class UserTesting extends React.Component {
           )}
           centerRenderer={() => (this.props.skill && this.props.skill.name) || 'Loading...'}
           rightRenderer={() => (
-            <div className="mr-3">
+            <div ref={this.sharingButton} className="mr-3">
               <Tooltip className="top-nav-icon" title="Share" position="bottom" distance={16}>
                 <RoundButton
                   id="icon-share"
@@ -90,18 +112,14 @@ class UserTesting extends React.Component {
                   imgSize={15}
                 />
               </Tooltip>
-              <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
-                <PopoverBody style={{ minWidth: '260px' }}>
-                  <InputGroup>
-                    <InputGroupAddon addonType="prepend">
-                      <ClipBoard component="button" className="btn btn-clear copy-link" value={window.location.href} id="shareLink">
-                        <i className="fas fa-copy" />
-                      </ClipBoard>
-                    </InputGroupAddon>
-                    <Input readOnly value={window.location.href} className="form-control-border right" />
-                  </InputGroup>
-                </PopoverBody>
-              </Popover>
+              <Popover
+                gap={-12}
+                show={this.state.share}
+                className="mt-3 share"
+                target={this.sharingButton.current}
+                onHide={this.toggleShare}
+                renderBody={this.renderBody}
+              />
             </div>
           )}
         />

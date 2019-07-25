@@ -52,6 +52,7 @@ export const recurse = (tag, index = 0) => {
 
 const getAudioMeta = (audio) => {
   return new Promise((resolve, reject) => {
+    if (!audio) return resolve(0);
     audio.addEventListener('error', reject);
     audio.addEventListener('loadedmetadata', (e) => {
       resolve(e.target.duration);
@@ -60,6 +61,7 @@ const getAudioMeta = (audio) => {
 };
 
 const newAudio = (src) => {
+  if (!src) return null;
   let newSrc = src;
   if (newSrc.startsWith('soundbank://soundlibrary/')) {
     newSrc = `${src.replace('soundbank://soundlibrary/', 'https://d3qhmae9zx9eb.cloudfront.net/')}.mp3`;

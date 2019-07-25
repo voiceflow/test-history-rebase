@@ -1,53 +1,97 @@
-import React, { Component } from 'react';
-import { Tooltip } from 'reactstrap';
+import React, { useRef, useState } from 'react';
+import styled from 'styled-components';
+
+import SvgIcon from '@/components/SvgIcon';
+import { flexEndStyles } from '@/componentsV2/Flex';
+import Locked from '@/svgs/locked.svg';
+import Unlocked from '@/svgs/unlocked.svg';
 
 import Clipboard from './ClipBoardSource';
 
-class ClipBoard extends Component {
-  constructor(props) {
-    super(props);
+const InputContainer = styled.div`
+  display: flex;
+`;
 
-    this.toggle = this.toggle.bind(this);
-    this.onSuccess = this.onSuccess.bind(this);
-    this.state = {
-      tooltipOpen: false,
-      copied: false,
-    };
-  }
+const CopiedContainer = styled.div`
+  padding-top: 10px;
+  display: flex;
+`;
 
-  toggle() {
-    this.setState({
-      tooltipOpen: !this.state.tooltipOpen,
-      copied: false,
-    });
-  }
+const Input = styled.input`
+  display: block;
+  flex: 1;
+  width: 100%;
+  padding: ${(props) => ('locked' in props ? '8px 16px 8px 42px' : '8px 16px')};
+  font: normal 15px/1.4666666667 Open Sans, Arial, sans-serif;
+  color: #132144;
+  background: #fff;
+  border: 1px solid #d4d9e6;
+  margin-bottom: 0;
+  border-radius: 5px;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+    max-height 0.12s linear;
+`;
 
-  onSuccess() {
-    this.setState({
-      tooltipOpen: true,
-      copied: true,
-    });
-  }
+const InputPrepend = styled.div`
+  position: absolute;
+  padding: 15px;
+`;
 
-  render() {
-    return (
-      <>
-        <Clipboard
-          id={this.props.id}
-          style={{ cursor: 'pointer' }}
-          data-clipboard-text={this.props.value}
-          onSuccess={this.onSuccess}
-          component={this.props.component}
-          className={this.props.className}
-        >
-          {this.props.children}
-        </Clipboard>
-        <Tooltip placement="bottom" isOpen={this.state.tooltipOpen} target={this.props.id} toggle={this.toggle}>
-          {this.state.copied ? 'Copied!' : 'Copy to Clipboard'}
-        </Tooltip>
-      </>
-    );
-  }
-}
+const InputGroup = styled.div`
+  display: flex;
+  flex: 1;
+`;
+
+const CopyButton = styled.div`
+  ${flexEndStyles}
+  margin-left: 10px;
+`;
+
+const ClipBoard = (props) => {
+  const { id, name, value, locked } = props;
+  const [copied, setCopied] = useState(false);
+  const copyClearTimeout = useRef(false);
+
+  const handleOnCopy = () => {
+    if (copyClearTimeout.current) {
+      clearTimeout(copyClearTimeout.current);
+    }
+
+    setCopied(true);
+    copyClearTimeout.current = setTimeout(() => setCopied(false), 3000);
+  };
+  return (
+    <>
+      <InputContainer>
+        <InputGroup>
+          {'locked' in props && (
+            <InputPrepend>
+              <SvgIcon icon={locked ? Locked : Unlocked} width={18} height={18} />
+            </InputPrepend>
+          )}
+          <Input readOnly value={value} className="form-control-border right" />
+        </InputGroup>
+        <CopyButton>
+          <Clipboard
+            id={id}
+            style={{ cursor: 'pointer' }}
+            data-clipboard-text={value}
+            component="button"
+            className="btn btn-secondary"
+            onSuccess={handleOnCopy}
+          >
+            <span>Copy {name}</span>
+          </Clipboard>
+        </CopyButton>
+      </InputContainer>
+      {copied && (
+        <CopiedContainer>
+          <small className="light-blue">Copied to clipboard</small>
+        </CopiedContainer>
+      )}
+    </>
+  );
+};
 
 export default ClipBoard;

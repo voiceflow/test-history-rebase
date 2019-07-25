@@ -4,7 +4,7 @@ exports[`Captioned Icon Button renders 1`] = `
 <Styled(Styled(styled.button))>
   <SvgIcon
     color="#becedc"
-    icon="plus.svg"
+    icon="plus"
     size={16}
   />
   <styled.span>

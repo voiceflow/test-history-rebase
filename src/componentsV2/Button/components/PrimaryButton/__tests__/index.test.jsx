@@ -1,8 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import PlusIcon from '@/svgs/plus.svg';
-
 import PrimaryButton from '..';
 
 let component;
@@ -15,6 +13,6 @@ describe('Primary Button', () => {
   });
 
   it('renders with icon', () => {
-    component = shallow(<PrimaryButton icon={PlusIcon}>Button</PrimaryButton>);
+    component = shallow(<PrimaryButton icon="plus">Button</PrimaryButton>);
   });
 });

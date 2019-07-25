@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+// eslint-disable-next-line no-secrets/no-secrets
 const GuidedStepsWrapper = styled.div`
   max-width: 1040px;
   margin-left: auto;
@@ -87,11 +88,8 @@ const GuidedStepsWrapper = styled.div`
 
   .gs__steps-list__list-item.gs__is-filled {
     &:before {
-      //background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(78, 111, 249, 0.85)), color-stop(96%, #4e6ff9));
-      //background-image: -webkit-linear-gradient(top, rgba(78, 111, 249, 0.85), #4e6ff9 96%);
-      //background-image: -o-linear-gradient(top, rgba(78, 111, 249, 0.85), #4e6ff9 96%);
-      //background-image: linear-gradient(-180deg, rgba(78, 111, 249, 0.85), #4e6ff9 96%);
-      background: url('check-white.svg');
+      color: #fff;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 8 7" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path d="M2.93392736,4.160577 L7.08815759,0.137094346 C7.31579123,-0.0625550403 7.64460031,-0.0419946134 7.8499241,0.184727594 C8.0500253,0.40568292 8.0500253,0.76158459 7.8499241,0.982539917 L3.25221093,6.0594172 C2.84386528,6.51031978 2.17846245,6.51397506 1.7659921,6.06758151 C1.73992286,6.03936823 1.71522281,6.00968217 1.69199337,5.97864524 L0.12890688,3.89019962 C-0.055920774,3.64325071 -0.0403405209,3.28360157 0.165008085,3.05685196 C0.372006184,2.82828095 0.701591551,2.80187658 0.93686071,2.99501583 L2.14820594,4.160577 C2.43611018,4.39692591 2.65309537,4.40688478 2.93392736,4.160577 Z" id="path-1"></path></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g fill="%23FFFFFF"><use xlink:href="%23path-1"></use><use xlink:href="%23path-1"></use></g></g></svg>');
       background-size: 8px 8px;
       background-repeat: no-repeat;
       background-position: 50% 50%;
@@ -99,7 +97,6 @@ const GuidedStepsWrapper = styled.div`
       border-width: 0;
       display: inline-block;
       vertical-align: top;
-      color: #fff;
       padding: 4px;
       margin: 0;
       -webkit-box-shadow: none;

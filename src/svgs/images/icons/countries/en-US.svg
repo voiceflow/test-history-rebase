@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg  viewBox="0 0 26 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
-    <title>US</title>
-    <desc>Created with Sketch.</desc>
-    <defs>
+            <defs>
         <filter x="-66.7%" y="-85.7%" width="233.3%" height="271.4%" filterUnits="objectBoundingBox" id="filter-1">
             <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
             <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
@@ -34,7 +31,7 @@
                 <path d="M0,0 L18,0 L18,0.933333333 L0,0.933333333 L0,0 Z M0,1.86666667 L18,1.86666667 L18,2.8 L0,2.8 L0,1.86666667 Z M0,3.73333333 L18,3.73333333 L18,4.66666667 L0,4.66666667 L0,3.73333333 Z M0,5.6 L18,5.6 L18,6.53333333 L0,6.53333333 L0,5.6 Z M0,7.46666667 L18,7.46666667 L18,8.4 L0,8.4 L0,7.46666667 Z M0,9.33333333 L18,9.33333333 L18,10.2666667 L0,10.2666667 L0,9.33333333 Z M0,11.2 L18,11.2 L18,12.1333333 L0,12.1333333 L0,11.2 Z M0,13.0666667 L18,13.0666667 L18,14 L0,14 L0,13.0666667 Z" id="Rectangle-511" fill="#D02F44" mask="url(#mask-3)"></path>
                 <rect id="Rectangle-511" fill="#46467F" mask="url(#mask-3)" x="0" y="0" width="7.71428571" height="6.53333333"></rect>
                 <g id="Oval-43" mask="url(#mask-3)">
-                    fill="currentColor" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+                    <use fill="currentColor" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
                     <use fill="url(#linearGradient-4)" fill-rule="evenodd" xlink:href="#path-5"></use>
                 </g>
             </g>

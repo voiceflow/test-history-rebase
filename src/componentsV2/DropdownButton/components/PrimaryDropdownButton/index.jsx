@@ -3,7 +3,6 @@ import React from 'react';
 import SvgIcon from '@/components/SvgIcon';
 import PrimaryButton from '@/componentsV2/Button/components/PrimaryButton';
 import PrimaryButtonContainer from '@/componentsV2/Button/components/PrimaryButton/components/PrimaryButtonContainer';
-import CaretDownIcon from '@/svgs/solid/caret-down.svg';
 
 import { Container, Toggle } from './components';
 
@@ -15,7 +14,7 @@ function DropdownButton({ disabled, onToggle, children }, ref) {
       </PrimaryButton>
       <PrimaryButtonContainer disabled={disabled} canHover={false} onClick={onToggle}>
         <Toggle>
-          <SvgIcon icon={CaretDownIcon} width={12} />
+          <SvgIcon icon="caretDown" width={12} />
         </Toggle>
       </PrimaryButtonContainer>
     </Container>

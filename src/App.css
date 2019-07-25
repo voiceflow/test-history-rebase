@@ -1808,21 +1808,6 @@ body.modal-open {
   animation: spin 1s linear infinite;
 }
 
-.save-loader-white {
-  display: inline-flex;
-  width: 1em;
-  height: 1em;
-  line-height: 1;
-  background-image: url('/loader-white.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  -webkit-animation: spin 1s linear infinite;
-  -moz-animation: spin 1s linear infinite;
-  -ms-animation: spin 1s linear infinite;
-  animation: spin 1s linear infinite;
-}
-
 .w-300 {
   width: 320px !important;
 }

@@ -4,8 +4,6 @@ import { storiesOf } from '@storybook/react';
 import React from 'react';
 
 import Variant from '@/../.storybook/Variant';
-import PlusIcon from '@/svgs/plus.svg';
-import SyncIcon from '@/svgs/sync.svg';
 
 import Button from '.';
 
@@ -43,12 +41,12 @@ storiesOf('Button', module)
     return (
       <>
         <Variant label="primary">
-          <Button icon={PlusIcon} disabled={disabled} onClick={onClick}>
+          <Button icon="plus" disabled={disabled} onClick={onClick}>
             {label}
           </Button>
         </Variant>
         <Variant label="secondary">
-          <Button variant="secondary" icon={SyncIcon} disabled={disabled} onClick={onClick}>
+          <Button variant="secondary" icon="sync" disabled={disabled} onClick={onClick}>
             {label}
           </Button>
         </Variant>

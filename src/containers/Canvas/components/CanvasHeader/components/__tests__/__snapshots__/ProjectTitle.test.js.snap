@@ -42,7 +42,7 @@ exports[`Project Title render project title 1`] = `
     <SvgIcon
       className="icon-back"
       color="#6E849A"
-      icon="arrow-left.svg"
+      icon="arrowLeft"
       onClick={[Function]}
       size={16}
     />

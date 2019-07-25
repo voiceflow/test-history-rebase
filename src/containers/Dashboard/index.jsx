@@ -36,9 +36,6 @@ import { setConfirm, setError } from '@/ducks/modal';
 import { copyProject, deleteProject, updateProjects } from '@/ducks/project';
 import { getMembers } from '@/ducks/team';
 import { useScrollHelpers } from '@/hooks/scroll';
-import NotificationsIcon from '@/svgs/Notifications.svg';
-import AddIcon from '@/svgs/add-step.svg';
-import InformationIcon from '@/svgs/information.svg';
 
 import ExpiryButton from './ExpiryButton';
 import TeamSettings from './TeamSettings';
@@ -198,13 +195,13 @@ export const DashBoard = (props) => {
 
   const renderUpdatesButton = () => {
     if (!show_update_bubble) {
-      return <RoundButton active={updates_open} icon={NotificationsIcon} onClick={updateButtonClick} imgSize={15} />;
+      return <RoundButton active={updates_open} icon="notifications" onClick={updateButtonClick} imgSize={15} />;
     }
     return (
       <div className="dropdown-update-container" onMouseEnter={() => toggleUpdatesHover(true)} onMouseLeave={() => toggleUpdatesHover(false)}>
         <div className="dropdown-update-bubble" />
         {!updates_hover && !updates_open ? (
-          <RoundButton active={updates_open} icon={NotificationsIcon} onClick={updateButtonClick} imgSize={15} />
+          <RoundButton active={updates_open} icon="notifications" onClick={updateButtonClick} imgSize={15} />
         ) : (
           <div className={cn('dropdown-button-numbered')} onClick={updateButtonClick}>
             <div className="update-number-circle">{new_product_updates.length}</div>
@@ -261,7 +258,7 @@ export const DashBoard = (props) => {
                 <Dropdown isOpen={showInfo} toggle={() => setShowInfo(!showInfo)}>
                   <DropdownToggle className="ml-1" tag="div">
                     <Tooltip distance={19} title="Resources" position="bottom">
-                      <RoundButton icon={InformationIcon} imgSize={15} active={showInfo} />
+                      <RoundButton icon="information" imgSize={15} active={showInfo} />
                     </Tooltip>
                   </DropdownToggle>
                   <DropdownMenu className="mt-2">
@@ -411,7 +408,7 @@ export const DashBoard = (props) => {
                         <Tooltip distance={16} title="Add new list" position="bottom" className="ml-1 mr-4">
                           <RoundButton
                             variant="shadow"
-                            icon={AddIcon}
+                            icon="addStep"
                             onClick={() => {
                               props.addBoard(props.team_id);
                             }}

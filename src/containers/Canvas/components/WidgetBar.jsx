@@ -4,10 +4,6 @@ import { Tooltip } from 'react-tippy';
 
 import Button from '@/components/Button';
 import SvgIcon from '@/components/SvgIcon';
-import HomeIcon from '@/svgs/home.svg';
-import StarIcon from '@/svgs/nav-star.svg';
-import ZoomInIcon from '@/svgs/zoom-in.svg';
-import ZoomOutIcon from '@/svgs/zoom-out.svg';
 
 import WidgetBarWrapper from './WidgetBarWrapper';
 
@@ -15,21 +11,21 @@ const BaseWidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update, 
   <WidgetBarWrapper isCanvas isTest={!isCanvas} menuOpen={menuOpen}>
     <div className="canvas-controls__action __type-dual">
       <Button isWhiteCirc onClick={() => zoom(1000, engine, update)} className="round-left zoom-btn">
-        <SvgIcon className="zoom-in-icon" icon={ZoomInIcon} height={14} width={14} />
+        <SvgIcon className="zoom-in-icon" icon="zoomIn" height={14} width={14} />
       </Button>
       <Button isWhiteCirc onClick={() => zoom(-1000, engine, update)} className="round-right zoom-btn">
-        <SvgIcon className="zoom-out-icon" icon={ZoomOutIcon} height={14} width={14} />
+        <SvgIcon className="zoom-out-icon" icon="zoomOut" height={14} width={14} />
       </Button>
     </div>
     <Tooltip title="Go to home" position="top" distance={8}>
       <Button isWhiteCirc className="__type-single" onClick={() => centerDiagram(engine, setOpen)}>
-        <SvgIcon className="home-icon" icon={HomeIcon} height={14} width={14} />
+        <SvgIcon className="home-icon" icon="home" height={14} width={14} />
       </Button>
     </Tooltip>
     {!preview && (
       <Tooltip title="See Shortcuts" position="top" distance={8}>
         <Button isWhiteCirc className="__type-single" onClick={() => toggleKeyboard(!keyboardHelp)}>
-          <SvgIcon className="star-icon" icon={StarIcon} height={14} width={14} />
+          <SvgIcon className="star-icon" icon="star" height={14} width={14} />
         </Button>
       </Tooltip>
     )}

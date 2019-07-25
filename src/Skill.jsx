@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Tooltip } from 'react-tippy';
 import { Alert } from 'reactstrap';
 import { compose } from 'recompose';
 
@@ -240,63 +239,6 @@ class Skill extends Component {
         </div>
       );
     }
-  };
-
-  renderUploadButton = () => {
-    if (this.props.live_mode) {
-      return (
-        <Tooltip html={<div style={{ width: 155 }}>Update your live version with your local changes</div>} position="bottom" distance={16}>
-          <Button variant="contained" className="publish-btn" onClick={this.openUpdateLive}>
-            Update Live{' '}
-            <div className="launch">
-              <div className="first">
-                <img src="/up.svg" alt="upload" width="16" height="16" />
-              </div>
-              <div className="second">
-                <img src="/rocket.svg" alt="check" width="16" height="16" />
-              </div>
-            </div>
-          </Button>
-        </Tooltip>
-      );
-    }
-    if (this.isUploadLoading()) {
-      return (
-        <Button isPublish disabled variant="contained" onClick={() => this.setState({ show_upload_prompt: !this.state.show_upload_prompt })}>
-          <p className="loading-btn m-0 p-0">Uploading</p>
-          <div className="launch">
-            <div className="load-spinner pt-1">
-              <span className="save-loader-white" />
-            </div>
-          </div>
-        </Button>
-      );
-    }
-    return (
-      <Tooltip
-        html={
-          <div style={{ width: 155 }}>
-            {this.props.platform === 'google'
-              ? 'Test your Action on your own Google device, or in the Google Actions console'
-              : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}
-          </div>
-        }
-        position="bottom"
-        distance={16}
-      >
-        <Button isPublish variant="contained" onClick={this.openUpdate}>
-          {this.props.platform === 'google' ? 'Upload to Google' : 'Upload to Alexa'}
-          <div className="launch">
-            <div className="first">
-              <img src="/up.svg" alt="upload" width="15" height="15" />
-            </div>
-            <div className="second">
-              <img src="/check-white.svg" alt="check" width="15" height="15" />
-            </div>
-          </div>
-        </Button>
-      </Tooltip>
-    );
   };
 
   render() {

@@ -1811,7 +1811,7 @@ body.modal-open {
   width: 1em;
   height: 1em;
   line-height: 1;
-  background-image: url('/loader-white.svg');
+  color: #fff;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;

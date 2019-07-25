@@ -7,8 +7,6 @@ import SvgIcon from '@/components/SvgIcon';
 import NewButton from '@/componentsV2/Button';
 import { TEST_STATUS, leaveTest, resetTest, startTest } from '@/ducks/test';
 import { updateVersion } from '@/ducks/version';
-import LeftIcon from '@/svgs/arrow-left.svg';
-import StartTestIcon from '@/svgs/forward.svg';
 
 import ProjectTitle from '../Canvas/components/CanvasHeader/components/ProjectTitle';
 import ShareTest from './ShareTest';
@@ -29,7 +27,7 @@ const TestingHeader = (props) => {
             leaveTest();
           }}
         >
-          <BackButtonIcon icon={LeftIcon} />
+          <BackButtonIcon icon="arrowLeft" />
           Back
         </TestingBackButton>
       );
@@ -71,7 +69,7 @@ const TestingHeader = (props) => {
               >
                 Start Test
                 <StartSubButton>
-                  <SvgIcon icon={StartTestIcon} width={16} height={16} color="#fff" />
+                  <SvgIcon icon="forward" width={16} height={16} color="#fff" />
                 </StartSubButton>
               </StartButton>
             )}

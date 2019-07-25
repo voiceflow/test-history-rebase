@@ -4,7 +4,6 @@ import { Tooltip } from 'react-tippy';
 
 import Button from '@/components/Button';
 import SvgIcon from '@/components/SvgIcon';
-import PublishSpinnerIcon from '@/svgs/publish-spin.svg';
 
 import VendorSelectList from '../VendorSelectList/VendorSelectList';
 import UploadButtonWrapper from './UploadButtonWrapper';
@@ -68,7 +67,7 @@ class UploadButton extends Component {
               {this.renderButtonText()}
               <div className="publish-spinner">
                 <div className="spinner-icon">
-                  <SvgIcon icon={PublishSpinnerIcon} color="#fff" />
+                  <SvgIcon icon="publishSpin" color="#fff" />
                 </div>
               </div>
             </Button>

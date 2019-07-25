@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg  viewBox="0 0 1235 800" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>entertainment-icon</title>
-        <defs>
+            <defs>
         <linearGradient x1="50%" y1="19.6859798%" x2="-33.8124944%" y2="294.476483%" id="linearGradient-1">
             <stop stop-color="currentColor" offset="0%"></stop>
             <stop stop-color="currentColor" offset="100%"></stop>

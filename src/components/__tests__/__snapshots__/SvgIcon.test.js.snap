@@ -5,6 +5,6 @@ exports[`SvgIcon renders SvgIcon 1`] = `
   color="#6E849A"
   size={16}
 >
-  <home.svg />
+  <test-file-stub />
 </styled.span>
 `;

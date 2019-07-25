@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-import ICONS from '@/svgs';
+import * as ICONS from '@/svgs';
 
 export const SvgIconContainer = styled.span`
   color: ${({ color }) => color};
@@ -25,7 +25,7 @@ export const SvgIconContainer = styled.span`
 
 function SvgIcon({ icon, ...props }) {
   let IconElement;
-  if (ICONS && _.isString(icon)) {
+  if (_.isString(icon)) {
     if (!(icon in ICONS)) return null;
     IconElement = ICONS[icon];
   } else {

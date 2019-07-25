@@ -3,8 +3,6 @@ import { boolean, text } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import EllipsisIcon from '@/svgs/elipsis.svg';
-
 import { FlexAround } from '../Flex';
 import CaptionedIconButton from '.';
 
@@ -15,7 +13,7 @@ storiesOf('Captioned Icon Button', module).add('variants', () => {
 
   return (
     <FlexAround>
-      <CaptionedIconButton icon={EllipsisIcon} disabled={disabled} onClick={onClick}>
+      <CaptionedIconButton icon="elipsis" disabled={disabled} onClick={onClick}>
         {label}
       </CaptionedIconButton>
     </FlexAround>

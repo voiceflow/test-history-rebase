@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 239 255" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Artwork</title>
-        <defs>
+            <defs>
         <path d="M14.5,1.08466954 L156.021368,21.1718058 C163.477212,22.3127668 169.521368,27.523162 169.521368,32.8014368 L169.521368,68.0597461 C169.521368,73.3380209 163.477212,78.540779 156.021368,79.6723605 L15.5,94.5889628 C8.04415588,95.5412104 9.13077564e-16,89.283215 0,79.3858475 L0,16.2724946 C8.63279275e-16,6.37512713 7.04415588,0.123958883 14.5,1.08466954 Z" id="path-1"></path>
         <filter x="-36.6%" y="-45.9%" width="173.1%" height="232.3%" filterUnits="objectBoundingBox" id="filter-2">
             <feOffset dx="0" dy="19" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>

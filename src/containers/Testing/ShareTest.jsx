@@ -7,7 +7,6 @@ import RoundButton from '@/components/Button/RoundButton';
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import { Spinner } from '@/components/Spinner';
 import { shareTest } from '@/ducks/test';
-import ShareIcon from '@/svgs/share.svg';
 
 const TestingHeader = (props) => {
   const { shareTest, rendered, render } = props;
@@ -25,7 +24,7 @@ const TestingHeader = (props) => {
   return (
     <>
       <Tooltip title="Share Test" position="bottom">
-        <RoundButton id="icon-share" active={share} variant="color" color="#5b9dfa" icon={ShareIcon} onClick={makeConfig} imgSize={15} />
+        <RoundButton id="icon-share" active={share} variant="color" color="#5b9dfa" icon="share" onClick={makeConfig} imgSize={15} />
       </Tooltip>
       <Popover placement="bottom" isOpen={share} target="icon-share" toggle={makeConfig} className="mt-3 share">
         <PopoverBody>

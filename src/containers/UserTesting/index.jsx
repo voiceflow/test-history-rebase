@@ -13,7 +13,6 @@ import Header from '@/components/Header';
 import Test from '@/containers/Testing';
 import { initializeTest, updateTest } from '@/ducks/test';
 import { fetchVersionSuccess } from '@/ducks/version';
-import ShareIcon from '@/svgs/share.svg';
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["componentDidMount","componentWillUnmount","render"] }] */
 
 class UserTesting extends React.Component {
@@ -85,7 +84,7 @@ class UserTesting extends React.Component {
                   color="#5b9dfa"
                   active={this.state.share}
                   size={44}
-                  icon={ShareIcon}
+                  icon="share"
                   onClick={this.toggleShare}
                   imgSize={15}
                 />

@@ -277,7 +277,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       <RoundButton
         active={false}
         disabled={false}
-        icon="cog.svg"
+        icon="cog"
         imgSize={15}
         onClick={[Function]}
         size={42}

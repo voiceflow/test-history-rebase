@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 
-const SUCESS_ICON = '/green-check.svg';
+const SUCCESS_ICON = '/green-check.svg';
 const WARNING_ICON = '/yellow-error.svg';
 
 export const SET_PREVIEW = 'SET_PREVIEW';
@@ -62,7 +62,7 @@ export const setPreview = (preview) => ({
 
 export const setCanvasInfo = (error) => ({
   type: CANVAS_ERROR,
-  payload: { error: { msg: error, icon: SUCESS_ICON } },
+  payload: { error: { msg: error, icon: SUCCESS_ICON } },
 });
 
 export const setCanvasError = (error) => ({

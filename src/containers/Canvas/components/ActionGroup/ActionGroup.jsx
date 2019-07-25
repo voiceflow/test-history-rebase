@@ -23,7 +23,6 @@ import { updateVendorId } from '@/ducks/project';
 import { updateLocales, updateSkillDB, updateVersion } from '@/ducks/version';
 import LOCALE_MAP from '@/services/LocaleMap';
 import InvRegex from '@/services/Regex';
-import CogIcon from '@/svgs/cog.svg';
 
 import Settings from '../../../Skill/Settings';
 import UploadButton from '../UploadButton/UploadButton';
@@ -1103,7 +1102,7 @@ export class ActionGroup extends PureComponent {
           <Tooltip title="Settings" position="bottom">
             <RoundButton
               active={showSettings.show}
-              icon={CogIcon}
+              icon="cog"
               onClick={() => {
                 this.props.unfocus();
                 this.props.showSettingsModal(true);

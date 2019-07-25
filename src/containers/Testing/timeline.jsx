@@ -7,7 +7,6 @@ import { compose } from 'recompose';
 import SvgIcon from '@/components/SvgIcon';
 import { setError } from '@/ducks/modal';
 import { TEST_STATUS, endTest, fetchState, resetTest, startTest, updateState } from '@/ducks/test';
-import StartTestIcon from '@/svgs/forward.svg';
 
 import TestBox from './TestingBox';
 import { StartButton, StartSubButton } from './TestingHeaderWrapper';
@@ -263,7 +262,7 @@ class Timeline extends Component {
               <StartButton className="d-inline-block" onClick={() => startTest()}>
                 Start Test
                 <StartSubButton>
-                  <SvgIcon icon={StartTestIcon} width={16} height={16} color="#fff" />
+                  <SvgIcon icon="forward" width={16} height={16} color="#fff" />
                 </StartSubButton>
               </StartButton>
             )}

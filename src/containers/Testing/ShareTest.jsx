@@ -11,8 +11,6 @@ import { Spinner } from '@/components/Spinner';
 import { setConfirm } from '@/ducks/modal';
 import { getMembers, updateMembers } from '@/ducks/team';
 import { shareTest } from '@/ducks/test';
-import ShareIcon from '@/svgs/link.svg';
-
 import TeamSettings from '../Dashboard/TeamSettings';
 
 const BodyContainer = styled.div`
@@ -93,7 +91,7 @@ const TestingHeader = (props) => {
   return (
     <div ref={sharingButton}>
       <Tooltip title="Share Test" position="bottom">
-        <RoundButton id="icon-share" active={share} variant="color" color="#5b9dfa" icon={ShareIcon} onClick={makeConfig} imgSize={16} />
+        <RoundButton id="icon-share" active={share} variant="color" color="#5b9dfa" icon="share" onClick={makeConfig} imgSize={16} />
       </Tooltip>
       <Popover gap={-12} show={share} className="mt-3 share" target={sharingButton.current} onHide={() => setShare(!share)} renderBody={renderBody} />
       <TeamSettings hideIcon={true} open={team_setting} update={(setting) => setTeamSetting(setting)} close={() => setTeamSetting(false)} />

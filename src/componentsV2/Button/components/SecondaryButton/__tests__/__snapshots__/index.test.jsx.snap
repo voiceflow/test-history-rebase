@@ -11,7 +11,7 @@ exports[`Seconday Button renders with icon 1`] = `
   <styled.span>
     <SvgIcon
       color="#6E849A"
-      icon="plus.svg"
+      icon="plus"
       size={16}
     />
   </styled.span>

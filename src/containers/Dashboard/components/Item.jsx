@@ -27,6 +27,7 @@ const DROPDOWN_OPTIONS = [
 
 const DROPDOWN_BUTTON_PROPS = {
   isDropdown: true,
+  className: 'dropdown-button projects-list__item-action',
 };
 
 export function Item(props) {
@@ -63,29 +64,30 @@ export function Item(props) {
           '__is-draggable __is-dragging': isDraggingPreview,
         })}
       >
-        <div
-          style={{
-            backgroundImage: avatarUrl ? `url(${avatarUrl})` : undefined,
+        <Dropdown
+          options={DROPDOWN_OPTIONS}
+          onRemove={onRemove}
+          onDuplicate={onDuplicate}
+          buttonProps={DROPDOWN_BUTTON_PROPS}
+          popoverProps={{
+            onShow: toggleDropdownOpened,
+            onHide: toggleDropdownOpened,
+            stopPropagation: true,
           }}
-          className={`projects-list__item-image cap-${color}`}
-        >
-          {!avatarUrl && upperCase(name).charAt(0)}
-        </div>
-
-        <div className="projects-list__item-actions">
-          <Dropdown
-            options={DROPDOWN_OPTIONS}
-            onRemove={onRemove}
-            onDuplicate={onDuplicate}
-            buttonProps={DROPDOWN_BUTTON_PROPS}
-            popoverProps={{
-              onShow: toggleDropdownOpened,
-              onHide: toggleDropdownOpened,
-              stopPropagation: true,
-            }}
-            label={<i className="far fa-ellipsis-h" />}
-          />
-        </div>
+          label={
+            <>
+              <div
+                style={{
+                  backgroundImage: avatarUrl ? `url(${avatarUrl})` : undefined,
+                }}
+                className={`projects-list__item-image projects-list__item-icon cap-${color}`}
+              >
+                {!avatarUrl && upperCase(name).charAt(0)}
+              </div>
+              <div className="projects-list__item-actions projects-list__item-icon far fa-ellipsis-h" />
+            </>
+          }
+        />
 
         <div className="projects-list__item-details">
           <div className="projects-list__item-title">{name}</div>

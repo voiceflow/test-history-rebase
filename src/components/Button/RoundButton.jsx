@@ -58,6 +58,7 @@ const Button = styled.button`
   position: relative;
   display: flex;
   justify-content: center;
+  align-items: center;
   cursor: pointer;
   z-index: 1;
   background: ${({ color }) => (color ? `linear-gradient(${color}15, ${color}30)` : '#fff')};
@@ -86,7 +87,7 @@ const Button = styled.button`
   background-image: ${({ color }) => (color ? `linear-gradient(${color}15, ${color}30)` : 'none')};
 
   &:hover {
-    ${hoverStyles}
+    ${({ active }) => !active && hoverStyles}
   }
   ${({ active }) => active && activeStyles}
   &:active {

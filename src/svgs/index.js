@@ -1,6 +1,6 @@
 // PLEASE IMPORT AS CAMELCASE
 
-export { default as notifications } from './notification.svg';
+export { default as notifications } from './notifications.svg';
 export { default as play } from './play.svg';
 export { default as addBoard } from './add-board.svg';
 export { default as plus } from './plus.svg';

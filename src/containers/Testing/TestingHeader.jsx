@@ -14,7 +14,7 @@ import { BackButtonIcon, SeparatorDot, StartButton, StartSubButton, TestingBackB
 import TestTimer from './TestingTimer';
 
 const TestingHeader = (props) => {
-  const { page, skill, history, leaveTest, preview, startTest, status, resetTest, updateSkill } = props;
+  const { page, skill, history, leaveTest, preview, startTest, status, resetTest, updateSkill, team_id } = props;
   const active = status !== TEST_STATUS.IDLE;
   const running = status === TEST_STATUS.ACTIVE;
 
@@ -52,7 +52,7 @@ const TestingHeader = (props) => {
       rightRenderer={() => (
         <div className="title-group">
           <div className="title-group-sub">
-            <ShareTest />
+            <ShareTest team_id={team_id} />
           </div>
           <div className="align-icon no-select">
             {running ? (

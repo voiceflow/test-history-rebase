@@ -21,6 +21,15 @@ export const FlexCenter = styled.div`
   ${flexCenterStyles}
 `;
 
+export const flexEndStyles = css`
+  ${flexStyles}
+  justify-content: flex-end;
+`;
+
+export const FlexEnd = styled.div`
+  ${flexEndStyles}
+`;
+
 export const flexApartStyles = css`
   ${flexStyles}
   justify-content: space-between;

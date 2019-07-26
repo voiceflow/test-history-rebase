@@ -1,12 +1,19 @@
 // STANDALONE SSML EDITOR
 import _ from 'lodash';
 import React, { useState } from 'react';
+import Textarea from 'react-textarea-autosize';
 import styled from 'styled-components';
 
 import Header from '@/components/Header';
 import SSMLEditor, { Container } from '@/components/SSMLEditor';
 import Button from '@/componentsV2/Button';
 
+const App = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  padding-bottom: 100px;
+`;
 const Page = styled.div`
   padding-top: 50px;
   max-width: 600px;
@@ -18,13 +25,14 @@ const Page = styled.div`
   }
 `;
 
-const CodeContainer = styled.pre`
+const CodeContainer = styled(Textarea)`
   width: 100%;
-  background-color: #fff;
+  font-family: monospace;
   border: 1px solid #d4d9e6;
   border-radius: 5px;
   white-space: pre-wrap;
   padding: 20px;
+  resize: none;
 `;
 
 const ExportSection = styled.div`
@@ -58,15 +66,17 @@ export default function SSML() {
         )}
         centerRenderer={_.constant('SSML Editor (ALPHA)')}
       />
-      <Page>
-        <SSMLEditor value={value} onChange={updateValue} />
-        <ExportSection>
-          <Button variant="secondary" onClick={generateCode} disabled={!value.text.trim()}>
-            Export SSML
-          </Button>
-          {ssml && <CodeContainer>{ssml}</CodeContainer>}
-        </ExportSection>
-      </Page>
+      <App>
+        <Page>
+          <SSMLEditor value={value} onChange={updateValue} />
+          <ExportSection>
+            <Button variant="secondary" onClick={generateCode} disabled={!value.text.trim()}>
+              Export SSML
+            </Button>
+            {ssml && <CodeContainer value={ssml} onChange={(e) => updateSSML(e.target.value)} />}
+          </ExportSection>
+        </Page>
+      </App>
     </>
   );
 }

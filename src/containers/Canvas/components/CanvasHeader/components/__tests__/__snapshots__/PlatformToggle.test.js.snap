@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Platform Toggle render platform toggle 1`] = `
-<div
-  id="middle-group"
->
+<Fragment>
   <Tooltip
     animateFill={true}
     animation="shift"
@@ -72,5 +70,5 @@ exports[`Platform Toggle render platform toggle 1`] = `
       className="switch-selection"
     />
   </Tooltip>
-</div>
+</Fragment>
 `;

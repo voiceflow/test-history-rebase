@@ -1,9 +1,10 @@
 import { constants, utils } from '@voiceflow/common';
 import NLC from '@voiceflow/natural-language-commander';
 import axios from 'axios';
-import { setError } from 'ducks/modal';
 import update from 'immutability-helper';
 import _ from 'lodash';
+
+import { setError } from '@/ducks/modal';
 
 const { DEFAULT_INTENTS } = constants.intents;
 const SLOT_TYPES = constants.slots;
@@ -20,7 +21,9 @@ export const TEST_STATUS = {
 };
 
 // load in previous test setting
-const params = JSON.parse(localStorage.getItem('testParams')) || { debug: true };
+const params = JSON.parse(localStorage.getItem('testParams')) || {
+  debug: true,
+};
 
 const initialState = {
   nlc: null,
@@ -168,6 +171,33 @@ export const initializeTest = (options = {}) => (dispatch, getState) => {
         callback: _.noop,
       });
     });
+
+    const AUDIO_INTENTS = [
+      {
+        name: 'Pause',
+        intent: 'AMAZON.PauseIntent',
+      },
+      {
+        name: 'Resume',
+        intent: 'AMAZON.ResumeIntent',
+      },
+      {
+        name: 'Next',
+        intent: 'AMAZON.NextIntent',
+      },
+      {
+        name: 'Previous',
+        intent: 'AMAZON.PreviousIntent',
+      },
+    ];
+
+    AUDIO_INTENTS.forEach(({ intent, name }) => {
+      nlc.registerIntent({
+        intent,
+        utterances: [name],
+        callback: _.noop,
+      });
+    });
   } catch (err) {
     console.error(err);
   }
@@ -200,7 +230,11 @@ export const renderTest = (diagramId) => async (dispatch, getState) => {
   const { skills } = getState();
   const { intents, slots, platform } = skills.dev_skill || skills.skill;
 
-  dispatch(updateTest({ rendered: 1 }));
+  dispatch(
+    updateTest({
+      rendered: 1,
+    })
+  );
   try {
     await axios.post(`/diagram/${diagramId}/test/publish`, {
       intents,
@@ -208,7 +242,11 @@ export const renderTest = (diagramId) => async (dispatch, getState) => {
       platform,
     });
     dispatch(initializeTest());
-    dispatch(updateTest({ rendered: 2 }));
+    dispatch(
+      updateTest({
+        rendered: 2,
+      })
+    );
   } catch (err) {
     console.error(err);
     dispatch(setError('Could Not Render Your Test Project'));
@@ -256,7 +294,15 @@ export const updateGlobal = (name, value) => (dispatch, getState) => {
   const currentState = getState().test.state;
   dispatch(
     updateTest({
-      state: update(currentState, { globals: { 0: { [name]: { $set: value } } } }),
+      state: update(currentState, {
+        globals: {
+          0: {
+            [name]: {
+              $set: value,
+            },
+          },
+        },
+      }),
     })
   );
 };
@@ -282,7 +328,10 @@ export const shareTest = (render) => async (dispatch, getState) => {
     // if nothing has changed, just send back the original config
     if (currentConfigObject === configObject && configId) return configId;
 
-    const { data: newConfigId } = await axios.post(`/test/makeInfo/${skillId}`, { diagram, globals });
+    const { data: newConfigId } = await axios.post(`/test/makeInfo/${skillId}`, {
+      diagram,
+      globals,
+    });
 
     dispatch(
       updateTest({

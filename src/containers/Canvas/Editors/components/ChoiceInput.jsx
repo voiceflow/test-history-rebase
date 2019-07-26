@@ -1,11 +1,12 @@
 import cn from 'classnames';
-import Button from 'components/Button';
 import randomstring from 'randomstring';
 import React from 'react';
 import Textarea from 'react-textarea-autosize';
 import { Tooltip } from 'react-tippy';
 import { Collapse } from 'reactstrap';
-import { sampleUtteranceRegex } from 'services/Regex';
+
+import Button from '@/components/Button';
+import { sampleUtteranceRegex } from '@/services/Regex';
 
 // so we don't need to rerender the entire choiceinput component
 class ContainedTextarea extends React.PureComponent {
@@ -90,12 +91,12 @@ class ChoiceInput extends React.Component {
     this.setState({ text: '' });
   };
 
-  deleteUtterance(e, i) {
+  deleteUtterance = (e, i) => {
     e.preventDefault();
     this.state.samples.splice(i, 1);
     this.forceUpdate();
     this.updateInput();
-  }
+  };
 
   updateInput() {
     this.props.onChange(this.state.samples.map((s) => s.text).join('\n'));
@@ -118,13 +119,11 @@ class ChoiceInput extends React.Component {
     if (!Array.isArray(utterances)) {
       return null;
     }
-
-    return utterances.map((utterance, i) => {
-      if (i === 0) {
+    return utterances.map((utterance, index) => {
+      if (index === 0) {
         return null;
       }
 
-      const index = utterances.length - i;
       return (
         <div className="choice-utterance" key={utterance.key}>
           <ContainedTextarea value={utterance.text} index={index} onChange={this.updateSample} />
@@ -156,7 +155,7 @@ class ChoiceInput extends React.Component {
           <Button className="close" onClick={() => this.props.remove()} disabled={live_mode} />
         </div>
         {hasEntry && (
-          <div>
+          <>
             <ContainedTextarea
               placeholder="Enter user reply"
               className="form-control user-input mb-2"
@@ -172,7 +171,7 @@ class ChoiceInput extends React.Component {
                 })}
               />
             </div>
-          </div>
+          </>
         )}
         <Collapse isOpen={choice.open || !hasEntry}>
           <Tooltip className="flex-hard" theme="warning" arrow={true} position="bottom-start" open={!!text_error} distance={5} html={text_error}>

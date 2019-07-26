@@ -1,8 +1,10 @@
 import axios from 'axios';
-import Button from 'components/Button';
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { Input } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
 
 const MAX_SIZE = 10 * 1024 * 1024;
 
@@ -102,7 +104,7 @@ class AudioDrop extends Component {
         <div className="audio-box">
           <div className="h-100 super-center">
             <h1 className="mb-0">
-              <span className="loader" />
+              <Spinner isEmpty />
             </h1>
           </div>
         </div>

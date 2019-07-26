@@ -23,28 +23,35 @@ exports[`Dashboard render dashboard 1`] = `
       show_update_modal={false}
       toggle={[Function]}
     />
-    <Header
-      leftRenderer={[Function]}
-      rightRenderer={[Function]}
-      subHeaderRenderer={[Function]}
-      withLogo={true}
+    <DashboardHeader
+      handleFilterText={[Function]}
+      new_product_updates={Array []}
+      product_updates={Array []}
+      renderUpdatesButton={[Function]}
+      setNewProductUpdates={[Function]}
+      setShowInfo={[Function]}
+      setShowUpdateBubble={[Function]}
+      setTeamSetting={[Function]}
+      showInfo={false}
+      team={
+        Object {
+          "state": null,
+          "team_id": 1,
+        }
+      }
+      team_setting={null}
+      teams={
+        Object {
+          "allIds": Array [],
+          "byId": Object {},
+        }
+      }
+      toggleUpdatesOpen={[Function]}
+      updates_open={false}
     />
-    <div
-      id="loading-diagram"
-    >
-      <div
-        className="text-center"
-      >
-        <h5
-          className="text-muted mb-2"
-        >
-          Loading Projects...
-        </h5>
-        <span
-          className="loader"
-        />
-      </div>
-    </div>
+    <FullSpinner
+      name="Projects"
+    />
     <div
       className=""
       id="dashboard"
@@ -116,13 +123,13 @@ exports[`Dashboard render dashboard 1`] = `
                     trigger="mouseenter focus"
                     unmountHTMLWhenHide={false}
                   >
-                    <Button
-                      className="mt-1 add-button"
-                      iconPosition="right"
-                      isNavBordered={true}
+                    <RoundButton
+                      disabled={false}
+                      icon="addStep"
+                      imgSize={15}
                       onClick={[Function]}
-                      onRef={[Function]}
-                      trackEvent="Button Click"
+                      size={42}
+                      variant="shadow"
                     />
                   </Tooltip>
                 </div>

@@ -1,26 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Canvas Header render canvas header 1`] = `
-<styled.header>
-  <styled.div>
-    <styled.div>
-      <Connect(ProjectTitle) />
-    </styled.div>
-    <styled.div>
-      <PlatformToggle
-        onToggle={[Function]}
-      />
-      <styled.div>
-        <div
-          className="title-group no-select"
-        />
-        <Connect(UserMenu) />
-      </styled.div>
-    </styled.div>
-  </styled.div>
-  <Connect(SecondaryNavBar)
-    page="canvas"
-  />
-  <Connect(IntercomChat) />
-</styled.header>
+<Header
+  centerRenderer={[Function]}
+  leftRenderer={[Function]}
+  onBackClick={[Function]}
+  rightRenderer={[Function]}
+  subHeaderRenderer={[Function]}
+/>
 `;

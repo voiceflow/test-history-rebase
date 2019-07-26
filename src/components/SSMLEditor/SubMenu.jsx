@@ -1,5 +1,6 @@
 import React from 'react';
-import ArrowRight from 'svgs/arrow-right.svg';
+
+import ArrowRight from '@/svgs/arrow-right.svg';
 
 import { Effect, RightArrow, SubMenuContainer } from './Menu';
 import Prompt from './Prompt';

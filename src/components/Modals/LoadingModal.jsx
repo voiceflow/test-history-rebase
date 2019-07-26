@@ -1,16 +1,13 @@
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 
+import { Spinner } from '@/components/Spinner';
+
 const LoadingModal = ({ open }) => {
   return (
     <Modal isOpen={open} centered size="sm">
       <ModalBody className="text-center my-4">
-        <div>
-          <h1>
-            <span className="loader text-lg" />
-          </h1>
-          <h5 className="pt-2 mb-0">Loading</h5>
-        </div>
+        <Spinner message="Loading" />
       </ModalBody>
     </Modal>
   );

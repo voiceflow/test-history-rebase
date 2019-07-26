@@ -1,19 +1,21 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
+import _ from 'lodash';
 import PropTypes from 'prop-types';
-import * as React from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 
-export const SvgIconContainer = styled.span`
-  display: inline-block;
-  color: ${({ color }) => color};
+import * as ICONS from '@/svgs';
 
-  ${({ height, width }) => css`
-    height: ${height}px;
-    width: ${width}px;
-  `};
+export const SvgIconContainer = styled.span`
+  color: ${({ color }) => color};
 
   & > svg {
     display: block;
+
+    ${({ size, height = size, width = size }) => css`
+      height: ${height}px;
+      width: ${width}px;
+    `};
   }
 
   &:hover {
@@ -21,24 +23,32 @@ export const SvgIconContainer = styled.span`
   }
 `;
 
-function SvgIcon({ icon: Icon, ...props }) {
+function SvgIcon({ icon, ...props }) {
+  let IconElement;
+  if (_.isString(icon)) {
+    if (!(icon in ICONS)) return null;
+    IconElement = ICONS[icon];
+  } else {
+    IconElement = icon;
+  }
+
   return (
     <SvgIconContainer {...props}>
-      <Icon />
+      <IconElement />
     </SvgIconContainer>
   );
 }
 
 SvgIcon.propTypes = {
   icon: PropTypes.elementType,
+  size: PropTypes.number,
   height: PropTypes.number,
   width: PropTypes.number,
   color: PropTypes.string,
 };
 
 SvgIcon.defaultProps = {
-  height: 16,
-  width: 16,
+  size: 16,
   color: '#6E849A',
 };
 

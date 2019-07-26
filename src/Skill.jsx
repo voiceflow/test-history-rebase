@@ -1,27 +1,28 @@
 import axios from 'axios';
-import Button from 'components/Button';
-// Components
-import Header from 'components/Header';
-import DefaultModal from 'components/Modals/DefaultModal';
-import SecondaryNavBar from 'components/NavBar/SecondaryNavBar';
-import { Spinner } from 'components/Spinner/Spinner';
-import Migrate from 'containers/Skill/Migrate';
-// Ducks
-import { unnormalize } from 'ducks/_normalize';
-import { getVendors } from 'ducks/account';
-import { fetchDiagrams } from 'ducks/diagram';
-import { fetchDisplays } from 'ducks/display';
-import { fetchProducts } from 'ducks/product';
-import { fetchVersion, resetVersion, setLiveModeModal, updateVersion } from 'ducks/version';
-// HOCs
-import { errorScreen, loadSession, socketCheck } from 'hocs/socketCheck';
 import * as _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Tooltip } from 'react-tippy';
 import { Alert } from 'reactstrap';
 import { compose } from 'recompose';
+
+import Button from '@/components/Button';
+// Components
+import Header from '@/components/Header';
+import DefaultModal from '@/components/Modals/DefaultModal';
+import SecondaryNavBar from '@/components/NavBar/SecondaryNavBar';
+import { FullSpinner } from '@/components/Spinner';
+import { ProjectTitleContainer } from '@/containers/Canvas/components/CanvasHeader/styled';
+import Migrate from '@/containers/Skill/Migrate';
+// Ducks
+import { unnormalize } from '@/ducks/_normalize';
+import { getVendors } from '@/ducks/account';
+import { fetchDiagrams } from '@/ducks/diagram';
+import { fetchDisplays } from '@/ducks/display';
+import { fetchProducts } from '@/ducks/product';
+import { fetchTeams, updateCurrentTeam } from '@/ducks/team';
+import { fetchVersion, resetVersion, setLiveModeModal, updateVersion } from '@/ducks/version';
+// HOCs
+import { errorScreen, loadSession, socketCheck } from '@/hocs/socketCheck';
 
 import Business from './containers/Business';
 // Views
@@ -30,6 +31,8 @@ import Logs from './containers/Logs';
 import Publish from './containers/Skill/Publish';
 import Settings from './containers/Skill/Settings';
 import Visuals from './containers/Visuals';
+
+const getTeamFromURL = (computedMatch) => _.get(computedMatch, ['params', 'team_id']);
 
 const live_modal_content = (
   <div className="text-center">
@@ -89,6 +92,10 @@ class Skill extends Component {
     }
   }
 
+  updateTeam = (team_id) => {
+    if (!this.props.page) this.props.history.push(`/team/${team_id}`);
+  };
+
   trackCanvasTime() {
     const time_unmounted = new Date();
     if (this.props.skill) {
@@ -134,6 +141,17 @@ class Skill extends Component {
         }
       });
       this.props.getDiagrams(this.props.computedMatch.params.skill_id);
+      if (!this.props.team) {
+        this.props.fetchTeams().then(() => {
+          if (this.props.teams.allIds.length > 0) {
+            const urlTeam = getTeamFromURL(this.props.computedMatch);
+            if (!this.props.team_id) {
+              this.props.updateCurrentTeam(urlTeam || this.props.teams.allIds[0]);
+            }
+            if (!urlTeam && this.props.page !== 'template') this.updateTeam(this.props.team_id);
+          }
+        });
+      }
     } else {
       this.setState({
         load_skill: false,
@@ -223,63 +241,6 @@ class Skill extends Component {
     }
   };
 
-  renderUploadButton = () => {
-    if (this.props.live_mode) {
-      return (
-        <Tooltip html={<div style={{ width: 155 }}>Update your live version with your local changes</div>} position="bottom" distance={16}>
-          <Button variant="contained" className="publish-btn" onClick={this.openUpdateLive}>
-            Update Live{' '}
-            <div className="launch">
-              <div className="first">
-                <img src="/up.svg" alt="upload" width="16" height="16" />
-              </div>
-              <div className="second">
-                <img src="/rocket.svg" alt="check" width="16" height="16" />
-              </div>
-            </div>
-          </Button>
-        </Tooltip>
-      );
-    }
-    if (this.isUploadLoading()) {
-      return (
-        <Button isPublish disabled variant="contained" onClick={() => this.setState({ show_upload_prompt: !this.state.show_upload_prompt })}>
-          <p className="loading-btn m-0 p-0">Uploading</p>
-          <div className="launch">
-            <div className="load-spinner pt-1">
-              <span className="save-loader-white" />
-            </div>
-          </div>
-        </Button>
-      );
-    }
-    return (
-      <Tooltip
-        html={
-          <div style={{ width: 155 }}>
-            {this.props.platform === 'google'
-              ? 'Test your Action on your own Google device, or in the Google Actions console'
-              : 'Test your Skill on your own Alexa device, or in the Alexa developer console'}
-          </div>
-        }
-        position="bottom"
-        distance={16}
-      >
-        <Button isPublish variant="contained" onClick={this.openUpdate}>
-          {this.props.platform === 'google' ? 'Upload to Google' : 'Upload to Alexa'}
-          <div className="launch">
-            <div className="first">
-              <img src="/up.svg" alt="upload" width="15" height="15" />
-            </div>
-            <div className="second">
-              <img src="/check-white.svg" alt="check" width="15" height="15" />
-            </div>
-          </div>
-        </Button>
-      </Tooltip>
-    );
-  };
-
   render() {
     if (!this.state.mounted) return null;
 
@@ -295,8 +256,17 @@ class Skill extends Component {
       );
     }
 
+    if (
+      this.state.load_skill ||
+      this.props.load_diagram ||
+      this.props.loadSession ||
+      ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)
+    ) {
+      return <FullSpinner name="Project" />;
+    }
+
     return (
-      <React.Fragment>
+      <>
         <DefaultModal
           open={this.props.show_live_mode_modal}
           toggle={() => {
@@ -306,52 +276,41 @@ class Skill extends Component {
           header="Live Mode Disclaimer"
           close_button_text="Confirm"
         />
-        {this.state.load_skill ||
-        this.props.load_diagram ||
-        this.props.loadSession ||
-        ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new) ? (
-          React.createElement(Spinner, { name: 'Project' })
-        ) : (
-          <>
-            <div id="app" className={this.props.page}>
-              {this.props.page !== 'canvas' && this.props.page !== 'test' && (
-                <div className="main-container-header">
-                  <Header
-                    // title={this.props.skill.name}
-                    history={this.props.history}
-                    leftRenderer={() => (
-                      <div onDoubleClick={() => this.setState({ editName: true })}>
-                        <Link to="/" className="mx-3">
-                          <img src="/back.svg" alt="back" className="mr-3" />
-                        </Link>
-                        {/* eslint-disable-next-line no-nested-ternary */}
-                        {this.state.editName ? (
-                          <input
-                            autoFocus // eslint-disable-line jsx-a11y/no-autofocus
-                            className="edit-input"
-                            value={this.props.skill.name}
-                            onChange={(e) => {
-                              this.props.updateSkill('name', e.target.value);
-                              this.props.updateSkill('inv_name', e.target.value);
-                            }}
-                            onBlur={() => this.setState({ editName: false })}
-                          />
-                        ) : this.props.skill && this.props.skill.name ? (
-                          this.props.skill.name
-                        ) : (
-                          'Loading Skill'
-                        )}
-                      </div>
+        <div id="app" className={this.props.page}>
+          {this.props.page !== 'canvas' && this.props.page !== 'test' && (
+            <div className="main-container-header">
+              <Header
+                // title={this.props.skill.name}
+                onBackClick={() => this.props.history.push('/')}
+                history={this.props.history}
+                leftRenderer={() => (
+                  <ProjectTitleContainer onDoubleClick={() => this.setState({ editName: true })}>
+                    {/* eslint-disable-next-line no-nested-ternary */}
+                    {this.state.editName ? (
+                      <input
+                        autoFocus // eslint-disable-line jsx-a11y/no-autofocus
+                        className="edit-input"
+                        value={this.props.skill.name}
+                        onChange={(e) => {
+                          this.props.updateSkill('name', e.target.value);
+                          this.props.updateSkill('inv_name', e.target.value);
+                        }}
+                        onBlur={() => this.setState({ editName: false })}
+                      />
+                    ) : this.props.skill && this.props.skill.name ? (
+                      this.props.skill.name
+                    ) : (
+                      'Loading Skill'
                     )}
-                    subHeaderRenderer={() => !this.props.preview && <SecondaryNavBar page={this.props.page} history={this.props.history} />}
-                  />
-                </div>
-              )}
-              {this.renderPage()}
+                  </ProjectTitleContainer>
+                )}
+                subHeaderRenderer={() => !this.props.preview && <SecondaryNavBar page={this.props.page} history={this.props.history} />}
+              />
             </div>
-          </>
-        )}
-      </React.Fragment>
+          )}
+          {this.renderPage()}
+        </div>
+      </>
     );
   }
 }
@@ -369,10 +328,14 @@ const mapStateToProps = (state) => ({
   user: state.account,
   boards_array: unnormalize(state.board),
   team_id: state.team.team_id,
+  team: state.team.byId[state.team.team_id],
+  teams: state.team,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    fetchTeams: () => dispatch(fetchTeams()),
+    updateCurrentTeam: (team_id) => dispatch(updateCurrentTeam(team_id)),
     getDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id)),
     getVersion: (version_id, preview, diagram_id) => dispatch(fetchVersion(version_id, preview, diagram_id)),
     setLiveModal: (isLive) => dispatch(setLiveModeModal(isLive)),

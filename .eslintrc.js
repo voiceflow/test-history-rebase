@@ -1,9 +1,12 @@
+const { default: webpackConfig } = require('./config/webpack/common');
+
 module.exports = {
   extends: '@voiceflow/eslint-config/frontend',
   parser: 'babel-eslint',
   rules: {
     // errors
     'no-param-reassign': ['error', { props: false }],
+    'react/jsx-fragments': 'error',
     'no-console': ['error', { allow: ['error'] }],
     quotes: ['error', 'single', 'avoid-escape'],
     'no-secrets/no-secrets': ['error', { tolerance: 4.2 }],
@@ -38,7 +41,6 @@ module.exports = {
     // disabled temporarily by setting as warnings
     'max-len': 'warn',
     camelcase: 'warn',
-    'import/no-unresolved': 'warn',
     'react/jsx-curly-brace-presence': 'warn',
     'optimize-regex/optimize-regex': 'warn',
     'lodash/prefer-lodash-typecheck': 'warn',
@@ -72,5 +74,21 @@ module.exports = {
       'window.performance',
       'performance',
     ],
+    'import/resolver': {
+      webpack: {
+        config: webpackConfig,
+      },
+    },
+    react: {
+      version: 'detect',
+    },
   },
+  overrides: [
+    {
+      files: ['*.story.jsx'],
+      rules: {
+        'import/no-extraneous-dependencies': 'off',
+      },
+    },
+  ],
 };

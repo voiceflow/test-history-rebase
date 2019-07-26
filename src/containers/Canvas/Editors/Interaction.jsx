@@ -1,11 +1,12 @@
 import cn from 'classnames';
-import PlatformTooltip from 'components/Tooltips/PlatformTooltip';
-import { setCanFulfill, updateIntents } from 'ducks/version';
 import _ from 'lodash';
 import randomstring from 'randomstring';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, ButtonGroup } from 'reactstrap';
+
+import PlatformTooltip from '@/components/Tooltips/PlatformTooltip';
+import { setCanFulfill, updateIntents } from '@/ducks/version';
 
 import ChoiceDropdownInputs from './components/ChoiceDropdownInputs';
 import IntentInputs from './components/IntentInputs';
@@ -130,7 +131,7 @@ export class Interaction extends Component {
     switch (this.state.tab) {
       case 'choices':
         return (
-          <React.Fragment>
+          <>
             <div className="d-flex justify-content-between">
               <label>Choices</label>
               <PlatformTooltip platform={this.props.platform} field="Interaction choices" />
@@ -148,11 +149,11 @@ export class Interaction extends Component {
               platform={this.props.platform}
               live_mode={this.props.live_mode}
             />
-          </React.Fragment>
+          </>
         );
       case 'intents':
         return (
-          <React.Fragment>
+          <>
             <label>Intents</label>
             <IntentInputs
               intents={this.props.intents}
@@ -166,11 +167,11 @@ export class Interaction extends Component {
               updateEvents={this.props.updateEvents}
               setCanFulfill={this.props.setCanFulfill}
             />
-          </React.Fragment>
+          </>
         );
       case 'slots':
         return (
-          <React.Fragment>
+          <>
             <label>Slots</label>
             <SlotInputs
               intents={this.props.intents}
@@ -180,7 +181,7 @@ export class Interaction extends Component {
               platform={this.props.platform}
               live_mode={this.props.live_mode}
             />
-          </React.Fragment>
+          </>
         );
       default:
         return null;
@@ -189,7 +190,7 @@ export class Interaction extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <ButtonGroup className="toggle-group mb-2">
           <Button
             outline={this.state.tab !== 'choices'}
@@ -223,7 +224,7 @@ export class Interaction extends Component {
           </Button>
         </ButtonGroup>
         <div className={cn({ 'disabled-overlay': this.props.live_mode })}>{this.renderTab()}</div>
-      </React.Fragment>
+      </>
     );
   }
 }

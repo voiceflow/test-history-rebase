@@ -1,13 +1,12 @@
-import IntercomChat from 'components/Header/components/IntercomChat';
-import UserMenu from 'components/Header/components/UserMenu';
-import SecondaryNavBar from 'components/NavBar/SecondaryNavBar';
-import { updateVersion } from 'ducks/version';
 import React from 'react';
 import { connect } from 'react-redux';
 
+import Header from '@/components/Header';
+import SecondaryNavBar from '@/components/NavBar/SecondaryNavBar';
+import { updateVersion } from '@/ducks/version';
+
 import PlatformToggle from './components/PlatformToggle';
 import ProjectTitle from './components/ProjectTitle';
-import { CanvasHeaderContainer, HeaderActions, HeaderNavigation, JustifiedHeaderActions, PrimaryCanvasHeader } from './styled';
 
 export function CanvasHeader({ platform, history, preview, updateSkill, renderPlatformSwitch, updateLinter, children }) {
   const onToggle = () => {
@@ -19,22 +18,15 @@ export function CanvasHeader({ platform, history, preview, updateSkill, renderPl
   };
 
   return (
-    <CanvasHeaderContainer>
-      <PrimaryCanvasHeader>
-        <HeaderNavigation>
-          <ProjectTitle onChange={updateSkill} />
-        </HeaderNavigation>
-        <HeaderActions>
-          <PlatformToggle platform={platform} onToggle={onToggle} />
-          <JustifiedHeaderActions>
-            <div className="title-group no-select">{children}</div>
-            <UserMenu history={history} preview={preview} />
-          </JustifiedHeaderActions>
-        </HeaderActions>
-      </PrimaryCanvasHeader>
-      <SecondaryNavBar page="canvas" history={history} />
-      <IntercomChat />
-    </CanvasHeaderContainer>
+    <Header
+      history={history}
+      preview={preview}
+      onBackClick={() => history.push('/')}
+      leftRenderer={() => <ProjectTitle onChange={updateSkill} />}
+      centerRenderer={() => <PlatformToggle platform={platform} onToggle={onToggle} />}
+      rightRenderer={() => children}
+      subHeaderRenderer={() => <SecondaryNavBar page="canvas" history={history} />}
+    />
   );
 }
 

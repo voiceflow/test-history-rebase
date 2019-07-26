@@ -1,8 +1,9 @@
-import DefaultButton from 'components/Button';
-import Image from 'components/Uploads/Image';
 import React, { Component } from 'react';
 import { Tooltip } from 'react-tippy';
 import { Button, ButtonGroup } from 'reactstrap';
+
+import DefaultButton from '@/components/Button';
+import Image from '@/components/Uploads/Image';
 
 import VariableInput from './components/VariableInput';
 import VariableText from './components/VariableText';
@@ -38,7 +39,7 @@ class Card extends Component {
   render() {
     const type = this.state.node.extras.cardtype;
     return (
-      <React.Fragment>
+      <>
         <label className="mt-0">Card Type</label>
         <ButtonGroup className="toggle-group mb-2">
           <Button outline={type !== 'Simple'} onClick={() => this.updateContent('cardtype', 'Simple')} disabled={type === 'Simple'}>
@@ -57,7 +58,7 @@ class Card extends Component {
           updateRaw={(raw) => this.updateContent('title', raw)}
         />
         {type === 'Standard' && (
-          <React.Fragment>
+          <>
             <label className="space-between">
               Image <span className="section-title">OPTIONAL</span>
             </label>
@@ -85,23 +86,23 @@ class Card extends Component {
                     Add Small Screen Image
                   </Tooltip>
                 ) : (
-                  <React.Fragment>Remove Small Image</React.Fragment>
+                  'Remove Small Image'
                 )}
               </DefaultButton>
             </div>
-          </React.Fragment>
+          </>
         )}
-        <React.Fragment>
+        <>
           <label>{type === 'Standard' ? 'Text' : 'Content'}</label>
           <VariableText
             className="editor"
             raw={this.state.node.extras.content}
-            placeholder={<React.Fragment>Add content to your card here</React.Fragment>}
+            placeholder="Add content to your card here"
             variables={this.props.variables}
             updateRaw={(raw) => this.updateContent('content', raw)}
           />
-        </React.Fragment>
-      </React.Fragment>
+        </>
+      </>
     );
   }
 }

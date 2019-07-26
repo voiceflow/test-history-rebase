@@ -1,9 +1,10 @@
-import SvgIcon from 'components/SvgIcon';
 import React, { useState } from 'react';
 import { Tooltip } from 'react-tippy';
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 import styled from 'styled-components';
-import Clock from 'svgs/clock.svg';
+
+import SvgIcon from '@/components/SvgIcon';
+import Clock from '@/svgs/clock.svg';
 
 import { makeDescription } from './tagUtil';
 

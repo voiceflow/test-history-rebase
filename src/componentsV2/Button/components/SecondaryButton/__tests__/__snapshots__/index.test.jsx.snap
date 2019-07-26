@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Seconday Button renders 1`] = `
+<Styled(Styled(styled.button))>
+  Button
+</Styled(Styled(styled.button))>
+`;
+
+exports[`Seconday Button renders with icon 1`] = `
+<Styled(Styled(styled.button))>
+  <styled.span>
+    <SvgIcon
+      color="#6E849A"
+      icon="plus"
+      size={16}
+    />
+  </styled.span>
+  Button
+</Styled(Styled(styled.button))>
+`;

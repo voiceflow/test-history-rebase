@@ -6,6 +6,7 @@ export function dump(contentState) {
   contentState
     .getBlockMap()
     .toArray()
+    // eslint-disable-next-line no-console
     .map((x, i) => console.log(i, x.toJS()));
 }
 

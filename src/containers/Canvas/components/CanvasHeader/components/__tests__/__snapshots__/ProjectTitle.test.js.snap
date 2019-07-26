@@ -7,20 +7,27 @@ exports[`Project Title render project title 1`] = `
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-EHOje",
+        "componentId": "sc-bdVaJa",
         "isStatic": true,
         "rules": Array [
           "
   overflow-x: hidden;
   text-overflow: ellipsis;
   font-size: 18px;
+  display: flex;
+  align-items: center;
+  height: inherit;
+
+  & > * {
+    height: inherit;
+  }
 ",
         ],
       },
       "displayName": "styled.div",
       "foldedComponentIds": Array [],
       "render": [Function],
-      "styledComponentId": "sc-EHOje",
+      "styledComponentId": "sc-bdVaJa",
       "target": "div",
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -30,16 +37,6 @@ exports[`Project Title render project title 1`] = `
   forwardedRef={null}
   onDoubleClick={[Function]}
 >
-  <Link
-    className="mx-3"
-    to="/"
-  >
-    <img
-      alt="back"
-      className="mr-3"
-      src="/back.svg"
-    />
-  </Link>
   Loading Skill
 </StyledComponent>
 `;

@@ -173,8 +173,13 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       />
     </div>
     <Connect(Settings)
-      page="basic"
       platform="alexa"
+      showSettings={
+        Object {
+          "show": false,
+          "tag": "basic",
+        }
+      }
       skill={
         Object {
           "account_linking": null,
@@ -218,6 +223,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
           "slots": Array [],
         }
       }
+      tag="basic"
       user={
         Object {
           "email": "jdoe@gmail.com",
@@ -228,9 +234,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       }
     />
   </Modal>
-  <div
-    className="title-group-sub"
-  >
+  <styled.div>
     <Tooltip
       animateFill={true}
       animation="shift"
@@ -268,24 +272,22 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       trigger="mouseenter focus"
       unmountHTMLWhenHide={false}
     >
-      <Button
-        className="dropdown-button-border"
-        iconPosition="right"
-        id="settings-icon"
+      <RoundButton
+        active={false}
+        disabled={false}
+        icon="cog"
+        imgSize={15}
         onClick={[Function]}
-        onRef={[Function]}
-        trackEvent="Button Click"
-        type="button"
+        size={42}
+        variant="plain"
       />
     </Tooltip>
-  </div>
-  <div
-    className="title-group-sub"
-  >
+  </styled.div>
+  <styled.div>
     <Connect(TestingHeader)
       render={true}
     />
-  </div>
+  </styled.div>
   <UploadButton
     isUploadLoading={[Function]}
     openUpdate={[Function]}

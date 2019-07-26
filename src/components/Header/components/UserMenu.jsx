@@ -1,9 +1,10 @@
-import { User } from 'components/User/User';
-import { logout } from 'ducks/account';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+
+import { User } from '@/components/User/User';
+import { logout } from '@/ducks/account';
 
 export function UserMenu({ user, logout, history, preview }) {
   if (preview) {
@@ -21,7 +22,7 @@ export function UserMenu({ user, logout, history, preview }) {
   };
 
   return (
-    <UncontrolledDropdown className="account-dropdown">
+    <UncontrolledDropdown className="account-dropdown nav-child-item">
       <DropdownToggle className="account hover" nav tag="div">
         <User user={user} className="pointer" />
       </DropdownToggle>

@@ -1,7 +1,8 @@
-import SvgIcon from 'components/SvgIcon';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import CaretDown from 'svgs/toggle.svg';
+
+import SvgIcon from '@/components/SvgIcon';
+import CaretDown from '@/svgs/toggle.svg';
 
 import SubMenu from './SubMenu';
 import DATA from './data';
@@ -31,7 +32,6 @@ export const SubMenuContainer = styled.div`
   right: 0;
   display: none;
   width: 240px;
-  margin: 0;
   background: #fff;
   border-radius: 5px;
   box-shadow: 0 8px 16px rgba(17, 49, 96, 0.16), 0 0 0 rgba(17, 49, 96, 0.06);

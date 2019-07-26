@@ -2,7 +2,7 @@ import cn from 'classnames';
 import memoize from 'memoize-one';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import Icon from '../Icon';
 
@@ -89,11 +89,11 @@ export default class PopoverList extends Component {
             const text = level === 1 ? <strong>{label}</strong> : label;
 
             childProps.children = (
-              <Fragment>
+              <>
                 {!!icon && <Icon className={cn(icon, { '__text-position': !!text })} />}
                 {textTruncate ? <div className="text-truncate">{text}</div> : text}
                 {!!rightIcon && <Icon className={cn(rightIcon, { '__text-position': !!text })} />}
-              </Fragment>
+              </>
             );
           }
 

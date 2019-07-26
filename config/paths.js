@@ -10,7 +10,7 @@ const PATHS = {
   indexHTML: `${publicDir}index.html`,
   sourceDir,
   publicDir,
-  buildDir: 'build/'
+  buildDir: 'build/',
 };
 
 module.exports = Object.entries(PATHS).reduce(
@@ -20,9 +20,8 @@ module.exports = Object.entries(PATHS).reduce(
     return acc;
   },
   {
-    modules: 'node_modules/',
     staticJS: `${staticDir}js/`,
     staticCSS: `${staticDir}css/`,
     staticMedia: `${staticDir}media/`,
   }
-)
+);

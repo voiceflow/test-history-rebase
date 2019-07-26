@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { AMAZON_APP_ID } from 'config';
 import React, { Component } from 'react';
+
+import { AMAZON_APP_ID } from '@/config';
 
 const AmazonLoad = () =>
   new Promise((resolve) => {

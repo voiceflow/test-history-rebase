@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Captioned Icon Button renders 1`] = `
+<Styled(Styled(styled.button))>
+  <SvgIcon
+    color="#becedc"
+    icon="plus"
+    size={16}
+  />
+  <styled.span>
+    LABEL
+  </styled.span>
+</Styled(Styled(styled.button))>
+`;

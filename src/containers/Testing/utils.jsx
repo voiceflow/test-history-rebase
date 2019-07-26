@@ -52,6 +52,7 @@ export const recurse = (tag, index = 0) => {
 
 const getAudioMeta = (audio) => {
   return new Promise((resolve, reject) => {
+    if (!audio) return resolve(0);
     audio.addEventListener('error', reject);
     audio.addEventListener('loadedmetadata', (e) => {
       resolve(e.target.duration);
@@ -60,7 +61,12 @@ const getAudioMeta = (audio) => {
 };
 
 const newAudio = (src) => {
-  return new Audio(src);
+  if (!src) return null;
+  let newSrc = src;
+  if (newSrc.startsWith('soundbank://soundlibrary/')) {
+    newSrc = `${src.replace('soundbank://soundlibrary/', 'https://d3qhmae9zx9eb.cloudfront.net/')}.mp3`;
+  }
+  return new Audio(newSrc);
 };
 
 export const getUserTestOutputs = async (trace, ending) => {
@@ -135,54 +141,27 @@ export const getUserTestOutputs = async (trace, ending) => {
         outputBlock.delay = audioData.duration * 1000;
 
         outputBlock.node = block.line.id;
-        outputBlock.audioType = child.name === 'voice' || (child.name === 'audio' && 'audio');
+        outputBlock.audioType = child.name;
         outputBlock.type = type;
         outputBlock.isLast = !block.line.nextId;
 
         dom.push(outputBlock);
       });
     } else if (type === 'Stream') {
-      dom.push({
-        debug: 'stream',
+      const audio = newAudio(block.line.play);
+      const text = block.line.play.length > 40 ? `...${block.line.play.substr(-33)}` : block.line.play;
+      // eslint-disable-next-line no-await-in-loop
+      const duration = await getAudioMeta(audio);
+      const outputBlock = {
+        audio,
+        delay: duration * 1000,
+        audioType: 'stream',
+        text,
         node: block.line.id,
-        text: 'Stream Blocks are currently unsupported for testing',
-        important: true,
-      });
-      // const audio = newAudio(block.line.play);
-      // // eslint-disable-next-line no-await-in-loop
-      // await getAudioMeta(audio);
-      // const outputBlock = {
-      //   audio,
-      //   text: 'Streaming',
-      //   node: block.line.id,
-      //   isLast: !block.line.nextId,
-      //   type,
-      // };
-      // dom.push(outputBlock);
-      // const outputBlockChoices = {
-      //   options: [
-      //     {
-      //       label: 'Resume',
-      //       val: 'AMAZON.ResumeIntent',
-      //     },
-      //     {
-      //       label: 'Pause',
-      //       val: 'AMAZON.PauseIntent',
-      //     },
-      //     {
-      //       label: 'Next',
-      //       val: 'AMAZON.NextIntent',
-      //     },
-      //     {
-      //       label: 'Previous',
-      //       val: 'AMAZON.PreviousIntent',
-      //     },
-      //   ],
-      //   node: block.line.id,
-      //   isLast: !block.line.nextId,
-      //   type,
-      // };
-      // dom.push(outputBlockChoices);
+        isLast: !block.line.NEXT,
+        type,
+      };
+      dom.push(outputBlock);
     } else if (type === 'Choice' && idx > 0) {
       const outputBlock = {
         options: _.map(block.line.inputs, _.head),

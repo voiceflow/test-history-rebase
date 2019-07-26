@@ -3,9 +3,9 @@
 
 import { EditorState } from 'draft-js';
 
-import Tag from './Tag';
 import depthDecorator from './depthDecorator';
 import { reselect, selectBetween } from './selectUtil';
+import Tag from './tag';
 import { makeEndTag, makeStartTag } from './tagUtil';
 import { findTagsBetween, insertAtomic, linkTags } from './util';
 

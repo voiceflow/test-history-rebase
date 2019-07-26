@@ -1,10 +1,11 @@
-import Button from 'components/Button';
-import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect';
-import { openTab } from 'ducks/user';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
+
+import Button from '@/components/Button';
+import { selectStyles, variableComponent } from '@/components/VariableSelect/VariableSelect';
+import { openTab } from '@/ducks/user';
 
 class SlotMappings extends Component {
   constructor(props) {
@@ -84,7 +85,7 @@ class SlotMappings extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         {this.props.arguments.map((argument, i) => {
           return (
             <div key={i} className="super-center mb-2">
@@ -125,7 +126,7 @@ class SlotMappings extends Component {
         <Button isBtn isClear isBlock className="mb-2" onClick={this.handleAddMap}>
           <i className="far fa-plus" /> Add Variable Map
         </Button>
-      </React.Fragment>
+      </>
     );
   }
 }

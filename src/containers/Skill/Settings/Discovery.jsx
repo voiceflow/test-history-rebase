@@ -1,13 +1,13 @@
 import { constants } from '@voiceflow/common';
 import axios from 'axios';
-import Button from 'components/Button';
-import { setError } from 'ducks/modal';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert, FormGroup, Label } from 'reactstrap';
 
-import { intentHasSlots } from 'Helper';
+import { intentHasSlots } from '@/Helper';
+import Button from '@/components/Button';
+import { setError } from '@/ducks/modal';
 
 import CanFulfill from './Canfulfill';
 
@@ -86,48 +86,46 @@ class DiscoverySettings extends Component {
     const fulfillment_intent = _.find(intents_sorted, { key: fullfillment_intent_key });
 
     return (
-      <React.Fragment>
-        <div className="settings-content settings-discovery clearfix">
-          <FormGroup>
-            <Label>CanFulfill Intent</Label>
-            <div className="helper-text mb-2">Set the slot fulfillment values that your skill is able to understand</div>
-            <hr />
-            {!fullfillment_intent_key &&
-              (Object.keys(skill.fulfillment).length !== 0 ? (
-                <div className="selected-intent-label">Select an Intent Below to Customize Slot Fulfillment</div>
-              ) : (
-                <Alert className="text-center">
-                  To add a CanFulfillIntent Handle, add an Intent Block in your Root Flow and enable the "CanFulfillIntent" toggle
-                </Alert>
-              ))}
-            {!fullfillment_intent_key && this.fulfillmentButtons(intents_sorted)}
-            {fullfillment_intent_key && (
-              <CanFulfill
-                slots={skill.slots}
-                fulfillment={skill.fulfillment}
-                selected_intent={fulfillment_intent}
-                history={history}
-                skill_id={skill.skill_id}
-                save={this.save}
-              />
-            )}
-          </FormGroup>
-          <div className="super-center">
-            {fullfillment_intent_key && (
-              <Button
-                isBtn
-                isClear
-                className="exit btn-thicc"
-                onClick={() => {
-                  history.push(`/settings/${skill.skill_id}/discovery`);
-                }}
-              >
-                <i className="far fa-chevron-left" /> Back
-              </Button>
-            )}
-          </div>
+      <div className="settings-content settings-discovery clearfix">
+        <FormGroup>
+          <Label>CanFulfill Intent</Label>
+          <div className="helper-text mb-2">Set the slot fulfillment values that your skill is able to understand</div>
+          <hr />
+          {!fullfillment_intent_key &&
+            (Object.keys(skill.fulfillment).length !== 0 ? (
+              <div className="selected-intent-label">Select an Intent Below to Customize Slot Fulfillment</div>
+            ) : (
+              <Alert className="text-center">
+                To add a CanFulfillIntent Handle, add an Intent Block in your Root Flow and enable the "CanFulfillIntent" toggle
+              </Alert>
+            ))}
+          {!fullfillment_intent_key && this.fulfillmentButtons(intents_sorted)}
+          {fullfillment_intent_key && (
+            <CanFulfill
+              slots={skill.slots}
+              fulfillment={skill.fulfillment}
+              selected_intent={fulfillment_intent}
+              history={history}
+              skill_id={skill.skill_id}
+              save={this.save}
+            />
+          )}
+        </FormGroup>
+        <div className="super-center">
+          {fullfillment_intent_key && (
+            <Button
+              isBtn
+              isClear
+              className="exit btn-thicc"
+              onClick={() => {
+                history.push(`/settings/${skill.skill_id}/discovery`);
+              }}
+            >
+              <i className="far fa-chevron-left" /> Back
+            </Button>
+          )}
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

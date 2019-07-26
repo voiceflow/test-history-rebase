@@ -1,8 +1,9 @@
 import axios from 'axios';
-import SvgIcon from 'components/SvgIcon';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
-import Sound from 'svgs/sound.svg';
+
+import SvgIcon from '@/components/SvgIcon';
+import Sound from '@/svgs/sound.svg';
 
 function Speaker(props) {
   const { ssml, voice } = props;

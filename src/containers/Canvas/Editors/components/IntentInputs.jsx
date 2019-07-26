@@ -1,13 +1,14 @@
 import './IntentInputs.css';
 
 import { utils } from '@voiceflow/common';
-import { setConfirm } from 'ducks/modal';
 import _ from 'lodash';
 import converter from 'number-to-words';
 import randomstring from 'randomstring';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert, Input } from 'reactstrap';
+
+import { setConfirm } from '@/ducks/modal';
 
 import IntentInput from './IntentInput';
 
@@ -154,6 +155,23 @@ class IntentInputs extends Component {
     return all_utterances.includes(utterance.toLowerCase());
   };
 
+  checkEditUtterances = (utterance, intentKey, index) => {
+    const all_utterances = [];
+    this.props.intents.forEach((intent) => {
+      if (intent.key !== intentKey) {
+        intent.inputs.forEach((input) => {
+          all_utterances.push(input.text.toLowerCase());
+        });
+      } else {
+        intent.inputs.forEach((input, idx) => {
+          if (idx !== index) all_utterances.push(input.text.toLowerCase());
+        });
+      }
+    });
+
+    return all_utterances.includes(utterance.toLowerCase());
+  };
+
   checkName = (name) => {
     return this.props.intents.some((i) => i.name === name);
   };
@@ -181,6 +199,7 @@ class IntentInputs extends Component {
               slots={this.props.slots}
               intent={intent}
               utteranceExists={this.checkUtterances}
+              checkEditUtterances={this.checkEditUtterances}
               nameExists={this.checkName}
               removeIntent={this.handleRemoveIntent}
               update={this.props.update}

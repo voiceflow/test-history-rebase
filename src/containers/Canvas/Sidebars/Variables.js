@@ -1,11 +1,12 @@
-import { setError } from 'ducks/modal';
-import { pushVariable, setVariables } from 'ducks/variable';
-import { updateVersion } from 'ducks/version';
 import isVarName from 'is-var-name';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { FormGroup, Input, Label } from 'reactstrap';
+
+import { setError } from '@/ducks/modal';
+import { pushVariable, setVariables } from '@/ducks/variable';
+import { updateVersion } from '@/ducks/version';
 
 import { defaultVariables } from '../Constants';
 
@@ -106,7 +107,7 @@ export class Variables extends PureComponent {
     const { locked, variables, global_variables } = this.props;
     const { tab, new_global, new_var } = this.state;
     return (
-      <React.Fragment>
+      <>
         {tab !== 'local' ? (
           <>
             <form id="variable-submit" onSubmit={this.addGlobalVariable}>
@@ -206,7 +207,7 @@ export class Variables extends PureComponent {
             })}
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

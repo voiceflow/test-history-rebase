@@ -3,13 +3,14 @@ import './IntentInput.css';
 
 import { utils } from '@voiceflow/common';
 import cn from 'classnames';
-import { setError } from 'ducks/modal';
 import React, { Component } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { Collapse } from 'reactstrap';
-import { sampleUtteranceRegex } from 'services/Regex';
+
+import { setError } from '@/ducks/modal';
+import { sampleUtteranceRegex } from '@/services/Regex';
 
 import Utterance from './Utterance';
 
@@ -186,11 +187,13 @@ class IntentInput extends Component {
           return (
             <Utterance
               key={u}
-              intent={u}
+              utterance={u}
+              intent_id={this.props.intent_id}
               live_mode={this.props.live_mode}
               slots={this.props.slots}
               index={i}
               editUtterance={this.editUtterance}
+              checkEditUtterances={this.props.checkEditUtterances}
               deleteUtterance={this.deleteUtterance}
               utteranceExists={this.props.utteranceExists}
               showWarning={this.props.intent_warning_slots.includes(slot_name[2])}
@@ -201,11 +204,13 @@ class IntentInput extends Component {
         return (
           <Utterance
             key={u}
-            intent={u}
+            utterance={u}
+            intent_id={this.props.intent_id}
             live_mode={this.props.live_mode}
             slots={this.props.slots}
             index={i}
             editUtterance={this.editUtterance}
+            checkEditUtterances={this.props.checkEditUtterances}
             deleteUtterance={this.deleteUtterance}
             utteranceExists={this.props.utteranceExists}
             showWarning={false}

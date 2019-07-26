@@ -1,15 +1,17 @@
 import './Account.css';
 
 import axios from 'axios';
-import Button from 'components/Button';
-import Header from 'components/Header';
-import Image from 'components/Uploads/Image';
-import { AmazonAccessToken, googleAccessToken, updateAccount } from 'ducks/account';
-import { setConfirm, setError } from 'ducks/modal';
 import moment from 'moment';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert } from 'reactstrap';
+
+import Button from '@/components/Button';
+import Header from '@/components/Header';
+import { Spinner } from '@/components/Spinner';
+import Image from '@/components/Uploads/Image';
+import { AmazonAccessToken, googleAccessToken, updateAccount } from '@/ducks/account';
+import { setConfirm, setError } from '@/ducks/modal';
 
 const UNLINKED = 0;
 const LOADING = 1;
@@ -176,7 +178,7 @@ class Account extends Component {
                 <div className="super-center">{renderButton(this.state.amzn, this.resetAmazon)}</div>
               </div>
               {this.state.profile && (
-                <React.Fragment>
+                <>
                   <hr />
                   <div className="pl-4 pb-4 pr-4 space-between helper-text">
                     <div className="col-0">
@@ -196,7 +198,7 @@ class Account extends Component {
                       <br />
                     </div>
                   </div>
-                </React.Fragment>
+                </>
               )}
             </div>
             <div className="card mb-5">
@@ -205,7 +207,7 @@ class Account extends Component {
                 <div className="super-center">{renderButton(this.state.google, this.resetGoogle)}</div>
               </div>
               {this.state.gprofile && (
-                <React.Fragment>
+                <>
                   <hr />
                   <div className="pl-4 pb-4 pr-4 space-between helper-text">
                     <div className="col-0">
@@ -225,7 +227,7 @@ class Account extends Component {
                       <br />
                     </div>
                   </div>
-                </React.Fragment>
+                </>
               )}
             </div>
           </div>
@@ -257,7 +259,7 @@ function renderButton(stage, action) {
     case LOADING:
       return (
         <Button isPrimary disabled>
-          <span className="loader" />
+          <Spinner isEmpty />
         </Button>
       );
     case UNLINKED:

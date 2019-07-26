@@ -2,15 +2,22 @@ import './DashBoard.css';
 
 import axios from 'axios';
 import cn from 'classnames';
-import Button from 'components/Button';
-import DragLayer from 'components/DragLayer';
-import Header from 'components/Header';
-import LoadingModal from 'components/Modals/LoadingModal';
-import UpdatesModal from 'components/Modals/UpdatesModal';
-import { Members } from 'components/User/User';
-import { YOUTUBE_CHANNEL_ID } from 'config';
-import { ScrollContextProvider } from 'contexts';
-import { unnormalize } from 'ducks/_normalize';
+import _ from 'lodash';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Tooltip } from 'react-tippy';
+import { Alert } from 'reactstrap';
+
+import Button from '@/components/Button';
+import RoundButton from '@/components/Button/RoundButton';
+import DragLayer from '@/components/DragLayer';
+import LoadingModal from '@/components/Modals/LoadingModal';
+import UpdatesModal from '@/components/Modals/UpdatesModal';
+import { FullSpinner } from '@/components/Spinner';
+import { ScrollContextProvider } from '@/contexts';
+import { unnormalize } from '@/ducks/_normalize';
 import {
   addBoard,
   changeListPosition,
@@ -21,26 +28,16 @@ import {
   renameList,
   updateBoards,
   updateLists,
-} from 'ducks/board';
-import { setConfirm, setError } from 'ducks/modal';
-import { copyProject, deleteProject, updateProjects } from 'ducks/project';
-import { getMembers } from 'ducks/team';
-import { useScrollHelpers } from 'hooks/scroll';
-import _ from 'lodash';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Tooltip } from 'react-tippy';
-import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Input, Popover, PopoverBody, UncontrolledDropdown } from 'reactstrap';
+} from '@/ducks/board';
+import { setConfirm, setError } from '@/ducks/modal';
+import { copyProject, deleteProject, updateProjects } from '@/ducks/project';
+import { getMembers } from '@/ducks/team';
+import { useScrollHelpers } from '@/hooks/scroll';
 
 import ExpiryButton from './ExpiryButton';
-import TeamSettings from './TeamSettings';
-import UpdatesPopover from './UpdatesPopover';
+import DashboardHeader from './Header';
 import { Item as ListItem } from './components/Item';
 import List, { List as SimpleList } from './components/List';
-
-const YOUTUBE_CHANNEL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
 
 const filter_projects = (projects, filter) => {
   const filtered = {};
@@ -55,6 +52,7 @@ const filter_projects = (projects, filter) => {
 export const DashBoard = (props) => {
   const [loading, toggleLoading] = useState(true);
   const [filter_text, handleFilterText] = useState('');
+  const [showInfo, setShowInfo] = useState(false);
   const [loading_modal, toggleLoadingModal] = useState(false);
   const [show_updates_modal, toggleShowUpdatesModal] = useState(false);
   const [team_setting, setTeamSetting] = useState(null);
@@ -191,13 +189,13 @@ export const DashBoard = (props) => {
 
   const renderUpdatesButton = () => {
     if (!show_update_bubble) {
-      return <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />;
+      return <RoundButton active={updates_open} icon="notifications" onClick={updateButtonClick} imgSize={15} />;
     }
     return (
       <div className="dropdown-update-container" onMouseEnter={() => toggleUpdatesHover(true)} onMouseLeave={() => toggleUpdatesHover(false)}>
         <div className="dropdown-update-bubble" />
         {!updates_hover && !updates_open ? (
-          <Button className={cn('dropdown-button-border', { active: updates_open })} type="button" onClick={updateButtonClick} />
+          <RoundButton active={updates_open} icon="notifications" onClick={updateButtonClick} imgSize={15} />
         ) : (
           <div className={cn('dropdown-button-numbered')} onClick={updateButtonClick}>
             <div className="update-number-circle">{new_product_updates.length}</div>
@@ -217,111 +215,26 @@ export const DashBoard = (props) => {
           toggle={() => toggleShowUpdatesModal(!props.show_updates_modl)}
           product_updates={product_updates}
         />
-        <Header
-          withLogo
+        <DashboardHeader
           history={props.history}
-          leftRenderer={() => (
-            <div className="searchBar ml-3">
-              <Input
-                name="filter_text"
-                className="search-input form-control-2"
-                placeholder="Search Projects"
-                onChange={(e) => handleFilterText(e.target.value)}
-              />
-            </div>
-          )}
-          rightRenderer={() => (
-            <div className="title-group no-select pr-2">
-              <div className="subheader-right mr-2">
-                <div id="update-popup">{renderUpdatesButton()}</div>
-                <Popover
-                  className="updates-popover-container"
-                  placement="bottom"
-                  isOpen={updates_open}
-                  target="update-popup"
-                  toggle={() => {
-                    toggleUpdatesOpen(!updates_open);
-                    setNewProductUpdates([]);
-                    setShowUpdateBubble(false);
-                  }}
-                >
-                  <PopoverBody>
-                    <UpdatesPopover product_updates={product_updates} new_product_updates={new_product_updates} />
-                  </PopoverBody>
-                </Popover>
-              </div>
-              <div className="subheader-right ml-2">
-                <UncontrolledDropdown>
-                  <DropdownToggle className="ml-1" tag="div">
-                    <Tooltip distance={19} title="Resources" position="bottom">
-                      <Button className="dropdown-button-border info" type="submit" />
-                    </Tooltip>
-                  </DropdownToggle>
-                  <DropdownMenu className="mt-2">
-                    <a href="https://learn.voiceflow.com/" target="_blank" rel="noopener noreferrer">
-                      <DropdownItem>University</DropdownItem>
-                    </a>
-                    <a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
-                      <DropdownItem>Youtube</DropdownItem>
-                    </a>
-                    <a href="https://www.facebook.com/groups/voiceflowgroup/" target="_blank" rel="noopener noreferrer">
-                      <DropdownItem>Community</DropdownItem>
-                    </a>
-                    <a href="https://forum.voiceflow.com/" target="_blank" rel="noopener noreferrer">
-                      <DropdownItem>Forums</DropdownItem>
-                    </a>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              </div>
-            </div>
-          )}
-          subHeaderRenderer={() => (
-            <div id="secondary-nav">
-              <div>
-                {props.teams.allIds.map((team_id) => {
-                  const team = props.teams.byId[team_id];
-                  if (team.team_id === props.team_id) {
-                    return (
-                      <div key={team.team_id} className="nav-item active">
-                        {team.name}
-                      </div>
-                    );
-                  }
-                  return (
-                    <Link key={team.team_id} className="nav-item" to={`/team/${team.team_id}`} onClick={() => fetchBoards && fetchBoards.abort()}>
-                      {team.name}
-                    </Link>
-                  );
-                })}
-                {props.teams.allIds.length < 3 && (
-                  <Link className="nav-item" to="/team/new">
-                    <img src="/add-board.svg" className="mr-1 mb-1" height={15} width={15} alt="add" /> New Board
-                  </Link>
-                )}
-              </div>
-              <div className="super-center">
-                {props.team && (
-                  <>
-                    <div style={{ color: '#CDAD32', marginRight: 15 }} className="pointer" onClick={() => setTeamSetting('MEMBERS')}>
-                      <img src="/images/icons/power.svg" alt="power" className="px-2" />
-                      Add Collaborators
-                    </div>
-                    <Members members={props.team.members} />
-                    <TeamSettings open={team_setting} update={(setting) => setTeamSetting(setting)} close={() => setTeamSetting(false)} />
-                  </>
-                )}
-              </div>
-            </div>
-          )}
+          handleFilterText={handleFilterText}
+          renderUpdatesButton={renderUpdatesButton}
+          updates_open={updates_open}
+          toggleUpdatesOpen={toggleUpdatesOpen}
+          setNewProductUpdates={setNewProductUpdates}
+          setShowUpdateBubble={setShowUpdateBubble}
+          product_updates={product_updates}
+          new_product_updates={new_product_updates}
+          showInfo={showInfo}
+          setShowInfo={setShowInfo}
+          teams={props.teams}
+          team_id={props.team_id}
+          team={props.team}
+          fetchBoards={fetchBoards}
+          team_setting={team_setting}
+          setTeamSetting={setTeamSetting}
         />
-        {loading && (
-          <div id="loading-diagram">
-            <div className="text-center">
-              <h5 className="text-muted mb-2">Loading Projects...</h5>
-              <span className="loader" />
-            </div>
-          </div>
-        )}
+        {loading && <FullSpinner name="Projects" />}
         {LOCKED && (
           <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
             <Alert color="danger" onClick={() => setTeamSetting('BILLING')} className="pointer text-center py-3">
@@ -409,12 +322,13 @@ export const DashBoard = (props) => {
                       </DragLayer>
                       <div className="main-list-add">
                         <Tooltip distance={16} title="Add new list" position="bottom" className="ml-1 mr-4">
-                          <Button
+                          <RoundButton
+                            variant="shadow"
+                            icon="addStep"
                             onClick={() => {
                               props.addBoard(props.team_id);
                             }}
-                            isNavBordered
-                            className="mt-1 add-button"
+                            imgSize={15}
                           />
                         </Tooltip>
                       </div>

@@ -1,9 +1,10 @@
 import cn from 'classnames';
-import { renameDiagram } from 'ducks/diagram';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { DropdownItem, DropdownMenu, DropdownToggle, Input, UncontrolledDropdown } from 'reactstrap';
+
+import { renameDiagram } from '@/ducks/diagram';
 
 class FlowButton extends Component {
   constructor(props) {

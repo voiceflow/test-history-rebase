@@ -1,15 +1,16 @@
 import cn from 'classnames';
-import Button from 'components/Button';
-import Dropdown from 'components/Dropdown';
-import Form from 'components/Form';
-import { ScrollContextProvider } from 'contexts';
-import withDraggable from 'hocs/withDraggable';
-import { useHorizontalScrollToNode, useScrollHelpers, useScrollShadows } from 'hooks/scroll';
-import { useToggle } from 'hooks/toggle';
 import * as _ from 'lodash';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
+import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+
+import Button from '@/components/Button';
+import Form from '@/components/Form';
+import { ScrollContextProvider } from '@/contexts';
+import withDraggable from '@/hocs/withDraggable';
+import { useHorizontalScrollToNode, useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
+import { useToggle } from '@/hooks/toggle';
 
 import Item from './Item';
 
@@ -19,18 +20,6 @@ const DropContainer = withDraggable({
   onDropKey: 'onDrop',
   onMoveKey: 'onMove',
 })(({ children, className, connectDropTarget }) => connectDropTarget && connectDropTarget(<div className={className}>{children}</div>));
-
-const DROPDOWN_OPTIONS = [
-  {
-    id: 'remove',
-    label: 'Remove List',
-  },
-];
-
-const DROPDOWN_BUTTON_PROPS = {
-  icon: 'more',
-  isDropdown: true,
-};
 
 export function List(props) {
   const {
@@ -130,12 +119,14 @@ export function List(props) {
                 </div>
 
                 <div className="main-list-header__aside">
-                  <Dropdown
-                    options={DROPDOWN_OPTIONS}
-                    onRemove={onRemove}
-                    buttonProps={DROPDOWN_BUTTON_PROPS}
-                    label={<i className="far fa-ellipsis-h" />}
-                  />
+                  <UncontrolledDropdown inNavbar>
+                    <DropdownToggle tag="div" className="dropdown-button">
+                      <i className="far fa-ellipsis-h" />
+                    </DropdownToggle>
+                    <DropdownMenu right className="no-select py-1">
+                      <DropdownItem onClick={onRemove}>Remove List</DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
                 </div>
               </DropContainer>
 
@@ -160,7 +151,7 @@ export function List(props) {
                         } else if (smallIcon) {
                           icon = smallIcon;
                         }
-                        return !project ? null : (
+                        return (
                           <li key={project.project_id} className="projects-list__list-item">
                             <Item
                               index={i}
@@ -169,6 +160,7 @@ export function List(props) {
                               listId={id}
                               created={project.created}
                               isFB={false}
+                              isReference={project.reference}
                               avatarUrl={icon}
                               name={project.name}
                               diagram={project.diagram}

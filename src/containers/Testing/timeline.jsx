@@ -1,13 +1,15 @@
-import Button from 'components/Button';
-import { setError } from 'ducks/modal';
-import { TEST_STATUS, endTest, fetchState, incrementTime, resetTest, startTest, updateState } from 'ducks/test';
 import _ from 'lodash';
 import moment from 'moment';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
+import SvgIcon from '@/components/SvgIcon';
+import { setError } from '@/ducks/modal';
+import { TEST_STATUS, endTest, fetchState, resetTest, startTest, updateState } from '@/ducks/test';
+
 import TestBox from './TestingBox';
+import { StartButton, StartSubButton } from './TestingHeaderWrapper';
 import { getUserTestOutputs } from './utils';
 
 class Timeline extends Component {
@@ -33,6 +35,7 @@ class Timeline extends Component {
       this.node.setFocused(false);
     }
     this.cacheOutputs = null;
+    this.streamAudio = null;
 
     if (!state) return;
 
@@ -102,6 +105,7 @@ class Timeline extends Component {
 
   popInterval = (options = {}) => {
     const { test, endTest, diagrams } = this.props;
+
     if (!_.get(this.interval, ['queue', 'length'])) {
       this.setState({ loading: false });
       if (this.interval.end) endTest();
@@ -111,6 +115,11 @@ class Timeline extends Component {
     clearTimeout(this.interval.timeout);
 
     const newOutput = this.interval.queue.shift();
+
+    if (newOutput.forceInput && !options.dump) {
+      this.nextState(newOutput.forceInput);
+      return;
+    }
 
     if (newOutput.diagram) {
       if (!_.get(this.interval.queue[0], ['diagram'])) {
@@ -139,7 +148,34 @@ class Timeline extends Component {
 
     if (!options.dump) {
       this.centerNode(newOutput.node);
-      this.playAudio(newOutput.audio);
+
+      if (newOutput.type === 'Stream' && test.state.play) {
+        newOutput.delay = false;
+        let play = 'Pause';
+        if (test.state.play.action === 'START' && this.interval.queue.length === 0) {
+          this.streamAudio = newOutput.audio;
+          this.streamAudio.onended = () => this.nextState('Next');
+          this.playAudio(this.streamAudio);
+        } else {
+          newOutput.text = null;
+          if (this.streamAudio) {
+            // eslint-disable-next-line max-depth
+            if (test.state.play.action === 'PAUSE') {
+              this.streamAudio.pause();
+              play = 'Resume';
+            } else if (test.state.play.action === 'RESUME') {
+              this.playAudio(this.streamAudio);
+            } else if (test.state.play.action === 'END') {
+              this.streamAudio.onended = _.noop;
+              this.streamAudio = null;
+            }
+          }
+        }
+        if (test.state.play.action !== 'END') this.setState({ options: ['Previous', play, 'Next'] });
+      } else {
+        this.playAudio(newOutput.audio);
+        if (Array.isArray(newOutput.options)) this.setState({ options: newOutput.options.filter((option) => option && option.trim()) });
+      }
     }
 
     if (newOutput.text) {
@@ -158,9 +194,6 @@ class Timeline extends Component {
       this.addOutput(newOutput, extras);
     }
 
-    if (!options.dump && Array.isArray(newOutput.options)) {
-      this.setState({ options: newOutput.options.filter((option) => option && option.trim()) });
-    }
     if (newOutput.delay && !options.dump) {
       this.interval.timeout = setTimeout(() => this.popInterval(options), newOutput.delay);
     } else {
@@ -190,7 +223,7 @@ class Timeline extends Component {
     const { trace, line_id: lineId } = newState;
 
     // update the state if there is another line to continue
-    if (lineId) this.props.updateState(newState);
+    if (lineId || newState.play) this.props.updateState(newState);
     if (!trace) return;
 
     const outputQueue = await getUserTestOutputs(trace, newState.ending);
@@ -216,7 +249,7 @@ class Timeline extends Component {
   };
 
   render() {
-    const { test, resetTest, startTest, skill } = this.props;
+    const { test, resetTest, startTest, userTest, skill } = this.props;
     const { outputs, loading, options } = this.state;
 
     if (test.status === TEST_STATUS.IDLE) {
@@ -225,10 +258,14 @@ class Timeline extends Component {
           <div>
             <img src="/Testing.svg" alt="user" width="80" />
             <div className="text-muted mb-4 mt-3">Start test to see the dialog transcription</div>
-            <Button isPrimary onClick={() => startTest()}>
-              Start test
-              <i className="fas fa-play ml-2" />
-            </Button>
+            {userTest && (
+              <StartButton className="d-inline-block" onClick={() => startTest()}>
+                Start Test
+                <StartSubButton>
+                  <SvgIcon icon="forward" width={16} height={16} color="#fff" />
+                </StartSubButton>
+              </StartButton>
+            )}
           </div>
         </div>
       );
@@ -243,7 +280,10 @@ class Timeline extends Component {
           outputs={outputs}
           loading={loading}
           options={options}
-          handleRestart={resetTest}
+          handleRestart={async () => {
+            await resetTest();
+            await startTest();
+          }}
           playAudio={this.playAudio}
           locale={Array.isArray(skill.locales) && skill.locales[0]}
         />
@@ -256,11 +296,11 @@ const mapStateToProps = (state) => ({
   diagrams: state.diagrams.diagrams,
   skill: state.skills.skill,
   test: state.test,
+  userTest: state.test.userTest,
 });
 
 const mapDispatchToProps = {
   endTest,
-  incrementTime,
   fetchState,
   resetTest,
   setError,

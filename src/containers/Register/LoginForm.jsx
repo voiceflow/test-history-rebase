@@ -1,5 +1,4 @@
-import Button from 'components/Button';
-import { login } from 'ducks/account';
+import cn from 'classnames';
 import * as _ from 'lodash';
 import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
@@ -7,7 +6,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
 
-import ErrorWidget from './ErrorWidget';
+import Button from '@/components/Button';
+import { login } from '@/ducks/account';
+
+import { AuthBox } from './AuthBoxes';
+import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
 
 export const LoginForm = ({ login, history, location }) => {
@@ -15,8 +18,8 @@ export const LoginForm = ({ login, history, location }) => {
   const [loginError, setLoginError] = useState(null);
   const [email, setEmail] = useState(query.email ? query.email : '');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [unverified] = useState(false);
-  const [errorColor, setErrorColor] = useState('danger');
   let timeout;
 
   const openRegister = (e) => {
@@ -32,9 +35,7 @@ export const LoginForm = ({ login, history, location }) => {
       password,
     }).catch((err) => {
       const errText = _.get(err, ['response', 'data', 'data']) || (unverified ? 'Please verify your email to use Facebook login' : false);
-      const errColor = unverified ? 'success' : 'danger';
       setLoginError(errText);
-      setErrorColor(errColor);
     });
     return false;
   };
@@ -48,56 +49,72 @@ export const LoginForm = ({ login, history, location }) => {
   });
 
   return (
-    <Form id="login-form" onSubmit={loginSubmit}>
-      <img className="login-logo" src="/logo.png" alt="logo" />
-      <div className="px-5 pb-5 pt-4">
-        <div className="text-center">
-          <h4 className="mb-4">Login</h4>
-        </div>
-        <SocialLogin entryText="Login" />
-        <ErrorWidget color={errorColor} error={loginError} />
-        <FormGroup>
-          <Input
-            className="form-bg"
-            type="email"
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-            minLength="6"
-            value={email}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            className="form-bg"
-            type="password"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-            minLength="8"
-            value={password}
-          />
-        </FormGroup>
-        <Button isPrimary isLarge isBlock type="submit">
-          Login
-        </Button>
-        <div className="text-center small mt-2">
-          <Link style={{ color: '#8da2b5' }} to="/reset">
-            Forgot your password?
-          </Link>
-        </div>
-        <hr />
-        <div className="text-center">
-          Dont have an account?
-          <a href="/signup" onClick={openRegister}>
-            {' '}
-            Sign Up
-          </a>
-        </div>
-      </div>
-    </Form>
+    <AuthenticationContainer>
+      <AuthBox>
+        <Form onSubmit={loginSubmit}>
+          <img className="auth-logo" src="/logo.png" alt="logo" />
+          <div className="auth-form-wrapper">
+            <FormGroup>
+              <Input
+                className="form-bg"
+                type="email"
+                name="email"
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                required
+                minLength="6"
+                value={email}
+              />
+            </FormGroup>
+            <FormGroup className="passwordInput">
+              <Input
+                className="form-bg"
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                minLength="8"
+                value={password}
+              />
+              {password.length === 0 ? (
+                <Link className="forgotLink" to="/reset">
+                  Forgot?
+                </Link>
+              ) : (
+                // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+                <img
+                  onClick={() => setShowPassword(!showPassword)}
+                  className={cn('viewPassword', { hiddenEye: showPassword })}
+                  src={showPassword ? '/eye-hide.svg' : '/eye.svg'}
+                  alt=""
+                />
+              )}
+            </FormGroup>
+            <div className="row">
+              <div className="col-8 auth__link">
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <a onClick={openRegister}>Don't have an account?</a>
+              </div>
+              <div className="col-4">
+                <Button isPrimary isBlock type="submit">
+                  Sign in
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Form>
+        <SocialLogin entryText="Or sign in with" light />
+        {loginError && (
+          <div className="errorContainer row">
+            <div className="col-1">
+              <img src="/error.svg" alt="" />
+            </div>
+            <div className="col-11">{loginError}</div>
+          </div>
+        )}
+      </AuthBox>
+    </AuthenticationContainer>
   );
 };
 

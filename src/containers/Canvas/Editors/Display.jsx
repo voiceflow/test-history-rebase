@@ -1,8 +1,6 @@
 import './Display.css';
 
 import axios from 'axios';
-import AceEditor from 'components/AceEditor';
-import { ModalHeader } from 'components/Modals/ModalHeader';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -11,6 +9,10 @@ import Select from 'react-select';
 import { Tooltip } from 'react-tippy';
 import { Button, Input, InputGroup, InputGroupAddon, Modal, ModalBody } from 'reactstrap';
 import { compose } from 'redux';
+
+import AceEditor from '@/components/AceEditor';
+import { ModalHeader } from '@/components/Modals/ModalHeader';
+import { Spinner } from '@/components/Spinner';
 
 import { selectStyles } from '../../../components/VariableSelect/VariableSelect';
 import DisplayRender from './components/DisplayRender';
@@ -207,20 +209,14 @@ export class Display extends Component {
   // Render entire modal
   renderDisplayTest() {
     const { variables, modalContent, variables_error, current_request, rendered_datasource, node } = this.state;
-
-    const loading = (
-      <div className="text-center mt-3">
-        <div className="loader text-lg" />
-      </div>
-    );
     if (_.isNil(modalContent) && _.isEmpty(variables)) {
-      return loading;
+      return <Spinner isEmpty />;
     }
 
     return (
       <div>
         {!_.isEmpty(variables) && (
-          <React.Fragment>
+          <>
             <Button color="primary" onClick={() => this.testDisplay()} className="mt-2" disabled={variables_error}>
               <i className="fas fa-play mr-2" /> Run
             </Button>
@@ -240,10 +236,10 @@ export class Display extends Component {
                 </InputGroup>
               </React.Fragment>
             ))}
-          </React.Fragment>
+          </>
         )}
         {modalContent && variables_error && <div className="error-message text-center">{variables_error}</div>}
-        {current_request && loading}
+        {current_request && <Spinner isEmpty />}
         {modalContent && <div className="space-between flex-hard" />}
 
         {modalContent && (
@@ -283,7 +279,7 @@ export class Display extends Component {
     const displayOptions = _.cloneDeep(this.props.displays);
 
     return (
-      <React.Fragment>
+      <>
         <Modal size="lg" isOpen={modal} toggle={this.disableModal}>
           <ModalHeader toggle={this.disableModal} header="Multimodal Display Test" />
           <ModalBody>{modal && this.renderDisplayTest()}</ModalBody>
@@ -423,7 +419,7 @@ export class Display extends Component {
             </div>
           )}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

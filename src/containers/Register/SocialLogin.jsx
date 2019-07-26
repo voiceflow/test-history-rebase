@@ -1,13 +1,15 @@
-import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from 'config';
-import { fbLogin, googleLogin } from 'ducks/account';
-import React, { Fragment, useEffect, useState } from 'react';
-import FacebookLogin from 'react-facebook-login';
+import cn from 'classnames';
+import React, { useEffect, useState } from 'react';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
 
-import ErrorWidget from './ErrorWidget';
+import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from '@/config';
+import { fbLogin, googleLogin } from '@/ducks/account';
 
-const SocialLogin = ({ entryText, googleLogin, fbLogin }) => {
+import { SocialLoginContainer } from './AuthBoxes';
+
+const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
   const [authError, setAuthError] = useState(null);
   let timeout;
 
@@ -45,28 +47,38 @@ const SocialLogin = ({ entryText, googleLogin, fbLogin }) => {
   });
 
   return (
-    <Fragment>
-      <ErrorWidget error={authError} color="danger" />
-      <div className="social-login">
-        <GoogleLogin
-          clientId={GOOGLE_CLIENT_ID}
-          className="social-button class-ggl mb-2"
-          buttonText={`${entryText} with Google`}
-          onSuccess={triggerGoogleLogin}
-        />
-        <FacebookLogin
-          appId={FACEBOOK_APP_ID}
-          cssClass="social-button class-fb"
-          icon="fa-facebook"
-          fields="name,email"
-          buttonText={`${entryText} with Facebook`}
-          callback={triggerFbLogin}
-        />
-        <div className="break">
-          <span className="break-text">OR</span>
+    <SocialLoginContainer>
+      <div className="helperText">{entryText}</div>
+      <GoogleLogin
+        clientId={GOOGLE_CLIENT_ID}
+        render={(renderProps) => (
+          <div onClick={renderProps.onClick} className={cn('social-button', { 'social-button-light': light })}>
+            <img src="/google.svg" alt="" />
+            Google
+          </div>
+        )}
+        onSuccess={triggerGoogleLogin}
+      />
+      <FacebookLogin
+        appId={FACEBOOK_APP_ID}
+        fields="name,email"
+        render={(renderProps) => (
+          <div onClick={renderProps.onClick} className={cn('social-button', { 'social-button-light': light })}>
+            <img src="/facebook.svg" alt="" />
+            Facebook
+          </div>
+        )}
+        callback={triggerFbLogin}
+      />
+      {authError && (
+        <div className="errorContainer row">
+          <div className="col-1">
+            <img src="/error.svg" alt="" />
+          </div>
+          <div className="col-11">An unexpected error occurred. Please try again or use a different sign up method.</div>
         </div>
-      </div>
-    </Fragment>
+      )}
+    </SocialLoginContainer>
   );
 };
 

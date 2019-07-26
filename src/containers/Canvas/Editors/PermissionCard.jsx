@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import Toggle from 'react-toggle';
 import { Alert, Button, ButtonGroup } from 'reactstrap';
 
+import { showSettingsModal } from '@/ducks/modal';
+
 const PERMISSIONS = [
   { name: 'Reminders', code: 'alexa::alerts:reminders:skill:readwrite' },
   { name: 'Notifications', code: 'alexa::devices:all:notifications:write' },
@@ -59,7 +61,7 @@ class PermissionCard extends Component {
             <Toggle checked={!!this.state.node.extras.custom} onChange={() => this.toggle('custom')} icons={false} />
           </div>
           {this.state.node.extras.custom && (
-            <React.Fragment>
+            <>
               <hr />
               {PERMISSIONS.map((permission) => (
                 <div className="space-between" key={permission.code}>
@@ -71,13 +73,13 @@ class PermissionCard extends Component {
                   />
                 </div>
               ))}
-            </React.Fragment>
+            </>
           )}
         </div>
       );
     }
     return (
-      <React.Fragment>
+      <>
         <ButtonGroup className="toggle-group mb-2">
           <Button
             outline={this.state.node.extras.a_l}
@@ -96,7 +98,7 @@ class PermissionCard extends Component {
         </ButtonGroup>
         <div className={this.props.live_mode ? 'text-center disabled-overlay' : 'text-center'}>
           {this.state.node.extras.a_l ? (
-            <React.Fragment>
+            <>
               {this.props.account_linking ? (
                 <label>
                   <b>{this.props.account_linking.authorizationUrl}</b>
@@ -106,7 +108,7 @@ class PermissionCard extends Component {
                   <i className="far fa-exclamation-triangle mr-1" /> No Account Link found
                 </Alert>
               )}
-              <Link className="btn btn-clear btn-block" to={`/tools/${this.props.skill_id}/link_account/templates`}>
+              <Link className="btn btn-clear btn-block" onClick={() => this.props.showSettingsModal(true, 'advanced')}>
                 Edit Account Linking
               </Link>
               <hr />
@@ -118,9 +120,9 @@ class PermissionCard extends Component {
                   <img src="/images/account_linking.png" className="w-100" alt="sample account linking" />
                 </div>
               </div>
-            </React.Fragment>
+            </>
           ) : (
-            <React.Fragment>
+            <>
               <div className="px-4">
                 <label>Send a Permission Request Card to the user's phone/device</label>
               </div>
@@ -134,10 +136,10 @@ class PermissionCard extends Component {
                   Settings
                 </button>
               </div>
-            </React.Fragment>
+            </>
           )}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }
@@ -147,4 +149,7 @@ const mapStateToProps = (state) => ({
   account_linking: state.skills.skill.account_linking,
   live_mode: state.skills.live_mode,
 });
-export default connect(mapStateToProps)(PermissionCard);
+export default connect(
+  mapStateToProps,
+  { showSettingsModal }
+)(PermissionCard);

@@ -1,12 +1,12 @@
 import axios from 'axios';
-import Normalize, { unnormalize } from 'ducks/_normalize';
-import { setError } from 'ducks/modal';
-import { fetchProjects } from 'ducks/project';
 import update from 'immutability-helper';
 import _ from 'lodash';
 import randomstring from 'randomstring';
 
-import { deleteProject } from './project';
+import Normalize, { unnormalize } from '@/ducks/_normalize';
+import { setError } from '@/ducks/modal';
+
+import { deleteProject, fetchProjects } from './project';
 
 const initialState = {
   byId: {},
@@ -77,11 +77,16 @@ export const fetchBoards = (team_id) => {
       const unsorted_projects = projects.filter((p) => !board_projects.has(p));
 
       if (unsorted_projects.length > 0) {
-        boards.push({
-          board_id: randomstring.generate(10),
-          name: 'Default List',
-          projects: unsorted_projects,
-        });
+        let board = boards.filter((board) => board.name === 'Default List')[0];
+        if (!board) {
+          board = {
+            board_id: randomstring.generate(10),
+            name: 'Default List',
+            projects: [],
+          };
+          boards.push(board);
+        }
+        board.projects.push(...unsorted_projects);
       }
 
       // NORMALIZE

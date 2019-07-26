@@ -1,13 +1,15 @@
-// import AceEditor from 'components/AceEditor';
-import Button from 'components/Button';
-import DefaultModal from 'components/Modals/DefaultModal';
-import Prompt from 'components/Uploads/Prompt';
-import { setConfirm, setError } from 'ducks/modal';
-import { deleteProject } from 'ducks/project';
-import { updateVersion, updateVersionMerge } from 'ducks/version';
+// import AceEditor from '@/components/AceEditor';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert, FormGroup, Label } from 'reactstrap';
+
+import AceEditor from '@/components/AceEditor';
+import Button from '@/components/Button';
+import DefaultModal from '@/components/Modals/DefaultModal';
+import Prompt from '@/components/Uploads/Prompt';
+import { setConfirm, setError } from '@/ducks/modal';
+import { deleteProject } from '@/ducks/project';
+import { updateVersion, updateVersionMerge } from '@/ducks/version';
 
 import AccountLinkTemplate from '../../Business/AccountLinkTemplate';
 
@@ -75,7 +77,7 @@ class AdvancedSettings extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <DefaultModal
           open={this.state.show_overwrite_modal}
           toggle={() => {
@@ -96,36 +98,6 @@ class AdvancedSettings extends Component {
             />
           </FormGroup>
         </div>
-        {/* <div className="settings-content clearfix">
-          <FormGroup>
-            <div className="mt-4">
-              <Label>Skill Events (events: {'{object}'})</Label>
-              <AceEditor
-                name="datasource_editor"
-                className="datasource_editor"
-                mode="json"
-                theme="github"
-                onChange={(value) => {
-                  this.props.updateSkill('alexa_events', value);
-                }}
-                fontSize={14}
-                showPrintMargin={false}
-                showGutter={true}
-                highlightActiveLine={true}
-                value={this.props.skill.alexa_events}
-                editorProps={{ $blockScrolling: true }}
-                setOptions={{
-                  enableBasicAutocompletion: true,
-                  enableLiveAutocompletion: false,
-                  enableSnippets: false,
-                  showLineNumbers: true,
-                  tabSize: 2,
-                  useWorker: false,
-                }}
-              />
-            </div>
-          </FormGroup>
-        </div> */}
         {this.props.live_mode && (
           <div className="no-bottom clearfix">
             <FormGroup>
@@ -143,6 +115,35 @@ class AdvancedSettings extends Component {
         <div className="settings-content mt-5 no-bottom clearfix">
           <AccountLinkTemplate {...this.props} />
         </div>
+        {this.props.user.admin >= 60 && (
+          <div className="settings-content clearfix my-5">
+            <h5 className="text-muted mb-0">Skill Events</h5>
+            <hr />
+            <AceEditor
+              name="datasource_editor"
+              className="datasource_editor"
+              mode="json"
+              theme="github"
+              onChange={(value) => {
+                this.props.updateSkill('alexa_events', value);
+              }}
+              fontSize={14}
+              showPrintMargin={false}
+              showGutter={true}
+              highlightActiveLine={true}
+              value={this.props.skill.alexa_events}
+              editorProps={{ $blockScrolling: true }}
+              setOptions={{
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: false,
+                enableSnippets: false,
+                showLineNumbers: true,
+                tabSize: 2,
+                useWorker: false,
+              }}
+            />
+          </div>
+        )}
         <div className="settings-content no-bottom clearfix">
           <FormGroup>
             <Label>Delete Project</Label>
@@ -155,7 +156,7 @@ class AdvancedSettings extends Component {
             </Alert>
           </FormGroup>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

@@ -1,0 +1,54 @@
+import './Header.css';
+
+// import cn from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+
+import SvgIcon from '@/components/SvgIcon';
+import LeftIcon from '@/svgs/arrow-left.svg';
+
+import IntercomChat from './components/IntercomChat';
+import UserMenu from './components/UserMenu';
+import { BackButton, CenterGroup, HeaderActions, HeaderContainer, HeaderNavigation, JustifiedHeaderActions, Logo, PrimaryHeader } from './styled';
+
+function Header({ title, preview, history, withLogo, onBackClick, leftRenderer, rightRenderer, centerRenderer, subHeaderRenderer }) {
+  return (
+    <HeaderContainer>
+      <PrimaryHeader>
+        {withLogo && <Logo src="/logo_bubble_Small.png" alt="logo" draggable="false" />}
+        {onBackClick && (
+          <BackButton>
+            <SvgIcon icon={LeftIcon} className="icon-back" onClick={onBackClick} />
+          </BackButton>
+        )}
+        <HeaderNavigation>
+          {leftRenderer && leftRenderer()}
+          {title}
+        </HeaderNavigation>
+        <HeaderActions>
+          <CenterGroup>{centerRenderer && centerRenderer()}</CenterGroup>
+          <JustifiedHeaderActions>
+            {!preview && rightRenderer && <div className="title-group no-select">{rightRenderer()}</div>}
+            <UserMenu history={history} preview={preview} />
+          </JustifiedHeaderActions>
+        </HeaderActions>
+      </PrimaryHeader>
+      {subHeaderRenderer && subHeaderRenderer()}
+      <IntercomChat />
+    </HeaderContainer>
+  );
+}
+
+Header.propTypes = {
+  title: PropTypes.node,
+  className: PropTypes.string,
+  leftRenderer: PropTypes.func,
+  rightRenderer: PropTypes.func,
+  leftClassName: PropTypes.string,
+  gridClassName: PropTypes.string,
+  rightClassName: PropTypes.string,
+  centerRenderer: PropTypes.func,
+  subHeaderRenderer: PropTypes.func,
+};
+
+export default Header;

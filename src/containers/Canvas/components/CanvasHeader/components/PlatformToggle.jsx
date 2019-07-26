@@ -7,7 +7,7 @@ const ALEXA_PLATFORM = 'alexa';
 
 function PlatformToggle({ platform, onToggle }) {
   return (
-    <div id="middle-group">
+    <>
       <Tooltip
         distance={16}
         title={platform === GOOGLE_PLATFORM ? 'Switch to Amazon View' : 'Switch to Google View'}
@@ -37,7 +37,7 @@ function PlatformToggle({ platform, onToggle }) {
         </label>
         <span className="switch-selection" />
       </Tooltip>
-    </div>
+    </>
   );
 }
 

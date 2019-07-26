@@ -29,6 +29,7 @@ exports[`Canvas render canvas 1`] = `
     toggle={[Function]}
   />
   <div
+    className="testing_mode"
     id="canvas"
     onMouseDown={[Function]}
     onMouseMove={[Function]}
@@ -44,7 +45,7 @@ exports[`Canvas render canvas 1`] = `
       type_counter={Object {}}
       unfocus={[Function]}
     />
-    <Spinner
+    <FullSpinner
       name="Flow"
     />
     <Connect(withStateHandlers(withStateHandlers(Editor)))
@@ -220,7 +221,7 @@ exports[`Canvas render canvas 1`] = `
           transitionName="fade"
         />
       </div>
-      <WidgetBar
+      <Connect(BaseWidgetBar)
         engine={
           DiagramEngine {
             "canvas": null,

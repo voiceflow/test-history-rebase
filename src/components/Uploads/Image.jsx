@@ -1,8 +1,10 @@
 import axios from 'axios';
-import Button from 'components/Button';
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { Input } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
 
 const MAX_SIZE = 5 * 1024 * 1024;
 
@@ -64,11 +66,7 @@ class Image extends Component {
     if (this.state.loading) {
       render = (
         <div className="image-box super-center d-flex">
-          <div className="h-100 super-center">
-            <h1 className="mb-0">
-              <span className="loader" />
-            </h1>
-          </div>
+          <Spinner isEmpty />
         </div>
       );
     } else if (this.state.error) {

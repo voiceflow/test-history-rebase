@@ -1,12 +1,16 @@
 import './NavBar.css';
 
 import axios from 'axios';
-import { fetchDiagrams, updateDiagramRoot } from 'ducks/diagram';
-import { setLiveModeModal, toggleLive } from 'ducks/version';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Toggle from 'react-toggle';
+
+import { FullSpinner } from '@/components/Spinner';
+import SvgIcon from '@/components/SvgIcon';
+import { fetchDiagrams, updateDiagramRoot } from '@/ducks/diagram';
+import { setLiveModeModal, toggleLive } from '@/ducks/version';
+import LogsIcon from '@/svgs/logs.svg';
 
 import { NavBarTabs } from './styled';
 
@@ -92,16 +96,18 @@ export class SecondaryNavBar extends Component {
   }
 
   render() {
+    const { amzn_id, live_version, live_mode, page, skill_id } = this.props;
+
     return (
       <>
         <div id="secondary-nav">
           <NavBarTabs>{PAGES.map((page) => this.renderItem(page))}</NavBarTabs>
           <div id="secondary-nav-right-group">
-            {this.props.amzn_id && (
+            {amzn_id && (
               <>
-                {this.props.live_version ? (
+                {live_version ? (
                   <>
-                    {this.props.live_mode ? (
+                    {live_mode ? (
                       <div className="live-mode-text">
                         <p>Live</p>
                       </div>
@@ -111,37 +117,30 @@ export class SecondaryNavBar extends Component {
                       </div>
                     )}
                     <Toggle
-                      checked={this.props.live_mode}
+                      checked={live_mode}
                       icons={false}
                       onChange={() => {
                         this.setState({ loading: true });
                         this.toggleLiveMode();
                       }}
-                      disabled={this.props.page !== 'canvas' || this.state.loading}
+                      disabled={page !== 'canvas' || this.state.loading}
                     />
                   </>
                 ) : null}
-                {this.props.page === 'logs' ? (
-                  <div className="nav-item">
-                    <img src="/logs.svg" alt="logs" width="16" height="16" />
+                {page === 'logs' ? (
+                  <div className="log-icon">
+                    <SvgIcon icon={LogsIcon} />
                   </div>
                 ) : (
-                  <Link to={`/creator_logs/${this.props.skill_id}`} className="nav-item">
-                    <img src="/logs.svg" alt="logs" width="16" height="16" />
+                  <Link to={`/creator_logs/${skill_id}`} className="log-icon">
+                    <SvgIcon icon={LogsIcon} />
                   </Link>
                 )}
               </>
             )}
           </div>
         </div>
-        {this.state.loading && (
-          <div id="loading-diagram" style={{ zIndex: 100 }}>
-            <div className="text-center">
-              <h5 className="text-muted mb-2">Loading Version</h5>
-              <span className="loader" />
-            </div>
-          </div>
-        )}
+        {this.state.loading && <FullSpinner name="Version" />}
       </>
     );
   }

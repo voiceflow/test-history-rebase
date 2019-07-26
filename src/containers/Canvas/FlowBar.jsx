@@ -1,13 +1,14 @@
 import './FlowBar.css';
 
 import cn from 'classnames';
-import { renameDiagram } from 'ducks/diagram';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 } from 'uuid';
+
+import { renameDiagram } from '@/ducks/diagram';
 
 export class FlowBar extends Component {
   constructor(props) {
@@ -76,7 +77,7 @@ export class FlowBar extends Component {
     if (!diagram) return null;
 
     return (
-      <React.Fragment>
+      <>
         <button id="home-button" className="btn-home pl-3" onClick={() => enterFlow(root_id)}>
           <span>Home</span>
         </button>
@@ -141,7 +142,7 @@ export class FlowBar extends Component {
             </DropdownMenu>
           </Dropdown>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

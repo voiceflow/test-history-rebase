@@ -7,12 +7,7 @@ import './assets/fontawesome/css/all.min.css';
 import './App.css';
 import 'react-day-picker/lib/style.css';
 
-// GLOBAL MODALS
-import ConfirmModal from 'components/Modals/ConfirmModal';
-import ErrorModal from 'components/Modals/ErrorModal';
-import Modal from 'components/Modals/Modal';
 import { ConnectedRouter } from 'connected-react-router';
-import { getAuth, getUser } from 'ducks/account';
 import React, { Component } from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -23,11 +18,19 @@ import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { Alert } from 'reactstrap';
 import { compose } from 'recompose';
-import { history } from 'store/store';
-import { evaluateMaintenance } from 'utils/maintenance';
+import { ThemeProvider } from 'styled-components';
+
+import ConfirmModal from '@/components/Modals/ConfirmModal';
+import ErrorModal from '@/components/Modals/ErrorModal';
+import Modal from '@/components/Modals/Modal';
+import { FullSpinner } from '@/components/Spinner';
+import { getAuth, getUser } from '@/ducks/account';
+import { history } from '@/store/store';
+import { evaluateMaintenance } from '@/utils/maintenance';
 
 import allRoutes from './Routes/allRoutes';
 import Alerts from './components/Alerts/Alerts';
+import theme from './styles/theme';
 
 ReactGA.initialize('UA-124745244-3');
 toast.configure({
@@ -55,8 +58,7 @@ class App extends Component {
           })
         )
         .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err);
+          console.error(err);
           this.setState({ loading: false });
           history.push('/login');
         });
@@ -97,27 +99,21 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.loading) {
-      return (
-        <div id="loading-diagram">
-          <div className="text-center">
-            <h5 className="text-muted mb-2">Loading Account...</h5>
-            <span className="loader" />
-          </div>
-        </div>
-      );
-    }
+    if (this.state.loading) return <FullSpinner name="Account" />;
+
     return (
-      <div id="body">
-        <ConnectedRouter history={history}>
-          <ConfirmModal />
-          <ErrorModal />
-          <Modal />
-          <Alerts />
-          <ToastContainer />
-          {allRoutes}
-        </ConnectedRouter>
-      </div>
+      <ThemeProvider theme={theme}>
+        <div id="body">
+          <ConnectedRouter history={history}>
+            <ConfirmModal />
+            <ErrorModal />
+            <Modal />
+            <Alerts />
+            <ToastContainer />
+            {allRoutes}
+          </ConnectedRouter>
+        </div>
+      </ThemeProvider>
     );
   }
 }

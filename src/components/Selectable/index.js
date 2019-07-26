@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 export default class Selectable extends Component {
   static propTypes = {
@@ -80,7 +80,7 @@ export default class Selectable extends Component {
     const { value, onHide, opened: defaultOpened, onShow, onSelect, children, stopPropagation, popoverRenderer, ...popoverProps } = this.props;
 
     return (
-      <Fragment>
+      <>
         {popoverRenderer({
           ...popoverProps,
           show: opened,
@@ -97,7 +97,7 @@ export default class Selectable extends Component {
           value,
           opened,
         })}
-      </Fragment>
+      </>
     );
   }
 }

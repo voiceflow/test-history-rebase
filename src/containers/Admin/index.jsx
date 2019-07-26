@@ -1,11 +1,12 @@
 import './Admin.css';
 
-import Header from 'components/Header';
-import { fetchTeams } from 'ducks/team';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ButtonGroup } from 'reactstrap';
+
+import Header from '@/components/Header';
+import { fetchTeams } from '@/ducks/team';
 
 import Copy from './Copy';
 import FinanceBoard from './FinanceBoard';
@@ -18,63 +19,63 @@ import Vendors from './Vendors';
 const tabs = [
   {
     display: (
-      <React.Fragment>
+      <>
         <i className="fal fa-home" /> Home
-      </React.Fragment>
+      </>
     ),
     match: ['default'],
     link: '/admin',
   },
   {
     display: (
-      <React.Fragment>
+      <>
         <i className="fal fa-money-bill-wave" /> Finance
-      </React.Fragment>
+      </>
     ),
     match: ['charges'],
     link: '/admin/charges',
   },
   {
     display: (
-      <React.Fragment>
+      <>
         <i className="fal fa-store-alt" /> Vendors
-      </React.Fragment>
+      </>
     ),
     match: ['vendors'],
     link: '/admin/vendors',
   },
   {
     display: (
-      <React.Fragment>
+      <>
         <i className="fal fa-search" /> Skill Lookup
-      </React.Fragment>
+      </>
     ),
     match: ['lookup'],
     link: '/admin/lookup',
   },
   {
     display: (
-      <React.Fragment>
+      <>
         <i className="fal fa-copy" /> Copy
-      </React.Fragment>
+      </>
     ),
     match: ['copy'],
     link: '/admin/copy',
   },
   {
     display: (
-      <React.Fragment>
+      <>
         <i className="fal fa-ruler-combined" /> Templates
-      </React.Fragment>
+      </>
     ),
     match: ['template'],
     link: '/admin/template',
   },
   {
     display: (
-      <React.Fragment>
+      <>
         <i className="fal fa-scroll" /> Product Updates
-      </React.Fragment>
+      </>
     ),
     match: ['updates'],
     link: '/admin/updates',

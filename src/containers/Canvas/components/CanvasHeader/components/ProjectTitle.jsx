@@ -1,7 +1,7 @@
-import { useEnableDisable } from 'hooks/toggle';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+
+import { useEnableDisable } from '@/hooks/toggle';
 
 import { ProjectTitleContainer } from '../styled';
 
@@ -10,10 +10,6 @@ export function ProjectTitle({ skill, onChange }) {
 
   return (
     <ProjectTitleContainer onDoubleClick={onStartEditing}>
-      <Link to="/" className="mx-3">
-        <img src="/back.svg" alt="back" className="mr-3" />
-      </Link>
-      {/* eslint-disable-next-line no-nested-ternary */}
       {isEditing ? (
         <input
           // eslint-disable-next-line jsx-a11y/no-autofocus

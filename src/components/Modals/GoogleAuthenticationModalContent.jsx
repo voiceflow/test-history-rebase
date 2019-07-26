@@ -1,9 +1,11 @@
 import './Modals.css';
 
-import Button from 'components/Button';
-import { GOOGLE_OAUTH_ID } from 'config';
 import React from 'react';
 import { Input } from 'reactstrap';
+
+import { Spinner } from '@/components/Spinner';
+import Button from '@/componentsV2/Button';
+import { GOOGLE_OAUTH_ID } from '@/config';
 
 // eslint-disable-next-line no-secrets/no-secrets
 const OAUTH_URL = `https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=${GOOGLE_OAUTH_ID}&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state=state`;
@@ -18,7 +20,7 @@ const MultiPlatformModalContent = ({ token, onChange, loading, onVerify }) => {
             Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.
           </div>
           <a href={OAUTH_URL} target="_blank" rel="noopener noreferrer">
-            <Button type="button" className="btn btn-clear">
+            <Button type="button" variant="secondary" className="btn btn-clear">
               Log In
             </Button>
           </a>
@@ -42,11 +44,11 @@ const MultiPlatformModalContent = ({ token, onChange, loading, onVerify }) => {
       </div>
       <div className="d-flex justify-content-center pt-1 mb-4 w-100">
         {!loading && (
-          <Button isPrimary className="mr-4" onClick={onVerify}>
+          <Button className="mr-4" onClick={onVerify}>
             Verify
           </Button>
         )}
-        {loading && <span style={{ height: '44px' }} className="loader" />}
+        {loading && <Spinner isEmpty />}
       </div>
     </div>
   );

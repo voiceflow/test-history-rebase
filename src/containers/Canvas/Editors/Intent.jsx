@@ -1,9 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import './Intent.css';
 
-import PlatformTooltip from 'components/Tooltips/PlatformTooltip';
-import { setConfirm, setError } from 'ducks/modal';
-import { setCanFulfill, updateIntents } from 'ducks/version';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -11,6 +8,10 @@ import Select, { components } from 'react-select';
 import { Tooltip } from 'react-tippy';
 import Toggle from 'react-toggle';
 import { Button, ButtonGroup } from 'reactstrap';
+
+import PlatformTooltip from '@/components/Tooltips/PlatformTooltip';
+import { setConfirm, setError } from '@/ducks/modal';
+import { setCanFulfill, updateIntents } from '@/ducks/version';
 
 import IntentInputs from './components/IntentInputs';
 import SlotInputs from './components/SlotInputs';
@@ -210,7 +211,7 @@ export class Intent extends Component {
     }
 
     return (
-      <React.Fragment>
+      <>
         <div className="d-flex justify-content-between">
           <label>Select Intent</label>
           <PlatformTooltip platform={this.props.platform} field="Intent handlers" />
@@ -232,7 +233,7 @@ export class Intent extends Component {
           />
         </div>
         {!!slots && (
-          <React.Fragment>
+          <>
             <hr />
             <div className="diagram-title">Slot Mapping</div>
             <SlotMappings
@@ -242,9 +243,9 @@ export class Intent extends Component {
               arguments={extras.mappings}
               update={this.update}
             />
-          </React.Fragment>
+          </>
         )}
-      </React.Fragment>
+      </>
     );
   }
 
@@ -272,7 +273,7 @@ export class Intent extends Component {
         return this.command(options);
       case 'intents':
         return (
-          <React.Fragment>
+          <>
             <label>Intents</label>
             <IntentInputs
               intents={this.props.intents}
@@ -284,11 +285,11 @@ export class Intent extends Component {
               live_mode={this.props.live_mode}
               setCanFulfill={this.props.setCanFulfill}
             />
-          </React.Fragment>
+          </>
         );
       case 'slots':
         return (
-          <React.Fragment>
+          <>
             <label>Slots</label>
             <SlotInputs
               intents={this.props.intents}
@@ -298,7 +299,7 @@ export class Intent extends Component {
               platform={this.props.platform}
               live_mode={this.props.live_mode}
             />
-          </React.Fragment>
+          </>
         );
       default:
         return null;
@@ -311,7 +312,7 @@ export class Intent extends Component {
     const intent = extras.intent;
 
     return (
-      <React.Fragment>
+      <>
         <ButtonGroup className="toggle-group mb-2">
           <Button
             outline={this.state.tab !== 'Select'}
@@ -386,7 +387,7 @@ export class Intent extends Component {
             </div>
           )}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

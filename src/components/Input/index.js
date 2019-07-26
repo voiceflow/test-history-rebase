@@ -91,7 +91,10 @@ export default class Input extends Component {
       label: _label,
       options,
       selectedId,
-      buttonProps: { isSimple: true, ...buttonProps },
+      buttonProps: {
+        isSimple: true,
+        ...buttonProps,
+      },
     };
   }
 
@@ -132,7 +135,9 @@ export default class Input extends Component {
       onBlur(e);
     }
 
-    this.setState({ focused: false });
+    this.setState({
+      focused: false,
+    });
   };
 
   onChange = (e) => {
@@ -170,7 +175,9 @@ export default class Input extends Component {
       onFocus(e);
     }
 
-    this.setState({ focused: true });
+    this.setState({
+      focused: true,
+    });
   };
 
   onKeyUp = (e) => {
@@ -266,7 +273,6 @@ export default class Input extends Component {
       className: cn('form-control', className, {
         '__is-active': isActive,
         '__has-danger': !!error,
-        '__type-readonly': readOnly,
       }),
       onKeyDown: onEnterPress ? this.onKeyDown : onKeyDown,
       onKeyPress: onEnterPress ? this.onKeyPress : onKeyPress,
@@ -288,40 +294,42 @@ export default class Input extends Component {
     const actionNode = (!!action || actionText) && (
       // eslint-disable-next-line jsx-a11y/interactive-supports-focus
       <div role="button" onClick={onActionClick} className={cn('form-control-group__addon __with-action', actionClassName)}>
-        {!!action && <Icon className={action} />}
-        {!!actionText && <span className="text-link">{actionText}</span>}
+        {' '}
+        {!!action && <Icon className={action} />} {!!actionText && <span className="text-link"> {actionText} </span>}{' '}
       </div>
     );
 
     return (
-      <Fragment>
+      <>
+        {' '}
         {!!label && !withAside && (
           <label htmlFor={id} className="form-label">
-            {label}
+            {' '}
+            {label}{' '}
           </label>
-        )}
-
+        )}{' '}
         {withAside && (
           <div className="form-group-header">
             <div className="form-group-header__title">
+              {' '}
               {!!label && (
                 <label htmlFor={id} className="form-label">
-                  {label}
+                  {' '}
+                  {label}{' '}
                 </label>
-              )}
-            </div>
-
+              )}{' '}
+            </div>{' '}
             <div className="form-group-header__aside">
+              {' '}
               {asideRenderer
                 ? asideRenderer()
                 : counterProps &&
                   (showCounter === 'always' || (showCounter === 'onFocus' && focused)) && (
                     <Counter {...counterProps} length={this.getCounterLength(value, counterSplitBy)} className="__text-position" />
-                  )}
-            </div>
+                  )}{' '}
+            </div>{' '}
           </div>
-        )}
-
+        )}{' '}
         {!wrapInput ? (
           input
         ) : (
@@ -330,53 +338,42 @@ export default class Input extends Component {
               '__with-header-control': !!controlGroupHeaderRenderer,
             })}
           >
-            {!!controlGroupHeaderRenderer && <div className="form-control-group__header">{controlGroupHeaderRenderer()}</div>}
-
+            {!!controlGroupHeaderRenderer && <div className="form-control-group__header"> {controlGroupHeaderRenderer()} </div>}{' '}
             {!!loader && (
               <div className="form-control-group__addon">
                 <Loader size="md" inline pending />
               </div>
-            )}
-
+            )}{' '}
             {!!icon && (
               <div className="form-control-group__addon">
-                <Icon className={icon} />
+                <Icon className={icon} />{' '}
               </div>
-            )}
-
+            )}{' '}
             {!!dropdown && (
               <div className="form-control-group__addon __type-dropdown">
-                <Dropdown {...Input.getDropdownProps(dropdown)} />
+                <Dropdown {...Input.getDropdownProps(dropdown)} />{' '}
               </div>
-            )}
-
-            {!!leftAddon && <div className={cn('form-control-group__addon', leftAddonClassName)}>{leftAddon}</div>}
-
-            {actionPosition === 'left' && actionNode}
-
-            {input}
-
-            {actionPosition === 'right' && actionNode}
-
-            {!!rightAddon && <div className={cn('form-control-group__addon', rightAddonClassName)}>{rightAddon}</div>}
+            )}{' '}
+            {!!leftAddon && <div className={cn('form-control-group__addon', leftAddonClassName)}> {leftAddon} </div>}{' '}
+            {actionPosition === 'left' && actionNode} {input} {actionPosition === 'right' && actionNode}{' '}
+            {!!rightAddon && <div className={cn('form-control-group__addon', rightAddonClassName)}> {rightAddon} </div>}{' '}
           </div>
-        )}
-
-        {hint && (isHintSmall ? <small className="form-hint text-gray">{hint}</small> : <div className="form-hint text-gray">{hint}</div>)}
-
+        )}{' '}
+        {hint && (isHintSmall ? <small className="form-hint text-gray"> {hint} </small> : <div className="form-hint text-gray">{hint}</div>)}{' '}
         {!withoutErrorText && !!error && (
           <small className="form-hint text-danger">
+            {' '}
             {error.includes('\n')
               ? error.split('\n').map((s, i) => (
                   <Fragment key={i}>
-                    {i !== 0 && <br />}
-                    {s}
+                    {' '}
+                    {i !== 0 && <br />} {s}{' '}
                   </Fragment>
                 ))
-              : error}
+              : error}{' '}
           </small>
-        )}
-      </Fragment>
+        )}{' '}
+      </>
     );
   }
 }

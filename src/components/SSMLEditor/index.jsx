@@ -12,17 +12,16 @@ import Recent from './Recent';
 import Speaker from './Speaker';
 import Voice from './Voice';
 import createEntityStore from './entityStore';
-import createTagPlugin from './tagPlugin.jsx';
+import createTagPlugin from './tagPlugin';
 import { wrapVoice } from './tagUtil';
 
-const Container = styled.div`
+export const Container = styled.div`
   background: #ffffff;
   border: 1px solid #d4d9e6;
   box-shadow: 0px 1px 3px rgba(17, 49, 96, 0.06);
   border-radius: 5px;
-  margin: 50px 50px 50px 550px;
   width: 376px;
-  padding: 15px 20px 0px 20px !important;
+  /* padding: 15px 20px 0px 20px !important; */
   word-break: break-all;
   display: flex;
   flex-direction: column;
@@ -34,8 +33,8 @@ const Container = styled.div`
   }
 
   & > .DraftEditor-root {
-    height: 80px !important;
-    overflow: scroll; /* makes tippy position bottom */
+    padding: 15px 20px !important;
+    min-height: 88px !important;
   }
 
   & > .DraftEditor-root div {
@@ -50,7 +49,7 @@ const Container = styled.div`
   & > .DraftEditor-editorContainer,
   .DraftEditor-root,
   .public-DraftEditor-content {
-    height: 80px !important; /* click the editor starts input */
+    min-height: 88px !important; /* click the editor starts input */
   }
 `;
 
@@ -58,6 +57,7 @@ const Bottom = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0px 20px !important;
 `;
 
 const Section = styled.div`
@@ -66,13 +66,11 @@ const Section = styled.div`
 `;
 
 const Divider = styled.hr`
-  margin-left: -20px;
-  margin-right: -20px;
   margin-bottom: 0px;
-  margin-top: 5px;
+  margin-top: 0px;
 `;
 
-class VariableText extends Component {
+class SSMLEditor extends Component {
   constructor(props) {
     super(props);
     this.mentionPlugin = createMentionPlugin({
@@ -91,11 +89,12 @@ class VariableText extends Component {
       mentionComponent: (mentionProps) => <span className="variable-block">{mentionProps.children}</span>,
     });
 
-    const { raw, store, voice } = props.content || {};
+    const { value, variables = [] } = props;
+    const { raw, store, voice } = value || {};
 
     this.state = {
-      editorState: props.content ? EditorState.createWithContent(convertFromRaw(raw)) : EditorState.createEmpty(),
-      suggestions: this.props.variables.map((v) => {
+      editorState: value && raw ? EditorState.createWithContent(convertFromRaw(raw)) : EditorState.createEmpty(),
+      suggestions: variables.map((v) => {
         return { name: v };
       }),
       recent: [],
@@ -108,13 +107,9 @@ class VariableText extends Component {
   }
 
   onSearchChange = ({ value }) => {
+    const { variables = [] } = this.props;
     this.setState({
-      suggestions: defaultSuggestionsFilter(
-        value,
-        this.props.variables.map((v) => {
-          return { name: v };
-        })
-      ),
+      suggestions: defaultSuggestionsFilter(value, variables.map((v) => ({ name: v }))),
     });
   };
 
@@ -203,4 +198,4 @@ class VariableText extends Component {
   }
 }
 
-export default VariableText;
+export default SSMLEditor;

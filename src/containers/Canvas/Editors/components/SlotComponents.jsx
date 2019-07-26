@@ -1,9 +1,10 @@
-import { setError } from 'ducks/modal';
 import randomstring from 'randomstring';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { components } from 'react-select';
 import Textarea from 'react-textarea-autosize';
+
+import { setError } from '@/ducks/modal';
 
 import ContainedTextarea from './ContainedTextArea';
 
@@ -169,7 +170,7 @@ class SlotSynonyms extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <div>{this.renderUtterances(this.props.inputs, this.onDeleteExample)}</div>
         <Textarea
           className="slot-input"
@@ -184,7 +185,7 @@ class SlotSynonyms extends Component {
             <i className="far fa-long-arrow-right" />
           </span>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

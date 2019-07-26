@@ -1,10 +1,10 @@
 /* eslint-disable guard-for-in, no-restricted-syntax, simple-import-sort/sort */
 import React, { Component } from 'react';
-import * as SRD from 'components/SRD/main';
+import * as SRD from '@/components/SRD/main';
 import cn from 'classnames';
 import Menu from './Menu';
 import Editor from './Editor';
-import Test from 'containers/Testing';
+import Test from '@/containers/Testing';
 import axios from 'axios';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -12,50 +12,52 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 // import Loader from './Loader'
 import 'draft-js/dist/Draft.css';
-import 'components/SRD/sass/main.css';
+import '@/components/SRD/sass/main.css';
 import './StoryBoard.css';
 
 // HOCs
-import { undo, redo } from 'hocs/withUndoRedo';
-import { open, blockMenu } from 'hocs/withCanvasHelper';
-import { keyboardModal } from 'hocs/withModalHandlers';
+import { undo, redo } from '@/hocs/withUndoRedo';
+import { open, blockMenu } from '@/hocs/withCanvasHelper';
+import { keyboardModal } from '@/hocs/withModalHandlers';
 
 import { WidgetBar } from './components/WidgetBar';
 import CanvasWarning from './components/CanvasWarning';
 import Header from './components/CanvasHeader';
 // Helpers
-import { combineAppendValidation, appendValidator } from 'utils/combineHelper';
+import { combineAppendValidation, appendValidator } from '@/utils/combineHelper';
 
-import { updateVersion, updateIntents, setCanFulfill } from 'ducks/version';
-import { setVariables } from 'ducks/variable';
-import { renameDiagram, appendDiagrams, updateDiagrams } from 'ducks/diagram';
-import { setError, setConfirm } from 'ducks/modal';
-import { openTab, closeTab, setCanvasError, clearCanvasMessage } from 'ducks/user';
+import { updateVersion, updateIntents, setCanFulfill } from '@/ducks/version';
+import { setVariables } from '@/ducks/variable';
+import { renameDiagram, appendDiagrams, updateDiagrams } from '@/ducks/diagram';
+import { setError, setConfirm } from '@/ducks/modal';
+import { openTab, closeTab, setCanvasError, clearCanvasMessage } from '@/ducks/user';
 
-import TestingHeader from 'containers/Testing/TestingHeader';
+import TestingHeader from '@/containers/Testing/TestingHeader';
 import Clipboard from './components/Clipboard';
 import ActionGroup from './components/ActionGroup/ActionGroup';
 import HelpModal from './HelpModal';
-import new_template from 'assets/templates/new';
+import new_template from '@/assets/templates/new';
 import { Alert, ListGroup, ListGroupItem } from 'reactstrap';
 
 import cloneDeep from 'lodash/cloneDeep';
 import * as util from './util';
 import Spotlight from './Spotlight';
-import { Toolkit } from 'components/SRD/Toolkit';
+import { Toolkit } from '@/components/SRD/Toolkit';
 import FlowBar from './FlowBar';
-import DefaultModal from 'components/Modals/DefaultModal';
-import ShortCuts from 'components/ShortCuts/ShortCuts';
+import DefaultModal from '@/components/Modals/DefaultModal';
+import ShortCuts from '@/components/ShortCuts/ShortCuts';
 import Mousetrap from 'mousetrap';
 
-import { BlockNodeModel } from 'components/SRD/models/BlockNodeModel';
-import { PointModel } from 'components/SRD/models/PointModel';
+import { BlockNodeModel } from '@/components/SRD/models/BlockNodeModel';
+import { BlockLinkModel } from '@/components/SRD/models/BlockLinkModel';
+import { PointModel } from '@/components/SRD/models/PointModel';
+
 /* eslint-disable no-secrets/no-secrets */
-import { BlockLinkFactory } from 'components/SRD/factories/BlockLinkFactory';
-import { BlockPortFactory } from 'components/SRD/factories/BlockPortFactory';
-import { BlockNodeFactory } from 'components/SRD/factories/BlockNodeFactory';
+import { BlockLinkFactory } from '@/components/SRD/factories/BlockLinkFactory';
+import { BlockPortFactory } from '@/components/SRD/factories/BlockPortFactory';
+import { BlockNodeFactory } from '@/components/SRD/factories/BlockNodeFactory';
 /* eslint-enable no-secrets/no-secrets */
-import { Spinner } from 'components/Spinner/Spinner';
+import { FullSpinner } from '@/components/Spinner';
 
 import { ALLOWED_GOOGLE_BLOCKS } from './Constants';
 
@@ -66,9 +68,9 @@ import { checkBlockDisabledLive } from './Blocks';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Prompt } from 'react-router';
 import moment from 'moment';
-import Upgrade from 'components/Modals/MultiPlatformModalContent';
-import { fetchIntegrationUsers } from 'ducks/integration';
-import { initializeTest, renderTest } from 'ducks/test';
+import Upgrade from '@/components/Modals/MultiPlatformModalContent';
+import { fetchIntegrationUsers } from '@/ducks/integration';
+import { initializeTest, renderTest, TEST_STATUS } from '@/ducks/test';
 /* eslint-enable simple-import-sort/sort */
 
 import _ from 'lodash';
@@ -323,6 +325,20 @@ export class Canvas extends Component {
             engine.getDiagramModel().addNode(n);
           }
         });
+      } else if (recent.eventType === 'copy') {
+        const linkSet = new Set(recent.node.filter((n) => n instanceof BlockLinkModel));
+        _.forEach(recent.node, (n) => {
+          if (n instanceof BlockNodeModel) {
+            _.forEach(n.ports, (port) => {
+              _.forEach(port.getLinks(), (link) => {
+                if (!linkSet.has(link)) link.remove();
+              });
+            });
+            engine.getDiagramModel().removeNode(n);
+          } else if (n instanceof BlockLinkModel) {
+            engine.getDiagramModel().removeLink(n);
+          }
+        });
       } else {
         _.forEach(recent.node, (n) => n instanceof BlockNodeModel && n.remove());
       }
@@ -340,6 +356,14 @@ export class Canvas extends Component {
       const recent = _.last(redoEvents);
       if (recent.eventType === 'remove') {
         _.forEach(recent.node, (n) => n instanceof BlockNodeModel && n.remove());
+      } else if (recent.eventType === 'copy') {
+        _.forEach(recent.node, (n) => {
+          if (n instanceof BlockNodeModel) {
+            engine.getDiagramModel().addNode(n);
+          } else if (n instanceof BlockLinkModel) {
+            engine.getDiagramModel().addLink(n);
+          }
+        });
       } else {
         engine.getDiagramModel().clearSelection();
         _.forEach(recent.node, (n) => n instanceof BlockNodeModel && engine.getDiagramModel().addNode(n));
@@ -1269,78 +1293,85 @@ export class Canvas extends Component {
       engine.getDiagramModel().clearSelection();
       engine.setSuperSelect(node);
       setBlockMenu(
-        <React.Fragment>
-          <div
-            style={{
-              top: engine.getDiagramModel().getGridPosition(e.clientY - 100),
-              left: engine.getDiagramModel().getGridPosition(e.clientX),
-              cursor: 'pointer',
-              position: 'absolute',
-              zIndex: 10,
-            }}
-          >
-            <ListGroup>
-              {!combineNode && (
-                <ListGroupItem
-                  onClick={() => {
-                    node.setLocked(true);
-                    node.selected = true;
-                    node.edit = true;
-                    setBlockMenu(null);
-                  }}
-                >
-                  Rename
-                </ListGroupItem>
-              )}
+        <div
+          style={{
+            top: engine.getDiagramModel().getGridPosition(e.clientY - 100),
+            left: engine.getDiagramModel().getGridPosition(e.clientX),
+            cursor: 'pointer',
+            position: 'absolute',
+            zIndex: 10,
+          }}
+        >
+          <ListGroup>
+            {!combineNode && (
               <ListGroupItem
                 onClick={() => {
-                  this.clipboard.current.copy([combineNode || node]);
+                  node.setLocked(true);
+                  node.selected = true;
+                  node.edit = true;
+                  setBlockMenu(null);
+                }}
+              >
+                Rename
+              </ListGroupItem>
+            )}
+            <ListGroupItem
+              onClick={() => {
+                this.clipboard.current.copy([combineNode || node]);
+
+                setBlockMenu(null);
+              }}
+            >
+              Copy Block
+            </ListGroupItem>
+            <ListGroupItem
+              onClick={() => {
+                if (combineNode) {
+                  this.removeCombineNode(combineNode);
+                } else {
+                  this.removeNode(node);
+                }
+                setBlockMenu(null);
+              }}
+            >
+              Delete Block
+            </ListGroupItem>
+          </ListGroup>
+        </div>
+      );
+    } else {
+      setBlockMenu(
+        <div
+          style={{
+            top: engine.getDiagramModel().getGridPosition(e.clientY - 110),
+            left: engine.getDiagramModel().getGridPosition(e.clientX),
+            cursor: 'pointer',
+            position: 'absolute',
+            zIndex: 10,
+          }}
+        >
+          <ListGroup>
+            <ListGroupItem
+              onClick={() => {
+                this.addComment(e);
+                setBlockMenu(null);
+              }}
+            >
+              Add Comment
+            </ListGroupItem>
+            {localStorage.clipboard && (
+              <ListGroupItem
+                onClick={() => {
+                  this.clipboard.current.paste();
 
                   setBlockMenu(null);
                 }}
               >
-                Copy Block
+                Paste Block
               </ListGroupItem>
-              <ListGroupItem
-                onClick={() => {
-                  if (combineNode) {
-                    this.removeCombineNode(combineNode);
-                  } else {
-                    this.removeNode(node);
-                  }
-                  setBlockMenu(null);
-                }}
-              >
-                Delete Block
-              </ListGroupItem>
-            </ListGroup>
-          </div>
-        </React.Fragment>
-      );
-    } else {
-      setBlockMenu(
-        <React.Fragment>
-          <div
-            style={{
-              top: engine.getDiagramModel().getGridPosition(e.clientY - 110),
-              left: engine.getDiagramModel().getGridPosition(e.clientX),
-              cursor: 'pointer',
-              position: 'absolute',
-              zIndex: 10,
-            }}
-          >
-            <ListGroup>
-              <ListGroupItem
-                onClick={() => {
-                  this.addComment(e);
-                  setBlockMenu(null);
-                }}
-              >
-                Add Comment
-              </ListGroupItem>
-            </ListGroup>
-          </div>
-        </React.Fragment>
+            )}
+          </ListGroup>
+        </div>
       );
     }
   };
@@ -1545,7 +1576,7 @@ export class Canvas extends Component {
       addUndo,
     } = this.props;
     return (
-      <React.Fragment>
+      <>
         <Prompt
           message={() => {
             if (!util.canSave()) {
@@ -1582,12 +1613,12 @@ export class Canvas extends Component {
           </Header>
         )}
         {!this.props.preview && this.props.page === 'test' && (
-          <TestingHeader preview={this.props.preview} history={this.props.history} page={this.props.page} />
+          <TestingHeader preview={this.props.preview} team_id={this.props.team_id} history={this.props.history} page={this.props.page} />
         )}
         {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={() => this.setState({ spotlight: false })} />}
         <div
           id={this.props.preview ? 'canvas_preview' : 'canvas'}
-          className={this.props.page}
+          className={cn(this.props.page, { testing_mode: this.props.status !== TEST_STATUS.IDLE })}
           onMouseMove={this.mouseMove}
           onMouseUp={this.combineNode}
           onMouseDown={() => {
@@ -1614,7 +1645,7 @@ export class Canvas extends Component {
               this.updateTree = fn;
             }}
           />
-          {this.state.load_diagram && <Spinner name="Flow" />}
+          {this.state.load_diagram && <FullSpinner name="Flow" />}
           <Editor
             unfocus={this.onDiagramUnfocus}
             open={this.props.open && this.props.page === 'canvas'}
@@ -1746,7 +1777,7 @@ export class Canvas extends Component {
             />
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }
@@ -1768,6 +1799,7 @@ const mapStateToProps = (state) => {
     integration_users_error: state.integrationUsers.error,
     tab: tab || state.userSetting.tab,
     tabOpen: state.userSetting.menuOpen,
+    status: state.test.status,
   };
 };
 

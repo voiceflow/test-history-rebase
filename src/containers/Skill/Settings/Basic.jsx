@@ -1,14 +1,15 @@
 import axios from 'axios';
-import Button from 'components/Button';
-import Prompt from 'components/Uploads/Prompt';
-import { setError } from 'ducks/modal';
-import { updateVersion, updateVersionMerge } from 'ducks/version';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import Toggle from 'react-toggle';
 import { Collapse, FormGroup, Input, Label } from 'reactstrap';
+
+import Button from '@/components/Button';
+import Prompt from '@/components/Uploads/Prompt';
+import { setError } from '@/ducks/modal';
+import { updateVersion, updateVersionMerge } from '@/ducks/version';
 
 const disabled_stages = new Set([11, 12]);
 
@@ -99,7 +100,7 @@ class BasicSettings extends Component {
   render() {
     const { name, inv_name } = this.props.skill;
     return (
-      <React.Fragment>
+      <>
         <div className="settings-content clearfix pb-11 no-bottom">
           <FormGroup>
             <Label>Project Name</Label>
@@ -140,7 +141,7 @@ class BasicSettings extends Component {
             <hr />
 
             {this.props.skill.repeat > 0 && (
-              <React.Fragment>
+              <>
                 {/* <Label className="mb-1">Complete Repeat</Label> */}
                 <div className="helper-text">
                   <div className="row space-between">
@@ -163,7 +164,7 @@ class BasicSettings extends Component {
                     </div>
                   </div>
                 </div>
-              </React.Fragment>
+              </>
             )}
           </FormGroup>
           <hr />
@@ -194,7 +195,7 @@ class BasicSettings extends Component {
             </div>
             <hr />
             {!this.props.skill.restart && (
-              <React.Fragment>
+              <>
                 {/* <Label className="mb-1">Resume Prompt</Label> */}
                 <div className="helper-text">
                   <div className="row space-between mb-3">
@@ -220,7 +221,7 @@ class BasicSettings extends Component {
                 </div>
                 {this.state.hide_resume && <hr />}
                 {!this.state.hide_resume && (
-                  <React.Fragment>
+                  <>
                     <Prompt
                       placeholder="Welcome back, would you like to resume?"
                       voice={this.props.skill.resume_prompt.voice}
@@ -242,13 +243,13 @@ class BasicSettings extends Component {
                     <Button isClear className="mt-3" onClick={this.toggleResumeFollowUp}>
                       {this.state.resume_collapse ? 'Cancel Follow Up' : 'Resume Follow Up'}
                     </Button>
-                  </React.Fragment>
+                  </>
                 )}
-              </React.Fragment>
+              </>
             )}
           </FormGroup>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

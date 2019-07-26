@@ -1,15 +1,16 @@
 /* eslint-disable no-underscore-dangle */
 import cn from 'classnames';
-import { IS_DEVELOPMENT } from 'config';
 import cloneDeep from 'lodash/cloneDeep';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import transform from 'lodash/transform';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
-import { autoFocusCreator, getTransform } from 'utils/forms';
-import { getIn, setIn } from 'utils/objects';
+import React, { Component } from 'react';
+
+import { IS_DEVELOPMENT } from '@/config';
+import { autoFocusCreator, getTransform } from '@/utils/forms';
+import { getIn, setIn } from '@/utils/objects';
 
 import { PropsBridgeUpdater } from '../PropsBridge';
 
@@ -353,8 +354,8 @@ export default class Form extends Component {
 }
 
 export const FormReviewField = ({ label, children, childrenClassName }) => (
-  <Fragment>
+  <>
     <label className="form-label">{label}</label>
     <p className={childrenClassName}>{children}</p>
-  </Fragment>
+  </>
 );

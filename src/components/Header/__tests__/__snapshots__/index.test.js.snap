@@ -1,22 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Header render header 1`] = `
-<div
-  className="header"
->
-  <div
-    className="header-inner"
-  >
-    <div
-      className="header-grid __with-center"
-    >
-      <div
-        className="header-grid__right"
-      >
+<styled.header>
+  <styled.div>
+    <styled.div />
+    <styled.div>
+      <styled.div>
         <Connect(UserMenu) />
-      </div>
-    </div>
-  </div>
+      </styled.div>
+    </styled.div>
+  </styled.div>
   <Connect(IntercomChat) />
-</div>
+</styled.header>
 `;

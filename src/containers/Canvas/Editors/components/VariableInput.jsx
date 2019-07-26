@@ -100,7 +100,7 @@ class VariableInput extends Component {
     const plugins = [this.mentionPlugin, this.singleLinePlugin];
 
     return (
-      <React.Fragment>
+      <>
         <div className={`variable-input-field ${this.props.className}`}>
           <Editor
             plugins={plugins}
@@ -120,7 +120,7 @@ class VariableInput extends Component {
           suggestions={this.state.suggestions}
           onAddMention={this.onAddMention}
         />
-      </React.Fragment>
+      </>
     );
   }
 }

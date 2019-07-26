@@ -1,8 +1,4 @@
 import cn from 'classnames';
-import Dropdown from 'components/Dropdown';
-import Link from 'components/Link';
-import withDraggable from 'hocs/withDraggable';
-import { useToggle } from 'hooks/toggle';
 import * as _ from 'lodash';
 import map from 'lodash/map';
 import upperCase from 'lodash/upperCase';
@@ -10,8 +6,13 @@ import upperCase from 'lodash/upperCase';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
-import { colors } from 'utils/colors';
-import { getHumanLanguageName } from 'utils/languages';
+
+import Dropdown from '@/components/Dropdown';
+import Link from '@/components/Link';
+import withDraggable from '@/hocs/withDraggable';
+import { useToggle } from '@/hooks/toggle';
+import { colors } from '@/utils/colors';
+import { getHumanLanguageName } from '@/utils/languages';
 
 const DROPDOWN_OPTIONS = [
   {
@@ -26,10 +27,12 @@ const DROPDOWN_OPTIONS = [
 
 const DROPDOWN_BUTTON_PROPS = {
   isDropdown: true,
+  className: 'dropdown-button projects-list__item-action',
 };
 
 export function Item(props) {
   const {
+    id,
     name,
     created,
     diagram,
@@ -43,10 +46,11 @@ export function Item(props) {
     connectDragSource,
     connectDropTarget,
     isDraggingPreview,
+    isReference,
   } = props;
 
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
-  const pathTo = `/canvas/${version_id}/${diagram}`;
+  const pathTo = isReference ? `/reference/${id}` : `/canvas/${version_id}/${diagram}`;
 
   const color = colors[new Date(created).getTime() % colors.length];
 
@@ -60,29 +64,30 @@ export function Item(props) {
           '__is-draggable __is-dragging': isDraggingPreview,
         })}
       >
-        <div
-          style={{
-            backgroundImage: avatarUrl ? `url(${avatarUrl})` : undefined,
+        <Dropdown
+          options={DROPDOWN_OPTIONS}
+          onRemove={onRemove}
+          onDuplicate={onDuplicate}
+          buttonProps={DROPDOWN_BUTTON_PROPS}
+          popoverProps={{
+            onShow: toggleDropdownOpened,
+            onHide: toggleDropdownOpened,
+            stopPropagation: true,
           }}
-          className={`projects-list__item-image cap-${color}`}
-        >
-          {!avatarUrl && upperCase(name).charAt(0)}
-        </div>
-
-        <div className="projects-list__item-actions">
-          <Dropdown
-            options={DROPDOWN_OPTIONS}
-            onRemove={onRemove}
-            onDuplicate={onDuplicate}
-            buttonProps={DROPDOWN_BUTTON_PROPS}
-            popoverProps={{
-              onShow: toggleDropdownOpened,
-              onHide: toggleDropdownOpened,
-              stopPropagation: true,
-            }}
-            label={<i className="far fa-ellipsis-h" />}
-          />
-        </div>
+          label={
+            <>
+              <div
+                style={{
+                  backgroundImage: avatarUrl ? `url(${avatarUrl})` : undefined,
+                }}
+                className={`projects-list__item-image projects-list__item-icon cap-${color}`}
+              >
+                {!avatarUrl && upperCase(name).charAt(0)}
+              </div>
+              <div className="projects-list__item-actions projects-list__item-icon far fa-ellipsis-h" />
+            </>
+          }
+        />
 
         <div className="projects-list__item-details">
           <div className="projects-list__item-title">{name}</div>

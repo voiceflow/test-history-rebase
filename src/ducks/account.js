@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { LOGROCKET_ENABLED } from 'config';
 import { push } from 'connected-react-router';
 import LogRocket from 'logrocket';
 import queryString from 'query-string';
 import { IntercomAPI } from 'react-intercom';
 
-import { getDevice } from 'Helper';
+import { getDevice } from '@/Helper';
+import { LOGROCKET_ENABLED } from '@/config';
 
 import { getAuthCookie, removeAuthCookie, removeLastSessionCookie, setAuthCookie } from '../cookies';
 

@@ -105,6 +105,7 @@ export const fetchIntegrationUsers = () => {
       dispatch(fetchIntegrationUsersSuccess(dictByPlatform));
     } catch (e) {
       dispatch(fetchIntegrationUsersFailure(e));
+      throw e;
     }
   };
 };
@@ -137,8 +138,10 @@ export const addIntegrationUser = (integration, body) => {
         dictByPlatform[user.platform].push(user);
       });
       dispatch(addIntegrationUserSuccess(dictByPlatform));
+      return dictByPlatform;
     } catch (e) {
       dispatch(addIntegrationUserFailure(e));
+      throw e;
     }
   };
 };
@@ -173,6 +176,7 @@ export const deleteIntegrationUser = (integration, body) => {
       dispatch(deleteIntegrationUserSuccess(dictByPlatform));
     } catch (e) {
       dispatch(deleteIntegrationUserFailure(e));
+      throw e;
     }
   };
 };

@@ -4,9 +4,10 @@ import cn from 'classnames';
 import _ from 'lodash';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { track } from 'utils/tracker';
+
+import { track } from '@/utils/tracker';
 
 import Icon from '../Icon';
 import Loader from '../Loader';
@@ -186,7 +187,7 @@ export default class Button extends Component {
       ));
 
     const content = (
-      <Fragment>
+      <>
         {!!vendorIcon && (
           <span className="btn__icon">
             <Icon custom className={`vendor-icon vendor-icon-${vendorIcon}`} />
@@ -204,7 +205,7 @@ export default class Button extends Component {
             <Loader size="sm" pending />
           </span>
         )}
-      </Fragment>
+      </>
     );
 
     return tooltipText ? (

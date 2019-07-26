@@ -1,11 +1,12 @@
-import { selectStyles, variableComponent } from 'components/VariableSelect/VariableSelect';
 import { ContentState, convertToRaw } from 'draft-js';
-import { openTab } from 'ducks/user';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { Button } from 'reactstrap';
+
+import { selectStyles, variableComponent } from '@/components/VariableSelect/VariableSelect';
+import { openTab } from '@/ducks/user';
 
 import VariableInput from './components/VariableInput';
 
@@ -166,22 +167,20 @@ export class Mail extends Component {
           </Button>
         </div>
         {!user ? (
-          <React.Fragment>
-            <VariableInput
-              className="form-control"
-              raw={this.state.node.extras.to}
-              placeholder="E-mail Recipient"
-              variables={this.props.variables}
-              updateRaw={(raw) => {
-                const node = this.state.node;
-                node.extras.to = raw;
+          <VariableInput
+            className="form-control"
+            raw={this.state.node.extras.to}
+            placeholder="E-mail Recipient"
+            variables={this.props.variables}
+            updateRaw={(raw) => {
+              const node = this.state.node;
+              node.extras.to = raw;
 
-                this.setState({
-                  node,
-                });
-              }}
-            />
-          </React.Fragment>
+              this.setState({
+                node,
+              });
+            }}
+          />
         ) : (
           <span className="text-muted font-italic">This Message Will Only Be Sent If the User Consents to Sharing Their Email</span>
         )}
@@ -189,32 +188,30 @@ export class Mail extends Component {
         <label>Email Variable Map</label>
         <div>
           {this.state.node.extras.mapping.length !== 0 ? (
-            <React.Fragment>
-              {this.state.node.extras.mapping.map((v, i) => {
-                return (
-                  <div key={i} className="variable_map mb-2">
-                    <Select
-                      styles={selectStyles}
-                      components={{ Option: variableComponent }}
-                      className="map-box"
-                      classNamePrefix="variable-box"
-                      placeholder="Variable"
-                      value={v.val ? { label: `{${v.val}}`, value: v.val } : null}
-                      onChange={(select) => this.selectVariable(select, i)}
-                      options={
-                        Array.isArray(this.props.variables)
-                          ? this.props.variables.map((variable) => {
-                              return { label: `{${variable}}`, value: variable, openVar: this.props.openVarTab };
-                            })
-                          : null
-                      }
-                    />
-                    <i className="far fa-arrow-right" />
-                    <input readOnly className="map-box form-control" value={`{${v.key}}`} />
-                  </div>
-                );
-              })}
-            </React.Fragment>
+            this.state.node.extras.mapping.map((v, i) => {
+              return (
+                <div key={i} className="variable_map mb-2">
+                  <Select
+                    styles={selectStyles}
+                    components={{ Option: variableComponent }}
+                    className="map-box"
+                    classNamePrefix="variable-box"
+                    placeholder="Variable"
+                    value={v.val ? { label: `{${v.val}}`, value: v.val } : null}
+                    onChange={(select) => this.selectVariable(select, i)}
+                    options={
+                      Array.isArray(this.props.variables)
+                        ? this.props.variables.map((variable) => {
+                            return { label: `{${variable}}`, value: variable, openVar: this.props.openVarTab };
+                          })
+                        : null
+                    }
+                  />
+                  <i className="far fa-arrow-right" />
+                  <input readOnly className="map-box form-control" value={`{${v.key}}`} />
+                </div>
+              );
+            })
           ) : (
             <i className="text-muted">No Variables Exist For This Email</i>
           )}

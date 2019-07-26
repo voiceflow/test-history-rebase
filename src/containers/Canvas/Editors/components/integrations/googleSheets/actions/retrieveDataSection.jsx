@@ -1,9 +1,10 @@
-import Button from 'components/Button';
-import { selectStyles } from 'components/VariableSelect/VariableSelect';
 import React, { Component } from 'react';
 import Select from 'react-select';
 import { Tooltip } from 'react-tippy';
 import { Collapse } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { selectStyles } from '@/components/VariableSelect/VariableSelect';
 
 import VariableInput from '../../../VariableInput';
 

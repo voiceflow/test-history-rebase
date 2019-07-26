@@ -1,18 +1,19 @@
 // Components
-import Button from 'components/Button';
-import { Spinner } from 'components/Spinner/Spinner';
-import Dashboard from 'containers/Dashboard';
-// Views
-import Onboarding from 'containers/Onboarding';
-import Templates from 'containers/Templates';
-import { setConfirm, setError, setModal } from 'ducks/modal';
-// Actions
-import { fetchTeams, teamInvite, updateCurrentTeam } from 'ducks/team';
 import * as _ from 'lodash';
 import queryString from 'query-string';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import Button from '@/components/Button';
+import { FullSpinner } from '@/components/Spinner';
+import Dashboard from '@/containers/Dashboard';
+// Views
+import Onboarding from '@/containers/Onboarding';
+import Templates from '@/containers/Templates';
+import { setConfirm, setError, setModal } from '@/ducks/modal';
+// Actions
+import { fetchTeams, teamInvite, updateCurrentTeam } from '@/ducks/team';
 
 const DASHBOARD_PATH = '/dashboard';
 
@@ -89,7 +90,7 @@ class Team extends PureComponent {
   }
 
   render() {
-    if (this.state.loading) return <Spinner name="Team" />;
+    if (this.state.loading) return <FullSpinner name="Team" />;
 
     if (this.props.teams.allIds.length === 0) {
       return (

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Button from 'components/Button';
 import moment from 'moment';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
@@ -7,6 +6,8 @@ import React, { Component } from 'react';
 import ReactJson from 'react-json-view';
 import { connect } from 'react-redux';
 import { Table } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 class TablePagination extends React.Component {
   handleFirstPageButtonClick = (event) => {
@@ -104,7 +105,7 @@ export class LogTable extends Component {
         <tbody>
           {logs.slice(page * rows_per_page, page * rows_per_page + rows_per_page).map((log, i) => (
             <tr key={i + page * rows_per_page}>
-              <td>{moment(log.timestamp).format('LTS')}</td>
+              <td>{moment(log.timestamp).format('LLL')}</td>
               <td>{log.user_id.slice(0, 11)}</td>
               {parseRequest(log.request)}
             </tr>
@@ -199,7 +200,7 @@ function parseRequest(rawRequest) {
   const request = JSON.parse(rawRequest);
 
   return (
-    <React.Fragment>
+    <>
       <td>
         <p className="mb-0 text-danger">{request.error.type}</p>
         <p className="mt-0">{request.error.message}</p>
@@ -207,6 +208,6 @@ function parseRequest(rawRequest) {
       <td>
         <ReactJson collapsed src={request} enableClipboard={false} collapseStringsAfterLength={40} />
       </td>
-    </React.Fragment>
+    </>
   );
 }

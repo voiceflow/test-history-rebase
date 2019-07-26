@@ -1,8 +1,9 @@
-import Button from 'components/Button';
 import _ from 'lodash';
 import randomstring from 'randomstring';
 import React, { Component } from 'react';
 import { Input, InputGroup } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 import SpeakElement from './components/SpeakElement';
 
@@ -109,7 +110,7 @@ export class Speak extends Component {
           />
         ))}
         {properties.dialogs.length < BLOCK_LIMIT ? (
-          <React.Fragment>
+          <>
             <div className="d-flex mt-4">
               <Button isBtn isSecondary className="mr-3" onClick={() => this.handleAddBlock(false)}>
                 <img src="/comment.svg" alt="comment" className="mr-3 mb-1" width="17px" />
@@ -134,7 +135,7 @@ export class Speak extends Component {
                 <span className="ml-2">Output Random Entry</span>
               </label>
             </InputGroup>
-          </React.Fragment>
+          </>
         ) : null}
       </div>
     );

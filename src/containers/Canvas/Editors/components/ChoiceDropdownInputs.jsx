@@ -1,11 +1,12 @@
 /* eslint-disable no-underscore-dangle */
-import Button from 'components/Button';
-import { setError } from 'ducks/modal';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select, { components } from 'react-select';
 import { Alert, Collapse } from 'reactstrap';
+
+import Button from '@/components/Button';
+import { setError } from '@/ducks/modal';
 
 import SlotMappings from './SlotMappings';
 
@@ -209,7 +210,7 @@ class ChoiceDropdownInputs extends Component {
                       />
                     </div>
                     {!!slots && (
-                      <React.Fragment>
+                      <>
                         <div className="diagram-title">Slot Mapping</div>
                         <SlotMappings
                           variables={this.props.variables}
@@ -218,7 +219,7 @@ class ChoiceDropdownInputs extends Component {
                           arguments={choice.mappings}
                           update={this.props.update}
                         />
-                      </React.Fragment>
+                      </>
                     )}
                   </Collapse>
                 </div>

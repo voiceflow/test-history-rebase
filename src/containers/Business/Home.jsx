@@ -1,12 +1,14 @@
 import './react-table.css';
 
 import axios from 'axios';
-import LineBar from 'components/LineBar/LineBar';
-import TimeInterval from 'components/TimeInterval/TimeInterval';
 import moment from 'moment';
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import { Table } from 'reactstrap';
+
+import LineBar from '@/components/LineBar/LineBar';
+import { Spinner } from '@/components/Spinner';
+import TimeInterval from '@/components/TimeInterval/TimeInterval';
 
 const addDays = function(date, days) {
   date.setDate(date.getDate() + days);
@@ -259,9 +261,9 @@ class Home extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td>{this.state.stats_loading ? <span className="loader" /> : this.state.users}</td>
-                      <td>{this.state.stats_loading ? <span className="loader" /> : this.state.sessions}</td>
-                      <td>{this.state.stats_loading ? <span className="loader" /> : this.state.interactions}</td>
+                      <td>{this.state.stats_loading ? <Spinner isEmpty /> : this.state.users}</td>
+                      <td>{this.state.stats_loading ? <Spinner isEmpty /> : this.state.sessions}</td>
+                      <td>{this.state.stats_loading ? <Spinner isEmpty /> : this.state.interactions}</td>
                     </tr>
                   </tbody>
                 </Table>
@@ -270,9 +272,7 @@ class Home extends Component {
                 <label>Daily active users</label> <TimeInterval handleFilterTypeChange={this.handleFilterTypeChange} />
               </div>
             </div>
-            <div className="row">
-              {this.state.dau_loading ? <span className="loader" /> : <LineBar dau={this.state.dau} dates={this.state.dates} />}
-            </div>
+            <div className="row">{this.state.dau_loading ? <Spinner isEmpty /> : <LineBar dau={this.state.dau} dates={this.state.dates} />}</div>
           </div>
           <div className="graph-form mt-5">
             <div className="row justify-content-center">
@@ -280,7 +280,7 @@ class Home extends Component {
             </div>
             <div className="row justify-content-center">
               {this.state.users_loading ? (
-                <span className="loader" />
+                <Spinner isEmpty />
               ) : (
                 <ReactTable
                   className="w-100"

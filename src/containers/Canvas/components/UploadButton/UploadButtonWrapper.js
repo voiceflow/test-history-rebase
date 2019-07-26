@@ -107,6 +107,10 @@ const UploadButtonWrapper = styled.div`
     }
   }
 
+  .spinning-publish.publish-btn:hover {
+    box-shadow: none;
+  }
+
   @keyframes spin {
     from {
       transform: rotate(0deg);

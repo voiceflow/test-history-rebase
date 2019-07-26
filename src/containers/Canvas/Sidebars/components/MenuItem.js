@@ -14,7 +14,9 @@ const MenuItem = ({ draggable, item, platform, data, name }) => (
       draggable={draggable}
       onDragStart={(event) => {
         event.stopPropagation();
-        window.Appcues.track('block dragged');
+        if (window.Appcues) {
+          window.Appcues.track('block dragged');
+        }
         event.dataTransfer.setData('node', item.type);
         if (data) {
           event.dataTransfer.setData('data', data);

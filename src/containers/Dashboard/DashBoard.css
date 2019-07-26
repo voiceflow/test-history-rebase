@@ -41,6 +41,7 @@
 .add-collaborators > * {
   padding-right: 4px;
 }
+
 /* stylelint-enable */
 
 .team-setting-cog {
@@ -169,7 +170,7 @@
   flex: 0 0 auto;
   align-self: flex-start;
   min-width: 0;
-  margin: 13px 27px;
+  margin: 12px 26px;
   -ms-flex-item-align: start;
 }
 

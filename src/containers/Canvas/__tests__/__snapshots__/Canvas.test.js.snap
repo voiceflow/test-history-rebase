@@ -46,7 +46,9 @@ exports[`Canvas render canvas 1`] = `
       unfocus={[Function]}
     />
     <FullSpinner
+      backgroundColor="#f7f9fb"
       name="Flow"
+      zIndex={1}
     />
     <Connect(withStateHandlers(withStateHandlers(Editor)))
       appendCombineNode={[Function]}

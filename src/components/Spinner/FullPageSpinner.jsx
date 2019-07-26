@@ -9,15 +9,16 @@ const Diagram = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 6;
+  z-index: ${(props) => props.zIndex || 6};
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: ${(props) => props.backgroundColor || 'initial'};
 `;
 
 const FullSpinner = (props) => {
   return (
-    <Diagram>
+    <Diagram backgroundColor={props.backgroundColor} zIndex={props.zIndex}>
       <Spinner {...props} />
     </Diagram>
   );

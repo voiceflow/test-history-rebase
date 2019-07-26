@@ -1,12 +1,14 @@
 // STANDALONE SSML EDITOR
 import _ from 'lodash';
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import Textarea from 'react-textarea-autosize';
 import styled from 'styled-components';
 
 import Header from '@/components/Header';
 import SSMLEditor, { Container } from '@/components/SSMLEditor';
 import Button from '@/componentsV2/Button';
+import { setError } from '@/ducks/modal';
 
 const App = styled.div`
   width: 100%;
@@ -43,7 +45,8 @@ const ExportSection = styled.div`
   }
 `;
 
-export default function SSML() {
+function SSML(props) {
+  const { setError } = props;
   const [value, updateValue] = useState({ text: '' });
   const [ssml, updateSSML] = useState('');
 
@@ -68,7 +71,7 @@ export default function SSML() {
       />
       <App>
         <Page>
-          <SSMLEditor value={value} onChange={updateValue} />
+          <SSMLEditor value={value} onChange={updateValue} setError={setError} />
           <ExportSection>
             <Button variant="secondary" onClick={generateCode} disabled={!value.text.trim()}>
               Export SSML
@@ -80,3 +83,12 @@ export default function SSML() {
     </>
   );
 }
+
+const mapDispatchToProps = {
+  setError,
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SSML);

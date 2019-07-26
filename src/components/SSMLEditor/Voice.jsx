@@ -4,18 +4,15 @@ import Select from 'react-select';
 import styled from 'styled-components';
 
 const StyledSelect = styled(Select)`
-  width: 87px;
+  width: 100px;
   & > .css-bg1rzq-control {
     border: 1px transparent !important;
     box-shadow: none !important;
   }
 
-  & > .select-box {
-    border: 1px transparent !important;
-  }
-
   & > .select-box__control {
     box-shadow: none !important;
+    border: 1px transparent !important;
   }
 
   & > .select-box__control--is-focused {

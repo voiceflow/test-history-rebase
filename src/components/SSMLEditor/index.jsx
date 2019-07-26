@@ -37,8 +37,8 @@ export const Container = styled.div`
     min-height: 88px !important;
   }
 
-  & > .DraftEditor-root div {
-    display: inline-block;
+  & > .DraftEditor-root .public-DraftEditor-content div {
+    display: inline;
   }
 
   & > .DraftEditor-root figure {
@@ -169,6 +169,7 @@ class SSMLEditor extends Component {
   render() {
     const { MentionSuggestions } = this.mentionPlugin;
     const plugins = [this.entityStore.first, this.mentionPlugin, this.tagPlugin, this.entityStore.last];
+    const { setError } = this.props;
 
     return (
       <Container>
@@ -184,7 +185,7 @@ class SSMLEditor extends Component {
           <Divider />
           <Bottom>
             <Section>
-              <Speaker ssml={this.state.text} voice={this.state.voice} />
+              <Speaker ssml={this.state.text} voice={this.state.voice} setError={setError} />
               <Voice voice={this.state.voice} onChange={this.changeVoice} />
             </Section>
             <Section>

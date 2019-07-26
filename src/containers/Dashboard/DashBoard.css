@@ -222,6 +222,7 @@
 .main-list-header__title {
   width: 100%;
   overflow: hidden;
+  color: #132144;
   font-weight: 600;
   white-space: nowrap;
   text-overflow: ellipsis;

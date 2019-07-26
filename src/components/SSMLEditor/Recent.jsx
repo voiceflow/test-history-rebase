@@ -10,18 +10,18 @@ import { makeDescription } from './tagUtil';
 
 const RecentButton = styled(DropdownToggle)`
   padding: 0px 0px 0px 0px;
-  margin: 5px 25px 0px 0px;
+  margin: 0px 25px 0px 0px;
   border: none;
-  background-color: #fff !important;
+  background: #fff !important;
   border-color: #fff !important;
 
   &:hover {
-    background-color: #fff;
+    background: #fff;
     border: 1px solid transparent;
   }
 
   &:active {
-    background-color: #fff !important;
+    background: #fff !important;
     border: 1px solid transparent !important;
   }
 `;

@@ -15,7 +15,7 @@ function Speaker(props) {
 
   return (
     <Tooltip title="Play" position="top">
-      <SvgIcon style={{ cursor: 'pointer', marginRight: '7px', marginTop: '7px' }} onClick={speak} icon={Sound} />
+      <SvgIcon style={{ cursor: 'pointer' }} onClick={speak} icon={Sound} />
     </Tooltip>
   );
 }

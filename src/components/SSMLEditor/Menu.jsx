@@ -86,7 +86,6 @@ const AddEffectText = styled.div`
 
 const CaretDownIcon = styled(SvgIcon)`
   margin-left: 10px;
-  margin-top: 5px;
   color: ${(props) => (props.hover ? '#5d9df5' : '#62778c')};
 `;
 

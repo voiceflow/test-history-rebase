@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled, { css } from 'styled-components';
@@ -122,6 +123,7 @@ RoundButton.defaultProps = {
   imgSize: 18,
   size: 42,
   disabled: false,
+  onClick: _.noop,
 };
 
 export default RoundButton;

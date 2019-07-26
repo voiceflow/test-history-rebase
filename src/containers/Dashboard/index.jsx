@@ -8,17 +8,14 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
-import { Alert, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input, Popover, PopoverBody } from 'reactstrap';
+import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
 import RoundButton from '@/components/Button/RoundButton';
 import DragLayer from '@/components/DragLayer';
-import Header from '@/components/Header';
 import LoadingModal from '@/components/Modals/LoadingModal';
 import UpdatesModal from '@/components/Modals/UpdatesModal';
 import { FullSpinner } from '@/components/Spinner';
-import { Members } from '@/components/User/User';
-import { YOUTUBE_CHANNEL_ID } from '@/config';
 import { ScrollContextProvider } from '@/contexts';
 import { unnormalize } from '@/ducks/_normalize';
 import {
@@ -38,12 +35,9 @@ import { getMembers } from '@/ducks/team';
 import { useScrollHelpers } from '@/hooks/scroll';
 
 import ExpiryButton from './ExpiryButton';
-import TeamSettings from './TeamSettings';
-import UpdatesPopover from './UpdatesPopover';
+import DashboardHeader from './Header';
 import { Item as ListItem } from './components/Item';
 import List, { List as SimpleList } from './components/List';
-
-const YOUTUBE_CHANNEL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
 
 const filter_projects = (projects, filter) => {
   const filtered = {};
@@ -221,102 +215,24 @@ export const DashBoard = (props) => {
           toggle={() => toggleShowUpdatesModal(!props.show_updates_modl)}
           product_updates={product_updates}
         />
-        <Header
-          withLogo
+        <DashboardHeader
           history={props.history}
-          leftRenderer={() => (
-            <div className="searchBar ml-3">
-              <Input
-                name="filter_text"
-                className="search-input form-control-2"
-                placeholder="Search Projects"
-                onChange={(e) => handleFilterText(e.target.value)}
-              />
-            </div>
-          )}
-          rightRenderer={() => (
-            <div className="title-group no-select pr-2">
-              <div className="subheader-right mr-2">
-                <div id="update-popup">{renderUpdatesButton()}</div>
-                <Popover
-                  className="updates-popover-container"
-                  placement="bottom"
-                  isOpen={updates_open}
-                  target="update-popup"
-                  toggle={() => {
-                    toggleUpdatesOpen(!updates_open);
-                    setNewProductUpdates([]);
-                    setShowUpdateBubble(false);
-                  }}
-                >
-                  <PopoverBody>
-                    <UpdatesPopover product_updates={product_updates} new_product_updates={new_product_updates} />
-                  </PopoverBody>
-                </Popover>
-              </div>
-              <div className="subheader-right ml-2">
-                <Dropdown isOpen={showInfo} toggle={() => setShowInfo(!showInfo)}>
-                  <DropdownToggle className="ml-1" tag="div">
-                    <Tooltip distance={19} title="Resources" position="bottom">
-                      <RoundButton icon="information" imgSize={15} active={showInfo} />
-                    </Tooltip>
-                  </DropdownToggle>
-                  <DropdownMenu className="mt-2">
-                    <a href="https://learn.voiceflow.com/" target="_blank" rel="noopener noreferrer">
-                      <DropdownItem>University</DropdownItem>
-                    </a>
-                    <a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
-                      <DropdownItem>Youtube</DropdownItem>
-                    </a>
-                    <a href="https://www.facebook.com/groups/voiceflowgroup/" target="_blank" rel="noopener noreferrer">
-                      <DropdownItem>Community</DropdownItem>
-                    </a>
-                    <a href="https://forum.voiceflow.com/" target="_blank" rel="noopener noreferrer">
-                      <DropdownItem>Forums</DropdownItem>
-                    </a>
-                  </DropdownMenu>
-                </Dropdown>
-              </div>
-            </div>
-          )}
-          subHeaderRenderer={() => (
-            <div id="secondary-nav">
-              <div>
-                {props.teams.allIds.map((team_id) => {
-                  const team = props.teams.byId[team_id];
-                  if (team.team_id === props.team_id) {
-                    return (
-                      <div key={team.team_id} className="nav-item active">
-                        {team.name}
-                      </div>
-                    );
-                  }
-                  return (
-                    <Link key={team.team_id} className="nav-item" to={`/team/${team.team_id}`} onClick={() => fetchBoards && fetchBoards.abort()}>
-                      {team.name}
-                    </Link>
-                  );
-                })}
-                {props.teams.allIds.length < 3 && (
-                  <Link className="nav-item" to="/team/new">
-                    <img src="/add-board.svg" className="mr-1 mb-1" height={15} width={15} alt="add" /> New Board
-                  </Link>
-                )}
-              </div>
-              <div className="super-center">
-                {props.team && (
-                  <>
-                    <div style={{ color: '#CDAD32', marginRight: 15 }} className="pointer" onClick={() => setTeamSetting('MEMBERS')}>
-                      <img src="/images/icons/power.svg" alt="power" className="px-2" />
-                      Add Collaborators
-                    </div>
-                    <Members members={props.team.members} />
-                    <TeamSettings open={team_setting} update={(setting) => setTeamSetting(setting)} close={() => setTeamSetting(false)} />
-                  </>
-                )}
-              </div>
-            </div>
-          )}
+          handleFilterText={handleFilterText}
+          renderUpdatesButton={renderUpdatesButton}
+          updates_open={updates_open}
+          toggleUpdatesOpen={toggleUpdatesOpen}
+          setNewProductUpdates={setNewProductUpdates}
+          setShowUpdateBubble={setShowUpdateBubble}
+          product_updates={product_updates}
+          new_product_updates={new_product_updates}
+          showInfo={showInfo}
+          setShowInfo={setShowInfo}
+          teams={props.teams}
+          team_id={props.team_id}
+          team={props.team}
+          fetchBoards={fetchBoards}
+          team_setting={team_setting}
+          setTeamSetting={setTeamSetting}
         />
         {loading && <FullSpinner name="Projects" />}
         {LOCKED && (

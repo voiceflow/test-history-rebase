@@ -416,13 +416,6 @@
   margin-left: -100px;
 }
 
-.title-group {
-  display: flex;
-  align-items: center;
-  height: 65px;
-  margin-right: 10px;
-}
-
 .modal-img {
   display: block;
   width: 60%;
@@ -3414,7 +3407,6 @@ button.close:hover{
   background-color: #f1f4f7 !important;
   cursor: pointer;
 }
-
 
 #home-button {
   position: absolute;

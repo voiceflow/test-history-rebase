@@ -23,11 +23,31 @@ exports[`Dashboard render dashboard 1`] = `
       show_update_modal={false}
       toggle={[Function]}
     />
-    <Header
-      leftRenderer={[Function]}
-      rightRenderer={[Function]}
-      subHeaderRenderer={[Function]}
-      withLogo={true}
+    <DashboardHeader
+      handleFilterText={[Function]}
+      new_product_updates={Array []}
+      product_updates={Array []}
+      renderUpdatesButton={[Function]}
+      setNewProductUpdates={[Function]}
+      setShowInfo={[Function]}
+      setShowUpdateBubble={[Function]}
+      setTeamSetting={[Function]}
+      showInfo={false}
+      team={
+        Object {
+          "state": null,
+          "team_id": 1,
+        }
+      }
+      team_setting={null}
+      teams={
+        Object {
+          "allIds": Array [],
+          "byId": Object {},
+        }
+      }
+      toggleUpdatesOpen={[Function]}
+      updates_open={false}
     />
     <FullSpinner
       name="Projects"

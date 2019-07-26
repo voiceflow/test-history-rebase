@@ -7,7 +7,7 @@ exports[`Project Title render project title 1`] = `
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-bZQynM",
+        "componentId": "sc-bdVaJa",
         "isStatic": true,
         "rules": Array [
           "
@@ -16,9 +16,10 @@ exports[`Project Title render project title 1`] = `
   font-size: 18px;
   display: flex;
   align-items: center;
-  .icon-back {
-    line-height: inherit;
-    cursor: pointer;
+  height: inherit;
+
+  & > * {
+    height: inherit;
   }
 ",
         ],
@@ -26,7 +27,7 @@ exports[`Project Title render project title 1`] = `
       "displayName": "styled.div",
       "foldedComponentIds": Array [],
       "render": [Function],
-      "styledComponentId": "sc-bZQynM",
+      "styledComponentId": "sc-bdVaJa",
       "target": "div",
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -36,17 +37,6 @@ exports[`Project Title render project title 1`] = `
   forwardedRef={null}
   onDoubleClick={[Function]}
 >
-  <styled.span
-    className="mx-3"
-  >
-    <SvgIcon
-      className="icon-back"
-      color="#6E849A"
-      icon="arrowLeft"
-      onClick={[Function]}
-      size={16}
-    />
-  </styled.span>
   Loading Skill
 </StyledComponent>
 `;

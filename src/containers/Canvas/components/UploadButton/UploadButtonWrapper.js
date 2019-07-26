@@ -13,7 +13,7 @@ const UploadButtonWrapper = styled.div`
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     ${({ isGoogle }) =>
       isGoogle
         ? css`
@@ -23,7 +23,8 @@ const UploadButtonWrapper = styled.div`
             width: 192px;
           `};
     height: 42px;
-    padding: 11px 58px 12px 22px;
+    padding: 0 20px;
+
     color: #fff !important;
     font-weight: 500;
     font-size: 15px;
@@ -121,8 +122,7 @@ const UploadButtonWrapper = styled.div`
 
   .publish-spinner {
     position: absolute;
-    top: 6px;
-    right: 7px;
+    right: 8px;
     display: flex;
     width: 30px;
     height: 30px;

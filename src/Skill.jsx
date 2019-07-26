@@ -2,7 +2,6 @@ import axios from 'axios';
 import * as _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 import { compose } from 'recompose';
 
@@ -12,6 +11,7 @@ import Header from '@/components/Header';
 import DefaultModal from '@/components/Modals/DefaultModal';
 import SecondaryNavBar from '@/components/NavBar/SecondaryNavBar';
 import { FullSpinner } from '@/components/Spinner';
+import { ProjectTitleContainer } from '@/containers/Canvas/components/CanvasHeader/styled';
 import Migrate from '@/containers/Skill/Migrate';
 // Ducks
 import { unnormalize } from '@/ducks/_normalize';
@@ -281,12 +281,10 @@ class Skill extends Component {
             <div className="main-container-header">
               <Header
                 // title={this.props.skill.name}
+                onBackClick={() => this.props.history.push('/')}
                 history={this.props.history}
                 leftRenderer={() => (
-                  <div onDoubleClick={() => this.setState({ editName: true })}>
-                    <Link to="/" className="mx-3">
-                      <img src="/back.svg" alt="back" className="mr-3" />
-                    </Link>
+                  <ProjectTitleContainer onDoubleClick={() => this.setState({ editName: true })}>
                     {/* eslint-disable-next-line no-nested-ternary */}
                     {this.state.editName ? (
                       <input
@@ -304,7 +302,7 @@ class Skill extends Component {
                     ) : (
                       'Loading Skill'
                     )}
-                  </div>
+                  </ProjectTitleContainer>
                 )}
                 subHeaderRenderer={() => !this.props.preview && <SecondaryNavBar page={this.props.page} history={this.props.history} />}
               />

@@ -1,60 +1,43 @@
 import './Header.css';
 
-import cn from 'classnames';
-// eslint-disable-next-line import/no-extraneous-dependencies
+// import cn from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
+
+import SvgIcon from '@/components/SvgIcon';
+import LeftIcon from '@/svgs/arrow-left.svg';
 
 import IntercomChat from './components/IntercomChat';
 import UserMenu from './components/UserMenu';
+import { BackButton, HeaderActions, HeaderContainer, HeaderNavigation, JustifiedHeaderActions, Logo, PrimaryHeader } from './styled';
 
-const Header = (props) => {
-  const {
-    title,
-    preview,
-    history,
-    withLogo,
-    className,
-    leftRenderer,
-    rightRenderer,
-    leftClassName,
-    gridClassName,
-    rightClassName,
-    centerRenderer,
-    subHeaderRenderer,
-  } = props;
-
+function Header({ title, preview, history, withLogo, onBackClick, leftRenderer, rightRenderer, centerRenderer, subHeaderRenderer }) {
   return (
-    <div className={cn('header', className)}>
-      <div className="header-inner">
-        <div className={cn('header-grid __with-center', gridClassName)}>
-          {(leftRenderer || withLogo) && (
-            <div className={cn('header-grid__left', leftClassName)}>
-              {withLogo && (
-                <Link to="/dashboard" className="mx-2">
-                  <img className="voiceflow-logo" src="/logo.png" alt="logo" />
-                </Link>
-              )}
-              {leftRenderer && leftRenderer()}
-              {!!title && <div className="header__title">{title}</div>}
-            </div>
-          )}
-
-          {centerRenderer && <div className="header-grid__center">{centerRenderer()}</div>}
-
-          <div className={cn('header-grid__right', rightClassName)}>
-            {!preview && rightRenderer && rightRenderer()}
+    <HeaderContainer>
+      <PrimaryHeader>
+        {withLogo && <Logo src="/logo_bubble_Small.png" alt="logo" draggable="false" />}
+        {onBackClick && (
+          <BackButton>
+            <SvgIcon icon={LeftIcon} className="icon-back" onClick={onBackClick} />
+          </BackButton>
+        )}
+        <HeaderNavigation>
+          {leftRenderer && leftRenderer()}
+          {title}
+        </HeaderNavigation>
+        <HeaderActions>
+          {centerRenderer && centerRenderer()}
+          <JustifiedHeaderActions>
+            {!preview && rightRenderer && <div className="title-group no-select">{rightRenderer()}</div>}
             <UserMenu history={history} preview={preview} />
-          </div>
-        </div>
-      </div>
-
+          </JustifiedHeaderActions>
+        </HeaderActions>
+      </PrimaryHeader>
       {subHeaderRenderer && subHeaderRenderer()}
       <IntercomChat />
-    </div>
+    </HeaderContainer>
   );
-};
+}
 
 Header.propTypes = {
   title: PropTypes.node,

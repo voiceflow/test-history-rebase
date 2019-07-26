@@ -26,6 +26,7 @@ import InvRegex from '@/services/Regex';
 
 import Settings from '../../../Skill/Settings';
 import UploadButton from '../UploadButton/UploadButton';
+import { SubTitleGroup } from './styled';
 
 const loading = (message) => {
   return (
@@ -182,6 +183,96 @@ export class ActionGroup extends PureComponent {
     };
 
     this.token = null;
+  }
+
+  render() {
+    const { updateModal, should_pop_confetti, updateLiveModal, show_upload_prompt, vendors_open, stage, is_first_upload } = this.state;
+    const { skill, platform, live_mode, vendors, showSettings, showSettingsModal } = this.props;
+
+    return (
+      <>
+        {updateModal && (
+          <div id="confetti-positioner">
+            <Confetti
+              active={should_pop_confetti}
+              config={{
+                angle: 90,
+                spread: 70,
+                startVelocity: 50,
+                elementCount: 75,
+                dragFriction: 0.05,
+                duration: 8000,
+                delay: 0,
+              }}
+            />
+          </div>
+        )}
+        <Modal
+          size={stage === 0 ? 'lg' : undefined}
+          isOpen={updateModal && is_first_upload}
+          toggle={() => this.setState({ updateModal: false })}
+          onClosed={this.shouldReset}
+          className="stage_modal"
+        >
+          <ModalHeader toggle={() => this.setState({ updateModal: false })} className="pb-0 mb--4" header="Upload Project" />
+          <ModalBody className="modal-info" style={{ padding: '0rem 2rem' }}>
+            <div>{this.renderBody(true)}</div>
+          </ModalBody>
+        </Modal>
+
+        <Modal
+          isOpen={updateLiveModal}
+          toggle={this.toggleUpdateLive}
+          onClosed={() => {
+            this.setState({ live_update_stage: 0 });
+          }}
+          className="stage_modal"
+        >
+          <ModalHeader toggle={this.toggleUpdateLive} header="Update Live Version" />
+          <ModalBody className="modal-info">
+            <div>{this.renderLiveStage()}</div>
+          </ModalBody>
+        </Modal>
+
+        <Modal isOpen={showSettings.show} toggle={() => showSettingsModal(!showSettings.show)} className="ag__settings_modal">
+          <div className="ag__settings_header">
+            <ModalHeader toggle={() => showSettingsModal(false)} className="pb-2" header="Project Settings" />
+          </div>
+          <Settings {...this.props} tag={showSettings.tag} toggleUpgrade={this.toggleUpgrade} />
+        </Modal>
+
+        <SubTitleGroup>
+          <Tooltip title="Settings" position="bottom">
+            <RoundButton
+              active={showSettings.show}
+              icon="cog"
+              onClick={() => {
+                this.props.unfocus();
+                this.props.showSettingsModal(true);
+              }}
+              imgSize={15}
+            />
+          </Tooltip>
+        </SubTitleGroup>
+        <SubTitleGroup>
+          <ShareTest render />
+        </SubTitleGroup>
+        <UploadButton
+          live_mode={live_mode}
+          show_upload_prompt={show_upload_prompt}
+          vendors={vendors}
+          platform={platform}
+          vendors_open={vendors_open}
+          project_id={skill.project_id}
+          openUpdateLive={() => this.openUpdateLive()}
+          toggle_upload_prompt={() => this.setState({ show_upload_prompt: !show_upload_prompt })}
+          isUploadLoading={() => this.isUploadLoading()}
+          openUpdate={() => this.openUpdate()}
+          toggleVendors={() => this.toggleVendors()}
+        />
+        {this.displayUploadPrompt()}
+      </>
+    );
   }
 
   async componentDidMount() {
@@ -1041,96 +1132,6 @@ export class ActionGroup extends PureComponent {
     }
     return modal_content;
   };
-
-  render() {
-    const { updateModal, should_pop_confetti, updateLiveModal, show_upload_prompt, vendors_open, stage, is_first_upload } = this.state;
-    const { skill, platform, live_mode, vendors, showSettings, showSettingsModal } = this.props;
-
-    return (
-      <>
-        {updateModal && (
-          <div id="confetti-positioner">
-            <Confetti
-              active={should_pop_confetti}
-              config={{
-                angle: 90,
-                spread: 70,
-                startVelocity: 50,
-                elementCount: 75,
-                dragFriction: 0.05,
-                duration: 8000,
-                delay: 0,
-              }}
-            />
-          </div>
-        )}
-        <Modal
-          size={stage === 0 ? 'lg' : undefined}
-          isOpen={updateModal && is_first_upload}
-          toggle={() => this.setState({ updateModal: false })}
-          onClosed={this.shouldReset}
-          className="stage_modal"
-        >
-          <ModalHeader toggle={() => this.setState({ updateModal: false })} className="pb-0 mb--4" header="Upload Project" />
-          <ModalBody className="modal-info" style={{ padding: '0rem 2rem' }}>
-            <div>{this.renderBody(true)}</div>
-          </ModalBody>
-        </Modal>
-
-        <Modal
-          isOpen={updateLiveModal}
-          toggle={this.toggleUpdateLive}
-          onClosed={() => {
-            this.setState({ live_update_stage: 0 });
-          }}
-          className="stage_modal"
-        >
-          <ModalHeader toggle={this.toggleUpdateLive} header="Update Live Version" />
-          <ModalBody className="modal-info">
-            <div>{this.renderLiveStage()}</div>
-          </ModalBody>
-        </Modal>
-
-        <Modal isOpen={showSettings.show} toggle={() => showSettingsModal(!showSettings.show)} className="ag__settings_modal">
-          <div className="ag__settings_header">
-            <ModalHeader toggle={() => showSettingsModal(false)} className="pb-2" header="Project Settings" />
-          </div>
-          <Settings {...this.props} tag={showSettings.tag} toggleUpgrade={this.toggleUpgrade} />
-        </Modal>
-
-        <div className="title-group-sub">
-          <Tooltip title="Settings" position="bottom">
-            <RoundButton
-              active={showSettings.show}
-              icon="cog"
-              onClick={() => {
-                this.props.unfocus();
-                this.props.showSettingsModal(true);
-              }}
-              imgSize={15}
-            />
-          </Tooltip>
-        </div>
-        <div className="title-group-sub">
-          <ShareTest team_id={this.props.team_id} render />
-        </div>
-        <UploadButton
-          live_mode={live_mode}
-          show_upload_prompt={show_upload_prompt}
-          vendors={vendors}
-          platform={platform}
-          vendors_open={vendors_open}
-          project_id={skill.project_id}
-          openUpdateLive={() => this.openUpdateLive()}
-          toggle_upload_prompt={() => this.setState({ show_upload_prompt: !show_upload_prompt })}
-          isUploadLoading={() => this.isUploadLoading()}
-          openUpdate={() => this.openUpdate()}
-          toggleVendors={() => this.toggleVendors()}
-        />
-        {this.displayUploadPrompt()}
-      </>
-    );
-  }
 }
 
 const mapStateToProps = (state) => ({

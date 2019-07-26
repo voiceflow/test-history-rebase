@@ -22,7 +22,7 @@ export function UserMenu({ user, logout, history, preview }) {
   };
 
   return (
-    <UncontrolledDropdown className="account-dropdown">
+    <UncontrolledDropdown className="account-dropdown nav-child-item">
       <DropdownToggle className="account hover" nav tag="div">
         <User user={user} className="pointer" />
       </DropdownToggle>

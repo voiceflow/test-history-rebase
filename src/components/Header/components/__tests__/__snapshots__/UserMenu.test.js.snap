@@ -2,7 +2,7 @@
 
 exports[`User Menu render user menu 1`] = `
 <UncontrolledDropdown
-  className="account-dropdown"
+  className="account-dropdown nav-child-item"
 >
   <DropdownToggle
     aria-haspopup={true}

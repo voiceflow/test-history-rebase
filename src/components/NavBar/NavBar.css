@@ -5,31 +5,13 @@
   cursor: pointer;
 }
 
-.voiceflow-logo {
-  height: 25px;
-  margin-top: 7.5px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100% auto;
-}
-
 .nav-item {
   font-size: 15px;
   letter-spacing: 0.2px;
 }
 
-#secondary-nav {
-  top: 65px;
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 50px;
-  padding: 0 10px 0 40px;
-  white-space: nowrap;
-  background-color: #f7f9fb;
-  border-top: 1px solid #dce5e8;
+#secondary-nav > * {
+  height: inherit;
 }
 
 #secondary-nav .nav-item {
@@ -110,6 +92,10 @@ div.nav-item {
   cursor: pointer;
 }
 
+.log-icon {
+  padding: 0 8px;
+}
+
 .navbar-brand {
   height: 100%;
   margin-top: -3px !important;
@@ -180,7 +166,8 @@ div.nav-item {
   box-shadow: 0 0 0 1px rgba(184, 218, 255, 1);
 }
 
-.dropdown-button.show, .dropdown-button.active {
+.dropdown-button.show,
+.dropdown-button.active {
   color: #5d9df5;
   background: linear-gradient(#5d9df515, #5d9df530);
   border: 1px solid #fff !important;

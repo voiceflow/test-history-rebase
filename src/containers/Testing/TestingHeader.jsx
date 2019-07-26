@@ -8,52 +8,43 @@ import NewButton from '@/componentsV2/Button';
 import { TEST_STATUS, leaveTest, resetTest, startTest } from '@/ducks/test';
 import { updateVersion } from '@/ducks/version';
 
+import { SubTitleGroup } from '../Canvas/components/ActionGroup/styled';
 import ProjectTitle from '../Canvas/components/CanvasHeader/components/ProjectTitle';
 import ShareTest from './ShareTest';
-import { BackButtonIcon, SeparatorDot, StartButton, StartSubButton, TestingBackButton } from './TestingHeaderWrapper';
+import { SeparatorDot, StartButton, StartSubButton, TestingBackButton } from './TestingHeaderWrapper';
 import TestTimer from './TestingTimer';
 
-const TestingHeader = (props) => {
-  const { page, skill, history, leaveTest, preview, startTest, status, resetTest, updateSkill, team_id } = props;
+function TestingHeader({ page, skill, history, leaveTest, preview, startTest, status, resetTest, updateSkill }) {
   const active = status !== TEST_STATUS.IDLE;
   const running = status === TEST_STATUS.ACTIVE;
 
-  const renderLeftHeader = () => {
-    if (active) {
-      return (
-        <TestingBackButton
-          onClick={() => {
-            history.push(`/canvas/${skill.skill_id}/${skill.diagram}`);
-            leaveTest();
-          }}
-        >
-          <BackButtonIcon icon="arrowLeft" />
-          Back
-        </TestingBackButton>
-      );
-    }
-    return <ProjectTitle onChange={updateSkill} />;
+  const onClick = () => {
+    history.push(`/canvas/${skill.skill_id}/${skill.diagram}`);
+    leaveTest();
   };
+
+  const renderLeftHeader = () => (active ? <TestingBackButton onClick={onClick}>Back</TestingBackButton> : <ProjectTitle onChange={updateSkill} />);
 
   return (
     <Header
       history={history}
+      onBackClick={onClick}
       leftRenderer={() => renderLeftHeader()}
       centerRenderer={() => (
-        <div id="middle-group">
+        <>
           {status === TEST_STATUS.ENDED && (
             <div>
               Completed<SeparatorDot>•</SeparatorDot>
             </div>
           )}
           <TestTimer />
-        </div>
+        </>
       )}
       rightRenderer={() => (
-        <div className="title-group">
-          <div className="title-group-sub">
-            <ShareTest team_id={team_id} />
-          </div>
+        <>
+          <SubTitleGroup>
+            <ShareTest />
+          </SubTitleGroup>
           <div className="align-icon no-select">
             {running ? (
               <NewButton variant="secondary" onClick={leaveTest}>
@@ -74,12 +65,12 @@ const TestingHeader = (props) => {
               </StartButton>
             )}
           </div>
-        </div>
+        </>
       )}
       subHeaderRenderer={() => !preview && !active && <SecondaryNavBar page={page} history={history} />}
     />
   );
-};
+}
 
 const mapStateToProps = (state) => ({
   skill: state.skills.skill,

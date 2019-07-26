@@ -9,9 +9,11 @@ import Button from '@/components/Button';
 import CheckMark from '@/components/CheckMark';
 import { ModalHeader } from '@/components/Modals/ModalHeader';
 import { Spinner } from '@/components/Spinner';
+import SvgIcon from '@/components/SvgIcon';
 import Image from '@/components/Uploads/Image';
 import { setConfirm, setError } from '@/ducks/modal';
 import { deleteTeam, leaveTeam, updateCurrentTeamItem, updateMembers, updateTeamName } from '@/ducks/team';
+import CogIcon from '@/svgs/cog.svg';
 
 import Billing from './Billing';
 import { PLANS_ID } from './PLANS';
@@ -397,11 +399,11 @@ class TeamSettings extends Component {
     const fullscreen = stage in STAGES && STAGES[stage].fullscreen;
 
     return (
-      <div style={{ marginRight: 30, marginLeft: 15 }}>
+      <div className="nav-child-item">
         {!hideIcon && (
           <UncontrolledDropdown inNavbar>
-            <DropdownToggle tag="div" className="pointer">
-              <img src="/cog.svg" width={17} alt="cog" />
+            <DropdownToggle tag="div" className="pointer team-setting-cog">
+              <SvgIcon icon={CogIcon} />
             </DropdownToggle>
             <DropdownMenu right className="no-select">
               <DropdownItem onClick={() => update('MEMBERS')}>{this.IS_ADMIN ? 'Manage Members' : 'Team Members'}</DropdownItem>

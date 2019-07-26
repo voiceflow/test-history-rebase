@@ -234,9 +234,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       }
     />
   </Modal>
-  <div
-    className="title-group-sub"
-  >
+  <styled.div>
     <Tooltip
       animateFill={true}
       animation="shift"
@@ -284,14 +282,12 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
         variant="plain"
       />
     </Tooltip>
-  </div>
-  <div
-    className="title-group-sub"
-  >
+  </styled.div>
+  <styled.div>
     <Connect(TestingHeader)
       render={true}
     />
-  </div>
+  </styled.div>
   <UploadButton
     isUploadLoading={[Function]}
     openUpdate={[Function]}

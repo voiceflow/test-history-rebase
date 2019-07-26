@@ -1,18 +1,17 @@
 import styled from 'styled-components';
 
 import Button from '@/components/Button';
-import SvgIcon from '@/components/SvgIcon';
 import { flexCenterStyles } from '@/componentsV2/Flex';
 
 export const TestingBackButton = styled.div`
-  ${flexCenterStyles};
-  margin: -32px 0;
-  padding-right: 32px;
-  border-right: 1px solid #eaeff4;
-  padding-left: 6px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 18px;
+  width: 80px;
   line-height: 18px;
+  border-right: 1px solid rgb(234, 239, 244);
+  height: inherit;
+  display: flex;
+  align-items: center;
 `;
 
 export const StartSubButton = styled.div`
@@ -28,11 +27,6 @@ export const StartSubButton = styled.div`
   transition: all 0.2s;
   justify-content: center;
   align-items: center;
-`;
-
-export const BackButtonIcon = styled(SvgIcon)`
-  line-height: inherit;
-  margin-right: 13px;
 `;
 
 export const SeparatorDot = styled.span`

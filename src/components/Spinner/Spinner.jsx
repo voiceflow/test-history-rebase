@@ -7,7 +7,6 @@ const Text = styled.div`
   color: #132144;
   font-weight: 400;
   font-size: 18px;
-  padding-bottom: 14px;
 `;
 
 const Spinner = ({ isEmpty, message, name, isLg, isMd }) => {

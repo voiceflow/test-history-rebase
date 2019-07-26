@@ -3,6 +3,8 @@ import { shallow } from 'enzyme/build';
 import _ from 'lodash';
 import React from 'react';
 
+import theme from '@/styles/theme';
+
 import { testSkill } from '../__mock__/MockSkill';
 import { Canvas } from '..';
 
@@ -16,6 +18,7 @@ describe('Canvas', () => {
     const skill = testSkill;
     const component = shallow(
       <Canvas
+        theme={theme}
         skill={skill}
         setOnSave={setOnSave}
         resetSkill={jest.fn()}
@@ -34,6 +37,7 @@ describe('Canvas', () => {
     const diagram_id = 'e9f52b0622f08ff1b21137bae05a242b';
     const component = shallow(
       <Canvas
+        theme={theme}
         skill={skill}
         resetSkill={jest.fn()}
         diagram_id={diagram_id}
@@ -56,6 +60,7 @@ describe('Canvas', () => {
     const enterFlow = jest.spyOn(Canvas.prototype, 'enterFlow');
     const component = shallow(
       <Canvas
+        theme={theme}
         page="canvas"
         skill={skill}
         setOnSave={setOnSave}
@@ -83,6 +88,7 @@ describe('Canvas', () => {
     const enterFlow = jest.spyOn(Canvas.prototype, 'createDiagram');
     const component = shallow(
       <Canvas
+        theme={theme}
         skill={skill}
         diagrams={[]}
         setOnSave={setOnSave}
@@ -103,6 +109,7 @@ describe('Canvas', () => {
     const onSave = jest.spyOn(Canvas.prototype, 'onSave');
     const component = shallow(
       <Canvas
+        theme={theme}
         skill={skill}
         diagrams={[]}
         setOnSave={setOnSave}

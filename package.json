@@ -201,7 +201,7 @@
   "scripts": {
     "build": "patch-package && wp --prod",
     "build:dev": "patch-package && wp",
-    "commit": "git-cz",
+    "commit": "scripts/change_remote.sh && git-cz",
     "deploy:staging": "git push origin $(git branch | grep \\* | cut -d ' ' -f2):staging -f",
     "gen-certs": "scripts/generate_certs.sh",
     "lint": "npm run lint:js && npm run lint:css",

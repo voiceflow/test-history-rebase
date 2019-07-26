@@ -20,12 +20,12 @@ const activeStyles = css`
         css`
           background-color: #5b9dfa30;
           color: #5b9dfa;
-          box-shadow: 0 0 0 1px 5b9dfa99;
+          box-shadow: 0 0 0 1px #5b9dfa99;
         `}
 
       ${color &&
         css`
-          box-shadow: 0 0 0 1px ${color}99;
+          box-shadow: 0 0 0 1px #${color}99;
         `}
     `}
 `;

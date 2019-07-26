@@ -321,7 +321,7 @@ export const DashBoard = (props) => {
                         }}
                       </DragLayer>
                       <div className="main-list-add">
-                        <Tooltip distance={16} title="Add new list" position="bottom" className="ml-1 mr-4">
+                        <Tooltip distance={10} title="Add new list" position="bottom">
                           <RoundButton
                             variant="shadow"
                             icon="addStep"

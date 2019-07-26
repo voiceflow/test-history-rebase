@@ -10,6 +10,8 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
+import { withTheme } from 'styled-components';
+
 // import Loader from './Loader'
 import 'draft-js/dist/Draft.css';
 import '@/components/SRD/sass/main.css';
@@ -1645,7 +1647,7 @@ export class Canvas extends Component {
               this.updateTree = fn;
             }}
           />
-          {this.state.load_diagram && <FullSpinner name="Flow" />}
+          {this.state.load_diagram && <FullSpinner backgroundColor={this.props.theme.color.background} zIndex={1} name="Flow" />}
           <Editor
             unfocus={this.onDiagramUnfocus}
             open={this.props.open && this.props.page === 'canvas'}
@@ -1833,5 +1835,6 @@ export default compose(
   blockMenu,
   keyboardModal,
   undo,
-  redo
+  redo,
+  withTheme
 )(Canvas);

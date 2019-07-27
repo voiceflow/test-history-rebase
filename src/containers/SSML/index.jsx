@@ -1,6 +1,6 @@
 // STANDALONE SSML EDITOR
 import _ from 'lodash';
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Textarea from 'react-textarea-autosize';
 import styled from 'styled-components';
@@ -50,66 +50,106 @@ const ExportSection = styled.div`
   }
 `;
 
-function SSML(props) {
-  const { setError } = props;
-  const [value, updateValue] = useState({ text: '' });
-  const [ssml, updateSSML] = useState('');
-  const [copied, setCopied] = useState(false);
+class SSML extends Component {
+  constructor(props) {
+    super(props);
 
-  const generateCode = () => {
-    if (!value.text) return;
-    updateSSML(value.text);
+    let value;
+    try {
+      value = JSON.parse(localStorage.getItem('SSML_EDITOR'));
+    } catch (err) {
+      console.error(err);
+    }
+    if (!value) value = { text: '' };
+
+    this.state = {
+      value,
+      ssml: '',
+      copied: false,
+    };
+  }
+
+  saveValue = () => {
+    localStorage.setItem('SSML_EDITOR', JSON.stringify(this.state.value));
   };
 
-  const copyCode = () => {
+  componentWillUnmount = () => {
+    this.saveValue();
+  };
+
+  generateCode = () => {
+    const { value } = this.state;
+    if (!value.text) return;
+    this.saveValue();
+    this.setState({
+      ssml: value.text,
+    });
+  };
+
+  copyCode = () => {
     const dummy = document.createElement('textarea');
     document.body.appendChild(dummy);
-    dummy.value = ssml;
+    dummy.value = this.state.ssml;
     dummy.select();
     document.execCommand('copy');
     document.body.removeChild(dummy);
 
-    if (copied) clearInterval(copied);
-    setCopied(setTimeout(() => setCopied(false), 3000));
+    if (this.copyInterval) clearInterval(this.copyInterval);
+    this.copyInterval = setTimeout(() => this.setState({ copied: false }), 3000);
   };
 
-  return (
-    <>
-      <a id="MadeInVoiceflow" href="https://voiceflow.com" target="_blank" rel="noopener noreferrer">
-        <img src="/favicon.png" alt="Voiceflow" />
-        <span>Made In Voiceflow</span>
-      </a>
-      <Header
-        leftRenderer={() => (
-          <a href="https://www.voiceflow.com" className="mx-2">
-            <img className="voiceflow-logo" src="/logo.png" alt="logo" />
-          </a>
-        )}
-        centerRenderer={_.constant('SSML Editor (ALPHA)')}
-      />
-      <App>
-        <Page>
-          <SSMLEditor value={value} onChange={updateValue} setError={setError} />
-          <ExportSection>
-            <Button variant="primary" onClick={generateCode} disabled={!value.text.trim()}>
-              Generate SSML
-            </Button>
-            {ssml && (
-              <>
-                <CodeContainer value={ssml} onChange={(e) => updateSSML(e.target.value)} />
-                <div>
-                  {!!copied && <small className="light-blue mr-3">Copied to clipboard</small>}
-                  <Button variant="secondary" onClick={copyCode}>
-                    Copy
-                  </Button>
-                </div>
-              </>
-            )}
-          </ExportSection>
-        </Page>
-      </App>
-    </>
-  );
+  updateSSML = (e) => {
+    this.setState({
+      ssml: e.target.value,
+    });
+  };
+
+  updateValue = (value) => {
+    this.setState({ value });
+  };
+
+  render() {
+    const { value, ssml, copied } = this.state;
+    const { setError } = this.props;
+
+    return (
+      <>
+        <a id="MadeInVoiceflow" href="https://voiceflow.com" target="_blank" rel="noopener noreferrer">
+          <img src="/favicon.png" alt="Voiceflow" />
+          <span>Made In Voiceflow</span>
+        </a>
+        <Header
+          leftRenderer={() => (
+            <a href="https://www.voiceflow.com" className="mx-2">
+              <img className="voiceflow-logo" src="/logo.png" alt="logo" />
+            </a>
+          )}
+          centerRenderer={_.constant('SSML Editor (ALPHA)')}
+        />
+        <App>
+          <Page>
+            <SSMLEditor value={value} onChange={this.updateValue} setError={setError} />
+            <ExportSection>
+              <Button variant="primary" onClick={this.generateCode} disabled={!value.text.trim()}>
+                Generate SSML
+              </Button>
+              {ssml && (
+                <>
+                  <CodeContainer value={ssml} onChange={this.updateSSML} />
+                  <div>
+                    {!!copied && <small className="light-blue mr-3">Copied to clipboard</small>}
+                    <Button variant="secondary" onClick={this.copyCode}>
+                      Copy
+                    </Button>
+                  </div>
+                </>
+              )}
+            </ExportSection>
+          </Page>
+        </App>
+      </>
+    );
+  }
 }
 
 const mapDispatchToProps = {

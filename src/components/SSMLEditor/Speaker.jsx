@@ -31,10 +31,14 @@ class Speaker extends Component {
 
     // if nothing has changed in the text ssml don't make the call but instead just replay the current audio
     if (this.audioSSML === ssml && this.audio) {
-      this.audio.currentTime = 0;
-      this.audio.play();
-      this.setState({ playing: true, loading: false });
-      return;
+      try {
+        this.audio.currentTime = 0;
+        this.audio.play();
+        this.setState({ playing: true, loading: false });
+        return;
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     this.setState({ loading: true });

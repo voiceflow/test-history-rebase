@@ -41,6 +41,10 @@ export const Container = styled.div`
     display: inline;
   }
 
+  & > .DraftEditor-root .public-DraftEditor-content br {
+    display: none;
+  }
+
   & > .DraftEditor-root figure {
     display: inline-block;
     margin: 0;

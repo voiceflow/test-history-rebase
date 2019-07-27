@@ -19,23 +19,23 @@ const RecentButton = styled(DropdownToggle)`
 function Recent(props) {
   const { history, onClick } = props;
   const [open, setOpen] = useState(false);
+  if (history.length === 0) return null;
+
   return (
     <div>
       <Dropdown isOpen={open} toggle={() => setOpen(!open)}>
-        <RecentButton>
+        <RecentButton tag="div">
           <Tooltip title="Recent Effects" position="top">
             <SvgIcon icon={Clock} />
           </Tooltip>
         </RecentButton>
-        {history.length === 0 ? null : (
-          <DropdownMenu>
-            {history.map((val, i) => (
-              <DropdownItem key={i} onClick={() => onClick(val, true)}>
-                {makeDescription(val)}
-              </DropdownItem>
-            ))}
-          </DropdownMenu>
-        )}
+        <DropdownMenu>
+          {history.map((val, i) => (
+            <DropdownItem key={i} onClick={() => onClick(val, true)}>
+              {makeDescription(val)}
+            </DropdownItem>
+          ))}
+        </DropdownMenu>
       </Dropdown>
     </div>
   );

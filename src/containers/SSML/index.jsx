@@ -9,6 +9,7 @@ import Header from '@/components/Header';
 import SSMLEditor, { Container } from '@/components/SSMLEditor';
 import Button from '@/componentsV2/Button';
 import { setError } from '@/ducks/modal';
+import removeIntercom from '@/hocs/removeIntercom';
 
 const App = styled.div`
   width: 100%;
@@ -35,13 +36,17 @@ const CodeContainer = styled(Textarea)`
   white-space: pre-wrap;
   padding: 20px;
   resize: none;
+  margin: 40px 0 20px 0;
+  box-shadow: 0px 1px 3px rgba(17, 49, 96, 0.06);
 `;
 
 const ExportSection = styled.div`
   width: 100%;
+  padding-top: 20px;
+  text-align: right;
 
   button {
-    margin: 20px auto;
+    display: inline-block;
   }
 `;
 
@@ -49,10 +54,23 @@ function SSML(props) {
   const { setError } = props;
   const [value, updateValue] = useState({ text: '' });
   const [ssml, updateSSML] = useState('');
+  const [copied, setCopied] = useState(false);
 
   const generateCode = () => {
     if (!value.text) return;
     updateSSML(value.text);
+  };
+
+  const copyCode = () => {
+    const dummy = document.createElement('textarea');
+    document.body.appendChild(dummy);
+    dummy.value = ssml;
+    dummy.select();
+    document.execCommand('copy');
+    document.body.removeChild(dummy);
+
+    if (copied) clearInterval(copied);
+    setCopied(setTimeout(() => setCopied(false), 3000));
   };
 
   return (
@@ -73,10 +91,20 @@ function SSML(props) {
         <Page>
           <SSMLEditor value={value} onChange={updateValue} setError={setError} />
           <ExportSection>
-            <Button variant="secondary" onClick={generateCode} disabled={!value.text.trim()}>
-              Export SSML
+            <Button variant="primary" onClick={generateCode} disabled={!value.text.trim()}>
+              Generate SSML
             </Button>
-            {ssml && <CodeContainer value={ssml} onChange={(e) => updateSSML(e.target.value)} />}
+            {ssml && (
+              <>
+                <CodeContainer value={ssml} onChange={(e) => updateSSML(e.target.value)} />
+                <div>
+                  {!!copied && <small className="light-blue mr-3">Copied to clipboard</small>}
+                  <Button variant="secondary" onClick={copyCode}>
+                    Copy
+                  </Button>
+                </div>
+              </>
+            )}
           </ExportSection>
         </Page>
       </App>
@@ -88,7 +116,9 @@ const mapDispatchToProps = {
   setError,
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SSML);
+export default removeIntercom(
+  connect(
+    null,
+    mapDispatchToProps
+  )(SSML)
+);

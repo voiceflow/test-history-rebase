@@ -5,9 +5,6 @@ import styled from 'styled-components';
 import { makeDescription, makeETag } from './tagUtil';
 
 const TagContainer = styled.div`
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
-
   color: ${({ type }) => {
     switch (type) {
       case 'BREAK':
@@ -45,7 +42,7 @@ function Tag(props) {
       <TagContainer type={data.VF_type}>
         {(entity.type === 'OPEN' || entity.type === 'VOID') && '< '}
         {entity.type !== 'CLOSE' && makeETag(data)}
-        {entity.type === 'VOID' && ' '}
+        &nbsp;
         {(entity.type === 'VOID' || entity.type === 'CLOSE') && '>'}
       </TagContainer>
     </Tooltip>

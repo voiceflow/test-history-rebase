@@ -95,6 +95,8 @@ class SSML extends Component {
     document.body.removeChild(dummy);
 
     if (this.copyInterval) clearInterval(this.copyInterval);
+
+    this.setState({ copied: true });
     this.copyInterval = setTimeout(() => this.setState({ copied: false }), 3000);
   };
 

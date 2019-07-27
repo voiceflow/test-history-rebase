@@ -30,13 +30,16 @@ const Divider = styled.hr`
 
 function Prompt(props) {
   const { options, prompt, data, onClick } = props;
-  const { placeholder, attribute } = prompt;
+  // default format is to do nothing
+  const { placeholder, attribute, format } = prompt;
   const [input, setInput] = useState('');
   const [focus, changeFocus] = useState(false);
 
   const submit = (e) => {
     e.preventDefault();
-    onClick({ ...data, [attribute]: input, VF_path: [...data.VF_path, input], VF_custom: true });
+    let value = input;
+    if (typeof format === 'function') value = format(value);
+    onClick({ ...data, [attribute]: value, VF_path: [...data.VF_path, value], VF_custom: true });
     setInput('');
   };
 

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { makeDescription, makeETag } from './tagUtil';
 
 const TagContainer = styled.div`
+  font-size: 11px;
   color: ${({ type }) => {
     switch (type) {
       case 'BREAK':

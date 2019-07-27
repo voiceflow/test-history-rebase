@@ -1793,6 +1793,13 @@ body.modal-open {
   box-shadow: none !important;
 }
 
+.spin {
+  -webkit-animation: spin 1s linear infinite;
+  -moz-animation: spin 1s linear infinite;
+  -ms-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+
 .save-loader {
   display: inline-flex;
   width: 16px;

@@ -406,16 +406,6 @@
   transition: all 0.2s ease !important;
 }
 
-#middle-group {
-  z-index: 1040;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
-  height: 65px;
-  margin-left: -100px;
-}
-
 .modal-img {
   display: block;
   width: 60%;

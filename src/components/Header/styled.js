@@ -7,6 +7,13 @@ export const HeaderContainer = styled.header`
   z-index: 10;
 `;
 
+export const CenterGroup = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+`;
+
 export const PrimaryHeader = styled.div`
   display: flex;
   align-items: center;

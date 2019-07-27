@@ -10,6 +10,7 @@ import Admin from '@/containers/Admin';
 import NewTeam from '@/containers/Dashboard/NewTeam';
 import Reset from '@/containers/Register/reset';
 import ResetPassword from '@/containers/Register/resetPassword';
+import SSML from '@/containers/SSML';
 import UserTesting from '@/containers/UserTesting';
 
 import Skill from '../Skill';
@@ -22,6 +23,7 @@ import PublicRoute from './PublicRoute';
 
 const allRoutes = (
   <Switch>
+    <Route exact path="/ssml" component={SSML} />
     {/* User routes */}
     <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
     <PublicRoute exact path="/reset" name="Reset" component={Reset} />

@@ -21,6 +21,8 @@ export { default as returnHome } from './return-home.svg';
 export { default as back } from './back.svg';
 export { default as folderLight } from './folder-light.svg';
 export { default as save } from './save.svg';
+export { default as sound } from './sound.svg';
+export { default as stop } from './stop.svg';
 export { default as badge } from './badge.svg';
 export { default as forward } from './forward.svg';
 export { default as check2 } from './check-2.svg';

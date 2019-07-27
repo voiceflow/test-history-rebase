@@ -9,7 +9,7 @@ import LeftIcon from '@/svgs/arrow-left.svg';
 
 import IntercomChat from './components/IntercomChat';
 import UserMenu from './components/UserMenu';
-import { BackButton, HeaderActions, HeaderContainer, HeaderNavigation, JustifiedHeaderActions, Logo, PrimaryHeader } from './styled';
+import { BackButton, CenterGroup, HeaderActions, HeaderContainer, HeaderNavigation, JustifiedHeaderActions, Logo, PrimaryHeader } from './styled';
 
 function Header({ title, preview, history, withLogo, onBackClick, leftRenderer, rightRenderer, centerRenderer, subHeaderRenderer, clickable }) {
   return (
@@ -26,7 +26,7 @@ function Header({ title, preview, history, withLogo, onBackClick, leftRenderer, 
           {title}
         </HeaderNavigation>
         <HeaderActions>
-          {centerRenderer && centerRenderer()}
+          <CenterGroup>{centerRenderer && centerRenderer()}</CenterGroup>
           <JustifiedHeaderActions>
             {!preview && rightRenderer && <div className="title-group no-select">{rightRenderer()}</div>}
             <UserMenu history={history} preview={preview} />

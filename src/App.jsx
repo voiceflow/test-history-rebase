@@ -58,8 +58,7 @@ class App extends Component {
           })
         )
         .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err);
+          console.error(err);
           this.setState({ loading: false });
           history.push('/login');
         });

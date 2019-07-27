@@ -5,6 +5,7 @@ exports[`Header render header 1`] = `
   <styled.div>
     <styled.div />
     <styled.div>
+      <styled.div />
       <styled.div>
         <Connect(UserMenu) />
       </styled.div>

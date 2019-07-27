@@ -30,7 +30,7 @@ class Speaker extends Component {
     if (!ssml.trim()) return;
 
     // if nothing has changed in the text ssml don't make the call but instead just replay the current audio
-    if (this.audioSSML === ssml && this.audio) {
+    if (this.currentSSML === voice + ssml && this.audio) {
       try {
         this.audio.currentTime = 0;
         this.audio.play();
@@ -47,7 +47,7 @@ class Speaker extends Component {
       const res = await axios.post('/test/speak', { ssml, voice: voice === 'Alexa' ? '_DEFAULT' : voice });
       this.setState({ playing: true });
 
-      this.audioSSML = ssml;
+      this.currentSSML = voice + ssml;
       this.audio = new Audio(res.data);
       this.audio.play();
 

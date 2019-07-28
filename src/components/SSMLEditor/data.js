@@ -25,6 +25,17 @@ export default [
       },
     ],
     prompt: {
+      format: (text) => {
+        let number = text;
+        // if text is a number ensure it is positive and attach the right unit of measurement to it
+        if (!Number.isNaN(text * 1)) {
+          number = Math.abs(text * 1);
+          if (number > 10000) number = 10000;
+          if (number <= 10) number += 's';
+          else number += 'ms';
+        }
+        return number;
+      },
       placeholder: '0.5s',
       attribute: 'time',
     },

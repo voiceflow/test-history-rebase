@@ -139,11 +139,7 @@ export default function skillReducer(state = initialState, action) {
     case UPDATE_VERSION_MERGE:
       return {
         ...state,
-        skill: update(state.skill, {
-          [action.payload.type]: {
-            $merge: action.payload.val,
-          },
-        }),
+        skill: update(state.skill, { $merge: action.payload }),
       };
     case SET_LIVE_MODE_MODAL:
       return {
@@ -218,12 +214,9 @@ export const updateEntireVersion = (skill) => ({
   },
 });
 
-export const updateVersionMerge = (type, val) => ({
+export const updateVersionMerge = (payload) => ({
   type: UPDATE_VERSION_MERGE,
-  payload: {
-    type,
-    val,
-  },
+  payload,
 });
 
 export const toggleLive = (skill, diagram_id, live_version, live_mode) => (dispatch) => {

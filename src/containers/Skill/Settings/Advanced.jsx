@@ -1,4 +1,7 @@
 // import AceEditor from '@/components/AceEditor';
+import axios from 'axios';
+import update from 'immutability-helper';
+import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert, FormGroup, Label } from 'reactstrap';
@@ -9,29 +12,74 @@ import DefaultModal from '@/components/Modals/DefaultModal';
 import Prompt from '@/components/Uploads/Prompt';
 import { setConfirm, setError } from '@/ducks/modal';
 import { deleteProject } from '@/ducks/project';
-import { updateVersion, updateVersionMerge } from '@/ducks/version';
+import { updateVersionMerge } from '@/ducks/version';
 
 import AccountLinkTemplate from '../../Business/AccountLinkTemplate';
 
 class AdvancedSettings extends Component {
   constructor(props) {
     super(props);
+    const { error_prompt, alexa_events } = props.skill;
+
     this.state = {
       saving: false,
       show_overwrite_modal: false,
+      settings: {
+        alexa_events: alexa_events || '',
+        error_prompt: error_prompt || { voice: 'Alexa', content: '' },
+      },
     };
 
-    if (!props.skill.error_prompt) {
-      const error_prompt = {
-        voice: 'Alexa',
-        content: '',
-      };
-      props.skill.error_prompt = error_prompt;
-    }
-    if (!props.skill.alexa_events) {
-      props.skill.alexa_events = '';
-    }
+    this.baseline = JSON.stringify(this.state.settings);
   }
+
+  componentWillUnmount() {
+    this.saveSettings();
+  }
+
+  saveSettings = async () => {
+    const { setError, skill, updateVersionMerge } = this.props;
+    const { settings } = this.state;
+
+    // Don't save if nothing has changed - save me some HTTP calls
+    const settingsString = JSON.stringify(settings);
+    if (this.baseline === settingsString) return;
+    this.baseline = settingsString;
+
+    const tempSettings = _.cloneDeep(settings);
+
+    if (!settings.error_prompt.content) {
+      settings.error_prompt = null;
+    }
+    if (settings.alexa_events.trim()) {
+      try {
+        JSON.parse(settings.alexa_events);
+      } catch (err) {
+        this.props.setError(`Warning: Invalid JSON For Skill Events: ${err.message}`);
+      }
+    }
+
+    try {
+      await axios.patch(`/skill/${skill.skill_id}?settings=1`, tempSettings);
+      updateVersionMerge(tempSettings);
+    } catch (err) {
+      setError('Settings Save Error');
+    }
+  };
+
+  updateErrorPrompt = (value) => {
+    const { settings } = this.state;
+    this.setState({
+      settings: update(settings, { error_prompt: { $merge: value } }),
+    });
+  };
+
+  updateAlexaEvents = (value) => {
+    const { settings } = this.state;
+    this.setState({
+      settings: update(settings, { alexa_events: { $set: value } }),
+    });
+  };
 
   overwriteSuccessModal = (result) => {
     const msg = result ? 'Development version successfully overwritten' : 'Overwrite failed.';
@@ -76,6 +124,8 @@ class AdvancedSettings extends Component {
   };
 
   render() {
+    const { settings } = this.state;
+
     return (
       <>
         <DefaultModal
@@ -92,9 +142,9 @@ class AdvancedSettings extends Component {
             <div className="helper-text mb-2">What to say if the skill encounters an unexpected error</div>
             <Prompt
               placeholder="Sorry, this skill has encountered an error"
-              voice={this.props.skill.error_prompt ? this.props.skill.error_prompt.voice : null}
-              content={this.props.skill.error_prompt ? this.props.skill.error_prompt.content : null}
-              updatePrompt={(prompt) => this.props.updateSkillMerge('error_prompt', prompt)}
+              voice={settings.error_prompt ? settings.error_prompt.voice : null}
+              content={settings.error_prompt ? settings.error_prompt.content : null}
+              updatePrompt={this.updateErrorPrompt}
             />
           </FormGroup>
         </div>
@@ -124,14 +174,12 @@ class AdvancedSettings extends Component {
               className="datasource_editor"
               mode="json"
               theme="github"
-              onChange={(value) => {
-                this.props.updateSkill('alexa_events', value);
-              }}
+              onChange={this.updateAlexaEvents}
               fontSize={14}
               showPrintMargin={false}
               showGutter={true}
               highlightActiveLine={true}
-              value={this.props.skill.alexa_events}
+              value={settings.alexa_events}
               editorProps={{ $blockScrolling: true }}
               setOptions={{
                 enableBasicAutocompletion: true,
@@ -166,15 +214,13 @@ const mapStateToProps = (state) => ({
   skill: state.skills.skill,
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    deleteProject: (p_id) => dispatch(deleteProject(p_id)),
-    updateSkill: (type, val) => dispatch(updateVersion(type, val)),
-    updateSkillMerge: (type, val) => dispatch(updateVersionMerge(type, val)),
-    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
-    setError: (err) => dispatch(setError(err)),
-  };
+const mapDispatchToProps = {
+  deleteProject,
+  updateVersionMerge,
+  setConfirm,
+  setError,
 };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

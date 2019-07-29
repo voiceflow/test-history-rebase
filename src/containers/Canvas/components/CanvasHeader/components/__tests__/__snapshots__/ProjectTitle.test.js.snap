@@ -11,16 +11,11 @@ exports[`Project Title render project title 1`] = `
         "isStatic": true,
         "rules": Array [
           "
-  overflow-x: hidden;
-  text-overflow: ellipsis;
+  width: 100%;
   font-size: 18px;
   display: flex;
   align-items: center;
   height: inherit;
-
-  & > * {
-    height: inherit;
-  }
 ",
         ],
       },
@@ -37,6 +32,8 @@ exports[`Project Title render project title 1`] = `
   forwardedRef={null}
   onDoubleClick={[Function]}
 >
-  Loading Skill
+  <styled.div>
+    Loading Skill
+  </styled.div>
 </StyledComponent>
 `;

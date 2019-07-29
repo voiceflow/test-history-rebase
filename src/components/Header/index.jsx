@@ -15,7 +15,7 @@ function Header({ title, preview, history, withLogo, onBackClick, leftRenderer, 
   return (
     <HeaderContainer>
       <PrimaryHeader>
-        {withLogo && <Logo src="/logo_bubble_Small.png" alt="logo" draggable="false" onClick={clickable ? () => history.push('/') : ''} />}
+        {withLogo && <Logo src="/logo_bubble_Small.png" alt="logo" draggable="false" onClick={() => clickable && history.push('/')} />}
         {onBackClick && (
           <BackButton>
             <SvgIcon icon={LeftIcon} className="icon-back" onClick={onBackClick} />

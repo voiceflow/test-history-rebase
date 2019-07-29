@@ -48,8 +48,7 @@ jobs:
     steps:
       - checkout
       - run: git tag --merged production
-      - run: npm i -g semantic-release@15
-      - run: semantic-release
+      - run: npx semantic-release@15
   test: # runs not using Workflows must have a `build` job as entry point
     executor: node_11
     steps: # a collection of executable commands

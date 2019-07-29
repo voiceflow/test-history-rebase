@@ -265,9 +265,9 @@ export class BlockNodeWidget extends BaseWidget {
           selected.remove(false);
           targetNode.remove('combine');
         }
-        node.setSelected();
+        selected.setSelected();
         engine.getDiagramModel().clearSelection();
-        engine.setSuperSelect(node);
+        engine.setSuperSelect(selected);
         engine.getDiagramModel().addNode(node);
         engine.enableRepaintEntities([node]);
         engine.repaintCanvas(false);

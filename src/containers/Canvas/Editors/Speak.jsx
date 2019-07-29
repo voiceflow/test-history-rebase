@@ -3,7 +3,7 @@ import randomstring from 'randomstring';
 import React, { Component } from 'react';
 import { Input, InputGroup } from 'reactstrap';
 
-import Button from '@/components/Button';
+import Button from '@/componentsV2/Button';
 
 import SpeakElement from './components/SpeakElement';
 
@@ -112,12 +112,10 @@ export class Speak extends Component {
         {properties.dialogs.length < BLOCK_LIMIT ? (
           <>
             <div className="d-flex mt-4">
-              <Button isBtn isSecondary className="mr-3" onClick={() => this.handleAddBlock(false)}>
-                <img src="/comment.svg" alt="comment" className="mr-3 mb-1" width="17px" />
+              <Button icon="comment" variant="secondary" className="mr-3" onClick={() => this.handleAddBlock(false)}>
                 Add Speech
               </Button>
-              <Button isBtn isSecondary onClick={() => this.handleAddBlock(true)}>
-                <img src="/volume.svg" alt="volume" className="mr-3 mb-1" width="16px" />
+              <Button icon="volume" variant="secondary" onClick={() => this.handleAddBlock(true)}>
                 Add Audio
               </Button>
             </div>

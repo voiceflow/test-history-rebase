@@ -16,4 +16,6 @@ REACT_APP_LOGROCKET_ENABLED='true'
 
 ## Editor Configuration
 
-See [editor configuration docs](https://github.com/storyflow/workspace#editor-configuration).
+See [editor configuration docs](https://github.com/storyflow/workspace#editor-configuration)
+
+.

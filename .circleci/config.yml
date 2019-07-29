@@ -7,6 +7,10 @@ executors:
       - image: circleci/node:11 # ...with this image as the primary container; this is where all `steps` will run
     environment:
       NODE_OPTIONS: --max-old-space-size=2048
+  image_builder:
+    working_directory: /tmp/vf-build
+    docker: 
+      - image: voiceflow/ci-image:v3
 
 commands:
   run_tests:
@@ -40,7 +44,7 @@ commands:
 jobs:
   release:
     docker:
-      - image: node:11
+      - image: circleci/node:11
     steps:
       - checkout
       - run: git tag --merged production
@@ -61,247 +65,101 @@ jobs:
             - run:
                 name: (Dependency Tests)
                 command: npm run test:dependencies
-  build:
-    executor: node_11
-    steps:
-      - run_tests:
-          tests:
             - run:
                 name: (Build App)
                 command: npm run build
             - run:
                 name: (Build Storybook)
-                command: npm run storybook:build
-  deploy-creator-master:
-    machine: true
+                command: npm run storybook:build           
+  build-push-image:
+    executor: image_builder
     steps:
       - checkout # special step to check out source code to working directory
-      - run:
-          name: Add token
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-      - run: # Need this for --squash to work
-          name: set docker daemon to experimental
-          command: |
-            sudo sh -c 'echo '\''DOCKER_OPTS="--experimental=true"'\'' >> /etc/default/docker'
-            sudo service docker restart
-      - run:
-          name: 'Build creator-app docker image'
-          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_VF_APP_API_HOST=api.master.voiceflow.com --build-arg build_VF_APP_BUILD_ENV=staging --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-master-$CIRCLE_BUILD_NUM .
-      - run:
-          name: 'Push creator-app docker images'
-          command: |
-            $(aws ecr get-login --no-include-email --region us-east-1)
-            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-master-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-master
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-master-$CIRCLE_BUILD_NUM
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-master
-      - run:
-          name: Install aws-iam-authenticator
-          command: |
-            curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
-            chmod +x ./aws-iam-authenticator
-            sudo cp ./aws-iam-authenticator /usr/bin
-      - run:
-          name: Install kubectl
-          command: |
-            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-            chmod +x ./kubectl
-            sudo mv ./kubectl /usr/local/bin/kubectl
-      - run:
-          name: Install aws-cli
-          command: |
-            sudo apt-get install -y python3-pip python3-dev
-            sudo pip3 install awscli
-      - run:
-          name: Get credentials
-          command: |
-            aws eks --region us-east-1 update-kubeconfig --name development
-      - run:
-          name: Update creator-app image
-          command: |
-            kubectl set image --namespace voiceflow-v1 deployment/creator-app-master app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-master-$CIRCLE_BUILD_NUM
-  deploy-storybook-master:
-    machine: true
-    steps:
-      - checkout # special step to check out source code to working directory
-      - run:
-          name: Add token
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-      - run: # Need this for --squash to work
-          name: set docker daemon to experimental
-          command: |
-            sudo sh -c 'echo '\''DOCKER_OPTS="--experimental=true"'\'' >> /etc/default/docker'
-            sudo service docker restart
-      - run:
-          name: 'Build storybook docker image'
-          command: docker build -f Dockerfile-storybook --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-master-$CIRCLE_BUILD_NUM .
-      - run:
-          name: 'Push storybook docker images'
-          command: |
-            $(aws ecr get-login --no-include-email --region us-east-1)
-            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-master-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-master
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-master-$CIRCLE_BUILD_NUM
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-master
-      - run:
-          name: Install aws-iam-authenticator
-          command: |
-            curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
-            chmod +x ./aws-iam-authenticator
-            sudo cp ./aws-iam-authenticator /usr/bin
-      - run:
-          name: Install kubectl
-          command: |
-            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-            chmod +x ./kubectl
-            sudo mv ./kubectl /usr/local/bin/kubectl
-      - run:
-          name: Install aws-cli
-          command: |
-            sudo apt-get install -y python3-pip python3-dev
-            sudo pip3 install awscli
-      - run:
-          name: Get credentials
-          command: |
-            aws eks --region us-east-1 update-kubeconfig --name development
-      - run:
-          name: Update storybook image
-          command: |
-            kubectl set image --namespace voiceflow-v1 deployment/storybook-master storybook=168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-master-$CIRCLE_BUILD_NUM
-  deploy-creator-staging:
-    machine: true
-    steps:
-      - checkout # special step to check out source code to working directory
-      - run:
-          name: Add token
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-      - run: # Need this for --squash to work
-          name: set docker daemon to experimental
-          command: |
-            sudo sh -c 'echo '\''DOCKER_OPTS="--experimental=true"'\'' >> /etc/default/docker'
-            sudo service docker restart
+      - setup_remote_docker
       - run:
           name: 'Build docker image'
-          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_VF_APP_API_HOST=api.staging.voiceflow.com --build-arg build_VF_APP_BUILD_ENV=staging --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-staging-$CIRCLE_BUILD_NUM .
+          command: |
+            mkdir -p /tmp/vf-build/vars
+            npm config set unsafe-perm true # needed for npx to work
+            # Fix semantic versioning and api host
+            if [ "$CIRCLE_BRANCH" == "production" ]; then
+              npx semantic-release@15 --prepare --dry-run | tee sem_release.output  # print semver to screen
+              SEM_VER=$(cat sem_release.output | grep 'Published release ' | awk '{print $NF}')  # Get release semver
+              if [ -z "$SEM_VER" ]; then
+                SEM_VER=$(npm view @voiceflow/creator-app version)
+              fi
+              VF_APP_API_HOST=api.voiceflow.com
+              VF_APP_BUILD_ENV=production
+            else
+              SEM_VER=$CIRCLE_BRANCH-$CIRCLE_SHA1
+              VF_APP_BUILD_ENV=staging
+              VF_APP_API_HOST=api.$CIRCLE_BRANCH.voiceflow.com
+            fi
+            echo -e "Building with SEM_VER=${SEM_VER}"
+            echo -e "API host is $VF_APP_API_HOST"
+            $(aws ecr get-login --no-include-email --region us-east-1)
+            docker build \
+              --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} \
+              --build-arg BUILD_NUM=$CIRCLE_BUILD_NUM \
+              --build-arg BUILD_URL=$CIRCLE_BUILD_URL	\
+              --build-arg GIT_SHA=$CIRCLE_SHA1 \
+              --build-arg SEM_VER=$SEM_VER \
+              --build-arg VF_APP_BUILD_ENV=$VF_APP_BUILD_ENV \
+              --build-arg VF_APP_API_HOST=$VF_APP_API_HOST \
+              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM . 
+            echo $CIRCLE_BUILD_NUM > /tmp/vf-build/vars/build_num
       - run:
           name: 'Push docker images'
           command: |
-            $(aws ecr get-login --no-include-email --region us-east-1)
-            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-staging-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-staging
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-staging-$CIRCLE_BUILD_NUM
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-staging
-      - run:
-          name: Install aws-iam-authenticator
-          command: |
-            curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
-            chmod +x ./aws-iam-authenticator
-            sudo cp ./aws-iam-authenticator /usr/bin
-      - run:
-          name: Install kubectl
-          command: |
-            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-            chmod +x ./kubectl
-            sudo mv ./kubectl /usr/local/bin/kubectl
-      - run:
-          name: Install aws-cli
-          command: |
-            sudo apt-get install -y python3-pip python3-dev
-            sudo pip3 install awscli
-      - run:
-          name: Get credentials
-          command: |
-            aws eks --region us-east-1 update-kubeconfig --name development
-      - run:
-          name: Update image
-          command: |
-            kubectl set image --namespace voiceflow-v1 deployment/creator-app-staging app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-staging-$CIRCLE_BUILD_NUM
-  deploy-k8s-production:
-    machine: true
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-$CIRCLE_BRANCH
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-$CIRCLE_BRANCH
+      - persist_to_workspace:
+          root: vars
+          paths:
+            - build_num
+  deploy-image:
+    executor: image_builder
     steps:
-      - checkout # special step to check out source code to working directory
-      - run:
-          name: Add token
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-      - run: # Need this for --squash to work
-          name: set docker daemon to experimental
-          command: |
-            sudo sh -c 'echo '\''DOCKER_OPTS="--experimental=true"'\'' >> /etc/default/docker'
-            sudo service docker restart
-      - run:
-          name: 'Build docker image'
-          command: docker build --build-arg build_NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} --build-arg build_VF_APP_API_HOST=api.voiceflow.com --build-arg build_VF_APP_BUILD_ENV=production --squash -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-production-$CIRCLE_BUILD_NUM .
-      - run:
-          name: 'Push docker images'
-          command: |
-            $(aws ecr get-login --no-include-email --region us-east-1)
-            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-production-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-production
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-production-$CIRCLE_BUILD_NUM
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-production
-      - run:
-          name: Install aws-iam-authenticator
-          command: |
-            curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
-            chmod +x ./aws-iam-authenticator
-            sudo cp ./aws-iam-authenticator /usr/bin
-      - run:
-          name: Install kubectl
-          command: |
-            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-            chmod +x ./kubectl
-            sudo mv ./kubectl /usr/local/bin/kubectl
-      - run:
-          name: Install aws-cli
-          command: |
-            sudo apt-get install -y python3-pip python3-dev
-            sudo pip3 install awscli
-      - run:
-          name: Get credentials
-          command: |
-            aws eks --region us-east-1 update-kubeconfig --name production
+      - attach_workspace:
+          at: /tmp/vf-build/vars
       - run:
           name: Update image
           command: |
-            kubectl set image --namespace voiceflow-v1 deployment/creator-app-production app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-production-$CIRCLE_BUILD_NUM
+            if [ "$CIRCLE_BRANCH" == "master" ] || [ "$CIRCLE_BRANCH" == "staging" ]; then
+              aws eks --region us-east-1 update-kubeconfig --name development
+            fi
+            if [ "$CIRCLE_BRANCH" == "production" ]; then
+              aws eks --region us-east-1 update-kubeconfig --name production
+            fi
+            BUILD_NUM=$(cat /tmp/vf-build/vars/build_num)
+            kubectl set image --namespace voiceflow-v1 deployment/creator-app-$CIRCLE_BRANCH app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$BUILD_NUM
 workflows:
   version: 2
   build-deploy:
     jobs:
       - test
-      - build:
-          requires:
-            - test
+      - build-push-image:
           filters:
             branches:
-              ignore:
-                - production
+              only:
                 - master
                 - staging
-      - deploy-creator-master:
+                - production
+      - deploy-image:
           requires:
             - test
+            - build-push-image
           filters:
             branches:
-              only: master
-      - deploy-storybook-master:
-          requires:
-            - test
-          filters:
-            branches:
-              only: master
-      - deploy-creator-staging:
-          requires:
-            - test
-          filters:
-            branches:
-              only: staging
-      - deploy-k8s-production:
-          requires:
-            - test
-          filters:
-            branches:
-              only: production
+              only:
+                - master
+                - staging
+                - production
       - release:
           requires:
             - test
-            - deploy-k8s-production
+            - deploy-image
           filters:
             branches:
               only: production

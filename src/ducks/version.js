@@ -85,7 +85,9 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         skill: update(state.skill, {
-          [action.payload.type]: { $set: action.payload.val },
+          [action.payload.type]: {
+            $set: action.payload.val,
+          },
         }),
       };
     case UPDATE_FULFILLMENT:
@@ -94,7 +96,9 @@ export default function skillReducer(state = initialState, action) {
         skill: update(state.skill, {
           fulfillment: {
             [action.payload.intent_key]: {
-              $set: { slot_config: action.payload.slot_config },
+              $set: {
+                slot_config: action.payload.slot_config,
+              },
             },
           },
         }),
@@ -104,19 +108,25 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         skill: update(state.skill, {
-          fulfillment: { $unset: [action.payload.intent_key] },
+          fulfillment: {
+            $unset: [action.payload.intent_key],
+          },
         }),
       };
     case UPDATE_ENTIRE_VERSION:
       return {
         ...state,
-        skill: update(state.skill, { $merge: action.payload.skill }),
+        skill: update(state.skill, {
+          $merge: action.payload.skill,
+        }),
       };
     case UPDATE_USER_MODULES:
       return {
         ...state,
         user_modules: update(state.user_modules, {
-          [action.payload.module.module_id]: { $set: action.payload.module },
+          [action.payload.module.module_id]: {
+            $set: action.payload.module,
+          },
         }),
       };
     case REMOVE_USER_MODULES:
@@ -147,7 +157,10 @@ export const fetchVersionBegin = () => ({
 
 export const fetchVersionSuccess = (skills, user_modules) => ({
   type: FETCH_VERSION_SUCCESS,
-  payload: { skills, user_modules },
+  payload: {
+    skills,
+    user_modules,
+  },
 });
 
 export const resetVersion = () => ({
@@ -156,35 +169,49 @@ export const resetVersion = () => ({
 
 export const fetchVersionFailure = (error) => ({
   type: FETCH_VERSION_FAILURE,
-  payload: { error },
+  payload: {
+    error,
+  },
 });
 
 export const fetchLiveVersionSuccess = (live, show) => ({
   type: FETCH_LIVE_VERSION_SUCCESS,
-  payload: { live, show },
+  payload: {
+    live,
+    show,
+  },
 });
 
 export const fetchDevVersionSuccess = (dev_skill) => ({
   type: FETCH_DEV_VERSION_SUCCESS,
-  payload: { dev_skill },
+  payload: {
+    dev_skill,
+  },
 });
 
 export const setLiveModeModal = (isLive) => ({
   type: SET_LIVE_MODE_MODAL,
-  payload: { isLive },
+  payload: {
+    isLive,
+  },
 });
 
 export const updateVersion = (type, val) => (dispatch) => {
   dispatch({
     type: UPDATE_VERSION,
-    payload: { type, val },
+    payload: {
+      type,
+      val,
+    },
   });
   return Promise.resolve();
 };
 
 export const updateEntireVersion = (skill) => ({
   type: UPDATE_ENTIRE_VERSION,
-  payload: { skill },
+  payload: {
+    skill,
+  },
 });
 
 export const updateVersionMerge = (payload) => ({
@@ -195,29 +222,43 @@ export const updateVersionMerge = (payload) => ({
 export const toggleLive = (skill, diagram_id, live_version, live_mode) => (dispatch) => {
   dispatch({
     type: TOGGLE_LIVE,
-    payload: { skill, diagram_id, live_version, live_mode },
+    payload: {
+      skill,
+      diagram_id,
+      live_version,
+      live_mode,
+    },
   });
   return Promise.resolve();
 };
 
 export const removeFulfillment = (intent_key) => ({
   type: REMOVE_FULFILLMENT,
-  payload: { intent_key },
+  payload: {
+    intent_key,
+  },
 });
 
 export const updateFulfillment = (intent_key, slot_config) => ({
   type: UPDATE_FULFILLMENT,
-  payload: { intent_key, slot_config },
+  payload: {
+    intent_key,
+    slot_config,
+  },
 });
 
 export const updateUserModules = (module) => ({
   type: UPDATE_USER_MODULES,
-  payload: { module },
+  payload: {
+    module,
+  },
 });
 
 export const removeUserModules = (module_id) => ({
   type: REMOVE_USER_MODULES,
-  payload: { module_id },
+  payload: {
+    module_id,
+  },
 });
 export const updateLocales = (locale) => {
   return (dispatch, getState) => {
@@ -274,7 +315,9 @@ export const setCanFulfill = (intent_key, new_value) => {
       dispatch(removeFulfillment(intent_key));
     } else if (!fulfillment && new_value) {
       const slot_config = {};
-      const intent = _.find(skill.intents, { key: intent_key });
+      const intent = _.find(skill.intents, {
+        key: intent_key,
+      });
       const intent_slots = getIntentSlots(intent, skill.slots);
 
       intent_slots.forEach((slot) => {

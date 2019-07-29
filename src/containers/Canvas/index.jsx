@@ -715,8 +715,9 @@ export class Canvas extends Component {
               }
             });
             current.remove(false);
+            current.setSelected();
             engine.getDiagramModel().clearSelection();
-            engine.setSuperSelect(parent);
+            engine.setSuperSelect(current);
             engine.enableRepaintEntities([parent]);
             engine.repaintCanvas(false);
           }

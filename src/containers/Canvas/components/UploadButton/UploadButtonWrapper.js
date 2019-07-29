@@ -66,7 +66,7 @@ const UploadButtonWrapper = styled.div`
     height: 100%;
     color: #fff;
     background-color: red;
-    background-image: url('/caret-down.svg'), linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
+    background-image: url('/caret-down-white.svg'), linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
     background-repeat: no-repeat;
     background-position: center;
     background-position-x: 45%;
@@ -76,12 +76,12 @@ const UploadButtonWrapper = styled.div`
     cursor: pointer;
 
     &:hover {
-      background-image: url('/caret-down.svg'), linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
+      background-image: url('/caret-down-white.svg'), linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
     }
   }
 
   .vendor-dropdown.active {
-    background-image: url('/caret-down.svg'), linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
+    background-image: url('/caret-down-white.svg'), linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
   }
 
   .spinning-publish {

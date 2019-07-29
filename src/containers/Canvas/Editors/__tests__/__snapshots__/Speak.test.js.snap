@@ -38,35 +38,17 @@ exports[`SpeakEditor render speak block editor 1`] = `
   >
     <Button
       className="mr-3"
-      iconPosition="right"
-      isBtn={true}
-      isSecondary={true}
+      icon="comment"
       onClick={[Function]}
-      onRef={[Function]}
-      trackEvent="Button Click"
+      variant="secondary"
     >
-      <img
-        alt="comment"
-        className="mr-3 mb-1"
-        src="/comment.svg"
-        width="17px"
-      />
       Add Speech
     </Button>
     <Button
-      iconPosition="right"
-      isBtn={true}
-      isSecondary={true}
+      icon="volume"
       onClick={[Function]}
-      onRef={[Function]}
-      trackEvent="Button Click"
+      variant="secondary"
     >
-      <img
-        alt="volume"
-        className="mr-3 mb-1"
-        src="/volume.svg"
-        width="16px"
-      />
       Add Audio
     </Button>
   </div>

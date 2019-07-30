@@ -47,7 +47,7 @@ class Vendors extends React.Component {
             <div className="row">
               <div className="col-sm-8">
                 <Input
-                  className="search-input form-control-2"
+                  className="search-input"
                   placeholder="Find creator by id or email"
                   onChange={this.handleSearch}
                   onEnterPress={() => {

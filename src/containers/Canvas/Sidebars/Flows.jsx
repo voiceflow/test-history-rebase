@@ -79,13 +79,7 @@ export class Flows extends PureComponent {
         <>
           <div className="search-section">
             <label className="section-title mt-3">All Flows</label>
-            <Input
-              placeholder="Search Flows"
-              name="filter"
-              value={filter}
-              onChange={this.handleChange}
-              className="form-control-border mb-3 search-input"
-            />
+            <Input placeholder="Search Flows" name="filter" value={filter} onChange={this.handleChange} className="mb-3 search-input" />
           </div>
           <div className="flows-list">
             {diagrams.map((diagram) => {

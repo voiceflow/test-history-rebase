@@ -214,6 +214,11 @@ ul {
   /* stylelint-enable */
 }
 
+.form-control.border-none {
+  border: 1px solid transparent !important;
+  box-shadow: none;
+}
+
 .StripeElement {
   box-sizing: border-box;
   width: 100%;
@@ -461,7 +466,7 @@ ul {
 }
 
 .search-input {
-  padding-left: 43px !important;
+  padding-left: 40px !important;
   color: #132144 !important;
   background-image: url(/search.svg) !important;
   background-repeat: no-repeat !important;
@@ -470,7 +475,7 @@ ul {
 }
 
 .search-input:focus {
-  border: 1px solid #fff !important;
+  border: 1px solid #5d9df5 !important;
   box-shadow: none !important;
 }
 

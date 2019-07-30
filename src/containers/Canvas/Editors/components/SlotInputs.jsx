@@ -117,7 +117,7 @@ class SlotInputs extends Component {
             onChange={this.onSearchChange}
             id="searchSlots"
             placeholder="Search Slots"
-            className="mb-3 form-control-border search-input"
+            className="mb-3 search-input"
             value={this.state.search_value}
           />
         )}

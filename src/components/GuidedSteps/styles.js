@@ -1,11 +1,17 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-// eslint-disable-next-line no-secrets/no-secrets
 const GuidedStepsWrapper = styled.div`
   max-width: 1040px;
   margin-left: auto;
   margin-right: auto;
   padding: 32px;
+  /* stylelint-disable no-secrets/no-secrets */
+  ${({ noDetail }) =>
+    noDetail
+      ? css`
+          max-width: 700px;
+        ` /* eslint-disable-next-line no-secrets/no-secrets */
+      : '' /* eslint-disable-next-line no-secrets/no-secrets */};
 
   .alert {
     margin-bottom: 15px;
@@ -39,6 +45,10 @@ const GuidedStepsWrapper = styled.div`
 
     .gs__steps-list__title {
       font-weight: 600;
+    }
+
+    .gs__is-constant {
+      color: #62778c;
     }
 
     &:before {
@@ -203,6 +213,14 @@ const GuidedStepsWrapper = styled.div`
       width: 304px;
       color: #8da2b5;
     }
+    ${({ noDetail }) =>
+      noDetail
+        ? css`
+            .gs__details {
+              display: none;
+            }
+          `
+        : ''};
   }
 
   .publish-info {

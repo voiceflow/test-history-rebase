@@ -35,6 +35,10 @@ const selectStyle = {
     ...provided,
     textAlign: 'left',
   }),
+  valueContainer: (provided) => ({
+    ...provided,
+    padding: '2px 15px',
+  }),
   control: (provided) => ({
     ...provided,
     height: '45px',

@@ -33,7 +33,7 @@ export default function DashboardHeader({
         <div className="searchBar">
           <Input
             name="filter_text"
-            className="search-input form-control-2"
+            className="search-input border-none"
             placeholder="Search Projects"
             onChange={(e) => handleFilterText(e.target.value)}
           />

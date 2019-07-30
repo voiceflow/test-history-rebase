@@ -14,7 +14,7 @@ const activeStyles = css`
     variant !== 'plain' &&
     css`
       border: 1px solid #fff;
-      box-shadow: 0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16);
+      box-shadow: 0 0 0 1px ${color}99, 0 2px 4px 1px rgba(17, 49, 96, 0.16);
 
       ${variant === 'shadow' &&
         css`
@@ -22,10 +22,9 @@ const activeStyles = css`
           color: #5b9dfa;
           box-shadow: 0 0 0 1px #5b9dfa99;
         `}
-
       ${color &&
         css`
-          box-shadow: 0 0 0 1px #${color}99;
+          box-shadow: 0 0 0 1px ${color}99;
         `}
     `}
 `;

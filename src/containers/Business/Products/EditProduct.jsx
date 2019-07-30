@@ -7,11 +7,11 @@ import { connect } from 'react-redux';
 // Components
 import Button from '@/components/Button';
 import { FullSpinner } from '@/components/Spinner';
-import Stepper from '@/components/Stepper';
 // Ducks
 import { setError } from '@/ducks/modal';
 import { addProduct, updateProduct } from '@/ducks/product';
 
+import GuidedSteps from '../../../components/GuidedSteps';
 // Constants
 import { TAX_CATEGORY } from './Constants';
 import IconsForm from './IconsForm';
@@ -25,29 +25,6 @@ import entitlementSchema from './Schemas/entitlementSchema.json';
 import subSchema from './Schemas/subSchema.json';
 
 const AMAZON_KEY = 'amazon.com';
-
-const STAGES = [
-  {
-    id: 0,
-    label: 'Description',
-  },
-  {
-    id: 1,
-    label: 'Pricing',
-  },
-  {
-    id: 2,
-    label: 'Invocations',
-  },
-  {
-    id: 3,
-    label: 'Icons',
-  },
-  {
-    id: 4,
-    label: 'Details',
-  },
-];
 
 class EditProduct extends React.Component {
   constructor(props) {
@@ -77,13 +54,6 @@ class EditProduct extends React.Component {
       testInstruct: '',
       loading: id !== 'new',
     };
-
-    this.updateStage = this.updateStage.bind(this);
-    this.updateProduct = this.updateProduct.bind(this);
-    this.renderForm = this.renderForm.bind(this);
-    this.populateData = this.populateData.bind(this);
-    this.submit = this.submit.bind(this);
-    this.invalidSubmit = this.invalidSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -149,9 +119,9 @@ class EditProduct extends React.Component {
     }
   }
 
-  updateStage(stage) {
+  updateStage = (stage) => {
     this.setState({ stage });
-  }
+  };
 
   handleChange = (property, value) => (event) => {
     if (!_.isUndefined(value)) {
@@ -190,7 +160,7 @@ class EditProduct extends React.Component {
     });
   };
 
-  submit() {
+  submit = () => {
     let template;
     switch (this.state.purchaseType) {
       case 'ENTITLEMENT':
@@ -207,9 +177,9 @@ class EditProduct extends React.Component {
     }
     template = this.populateData(template);
     this.updateProduct(template, null, _.isEmpty(this.state.data));
-  }
+  };
 
-  updateProduct(data, node, newProduct = true) {
+  updateProduct = (data, node, newProduct = true) => {
     if (newProduct) {
       const product = {
         data,
@@ -246,9 +216,9 @@ class EditProduct extends React.Component {
           this.props.setError('Unable to update Product');
         });
     }
-  }
+  };
 
-  populateData(data) {
+  populateData = (data) => {
     const locales = {};
     const info = data.publishingInformation;
     const privacy = data.privacyAndCompliance;
@@ -273,13 +243,96 @@ class EditProduct extends React.Component {
     data.referenceName = this.state.name.replace(/ /g, '_').toLowerCase();
 
     return data;
-  }
+  };
 
-  invalidSubmit(_event, errors) {
+  invalidSubmit = (_event, errors) => {
     this.props.setError(`Invalid Product - ${JSON.stringify(errors)}`);
-  }
+  };
 
-  renderForm() {
+  setStage = (stepNum) => {
+    this.setState({
+      stage: stepNum,
+    });
+  };
+
+  renderBlocks = () => {
+    const blocks = [];
+    const enterText = <>Submit</>;
+    blocks.push({
+      title: 'Description',
+      content: (
+        <ProductDescriptionForm
+          handleChange={this.handleChange}
+          name={this.state.name}
+          synonyms={this.state.synonyms}
+          summary={this.state.summary}
+          detailed={this.state.detailed}
+          continue={this.updateStage}
+        />
+      ),
+    });
+
+    blocks.push({
+      title: 'Pricing',
+      content: (
+        <PricingForm
+          handleChange={this.handleChange}
+          purchaseType={this.state.purchaseType}
+          price={this.state.price}
+          distCountries={this.state.distCountries}
+          taxCategory={this.state.taxCategory}
+          subType={this.state.subType}
+          updateStage={this.updateStage}
+        />
+      ),
+    });
+
+    blocks.push({
+      title: 'Invocations',
+      content: (
+        <PhrasesForm
+          handleChange={this.handlePhraseChange}
+          handleAdd={this.handlePhraseAdd}
+          handleRemove={this.handlePhraseRemove}
+          phrases={this.state.phrases}
+          updateStage={this.updateStage}
+        />
+      ),
+    });
+
+    blocks.push({
+      title: 'Icons',
+      content: (
+        <IconsForm
+          handleChange={this.handleChange}
+          large_icon={this.state.large_icon}
+          small_icon={this.state.small_icon}
+          updateStage={this.updateStage}
+        />
+      ),
+    });
+
+    blocks.push({
+      title: 'Details',
+      content: (
+        <ProductDetailsForm
+          handleChange={this.handleChange}
+          keywords={this.state.keywords}
+          description={this.state.description}
+          prompt={this.state.prompt}
+          policy={this.state.policy}
+          testInstruct={this.state.testInstruct}
+          buyDescription={this.state.buyDescription}
+          updateStage={this.updateStage}
+          submit={this.submit}
+        />
+      ),
+    });
+
+    return <GuidedSteps blocks={blocks} submitText={enterText} haveFooter step={this.state.stage} setStage={this.setStage} forceFollow noDetail />;
+  };
+
+  renderForm = () => {
     switch (this.state.stage) {
       case 0:
         return (
@@ -339,7 +392,7 @@ class EditProduct extends React.Component {
           />
         );
     }
-  }
+  };
 
   render() {
     if (this.state.loading) {
@@ -353,18 +406,9 @@ class EditProduct extends React.Component {
           onClick={() => {
             this.props.history.push(`/tools/${this.props.skill_id}/products`);
           }}
-          style={{ top: 135, left: 210 }}
+          style={{ top: 135, left: 120 }}
         />
-        <div>
-          <div className="product-editor pt-2">
-            <div className="stepper mt-4">
-              <Stepper steps={STAGES} activeStepId={this.state.stage} onChangeStep={(idx) => this.updateStage(idx)} />
-            </div>
-            <div className="product-form">
-              <div className="product-form-inner">{this.renderForm()}</div>
-            </div>
-          </div>
-        </div>
+        <div style={{ marginTop: '20px' }}>{this.renderBlocks()}</div>
       </div>
     );
   }

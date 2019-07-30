@@ -44,7 +44,7 @@ class PhrasesForm extends React.Component {
             </div>
           </div>
           <div className="product-stage-button">
-            <Button isFlatGray variant="contained" onClick={() => this.props.updateStage(1)}>
+            <Button isFlatGray type="button" variant="contained" onClick={() => this.props.updateStage(1)}>
               Previous
             </Button>
             <Button isPrimary className="ml-2" variant="contained">

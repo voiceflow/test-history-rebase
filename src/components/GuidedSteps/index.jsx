@@ -14,8 +14,22 @@ class GuidedSteps extends React.Component {
     formValid: false,
   };
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.step >= 0 && props.step !== state.stepNumber) {
+      return {
+        stepNumber: props.step,
+        stepStatus: {
+          ...state.stepStatus,
+          [state.stepNumber]: true,
+        },
+      };
+    }
+  }
+
   validStepChange = (nextStep) => {
     if (!this.props.forceFollow) return true;
+
+    if (this.props.step >= 0) return false;
 
     // Find the farthest the user has progressed
     let farthestBlock = this.props.blocks.length - 1;
@@ -30,7 +44,7 @@ class GuidedSteps extends React.Component {
     if (nextStep > this.state.stepNumber + 1) return false;
 
     // Don't let the user continue if the current step is not valid
-    const stepValid = this.props.checkStep(this.state.stepNumber);
+    const stepValid = this.props.checkStep ? this.props.checkStep(this.state.stepNumber) : true;
     if (nextStep === this.state.stepNumber + 1 && !stepValid) return false;
 
     return true;
@@ -41,9 +55,13 @@ class GuidedSteps extends React.Component {
 
     if (!this.validStepChange(nextStep)) return;
 
+    if (this.props.step) {
+      return this.props.setStage(nextStep);
+    }
+
     const prevStep = this.state.stepNumber;
-    // Check if the last step was a valid step
-    const stepValid = this.props.checkStep(prevStep);
+    // Check if the last step was a valid step, if no step check function is provided, default to true
+    const stepValid = this.props.checkStep ? this.props.checkStep(prevStep) : true;
 
     const stepStatus = _.cloneDeep(this.state.stepStatus);
     stepStatus[prevStep] = stepValid;
@@ -61,9 +79,12 @@ class GuidedSteps extends React.Component {
   };
 
   checkFormValidity = (statuses) => {
-    const lastStepValid = this.props.checkStep(this.props.blocks.length - 1);
-    for (let i = 0; i < this.props.blocks.length; i++) {
-      if (i === this.props.blocks.length - 1) return lastStepValid;
+    const { checkStep, blocks } = this.props;
+
+    if (!checkStep) return true;
+    const lastStepValid = checkStep(blocks.length - 1);
+    for (let i = 0; i < blocks.length; i++) {
+      if (i === blocks.length - 1) return lastStepValid;
       if (statuses[i] !== true) {
         return false;
       }
@@ -78,7 +99,7 @@ class GuidedSteps extends React.Component {
 
   render() {
     return (
-      <GuidedStepsWrapper>
+      <GuidedStepsWrapper noDetail={this.props.noDetail}>
         <ul className="gs__steps-list">
           {this.props.blocks &&
             this.props.blocks.map((block, idx) => (
@@ -95,7 +116,8 @@ class GuidedSteps extends React.Component {
                   className={cn(
                     'gs__steps-list__title',
                     { 'gs__clickable-step': this.state.stepNumber !== idx && this.validStepChange(idx) },
-                    { 'gs__non-clickable-step': !this.validStepChange(idx) }
+                    { 'gs__non-clickable-step': !this.validStepChange(idx) },
+                    { 'gs__is-constant': this.props.step !== undefined }
                   )}
                   onClick={() => this.changeStep(null, idx)}
                 >
@@ -105,17 +127,19 @@ class GuidedSteps extends React.Component {
                   <div className={cn('gs__steps-list__content')}>
                     <div className="gs__panel">
                       <div className="gs__panel-body">{block.content}</div>
-                      <div className="gs__panel-footer">
-                        {idx < this.props.blocks.length - 1 ? (
-                          <Button variant="secondary" disabled={!this.validStepChange(idx + 1)} onClick={(e) => this.changeStep(e, idx + 1)}>
-                            Next
-                          </Button>
-                        ) : (
-                          <Button variant="primary" disabled={!this.state.formValid} onClick={(e) => this.submit(e, idx)}>
-                            {this.props.submitText}
-                          </Button>
-                        )}
-                      </div>
+                      {!this.props.haveFooter && (
+                        <div className="gs__panel-footer">
+                          {idx < this.props.blocks.length - 1 ? (
+                            <Button variant="secondary" disabled={!this.validStepChange(idx + 1)} onClick={(e) => this.changeStep(e, idx + 1)}>
+                              Next
+                            </Button>
+                          ) : (
+                            <Button variant="primary" disabled={!this.state.formValid} onClick={(e) => this.submit(e, idx)}>
+                              {this.props.submitText}
+                            </Button>
+                          )}
+                        </div>
+                      )}
                     </div>
                     <div className="gs__details">{block.description}</div>
                   </div>

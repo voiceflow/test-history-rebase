@@ -3,10 +3,12 @@ import React, { Component } from 'react';
 import Button from '@/components/Button';
 import Image from '@/components/Uploads/Image';
 
+import { IconsFormWrapper } from './styled';
+
 class IconsForm extends Component {
   render() {
     return (
-      <div>
+      <IconsFormWrapper>
         <div className="justify-content-center d-flex">
           <div>
             <label className="mt-0 text-center">
@@ -39,7 +41,7 @@ class IconsForm extends Component {
             Continue
           </Button>
         </div>
-      </div>
+      </IconsFormWrapper>
     );
   }
 }

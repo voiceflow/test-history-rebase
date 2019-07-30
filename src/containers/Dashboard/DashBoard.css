@@ -10,13 +10,6 @@
   user-select: none;
 }
 
-.search-input {
-  padding-left: 20px !important;
-  background-position: 0 center !important;
-  background-size: auto 40% !important;
-  box-shadow: none !important;
-}
-
 .nav-child-item {
   padding-left: 20px;
 }

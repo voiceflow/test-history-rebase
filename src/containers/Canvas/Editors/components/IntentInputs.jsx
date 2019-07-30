@@ -221,7 +221,7 @@ class IntentInputs extends Component {
             type="search"
             onChange={this.onSearchChange}
             id="searchIntents"
-            className="form-control-border mb-3 search-input"
+            className="mb-3 search-input"
             placeholder="Search Intents"
             value={this.state.search_value}
           />

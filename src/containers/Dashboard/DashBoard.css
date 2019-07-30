@@ -452,9 +452,12 @@
 }
 
 .projects-list__item-details {
+  display: flex;
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
-  min-width: 0;
+  flex-direction: column;
+  align-content: flex-end;
+  max-width: 170px;
   margin-top: -1px;
   margin-bottom: -1px;
 }

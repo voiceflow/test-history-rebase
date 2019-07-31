@@ -52,9 +52,9 @@ module.exports = {
           // TODO: To be removed once canvas component is being used
           'components/Canvas/**/*',
           'components/CanvasControls/**/*',
-          'components/hocs/index.js',
-          'components/hocs/styled.js',
-          'components/hocs/withContext.js',
+          'hocs/index.js',
+          'hocs/styled.js',
+          'hocs/withContext.jsx',
           'svgs/**/*',
         ],
       },

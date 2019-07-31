@@ -27,6 +27,14 @@ class Canvas extends React.PureComponent {
 
   panDistance = 0;
 
+  api = {
+    getZoom: () => this.zoom / ZOOM_FACTOR,
+    getPosition: () => this.position,
+    zoomIn: (delta) => this.offsetZoom(delta),
+    zoomOut: (delta) => this.offsetZoom(-delta),
+    reorient: () => this.resetPosition(),
+  };
+
   onScroll = stopPropagation((event) => {
     const scrollDelta = getScrollDelta(event);
     const scrollOrigin = mouseEventOffset(event, this.rootRef.current);
@@ -111,16 +119,8 @@ class Canvas extends React.PureComponent {
   render() {
     const { children } = this.props;
 
-    const canvasAPI = {
-      getZoom: () => this.zoom / ZOOM_FACTOR,
-      getPosition: () => this.position,
-      zoomIn: (delta) => this.offsetZoom(delta),
-      zoomOut: (delta) => this.offsetZoom(-delta),
-      reorient: () => this.resetPosition(),
-    };
-
     return (
-      <CanvasProvider value={canvasAPI}>
+      <CanvasProvider value={this.api}>
         <Container ref={this.rootRef} onWheel={this.onScroll} onMouseDown={this.onMouseDown}>
           <RenderLayer ref={this.renderLayerRef}>{children}</RenderLayer>
         </Container>

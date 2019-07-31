@@ -10,6 +10,8 @@ import Clipboard from './ClipBoardSource';
 
 const InputContainer = styled.div`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const CopiedContainer = styled.div`
@@ -46,10 +48,11 @@ const InputGroup = styled.div`
 const CopyButton = styled.div`
   ${flexEndStyles}
   margin-left: 10px;
+  min-width: 110px;
 `;
 
 const ClipBoard = (props) => {
-  const { id, name, value, locked } = props;
+  const { id, name, value, locked, children } = props;
   const [copied, setCopied] = useState(false);
   const copyClearTimeout = useRef(false);
 
@@ -64,14 +67,16 @@ const ClipBoard = (props) => {
   return (
     <>
       <InputContainer>
-        <InputGroup>
-          {'locked' in props && (
-            <InputPrepend>
-              <SvgIcon icon={locked ? Locked : Unlocked} width={18} height={18} />
-            </InputPrepend>
-          )}
-          <Input readOnly value={value} className="form-control-border right" />
-        </InputGroup>
+        {children || (
+          <InputGroup>
+            {'locked' in props && (
+              <InputPrepend>
+                <SvgIcon icon={locked ? Locked : Unlocked} width={18} height={18} />
+              </InputPrepend>
+            )}
+            <Input readOnly value={value} className="form-control-border right" />
+          </InputGroup>
+        )}
         <CopyButton>
           <Clipboard
             id={id}

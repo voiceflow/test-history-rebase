@@ -1,25 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Amazon Login Test render empty card 1`] = `
-<div
+<Button
   className="LoginWithAmazon"
   onClick={[Function]}
+  variant="primary"
 >
-  <img
-    alt="Login with Amazon"
-    border="0"
-    className="unpressed"
-    height="64"
-    src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_312x64.png"
-    width="312"
-  />
-  <img
-    alt="Login with Amazon"
-    border="0"
-    className="pressed"
-    height="64"
-    src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_312x64_pressed.png"
-    width="312"
-  />
-</div>
+  Connect Amazon
+</Button>
 `;

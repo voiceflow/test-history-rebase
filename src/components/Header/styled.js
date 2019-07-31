@@ -18,7 +18,7 @@ export const PrimaryHeader = styled.div`
   display: flex;
   align-items: center;
   background-color: #fff;
-  padding: 0 40px 0 22px;
+  padding: 0 40px 0 28px;
   height: 64px;
 `;
 
@@ -50,11 +50,17 @@ export const JustifiedHeaderActions = styled.div`
 
 export const BackButton = styled.span`
   padding: 20px 20px 20px 0;
-  margin-right: 12px;
+  margin-right: 6px;
   cursor: pointer;
   height: inherit;
   display: flex;
   align-items: center;
+  opacity: 0.8;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 export const Logo = styled.img`

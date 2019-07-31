@@ -4,37 +4,13 @@ import React from 'react';
 import { stopPropagation } from '@/utils/dom';
 
 import { Container, RenderLayer } from './components';
+import { ZOOM_FACTOR } from './constants';
 import { CanvasProvider } from './contexts';
+import { calculateScrollTranslation, getScrollDelta, normalizeZoom, transformStyle } from './utils';
 
 export const ORIGIN = [0, 0];
 
-export const ZOOM_FACTOR = 100;
-export const MIN_ZOOM = 10;
-export const MAX_ZOOM = 200;
-
-export const SCROLL_FACTOR = 60;
-export const PINCH_SCROLL_FACTOR = 3;
-
 export const MAX_CLICK_TRAVEL = 3;
-
-function transformStyle([posX, posY], zoom) {
-  return `translate(${posX}px, ${posY}px) scale(${zoom / ZOOM_FACTOR})`;
-}
-
-function getScrollDelta(event) {
-  const scrollDelta = event.deltaY;
-
-  // check if it is pinch gesture
-  if (event.ctrlKey && scrollDelta % 1 !== 0) {
-    return scrollDelta / PINCH_SCROLL_FACTOR;
-  }
-
-  return scrollDelta / SCROLL_FACTOR;
-}
-
-function normalizeZoom(zoom) {
-  return Math.min(Math.max(zoom, MIN_ZOOM), MAX_ZOOM);
-}
 
 class Canvas extends React.PureComponent {
   rootRef = React.createRef();
@@ -99,20 +75,7 @@ class Canvas extends React.PureComponent {
   }
 
   getScrollTranslation([originX, originY], prevZoom, nextZoom) {
-    const [canvasX, canvasY] = this.position;
-    const { width: canvasWidth, height: canvasHeight } = this.rootRef.current.getBoundingClientRect();
-
-    const zoomDelta = nextZoom / ZOOM_FACTOR - prevZoom;
-
-    // compute width and height increment factor
-    const xFactor = (originX - canvasX) / prevZoom / canvasWidth;
-    const yFactor = (originY - canvasY) / prevZoom / canvasHeight;
-
-    // compute difference between rect before and after scroll
-    const deltaX = canvasWidth * zoomDelta * xFactor;
-    const deltaY = canvasHeight * zoomDelta * yFactor;
-
-    return [canvasX - deltaX, canvasY - deltaY];
+    return calculateScrollTranslation([originX, originY], prevZoom, nextZoom, this.position, this.rootRef.current.getBoundingClientRect());
   }
 
   serialize = () => ({

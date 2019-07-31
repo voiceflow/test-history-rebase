@@ -17,7 +17,7 @@ class CanvasExample extends React.PureComponent {
   render() {
     return (
       <div style={{ position: 'relative', height: 400, width: 400, border: '1px solid black' }}>
-        <div style={{ position: 'absolute', zIndex: 10 }} ref={this.overlayRef} />
+        <div style={{ position: 'absolute', zIndex: 10, pointerEvents: 'none' }} ref={this.overlayRef} />
         <Canvas>
           {this.overlayRef.current && ReactDOM.createPortal(<CanvasControls />, this.overlayRef.current)}
           <div style={{ position: 'absolute', top: 40, left: 40, height: 40, width: 40, background: 'red' }} />

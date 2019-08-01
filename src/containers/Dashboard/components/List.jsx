@@ -170,7 +170,7 @@ export function List(props) {
                               onMove={onMoveProject}
                               onToggleDragging={setMoving}
                               language={project.locales}
-                              uploaded={project.isLive}
+                              isLive={project.islive}
                               onRemove={() => onDeleteProject(project.project_id)}
                               onDuplicate={() => onCopyProject(project.project_id, id)}
                             />

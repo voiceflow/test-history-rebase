@@ -196,20 +196,15 @@ ul {
   box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   /* stylelint-disable */
-  -webkit-transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
+  -webkit-transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
     -webkit-box-shadow 0.12s linear;
-  -o-transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+  -o-transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
-  transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
     -webkit-box-shadow 0.12s linear;
-  transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
-  transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear, -webkit-box-shadow 0.12s linear;
   /* stylelint-enable */
 }
@@ -243,20 +238,15 @@ ul {
   box-shadow: inset 0 0 5px 5px #fff !important;
 
   /* stylelint-disable */
-  -webkit-transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
+  -webkit-transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
     -webkit-box-shadow 0.12s linear;
-  -o-transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+  -o-transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
-  transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
     -webkit-box-shadow 0.12s linear;
-  transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
-  transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear, -webkit-box-shadow 0.12s linear;
   /* stylelint-enable */
 }
@@ -2204,15 +2194,6 @@ kbd {
 .react-toggle--checked .react-toggle-thumb {
   left: 27px;
   border-color: #19ab27;
-}
-
-#secondary-nav-right-group {
-  display: flex;
-  align-items: center;
-}
-
-#secondary-nav-right-group .react-toggle {
-  margin-bottom: -8px;
 }
 
 .update-modal-feature {

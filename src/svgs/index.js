@@ -24,6 +24,8 @@ export { default as save } from './save.svg';
 export { default as sound } from './sound.svg';
 export { default as stop } from './stop.svg';
 export { default as badge } from './badge.svg';
+export { default as outlinedCircle } from './outlined-circle.svg';
+export { default as outlinedFilledCircle } from './outlined-filled-circle.svg';
 export { default as forward } from './forward.svg';
 export { default as check2 } from './check-2.svg';
 export { default as blocks } from './blocks.svg';

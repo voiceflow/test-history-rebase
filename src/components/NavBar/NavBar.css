@@ -378,13 +378,3 @@ div.nav-item {
     border-color: #ffffff5e;
   }
 }
-
-.live-mode-text {
-  display: inline-block;
-  margin-right: 15px;
-  padding-bottom: 1px;
-  color: #88a2b7;
-  font-size: 12px;
-  letter-spacing: 0.3px;
-  text-transform: capitalize;
-}

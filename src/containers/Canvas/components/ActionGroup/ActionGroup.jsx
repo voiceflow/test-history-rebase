@@ -22,171 +22,43 @@ import { setError, showSettingsModal } from '@/ducks/modal';
 import { updateVendorId } from '@/ducks/project';
 import { updateLocales, updateSkillDB, updateVersion } from '@/ducks/version';
 import LOCALE_MAP from '@/services/LocaleMap';
-import InvRegex from '@/services/Regex';
 
 import Settings from '../../../Skill/Settings';
 import UploadButton from '../UploadButton/UploadButton';
+import { ENDING_STAGES, GOOGLE_STAGES, LOADING_STAGES, SHOW_PROMPT_ALEXA, STAGE_PERCENTAGES } from './Constants';
 import { SubTitleGroup } from './styled';
-
-const loading = (message) => {
-  return (
-    <div className="super-center mb-4">
-      <div className="text-center">
-        <p className="mb-0">{message}</p>
-      </div>
-    </div>
-  );
-};
-
-const matchesKeyword = (splitName) => (l) =>
-  splitName.find((split) => {
-    return split === l.toLowerCase();
-  });
-
-const GOOGLE_STAGES = {
-  0: 'No Google Token Found',
-  1: 'No Project ID Found',
-  2: 'Confirm Publish',
-  3: 'Rendering',
-  4: 'Publishing',
-  5: 'Published',
-};
-
-// USE AS REFERENCE
-// const ALEXA_STAGES = {
-//     "0": "Upload Skill",
-//     "1": "Voiceflow Rendering",
-//     "2": "Success",
-//     "4": "Rendering Error",
-//     "5": "Amazon Login",
-//     "6": "Developer Account",
-//     "7": "Check Vendor",
-//     "8": "Verifying Login",
-//     "9": "Amazon Error",
-//     "11": "Uploading to Alexa",
-//     "12": "Building Interaction Model",
-//     "13": "Enable Skill",
-//     "14": "Invocation Name",
-// }
-
-const SHOW_PROMPT_ALEXA = [4, 5, 6, 9, 14, 2];
-
-const STAGE_PERCENTAGES = {
-  alexa: {
-    1: [0, 5],
-    11: [10, 49],
-    12: [50, 95],
-    13: [96, 100],
-  },
-  google: {
-    3: [0, 59],
-    4: [60, 98],
-  },
-};
-
-// Loading without percentages
-const LOADING_STAGES = {
-  alexa: [7, 8],
-  google: [],
-};
-
-// const ERROR_STAGES = {
-//   alexa: [4, 9],
-//   google: [2]
-// }
-
-const ENDING_STAGES = {
-  alexa: [2, 4, 9, 10],
-  google: [2, 5],
-};
-const LAUNCH_PHRASES = ['launch', 'ask', 'tell', 'load', 'begin', 'enable'];
-const WAKE_WORDS = ['Alexa', 'Amazon', 'Echo', 'Skill', 'App'];
-
-const Video = (link, className) => {
-  return (
-    <div className={`mt-3 rounded overflow-hidden ${className || 'w-100'}`}>
-      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-      <video className="rounded w-100 overflow-hidden" controls>
-        <source src={link} type="video/mp4" />
-      </video>
-    </div>
-  );
-};
-
-const invNameError = (name, locales) => {
-  if (!name || !name.trim()) {
-    return 'Invocation name required for Alexa';
-  }
-  let characters = InvRegex.validLatinChars;
-  let inv_name_error = `[${locales
-    .filter((l) => l !== 'jp-JP')
-    .join(',')}] Invocation name may only contain Latin characters, apostrophes, periods and spaces`;
-  if (locales.length === 1 && locales[0] === 'ja-JP') {
-    characters = InvRegex.validSpokenCharacters;
-    inv_name_error = 'Invocation name may only contain Japanese/English characters, apostrophes, periods and spaces';
-  } else if (locales.some((l) => l.includes('en'))) {
-    // If an English Skill No Accents Allowed
-    inv_name_error = `[${locales
-      .filter((l) => l.includes('en'))
-      .join(',')}] Invocation name may only contain alphabetic characters, apostrophes, periods and spaces`;
-    characters = InvRegex.validCharacters;
-  }
-
-  const validRegex = `[^${characters}.' ]+`;
-  const match = name.match(validRegex);
-  const split_name = name.split(' ').map((splits) => {
-    return splits.toLowerCase();
-  });
-  if (match) {
-    return `${inv_name_error} - Invalid Characters: "${match.join()}"`;
-  }
-  if (WAKE_WORDS.some(matchesKeyword(split_name))) {
-    return `Invocation name cannot contain Alexa keywords e.g. ${WAKE_WORDS.join(', ')}`;
-  }
-  if (LAUNCH_PHRASES.some(matchesKeyword(split_name))) {
-    return `Invocation name cannot contain Launch Phrases e.g. ${LAUNCH_PHRASES.join(', ')}`;
-  }
-  return null;
-};
+import { Video, invNameError, loading } from './utils';
 
 export class ActionGroup extends PureComponent {
-  constructor(props) {
-    // localStorage.clear()
-    super(props);
+  state = {
+    alexa_stage: 0,
+    amzn_error: false,
+    flash: false,
+    google_stage: 0,
+    inv_name: null,
+    inv_name_error: '',
+    is_first_upload: false,
+    live_update_stage: 0,
+    percent: 0,
+    publish: false,
+    should_pop_confetti: false,
+    show_upload_prompt: false,
+    updateLiveModal: false,
+    updateModal: false,
+    upload_error: 'No Error',
+  };
 
-    this.state = {
-      dropdownOpen: false,
-      projects: false,
-      publish: false,
-      diagrams: [],
-      share: false,
-      updateModal: false,
-      updateLiveModal: false,
-      stage: 0,
-      google_stage: 0,
-      amzn_error: false,
-      upload_error: 'No Error',
-      settings_tab_state: 'basic',
-      displayingConfirmDelete: false,
-      inv_name: null,
-      inv_name_error: '',
-      flash: false,
-      live_update_stage: 0,
-      is_first_upload: false,
-      show_upload_prompt: false,
-      is_error: false,
-      should_pop_confetti: false,
-      percentage: 0,
-      upload_button_loading: true,
-      selected_vendor: props.vendor_id,
-      settingsModal: false,
-    };
+  amazon_token = null;
 
-    this.token = null;
-  }
+  google_token = null;
+
+  SucceedLocale = null;
+
+  loading_timeout = null;
+  // timeout=null;
 
   render() {
-    const { updateModal, should_pop_confetti, updateLiveModal, show_upload_prompt, vendors_open, stage, is_first_upload } = this.state;
+    const { updateModal, should_pop_confetti, updateLiveModal, show_upload_prompt, stage, is_first_upload } = this.state;
     const { skill, platform, live_mode, vendors, showSettings, showSettingsModal } = this.props;
 
     return (
@@ -223,9 +95,7 @@ export class ActionGroup extends PureComponent {
         <Modal
           isOpen={updateLiveModal}
           toggle={this.toggleUpdateLive}
-          onClosed={() => {
-            this.setState({ live_update_stage: 0 });
-          }}
+          onClosed={() => this.setState({ live_update_stage: 0 })}
           className="stage_modal"
         >
           <ModalHeader toggle={this.toggleUpdateLive} header="Update Live Version" />
@@ -259,16 +129,13 @@ export class ActionGroup extends PureComponent {
         </SubTitleGroup>
         <UploadButton
           live_mode={live_mode}
-          show_upload_prompt={show_upload_prompt}
           vendors={vendors}
           platform={platform}
-          vendors_open={vendors_open}
           project_id={skill.project_id}
-          openUpdateLive={() => this.openUpdateLive()}
+          openUpdateLive={this.openUpdateLive}
+          isUploadLoading={this.isUploadLoading()}
+          openUpdate={this.openUpdate}
           toggle_upload_prompt={() => this.setState({ show_upload_prompt: !show_upload_prompt })}
-          isUploadLoading={() => this.isUploadLoading()}
-          openUpdate={() => this.openUpdate()}
-          toggleVendors={() => this.toggleVendors()}
         />
         {this.displayUploadPrompt()}
       </>
@@ -284,8 +151,7 @@ export class ActionGroup extends PureComponent {
     });
 
     try {
-      const token = await AmazonAccessToken();
-      this.token = token;
+      this.amazon_token = await AmazonAccessToken();
     } catch (err) {
       console.error(err);
     }
@@ -306,7 +172,7 @@ export class ActionGroup extends PureComponent {
     const { setCB, onSave, platform } = this.props;
 
     this.reset();
-    if (this.timeout) clearInterval(this.timeout);
+    // if (this.timeout) clearInterval(this.timeout);
     if (is_first_upload) {
       setCB(() => {
         this.setState({
@@ -336,7 +202,7 @@ export class ActionGroup extends PureComponent {
       percent: 1,
       amzn_error: false,
       // eslint-disable-next-line no-nested-ternary
-      stage: this.token ? (vendors.length === 0 ? 6 : 0) : 5,
+      stage: this.amazon_token ? (vendors.length === 0 ? 6 : 0) : 5,
       google_stage: this.google_token ? 2 : 0,
       is_first_upload: localStorage.getItem(`is_first_session_${user.id}`) !== 'false',
       // // TESTING PURPOSES
@@ -513,7 +379,7 @@ export class ActionGroup extends PureComponent {
   updateAlexa = async () => {
     const { vendors, skill, updateSkill } = this.props;
     const { inv_name: stateInvName, stage } = this.state;
-    if (!this.token) {
+    if (!this.amazon_token) {
       return this.updateAlexaStage(5);
     }
     if (vendors.length === 0) {
@@ -632,11 +498,6 @@ export class ActionGroup extends PureComponent {
     this.setState((prev_state) => ({
       updateLiveModal: !prev_state.updateLiveModal,
     }));
-  };
-
-  toggleVendors = () => {
-    const { vendors_open } = this.state;
-    this.setState({ vendors_open: !vendors_open });
   };
 
   showUploadPrompt = () => {
@@ -867,7 +728,7 @@ export class ActionGroup extends PureComponent {
               <AmazonLogin
                 updateLogin={(stage) => {
                   if (stage === 2) {
-                    this.token = true;
+                    this.amazon_token = true;
                     this.checkVendor();
                   } else if (1) {
                     this.updateAlexaStage(8);

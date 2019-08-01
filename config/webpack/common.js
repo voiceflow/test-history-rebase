@@ -49,6 +49,12 @@ module.exports = {
           'components/SvgIcon/*',
           // TODO: To be removed once V2 components are being used
           'componentsV2/**/*',
+          // TODO: To be removed once canvas component is being used
+          'components/Canvas/**/*',
+          'components/CanvasControls/**/*',
+          'hocs/index.js',
+          'hocs/styled.js',
+          'hocs/withContext.jsx',
           'svgs/**/*',
         ],
       },

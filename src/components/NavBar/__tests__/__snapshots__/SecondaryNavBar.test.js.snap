@@ -31,9 +31,7 @@ exports[`Secondary Nav Bar render secondary nav bar 1`] = `
         analytics
       </div>
     </styled.div>
-    <div
-      id="secondary-nav-right-group"
-    />
+    <styled.div />
   </div>
 </Fragment>
 `;

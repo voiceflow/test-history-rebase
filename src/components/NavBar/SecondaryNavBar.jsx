@@ -12,7 +12,7 @@ import { fetchDiagrams, updateDiagramRoot } from '@/ducks/diagram';
 import { setLiveModeModal, toggleLive } from '@/ducks/version';
 import LogsIcon from '@/svgs/logs.svg';
 
-import { NavBarTabs } from './styled';
+import { LiveToggleText, LiveToggleWrapper, NavBarTabs, NavRightGroup } from './styled';
 
 const PAGES = ['canvas', 'test', 'publish', 'analytics'];
 
@@ -102,20 +102,12 @@ export class SecondaryNavBar extends Component {
       <>
         <div id="secondary-nav">
           <NavBarTabs>{PAGES.map((page) => this.renderItem(page))}</NavBarTabs>
-          <div id="secondary-nav-right-group">
+          <NavRightGroup>
             {amzn_id && (
               <>
                 {live_version ? (
-                  <>
-                    {live_mode ? (
-                      <div className="live-mode-text">
-                        <p>Live</p>
-                      </div>
-                    ) : (
-                      <div className="live-mode-text">
-                        <p>Development</p>
-                      </div>
-                    )}
+                  <LiveToggleWrapper>
+                    {live_mode ? <LiveToggleText>Live</LiveToggleText> : <LiveToggleText>Development</LiveToggleText>}
                     <Toggle
                       checked={live_mode}
                       icons={false}
@@ -125,7 +117,7 @@ export class SecondaryNavBar extends Component {
                       }}
                       disabled={page !== 'canvas' || this.state.loading}
                     />
-                  </>
+                  </LiveToggleWrapper>
                 ) : null}
                 {page === 'logs' ? (
                   <div className="log-icon">
@@ -138,7 +130,7 @@ export class SecondaryNavBar extends Component {
                 )}
               </>
             )}
-          </div>
+          </NavRightGroup>
         </div>
         {this.state.loading && <FullSpinner name="Version" />}
       </>

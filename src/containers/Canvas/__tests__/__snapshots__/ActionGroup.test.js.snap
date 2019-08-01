@@ -24,7 +24,6 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
     onClosed={[Function]}
     onOpened={[Function]}
     role="dialog"
-    size="lg"
     toggle={[Function]}
     zIndex={1050}
   >
@@ -289,12 +288,10 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
     />
   </styled.div>
   <UploadButton
-    isUploadLoading={[Function]}
+    isUploadLoading={true}
     openUpdate={[Function]}
     openUpdateLive={[Function]}
     platform="alexa"
-    show_upload_prompt={false}
-    toggleVendors={[Function]}
     toggle_upload_prompt={[Function]}
   />
 </Fragment>

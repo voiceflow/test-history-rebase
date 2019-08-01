@@ -9,10 +9,13 @@ import { Tooltip } from 'react-tippy';
 
 import Dropdown from '@/components/Dropdown';
 import Link from '@/components/Link';
+import SvgIcon from '@/components/SvgIcon';
 import withDraggable from '@/hocs/withDraggable';
 import { useToggle } from '@/hooks/toggle';
 import { colors } from '@/utils/colors';
 import { getHumanLanguageName } from '@/utils/languages';
+
+import { ProjectListDragZone, ProjectNameWrapper, ProjectTitle, ProjectTitleCaption, ProjectTitleDetails } from './styled';
 
 const DROPDOWN_OPTIONS = [
   {
@@ -37,7 +40,7 @@ export function Item(props) {
     created,
     diagram,
     language,
-    uploaded,
+    isLive,
     onRemove,
     avatarUrl,
     isDragging,
@@ -88,18 +91,24 @@ export function Item(props) {
             </>
           }
         />
+        <ProjectNameWrapper>
+          <ProjectTitleDetails>
+            <ProjectTitle>{name}</ProjectTitle>
+            <ProjectTitleCaption>{map(language, (l) => getHumanLanguageName(l)).join(', ')}</ProjectTitleCaption>
+          </ProjectTitleDetails>
 
-        <div className="projects-list__item-details">
-          <div className="projects-list__item-title">{name}</div>
-          <div className="projects-list__item-caption">{map(language, (l) => getHumanLanguageName(l)).join(', ')}</div>
-        </div>
-
-        <Tooltip position="top" title={uploaded ? 'Live' : 'Development'} className="projects-list__item-status" distance={10}>
-          <i className={`status-indicator status-indicator-${uploaded ? 'success' : 'info'}`} />
-        </Tooltip>
+          <Tooltip position="top" title={isLive ? 'Live' : 'Development'} className="projects-list__item-status" distance={10}>
+            <SvgIcon
+              icon={isLive ? 'outlinedFilledCircle' : 'outlinedCircle'}
+              color={isLive ? '#43A047' : '#5D9DF5'}
+              size={14}
+              className="status-indicator"
+            />
+          </Tooltip>
+        </ProjectNameWrapper>
       </Link>
 
-      {isDragging && <div className="projects-list__dragzone" />}
+      {isDragging && <ProjectListDragZone />}
     </div>
   );
 
@@ -122,7 +131,7 @@ Item.propTypes = {
   isOver: PropTypes.bool,
   onRemove: PropTypes.func.isRequired,
   language: PropTypes.array.isRequired,
-  uploaded: PropTypes.bool,
+  isLive: PropTypes.bool,
   avatarUrl: PropTypes.string,
   isDragging: PropTypes.bool,
   isDragLayer: PropTypes.bool,

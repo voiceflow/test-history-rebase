@@ -14,6 +14,8 @@ import DefaultButton from '@/components/Button';
 import AmazonLogin from '@/components/Forms/AmazonLogin';
 import Multiple from '@/components/Forms/Multiple';
 import GuidedSteps, { GuidedStepsWrapper } from '@/components/GuidedSteps';
+import { ModalFooter } from '@/components/Modals/ModalFooter';
+import { ModalHeader } from '@/components/Modals/ModalHeader';
 import RadioButtons, { YES_NO_RADIO_BUTTONS } from '@/components/RadioButtons';
 import { Spinner } from '@/components/Spinner';
 import Image from '@/components/Uploads/Image';
@@ -35,7 +37,7 @@ const stage_title = {
   6: 'Checking Vendor',
   7: 'Building and Submitting',
   9: 'Privacy & Compliance Ext.',
-  10: 'Submitted for Review',
+  10: 'Sent for Review',
   11: 'Awaiting Review',
   12: 'Confirming Withdraw',
 };
@@ -183,7 +185,7 @@ class Skill extends Component {
       .then(() => {
         this.setState({
           stage: 10,
-          publish: false,
+          publish: true,
           review: true,
         });
       })
@@ -805,26 +807,6 @@ class Skill extends Component {
   render() {
     const { stage, amzn_id, stage_error, instructions, locales, loaded, publish, live, review, id_collapse } = this.state;
     // const { setConfirm } = this.props;
-    // Success Screen
-    if (stage === 10) {
-      return (
-        <div className="super-center h-100">
-          <div className="success-page d-flex">
-            <div className="success-text">
-              <h1>Congrats!</h1>
-              <p className="text-muted">
-                Your skill has been successfully submitted for review to the Amazon Skill store. You will be updated on the status of your skill via
-                email.
-              </p>
-              <DefaultButton isSecondary onClick={() => this.setState({ stage: 2 })}>
-                Return to Project
-              </DefaultButton>
-            </div>
-            <img src="/images/success.svg" alt="success" />
-          </div>
-        </div>
-      );
-    }
 
     let content;
     // const alexaDashboardUrl = `https://developer.amazon.com/alexa/console/ask/build/custom/${amzn_id}/development/en_US/dashboard`;
@@ -924,6 +906,15 @@ class Skill extends Component {
           </div>
         </div>
       );
+    } else if (stage === 10) {
+      content = (
+        <div className="text-center mb-4">
+          <img id="rocket" alt="submitted" height={120} src="/images/icons/takeoff.svg" />
+          <div className="px-3 mt-4 text-dull">
+            Your project has been submitted for review. During this time you will see the skill with the "Review" status.
+          </div>
+        </div>
+      );
     }
 
     if (!loaded)
@@ -936,12 +927,11 @@ class Skill extends Component {
     return (
       <>
         <Modal isOpen={publish} className="stage_modal" centered size="lg" onClosed={this.closePublish}>
+          <ModalHeader toggle={() => this.setState({ publish: false })}>{stage_title[stage]}</ModalHeader>
           <ModalBody>
-            <div className="d-flex justify-content-between" ref={this.privacyTop}>
-              <b>{stage_title[stage]}</b>
-            </div>
             <div className="modal-info">{content}</div>
           </ModalBody>
+          <ModalFooter link="/dashboard">Return to Dashboard</ModalFooter>
         </Modal>
 
         <div className="subheader-page-container">

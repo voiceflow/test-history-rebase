@@ -8,8 +8,10 @@ import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { Alert, Button as ReactstrapButton, ButtonGroup, Collapse, Form, FormGroup, Input, Label, Modal, ModalBody } from 'reactstrap';
+import styled from 'styled-components';
 
 import DefaultButton from '@/components/Button';
+import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import GoogleAuth from '@/components/Modals/GoogleAuthenticationModalContent';
 import { ModalHeader } from '@/components/Modals/ModalHeader';
 import { Spinner } from '@/components/Spinner';
@@ -65,6 +67,20 @@ const GOOGLE_PUBLISH_STAGES = {
 };
 
 const DISALLOW_CHANGES_STAGES = new Set([11, 12]);
+
+const PrivacyPolicyLink = styled.div`
+  color: #8da2b5;
+  font-size: 13px;
+`;
+
+const LegalDisclaimer = styled.div`
+  font-size: 11px;
+  color: #62778c;
+  padding: 8px 0;
+  border-bottom: 1px solid #eaeff4;
+  margin-bottom: 24px;
+`;
+
 class GooglePublish extends Component {
   constructor(props) {
     super(props);
@@ -87,33 +103,167 @@ class GooglePublish extends Component {
     };
 
     this.privacyTop = React.createRef();
-
-    this.handleChange = this.handleChange.bind(this);
-    this.togglePublish = this.togglePublish.bind(this);
-    this.googleAuthTokenContent = this.googleAuthTokenContent.bind(this);
-    this.verifyGoogleToken = this.verifyGoogleToken.bind(this);
-    this.save = this.save.bind(this);
-    this.handleSelection = this.handleSelection.bind(this);
-    this.onPublish = this.onPublish.bind(this);
-    this.onPublishClicked = this.onPublishClicked.bind(this);
-    this.publishedContent = this.publishedContent.bind(this);
-    this.onDrop = this.onDrop.bind(this);
-    this.unlinkGoogle = this.unlinkGoogle.bind(this);
-    this.onUnlinkClick = this.onUnlinkClick.bind(this);
   }
 
-  togglePublish() {
-    const { publish_modal_open } = this.state;
+  render() {
+    const { stage, google_link_user, google_id, loaded, publish_modal_open, uploaded, id_collapse, modify_url, live } = this.state;
+
+    let modal_content = null;
+
+    if (stage === 2 || stage === 3 || stage === 6 || stage === 7) {
+      modal_content = (
+        <>
+          <Spinner message={`Loading ${GOOGLE_PUBLISH_STAGES[stage]}`} />
+        </>
+      );
+    } else if (stage === 0 || stage === 1) {
+      modal_content = this.googleAuthTokenContent();
+    } else if (stage === 4) {
+      modal_content = this.publishedContent();
+    }
+
+    const googleConsoleUrl = `https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/overview`;
+
+    if (!loaded)
+      return (
+        <div className="super-center h-100 w-100">
+          <Spinner message="Getting Action Status" />
+        </div>
+      );
+
+    return (
+      <>
+        <Modal
+          isOpen={publish_modal_open}
+          toggle={this.togglePublish}
+          className="stage_modal"
+          centered
+          size={[0, 1].includes(stage) ? 'md' : 'lg'}
+          onClosed={this.closePublish}
+        >
+          <ModalHeader
+            toggle={this.togglePublish}
+            className="w-100"
+            header={
+              <div className="d-flex justify-content-between" ref={this.privacyTop}>
+                <>{GOOGLE_PUBLISH_STAGES[stage]}</>
+              </div>
+            }
+          />
+          <ModalBody className="p-0">
+            <div className="modal-info" style={{ padding: '0 2rem 1rem 2rem' }}>
+              {modal_content}
+            </div>
+          </ModalBody>
+        </Modal>
+
+        <div className="subheader-page-container">
+          <>
+            <div className="container pt-3">
+              {live ? (
+                <div className="alert alert-success mb-4" role="alert">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <h5 className="mb-0">This Action currently has a live version in production</h5>
+                  </div>
+                </div>
+              ) : null}
+              {google_id && uploaded ? (
+                <div className="alert alert-success mb-4" role="alert">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <span>This Action is linked on the Google Actions Console</span>
+                    <b onClick={() => this.setState({ id_collapse: !id_collapse })} className="pointer">
+                      {id_collapse ? 'Hide' : 'More Info'}{' '}
+                      <span style={{ width: '9px', display: 'inline-block', textAlign: 'right' }}>
+                        <i className={`fas fa-caret-left rotate${id_collapse ? ' fa-rotate--90' : ''}`} />
+                      </span>
+                    </b>
+                  </div>
+                  <Collapse isOpen={id_collapse}>
+                    <hr />
+                    <span>Project ID | </span>
+                    <a
+                      href={`https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/simulator`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <b>{google_id} </b>
+                    </a>
+
+                    {!modify_url && (
+                      <span
+                        onClick={() => {
+                          this.setState({ modify_url: true });
+                        }}
+                        className="tooltip-link ml-2"
+                      >
+                        Link not working? Modify your google user ID
+                      </span>
+                    )}
+
+                    {modify_url && (
+                      <span className="ml-2 google-link-publish">
+                        <a
+                          href={`https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/simulator`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {'https://console.actions.google.com/u/'}
+                          <span>
+                            <Input
+                              className="google-link-input"
+                              name="google_link_user"
+                              value={google_link_user}
+                              onChange={this.handleChange}
+                              onClick={(e) => e.preventDefault()}
+                            />
+                          </span>
+                          {`/project/${google_id}/simulator`}
+                        </a>
+                        <Tooltip
+                          target="tooltip"
+                          className="menu-tip"
+                          theme="menu"
+                          position="bottom"
+                          title="This changes the Google Account that your link points to. A value of '0' will use your default Google Account, '1' will use the second Google Account you are logged into, and so on."
+                        >
+                          <i className="fas fa-question" />
+                        </Tooltip>
+                      </span>
+                    )}
+                  </Collapse>
+                </div>
+              ) : null}
+              {DISALLOW_CHANGES_STAGES.has(stage) ? (
+                <div className="alert alert-success mb-4" role="alert">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <h5 className="mb-0">This Action is currently in review so you cannot edit it.</h5>
+                    <>
+                      <DefaultButton isWhite variant="contained" href={googleConsoleUrl} target="_blank">
+                        Visit Dashboard
+                      </DefaultButton>
+                      <DefaultButton isPrimary variant="contained" className="ml-3" onClick={this.toggleConfirmWithdraw}>
+                        Withdraw Skill
+                      </DefaultButton>
+                    </>
+                  </div>
+                </div>
+              ) : null}
+              <Form>{this.renderBlocks()}</Form>
+            </div>
+          </>
+        </div>
+      </>
+    );
+  }
+
+  togglePublish = () =>
     this.setState({
-      publish_modal_open: !publish_modal_open,
+      publish_modal_open: !this.state.publish_modal_open,
     });
-  }
 
-  scrollToTop() {
-    this.privacyTop.current.scrollIntoView(true);
-  }
+  scrollToTop = () => this.privacyTop.current.scrollIntoView(true);
 
-  onPublish() {
+  onPublish = () =>
     this.save(true, () => {
       const { google_id } = this.state;
       const { setError, project_id } = this.props;
@@ -161,13 +311,11 @@ class GooglePublish extends Component {
           setError(error_msg);
         });
     });
-  }
 
-  handleSelection(value) {
+  handleSelection = (value) =>
     this.setState({
       category: value,
     });
-  }
 
   async componentDidMount() {
     const { project_id, skill_id, setError } = this.props;
@@ -240,7 +388,7 @@ class GooglePublish extends Component {
     }
   }
 
-  save(publish = false, cb) {
+  save = (publish = false, cb) => {
     const { setError, skill_id } = this.props;
     const s = this.state;
 
@@ -264,18 +412,18 @@ class GooglePublish extends Component {
         console.log(err);
         setError('Save Error, updates not saved');
       });
-  }
+  };
 
-  handleChange(event) {
+  handleChange = (event) => {
     const { stage } = this.state;
     if (stage !== 11) {
       this.setState({
         [event.target.name]: event.target.value,
       });
     }
-  }
+  };
 
-  async verifyGoogleToken() {
+  verifyGoogleToken = async () => {
     const { google_token, publish_clicked } = this.state;
     const { setConfirm, setError } = this.props;
     this.setState({
@@ -306,9 +454,9 @@ class GooglePublish extends Component {
       });
       setError(e);
     }
-  }
+  };
 
-  onUnlinkClick() {
+  onUnlinkClick = () => {
     const { setConfirm } = this.props;
     const { google_id } = this.state;
     setConfirm({
@@ -322,9 +470,9 @@ class GooglePublish extends Component {
         this.unlinkGoogle();
       },
     });
-  }
+  };
 
-  async unlinkGoogle() {
+  unlinkGoogle = async () => {
     const { project_id, setError } = this.props;
     this.setState({
       unlink_loading: true,
@@ -356,15 +504,14 @@ class GooglePublish extends Component {
     this.setState({
       unlink_loading: false,
     });
-  }
+  };
 
-  onMainLocaleBtnClick(locale) {
+  onMainLocaleBtnClick = (locale) =>
     this.setState({
       main_locale: locale,
     });
-  }
 
-  async onDrop(files) {
+  onDrop = async (files) => {
     const { project_id, setError } = this.props;
     const { stage } = this.state;
     if (files.length === 1) {
@@ -397,9 +544,9 @@ class GooglePublish extends Component {
       };
       reader.readAsText(files[0], 'UTF-8');
     }
-  }
+  };
 
-  onPublishClicked() {
+  onPublishClicked = () => {
     const { stage } = this.state;
 
     this.setState({
@@ -409,25 +556,25 @@ class GooglePublish extends Component {
     if (stage === 2) {
       this.onPublish();
     }
-  }
+  };
 
-  googleAuthTokenContent() {
+  googleAuthTokenContent = () => {
     const { stage, google_token } = this.state;
 
     if (stage !== 0 && stage !== 1) {
       return null;
     }
     return <GoogleAuth onVerify={this.verifyGoogleToken} token={google_token} onChange={this.handleChange} loading={stage === 1} />;
-  }
+  };
 
-  publishedContent() {
+  publishedContent = () => {
     const { stage, google_link_user, google_id } = this.state;
 
     if (stage !== 4) {
       return null;
     }
     return (
-      <div>
+      <>
         <img src="/images/preview.svg" alt="Success" height="160" />
         <br />
         Your Action Has been uploaded to Google Actions!
@@ -452,9 +599,9 @@ class GooglePublish extends Component {
             Submit for Review
           </a>
         </div>
-      </div>
+      </>
     );
-  }
+  };
 
   checkValidStep = (stepNumber) => {
     const { credentials, main_locale } = this.state;
@@ -485,7 +632,7 @@ class GooglePublish extends Component {
         <>
           <FormGroup className="mb-4">
             <Label className="publish-label">Dialogflow Credentials File *</Label>
-            <div>
+            <>
               <Dropzone
                 className={`dropzone google-upload ${credentials && !auth_error ? 'disabled' : ''}`}
                 activeClassName="active"
@@ -496,7 +643,7 @@ class GooglePublish extends Component {
                 onDrop={this.onDrop}
                 disabled={credentials && !auth_error}
               >
-                <div>
+                <>
                   {!credentials && !loading_creds && (
                     <div className="drop-child">
                       Drag and Drop your file here
@@ -539,9 +686,9 @@ class GooglePublish extends Component {
                   <div className="rejected-file text-danger">
                     <b>File not Accepted</b>
                   </div>
-                </div>
+                </>
               </Dropzone>
-            </div>
+            </>
           </FormGroup>
           {credentials && (
             <FormGroup>
@@ -632,188 +779,34 @@ class GooglePublish extends Component {
       title: 'Legal',
       content: (
         <>
+          <LegalDisclaimer>
+            Unfortunately the Privacy Policy or Terms and Conditions for Google Actions must be updated manually. Copy these links into the "Privacy
+            and Consent" portion of the{' '}
+            <a href={`https://console.actions.google.com/project/${google_id}/directoryinformation/`} target="_blank" rel="noopener noreferrer">
+              Google Action Console
+            </a>
+            .
+          </LegalDisclaimer>
+
           <FormGroup>
             <Label className="publish-label">Privacy Policy URL</Label>
-            <Input className="form-bg" type="text" name="privacy_policy" readOnly placeholder="Privacy Policy" value={privacy_policy} />
+            <ClipBoard name="link" value={privacy_policy}>
+              <PrivacyPolicyLink>{privacy_policy}</PrivacyPolicyLink>
+            </ClipBoard>
           </FormGroup>
 
           <FormGroup className="mb-4">
             <Label className="publish-label">Terms and Conditions URL</Label>
-            <Input className="form-bg" type="text" name="terms_and_cond" readOnly placeholder="Terms and Conditions" value={terms_and_cond} />
+            <ClipBoard name="link" value={terms_and_cond}>
+              <PrivacyPolicyLink>{terms_and_cond}</PrivacyPolicyLink>
+            </ClipBoard>
           </FormGroup>
-        </>
-      ),
-      description: (
-        <>
-          <div className="publish-info">
-            <p className="helper-text">
-              The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Action (this field is for
-              reference only).
-            </p>
-          </div>
-          <div className="publish-info">
-            <p className="helper-text">
-              The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Action (this field is
-              for reference only).
-            </p>
-          </div>
         </>
       ),
     });
 
     return <GuidedSteps blocks={blocks} checkStep={this.checkValidStep} onFinishSteps={this.onPublishClicked} submitText={enterText} forceFollow />;
   };
-
-  render() {
-    const { stage, google_link_user, google_id, loaded, publish_modal_open, uploaded, id_collapse, modify_url, live } = this.state;
-
-    let modal_content = null;
-
-    if (stage === 2 || stage === 3 || stage === 6 || stage === 7) {
-      modal_content = (
-        <div>
-          <Spinner message={`Loading ${GOOGLE_PUBLISH_STAGES[stage]}`} />
-        </div>
-      );
-    } else if (stage === 0 || stage === 1) {
-      modal_content = this.googleAuthTokenContent();
-    } else if (stage === 4) {
-      modal_content = this.publishedContent();
-    }
-
-    const googleConsoleUrl = `https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/overview`;
-
-    if (!loaded)
-      return (
-        <div className="super-center h-100 w-100">
-          <Spinner message="Getting Action Status" />
-        </div>
-      );
-
-    return (
-      <>
-        <Modal
-          isOpen={publish_modal_open}
-          toggle={this.togglePublish}
-          className="stage_modal"
-          centered
-          size={[0, 1].includes(stage) ? 'md' : 'lg'}
-          onClosed={this.closePublish}
-        >
-          <ModalHeader
-            toggle={this.togglePublish}
-            className="w-100"
-            header={
-              <div className="d-flex justify-content-between" ref={this.privacyTop}>
-                <div>{GOOGLE_PUBLISH_STAGES[stage]}</div>
-              </div>
-            }
-          />
-          <ModalBody className="p-0">
-            <div className="modal-info" style={{ padding: '0 2rem 1rem 2rem' }}>
-              {modal_content}
-            </div>
-          </ModalBody>
-        </Modal>
-
-        <div className="subheader-page-container">
-          <div>
-            <div className="container pt-3">
-              {live ? (
-                <div className="alert alert-success mb-4" role="alert">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0">This Action currently has a live version in production</h5>
-                  </div>
-                </div>
-              ) : null}
-              {google_id && uploaded ? (
-                <div className="alert alert-success mb-4" role="alert">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <span>This Action is linked on the Google Actions Console</span>
-                    <b onClick={() => this.setState({ id_collapse: !id_collapse })} className="pointer">
-                      {id_collapse ? 'Hide' : 'More Info'}{' '}
-                      <span style={{ width: '9px', display: 'inline-block', textAlign: 'right' }}>
-                        <i className={`fas fa-caret-left rotate${id_collapse ? ' fa-rotate--90' : ''}`} />
-                      </span>
-                    </b>
-                  </div>
-                  <Collapse isOpen={id_collapse}>
-                    <hr />
-                    <span>Project ID | </span>
-                    <a
-                      href={`https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/simulator`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <b>{google_id} </b>
-                    </a>
-
-                    {!modify_url && (
-                      <span
-                        onClick={() => {
-                          this.setState({ modify_url: true });
-                        }}
-                        className="tooltip-link ml-2"
-                      >
-                        Link not working? Modify your google user ID
-                      </span>
-                    )}
-
-                    {modify_url && (
-                      <span className="ml-2 google-link-publish">
-                        <a
-                          href={`https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/simulator`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {'https://console.actions.google.com/u/'}
-                          <span>
-                            <Input
-                              className="google-link-input"
-                              name="google_link_user"
-                              value={google_link_user}
-                              onChange={this.handleChange}
-                              onClick={(e) => e.preventDefault()}
-                            />
-                          </span>
-                          {`/project/${google_id}/simulator`}
-                        </a>
-                        <Tooltip
-                          target="tooltip"
-                          className="menu-tip"
-                          theme="menu"
-                          position="bottom"
-                          title="This changes the Google Account that your link points to. A value of '0' will use your default Google Account, '1' will use the second Google Account you are logged into, and so on."
-                        >
-                          <i className="fas fa-question" />
-                        </Tooltip>
-                      </span>
-                    )}
-                  </Collapse>
-                </div>
-              ) : null}
-              {DISALLOW_CHANGES_STAGES.has(stage) ? (
-                <div className="alert alert-success mb-4" role="alert">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0">This Action is currently in review so you cannot edit it.</h5>
-                    <div>
-                      <DefaultButton isWhite variant="contained" href={googleConsoleUrl} target="_blank">
-                        Visit Dashboard
-                      </DefaultButton>
-                      <DefaultButton isPrimary variant="contained" className="ml-3" onClick={this.toggleConfirmWithdraw}>
-                        Withdraw Skill
-                      </DefaultButton>
-                    </div>
-                  </div>
-                </div>
-              ) : null}
-              <Form>{this.renderBlocks()}</Form>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  }
 }
 
 const mapStateToProps = (state) => ({

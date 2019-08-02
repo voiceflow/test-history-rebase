@@ -80,10 +80,9 @@ jobs:
           command: |
             mkdir -p /tmp/vf-build/vars
             npm config set unsafe-perm true # needed for npx to work
-            echo -e "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
             # Fix semantic versioning and api host
             if [ "$CIRCLE_BRANCH" == "production" ]; then
-              (npx semantic-release@15 --prepare --dry-run || true) | tee sem_release.output  # print semver to screen
+              npx semantic-release@15 --prepare --dry-run | tee sem_release.output  # print semver to screen
               SEM_VER=$(cat sem_release.output | grep 'Published release ' | awk '{print $NF}')  # Get release semver
               if [ -z "$SEM_VER" ]; then
                 SEM_VER=$(npm view @voiceflow/creator-app version)
@@ -95,7 +94,7 @@ jobs:
               VF_APP_BUILD_ENV=staging
               VF_APP_API_HOST=api.$CIRCLE_BRANCH.voiceflow.com
             fi
-            echo -e "Building with SEM_VER=$SEM_VER"
+            echo -e "Building with SEM_VER=${SEM_VER}"
             echo -e "API host is $VF_APP_API_HOST"
             $(aws ecr get-login --no-include-email --region us-east-1)
             docker build \

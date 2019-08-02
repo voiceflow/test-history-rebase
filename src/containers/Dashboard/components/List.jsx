@@ -123,7 +123,7 @@ export function List(props) {
                 <div className="main-list-header__aside">
                   <Dropdown isOpen={showOptions} toggle={() => toggleShow(!showOptions)} inNavbar>
                     <DropdownToggle tag="div">
-                      <RoundButton variant="shadow" icon="elipsis" active={showOptions} imgSize={15} />
+                      <RoundButton variant="shadow" noShadow active={showOptions} icon="elipsis" imgSize={15} />
                     </DropdownToggle>
                     <DropdownMenu right className="no-select py-1">
                       <DropdownItem onClick={onRemove}>Remove List</DropdownItem>

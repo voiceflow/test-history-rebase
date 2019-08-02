@@ -8,7 +8,7 @@ import { clickableStyles } from '@/componentsV2/Button/styles';
 
 const activeStyles = css`
   background-color: #eef4f6cc;
-  color: #113160;
+  color: #6e849a;
 
   ${({ variant, color }) =>
     variant !== 'plain' &&
@@ -18,7 +18,7 @@ const activeStyles = css`
 
       ${variant === 'shadow' &&
         css`
-          background-color: #5b9dfa30;
+          background: linear-gradient(#5d9df515, #5d9df530);
           color: #5b9dfa;
           box-shadow: 0 0 0 1px #5b9dfa99;
         `}
@@ -67,13 +67,13 @@ const Button = styled.button`
   text-align: center;
   padding: 0;
   transition: all 0.15s linear;
-  ${({ variant }) => {
+  ${({ variant, noShadow }) => {
     if (variant === 'color') {
       return css`
         box-shadow: 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.18);
       `;
     }
-    if (variant === 'shadow') {
+    if (variant === 'shadow' && !noShadow) {
       return css`
         box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
       `;
@@ -96,11 +96,11 @@ const Button = styled.button`
 `;
 
 const RoundButton = (props) => {
-  const { icon, color, imgSize, className, innerRef, onClick, disabled } = props;
+  const { icon, color, imgSize, className, innerRef, onClick, disabled, children } = props;
 
   return (
     <Button {...props} className={className} ref={innerRef} disabled={disabled} onClick={(e) => onClick(e)}>
-      <SvgIcon icon={icon} width={imgSize} height={imgSize} color={color} />
+      {children || <SvgIcon icon={icon} width={imgSize} height={imgSize} color={color || 'currentColor'} />}
     </Button>
   );
 };

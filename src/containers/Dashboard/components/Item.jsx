@@ -30,7 +30,7 @@ const DROPDOWN_OPTIONS = [
 
 const DROPDOWN_BUTTON_PROPS = {
   isDropdown: true,
-  className: 'dropdown-button projects-list__item-action',
+  className: 'projects-list__item-action',
 };
 
 export function Item(props) {

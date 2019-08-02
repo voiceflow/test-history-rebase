@@ -126,7 +126,7 @@ exports[`Dashboard render dashboard 1`] = `
                     <RoundButton
                       disabled={false}
                       icon="addStep"
-                      imgSize={15}
+                      imgSize={13}
                       onClick={[Function]}
                       size={42}
                       variant="shadow"

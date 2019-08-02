@@ -423,7 +423,6 @@
 
 .projects-list__item-actions {
   display: none;
-  margin-right: 16px;
 }
 
 .main-list-body.still .projects-list__item:hover {
@@ -436,6 +435,12 @@
 .main-list-body.still .projects-list__item:hover .projects-list__item-image,
 .main-list-body.still .projects-list__item.__is-hovered .projects-list__item-image {
   display: none;
+}
+
+.projects-list__item:hover .projects-list__item-action {
+  border: 1px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
 }
 
 .main-list-body.still .projects-list__item:hover .projects-list__item-actions,

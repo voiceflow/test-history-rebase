@@ -328,7 +328,7 @@ export const DashBoard = (props) => {
                             onClick={() => {
                               props.addBoard(props.team_id);
                             }}
-                            imgSize={15}
+                            imgSize={13}
                           />
                         </Tooltip>
                       </div>

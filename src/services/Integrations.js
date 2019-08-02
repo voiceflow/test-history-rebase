@@ -11,7 +11,7 @@ const customAPICall = async (params) => {
       const resp = await axios.post('/integrations/custom/make_test_api_call', params);
       resolve(resp.data);
     } catch (e) {
-      reject(e);
+      reject(new Error(`${e.message}. ${e.response.data}`));
     }
   });
 };

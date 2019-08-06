@@ -23,10 +23,20 @@ class FeedSection extends Component {
     this.checkCompletion();
   }
 
+  componentDidUpdate() {
+    this.checkCompletion();
+  }
+
   checkCompletion() {
-    const { integrationsUser } = this.props;
+    const { integrationsUser, integration_users: integrationUsers, selected_integration: selectedIntegration } = this.props;
     const { completed: stateCompleted } = this.state;
     let completed = false;
+
+    if (!integrationsUser && selectedIntegration && integrationUsers[selectedIntegration] && integrationUsers[selectedIntegration].length) {
+      const users = integrationUsers[selectedIntegration];
+      this.selectUser(users[users.length - 1]);
+      completed = true;
+    }
 
     if (integrationsUser) {
       completed = true;

@@ -141,6 +141,7 @@ div.nav-item {
 .dropdown-button {
   position: relative;
   display: flex;
+  justify-content: center;
   width: 42px;
   height: 42px;
   padding: 11px 10px 10px 10px;

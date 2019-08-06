@@ -86,6 +86,7 @@ jobs:
               (npx semantic-release@15 --prepare --dry-run || true) | tee sem_release.output  # print semver to screen
               SEM_VER=$(cat sem_release.output | grep 'Published release ' | awk '{print $NF}')  # Get release semver
               if [ -z "$SEM_VER" ]; then
+                echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
                 SEM_VER=$(npm view @voiceflow/creator-app version)
               fi
               VF_APP_API_HOST=api.voiceflow.com

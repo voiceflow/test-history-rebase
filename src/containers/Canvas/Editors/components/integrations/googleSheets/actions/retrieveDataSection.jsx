@@ -112,7 +112,7 @@ class RetrieveData extends Component {
             </div>
           </div>
           <div className="text-center my-3">
-            <Button isFlat disabled={!this.state.completed} onClick={this.props.showNextSection}>
+            <Button isPrimary disabled={!this.state.completed} onClick={this.props.showNextSection}>
               Next
             </Button>
           </div>

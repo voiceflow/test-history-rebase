@@ -234,7 +234,6 @@ export const DashBoard = (props) => {
           team_setting={team_setting}
           setTeamSetting={setTeamSetting}
         />
-        {loading && <FullSpinner name="Projects" />}
         {LOCKED && (
           <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
             <Alert color="danger" onClick={() => setTeamSetting('BILLING')} className="pointer text-center py-3">
@@ -258,87 +257,91 @@ export const DashBoard = (props) => {
             </div>
           </div>
         )}
-        <div
-          id="dashboard"
-          className={cn({ 'thanos-ed': LOCKED || EXPIRED })}
-          onClickCapture={(e) => {
-            // prevent all click events
-            if (LOCKED || EXPIRED) {
-              e.preventDefault();
-              e.stopPropagation();
-              return false;
-            }
-          }}
-        >
-          {!loading && props.projects.allIds.length === 0 ? (
-            <div className="h-100 d-flex justify-content-center">
-              <div className="align-self-center">
-                <div className="text-center">
-                  <img src="/create.svg" alt="skill-icon" width="100" height="127" className="mb-1" />
+        {loading ? (
+          <FullSpinner name="Projects" />
+        ) : (
+          <div
+            id="dashboard"
+            className={cn({ 'thanos-ed': LOCKED || EXPIRED })}
+            onClickCapture={(e) => {
+              // prevent all click events
+              if (LOCKED || EXPIRED) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+              }
+            }}
+          >
+            {props.projects.allIds.length === 0 ? (
+              <div className="h-100 d-flex justify-content-center">
+                <div className="align-self-center">
+                  <div className="text-center">
+                    <img src="/create.svg" alt="skill-icon" width="100" height="127" className="mb-1" />
+                  </div>
+                  <label className="dark text-center">No Projects Found</label>
+                  <div className="text-muted mt-3 mb-2">This board has no projects yet, create one.</div>
+                  <Link to="/team/template" className="no-underline super-center">
+                    <Button isPrimary className="mt-3" id="createskill">
+                      New Project
+                    </Button>
+                  </Link>
                 </div>
-                <label className="dark text-center">No Projects Found</label>
-                <div className="text-muted mt-3 mb-2">This board has no projects yet, create one.</div>
-                <Link to="/team/template" className="no-underline super-center">
-                  <Button isPrimary className="mt-3" id="createskill">
-                    New Project
-                  </Button>
-                </Link>
               </div>
-            </div>
-          ) : (
-            <div className="board-container-body">
-              <div className="board-container-body-inner">
-                <ScrollContextProvider value={scrollHelpers}>
-                  <div ref={bodyRef} className="main-lists">
-                    <div ref={innerRef} className="main-lists-inner">
-                      {_.map(props.boards_array, (board, idx) => (
-                        <List
-                          id={board.board_id}
-                          key={board.board_id}
-                          isNew={board.isNew}
-                          index={idx}
-                          name={board.name}
-                          onRename={props.renameBoard}
-                          onRemove={() => deleteBoard(board.board_id)}
-                          projects={board.projects.map((p) => filtered_projects[p])}
-                          onCopyProject={copyProject}
-                          onDeleteProject={deleteProject}
-                          createSkill={newProject}
-                          onMove={props.changeListPosition}
-                          onDrop={saveList}
-                          onMoveProject={props.changeProjectPosition}
-                          clearNewBoard={props.clearIsNewBoard}
-                          onDropProject={saveList}
-                          disableDragging={!!filter}
-                        />
-                      ))}
-                      <DragLayer withMemo>
-                        {(item) => {
-                          if (item.dragType === 'dashboard-list') {
-                            return <SimpleList {...item} />;
-                          }
-                          return <ListItem {...item} />;
-                        }}
-                      </DragLayer>
-                      <div className="main-list-add">
-                        <Tooltip distance={10} title="Add new list" position="bottom">
-                          <RoundButton
-                            variant="shadow"
-                            icon="addStep"
-                            onClick={() => {
-                              props.addBoard(props.team_id);
-                            }}
-                            imgSize={13}
+            ) : (
+              <div className="board-container-body">
+                <div className="board-container-body-inner">
+                  <ScrollContextProvider value={scrollHelpers}>
+                    <div ref={bodyRef} className="main-lists">
+                      <div ref={innerRef} className="main-lists-inner">
+                        {_.map(props.boards_array, (board, idx) => (
+                          <List
+                            id={board.board_id}
+                            key={board.board_id}
+                            isNew={board.isNew}
+                            index={idx}
+                            name={board.name}
+                            onRename={props.renameBoard}
+                            onRemove={() => deleteBoard(board.board_id)}
+                            projects={board.projects.map((p) => filtered_projects[p])}
+                            onCopyProject={copyProject}
+                            onDeleteProject={deleteProject}
+                            createSkill={newProject}
+                            onMove={props.changeListPosition}
+                            onDrop={saveList}
+                            onMoveProject={props.changeProjectPosition}
+                            clearNewBoard={props.clearIsNewBoard}
+                            onDropProject={saveList}
+                            disableDragging={!!filter}
                           />
-                        </Tooltip>
+                        ))}
+                        <DragLayer withMemo>
+                          {(item) => {
+                            if (item.dragType === 'dashboard-list') {
+                              return <SimpleList {...item} />;
+                            }
+                            return <ListItem {...item} />;
+                          }}
+                        </DragLayer>
+                        <div className="main-list-add">
+                          <Tooltip distance={10} title="Add new list" position="bottom">
+                            <RoundButton
+                              variant="shadow"
+                              icon="addStep"
+                              onClick={() => {
+                                props.addBoard(props.team_id);
+                              }}
+                              imgSize={13}
+                            />
+                          </Tooltip>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </ScrollContextProvider>
+                  </ScrollContextProvider>
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     </>
   );

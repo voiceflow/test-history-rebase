@@ -83,8 +83,10 @@ jobs:
             echo -e "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
             # Fix semantic versioning and api host
             if [ "$CIRCLE_BRANCH" == "production" ]; then
-              (npx semantic-release@15 --prepare --dry-run || true) | tee sem_release.output  # print semver to screen
+              set +e # Do not terminate on first error (for semantic-release)
+              npx semantic-release@15 --prepare --dry-run | tee sem_release.output  # print semver to screen
               SEM_VER=$(cat sem_release.output | grep 'Published release ' | awk '{print $NF}')  # Get release semver
+              set -e
               if [ -z "$SEM_VER" ]; then
                 echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
                 SEM_VER=$(npm view @voiceflow/creator-app version)

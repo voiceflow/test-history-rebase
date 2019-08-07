@@ -207,7 +207,7 @@
     "lint:css": "stylelint src/**/*.css",
     "lint:js": "eslint \"src/**/*.{js,jsx}\"",
     "lint:quiet": "npm run lint:js -- --quiet && npm run lint:css -- --quiet",
-    "prepublish": "patch-package",
+    "postinstall": "patch-package",
     "start": "wp --action=serve",
     "storybook": "start-storybook --https --ssl-cert=certs/localhost.crt --ssl-key=certs/localhost.key",
     "storybook:build": "build-storybook --output-dir storybook_build --quiet",

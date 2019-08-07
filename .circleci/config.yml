@@ -79,10 +79,10 @@ jobs:
           name: 'Build docker image'
           command: |
             mkdir -p /tmp/vf-build/vars
-            npm config set unsafe-perm true # needed for npx to work
             echo -e "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
             # Fix semantic versioning and api host
             if [ "$CIRCLE_BRANCH" == "production" ]; then
+              npm config set unsafe-perm true # needed for npx to work
               set +e # Do not terminate on first error (for semantic-release)
               npx semantic-release@15 --prepare --dry-run | tee sem_release.output  # print semver to screen
               SEM_VER=$(cat sem_release.output | grep 'Published release ' | awk '{print $NF}')  # Get release semver

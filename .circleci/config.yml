@@ -9,7 +9,7 @@ executors:
       NODE_OPTIONS: --max-old-space-size=2048
   image_builder:
     working_directory: /tmp/vf-build
-    docker: 
+    docker:
       - image: voiceflow/ci-image:v3
 
 commands:
@@ -69,9 +69,10 @@ jobs:
                 command: npm run build
             - run:
                 name: (Build Storybook)
-                command: npm run storybook:build           
+                command: npm run storybook:build
   build-push-image:
-    executor: image_builder
+    docker:
+      - image: voiceflow/ci-image:v3
     steps:
       - checkout # special step to check out source code to working directory
       - setup_remote_docker
@@ -109,7 +110,7 @@ jobs:
               --build-arg SEM_VER=$SEM_VER \
               --build-arg VF_APP_BUILD_ENV=$VF_APP_BUILD_ENV \
               --build-arg VF_APP_API_HOST=$VF_APP_API_HOST \
-              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM . 
+              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM .
             echo $CIRCLE_BUILD_NUM > /tmp/vf-build/vars/build_num
       - run:
           name: 'Push docker images'
@@ -122,7 +123,8 @@ jobs:
           paths:
             - build_num
   deploy-image:
-    executor: image_builder
+    docker:
+      - image: voiceflow/ci-image:v3
     steps:
       - attach_workspace:
           at: /tmp/vf-build/vars

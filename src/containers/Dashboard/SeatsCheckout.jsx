@@ -8,7 +8,7 @@ import { Collapse, Input } from 'reactstrap';
 import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
 import { setError } from '@/ducks/modal';
-import { createTeam, updateMembers } from '@/ducks/team';
+import { createTeam, removeTrial, updateMembers } from '@/ducks/team';
 import StripeHandler from '@/hocs/withStripeHandler';
 
 import { PLANS_ID } from './PLANS';
@@ -144,13 +144,26 @@ class SeatsCheckout extends Component {
     }
   }
 
+  downgrade = () => {
+    const { removeTrial, team, next } = this.props;
+
+    removeTrial(team.team_id)
+      .then(() => next())
+      .catch(() => next());
+  };
+
   render() {
     const { stage, loading, coupon, coupon_toggle, source } = this.state;
-    const { width, collab, status, modify, prompt } = this.props;
+    const { width, collab, status, modify, prompt, team } = this.props;
     if (stage === 'PLAN') {
       return (
         <div className="d-flex align-items-start justify-content-center mb-4 mx--2 w-100">
-          <PricingCard plan="PROFESSIONAL" upgrade={(plan) => this.setState({ plan, stage: 'CHECKOUT' })} delay={300} />
+          <PricingCard
+            plan="PROFESSIONAL"
+            upgrade={(plan) => this.setState({ plan, stage: 'CHECKOUT' })}
+            delay={300}
+            downgrade={team.expiry && (() => this.downgrade())}
+          />
           <PricingCard plan="BUSINESS" upgrade={(plan) => this.setState({ plan, stage: 'CHECKOUT' })} delay={600} />
         </div>
       );
@@ -240,6 +253,7 @@ class SeatsCheckout extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
+  removeTrial: (team_id) => dispatch(removeTrial(team_id)),
   setError: (err) => dispatch(setError(err)),
   updateMembers: (members, options) => dispatch(updateMembers(members, options)),
   createTeam: (data) => dispatch(createTeam(data)),

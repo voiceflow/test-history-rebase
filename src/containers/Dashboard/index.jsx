@@ -31,7 +31,7 @@ import {
 } from '@/ducks/board';
 import { setConfirm, setError } from '@/ducks/modal';
 import { copyProject, deleteProject, updateProjects } from '@/ducks/project';
-import { getMembers } from '@/ducks/team';
+import { getMembers, removeTrial } from '@/ducks/team';
 import { useScrollHelpers } from '@/hooks/scroll';
 
 import ExpiryButton from './ExpiryButton';
@@ -205,6 +205,10 @@ export const DashBoard = (props) => {
     );
   };
 
+  const downgrade = () => {
+    props.removeTrial(props.team.team_id);
+  };
+
   return (
     <>
       <ExpiryButton team={props.team} upgrade={() => setTeamSetting('CHECKOUT')} />
@@ -251,9 +255,12 @@ export const DashBoard = (props) => {
             <div>
               <h3>Your free trial has expired</h3>
               <div className="text-dull mt-3 mb-4">Please Upgrade to continue using Voiceflow</div>
-              <Button isPrimary className="mb-5" onClick={() => setTeamSetting('CHECKOUT')}>
+              <Button isPrimary className="mb-4" onClick={() => setTeamSetting('CHECKOUT')}>
                 Upgrade Plan
               </Button>
+              <div className="btn-link" onClick={() => downgrade()}>
+                Downgrade to Personal
+              </div>
             </div>
           </div>
         )}
@@ -356,6 +363,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    removeTrial: (team_id) => dispatch(removeTrial(team_id)),
     fetchBoards: (team_id) => dispatch(fetchBoards(team_id)),
     addBoard: (team_id) => dispatch(addBoard(team_id)),
     deleteProject: (project_id) => dispatch(deleteProject(project_id)),

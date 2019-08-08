@@ -12,7 +12,7 @@ import { Spinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
 import Image from '@/components/Uploads/Image';
 import { setConfirm, setError } from '@/ducks/modal';
-import { deleteTeam, leaveTeam, updateCurrentTeamItem, updateMembers, updateTeamName } from '@/ducks/team';
+import { deleteTeam, leaveTeam, removeTrial, updateCurrentTeamItem, updateMembers, updateTeamName } from '@/ducks/team';
 import CogIcon from '@/svgs/cog.svg';
 
 import Billing from './Billing';
@@ -35,6 +35,7 @@ const STAGES = {
   BILLING: { title: 'Billing' },
   SUCCESS: { title: 'Update Success' },
 };
+
 /* eslint-enable sonarjs/no-duplicate-string */
 
 class TeamSettings extends Component {
@@ -156,6 +157,14 @@ class TeamSettings extends Component {
     });
   };
 
+  downgrade = () => {
+    const { removeTrial, team, close } = this.props;
+
+    removeTrial(team.team_id)
+      .then(() => close())
+      .catch(() => close());
+  };
+
   renderBody = () => {
     const { stage, name, members, is_diff, input } = this.state;
     const { team, user, setError, updateTeam, setConfirm, updateTeamName } = this.props;
@@ -164,8 +173,8 @@ class TeamSettings extends Component {
         if (!this.IS_ADMIN) return Contact;
         return (
           <div className="d-flex align-items-start justify-content-center mx--2 mt-5">
-            <PricingCard plan="HOBBY" delay={300} team={team} />
-            <PricingCard plan="PROFESSIONAL" delay={600} team={team} upgrade={this.upgrade(1)} />
+            {!team.expiry ? <PricingCard plan="HOBBY" delay={300} team={team} /> : ''}
+            <PricingCard plan="PROFESSIONAL" delay={600} team={team} upgrade={this.upgrade(1)} downgrade={team.expiry && (() => this.downgrade())} />
             <PricingCard plan="BUSINESS" delay={900} team={team} upgrade={this.upgrade(2)} />
           </div>
         );
@@ -177,6 +186,19 @@ class TeamSettings extends Component {
             <br />
             <span className="text-muted">
               Your subscription has been activated.
+              <br />
+              Thank you.
+            </span>
+          </div>
+        );
+      case 'DOWNGRADE-SUCCESS':
+        return (
+          <div className="py-5 my-5 text-center">
+            <img src="/images/icons/reciept.svg" alt="reciept" width={80} />
+            <br />
+            <br />
+            <span className="text-muted">
+              Your account has been changed to Hobbyist.
               <br />
               Thank you.
             </span>
@@ -206,6 +228,7 @@ class TeamSettings extends Component {
                 members={members}
                 team={team}
                 next={() => this.setState({ stage: 'SUCCESS' })}
+                downgradeComplete={() => this.setState({ stage: 'DOWNGRADE-SUCCESS' })}
                 user={user}
                 plan={plan}
                 collab={() => this.setState({ stage: 'MEMBERS' })}
@@ -468,6 +491,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    removeTrial: (team_id) => dispatch(removeTrial(team_id)),
     updateMembers: (members, options) => dispatch(updateMembers(members, options)),
     deleteTeam: (team_id) => dispatch(deleteTeam(team_id)),
     leaveTeam: (team_id) => dispatch(leaveTeam(team_id)),

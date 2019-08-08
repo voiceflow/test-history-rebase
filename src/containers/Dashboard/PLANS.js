@@ -3,7 +3,7 @@ const PLANS = {
     id: 0,
     name: 'Hobbyist',
     rate: 0,
-    image: '/images/icons/collaborate-selected.svg',
+    image: '/images/icons/hobbyist.svg',
     features: ['3 projects', 'Community support'],
   },
   PROFESSIONAL: {

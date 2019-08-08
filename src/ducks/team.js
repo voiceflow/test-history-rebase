@@ -195,6 +195,25 @@ export const createTeam = (data) => {
   };
 };
 
+export const removeTrial = (teamId) => {
+  return async (dispatch) => {
+    try {
+      await axios.put(`/team/${teamId}/downgrade`);
+      dispatch(
+        updateTeam(teamId, {
+          expiry: null,
+        })
+      );
+
+      dispatch(fetchTeams());
+      return Promise.resolve();
+    } catch (err) {
+      dispatch(setError(_.get(err, ['response', 'data']) || (err && JSON.stringify(err)) || 'Could not downgrade team'));
+      return Promise.reject();
+    }
+  };
+};
+
 export const updateMembers = (new_members, options) => {
   return async (dispatch, getState) => {
     try {

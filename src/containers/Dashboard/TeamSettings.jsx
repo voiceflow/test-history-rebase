@@ -191,6 +191,19 @@ class TeamSettings extends Component {
             </span>
           </div>
         );
+      case 'DOWNGRADE-SUCCESS':
+        return (
+          <div className="py-5 my-5 text-center">
+            <img src="/images/icons/reciept.svg" alt="reciept" width={80} />
+            <br />
+            <br />
+            <span className="text-muted">
+              Your account has been changed to Hobbyist.
+              <br />
+              Thank you.
+            </span>
+          </div>
+        );
       case 'CHECKOUT:PROJECTS':
       case 'CHECKOUT':
         if (!this.IS_ADMIN) return Contact;
@@ -215,6 +228,7 @@ class TeamSettings extends Component {
                 members={members}
                 team={team}
                 next={() => this.setState({ stage: 'SUCCESS' })}
+                downgradeComplete={() => this.setState({ stage: 'DOWNGRADE-SUCCESS' })}
                 user={user}
                 plan={plan}
                 collab={() => this.setState({ stage: 'MEMBERS' })}

@@ -145,11 +145,11 @@ class SeatsCheckout extends Component {
   }
 
   downgrade = () => {
-    const { removeTrial, team, next } = this.props;
+    const { removeTrial, team, downgradeComplete } = this.props;
 
     removeTrial(team.team_id)
-      .then(() => next())
-      .catch(() => next());
+      .then(() => downgradeComplete())
+      .catch(() => downgradeComplete());
   };
 
   render() {

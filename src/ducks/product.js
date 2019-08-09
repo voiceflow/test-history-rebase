@@ -129,7 +129,7 @@ export const deleteProduct = (skill_id, product_id) => {
       })
       .catch((err) => {
         console.error(err);
-        dispatch(setError('Error Encountered - Unable to Delete Product'));
+        dispatch(setError(err.response.data || 'Error Encountered - Unable to Delete Product'));
       });
   };
 };

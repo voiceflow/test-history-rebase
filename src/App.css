@@ -2238,15 +2238,14 @@ kbd {
   min-width: 350px;
   max-width: 350px;
   padding: 20px;
-  white-space: normal;
-  background-color: #fff;
-  border: solid 1px;
-  border: 1px solid rgba(141, 162, 181, 0.28);
-  border-radius: 5px;
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
   align-items: center;
+  white-space: normal;
+  background-color: #fff;
+  border: 1px solid rgba(141, 162, 181, 0.28);
+  border-radius: 5px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
 }
 
 .pass-icon {

@@ -7,9 +7,10 @@ import React, { Component, Fragment } from 'react';
 import AutoSizeInput from 'react-input-autosize';
 import Textarea from 'react-textarea-autosize';
 
+import SvgIcon from '@/components/SvgIcon';
+
 import Counter from '../Counter';
 import Dropdown from '../Dropdown';
-import Icon from '../Icon';
 import Loader from '../Loader';
 import { validateInteger, validateNumber } from './validations';
 
@@ -295,7 +296,7 @@ export default class Input extends Component {
       // eslint-disable-next-line jsx-a11y/interactive-supports-focus
       <div role="button" onClick={onActionClick} className={cn('form-control-group__addon __with-action', actionClassName)}>
         {' '}
-        {!!action && <Icon className={action} />} {!!actionText && <span className="text-link"> {actionText} </span>}{' '}
+        {!!actionText && <span className="text-link"> {actionText} </span>}{' '}
       </div>
     );
 
@@ -346,7 +347,7 @@ export default class Input extends Component {
             )}{' '}
             {!!icon && (
               <div className="form-control-group__addon">
-                <Icon className={icon} />{' '}
+                <SvgIcon icon={icon} />{' '}
               </div>
             )}{' '}
             {!!dropdown && (

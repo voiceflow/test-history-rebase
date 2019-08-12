@@ -16,7 +16,7 @@ const account = {
 describe('ActionGroup', () => {
   it('render action group/top nav bar', () => {
     const component = shallow(
-      <ActionGroup
+      <ActionGroup.WrappedComponent
         skill={testSkill}
         user={account}
         showSettings={{ show: false, tag: 'basic' }}

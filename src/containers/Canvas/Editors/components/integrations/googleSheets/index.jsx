@@ -68,10 +68,10 @@ class GoogleSheets extends IntegrationBase {
     delete this.currentUpdateRequest;
   }
 
-  updateActionData = (d, callback) => {
+  updateActionData = (d = {}, callback) => {
     const integration_data = this.props.integration_data;
     const action = integration_data.selected_action;
-    const action_data = integration_data.actions_data[action];
+    const action_data = integration_data.actions_data[action] || {};
 
     const updateSpec = {};
     Object.keys(d).forEach((k) => {

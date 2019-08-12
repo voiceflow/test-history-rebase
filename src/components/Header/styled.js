@@ -66,10 +66,7 @@ export const BackButton = styled.span`
 export const Logo = styled.img`
   height: 26px;
   margin-right: 22px;
-
-  &:hover {
-    cursor: ${({ disableLogoClick }) => (disableLogoClick ? 'initial' : 'pointer')};
-  }
+  cursor: ${({ disableLogoClick }) => (disableLogoClick ? 'initial' : 'pointer')};
 `;
 
 export const SecondaryNavWrapper = styled.div`

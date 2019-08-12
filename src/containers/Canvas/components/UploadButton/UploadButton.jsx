@@ -28,7 +28,7 @@ class UploadButton extends Component {
         >
           {multiVendor ? (
             <Button variant="contained" className="publish-btn multi-vendor-btn" onClick={this.onButtonClick}>
-              {platform === 'google' ? 'Upload to Google' : 'Upload to Alexa'}
+              {this.renderButtonText()}
             </Button>
           ) : (
             <Button variant="contained" className={cn('publish-btn', { 'spinning-publish': isUploadLoading })} onClick={this.onButtonClick}>
@@ -76,16 +76,12 @@ class UploadButton extends Component {
   };
 
   renderButtonText = () => {
-    const { isUploadLoading, platform, live_mode } = this.props;
+    const { platform, live_mode } = this.props;
 
     if (live_mode) {
       return 'Update Live';
     }
-
-    if (!isUploadLoading) {
-      return platform === 'google' ? 'Upload to Google' : 'Upload to Alexa';
-    }
-    return 'Uploading';
+    return platform === 'google' ? 'Upload to Google' : 'Upload to Alexa';
   };
 
   renderTooltipText = () => {

@@ -181,6 +181,8 @@ class TestSection extends Component {
     if (!selected_integration) {
       // this case is not valid since runTest is only available when integration type has been selected | leaving it until confirmed with Ty okay to remove
       setError(new Error('Test failed! Please select an integration'));
+    } else if (!user && selected_integration !== 'Custom API') {
+      setError(new Error(`Test failed! Please select a ${selected_integration === 'Google Sheets' ? 'user' : 'trigger'}`));
     } else if (!selected_action) {
       setError(new Error('Test failed! Please select an action'));
     } else if (!(actions_data && actions_data[selected_action])) {

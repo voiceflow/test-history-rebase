@@ -107,9 +107,9 @@ export const fetchProducts = (skill_id) => {
 };
 
 export const copyProduct = (skill_id, product_id) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     return axios
-      .post(`/skill/${skill_id}/${product_id}/${getState().account.id}/copy`)
+      .post(`/skill/${skill_id}/product/${product_id}/copy`)
       .then((res) => {
         dispatch(addProduct(res.data));
       })
@@ -129,7 +129,7 @@ export const deleteProduct = (skill_id, product_id) => {
       })
       .catch((err) => {
         console.error(err);
-        dispatch(setError('Error Encountered - Unable to Delete Product'));
+        dispatch(setError(err.response.data || 'Error Encountered - Unable to Delete Product'));
       });
   };
 };

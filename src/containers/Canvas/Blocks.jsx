@@ -182,16 +182,10 @@ const getBlocks = () => {
   return blocks;
 };
 
+const BAD_BLOCKS = new Set(['choice', 'capture', 'intent', 'interaction', 'permission', 'permissions', 'payment', 'cancel']);
+
 const checkBlockDisabledLive = (live_mode, block_type) => {
-  return (
-    live_mode === true &&
-    (block_type === 'choice' ||
-      block_type === 'intent' ||
-      block_type === 'command' ||
-      block_type === 'interaction' ||
-      block_type === 'permission' ||
-      block_type === 'permissions')
-  );
+  return live_mode === true && BAD_BLOCKS.has(block_type);
 };
 
 export { getSections, getBlocks, checkBlockDisabledLive };

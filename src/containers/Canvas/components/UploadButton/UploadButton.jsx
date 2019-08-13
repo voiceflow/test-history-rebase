@@ -64,13 +64,10 @@ class UploadButton extends Component {
   onButtonClick = () => {
     const { isUploadLoading, toggle_upload_prompt, openUpdate, openUpdateLive, live_mode } = this.props;
 
-    if (live_mode) {
-      toggle_upload_prompt();
-      openUpdateLive();
-    }
-
     if (isUploadLoading) {
       toggle_upload_prompt();
+    } else if (live_mode) {
+      openUpdateLive();
     } else {
       openUpdate();
     }

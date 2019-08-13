@@ -160,6 +160,7 @@ export class ActionGroup extends PureComponent {
       return this.updateAlexaStage(5);
     }
 
+    // If already logged in and they press the button again and they now have a dev account made async from voiceflow
     const { vendors, skill, updateSkill } = this.props;
     if (vendors.length === 0) {
       // get vendors and check again
@@ -417,6 +418,7 @@ export class ActionGroup extends PureComponent {
               inv_name_error: invNameError(e.target.value, skill.locales),
             })
           }
+          toggle_upload_prompt={this.toggleUploadPrompt}
           onConfirmUpload={() => {
             this.updateInvName();
             this.updateAlexa();

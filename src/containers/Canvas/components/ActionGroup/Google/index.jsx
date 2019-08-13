@@ -17,7 +17,7 @@ import { updateSkillDB } from '@/ducks/version';
 import Settings from '../../../../Skill/Settings';
 import UploadButton from '../../UploadButton/UploadButton';
 import { ENDING_STAGES, STAGE_PERCENTAGES } from '../Constants';
-import { Confetti, DisplayUploadPrompt, SettingsModal } from '../popups';
+import { DisplayUploadPrompt, SettingsModal } from '../popups';
 import SubTitleActions from '../sub-title-actions';
 import { loading } from '../utils';
 import GoogleBody from './popup-body';
@@ -29,10 +29,8 @@ export class ActionGroup extends PureComponent {
     is_first_upload: false,
     live_update_stage: 0,
     percent: 0,
-    should_pop_confetti: false,
     show_upload_prompt: false,
     updateLiveModal: false,
-    updateModal: false,
   };
 
   google_token = null;
@@ -41,7 +39,7 @@ export class ActionGroup extends PureComponent {
   // timeout=null;
 
   render() {
-    const { updateModal, should_pop_confetti, show_upload_prompt, updateLiveModal } = this.state;
+    const { show_upload_prompt, updateLiveModal } = this.state;
     const { skill, platform, live_mode, showSettings, showSettingsModal, unfocus } = this.props;
 
     return (
@@ -63,10 +61,6 @@ export class ActionGroup extends PureComponent {
           openUpdate={this.openUpdate}
           toggle_upload_prompt={this.toggleUploadPrompt}
         />
-
-        {/* All the popups */}
-
-        {updateModal && <Confetti active={should_pop_confetti} />}
 
         <DisplayUploadPrompt onButtonClick={this.closePrompt} showPrompt={show_upload_prompt}>
           {updateLiveModal ? this.renderLiveStage() : this.renderBody(false)}
@@ -170,12 +164,11 @@ export class ActionGroup extends PureComponent {
         axios
           .post(`/project/${project_id}/version/${new_version_data.new_skill.skill_id}/google`)
           .then((res) => {
-            // They completed their first upload successfully
-            this.uploadSuccess('google', res.data.google_id);
+            this.uploadSuccess(res.data);
           })
           .catch((err) => {
             this.setState({
-              updateModal: false,
+              show_upload_prompt: true,
             });
             this.updateGoogleStage(2);
             const error_msg = err.response && err.response.data ? err.response.data : err;

@@ -17,6 +17,7 @@ export default class AlexaBody extends PureComponent {
       onInvocatonNameChange,
       updateAlexa,
       onConfirmUpload,
+      toggle_upload_prompt,
       stateProps: { stage, amzn_error, upload_error, inv_name, is_first_upload, inv_name_error },
       skill,
     } = this.props;
@@ -108,7 +109,12 @@ export default class AlexaBody extends PureComponent {
             <img src="/Support.svg" alt="" />
             <PopUpText>Looks like you dont have a developer account, create one to get started!</PopUpText>
             <PopupButtonSection>
-              <PopUpLink href="https://developer.amazon.com/login.html" target="_blank" rel="noopener noreferrer">
+              <PopUpLink
+                href="https://developer.amazon.com/login.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => toggle_upload_prompt(false)}
+              >
                 <Button variant="primary">Developer Sign Up</Button>
               </PopUpLink>
             </PopupButtonSection>
@@ -188,24 +194,23 @@ export default class AlexaBody extends PureComponent {
     }
   }
 
-  amazonLogin = (stage) => {
+  amazonLogin = (result) => {
     const { updateAlexaStage, setAmazonToken } = this.props;
-
-    if (stage === 2) {
+    if (result === 2) {
       this.fetchVendors();
       setAmazonToken();
-    } else if (1) {
+    } else if (result === 1) {
       updateAlexaStage(8);
     } else {
-      updateAlexaStage(0, undefined, { amzn_error: true });
+      updateAlexaStage(5, undefined, { amzn_error: true });
     }
   };
 
   fetchVendors = async () => {
     const { getVendors, updateAlexaStage } = this.props;
 
-    await getVendors();
     updateAlexaStage(7);
+    await getVendors();
     this.checkVendors();
   };
 

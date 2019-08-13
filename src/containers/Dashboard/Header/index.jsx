@@ -28,6 +28,7 @@ export default function DashboardHeader({
   return (
     <Header
       withLogo
+      disableLogoClick
       history={history}
       leftRenderer={() => (
         <div className="searchBar">

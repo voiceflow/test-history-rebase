@@ -199,6 +199,7 @@ export class ActionGroup extends PureComponent {
       newVersionData = (await axios.post(`/project/${skill.project_id}/render`, { platform: 'alexa' })).data;
     } catch (err) {
       // RENDERING ERROR
+      this.toggleUploadPrompt(true);
       return this.updateAlexaStage(4);
     }
     try {
@@ -229,7 +230,7 @@ export class ActionGroup extends PureComponent {
         }
 
         if (!errorMessage && _.isString(errorData)) errorMessage = errorData;
-
+        this.toggleUploadPrompt(true);
         this.updateAlexaStage(9, undefined, {
           upload_error: errorMessage || 'Error Encountered',
         });

@@ -36,7 +36,6 @@ export class ActionGroup extends PureComponent {
     should_pop_confetti: false,
     show_upload_prompt: false,
     updateLiveModal: false,
-    updateModal: false,
     upload_error: 'No Error',
   };
 
@@ -49,7 +48,7 @@ export class ActionGroup extends PureComponent {
   // timeout=null;
 
   render() {
-    const { updateModal, should_pop_confetti, updateLiveModal, show_upload_prompt, is_first_upload } = this.state;
+    const { should_pop_confetti, updateLiveModal, show_upload_prompt, is_first_upload } = this.state;
     const { skill, platform, live_mode, vendors, showSettings, showSettingsModal, unfocus } = this.props;
 
     return (
@@ -75,7 +74,7 @@ export class ActionGroup extends PureComponent {
 
         {/* All the popups */}
 
-        {updateModal && <Confetti active={should_pop_confetti} />}
+        {show_upload_prompt && <Confetti active={should_pop_confetti} />}
 
         <DisplayUploadPrompt onButtonClick={this.closePrompt} showPrompt={show_upload_prompt}>
           {/* eslint-disable-next-line no-nested-ternary */}
@@ -237,16 +236,6 @@ export class ActionGroup extends PureComponent {
 
   // Step 7 - used in Step 6, Step 9, Step 10, Step 11, Step 12
   updateAlexaStage = (stage, cb, props) => {
-    // if(!is_first_upload){
-    //   if((ERROR_STAGES[platform].includes(stage) || stage === 2) && !this.timeout){
-    //     this.timeout = setTimeout(() => {
-    //       this.setState({show_upload_prompt: false})
-    //       this.reset()
-    //       this.timeout = null
-    //     }, 8000)
-    //   }
-    // }
-
     if (STAGE_PERCENTAGES.alexa[stage]) {
       const range = STAGE_PERCENTAGES.alexa[stage];
 
@@ -332,10 +321,11 @@ export class ActionGroup extends PureComponent {
     // Track upload on first session
     // They completed their first upload successfully
     this.updateAlexaStage(2);
+    this.setState({ show_upload_prompt: true });
+
     if (localStorage.getItem(`is_first_session_${user.creator_id}`) !== 'false') {
       localStorage.setItem(`is_first_session_${user.creator_id}`, 'false');
-      this.setState({ updateModal: true });
-      setTimeout(() => this.setState({ should_pop_confetti: true, updateModal: false }), 300);
+      setTimeout(() => this.setState({ should_pop_confetti: true }), 300);
       axios.post('/analytics/track_first_session_upload');
     }
   };

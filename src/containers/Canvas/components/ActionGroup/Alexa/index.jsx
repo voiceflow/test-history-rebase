@@ -290,6 +290,7 @@ export class ActionGroup extends PureComponent {
     const iterate = (depth) => {
       // wait up to 60 seconds
       if (depth === 20) {
+        this.toggleUploadPrompt(true);
         this.uploadSuccess();
       } else {
         setTimeout(() => {

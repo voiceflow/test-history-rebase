@@ -99,7 +99,7 @@ class CreateDataSection extends Component {
             {this.props.headers_loading && <Spinner isEmpty />}
             {!this.props.headers_loading && (
               <div className="text-center my-3">
-                <Button isFlat disabled={!this.state.completed} onClick={this.props.showNextSection}>
+                <Button isPrimary disabled={!this.state.completed} onClick={this.props.showNextSection}>
                   Next
                 </Button>
               </div>

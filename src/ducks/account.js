@@ -95,8 +95,9 @@ export const logout = () => {
 
 export const getVendors = () => {
   return async (dispatch) => {
+    let vendors = [];
     try {
-      const vendors = (await axios.get('/session/vendor?all=true')).data;
+      vendors = (await axios.get('/session/vendor?all=true')).data;
       if (Array.isArray(vendors)) {
         dispatch(
           updateAccount({
@@ -107,7 +108,7 @@ export const getVendors = () => {
     } catch (err) {
       console.error(err);
     }
-    Promise.resolve();
+    return vendors;
   };
 };
 

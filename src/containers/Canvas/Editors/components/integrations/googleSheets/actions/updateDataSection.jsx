@@ -122,7 +122,7 @@ class UpdateDataSection extends Component {
             {this.props.headers_loading && <Spinner isEmpty />}
             {!this.props.headers_loading && (
               <div className="text-center my-3">
-                <Button isPrimary disabled={!this.state.comploeted} onClick={this.props.showNextSection}>
+                <Button isPrimary disabled={!this.state.completed} onClick={this.props.showNextSection}>
                   Next
                 </Button>
               </div>

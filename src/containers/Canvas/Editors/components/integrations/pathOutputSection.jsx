@@ -107,7 +107,7 @@ class PathOutputSection extends Component {
             />
           )}
           <div className="text-center mt-3">
-            <Button isFlatVariable disabled={!this.state.completed} onClick={this.props.showNextSection}>
+            <Button isPrimary disabled={!this.state.completed} onClick={this.props.showNextSection}>
               Next
             </Button>
           </div>

@@ -65,6 +65,7 @@ class UploadButton extends Component {
     const { isUploadLoading, toggle_upload_prompt, openUpdate, openUpdateLive, live_mode } = this.props;
 
     if (live_mode) {
+      toggle_upload_prompt();
       openUpdateLive();
     }
 
@@ -76,12 +77,16 @@ class UploadButton extends Component {
   };
 
   renderButtonText = () => {
-    const { platform, live_mode } = this.props;
+    const { isUploadLoading, platform, live_mode } = this.props;
 
     if (live_mode) {
       return 'Update Live';
     }
-    return platform === 'google' ? 'Upload to Google' : 'Upload to Alexa';
+
+    if (!isUploadLoading) {
+      return platform === 'google' ? 'Upload to Google' : 'Upload to Alexa';
+    }
+    return 'Uploading';
   };
 
   renderTooltipText = () => {

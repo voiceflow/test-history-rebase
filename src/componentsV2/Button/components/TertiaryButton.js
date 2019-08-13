@@ -6,7 +6,7 @@ const TertiaryButton = styled(ButtonContainer)`
   border: 0;
   padding: 0 22px;
   color: #5d9df5;
-  background: #fff;
+  background: transparent;
   box-shadow: none;
 
   ${({ disabled }) =>

@@ -47,7 +47,7 @@ class Settings extends Component {
 
         if (!cb) {
           updateDiagramRoot(res.data.diagram);
-          history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`);
+          history.push(`/canvas/${res.data.project_id}/${res.data.diagram}`);
         } else {
           // eslint-disable-next-line callback-return
           cb(true);

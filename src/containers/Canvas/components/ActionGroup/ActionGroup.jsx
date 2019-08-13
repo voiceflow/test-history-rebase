@@ -537,11 +537,11 @@ export class ActionGroup extends PureComponent {
   };
 
   updateLiveVersion = () => {
-    const { saveSkill, skill, setError } = this.props;
+    const { saveSkill, skill, setError, root_id } = this.props;
     this.setState({ live_update_stage: 1 });
     saveSkill(true, () => {
       axios
-        .post(`/diagram/${skill.diagram}/${skill.skill_id}/rerender`)
+        .post(`/diagram/${root_id}/${skill.skill_id}/rerender`)
         .then(() => {
           this.setState({
             live_update_stage: 2,

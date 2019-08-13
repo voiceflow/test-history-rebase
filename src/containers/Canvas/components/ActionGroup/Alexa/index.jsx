@@ -126,7 +126,7 @@ export class ActionGroup extends PureComponent {
   };
 
   // Step 4 - used in <UploadButton/>
-  toggleUploadPrompt = () => this.setState({ show_upload_prompt: !this.state.show_upload_prompt });
+  toggleUploadPrompt = (value = !this.state.show_upload_prompt) => this.setState({ show_upload_prompt: value });
 
   // Step 5 - used in <UploadButton/>
   openUpdate = () => {
@@ -156,12 +156,19 @@ export class ActionGroup extends PureComponent {
   // Step 6 - used in Step 5 and Step 15
   updateAlexa = async () => {
     if (!this.amazon_token) {
+      this.toggleUploadPrompt(true);
       return this.updateAlexaStage(5);
     }
 
     const { vendors, skill, updateSkill } = this.props;
     if (vendors.length === 0) {
-      this.updateAlexaStage(6);
+      // get vendors and check again
+      this.updateAlexaStage(7);
+      this.toggleUploadPrompt(true);
+      const updatedVendors = await this.props.getVendors();
+      if (updatedVendors.length === 0) {
+        return this.updateAlexaStage(6);
+      }
     }
 
     const { inv_name: stateInvName, stage } = this.state;
@@ -187,51 +194,47 @@ export class ActionGroup extends PureComponent {
       this.updateInvName();
     }
 
-    axios
-      .post(`/project/${skill.project_id}/render`, { platform: 'alexa' })
-      .then((res) => {
-        const new_version_data = res.data;
-        this.updateAlexaStage(11, () => {
-          axios
-            .post(`/project/${skill.project_id}/version/${new_version_data.new_skill.skill_id}/alexa`)
-            .then((res) => {
-              updateSkill('amzn_id', res.data);
-              this.checkInteractionModel();
-            })
-            .catch((err) => {
-              if (err.status === 403 || err.response.status === 403) {
-                // No Vendor ID/Amazon Developer Account
-                this.updateAlexaStage(6);
-              } else if (err.status === 401 || err.response.status === 401) {
-                this.updateAlexaStage(5);
-              } else {
-                let errorMessage = '';
-                const errorData = _.get(err, ['response', 'data']);
-                if (errorData) {
-                  const { message, violations } = errorData;
-                  if (message) {
-                    errorMessage += err.response.data.message;
-                  }
+    let newVersionData;
+    try {
+      newVersionData = (await axios.post(`/project/${skill.project_id}/render`, { platform: 'alexa' })).data;
+    } catch (err) {
+      // RENDERING ERROR
+      return this.updateAlexaStage(4);
+    }
+    try {
+      this.updateAlexaStage(11);
+      const { data } = await axios.post(`/project/${skill.project_id}/version/${newVersionData.new_skill.skill_id}/alexa`);
+      updateSkill('amzn_id', data);
+      this.checkInteractionModel();
+    } catch (err) {
+      if (err.status === 403 || err.response.status === 403) {
+        // No Vendor ID/Amazon Developer Account
+        this.updateAlexaStage(6);
+      } else if (err.status === 401 || err.response.status === 401) {
+        this.updateAlexaStage(5);
+      } else {
+        let errorMessage = '';
+        const errorData = _.get(err, ['response', 'data']) || {};
+        const { message, violations } = errorData;
+        if (message) {
+          errorMessage += err.response.data.message;
+        }
 
-                  if (violations) {
-                    for (let i = 0; i < violations.length; i++) {
-                      errorMessage += `\n${violations[i].message}`;
-                    }
-                  }
+        if (violations) {
+          violations.forEach(({ message }) => {
+            if (message) {
+              errorMessage += `\n${message}`;
+            }
+          });
+        }
 
-                  if (!errorMessage && _.isString(errorData)) errorMessage = errorData;
-                }
+        if (!errorMessage && _.isString(errorData)) errorMessage = errorData;
 
-                this.updateAlexaStage(9, undefined, {
-                  upload_error: errorMessage || 'Error Encountered',
-                });
-              }
-            });
+        this.updateAlexaStage(9, undefined, {
+          upload_error: errorMessage || 'Error Encountered',
         });
-      })
-      .catch(() => {
-        this.updateAlexaStage(4);
-      });
+      }
+    }
   };
 
   // Step 7 - used in Step 6, Step 9, Step 10, Step 11, Step 12
@@ -285,7 +288,7 @@ export class ActionGroup extends PureComponent {
     this.SucceedLocale = null;
 
     const iterate = (depth) => {
-      // wait up to 20 seconds
+      // wait up to 60 seconds
       if (depth === 20) {
         this.uploadSuccess();
       } else {
@@ -306,6 +309,7 @@ export class ActionGroup extends PureComponent {
               iterate(depth + 1);
             })
             .catch(() => {
+              this.toggleUploadPrompt(true);
               this.uploadSuccess();
             });
         }, 3000);
@@ -341,6 +345,7 @@ export class ActionGroup extends PureComponent {
     } catch (err) {
       console.error(err);
     }
+    this.toggleUploadPrompt(true);
     this.uploadSuccess();
   };
 

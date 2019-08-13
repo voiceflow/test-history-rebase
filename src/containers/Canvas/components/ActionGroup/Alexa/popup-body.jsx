@@ -3,8 +3,8 @@ import React, { PureComponent } from 'react';
 import { Tooltip } from 'react-tippy';
 import { Alert } from 'reactstrap';
 
-import Button from '@/components/Button';
 import AmazonLogin from '@/components/Forms/AmazonLogin';
+import Button from '@/componentsV2/Button';
 
 import { Video, loading } from '../utils';
 import { PopUpLink, PopUpText, PopupButtonSection, UploadPromptWrapper } from './styled';
@@ -108,11 +108,9 @@ export default class AlexaBody extends PureComponent {
             <img src="/Support.svg" alt="" />
             <PopUpText>Looks like you dont have a developer account, create one to get started!</PopUpText>
             <PopupButtonSection>
-              <Button isPrimary>
-                <PopUpLink href="https://developer.amazon.com/login.html" target="_blank" rel="noopener noreferrer">
-                  Developer Sign Up
-                </PopUpLink>
-              </Button>
+              <PopUpLink href="https://developer.amazon.com/login.html" target="_blank" rel="noopener noreferrer">
+                <Button variant="primary">Developer Sign Up</Button>
+              </PopUpLink>
             </PopupButtonSection>
           </UploadPromptWrapper>
         );

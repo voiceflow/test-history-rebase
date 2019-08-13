@@ -116,7 +116,7 @@ class Admin extends Component {
 
     return (
       <>
-        <Header clickable withLogo history={this.props.history} />
+        <Header withLogo history={this.props.history} />
         <div className="admin Window">
           <div md="3" className="sidebar">
             <div className="title">Tools</div>

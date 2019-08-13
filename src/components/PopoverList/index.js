@@ -4,7 +4,7 @@ import memoize from 'memoize-one';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import Icon from '../Icon';
+import SvgIcon from '@/components/SvgIcon';
 
 export default class PopoverList extends Component {
   static propTypes = {
@@ -90,9 +90,9 @@ export default class PopoverList extends Component {
 
             childProps.children = (
               <>
-                {!!icon && <Icon className={cn(icon, { '__text-position': !!text })} />}
+                {!!icon && <SvgIcon icon={icon} />}
                 {textTruncate ? <div className="text-truncate">{text}</div> : text}
-                {!!rightIcon && <Icon className={cn(rightIcon, { '__text-position': !!text })} />}
+                {!!rightIcon && <SvgIcon icon={rightIcon} />}
               </>
             );
           }

@@ -40,6 +40,7 @@ export const LANGUAGES = {
   'it-IT': 'Italian (IT)',
   'ja-JP': 'Japanese (JP)',
   'pt-BR': 'Portugese (BR)',
+  'hi-IN': 'Hindi (IN)',
   // english: 'English (USA)',
   // english_gb: 'English (UK)',
   // english_ca: 'English (Canada)',

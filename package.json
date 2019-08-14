@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@voiceflow/apl-renderer": "^1.0.0",
-    "@voiceflow/common": "^6.1.1",
+    "@voiceflow/common": "^6.1.2",
     "@voiceflow/natural-language-commander": "^0.3.1",
     "availity-reactstrap-validation": "^2.4.0",
     "axios": "^0.18.0",

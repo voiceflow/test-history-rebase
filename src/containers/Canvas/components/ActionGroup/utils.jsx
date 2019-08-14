@@ -1,8 +1,9 @@
+import { constants } from '@voiceflow/common';
 import React from 'react';
 
-import InvRegex from '@/services/Regex';
-
 import { LAUNCH_PHRASES, WAKE_WORDS } from './Constants';
+
+const { validLatinChars, validSpokenCharacters, validCharacters } = constants.regex;
 
 export const loading = (message) => {
   return (
@@ -34,19 +35,19 @@ export const invNameError = (name, locales) => {
   if (!name || !name.trim()) {
     return 'Invocation name required for Alexa';
   }
-  let characters = InvRegex.validLatinChars;
-  let inv_name_error = `[${locales
+  let characters = validLatinChars;
+  let error = `[${locales
     .filter((l) => l !== 'jp-JP')
     .join(',')}] Invocation name may only contain Latin characters, apostrophes, periods and spaces`;
   if (locales.length === 1 && locales[0] === 'ja-JP') {
-    characters = InvRegex.validSpokenCharacters;
-    inv_name_error = 'Invocation name may only contain Japanese/English characters, apostrophes, periods and spaces';
+    characters = validSpokenCharacters;
+    error = 'Invocation name may only contain Japanese/English characters, apostrophes, periods and spaces';
   } else if (locales.some((l) => l.includes('en'))) {
     // If an English Skill No Accents Allowed
-    inv_name_error = `[${locales
+    error = `[${locales
       .filter((l) => l.includes('en'))
       .join(',')}] Invocation name may only contain alphabetic characters, apostrophes, periods and spaces`;
-    characters = InvRegex.validCharacters;
+    characters = validCharacters;
   }
 
   const validRegex = `[^${characters}.' ]+`;
@@ -55,7 +56,7 @@ export const invNameError = (name, locales) => {
     return splits.toLowerCase();
   });
   if (match) {
-    return `${inv_name_error} - Invalid Characters: "${match.join()}"`;
+    return `${error} - Invalid Characters: "${match.join()}"`;
   }
   if (WAKE_WORDS.some(matchesKeyword(split_name))) {
     return `Invocation name cannot contain Alexa keywords e.g. ${WAKE_WORDS.join(', ')}`;

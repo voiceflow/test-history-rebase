@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import './IntentInput.css';
 
-import { utils } from '@voiceflow/common';
+import { constants, utils } from '@voiceflow/common';
 import cn from 'classnames';
 import React, { Component } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
@@ -10,10 +10,10 @@ import { Tooltip } from 'react-tippy';
 import { Collapse } from 'reactstrap';
 
 import { setError } from '@/ducks/modal';
-import { sampleUtteranceRegex } from '@/services/Regex';
 
 import Utterance from './Utterance';
 
+const { sampleUtteranceRegex } = constants.regex;
 const { getUtterancesWithSlotNames } = utils.intent;
 
 function getSlotKeys(input) {

@@ -2519,10 +2519,10 @@
   resolved "https://registry.yarnpkg.com/@voiceflow/commitlint-config/-/commitlint-config-1.0.1.tgz#e9513aa348d5e88ff064022e2dae8d0d7e227f6a"
   integrity sha512-7amH9jUarcsB5CXmYNOeejQXtCs7kdyETjPp6q2x0y1mNGWfhqzWZ/FySP+wkvFytXyu46PADH29rBw3p2zGdw==
 
-"@voiceflow/common@^6.1.1":
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-6.1.1.tgz#a5d5399e85acc5b4cbd216896370f6886fe1bd99"
-  integrity sha512-zGhf3DC/Zbnb8bEIrlxqfIHLen9MdtvSI3hbK1oPsW2+Le2f7JkFyjTydSi0uTCfv2cGhT8z7BqFVOCUBRzGEg==
+"@voiceflow/common@^6.1.2":
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-6.1.2.tgz#5448a6b7af48299fab49a5155ee816cd79399710"
+  integrity sha512-lsMAAl9UcyNCZNEQ60nOe8cFPAnIjKSlOSTG29OuN4Qj8mTHb/o+cXYR9tPZGNXjbIFt743AwEPoIx9TM1RtRg==
   dependencies:
     lodash "^4.17.11"
     moment "^2.24.0"

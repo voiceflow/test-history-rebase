@@ -434,6 +434,7 @@ export class ActionGroup extends PureComponent {
 
   openUpdateLive = () => {
     const { onSave } = this.props;
+    this.toggleUploadPrompt(true);
     this.setState({
       updateLiveModal: true,
     });

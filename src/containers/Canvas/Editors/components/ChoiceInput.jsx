@@ -1,3 +1,4 @@
+import { constants } from '@voiceflow/common';
 import cn from 'classnames';
 import randomstring from 'randomstring';
 import React from 'react';
@@ -6,7 +7,8 @@ import { Tooltip } from 'react-tippy';
 import { Collapse } from 'reactstrap';
 
 import Button from '@/components/Button';
-import { sampleUtteranceRegex } from '@/services/Regex';
+
+const { sampleUtteranceRegex } = constants.regex;
 
 // so we don't need to rerender the entire choiceinput component
 class ContainedTextarea extends React.PureComponent {

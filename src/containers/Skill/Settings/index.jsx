@@ -1,4 +1,3 @@
-import axios from 'axios';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -20,64 +19,22 @@ class Settings extends Component {
     tab: this.props.tag ? this.props.tag : 'basic',
   };
 
-  constructor(props) {
-    super(props);
-
-    this.modalContent = this.modalContent.bind(this);
-    this.switchTab = this.switchTab.bind(this);
-    this.onSwapVersions = this.onSwapVersions.bind(this);
-  }
-
-  switchTab(tab) {
+  switchTab = (tab) => {
     if (tab !== this.state.tab) {
       this.setState({ tab });
     }
-  }
+  };
 
-  onSwapVersions(skill_id, is_overwrite, cb) {
-    const { updateSkill, updateDiagramRoot, history } = this.props;
-
-    axios
-      .post(`/skill/${skill_id}/restore`)
-      .then((res) => {
-        if (!is_overwrite) {
-          updateSkill('skill_id', res.data.skill_id);
-          updateSkill('diagram', res.data.diagram);
-        }
-
-        if (!cb) {
-          updateDiagramRoot(res.data.diagram);
-          history.push(`/canvas/${res.data.project_id}/${res.data.diagram}`);
-        } else {
-          // eslint-disable-next-line callback-return
-          cb(true);
-        }
-      })
-      .catch((err) => {
-        console.error(err.response);
-        this.setState({
-          error: 'Unable to restore version',
-        });
-
-        if (cb) {
-          // eslint-disable-next-line callback-return
-          cb(false);
-        }
-      });
-  }
-
-  modalContent() {
+  modalContent = () => {
     const { skill_id } = this.props;
 
-    if (!skill_id) {
-      return null;
-    }
+    if (!skill_id) return null;
 
     switch (this.state.tab) {
       case 'basic':
-        return <BasicSettings {...this.props} onSwapVersions={this.onSwapVersions} />;
+        return <BasicSettings {...this.props} />;
       case 'advanced':
-        return <AdvancedSettings {...this.props} onSwapVersions={this.onSwapVersions} />;
+        return <AdvancedSettings {...this.props} />;
       case 'discovery':
         return <DiscoverySettings {...this.props} />;
       case 'backups':
@@ -85,7 +42,7 @@ class Settings extends Component {
       default:
         return null;
     }
-  }
+  };
 
   render() {
     return (

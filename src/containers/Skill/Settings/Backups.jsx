@@ -6,72 +6,58 @@ import { connect } from 'react-redux';
 import { Alert, FormGroup, Label, Modal, ModalFooter, Table } from 'reactstrap';
 
 import Button from '@/components/Button';
-import { setConfirm } from '@/ducks/modal';
+import { Spinner } from '@/components/Spinner';
+import { setConfirm, setError, showSettingsModal } from '@/ducks/modal';
 
 import LightCanvas from '../../Canvas/LightCanvas';
 
 class BackupSettings extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    preview: false,
+    loading: true,
+    curr_preview: {
+      created: new Date(),
+    },
+    versions: [],
+    live_version: null,
+  };
 
-    this.state = {
-      preview: false,
-      loading: true,
-      curr_preview: {
-        created: new Date(),
-      },
-      versions: [],
-      live_version: null,
-    };
+  componentDidMount = async () => {
+    const { skill, setError } = this.props;
 
-    this.confirmRestore = this.confirmRestore.bind(this);
-    this.previewBackup = this.previewBackup.bind(this);
-  }
-
-  componentDidMount() {
-    const { skill } = this.props;
     try {
-      const load_promises = [];
+      const [req1, req2] = await Promise.all([
+        axios.get(`/project/${skill.project_id}/live_version`),
+        axios.get(`/project/${skill.project_id}/versions`),
+      ]);
 
-      load_promises.push(axios.get(`/project/${skill.project_id}/live_version`));
-      load_promises.push(axios.get(`/project/${skill.project_id}/versions`));
+      const liveVersion = req1.data;
+      const versions = req2.data.filter((version) => {
+        return version.skill_id !== liveVersion.live_version;
+      });
 
-      Promise.all(load_promises)
-        .then((res) => {
-          const live_version = res[0].data;
-          const versions = res[1].data.filter((version) => {
-            return version.skill_id !== live_version.live_version;
-          });
-
-          this.setState({
-            loading: false,
-            versions,
-            live_version: live_version.live_skill,
-          });
-        })
-        .catch(() => {
-          this.setState({
-            loading: false,
-            error: 'Unable to load versions',
-          });
-        });
+      this.setState({
+        loading: false,
+        versions,
+        live_version: liveVersion.live_skill,
+      });
     } catch (err) {
       this.setState({
         loading: false,
-        error: 'Unable to load versions',
       });
+      setError('Unable to Fetch Backup Versions');
     }
-  }
+  };
 
-  previewBackup(version) {
+  previewBackup = (version) => {
     this.setState({
       preview: true,
       curr_preview: version,
     });
-  }
+  };
 
-  confirmRestore(skill_id) {
-    const { setConfirm, onSwapVersions } = this.props;
+  confirmRestore = (versionId) => {
+    const { setConfirm } = this.props;
     setConfirm({
       warning: true,
       text: (
@@ -80,29 +66,49 @@ class BackupSettings extends Component {
           endpoint.
         </Alert>
       ),
-      confirm: onSwapVersions,
-      params: [skill_id],
+      confirm: () => this.swapVersions(versionId),
     });
-  }
+  };
 
-  render() {
+  swapVersions = async (versionId) => {
+    const { updateSkill, updateDiagramRoot, history, setError, showSettingsModal, setConfirm } = this.props;
+
+    try {
+      const { data } = await axios.post(`/skill/${versionId}/restore`);
+
+      updateSkill('skill_id', data.skill_id);
+      updateSkill('diagram', data.diagram);
+      updateDiagramRoot(data.diagram);
+      showSettingsModal(false);
+      setConfirm({
+        text: <Alert className="mb-0">Successfully Restored Backup</Alert>,
+      });
+      history.push(`/canvas/${data.project_id}/${data.diagram}`);
+    } catch (err) {
+      console.error(err.response);
+      setError('Unable to restore version');
+    }
+  };
+
+  renderBackups = () => {
     const { loading, versions, live_version, curr_preview, preview } = this.state;
     if (loading) {
-      return <div className="s__loading_symbol">Loading...</div>;
-    }
-
-    if ((!Array.isArray(versions) || versions.length === 0) && !live_version) {
       return (
-        <div className="settings-content clearfix">
-          <Alert color="warning" className="mb-0">
-            There are currently no backups for this skill
-            <br />
-            Backups are generated every time when you upload your skill
-          </Alert>
+        <div className="mt-5">
+          <Spinner name="Backup Versions" />
         </div>
       );
     }
 
+    if ((!Array.isArray(versions) || versions.length === 0) && !live_version) {
+      return (
+        <Alert color="warning" className="mb-0">
+          There are currently no backups for this skill
+          <br />
+          Backups are generated every time when you upload your skill
+        </Alert>
+      );
+    }
     return (
       <>
         {/* Modal for previewing backups */}
@@ -121,87 +127,94 @@ class BackupSettings extends Component {
             </Button>
           </ModalFooter>
         </Modal>
+        <div id="backup">
+          <Table>
+            <thead>
+              <tr>
+                <th>
+                  <label className="text-left">Saved</label>
+                </th>
+                <th>
+                  <label className="text-left">Platform</label>
+                </th>
+                <th>
+                  <label className="text-left ml-4">Preview</label>
+                </th>
+                <th>
+                  <label className="text-left">Restore</label>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {live_version ? (
+                <tr className="table-primary">
+                  <td>
+                    {moment(live_version.created).fromNow()} <br /> (Current live version)
+                  </td>
+                  <td className="text-center">
+                    <i
+                      className={cn('fab', {
+                        'fa-google': live_version.published_platform === 'google',
+                        'fa-amazon': live_version.published_platform !== 'google',
+                      })}
+                    />
+                  </td>
+                  <td>
+                    <Button isPrimary onClick={() => this.previewBackup(live_version)}>
+                      Preview
+                    </Button>
+                  </td>
+                  <td>
+                    <Button isPrimary onClick={() => this.confirmRestore(live_version.skill_id)}>
+                      Restore
+                    </Button>
+                  </td>
+                </tr>
+              ) : null}
+              {versions.map((version, i) => {
+                return (
+                  <tr key={i}>
+                    <td>{moment(version.created).fromNow()}</td>
+                    <td className="text-center">
+                      <i
+                        className={cn('fab', {
+                          'fa-google': version.published_platform === 'google',
+                          'fa-amazon': version.published_platform !== 'google',
+                        })}
+                      />
+                    </td>
+                    <td>
+                      <Button isFlat onClick={() => this.previewBackup(version)}>
+                        Preview
+                      </Button>
+                    </td>
+                    <td>
+                      <Button isPrimarySmall onClick={() => this.confirmRestore(version.skill_id)}>
+                        Restore
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </div>
+      </>
+    );
+  };
 
+  render() {
+    return (
+      <>
         <div className="settings-content settings-backups clearfix">
           <FormGroup>
             <Label>Backups</Label>
             <div className="helper-text mb-2">
               Restore your skill to previous versions. A version is saved every time you upload your skill to Alexa
             </div>
-            <div id="backup">
-              <Table>
-                <thead>
-                  <tr>
-                    <th>
-                      <label className="text-left">Saved</label>
-                    </th>
-                    <th>
-                      <label className="text-left">Platform</label>
-                    </th>
-                    <th>
-                      <label className="text-left ml-4">Preview</label>
-                    </th>
-                    <th>
-                      <label className="text-left">Restore</label>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {live_version ? (
-                    <tr className="table-primary">
-                      <td>
-                        {moment(live_version.created).fromNow()} <br /> (Current live version)
-                      </td>
-                      <td className="text-center">
-                        <i
-                          className={cn('fab', {
-                            'fa-google': live_version.published_platform === 'google',
-                            'fa-amazon': live_version.published_platform !== 'google',
-                          })}
-                        />
-                      </td>
-                      <td>
-                        <Button isPrimary onClick={() => this.previewBackup(live_version)}>
-                          Preview
-                        </Button>
-                      </td>
-                      <td>
-                        <Button isPrimary onClick={() => this.confirmRestore(live_version.skill_id)}>
-                          Restore
-                        </Button>
-                      </td>
-                    </tr>
-                  ) : null}
-                  {versions.map((version, i) => {
-                    return (
-                      <tr key={i}>
-                        <td>{moment(version.created).fromNow()}</td>
-                        <td className="text-center">
-                          <i
-                            className={cn('fab', {
-                              'fa-google': version.published_platform === 'google',
-                              'fa-amazon': version.published_platform !== 'google',
-                            })}
-                          />
-                        </td>
-                        <td>
-                          <Button isFlat onClick={() => this.previewBackup(version)}>
-                            Preview
-                          </Button>
-                        </td>
-                        <td>
-                          <Button isPrimarySmall onClick={() => this.confirmRestore(version.skill_id)}>
-                            Restore
-                          </Button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table>
-            </div>
           </FormGroup>
         </div>
+        {this.renderBackups()}
       </>
     );
   }
@@ -212,10 +225,10 @@ const mapStateToProps = (state) => ({
   team: state.team.byId[state.team.team_id],
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
-  };
+const mapDispatchToProps = {
+  showSettingsModal,
+  setConfirm,
+  setError,
 };
 export default connect(
   mapStateToProps,

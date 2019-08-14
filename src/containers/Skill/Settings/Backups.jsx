@@ -93,18 +93,20 @@ class BackupSettings extends Component {
   renderBackups = () => {
     const { loading, versions, live_version, curr_preview, preview } = this.state;
     if (loading) {
-      return <Spinner name="Backup Versions" />;
+      return (
+        <div className="mt-5">
+          <Spinner name="Backup Versions" />
+        </div>
+      );
     }
 
     if ((!Array.isArray(versions) || versions.length === 0) && !live_version) {
       return (
-        <div className="settings-content clearfix">
-          <Alert color="warning" className="mb-0">
-            There are currently no backups for this skill
-            <br />
-            Backups are generated every time when you upload your skill
-          </Alert>
-        </div>
+        <Alert color="warning" className="mb-0">
+          There are currently no backups for this skill
+          <br />
+          Backups are generated every time when you upload your skill
+        </Alert>
       );
     }
     return (

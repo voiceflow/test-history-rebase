@@ -1,11 +1,12 @@
 import './Utterance.css';
 
+import { constants } from '@voiceflow/common';
 import cn from 'classnames';
 import React from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { Tooltip } from 'react-tippy';
 
-import { sampleUtteranceRegex } from '@/services/Regex';
+const { sampleUtteranceRegex } = constants.regex;
 
 class Utterance extends React.PureComponent {
   constructor(props) {

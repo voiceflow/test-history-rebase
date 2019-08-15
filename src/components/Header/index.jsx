@@ -11,11 +11,30 @@ import IntercomChat from './components/IntercomChat';
 import UserMenu from './components/UserMenu';
 import { BackButton, CenterGroup, HeaderActions, HeaderContainer, HeaderNavigation, JustifiedHeaderActions, Logo, PrimaryHeader } from './styled';
 
-function Header({ title, preview, history, withLogo, onBackClick, leftRenderer, rightRenderer, centerRenderer, subHeaderRenderer, clickable }) {
+function Header({
+  title,
+  preview,
+  history,
+  withLogo,
+  onBackClick,
+  leftRenderer,
+  rightRenderer,
+  centerRenderer,
+  subHeaderRenderer,
+  disableLogoClick,
+}) {
   return (
     <HeaderContainer>
       <PrimaryHeader>
-        {withLogo && <Logo src="/logo_bubble_Small.png" alt="logo" draggable="false" onClick={() => clickable && history.push('/')} />}
+        {withLogo && (
+          <Logo
+            disableLogoClick={disableLogoClick}
+            src="/logo_bubble_Small.png"
+            alt="logo"
+            draggable="false"
+            onClick={() => (disableLogoClick ? null : history.push('/'))}
+          />
+        )}
         {onBackClick && (
           <BackButton>
             <SvgIcon icon={LeftIcon} className="icon-back" onClick={onBackClick} />

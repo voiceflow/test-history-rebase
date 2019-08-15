@@ -81,28 +81,6 @@ class AdvancedSettings extends Component {
     });
   };
 
-  overwriteSuccessModal = (result) => {
-    const msg = result ? 'Development version successfully overwritten' : 'Overwrite failed.';
-
-    this.setState({
-      show_overwrite_modal: true,
-      overwrite_status: msg,
-    });
-  };
-
-  confirmOverwrite = () => {
-    this.props.setConfirm({
-      warning: true,
-      text: (
-        <Alert color="danger" className="mb-0">
-          WARNING: This action can not be undone and will replace your development version completely with your live version.
-        </Alert>
-      ),
-      confirm: this.props.onSwapVersions,
-      params: [this.props.skill.skill_id, true, this.overwriteSuccessModal],
-    });
-  };
-
   confirmDelete = () => {
     this.props.setConfirm({
       warning: true,
@@ -148,20 +126,6 @@ class AdvancedSettings extends Component {
             />
           </FormGroup>
         </div>
-        {this.props.live_mode && (
-          <div className="no-bottom clearfix">
-            <FormGroup>
-              <Label>Overwrite Development Version with Live Version</Label>
-              <Alert color="danger between">
-                <span>This action cannot be undone.</span>
-                <br />
-                <Button isWarning onClick={this.confirmOverwrite}>
-                  Overwrite
-                </Button>
-              </Alert>
-            </FormGroup>
-          </div>
-        )}
         <div className="settings-content mt-5 no-bottom clearfix">
           <AccountLinkTemplate {...this.props} />
         </div>

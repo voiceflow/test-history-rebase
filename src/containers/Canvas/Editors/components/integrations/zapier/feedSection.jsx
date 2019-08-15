@@ -23,10 +23,6 @@ class FeedSection extends Component {
     this.checkCompletion();
   }
 
-  componentDidUpdate() {
-    this.checkCompletion();
-  }
-
   checkCompletion() {
     const { integrationsUser, integration_users: integrationUsers, selected_integration: selectedIntegration } = this.props;
     const { completed: stateCompleted } = this.state;

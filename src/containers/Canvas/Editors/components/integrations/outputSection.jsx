@@ -130,7 +130,7 @@ class OutputSection extends Component {
           )}
           {loading && <Spinner isEmpty />}
           <div className="text-center mt-3">
-            <Button isFlatVariable disabled={!completed} onClick={showNextSection}>
+            <Button isPrimary disabled={!completed} onClick={showNextSection}>
               Next
             </Button>
           </div>

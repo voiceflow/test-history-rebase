@@ -13,4 +13,5 @@ export default [
   { value: 'it-IT', name: 'Italian (IT)' },
   { value: 'ja-JP', name: 'Japanese (JP)' },
   { value: 'pt-BR', name: 'Portuguese (BR)' },
+  { value: 'hi-IN', name: 'Hindi (IN)' },
 ];

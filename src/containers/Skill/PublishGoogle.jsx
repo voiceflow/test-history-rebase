@@ -18,6 +18,7 @@ import { Spinner } from '@/components/Spinner';
 import Button from '@/componentsV2/Button';
 import { dialogflowToken, googleAccessToken, verifyGoogleToken } from '@/ducks/account';
 import { setConfirm, setError } from '@/ducks/modal';
+import { updateEntireVersion } from '@/ducks/version';
 
 import GuidedSteps from '../../components/GuidedSteps';
 
@@ -266,7 +267,7 @@ class GooglePublish extends Component {
   onPublish = () =>
     this.save(true, () => {
       const { google_id } = this.state;
-      const { setError, project_id } = this.props;
+      const { setError, project_id, user } = this.props;
 
       if (!google_id) {
         this.setState({
@@ -287,6 +288,7 @@ class GooglePublish extends Component {
           axios
             .post(`/project/${project_id}/version/${new_version_data.new_skill.skill_id}/google`)
             .then((res) => {
+              localStorage.setItem(`is_first_session_${user.creator_id}`, 'false');
               this.setState({
                 stage: 4,
                 google_id: res.data.google_id || google_id,
@@ -319,6 +321,7 @@ class GooglePublish extends Component {
 
   async componentDidMount() {
     const { project_id, skill_id, setError } = this.props;
+
     try {
       const g_token = await googleAccessToken();
       const d_token = await dialogflowToken(project_id);
@@ -389,21 +392,20 @@ class GooglePublish extends Component {
   }
 
   save = (publish = false, cb) => {
-    const { setError, skill_id } = this.props;
-    const s = this.state;
+    const { setError, skill_id, skill, updateEntireSkill } = this.props;
+    const { locales, main_locale, uploaded, google_link_user, google_id } = this.state;
 
-    const publish_info = {
-      google_publish_info: {
-        locales: s.locales,
-        main_locale: s.main_locale,
-        uploaded: s.uploaded,
-        google_link_user: s.google_link_user,
-      },
+    const google_publish_info = {
+      locales,
+      main_locale,
+      uploaded,
+      google_link_user,
     };
 
     axios
-      .patch(`/skill/${skill_id}?platform=google${publish === true ? '&publish=true' : ''}`, publish_info)
+      .patch(`/skill/${skill_id}?platform=google${publish === true ? '&publish=true' : ''}`, { google_publish_info })
       .then(() => {
+        updateEntireSkill({ ...skill, google_publish_info, google_id });
         // eslint-disable-next-line callback-return
         if (typeof cb === 'function') cb();
       })
@@ -810,7 +812,7 @@ class GooglePublish extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  skill: state.skills.skill.skill_id,
+  skill: state.skills.skill,
   project_id: state.skills.skill.project_id,
 });
 
@@ -818,6 +820,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setConfirm: (confirm) => dispatch(setConfirm(confirm)),
     setError: (err) => dispatch(setError(err)),
+    updateEntireSkill: (val) => dispatch(updateEntireVersion(val)),
   };
 };
 

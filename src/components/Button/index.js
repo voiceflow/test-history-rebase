@@ -7,9 +7,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import SvgIcon from '@/components/SvgIcon';
 import { track } from '@/utils/tracker';
 
-import Icon from '../Icon';
 import Loader from '../Loader';
 import Tooltip from '../Tooltip';
 
@@ -179,21 +179,15 @@ export default class Button extends Component {
     const iconElm =
       !!icon &&
       (isIconFlat || isIcon ? (
-        <Icon className={icon} />
+        <SvgIcon icon={icon} />
       ) : (
         <span className="btn__icon">
-          <Icon className={icon} />
+          <SvgIcon icon={icon} />
         </span>
       ));
 
     const content = (
       <>
-        {!!vendorIcon && (
-          <span className="btn__icon">
-            <Icon custom className={`vendor-icon vendor-icon-${vendorIcon}`} />
-          </span>
-        )}
-
         {iconPosition === 'left' && iconElm}
 
         {children}

@@ -163,7 +163,7 @@ export const addProjectToList = (board_id, project_id) => {
       const boards = getState().board;
       const team_id = getState().team.team_id;
       let board = boards.byId[board_id];
-      if (!board) throw new Error();
+      if (!board) throw new Error("Can't find board");
 
       board = update(board, {
         projects: {

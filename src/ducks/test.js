@@ -122,10 +122,14 @@ export const initializeTest = (options = {}) => (dispatch, getState) => {
 
   slots.forEach((slot) => {
     if (_.get(slot, ['type', 'value']) === 'Custom') {
-      nlc.addSlotType({
-        type: slot.name,
-        matcher: slot.inputs,
-      });
+      try {
+        nlc.addSlotType({
+          type: slot.name,
+          matcher: slot.inputs,
+        });
+      } catch (err) {
+        console.error('NLC Unable To Register Custom Slot:', slot, err);
+      }
     }
   });
 
@@ -135,12 +139,16 @@ export const initializeTest = (options = {}) => (dispatch, getState) => {
     if (s.type.google) builtInSlots.push(s.type.google);
   });
 
-  builtInSlots.forEach((s) => {
+  builtInSlots.forEach((slot) => {
     const matcher = /[\S\s]*/;
-    nlc.addSlotType({
-      type: s,
-      matcher,
-    });
+    try {
+      nlc.addSlotType({
+        type: slot,
+        matcher,
+      });
+    } catch (err) {
+      console.error('NLC Unable To Register Built in Slot:', slot, err);
+    }
   });
 
   intents.forEach((intent) => {
@@ -150,12 +158,16 @@ export const initializeTest = (options = {}) => (dispatch, getState) => {
     }
 
     const intentSlots = getSlotsForKeys(intent.inputs.map((input) => input.slots), slots, platform);
-    nlc.registerIntent({
-      slots: intentSlots,
-      intent: intent.name,
-      utterances: samples,
-      callback: _.noop,
-    });
+    try {
+      nlc.registerIntent({
+        slots: intentSlots,
+        intent: intent.name,
+        utterances: samples,
+        callback: _.noop,
+      });
+    } catch (err) {
+      console.error('NLC Unable To Register Custom Intent:', intent, err);
+    }
   });
 
   // Load in built in slots and intents
@@ -165,11 +177,15 @@ export const initializeTest = (options = {}) => (dispatch, getState) => {
 
     builtInIntents.forEach((intent) => {
       const { samples, name } = intent;
-      nlc.registerIntent({
-        intent: name,
-        utterances: samples,
-        callback: _.noop,
-      });
+      try {
+        nlc.registerIntent({
+          intent: name,
+          utterances: samples,
+          callback: _.noop,
+        });
+      } catch (err) {
+        console.error('NLC Unable To Register Built In Intent:', intent, err);
+      }
     });
 
     const AUDIO_INTENTS = [
@@ -192,11 +208,15 @@ export const initializeTest = (options = {}) => (dispatch, getState) => {
     ];
 
     AUDIO_INTENTS.forEach(({ intent, name }) => {
-      nlc.registerIntent({
-        intent,
-        utterances: [name],
-        callback: _.noop,
-      });
+      try {
+        nlc.registerIntent({
+          intent,
+          utterances: [name],
+          callback: _.noop,
+        });
+      } catch (err) {
+        console.error('NLC Unable To Register Audio Intent:', intent, err);
+      }
     });
   } catch (err) {
     console.error(err);

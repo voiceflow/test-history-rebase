@@ -29,8 +29,8 @@ export const SHOW_PROMPT_ALEXA = [4, 5, 6, 9, 14, 2];
 export const STAGE_PERCENTAGES = {
   alexa: {
     1: [0, 5],
-    11: [10, 49],
-    12: [50, 95],
+    11: [10, 39],
+    12: [40, 95],
     13: [96, 100],
   },
   google: {

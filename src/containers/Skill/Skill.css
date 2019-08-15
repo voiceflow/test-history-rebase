@@ -44,25 +44,12 @@
   color: #ff3562 !important;
 }
 
-.LoginWithAmazon {
-  display: inline-block;
-  cursor: pointer;
-}
-
 .unpressed {
   display: block;
 }
 
 .pressed {
   display: none;
-}
-
-.LoginWithAmazon:hover .unpressed {
-  display: none;
-}
-
-.LoginWithAmazon:hover .pressed {
-  display: block;
 }
 
 .stage_modal .modal-info p.loading {

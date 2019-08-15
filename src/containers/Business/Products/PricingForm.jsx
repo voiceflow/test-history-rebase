@@ -93,6 +93,7 @@ class PricingForm extends React.Component {
             <Button
               isBtn
               isSecondary
+              type="button"
               className="mr-2"
               outline={this.props.purchaseType !== 'ENTITLEMENT'}
               onClick={this.props.handleChange('purchaseType', 'ENTITLEMENT')}
@@ -103,6 +104,7 @@ class PricingForm extends React.Component {
             <Button
               isBtn
               isSecondary
+              type="button"
               className="mr-2"
               outline={this.props.purchaseType !== 'SUBSCRIPTION'}
               onClick={this.props.handleChange('purchaseType', 'SUBSCRIPTION')}
@@ -113,6 +115,7 @@ class PricingForm extends React.Component {
             <Button
               isBtn
               isSecondary
+              type="button"
               className="mr-2"
               outline={this.props.purchaseType !== 'CONSUMABLE'}
               onClick={this.props.handleChange('purchaseType', 'CONSUMABLE')}

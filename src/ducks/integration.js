@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { get as _get } from 'lodash';
 
 export const FETCH_INTEGRATION_USERS_BEGIN = 'FETCH_INTEGRATION_USERS_BEGIN';
 export const FETCH_INTEGRATION_USERS_SUCCESS = 'FETCH_INTEGRATION_USERS_SUCCESS';
@@ -141,7 +142,8 @@ export const addIntegrationUser = (integration, body) => {
       return dictByPlatform;
     } catch (e) {
       dispatch(addIntegrationUserFailure(e));
-      throw e;
+      const error = _get(e, ['response', 'data']);
+      throw error.data;
     }
   };
 };

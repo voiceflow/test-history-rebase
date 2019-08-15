@@ -35,7 +35,6 @@ const initialState = {
   },
   configId: null,
   configObject: null,
-  rendered: 0,
   userTest: false,
   debug: !!params.debug,
 };
@@ -244,17 +243,11 @@ export const resetTime = () => ({
   payload: 0,
 });
 
-export const renderTest = (diagramId) => async (dispatch, getState) => {
+export const renderTest = () => async (dispatch, getState) => {
+  const { skills } = getState();
+  const { intents, slots, platform, diagram: diagramId } = skills.dev_skill || skills.skill;
   if (diagramId === null) return;
 
-  const { skills } = getState();
-  const { intents, slots, platform } = skills.dev_skill || skills.skill;
-
-  dispatch(
-    updateTest({
-      rendered: 1,
-    })
-  );
   try {
     await axios.post(`/diagram/${diagramId}/test/publish`, {
       intents,
@@ -262,11 +255,6 @@ export const renderTest = (diagramId) => async (dispatch, getState) => {
       platform,
     });
     dispatch(initializeTest());
-    dispatch(
-      updateTest({
-        rendered: 2,
-      })
-    );
   } catch (err) {
     console.error(err);
     dispatch(setError('Could Not Render Your Test Project'));
@@ -327,13 +315,11 @@ export const updateGlobal = (name, value) => (dispatch, getState) => {
   );
 };
 
-export const shareTest = (render) => async (dispatch, getState) => {
+export const shareTest = () => async (dispatch, getState) => {
   try {
     const { skills, test } = getState();
     const { project_id: projectId, diagram, skill_id: skillId } = skills.skill;
     const { configId, configObject, state, status } = test;
-
-    if (render) await dispatch(renderTest(diagram));
 
     let globals;
     const store = localStorage.getItem(`TEST_VARIABLES_${projectId}`);
@@ -381,15 +367,6 @@ export const resetTest = () => (dispatch) => {
   dispatch(
     updateTest({
       status: TEST_STATUS.IDLE,
-    })
-  );
-};
-
-export const leaveTest = () => (dispatch) => {
-  dispatch(resetTest());
-  dispatch(
-    updateTest({
-      rendered: 0,
     })
   );
 };

@@ -31,7 +31,7 @@ import {
 } from '@/ducks/board';
 import { setConfirm, setError } from '@/ducks/modal';
 import { copyProject, deleteProject, updateProjects } from '@/ducks/project';
-import { getMembers, removeTrial } from '@/ducks/team';
+import { removeTrial } from '@/ducks/team';
 import { useScrollHelpers } from '@/hooks/scroll';
 
 import ExpiryButton from './ExpiryButton';
@@ -103,18 +103,6 @@ export const DashBoard = (props) => {
     });
   };
   const updateTeam = () => {
-    props
-      .getMembers(props.team_id)
-      .then(() => {
-        if (['LOCKED', 'WARNING'].includes(props.team.state)) {
-          setTeamSetting('BILLING');
-        } else {
-          setTeamSetting(false);
-        }
-      })
-      .catch(() => {
-        throw new Error("Can't Retrieve Members");
-      });
     // ensure team hasn't changed
     toggleLoading(true);
     fetchBoards = props.fetchBoards(props.team_id).then(() => {
@@ -369,7 +357,6 @@ const mapDispatchToProps = (dispatch) => {
     deleteProject: (project_id) => dispatch(deleteProject(project_id)),
     copyProject: (project_id, team_id, board_id) => dispatch(copyProject(project_id, team_id, board_id)),
     setConfirm: (confirm) => dispatch(setConfirm(confirm)),
-    getMembers: (team_id) => dispatch(getMembers(team_id)),
     setError: (err) => dispatch(setError(err)),
     updateLists: (team_id) => dispatch(updateLists(team_id)),
     removeBoard: (board_id) => dispatch(deleteBoard(board_id)),

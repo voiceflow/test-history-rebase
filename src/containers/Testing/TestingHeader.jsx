@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import SecondaryNavBar from '@/components/NavBar/SecondaryNavBar';
 import SvgIcon from '@/components/SvgIcon';
 import NewButton from '@/componentsV2/Button';
-import { TEST_STATUS, leaveTest, resetTest, startTest } from '@/ducks/test';
+import { TEST_STATUS, resetTest, startTest } from '@/ducks/test';
 import { updateVersion } from '@/ducks/version';
 
 import { SubTitleGroup } from '../Canvas/components/ActionGroup/styled';
@@ -14,13 +14,13 @@ import ShareTest from './ShareTest';
 import { SeparatorDot, StartButton, StartSubButton, TestingBackButton } from './TestingHeaderWrapper';
 import TestTimer from './TestingTimer';
 
-function TestingHeader({ page, skill, history, leaveTest, preview, startTest, status, resetTest, updateSkill }) {
+function TestingHeader({ page, skill, history, resetTest, preview, startTest, status, updateSkill }) {
   const active = status !== TEST_STATUS.IDLE;
   const running = status === TEST_STATUS.ACTIVE;
 
   const onClick = () => {
     history.push(`/canvas/${skill.skill_id}/${skill.diagram}`);
-    leaveTest();
+    resetTest();
   };
 
   const renderLeftHeader = () => (active ? <TestingBackButton onClick={onClick}>Back</TestingBackButton> : <ProjectTitle onChange={updateSkill} />);
@@ -47,7 +47,7 @@ function TestingHeader({ page, skill, history, leaveTest, preview, startTest, st
           </SubTitleGroup>
           <div className="align-icon no-select">
             {running ? (
-              <NewButton variant="secondary" onClick={leaveTest}>
+              <NewButton variant="secondary" onClick={resetTest}>
                 Finish Test
               </NewButton>
             ) : (
@@ -78,9 +78,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  leaveTest,
-  startTest,
   resetTest,
+  startTest,
   updateSkill: updateVersion,
 };
 

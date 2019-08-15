@@ -53,22 +53,22 @@ class Team extends PureComponent {
       }
     }
 
-    this.props.fetchTeams().then(() => {
-      this.setState({ loading: false });
-      if (this.props.teams.allIds.length > 0) {
-        const urlTeam = getTeamFromURL(this.props.computedMatch);
-        if (!this.props.team_id) {
-          this.props.updateCurrentTeam(urlTeam || this.props.teams.allIds[0]);
-        }
-        if (!urlTeam && this.props.page !== 'template') this.updateTeam(this.props.team_id);
-      } else {
-        if (this.props.location.pathname !== DASHBOARD_PATH)
-          this.props.history.push({
-            pathname: DASHBOARD_PATH,
-            search: this.props.location.search,
-          });
+    await this.props.fetchTeams();
+
+    this.setState({ loading: false });
+    if (this.props.teams.allIds.length > 0) {
+      const urlTeam = getTeamFromURL(this.props.computedMatch);
+      if (!this.props.team_id) {
+        this.props.updateCurrentTeam(urlTeam || this.props.teams.allIds[0]);
       }
-    });
+      if (!urlTeam && this.props.page !== 'template') this.updateTeam(this.props.team_id);
+    } else {
+      if (this.props.location.pathname !== DASHBOARD_PATH)
+        this.props.history.push({
+          pathname: DASHBOARD_PATH,
+          search: this.props.location.search,
+        });
+    }
   }
 
   componentDidMount() {

@@ -76,16 +76,10 @@ export const getMembers = (team_id) => {
   };
 };
 
-export const updateCurrentTeam = (team_id) => {
-  return async (dispatch, getStore) => {
-    if (team_id in getStore().team.byId) {
-      dispatch({
-        type: 'UPDATE_CURRENT_TEAM',
-        payload: team_id,
-      });
-    }
-  };
-};
+export const updateCurrentTeam = (team_id) => ({
+  type: 'UPDATE_CURRENT_TEAM',
+  payload: team_id,
+});
 
 export const updateCurrentTeamItem = (payload) => {
   return (dispatch, getStore) => {
@@ -137,13 +131,15 @@ export const leaveTeam = (team_id) => {
 export const fetchTeams = () => {
   return async (dispatch, getState) => {
     try {
+      const teams = getState().team;
       const res = await axios.get('/teams');
 
       // NORMALIZE TEAMS
       const state = normalize(
         'team_id',
         res.data.map((t) => {
-          t.members = [];
+          // use existing members if possible
+          t.members = _.get(teams, ['byId', t.team_id, 'members']) || [];
 
           if (t.expiry) t.expiry = new Date(t.expiry);
 
@@ -161,7 +157,7 @@ export const fetchTeams = () => {
       // If the current team doesn't exist, default it to something else
       dispatch(updateTeams(state));
 
-      if (!(getState().team.team_id in state.byId)) {
+      if (!(teams.team_id in state.byId)) {
         const new_team = state.allIds.length > 0 ? state.allIds[0] : undefined;
         dispatch(updateCurrentTeam(new_team));
       }

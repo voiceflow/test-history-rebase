@@ -19,7 +19,6 @@ const props = {
     byId: {},
     allIds: [],
   },
-  getMembers: () => new Promise((resolve) => resolve()),
   fetchProjects: () => new Promise((resolve) => resolve()),
   user: {
     id: 1,

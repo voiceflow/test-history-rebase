@@ -280,10 +280,7 @@ class Timeline extends Component {
           outputs={outputs}
           loading={loading}
           options={options}
-          handleRestart={async () => {
-            await resetTest();
-            await startTest();
-          }}
+          handleRestart={resetTest}
           playAudio={this.playAudio}
           locale={Array.isArray(skill.locales) && skill.locales[0]}
         />

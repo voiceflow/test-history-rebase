@@ -361,9 +361,9 @@ export const endTest = () => (dispatch) => {
   );
 };
 
-export const resetTest = () => (dispatch) => {
+export const resetTest = () => (dispatch, getState) => {
   dispatch(resetTime());
-  dispatch(setupGlobals());
+  if (getState().test.status !== TEST_STATUS.IDLE) dispatch(setupGlobals());
   dispatch(
     updateTest({
       status: TEST_STATUS.IDLE,

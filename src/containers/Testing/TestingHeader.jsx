@@ -53,9 +53,9 @@ function TestingHeader({ page, skill, history, resetTest, preview, startTest, st
             ) : (
               <StartButton
                 variant="contained"
-                onClick={async () => {
-                  await resetTest();
-                  await startTest();
+                onClick={() => {
+                  resetTest();
+                  startTest();
                 }}
               >
                 Start Test

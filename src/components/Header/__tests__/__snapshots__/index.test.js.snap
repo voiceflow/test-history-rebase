@@ -11,6 +11,5 @@ exports[`Header render header 1`] = `
       </styled.div>
     </styled.div>
   </styled.div>
-  <Connect(IntercomChat) />
 </styled.header>
 `;

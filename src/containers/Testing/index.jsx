@@ -9,6 +9,7 @@ import { compose } from 'recompose';
 
 import { setError } from '@/ducks/modal';
 import { TEST_STATUS, renderTest, resetTest } from '@/ducks/test';
+import { RemoveIntercom } from '@/hocs/removeIntercom';
 import { useToggle } from '@/hooks/toggle';
 
 import TestSettings from './TestingSettings';
@@ -49,6 +50,7 @@ function Test(props) {
     <>
       <div id="speech-bar-portal-element"></div>
       {open && <TestSettings open={conditionsOpen} />}
+      {open && <RemoveIntercom />}
       <div id="TestSidebar" className={cn({ open })}>
         {!userTest && (
           <>

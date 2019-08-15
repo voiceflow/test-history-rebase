@@ -24,6 +24,7 @@ class GuidedSteps extends React.Component {
         },
       };
     }
+    return null;
   }
 
   validStepChange = (nextStep) => {
@@ -64,7 +65,15 @@ class GuidedSteps extends React.Component {
     const stepValid = this.props.checkStep ? this.props.checkStep(prevStep) : true;
 
     const stepStatus = _.cloneDeep(this.state.stepStatus);
-    stepStatus[prevStep] = stepValid;
+    if (nextStep - prevStep > 1 && this.props.checkStep) {
+      // If we jumped steps we want to check all the steps inbetween
+      for (let i = prevStep; i < nextStep; i++) {
+        const stepValid = this.props.checkStep(i);
+        stepStatus[i] = stepValid;
+      }
+    } else {
+      stepStatus[prevStep] = stepValid;
+    }
 
     if (stepStatus[nextStep] === false) stepStatus[nextStep] = null;
 
@@ -98,6 +107,10 @@ class GuidedSteps extends React.Component {
   };
 
   render() {
+    const stepStatus = _.cloneDeep(this.state.stepStatus);
+
+    // Check if the for is valid up until now
+    const formValid = this.checkFormValidity(stepStatus);
     return (
       <GuidedStepsWrapper noDetail={this.props.noDetail}>
         <ul className="gs__steps-list">
@@ -134,7 +147,7 @@ class GuidedSteps extends React.Component {
                               Next
                             </Button>
                           ) : (
-                            <Button variant="primary" disabled={!this.state.formValid} onClick={(e) => this.submit(e, idx)}>
+                            <Button variant="primary" disabled={!formValid} onClick={(e) => this.submit(e, idx)}>
                               {this.props.submitText}
                             </Button>
                           )}

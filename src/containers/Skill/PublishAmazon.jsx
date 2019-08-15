@@ -11,10 +11,10 @@ import { Alert, Button, ButtonGroup, Collapse, Form, FormFeedback, FormGroup, In
 import validUrl from 'valid-url';
 
 import DefaultButton from '@/components/Button';
+import Checkbox from '@/components/Checkbox';
 import AmazonLogin from '@/components/Forms/AmazonLogin';
 import Multiple from '@/components/Forms/Multiple';
 import GuidedSteps, { GuidedStepsWrapper } from '@/components/GuidedSteps';
-import { ModalFooter } from '@/components/Modals/ModalFooter';
 import { ModalHeader } from '@/components/Modals/ModalHeader';
 import RadioButtons, { YES_NO_RADIO_BUTTONS } from '@/components/RadioButtons';
 import { Spinner } from '@/components/Spinner';
@@ -47,7 +47,6 @@ const disabled_stages = new Set([11, 12]);
 class Skill extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       loaded: false,
       dropdown: false,
@@ -239,32 +238,10 @@ class Skill extends Component {
       invalid_fields = _.values(invalid_fields);
       if (invalid_fields.length > 0) {
         this.setState({
-          stage: 2,
+          stage: 0,
           stage_error: {
-            stage: 2,
+            stage: 0,
             message: `Please fill all required fields before publishing. Missing fields: ${invalid_fields.join(', ')}`,
-          },
-        });
-        this.scrollToTop();
-        return;
-      }
-      if (!s.export) {
-        this.setState({
-          stage: 2,
-          stage_error: {
-            stage: 2,
-            message: 'Please Certify Alexa Skill Import/Export in Privacy/Complicance',
-          },
-        });
-        this.scrollToTop();
-        return;
-      }
-      if (!s.instructions) {
-        this.setState({
-          stage: 2,
-          stage_error: {
-            stage: 2,
-            message: 'Please Provide Testing Instructions',
           },
         });
         this.scrollToTop();
@@ -340,6 +317,10 @@ class Skill extends Component {
       setError('Limited to 30 keywords');
     } else if (s.keywords.length - split_keywords.length + 1 > 500) {
       setError('The total length of all keywords must be less than or equal to 150');
+    } else if (!s.export) {
+      setError('Please Certify Alexa Skill Import/Export in Privacy/Complicance');
+    } else if (!s.instructions) {
+      setError('Please Provide Testing Instructions');
     } else {
       this.setState({ publish: true });
     }
@@ -464,9 +445,15 @@ class Skill extends Component {
         return !!(summary && description && category);
       case 2:
         return !!(inv_name && invocations[0]);
+      case 5:
+        return !!(this.state.export && this.state.instructions);
       default:
         return true;
     }
+  };
+
+  forceChange = () => {
+    this.forceUpdate();
   };
 
   renderBlocks = () => {
@@ -485,6 +472,7 @@ class Skill extends Component {
       terms_and_cond,
       copa,
       name,
+      instructions,
     } = this.state;
 
     const blocks = [];
@@ -801,11 +789,82 @@ class Skill extends Component {
       ),
     });
 
+    blocks.push({
+      title: 'Privacy and Compliance',
+      content: (
+        <div className="form pa__locale-limited">
+          <div className="pb-3 pa__form_container">
+            <label>Does this skill allow users to make purchases or spend real money?</label>
+            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={this.state.purchase} onChange={(val) => this.onRadio('purchase', val)} />
+          </div>
+          <div className="pb-3 pa__form_container">
+            <label>Does this Alexa skill collect users' personal information?</label>
+            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={this.state.personal} onChange={(val) => this.onRadio('personal', val)} />
+          </div>
+          <div className="pb-3 pa__form_container">
+            <label>Does this skill contain advertising?</label>
+            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={this.state.ads} onChange={(val) => this.onRadio('ads', val)} />
+          </div>
+          <div>
+            <label>Export Compliance</label>
+            <div style={{ color: '#62778c' }}>
+              This Alexa skill may be imported to and exported from the United States and all other countries and regions in which Amazon operates
+              their program or in which you've authorized sales to end users (without the need for us to obtain any license or clearance or take any
+              other action) and is in full compliance with all applicable laws and regulations governing imports and exports, including those
+              applicable to software that makes use of encryption technology.
+            </div>
+            <div className="pb-3 pa__checkbox_container">
+              <Checkbox
+                value="export"
+                checked={this.state.export}
+                onChange={() => {
+                  this.setState({ export: !this.state.export });
+                }}
+              />
+              <div>I Certify</div>
+            </div>
+          </div>
+          <div className="">
+            <Label>Testing Instructions</Label>
+            <Textarea
+              name="instructions"
+              className="form-control"
+              value={instructions}
+              onChange={this.handleChange}
+              minRows={3}
+              placeholder="Any Particular Testing Instructions for Amazon Approval Process"
+            />
+          </div>
+        </div>
+      ),
+      description: (
+        <>
+          <div className="publish-info">
+            <p className="helper-text">
+              Personal Information includes anything that can identify the user such as name, email, password, phone number, birth date, etc.
+            </p>
+          </div>
+          <div className="publish-info">
+            <p className="helper-text">
+              Indicate if this skill is directed to children under the age of 13, as determined under the Children's Online Privacy Protection Act
+              (COPPA).
+            </p>
+          </div>
+          <div className="publish-info">
+            <p className="helper-text">
+              Please detail any special instructions our team will need in order to test your skill. Include any account or hardware requirements. If
+              your skill requests permissions, include ways to test these permissions requests. This information is not displayed to customers.
+            </p>
+          </div>
+        </>
+      ),
+    });
+
     return <GuidedSteps blocks={blocks} checkStep={this.checkValidStep} onFinishSteps={this.validateForm} submitText={enterText} />;
   };
 
   render() {
-    const { stage, amzn_id, stage_error, instructions, locales, loaded, publish, live, review, id_collapse } = this.state;
+    const { stage, amzn_id, locales, loaded, publish, live, review, id_collapse } = this.state;
     // const { setConfirm } = this.props;
 
     let content;
@@ -832,65 +891,7 @@ class Skill extends Component {
         </div>
       );
     } else if (stage === 2) {
-      content = (
-        <div className="form">
-          {stage_error && stage_error.stage === 2 ? <Alert color="danger">{stage_error.message}</Alert> : null}
-          {[
-            {
-              value: 'purchase',
-              text: 'Does this skill allow users to make purchases or spend real money?',
-            },
-            {
-              value: 'personal',
-              text: "Does this Alexa skill collect users' personal information?",
-            },
-            {
-              value: 'ads',
-              text: 'Does this skill contain advertising?',
-            },
-            {
-              value: 'export',
-              text:
-                "This Alexa skill may be imported to and exported from the United States and all other countries and regions in which Amazon operates their program or in which you've authorized sales to end users (without the need for us to obtain any license or clearance or take any other action) and is in full compliance with all applicable laws and regulations governing imports and exports, including those applicable to software that makes use of encryption technology.",
-              buttons: [
-                {
-                  id: true,
-                  label: 'I certify',
-                },
-                {
-                  id: false,
-                  label: 'I do not certify',
-                },
-              ],
-            },
-          ].map((form, i) => {
-            return (
-              <div className="p-3 my-3 paper" key={i}>
-                {form.text}
-                <RadioButtons
-                  buttons={form.buttons ? form.buttons : YES_NO_RADIO_BUTTONS}
-                  checked={this.state[form.value]}
-                  onChange={(val) => this.onRadio(form.value, val)}
-                />
-              </div>
-            );
-          })}
-          <div className="p-3 my-3 paper">
-            <Label>Testing Instructions</Label>
-            <Textarea
-              name="instructions"
-              className="blank"
-              value={instructions}
-              onChange={this.handleChange}
-              minRows={3}
-              placeholder="Any Particular Testing Instructions for Amazon Approval Process"
-            />
-          </div>
-          <DefaultButton isBtn isPrimary onClick={this.onPublish}>
-            Submit to Alexa
-          </DefaultButton>
-        </div>
-      );
+      publish && this.onPublish();
     } else if (stage === 5) {
       content = (
         <div>
@@ -931,7 +932,6 @@ class Skill extends Component {
           <ModalBody>
             <div className="modal-info">{content}</div>
           </ModalBody>
-          <ModalFooter link="/dashboard">Return to Dashboard</ModalFooter>
         </Modal>
 
         <div className="subheader-page-container">

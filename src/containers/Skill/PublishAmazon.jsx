@@ -30,7 +30,6 @@ const stage_title = {
   '-1': 'Login Failed',
   0: 'Login Developer with Amazon',
   1: 'Verifying',
-  2: 'Privacy & Compliance',
   3: 'Rendering',
   4: 'Publishing',
   5: 'Developer Account',
@@ -40,6 +39,7 @@ const stage_title = {
   10: 'Sent for Review',
   11: 'Awaiting Review',
   12: 'Confirming Withdraw',
+  13: 'Interaction Model (might take a few minutes)',
 };
 
 const disabled_stages = new Set([11, 12]);
@@ -107,7 +107,7 @@ class Skill extends Component {
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
-        console.log(err);
+        console.error(err);
       });
   }
 
@@ -209,76 +209,78 @@ class Skill extends Component {
     this.privacyTop.current.scrollIntoView(true);
   };
 
-  onPublish = () => {
-    const { project_id } = this.props;
-    this.save(true, () => {
-      const s = this.state;
-      const category = s.category && s.category.value ? s.category.value : null;
-      // let fields = ['name', 'inv_name', 'summary', 'description', 'invocations', 'small_icon', 'large_icon', 'category']
-      const fields = {
-        name: 'Name',
-        // eslint-disable-next-line sonarjs/no-duplicate-string
-        inv_name: 'Invocation Name',
-        summary: 'Summary',
-        description: 'Description',
-        invocations: 'Invocations',
-        small_icon: 'Small Icon',
-        large_icon: 'Large Icon',
-        category: 'Category',
-      };
-      let invalid_fields = Object.keys(fields).filter((field) => {
-        if (field === 'invocations') {
-          return !s.invocations[0];
-        }
-        if (field === 'category') {
-          return !category;
-        }
-        return !s[field];
-      });
-      invalid_fields = _.values(invalid_fields);
-      if (invalid_fields.length > 0) {
-        this.setState({
-          stage: 0,
-          stage_error: {
-            stage: 0,
-            message: `Please fill all required fields before publishing. Missing fields: ${invalid_fields.join(', ')}`,
-          },
-        });
-        this.scrollToTop();
-        return;
-      }
-
-      axios
-        .post(`/project/${project_id}/render`, { platform: 'alexa' })
-        .then((res) => {
-          this.setState({ stage: 4 });
-          const new_version_data = res.data;
+  // Step 10 - used in Step 6
+  checkInteractionModel = (amznId) => {
+    this.setState({ stage: 13 });
+    const iterate = (depth) => {
+      // wait up to 120 seconds
+      if (depth === 40) {
+        this.onCertify();
+      } else {
+        setTimeout(() => {
           axios
-            .post(`/project/${project_id}/version/${new_version_data.new_skill.skill_id}/alexa`)
-            .then(({ data: amzn_id }) => {
-              this.setState(
-                {
-                  amzn_id,
-                },
-                this.onCertify
-              );
-            })
-            .catch((err) => {
-              if (err.status === 403 || err.response.status === 403) {
-                // No Vendor ID/Amazon Developer Account
-                this.setState({
-                  stage: 5,
-                });
-              } else {
-                this.handleError(err, 'Publishing Error');
+            .get(`/interaction_model/${amznId}/status`)
+            .then((res) => {
+              if (res.data && res.data.interactionModel) {
+                // eslint-disable-next-line no-restricted-syntax, guard-for-in
+                for (const key in res.data.interactionModel) {
+                  const locale = res.data.interactionModel[key];
+                  if (locale.lastUpdateRequest && locale.lastUpdateRequest.status && locale.lastUpdateRequest.status === 'SUCCEEDED') {
+                    this.onCertify();
+                    return;
+                  }
+                }
               }
+              iterate(depth + 1);
+            })
+            .catch(() => {
+              this.onCertify();
             });
-        })
-        .catch((err) => {
-          this.handleError(err, 'Rendering Error');
-        });
-    });
-    this.setState({ stage: 3 });
+        }, 3000);
+      }
+    };
+
+    iterate(0);
+  };
+
+  onPublish = () => {
+    this.setState({ publish: true, stage: 3 });
+    const { project_id, setError } = this.props;
+    this.save()
+      .then(() => {
+        axios
+          .post(`/project/${project_id}/render`, { platform: 'alexa' })
+          .then((res) => {
+            this.setState({ stage: 4 });
+            const new_version_data = res.data;
+            axios
+              .post(`/project/${project_id}/version/${new_version_data.new_skill.skill_id}/alexa`)
+              .then(({ data: amzn_id }) => {
+                this.setState(
+                  {
+                    amzn_id,
+                  },
+                  () => this.checkInteractionModel(amzn_id)
+                );
+              })
+              .catch((err) => {
+                if (err.status === 403 || err.response.status === 403) {
+                  // No Vendor ID/Amazon Developer Account
+                  this.setState({
+                    stage: 5,
+                  });
+                } else {
+                  this.handleError(err, 'Publishing Error');
+                }
+              });
+          })
+          .catch((err) => {
+            this.handleError(err, 'Rendering Error');
+          });
+      })
+      .catch((err) => {
+        setError(err);
+      });
   };
 
   checkVendor = () => {
@@ -298,7 +300,7 @@ class Skill extends Component {
   componentWillUnmount() {
     const { loaded } = this.state;
     if (loaded) {
-      this.save(true);
+      this.save();
     }
   }
 
@@ -322,26 +324,14 @@ class Skill extends Component {
     } else if (!s.instructions) {
       setError('Please Provide Testing Instructions');
     } else {
-      this.setState({ publish: true });
+      this.onPublish();
     }
   };
 
-  save = (publish = false, cb) => {
-    const { setError, skill_id, updateEntireSkill } = this.props;
+  save = async () => {
+    const { skill_id, updateEntireSkill } = this.props;
     const s = this.state;
     const category = s.category && s.category.value ? s.category.value : null;
-
-    let store;
-
-    if (publish === true) {
-      store = {
-        purchase: s.purchase,
-        personal: s.personal,
-        ads: s.ads,
-        export: s.export,
-        instructions: s.instructions,
-      };
-    }
 
     const properties = {
       name: s.name,
@@ -357,29 +347,27 @@ class Skill extends Component {
       copa: s.copa,
       privacy_policy: !_.isEmpty(s.privacy_policy) ? s.privacy_policy : '',
       terms_and_cond: s.terms_and_cond,
-      ...store,
+      purchase: s.purchase,
+      personal: s.personal,
+      ads: s.ads,
+      export: s.export,
+      instructions: s.instructions,
     };
 
     if (!properties.name) {
-      return setError('Publish Settings not Saved: No Project Name');
+      throw new Error('Publish Settings not Saved: No Project Name');
     }
 
-    axios
-      .patch(`/skill/${skill_id}${publish === true ? '?publish=true' : ''}`, {
+    try {
+      await axios.patch(`/skill/${skill_id}?publish=true`, {
         ...properties,
         locales: JSON.stringify(properties.locales),
-      })
-      .then(() => {
-        updateEntireSkill(properties);
-
-        // eslint-disable-next-line callback-return
-        if (typeof cb === 'function') cb();
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err);
-        setError('Save Error, Publish Settings not Saved');
       });
+
+      updateEntireSkill(properties);
+    } catch (err) {
+      throw new Error('Save Error, Publish Settings not Saved');
+    }
   };
 
   handleChange = (event) => {
@@ -884,15 +872,14 @@ class Skill extends Component {
           />
         </div>
       );
-    } else if (stage === 1 || stage === 3 || stage === 4 || stage === 6 || stage === 7) {
+    } else if ([1, 3, 4, 6, 7, 13].includes(stage)) {
       content = (
         <div>
           <Spinner message={`Loading ${stage_title[stage]}`} />
         </div>
       );
-    } else if (stage === 2) {
-      publish && this.onPublish();
-    } else if (stage === 5) {
+    }
+    if (stage === 5) {
       content = (
         <div>
           Your Amazon Account needs to set up developer settings to Upload Skills

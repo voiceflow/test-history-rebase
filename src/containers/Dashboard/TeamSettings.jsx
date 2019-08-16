@@ -12,7 +12,7 @@ import { Spinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
 import Image from '@/components/Uploads/Image';
 import { setConfirm, setError } from '@/ducks/modal';
-import { deleteTeam, leaveTeam, removeTrial, updateCurrentTeamItem, updateMembers, updateTeamName } from '@/ducks/team';
+import { deleteTeam, getMembers, leaveTeam, removeTrial, updateCurrentTeamItem, updateMembers, updateTeamName } from '@/ducks/team';
 import CogIcon from '@/svgs/cog.svg';
 
 import Billing from './Billing';
@@ -48,8 +48,13 @@ class TeamSettings extends Component {
     is_diff: false,
   };
 
+  componentDidMount() {
+    const { team } = this.props;
+    if (team.members && team.members.length === 0) this.updateMembers();
+  }
+
   componentDidUpdate(prevProps, prevState) {
-    const { open, team } = this.props;
+    const { open, team, update } = this.props;
     const { members, diff } = this.state;
     if (!prevProps.open && open && typeof open === 'string') {
       this.setState({
@@ -65,7 +70,17 @@ class TeamSettings extends Component {
     if (prevState.members !== members && prevState.diff === diff) {
       this.checkDiff();
     }
+
+    if (team.state !== prevProps.team.state && ['LOCKED', 'WARNING'].includes(team.state)) update('BILLING');
+    if (team.team_id && team.team_id !== prevProps.team.team_id) this.updateMembers();
   }
+
+  updateMembers = () => {
+    const { team, getMembers } = this.props;
+    getMembers(team.team_id).catch(() => {
+      throw new Error("Can't Retrieve Members");
+    });
+  };
 
   checkDiff = () => {
     const { diff, members } = this.state;
@@ -486,19 +501,21 @@ class TeamSettings extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.account,
-  team: state.team.byId[state.team.team_id],
+  team: state.team.byId[state.team.team_id] || {},
+  teamId: state.team.team_id,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
     removeTrial: (team_id) => dispatch(removeTrial(team_id)),
     updateMembers: (members, options) => dispatch(updateMembers(members, options)),
-    deleteTeam: (team_id) => dispatch(deleteTeam(team_id)),
-    leaveTeam: (team_id) => dispatch(leaveTeam(team_id)),
+    deleteTeam: (teamId) => dispatch(deleteTeam(teamId)),
+    leaveTeam: (teamId) => dispatch(leaveTeam(teamId)),
     setConfirm: (confirm) => dispatch(setConfirm(confirm)),
     updateTeam: (payload) => dispatch(updateCurrentTeamItem(payload)),
     updateTeamName: (name) => dispatch(updateTeamName(name)),
     setError: (error) => dispatch(setError(error)),
+    getMembers: (teamId) => dispatch(getMembers(teamId)),
   };
 };
 

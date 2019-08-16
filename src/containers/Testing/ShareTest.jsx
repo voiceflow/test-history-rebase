@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import styled from 'styled-components';
@@ -9,8 +9,7 @@ import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import Popover from '@/components/Popover';
 import { Spinner } from '@/components/Spinner';
 import { setConfirm } from '@/ducks/modal';
-import { getMembers, updateMembers } from '@/ducks/team';
-import { shareTest } from '@/ducks/test';
+import { renderTest, shareTest } from '@/ducks/test';
 
 import TeamSettings from '../Dashboard/TeamSettings';
 
@@ -20,42 +19,24 @@ const BodyContainer = styled.div`
 `;
 
 const TestingHeader = (props) => {
-  const { shareTest, rendered, render, team, user, team_id, getMembers } = props;
+  const { shareTest, renderTest, render, user } = props;
 
   const [share, setShare] = useState(false);
   const [link, setLink] = useState(false);
-  const [team_setting, setTeamSetting] = useState(null);
+  const [teamSetting, setTeamSetting] = useState(null);
   const sharingButton = useRef(null);
-
-  const updateTeam = () => {
-    if (team_id) {
-      getMembers(team_id)
-        .then(() => {
-          if (['LOCKED', 'WARNING'].includes(team.state)) {
-            setTeamSetting('BILLING');
-          } else {
-            setTeamSetting(false);
-          }
-        })
-        .catch(() => {
-          throw new Error("Can't Retrieve Members");
-        });
-    }
-  };
-
-  useEffect(() => {
-    updateTeam();
-  }, [team_id]);
 
   const makeConfig = async () => {
     setShare(!share);
     if (!share) {
-      setLink(`${window.location.origin}/demo/${await shareTest(render)}`);
+      setLink(false);
+      if (render) await renderTest();
+      setLink(`${window.location.origin}/demo/${await shareTest()}`);
     }
   };
 
   const renderBody = () => {
-    if (rendered && link && team && user) {
+    if (link && user) {
       return (
         <>
           <BodyContainer index={1}>
@@ -94,23 +75,20 @@ const TestingHeader = (props) => {
       <Tooltip title="Share Test" position="bottom">
         <RoundButton id="icon-share" active={share} variant="color" color="#5b9dfa" icon="share" onClick={makeConfig} imgSize={16} />
       </Tooltip>
-      <Popover gap={-12} show={share} className="mt-3 share" target={sharingButton.current} onHide={() => setShare(!share)} renderBody={renderBody} />
-      <TeamSettings hideIcon={true} open={team_setting} update={(setting) => setTeamSetting(setting)} close={() => setTeamSetting(false)} />
+      <Popover gap={-10} show={share} className="mt-3 share" target={sharingButton.current} onHide={() => setShare(!share)} renderBody={renderBody} />
+      <TeamSettings hideIcon={true} open={teamSetting} update={(setting) => setTeamSetting(setting)} close={() => setTeamSetting(false)} />
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  rendered: state.test.rendered,
   user: state.account,
-  team: state.team.byId[state.team.team_id],
 });
 
 const mapDispatchToProps = {
   shareTest,
-  updateMembers,
+  renderTest,
   setConfirm,
-  getMembers,
 };
 
 export default connect(

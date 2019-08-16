@@ -690,3 +690,21 @@ p.loading-btn::after {
   margin-right: auto;
   margin-left: auto;
 }
+
+.pa__checkbox_container {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.pa__checkbox_container .form-checkbox {
+  margin: 0;
+}
+
+.pa__form_container .form-checkbox__btn {
+  margin-right: 10px;
+}
+
+.pa__form_container .groupform-inline__col {
+  margin-right: 15px;
+}

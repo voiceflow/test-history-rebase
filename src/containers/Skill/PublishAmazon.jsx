@@ -11,10 +11,10 @@ import { Alert, Button, ButtonGroup, Collapse, Form, FormFeedback, FormGroup, In
 import validUrl from 'valid-url';
 
 import DefaultButton from '@/components/Button';
+import Checkbox from '@/components/Checkbox';
 import AmazonLogin from '@/components/Forms/AmazonLogin';
 import Multiple from '@/components/Forms/Multiple';
 import GuidedSteps, { GuidedStepsWrapper } from '@/components/GuidedSteps';
-import { ModalFooter } from '@/components/Modals/ModalFooter';
 import { ModalHeader } from '@/components/Modals/ModalHeader';
 import RadioButtons, { YES_NO_RADIO_BUTTONS } from '@/components/RadioButtons';
 import { Spinner } from '@/components/Spinner';
@@ -30,7 +30,6 @@ const stage_title = {
   '-1': 'Login Failed',
   0: 'Login Developer with Amazon',
   1: 'Verifying',
-  2: 'Privacy & Compliance',
   3: 'Rendering',
   4: 'Publishing',
   5: 'Developer Account',
@@ -40,6 +39,7 @@ const stage_title = {
   10: 'Sent for Review',
   11: 'Awaiting Review',
   12: 'Confirming Withdraw',
+  13: 'Interaction Model (might take a few minutes)',
 };
 
 const disabled_stages = new Set([11, 12]);
@@ -47,7 +47,6 @@ const disabled_stages = new Set([11, 12]);
 class Skill extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       loaded: false,
       dropdown: false,
@@ -108,7 +107,7 @@ class Skill extends Component {
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
-        console.log(err);
+        console.error(err);
       });
   }
 
@@ -210,98 +209,78 @@ class Skill extends Component {
     this.privacyTop.current.scrollIntoView(true);
   };
 
-  onPublish = () => {
-    const { project_id } = this.props;
-    this.save(true, () => {
-      const s = this.state;
-      const category = s.category && s.category.value ? s.category.value : null;
-      // let fields = ['name', 'inv_name', 'summary', 'description', 'invocations', 'small_icon', 'large_icon', 'category']
-      const fields = {
-        name: 'Name',
-        // eslint-disable-next-line sonarjs/no-duplicate-string
-        inv_name: 'Invocation Name',
-        summary: 'Summary',
-        description: 'Description',
-        invocations: 'Invocations',
-        small_icon: 'Small Icon',
-        large_icon: 'Large Icon',
-        category: 'Category',
-      };
-      let invalid_fields = Object.keys(fields).filter((field) => {
-        if (field === 'invocations') {
-          return !s.invocations[0];
-        }
-        if (field === 'category') {
-          return !category;
-        }
-        return !s[field];
-      });
-      invalid_fields = _.values(invalid_fields);
-      if (invalid_fields.length > 0) {
-        this.setState({
-          stage: 2,
-          stage_error: {
-            stage: 2,
-            message: `Please fill all required fields before publishing. Missing fields: ${invalid_fields.join(', ')}`,
-          },
-        });
-        this.scrollToTop();
-        return;
-      }
-      if (!s.export) {
-        this.setState({
-          stage: 2,
-          stage_error: {
-            stage: 2,
-            message: 'Please Certify Alexa Skill Import/Export in Privacy/Complicance',
-          },
-        });
-        this.scrollToTop();
-        return;
-      }
-      if (!s.instructions) {
-        this.setState({
-          stage: 2,
-          stage_error: {
-            stage: 2,
-            message: 'Please Provide Testing Instructions',
-          },
-        });
-        this.scrollToTop();
-        return;
-      }
-
-      axios
-        .post(`/project/${project_id}/render`, { platform: 'alexa' })
-        .then((res) => {
-          this.setState({ stage: 4 });
-          const new_version_data = res.data;
+  // Step 10 - used in Step 6
+  checkInteractionModel = (amznId) => {
+    this.setState({ stage: 13 });
+    const iterate = (depth) => {
+      // wait up to 120 seconds
+      if (depth === 40) {
+        this.onCertify();
+      } else {
+        setTimeout(() => {
           axios
-            .post(`/project/${project_id}/version/${new_version_data.new_skill.skill_id}/alexa`)
-            .then(({ data: amzn_id }) => {
-              this.setState(
-                {
-                  amzn_id,
-                },
-                this.onCertify
-              );
-            })
-            .catch((err) => {
-              if (err.status === 403 || err.response.status === 403) {
-                // No Vendor ID/Amazon Developer Account
-                this.setState({
-                  stage: 5,
-                });
-              } else {
-                this.handleError(err, 'Publishing Error');
+            .get(`/interaction_model/${amznId}/status`)
+            .then((res) => {
+              if (res.data && res.data.interactionModel) {
+                // eslint-disable-next-line no-restricted-syntax, guard-for-in
+                for (const key in res.data.interactionModel) {
+                  const locale = res.data.interactionModel[key];
+                  if (locale.lastUpdateRequest && locale.lastUpdateRequest.status && locale.lastUpdateRequest.status === 'SUCCEEDED') {
+                    this.onCertify();
+                    return;
+                  }
+                }
               }
+              iterate(depth + 1);
+            })
+            .catch(() => {
+              this.onCertify();
             });
-        })
-        .catch((err) => {
-          this.handleError(err, 'Rendering Error');
-        });
-    });
-    this.setState({ stage: 3 });
+        }, 3000);
+      }
+    };
+
+    iterate(0);
+  };
+
+  onPublish = () => {
+    this.setState({ publish: true, stage: 3 });
+    const { project_id, setError } = this.props;
+    this.save()
+      .then(() => {
+        axios
+          .post(`/project/${project_id}/render`, { platform: 'alexa' })
+          .then((res) => {
+            this.setState({ stage: 4 });
+            const new_version_data = res.data;
+            axios
+              .post(`/project/${project_id}/version/${new_version_data.new_skill.skill_id}/alexa`)
+              .then(({ data: amzn_id }) => {
+                this.setState(
+                  {
+                    amzn_id,
+                  },
+                  () => this.checkInteractionModel(amzn_id)
+                );
+              })
+              .catch((err) => {
+                if (err.status === 403 || err.response.status === 403) {
+                  // No Vendor ID/Amazon Developer Account
+                  this.setState({
+                    stage: 5,
+                  });
+                } else {
+                  this.handleError(err, 'Publishing Error');
+                }
+              });
+          })
+          .catch((err) => {
+            this.handleError(err, 'Rendering Error');
+          });
+      })
+      .catch((err) => {
+        setError(err);
+      });
   };
 
   checkVendor = () => {
@@ -321,7 +300,7 @@ class Skill extends Component {
   componentWillUnmount() {
     const { loaded } = this.state;
     if (loaded) {
-      this.save(true);
+      this.save();
     }
   }
 
@@ -340,27 +319,19 @@ class Skill extends Component {
       setError('Limited to 30 keywords');
     } else if (s.keywords.length - split_keywords.length + 1 > 500) {
       setError('The total length of all keywords must be less than or equal to 150');
+    } else if (!s.export) {
+      setError('Please Certify Alexa Skill Import/Export in Privacy/Complicance');
+    } else if (!s.instructions) {
+      setError('Please Provide Testing Instructions');
     } else {
-      this.setState({ publish: true });
+      this.onPublish();
     }
   };
 
-  save = (publish = false, cb) => {
-    const { setError, skill_id, updateEntireSkill } = this.props;
+  save = async () => {
+    const { skill_id, updateEntireSkill } = this.props;
     const s = this.state;
     const category = s.category && s.category.value ? s.category.value : null;
-
-    let store;
-
-    if (publish === true) {
-      store = {
-        purchase: s.purchase,
-        personal: s.personal,
-        ads: s.ads,
-        export: s.export,
-        instructions: s.instructions,
-      };
-    }
 
     const properties = {
       name: s.name,
@@ -376,29 +347,27 @@ class Skill extends Component {
       copa: s.copa,
       privacy_policy: !_.isEmpty(s.privacy_policy) ? s.privacy_policy : '',
       terms_and_cond: s.terms_and_cond,
-      ...store,
+      purchase: s.purchase,
+      personal: s.personal,
+      ads: s.ads,
+      export: s.export,
+      instructions: s.instructions,
     };
 
     if (!properties.name) {
-      return setError('Publish Settings not Saved: No Project Name');
+      throw new Error('Publish Settings not Saved: No Project Name');
     }
 
-    axios
-      .patch(`/skill/${skill_id}${publish === true ? '?publish=true' : ''}`, {
+    try {
+      await axios.patch(`/skill/${skill_id}?publish=true`, {
         ...properties,
         locales: JSON.stringify(properties.locales),
-      })
-      .then(() => {
-        updateEntireSkill(properties);
-
-        // eslint-disable-next-line callback-return
-        if (typeof cb === 'function') cb();
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err);
-        setError('Save Error, Publish Settings not Saved');
       });
+
+      updateEntireSkill(properties);
+    } catch (err) {
+      throw new Error('Save Error, Publish Settings not Saved');
+    }
   };
 
   handleChange = (event) => {
@@ -464,9 +433,15 @@ class Skill extends Component {
         return !!(summary && description && category);
       case 2:
         return !!(inv_name && invocations[0]);
+      case 5:
+        return !!(this.state.export && this.state.instructions);
       default:
         return true;
     }
+  };
+
+  forceChange = () => {
+    this.forceUpdate();
   };
 
   renderBlocks = () => {
@@ -485,6 +460,7 @@ class Skill extends Component {
       terms_and_cond,
       copa,
       name,
+      instructions,
     } = this.state;
 
     const blocks = [];
@@ -801,11 +777,82 @@ class Skill extends Component {
       ),
     });
 
+    blocks.push({
+      title: 'Privacy and Compliance',
+      content: (
+        <div className="form pa__locale-limited">
+          <div className="pb-3 pa__form_container">
+            <label>Does this skill allow users to make purchases or spend real money?</label>
+            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={this.state.purchase} onChange={(val) => this.onRadio('purchase', val)} />
+          </div>
+          <div className="pb-3 pa__form_container">
+            <label>Does this Alexa skill collect users' personal information?</label>
+            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={this.state.personal} onChange={(val) => this.onRadio('personal', val)} />
+          </div>
+          <div className="pb-3 pa__form_container">
+            <label>Does this skill contain advertising?</label>
+            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={this.state.ads} onChange={(val) => this.onRadio('ads', val)} />
+          </div>
+          <div>
+            <label>Export Compliance</label>
+            <div style={{ color: '#62778c' }}>
+              This Alexa skill may be imported to and exported from the United States and all other countries and regions in which Amazon operates
+              their program or in which you've authorized sales to end users (without the need for us to obtain any license or clearance or take any
+              other action) and is in full compliance with all applicable laws and regulations governing imports and exports, including those
+              applicable to software that makes use of encryption technology.
+            </div>
+            <div className="pb-3 pa__checkbox_container">
+              <Checkbox
+                value="export"
+                checked={this.state.export}
+                onChange={() => {
+                  this.setState({ export: !this.state.export });
+                }}
+              />
+              <div>I Certify</div>
+            </div>
+          </div>
+          <div className="">
+            <Label>Testing Instructions</Label>
+            <Textarea
+              name="instructions"
+              className="form-control"
+              value={instructions}
+              onChange={this.handleChange}
+              minRows={3}
+              placeholder="Any Particular Testing Instructions for Amazon Approval Process"
+            />
+          </div>
+        </div>
+      ),
+      description: (
+        <>
+          <div className="publish-info">
+            <p className="helper-text">
+              Personal Information includes anything that can identify the user such as name, email, password, phone number, birth date, etc.
+            </p>
+          </div>
+          <div className="publish-info">
+            <p className="helper-text">
+              Indicate if this skill is directed to children under the age of 13, as determined under the Children's Online Privacy Protection Act
+              (COPPA).
+            </p>
+          </div>
+          <div className="publish-info">
+            <p className="helper-text">
+              Please detail any special instructions our team will need in order to test your skill. Include any account or hardware requirements. If
+              your skill requests permissions, include ways to test these permissions requests. This information is not displayed to customers.
+            </p>
+          </div>
+        </>
+      ),
+    });
+
     return <GuidedSteps blocks={blocks} checkStep={this.checkValidStep} onFinishSteps={this.validateForm} submitText={enterText} />;
   };
 
   render() {
-    const { stage, amzn_id, stage_error, instructions, locales, loaded, publish, live, review, id_collapse } = this.state;
+    const { stage, amzn_id, locales, loaded, publish, live, review, id_collapse } = this.state;
     // const { setConfirm } = this.props;
 
     let content;
@@ -825,73 +872,14 @@ class Skill extends Component {
           />
         </div>
       );
-    } else if (stage === 1 || stage === 3 || stage === 4 || stage === 6 || stage === 7) {
+    } else if ([1, 3, 4, 6, 7, 13].includes(stage)) {
       content = (
         <div>
           <Spinner message={`Loading ${stage_title[stage]}`} />
         </div>
       );
-    } else if (stage === 2) {
-      content = (
-        <div className="form">
-          {stage_error && stage_error.stage === 2 ? <Alert color="danger">{stage_error.message}</Alert> : null}
-          {[
-            {
-              value: 'purchase',
-              text: 'Does this skill allow users to make purchases or spend real money?',
-            },
-            {
-              value: 'personal',
-              text: "Does this Alexa skill collect users' personal information?",
-            },
-            {
-              value: 'ads',
-              text: 'Does this skill contain advertising?',
-            },
-            {
-              value: 'export',
-              text:
-                "This Alexa skill may be imported to and exported from the United States and all other countries and regions in which Amazon operates their program or in which you've authorized sales to end users (without the need for us to obtain any license or clearance or take any other action) and is in full compliance with all applicable laws and regulations governing imports and exports, including those applicable to software that makes use of encryption technology.",
-              buttons: [
-                {
-                  id: true,
-                  label: 'I certify',
-                },
-                {
-                  id: false,
-                  label: 'I do not certify',
-                },
-              ],
-            },
-          ].map((form, i) => {
-            return (
-              <div className="p-3 my-3 paper" key={i}>
-                {form.text}
-                <RadioButtons
-                  buttons={form.buttons ? form.buttons : YES_NO_RADIO_BUTTONS}
-                  checked={this.state[form.value]}
-                  onChange={(val) => this.onRadio(form.value, val)}
-                />
-              </div>
-            );
-          })}
-          <div className="p-3 my-3 paper">
-            <Label>Testing Instructions</Label>
-            <Textarea
-              name="instructions"
-              className="blank"
-              value={instructions}
-              onChange={this.handleChange}
-              minRows={3}
-              placeholder="Any Particular Testing Instructions for Amazon Approval Process"
-            />
-          </div>
-          <DefaultButton isBtn isPrimary onClick={this.onPublish}>
-            Submit to Alexa
-          </DefaultButton>
-        </div>
-      );
-    } else if (stage === 5) {
+    }
+    if (stage === 5) {
       content = (
         <div>
           Your Amazon Account needs to set up developer settings to Upload Skills
@@ -931,7 +919,6 @@ class Skill extends Component {
           <ModalBody>
             <div className="modal-info">{content}</div>
           </ModalBody>
-          <ModalFooter link="/dashboard">Return to Dashboard</ModalFooter>
         </Modal>
 
         <div className="subheader-page-container">

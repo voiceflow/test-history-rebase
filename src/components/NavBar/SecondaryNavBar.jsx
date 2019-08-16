@@ -14,7 +14,24 @@ import LogsIcon from '@/svgs/logs.svg';
 
 import { LiveToggleText, LiveToggleWrapper, NavBarTabs, NavRightGroup } from './styled';
 
-const PAGES = ['canvas', 'test', 'publish', 'analytics'];
+const PAGES = [
+  {
+    link: 'canvas',
+    name: 'build',
+  },
+  {
+    link: 'test',
+    name: 'test',
+  },
+  {
+    link: 'publish',
+    name: 'publish',
+  },
+  {
+    link: 'analytics',
+    name: 'analytics',
+  },
+];
 
 export class SecondaryNavBar extends Component {
   state = {
@@ -54,43 +71,43 @@ export class SecondaryNavBar extends Component {
   }
 
   renderItem(page) {
-    if (page === 'publish' && this.props.live_mode) {
+    if (page.link === 'publish' && this.props.live_mode) {
       return (
-        <Link to="" key={page} className="nav-item live-mode-disabled" onClick={(e) => e.preventDefault()}>
-          {page}
+        <Link to="" key={page.link} className="nav-item live-mode-disabled" onClick={(e) => e.preventDefault()}>
+          {page.name}
         </Link>
       );
     }
-    if (page === this.props.page) {
+    if (page.link === this.props.page) {
       return (
-        <div key={page} className="nav-item active">
-          {page}
+        <div key={page.link} className="nav-item active">
+          {page.name}
         </div>
       );
     }
     if (this.props.skill_id) {
       let suffix = '';
-      if (page === 'publish') {
+      if (page.link === 'publish') {
         suffix = this.props.platform === 'alexa' ? '' : this.props.platform;
-      } else if (page === 'analytics') {
+      } else if (page.link === 'analytics') {
         if (this.props.live_mode) {
           return (
-            <Link to={`/tools/${this.props.skill_id}`} key={page} className="nav-item">
-              {page}
+            <Link to={`/tools/${this.props.skill_id}`} key={page.link} className="nav-item">
+              {page.name}
             </Link>
           );
         }
         return null;
       }
       return (
-        <Link to={`/${page}/${this.props.skill_id}/${suffix}`} key={page} className="nav-item">
-          {page}
+        <Link to={`/${page.link}/${this.props.skill_id}/${suffix}`} key={page.link} className="nav-item">
+          {page.name}
         </Link>
       );
     }
     return (
-      <div key={page} className="nav-item">
-        {page}
+      <div key={page.link} className="nav-item">
+        {page.name}
       </div>
     );
   }

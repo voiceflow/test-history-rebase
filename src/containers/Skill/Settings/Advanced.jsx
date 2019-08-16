@@ -129,33 +129,31 @@ class AdvancedSettings extends Component {
         <div className="settings-content mt-5 no-bottom clearfix">
           <AccountLinkTemplate {...this.props} />
         </div>
-        {this.props.user.admin >= 60 && (
-          <div className="settings-content clearfix my-5">
-            <h5 className="text-muted mb-0">Skill Events</h5>
-            <hr />
-            <AceEditor
-              name="datasource_editor"
-              className="datasource_editor"
-              mode="json"
-              theme="github"
-              onChange={this.updateAlexaEvents}
-              fontSize={14}
-              showPrintMargin={false}
-              showGutter={true}
-              highlightActiveLine={true}
-              value={settings.alexa_events}
-              editorProps={{ $blockScrolling: true }}
-              setOptions={{
-                enableBasicAutocompletion: true,
-                enableLiveAutocompletion: false,
-                enableSnippets: false,
-                showLineNumbers: true,
-                tabSize: 2,
-                useWorker: false,
-              }}
-            />
-          </div>
-        )}
+        <div className="settings-content clearfix my-5">
+          <h5 className="text-muted mb-0">Skill Events</h5>
+          <hr />
+          <AceEditor
+            name="datasource_editor"
+            className="datasource_editor"
+            mode="json"
+            theme="github"
+            onChange={this.updateAlexaEvents}
+            fontSize={14}
+            showPrintMargin={false}
+            showGutter={true}
+            highlightActiveLine={true}
+            value={settings.alexa_events}
+            editorProps={{ $blockScrolling: true }}
+            setOptions={{
+              enableBasicAutocompletion: true,
+              enableLiveAutocompletion: false,
+              enableSnippets: false,
+              showLineNumbers: true,
+              tabSize: 2,
+              useWorker: false,
+            }}
+          />
+        </div>
         <div className="settings-content no-bottom clearfix">
           <FormGroup>
             <Label>Delete Project</Label>

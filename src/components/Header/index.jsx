@@ -7,7 +7,6 @@ import React from 'react';
 import SvgIcon from '@/components/SvgIcon';
 import LeftIcon from '@/svgs/arrow-left.svg';
 
-import IntercomChat from './components/IntercomChat';
 import UserMenu from './components/UserMenu';
 import { BackButton, CenterGroup, HeaderActions, HeaderContainer, HeaderNavigation, JustifiedHeaderActions, Logo, PrimaryHeader } from './styled';
 
@@ -53,7 +52,6 @@ function Header({
         </HeaderActions>
       </PrimaryHeader>
       {subHeaderRenderer && subHeaderRenderer()}
-      <IntercomChat />
     </HeaderContainer>
   );
 }

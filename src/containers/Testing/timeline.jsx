@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 
 import SvgIcon from '@/components/SvgIcon';
 import { setError } from '@/ducks/modal';
-import { TEST_STATUS, endTest, fetchState, resetTest, startTest, updateState } from '@/ducks/test';
+import { TEST_STATUS, endTest, fetchState, resetTest, startTest } from '@/ducks/test';
 
 import TestBox from './TestingBox';
 import { StartButton, StartSubButton } from './TestingHeaderWrapper';
@@ -220,13 +220,10 @@ class Timeline extends Component {
       return;
     }
 
-    const { trace, line_id: lineId } = newState;
-
-    // update the state if there is another line to continue
-    if (lineId || newState.play) this.props.updateState(newState);
+    const { trace, ending } = newState;
     if (!trace) return;
 
-    const outputQueue = await getUserTestOutputs(trace, newState.ending);
+    const outputQueue = await getUserTestOutputs(trace, ending);
 
     this.interval = {
       queue: outputQueue,
@@ -280,10 +277,7 @@ class Timeline extends Component {
           outputs={outputs}
           loading={loading}
           options={options}
-          handleRestart={async () => {
-            await resetTest();
-            await startTest();
-          }}
+          handleRestart={resetTest}
           playAudio={this.playAudio}
           locale={Array.isArray(skill.locales) && skill.locales[0]}
         />
@@ -305,7 +299,6 @@ const mapDispatchToProps = {
   resetTest,
   setError,
   startTest,
-  updateState,
 };
 
 export default compose(

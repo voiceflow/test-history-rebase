@@ -8,38 +8,23 @@ import { Tooltip } from 'react-tippy';
 import { compose } from 'recompose';
 
 import { setError } from '@/ducks/modal';
-import { TEST_STATUS, leaveTest, renderTest, resetTest } from '@/ducks/test';
+import { TEST_STATUS, renderTest, resetTest } from '@/ducks/test';
+import { RemoveIntercom } from '@/hocs/removeIntercom';
 import { useToggle } from '@/hooks/toggle';
 
 import TestSettings from './TestingSettings';
 import Timeline from './timeline';
 
 function Test(props) {
-  const {
-    open,
-    status,
-    preview,
-    renderTest,
-    leaveTest,
-    setSaveCB,
-    save,
-    skill,
-    rendered,
-    resetTest,
-    enterFlow,
-    diagramEngine,
-    loading,
-    userTest,
-  } = props;
+  const { open, status, preview, renderTest, resetTest, setSaveCB, save, rendered, enterFlow, diagramEngine, loading, userTest } = props;
 
-  const diagramId = skill.diagram;
   const active = status !== TEST_STATUS.IDLE;
   const [conditionsOpen, toggleConditionsOpen] = useToggle(false);
 
   const render = () => {
     if (!rendered) {
       if (preview) {
-        renderTest(diagramId);
+        renderTest();
       } else {
         _.isFunction(setSaveCB) && setSaveCB(renderTest);
         _.isFunction(save) && save();
@@ -53,7 +38,7 @@ function Test(props) {
     if (open)
       return () => {
         toggleConditionsOpen(false);
-        leaveTest();
+        resetTest();
       };
   }, [open]);
 
@@ -65,6 +50,7 @@ function Test(props) {
     <>
       <div id="speech-bar-portal-element"></div>
       {open && <TestSettings open={conditionsOpen} />}
+      {open && <RemoveIntercom />}
       <div id="TestSidebar" className={cn({ open })}>
         {!userTest && (
           <>
@@ -98,8 +84,6 @@ function Test(props) {
 }
 
 const mapStateToProps = (state) => ({
-  skill: state.skills.skill,
-  diagram_id: state.skills.skill.diagram,
   status: state.test.status,
   rendered: state.test.rendered,
   userTest: state.test.userTest,
@@ -109,7 +93,6 @@ const mapDispatchToProps = {
   setError,
   resetTest,
   renderTest,
-  leaveTest,
 };
 
 export default compose(

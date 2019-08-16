@@ -75,3 +75,7 @@ window.addEventListener('beforeunload', () => {
     window.CreatorSocket.disconnect();
   }
 });
+
+window.CreatorSocket.on('force_refresh', () => {
+  window.location.reload(true);
+});

@@ -20,6 +20,7 @@ import { Alert } from 'reactstrap';
 import { compose } from 'recompose';
 import { ThemeProvider } from 'styled-components';
 
+import IntercomChat from '@/components/IntercomChat';
 import ConfirmModal from '@/components/Modals/ConfirmModal';
 import ErrorModal from '@/components/Modals/ErrorModal';
 import Modal from '@/components/Modals/Modal';
@@ -112,6 +113,7 @@ class App extends Component {
             <ToastContainer />
             {allRoutes}
           </ConnectedRouter>
+          <IntercomChat />
         </div>
       </ThemeProvider>
     );

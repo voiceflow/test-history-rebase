@@ -1,22 +1,23 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
+import { IntercomAPI } from 'react-intercom';
 
-const removeIntercom = (WrappedComponent) => {
-  // eslint-disable-next-line react/display-name
-  return class extends Component {
-    componentDidMount() {
-      this.style = document.createElement('STYLE');
-      this.style.appendChild(document.createTextNode('#intercom-container {visibility: hidden;}'));
-      document.head.appendChild(this.style);
-    }
+export function RemoveIntercom(props) {
+  useEffect(() => {
+    IntercomAPI('update', {
+      hide_default_launcher: true,
+    });
+    return () => {
+      IntercomAPI('update', {
+        hide_default_launcher: false,
+      });
+    };
+  });
+  return <>{props.children}</>;
+}
+const removeIntercomWrap = (WrappedComponent) => (props) => (
+  <RemoveIntercom>
+    <WrappedComponent {...props} />
+  </RemoveIntercom>
+);
 
-    componentWillUnmount() {
-      if (this.style) document.head.removeChild(this.style);
-    }
-
-    render() {
-      return <WrappedComponent {...this.props} />;
-    }
-  };
-};
-
-export default removeIntercom;
+export default removeIntercomWrap;

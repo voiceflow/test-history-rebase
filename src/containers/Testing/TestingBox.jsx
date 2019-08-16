@@ -5,7 +5,6 @@ import Textarea from 'react-textarea-autosize';
 import { Collapse } from 'reactstrap';
 
 import Button from '@/components/Button';
-import removeIntercom from '@/hocs/removeIntercom';
 
 import SpeakBox from './SpeakBox';
 import SpeechBar from './SpeechBar';
@@ -274,4 +273,4 @@ class TestBox extends PureComponent {
 //   </Tooltip>
 // }
 
-export default removeIntercom(SpeechRecognition({ autoStart: false })(TestBox));
+export default SpeechRecognition({ autoStart: false })(TestBox);

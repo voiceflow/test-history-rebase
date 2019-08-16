@@ -10,7 +10,7 @@ exports[`Secondary Nav Bar render secondary nav bar 1`] = `
         className="nav-item"
         key="canvas"
       >
-        canvas
+        build
       </div>
       <div
         className="nav-item"

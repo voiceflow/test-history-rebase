@@ -4,6 +4,7 @@ import update from 'immutability-helper';
 import _ from 'lodash';
 
 import { setError } from '@/ducks/modal';
+import { updateCurrentTeam } from '@/ducks/team';
 
 // eslint-disable-next-line import/named
 import { getIntentSlots } from '../Helper';
@@ -378,9 +379,7 @@ export const fetchVersion = (version_id, preview, diagram_id) => {
     // TODO UPDATE THIS ROUTE
     return new Promise(async (resolve, reject) => {
       try {
-        const res = await axios.get(`/skill/${version_id}?${preview ? 'preview=1' : 'simple=1'}&user_modules=1`);
-
-        const skill = res.data;
+        const { data: skill } = await axios.get(`/skill/${version_id}?${preview ? 'preview=1' : 'simple=1'}&user_modules=1`);
         if (preview && !skill.preview) {
           dispatch(fetchVersionFailure('Preview not enabled for this skill'));
           return;
@@ -418,6 +417,7 @@ export const fetchVersion = (version_id, preview, diagram_id) => {
           dispatch(fetchLiveVersion(skill.project_id));
         }
         dispatch(fetchVersionSuccess(skill, user_modules));
+        dispatch(updateCurrentTeam(skill.team_id));
         resolve();
       } catch (err) {
         dispatch(fetchVersionFailure('Unable to load project'));

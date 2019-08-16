@@ -404,6 +404,7 @@ export const fetchState = (input) => async (dispatch, getState) => {
 
   try {
     const { data: newState } = await axios.post('/test/interact', state);
+    dispatch(updateState(newState));
     return newState;
   } catch (err) {
     console.error(err);

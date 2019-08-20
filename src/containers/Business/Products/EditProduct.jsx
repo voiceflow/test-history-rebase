@@ -279,6 +279,7 @@ class EditProduct extends React.Component {
           handleChange={this.handleChange}
           purchaseType={this.state.purchaseType}
           price={this.state.price}
+          trial={this.state.trial}
           distCountries={this.state.distCountries}
           taxCategory={this.state.taxCategory}
           subType={this.state.subType}
@@ -351,6 +352,7 @@ class EditProduct extends React.Component {
             handleChange={this.handleChange}
             purchaseType={this.state.purchaseType}
             price={this.state.price}
+            trial={this.state.trial}
             distCountries={this.state.distCountries}
             taxCategory={this.state.taxCategory}
             subType={this.state.subType}

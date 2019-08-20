@@ -16,7 +16,7 @@ if (!IS_DEVELOPMENT) {
     cookieDomain = 'voiceflow.com';
   }
 } else {
-  cookieDomain = 'localhost';
+  cookieDomain = process.env.API_HOST;
 }
 const cookieOptions = { path: '/', domain: cookieDomain };
 

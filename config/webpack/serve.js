@@ -21,12 +21,15 @@ module.exports = merge(buildConfig, {
   plugins: [
     new WebpackPluginServe({
       port: 3000,
-      host: 'localhost',
-      open: true,
+      host: '0.0.0.0',
+      open: false,
       compress: true,
       historyFallback: true,
       progress: 'minimal',
 
+      client: {
+        address: `${process.env.VF_APP_API_HOST}:3000`
+      },
       // serve generated files, fallback to public
       static: [paths.buildDir, paths.publicDir],
 

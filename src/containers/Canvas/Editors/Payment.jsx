@@ -2,12 +2,11 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Select from 'react-select';
 import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
+import Dropdown from '@/componentsV2/Dropdown';
 
-import { selectStyles } from '../../../components/VariableSelect/VariableSelect';
 import MenuItem from '../Sidebars/components/MenuItem';
 
 const cancel = {
@@ -17,74 +16,12 @@ const cancel = {
   tip: "Refund a purchase or cancel an user's subscription",
 };
 export class Payment extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    node: this.props.node,
+    selectedProduct: null,
+  };
 
-    this.state = {
-      node: this.props.node,
-      selectedProduct: null,
-    };
-
-    this.onUpdate = this.onUpdate.bind(this);
-    this.handleAddMap = this.handleAddMap.bind(this);
-    this.handleRemoveMap = this.handleRemoveMap.bind(this);
-    this.handleSelection = this.handleSelection.bind(this);
-    this.reset = this.reset.bind(this);
-  }
-
-  onUpdate() {
-    this.setState(
-      {
-        node: this.state.node,
-      },
-      this.props.onUpdate
-    );
-  }
-
-  handleAddMap(io) {
-    const node = this.state.node;
-    node.extras[io].push({
-      arg1: null,
-      arg2: null,
-    });
-
-    this.setState(
-      {
-        node,
-      },
-      this.props.onUpdate
-    );
-  }
-
-  handleRemoveMap(io, i) {
-    const node = this.state.node;
-
-    node.extras[io].splice(i, 1);
-
-    this.setState(
-      {
-        node,
-      },
-      this.props.onUpdate
-    );
-  }
-
-  handleSelection(io, i, arg, value) {
-    const node = this.state.node;
-
-    if (node.extras[io][i][arg] !== value) {
-      node.extras[io][i][arg] = value;
-
-      this.setState(
-        {
-          node,
-        },
-        this.props.onUpdate
-      );
-    }
-  }
-
-  reset() {
+  reset = () => {
     const node = this.state.node;
     node.extras.product_id = null;
     this.setState(
@@ -93,14 +30,17 @@ export class Payment extends Component {
       },
       this.props.onUpdate
     );
-  }
+  };
 
   openProductPage = () => {
     this.props.history.push(`/tools/${this.props.skill_id}/products`);
   };
 
   render() {
-    if (!Array.isArray(this.props.products) || this.props.products.length === 0) {
+    const { products } = this.props;
+    const { selectedProduct } = this.state;
+
+    if (!Array.isArray(products) || products.length === 0) {
       return (
         <div className="text-center">
           <img className="mb-3 mt-5" src="/images/OpenSafe.svg" alt="user" width="80" />
@@ -113,7 +53,7 @@ export class Payment extends Component {
       );
     }
 
-    const productOptions = _.cloneDeep(this.props.products);
+    const productOptions = _.cloneDeep(products);
 
     const options = productOptions.map((product) => {
       return {
@@ -172,10 +112,11 @@ export class Payment extends Component {
             See all
           </div>
         </div>
-        <Select
-          classNamePrefix="select-box"
-          styles={selectStyles}
-          onChange={(selected) => {
+        <Dropdown
+          options={options}
+          placeholder="Select product"
+          value={selectedProduct && selectedProduct.name}
+          onSelect={(selected) => {
             if (selected.openProductPage) {
               return selected.openProductPage();
             }
@@ -186,7 +127,6 @@ export class Payment extends Component {
               selectedProduct: selected,
             });
           }}
-          options={options}
         />
         <div>
           <div className="d__or_box">

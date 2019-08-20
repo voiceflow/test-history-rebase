@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import Page404 from '@/components/404';
+import Page404 from '@/components/ErrorPages/404';
 import Legal from '@/components/Legal';
 import Reference from '@/components/Reference';
 // import ModuleAdminPage from '@/containers/ModuleAdminPage';

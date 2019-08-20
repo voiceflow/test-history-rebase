@@ -49,7 +49,6 @@ export const FlexAround = styled.div`
 `;
 
 export const flexLabelStyles = css`
-  overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;

@@ -78,3 +78,5 @@ export { default as permissions } from './permissions.svg';
 export { default as zoomIn } from './zoom-in.svg';
 export { default as emptyState } from './empty-state.svg';
 export { default as zoomOut } from './zoom-out.svg';
+export { default as error404 } from './404.svg';
+export { default as error500 } from './500.svg';

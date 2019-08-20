@@ -3,6 +3,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import SvgIcon from '@/components/SvgIcon';
+
+import { ErrorBoundaryWrapper, Page404Wrapper } from './styled';
+
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -26,15 +30,21 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError || this.props.show) {
       return (
-        <div className="h-100 w-100 super-center">
-          <div className="text-center">
-            <h1>Whoops, something went wrong, please return to home</h1>
+        <ErrorBoundaryWrapper>
+          <Page404Wrapper>
+            <div>
+              <SvgIcon icon="error500" height={128} width={128} />
+            </div>
+
+            <h4>Alexa, what happened?</h4>
+
+            <p>Something went wrong. Try reloading the page</p>
+
             <Link to="/" className="btn btn-primary mt-3">
-              <i className="far fa-long-arrow-left mr-2" />
-              Home
+              Go to Dashboard
             </Link>
-          </div>
-        </div>
+          </Page404Wrapper>
+        </ErrorBoundaryWrapper>
       );
     }
     return this.props.children;

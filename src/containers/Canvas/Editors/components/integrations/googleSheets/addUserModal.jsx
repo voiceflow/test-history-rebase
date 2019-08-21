@@ -32,6 +32,26 @@ class GoogleAddUserModal extends Component {
     }
   };
 
+  onGoogleFailure = async (error) => {
+    const { onError } = this.props;
+
+    let message;
+
+    if (error.error === 'idpiframe_initialization_failed') {
+      message = 'Seems like you may not have third-party cookies enabled.';
+    } else if (error.error === 'popup_closed_by_user') {
+      message = 'Pop-up closed before authentication was completed';
+    } else if (error.error === 'access_denied') {
+      message = 'User denied permissions';
+    } else if (error.error === 'immediate_failed') {
+      message = 'No user could be automatically selected';
+    } else {
+      message = 'Unknown error during authentication';
+    }
+
+    onError(message);
+  };
+
   render() {
     return (
       <div className="d-flex flex-column">
@@ -47,6 +67,7 @@ class GoogleAddUserModal extends Component {
             className="social-button class-ggl mb-4"
             buttonText="Login with Google"
             onSuccess={this.googleLogin}
+            onFailure={this.onGoogleFailure}
             responseType="code"
             accessType="offline"
             scope="profile email https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets"

@@ -12,12 +12,12 @@ import integrationUsers from '@/ducks/integration';
 import modal from '@/ducks/modal';
 import products from '@/ducks/product';
 import project from '@/ducks/project';
+import publish from '@/ducks/publish';
 import team from '@/ducks/team';
 import test from '@/ducks/test';
 import userSetting from '@/ducks/user';
 import variables from '@/ducks/variable';
 import skills from '@/ducks/version';
-import publish from '@/ducks/publish';
 
 export default (history) =>
   combineReducers({

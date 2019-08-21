@@ -8,6 +8,7 @@ export const SET_CREATOR = 'SET_CREATOR';
 export const FIND_CREATOR_FAILED = 'FIND_CREATOR_FAILED';
 export const SET_CHARGES = 'SET_CHARGES';
 export const SET_VENDORS = 'SET_VENDORS';
+export const TOGGLE_DARK_MODE = 'TOGGLE_DARK_MODE';
 
 const initialState = {
   // The current creator being searched
@@ -19,6 +20,7 @@ const initialState = {
     errorMessage: '',
     errorReturned: null,
   },
+  dark: false,
 };
 
 export default function adminReducer(state = initialState, action) {
@@ -44,10 +46,21 @@ export default function adminReducer(state = initialState, action) {
         ...state,
         vendors: action.payload,
       };
+    case TOGGLE_DARK_MODE:
+      return {
+        ...state,
+        dark: !state.dark,
+      };
     default:
       return state;
   }
 }
+
+export const toggleDark = () => {
+  return {
+    type: TOGGLE_DARK_MODE,
+  };
+};
 
 // Find the creator based on their id or email
 export const findCreator = (creatorInfo) => async (dispatch) => {

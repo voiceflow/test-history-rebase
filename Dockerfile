@@ -15,7 +15,7 @@ RUN echo $NPM_TOKEN > .npmrc && \
   yarn install && \
   yarn build
 
-FROM nginx:stable 
+FROM nginx:stable
 
 COPY --from=build /app/build /var/www
 COPY ./config/nginx.conf /etc/nginx/conf.d/default.conf

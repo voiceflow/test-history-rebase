@@ -34,46 +34,50 @@ module.exports = {
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new WebpackBar({ name: `Voiceflow Creator - ${action || 'build'}` }),
-    new UnusedFilesWebpackPlugin({
-      failOnUnused: IS_PRODUCTION,
-      globOptions: {
-        cwd: paths.sourceDir,
-        ignore: [
-          'assets/**/*',
-          '**/__tests__/**/*',
-          '**/__mock__/**/*',
-          '**/__mocks__/**/*',
-          'components/SRD/sass/**/*',
-          'setupTests.js',
-          // TODO: To be removed once SvgIcon component is being used in the app
-          'components/SvgIcon/*',
-          // TODO: To be removed once V2 components are being used
-          'componentsV2/**/*',
-          // TODO: To be removed once canvas component is being used
-          'components/Canvas/**/*',
-          'components/CanvasControls/**/*',
-          'hocs/index.js',
-          'hocs/styled.js',
-          'hocs/withContext.jsx',
-          'svgs/**/*',
-        ],
-      },
-    }),
-    ...(IS_SERVING ? [] : [
-      new CircularDependencyPlugin({
-        exclude: /node_modules/,
-        allowAsyncCycles: true,
-        cwd: process.cwd(),
-        failOnError: true,
-        
-        onDetected({ paths, compilation }) {
-          // ignore self-referencing modules
-          if (paths.length > 2) {
-            compilation.warnings.push(new Error(`Circular dependency detected:\n${paths.join(' -> ')}`));
-          }
-        },
-      }),
-    ]),
+
+    ...(IS_SERVING
+      ? []
+      : [
+          new CircularDependencyPlugin({
+            exclude: /node_modules/,
+            allowAsyncCycles: true,
+            cwd: process.cwd(),
+            failOnError: true,
+
+            onDetected({ paths, compilation }) {
+              // ignore self-referencing modules
+              if (paths.length > 2) {
+                compilation.warnings.push(new Error(`Circular dependency detected:\n${paths.join(' -> ')}`));
+              }
+            },
+          }),
+          new UnusedFilesWebpackPlugin({
+            failOnUnused: IS_PRODUCTION,
+            globOptions: {
+              cwd: paths.sourceDir,
+              ignore: [
+                'assets/**/*',
+                '**/__tests__/**/*',
+                '**/__mock__/**/*',
+                '**/__mocks__/**/*',
+                'components/SRD/sass/**/*',
+                'setupTests.js',
+                // TODO: To be removed once SvgIcon component is being used in the app
+                'components/SvgIcon/*',
+                // TODO: To be removed once V2 components are being used
+                'componentsV2/**/*',
+                'svgs/**/*',
+                'admin/**/*',
+                // TODO: To be removed once canvas component is being used
+                'components/Canvas/**/*',
+                'components/CanvasControls/**/*',
+                'hocs/index.js',
+                'hocs/styled.js',
+                'hocs/withContext.jsx',
+              ],
+            },
+          }),
+        ]),
   ],
 
   mode: IS_PRODUCTION ? 'production' : 'development',

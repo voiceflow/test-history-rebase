@@ -43,6 +43,7 @@ typings/
 .npm
 # production
 /build
+/adminbuild
 # storybook
 /storybook_build
 

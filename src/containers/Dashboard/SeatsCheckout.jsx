@@ -1,9 +1,11 @@
 import axios from 'axios';
+import countryRegionData from 'country-region-data';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Select from 'react-select';
 import { CardElement } from 'react-stripe-elements';
-import { Collapse, Input } from 'reactstrap';
+import { Alert, Collapse, Input } from 'reactstrap';
 
 import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
@@ -30,11 +32,6 @@ class SeatsCheckout extends Component {
     const plan = PLANS_ID[propsPlan] ? PLANS_ID[propsPlan] : undefined;
     let stage = plan ? 'CHECKOUT' : 'PLAN';
 
-    this.calculatePrice = this.calculatePrice.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.checkout = this.checkout.bind(this);
-    this.checkSource = this.checkSource.bind(this);
-
     if (team && team.status > 0 && team.stripe_id) {
       stage = 'CHECK';
       this.checkSource(team);
@@ -46,10 +43,28 @@ class SeatsCheckout extends Component {
       loading: true,
       plan,
       stage,
+      country: null,
+      region: null,
+      postalCode: null,
+      invalid: false,
+      invalidMessage: null,
+      countryOptions: countryRegionData.map((countryObject) => {
+        return {
+          value: countryObject.countryShortCode,
+          label: countryObject.countryName,
+          regions: countryObject.regions.map((region) => {
+            return {
+              value: region.name,
+              label: region.name,
+            };
+          }),
+        };
+      }),
+      regionsOptions: [],
     };
   }
 
-  async checkSource(team) {
+  checkSource = async (team) => {
     const { setError } = this.props;
     try {
       const source = (await axios.get(`/team/${team.team_id}/source`)).data;
@@ -66,15 +81,29 @@ class SeatsCheckout extends Component {
         stage: 'CHECKOUT',
       });
     }
-  }
+  };
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
-  }
+  };
 
-  calculatePrice() {
+  updateRegion = (val) => {
+    this.setState({
+      region: val,
+    });
+  };
+
+  updateCountry = (val) => {
+    this.setState({
+      country: val,
+      regionsOptions: val.regions,
+      region: null,
+    });
+  };
+
+  calculatePrice = () => {
     const { plan } = this.state;
     const { invites, members: planMembers } = this.props;
     const base = plan ? plan.rate : null;
@@ -88,15 +117,39 @@ class SeatsCheckout extends Component {
       price += members * base;
     }
     return { members, price };
-  }
+  };
 
-  async checkout() {
-    const { source, plan, coupon } = this.state;
+  resetInvalidity = () => {
+    this.setState({
+      invalid: false,
+      invalidMessage: null,
+    });
+  };
+
+  isInvalid = () => {
+    if ((!this.state.country || !this.state.region || !this.state.postalCode) && !this.state.source) {
+      return true;
+    }
+    return false;
+  };
+
+  checkout = async () => {
+    const { source, plan, coupon, country } = this.state;
     const { updateMembers, members, next, stripe, team_name, user, checkChargeable, invites, createTeam, team: propsTeam, setError } = this.props;
+    this.resetInvalidity();
+
+    if (this.isInvalid()) {
+      this.setState({
+        invalid: true,
+        invalidMessage: 'Please fill all required fields (*).',
+      });
+      return;
+    }
+
     // A source already exists
     if (source) {
       this.setState({ stage: 'CREATE' });
-      await updateMembers(members, { plan: plan.id });
+      await updateMembers(members, { plan: plan.id, country });
       next();
       return;
     }
@@ -115,6 +168,12 @@ class SeatsCheckout extends Component {
         },
       });
 
+      const locationData = {
+        countryCode: this.state.country.value,
+        region: this.state.region.value,
+        postalCode: this.state.postalCode,
+      };
+
       if (!source) throw new Error('Invalid Card Information');
 
       await checkChargeable(source);
@@ -128,13 +187,14 @@ class SeatsCheckout extends Component {
           image: propsTeam.image,
           plan: plan.id,
           coupon,
+          locationData,
         });
 
         return next(team);
       }
       if (Array.isArray(members)) {
         // use the checkout to update existing members
-        await updateMembers(members, { source, plan: plan.id, coupon });
+        await updateMembers(members, { source, plan: plan.id, coupon, locationData });
         return next();
       }
       throw new Error('Invalid Member Format');
@@ -142,7 +202,7 @@ class SeatsCheckout extends Component {
       if (err) setError(err);
       this.setState({ stage: 'CHECKOUT' });
     }
-  }
+  };
 
   downgrade = () => {
     const { removeTrial, team, downgradeComplete } = this.props;
@@ -194,15 +254,39 @@ class SeatsCheckout extends Component {
               <div className="d-flex">
                 <div className="upgrade-plan-price-sum__symbol">$</div>
                 <div className="upgrade-plan-price-sum__cost">{price}</div>
-                <div className="upgrade-plan-price-sum__period">/ mo</div>
+                <div className="upgrade-plan-price-sum__period">/ mo + tax</div>
               </div>
             </div>
           </div>
           {!status && (
             <>
               <Collapse isOpen={coupon_toggle}>
-                <Input name="coupon" value={coupon} onChange={this.handleChange} placeholder="Coupon Code" />
+                <Input name="coupon" value={coupon} onChange={this.handleChange} placeholder="Coupon Code" style={{ marginBottom: '5px' }} />
               </Collapse>
+              {!source && (
+                <>
+                  <label>Address *</label>
+                  <Select
+                    classNamePrefix="select-box"
+                    className="mb-3"
+                    placeholder="Select your Country"
+                    name="country"
+                    onChange={this.updateCountry}
+                    value={this.state.country}
+                    options={this.state.countryOptions}
+                  ></Select>
+                  <Select
+                    classNamePrefix="select-box"
+                    className="mb-3"
+                    placeholder="Select your Region"
+                    name="region"
+                    onChange={this.updateRegion}
+                    value={this.state.region}
+                    options={this.state.regionsOptions}
+                  ></Select>
+                  <Input name="postalCode" onChange={this.handleChange} className="mb-3" placeholder="Zip/Postal Code" />
+                </>
+              )}
               {source ? (
                 <>
                   <div className="space-between">
@@ -221,7 +305,7 @@ class SeatsCheckout extends Component {
               ) : (
                 <>
                   <div className="space-between">
-                    <label>Payment Details</label>
+                    <label>Payment Details *</label>
                     <small className="btn-link" onClick={() => this.setState({ coupon_toggle: !coupon_toggle })}>
                       {coupon_toggle ? 'Cancel Coupon' : 'I Have Coupon'}
                     </small>
@@ -233,11 +317,16 @@ class SeatsCheckout extends Component {
               )}
             </>
           )}
+          {this.state.invalid === true && (
+            <Alert color="danger" style={{ marginTop: '5px', marginBottom: '0px' }}>
+              {this.state.invalidMessage}
+            </Alert>
+          )}
           <div className="super-center">
             <Button
               isBtn
               isPrimary
-              className="mt-4 mb-4"
+              className="mt-2 mb-2"
               onClick={(e) => {
                 e.preventDefault();
                 this.checkout();

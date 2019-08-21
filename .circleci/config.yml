@@ -137,6 +137,56 @@ jobs:
             fi
             BUILD_NUM=$(cat /tmp/vf-build/vars/build_num)
             kubectl set image --namespace voiceflow-v1 deployment/creator-app-$CIRCLE_BRANCH app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$BUILD_NUM
+  build-deploy-storybook: 
+    executor: image_builder
+    steps:
+      - checkout # special step to check out source code to working directory
+      - setup_remote_docker
+      - run:
+          name: 'Build storybook docker image'
+          command: |
+            $(aws ecr get-login --no-include-email --region us-east-1)
+            docker build \
+              -f storybook.dockerfile \
+              --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} \
+              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM .
+      - run:
+          name: 'Push storybook docker images'
+          command: |
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-$CIRCLE_BRANCH
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-$CIRCLE_BRANCH
+  build-deploy-admin: 
+    executor: image_builder
+    steps:
+      - checkout # special step to check out source code to working directory
+      - setup_remote_docker
+      - run:
+          name: 'Build and deploy admin panel docker image'
+          command: |
+            DEPLOY_SUFFIX=development
+            if [ "$CIRCLE_BRANCH" == "admin" ]; then
+              aws eks --region us-east-1 update-kubeconfig --name development
+              VF_APP_API_HOST=api.master.voiceflow.com
+              VF_APP_BUILD_ENV=staging
+            fi
+            if [ "$CIRCLE_BRANCH" == "admin-prod" ]; then
+              aws eks --region us-east-1 update-kubeconfig --name production
+              DEPLOY_SUFFIX=production
+              VF_APP_API_HOST=api.voiceflow.com
+              VF_APP_BUILD_ENV=production
+            fi
+            $(aws ecr get-login --no-include-email --region us-east-1)
+            docker build \
+              -f admin.dockerfile \
+              --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} \
+              --build-arg VF_APP_BUILD_ENV=$VF_APP_BUILD_ENV \
+              --build-arg VF_APP_API_HOST=$VF_APP_API_HOST \
+              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:k8s-$DEPLOY_SUFFIX-$CIRCLE_BUILD_NUM .
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:k8s-$DEPLOY_SUFFIX-$CIRCLE_BUILD_NUM
+            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:k8s-$DEPLOY_SUFFIX-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:latest-$DEPLOY_SUFFIX
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:latest-$DEPLOY_SUFFIX
+            kubectl set image --namespace voiceflow-v1 deployment/admin-ui-$DEPLOY_SUFFIX app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:k8s-$DEPLOY_SUFFIX-$CIRCLE_BUILD_NUM
 workflows:
   version: 2
   build-deploy:
@@ -159,6 +209,21 @@ workflows:
                 - master
                 - staging
                 - production
+      - build-deploy-storybook:
+          requires:
+            - deploy-image
+          filters:
+            branches:
+              only:
+                - master
+      - build-deploy-admin:
+          requires: 
+            - test
+          filters:
+            branches:
+              only:
+                - admin
+                - admin-prod
       - release:
           requires:
             - test

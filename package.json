@@ -20,6 +20,7 @@
     "clipboard": "^2.0.1",
     "closest": "0.0.1",
     "connected-react-router": "^6.3.2",
+    "country-region-data": "^1.4.6",
     "draft-js": "^0.10.5",
     "draft-js-mention-plugin": "github:DecathectZero/draft-js-mention",
     "draft-js-plugins-editor": "^2.1.1",
@@ -199,6 +200,7 @@
   },
   "scripts": {
     "build": "patch-package && wp --prod",
+    "build:admin": "wp --action=admin --prod",
     "build:dev": "patch-package && wp",
     "commit": "scripts/change_remote.sh && git-cz",
     "demo": "scripts/apply_demo_env.sh && wp --action=serve",
@@ -209,6 +211,7 @@
     "lint:js": "eslint \"src/**/*.{js,jsx}\"",
     "lint:quiet": "npm run lint:js -- --quiet && npm run lint:css -- --quiet",
     "postinstall": "patch-package",
+    "start:admin": "wp --action=admin-serve",
     "start": "scripts/apply_local_env.sh && wp --action=serve",
     "storybook": "start-storybook --https --ssl-cert=certs/localhost.crt --ssl-key=certs/localhost.key",
     "storybook:build": "build-storybook --output-dir storybook_build --quiet",

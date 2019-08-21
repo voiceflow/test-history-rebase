@@ -1,5 +1,3 @@
-import './Skill.css';
-
 import { constants } from '@voiceflow/common';
 import axios from 'axios';
 import _ from 'lodash';
@@ -20,7 +18,7 @@ import { dialogflowToken, googleAccessToken, verifyGoogleToken } from '@/ducks/a
 import { setConfirm, setError } from '@/ducks/modal';
 import { updateEntireVersion } from '@/ducks/version';
 
-import GuidedSteps from '../../components/GuidedSteps';
+import GuidedSteps from '../../../components/GuidedSteps';
 
 const { GOOGLE_LOCALES } = constants.locales;
 

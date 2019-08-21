@@ -713,7 +713,7 @@ hr.full-width {
 .alert-success {
   color: #5d9df5;
   background-color: #5d9df515;
-  border: 1px solid #5d9df540;
+  border-color: transparent;
 }
 
 .alert-success hr {

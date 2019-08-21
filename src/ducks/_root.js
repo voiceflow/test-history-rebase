@@ -17,6 +17,7 @@ import test from '@/ducks/test';
 import userSetting from '@/ducks/user';
 import variables from '@/ducks/variable';
 import skills from '@/ducks/version';
+import publish from '@/ducks/publish';
 
 export default (history) =>
   combineReducers({
@@ -37,4 +38,5 @@ export default (history) =>
     admin,
     test,
     alerts,
+    publish,
   });

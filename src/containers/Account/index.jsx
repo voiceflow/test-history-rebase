@@ -1,6 +1,5 @@
 import './Account.css';
 
-import axios from 'axios';
 import moment from 'moment';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -8,33 +7,27 @@ import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
 import Header from '@/components/Header';
-import { Spinner } from '@/components/Spinner';
 import Image from '@/components/Uploads/Image';
-import { AmazonAccessToken, googleAccessToken, updateAccount } from '@/ducks/account';
+import { checkAmazonAccount, checkGoogleAccount, deleteAmazonAccount, deleteGoogleAccount, updateAccount } from '@/ducks/account';
 import { setConfirm, setError } from '@/ducks/modal';
 
-const UNLINKED = 0;
-const LOADING = 1;
-const LINKED = 2;
-
 class Account extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    amazonStatus: false,
+    googleStatus: false,
+  };
 
-    this.state = {
-      amzn: LOADING,
-      google: LOADING,
-    };
+  componentDidMount = () => {
+    const { checkAmazonAccount, checkGoogleAccount } = this.props;
+    // eslint-disable-next-line promise/catch-or-return
+    checkAmazonAccount().then(() => this.setState({ amazonStatus: true }));
+    // eslint-disable-next-line promise/catch-or-return
+    checkGoogleAccount().then(() => this.setState({ googleStatus: true }));
+  };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.uploadProfile = this.uploadProfile.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.resetAmazon = this.resetAmazon.bind(this);
-    this.resetGoogle = this.resetGoogle.bind(this);
-  }
-
-  resetAmazon() {
-    this.props.setConfirm({
+  resetAmazon = () => {
+    const { setConfirm, deleteAmazonAccount } = this.props;
+    setConfirm({
       text: (
         <Alert color="danger" className="mb-0">
           <i className="fas fa-exclamation-triangle fa-2x" />
@@ -44,24 +37,17 @@ class Account extends Component {
         </Alert>
       ),
       warning: true,
-      confirm: () => {
-        this.setState({ amzn: LOADING }, () => {
-          axios
-            .delete('/session/amazon')
-            .then(() => {
-              this.setState({ amzn: UNLINKED, profile: null });
-            })
-            .catch(() => {
-              this.setState({ amzn: LINKED });
-              alert('Failed to Delete Amazon Account Association =');
-            });
-        });
+      confirm: async () => {
+        this.setState({ amazonStatus: false });
+        await deleteAmazonAccount();
+        this.setState({ amazonStatus: true });
       },
     });
-  }
+  };
 
-  resetGoogle() {
-    this.props.setConfirm({
+  resetGoogle = () => {
+    const { setConfirm, deleteGoogleAccount } = this.props;
+    setConfirm({
       text: (
         <Alert color="danger" className="mb-0">
           <i className="fas fa-exclamation-triangle fa-2x" />
@@ -70,54 +56,13 @@ class Account extends Component {
         </Alert>
       ),
       warning: true,
-      confirm: () => {
-        this.setState({ google: LOADING }, () => {
-          axios
-            .delete('/session/google/access_token')
-            .then(() => {
-              this.setState({ google: UNLINKED, gprofile: null });
-            })
-            .catch(() => {
-              this.setState({ google: LINKED });
-              alert('Failed to unlink Google Account');
-            });
-        });
+      confirm: async () => {
+        this.setState({ googleStatus: false });
+        await deleteGoogleAccount();
+        this.setState({ googleStatus: true });
       },
     });
-  }
-
-  componentDidMount() {
-    AmazonAccessToken()
-      .then((data) => {
-        if (data) {
-          this.setState({
-            amzn: data.token ? LINKED : UNLINKED,
-            token: data.token,
-            profile: data.profile,
-          });
-        } else {
-          throw new Error();
-        }
-      })
-      .catch(() => {
-        this.setState({
-          amzn: UNLINKED,
-        });
-      });
-
-    googleAccessToken()
-      .then((g_token) => {
-        this.setState({
-          google: g_token.token ? LINKED : UNLINKED,
-          gprofile: g_token.profile,
-        });
-      })
-      .catch(() => {
-        this.setState({
-          google: UNLINKED,
-        });
-      });
-  }
+  };
 
   handleChange = (event) => {
     this.setState({
@@ -125,19 +70,59 @@ class Account extends Component {
     });
   };
 
-  toggle() {
-    if (this.props.upgrade) {
-      this.props.history.push('/account');
-    } else {
-      this.props.history.push('/account/upgrade');
-    }
-  }
-
-  uploadProfile(url) {
+  uploadProfile = (url) => {
     this.props.updateAccount({ image: url });
-  }
+  };
+
+  amazonButton = () => {
+    if (!this.state.amazonStatus) {
+      return (
+        <Button isPrimary disabled>
+          loading...
+        </Button>
+      );
+    }
+    if (!this.props.user.amazon) {
+      return (
+        <Button isPrimary disabled>
+          Unlinked
+        </Button>
+      );
+    }
+    return (
+      <Button isPrimary onClick={this.resetAmazon}>
+        Reset
+      </Button>
+    );
+  };
+
+  googleButton = () => {
+    if (!this.state.googleStatus) {
+      return (
+        <Button isPrimary disabled>
+          loading...
+        </Button>
+      );
+    }
+    if (!this.props.user.google) {
+      return (
+        <Button isPrimary disabled>
+          Unlinked
+        </Button>
+      );
+    }
+    return (
+      <Button isPrimary onClick={this.resetGoogle}>
+        Reset
+      </Button>
+    );
+  };
 
   render() {
+    const {
+      user,
+      user: { amazon, google },
+    } = this.props;
     return (
       <>
         <Header withLogo history={this.props.history} />
@@ -145,13 +130,7 @@ class Account extends Component {
           <div className="container my-5 pt-4">
             <h5 className="ml-3">Profile</h5>
             <div className="mb-5 card d-flex flex-row p-4">
-              <Image
-                className="icon-image large-icon mr-4"
-                path="/user/profile/picture"
-                image={this.props.user.image}
-                update={this.uploadProfile}
-                replace
-              />
+              <Image className="icon-image large-icon mr-4" path="/user/profile/picture" image={user.image} update={this.uploadProfile} replace />
               <div className="helper-text super-center border-left pl-4">
                 <div className="col-0">
                   Name:
@@ -162,22 +141,22 @@ class Account extends Component {
                   <br />
                 </div>
                 <div className="col-sm">
-                  {this.props.user.name}
+                  {user.name}
                   <br />
-                  {this.props.user.email}
+                  {user.email}
                   <br />
-                  {moment(this.props.user.created).format('MMMM Do, YYYY')}
+                  {moment(user.created).format('MMMM Do, YYYY')}
                   <br />
                 </div>
               </div>
             </div>
             <h5 className="ml-3">Developer Integration</h5>
             <div className="card mb-5">
-              <div className={this.state.profile ? 'pl-4 pr-4 pt-4 space-between' : 'p-4 space-between'}>
+              <div className={amazon ? 'pl-4 pr-4 pt-4 space-between' : 'p-4 space-between'}>
                 <h4 className="mb-0 text-muted">Amazon</h4>
-                <div className="super-center">{renderButton(this.state.amzn, this.resetAmazon)}</div>
+                <div className="super-center">{this.amazonButton()}</div>
               </div>
-              {this.state.profile && (
+              {amazon && (
                 <>
                   <hr />
                   <div className="pl-4 pb-4 pr-4 space-between helper-text">
@@ -190,11 +169,11 @@ class Account extends Component {
                       <br />
                     </div>
                     <div className="col-sm">
-                      {this.state.profile.name}
+                      {amazon.profile.name}
                       <br />
-                      {this.state.profile.email}
+                      {amazon.profile.email}
                       <br />
-                      {this.state.profile.user_id}
+                      {amazon.profile.user_id}
                       <br />
                     </div>
                   </div>
@@ -204,9 +183,9 @@ class Account extends Component {
             <div className="card mb-5">
               <div className="p-4 space-between">
                 <h4 className="mb-0 text-muted">Google</h4>
-                <div className="super-center">{renderButton(this.state.google, this.resetGoogle)}</div>
+                <div className="super-center">{this.googleButton()}</div>
               </div>
-              {this.state.gprofile && (
+              {google && (
                 <>
                   <hr />
                   <div className="pl-4 pb-4 pr-4 space-between helper-text">
@@ -219,11 +198,11 @@ class Account extends Component {
                       <br />
                     </div>
                     <div className="col-sm">
-                      {this.state.gprofile.name}
+                      {google.name}
                       <br />
-                      {this.state.gprofile.email}
+                      {google.email}
                       <br />
-                      {this.state.gprofile.id}
+                      {google.id}
                       <br />
                     </div>
                   </div>
@@ -241,38 +220,17 @@ const mapStateToProps = (state) => ({
   user: state.account,
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
-    setError: (error) => dispatch(setError(error)),
-    updateAccount: (payload) => dispatch(updateAccount(payload)),
-  };
+const mapDispatchToProps = {
+  checkAmazonAccount,
+  checkGoogleAccount,
+  deleteAmazonAccount,
+  deleteGoogleAccount,
+  setConfirm,
+  setError,
+  updateAccount,
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Account);
-
-function renderButton(stage, action) {
-  switch (stage) {
-    case LOADING:
-      return (
-        <Button isPrimary disabled>
-          <Spinner isEmpty />
-        </Button>
-      );
-    case UNLINKED:
-      return (
-        <Button isPrimary disabled>
-          Unlinked
-        </Button>
-      );
-    default:
-      return (
-        <Button isPrimary onClick={action}>
-          Reset
-        </Button>
-      );
-  }
-}

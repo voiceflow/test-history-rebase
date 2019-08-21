@@ -15,7 +15,7 @@ import { AmazonAccessToken, getVendors } from '@/ducks/account';
 import { setError, showSettingsModal } from '@/ducks/modal';
 import { updateSkillDB, updateVersion } from '@/ducks/version';
 
-import Settings from '../../../../Skill/Settings';
+import Settings from '../../../../Publish/Settings';
 import UploadButton from '../../UploadButton/UploadButton';
 import { ENDING_STAGES, LOADING_STAGES, STAGE_PERCENTAGES } from '../Constants';
 import { Confetti, DisplayUploadPrompt, SettingsModal } from '../popups';

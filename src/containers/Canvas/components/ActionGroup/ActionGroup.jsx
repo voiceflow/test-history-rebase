@@ -1,11 +1,13 @@
+import './ActionGroup.css';
+
 import React from 'react';
 import { connect } from 'react-redux';
 
-import AlexaActionGroup from './Alexa';
-import GoogleActionGroup from './Google';
+import Alexa from './AlexaV2';
+// import GoogleActionGroup from './Google';
 
-function ActionGroup({ platform, ...props }) {
-  return platform === 'google' ? <GoogleActionGroup {...props} platform={platform} /> : <AlexaActionGroup {...props} platform={platform} />;
+function ActionGroup({ platform }) {
+  return <Alexa />;
 }
 
 const mapStateToProps = (state) => ({

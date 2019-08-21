@@ -5,7 +5,7 @@ import { Tooltip } from 'react-tippy';
 import Button from '@/components/Button';
 import SvgIcon from '@/components/SvgIcon';
 
-import VendorSelectList from '../VendorSelectList/VendorSelectList';
+import VendorSelectList from '../ActionGroup/AlexaV2/VendorSelectList';
 import UploadButtonWrapper from './UploadButtonWrapper';
 
 class UploadButton extends Component {

@@ -8,6 +8,7 @@ import { Alert, Button, ButtonGroup } from 'reactstrap';
 
 import { TIMEZONES } from '@/assets/timezones';
 
+import { RecurrenceToggle } from './ReminderStyle';
 import VariableInput from './components/VariableInput';
 import VariableText from './components/VariableText';
 
@@ -16,6 +17,15 @@ const USER_TIMEZONE = 'User Timezone';
 
 const timezones = [{ label: USER_TIMEZONE, value: USER_TIMEZONE }, ...TIMEZONES.map((zone) => ({ label: zone.value, value: zone.value }))];
 
+const weekArray = [
+  { text: 'S', val: 'SU' },
+  { text: 'M', val: 'MO' },
+  { text: 'T', val: 'TU' },
+  { text: 'W', val: 'WE' },
+  { text: 'T', val: 'TH' },
+  { text: 'F', val: 'FR' },
+  { text: 'S', val: 'SA' },
+];
 class ReminderBlock extends Component {
   constructor(props) {
     super(props);
@@ -24,10 +34,13 @@ class ReminderBlock extends Component {
       time: { h: null, m: null, s: null },
       date: '',
       timezone: USER_TIMEZONE,
-      freq: null,
-      byDay: [],
+      recurrence: {
+        freq: 'WEEKLY',
+        byDay: null,
+      },
       text: '',
       pushNotification: true,
+      recurrenceBool: false,
     };
 
     this.state = { ...default_state, ...props.node.extras.reminder };
@@ -45,16 +58,33 @@ class ReminderBlock extends Component {
     if (!this.state.timezone) this.state.timezone = USER_TIMEZONE;
     const d = new Date(this.state.date);
     if (!isNaN(d)) this.state.date = d;
-
-    this.updateContent = this.updateContent.bind(this);
   }
 
   componentDidUpdate() {
     const node = this.props.node;
+
     node.extras.reminder = this.state;
   }
 
-  updateContent(name, content, sub) {
+  updateRecurrenceType = (val) => {
+    this.setState({
+      recurrence: {
+        freq: val,
+        byDay: this.state.recurrence.byDay,
+      },
+    });
+  };
+
+  setRecurrenceDay = (val) => {
+    this.setState({
+      recurrence: {
+        freq: this.state.recurrence.freq,
+        byDay: val,
+      },
+    });
+  };
+
+  updateContent = (name, content, sub) => {
     if (sub) {
       const obj = this.state[name];
       obj[sub] = content;
@@ -66,12 +96,15 @@ class ReminderBlock extends Component {
         [name]: content,
       });
     }
-  }
+  };
 
   render() {
     const type = this.state.reminder_type;
+    const recurrenceType = this.state.recurrence.freq;
+    const recurrenceDay = this.state.recurrence.byDay;
+
     return (
-      <div>
+      <>
         <label className="mt-0">Reminder Type</label>
         <ButtonGroup className="toggle-group mb-2">
           <Button
@@ -123,45 +156,95 @@ class ReminderBlock extends Component {
           </div>
         </div>
         {type === 'SCHEDULED_ABSOLUTE' && (
-          <div className="grid-col-2-skew grid-col-2 text-muted mb-2">
-            <div>Date</div>
-            <div>Timezone</div>
-            <div className="pr-1">
-              <DayPickerInput
-                formatDate={formatDate}
-                format={FORMAT}
-                parseDate={parseDate}
-                placeholder="DD/MM/YYYY"
-                dayPickerProps={{
-                  disabledDays: {
-                    before: new Date(),
-                  },
-                }}
-                // value={this.state.date}
-                inputProps={{ className: 'form-control' }}
-                value={this.state.date}
-                onDayChange={(a, b, c) => {
-                  // eslint-disable-next-line no-console
-                  console.log(b);
-                  if (a) {
-                    this.updateContent('date', a);
-                  } else {
-                    setTimeout(() => {
-                      this.updateContent('date', c.state.value);
-                    }, 0);
-                  }
-                }}
-              />
+          <span>
+            <div className="grid-col-2-skew grid-col-2 text-muted mb-2">
+              <div>Date</div>
+              <div>Timezone</div>
+              <div className="pr-1">
+                <DayPickerInput
+                  formatDate={formatDate}
+                  format={FORMAT}
+                  parseDate={parseDate}
+                  placeholder="DD/MM/YYYY"
+                  dayPickerProps={{
+                    disabledDays: {
+                      before: new Date(),
+                    },
+                  }}
+                  // value={this.state.date}
+                  inputProps={{ className: 'form-control' }}
+                  value={this.state.date}
+                  onDayChange={(a, b, c) => {
+                    // eslint-disable-next-line no-console
+                    console.log(b);
+                    if (a) {
+                      this.updateContent('date', a);
+                    } else {
+                      setTimeout(() => {
+                        this.updateContent('date', c.state.value);
+                      }, 0);
+                    }
+                  }}
+                />
+              </div>
+              <div>
+                <Select
+                  classNamePrefix="select-box"
+                  value={{ value: this.state.timezone, label: this.state.timezone }}
+                  onChange={(t) => this.setState({ timezone: t.value })}
+                  options={timezones}
+                />
+              </div>
             </div>
+
             <div>
-              <Select
-                classNamePrefix="select-box"
-                value={{ value: this.state.timezone, label: this.state.timezone }}
-                onChange={(t) => this.setState({ timezone: t.value })}
-                options={timezones}
+              <label>Recurrence</label>
+
+              <RecurrenceToggle
+                checked={this.state.recurrenceBool}
+                icons={false}
+                onChange={() => {
+                  this.setState({ recurrenceBool: !this.state.recurrenceBool });
+                }}
               />
             </div>
-          </div>
+            {this.state.recurrenceBool && (
+              <div>
+                <ButtonGroup className="toggle-group mb-2">
+                  <Button
+                    outline={recurrenceType !== 'DAILY'}
+                    onClick={() => this.updateRecurrenceType('DAILY')}
+                    disabled={recurrenceType === 'DAILY'}
+                  >
+                    Daily
+                  </Button>
+                  <Button
+                    outline={recurrenceType !== 'WEEKLY'}
+                    onClick={() => this.updateRecurrenceType('WEEKLY')}
+                    disabled={recurrenceType === 'WEEKLY'}
+                  >
+                    Weekly
+                  </Button>
+                </ButtonGroup>
+                {recurrenceType === 'WEEKLY' && (
+                  <ButtonGroup className="toggle-group mb-2">
+                    {weekArray.map((day, index) => {
+                      return (
+                        <Button
+                          key={index}
+                          outline={recurrenceDay !== day.val}
+                          onClick={() => this.setRecurrenceDay(day.val)}
+                          disabled={recurrenceDay === day.val}
+                        >
+                          {day.text}
+                        </Button>
+                      );
+                    })}
+                  </ButtonGroup>
+                )}
+              </div>
+            )}
+          </span>
         )}
         <label>Reminder</label>
         <VariableText
@@ -174,7 +257,7 @@ class ReminderBlock extends Component {
         <Alert className="mt-3">
           If failing, try prompting the user with the <b>Permission</b> block and a message
         </Alert>
-      </div>
+      </>
     );
   }
 }

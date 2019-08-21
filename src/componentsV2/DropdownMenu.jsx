@@ -50,6 +50,7 @@ function DropwdownMenu({ options, onSelect, placement = 'bottom-start', children
                     onClose();
                     onSelect(value);
                   }}
+                  fullWidth
                 />
               </MenuContainer>
             );

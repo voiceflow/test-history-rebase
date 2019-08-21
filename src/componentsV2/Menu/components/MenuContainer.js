@@ -9,7 +9,7 @@ const MenuContainer = styled.ul`
 
   max-height: ${({ theme }) => theme.components.menuItem.height * MAX_VISIBLE_ITEMS}px;
   min-width: 100px;
-  max-width: 400px;
+  ${({ fullWidth }) => (fullWidth ? '' : 'max-width: 400px;')}
   margin: 0;
   padding: 8px 0;
   border-radius: 5px;

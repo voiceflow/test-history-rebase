@@ -21,3 +21,11 @@
   top: 15px;
   right: 20px;
 }
+
+.modal-header .close span {
+  display: none;
+}
+
+.modal-footer {
+  border-top: 1px solid #eaeff4
+}

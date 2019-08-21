@@ -384,6 +384,8 @@ export const fetchVersion = (version_id, preview, diagram_id) => {
           dispatch(fetchVersionFailure('Preview not enabled for this skill'));
           return;
         }
+        const { data: importToken } = await axios.get(`/exportProject/${skill.project_id}`);
+        skill.importToken = importToken;
 
         // TODO: this function is horrible and needs to die
         const globals = Array.isArray(skill.global) ? skill.global : [];

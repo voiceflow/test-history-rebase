@@ -29,7 +29,7 @@ class Team extends PureComponent {
   }
 
   updateTeam(team_id) {
-    if (!this.props.page) this.props.history.push(`/team/${team_id}`);
+    if (!this.props.page) this.props.history.push({ pathname: `/team/${team_id}`, search: this.props.location.search });
   }
 
   async initialize() {
@@ -50,6 +50,7 @@ class Team extends PureComponent {
             </div>
           ),
         });
+        this.props.history.push({ search: '' });
       }
     }
 

@@ -6,9 +6,9 @@ const activeStyles = css`
 `;
 
 const Container = styled.div`
-  ${({ size, width = size, height = size }) => css`
+  ${({ size, width = size }) => css`
     width: ${width}
-    height: ${height}
+    height: 100%
   `}
   background: #FFF;
   border: 1px solid #d4d9e6;

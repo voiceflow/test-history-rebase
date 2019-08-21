@@ -4,9 +4,9 @@ import SvgIcon from '@/components/SvgIcon';
 
 import { Container, DropdownButton, Icon, InnerContainer, Label, Toggle } from './components';
 
-const DropdownComponent = ({ disabled, icon, color, placeholder, label, onToggle, isOpen, value }, ref) => {
+const DropdownComponent = ({ disabled, icon, size, color, placeholder, label, onToggle, isOpen, value }, ref) => {
   return (
-    <Container ref={ref} onClick={onToggle} active={isOpen} color={color} inline>
+    <Container ref={ref} onClick={onToggle} active={isOpen} color={color} size={size} inline>
       <InnerContainer>
         {icon && (
           <Icon>

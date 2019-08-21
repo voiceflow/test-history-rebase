@@ -10,10 +10,10 @@ class Menu extends React.PureComponent {
   genKey = this.props.getKey || generateLocalKey();
 
   render() {
-    const { options, onSelect } = this.props;
+    const { options, onSelect, fullWidth } = this.props;
 
     return (
-      <Container>
+      <Container fullWidth={fullWidth}>
         <Scrollbars autoHeight autoHide hideTracksWhenNotNeeded>
           {options.map((option) => {
             const { value, label } = option;

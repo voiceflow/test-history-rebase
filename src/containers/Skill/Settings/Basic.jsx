@@ -8,6 +8,8 @@ import Toggle from 'react-toggle';
 import { Collapse, FormGroup, Input, Label } from 'reactstrap';
 
 import Button from '@/components/Button';
+import ClipBoard from '@/components/ClipBoard/ClipBoard';
+import SvgIcon from '@/components/SvgIcon';
 import Prompt from '@/components/Uploads/Prompt';
 import { setError } from '@/ducks/modal';
 import { updateVersionMerge } from '@/ducks/version';
@@ -27,7 +29,8 @@ class BasicSettings extends Component {
         resume_prompt: resume_prompt || { voice: 'Alexa', content: '' },
       },
       hideResume: !resume_prompt,
-      resumeCollapse: !!resume_prompt && resume_prompt.follow_content,
+      resumeCollapse: !!resume_prompt && !!resume_prompt.follow_content,
+      importCollapse: false,
     };
 
     // compare against for diff
@@ -102,7 +105,7 @@ class BasicSettings extends Component {
 
   render() {
     const { name, inv_name, repeat, restart, resume_prompt } = this.state.settings;
-    const { resumeCollapse, hideResume } = this.state;
+    const { resumeCollapse, importCollapse, hideResume } = this.state;
     return (
       <>
         <div className="settings-content clearfix pb-11 no-bottom">
@@ -219,7 +222,6 @@ class BasicSettings extends Component {
                     </div>
                   </div>
                 </div>
-                {hideResume && <hr />}
                 {!hideResume && (
                   <>
                     <Prompt
@@ -245,8 +247,32 @@ class BasicSettings extends Component {
                     </Button>
                   </>
                 )}
+                <hr />
               </>
             )}
+          </FormGroup>
+        </div>
+        <div className="settings-content settings-basic clearfix no-bottom">
+          <FormGroup>
+            <div className="helper-text">
+              <div className="row space-between mb-3" onClick={() => this.setState({ importCollapse: !importCollapse })}>
+                <div className="s__label_text col-11">
+                  Downloadable Link
+                  <Tooltip
+                    html="This link allows someone to import this project into their Voiceflow Account"
+                    className="s__label_tooltip"
+                    position="top"
+                  >
+                    <img alt="info" src="/info.svg" />
+                  </Tooltip>
+                </div>
+                <SvgIcon icon="arrowLeft" color="#BECEDC" style={{ transform: importCollapse ? 'rotate(90deg)' : 'rotate(-90deg)' }} />
+              </div>
+              <Collapse isOpen={importCollapse}>
+                <ClipBoard name="link" value={`${window.location.origin}/dashboard?import=${this.props.skill.importToken}`} id="shareLink" />
+              </Collapse>
+            </div>
+            <hr />
           </FormGroup>
         </div>
       </>

@@ -12,10 +12,17 @@ const Md5HashPlugin = require('webpack-md5-hash');
 const merge = require('webpack-merge');
 const path = require('path');
 const commonConfig = require('./common');
+const adminConfig = require('./adminCommon');
 const paths = require('../paths');
 const { BASE_HREF, IS_PRODUCTION, IS_SERVING } = require('./config');
+const { action } = require('webpack-nano/argv');
 
-module.exports = merge(commonConfig, {
+let configObject = commonConfig;
+if (action === 'admin-serve' || action === 'admin') {
+  configObject = adminConfig;
+}
+
+module.exports = merge(configObject, {
   output: {
     filename: `${paths.staticJS}${IS_PRODUCTION ? '[name].[hash:8]' : 'bundle'}.js`,
     chunkFilename: `${paths.staticJS}[name]${IS_PRODUCTION ? '.[chunkhash:8]' : ''}.chunk.js`,

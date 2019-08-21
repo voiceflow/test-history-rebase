@@ -200,6 +200,7 @@
   },
   "scripts": {
     "build": "patch-package && wp --prod",
+    "build:admin": "wp --action=admin --prod",
     "build:dev": "patch-package && wp",
     "commit": "scripts/change_remote.sh && git-cz",
     "demo": "scripts/apply_demo_env.sh && wp --action=serve",
@@ -210,6 +211,7 @@
     "lint:js": "eslint \"src/**/*.{js,jsx}\"",
     "lint:quiet": "npm run lint:js -- --quiet && npm run lint:css -- --quiet",
     "postinstall": "patch-package",
+    "start:admin": "wp --action=admin-serve",
     "start": "scripts/apply_local_env.sh && wp --action=serve",
     "storybook": "start-storybook --https --ssl-cert=certs/localhost.crt --ssl-key=certs/localhost.key",
     "storybook:build": "build-storybook --output-dir storybook_build --quiet",

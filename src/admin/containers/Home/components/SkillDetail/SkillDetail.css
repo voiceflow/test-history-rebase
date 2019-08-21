@@ -1,0 +1,52 @@
+.skill_preview {
+  box-sizing: border-box;
+  margin: 0 36px;
+  padding: 12px 0;
+  border-bottom: 2px solid lightgrey;
+}
+
+.skill_preview_title {
+  margin-top: 12px;
+  font-size: 24px;
+}
+
+.skill_preview_subtitle {
+  color: #6c7778;
+  font-size: 14px;
+}
+
+.skill_summary {
+  color: #5f6565;
+  font-size: 18px;
+}
+
+.skill_description {
+  margin-top: 12px;
+  color: #99a5a6;
+  font-size: 12px;
+}
+
+.show_skills_button {
+  width: fit-content;
+  color: #00b7ff;
+}
+
+.skill_summary_and_description {
+  padding-right: 24px;
+  overflow-y: scroll;
+}
+
+.skill_preview_title_large {
+  width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.target_user_inputs {
+  margin-top: 4px;
+}
+
+.team_summary_button_row.sd_left_align {
+  text-align: left;
+}

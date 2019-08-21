@@ -1,8 +1,8 @@
 FROM node:11 AS build
 
-ARG build_NPM_TOKEN
+ARG NPM_TOKEN
 ENV NODE_OPTIONS=--max-old-space-size=2048
-ENV NPM_TOKEN=${build_NPM_TOKEN}
+ENV NPM_TOKEN=${NPM_TOKEN}
 
 WORKDIR /app
 COPY . .

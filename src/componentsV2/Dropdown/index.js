@@ -5,7 +5,7 @@ import DropdownMenu from '@/componentsV2/DropdownMenu';
 
 import Component from './DropdownComponent';
 
-function Dropdown({ icon, label, color, value, options, placeholder, onSelect, disabled, children }) {
+function Dropdown({ icon, label, color, size, value, options, placeholder, onSelect, disabled, children }) {
   return (
     <DropdownMenu options={options} onSelect={onSelect} placement="bottom-start">
       {(ref, onToggle, isOpen) => {
@@ -14,6 +14,7 @@ function Dropdown({ icon, label, color, value, options, placeholder, onSelect, d
             value={value}
             color={color}
             icon={icon}
+            size={size}
             isOpen={isOpen}
             placeholder={placeholder}
             label={label}

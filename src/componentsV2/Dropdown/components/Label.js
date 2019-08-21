@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 const Label = styled.div`
-  font-size: 13px;
+  font-size: 12px;
   line-height: 15px;
   text-transform: uppercase;
   color: #62778c;
-  padding-left: 16px;
+  padding-right: 14px;
   font-weight: 600;
 `;
 

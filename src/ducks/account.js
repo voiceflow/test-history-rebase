@@ -117,7 +117,7 @@ export const logout = () => {
 export const getVendors = () => async (dispatch, getState) => {
   try {
     if (!getState().account.amazon) return;
-    const vendors = (await axios.get('/session/vendor?all=true')).data;
+    const vendors = (await axios.get('/session/amazon/vendor?all=true')).data;
     if (Array.isArray(vendors)) {
       dispatch(
         updateAmazonAccount({
@@ -185,7 +185,7 @@ export const getAuth = getAuthCookie;
 
 export const createAmazonSession = (code) => async (dispatch) => {
   try {
-    const { data: amazon } = (await axios.get(`/session/amazon/${code}`)) || null;
+    const { data: amazon } = (await axios.post('/session/amazon/verify_token', { code })) || null;
     dispatch(updateAccount({ amazon }));
   } catch (err) {
     console.error(err);
@@ -212,6 +212,16 @@ export const deleteAmazonAccount = () => async (dispatch) => {
   }
 };
 
+export const createGoogleSession = (code) => async (dispatch) => {
+  try {
+    const { data: google } = (await axios.post('/session/google/verify_token', { code })) || null;
+    dispatch(updateAccount({ google }));
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
 export const checkGoogleAccount = () => async (dispatch) => {
   let google = null;
   try {
@@ -230,22 +240,6 @@ export const deleteGoogleAccount = () => async (dispatch) => {
     dispatch(setError('Something went wrong - please refresh your page'));
   }
 };
-
-export const dialogflowToken = (projectId) =>
-  new Promise((resolve, reject) => {
-    axios
-      .get(`/session/google/dialogflow_access_token/${projectId}`)
-      .then((res) => resolve(!!(res.data && res.data.token)))
-      .catch((err) => reject(err));
-  });
-
-export const verifyGoogleToken = (token) =>
-  new Promise((resolve, reject) => {
-    axios
-      .post('/session/google/verify_token', { token })
-      .then((res) => resolve(res))
-      .catch((err) => reject(err));
-  });
 
 export function identifyLogRocket(user) {
   if (LOGROCKET_ENABLED) {

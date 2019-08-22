@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { ALEXA_STAGES, ALEXA_STATES } from '@/ducks/publish/alexa';
 
 import { IndefiniteLoading, ProgressLoading } from '../common/Loading';
+import RenderingError from '../common/RenderingError';
 import AmazonError from './AmazonError';
 import GetAmazonLogin from './AmazonLogin';
 import InvalidInvName from './InvalidInvName';
 import NoVendors from './NoVendors';
-import RenderingError from './RenderingError';
 import SubmitSuccess from './SubmitSuccess';
 import UploadSuccess from './UploadSuccess';
 

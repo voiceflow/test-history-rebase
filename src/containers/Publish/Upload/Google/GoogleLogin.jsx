@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Alert } from 'reactstrap';
 
-import AmazonLoginButton from '@/components/Forms/AmazonLogin';
-import { AmazonLogin } from '@/ducks/publish/alexa';
+import GoogleLoginButton from '@/components/Forms/GoogleLogin';
+import { GoogleLogin } from '@/ducks/publish/google';
 
 import { IndefiniteLoading } from '../common/Loading';
 import { PopUpText, PopupButtonSection, UploadPromptWrapper } from '../styled';
 
-const GetAmazonLogin = (props) => {
-  const { AmazonLogin } = props;
+const GetGoogleLogin = (props) => {
+  const { GoogleLogin } = props;
 
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ const GetAmazonLogin = (props) => {
   };
 
   const success = () => {
-    AmazonLogin();
+    GoogleLogin();
   };
 
   if (loading) return <IndefiniteLoading message="Verifying Login" />;
@@ -29,21 +29,17 @@ const GetAmazonLogin = (props) => {
     <UploadPromptWrapper>
       {error && (
         <Alert color="danger">
-          <span className="fail-icon" /> Login With Amazon Failed - Try Again
+          <span className="fail-icon" /> Google Login Failed - Try Again
         </Alert>
       )}
       <img src="/Connect-account.svg" alt="" />
-      <PopUpText>Please connect your Amazon developer account to upload your skill to Alexa.</PopUpText>
-
-      {/* {modal && Video('https://s3.amazonaws.com/com.getvoiceflow.videos/first.mp4')} */}
-      <PopupButtonSection>
-        <AmazonLoginButton onLoad={() => setLoading(true)} onFail={fail} onSuccess={success} />
-      </PopupButtonSection>
+      <PopUpText>Please connect your Google account to upload your skill to Google.</PopUpText>
+      <GoogleLoginButton onLoad={() => setLoading(true)} onFail={fail} onSuccess={success} ButtonWrapper={PopupButtonSection} />
     </UploadPromptWrapper>
   );
 };
 
 export default connect(
   null,
-  { AmazonLogin }
-)(GetAmazonLogin);
+  { GoogleLogin }
+)(GetGoogleLogin);

@@ -198,11 +198,11 @@ class Account extends Component {
                       <br />
                     </div>
                     <div className="col-sm">
-                      {google.name}
+                      {google.profile.name}
                       <br />
-                      {google.email}
+                      {google.profile.email}
                       <br />
-                      {google.id}
+                      {google.profile.id}
                       <br />
                     </div>
                   </div>

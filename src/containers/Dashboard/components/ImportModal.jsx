@@ -1,5 +1,6 @@
 import './ImportModal.css';
 
+import jwt from 'jsonwebtoken';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
@@ -10,7 +11,8 @@ import Select from '@/componentsV2/Dropdown';
 function ImportModal(props) {
   const { toggle, open, token, boards, importProject } = props;
   const [board, setBoard] = useState(boards[0]);
-  const { projectName } = JSON.parse(atob(token.split('.')[1]));
+  const { projectName } = jwt.decode(token);
+
   return (
     <Modal isOpen={open} toggle={toggle} className="import-modal">
       <ModalHeader toggle={toggle}>Copy Project</ModalHeader>

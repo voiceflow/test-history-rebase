@@ -2,6 +2,7 @@ import './DashBoard.css';
 
 import axios from 'axios';
 import cn from 'classnames';
+import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 import moment from 'moment';
 import queryString from 'query-string';
@@ -57,7 +58,10 @@ export const DashBoard = (props) => {
     const query = queryString.parse(props.location.search);
     importToken = query.import;
     try {
-      JSON.parse(atob(importToken.split('.')[1]));
+      const result = jwt.decode(importToken);
+      if (!result.projectId || !result.projectName) {
+        throw new Error('Unexpected JWT content');
+      }
     } catch (e) {
       importToken = null;
       props.history.replace({ search: '' });

@@ -173,7 +173,7 @@ export const checkDialogflow = () => async (dispatch, getState) => {
   dispatch(updateGoogle({ google_id: checkToken.google_id, credentials: true, error: checkToken.error }));
 
   if (checkToken.error) {
-    dispatch(updateGoogleStage(GOOGLE_STAGES.NO_DIALOGFLOW));
+    return dispatch(updateGoogleStage(GOOGLE_STAGES.NO_DIALOGFLOW));
   }
   dispatch(renderProject());
 };

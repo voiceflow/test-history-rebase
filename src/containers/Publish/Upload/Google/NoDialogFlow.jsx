@@ -52,6 +52,9 @@ const NoDialogFlow = ({ credentials, google_id, setConfirm, resetDialogflowCrede
     <UploadPromptWrapper>
       <img src="/Support.svg" alt="" />
       <PopUpText>
+        <Alert color="danger" className="my-2 w-100">
+          {error}
+        </Alert>
         Please provide Dialogflow Credentials
         <FormGroup className="mb-4">
           <Dropzone
@@ -93,7 +96,6 @@ const NoDialogFlow = ({ credentials, google_id, setConfirm, resetDialogflowCrede
             {error && (
               <div className="rejected-file text-danger">
                 <b>File not Accepted</b>
-                {error}
               </div>
             )}
           </Dropzone>

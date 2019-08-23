@@ -24,9 +24,19 @@ export class ProgressLoading extends Component {
     percent: 0,
   };
 
+  componentDidMount = () => {
+    this.updateInterval();
+  };
+
   componentDidUpdate = (prevProps) => {
+    if (prevProps.state !== this.props.state) {
+      this.updateInterval();
+    }
+  };
+
+  updateInterval = () => {
     const { state } = this.props;
-    if (prevProps.state !== state && state.loading) {
+    if (state && state.loading) {
       const { start, end, time } = state.loading;
       if (!_.isInteger(start) || !_.isInteger(end) || !_.isInteger(time)) return;
       clearInterval(this.timeout);

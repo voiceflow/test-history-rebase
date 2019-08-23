@@ -13,6 +13,7 @@ import { setError } from '@/ducks/modal';
 import { updateEntireVersion } from '@/ducks/version';
 
 import GuidedSteps, { GuidedStepsWrapper } from '../../../components/GuidedSteps';
+import UnlinkProject from './Unlink';
 
 const { GOOGLE_LOCALES } = constants.locales;
 
@@ -110,56 +111,61 @@ class GooglePublish extends Component {
               </div>
               <Collapse isOpen={id_collapse}>
                 <hr />
-                <span>Project ID | </span>
-                <a
-                  href={`https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/simulator`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <b>{google_id} </b>
-                </a>
-
-                {!modify_url && (
-                  <span
-                    onClick={() => {
-                      this.setState({ modify_url: true });
-                    }}
-                    className="tooltip-link ml-2"
+                <div>
+                  <span>Project ID | </span>
+                  <a
+                    href={`https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/simulator`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    Link not working? Modify your google user ID
-                  </span>
-                )}
+                    <b>{google_id} </b>
+                  </a>
 
-                {modify_url && (
-                  <span className="ml-2 google-link-publish">
-                    <a
-                      href={`https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/simulator`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  {!modify_url && (
+                    <span
+                      onClick={() => {
+                        this.setState({ modify_url: true });
+                      }}
+                      className="tooltip-link ml-2"
                     >
-                      {'https://console.actions.google.com/u/'}
-                      <span>
-                        <Input
-                          className="google-link-input"
-                          name="google_link_user"
-                          value={google_link_user}
-                          onChange={this.handleChange}
-                          onClick={(e) => e.preventDefault()}
-                        />
-                      </span>
-                      {`/project/${google_id}/simulator`}
-                    </a>
-                    <Tooltip
-                      target="tooltip"
-                      className="menu-tip"
-                      theme="menu"
-                      position="bottom"
-                      title="This changes the Google Account that your link points to. A value of '0' will use your default Google Account, '1' will use the second Google Account you are logged into, and so on."
-                    >
-                      <i className="fas fa-question" />
-                    </Tooltip>
-                  </span>
-                )}
+                      Link not working? Modify your google user ID
+                    </span>
+                  )}
+
+                  {modify_url && (
+                    <span className="ml-2 google-link-publish">
+                      <a
+                        href={`https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/simulator`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {'https://console.actions.google.com/u/'}
+                        <span>
+                          <Input
+                            className="google-link-input"
+                            name="google_link_user"
+                            value={google_link_user}
+                            onChange={this.handleChange}
+                            onClick={(e) => e.preventDefault()}
+                          />
+                        </span>
+                        {`/project/${google_id}/simulator`}
+                      </a>
+                      <Tooltip
+                        target="tooltip"
+                        className="menu-tip"
+                        theme="menu"
+                        position="bottom"
+                        title="This changes the Google Account that your link points to. A value of '0' will use your default Google Account, '1' will use the second Google Account you are logged into, and so on."
+                      >
+                        <i className="fas fa-question" />
+                      </Tooltip>
+                    </span>
+                  )}
+                </div>
+                <div className="mt-2">
+                  <UnlinkProject />
+                </div>
               </Collapse>
             </div>
           )}

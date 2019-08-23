@@ -3,8 +3,8 @@ import './ActionGroup.css';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Alexa from './AlexaV2';
-import Google from './GoogleV2';
+import Alexa from './Alexa';
+import Google from './Google';
 
 // import GoogleActionGroup from './Google';
 

@@ -33,7 +33,7 @@ const GetGoogleLogin = (props) => {
         </Alert>
       )}
       <img src="/Connect-account.svg" alt="" />
-      <PopUpText>Please connect your Google account to upload your skill to Google.</PopUpText>
+      <PopUpText>Please connect your Google account to upload your action</PopUpText>
       <GoogleLoginButton onLoad={() => setLoading(true)} onFail={fail} onSuccess={success} ButtonWrapper={PopupButtonSection} />
     </UploadPromptWrapper>
   );

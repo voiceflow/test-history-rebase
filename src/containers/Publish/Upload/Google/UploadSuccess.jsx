@@ -8,31 +8,16 @@ const UploadSuccess = (props) => {
 
   return (
     <UploadPromptWrapper>
-      <img src="/images/preview.svg" alt="Success" height="160" />
-      <br />
-      Your Action Has been uploaded to Google Actions!
-      <br />
-      <span className="text-muted text-center">
-        You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
-      </span>
-      <div className="my-3">
-        <a
-          href={`https://console.actions.google.com/u/0/project/${google_id}/simulator`}
-          className="btn btn-primary mb-3"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Test on Google Actions Simulator
+      <div className="d-flex align-items-center justify-content-center upload-prompt-title mb-2">
+        {/* eslint-disable-next-line sonarjs/no-duplicate-string */}
+        <span className="pass-icon mr-2" /> Action Upload Successful
+      </div>
+      <div className="upload-prompt-text">
+        You may test on the{' '}
+        <a href={`https://console.actions.google.com/u/0/project/${google_id}/simulator`} target="_blank" rel="noopener noreferrer">
+          Google Actions Simulator
         </a>
-        <br />
-        <a
-          href="http://learn.voiceflow.com/advanced-voiceflow-tutorials/uploading-your-project-to-google-assistant"
-          className="btn btn-default"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Submit for Review
-        </a>
+        . To submit for review, please follow the instructions on the Google Actions Developer Console.
       </div>
     </UploadPromptWrapper>
   );

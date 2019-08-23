@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { GOOGLE_STAGES, GOOGLE_STATES } from '@/ducks/publish/google';
 
-import { ProgressLoading } from '../common/Loading';
+import { IndefiniteLoading, ProgressLoading } from '../common/Loading';
 import RenderingError from '../common/RenderingError';
 import GoogleError from './GoogleError';
 import GetGoogleLogin from './GoogleLogin';
@@ -18,6 +18,8 @@ export const UploadGoogle = (props) => {
   switch (stage) {
     case GOOGLE_STAGES.GOOGLE_LOGIN:
       return <GetGoogleLogin />;
+    case GOOGLE_STAGES.CHECK_DIALOGFLOW:
+      return <IndefiniteLoading message="Checking Dialogflow" />;
     case GOOGLE_STAGES.NO_DIALOGFLOW:
       return <NoDialogFlow />;
     case GOOGLE_STAGES.RENDERING_ERROR:

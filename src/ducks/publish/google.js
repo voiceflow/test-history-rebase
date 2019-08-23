@@ -15,20 +15,21 @@ export const GOOGLE_STATES = {
   RENDERING_ERROR: {
     end: true,
   },
+  CHECK_DIALOGFLOW: {},
   RENDERING: {
     loading: {
       label: 'Rendering Flows',
       start: 0,
-      end: 5,
+      end: 9,
       time: 1500,
     },
   },
   UPLOADING_GOOGLE: {
     loading: {
       label: 'Uploading to Google',
-      start: 6,
-      end: 100,
-      time: 16000,
+      start: 10,
+      end: 98,
+      time: 20000,
     },
   },
   GOOGLE_ERROR: {
@@ -155,13 +156,15 @@ export const linkDialogflowCredential = (token) => async (dispatch, getState) =>
       project_id: projectId,
     });
     dispatch(updateGoogle({ google_id: data.google_id, credentials: true, error: null }));
-  } catch (e) {
-    dispatch(updateGoogle({ error: e.response.data.data || e }));
+  } catch (err) {
+    console.error(err);
+    dispatch(updateGoogle({ error: err.response.data.data || err }));
   }
 };
 
 // STEP 2 - check that the project is linked to a dialogflow project
 export const checkDialogflow = () => async (dispatch, getState) => {
+  dispatch(updateGoogleStage(GOOGLE_STAGES.CHECK_DIALOGFLOW));
   const projectId = getState().skills.skill.project_id;
   const {
     data: { token: checkToken },

@@ -57,7 +57,7 @@ const initialState = {
   credentials: false,
 };
 
-export default function alexaReducer(state = initialState, action) {
+export default function googleReducer(state = initialState, action) {
   switch (action.type) {
     case UPDATE_GOOGLE:
       return {
@@ -135,7 +135,7 @@ export const renderProject = () => async (dispatch, getState) => {
     dispatch(updateGoogleStage(GOOGLE_STAGES.RENDERING_ERROR));
   }
 };
-// STEP 2.2 Reset Dialogflow Cred
+// STEP 2.3 Reset Dialogflow Cred
 export const resetDialogflowCredential = () => async (dispatch, getState) => {
   const projectId = getState().skills.skill.project_id;
 
@@ -147,7 +147,7 @@ export const resetDialogflowCredential = () => async (dispatch, getState) => {
   dispatch(updateGoogle({ google_id: null, credentials: false, error: null }));
 };
 
-// STEP 2.1 Link Dialogflow Cred
+// STEP 2.2 Link Dialogflow Cred
 export const linkDialogflowCredential = (token) => async (dispatch, getState) => {
   const projectId = getState().skills.skill.project_id;
   try {
@@ -162,20 +162,25 @@ export const linkDialogflowCredential = (token) => async (dispatch, getState) =>
   }
 };
 
-// STEP 2 - check that the project is linked to a dialogflow project
-export const checkDialogflow = () => async (dispatch, getState) => {
-  dispatch(updateGoogleStage(GOOGLE_STAGES.CHECK_DIALOGFLOW));
+// STEP 2.1 Load Dialogflow Cred
+export const loadDialogflow = () => async (dispatch, getState) => {
   const projectId = getState().skills.skill.project_id;
   const {
     data: { token: checkToken },
   } = await axios.get(`/session/google/dialogflow_access_token/${projectId}`);
   if (!checkToken) {
     dispatch(updateGoogle({ credentials: false }));
-    return dispatch(updateGoogleStage(GOOGLE_STAGES.NO_DIALOGFLOW));
+  } else {
+    dispatch(updateGoogle({ google_id: checkToken.google_id, credentials: true, error: checkToken.error }));
   }
-  dispatch(updateGoogle({ google_id: checkToken.google_id, credentials: true, error: checkToken.error }));
+  return checkToken;
+};
 
-  if (checkToken.error) {
+// STEP 2 - check that the project is linked to a dialogflow project
+export const checkDialogflow = () => async (dispatch) => {
+  dispatch(updateGoogleStage(GOOGLE_STAGES.CHECK_DIALOGFLOW));
+  const checkToken = await dispatch(loadDialogflow());
+  if (!checkToken || checkToken.error) {
     return dispatch(updateGoogleStage(GOOGLE_STAGES.NO_DIALOGFLOW));
   }
   dispatch(renderProject());

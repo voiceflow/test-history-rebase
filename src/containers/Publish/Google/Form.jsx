@@ -3,8 +3,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Tooltip } from 'react-tippy';
-import { Button as ReactstrapButton, ButtonGroup, Collapse, Form, FormGroup, Input, Label } from 'reactstrap';
+import { Button as ReactstrapButton, ButtonGroup, Collapse, Form, FormGroup, Label } from 'reactstrap';
 import styled from 'styled-components';
 
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
@@ -69,17 +68,16 @@ class GooglePublish extends Component {
 
     this.state = {
       loaded: false,
-      google_id: '',
       name: skill.name,
       locales: [],
       main_locale: null,
       id_collapse: false,
-      modify_url: false,
     };
   }
 
   render() {
-    const { google_link_user, google_id, loaded, id_collapse, modify_url, live } = this.state;
+    const { google_id, google_email } = this.props;
+    const { loaded, id_collapse, live } = this.state;
 
     if (!loaded)
       return (
@@ -111,61 +109,15 @@ class GooglePublish extends Component {
               </div>
               <Collapse isOpen={id_collapse}>
                 <hr />
-                <div>
-                  <span>Project ID | </span>
-                  <a
-                    href={`https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/simulator`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <b>{google_id} </b>
-                  </a>
-
-                  {!modify_url && (
-                    <span
-                      onClick={() => {
-                        this.setState({ modify_url: true });
-                      }}
-                      className="tooltip-link ml-2"
-                    >
-                      Link not working? Modify your google user ID
-                    </span>
-                  )}
-
-                  {modify_url && (
-                    <span className="ml-2 google-link-publish">
-                      <a
-                        href={`https://console.actions.google.com/u/${google_link_user || '0'}/project/${google_id}/simulator`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {'https://console.actions.google.com/u/'}
-                        <span>
-                          <Input
-                            className="google-link-input"
-                            name="google_link_user"
-                            value={google_link_user}
-                            onChange={this.handleChange}
-                            onClick={(e) => e.preventDefault()}
-                          />
-                        </span>
-                        {`/project/${google_id}/simulator`}
-                      </a>
-                      <Tooltip
-                        target="tooltip"
-                        className="menu-tip"
-                        theme="menu"
-                        position="bottom"
-                        title="This changes the Google Account that your link points to. A value of '0' will use your default Google Account, '1' will use the second Google Account you are logged into, and so on."
-                      >
-                        <i className="fas fa-question" />
-                      </Tooltip>
-                    </span>
-                  )}
-                </div>
-                <div className="mt-2">
-                  <UnlinkProject />
-                </div>
+                <span>Project ID | </span>
+                <a
+                  href={`https://console.actions.google.com/u/${google_email}/project/${google_id}/simulator`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <b>{google_id} </b>
+                </a>
+                <UnlinkProject />
               </Collapse>
             </div>
           )}
@@ -205,13 +157,12 @@ class GooglePublish extends Component {
         publish_info.google_link_user = '0';
       }
 
-      const { google_id, privacy_policy, terms_and_cond } = res.data;
+      const { privacy_policy, terms_and_cond } = res.data;
 
       // TODO: Antipattern, fix this when we do redux
       this.setState({
         loaded: true,
         ...publish_info,
-        google_id,
         privacy_policy,
         terms_and_cond,
       });
@@ -229,13 +180,12 @@ class GooglePublish extends Component {
   }
 
   save = (publish = false, cb) => {
-    const { setError, skill_id, skill, updateEntireSkill } = this.props;
-    const { locales, main_locale, google_link_user, google_id } = this.state;
+    const { setError, skill_id, skill, updateEntireSkill, google_id } = this.props;
+    const { locales, main_locale } = this.state;
 
     const google_publish_info = {
       locales,
       main_locale,
-      google_link_user,
     };
 
     axios
@@ -272,7 +222,8 @@ class GooglePublish extends Component {
   };
 
   renderBlocks = () => {
-    const { google_id, main_locale, privacy_policy, terms_and_cond } = this.state;
+    const { google_id, google_email } = this.props;
+    const { main_locale, privacy_policy, terms_and_cond } = this.state;
 
     const blocks = [];
     const enterText = (
@@ -328,7 +279,11 @@ class GooglePublish extends Component {
           <LegalDisclaimer>
             Unfortunately the Privacy Policy or Terms and Conditions for Google Actions must be updated manually. Copy these links into the "Privacy
             and Consent" portion of the{' '}
-            <a href={`https://console.actions.google.com/project/${google_id}/directoryinformation/`} target="_blank" rel="noopener noreferrer">
+            <a
+              href={`https://console.actions.google.com/u/${google_email}/project/${google_id}/directoryinformation/`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Google Action Console
             </a>
             .
@@ -358,6 +313,8 @@ class GooglePublish extends Component {
 const mapStateToProps = (state) => ({
   skill: state.skills.skill,
   skill_id: state.skills.skill.skill_id,
+  google_id: state.publish.google.google_id,
+  google_email: (state.account.google && state.account.google.profile.email) || '0',
 });
 
 const mapDispatchToProps = (dispatch) => {

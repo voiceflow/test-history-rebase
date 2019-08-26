@@ -227,6 +227,7 @@ export const submitForReview = () => async (dispatch, getState) => {
 
   try {
     await axios.post(`/amazon/${skill_id}/${amzn_id}/certify`);
+    dispatch(updateVersion('review', true));
     dispatch(updateAlexaStage(ALEXA_STAGES.SUBMIT_SUCCESS));
   } catch (err) {
     console.error(err);

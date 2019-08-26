@@ -24,7 +24,6 @@ class Skill extends Component {
   state = {
     loaded: false,
     id_collapse: false,
-    amzn_id: null,
     stage_error: null,
     validate: {},
     saving: false,
@@ -86,7 +85,7 @@ class Skill extends Component {
   };
 
   onWithdraw = () => {
-    const { amzn_id } = this.state;
+    const { amzn_id } = this.props;
     axios
       .post(`/amazon/${amzn_id}/withdraw`)
       .then(() => {
@@ -108,11 +107,11 @@ class Skill extends Component {
   }
 
   validateForm = async () => {
-    const { setError, publish } = this.props;
+    const { setError, publish, review } = this.props;
 
     const s = this.state;
     const split_keywords = s.keywords.split(',');
-    if (s.review) {
+    if (review) {
       setError('This skill is currently under review and can not be resubmitted');
     } else if (s.privacy_policy && !validUrl.isUri(s.privacy_policy)) {
       setError('Privacy policy must be a url');
@@ -218,10 +217,6 @@ class Skill extends Component {
       default:
         return true;
     }
-  };
-
-  forceChange = () => {
-    this.forceUpdate();
   };
 
   renderBlocks = () => {
@@ -619,7 +614,8 @@ class Skill extends Component {
   };
 
   render() {
-    const { amzn_id, locales, loaded, live, review, id_collapse } = this.state;
+    const { amzn_id, review } = this.props;
+    const { locales, loaded, live, id_collapse } = this.state;
 
     if (!loaded)
       return (
@@ -687,6 +683,8 @@ class Skill extends Component {
 const mapStateToProps = (state) => ({
   skill_id: state.skills.skill.skill_id,
   project_id: state.skills.skill.project_id,
+  amzn_id: state.skills.skill.amzn_id,
+  review: state.skills.skill.review,
 });
 const mapDispatchToProps = (dispatch) => {
   return {

@@ -244,7 +244,7 @@ export const resetTime = () => ({
 });
 
 export const renderTest = () => async (dispatch, getState) => {
-  const { skills } = getState();
+  const { skills, test } = getState();
   const { intents, slots, platform, diagram: diagramId } = skills.dev_skill || skills.skill;
   if (diagramId === null) return;
 
@@ -254,7 +254,7 @@ export const renderTest = () => async (dispatch, getState) => {
       slots,
       platform,
     });
-    dispatch(initializeTest());
+    if (!test.state.stackSize || test.state.stackSize === 1) dispatch(initializeTest());
   } catch (err) {
     console.error(err);
     dispatch(setError('Could Not Render Your Test Project'));

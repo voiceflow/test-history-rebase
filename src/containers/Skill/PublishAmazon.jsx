@@ -5,9 +5,10 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import Textarea from 'react-textarea-autosize';
 import Toggle from 'react-toggle';
-import { Alert, Button, ButtonGroup, Collapse, Form, FormFeedback, FormGroup, Input, Label, Modal, ModalBody } from 'reactstrap';
+import { Alert, Button, ButtonGroup, Collapse, FormFeedback, FormGroup, Input, Label, Modal, ModalBody } from 'reactstrap';
+import { compose } from 'redux';
+import { getFormValues, reduxForm } from 'redux-form';
 import validUrl from 'valid-url';
 
 import DefaultButton from '@/components/Button';
@@ -19,12 +20,16 @@ import { ModalHeader } from '@/components/Modals/ModalHeader';
 import RadioButtons, { YES_NO_RADIO_BUTTONS } from '@/components/RadioButtons';
 import { Spinner } from '@/components/Spinner';
 import Image from '@/components/Uploads/Image';
+import { FormTextBox } from '@/componentsV2/form/TextBox';
+import { FormTextInput } from '@/componentsV2/form/TextInput';
 import { AmazonAccessToken } from '@/ducks/account';
 import { setError } from '@/ducks/modal';
 import { updateEntireVersion, updateSkillDB, updateVersion } from '@/ducks/version';
 
 import { AMAZON_CATEGORIES } from '../../services/Categories';
 import LOCALE_MAP from '../../services/LocaleMap';
+
+const PUBLISH_AMAZON_FORM = 'publish_amazon_form';
 
 const stage_title = {
   '-1': 'Login Failed',
@@ -103,6 +108,15 @@ class Skill extends Component {
         this.setState({
           loaded: true,
           ...res.data,
+        });
+
+        this.props.initialize({
+          name: res.data.name,
+          summary: res.data.summary,
+          description: res.data.description,
+          keywords: res.data.keywords,
+          inv_name: res.data.inv_name,
+          instructions: res.data.instructions,
         });
       })
       .catch((err) => {
@@ -333,12 +347,19 @@ class Skill extends Component {
     const s = this.state;
     const category = s.category && s.category.value ? s.category.value : null;
 
+    const name = _.get(this.props.amazonForm, ['name'], null);
+    const summary = _.get(this.props.amazonForm, ['summary'], null);
+    const description = _.get(this.props.amazonForm, ['description'], null);
+    const keywords = _.get(this.props.amazonForm, ['keywords'], null);
+    const inv_name = _.get(this.props.amazonForm, ['inv_name'], null);
+    const instructions = _.get(this.props.amazonForm, ['instructions'], null);
+
     const properties = {
-      name: s.name,
-      inv_name: s.inv_name,
-      summary: s.summary,
-      description: s.description,
-      keywords: s.keywords,
+      name,
+      inv_name,
+      summary,
+      description,
+      keywords,
       invocations: s.invocations,
       small_icon: s.small_icon,
       large_icon: s.large_icon,
@@ -351,7 +372,7 @@ class Skill extends Component {
       personal: s.personal,
       ads: s.ads,
       export: s.export,
-      instructions: s.instructions,
+      instructions,
     };
 
     if (!properties.name) {
@@ -425,7 +446,12 @@ class Skill extends Component {
   };
 
   checkValidStep = (stepNumber) => {
-    const { small_icon, large_icon, summary, description, category, inv_name, invocations, name } = this.state;
+    const { small_icon, large_icon, category, invocations } = this.state;
+    const name = _.get(this.props.amazonForm, ['name'], null);
+    const summary = _.get(this.props.amazonForm, ['summary'], null);
+    const description = _.get(this.props.amazonForm, ['description'], null);
+    const inv_name = _.get(this.props.amazonForm, ['inv_name'], null);
+    const instructions = _.get(this.props.amazonForm, ['instructions'], null);
     switch (stepNumber) {
       case 0:
         return !!(name && small_icon && large_icon);
@@ -434,7 +460,7 @@ class Skill extends Component {
       case 2:
         return !!(inv_name && invocations[0]);
       case 5:
-        return !!(this.state.export && this.state.instructions);
+        return !!(this.state.export && instructions);
       default:
         return true;
     }
@@ -445,23 +471,7 @@ class Skill extends Component {
   };
 
   renderBlocks = () => {
-    const {
-      stage,
-      locales,
-      small_icon,
-      large_icon,
-      summary,
-      description,
-      category,
-      inv_name,
-      invocations,
-      keywords,
-      privacy_policy,
-      terms_and_cond,
-      copa,
-      name,
-      instructions,
-    } = this.state;
+    const { stage, locales, small_icon, large_icon, category, invocations, privacy_policy, terms_and_cond, copa, name } = this.state;
 
     const blocks = [];
     const enterText = (
@@ -478,16 +488,7 @@ class Skill extends Component {
           <FormGroup className="mb-4">
             <div className="mb-4">
               <Label className="publish-label">Display Name *</Label>
-              <Input
-                className="form-bg"
-                invalid={this.state.validate.displayName}
-                type="text"
-                name="name"
-                disabled={disabled_stages.has(stage)}
-                placeholder="Storyflow - Interactive Story Adventures"
-                value={name}
-                onChange={this.handleChange}
-              />
+              <FormTextInput name="name" type="text" placeholder="Storyflow - Interactive Story Adventures" disabled={disabled_stages.has(stage)} />
               <FormFeedback>Uh oh! Looks like there is an issue with your email. Please input a correct email.</FormFeedback>
             </div>
           </FormGroup>
@@ -538,25 +539,14 @@ class Skill extends Component {
         <>
           <FormGroup className="mt-0 mb-4">
             <Label className="publish-label">Summary *</Label>
-            <Input
-              className="form-bg"
-              type="text"
-              name="summary"
-              disabled={disabled_stages.has(stage)}
-              placeholder="One Sentence Skill Summary"
-              value={summary}
-              onChange={this.handleChange}
-            />
+            <FormTextInput type="text" name="summary" placeholder="One Sentence Skill Summary" disabled={disabled_stages.has(stage)} />
           </FormGroup>
 
           <FormGroup className="mb-4">
             <Label className="publish-label">Description *</Label>
-            <Textarea
+            <FormTextBox
               name="description"
-              className="form-control"
               disabled={disabled_stages.has(stage)}
-              value={description}
-              onChange={this.handleChange}
               minRows={4}
               maxRows={4}
               placeholder="Skill Description"
@@ -580,14 +570,11 @@ class Skill extends Component {
             <Label className="publish-label">
               Keywords (Search Tags) <small>optional</small>
             </Label>
-            <Input
-              className="form-bg"
+            <FormTextInput
               type="text"
               name="keywords"
-              disabled={disabled_stages.has(stage)}
               placeholder="Keywords (Separated By Commas) e.g. Game, Space, Adventure"
-              value={keywords}
-              onChange={this.handleChange}
+              disabled={disabled_stages.has(stage)}
             />
           </FormGroup>
         </>
@@ -624,15 +611,7 @@ class Skill extends Component {
         <>
           <FormGroup className="mb-4">
             <Label className="publish-label">Invocation Name *</Label>
-            <Input
-              className="form-bg"
-              type="text"
-              name="inv_name"
-              disabled={disabled_stages.has(stage)}
-              placeholder="Enter an invocation name"
-              value={inv_name}
-              onChange={this.handleChange}
-            />
+            <FormTextInput type="text" name="inv_name" placeholder="Enter an invocation name" disabled={disabled_stages.has(stage)} />
           </FormGroup>
 
           <FormGroup className="mb-4">
@@ -814,13 +793,13 @@ class Skill extends Component {
           </div>
           <div className="">
             <Label>Testing Instructions</Label>
-            <Textarea
+            <FormTextBox
               name="instructions"
-              className="form-control"
-              value={instructions}
-              onChange={this.handleChange}
+              disabled={disabled_stages.has(stage)}
               minRows={3}
+              maxRows={3}
               placeholder="Any Particular Testing Instructions for Amazon Approval Process"
+              style={{ minHeight: '94px', maxHeight: '94px' }}
             />
           </div>
         </div>
@@ -967,7 +946,7 @@ class Skill extends Component {
                 </div>
               )}
             </GuidedStepsWrapper>
-            <Form>{this.renderBlocks()}</Form>
+            <form onSubmit={this.props.handleSubmit(this.save)}>{this.renderBlocks()}</form>
           </div>
         </div>
       </>
@@ -975,10 +954,32 @@ class Skill extends Component {
   }
 }
 
+const validate = (values) => {
+  const errors = {};
+  if (!values.name) {
+    errors.name = 'Display name is required.';
+  }
+  if (!values.summary) {
+    errors.summary = 'Display Summary is required.';
+  }
+  if (!values.description) {
+    errors.description = 'Display description is required.';
+  }
+  if (!values.inv_name) {
+    errors.inv_name = 'Invocation name is required.';
+  }
+  if (!values.instructions) {
+    errors.instructions = 'Testing instructions are required.';
+  }
+  return errors;
+};
+
 const mapStateToProps = (state) => ({
   skill_id: state.skills.skill.skill_id,
   project_id: state.skills.skill.project_id,
+  amazonForm: getFormValues(PUBLISH_AMAZON_FORM)(state),
 });
+
 const mapDispatchToProps = (dispatch) => {
   return {
     updateSkill: (type, val) => dispatch(updateVersion(type, val)),
@@ -988,7 +989,14 @@ const mapDispatchToProps = (dispatch) => {
     save: (publish, cb) => dispatch(updateSkillDB(publish, cb)),
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  reduxForm({
+    form: PUBLISH_AMAZON_FORM,
+    validate,
+  })
 )(Skill);

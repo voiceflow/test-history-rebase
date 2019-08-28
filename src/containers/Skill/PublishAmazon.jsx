@@ -318,7 +318,7 @@ class Skill extends Component {
     } else if (split_keywords.length > 30) {
       setError('Limited to 30 keywords');
     } else if (s.keywords.length - split_keywords.length + 1 > 500) {
-      setError('The total length of all keywords must be less than or equal to 150');
+      setError('All keywords must be less than or equal to 30 keywords or 150 characters.');
     } else if (!s.export) {
       setError('Please Certify Alexa Skill Import/Export in Privacy/Complicance');
     } else if (!s.instructions) {

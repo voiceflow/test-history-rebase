@@ -720,6 +720,10 @@ hr.full-width {
   border-color: #42a5ff50 !important;
 }
 
+.alert-danger hr {
+  border-color: #ff356250 !important;
+}
+
 .between {
   display: flex;
   align-items: center;

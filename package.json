@@ -33,6 +33,7 @@
     "lodash": "^4.17.11",
     "logrocket": "^1.0.0",
     "logrocket-react": "^3.0.0",
+    "markdown-to-jsx": "^6.10.3",
     "mathjs": "^5.10.3",
     "memoize-one": "^5.0.0",
     "moment": "^2.22.2",

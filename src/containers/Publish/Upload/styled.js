@@ -4,6 +4,11 @@ export const UploadPromptWrapper = styled.div`
   text-align: center;
   padding: 20px;
   width: 100%;
+
+  .modal & {
+    padding: 0 2rem;
+    text-align: left;
+  }
 `;
 
 export const PopupButtonSection = styled.div`
@@ -12,7 +17,13 @@ export const PopupButtonSection = styled.div`
   justify-content: center;
   margin: 0 -20px -20px;
   padding: 16px 2rem;
-  background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #fff;
+  background: #f9fafc;
+
+  .modal & {
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    margin: 0 -2rem;
+  }
 `;
 
 export const PopUpText = styled.div`

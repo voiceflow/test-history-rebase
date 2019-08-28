@@ -6,7 +6,7 @@ import GoogleLoginButton from '@/components/Forms/GoogleLogin';
 import { GoogleLogin } from '@/ducks/publish/google';
 
 import { IndefiniteLoading } from '../common/Loading';
-import { PopUpText, PopupButtonSection, UploadPromptWrapper } from '../styled';
+import { PopupButtonSection, UploadPromptWrapper } from '../styled';
 
 const GetGoogleLogin = (props) => {
   const { GoogleLogin } = props;
@@ -32,8 +32,6 @@ const GetGoogleLogin = (props) => {
           <span className="fail-icon" /> Google Login Failed - Try Again
         </Alert>
       )}
-      <img src="/Connect-account.svg" alt="" />
-      <PopUpText>Please connect your Google account to upload your action</PopUpText>
       <GoogleLoginButton onLoad={() => setLoading(true)} onFail={fail} onSuccess={success} ButtonWrapper={PopupButtonSection} />
     </UploadPromptWrapper>
   );

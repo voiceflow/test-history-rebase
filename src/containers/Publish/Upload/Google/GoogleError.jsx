@@ -12,7 +12,7 @@ const GoogleError = ({ error }) => (
       Google Error Response
     </div>
     <Alert color="danger" className="my-2 w-100">
-      {error}
+      {error.toString()}
     </Alert>
     <Alert className="w-100 mb-0">
       Google responded with an error, Visit our{' '}

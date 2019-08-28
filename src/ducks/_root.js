@@ -1,5 +1,6 @@
 import { connectRouter } from 'connected-react-router';
 import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 
 import account from '@/ducks/account';
 import admin from '@/ducks/admin';
@@ -39,4 +40,5 @@ export default (history) =>
     test,
     alerts,
     publish,
+    form: formReducer,
   });

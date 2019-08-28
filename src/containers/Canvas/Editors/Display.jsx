@@ -39,7 +39,7 @@ export class Display extends Component {
       current_request: false,
       user_variables: {},
       variables: [],
-      variables_error: '',
+      error: '',
       modal_error: '',
       rendered_datasource: '',
     };
@@ -131,7 +131,7 @@ export class Display extends Component {
     user_variables[e.target.name] = e.target.value;
     this.setState({
       user_variables,
-      variables_error: '',
+      error: '',
     });
   }
 
@@ -145,7 +145,7 @@ export class Display extends Component {
       const user_variable = user_variables[variable];
       if (_.isNil(user_variable) || user_variable === '') {
         this.setState({
-          variables_error: 'Variables cannot be blank!',
+          error: 'Variables cannot be blank!',
         });
         return;
       }
@@ -198,7 +198,7 @@ export class Display extends Component {
         modal: true,
         modalContent: null,
         variables,
-        variables_error: '',
+        error: '',
         user_variables: {},
         rendered_datasource: null,
       },
@@ -208,7 +208,7 @@ export class Display extends Component {
 
   // Render entire modal
   renderDisplayTest() {
-    const { variables, modalContent, variables_error, current_request, rendered_datasource, node } = this.state;
+    const { variables, modalContent, error, current_request, rendered_datasource, node } = this.state;
     if (_.isNil(modalContent) && _.isEmpty(variables)) {
       return <Spinner isEmpty />;
     }
@@ -217,12 +217,7 @@ export class Display extends Component {
       <div>
         {!_.isEmpty(variables) && (
           <>
-            <Button color="primary" onClick={() => this.testDisplay()} className="mt-2" disabled={variables_error}>
-              <i className="fas fa-play mr-2" /> Run
-            </Button>
-            <br />
             <label>We've detected you are using variables in your Data Source JSON, please set variables and run</label>
-            <br />
             {_.map(variables, (val, key) => (
               <React.Fragment key={key}>
                 <InputGroup className="mb-2">
@@ -236,20 +231,15 @@ export class Display extends Component {
                 </InputGroup>
               </React.Fragment>
             ))}
+            <Button color="primary" onClick={() => this.testDisplay()} className="mb-2" disabled={error}>
+              <i className="fas fa-play mr-2" /> Run
+            </Button>
           </>
         )}
-        {modalContent && variables_error && <div className="error-message text-center">{variables_error}</div>}
         {current_request && <Spinner isEmpty />}
         {modalContent && <div className="space-between flex-hard" />}
 
-        {modalContent && (
-          <DisplayRender
-            apl={modalContent}
-            data={rendered_datasource}
-            commands={node.extras.apl_commands}
-            error={(e) => this.setState({ variables_error: e })}
-          />
-        )}
+        {modalContent && <DisplayRender apl={modalContent} data={rendered_datasource} commands={node.extras.apl_commands} />}
       </div>
     );
   }
@@ -282,7 +272,7 @@ export class Display extends Component {
       <>
         <Modal size="lg" isOpen={modal} toggle={this.disableModal}>
           <ModalHeader toggle={this.disableModal} header="Multimodal Display Test" />
-          <ModalBody>{modal && this.renderDisplayTest()}</ModalBody>
+          <ModalBody className="pt-0">{modal && this.renderDisplayTest()}</ModalBody>
         </Modal>
         <div>
           <div className="d__label-title">

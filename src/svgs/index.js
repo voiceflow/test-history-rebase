@@ -80,3 +80,4 @@ export { default as emptyState } from './empty-state.svg';
 export { default as zoomOut } from './zoom-out.svg';
 export { default as error404 } from './404.svg';
 export { default as error500 } from './500.svg';
+export { default as restart } from './restart.svg';

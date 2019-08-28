@@ -2,15 +2,21 @@
 import React, { useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
-import { Alert, FormGroup, Label } from 'reactstrap';
+import { Alert, FormGroup } from 'reactstrap';
 
-import { Spinner } from '@/components/Spinner';
+import { LoadCircle } from '@/components/Loader';
 import Button from '@/componentsV2/Button';
 import { checkDialogflow, linkDialogflowCredential } from '@/ducks/publish/google';
 
 import { PopUpText, PopupButtonSection, UploadPromptWrapper } from '../styled';
 
 const MAX_SIZE = 10 * 1024 * 1024;
+
+const HelpLink = ({ children }) => (
+  <a href="https://learn.voiceflow.com/en/articles/2705386-uploading-your-project-to-google-assistant" target="_blank" rel="noopener noreferrer">
+    {children}
+  </a>
+);
 
 // Missing Dialogflow Credentials
 const NoDialogFlow = ({ credentials, linkDialogflowCredential, error, checkDialogflow }) => {
@@ -36,21 +42,13 @@ const NoDialogFlow = ({ credentials, linkDialogflowCredential, error, checkDialo
     <UploadPromptWrapper>
       {error && (
         <Alert color="danger" className="my-2 w-100">
-          Invalid Dialogflow Credentials, try regenerating
+          Invalid Dialogflow Credentials, try creating new file
         </Alert>
       )}
       <PopUpText>
-        Please provide Dialogflow Credentials <br />
-        Setup instructions can be found{' '}
-        <a
-          href="https://learn.voiceflow.com/en/articles/2705386-uploading-your-project-to-google-assistant"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          here
-        </a>
+        Please provide Dialogflow Credentials Setup instructions can be found <HelpLink>here</HelpLink>
       </PopUpText>
-      <FormGroup className="mt-3 mb-5">
+      <FormGroup className="mb-5">
         <Dropzone
           className={`dropzone google-upload ${canLink ? '' : 'disabled'}`}
           activeClassName="active"
@@ -59,32 +57,23 @@ const NoDialogFlow = ({ credentials, linkDialogflowCredential, error, checkDialo
           disableClick={false}
           maxSize={MAX_SIZE}
           onDrop={link}
-          disabled={!canLink}
+          disabled={!canLink || loading}
         >
           {canLink && !loading && (
-            <div className="drop-child">
-              Drag and Drop your file here
-              <br />
-              <small className="d-inline-block mt-2">OR</small>
-              <br />
-              <div className="pg__add_file_button">
-                <Button variant="primary" type="button" className="mt-2">
-                  Add File
-                </Button>
-              </div>
+            <div className="text-dull">
+              Drop JSON file here or <span className="btn-link">Browse</span>
             </div>
           )}
           {loading && (
-            <div className="d-flex publish-loader">
-              <Spinner isEmpty />
+            <div className="text-dull">
+              <LoadCircle color="transparent" style={{ position: 'absolute', left: 25, top: 25 }} />
+              Uploading
             </div>
           )}
           {credentials && !error && (
             <div className="align-self-center mx-2 d-flex">
               <i className="fal fa-check-circle text-success align-self-center mx-2" />
-              <span>
-                <Label>File uploaded</Label>
-              </span>
+              <span>Successfully Uploaded</span>
             </div>
           )}
           {error && (
@@ -98,6 +87,7 @@ const NoDialogFlow = ({ credentials, linkDialogflowCredential, error, checkDialo
         <Button variant="primary" onClick={checkDialogflow} disabled={!credentials}>
           Next
         </Button>
+        <HelpLink>Setup tutorial</HelpLink>
       </PopupButtonSection>
     </UploadPromptWrapper>
   );

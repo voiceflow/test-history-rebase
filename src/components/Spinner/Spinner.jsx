@@ -9,11 +9,11 @@ const Text = styled.div`
   font-size: 18px;
 `;
 
-const Spinner = ({ isEmpty, message, name, isLg, isMd }) => {
+const Spinner = ({ message, name, isLg, isMd }) => {
   return (
     <div className="text-center">
       <Loader isLg={isLg} isMd={isMd} />
-      {!isEmpty && <Text>{message || `Loading ${name}...`}</Text>}
+      {!!(message || name) && <Text>{message || `Loading ${name}...`}</Text>}
     </div>
   );
 };

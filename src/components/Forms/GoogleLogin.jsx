@@ -31,24 +31,22 @@ export const GoogleLoginForm = (props) => {
 
   return (
     <div className="d-flex flex-column">
-      <div className="w-100">
+      <div className="w-100 pb-3">
         <div className="mb-4">
-          <div className="my-2">Step 1</div>
-          <div className="text-muted my-3" style={{ fontSize: '0.9rem' }}>
+          <div className="my-2 text-muted">1. Connect Google</div>
+          <div className="my-3" style={{ fontSize: '0.9rem' }}>
             Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.
           </div>
-          <div className="d-flex justify-content-center pt-1 mb-4 w-100">
-            <a href={OAUTH_URL} target="_blank" rel="noopener noreferrer">
-              <Button type="button" variant="secondary" className="btn btn-clear">
-                Log In
-              </Button>
-            </a>
-          </div>
+          <a href={OAUTH_URL} target="_blank" rel="noopener noreferrer" className="no-underline">
+            <Button type="button" variant="secondary">
+              Login with Google
+            </Button>
+          </a>
         </div>
         <hr />
         <div className="my-4">
-          <div className="my-2">Step 2</div>
-          <div className="text-muted mb-2 mt-3" style={{ fontSize: '0.9rem' }}>
+          <div className="my-2 text-muted">2. Paste Credentials</div>
+          <div className="my-3" style={{ fontSize: '0.9rem' }}>
             Copy and paste the authentication code given in the field below.
           </div>
           <Input

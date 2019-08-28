@@ -16,7 +16,6 @@ import ReactGA from 'react-ga';
 import { hot } from 'react-hot-loader/root';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import { Alert } from 'reactstrap';
 import { compose } from 'recompose';
 import { ThemeProvider } from 'styled-components';
 
@@ -27,7 +26,6 @@ import Modal from '@/components/Modals/Modal';
 import { FullSpinner } from '@/components/Spinner';
 import { getAuth, getUser } from '@/ducks/account';
 import { history } from '@/store/store';
-import { evaluateMaintenance } from '@/utils/maintenance';
 
 import allRoutes from './Routes/allRoutes';
 import Alerts from './components/Alerts/Alerts';
@@ -69,33 +67,6 @@ class App extends Component {
       ReactGA.set({ page: location.pathname });
       ReactGA.pageview(location.pathname);
       this.setState({ session: !!getAuth() });
-    });
-
-    // REDIRECT TO MAINTENANCE
-    evaluateMaintenance((time) => {
-      if (time) {
-        setTimeout(
-          () =>
-            this.props.setConfirm({
-              size: 'rg',
-              text: (
-                <Alert className="mb-0">
-                  Voiceflow Creator will go under planned maintenance
-                  <br />
-                  <b>{time}</b> from now
-                  <hr />
-                  Live Projects will not be affected
-                </Alert>
-              ),
-            }),
-          100
-        );
-      } else {
-        window.location.replace('https://voiceflow.com/maintenance');
-        // eslint-disable-next-line xss/no-location-href-assign
-        window.location.href = 'https://voiceflow.com/maintenance';
-        throw new Error('MAINTENANCE');
-      }
     });
   }
 

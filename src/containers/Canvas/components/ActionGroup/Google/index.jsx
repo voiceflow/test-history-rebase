@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Modal } from 'reactstrap';
 
 import Button from '@/components/Button';
+import { ModalHeader } from '@/components/Modals/ModalHeader';
 import UploadGoogle from '@/containers/Publish/Upload/Google';
 import { checkGoogleAccount } from '@/ducks/account';
 import { GOOGLE_STAGES, GOOGLE_STATES, resetGoogleUpload } from '@/ducks/publish/google';
@@ -37,6 +38,7 @@ const GoogleActionGroup = (props) => {
       <UploadButton setPopup={setOpen} />
       {[GOOGLE_STAGES.GOOGLE_LOGIN, GOOGLE_STAGES.NO_DIALOGFLOW].includes(stage) ? (
         <Modal isOpen={open} contentClassName="overflow-hidden" toggle={close}>
+          <ModalHeader toggle={close}>{GOOGLE_STATES[stage].description}</ModalHeader>
           <UploadGoogle />
         </Modal>
       ) : (

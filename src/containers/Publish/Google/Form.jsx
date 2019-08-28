@@ -109,15 +109,19 @@ class GooglePublish extends Component {
               </div>
               <Collapse isOpen={id_collapse}>
                 <hr />
-                <span>Project ID | </span>
-                <a
-                  href={`https://console.actions.google.com/u/${google_email}/project/${google_id}/simulator`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <b>{google_id} </b>
-                </a>
-                <UnlinkProject />
+                <div className="space-between">
+                  <div>
+                    <span>Project ID | </span>
+                    <a
+                      href={`https://console.actions.google.com/u/${google_email}/project/${google_id}/simulator`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <b>{google_id} </b>
+                    </a>
+                  </div>
+                  <UnlinkProject />
+                </div>
               </Collapse>
             </div>
           )}

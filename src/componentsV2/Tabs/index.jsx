@@ -1,5 +1,5 @@
 import React from 'react';
-import { generateLocalKey } from 'react-smart-key/dist/es2015/generateKey';
+import { generateLocalKey } from 'react-smart-key/dist/es5/generateKey';
 
 import TabSet from '@/componentsV2/TabSet';
 import Tab from '@/componentsV2/TabSet/components/Tab';

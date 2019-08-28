@@ -1,9 +1,11 @@
 import './UserCard.css';
 
+import axios from 'axios';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Button } from 'reactstrap';
 
 import { User } from '@/components/User/User';
 
@@ -31,6 +33,7 @@ class UserCard extends React.Component {
               <Link to={`/admin/charges/${this.props.creator.creator_id ? this.props.creator.creator_id : null}`} className="view_charges_link">
                 View Charges & Subscription
               </Link>
+              <Button onClick={() => axios.post(`/admin-api/force_refresh/${this.props.creator.creator_id}`)}> Force Refresh User</Button>
               {/* <AdminAdvancedModal */}
               {/*  showModal={false} */}
               {/*  buttonLabel={'Advanced'} */}

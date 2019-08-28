@@ -59,6 +59,24 @@ export const fetchProjects = (team_id) => {
   };
 };
 
+export const importProject = (team_id, importToken) => {
+  return async (dispatch, getState) => {
+    try {
+      const new_project = (await axios.post(`/importProject/${team_id}/`, { token: importToken })).data;
+      const curTeam = getState().team.team_id;
+      if (curTeam === team_id) {
+        dispatch(Projects.add({ data: new_project }));
+        dispatch(addProjectToList(null, new_project.project_id));
+      }
+    } catch (err) {
+      console.error(err);
+      dispatch(setError('Unable to import project'));
+      return Promise.reject();
+    }
+    return Promise.resolve();
+  };
+};
+
 export const copyProject = (project_id, team_id, board_id) => {
   return async (dispatch, getState) => {
     try {

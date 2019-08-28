@@ -7,10 +7,12 @@ const staticDir = 'static/';
 const PATHS = {
   pkg: 'package.json',
   entrypoint: `${sourceDir}index.jsx`,
+  adminpoint: `${sourceDir}admin/index.jsx`,
   indexHTML: `${publicDir}index.html`,
   sourceDir,
   publicDir,
   buildDir: 'build/',
+  adminBuildDir: 'adminbuild/',
 };
 
 module.exports = Object.entries(PATHS).reduce(

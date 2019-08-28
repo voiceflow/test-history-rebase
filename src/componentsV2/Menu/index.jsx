@@ -1,6 +1,6 @@
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { generateLocalKey } from 'react-smart-key/dist/es2015/generateKey';
+import { generateLocalKey } from 'react-smart-key/dist/es5/generateKey';
 
 import { FlexLabel } from '@/componentsV2/Flex';
 
@@ -10,16 +10,19 @@ class Menu extends React.PureComponent {
   genKey = this.props.getKey || generateLocalKey();
 
   render() {
-    const { options, onSelect } = this.props;
+    const { options, onSelect, fullWidth } = this.props;
 
     return (
-      <Container>
+      <Container fullWidth={fullWidth}>
         <Scrollbars autoHeight autoHide hideTracksWhenNotNeeded>
-          {options.map(({ value, label }) => (
-            <Item onClick={() => onSelect(value)} key={this.genKey(value)}>
-              <FlexLabel>{label || (typeof value === 'string' ? value : value.toString())}</FlexLabel>
-            </Item>
-          ))}
+          {options.map((option) => {
+            const { value, label } = option;
+            return (
+              <Item onClick={() => onSelect(option)} key={this.genKey(value)}>
+                <FlexLabel>{label || (typeof value === 'string' ? value : value.toString())}</FlexLabel>
+              </Item>
+            );
+          })}
         </Scrollbars>
       </Container>
     );

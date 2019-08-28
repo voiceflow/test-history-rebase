@@ -162,8 +162,26 @@ export const addProjectToList = (board_id, project_id) => {
     try {
       const boards = getState().board;
       const team_id = getState().team.team_id;
-      let board = boards.byId[board_id];
-      if (!board) throw new Error("Can't find board");
+      let board;
+      if (!board_id) {
+        board = Object.values(boards.byId).filter((board) => board.name === 'Default List')[0];
+        if (!board) {
+          board = {
+            board_id: randomstring.generate(10),
+            name: 'Default List',
+            projects: [],
+            isNew: true,
+          };
+          dispatch(
+            Boards.add({
+              data: board,
+            })
+          );
+        }
+      } else {
+        board = boards.byId[board_id];
+        if (!board) throw new Error("Can't find board");
+      }
 
       board = update(board, {
         projects: {
@@ -172,7 +190,7 @@ export const addProjectToList = (board_id, project_id) => {
       });
       dispatch(
         Boards.update({
-          id: board_id,
+          id: board.board_id,
           data: board,
         })
       );

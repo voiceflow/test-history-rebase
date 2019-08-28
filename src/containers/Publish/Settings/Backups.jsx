@@ -40,6 +40,7 @@ class BackupSettings extends Component {
         loading: false,
         versions,
         live_version: liveVersion.live_skill,
+        live_version_id: liveVersion.live_version,
       });
     } catch (err) {
       this.setState({
@@ -91,7 +92,7 @@ class BackupSettings extends Component {
   };
 
   renderBackups = () => {
-    const { loading, versions, live_version, curr_preview, preview } = this.state;
+    const { loading, versions, live_version, live_version_id, curr_preview, preview } = this.state;
     if (loading) {
       return (
         <div className="mt-5">
@@ -109,6 +110,7 @@ class BackupSettings extends Component {
         </Alert>
       );
     }
+
     return (
       <>
         {/* Modal for previewing backups */}
@@ -165,7 +167,7 @@ class BackupSettings extends Component {
                     </Button>
                   </td>
                   <td>
-                    <Button isPrimary onClick={() => this.confirmRestore(live_version.skill_id)}>
+                    <Button isPrimary onClick={() => this.confirmRestore(live_version_id)}>
                       Restore
                     </Button>
                   </td>

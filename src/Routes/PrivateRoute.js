@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 
-import ErrorBoundary from '../ErrorBoundary';
+import ErrorBoundary from '../components/ErrorPages/ErrorBoundary';
 import { getAuth } from '../ducks/account';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (

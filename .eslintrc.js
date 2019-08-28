@@ -37,6 +37,7 @@ module.exports = {
     'react/prop-types': 'off',
     'react/destructuring-assignment': 'off',
     'lodash/import-scope': 'off',
+    'sonarjs/no-duplicate-string': 'off',
 
     // disabled temporarily by setting as warnings
     'max-len': 'warn',

@@ -1,0 +1,38 @@
+.fb_wrapper {
+  margin-bottom: 70px;
+  padding: 30px;
+}
+
+.fb_search {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.fb_search_button {
+  height: 40px;
+}
+
+.fb_header {
+  margin-bottom: 20px;
+}
+
+.admin_highlight_green {
+  padding: 5px 10px;
+  color: white;
+  font-size: 12px;
+  background-color: #00e676;
+  border-radius: 5px;
+}
+
+.fb_refresh_wrapper {
+  margin-top: 12px;
+}
+
+.fb_refresh {
+  color: #00b0e6;
+  font-size: 1rem;
+}
+
+.fb_refresh:hover {
+  cursor: pointer;
+}

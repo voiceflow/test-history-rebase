@@ -223,6 +223,7 @@ class AccountLinkTemplate extends Component {
                       accountLinkingRequest,
                     });
                   }}
+                  autocomplete="new-password"
                 />
               </>
             )}

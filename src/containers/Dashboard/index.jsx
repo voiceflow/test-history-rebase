@@ -2,8 +2,10 @@ import './DashBoard.css';
 
 import axios from 'axios';
 import cn from 'classnames';
+import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 import moment from 'moment';
+import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -30,12 +32,13 @@ import {
   updateLists,
 } from '@/ducks/board';
 import { setConfirm, setError } from '@/ducks/modal';
-import { copyProject, deleteProject, updateProjects } from '@/ducks/project';
+import { copyProject, deleteProject, importProject, updateProjects } from '@/ducks/project';
 import { removeTrial } from '@/ducks/team';
 import { useScrollHelpers } from '@/hooks/scroll';
 
 import ExpiryButton from './ExpiryButton';
 import DashboardHeader from './Header';
+import ImportModal from './components/ImportModal';
 import { Item as ListItem } from './components/Item';
 import List, { List as SimpleList } from './components/List';
 
@@ -50,7 +53,23 @@ const filter_projects = (projects, filter) => {
 };
 
 export const DashBoard = (props) => {
+  let importToken = null;
+  if (props.location && props.location.search) {
+    const query = queryString.parse(props.location.search);
+    importToken = query.import;
+    try {
+      const result = jwt.decode(importToken);
+      if (!result.projectId || !result.projectName) {
+        throw new Error('Unexpected JWT content');
+      }
+    } catch (e) {
+      importToken = null;
+      props.history.replace({ search: '' });
+      props.setError('Bad Import Link');
+    }
+  }
   const [loading, toggleLoading] = useState(true);
+  const [importOpen, toggleImport] = useState(!!importToken);
   const [filter_text, handleFilterText] = useState('');
   const [showInfo, setShowInfo] = useState(false);
   const [loading_modal, toggleLoadingModal] = useState(false);
@@ -62,6 +81,25 @@ export const DashBoard = (props) => {
   const [new_product_updates, setNewProductUpdates] = useState([]);
   const [updates_hover, toggleUpdatesHover] = useState(false);
   const [show_update_bubble, setShowUpdateBubble] = useState(false);
+
+  const closeImport = () => {
+    toggleImport(false);
+    props.history.replace({ search: '' });
+  };
+
+  const importProject = (team_id) => {
+    closeImport();
+    toggleLoadingModal(true);
+    props
+      .importProject(team_id, importToken)
+      .then(() => {
+        toggleLoadingModal(false);
+      })
+      .catch((e) => {
+        toggleLoadingModal(false);
+        props.setError(e);
+      });
+  };
 
   const copyProject = (project_id, board_id = null) => {
     if (props.projects.allIds.length >= props.team.projects) {
@@ -201,6 +239,7 @@ export const DashBoard = (props) => {
     <>
       <ExpiryButton team={props.team} upgrade={() => setTeamSetting('CHECKOUT')} />
       <LoadingModal open={loading_modal} />
+      {importToken && <ImportModal open={importOpen} toggle={closeImport} importProject={importProject} token={importToken} />}
       <div id="app" className="dashboard">
         <UpdatesModal
           show_update_modal={show_updates_modal}
@@ -355,6 +394,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchBoards: (team_id) => dispatch(fetchBoards(team_id)),
     addBoard: (team_id) => dispatch(addBoard(team_id)),
     deleteProject: (project_id) => dispatch(deleteProject(project_id)),
+    importProject: (team_id, token) => dispatch(importProject(team_id, token)),
     copyProject: (project_id, team_id, board_id) => dispatch(copyProject(project_id, team_id, board_id)),
     setConfirm: (confirm) => dispatch(setConfirm(confirm)),
     setError: (err) => dispatch(setError(err)),

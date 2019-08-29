@@ -31,6 +31,7 @@ const initialState = {
   status: TEST_STATUS.IDLE,
   startTime: 0,
   state: {
+    display_info: null,
     globals: [{}],
   },
   configId: null,
@@ -74,7 +75,7 @@ export const setDebug = (value) =>
     debug: !!value,
   });
 
-export const setupGlobals = () => (dispatch, getState) => {
+export const resetState = () => (dispatch, getState) => {
   const { skills, test } = getState();
   const { project_id: projectId, global, platform } = skills.skill;
 
@@ -107,6 +108,7 @@ export const setupGlobals = () => (dispatch, getState) => {
     updateTest({
       state: {
         ...test.state,
+        display_info: null,
         globals: [currentGlobals],
       },
     })
@@ -226,7 +228,7 @@ export const initializeTest = (options = {}) => (dispatch, getState) => {
       nlc,
     })
   );
-  dispatch(setupGlobals());
+  dispatch(resetState());
 
   if (options.userTest) {
     dispatch(
@@ -244,7 +246,7 @@ export const resetTime = () => ({
 });
 
 export const renderTest = () => async (dispatch, getState) => {
-  const { skills } = getState();
+  const { skills, test } = getState();
   const { intents, slots, platform, diagram: diagramId } = skills.dev_skill || skills.skill;
   if (diagramId === null) return;
 
@@ -254,7 +256,7 @@ export const renderTest = () => async (dispatch, getState) => {
       slots,
       platform,
     });
-    dispatch(initializeTest());
+    if (!test.state.stackSize || test.state.stackSize === 1) dispatch(initializeTest());
   } catch (err) {
     console.error(err);
     dispatch(setError('Could Not Render Your Test Project'));
@@ -274,6 +276,7 @@ export const startTest = (diagramId, line = null) => (dispatch, getState) => {
         id: diagramId || diagram,
       },
     ],
+    display_info: null,
     input: '',
     line,
     testing: true,
@@ -363,7 +366,7 @@ export const endTest = () => (dispatch) => {
 
 export const resetTest = () => (dispatch, getState) => {
   dispatch(resetTime());
-  if (getState().test.status !== TEST_STATUS.IDLE) dispatch(setupGlobals());
+  if (getState().test.status !== TEST_STATUS.IDLE) dispatch(resetState());
   dispatch(
     updateTest({
       status: TEST_STATUS.IDLE,

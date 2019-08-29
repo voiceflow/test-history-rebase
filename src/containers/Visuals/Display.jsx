@@ -4,13 +4,18 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
-import { Col, FormGroup, Input, Row } from 'reactstrap';
+import { Col, FormGroup, Row } from 'reactstrap';
+import { compose } from 'redux';
+import { getFormValues, isDirty, reduxForm } from 'redux-form';
 
 import AceEditor from '@/components/AceEditor';
 import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
+import { FormTextInput } from '@/componentsV2/form/TextInput';
 import { addDisplay, updateDisplay } from '@/ducks/display';
 import { setError } from '@/ducks/modal';
+
+const DISPLAY_FORM_NAME = 'display_visual_form';
 
 class Display extends Component {
   constructor(props) {
@@ -59,6 +64,10 @@ class Display extends Component {
             description: res.data.description,
             loading: false,
           });
+          this.props.initialize({
+            display_name: res.data.title,
+            display_description: res.data.description,
+          });
         })
         .catch((err) => {
           console.error(err);
@@ -88,18 +97,12 @@ class Display extends Component {
   }
 
   save() {
-    const { saved, title, document, datasource, description, display_id } = this.state;
+    const { saved, document, datasource, display_id } = this.state;
     const { skill_id, history, dispatch, setError } = this.props;
 
-    if (saved) return;
-    if (!title) {
-      this.setState({
-        error: {
-          message: 'Empty Display Title',
-        },
-      });
-      return;
-    }
+    const title = this.props.displayForm.display_name;
+    const description = this.props.displayForm.display_description;
+    if (saved && !this.props.isDirty) return;
 
     this.setState({
       saving: true,
@@ -200,146 +203,159 @@ class Display extends Component {
   }
 
   render() {
-    const { loading, saving, saved, title, description, document, datasource } = this.state;
+    const { loading, saving, saved, document, datasource } = this.state;
     const { history, skill_id } = this.props;
     return (
-      <div className="business-page-inner">
-        {loading ? (
-          React.createElement(Spinner, { name: 'Displays' })
-        ) : (
-          <Dropzone
-            id="page-drop"
-            activeClassName="active"
-            rejectClassName="reject"
-            multiple={false}
-            disableClick={true}
-            maxSize={1024 * 1024}
-            accept=".json,.JSON,application/json"
-            onDrop={this.onDropJSON}
-          >
-            {({ open }) => (
-              <>
-                <div className="drop-overlay active">
-                  <div>
-                    <h1>
-                      <i className="fas fa-file-code" />
-                    </h1>
-                    <p>Drag and Drop APL JSON Files</p>
-                  </div>
-                </div>
-                <div className="drop-overlay reject">
-                  <div>
-                    <h1>
-                      <i className="fas fa-file-times" />
-                    </h1>
-                    <p>APL JSON Files Only</p>
-                  </div>
-                </div>
-                <div className="content">
-                  <div className="space-between">
-                    <div className="text-muted">
-                      <h5 className="mb-0">APL Template</h5>{' '}
-                      <small>
-                        <i className="far fa-link" /> ({' '}
-                        <a href="https://developer.amazon.com/alexa/console/ask/displays" target="_blank" rel="noopener noreferrer">
-                          Authoring Tool
-                        </a>{' '}
-                        )
-                      </small>
-                    </div>
-                    <div className="subheader-right">
-                      <Button
-                        isFlat
-                        varient="contained"
-                        className="mr-2"
-                        onClick={() => {
-                          history.push(`/visuals/${skill_id}`);
-                        }}
-                      >
-                        Back
-                      </Button>
-                      <Button isPrimary varient="contained" onClick={this.save} style={{ width: 100 }}>
-                        {saving ? <Spinner isEmpty /> : <>Save{saved ? '' : '*'}</>}
-                      </Button>
+      <form onSubmit={this.props.handleSubmit(this.save)}>
+        <div className="business-page-inner">
+          {loading ? (
+            <Spinner name="Displays" />
+          ) : (
+            <Dropzone
+              id="page-drop"
+              activeClassName="active"
+              rejectClassName="reject"
+              multiple={false}
+              disableClick={true}
+              maxSize={1024 * 1024}
+              accept=".json,.JSON,application/json"
+              onDrop={this.onDropJSON}
+            >
+              {({ open }) => (
+                <>
+                  <div className="drop-overlay active">
+                    <div>
+                      <h1>
+                        <i className="fas fa-file-code" />
+                      </h1>
+                      <p>Drag and Drop APL JSON Files</p>
                     </div>
                   </div>
-                  <hr />
-                  <FormGroup className="mt-0">
-                    <label>Display Name</label>
-                    <Input name="title" placeholder="Name of Display" value={title} onChange={this.onChange} />
-                  </FormGroup>
-                  <FormGroup>
-                    <label>Description</label>
-                    <Input name="description" placeholder="Description of Display" value={description} onChange={this.onChange} />
-                  </FormGroup>
-                  <hr />
-                  <Button isClear block onClick={() => open()} className="mb-4 w-100">
-                    <i className="fas fa-file-code mr-1" /> Upload JSON File
-                  </Button>
-                  <FormGroup>
-                    <Row className="no-padding-row">
-                      <Col md="6">
-                        <div>APL Document</div>
-                        <AceEditor
-                          name="document_editor"
-                          className="document_editor"
-                          mode="json"
-                          theme="monokai"
-                          onChange={this.onChangeDocument}
-                          fontSize={14}
-                          showPrintMargin={false}
-                          showGutter={true}
-                          highlightActiveLine={true}
-                          value={document}
-                          editorProps={{ $blockScrolling: true }}
-                          setOptions={{
-                            enableBasicAutocompletion: true,
-                            enableLiveAutocompletion: false,
-                            enableSnippets: false,
-                            showLineNumbers: true,
-                            tabSize: 2,
-                            useWorker: false,
+                  <div className="drop-overlay reject">
+                    <div>
+                      <h1>
+                        <i className="fas fa-file-times" />
+                      </h1>
+                      <p>APL JSON Files Only</p>
+                    </div>
+                  </div>
+                  <div className="content">
+                    <div className="space-between">
+                      <div className="text-muted">
+                        <h5 className="mb-0">APL Template</h5>{' '}
+                        <small>
+                          <i className="far fa-link" /> ({' '}
+                          <a href="https://developer.amazon.com/alexa/console/ask/displays" target="_blank" rel="noopener noreferrer">
+                            Authoring Tool
+                          </a>{' '}
+                          )
+                        </small>
+                      </div>
+                      <div className="subheader-right">
+                        <Button
+                          isFlat
+                          varient="contained"
+                          className="mr-2"
+                          type="button"
+                          onClick={() => {
+                            history.push(`/visuals/${skill_id}`);
                           }}
-                        />
-                      </Col>
-                      <Col md="6">
-                        <div>Default Datasource (optional)</div>
-                        <AceEditor
-                          name="document_editor"
-                          className="document_editor"
-                          mode="json"
-                          theme="monokai"
-                          onChange={this.onChangeDataSource}
-                          fontSize={14}
-                          showPrintMargin={false}
-                          showGutter={true}
-                          highlightActiveLine={true}
-                          value={datasource}
-                          editorProps={{ $blockScrolling: true }}
-                          setOptions={{
-                            enableBasicAutocompletion: true,
-                            enableLiveAutocompletion: false,
-                            enableSnippets: false,
-                            showLineNumbers: true,
-                            tabSize: 2,
-                            useWorker: false,
-                          }}
-                        />
-                      </Col>
-                    </Row>
-                  </FormGroup>
-                </div>
-              </>
-            )}
-          </Dropzone>
-        )}
-      </div>
+                        >
+                          Back
+                        </Button>
+                        <Button isPrimary varient="contained" style={{ width: 100 }}>
+                          {saving ? <Spinner isEmpty /> : <>Save{saved ? '' : '*'}</>}
+                        </Button>
+                      </div>
+                    </div>
+                    <hr />
+                    <FormGroup className="mt-0">
+                      <label>Display Name</label>
+                      <FormTextInput name="display_name" type="text" placeholder="Name of Display" />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Description</label>
+                      <FormTextInput name="display_description" type="text" placeholder="Description of Display" />
+                    </FormGroup>
+                    <hr />
+                    <Button isClear onClick={() => open()} className="mb-4 w-100">
+                      <i className="fas fa-file-code mr-1" /> Upload JSON File
+                    </Button>
+                    <FormGroup>
+                      <Row className="no-padding-row">
+                        <Col md="6">
+                          <div>APL Document</div>
+                          <AceEditor
+                            name="document_editor"
+                            className="document_editor"
+                            mode="json"
+                            theme="monokai"
+                            onChange={this.onChangeDocument}
+                            fontSize={14}
+                            showPrintMargin={false}
+                            showGutter={true}
+                            highlightActiveLine={true}
+                            value={document}
+                            editorProps={{ $blockScrolling: true }}
+                            setOptions={{
+                              enableBasicAutocompletion: true,
+                              enableLiveAutocompletion: false,
+                              enableSnippets: false,
+                              showLineNumbers: true,
+                              tabSize: 2,
+                              useWorker: false,
+                            }}
+                          />
+                        </Col>
+                        <Col md="6">
+                          <div>Default Datasource (optional)</div>
+                          <AceEditor
+                            name="document_editor"
+                            className="document_editor"
+                            mode="json"
+                            theme="monokai"
+                            onChange={this.onChangeDataSource}
+                            fontSize={14}
+                            showPrintMargin={false}
+                            showGutter={true}
+                            highlightActiveLine={true}
+                            value={datasource}
+                            editorProps={{ $blockScrolling: true }}
+                            setOptions={{
+                              enableBasicAutocompletion: true,
+                              enableLiveAutocompletion: false,
+                              enableSnippets: false,
+                              showLineNumbers: true,
+                              tabSize: 2,
+                              useWorker: false,
+                            }}
+                          />
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                  </div>
+                </>
+              )}
+            </Dropzone>
+          )}
+        </div>
+      </form>
     );
   }
 }
 
+const validate = (values) => {
+  const errors = {};
+  if (!values.display_name) {
+    errors.display_name = 'Display Name is Required';
+  }
+  return errors;
+};
+
 const mapStateToProps = (state) => ({
   skill_id: state.skills.skill.skill_id,
+  displayForm: getFormValues(DISPLAY_FORM_NAME)(state),
+  isDirty: isDirty(DISPLAY_FORM_NAME)(state),
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -347,7 +363,13 @@ const mapDispatchToProps = (dispatch) => {
     setError: (err) => dispatch(setError(err)),
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  reduxForm({
+    form: DISPLAY_FORM_NAME,
+    validate,
+  })
 )(Display);

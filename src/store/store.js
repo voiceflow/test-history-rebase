@@ -19,5 +19,6 @@ export default ({ children, initialState = {} }) => {
   const middleware = [routerMiddleware(history), thunk, ...(LOGROCKET_ENABLED ? [LogRocket.reduxMiddleware()] : [])];
 
   const store = createStore(rootReducer(history), initialState, composeEnhancers(applyMiddleware(...middleware)));
+  window.store = store;
   return <Provider store={store}>{children}</Provider>;
 };

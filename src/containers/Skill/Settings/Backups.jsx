@@ -84,7 +84,7 @@ class BackupSettings extends Component {
       setConfirm({
         text: <Alert className="mb-0">Successfully Restored Backup</Alert>,
       });
-      history.push(`/canvas/${data.project_id}/${data.diagram}`);
+      history.push(`/canvas/${data.skill_id}/${data.diagram}`);
     } catch (err) {
       console.error(err.response);
       setError('Unable to restore version');

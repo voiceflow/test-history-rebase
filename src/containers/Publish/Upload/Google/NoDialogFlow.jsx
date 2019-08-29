@@ -85,7 +85,7 @@ const NoDialogFlow = ({ credentials, linkDialogflowCredential, error, checkDialo
       </FormGroup>
       <PopupButtonSection>
         <Button variant="primary" onClick={checkDialogflow} disabled={!credentials}>
-          Next
+          Upload
         </Button>
         <HelpLink>Setup tutorial</HelpLink>
       </PopupButtonSection>

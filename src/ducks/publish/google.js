@@ -189,8 +189,18 @@ export const loadDialogflow = () =>
 
 // STEP 2 - check that the project is linked to a dialogflow project
 export const checkDialogflow = () =>
-  uploadStep(async (dispatch) => {
-    dispatch(updateGoogleStage(GOOGLE_STAGES.CHECK_DIALOGFLOW));
+  uploadStep(async (dispatch, getState) => {
+    const {
+      publish: {
+        google: { options },
+      },
+    } = getState();
+
+    // if options check is disabled, do not show this stage but still run
+    if (options.check !== false) {
+      dispatch(updateGoogleStage(GOOGLE_STAGES.CHECK_DIALOGFLOW));
+    }
+
     const checkToken = await dispatch(loadDialogflow());
     if (!checkToken || checkToken.error) {
       return dispatch(updateGoogleStage(GOOGLE_STAGES.NO_DIALOGFLOW));

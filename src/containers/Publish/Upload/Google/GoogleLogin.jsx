@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { Alert } from 'reactstrap';
 
 import GoogleLoginButton from '@/components/Forms/GoogleLogin';
-import { GoogleLogin } from '@/ducks/publish/google';
+import { GoogleLogin, updateGoogle } from '@/ducks/publish/google';
 
 import { IndefiniteLoading } from '../common/Loading';
 import { PopupButtonSection, UploadPromptWrapper } from '../styled';
 
 const GetGoogleLogin = (props) => {
-  const { GoogleLogin } = props;
+  const { GoogleLogin, updateGoogle } = props;
 
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -20,10 +20,17 @@ const GetGoogleLogin = (props) => {
   };
 
   const success = () => {
+    // do no trigger the check dialogflow token state (to stay on modal)
+    updateGoogle({ options: { check: false } });
     GoogleLogin();
   };
 
-  if (loading) return <IndefiniteLoading message="Verifying Login" />;
+  if (loading)
+    return (
+      <div className="mt-4 mb-5">
+        <IndefiniteLoading message="Verifying Login" />
+      </div>
+    );
 
   return (
     <UploadPromptWrapper>
@@ -39,5 +46,5 @@ const GetGoogleLogin = (props) => {
 
 export default connect(
   null,
-  { GoogleLogin }
+  { GoogleLogin, updateGoogle }
 )(GetGoogleLogin);

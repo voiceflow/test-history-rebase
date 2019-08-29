@@ -16,6 +16,14 @@ body {
   background: #f7f9fb !important;
 }
 
+a {
+  color: #5d9df5;
+}
+
+a:hover {
+  color: #7eb4ff;
+}
+
 li {
   display: list-item;
   text-align: -webkit-match-parent;

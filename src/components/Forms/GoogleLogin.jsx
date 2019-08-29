@@ -53,7 +53,7 @@ export const GoogleLoginForm = (props) => {
             className="form-bg"
             type="text"
             name="google_token"
-            placeholder="Paste your Google Authentication Token here"
+            placeholder="Paste code here"
             value={token}
             onChange={(e) => setToken(e.target.value)}
             disabled={loading}

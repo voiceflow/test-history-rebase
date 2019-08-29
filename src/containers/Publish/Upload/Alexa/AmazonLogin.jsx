@@ -35,7 +35,6 @@ const GetAmazonLogin = (props) => {
       <img src="/Connect-account.svg" alt="" />
       <PopUpText>Please connect your Amazon developer account to upload your skill to Alexa.</PopUpText>
 
-      {/* {modal && Video('https://s3.amazonaws.com/com.getvoiceflow.videos/first.mp4')} */}
       <PopupButtonSection>
         <AmazonLoginButton onLoad={() => setLoading(true)} onFail={fail} onSuccess={success} />
       </PopupButtonSection>

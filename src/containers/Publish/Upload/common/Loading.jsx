@@ -1,9 +1,7 @@
-import 'react-sweet-progress/lib/style.css';
-
 import _ from 'lodash';
-import React, { Component } from 'react';
-import { Progress } from 'react-sweet-progress';
+import React, { PureComponent } from 'react';
 
+import Progress from '@/components/Progress';
 import { Spinner } from '@/components/Spinner';
 
 import { UploadPromptWrapper } from '../styled';
@@ -19,20 +17,20 @@ export const IndefiniteLoading = ({ message }) => (
   </UploadPromptWrapper>
 );
 
-export class ProgressLoading extends Component {
+export class ProgressLoading extends PureComponent {
   state = {
     percent: 0,
   };
 
-  componentDidMount = () => {
+  componentDidMount() {
     this.updateInterval();
-  };
+  }
 
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate(prevProps) {
     if (prevProps.state !== this.props.state) {
       this.updateInterval();
     }
-  };
+  }
 
   updateInterval = () => {
     const { state } = this.props;
@@ -47,9 +45,9 @@ export class ProgressLoading extends Component {
     }
   };
 
-  componentWillUnmount = () => {
+  componentWillUnmount() {
     clearInterval(this.timeout);
-  };
+  }
 
   // Step 8 - used in Step 7
   increment = (limit, interval) => {
@@ -60,7 +58,7 @@ export class ProgressLoading extends Component {
     }
   };
 
-  render = () => {
+  render() {
     const { percent } = this.state;
     const label = _.get(this.props.state, ['loading', 'label']);
 
@@ -75,5 +73,5 @@ export class ProgressLoading extends Component {
         )}
       </UploadPromptWrapper>
     );
-  };
+  }
 }

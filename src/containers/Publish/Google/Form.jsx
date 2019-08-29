@@ -139,8 +139,6 @@ class GooglePublish extends Component {
   async componentDidMount() {
     const { skill_id, setError } = this.props;
 
-    // TODO : get google id
-
     try {
       const res = await axios.get(`/skill/google/${skill_id}`);
 

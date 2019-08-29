@@ -19,10 +19,7 @@ export function PublishAmazon(props) {
     publish({ submit: true });
   };
 
-  useEffect(() => {
-    if (ALEXA_STATES[stage].end) setClose(true);
-    else setClose(false);
-  }, [stage]);
+  useEffect(() => setClose(ALEXA_STATES[stage].end), [stage]);
 
   useEffect(() => {
     if (!amazon) {

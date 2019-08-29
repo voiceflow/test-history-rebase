@@ -20,10 +20,7 @@ export function PublishGoogle(props) {
     publish();
   };
 
-  useEffect(() => {
-    if (GOOGLE_STATES[stage].end) setClose(true);
-    else setClose(false);
-  }, [stage]);
+  useEffect(() => setClose(GOOGLE_STATES[stage].end), [stage]);
 
   useEffect(() => {
     loadDialogflow();
@@ -49,16 +46,20 @@ export function PublishGoogle(props) {
   );
 }
 
+const mapStateToProps = (state) => ({
+  stage: state.publish.google.stage,
+  google: state.account.google,
+  project_id: state.skills.skill.project_id,
+});
+
+const mapDispatchToProps = {
+  resetGoogleUpload,
+  checkGoogleAccount,
+  publish,
+  loadDialogflow,
+};
+
 export default connect(
-  (state) => ({
-    stage: state.publish.google.stage,
-    google: state.account.google,
-    project_id: state.skills.skill.project_id,
-  }),
-  {
-    resetGoogleUpload,
-    checkGoogleAccount,
-    publish,
-    loadDialogflow,
-  }
+  mapStateToProps,
+  mapDispatchToProps
 )(PublishGoogle);

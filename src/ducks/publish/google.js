@@ -108,6 +108,17 @@ export const resetGoogleUpload = () => (dispatch) => {
 
 const uploadStep = createUploadStep('google');
 
+export const resetDialogflowCredential = () => async (dispatch, getState) => {
+  const project_id = getState().skills.skill.project_id;
+
+  await axios.delete('/session/google/dialogflow_access_token', {
+    data: {
+      project_id,
+    },
+  });
+  dispatch(updateGoogle({ google_id: null, credentials: false, error: null }));
+};
+
 // UPLOAD SUCCESS
 export const uploadSuccess = () =>
   uploadStep(async (dispatch) => {
@@ -143,19 +154,6 @@ export const renderProject = () =>
       console.error(err);
       dispatch(updateGoogleStage(GOOGLE_STAGES.RENDERING_ERROR));
     }
-  });
-
-// STEP 2.3 Reset Dialogflow Cred
-export const resetDialogflowCredential = () =>
-  uploadStep(async (dispatch, getState) => {
-    const projectId = getState().skills.skill.project_id;
-
-    await axios.delete('/session/google/dialogflow_access_token', {
-      data: {
-        projectId,
-      },
-    });
-    dispatch(updateGoogle({ google_id: null, credentials: false, error: null }));
   });
 
 // STEP 2.2 Link Dialogflow Cred

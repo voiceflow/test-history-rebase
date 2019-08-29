@@ -7,7 +7,7 @@ export const createUploadStep = (platform) => (callback) => (dispatch, getState)
   const overrideDispatch = (step) => {
     // only update if id is consistent
     if (getState().publish[platform].id === publishId) {
-      dispatch(step);
+      return dispatch(step);
     }
   };
 

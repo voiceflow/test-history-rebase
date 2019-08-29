@@ -1178,10 +1178,6 @@ textarea.form-control::placeholder,
   line-height: 20px;
 }
 
-.TitleBar .publish-btn:hover {
-  color: #3d96f0 !important;
-}
-
 .flex-hard {
   flex: 10;
 }

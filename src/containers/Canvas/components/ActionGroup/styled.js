@@ -34,7 +34,7 @@ export const UploadButtonWrapper = styled.div`
     height: 42px;
     padding: 0 20px;
 
-    color: #fff !important;
+    color: #fff;
     font-weight: 500;
     font-size: 15px;
     text-transform: none;
@@ -48,13 +48,11 @@ export const UploadButtonWrapper = styled.div`
 
     &:hover {
       background: linear-gradient(0deg, #2c85ff, #2c85ff);
-      border: none !important;
       box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
     }
 
     &:active {
       background: linear-gradient(0deg, #2c85ff, #2c85ff);
-      border: none !important;
       box-shadow: 0px 7px 12px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
     }
   }
@@ -207,12 +205,11 @@ export const PopupTransition = styled.div`
 `;
 
 export const PopupContainer = styled.div`
-  ${({ open }) => (open ? '' : 'display: none !important;')}
+  display: ${({ open }) => (open ? 'flex' : 'none')};
   position: absolute;
   top: 75px;
   right: 15px;
   z-index: 1;
-  display: flex;
   flex-direction: column;
   align-items: center;
   min-width: 350px;

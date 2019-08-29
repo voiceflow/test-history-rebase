@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import Alexa from './Alexa';
 import Google from './Google';
 
-// import GoogleActionGroup from './Google';
-
 function ActionGroup({ platform }) {
   if (platform === 'alexa') return <Alexa />;
   return <Google />;

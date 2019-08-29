@@ -21,10 +21,7 @@ function UploadButton(props) {
 
   const text = state.end ? 'Upload to Alexa' : 'Uploading';
 
-  const action = () => {
-    if (state.end) publish();
-    else setPopup((open) => !open);
-  };
+  const action = () => (state.end ? publish() : setPopup((open) => !open));
 
   return (
     <UploadButtonWrapper options={multiVendor}>

@@ -185,7 +185,7 @@ class Account extends Component {
                 <h4 className="mb-0 text-muted">Google</h4>
                 <div className="super-center">{this.googleButton()}</div>
               </div>
-              {google && (
+              {google && google.profile && (
                 <>
                   <hr />
                   <div className="pl-4 pb-4 pr-4 space-between helper-text">

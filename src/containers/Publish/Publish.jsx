@@ -1,11 +1,13 @@
+import './Skill.css';
+
 import cloneDeep from 'lodash/cloneDeep';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Badge } from 'reactstrap';
 
-import PublishAmazon from './PublishAmazon';
-import PublishGoogle from './PublishGoogle';
+import PublishAmazon from './Amazon';
+import PublishGoogle from './Google';
 
 const updateLink = (link, skill_id) => {
   return link.replace(':skill_id', skill_id);

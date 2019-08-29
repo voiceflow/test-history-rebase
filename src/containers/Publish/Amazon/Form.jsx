@@ -1,77 +1,45 @@
-import './Skill.css';
-
 import axios from 'axios';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import Toggle from 'react-toggle';
-import { Alert, Button, ButtonGroup, Collapse, FormFeedback, FormGroup, Input, Label, Modal, ModalBody } from 'reactstrap';
+import { Button, ButtonGroup, Collapse, FormFeedback, FormGroup, Input, Label } from 'reactstrap';
 import { compose } from 'redux';
 import { getFormValues, reduxForm } from 'redux-form';
 import validUrl from 'valid-url';
 
-import DefaultButton from '@/components/Button';
 import Checkbox from '@/components/Checkbox';
-import AmazonLogin from '@/components/Forms/AmazonLogin';
 import Multiple from '@/components/Forms/Multiple';
 import GuidedSteps, { GuidedStepsWrapper } from '@/components/GuidedSteps';
-import { ModalHeader } from '@/components/Modals/ModalHeader';
 import RadioButtons, { YES_NO_RADIO_BUTTONS } from '@/components/RadioButtons';
 import { Spinner } from '@/components/Spinner';
 import Image from '@/components/Uploads/Image';
 import { FormTextBox } from '@/componentsV2/form/TextBox';
 import { FormTextInput } from '@/componentsV2/form/TextInput';
-import { AmazonAccessToken } from '@/ducks/account';
 import { setError } from '@/ducks/modal';
 import { updateEntireVersion, updateSkillDB, updateVersion } from '@/ducks/version';
 
-import { AMAZON_CATEGORIES } from '../../services/Categories';
-import LOCALE_MAP from '../../services/LocaleMap';
+import { AMAZON_CATEGORIES } from '../../../services/Categories';
+import LOCALE_MAP from '../../../services/LocaleMap';
 
 const PUBLISH_AMAZON_FORM = 'publish_amazon_form';
 
-const stage_title = {
-  '-1': 'Login Failed',
-  0: 'Login Developer with Amazon',
-  1: 'Verifying',
-  3: 'Rendering',
-  4: 'Publishing',
-  5: 'Developer Account',
-  6: 'Checking Vendor',
-  7: 'Building and Submitting',
-  9: 'Privacy & Compliance Ext.',
-  10: 'Sent for Review',
-  11: 'Awaiting Review',
-  12: 'Confirming Withdraw',
-  13: 'Interaction Model (might take a few minutes)',
-};
-
-const disabled_stages = new Set([11, 12]);
-
 class Skill extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loaded: false,
-      dropdown: false,
-      stage: 1,
-      publish: false,
-      id_collapse: false,
-      amzn_id: null,
-      stage_error: null,
-      validate: {},
-    };
-    // this.transferIcon = this.transferIcon.bind(this)
-    this.privacyTop = React.createRef();
-  }
+  state = {
+    loaded: false,
+    id_collapse: false,
+    stage_error: null,
+    validate: {},
+    saving: false,
+  };
+
+  privacyTop = React.createRef();
 
   componentDidMount() {
     const { skill_id } = this.props;
-    AmazonAccessToken()
-      .then(() => this.setState({ stage: 2 }))
-      .catch(() => this.setState({ stage: 0 }));
 
+    // TODO: Antipattern, fix this when we do redux ( sync with redux store )
     axios
       .get(`/skill/${skill_id}?verbose=1`)
       .then((res) => {
@@ -104,7 +72,6 @@ class Skill extends Component {
         }
         res.data.privacy_policy = !_.isEmpty(res.data.privacy_policy) ? res.data.privacy_policy : '';
 
-        // TODO: Antipattern, fix this when we do redux
         this.setState({
           loaded: true,
           ...res.data,
@@ -131,30 +98,8 @@ class Skill extends Component {
     });
   };
 
-  handleError = (err, default_error) => {
-    const { setError } = this.props;
-    console.error(err);
-
-    let error_message = '';
-    if (_.has(err, ['response', 'data', 'message'])) {
-      error_message += err.response.data.message;
-
-      if (err.response.data.violations) {
-        for (let i = 0; i < err.response.data.violations.length; i++) {
-          error_message += `\n${err.response.data.violations[i].message}`;
-        }
-      }
-    }
-
-    this.setState({
-      publish: false,
-      stage: 2,
-    });
-    setError(_.has(err, ['response', 'data', 'message']) ? error_message : default_error);
-  };
-
   onWithdraw = () => {
-    const { amzn_id } = this.state;
+    const { amzn_id } = this.props;
     axios
       .post(`/amazon/${amzn_id}/withdraw`)
       .then(() => {
@@ -171,159 +116,16 @@ class Skill extends Component {
       });
   };
 
-  onDelete = () => {
-    const { skill_id, history } = this.props;
-    axios
-      .delete(`/skill/${skill_id}`)
-      .then(() => {
-        history.push('/dashboard');
-      })
-      .catch((err) => {
-        this.handleError(err, 'Deletion Error');
-        this.setState({
-          stage: 0,
-        });
-      });
-  };
-
-  onCertify = () => {
-    const { skill_id } = this.props;
-    const { amzn_id } = this.state;
-
-    this.setState({
-      stage: 7,
-    });
-    axios
-      .post(`/amazon/${skill_id}/${amzn_id}/certify`)
-      .then(() => {
-        this.setState({
-          stage: 10,
-          publish: true,
-          review: true,
-        });
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.dir(err);
-        let error_message = 'Certification Error \n';
-        if (_.has(err, ['response', 'data', 'message'])) {
-          error_message += err.response.data.message;
-
-          if (err.response.data.violations) {
-            for (let i = 0; i < err.response.data.violations.length; i++) {
-              error_message += `\n${err.response.data.violations[i].message}`;
-            }
-          }
-        }
-        this.handleError(err, error_message);
-      });
-  };
-
-  scrollToTop = () => {
-    this.privacyTop.current.scrollIntoView(true);
-  };
-
-  // Step 10 - used in Step 6
-  checkInteractionModel = (amznId) => {
-    this.setState({ stage: 13 });
-    const iterate = (depth) => {
-      // wait up to 120 seconds
-      if (depth === 40) {
-        this.onCertify();
-      } else {
-        setTimeout(() => {
-          axios
-            .get(`/interaction_model/${amznId}/status`)
-            .then((res) => {
-              if (res.data && res.data.interactionModel) {
-                // eslint-disable-next-line no-restricted-syntax, guard-for-in
-                for (const key in res.data.interactionModel) {
-                  const locale = res.data.interactionModel[key];
-                  if (locale.lastUpdateRequest && locale.lastUpdateRequest.status && locale.lastUpdateRequest.status === 'SUCCEEDED') {
-                    this.onCertify();
-                    return;
-                  }
-                }
-              }
-              iterate(depth + 1);
-            })
-            .catch(() => {
-              this.onCertify();
-            });
-        }, 3000);
-      }
-    };
-
-    iterate(0);
-  };
-
-  onPublish = () => {
-    this.setState({ publish: true, stage: 3 });
-    const { project_id, setError } = this.props;
-    this.save()
-      .then(() => {
-        axios
-          .post(`/project/${project_id}/render`, { platform: 'alexa' })
-          .then((res) => {
-            this.setState({ stage: 4 });
-            const new_version_data = res.data;
-            axios
-              .post(`/project/${project_id}/version/${new_version_data.new_skill.skill_id}/alexa`)
-              .then(({ data: amzn_id }) => {
-                this.setState(
-                  {
-                    amzn_id,
-                  },
-                  () => this.checkInteractionModel(amzn_id)
-                );
-              })
-              .catch((err) => {
-                if (err.status === 403 || err.response.status === 403) {
-                  // No Vendor ID/Amazon Developer Account
-                  this.setState({
-                    stage: 5,
-                  });
-                } else {
-                  this.handleError(err, 'Publishing Error');
-                }
-              });
-          })
-          .catch((err) => {
-            this.handleError(err, 'Rendering Error');
-          });
-      })
-      .catch((err) => {
-        setError(err);
-      });
-  };
-
-  checkVendor = () => {
-    this.setState({ stage: 6 });
-
-    axios
-      .get('/session/vendor')
-      .then(() => {
-        this.setState({ stage: 2 });
-      })
-      .catch((err) => {
-        console.error(err);
-        this.setState({ stage: 5 });
-      });
-  };
-
   componentWillUnmount() {
-    const { loaded } = this.state;
-    if (loaded) {
-      this.save();
-    }
+    if (this.state.loaded) this.save();
   }
 
-  validateForm = () => {
-    const { setError } = this.props;
+  validateForm = async () => {
+    const { setError, publish, review } = this.props;
 
     const s = this.state;
     const split_keywords = s.keywords.split(',');
-    if (s.review) {
+    if (review) {
       setError('This skill is currently under review and can not be resubmitted');
     } else if (s.privacy_policy && !validUrl.isUri(s.privacy_policy)) {
       setError('Privacy policy must be a url');
@@ -338,7 +140,10 @@ class Skill extends Component {
     } else if (!s.instructions) {
       setError('Please Provide Testing Instructions');
     } else {
-      this.onPublish();
+      this.setState({ saving: true });
+      await this.save();
+      this.setState({ saving: false });
+      publish();
     }
   };
 
@@ -392,41 +197,15 @@ class Skill extends Component {
   };
 
   handleChange = (event) => {
-    const { stage } = this.state;
-    if (stage !== 11) {
-      this.setState({
-        [event.target.name]: event.target.value,
-      });
-    }
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
   };
 
   handleSelection = (value) => {
     this.setState({
       category: value,
     });
-  };
-
-  toggle = () => {
-    const { dropdown } = this.state;
-    this.setState({
-      dropdown: !dropdown,
-    });
-  };
-
-  togglePublish = () => {
-    const { publish } = this.state;
-    this.setState({
-      publish: !publish,
-    });
-  };
-
-  closePublish = () => {
-    const { stage } = this.state;
-    if (stage === 1) {
-      this.setState({
-        stage: 0,
-      });
-    }
   };
 
   onLocaleBtnClick = (locale) => {
@@ -466,18 +245,18 @@ class Skill extends Component {
     }
   };
 
-  forceChange = () => {
-    this.forceUpdate();
-  };
-
   renderBlocks = () => {
-    const { stage, locales, small_icon, large_icon, category, invocations, privacy_policy, terms_and_cond, copa, name } = this.state;
+    const { locales, small_icon, large_icon, category, invocations, privacy_policy, terms_and_cond, copa, name, saving } = this.state;
 
     const blocks = [];
     const enterText = (
       <>
         Submit for Review
-        <i className="fab fa-amazon ml-2" />
+        {saving && (
+          <span className="ml-2">
+            <i className="fas fa-sync fa-spin" />
+          </span>
+        )}
       </>
     );
 
@@ -488,7 +267,7 @@ class Skill extends Component {
           <FormGroup className="mb-4">
             <div className="mb-4">
               <Label className="publish-label">Display Name *</Label>
-              <FormTextInput name="name" type="text" placeholder="Storyflow - Interactive Story Adventures" disabled={disabled_stages.has(stage)} />
+              <FormTextInput name="name" type="text" placeholder="Storyflow - Interactive Story Adventures" />
               <FormFeedback>Uh oh! Looks like there is an issue with your email. Please input a correct email.</FormFeedback>
             </div>
           </FormGroup>
@@ -497,7 +276,6 @@ class Skill extends Component {
             <div style={{ width: '50%' }}>
               <Image
                 className="icon-image large-icon text-center pa__icon"
-                isDisabled={disabled_stages.has(stage)}
                 path="/image/large_icon"
                 image={large_icon}
                 update={(url) => this.setState({ large_icon: url })}
@@ -507,7 +285,6 @@ class Skill extends Component {
             <div style={{ width: '50%' }}>
               <Image
                 className="icon-image small-icon text-center pa__icon"
-                isDisabled={disabled_stages.has(stage)}
                 path="/image/small_icon"
                 image={small_icon}
                 update={(url) => this.setState({ small_icon: url })}
@@ -539,14 +316,13 @@ class Skill extends Component {
         <>
           <FormGroup className="mt-0 mb-4">
             <Label className="publish-label">Summary *</Label>
-            <FormTextInput type="text" name="summary" placeholder="One Sentence Skill Summary" disabled={disabled_stages.has(stage)} />
+            <FormTextInput type="text" name="summary" placeholder="One Sentence Skill Summary" />
           </FormGroup>
 
           <FormGroup className="mb-4">
             <Label className="publish-label">Description *</Label>
             <FormTextBox
               name="description"
-              disabled={disabled_stages.has(stage)}
               minRows={4}
               maxRows={4}
               placeholder="Skill Description"
@@ -556,26 +332,14 @@ class Skill extends Component {
 
           <FormGroup className="mb-4">
             <Label className="publish-label">Category *</Label>
-            <Select
-              classNamePrefix="select-box"
-              name="category"
-              isDisabled={disabled_stages.has(stage)}
-              value={category}
-              onChange={this.handleSelection}
-              options={AMAZON_CATEGORIES}
-            />
+            <Select classNamePrefix="select-box" name="category" value={category} onChange={this.handleSelection} options={AMAZON_CATEGORIES} />
           </FormGroup>
 
           <FormGroup className="mb-4">
             <Label className="publish-label">
               Keywords (Search Tags) <small>optional</small>
             </Label>
-            <FormTextInput
-              type="text"
-              name="keywords"
-              placeholder="Keywords (Separated By Commas) e.g. Game, Space, Adventure"
-              disabled={disabled_stages.has(stage)}
-            />
+            <FormTextInput type="text" name="keywords" placeholder="Keywords (Separated By Commas) e.g. Game, Space, Adventure" />
           </FormGroup>
         </>
       ),
@@ -611,7 +375,7 @@ class Skill extends Component {
         <>
           <FormGroup className="mb-4">
             <Label className="publish-label">Invocation Name *</Label>
-            <FormTextInput type="text" name="inv_name" placeholder="Enter an invocation name" disabled={disabled_stages.has(stage)} />
+            <FormTextInput type="text" name="inv_name" placeholder="Enter an invocation name" />
           </FormGroup>
 
           <FormGroup className="mb-4">
@@ -622,7 +386,6 @@ class Skill extends Component {
               max={3}
               prepend="Alexa,"
               update={(list) => this.setState({ invocations: list })}
-              isDisabled={disabled_stages.has(stage)}
               placeholder={`open/start/launch ${name}`}
               add={
                 <span>
@@ -697,7 +460,6 @@ class Skill extends Component {
               className="form-bg"
               type="text"
               name="privacy_policy"
-              disabled={disabled_stages.has(stage)}
               placeholder="Privacy Policy"
               value={privacy_policy}
               onChange={this.handleChange}
@@ -711,7 +473,6 @@ class Skill extends Component {
                 className="form-bg"
                 type="text"
                 name="terms_and_cond"
-                disabled={disabled_stages.has(stage)}
                 placeholder="Terms and Conditions"
                 value={terms_and_cond}
                 onChange={this.handleChange}
@@ -795,7 +556,6 @@ class Skill extends Component {
             <Label>Testing Instructions</Label>
             <FormTextBox
               name="instructions"
-              disabled={disabled_stages.has(stage)}
               minRows={3}
               maxRows={3}
               placeholder="Any Particular Testing Instructions for Amazon Approval Process"
@@ -827,62 +587,12 @@ class Skill extends Component {
       ),
     });
 
-    return <GuidedSteps blocks={blocks} checkStep={this.checkValidStep} onFinishSteps={this.validateForm} submitText={enterText} />;
+    return <GuidedSteps blocks={blocks} checkStep={this.checkValidStep} onFinishSteps={this.validateForm} submitText={enterText} disabled={saving} />;
   };
 
   render() {
-    const { stage, amzn_id, locales, loaded, publish, live, review, id_collapse } = this.state;
-    // const { setConfirm } = this.props;
-
-    let content;
-    // const alexaDashboardUrl = `https://developer.amazon.com/alexa/console/ask/build/custom/${amzn_id}/development/en_US/dashboard`;
-    if (stage === 0 || stage === -1) {
-      content = (
-        <div className="my-5">
-          {stage === -1 ? <Alert color="danger">Login With Amazon Failed - Try Again.</Alert> : null}
-          <AmazonLogin
-            updateLogin={(stage) => {
-              if (stage === 2) {
-                this.checkVendor();
-              } else {
-                this.setState({ stage });
-              }
-            }}
-          />
-        </div>
-      );
-    } else if ([1, 3, 4, 6, 7, 13].includes(stage)) {
-      content = (
-        <div>
-          <Spinner message={`Loading ${stage_title[stage]}`} />
-        </div>
-      );
-    }
-    if (stage === 5) {
-      content = (
-        <div>
-          Your Amazon Account needs to set up developer settings to Upload Skills
-          <Alert className="mt-4">Press "Create your Amazon Developer account" and sign up with the same email as your Amazon Account.</Alert>
-          <div className="my-3">
-            <a href="https://developer.amazon.com/login.html" className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
-              Developer Sign Up
-            </a>
-            <DefaultButton isClear onClick={this.checkVendor}>
-              <i className="fas fa-sync-alt" /> Check Again
-            </DefaultButton>
-          </div>
-        </div>
-      );
-    } else if (stage === 10) {
-      content = (
-        <div className="text-center mb-4">
-          <img id="rocket" alt="submitted" height={120} src="/images/icons/takeoff.svg" />
-          <div className="px-3 mt-4 text-dull">
-            Your project has been submitted for review. During this time you will see the skill with the "Review" status.
-          </div>
-        </div>
-      );
-    }
+    const { amzn_id, review } = this.props;
+    const { locales, loaded, live, id_collapse } = this.state;
 
     if (!loaded)
       return (
@@ -893,13 +603,6 @@ class Skill extends Component {
 
     return (
       <>
-        <Modal isOpen={publish} className="stage_modal" centered size="lg" onClosed={this.closePublish}>
-          <ModalHeader toggle={() => this.setState({ publish: false })}>{stage_title[stage]}</ModalHeader>
-          <ModalBody>
-            <div className="modal-info">{content}</div>
-          </ModalBody>
-        </Modal>
-
         <div className="subheader-page-container">
           <div>
             <GuidedStepsWrapper className="pb-0">
@@ -977,6 +680,8 @@ const validate = (values) => {
 const mapStateToProps = (state) => ({
   skill_id: state.skills.skill.skill_id,
   project_id: state.skills.skill.project_id,
+  amzn_id: state.skills.skill.amzn_id,
+  review: state.skills.skill.review,
   amazonForm: getFormValues(PUBLISH_AMAZON_FORM)(state),
 });
 

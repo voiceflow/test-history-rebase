@@ -1,11 +1,12 @@
 import axios from 'axios';
 import * as _ from 'lodash';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
-import { AmazonAccessToken } from '@/ducks/account';
+import { checkAmazonAccount } from '@/ducks/account';
 
 class Migrate extends Component {
   constructor(props) {
@@ -29,7 +30,8 @@ class Migrate extends Component {
   };
 
   componentDidMount() {
-    AmazonAccessToken()
+    this.props
+      .checkAmazonAccount()
       .then(() => this.setState({ stage: 1 }))
       .catch(() =>
         this.setState({
@@ -111,4 +113,7 @@ class Migrate extends Component {
   }
 }
 
-export default Migrate;
+export default connect(
+  null,
+  { checkAmazonAccount }
+)(Migrate);

@@ -108,14 +108,15 @@ class GuidedSteps extends React.Component {
 
   render() {
     const stepStatus = _.cloneDeep(this.state.stepStatus);
+    const { disabled, blocks, noDetail, submitText, haveFooter, step } = this.props;
 
     // Check if the for is valid up until now
     const formValid = this.checkFormValidity(stepStatus);
     return (
-      <GuidedStepsWrapper noDetail={this.props.noDetail}>
+      <GuidedStepsWrapper noDetail={noDetail}>
         <ul className="gs__steps-list">
-          {this.props.blocks &&
-            this.props.blocks.map((block, idx) => (
+          {blocks &&
+            blocks.map((block, idx) => (
               <li
                 key={block.title}
                 className={cn(
@@ -130,7 +131,7 @@ class GuidedSteps extends React.Component {
                     'gs__steps-list__title',
                     { 'gs__clickable-step': this.state.stepNumber !== idx && this.validStepChange(idx) },
                     { 'gs__non-clickable-step': !this.validStepChange(idx) },
-                    { 'gs__is-constant': this.props.step !== undefined }
+                    { 'gs__is-constant': step !== undefined }
                   )}
                   onClick={() => this.changeStep(null, idx)}
                 >
@@ -140,15 +141,15 @@ class GuidedSteps extends React.Component {
                   <div className={cn('gs__steps-list__content')}>
                     <div className="gs__panel">
                       <div className="gs__panel-body">{block.content}</div>
-                      {!this.props.haveFooter && (
+                      {!haveFooter && (
                         <div className="gs__panel-footer">
-                          {idx < this.props.blocks.length - 1 ? (
+                          {idx < blocks.length - 1 ? (
                             <Button variant="secondary" disabled={!this.validStepChange(idx + 1)} onClick={(e) => this.changeStep(e, idx + 1)}>
                               Next
                             </Button>
                           ) : (
-                            <Button variant="primary" disabled={!formValid} onClick={(e) => this.submit(e, idx)}>
-                              {this.props.submitText}
+                            <Button variant="primary" disabled={!formValid || disabled} onClick={(e) => this.submit(e, idx)}>
+                              {submitText}
                             </Button>
                           )}
                         </div>

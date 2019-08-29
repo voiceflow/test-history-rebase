@@ -13,7 +13,8 @@ import { TEST_STATUS, renderTest, resetTest } from '@/ducks/test';
 import { RemoveIntercom } from '@/hocs/removeIntercom';
 import { useToggle } from '@/hooks/toggle';
 
-// import ShowDisplay from './ShowDisplay';
+// eslint-disable-next-line no-unused-vars
+import ShowDisplay from './ShowDisplay';
 import TestSettings from './TestingSettings';
 import Timeline from './timeline';
 

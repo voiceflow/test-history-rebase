@@ -13,7 +13,7 @@ import { TEST_STATUS, renderTest, resetTest } from '@/ducks/test';
 import { RemoveIntercom } from '@/hocs/removeIntercom';
 import { useToggle } from '@/hooks/toggle';
 
-import ShowDisplay from './ShowDisplay';
+// import ShowDisplay from './ShowDisplay';
 import TestSettings from './TestingSettings';
 import Timeline from './timeline';
 
@@ -73,7 +73,7 @@ function Test(props) {
           <div className="condition-label" id="TestDialog">
             <label>Dialog</label>
             <div className="d-flex">
-              <ShowDisplay />
+              {/* <ShowDisplay /> */}
               <div onClick={resetTest} className={cn('d-flex align-items-center pointer mx-1', { disabled: !active })}>
                 <Tooltip title="Reset Test" position="bottom">
                   <SvgIcon icon="restart" />

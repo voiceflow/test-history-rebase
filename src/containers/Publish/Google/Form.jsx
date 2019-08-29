@@ -316,7 +316,7 @@ const mapStateToProps = (state) => ({
   skill: state.skills.skill,
   skill_id: state.skills.skill.skill_id,
   google_id: state.publish.google.google_id,
-  google_email: (state.account.google && state.account.google.profile.email) || '0',
+  google_email: _.get(state, ['account', 'google', 'profile', 'email']) || '0',
 });
 
 const mapDispatchToProps = (dispatch) => {

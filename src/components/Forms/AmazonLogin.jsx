@@ -1,10 +1,8 @@
-import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import axios from 'axios';
+import React, { Component } from 'react';
 
 import Button from '@/componentsV2/Button';
 import { AMAZON_APP_ID } from '@/config';
-import { createAmazonSession } from '@/ducks/account';
 
 const AmazonLoad = () =>
   new Promise((resolve) => {
@@ -32,40 +30,53 @@ const AmazonLoad = () =>
     }
   });
 
-export const AmazonLoginButton = (props) => {
-  const { onLoad, onFail, onSuccess, createAmazonSession } = props;
-  useEffect(() => {
+const AmazonLogin = () =>
+  new Promise((resolve, reject) => {
+    const options = { response_type: 'code', scope: 'alexa::ask:skills:readwrite alexa::ask:models:readwrite alexa::ask:skills:test profile' };
+    window.amazon.Login.authorize(options, (response) => {
+      if (response.error) {
+        reject();
+      } else {
+        axios
+          .get(`/session/amazon/${response.code}`)
+          .then(() => {
+            resolve();
+          })
+          .catch((err) => {
+            console.error(err);
+            reject(err);
+          });
+      }
+    });
+  });
+
+class NormalButton extends Component {
+  constructor(props) {
+    super(props);
+
+    this.triggerLogin = this.triggerLogin.bind(this);
+  }
+
+  // eslint-disable-next-line react/no-deprecated, class-methods-use-this
+  componentWillMount() {
     AmazonLoad();
-  }, []);
+  }
 
-  const triggerLogin = async () => {
-    onLoad();
-    try {
-      const options = { response_type: 'code', scope: 'alexa::ask:skills:readwrite alexa::ask:models:readwrite alexa::ask:skills:test profile' };
-      window.amazon.Login.authorize(options, async (response) => {
-        if (response.error) throw new Error();
-        await createAmazonSession(response.code);
-        onSuccess();
-      });
-    } catch (err) {
-      onFail();
-    }
-  };
+  triggerLogin() {
+    const that = this;
+    that.props.updateLogin(1);
+    AmazonLogin()
+      .then(() => that.props.updateLogin(2))
+      .catch(() => that.props.updateLogin(-1));
+  }
 
-  return (
-    <Button variant="primary" className="LoginWithAmazon" onClick={triggerLogin}>
-      Connect Amazon
-    </Button>
-  );
-};
+  render() {
+    return (
+      <Button variant="primary" className="LoginWithAmazon" onClick={this.triggerLogin}>
+        Connect Amazon
+      </Button>
+    );
+  }
+}
 
-AmazonLoginButton.propTypes = {
-  onSuccess: PropTypes.func,
-  onFail: PropTypes.func,
-  onLoad: PropTypes.func,
-};
-
-export default connect(
-  null,
-  { createAmazonSession }
-)(AmazonLoginButton);
+export default NormalButton;

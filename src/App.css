@@ -16,14 +16,6 @@ body {
   background: #f7f9fb !important;
 }
 
-a {
-  color: #5d9df5;
-}
-
-a:hover {
-  color: #7eb4ff;
-}
-
 li {
   display: list-item;
   text-align: -webkit-match-parent;
@@ -325,6 +317,7 @@ ul {
 .subheader-page-container > div {
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
 }
 
 #app > #canvas,
@@ -720,7 +713,7 @@ hr.full-width {
 .alert-success {
   color: #5d9df5;
   background-color: #5d9df515;
-  border-color: transparent;
+  border: 1px solid #5d9df540;
 }
 
 .alert-success hr {
@@ -1186,6 +1179,10 @@ textarea.form-control::placeholder,
   line-height: 20px;
 }
 
+.TitleBar .publish-btn:hover {
+  color: #3d96f0 !important;
+}
+
 .flex-hard {
   flex: 10;
 }
@@ -1240,6 +1237,8 @@ textarea.form-control::placeholder,
   padding-right: 20px;
   padding-left: 20px;
   overflow: visible;
+  background-color: #f7f9fb !important;
+  background-color: #fff;
   border: 1px dashed #c5d3e0;
   border-radius: 5px;
   cursor: pointer;

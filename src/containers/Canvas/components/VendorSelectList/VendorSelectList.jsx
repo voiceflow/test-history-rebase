@@ -1,11 +1,11 @@
+import './VendorSelectList.css';
+
 import cn from 'classnames';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Button from '@/components/Button';
 import { updateVendorId } from '@/ducks/project';
-
-import { VendorList } from '../styled';
 
 class VendorSelectList extends Component {
   componentDidMount = () => {
@@ -28,7 +28,7 @@ class VendorSelectList extends Component {
   };
 
   renderVendorList = () => {
-    const { vendors, vendor_id, updateVendorId } = this.props;
+    const { vendors, vendor_id, project_id, updateVendorId } = this.props;
     return vendors.map((vendor) => {
       return (
         <Button
@@ -36,7 +36,7 @@ class VendorSelectList extends Component {
           className={cn('country-checkbox', 'vendor-button')}
           key={vendor.id}
           onClick={() => {
-            updateVendorId(vendor.id);
+            updateVendorId(project_id, vendor.id);
           }}
         >
           <span>{vendor.name}</span>
@@ -47,10 +47,10 @@ class VendorSelectList extends Component {
 
   render() {
     return (
-      <VendorList ref={this.setWrapperRef}>
+      <div className={cn('vendors-select-list', {})} ref={this.setWrapperRef}>
         <div className="wh_select-list-header">SELECT VENDOR</div>
         {this.renderVendorList()}
-      </VendorList>
+      </div>
     );
   }
 }

@@ -113,17 +113,18 @@ export const deleteProject = (project_id) => {
   };
 };
 
-export const updateVendorId = (vendorId) => async (dispatch, getState) => {
-  try {
-    const projectId = getState().skills.skill.project_id;
-    const amznId = (await axios.post(`/project/${projectId}/vendor_id`, { vendor_id: vendorId })).data;
-    await dispatch(updateVersion('amzn_id', amznId || null));
-    await dispatch(updateVersion('vendor_id', vendorId));
-    await dispatch(fetchLiveVersion(projectId, amznId));
-  } catch (err) {
-    dispatch(setError('Unable to update Vendor Id'));
-    console.error(err);
-  }
+export const updateVendorId = (project_id, vendor_id) => {
+  return async (dispatch) => {
+    try {
+      const amzn_id = (await axios.post(`/project/${project_id}/vendor_id`, { vendor_id })).data;
+      await dispatch(updateVersion('amzn_id', amzn_id || null));
+      await dispatch(updateVersion('vendor_id', vendor_id));
+      await dispatch(fetchLiveVersion(project_id, amzn_id));
+    } catch (err) {
+      dispatch(setError('Unable to update Vendor Id'));
+      console.error(err);
+    }
+  };
 };
 
 // export const reorderProjects = (dragIndex, hoverIndex) => {

@@ -168,6 +168,7 @@
   text-align: center;
 }
 
+#TitleBar,
 #PreviewBar {
   position: absolute;
   z-index: 3;
@@ -188,8 +189,37 @@
   padding-top: 20px;
 }
 
+.TitleBar-shadow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  -webkit-box-shadow: 0 15px 56px 16px rgba(245, 246, 250, 1);
+  -moz-box-shadow: 0 15px 56px 16px rgba(245, 246, 250, 1);
+  box-shadow: 0 15px 56px 16px rgba(245, 246, 250, 1);
+}
+
+#TitleBar .main-menu-btn {
+  width: 90px;
+  border-radius: 0;
+}
+
+#TitleBar .main-menu-btn-group {
+  padding-left: 10px;
+  background-color: #333;
+}
+
 .dropdown.show {
   cursor: pointer !important;
+}
+
+#TitleBar .dropdown-menu {
+  /* transform: translate3d(0px, 50px, 0px) !important; */
+
+  /*    border-radius: 0;
+    margin-left: -5px;
+    margin-top: 0px; */
 }
 
 /* .Menu .saved{
@@ -205,6 +235,46 @@
   margin-bottom: 30px;
   margin-left: -15px;
   border-color: #e2e9ec;
+}
+
+#TitleBar input {
+  flex: 1;
+  margin-left: 0;
+  padding: 7px 20px 7px 20px;
+  font-size: 24px;
+  background-color: transparent;
+  border: none;
+  transition: background-color 0.4s ease;
+}
+
+#TitleBar .fas.fa-folder {
+  margin-right: 5px;
+  color: #8da2b5;
+  font-size: 24px;
+}
+
+#TitleBar .skill-name {
+  display: inline-block;
+  max-width: 360px;
+  margin-right: 15px;
+  overflow: hidden;
+  color: #42a5ff !important;
+  font-size: 24px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#TitleBar .project {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#TitleBar .platform-dropdown {
+  width: 150px !important;
+  padding: 5px 0 5px 0;
+  border: none;
+  box-shadow: 0 2px 4px 0 rgba(118, 186, 255, 0.17) !important;
 }
 
 .platform-dropdown.arrow.dropdown-menu.show {
@@ -256,6 +326,54 @@
   position: absolute;
   margin-top: 5px;
   margin-left: 17px;
+}
+
+#TitleBar .white-btn.play {
+  display: flex;
+  min-height: 36px !important;
+  padding: 0 5px 0 18px !important;
+  color: #8da2b5 !important;
+  font-size: 20px !important;
+  line-height: 30px;
+  text-align: center;
+  background-color: #fff !important;
+  border-radius: 25px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+  transition: all 0.25s ease;
+}
+
+#TitleBar .white-btn.play:hover {
+  color: #132144 !important;
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.06) !important;
+  transform: translateY(-1px);
+
+  /* background-color: #edf3fe !important; */
+
+  /* border: 1px solid #42A5FF !important; */
+}
+
+#TitleBar .white-btn.play span.button-circle {
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  margin-top: -1px;
+  margin-bottom: -1px;
+  margin-left: 2px;
+  padding: 5px 6px 8px 7px;
+  font-size: 10px;
+
+  /* display: inline-block; */
+  line-height: 15px;
+  background-color: #fff;
+
+  /*    background-color: #fff; */
+  border-radius: 20px;
+  transition: border-color 0.25s ease-in-out;
+}
+
+#TitleBar .white-btn.play span.words {
+  display: inline-block;
+  font-size: 0.875rem !important;
 }
 
 .align-icon {
@@ -379,12 +497,33 @@
   text-transform: capitalize;
 }
 
+#TitleBar .project {
+  height: 55px;
+}
+
 .card-dropdown {
   margin-top: 0 !important;
 }
 
 .card-dropdown .show {
   width: 10px;
+}
+
+#TitleBar .status {
+  width: 400px;
+  padding-right: 28px;
+  color: #aaa;
+  line-height: 49px;
+  text-align: right;
+}
+
+#TitleBar input:focus {
+  background-color: #efefef;
+  outline: 0;
+}
+
+#TitleBar input::placeholder {
+  color: #ccc;
 }
 
 .api-test-block {
@@ -1120,6 +1259,19 @@
 
   /*    background-image: url('/images/dot.svg');
     background-repeat: repeat; */
+}
+
+.App.review .blocks {
+  border-color: #ffab91 !important;
+  border-width: 3px !important;
+}
+
+.App.review #diagram {
+  /* border: 10px solid #D84315; */
+}
+
+.App.review #TitleBar {
+  /* border-bottom: 10px solid #D84315 !important; */
 }
 
 #review {
@@ -3335,6 +3487,23 @@ button.close:hover{
 
 .btn-group .white-circ {
   width: 40px;
+}
+
+@media (max-width: 1250px) {
+  .title-group .last-save {
+    display: none;
+  }
+
+  #TitleBar {
+    /* height: 105px; */
+    display: block;
+    padding-right: 0;
+    padding-left: 290px;
+  }
+
+  #TitleBar .skill-name {
+    padding-left: 20px;
+  }
 }
 
 .SkillModal-Templates .TemplateItem {

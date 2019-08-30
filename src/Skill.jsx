@@ -1,4 +1,3 @@
-/* eslint-disable no-secrets/no-secrets */
 import axios from 'axios';
 import * as _ from 'lodash';
 import React, { Component } from 'react';
@@ -13,9 +12,10 @@ import DefaultModal from '@/components/Modals/DefaultModal';
 import SecondaryNavBar from '@/components/NavBar/SecondaryNavBar';
 import { FullSpinner } from '@/components/Spinner';
 import { ProjectTitleContainer } from '@/containers/Canvas/components/CanvasHeader/styled';
-import Migrate from '@/containers/Publish/Amazon/Migrate';
+import Migrate from '@/containers/Skill/Migrate';
 // Ducks
 import { unnormalize } from '@/ducks/_normalize';
+import { getVendors } from '@/ducks/account';
 import { fetchDiagrams } from '@/ducks/diagram';
 import { fetchDisplays } from '@/ducks/display';
 import { fetchProducts } from '@/ducks/product';
@@ -28,8 +28,8 @@ import Business from './containers/Business';
 // Views
 import Canvas from './containers/Canvas';
 import Logs from './containers/Logs';
-import Publish from './containers/Publish/Publish';
-import Settings from './containers/Publish/Settings';
+import Publish from './containers/Skill/Publish';
+import Settings from './containers/Skill/Settings';
 import Visuals from './containers/Visuals';
 
 const live_modal_content = (
@@ -115,6 +115,7 @@ class Skill extends Component {
     this.time_mounted = new Date();
 
     try {
+      await this.props.getVendors();
       if (!_.has(this.props, ['computedMatch', 'params', 'skill_id'])) {
         return this.setState({
           load_skill: false,
@@ -329,6 +330,7 @@ const mapDispatchToProps = (dispatch) => {
     getDisplays: (skill_id) => dispatch(fetchDisplays(skill_id)),
     updateSkill: (type, val) => dispatch(updateVersion(type, val)),
     resetSkill: () => dispatch(resetVersion()),
+    getVendors: () => dispatch(getVendors()),
   };
 };
 

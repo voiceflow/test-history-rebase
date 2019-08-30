@@ -398,7 +398,7 @@ const mapStateToProps = (state) => ({
   fulfillment: state.skills.skill.fulfillment,
   intents: state.skills.skill.intents,
   slots: state.skills.skill.slots,
-  name: state.diagrams.diagrams.find((d) => d.id === state.skills.skill.diagram).name,
+  name: _.get(state.diagrams.diagrams.find((d) => d.id === state.skills.skill.diagram), ['name']),
 });
 
 const mapDispatchToProps = (dispatch) => {

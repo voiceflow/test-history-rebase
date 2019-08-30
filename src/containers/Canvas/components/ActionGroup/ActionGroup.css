@@ -135,8 +135,10 @@
 
 .close-upload-success-popup {
   position: absolute;
-  top: 6px;
-  right: 20px;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  padding: 24px !important;
 }
 
 .react-sweet-progress-symbol {

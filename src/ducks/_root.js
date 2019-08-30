@@ -13,7 +13,6 @@ import integrationUsers from '@/ducks/integration';
 import modal from '@/ducks/modal';
 import products from '@/ducks/product';
 import project from '@/ducks/project';
-import publish from '@/ducks/publish';
 import team from '@/ducks/team';
 import test from '@/ducks/test';
 import userSetting from '@/ducks/user';
@@ -39,6 +38,5 @@ export default (history) =>
     admin,
     test,
     alerts,
-    publish,
     form: formReducer,
   });

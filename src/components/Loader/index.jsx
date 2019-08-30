@@ -6,18 +6,18 @@ const spinnerStyles = css`
   height: 1em;
   border-radius: 50%;
   display: inline-flex;
-  margin-bottom: 20px;
   font-size: ${(props) => (props.isMd ? '2rem' : '4rem')};
 `;
 const LoadContainer = styled.div`
   ${spinnerStyles}
   box-shadow: 0 1px 2px 0 rgba(17, 49, 96, 0.24);
+  margin-bottom: 20px;
 `;
 
-const LoadCircle = styled.span`
+export const LoadCircle = styled.span`
   ${spinnerStyles}
   line-height: 1;
-  background-color: #fff;
+  background-color: ${({ color }) => color || '#fff'};
   background-image: url('/loader-2.svg');
   background-repeat: no-repeat;
   background-position: center;

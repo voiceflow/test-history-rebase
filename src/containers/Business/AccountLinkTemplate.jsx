@@ -12,7 +12,7 @@ import { setError } from '@/ducks/modal';
 import { updateVersion } from '@/ducks/version';
 
 const clientAuthScheme = [
-  { value: 'HTTP_BASIC', label: 'HTTP Basic(recommended)' },
+  { value: 'HTTP_BASIC', label: 'HTTP Basic (recommended)' },
   { value: 'REQUEST_BODY_CREDENTIALS', label: 'Credentials in request body' },
 ];
 

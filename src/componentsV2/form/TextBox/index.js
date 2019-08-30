@@ -8,7 +8,7 @@ import TextBoxInput from './components/TextBoxInput';
 const TextBox = ({ value, onChange, ...props }) => {
   return (
     <>
-      <TextBoxInput errorBound={props.touched && props.error} {...props} touched="false" />
+      <TextBoxInput errorBound={props.touched && props.error} onChange={onChange} value={value} {...props} touched="false" />
       {props.touched && ((props.error && <InputError>{props.error}</InputError>) || (props.warning && <span>{props.warning}</span>))}
     </>
   );

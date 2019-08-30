@@ -29,7 +29,6 @@ import Business from './containers/Business';
 import Canvas from './containers/Canvas';
 import Logs from './containers/Logs';
 import Publish from './containers/Publish/Publish';
-import Settings from './containers/Publish/Settings';
 import Visuals from './containers/Visuals';
 
 const live_modal_content = (
@@ -194,8 +193,6 @@ class Skill extends Component {
         );
       case 'tools':
         return <Business {...this.props} page={this.props.secondaryPage} toggleUpgrade={this.toggleUpgrade} />;
-      case 'settings':
-        return <Settings {...this.props} page={this.props.secondaryPage} live_mode={this.props.live_mode} toggleUpgrade={this.toggleUpgrade} />;
       case 'publish':
         return <Publish {...this.props} page={this.props.secondaryPage} />;
       case 'logs':

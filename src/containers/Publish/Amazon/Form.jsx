@@ -155,6 +155,7 @@ class Skill extends Component {
     const name = _.get(this.props.amazonForm, ['name'], null);
     const summary = _.get(this.props.amazonForm, ['summary'], null);
     const description = _.get(this.props.amazonForm, ['description'], null);
+    const updatesDescription = _.get(this.props.amazonForm, ['updatesDescription'], null);
     const keywords = _.get(this.props.amazonForm, ['keywords'], null);
     const inv_name = _.get(this.props.amazonForm, ['inv_name'], null);
     const instructions = _.get(this.props.amazonForm, ['instructions'], null);
@@ -164,6 +165,7 @@ class Skill extends Component {
       inv_name,
       summary,
       description,
+      updates_description: updatesDescription,
       keywords,
       invocations: s.invocations,
       small_icon: s.small_icon,
@@ -246,7 +248,7 @@ class Skill extends Component {
   };
 
   renderBlocks = () => {
-    const { locales, small_icon, large_icon, category, invocations, privacy_policy, terms_and_cond, copa, name, saving } = this.state;
+    const { locales, small_icon, large_icon, category, invocations, privacy_policy, terms_and_cond, copa, name, saving, live } = this.state;
 
     const blocks = [];
     const enterText = (
@@ -330,6 +332,21 @@ class Skill extends Component {
             />
           </FormGroup>
 
+          {live && (
+            <FormGroup className="mb-4">
+              <Label className="publish-label">
+                What's new? <small>optional</small>
+              </Label>
+              <FormTextBox
+                name="updatesDescription"
+                minRows={4}
+                maxRows={4}
+                placeholder="What's new?"
+                style={{ minHeight: '94px', maxHeight: '94px' }}
+              />
+            </FormGroup>
+          )}
+
           <FormGroup className="mb-4">
             <Label className="publish-label">Category *</Label>
             <Select classNamePrefix="select-box" name="category" value={category} onChange={this.handleSelection} options={AMAZON_CATEGORIES} />
@@ -355,6 +372,13 @@ class Skill extends Component {
               <b>Description</b> is where you can provide a more detailed explanation of your Skill.
             </p>
           </div>
+          {live && (
+            <div className="publish-info">
+              <p className="helper-text">
+                <b>What's new?</b> is where you can describe new features and fixes in this version of your Skill.
+              </p>
+            </div>
+          )}
           <div className="publish-info">
             <p className="helper-text">
               <b>Category</b> is the type of your Skill. This helps users find your Skill in the store.

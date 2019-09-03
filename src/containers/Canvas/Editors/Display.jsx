@@ -5,7 +5,6 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import Select from 'react-select';
 import { Tooltip } from 'react-tippy';
 import { Button, Input, InputGroup, InputGroupAddon, Modal, ModalBody } from 'reactstrap';
 import { compose } from 'redux';
@@ -13,8 +12,8 @@ import { compose } from 'redux';
 import AceEditor from '@/components/AceEditor';
 import { ModalHeader } from '@/components/Modals/ModalHeader';
 import { Spinner } from '@/components/Spinner';
+import Dropdown from '@/componentsV2/DropdownSearch';
 
-import { selectStyles } from '../../../components/VariableSelect/VariableSelect';
 import DisplayRender from './components/DisplayRender';
 
 export class Display extends Component {
@@ -125,6 +124,22 @@ export class Display extends Component {
       () => onUpdate()
     );
   }
+
+  onClear = () => {
+    const { node } = this.state;
+    const { onUpdate } = this.props;
+    node.extras.display_id = null;
+    node.extras.datasource = null;
+
+    this.setState(
+      {
+        selected: null,
+        node,
+        modal_error: '',
+      },
+      () => onUpdate()
+    );
+  };
 
   handleVariableChange(e) {
     const { user_variables } = this.state;
@@ -281,11 +296,10 @@ export class Display extends Component {
               See all
             </div>
           </div>
-          <Select
-            classNamePrefix="select-box"
+          <Dropdown
             value={selected}
-            onChange={this.selectDisplay}
-            styles={selectStyles}
+            onClear={this.onClear}
+            onSelect={this.selectDisplay}
             placeholder="Select Multimodal Display"
             options={displayOptions.map((display) => {
               return {

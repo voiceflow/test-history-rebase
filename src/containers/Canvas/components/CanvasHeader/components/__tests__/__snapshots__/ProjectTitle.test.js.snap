@@ -30,7 +30,6 @@ exports[`Project Title render project title 1`] = `
     }
   }
   forwardedRef={null}
-  onDoubleClick={[Function]}
 >
   <styled.div>
     Loading Skill

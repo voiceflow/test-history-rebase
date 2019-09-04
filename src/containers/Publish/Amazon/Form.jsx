@@ -18,7 +18,7 @@ import Image from '@/components/Uploads/Image';
 import { FormTextBox } from '@/componentsV2/form/TextBox';
 import { FormTextInput } from '@/componentsV2/form/TextInput';
 import { setError } from '@/ducks/modal';
-import { updateEntireVersion, updateSkillDB, updateVersion } from '@/ducks/version';
+import { updateEntireVersion, updateVersion } from '@/ducks/version';
 
 import { AMAZON_CATEGORIES } from '../../../services/Categories';
 import LOCALE_MAP from '../../../services/LocaleMap';
@@ -713,9 +713,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateSkill: (type, val) => dispatch(updateVersion(type, val)),
     updateEntireSkill: (val) => dispatch(updateEntireVersion(val)),
-    // setConfirm: (confirm) => dispatch(setConfirm(confirm)),
     setError: (err) => dispatch(setError(err)),
-    save: (publish, cb) => dispatch(updateSkillDB(publish, cb)),
   };
 };
 

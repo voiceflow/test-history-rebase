@@ -216,6 +216,8 @@ export class Canvas extends Component {
         setError(integration_users_error);
       }
     });
+
+    window.canvasSave = () => this.onSave(false);
   }
 
   componentWillUnmount() {
@@ -232,6 +234,8 @@ export class Canvas extends Component {
     }
     localStorage.setItem('is_first_session', 'false');
     clearCanvasMessage();
+
+    window.canvasSave = null;
   }
 
   openTab(tab) {
@@ -864,7 +868,7 @@ export class Canvas extends Component {
     this.saveCB = cb;
   };
 
-  onSave(state = true) {
+  async onSave(state = true) {
     const { engine, diagram_name } = this.state;
     const { preview, variables, skill, skillSaveCB, setError } = this.props;
     if (this.saving) return;
@@ -907,37 +911,36 @@ export class Canvas extends Component {
 
       const save_diagram = axios.post('/diagram', diagram);
 
-      Promise.all([save_skill_intents, save_diagram])
-        .then(() => {
-          this.saving = false;
-          this.lastModel = data;
-          state &&
-            this.setState({
-              saving: false,
-              saved: true,
-            });
-          if (typeof skillSaveCB === 'function') {
-            skillSaveCB(serialize.id);
-          } else if (typeof this.saveCB === 'function') {
-            this.saveCB(serialize.id);
-            this.saveCB = null;
-          }
-        })
-        .catch(() => {
-          this.saving = false;
-          state &&
-            this.setState({
-              saving: false,
-            }) &&
-            setError('Error Saving Project');
+      try {
+        await Promise.all([save_skill_intents, save_diagram]);
+        this.saving = false;
+        this.lastModel = data;
+        state &&
+          this.setState({
+            saving: false,
+            saved: true,
+          });
+        if (typeof skillSaveCB === 'function') {
+          skillSaveCB(serialize.id);
+        } else if (typeof this.saveCB === 'function') {
+          this.saveCB(serialize.id);
+          this.saveCB = null;
+        }
+      } catch (error) {
+        this.saving = false;
+        state &&
+          this.setState({
+            saving: false,
+          }) &&
+          setError('Error Saving Project');
 
-          if (typeof skillSaveCB === 'function') {
-            skillSaveCB(null);
-          } else if (typeof this.saveCB === 'function') {
-            this.saveCB(null);
-            this.saveCB = null;
-          }
-        });
+        if (typeof skillSaveCB === 'function') {
+          skillSaveCB(null);
+        } else if (typeof this.saveCB === 'function') {
+          this.saveCB(null);
+          this.saveCB = null;
+        }
+      }
     } catch (e) {
       this.saving = false;
       // eslint-disable-next-line no-console

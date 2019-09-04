@@ -374,6 +374,7 @@ export const renderProject = () =>
 
     dispatch(updateAlexaStage(ALEXA_STAGES.RENDERING));
     try {
+      if (window.canvasSave) await window.canvasSave();
       const {
         new_skill: { skill_id: newVersionId },
       } = (await axios.post(`/project/${project_id}/render`, { platform: 'alexa' })).data;

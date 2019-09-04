@@ -147,6 +147,7 @@ export const renderProject = () =>
 
     dispatch(updateGoogleStage(GOOGLE_STAGES.RENDERING));
     try {
+      if (window.canvasSave) await window.canvasSave();
       const { data } = await axios.post(`/project/${projectId}/render`, { platform: 'google', google_id: googleId });
       const newVersionId = data.new_skill.skill_id;
       dispatch(submitProject(newVersionId));

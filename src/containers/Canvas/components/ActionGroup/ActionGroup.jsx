@@ -13,6 +13,7 @@ import { setError, showSettingsModal } from '@/ducks/modal';
 
 import Alexa from './Alexa';
 import Google from './Google';
+import Live from './Live';
 import { SubTitleGroup } from './styled';
 
 function SettingsModal({ isOpen, onToggle, children }) {
@@ -27,9 +28,10 @@ function SettingsModal({ isOpen, onToggle, children }) {
 }
 
 function ActionGroup(props) {
-  const { platform, showSettingsModal, showSettings, unfocus } = props;
+  const { platform, showSettingsModal, showSettings, unfocus, live_mode } = props;
 
   const renderPlatform = () => {
+    if (live_mode) return <Live />;
     if (platform === 'alexa') return <Alexa />;
     return <Google />;
   };

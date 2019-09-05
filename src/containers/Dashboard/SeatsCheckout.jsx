@@ -23,6 +23,10 @@ const STAGES = {
   CHECK: { loader: 'Checking Source' },
 };
 
+const PLANS = {
+  BUSINESS: 2,
+};
+
 class SeatsCheckout extends Component {
   constructor(props) {
     super(props);
@@ -38,6 +42,8 @@ class SeatsCheckout extends Component {
     }
 
     this.state = {
+      couponInputTimeout: null,
+      freeCoupon: false,
       coupon: '',
       coupon_toggle: false,
       loading: true,
@@ -89,6 +95,49 @@ class SeatsCheckout extends Component {
     });
   };
 
+  couponHandler = (event) => {
+    const { plan } = this.state;
+    const coupon = event.target && event.target.value;
+
+    this.setState({
+      invalid: false,
+      coupon,
+    });
+
+    clearTimeout(this.state.couponInputTimeout);
+
+    if (!coupon) return;
+
+    const newTimeout = setTimeout(() => {
+      axios
+        .get(`/team/coupons/${coupon}`)
+        .then(({ data }) => {
+          if (plan.id === PLANS.BUSINESS) {
+            this.setState({
+              invalid: !data.valid,
+              invalidMessage: !data.valid ? 'This coupon is invalid' : null,
+              freeCoupon: data.valid && !data.stripeCoupon,
+            });
+          } else {
+            this.setState({
+              invalid: true,
+              freeCoupon: false,
+              invalidMessage: 'This coupon is only valid for the business plan.',
+            });
+          }
+        })
+        .catch(() => {
+          this.setState({
+            freeCoupon: false,
+          });
+        });
+    }, 150);
+
+    this.setState({
+      couponInputTimeout: newTimeout,
+    });
+  };
+
   updateRegion = (val) => {
     this.setState({
       region: val,
@@ -116,6 +165,10 @@ class SeatsCheckout extends Component {
       members = planMembers.length;
       price += members * base;
     }
+
+    if (this.state.freeCoupon === true) {
+      price = 0;
+    }
     return { members, price };
   };
 
@@ -138,45 +191,50 @@ class SeatsCheckout extends Component {
     const { updateMembers, members, next, stripe, team_name, user, checkChargeable, invites, createTeam, team: propsTeam, setError } = this.props;
     this.resetInvalidity();
 
-    if (this.isInvalid()) {
-      this.setState({
-        invalid: true,
-        invalidMessage: 'Please fill all required fields (*).',
-      });
-      return;
-    }
+    if (this.state.freeCoupon === false) {
+      if (this.isInvalid()) {
+        this.setState({
+          invalid: true,
+          invalidMessage: 'Please fill all required fields (*).',
+        });
+        return;
+      }
 
-    // A source already exists
-    if (source) {
-      this.setState({ stage: 'CREATE' });
-      await updateMembers(members, { plan: plan.id, country });
-      next();
-      return;
+      // A source already exists
+      if (source) {
+        this.setState({ stage: 'CREATE' });
+        await updateMembers(members, { plan: plan.id, country });
+        next();
+        return;
+      }
     }
 
     try {
-      this.setState({ stage: 'SOURCE' });
+      let locationData = null;
+      if (this.state.freeCoupon === false) {
+        this.setState({ stage: 'SOURCE' });
 
-      const { source } = await stripe.createSource({
-        type: 'card',
-        metadata: {
-          team: team_name,
-        },
-        owner: {
-          name: user.name,
-          email: user.email,
-        },
-      });
+        const { source } = await stripe.createSource({
+          type: 'card',
+          metadata: {
+            team: team_name,
+          },
+          owner: {
+            name: user.name,
+            email: user.email,
+          },
+        });
 
-      const locationData = {
-        countryCode: this.state.country.value,
-        region: this.state.region.value,
-        postalCode: this.state.postalCode,
-      };
+        locationData = {
+          countryCode: this.state.country.value,
+          region: this.state.region.value,
+          postalCode: this.state.postalCode,
+        };
 
-      if (!source) throw new Error('Invalid Card Information');
+        if (!source) throw new Error('Invalid Card Information');
 
-      await checkChargeable(source);
+        await checkChargeable(source);
+      }
 
       this.setState({ stage: 'CREATE' });
       if (Array.isArray(invites)) {
@@ -213,7 +271,7 @@ class SeatsCheckout extends Component {
   };
 
   render() {
-    const { stage, loading, coupon, coupon_toggle, source } = this.state;
+    const { stage, loading, coupon, coupon_toggle, source, freeCoupon } = this.state;
     const { width, collab, status, modify, prompt, team } = this.props;
     if (stage === 'PLAN') {
       return (
@@ -237,6 +295,7 @@ class SeatsCheckout extends Component {
     }
 
     const { price, members } = this.calculatePrice();
+
     return (
       <div style={{ width: width || 400 }}>
         {loader && <div className="w-100 position-relative">{loader}</div>}
@@ -260,10 +319,7 @@ class SeatsCheckout extends Component {
           </div>
           {!status && (
             <>
-              <Collapse isOpen={coupon_toggle}>
-                <Input name="coupon" value={coupon} onChange={this.handleChange} placeholder="Coupon Code" style={{ marginBottom: '5px' }} />
-              </Collapse>
-              {!source && (
+              {!source && !freeCoupon && (
                 <>
                   <label>Address *</label>
                   <Select
@@ -287,34 +343,52 @@ class SeatsCheckout extends Component {
                   <Input name="postalCode" onChange={this.handleChange} className="mb-3" placeholder="Zip/Postal Code" />
                 </>
               )}
-              {source ? (
+              {!freeCoupon && (
                 <>
-                  <div className="space-between">
-                    <label>Payment Details</label>
-                    <small className="btn-link" onClick={modify}>
-                      Modify
-                    </small>
-                  </div>
-                  <input
-                    value={`[${source.brand}] XXXX-XXXX-XXXX-${source.last4}`}
-                    className="disabled form-control"
-                    style={{ height: 40 }}
-                    disabled
-                  />
-                </>
-              ) : (
-                <>
-                  <div className="space-between">
-                    <label>Payment Details *</label>
-                    <small className="btn-link" onClick={() => this.setState({ coupon_toggle: !coupon_toggle })}>
-                      {coupon_toggle ? 'Cancel Coupon' : 'I Have Coupon'}
-                    </small>
-                  </div>
-                  <div style={{ height: 40 }}>
-                    <CardElement onReady={() => this.setState({ loading: false })} />
-                  </div>
+                  {source ? (
+                    <>
+                      <div className="space-between">
+                        <label>Payment Details</label>
+                        <small className="btn-link" onClick={modify}>
+                          Modify
+                        </small>
+                      </div>
+                      <input
+                        value={`[${source.brand}] XXXX-XXXX-XXXX-${source.last4}`}
+                        className="disabled form-control"
+                        style={{ height: 40 }}
+                        disabled
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <div className="space-between">
+                        <label>Payment Details *</label>
+                        <small
+                          className="btn-link"
+                          onClick={() =>
+                            this.setState({
+                              coupon_toggle: !coupon_toggle,
+                              coupon: '',
+                            })
+                          }
+                        >
+                          {coupon_toggle ? 'Cancel Coupon' : 'I Have a Coupon'}
+                        </small>
+                      </div>
+                      <div style={{ height: 40 }}>
+                        <CardElement onReady={() => this.setState({ loading: false })} />
+                      </div>
+                    </>
+                  )}
                 </>
               )}
+              <Collapse isOpen={coupon_toggle}>
+                <div className="space-between">
+                  <label>Coupon Code</label>
+                </div>
+                <Input name="coupon" value={coupon} onChange={this.couponHandler} placeholder="Coupon Code" style={{ marginBottom: '5px' }} />
+              </Collapse>
             </>
           )}
           {this.state.invalid === true && (
@@ -326,6 +400,7 @@ class SeatsCheckout extends Component {
             <Button
               isBtn
               isPrimary
+              disabled={this.state.invalid}
               className="mt-2 mb-2"
               onClick={(e) => {
                 e.preventDefault();

@@ -175,7 +175,7 @@ export const createTeam = (data) => {
   return async (dispatch) => {
     try {
       let team;
-      if (data.source) {
+      if (data.source || data.coupon) {
         // creating the team from a paid source
         team = (await axios.post('/team/checkout', data)).data;
       } else {

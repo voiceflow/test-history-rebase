@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import './NavBar.css';
 
 import axios from 'axios';
@@ -122,7 +123,7 @@ export class SecondaryNavBar extends Component {
           <NavRightGroup>
             {amzn_id && (
               <>
-                {live_version ? (
+                {/* {live_version ? (
                   <LiveToggleWrapper>
                     {live_mode ? <LiveToggleText>Live</LiveToggleText> : <LiveToggleText>Development</LiveToggleText>}
                     <Toggle
@@ -135,7 +136,7 @@ export class SecondaryNavBar extends Component {
                       disabled={page !== 'canvas' || this.state.loading}
                     />
                   </LiveToggleWrapper>
-                ) : null}
+                ) : null} */}
                 {page === 'logs' ? (
                   <div className="log-icon">
                     <SvgIcon icon={LogsIcon} />

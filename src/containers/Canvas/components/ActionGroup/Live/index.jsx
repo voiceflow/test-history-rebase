@@ -69,7 +69,7 @@ function Live(props) {
         position="bottom"
         distance={16}
       >
-        <Button variant="contained" className="publish-btn" onClick={openUpdateLive}>
+        <Button variant="contained" className="publish-btn" onClick={openUpdateLive} disabled>
           Update Live
           <div className="publish-spinner">
             <div className="spinner-icon">

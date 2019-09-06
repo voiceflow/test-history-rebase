@@ -406,7 +406,7 @@ class TeamSettings extends Component {
                     />
                   </div>
                 </div>
-                {team.status > 0 && !team.expiry && this.priceEstimate()}
+                {team.status > 0 && this.priceEstimate()}
               </div>
             )}
           </div>

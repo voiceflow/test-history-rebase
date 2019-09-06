@@ -190,7 +190,7 @@ class NewTeam extends Component {
               <span className="uppercase text-muted">Upgrade Board</span>
               <div className="super-center mt-4">
                 <SeatsCheckout
-                  prompt="Upgrade"
+                  prompt="Start Free Trial"
                   invites={invites}
                   team={{
                     name: stateName,

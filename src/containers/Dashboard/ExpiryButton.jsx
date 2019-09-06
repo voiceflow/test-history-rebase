@@ -8,8 +8,6 @@ export default ({ team, upgrade }) => {
 
   const days = moment(team.expiry).diff(moment(), 'days');
 
-  if (days > 30) return null;
-
   return (
     <div id="expiry-button" onClick={upgrade}>
       <Tooltip title={`Your trial ends in ${days} days`} distance={14}>

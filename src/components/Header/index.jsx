@@ -13,6 +13,7 @@ import { BackButton, CenterGroup, HeaderActions, HeaderContainer, HeaderNavigati
 function Header({
   title,
   preview,
+  isUserMenu,
   history,
   withLogo,
   onBackClick,
@@ -24,7 +25,7 @@ function Header({
 }) {
   return (
     <HeaderContainer>
-      <PrimaryHeader>
+      <PrimaryHeader isBackClick={onBackClick}>
         {withLogo && (
           <Logo
             disableLogoClick={disableLogoClick}
@@ -47,7 +48,7 @@ function Header({
           <CenterGroup>{centerRenderer && centerRenderer()}</CenterGroup>
           <JustifiedHeaderActions>
             {!preview && rightRenderer && <div className="title-group no-select">{rightRenderer()}</div>}
-            <UserMenu history={history} preview={preview} />
+            {!isUserMenu && <UserMenu history={history} preview={preview} />}
           </JustifiedHeaderActions>
         </HeaderActions>
       </PrimaryHeader>

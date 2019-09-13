@@ -18,7 +18,8 @@ export const PrimaryHeader = styled.div`
   display: flex;
   align-items: center;
   background-color: #fff;
-  padding: 0 40px 0 28px;
+  padding-right: ${(props) => (props.isBackClick ? 40 : 28)}px
+  padding-left: 28px;
   height: 64px;
 `;
 

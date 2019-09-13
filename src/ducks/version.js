@@ -375,9 +375,9 @@ export const togglePreview = (preview) => {
 
 // save new invocation name
 export const syncInvocationName = (name) => async (dispatch, getState) => {
-  const { skill } = getState();
+  const { skills } = getState();
   try {
-    await axios.patch(`/skill/${skill.skill.skill_id}?inv_name=1`, { inv_name: name });
+    await axios.patch(`/skill/${skills.skill.skill_id}?inv_name=1`, { inv_name: name });
     dispatch(updateVersion('inv_name', name));
   } catch (err) {
     dispatch(setError('Unable to Save Invocation Name'));

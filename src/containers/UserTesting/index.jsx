@@ -91,9 +91,10 @@ class UserTesting extends React.Component {
           <span>Made In Voiceflow</span>
         </a>
         <Header
+          isUserMenu
           leftRenderer={() => (
             <a href="https://www.voiceflow.com" className="mx-2">
-              <img className="voiceflow-logo" src="/logo.png" alt="logo" />
+              <img className="voiceflow-logo" src="/logo_bubble_small.png" alt="logo" />
             </a>
           )}
           centerRenderer={() => (this.props.skill && this.props.skill.name) || 'Loading...'}

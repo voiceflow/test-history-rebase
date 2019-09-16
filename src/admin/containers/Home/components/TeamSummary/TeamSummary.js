@@ -6,7 +6,7 @@ import { Card, CardBody, Collapse, ListGroup } from 'reactstrap';
 
 import Button from '@/components/Button';
 
-import TrialModal from '../../../../components/TrialModal/TrialModal';
+import PlanModal from '../../../../components/PlanModal/PlanModal';
 import SkillDetail from '../SkillDetail/SkillDetail';
 import { TeamSummaryWrapper } from './styles';
 
@@ -15,7 +15,7 @@ class TeamSummary extends React.Component {
     super(props);
     this.state = {
       showSkills: false,
-      showTrialModal: false,
+      showPlanModal: false,
     };
   }
 
@@ -23,9 +23,9 @@ class TeamSummary extends React.Component {
     this.setState((state) => ({ showSkills: !state.showSkills }));
   };
 
-  toggleTrial = () => {
+  togglePlanModal = () => {
     this.setState((prevState) => ({
-      showTrialModal: !prevState.showTrialModal,
+      showPlanModal: !prevState.showPlanModal,
     }));
   };
 
@@ -51,10 +51,10 @@ class TeamSummary extends React.Component {
             <h5>{this.props.board.name}</h5>
             <div className="team_summary_created">{moment(this.props.board.created).format('MMMM Do YYYY, h:mm:ss a')}</div>
             <div className="team_summary_created">
-              Trial Expiry: {this.props.board.expiry ? moment(this.props.board.expiry).format('MMM Do YYYY') : 'No trial set'}
+              Plan Expiry: {this.props.board.expiry ? moment(this.props.board.expiry).format('MMM Do YYYY') : 'No expiry set'}
             </div>
-            <Button className="mt-2" isPrimary onClick={this.toggleTrial}>
-              Manage Trial
+            <Button className="mt-2" isPrimary onClick={this.togglePlanModal}>
+              Manage Plan
             </Button>
           </div>
           <div className="mb-2 col-sm-4">
@@ -84,7 +84,7 @@ class TeamSummary extends React.Component {
           </Card>
         </Collapse>
 
-        <TrialModal showTrialModal={this.state.showTrialModal} toggleTrial={this.toggleTrial} team={this.props.board} />
+        <PlanModal showPlanModal={this.state.showPlanModal} togglePlanModal={this.togglePlanModal} team={this.props.board} />
       </TeamSummaryWrapper>
     );
   }

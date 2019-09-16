@@ -1,4 +1,4 @@
-import './TrialModal.css';
+import './PlanModal.css';
 
 import moment from 'moment';
 import React from 'react';
@@ -8,9 +8,9 @@ import { toast } from 'react-toastify';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 
 import Button from '@/components/Button';
-import { editTrial } from '@/ducks/admin';
+import { editTrial, setEnterprise } from '@/ducks/admin';
 
-class TrialModal extends React.Component {
+class PlanModal extends React.Component {
   constructor(props) {
     super(props);
     this.handleDayClick = this.handleDayClick.bind(this);
@@ -32,21 +32,38 @@ class TrialModal extends React.Component {
     this.setState({ selectedDay: day });
   }
 
-  giveTrial = (trialLength) => {
-    if (!trialLength && trialLength !== null) {
+  giveTrial = (expiry) => {
+    if (!expiry && expiry !== null) {
       toast.error('You must select a day for the trial');
       return;
     }
-    if (!trialLength && !this.props.team.expiry) {
+    if (!expiry && !this.props.team.expiry) {
       toast.error('User already has no trial');
       return;
     }
     if (this.props.team) {
-      this.props.editTrial(this.props.team.team_id, trialLength);
+      this.props.editTrial(this.props.team.team_id, expiry);
     } else {
       toast.error('Team not found.');
     }
-    this.props.toggleTrial();
+    this.props.togglePlanModal();
+  };
+
+  makeEnterprise = (expiry, planId) => {
+    if (!expiry && expiry !== null) {
+      toast.error('You must select a day for the trial');
+      return;
+    }
+    if (!expiry && !this.props.team.expiry) {
+      toast.error('User already has no trial');
+      return;
+    }
+    if (this.props.team) {
+      this.props.setEnterprise(this.props.team.team_id, planId, expiry);
+    } else {
+      toast.error('Team not found.');
+    }
+    this.props.togglePlanModal();
   };
 
   getSelectedDays = () => {
@@ -67,21 +84,40 @@ class TrialModal extends React.Component {
     const selectedDays = this.getSelectedDays();
 
     const { team } = this.props;
+
+    let planType;
+
+    switch (team.plan_id) {
+      case 0:
+        planType = 'Community';
+        break;
+      case 1:
+        planType = 'Pro';
+        break;
+      case 2:
+        planType = 'Business';
+        break;
+      default:
+        planType = `Unknown: ${team.plan_id}`;
+        break;
+    }
+
     return (
       <div>
-        <Modal isOpen={this.props.showTrialModal} toggle={this.props.toggleTrial}>
-          <div className="am__title" onClick={this.props.toggleTrial}>
-            Trial controls
+        <Modal isOpen={this.props.showPlanModal} toggle={this.props.togglePlanModal}>
+          <div className="am__title" onClick={this.props.togglePlanModal}>
+            Plan Controls
             <div className="close am__close" />
           </div>
           <ModalBody>
             <div>
               <div className="ctg__charge_overview">
-                <div className="ctg__charge_for">Editing trial for:</div>
+                <div className="ctg__charge_for">Editing plan for:</div>
                 <div className="ctg__charge_header">Team #{team.team_id}</div>
-                <div className="ctg__receipt_divider"> </div>
+                <div className="ctg__receipt_divider"></div>
                 <div className="ctg__charge_amount">
-                  <div>Current trial status: {team.expiry ? moment(team.expiry).format('MMMM Do YYYY, h:mm:ss a') : 'No trial set'}</div>
+                  <div>Current Plan: {planType}</div>
+                  <div>Expiry: {team.expiry ? moment(team.expiry).format('MMMM Do YYYY, h:mm:ss a') : 'No expiry set'}</div>
                   <div className="ctg__date-picker">
                     <DayPicker
                       onDayClick={this.handleDayClick}
@@ -91,13 +127,13 @@ class TrialModal extends React.Component {
                     />
                     <div className="ctg__trial_details">
                       <div>
-                        Trial will expire{' '}
+                        Plan will expire{' '}
                         {moment(this.state.selectedDay)
                           .startOf('day')
                           .fromNow()}
                       </div>
                       <div>
-                        Trial Expiry:{' '}
+                        Plan Expiry:{' '}
                         {moment(this.state.selectedDay)
                           .add(1, 'd')
                           .format('MMM Do YYYY')}{' '}
@@ -109,17 +145,14 @@ class TrialModal extends React.Component {
               </div>
             </div>
           </ModalBody>
-          <ModalFooter>
-            <Button isSecondary onClick={this.props.toggleTrial}>
-              Cancel
-            </Button>
+          <ModalFooter style={{ 'justify-content': 'center' }}>
             <Button
               isWarning
               onClick={() => {
                 this.giveTrial(null);
               }}
             >
-              Change to free plan
+              Change to free
             </Button>
             <Button
               isPrimary
@@ -127,7 +160,25 @@ class TrialModal extends React.Component {
                 this.giveTrial(this.state.selectedDay);
               }}
             >
-              Grant Trial
+              Set Trial
+            </Button>
+          </ModalFooter>
+          <ModalFooter style={{ 'justify-content': 'center' }}>
+            <Button
+              isPrimary
+              onClick={() => {
+                this.makeEnterprise(this.state.selectedDay, 1);
+              }}
+            >
+              Set Enterprise Pro
+            </Button>
+            <Button
+              isPrimary
+              onClick={() => {
+                this.makeEnterprise(this.state.selectedDay, 2);
+              }}
+            >
+              Set Enterprise Business
             </Button>
           </ModalFooter>
         </Modal>
@@ -138,5 +189,5 @@ class TrialModal extends React.Component {
 
 export default connect(
   null,
-  { editTrial }
-)(TrialModal);
+  { editTrial, setEnterprise }
+)(PlanModal);

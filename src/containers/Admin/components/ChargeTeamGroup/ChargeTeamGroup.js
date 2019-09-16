@@ -12,7 +12,7 @@ import Input from '@/components/Input';
 import { cancelSubscription, editTrial, refundCharge } from '@/ducks/admin';
 
 import ChargeItem from '../ChargeItem/ChargeItem';
-import TrialModal from '../TrialModal/TrialModal';
+import PlanModal from '../PlanModal/PlanModal';
 
 const DATETIME_FORMAT = 'MMMM Do YYYY, h:mm:ss a';
 
@@ -27,7 +27,7 @@ class ChargeTeamGroup extends React.Component {
       refundAmountError: '',
       refundAmount: '',
       showCancelModal: false,
-      showTrialModal: false,
+      showPlanModal: false,
     };
   }
 
@@ -43,9 +43,9 @@ class ChargeTeamGroup extends React.Component {
     }));
   };
 
-  toggleTrial = () => {
+  togglePlanModal = () => {
     this.setState((prevState) => ({
-      showTrialModal: !prevState.showTrialModal,
+      showPlanModal: !prevState.showPlanModal,
     }));
   };
 
@@ -98,15 +98,15 @@ class ChargeTeamGroup extends React.Component {
             <div className="ctg__header-details">
               Team #{team.team_id} - Seats: {team.seats} - Created: {moment(team.created).format(DATETIME_FORMAT)}
               <div className="ctg__team-subheader">Subscription id: {team.stripe_sub_id ? team.stripe_sub_id : 'Cancelled'}</div>
-              <div className="ctg__team-subheader">Trial Expiry: {team.expiry ? moment(team.expiry).format('MMM Do YYYY') : 'No trial set'}</div>
+              <div className="ctg__team-subheader">Plan Expiry: {team.expiry ? moment(team.expiry).format('MMM Do YYYY') : 'No expiry set'}</div>
             </div>
             {team.stripe_sub_id ? (
               <Button className="ctg__team-cancel" isWarning onClick={this.toggleSub}>
                 Cancel Subscription
               </Button>
             ) : null}
-            <Button className="ctg__team-cancel" isPrimary onClick={this.toggleTrial}>
-              Manage Trial
+            <Button className="ctg__team-cancel" isPrimary onClick={this.togglePlanModal}>
+              Manage Plan
             </Button>
           </div>
           <Collapse isOpen={this.state.collapse}>
@@ -242,7 +242,7 @@ class ChargeTeamGroup extends React.Component {
             </ModalFooter>
           </Modal>
 
-          <TrialModal showTrialModal={this.state.showTrialModal} toggleTrial={this.toggleTrial} team={team} />
+          <PlanModal showPlanModal={this.state.showPlanModal} togglePlanModal={this.togglePlanModal} team={team} />
         </div>
       );
     }

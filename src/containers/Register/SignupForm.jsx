@@ -63,6 +63,8 @@ export const SignupForm = ({ signup, history }) => {
                 required
                 minLength="3"
                 value={name}
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus
               />
             </FormGroup>
             <FormGroup>

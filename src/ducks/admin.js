@@ -184,7 +184,30 @@ export const editTrial = (teamId, date) => async () => {
     }
     toast.success("Trial period set! Please refresh the page to see updated charges'");
   } catch (err) {
-    toast.error('Trail edit failed.');
+    toast.error('Trial edit failed.');
+  }
+};
+
+export const setEnterprise = (teamId, planId, date) => async () => {
+  if (!teamId) {
+    return;
+  }
+
+  try {
+    if (date) {
+      // Date should be a timestamp (something like 1429482798)
+      // Add one extra day to account for reset at midnight
+      const formatDate = moment(date)
+        .add(1, 'd')
+        .unix();
+      axios.post(`/admin-api/enterprise/${teamId}/${planId}/${formatDate}`);
+    } else {
+      // We want to set the trial expiry to null here
+      axios.post(`/admin-api/enterprise/${teamId}/${planId}/${0}`);
+    }
+    toast.success("Enterprise period set! Please refresh the page to see updated charges'");
+  } catch (err) {
+    toast.error('Enterprise edit failed.');
   }
 };
 

@@ -53,15 +53,6 @@ describe('Test Product Reducer', () => {
       products: [{ id: 1, val: 'test1' }, { id: 2, val: 'updated_test_2' }, { id: 3, val: 'test3' }],
     });
   });
-  it('should handle ADD_PRODUCT', () => {
-    const add = {
-      type: actions.ADD_PRODUCT,
-      payload: { product: 'test' },
-    };
-    expect(productReducer({ products: [] }, add)).toEqual({
-      products: ['test'],
-    });
-  });
 
   it('should handle REMOVE_PRODUCT', () => {
     const initial = [{ id: 1, val: 'test1' }, { id: 2, val: 'test2' }, { id: 3, val: 'test3' }];

@@ -4,18 +4,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Home from './Home';
-import EditProduct from './Products/EditProduct';
-import Products from './Products/Products';
+import ProductList from './ProductList';
+import Product from './Products';
 
 class Business extends Component {
   render() {
     let page;
     switch (this.props.page) {
       case 'products':
-        page = <Products {...this.props} />;
+        page = <ProductList {...this.props} />;
         break;
       case 'product':
-        page = <EditProduct {...this.props} />;
+        page = <Product {...this.props} />;
         break;
       default:
         page = <Home {...this.props} />;

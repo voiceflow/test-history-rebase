@@ -21,17 +21,10 @@ const GuidedStepsWrapper = styled.div`
     margin-bottom: 0px;
   }
 
-  ul {
-    display: block;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    padding-inline-start: 40px;
-  }
-
   textarea {
     resize: none;
+    min-height: 94px;
+    padding: 12px 12px 12px 15px;
   }
 
   .gs__steps-list {
@@ -137,11 +130,6 @@ const GuidedStepsWrapper = styled.div`
     }
   }
 
-  li {
-    display: list-item;
-    text-align: -webkit-match-parent;
-  }
-
   li:last-child {
     &:after {
       background-color: transparent !important;
@@ -172,12 +160,11 @@ const GuidedStepsWrapper = styled.div`
   .gs__steps-list__content {
     margin-top: 23px;
     margin-bottom: 2px;
-    overflow-y: hidden;
     display: flex;
 
     .gs__panel {
       flex: 3 1 auto;
-      min-width: 0;
+      width: 60%;
       display: -ms-flexbox;
       display: flex;
       min-height: 0;

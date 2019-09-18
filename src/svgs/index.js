@@ -82,3 +82,7 @@ export { default as zoomOut } from './zoom-out.svg';
 export { default as error404 } from './404.svg';
 export { default as error500 } from './500.svg';
 export { default as restart } from './restart.svg';
+export { default as noProducts } from './no-products.svg';
+export { default as imageDropzone } from './image-dropzone.svg';
+export { default as itemAdd } from './expression-add.svg';
+export { default as itemMinus } from './expression-minus.svg';

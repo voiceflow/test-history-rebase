@@ -56,9 +56,7 @@ class GuidedSteps extends React.Component {
 
     if (!this.validStepChange(nextStep)) return;
 
-    if (this.props.step) {
-      return this.props.setStage(nextStep);
-    }
+    this.props.setStage && this.props.setStage(nextStep);
 
     const prevStep = this.state.stepNumber;
     // Check if the last step was a valid step, if no step check function is provided, default to true

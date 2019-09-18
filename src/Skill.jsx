@@ -138,7 +138,7 @@ class Skill extends Component {
 
       // LOAD PRODUCTS
       try {
-        if (this.props.skill.locales && this.props.skill.locales.includes('en-US')) this.props.getProducts(this.props.skill.skill_id);
+        this.props.getProducts(this.props.skill.skill_id);
       } catch (err) {
         console.error(err);
       }

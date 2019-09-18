@@ -7,8 +7,8 @@ const activeStyles = css`
 
 const Container = styled.div`
   ${({ size, width = size }) => css`
-    width: ${width}
-    height: 100%
+    width: ${width};
+    height: 100%;
   `}
   background: #FFF;
   border: 1px solid #d4d9e6;

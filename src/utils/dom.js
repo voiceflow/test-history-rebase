@@ -204,19 +204,29 @@ export const scrollTo = (node, { top = 0, left = 0, ...opts } = {}) => {
 
 export const withHandler = (task) =>
   // eslint-disable-next-line consistent-return
-  (cb) => (event) => {
-    task(event);
+  (cb, options) => (event) => {
+    task(event, options);
 
     if (cb) {
       return cb(event);
     }
   };
 
-export const stopPropagation = withHandler((e) => e.stopPropagation());
+export const stopPropagation = withHandler((e, stopNativePropagation) => {
+  e.stopPropagation();
+
+  if (stopNativePropagation) {
+    e.nativeEvent.stopImmediatePropagation();
+  }
+});
 
 export const preventDefault = withHandler((e) => e.preventDefault());
 
-export const swallowEvent = withHandler((e) => {
+export const swallowEvent = withHandler((e, stopNativePropagation) => {
   e.stopPropagation();
   e.preventDefault();
+
+  if (stopNativePropagation) {
+    e.nativeEvent.stopImmediatePropagation();
+  }
 });

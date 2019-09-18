@@ -1460,3 +1460,15 @@
   max-height: 300px !important;
   overflow: auto;
 }
+
+div.popover-container {
+  max-height: 380px !important;
+}
+
+div.popover-container .popover-body {
+  padding: 16px;
+}
+
+div.popover-container .arrow {
+  display: none;
+}

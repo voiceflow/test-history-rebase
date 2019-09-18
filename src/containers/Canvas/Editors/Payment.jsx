@@ -6,6 +6,7 @@ import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
 import Dropdown from '@/componentsV2/Dropdown';
+import { getSelectedLocales } from '@/ducks/utils';
 
 import MenuItem from '../Sidebars/components/MenuItem';
 
@@ -22,7 +23,8 @@ export class Payment extends Component {
   };
 
   reset = () => {
-    const node = this.state.node;
+    const { node } = this.state;
+
     node.extras.product_id = null;
     this.setState(
       {
@@ -37,8 +39,12 @@ export class Payment extends Component {
   };
 
   render() {
-    const { products } = this.props;
+    const { products, locales } = this.props;
     const { selectedProduct } = this.state;
+
+    if (getSelectedLocales(locales).length === 0) {
+      return <Alert color="danger">In Skill Purchases are not supported for any of the selected regions of this project</Alert>;
+    }
 
     if (!Array.isArray(products) || products.length === 0) {
       return (
@@ -53,9 +59,7 @@ export class Payment extends Component {
       );
     }
 
-    const productOptions = _.cloneDeep(products);
-
-    const options = productOptions.map((product) => {
+    const options = products.map((product) => {
       return {
         value: product.id,
         label: product.name,
@@ -72,12 +76,6 @@ export class Payment extends Component {
         <>
           <label className="space-between mb-3">
             <span>{current.name}</span>
-            <span>
-              $
-              <span className="text-cash-money">
-                {_.get(current, ['data', 'publishingInformation', 'pricing', 'amazon.com', 'defaultPriceListing', 'price'])}
-              </span>
-            </span>
           </label>
           <Button isPrimary isBlock isLarge onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/product/${current.id}`)}>
             Edit Product <i className="fas fa-sign-in" />
@@ -85,7 +83,7 @@ export class Payment extends Component {
           <Button isClear isLarge isBlock className="mt-2" onClick={this.reset}>
             Unlink Product
           </Button>
-          {current.data.type === 'SUBSCRIPTION' ? (
+          {current.type === 'SUBSCRIPTION' ? (
             <>
               <h2 className="cut-through mt-5 mb-4">
                 <span>Subscription Settings</span>
@@ -117,11 +115,8 @@ export class Payment extends Component {
           placeholder="Select product"
           value={selectedProduct && selectedProduct.name}
           onSelect={(selected) => {
-            if (selected.openProductPage) {
-              return selected.openProductPage();
-            }
-            const node = this.state.node;
-            node.extras.product_id = selected.value;
+            const { node } = this.state;
+            node.extras.product_id = selected;
             this.setState({
               node,
               selectedProduct: selected,
@@ -143,6 +138,8 @@ export class Payment extends Component {
 
 const mapStateToProps = (state) => ({
   skill_id: state.skills.skill.skill_id,
+  locales: state.skills.skill.locales,
   products: state.products.products,
 });
+
 export default connect(mapStateToProps)(Payment);

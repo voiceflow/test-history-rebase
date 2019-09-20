@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
-import { Alert, Button } from 'reactstrap';
+import { Alert } from 'reactstrap';
+
+import Button from '@/components/Button';
 
 export class CancelPayment extends Component {
   constructor(props) {
@@ -71,6 +73,18 @@ export class CancelPayment extends Component {
     }
   }
 
+  reset = () => {
+    const { node } = this.state;
+
+    node.extras.product_id = null;
+    this.setState(
+      {
+        node,
+      },
+      this.props.onUpdate
+    );
+  };
+
   render() {
     if (!Array.isArray(this.props.products) || this.props.products.length === 0) {
       return (
@@ -110,19 +124,14 @@ export class CancelPayment extends Component {
               )
             </span>
           </label>
-          <Button
-            className="btn-primary btn-block btn-lg"
-            onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/product/${current.id}`)}
-          >
+          <Button isPrimary isBlock isLarge onClick={() => this.props.history.push(`/tools/${this.props.skill_id}/product/${current.id}`)}>
             Edit Product <i className="fas fa-sign-in" />
           </Button>
-          <Button color="clear" block className="btn-lg mt-2" onClick={this.reset}>
+          <Button isClear isLarge isBlock className="mt-2" onClick={this.reset}>
             Unlink Product
           </Button>
           <Alert color="warning" className="mt-3">
-            {current.data.type === 'SUBSCRIPTION'
-              ? 'The user will have their subscription cancelled'
-              : 'The user will be refunded their product purchase'}
+            {current.type === 'SUBSCRIPTION' ? 'The user will have their subscription cancelled' : 'The user will be refunded their product purchase'}
           </Alert>
         </>
       );

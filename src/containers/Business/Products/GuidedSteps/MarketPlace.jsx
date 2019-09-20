@@ -126,6 +126,7 @@ class MarketPlace extends React.PureComponent {
         marketPlaces: MarketPlaceAvailability.map(({ marketPlace, currency, min }) => {
           return {
             [marketPlace]: {
+              ...product.marketPlaces[marketPlace],
               currency,
               price: min,
               countries: [],
@@ -160,6 +161,7 @@ class MarketPlace extends React.PureComponent {
         marketPlaces: {
           ...marketPlaces,
           [place]: {
+            ...marketPlaces[place],
             price: 0,
             countries: [],
             currency: MarketPlaceAvailability.find((value) => value.marketPlace === place).currency,

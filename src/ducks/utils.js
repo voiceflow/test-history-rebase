@@ -251,12 +251,10 @@ export const normalizeProductLocale = (product, locales) => {
         };
       })
       .reduce(convertArryToObject, {}),
-    ...(product.id === NEW_PRODUCT_ID && {
-      marketPlaces: Object.keys(product.marketPlaces)
-        .map((place) => {
-          return { [place]: { ...product.marketPlaces[place], releaseDate: moment().format('YYYY-MM-DD') } };
-        })
-        .reduce(convertArryToObject, {}),
-    }),
+    marketPlaces: Object.keys(product.marketPlaces)
+      .map((place) => {
+        return { [place]: { ...product.marketPlaces[place], releaseDate: product.marketPlaces[place].releaseDate || moment().format('YYYY-MM-DD') } };
+      })
+      .reduce(convertArryToObject, {}),
   };
 };

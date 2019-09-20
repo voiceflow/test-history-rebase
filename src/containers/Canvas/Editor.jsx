@@ -359,7 +359,7 @@ class Editor extends Component {
       case 'payment':
         return <Payment history={this.props.history} createProduct={this.props.createProduct} editProduct={this.props.editProduct} />;
       case 'cancel':
-        return <CancelPayment createProduct={this.props.createProduct} editProduct={this.props.editProduct} />;
+        return <CancelPayment history={this.props.history} createProduct={this.props.createProduct} editProduct={this.props.editProduct} />;
       case 'module':
         return <Module user_modules={this.props.user_modules} />;
       case 'mail':

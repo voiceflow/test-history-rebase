@@ -6,6 +6,7 @@ const ENV_PREFIX = 'VF_APP_';
 module.exports = {
   IS_PRODUCTION: NODE_ENV === 'production',
   IS_SERVING: action === 'serve' || action === 'admin-serve',
+  IS_ADMIN: action === 'admin' || action === 'admin-serve',
   BASE_HREF: '/',
 
   ENV: {

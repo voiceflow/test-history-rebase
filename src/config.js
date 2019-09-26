@@ -6,6 +6,14 @@ export const BUILD_ENV = process.env.BUILD_ENV;
 
 export const API_HOST = process.env.API_HOST;
 
+export const ADMIN_HOST =
+  // eslint-disable-next-line no-nested-ternary
+  !API_HOST || API_HOST.includes('localhost')
+    ? 'https://localhost:3001'
+    : BUILD_ENV === 'staging'
+    ? 'https://admin.development.voiceflow.com'
+    : 'https://admin.voiceflow.com';
+
 // amazon
 export const AMAZON_APP_ID = process.env.AMAZON_APP_ID;
 

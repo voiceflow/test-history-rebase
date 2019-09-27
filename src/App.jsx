@@ -59,7 +59,7 @@ class App extends Component {
         .catch((err) => {
           console.error(err);
           this.setState({ loading: false });
-          history.push('/login');
+          if (window.location.pathname !== '/ssml') history.push('/login');
         });
     }
 

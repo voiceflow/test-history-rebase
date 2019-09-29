@@ -1,5 +1,14 @@
 import styled from 'styled-components';
 
+export const MsgBox = styled.div`
+  ${({ error }) => (error ? 'color: #e91e63;' : '')}
+  font-size: 12px;
+  line-height: 15px;
+  padding: 13px;
+  background: #ffffff;
+  text-align: left;
+`;
+
 export const AuthBox = styled.div`
   text-align: center;
 

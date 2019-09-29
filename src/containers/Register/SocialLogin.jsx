@@ -9,7 +9,7 @@ import { fbLogin, googleLogin } from '@/ducks/account';
 
 import { SocialLoginContainer } from './AuthBoxes';
 
-const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
+const SocialLogin = ({ entryText, light, googleLogin, fbLogin, coupon }) => {
   const [authError, setAuthError] = useState(null);
   let timeout;
 
@@ -19,6 +19,7 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
       email: userProfile.profileObj.email,
       googleId: userProfile.profileObj.googleId,
       token: userProfile.tokenId,
+      coupon,
     }).catch((err) => {
       setAuthError(err.response.data);
     });
@@ -32,6 +33,7 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
       fbId: fbUser.id,
       code: fbUser.accessToken,
       uri: window.location.href,
+      coupon,
     }).catch((err) => {
       setAuthError(err.response.data);
     });

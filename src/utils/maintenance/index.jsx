@@ -16,7 +16,7 @@ const MAINTENANCE_CHECK_INTERVAL = 5 * 60 * 1000;
 
 const getMaintenance = async () => {
   const {
-    data: { start_time_utc: startTimeUTC, end_time_utc: endTimeUTC },
+    data: { startTimeUTC, endTimeUTC },
   } = await axios.get(`${MAINTENANCE_STATUS_SOURCE}?q=${randomstring.generate()}`, {
     withCredentials: false,
   });

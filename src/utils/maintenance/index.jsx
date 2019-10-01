@@ -17,7 +17,9 @@ const MAINTENANCE_CHECK_INTERVAL = 5 * 60 * 1000;
 const getMaintenance = async () => {
   const {
     data: { start_time_utc: startTimeUTC, end_time_utc: endTimeUTC },
-  } = await axios.get(`${MAINTENANCE_STATUS_SOURCE}?q=${randomstring.generate()}`);
+  } = await axios.get(`${MAINTENANCE_STATUS_SOURCE}?q=${randomstring.generate()}`, {
+    withCredentials: false,
+  });
 
   // TEST TIME INTERVALS (uncomment to override fetched times with hard coded test ISO-ZULU intervals)
   // const minutesFromNow = (minutes = 1) => new Date(Date.now() + minutes * 60 * 1000).toISOString();

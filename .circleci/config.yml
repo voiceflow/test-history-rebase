@@ -93,10 +93,12 @@ jobs:
               fi
               VF_APP_API_HOST=api.voiceflow.com
               VF_APP_BUILD_ENV=production
+              VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.maintenance/maintenance.json
             else
               SEM_VER=$CIRCLE_BRANCH-$CIRCLE_SHA1
               VF_APP_BUILD_ENV=staging
               VF_APP_API_HOST=api.$CIRCLE_BRANCH.voiceflow.com
+              VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.dev.maintenance/maintenance.json
             fi
             echo -e "Building with SEM_VER=$SEM_VER"
             echo -e "API host is $VF_APP_API_HOST"
@@ -109,6 +111,7 @@ jobs:
               --build-arg SEM_VER=$SEM_VER \
               --build-arg VF_APP_BUILD_ENV=$VF_APP_BUILD_ENV \
               --build-arg VF_APP_API_HOST=$VF_APP_API_HOST \
+              --build-arg VF_APP_MAINTENANCE_STATUS_SOURCE=$VF_APP_MAINTENANCE_STATUS_SOURCE \
               -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM . 
             echo $CIRCLE_BUILD_NUM > /tmp/vf-build/vars/build_num
       - run:

@@ -43,3 +43,6 @@ export const STRIPE_KEY = IS_PRODUCTION && BUILD_ENV !== 'staging' ? STRIPE_LIVE
 // logrocket
 export const LOGROCKET_ENABLED = IS_PRODUCTION || process.env.LOGROCKET_ENABLED === 'true';
 export const LOGROCKET_PROJECT = process.env.LOGROCKET_PROJECT;
+
+// maintenance
+export const MAINTENANCE_STATUS_SOURCE = process.env.MAINTENANCE_STATUS_SOURCE;

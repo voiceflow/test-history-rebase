@@ -16,16 +16,16 @@ const MAINTENANCE_CHECK_INTERVAL = 5 * 60 * 1000;
 
 const getMaintenance = async () => {
   const {
-    data: { startTimeUTC, endTimeUTC },
+    data: { startTimeUtc, endTimeUtc },
   } = await axios.get(`${MAINTENANCE_STATUS_SOURCE}?q=${randomstring.generate()}`, {
     withCredentials: false,
   });
 
   // TEST TIME INTERVALS (uncomment to override fetched times with hard coded test ISO-ZULU intervals)
   // const minutesFromNow = (minutes = 1) => new Date(Date.now() + minutes * 60 * 1000).toISOString();
-  // return { startTimeUTC: minutesFromNow(1), endTimeUTC: minutesFromNow(60) };
+  // return { startTimeUtc: minutesFromNow(1), endTimeUtc: minutesFromNow(60) };
 
-  return { startTimeUTC, endTimeUTC };
+  return { startTimeUtc, endTimeUtc };
 };
 
 class MaintenanceGate extends React.Component {
@@ -66,11 +66,12 @@ class MaintenanceGate extends React.Component {
     }
 
     try {
-      const { startTimeUTC, endTimeUTC } = await getMaintenance();
+      const { startTimeUtc, endTimeUtc } = await getMaintenance();
 
       // if it fails to convert these variables will be set to NaN, which are falsy
-      const start = Date.parse(startTimeUTC);
-      const end = Date.parse(endTimeUTC);
+      const start = Date.parse(startTimeUtc);
+      const end = Date.parse(endTimeUtc);
+
       if (start && end) {
         this.maintenance.evaluateMaintenance(start, end);
       }

@@ -13,6 +13,12 @@ function ImportModal(props) {
   const [board, setBoard] = useState(boards[0]);
   const { projectName } = jwt.decode(token);
 
+  const onChange = (value) => {
+    boards.forEach((item) => {
+      if (item.value === value) setBoard(item);
+    });
+  };
+
   return (
     <Modal isOpen={open} toggle={toggle} className="import-modal">
       <ModalHeader toggle={toggle}>Copy Project</ModalHeader>
@@ -20,7 +26,7 @@ function ImportModal(props) {
         <Label>
           Copy <strong>{projectName}</strong> to
         </Label>
-        <Select options={boards} value={board.label} onSelect={setBoard} disabled={boards.length === 1} />
+        <Select options={boards} value={board.label} onSelect={onChange} disabled={boards.length === 1} />
       </ModalBody>
       <ModalFooter>
         <Button variant="tertiary" onClick={toggle}>

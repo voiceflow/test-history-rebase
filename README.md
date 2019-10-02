@@ -18,6 +18,27 @@ in the `.env.local` file in this directory. If this file doesn't exist then crea
 REACT_APP_LOGROCKET_ENABLED='true'
 ```
 
+## Previewing in an ephmeral environment
+
+1. Ask Frank (@Fran) <<frank@voiceflow.com>> for an ephemeral environment
+2. A hash string will be given to you that represents your ephemeral environment name
+3. Run `yarn preview <environment name>`
+4. Monitor CircleCI to check your ephemeral branch's (`ephemeral-<environment name>`) deployment status.
+
+* Make sure you run `yarn preview <environment name>` at least once in the `creator-app` repository after you have received your ephemeral environment. This will ensure that the app's API_URL is set correctly to your ephemeral API server.
+
+| Component | URL |
+| --------- | --- |
+| creator-api | `https://api.<environment name>.voiceflow.com` |
+| creator-app | `https://creator.<environment name>.voiceflow.com` |
+
+Currently, only the `creator` component is supported; `voiceflow-server` and `integrations` services are not deployed as of this writing. HTTP 500 errors on the `/integrations` path is normal since the `integrations` service is not deployed.
+
+#### Ephemeral environment rip down
+
+1. Run `yarn preview:delete <environment name>`
+2. If you are completely finished using the environment, please inform Frank to remove all cloud resources.
+
 ## Editor Configuration
 
 See [editor configuration docs](https://github.com/storyflow/workspace#editor-configuration)

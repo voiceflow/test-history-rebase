@@ -6,7 +6,6 @@ import Legal from '@/components/Legal';
 import Reference from '@/components/Reference';
 // import ModuleAdminPage from '@/containers/ModuleAdminPage';
 import Account from '@/containers/Account';
-import Admin from '@/containers/Admin';
 import NewTeam from '@/containers/Dashboard/NewTeam';
 import Reset from '@/containers/Register/reset';
 import ResetPassword from '@/containers/Register/resetPassword';
@@ -63,17 +62,6 @@ const allRoutes = (
     {/* Admin routes */}
     <PrivateRoute path="/visuals/:skill_id/display/:id" component={Skill} page="visuals" secondaryPage="display" />
     <PrivateRoute path="/visuals/:skill_id" component={Skill} page="visuals" secondaryPage="displays" />
-    <PrivateRoute path="/admin/template" name="Admin" component={Admin} page="template" />
-    <PrivateRoute path="/admin/updates" name="Admin" component={Admin} page="updates" />
-    <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page="copy" />
-    <PrivateRoute path="/admin/charges/:creator_id" name="Admin" component={Admin} page="charges" />
-    <PrivateRoute path="/admin/charges" name="Admin" component={Admin} page="charges" />
-    <PrivateRoute path="/admin/lookup/:version_id" name="Admin" component={Admin} page="lookup" />
-    <PrivateRoute path="/admin/lookup" name="Admin" component={Admin} page="lookup" />
-    <PrivateRoute path="/admin/vendors/:creator_id" name="Admin" component={Admin} page="vendors" />
-    <PrivateRoute path="/admin/vendors" name="Admin" component={Admin} page="vendors" />
-    <PrivateRoute path="/admin/version/:version_id" name="Admin" component={Admin} page="default" />
-    <PrivateRoute path="/admin" name="Admin" component={Admin} page="default" />
     <PrivateRoute path="/publish/:skill_id/google" component={Skill} page="publish" secondaryPage="google" />
     <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} page="publish" secondaryPage="alexa" />
     <PrivateRoute path="/publish/:skill_id" component={Skill} page="publish" secondaryPage="alexa" />

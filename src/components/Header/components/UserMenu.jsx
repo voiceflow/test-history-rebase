@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
 import { User } from '@/components/User/User';
+import { ADMIN_HOST } from '@/config';
 import { logout } from '@/ducks/account';
 
 export function UserMenu({ user, logout, history, preview }) {
@@ -33,9 +34,9 @@ export function UserMenu({ user, logout, history, preview }) {
           Account
         </Link>
         {user.admin >= 100 && (
-          <Link className="dropdown-item" to="/admin">
+          <a className="dropdown-item" href={ADMIN_HOST}>
             Admin
-          </Link>
+          </a>
         )}
         <DropdownItem onClick={userLogout} tag="a" href="#">
           Logout

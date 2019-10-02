@@ -14,7 +14,7 @@ const path = require('path');
 const commonConfig = require('./common');
 const adminConfig = require('./adminCommon');
 const paths = require('../paths');
-const { BASE_HREF, IS_PRODUCTION, IS_SERVING } = require('./config');
+const { BASE_HREF, IS_ADMIN, IS_PRODUCTION, IS_SERVING } = require('./config');
 const { action } = require('webpack-nano/argv');
 
 let configObject = commonConfig;
@@ -87,7 +87,7 @@ module.exports = merge(configObject, {
     }),
     new InlineManifestPlugin(),
     new BaseHrefWebpackPlugin({ baseHref: BASE_HREF }),
-    ...(IS_SERVING ? [] : [new CopyPlugin([{ from: paths.publicDir, to: paths.buildDir }])]),
+    ...(IS_SERVING ? [] : [new CopyPlugin([{ from: paths.publicDir, to: IS_ADMIN ? paths.adminBuildDir : paths.buildDir }])]),
     ...(IS_PRODUCTION
       ? [
           new Md5HashPlugin(),

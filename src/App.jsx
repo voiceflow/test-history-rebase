@@ -26,6 +26,7 @@ import Modal from '@/components/Modals/Modal';
 import { FullSpinner } from '@/components/Spinner';
 import { getAuth, getUser } from '@/ducks/account';
 import { history } from '@/store/store';
+import MaintenanceGate from '@/utils/maintenance';
 
 import allRoutes from './Routes/allRoutes';
 import Alerts from './components/Alerts/Alerts';
@@ -59,7 +60,7 @@ class App extends Component {
         .catch((err) => {
           console.error(err);
           this.setState({ loading: false });
-          history.push('/login');
+          if (window.location.pathname !== '/ssml') history.push('/login');
         });
     }
 
@@ -76,15 +77,17 @@ class App extends Component {
     return (
       <ThemeProvider theme={theme}>
         <div id="body">
-          <ConnectedRouter history={history}>
-            <ConfirmModal />
-            <ErrorModal />
-            <Modal />
-            <Alerts />
-            <ToastContainer />
-            {allRoutes}
-          </ConnectedRouter>
-          <IntercomChat />
+          <MaintenanceGate>
+            <ConnectedRouter history={history}>
+              <ConfirmModal />
+              <ErrorModal />
+              <Modal />
+              <Alerts />
+              <ToastContainer />
+              {allRoutes}
+            </ConnectedRouter>
+            <IntercomChat />
+          </MaintenanceGate>
         </div>
       </ThemeProvider>
     );

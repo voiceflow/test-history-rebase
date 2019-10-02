@@ -7,6 +7,7 @@ import Sidebar from '@/admin/components/Sidebar';
 import BetaProgram from '@/admin/containers/BetaProgram';
 import BetaUsersList from '@/admin/containers/BetaProgram/BetaUsersList';
 import Copy from '@/admin/containers/Copy';
+import Coupon from '@/admin/containers/Coupon';
 import FinanceBoard from '@/admin/containers/Finance';
 import Home from '@/admin/containers/Home';
 import ProductUpdates from '@/admin/containers/ProductUpdates';
@@ -32,6 +33,7 @@ class Admin extends React.Component {
             <PageWrapper>
               <Route exact path="/admin" component={Home} />
               <Route path="/admin/template" component={Template} />
+              <Route path="/admin/coupon" component={Coupon} />
               <Route path="/admin/updates" component={ProductUpdates} />
               <Route path="/admin/copy" component={Copy} />
               <Route path="/admin/charges/:creator_id" component={FinanceBoard} />

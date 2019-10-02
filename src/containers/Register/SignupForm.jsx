@@ -1,12 +1,14 @@
 import './Account.css';
 
 import axios from 'axios';
+import moment from 'moment';
 import queryString from 'query-string/index';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/Button';
+import { PLAN_NAME } from '@/containers/Dashboard/PLANS';
 import { signup } from '@/ducks/account';
 
 import { AuthBox, MsgBox } from './AuthBoxes';
@@ -21,7 +23,7 @@ export const SignupForm = ({ signup, history }) => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
-  const [couponErr, setCouponErr] = useState(0);
+  const [couponMsg, setCouponMsg] = useState({ err: false, msg: null });
   let timeout;
   let couponTimeout;
 
@@ -55,14 +57,17 @@ export const SignupForm = ({ signup, history }) => {
   useEffect(() => {
     clearTimeout(couponTimeout);
     couponTimeout = setTimeout(async () => {
-      if (!coupon) setCouponErr(0);
+      if (!coupon) return setCouponMsg({ err: false, msg: null });
       const { data } = await axios.get(`/team/coupons/${coupon}`);
       if (!data.valid) {
-        setCouponErr(2);
+        setCouponMsg({ err: true, msg: 'Promo code does not exist, please try again.' });
       } else if (data.stripeCoupon) {
-        setCouponErr(3);
+        setCouponMsg({ err: true, msg: 'Please apply this promo code after signing up.' });
       } else {
-        setCouponErr(1);
+        setCouponMsg({
+          err: false,
+          msg: `Success! You've been upgraded to Voiceflow ${PLAN_NAME[data.plan]} for ${moment.duration(data.duration, 'days').humanize()}.`,
+        });
       }
     }, 150);
     return () => clearTimeout(couponTimeout);
@@ -122,19 +127,9 @@ export const SignupForm = ({ signup, history }) => {
                 minLength="3"
                 value={coupon}
               />
-              {couponErr === 3 && (
+              {couponMsg.msg && (
                 <div className="row mt-0">
-                  <MsgBox error>Please use this promo code after signup.</MsgBox>
-                </div>
-              )}
-              {couponErr === 2 && (
-                <div className="row mt-0">
-                  <MsgBox error>Promo code does not exist, please try again.</MsgBox>
-                </div>
-              )}
-              {couponErr === 1 && (
-                <div className="row mt-0">
-                  <MsgBox>Success! You've been upgraded to Voiceflow PRO for a year.</MsgBox>
+                  <MsgBox error={couponMsg.err}>{couponMsg.msg}</MsgBox>
                 </div>
               )}
             </FormGroup>

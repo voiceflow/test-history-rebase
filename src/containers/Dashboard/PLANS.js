@@ -1,3 +1,5 @@
+export const PLAN_NAME = ['Hobbyist', 'Professional', 'Business'];
+
 const PLANS = {
   HOBBY: {
     id: 0,

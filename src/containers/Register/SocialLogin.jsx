@@ -9,7 +9,7 @@ import { fbLogin, googleLogin } from '@/ducks/account';
 
 import { SocialLoginContainer } from './AuthBoxes';
 
-const SocialLogin = ({ entryText, light, googleLogin, fbLogin, coupon }) => {
+const SocialLogin = ({ entryText, light, googleLogin, fbLogin, coupon, checkCoupon }) => {
   const [authError, setAuthError] = useState(null);
   let timeout;
 
@@ -54,7 +54,12 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin, coupon }) => {
       <GoogleLogin
         clientId={GOOGLE_CLIENT_ID}
         render={(renderProps) => (
-          <div onClick={renderProps.onClick} className={cn('social-button', { 'social-button-light': light })}>
+          <div
+            onClick={() => {
+              checkCoupon() && renderProps.onClick();
+            }}
+            className={cn('social-button', { 'social-button-light': light })}
+          >
             <img src="/google.svg" alt="" />
             Google
           </div>
@@ -65,7 +70,12 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin, coupon }) => {
         appId={FACEBOOK_APP_ID}
         fields="name,email"
         render={(renderProps) => (
-          <div onClick={renderProps.onClick} className={cn('social-button', { 'social-button-light': light })}>
+          <div
+            onClick={() => {
+              checkCoupon() && renderProps.onClick();
+            }}
+            className={cn('social-button', { 'social-button-light': light })}
+          >
             <img src="/facebook.svg" alt="" />
             Facebook
           </div>

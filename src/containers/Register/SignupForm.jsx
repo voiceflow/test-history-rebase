@@ -24,8 +24,9 @@ export const SignupForm = ({ signup, history, promo }) => {
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
   const [couponMsg, setCouponMsg] = useState({ err: false, msg: null });
+  const [couponValid, setCouponValid] = useState(false);
+  const [couponError, setCouponError] = useState(false);
   let timeout;
-  let couponTimeout;
 
   const openLogin = (e) => {
     e.preventDefault();
@@ -33,8 +34,20 @@ export const SignupForm = ({ signup, history, promo }) => {
     return false;
   };
 
+  const checkCoupon = () => {
+    if (coupon && !couponValid) {
+      setCouponError(true);
+      return false;
+    }
+
+    return true;
+  };
+
   const signupSubmit = (e) => {
     e.preventDefault();
+
+    if (!checkCoupon()) return;
+
     signup({
       name,
       email,
@@ -54,24 +67,29 @@ export const SignupForm = ({ signup, history, promo }) => {
     return () => clearTimeout(timeout);
   });
 
-  useEffect(() => {
-    clearTimeout(couponTimeout);
-    couponTimeout = setTimeout(async () => {
-      if (!coupon) return setCouponMsg({ err: false, msg: null });
-      const { data } = await axios.get(`/team/coupons/${coupon}`);
-      if (!data.valid) {
-        setCouponMsg({ err: true, msg: 'Promo code does not exist, please try again.' });
-      } else if (data.stripeCoupon) {
-        setCouponMsg({ err: true, msg: 'Please apply this promo code after signing up.' });
-      } else {
-        setCouponMsg({
-          err: false,
-          msg: `Success! You've been upgraded to Voiceflow ${PLAN_NAME[data.plan]} for ${moment.duration(data.duration, 'days').humanize()}.`,
-        });
-      }
-    }, 150);
-    return () => clearTimeout(couponTimeout);
-  }, [coupon]);
+  const verifyCoupon = async (input) => {
+    setCouponValid(false);
+
+    if (!input) return setCouponMsg({ err: false, msg: null });
+    const { data } = await axios.get(`/team/coupons/${input}`);
+    if (!data.valid) {
+      setCouponMsg({ err: true, msg: 'Promo code does not exist, please try again.' });
+    } else if (data.stripeCoupon) {
+      setCouponMsg({ err: true, msg: 'Please apply this promo code after signing up.' });
+    } else {
+      setCouponMsg({
+        err: false,
+        msg: `Success! You've been upgraded to Voiceflow ${PLAN_NAME[data.plan]} for ${moment.duration(data.duration, 'days').humanize()}.`,
+      });
+      setCouponValid(true);
+    }
+  };
+
+  const onCouponChange = async (e) => {
+    setCouponError(false);
+    setCoupon(e.target.value);
+    await verifyCoupon(e.target.value);
+  };
 
   return (
     <AuthenticationContainer dark>
@@ -123,12 +141,13 @@ export const SignupForm = ({ signup, history, promo }) => {
                   className="form-bg"
                   type="text"
                   name="coupon"
-                  onChange={(e) => setCoupon(e.target.value)}
+                  onChange={onCouponChange}
                   placeholder="Promo code"
                   minLength="3"
                   value={coupon}
                 />
-                {couponMsg.msg && (
+                {couponValid && <div>Success check</div>}
+                {couponError && (
                   <div className="row mt-0">
                     <MsgBox error={couponMsg.err}>{couponMsg.msg}</MsgBox>
                   </div>
@@ -149,7 +168,7 @@ export const SignupForm = ({ signup, history, promo }) => {
           </div>
         </Form>
 
-        <SocialLogin entryText="Or sign up with" coupon={coupon} />
+        <SocialLogin entryText="Or sign up with" coupon={coupon} checkCoupon={checkCoupon} />
 
         {signupError && (
           <div className="errorContainer row">

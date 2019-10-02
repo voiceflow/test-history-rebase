@@ -1,12 +1,19 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const fadeIn = keyframes`
+  from { opacity: 0; }
+  to   { opacity: 1; }
+`;
 
 export const MsgBox = styled.div`
   ${({ error }) => (error ? 'color: #e91e63;' : '')}
   font-size: 12px;
   line-height: 15px;
-  padding: 13px;
+  padding: 5px 0px 0px 15px;
   background: #ffffff;
   text-align: left;
+
+  animation: ${fadeIn} 1s;
 `;
 
 export const AuthBox = styled.div`

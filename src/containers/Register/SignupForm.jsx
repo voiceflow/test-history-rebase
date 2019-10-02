@@ -1,6 +1,7 @@
 import './Account.css';
 
 import axios from 'axios';
+import throttle from 'lodash/throttle';
 import moment from 'moment';
 import queryString from 'query-string/index';
 import React, { useEffect, useState } from 'react';
@@ -11,7 +12,7 @@ import Button from '@/components/Button';
 import { PLAN_NAME } from '@/containers/Dashboard/PLANS';
 import { signup } from '@/ducks/account';
 
-import { AuthBox, MsgBox } from './AuthBoxes';
+import { AuthBox, Check, MsgBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
 
@@ -67,28 +68,32 @@ export const SignupForm = ({ signup, history, promo }) => {
     return () => clearTimeout(timeout);
   });
 
-  const verifyCoupon = async (input) => {
-    setCouponValid(false);
+  const verifyCoupon = React.useCallback(
+    throttle(async (input) => {
+      setCouponValid(false);
 
-    if (!input) return setCouponMsg({ err: false, msg: null });
-    const { data } = await axios.get(`/team/coupons/${input}`);
-    if (!data.valid) {
-      setCouponMsg({ err: true, msg: 'Promo code does not exist, please try again.' });
-    } else if (data.stripeCoupon) {
-      setCouponMsg({ err: true, msg: 'Please apply this promo code after signing up.' });
-    } else {
-      setCouponMsg({
-        err: false,
-        msg: `Success! You've been upgraded to Voiceflow ${PLAN_NAME[data.plan]} for ${moment.duration(data.duration, 'days').humanize()}.`,
-      });
-      setCouponValid(true);
-    }
-  };
+      if (!input) return setCouponMsg({ err: false, msg: null });
+      const { data } = await axios.get(`/team/coupons/${input}`);
+      if (!data.valid) {
+        setCouponMsg({ err: true, msg: 'Promo code does not exist, please try again.' });
+      } else if (data.stripeCoupon) {
+        setCouponMsg({ err: true, msg: 'Please apply this promo code after signing up.' });
+      } else {
+        setCouponMsg({
+          err: false,
+          msg: `Success! You've been upgraded to Voiceflow ${PLAN_NAME[data.plan]} for ${moment.duration(data.duration, 'days').humanize()}.`,
+        });
+        setCouponValid(true);
+      }
+    }, 1000),
+    []
+  );
 
   const onCouponChange = async (e) => {
     setCouponError(false);
     setCoupon(e.target.value);
-    await verifyCoupon(e.target.value);
+
+    verifyCoupon(e.target.value);
   };
 
   return (
@@ -142,11 +147,14 @@ export const SignupForm = ({ signup, history, promo }) => {
                   type="text"
                   name="coupon"
                   onChange={onCouponChange}
+                  style={{
+                    paddingRight: couponValid ? 40 : undefined,
+                  }}
                   placeholder="Promo code"
                   minLength="3"
                   value={coupon}
                 />
-                {couponValid && <div>Success check</div>}
+                {couponValid && <Check icon="check2" color="green" size={20} />}
                 {couponError && (
                   <div className="row mt-0">
                     <MsgBox error={couponMsg.err}>{couponMsg.msg}</MsgBox>

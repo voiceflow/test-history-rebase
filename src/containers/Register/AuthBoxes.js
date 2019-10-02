@@ -1,8 +1,16 @@
 import styled, { keyframes } from 'styled-components';
 
+import SvgIcon from '@/components/SvgIcon';
+
 const fadeIn = keyframes`
   from { opacity: 0; }
   to   { opacity: 1; }
+`;
+
+export const Check = styled(SvgIcon)`
+  position: absolute;
+  top: 13px;
+  right: 12px;
 `;
 
 export const MsgBox = styled.div`

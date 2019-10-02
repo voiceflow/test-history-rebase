@@ -15,7 +15,7 @@ import { AuthBox, MsgBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
 
-export const SignupForm = ({ signup, history }) => {
+export const SignupForm = ({ signup, history, promo }) => {
   // eslint-disable-next-line no-restricted-globals
   const query = queryString.parse(location.search);
   const [signupError, setSignupError] = useState(null);
@@ -117,22 +117,24 @@ export const SignupForm = ({ signup, history }) => {
                 value={password}
               />
             </FormGroup>
-            <FormGroup>
-              <Input
-                className="form-bg"
-                type="text"
-                name="coupon"
-                onChange={(e) => setCoupon(e.target.value)}
-                placeholder="Promo code"
-                minLength="3"
-                value={coupon}
-              />
-              {couponMsg.msg && (
-                <div className="row mt-0">
-                  <MsgBox error={couponMsg.err}>{couponMsg.msg}</MsgBox>
-                </div>
-              )}
-            </FormGroup>
+            {promo && (
+              <FormGroup>
+                <Input
+                  className="form-bg"
+                  type="text"
+                  name="coupon"
+                  onChange={(e) => setCoupon(e.target.value)}
+                  placeholder="Promo code"
+                  minLength="3"
+                  value={coupon}
+                />
+                {couponMsg.msg && (
+                  <div className="row mt-0">
+                    <MsgBox error={couponMsg.err}>{couponMsg.msg}</MsgBox>
+                  </div>
+                )}
+              </FormGroup>
+            )}
             <div className="row">
               <div className="col-6 auth__link">
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}

@@ -6,9 +6,11 @@ import moment from 'moment';
 import queryString from 'query-string/index';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { Tooltip } from 'react-tippy';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/Button';
+import Icon from '@/components/SvgIcon';
 import { PLAN_NAME } from '@/containers/Dashboard/PLANS';
 import { signup } from '@/ducks/account';
 
@@ -75,13 +77,13 @@ export const SignupForm = ({ signup, history, promo }) => {
       if (!input) return setCouponMsg({ err: false, msg: null });
       const { data } = await axios.get(`/team/coupons/${input}`);
       if (!data.valid) {
-        setCouponMsg({ err: true, msg: 'Promo code does not exist, please try again.' });
+        setCouponMsg({ err: true, msg: 'Promo code does not exist, please try again' });
       } else if (data.stripeCoupon) {
-        setCouponMsg({ err: true, msg: 'Please apply this promo code after signing up.' });
+        setCouponMsg({ err: true, msg: 'Please apply this promo code after signing up' });
       } else {
         setCouponMsg({
           err: false,
-          msg: `Success! You've been upgraded to Voiceflow ${PLAN_NAME[data.plan]} for ${moment.duration(data.duration, 'days').humanize()}.`,
+          msg: `Voiceflow ${PLAN_NAME[data.plan]} for ${moment.duration(data.duration, 'days').humanize()}`,
         });
         setCouponValid(true);
       }
@@ -154,7 +156,13 @@ export const SignupForm = ({ signup, history, promo }) => {
                   minLength="3"
                   value={coupon}
                 />
-                {couponValid && <Check icon="check2" color="green" size={20} />}
+                {couponValid && (
+                  <Check>
+                    <Tooltip title={couponMsg.msg} position="top">
+                      <Icon icon="check2" color="green" size={20} />
+                    </Tooltip>
+                  </Check>
+                )}
                 {couponError && (
                   <div className="row mt-0">
                     <MsgBox error={couponMsg.err}>{couponMsg.msg}</MsgBox>

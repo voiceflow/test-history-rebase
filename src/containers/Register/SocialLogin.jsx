@@ -9,7 +9,7 @@ import { fbLogin, googleLogin } from '@/ducks/account';
 
 import { SocialLoginContainer } from './AuthBoxes';
 
-const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
+const SocialLogin = ({ entryText, light, googleLogin, fbLogin, coupon, checkCoupon }) => {
   const [authError, setAuthError] = useState(null);
   let timeout;
 
@@ -19,6 +19,7 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
       email: userProfile.profileObj.email,
       googleId: userProfile.profileObj.googleId,
       token: userProfile.tokenId,
+      coupon,
     }).catch((err) => {
       setAuthError(err.response.data);
     });
@@ -32,6 +33,7 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
       fbId: fbUser.id,
       code: fbUser.accessToken,
       uri: window.location.href,
+      coupon,
     }).catch((err) => {
       setAuthError(err.response.data);
     });
@@ -52,7 +54,12 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
       <GoogleLogin
         clientId={GOOGLE_CLIENT_ID}
         render={(renderProps) => (
-          <div onClick={renderProps.onClick} className={cn('social-button', { 'social-button-light': light })}>
+          <div
+            onClick={() => {
+              checkCoupon() && renderProps.onClick();
+            }}
+            className={cn('social-button', { 'social-button-light': light })}
+          >
             <img src="/google.svg" alt="" />
             Google
           </div>
@@ -63,7 +70,12 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin }) => {
         appId={FACEBOOK_APP_ID}
         fields="name,email"
         render={(renderProps) => (
-          <div onClick={renderProps.onClick} className={cn('social-button', { 'social-button-light': light })}>
+          <div
+            onClick={() => {
+              checkCoupon() && renderProps.onClick();
+            }}
+            className={cn('social-button', { 'social-button-light': light })}
+          >
             <img src="/facebook.svg" alt="" />
             Facebook
           </div>

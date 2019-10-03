@@ -1,24 +1,34 @@
 import './Account.css';
 
+import axios from 'axios';
+import throttle from 'lodash/throttle';
+import moment from 'moment';
 import queryString from 'query-string/index';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { Tooltip } from 'react-tippy';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/Button';
+import Icon from '@/components/SvgIcon';
+import { PLAN_NAME } from '@/containers/Dashboard/PLANS';
 import { signup } from '@/ducks/account';
 
-import { AuthBox } from './AuthBoxes';
+import { AuthBox, Check, MsgBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
 
-export const SignupForm = ({ signup, history }) => {
+export const SignupForm = ({ signup, history, promo }) => {
   // eslint-disable-next-line no-restricted-globals
   const query = queryString.parse(location.search);
   const [signupError, setSignupError] = useState(null);
   const [email, setEmail] = useState(query.email ? query.email : '');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [coupon, setCoupon] = useState('');
+  const [couponMsg, setCouponMsg] = useState({ err: false, msg: null });
+  const [couponValid, setCouponValid] = useState(false);
+  const [couponError, setCouponError] = useState(false);
   let timeout;
 
   const openLogin = (e) => {
@@ -27,12 +37,25 @@ export const SignupForm = ({ signup, history }) => {
     return false;
   };
 
+  const checkCoupon = () => {
+    if (coupon && !couponValid) {
+      setCouponError(true);
+      return false;
+    }
+
+    return true;
+  };
+
   const signupSubmit = (e) => {
     e.preventDefault();
+
+    if (!checkCoupon()) return;
+
     signup({
       name,
       email,
       password,
+      coupon,
     }).catch((err) => {
       setSignupError(err.response.data.data);
     });
@@ -46,6 +69,34 @@ export const SignupForm = ({ signup, history }) => {
 
     return () => clearTimeout(timeout);
   });
+
+  const verifyCoupon = React.useCallback(
+    throttle(async (input) => {
+      setCouponValid(false);
+
+      if (!input) return setCouponMsg({ err: false, msg: null });
+      const { data } = await axios.get(`/team/coupons/${input}`);
+      if (!data.valid) {
+        setCouponMsg({ err: true, msg: 'Promo code does not exist, please try again' });
+      } else if (data.stripeCoupon) {
+        setCouponMsg({ err: true, msg: 'Please apply this promo code after signing up' });
+      } else {
+        setCouponMsg({
+          err: false,
+          msg: `Voiceflow ${PLAN_NAME[data.plan]} for ${moment.duration(data.duration, 'days').humanize()}`,
+        });
+        setCouponValid(true);
+      }
+    }, 1000),
+    []
+  );
+
+  const onCouponChange = async (e) => {
+    setCouponError(false);
+    setCoupon(e.target.value);
+
+    verifyCoupon(e.target.value);
+  };
 
   return (
     <AuthenticationContainer dark>
@@ -91,6 +142,34 @@ export const SignupForm = ({ signup, history }) => {
                 value={password}
               />
             </FormGroup>
+            {promo && (
+              <FormGroup>
+                <Input
+                  className="form-bg"
+                  type="text"
+                  name="coupon"
+                  onChange={onCouponChange}
+                  style={{
+                    paddingRight: couponValid ? 40 : undefined,
+                  }}
+                  placeholder="Promo code"
+                  minLength="3"
+                  value={coupon}
+                />
+                {couponValid && (
+                  <Check>
+                    <Tooltip title={couponMsg.msg} position="top">
+                      <Icon icon="check2" color="green" size={20} />
+                    </Tooltip>
+                  </Check>
+                )}
+                {couponError && (
+                  <div className="row mt-0">
+                    <MsgBox error={couponMsg.err}>{couponMsg.msg}</MsgBox>
+                  </div>
+                )}
+              </FormGroup>
+            )}
             <div className="row">
               <div className="col-6 auth__link">
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -105,7 +184,7 @@ export const SignupForm = ({ signup, history }) => {
           </div>
         </Form>
 
-        <SocialLogin entryText="Or sign up with" />
+        <SocialLogin entryText="Or sign up with" coupon={coupon} checkCoupon={checkCoupon} />
 
         {signupError && (
           <div className="errorContainer row">

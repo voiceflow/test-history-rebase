@@ -214,8 +214,17 @@ jobs:
               --build-arg VF_APP_API_HOST=$VF_APP_API_HOST \
               -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM .
             docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM
+            # Admin build
+            docker build \
+              -f admin.dockerfile \
+              --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} \
+              --build-arg VF_APP_BUILD_ENV=$VF_APP_BUILD_ENV \
+              --build-arg VF_APP_API_HOST=$VF_APP_API_HOST \
+              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM .
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM
             aws eks --region us-east-1 update-kubeconfig --name development
             kubectl set image --namespace ephemeral-$ENV_NAME deployment/creator-app-$ENV_NAME app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM
+            kubectl set image --namespace ephemeral-$ENV_NAME deployment/admin-ui-$ENV_NAME app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM
 workflows:
   version: 2
   build-deploy:

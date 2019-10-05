@@ -27,6 +27,7 @@ const allRoutes = (
     <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
     <PublicRoute exact path="/reset" name="Reset" component={Reset} />
     <PublicRoute exact path="/login" name="Login" page="login" component={LoginForm} />
+    <PublicRoute exact path="/signup/promo" name="SignUpPromo" page="signupPromo" component={SignupForm} promo />
     <PublicRoute exact path="/signup" name="SignUp" page="signup" component={SignupForm} />
     <Route exact path="/creator/privacy_policy" name="Privacy Policy" component={Legal} />
     <Route exact path="/creator/terms" name="Terms" component={Legal} />

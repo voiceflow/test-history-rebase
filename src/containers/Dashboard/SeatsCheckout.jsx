@@ -23,10 +23,6 @@ const STAGES = {
   CHECK: { loader: 'Checking Source' },
 };
 
-const PLANS = {
-  BUSINESS: 2,
-};
-
 class SeatsCheckout extends Component {
   constructor(props) {
     super(props);
@@ -112,7 +108,7 @@ class SeatsCheckout extends Component {
       axios
         .get(`/team/coupons/${coupon}`)
         .then(({ data }) => {
-          if (plan.id === PLANS.BUSINESS) {
+          if (plan.id === data.plan) {
             this.setState({
               invalid: !data.valid,
               invalidMessage: !data.valid ? 'This coupon is invalid' : null,
@@ -122,7 +118,7 @@ class SeatsCheckout extends Component {
             this.setState({
               invalid: true,
               freeCoupon: false,
-              invalidMessage: 'This coupon is only valid for the business plan.',
+              invalidMessage: 'This coupon is valid for a different plan.',
             });
           }
         })

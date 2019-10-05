@@ -45,6 +45,9 @@ const Sidebar = (props) => {
           <NavLink to="/admin/template" activeClassName="is-active">
             <i className="fal fa-ruler-combined" /> Templates
           </NavLink>
+          <NavLink to="/admin/coupon" activeClassName="is-active">
+            <i className="fal fa-store" /> Coupons
+          </NavLink>
           <NavLink to="/admin/updates" activeClassName="is-active">
             <i className="fal fa-scroll" /> Product Updates
           </NavLink>

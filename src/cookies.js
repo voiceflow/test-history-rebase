@@ -3,6 +3,7 @@ import Cookies from 'universal-cookie';
 import { IS_DEVELOPMENT } from '@/config';
 
 export const AUTH_COOKIE = 'auth_vf';
+export const MAINTENANCE_COOKIE = 'maintenance';
 
 const cookies = new Cookies();
 
@@ -26,6 +27,10 @@ export const setAuthCookie = (token) => {
   cookies.set(AUTH_COOKIE, token, cookieOptions);
   window.CreatorSocket && window.CreatorSocket.authCB && window.CreatorSocket.authCB(token);
 };
+
+export function getMaintenanceCookie() {
+  return cookies.get(MAINTENANCE_COOKIE);
+}
 
 export function getAuthCookie() {
   switch (window.location.host) {

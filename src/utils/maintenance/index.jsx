@@ -7,6 +7,7 @@ import { Alert } from 'reactstrap';
 
 import LoadingGate from '@/admin/Routes/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
+import { getMaintenanceCookie } from '@/cookies';
 import { setConfirm } from '@/ducks/modal';
 
 import MaintenanceController from './MaintenanceController';
@@ -56,6 +57,9 @@ class MaintenanceGate extends React.Component {
   maintenance = new MaintenanceController(this.action);
 
   checkMaintenance = async () => {
+    // TODO: use environment variable check
+    if (getMaintenanceCookie() === 'd8WMYh2gtx') return;
+
     // additional failsafe - call an arbitrary api endpoint to ensure API isn't in maintenance
     try {
       await axios.get('/maintenance');

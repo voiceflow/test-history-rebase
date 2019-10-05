@@ -58,7 +58,11 @@ class MaintenanceGate extends React.Component {
 
   checkMaintenance = async () => {
     // TODO: use environment variable check
-    if (getMaintenanceCookie() === 'd8WMYh2gtx') return;
+    if (getMaintenanceCookie() === 'd8WMYh2gtx') {
+      return this.setState({
+        checked: true,
+      });
+    }
 
     // additional failsafe - call an arbitrary api endpoint to ensure API isn't in maintenance
     try {

@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import GoogleLogin from 'react-google-login';
@@ -9,7 +10,7 @@ import { fbLogin, googleLogin } from '@/ducks/account';
 
 import { SocialLoginContainer } from './AuthBoxes';
 
-const SocialLogin = ({ entryText, light, googleLogin, fbLogin, coupon, checkCoupon }) => {
+const SocialLogin = ({ entryText, light, googleLogin, fbLogin, coupon, checkCoupon = _.constant(true) }) => {
   const [authError, setAuthError] = useState(null);
   let timeout;
 

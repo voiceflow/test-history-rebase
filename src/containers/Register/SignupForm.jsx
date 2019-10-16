@@ -24,7 +24,7 @@ export const SignupForm = ({ signup, history, promo }) => {
   const [signupError, setSignupError] = useState(null);
   const [email, setEmail] = useState(query.email ? query.email : '');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+  const [name, setName] = useState(query.name ? query.name : '');
   const [coupon, setCoupon] = useState('');
   const [couponMsg, setCouponMsg] = useState({ err: false, msg: null });
   const [couponValid, setCouponValid] = useState(false);
@@ -91,12 +91,16 @@ export const SignupForm = ({ signup, history, promo }) => {
     []
   );
 
-  const onCouponChange = async (e) => {
+  const onCouponChange = async (value) => {
     setCouponError(false);
-    setCoupon(e.target.value);
+    setCoupon(value);
 
-    verifyCoupon(e.target.value);
+    verifyCoupon(value);
   };
+
+  useEffect(() => {
+    if (promo && query.coupon) onCouponChange(query.coupon);
+  }, []);
 
   return (
     <AuthenticationContainer dark>
@@ -148,7 +152,7 @@ export const SignupForm = ({ signup, history, promo }) => {
                   className="form-bg"
                   type="text"
                   name="coupon"
-                  onChange={onCouponChange}
+                  onChange={(e) => onCouponChange(e.target.value)}
                   style={{
                     paddingRight: couponValid ? 40 : undefined,
                   }}

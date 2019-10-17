@@ -85,6 +85,7 @@ export const createNewProduct = (locale) => {
     version: '1.0',
     type: 'ENTITLEMENT',
     name: '',
+    releaseDate: moment().format('YYYY-MM-DD'),
     marketPlaces: getDefaultAvailability(),
     locales: {
       [locale]: {
@@ -96,12 +97,15 @@ export const createNewProduct = (locale) => {
 
 // ---------------- format product object FOR api -------------//
 
-export const formatMarketPlaces = (marketPlaces, id) =>
-  Object.keys(marketPlaces)
+export const formatMarketPlaces = (marketPlaces) => {
+  // find any valid release date
+  const generalReleaseDate = Object.values(marketPlaces).find((place) => !!place.releaseDate).releaseDate || moment().format('YYYY-MM-DD');
+
+  return Object.keys(marketPlaces)
     .map((place) => {
       return {
         [place]: {
-          releaseDate: id === NEW_PRODUCT_ID ? moment().format('YYYY-MM-DD') : marketPlaces[place].releaseDate,
+          releaseDate: marketPlaces[place].releaseDate || generalReleaseDate,
           defaultPriceListing: {
             price: marketPlaces[place].price,
             currency: marketPlaces[place].currency,
@@ -110,6 +114,7 @@ export const formatMarketPlaces = (marketPlaces, id) =>
       };
     })
     .reduce(convertArryToObject, {});
+};
 
 export const getDistributionCountries = (marketPlaces) =>
   Object.keys(marketPlaces)
@@ -135,7 +140,7 @@ export const getFormattedProduct = (data, skillID) => {
       }),
       publishingInformation: {
         distributionCountries: getDistributionCountries(data.marketPlaces),
-        pricing: formatMarketPlaces(data.marketPlaces, data.id),
+        pricing: formatMarketPlaces(data.marketPlaces),
         taxInformation: {
           category: data.taxCategory,
         },
@@ -180,20 +185,20 @@ export const getFormattedProduct = (data, skillID) => {
 
 // ---------------- parse product object FROM api ------------------- //
 
-const parseMarketPlaces = (allPlaces, distributionCountries) =>
-  Object.keys(allPlaces)
-    .map((place) => {
-      return {
-        [place]: {
-          ...allPlaces[place].defaultPriceListing,
-          releaseDate: allPlaces[place].releaseDate,
-          countries: MarketPlaceAvailability.find(({ marketPlace }) => marketPlace === place).countries.filter((country) =>
-            distributionCountries.includes(country)
-          ),
-        },
-      };
-    })
-    .reduce(convertArryToObject, {});
+export const parseMarketPlaces = (allPlaces, distributionCountries) =>
+  Object.keys(allPlaces).reduce(
+    (acc, place) => ({
+      ...acc,
+      [place]: {
+        ...allPlaces[place].defaultPriceListing,
+        releaseDate: allPlaces[place].releaseDate,
+        countries: MarketPlaceAvailability.find(({ marketPlace }) => marketPlace === place).countries.filter((country) =>
+          distributionCountries.includes(country)
+        ),
+      },
+    }),
+    {}
+  );
 
 const parseLocals = (locales, privacyAndCompliance) =>
   Object.keys(locales)
@@ -218,21 +223,19 @@ export const parseProduct = ({
   id,
   name,
   data: { version, type, privacyAndCompliance, publishingInformation, testingInstructions, purchasableState, subscriptionInformation = {} },
-}) => {
-  return {
-    id,
-    name,
-    version,
-    type,
-    purchasableState,
-    testingInstructions,
-    taxCategory: publishingInformation.taxInformation.category,
-    subscriptionFrequency: subscriptionInformation.subscriptionPaymentFrequency,
-    trialPeriodDays: subscriptionInformation.subscriptionTrialPeriodDays,
-    marketPlaces: parseMarketPlaces(publishingInformation.pricing, publishingInformation.distributionCountries),
-    locales: parseLocals(publishingInformation.locales, privacyAndCompliance),
-  };
-};
+}) => ({
+  id,
+  name,
+  version,
+  type,
+  marketPlaces: parseMarketPlaces(publishingInformation.pricing, publishingInformation.distributionCountries),
+  purchasableState,
+  testingInstructions,
+  taxCategory: publishingInformation.taxInformation.category,
+  subscriptionFrequency: subscriptionInformation.subscriptionPaymentFrequency,
+  trialPeriodDays: subscriptionInformation.subscriptionTrialPeriodDays,
+  locales: parseLocals(publishingInformation.locales, privacyAndCompliance),
+});
 
 // ---------------------- normalization ----------------
 

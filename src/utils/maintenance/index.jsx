@@ -58,7 +58,7 @@ class MaintenanceGate extends React.Component {
 
   checkMaintenance = async () => {
     // TODO: use environment variable check
-    if (getMaintenanceCookie() === 'd8WMYh2gtx') {
+    if (getMaintenanceCookie() === 'd8WMYh2g89') {
       return this.setState({
         checked: true,
       });

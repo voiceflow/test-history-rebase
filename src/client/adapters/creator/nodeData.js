@@ -13,8 +13,16 @@ const nodeDataAdapter = createSimpleAdapter(
       type = BlockType.DEPRECATED;
     }
 
+    let data = {};
+    try {
+      data = blockAdapter[type].fromDB(dbData);
+    } catch (err) {
+      type = BlockType.DEPRECATED;
+      data = dbData;
+    }
+
     return {
-      ...blockAdapter[type].fromDB(dbData),
+      ...data,
       type,
       name: node.name,
       nodeID: node.id,

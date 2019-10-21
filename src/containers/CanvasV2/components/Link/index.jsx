@@ -2,7 +2,7 @@ import React from 'react';
 import { withProps } from 'recompose';
 
 import { withCanvas } from '@/components/Canvas/contexts';
-import { withEngine, withTestingMode } from '@/containers/CanvasV2/contexts';
+import { withEngine, withPlatform, withTestingMode } from '@/containers/CanvasV2/contexts';
 import { compose } from '@/utils/functional';
 
 import { Overlay, Path, RemoveButton } from './components';
@@ -66,6 +66,12 @@ export class Link extends React.PureComponent {
     return this.props.engine.port.getRect(this.props.link[relationship].portID);
   }
 
+  matchesPlatform(platform) {
+    const port = this.props.engine.getPortByID(this.props.link.source.portID);
+
+    return !port.platform || port.platform === platform;
+  }
+
   drawFromPoints(nextPoints) {
     const pathEl = this.pathRef.current;
     const hiddenPathEl = this.hiddenPathRef.current;
@@ -98,10 +104,10 @@ export class Link extends React.PureComponent {
   }
 
   render() {
-    const { isTesting } = this.props;
+    const { link, isTesting, platform } = this.props;
     const { isHovering } = this.state;
 
-    if (!this.hasPort('source') || !this.hasPort('target')) {
+    if (!link || !this.hasPort('source') || !this.hasPort('target')) {
       return null;
     }
 
@@ -113,7 +119,7 @@ export class Link extends React.PureComponent {
     const [centerX, centerY] = buildCenter(this.points);
 
     return (
-      <g ref={this.containerRef}>
+      <g ref={this.containerRef} style={{ visibility: this.matchesPlatform(platform) ? 'visible' : 'hidden' }}>
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
         <Overlay d={path} isHovering={isHovering} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} ref={this.hiddenPathRef} />
         <Path d={path} markerEnd="url(#head)" isHovering={isHovering} ref={this.pathRef} />
@@ -127,6 +133,7 @@ export class Link extends React.PureComponent {
 export default compose(
   withEngine,
   withCanvas,
+  withPlatform,
   withTestingMode,
   withProps(({ linkID, engine }) => ({
     link: engine.getLinkByID(linkID),

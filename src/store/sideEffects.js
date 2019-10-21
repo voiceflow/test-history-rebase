@@ -1,7 +1,7 @@
 import client from '@/client';
 import skillAdapter, { extractIntents, extractProject, extractSlots } from '@/client/adapters/skill';
 import { addProjectToList } from '@/ducks/board';
-import { initializeCreator, removeHiddenLinks, resetCreator } from '@/ducks/creator';
+import { initializeCreator, resetCreator } from '@/ducks/creator';
 import { allDiagramsSelector, loadDiagramsForSkill, saveActiveDiagram } from '@/ducks/diagram';
 import { loadDisplaysForSkill } from '@/ducks/display';
 import { fetchIntegrationUsers } from '@/ducks/integration';
@@ -88,10 +88,4 @@ export const saveVariableSets = () => async (dispatch, getState) => {
   await Promise.all(diagrams.map((diagram) => dispatch(saveVariableSet(diagram.id))));
 };
 
-export const savePlatformAndActiveDiagram = () => async (dispatch, getState) => {
-  const platform = activePlatformSelector(getState());
-
-  dispatch(removeHiddenLinks(platform));
-
-  await Promise.all([dispatch(savePlatform()), dispatch(saveActiveDiagram())]);
-};
+export const savePlatformAndActiveDiagram = () => (dispatch) => Promise.all([dispatch(savePlatform()), dispatch(saveActiveDiagram())]);

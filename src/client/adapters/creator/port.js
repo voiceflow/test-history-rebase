@@ -1,9 +1,25 @@
 import { BlockType, PlatformType } from '@/constants';
-import PortLabels from '@/containers/CanvasV2/managers/labels';
 
 import { createAdapter } from '../utils';
 
 const getAlternativePlatform = (platform) => (platform === PlatformType.ALEXA ? PlatformType.GOOGLE : PlatformType.ALEXA);
+
+const getPortLabel = (port, index) => {
+  if (port.platform !== PlatformType.ALEXA) {
+    return null;
+  }
+
+  switch (index) {
+    case 1:
+      return 'next';
+    case 2:
+      return 'previous';
+    case 3:
+      return 'pause';
+    default:
+      return null;
+  }
+};
 
 const portAdapter = createAdapter(
   (dbPort, nodeType, platform) => ({
@@ -19,7 +35,7 @@ const portAdapter = createAdapter(
     parentNode: appPort.nodeID,
     links: linksByPortID[appPort.id] || [],
     in: !!isInPort,
-    label: (!isInPort && (PortLabels[type]?.(appPort, index, platform) || appPort.label)) || ' ',
+    label: (!isInPort && (getPortLabel(appPort, index) || appPort.label)) || ' ',
     ...(appPort.platform && { hidden: appPort.platform !== platform }),
   })
 );

@@ -67,7 +67,6 @@ export const ADD_PORT = 'CREATOR:PORT:ADD';
 export const REMOVE_PORT = 'CREATOR:PORT:REMOVE';
 export const ADD_LINK = 'CREATOR:LINK:ADD';
 export const REMOVE_LINK = 'CREATOR:LINK:REMOVE';
-export const REMOVE_HIDDEN_LINKS = 'CREATOR:LINK:REMOVE_HIDDEN';
 export const SET_FOCUS = 'CREATOR:FOCUS:SET';
 export const CLEAR_FOCUS = 'CREATOR:FOCUS:CLEAR';
 
@@ -126,17 +125,6 @@ export const removePortReducer = (state, { payload: portID }) =>
   )(state);
 
 export const removeLinkReducer = (state, { payload: linkID }) => removeLinkFromState(linkID)(state);
-
-export const removeHiddenLinksReducer = (state, { payload: platform }) => {
-  const hiddenLinkIDs = state.links.allKeys.filter((linkID) => {
-    const link = getNormalizedByKey(state.links, linkID);
-    const port = getNormalizedByKey(state.ports, link.source.portID);
-
-    return port.platform && port.platform !== platform;
-  });
-
-  return removeAllLinksFromState(hiddenLinkIDs)(state);
-};
 
 export const setFocusReducer = (state, { payload: { nodeID, renameActiveRevision } }) => {
   if (state.focus.isActive && nodeID === state.focus.target && renameActiveRevision === state.focus.renameActiveRevision) {
@@ -205,8 +193,6 @@ function creatorReducer(state = DEFAULT_STATE, action) {
       return addLinkReducer(state, action);
     case REMOVE_LINK:
       return removeLinkReducer(state, action);
-    case REMOVE_HIDDEN_LINKS:
-      return removeHiddenLinksReducer(state, action);
     case SET_FOCUS:
       return setFocusReducer(state, action);
     case CLEAR_FOCUS:
@@ -380,8 +366,6 @@ export const addLink = (sourcePortID, targetPortID, linkID) => createAction(ADD_
 export const removeLink = (linkID) => createAction(REMOVE_LINK, linkID);
 
 export const setFocus = (nodeID, renameActiveRevision = null) => createAction(SET_FOCUS, { nodeID, renameActiveRevision });
-
-export const removeHiddenLinks = (platform) => createAction(REMOVE_HIDDEN_LINKS, platform);
 
 export const clearFocus = () => createAction(CLEAR_FOCUS);
 

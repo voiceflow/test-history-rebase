@@ -33,7 +33,7 @@ class PortManager extends EngineConsumer {
     return links.some((link) => {
       const port = this.engine.getPortByID(link.source.portID);
 
-      return !port.plaform || port.plaform === platform;
+      return !port.platform || port.platform === platform;
     });
   }
 

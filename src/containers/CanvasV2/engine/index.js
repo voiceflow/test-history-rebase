@@ -6,7 +6,7 @@ import { BlockType } from '@/constants';
 import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import { diagramByIDSelector } from '@/ducks/diagram';
-import { isRootDiagramSelector } from '@/ducks/skill';
+import { activePlatformSelector, isRootDiagramSelector } from '@/ducks/skill';
 import { setCanvasError } from '@/ducks/user';
 import { useEnableDisable } from '@/hooks';
 
@@ -112,6 +112,8 @@ export class Engine {
     this.ports.set(port.id, { ...port, api });
 
     this.addSupportedLinks(port.id);
+
+    this.port.redrawLinks(port.id);
   }
 
   expirePort(portID, api) {
@@ -157,7 +159,18 @@ export class Engine {
     if (links.length) {
       this.supportedLinks.push(...links.map((link) => link.id));
 
-      if (this.supportedLinks.length === this.linkIDs.length) {
+      const platform = activePlatformSelector(this.store.getState());
+      if (
+        this.supportedLinks.length ===
+        this.linkIDs
+          .map(this.getLinkByID)
+          .filter(Boolean)
+          .filter((link) => {
+            const port = this.getPortByID(link.source.portID);
+
+            return !port.platform || port.platform === platform;
+          }).length
+      ) {
         this.finalize();
       }
     }

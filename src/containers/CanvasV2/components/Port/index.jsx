@@ -11,6 +11,12 @@ import { compose } from '@/utils/functional';
 import { Container, Label } from './components';
 
 class Port extends React.PureComponent {
+  static getDerivedStateFromProps({ engine, port }) {
+    return {
+      hasLinks: port && engine.port.hasActiveLinks(port.id),
+    };
+  }
+
   state = {
     hasLinks: this.props.hasLinks,
   };

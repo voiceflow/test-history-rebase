@@ -25,7 +25,7 @@ function PortSet({ ports, children }) {
           .filter((portID) => {
             const port = engine.getPortByID(portID);
 
-            return !port.platform || port.platform === platform;
+            return port && (!port.platform || port.platform === platform);
           })
           .map((portID, index) => (
             <PortListItem key={portID}>

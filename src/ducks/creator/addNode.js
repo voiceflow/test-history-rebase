@@ -14,7 +14,6 @@ import {
   getLinkIDsByPortID,
   patchNodeInState,
   removeAllLinksFromState,
-  removeAllPortsFromBlocksInState,
 } from './utils';
 
 export const buildPortForNode = (nodeID) => (port) => ({
@@ -108,7 +107,6 @@ export const addNestedNodeReducer = (state, { payload: { parentNodeID, node, dat
   return compose(
     addNodeToState(mergedNode, mergedData),
     removeAllLinksFromState(parentNodeOutLinkIDs),
-    removeAllPortsFromBlocksInState(parentNodeOutPortIDs),
     patchNodeInState(parentNode.id, {
       parentNode: mergedNodeID,
     }),

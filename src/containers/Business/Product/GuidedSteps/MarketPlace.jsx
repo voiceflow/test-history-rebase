@@ -6,12 +6,12 @@ import React from 'react';
 
 import Button from '@/componentsV2/Button';
 import DropdownMultiselect from '@/componentsV2/DropdownMultiselect';
+import Input from '@/componentsV2/Input';
 import { productByIDSelector, updateProduct } from '@/ducks/product';
 import { connect } from '@/hocs';
 import { CountriesName, MarketPlaceAvailability } from '@/services/LocaleMap';
-import Input from '@/componentsV2/Input';
 
-import { AvailabilitySubSection, NextButtonContainer, PriceInput, SubSection, Text } from './components';
+import { AvailabilitySubSection, NextButtonContainer, SubSection, Text } from './components';
 
 const MarketPlaceOptions = MarketPlaceAvailability.map(({ marketPlace, currency }) => ({
   value: marketPlace,
@@ -64,9 +64,10 @@ class MarketPlace extends React.PureComponent {
                       <div key={index}>
                         <SubSection flex>
                           <Input
+                            type="number"
                             name="price"
                             placeholder={`e.g. ${min}`}
-                            value={product.marketPlaces[place].price}
+                            defaultValue={product.marketPlaces[place].price}
                             onChange={this.onPriceChange(place, index)}
                           />
                           <Text>{icon}</Text>

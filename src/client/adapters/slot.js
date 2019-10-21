@@ -8,7 +8,7 @@ const slotAdapter = createAdapter(
     name,
     inputs,
     open,
-    selected: type ? (type.value === LEGACY_CUSTOM_SLOT_TYPE ? CUSTOM_SLOT_TYPE : type.value) : null,
+    selected: (type && (type.value === LEGACY_CUSTOM_SLOT_TYPE ? CUSTOM_SLOT_TYPE : type.value)) || null,
   }),
   ({ id, name, inputs, open, selected }) => ({
     key: id,

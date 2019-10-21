@@ -15,7 +15,7 @@ jest.mock('react-ga');
 jest.mock('axios');
 jest.mock('universal-cookie');
 const mockDispatch = jest.fn();
-const mockGetState = jest.fn(() => ({ router: { location: 'test location' } }));
+const mockGetState = jest.fn(() => ({ router: { location: 'test location' }, session: { tabID: 'foo ' } }));
 
 /* beforeAll(() => {
   pool.query('DELETE FROM creators WHERE email = \'tests@getvoiceflow.com\'',

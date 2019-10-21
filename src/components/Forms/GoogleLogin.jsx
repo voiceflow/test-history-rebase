@@ -33,7 +33,7 @@ export const GoogleLoginForm = (props) => {
     <div className="d-flex flex-column">
       <div className="w-100 pb-3">
         <div className="mb-4">
-          <div className="my-2 text-muted">1. Connect Google</div>
+          <label className="my-2">1. Connect Google</label>
           <div className="my-3" style={{ fontSize: '0.9rem' }}>
             Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.
           </div>
@@ -45,7 +45,7 @@ export const GoogleLoginForm = (props) => {
         </div>
         <hr />
         <div className="my-4">
-          <div className="my-2 text-muted">2. Paste Credentials</div>
+          <label className="my-2">2. Paste Credentials</label>
           <div className="my-3" style={{ fontSize: '0.9rem' }}>
             Copy and paste the authentication code given in the field below.
           </div>

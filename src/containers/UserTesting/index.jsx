@@ -1,19 +1,20 @@
 import './UserTesting.css';
 
-import axios from 'axios';
 import React from 'react';
 import { IntercomAPI } from 'react-intercom';
-import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import styled from 'styled-components';
 
+import client from '@/client';
 import RoundButton from '@/components/Button/RoundButton';
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import Header from '@/components/Header';
 import Popover from '@/components/Popover';
-import Test from '@/containers/Testing';
+import { TestingModeProvider } from '@/containers/CanvasV2/contexts';
+import Testing from '@/containers/Testing';
+import { activeDiagramIDSelector, activeNameSelector, setActiveSkill } from '@/ducks/skill';
 import { initializeTest, updateTest } from '@/ducks/test';
-import { fetchVersionSuccess } from '@/ducks/version';
+import { connect } from '@/hocs';
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["componentDidMount","componentWillUnmount","render"] }] */
 
 const BodyContainer = styled.div`
@@ -30,7 +31,7 @@ class UserTesting extends React.Component {
     IntercomAPI('update', {
       hide_default_launcher: true,
     });
-    if (this.props.skill.diagram) {
+    if (this.props.diagramID) {
       this.setState({ loading: 0 });
     } else {
       this.fetchInformation();
@@ -58,8 +59,8 @@ class UserTesting extends React.Component {
   }
 
   async fetchInformation() {
-    const { fetchVersionSuccess, initializeTest, updateTest } = this.props;
-    const { data } = await axios.get(`/test/getInfo/${this.props.match.params.skill_id}`);
+    const { setActiveSkill, initializeTest, updateTest } = this.props;
+    const data = await client.testing.getInfo(this.props.match.params.skill_id);
     const skillData = data.skill;
     const globals = Array.isArray(skillData.global) ? skillData.global : [];
     skillData.global = [...new Set(['sessions', 'user_id', 'timestamp', 'platform', 'locale', ...globals])];
@@ -68,7 +69,7 @@ class UserTesting extends React.Component {
     }
     skillData.platform = skillData.platform === 'google' ? 'google' : 'alexa';
 
-    fetchVersionSuccess(skillData, {});
+    setActiveSkill(skillData);
 
     localStorage.setItem(`TEST_VARIABLES_${skillData.skill_id}`, JSON.stringify(data.globals));
 
@@ -84,6 +85,7 @@ class UserTesting extends React.Component {
   };
 
   render() {
+    const { name } = this.props;
     return (
       <>
         <a id="MadeInVoiceflow" href="https://voiceflow.com" target="_blank" rel="noopener noreferrer">
@@ -97,12 +99,11 @@ class UserTesting extends React.Component {
               <img className="voiceflow-logo" src="/logo_bubble_Small.png" alt="logo" />
             </a>
           )}
-          centerRenderer={() => (this.props.skill && this.props.skill.name) || 'Loading...'}
+          centerRenderer={() => name || 'Loading...'}
           rightRenderer={() => (
             <div ref={this.sharingButton} className="mr-3">
               <Tooltip className="top-nav-icon" title="Share" position="bottom" distance={16}>
                 <RoundButton
-                  id="icon-share"
                   variant="color"
                   color="#5b9dfa"
                   active={this.state.share}
@@ -125,7 +126,9 @@ class UserTesting extends React.Component {
         />
         {!this.state.loading && (
           <div id="PublicUserTesting">
-            <Test open={true} loading={this.state.loading} />
+            <TestingModeProvider value={true}>
+              <Testing />
+            </TestingModeProvider>
           </div>
         )}
       </>
@@ -133,14 +136,15 @@ class UserTesting extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  skill: state.skills.skill,
-});
+const mapStateToProps = {
+  name: activeNameSelector,
+  diagramID: activeDiagramIDSelector,
+};
 
 const mapDispatchToProps = {
   initializeTest,
   updateTest,
-  fetchVersionSuccess,
+  setActiveSkill,
 };
 
 export default connect(

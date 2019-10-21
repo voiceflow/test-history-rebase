@@ -1,7 +1,9 @@
-export default {
+export const ANIMATION_SPEED = 0.15;
+
+const THEME = {
   unit: 8,
   color: {
-    background: '#f7f9fb',
+    background: '#f9f9f9',
     gradient: [
       // brightest
       '#fff', // '0'
@@ -21,8 +23,21 @@ export default {
     editSidebar: {
       width: 400,
     },
+    menuBar: {
+      width: 40,
+    },
+    menuHandle: {
+      width: 18,
+    },
     menuDrawer: {
       width: 250,
     },
   },
+  transition(...propertyWhitelist) {
+    const properties = propertyWhitelist.length ? propertyWhitelist : ['all'];
+
+    return `transition: ${properties.map((property) => `${property} ${ANIMATION_SPEED}s ease`).join(',')};`;
+  },
 };
+
+export default THEME;

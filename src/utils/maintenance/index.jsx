@@ -7,8 +7,8 @@ import { Alert } from 'reactstrap';
 
 import LoadingGate from '@/admin/Routes/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
-import { getMaintenanceCookie } from '@/cookies';
 import { setConfirm } from '@/ducks/modal';
+import { getMaintenanceCookie } from '@/utils/cookies';
 
 import MaintenanceController from './MaintenanceController';
 

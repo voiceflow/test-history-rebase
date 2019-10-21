@@ -1,15 +1,43 @@
 /* eslint-disable no-await-in-loop */
-import { constants } from '@voiceflow/common';
 import axios from 'axios';
 import _ from 'lodash';
 import randomstring from 'randomstring';
+import { createSelector } from 'reselect';
 
+import client from '@/client';
+import { PlatformType } from '@/constants';
 import { getVendors } from '@/ducks/account';
-import { updateVersion } from '@/ducks/version';
+import {
+  activeLocalesSelector,
+  activeProjectIDSelector,
+  activeSkillIDSelector,
+  invNameSelector,
+  publishPlatformSelectors,
+  updatePublishPlatforms,
+} from '@/ducks/skill';
 
-import { createUploadStep } from './utils';
+import { createPublishStateSelector, createUploadStep, invNameError } from './utils';
 
-const { validLatinChars, validSpokenCharacters, validCharacters } = constants.regex;
+export { invNameError };
+
+export const PLATFORM = PlatformType.ALEXA;
+export const publishInfoSelector = publishPlatformSelectors[PLATFORM];
+export const updatePublishInfo = updatePublishPlatforms[PLATFORM];
+
+export const amznIDSelector = createSelector(
+  publishInfoSelector,
+  ({ amznID }) => amznID
+);
+
+export const reviewSelector = createSelector(
+  publishInfoSelector,
+  ({ review }) => review
+);
+
+export const vendorIdSelector = createSelector(
+  publishInfoSelector,
+  ({ vendorId }) => vendorId
+);
 
 /*
   flags:
@@ -174,74 +202,29 @@ export const resetAlexaUpload = () => (dispatch) => {
   dispatch(updateAlexa(initialState));
 };
 
-// Determine if Invocation Name Valid
-const LAUNCH_PHRASES = ['launch', 'ask', 'tell', 'load', 'begin', 'enable'];
-const WAKE_WORDS = ['Alexa', 'Amazon', 'Echo', 'Skill', 'App'];
-
-const matchesKeyword = (splitName) => (l) =>
-  splitName.find((split) => {
-    return split === l.toLowerCase();
-  });
-
-// detect if an invocation name is invalid relative to the locales for the skill
-export const invNameError = (name, locales) => {
-  if (!name || !name.trim()) return 'Invocation name required for Alexa';
-  let characters = validLatinChars;
-  let error = `[${locales
-    .filter((l) => l !== 'jp-JP')
-    .join(',')}] Invocation name may only contain Latin characters, apostrophes, periods and spaces`;
-  if (locales.length === 1 && locales[0] === 'ja-JP') {
-    characters = validSpokenCharacters;
-    error = 'Invocation name may only contain Japanese/English characters, apostrophes, periods and spaces';
-  } else if (locales.some((l) => l.includes('en'))) {
-    // If an English Skill No Accents Allowed
-    error = `[${locales
-      .filter((l) => l.includes('en'))
-      .join(',')}] Invocation name may only contain alphabetic characters, apostrophes, periods and spaces`;
-    characters = validCharacters;
-  }
-
-  const validRegex = `[^${characters}.' ]+`;
-  const match = name.match(validRegex);
-  const splitName = name.split(' ').map((splits) => {
-    return splits.toLowerCase();
-  });
-  if (match) {
-    return `${error} - Invalid Characters: "${match.join()}"`;
-  }
-  if (WAKE_WORDS.some(matchesKeyword(splitName))) {
-    return `Invocation name cannot contain Alexa keywords e.g. ${WAKE_WORDS.join(', ')}`;
-  }
-  if (LAUNCH_PHRASES.some(matchesKeyword(splitName))) {
-    return `Invocation name cannot contain Launch Phrases e.g. ${LAUNCH_PHRASES.join(', ')}`;
-  }
-  return null;
-};
-
-const uploadStep = createUploadStep('alexa');
+export const publishStateSelector = createPublishStateSelector(PLATFORM);
+const uploadStep = createUploadStep(PLATFORM);
 
 // STEP 8 (optional)
 export const submitForReview = () =>
   uploadStep(async (dispatch, getState) => {
-    const {
-      skills: {
-        skill: { amzn_id, skill_id },
-      },
-    } = getState();
+    const state = getState();
+    const skillID = activeSkillIDSelector(state);
+    const amznID = amznIDSelector(state);
 
     dispatch(updateAlexaStage(ALEXA_STAGES.SUBMITTING_SKILL));
 
     try {
-      await axios.post(`/amazon/${skill_id}/${amzn_id}/certify`);
-      dispatch(updateVersion('review', true));
+      await axios.post(`/amazon/${skillID}/${amznID}/certify`);
+      dispatch(updatePublishInfo({ review: true }));
       dispatch(updateAlexaStage(ALEXA_STAGES.SUBMIT_SUCCESS));
     } catch (err) {
       console.error(err);
       let errorMessage = 'Certification Error \n';
-      if (_.has(err, ['response', 'data', 'message'])) {
+      if (err?.response?.data?.message) {
         errorMessage += err.response.data.message;
       }
-      const violations = _.get(err, ['response', 'data', 'violations']);
+      const violations = err?.response?.data?.violations;
       if (Array.isArray(violations)) {
         for (let i = 0; i < violations.length; i++) errorMessage += `\n${violations[i].message}`;
       }
@@ -259,14 +242,12 @@ export const uploadSuccess = () =>
 // STEP 7
 export const enableSkill = () =>
   uploadStep(async (dispatch, getState) => {
-    const {
-      skills: {
-        skill: { amzn_id },
-      },
-    } = getState();
+    const state = getState();
+    const { amznID } = publishInfoSelector(state);
+
     dispatch(updateAlexaStage(ALEXA_STAGES.ENABLING_SKILL));
     try {
-      await axios.put(`/interaction_model/${amzn_id}/enable`);
+      await axios.put(`/interaction_model/${amznID}/enable`);
     } catch (err) {
       console.error(err);
     }
@@ -276,32 +257,28 @@ export const enableSkill = () =>
 // STEP 6
 export const checkInteractionModel = () =>
   uploadStep(async (dispatch, getState) => {
-    const {
-      skills: {
-        skill: { amzn_id, locales },
-      },
-      publish: {
-        alexa: {
-          options: { submit },
-        },
-      },
-    } = getState();
+    const state = getState();
+    // get submit option
+    const { options } = publishStateSelector(state);
+    const locales = activeLocalesSelector(state);
+    const amznID = amznIDSelector(state);
+
     dispatch(updateAlexaStage(ALEXA_STAGES.INTERACTION_MODEL));
 
     let success = false;
     try {
       // wait up to 60 seconds and even longer if submitting for review
-      const checks = submit ? 60 : 20;
+      const checks = options.submit ? 60 : 20;
 
       for (let i = 0; i < checks; i++) {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         const {
           data: { interactionModel = {} },
-        } = await axios.get(`/interaction_model/${amzn_id}/status`);
+        } = await axios.get(`/interaction_model/${amznID}/status`);
 
         // eslint-disable-next-line no-loop-func
         _.forOwn(interactionModel, (metadata, locale) => {
-          if (_.get(metadata, ['lastUpdateRequest', 'status']) === 'SUCCEEDED') {
+          if (metadata?.lastUpdateRequest?.status === 'SUCCEEDED') {
             success = locale;
             return false;
           }
@@ -313,7 +290,7 @@ export const checkInteractionModel = () =>
     }
 
     dispatch(updateAlexa({ locale: success || locales[0] }));
-    if (submit) {
+    if (options.submit) {
       dispatch(submitForReview());
     } else if (success) {
       dispatch(enableSkill());
@@ -325,25 +302,21 @@ export const checkInteractionModel = () =>
 // STEP 5
 export const submitProject = (newVersionId) =>
   uploadStep(async (dispatch, getState) => {
-    const {
-      skills: {
-        skill: { project_id },
-      },
-    } = getState();
+    const projectID = activeProjectIDSelector(getState());
     dispatch(updateAlexaStage(ALEXA_STAGES.UPLOADING_ALEXA));
     try {
-      const { data: amznId } = await axios.post(`/project/${project_id}/version/${newVersionId}/alexa`);
-      dispatch(updateVersion('amzn_id', amznId));
+      const { data: amznID } = await axios.post(`/project/${projectID}/version/${newVersionId}/alexa`);
+      dispatch(updatePublishInfo({ amznID }));
       dispatch(checkInteractionModel());
     } catch (err) {
-      if (err.status === 403 || err.response.status === 403) {
+      if (err?.response?.status === 403) {
         // No Vendor ID/Amazon Developer Account
         dispatch(updateAlexaStage(ALEXA_STAGES.NO_VENDOR));
-      } else if (err.status === 401 || err.response.status === 401) {
+      } else if (err?.response?.status === 401) {
         dispatch(updateAlexaStage(ALEXA_STAGES.AMAZON_LOGIN));
       } else {
         let errorMessage = '';
-        const errorData = _.get(err, ['response', 'data']) || {};
+        const errorData = err?.response?.data || {};
         const { message, violations } = errorData;
         if (message) {
           errorMessage += err.response.data.message;
@@ -358,7 +331,7 @@ export const submitProject = (newVersionId) =>
         }
 
         if (!errorMessage && _.isString(errorData)) errorMessage = errorData;
-        dispatch(updateAlexaError(errorMessage));
+        dispatch(updateAlexaError(errorMessage || 'Something went wrong with this upload'));
       }
     }
   });
@@ -366,18 +339,14 @@ export const submitProject = (newVersionId) =>
 // STEP 4
 export const renderProject = () =>
   uploadStep(async (dispatch, getState) => {
-    const {
-      skills: {
-        skill: { project_id },
-      },
-    } = getState();
+    const projectID = activeProjectIDSelector(getState());
 
     dispatch(updateAlexaStage(ALEXA_STAGES.RENDERING));
     try {
       if (window.canvasSave) await window.canvasSave();
       const {
         new_skill: { skill_id: newVersionId },
-      } = (await axios.post(`/project/${project_id}/render`, { platform: 'alexa' })).data;
+      } = (await axios.post(`/project/${projectID}/render`, { platform: 'alexa' })).data;
       dispatch(submitProject(newVersionId));
     } catch (err) {
       console.error(err);
@@ -388,26 +357,24 @@ export const renderProject = () =>
 // STEP 3 - check that the skill invocation name is valid
 export const checkInvName = () =>
   uploadStep((dispatch, getState) => {
-    const {
-      skills: {
-        skill: { inv_name, locales },
-      },
-    } = getState();
+    const state = getState();
+    const locales = activeLocalesSelector(state);
+    const invName = invNameSelector(state);
 
-    if (invNameError(inv_name, locales)) return dispatch(updateAlexaStage(ALEXA_STAGES.INVALID_INV_NAME));
+    if (invNameError(invName, locales)) return dispatch(updateAlexaStage(ALEXA_STAGES.INVALID_INV_NAME));
     dispatch(renderProject());
   });
 
 // STEP 2 - check that user has vendors (developer account) associated with his amazon account
 export const checkVendors = () =>
   uploadStep(async (dispatch, getState) => {
-    if (!_.get(getState().account, ['amazon', 'vendors', 'length'])) {
+    if (!getState().account?.amazon?.vendors?.length) {
       // get vendors and check again
       dispatch(updateAlexaStage(ALEXA_STAGES.CHECKING_VENDOR));
       await dispatch(getVendors());
 
       // STEP 2.5: if no vendors again then send to developer account screen
-      if (!_.get(getState().account, ['amazon', 'vendors', 'length'])) {
+      if (!getState().account?.amazon?.vendors?.length) {
         dispatch(updateAlexaStage(ALEXA_STAGES.NO_VENDOR));
         return;
       }
@@ -425,11 +392,7 @@ export const AmazonLogin = () =>
 
 // start the publishing process and set option parameters
 export const publish = (options = {}) => (dispatch, getState) => {
-  const {
-    publish: {
-      alexa: { stage },
-    },
-  } = getState();
+  const { stage } = publishStateSelector(getState());
 
   // if there is already an ongoing upload
   if (!ALEXA_STATES[stage].end) return;
@@ -437,4 +400,12 @@ export const publish = (options = {}) => (dispatch, getState) => {
   // set a unique publishing id with each publish
   dispatch(updateAlexa({ options, id: randomstring.generate() }));
   dispatch(AmazonLogin());
+};
+
+export const updateVendor = (vendorId) => async (dispatch, getState) => {
+  const state = getState();
+  const projectID = activeProjectIDSelector(state);
+
+  const amznID = (await client.project.updateVendorId(projectID, vendorId)) || null;
+  dispatch(updatePublishInfo({ amznID, vendorId }));
 };

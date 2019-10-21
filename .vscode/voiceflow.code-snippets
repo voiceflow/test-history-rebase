@@ -1,0 +1,66 @@
+{
+  "React Function Component": {
+    "scope": "javascript,javascriptreact",
+    "prefix": "rfc",
+    "body": ["import React from 'react';", "", "const $1 = ({ $2 }) =>", "  (", "    ${3:null}", "  );", "", "export default $1;"],
+    "description": "Create a stateless react component"
+  },
+  "React Class Component": {
+    "scope": "javascript,javascriptreact",
+    "prefix": "rcc",
+    "body": [
+      "import React from 'react';",
+      "",
+      "class $1 extends React.PureComponent {",
+      "  state = {",
+      "    $2",
+      "  };",
+      "",
+      "  render() {",
+      "    ${3:const { $4 \\} = this.props;}",
+      "    ${5:const { $6 \\} = this.state;}",
+      "",
+      "    return (",
+      "      ${7:null}",
+      "    );",
+      "  }",
+      "}",
+      "",
+      "export default $1;"
+    ],
+    "description": "Create a stateful react component"
+  },
+  "React Styled Component": {
+    "scope": "javascript,javascriptreact",
+    "prefix": "rsc",
+    "body": ["import { styled } from '@/hocs';", "", "const $1 = styled$2`", "  $3", "`;", "", "export default $1;"],
+    "description": "Create a styled react component"
+  },
+  "Redux State Connection": {
+    "scope": "javascript,javascriptreact",
+    "prefix": "xsc",
+    "body": [
+      "import { connect } from '@/hocs';",
+      "",
+      "${1:const mapStateToProps = {",
+      "  $2",
+      "\\};}",
+      "",
+      "${3:const mapDispatchToProps = {",
+      "  $4",
+      "\\};}",
+      "",
+      "export default connect(",
+      "  ${5:mapStateToProps},",
+      "  ${6:mapDispatchToProps},",
+      ")($7)"
+    ],
+    "description": "Create redux connection patterns"
+  },
+  "React Component Index": {
+    "scope": "javascript,javascriptreact",
+    "prefix": "rci",
+    "body": ["export { default as $1 } from './$2$1';"],
+    "description": "Create a component index file"
+  }
+}

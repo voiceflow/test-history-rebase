@@ -13,7 +13,7 @@ exports[`Button renders secondary 1`] = `
 `;
 
 exports[`Button renders tertiary 1`] = `
-<Styled(Styled(styled.button))>
+<TertiaryButton>
   Tertiary Button
-</Styled(Styled(styled.button))>
+</TertiaryButton>
 `;

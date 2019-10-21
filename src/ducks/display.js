@@ -1,119 +1,38 @@
-import axios from 'axios';
-import update from 'immutability-helper';
+import client from '@/client';
 
-export const FETCH_DISPLAY_BEGIN = 'FETCH_DISPLAY_BEGIN';
-export const SET_DISPLAYS = 'SET_DISPLAYS';
-export const ADD_DISPLAY = 'ADD_DISPLAY';
-export const REMOVE_DISPLAY = 'REMOVE_DISPLAY';
-export const FETCH_DISPLAYS_FAILURE = 'FETCH_DISPLAYS_FAILURE';
-export const UPDATE_DISPLAY = 'UPDATE_DISPLAY';
+import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from './utils/crud';
 
-const initialState = {
-  displays: [],
+export const STATE_KEY = 'display';
+
+const displayReducer = createCRUDReducer(STATE_KEY);
+
+export default displayReducer;
+
+// selectors
+
+export const {
+  root: rootDisplaysSelector,
+  all: allDisplaysSelector,
+  byID: displayByIDSelector,
+  findByIDs: displaysByIDsSelector,
+  has: hasDisplaysSelector,
+} = createCRUDSelectors(STATE_KEY);
+
+// action creators
+
+export const { add: addDisplay, update: updateDisplay, remove: removeDisplay, replace: replaceDisplays } = createCRUDActionCreators(STATE_KEY);
+
+export const deleteDisplay = (displayID) => async (dispatch) => {
+  await client.display.delete(displayID);
+  dispatch(removeDisplay(displayID));
 };
 
-export default function displayReducer(state = initialState, action) {
-  switch (action.type) {
-    case FETCH_DISPLAY_BEGIN:
-      return {
-        ...state,
-        loading: true,
-      };
-    case UPDATE_DISPLAY:
-      // eslint-disable-next-line no-case-declarations
-      const idx = state.displays.findIndex((p) => p.display_id === action.payload.display.display_id);
-      return {
-        ...state,
-        displays: update(state.displays, { $splice: [[idx, 1, action.payload.display]] }),
-      };
-    case ADD_DISPLAY:
-      return {
-        ...state,
-        displays: update(state.displays, { $push: [action.payload.display] }),
-      };
-    case SET_DISPLAYS:
-      return {
-        ...state,
-        displays: action.payload.displays,
-        loading: false,
-      };
-    case FETCH_DISPLAYS_FAILURE:
-      return {
-        ...state,
-        err: action.payload.error,
-        loading: false,
-      };
-    case REMOVE_DISPLAY:
-      // eslint-disable-next-line no-case-declarations
-      const index = state.displays.findIndex((p) => p.display_id === action.payload.display_id);
-      return {
-        ...state,
-        displays: update(state.displays, { $splice: [[index, 1]] }),
-      };
-    default:
-      return state;
-  }
-}
+// side effects
 
-export const beginFetchDisplays = () => ({
-  type: FETCH_DISPLAY_BEGIN,
-});
+export const loadDisplaysForSkill = (skillID) => async (dispatch) => {
+  const displays = await client.skill.findDisplays(skillID);
 
-export const setDisplays = (displays) => (dispatch) => {
-  dispatch({
-    type: SET_DISPLAYS,
-    payload: { displays },
-  });
-  return Promise.resolve();
-};
+  dispatch(replaceDisplays(displays));
 
-export const updateDisplay = (display) => ({
-  type: UPDATE_DISPLAY,
-  payload: { display },
-});
-export const addDisplay = (display) => ({
-  type: ADD_DISPLAY,
-  payload: { display },
-});
-
-export const removeDisplay = (display_id) => ({
-  type: REMOVE_DISPLAY,
-  payload: { display_id },
-});
-
-export const fetchDisplaysFailure = (error) => ({
-  type: FETCH_DISPLAYS_FAILURE,
-  payload: { error },
-});
-
-export const fetchDisplays = (skill_id) => {
-  return (dispatch) => {
-    dispatch(beginFetchDisplays());
-    return axios
-      .get(`/multimodal/displays?skill_id=${skill_id}`)
-      .then((res) => {
-        const displays = res.data.map((t) => {
-          return {
-            title: t.title,
-            display_id: t.id,
-            document: t.document,
-            description: t.description,
-            datasource: t.datasource,
-          };
-        });
-        dispatch(setDisplays(displays));
-      })
-      .catch((err) => {
-        console.error(err.response);
-        dispatch(fetchDisplaysFailure('Could Not Retreieve Displays'));
-      });
-  };
-};
-
-export const deleteDisplay = (display_id) => {
-  return (dispatch) => {
-    return axios.delete(`/multimodal/display/${display_id}`).then(() => {
-      dispatch(removeDisplay(display_id));
-    });
-  };
+  return displays;
 };

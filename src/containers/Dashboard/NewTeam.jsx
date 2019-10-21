@@ -1,7 +1,5 @@
 import update from 'immutability-helper';
-import _ from 'lodash';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 import { compose } from 'recompose';
@@ -10,8 +8,10 @@ import Button from '@/components/Button';
 import ImageOptions from '@/components/Forms/ImageOptions';
 import { Spinner } from '@/components/Spinner';
 import Image from '@/components/Uploads/Image';
+import { userSelector } from '@/ducks/account';
 import { setError, setModal } from '@/ducks/modal';
 import { createTeam } from '@/ducks/team';
+import { connect } from '@/hocs';
 
 import SeatsCheckout from './SeatsCheckout';
 
@@ -217,7 +217,7 @@ class NewTeam extends Component {
               <div className="super-center mt-4">
                 <div style={{ minWidth: 400 }}>
                   <WrapForm value={user.email} disabled className="disabled">
-                    <label className="text-muted mr-3">OWNER</label>
+                    <label className="text-muted mr-3 mb-0">OWNER</label>
                   </WrapForm>
                   {invites.map((invite, i) => (
                     <div key={i} className="input-wrap-wrap">
@@ -313,7 +313,7 @@ class NewTeam extends Component {
               <h5 className="uppercase-header">Create Board</h5>
               <div className="mt-5 pt-4">
                 <ImageOptions
-                  question="Who's using this board?"
+                  label="Who's using this board?"
                   state={type}
                   update={(type) => this.setState({ type })}
                   options={TYPE_OPTIONS}
@@ -340,27 +340,15 @@ class NewTeam extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.account,
-    skill: state.skills.skill,
-    diagram_id: state.skills.skill.diagram,
-    diagrams: state.diagrams.diagrams,
-    diagram_error: state.diagrams.error,
-    root_id: state.diagrams.root_id,
-    error: state.skills.error,
-    variables: state.variables.localVariables,
-    diagram_set: new Set(state.diagrams.diagrams.map((d) => d.id)),
-    diagram: _.find(state.diagrams.diagrams, ['id', state.skills.skill.diagram]),
-    canvasError: state.userSetting.canvasError,
-  };
+const mapStateToProps = {
+  user: userSelector,
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  createTeam: (data) => dispatch(createTeam(data)),
-  setError: (err) => dispatch(setError(err)),
-  setModal: (confirm) => dispatch(setModal(confirm)),
-});
+const mapDispatchToProps = {
+  createTeam,
+  setError,
+  setModal,
+};
 
 export default compose(
   connect(

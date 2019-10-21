@@ -11,11 +11,15 @@
   display: inline-block;
   width: 30px;
   height: 30px;
-  color: #132043;
   line-height: 30px;
   text-align: center;
-  background-color: #f0f3f7;
-  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  color: rgb(98, 119, 140);
+  box-shadow: rgba(0, 0, 0, 0.16) 0 1px 0;
+  padding: 0 8px;
+  background: linear-gradient(rgb(239, 245, 246) 0%, rgb(238, 244, 246) 100%), rgb(255, 255, 255);
+  border-radius: 5px;
 }
 
 .uppercase {
@@ -25,7 +29,7 @@
 }
 
 .light-canvas-modal .modal-content {
-  background: #f7f9fb;
+  background: #f9f9f9;
 }
 
 #lightcanvas #widget-bar {
@@ -47,9 +51,9 @@
   z-index: 1050;
   width: 100%;
   height: 100%;
-  padding: 15px;
+  padding: 20px;
   overflow-y: scroll;
-  background-color: #f7f9fb;
+  background-color: #f9f9f9;
 }
 
 #template-box-container > .card {
@@ -57,6 +61,8 @@
   min-height: 100%;
   padding: 40px;
   overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.08), 0 1px 3px 0 rgba(17, 49, 96, 0.08);
 }
 
 #name-box {
@@ -82,7 +88,7 @@
   align-items: center;
   justify-content: space-between;
   margin: 5px 10px;
-  padding: 10px 10px 10px 45px;
+  padding: 10px 32px 10px 45px;
   font-size: 15px;
   background: none;
   background-image: url('/images/icons/empty.svg');
@@ -126,7 +132,7 @@
   justify-content: center;
   height: 100%;
   transform: translateY(-40px);
-  transition: transform 0.3s ease;
+  transition: transform 0.15s ease;
   widows: 100%;
 }
 
@@ -152,7 +158,6 @@
   border-top: 1px solid #eaeff4;
   cursor: pointer;
 }
-
 
 .platform-image {
   position: absolute;

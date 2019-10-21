@@ -1,22 +1,14 @@
 import axios from 'axios';
-import { push } from 'connected-react-router';
 import update from 'immutability-helper';
-import LogRocket from 'logrocket';
-import queryString from 'query-string';
-import { IntercomAPI } from 'react-intercom';
+import { createSelector } from 'reselect';
 
-import { getDevice } from '@/Helper';
-import { LOGROCKET_ENABLED } from '@/config';
+import client from '@/client';
 import { setError } from '@/ducks/modal';
 
-import { getAuthCookie, removeAuthCookie, removeLastSessionCookie, setAuthCookie } from '../cookies';
+import { createAction, createRootSelector } from './utils';
 
-export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT';
-export const UPDATE_AMAZON_ACCOUNT = 'UPDATE_AMAZON_ACCOUNT';
-export const UPDATE_GOOGLE_ACCOUNT = 'UPDATE_GOOGLE_ACCOUNT';
-export const RESET_ACCOUNT = 'RESET_ACCOUNT';
-
-const initialState = {
+export const STATE_KEY = 'account';
+const DEFAULT_STATE = {
   loading: false,
   email: null,
   name: null,
@@ -27,8 +19,16 @@ const initialState = {
   google: null,
 };
 
-// REDUCER
-export default function accountReducer(state = initialState, action) {
+// actions
+
+export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT';
+export const UPDATE_AMAZON_ACCOUNT = 'UPDATE_AMAZON_ACCOUNT';
+export const UPDATE_GOOGLE_ACCOUNT = 'UPDATE_GOOGLE_ACCOUNT';
+export const RESET_ACCOUNT = 'RESET_ACCOUNT';
+
+// reducers
+
+export default function accountReducer(state = DEFAULT_STATE, action) {
   switch (action.type) {
     case UPDATE_GOOGLE_ACCOUNT:
       if (!state.google) return state;
@@ -37,151 +37,54 @@ export default function accountReducer(state = initialState, action) {
       if (!state.amazon) return state;
       return update(state, { amazon: { $merge: action.payload } });
     case UPDATE_ACCOUNT:
-      return {
-        ...state,
-        ...action.payload,
-      };
+      return { ...state, ...action.payload };
     case RESET_ACCOUNT:
-      return initialState;
+      return DEFAULT_STATE;
     default:
       return state;
   }
 }
 
-// ACTIONS
-const resetAccount = () => ({
-  type: RESET_ACCOUNT,
-});
+// selectors
 
-export const updateAccount = (payload) => ({
-  type: UPDATE_ACCOUNT,
-  payload,
-});
+export const userSelector = createRootSelector(STATE_KEY);
 
-export const updateAmazonAccount = (payload) => ({
-  type: UPDATE_AMAZON_ACCOUNT,
-  payload,
-});
+export const userIDSelector = createSelector(
+  userSelector,
+  ({ creator_id }) => creator_id
+);
 
-export const updateGoogleAccount = (payload) => ({
-  type: UPDATE_GOOGLE_ACCOUNT,
-  payload,
-});
+export const amazonAccountSelector = createSelector(
+  userSelector,
+  ({ amazon }) => amazon
+);
 
-export const checkSession = () => {
-  return async (dispatch) => {
-    try {
-      const user = (await axios.get('/session')).data;
-      dispatch(updateAccount(user));
-      return Promise.resolve(user);
-    } catch (err) {
-      removeAuthCookie();
-      dispatch(resetAccount());
-      return Promise.reject(err);
-    }
-  };
-};
+// action creators
 
-export const getUser = () => {
-  return async (dispatch) => {
-    try {
-      const user = (await axios.get('/user')).data;
-      dispatch(updateAccount(user));
+export const resetAccount = () => createAction(RESET_ACCOUNT);
 
-      identifyLogRocket(user);
+export const updateAccount = (account) => createAction(UPDATE_ACCOUNT, account);
 
-      return Promise.resolve(user);
-    } catch (err) {
-      removeAuthCookie();
-      dispatch(resetAccount());
-      return Promise.reject(err);
-    }
-  };
-};
+export const updateAmazonAccount = (account) => createAction(UPDATE_AMAZON_ACCOUNT, account);
 
-export const logout = () => {
-  return async (dispatch) => {
-    try {
-      await axios.delete('/session');
-    } catch (err) {
-      console.error(err);
-    }
-    removeAuthCookie();
-    localStorage.clear();
-    dispatch(resetAccount());
+export const updateGoogleAccount = (account) => createAction(UPDATE_GOOGLE_ACCOUNT, account);
 
-    return Promise.resolve();
-  };
-};
+// side effects
 
 export const getVendors = () => async (dispatch, getState) => {
+  const state = getState();
+
+  if (!amazonAccountSelector(state)) return;
+
   try {
-    if (!getState().account.amazon) return;
-    const vendors = (await axios.get('/session/amazon/vendor?all=true')).data;
+    const vendors = await client.user.getVendors();
     if (Array.isArray(vendors)) {
-      dispatch(
-        updateAmazonAccount({
-          vendors,
-        })
-      );
+      dispatch(updateAmazonAccount({ vendors }));
     }
   } catch (err) {
     console.error(err);
   }
 };
-
-const createSession = (endpoint) => (user) => async (dispatch, getState) => {
-  try {
-    const data = (await axios.put(endpoint, { user, device: getDevice() })).data;
-    if (data.user.id) {
-      data.user.creator_id = data.user.id;
-      delete data.user.id;
-    }
-
-    setAuthCookie(data.token);
-    removeLastSessionCookie();
-
-    dispatch(updateAccount(data.user));
-
-    const location = getState().router.location;
-    const search = queryString.parse(location.search);
-
-    if (search.invite || !data.user.first_login) {
-      dispatch(
-        push({
-          pathname: '/dashboard',
-          search: location.search,
-          state: { from: location },
-        })
-      );
-    } else {
-      localStorage.setItem('is_first_upload', 'true');
-      localStorage.setItem('is_first_session', 'true');
-      dispatch(push('/onboarding'));
-    }
-
-    identifyLogRocket(data.user);
-
-    if (window.Appcues) {
-      window.Appcues.identify(data.user.creator_id, {
-        email: user.email,
-        name: user.name,
-      });
-    }
-
-    return Promise.resolve();
-  } catch (err) {
-    return Promise.reject(err);
-  }
-};
-
-export const signup = createSession('/user');
-export const login = createSession('/session');
-export const googleLogin = createSession('/googleLogin');
-export const fbLogin = createSession('/fbLogin');
-
-// Non Action functions
-export const getAuth = getAuthCookie;
 
 export const createAmazonSession = (code) => async (dispatch) => {
   try {
@@ -240,15 +143,3 @@ export const deleteGoogleAccount = () => async (dispatch) => {
     dispatch(setError('Something went wrong - please refresh your page'));
   }
 };
-
-export function identifyLogRocket(user) {
-  if (LOGROCKET_ENABLED) {
-    LogRocket.identify(user.creator_id, {
-      email: user.email,
-      name: user.name,
-    });
-
-    // add session URL to intercom timeline
-    LogRocket.getSessionURL((sessionURL) => IntercomAPI('trackEvent', 'LogRocket', { sessionURL }));
-  }
-}

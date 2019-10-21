@@ -16,6 +16,7 @@ const Diagram = styled.div`
   justify-content: center;
   font-size: 4rem;
 `;
+
 function Reference(props) {
   const project_id = props.match.params.project_id;
   const history = props.history;

@@ -2,20 +2,21 @@ import './Template.css';
 
 import axios from 'axios';
 import _ from 'lodash';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
 import { FullSpinner } from '@/components/Spinner';
+import { userSelector } from '@/ducks/account';
 import { addProjectToList } from '@/ducks/board';
+import { connect } from '@/hocs';
 
 import LOCALE_MAP from '../../services/LocaleMap';
 
 const getBoardFromURL = (computedMatch) => _.get(computedMatch, ['params', 'board_id']);
 
-class Templates extends Component {
+class Templates extends React.Component {
   constructor(props) {
     super(props);
 
@@ -190,15 +191,14 @@ class Templates extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.account,
-});
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addProjectToList: (board_id, project_id) => dispatch(addProjectToList(board_id, project_id)),
-  };
+const mapStateToProps = {
+  user: userSelector,
 };
+
+const mapDispatchToProps = {
+  addProjectToList,
+};
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

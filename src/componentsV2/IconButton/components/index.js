@@ -1,4 +1,5 @@
 import ActionContainer from './ActionIconButtonContainer';
 import Container from './IconButtonContainer';
+import SubtleContainer from './SubtleIconButtonContainer';
 
-export { ActionContainer, Container };
+export { ActionContainer, SubtleContainer, Container };

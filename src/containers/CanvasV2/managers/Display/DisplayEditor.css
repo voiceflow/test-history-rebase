@@ -1,0 +1,10 @@
+.ace_custom_variable {
+  display: inline-block;
+  padding-right: 2px;
+  padding-left: 2px;
+  color: #fff;
+  text-decoration: none;
+  background-color: #42a5ff;
+  border-radius: 4px;
+  cursor: pointer;
+}

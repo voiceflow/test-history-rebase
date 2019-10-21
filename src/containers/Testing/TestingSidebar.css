@@ -11,7 +11,7 @@
   background-color: #fff;
   border-left: 1px solid #e2e9ec;
   transform: translateX(400px);
-  transition: transform 0.3s;
+  transition: transform 0.15s;
   user-select: none;
 }
 
@@ -59,12 +59,12 @@
   background: #fff;
   border-left: 1px solid #e2e9ec;
   transform: translateX(300px);
-  transition: transform 0.6s;
+  transition: all 0.25s ease;
 }
 
 #TestVariables {
   flex: 1;
-  padding: 15px 20px;
+  padding: 16px 20px;
   overflow-y: scroll;
 }
 
@@ -74,16 +74,25 @@
   width: 100%;
   height: auto;
   margin-bottom: 10px;
-  padding: 7px 8px;
+  padding: 12px 15px;
+  border: 1px solid #d4d9e6;
+  height: 42px;
+  border-radius: 5px;
+  transition: all 0.15s ease;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 }
 
 .test-variable.editor:focus-within {
-  border-color: #4668f3 !important;
+  border-color: #5d9df5 !important;
 }
 
 .test-variable .variable_tag {
   margin: 0;
-  padding: 2px 5px !important;
+  margin-right: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #62778c;
 }
 
 .test-variable input {
@@ -110,7 +119,10 @@
 
 #TestInput > textarea {
   width: 100%;
-  min-height: 63px;
+  min-height: 80px;
+  padding: 10px 16px;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
+  outline: none;
 
   /* margin-bottom: 5px; */
 }
@@ -137,8 +149,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 62px;
-  padding: 10px 25px 10px 20px;
+  min-height: 60px;
+  padding: 11px 25px 11px 22px;
   text-align: center;
   background: -webkit-linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
   background-image: -moz-linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
@@ -319,6 +331,7 @@ td {
 }
 
 .message {
+  color: #132144;
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -429,10 +442,18 @@ td {
 }
 
 .modal-title {
-  color: #8da2b5;
-  font-weight: 500;
-  font-size: 16px;
+  color: #8c94a6;
+  font-weight: 600;
+  font-size: 15px;
   text-transform: uppercase;
+}
+
+.alert {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
 }
 
 .debug-switch {

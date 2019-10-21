@@ -1,18 +1,21 @@
 import './Business.css';
 
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+
+import { userSelector } from '@/ducks/account';
+import { activeProjectIDSelector, activeSkillIDSelector } from '@/ducks/skill';
+import { connect } from '@/hocs';
 
 import Home from './Home';
-import ProductList from './ProductList';
-import Product from './Products';
+import Product from './Product';
+import ProductsList from './ProductsList';
 
 class Business extends Component {
   render() {
     let page;
     switch (this.props.page) {
       case 'products':
-        page = <ProductList {...this.props} />;
+        page = <ProductsList {...this.props} />;
         break;
       case 'product':
         page = <Product {...this.props} />;
@@ -28,10 +31,11 @@ class Business extends Component {
     );
   }
 }
-const mapStateToProps = (state) => ({
-  user: state.account,
-  skill_id: state.skills.skill.skill_id,
-  project_id: state.skills.skill.project_id,
-});
+
+const mapStateToProps = {
+  user: userSelector,
+  skillID: activeSkillIDSelector,
+  projectID: activeProjectIDSelector,
+};
 
 export default connect(mapStateToProps)(Business);

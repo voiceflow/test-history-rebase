@@ -1,37 +1,29 @@
-import cn from 'classnames';
 import * as _ from 'lodash';
 import map from 'lodash/map';
-import upperCase from 'lodash/upperCase';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import Dropdown from '@/components/Dropdown';
-import Link from '@/components/Link';
+import Avatar from '@/components/Avatar';
 import SvgIcon from '@/components/SvgIcon';
+import Dropdown from '@/componentsV2/Dropdown';
 import withDraggable from '@/hocs/withDraggable';
 import { useToggle } from '@/hooks/toggle';
 import { colors } from '@/utils/colors';
+import { stopPropagation } from '@/utils/dom';
 import { getHumanLanguageName } from '@/utils/languages';
 
-import { ProjectListDragZone, ProjectNameWrapper, ProjectTitle, ProjectTitleCaption, ProjectTitleDetails } from './styled';
-
-const DROPDOWN_OPTIONS = [
-  {
-    id: 'duplicate',
-    label: 'Copy Project',
-  },
-  {
-    id: 'remove',
-    label: 'Remove Project',
-  },
-];
-
-const DROPDOWN_BUTTON_PROPS = {
-  isDropdown: true,
-  className: 'projects-list__item-action',
-};
+import {
+  DropdownIconWrapper,
+  ProjectListDragZone,
+  ProjectListItem,
+  ProjectListItemActions,
+  ProjectNameWrapper,
+  ProjectTitle,
+  ProjectTitleCaption,
+  ProjectTitleDetails,
+} from './styled';
 
 export function Item(props) {
   const {
@@ -48,49 +40,45 @@ export function Item(props) {
     onDuplicate,
     connectDragSource,
     connectDropTarget,
-    isDraggingPreview,
     isReference,
   } = props;
 
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
-  const pathTo = isReference ? `/reference/${id}` : `/canvas/${version_id}/${diagram}`;
 
+  const pathTo = isReference ? `/reference/${id}` : `/canvas/${version_id}/${diagram}`;
   const color = colors[new Date(created).getTime() % colors.length];
+  const options = [
+    {
+      value: 'duplicate',
+      label: 'Copy Project',
+      onClick: onDuplicate,
+    },
+    {
+      value: 'remove',
+      label: 'Remove Project',
+      onClick: onRemove,
+    },
+  ];
 
   const item = (
     <div>
-      <Link
-        to={pathTo}
-        className={cn('projects-list__item', {
-          hidden: isDragging,
-          '__is-active __is-hovered': isDropdownOpened,
-          '__is-draggable __is-dragging': isDraggingPreview,
-        })}
-      >
-        <Dropdown
-          options={DROPDOWN_OPTIONS}
-          onRemove={onRemove}
-          onDuplicate={onDuplicate}
-          buttonProps={DROPDOWN_BUTTON_PROPS}
-          popoverProps={{
-            onShow: toggleDropdownOpened,
-            onHide: toggleDropdownOpened,
-            stopPropagation: true,
-          }}
-          label={
-            <>
-              <div
-                style={{
-                  backgroundImage: avatarUrl ? `url(${avatarUrl})` : undefined,
-                }}
-                className={`projects-list__item-image projects-list__item-icon cap-${color}`}
-              >
-                {!avatarUrl && upperCase(name).charAt(0)}
-              </div>
-              <div className="projects-list__item-actions projects-list__item-icon far fa-ellipsis-h" />
-            </>
-          }
-        />
+      <ProjectListItem to={pathTo} hidden={isDragging} isActive={isDropdownOpened} tabIndex={0} onBlur={toggleDropdownOpened}>
+        <Dropdown options={options}>
+          {(ref, onToggle) => (
+            <DropdownIconWrapper
+              onClick={stopPropagation(() => {
+                toggleDropdownOpened();
+                onToggle();
+              })}
+              ref={ref}
+            >
+              <Avatar url={avatarUrl} name={name} color={color} />
+              <ProjectListItemActions>
+                <SvgIcon icon="elipsis" />
+              </ProjectListItemActions>
+            </DropdownIconWrapper>
+          )}
+        </Dropdown>
         <ProjectNameWrapper>
           <ProjectTitleDetails>
             <ProjectTitle>{name}</ProjectTitle>
@@ -100,14 +88,13 @@ export function Item(props) {
           <Tooltip position="top" title={isLive ? 'Live' : 'Development'} className="projects-list__item-status" distance={10}>
             <SvgIcon
               icon={isLive ? 'outlinedFilledCircle' : 'outlinedCircle'}
-              color={isLive ? '#43A047' : '#5D9DF5'}
-              size={14}
+              color={isLive ? '#43A047' : '#059fe4'}
+              size={12}
               className="status-indicator"
             />
           </Tooltip>
         </ProjectNameWrapper>
-      </Link>
-
+      </ProjectListItem>
       {isDragging && <ProjectListDragZone />}
     </div>
   );

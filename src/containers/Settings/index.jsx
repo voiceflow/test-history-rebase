@@ -1,89 +1,52 @@
-import _ from 'lodash';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Button, ButtonGroup } from 'reactstrap';
+import React from 'react';
 
-import { updateDiagramRoot } from '@/ducks/diagram';
-import { updateVersion } from '@/ducks/version';
+import ButtonGroupRouter from '@/components/ButtonGroupRouter';
+import Modal, { ModalHeader } from '@/components/Modal';
+import { activeSkillIDSelector } from '@/ducks/skill';
+import { connect } from '@/hocs';
 
 import AdvancedSettings from './Advanced';
 import BackupSettings from './Backups';
-// SETTING PAGES
 import BasicSettings from './Basic';
-import DiscoverySettings from './Discovery';
 
-const TABS = ['basic', 'advanced', 'discovery', 'backups'];
+export const Settings = {
+  BASIC: 'basic',
+  ADVANCED: 'advanced',
+  DISCOVERY: 'discovery',
+  BACKUPS: 'backups',
+};
 
-class Settings extends Component {
-  state = {
-    tab: this.props.tag ? this.props.tag : 'basic',
-  };
+const SettingsOptions = [
+  {
+    value: Settings.BASIC,
+    label: 'Basic',
+    component: BasicSettings,
+  },
+  {
+    value: Settings.ADVANCED,
+    label: 'Advanced',
+    component: AdvancedSettings,
+  },
+  {
+    value: Settings.BACKUPS,
+    label: 'Backups',
+    component: BackupSettings,
+  },
+];
 
-  switchTab = (tab) => {
-    if (tab !== this.state.tab) {
-      this.setState({ tab });
-    }
-  };
-
-  modalContent = () => {
-    const { skill_id } = this.props;
-
-    if (!skill_id) return null;
-
-    switch (this.state.tab) {
-      case 'basic':
-        return <BasicSettings {...this.props} />;
-      case 'advanced':
-        return <AdvancedSettings {...this.props} />;
-      case 'discovery':
-        return <DiscoverySettings {...this.props} />;
-      case 'backups':
-        return <BackupSettings {...this.props} onSwapVersions={this.onSwapVersions} />;
-      default:
-        return null;
-    }
-  };
-
-  render() {
-    return (
-      <div className="settings pb-5">
-        <div>
-          <div className="nav-bar-top mb-4">
-            <ButtonGroup className="toggle-group mb-2 toggle-group-settings">
-              {TABS.map((tab) => {
-                return (
-                  <Button
-                    key={tab}
-                    onClick={() => this.switchTab(tab)}
-                    outline={this.state.tab !== tab}
-                    disabled={this.state.tab === tab || (this.props.live_mode && tab === 'backups')}
-                  >
-                    {_.startCase(tab)}
-                  </Button>
-                );
-              })}
-            </ButtonGroup>
-          </div>
-        </div>
-        <div className="h-100">{this.modalContent()}</div>
+function SettingsModal({ open, toggle, type = Settings.BASIC, setType }) {
+  return (
+    <Modal isOpen={open} toggle={toggle}>
+      <ModalHeader toggle={toggle} header="Project Settings" />
+      <div className="settings pb-3">
+        <ButtonGroupRouter selected={type} onChange={setType} routes={SettingsOptions} routeProps={{ toggle }} />
       </div>
-    );
-  }
+    </Modal>
+  );
 }
 
-const mapStateToProps = (state) => ({
-  skill_id: state.skills.skill.skill_id,
-  load_skill: state.skills.loading,
-  error: state.skills.error,
-});
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateSkill: (type, val) => dispatch(updateVersion(type, val)),
-    updateDiagramRoot: (val) => dispatch(updateDiagramRoot(val)),
-  };
+const mapStateToProps = {
+  skillID: activeSkillIDSelector,
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Settings);
+
+export default connect(mapStateToProps)(SettingsModal);

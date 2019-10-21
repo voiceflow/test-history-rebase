@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Alert, Button } from 'reactstrap';
+import { Button } from 'reactstrap';
 
 import { setConfirm, setError } from '@/ducks/modal';
 import { resetDialogflowCredential } from '@/ducks/publish/google';
@@ -13,16 +13,12 @@ function UnlinkGoogle(props) {
   const unlink = () => {
     setConfirm({
       warning: true,
-      text: (
-        <Alert color="danger" className="mb-0">
-          Are you sure you want to unlink the google project {google_id}? You will be able to link a new google project afterwards.
-        </Alert>
-      ),
+      text: `Are you sure you want to unlink the google project ${google_id}? You will be able to link a new google project afterwards.`,
       confirm: async () => {
         try {
           setLoading(true);
           await resetDialogflowCredential();
-          setConfirm({ text: <Alert className="mb-0">Successfully Unlinked Dialogflow Project</Alert>, cancel: false });
+          setConfirm({ text: 'Successfully Unlinked Dialogflow Project', cancel: false });
         } catch (err) {
           console.error(err);
           setError('Unable to unlink project');

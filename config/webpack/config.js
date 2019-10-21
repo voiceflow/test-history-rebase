@@ -1,4 +1,4 @@
-const { action, env, logrocket } = require('webpack-nano/argv');
+const { action, env, logrocket, debug, debugNet, debugHttp, debugSocket } = require('webpack-nano/argv');
 
 const { NODE_ENV } = process.env;
 const ENV_PREFIX = 'VF_APP_';
@@ -21,5 +21,12 @@ module.exports = {
 
       return acc;
     }, {}),
+    ...(debug ? {
+      DEBUG_NETWORK: true
+    }: {
+      DEBUG_NETWORK: debugNet ? true : '',
+      DEBUG_HTTP: debugHttp ? true : '',
+      DEBUG_SOCKET: debugSocket ? true : '',
+    })
   },
 };

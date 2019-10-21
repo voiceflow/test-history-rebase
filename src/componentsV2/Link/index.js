@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 const Link = styled.a`
-  color: ${({ variant }) => (variant === 'hidden' ? '#132144' : '#5')};
+  color: ${({ variant }) => (variant === 'hidden' ? '#132144' : '#5d9df5')};
   font-size: ${({ variant }) => (variant === 'secondary' ? 13 : 15)}px;
   line-height: 18px;
   user-select: none;

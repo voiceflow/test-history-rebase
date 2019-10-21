@@ -1,5 +1,8 @@
 import axios from 'axios';
 import { get as _get } from 'lodash';
+import { createSelector } from 'reselect';
+
+import { createRootSelector } from '@/ducks/utils';
 
 export const FETCH_INTEGRATION_USERS_BEGIN = 'FETCH_INTEGRATION_USERS_BEGIN';
 export const FETCH_INTEGRATION_USERS_SUCCESS = 'FETCH_INTEGRATION_USERS_SUCCESS';
@@ -16,6 +19,8 @@ const initialState = {
   loading: false,
   error: null,
 };
+
+const STATE_KEY = 'integrationUsers';
 
 export default function skillReducer(state = initialState, action) {
   switch (action.type) {
@@ -78,6 +83,24 @@ export default function skillReducer(state = initialState, action) {
       return state;
   }
 }
+
+// Selectors
+export const integrationUsersStateSelector = createRootSelector(STATE_KEY);
+
+export const integrationUsersSelector = createSelector(
+  integrationUsersStateSelector,
+  ({ integration_users }) => integration_users
+);
+
+export const integrationUsersLoadingSelector = createSelector(
+  integrationUsersStateSelector,
+  ({ loading }) => loading
+);
+
+export const integrationUsersErrorSelector = createSelector(
+  integrationUsersStateSelector,
+  ({ error }) => error
+);
 
 export const fetchIntegrationUsersBegin = () => ({
   type: FETCH_INTEGRATION_USERS_BEGIN,
@@ -142,8 +165,15 @@ export const addIntegrationUser = (integration, body) => {
       return dictByPlatform;
     } catch (e) {
       dispatch(addIntegrationUserFailure(e));
-      const error = _get(e, ['response', 'data']);
-      throw error.data;
+      let error = _get(e, ['response', 'data']);
+      if (e.response && typeof e.response.data === 'string') {
+        error = e.response.data;
+      } else if (typeof e === 'string') {
+        error = e;
+      } else if (e.response) {
+        error = `Error occured: ${JSON.stringify(e.response.data)}`;
+      }
+      throw error;
     }
   };
 };

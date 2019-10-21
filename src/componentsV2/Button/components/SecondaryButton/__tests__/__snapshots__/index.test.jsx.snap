@@ -1,20 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Seconday Button renders 1`] = `
-<Styled(Styled(styled.button))>
+<SecondaryButtonContainer>
   Button
-</Styled(Styled(styled.button))>
+</SecondaryButtonContainer>
 `;
 
 exports[`Seconday Button renders with icon 1`] = `
-<Styled(Styled(styled.button))>
-  <styled.span>
-    <SvgIcon
-      color="#6E849A"
+<SecondaryButtonContainer>
+  <SecondaryButtonIcon>
+    <Memo([object Object])
+      color="currentColor"
       icon="plus"
       size={16}
     />
-  </styled.span>
+  </SecondaryButtonIcon>
   Button
-</Styled(Styled(styled.button))>
+</SecondaryButtonContainer>
 `;

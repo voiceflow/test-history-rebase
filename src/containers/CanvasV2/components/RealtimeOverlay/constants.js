@@ -1,0 +1,2 @@
+export const CURSOR_EXPIRY_TIMEOUT = 5 * 1000;
+export const ANIMATION_DURATION = 1000;

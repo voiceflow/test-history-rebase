@@ -49,6 +49,7 @@ const CopyButton = styled.div`
   ${flexEndStyles}
   margin-left: 10px;
   min-width: 110px;
+  white-space: nowrap;
 `;
 
 const ClipBoard = (props) => {

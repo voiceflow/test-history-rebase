@@ -7,6 +7,8 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+import VariableTag from '@/components/VariableTag';
+
 import Menu from './Menu';
 import Recent from './Recent';
 import Speaker from './Speaker';
@@ -90,7 +92,7 @@ class SSMLEditor extends Component {
       mentionRegExp: '[\\w_-]*',
       mentionPrefix: '{',
       mentionSuffix: '}',
-      mentionComponent: (mentionProps) => <span className="variable-block">{mentionProps.children}</span>,
+      mentionComponent: (mentionProps) => <VariableTag>{mentionProps.children}</VariableTag>,
     });
 
     const { value, variables = [] } = props;

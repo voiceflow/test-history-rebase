@@ -6,7 +6,7 @@ import IconButtonContainer from './IconButtonContainer';
 const ActionIconButtonContainer = styled(IconButtonContainer)`
   ${importantStyles}
 
-  border: 2px solid #fff;
+  border: 1px solid #fff;
   color: rgba(93, 157, 245, 0.85);
 
   ${({ disabled }) =>

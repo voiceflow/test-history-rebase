@@ -2,14 +2,14 @@ import axios from 'axios';
 import cn from 'classnames';
 import moment from 'moment';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Alert, FormGroup, Label, Modal, ModalFooter, Table } from 'reactstrap';
+import { Alert, FormGroup, Label, Table } from 'reactstrap';
 
 import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
-import LightCanvas from '@/containers/Canvas/LightCanvas';
-import { fetchDiagrams } from '@/ducks/diagram';
-import { setConfirm, setError, showSettingsModal } from '@/ducks/modal';
+import { setConfirm, setError } from '@/ducks/modal';
+import { goToCanvas } from '@/ducks/router';
+import { activeProjectIDSelector } from '@/ducks/skill';
+import { connect } from '@/hocs';
 
 class BackupSettings extends Component {
   state = {
@@ -23,13 +23,10 @@ class BackupSettings extends Component {
   };
 
   componentDidMount = async () => {
-    const { skill, setError } = this.props;
+    const { projectID, setError } = this.props;
 
     try {
-      const [req1, req2] = await Promise.all([
-        axios.get(`/project/${skill.project_id}/live_version`),
-        axios.get(`/project/${skill.project_id}/versions`),
-      ]);
+      const [req1, req2] = await Promise.all([axios.get(`/project/${projectID}/live_version`), axios.get(`/project/${projectID}/versions`)]);
 
       const liveVersion = req1.data;
       const versions = req2.data.filter((version) => {
@@ -61,31 +58,22 @@ class BackupSettings extends Component {
     const { setConfirm } = this.props;
     setConfirm({
       warning: true,
-      text: (
-        <Alert color="danger" className="mb-0">
-          WARNING: This action can not be undone, will delete all your current work since your last backup, and will not change your skill's Amazon
-          endpoint.
-        </Alert>
-      ),
+      text:
+        "This action can not be undone, will delete all your current work since your last backup, and will not change your skill's Amazon endpoint.",
       confirm: () => this.swapVersions(versionId),
     });
   };
 
   swapVersions = async (versionId) => {
-    const { updateSkill, updateDiagramRoot, history, fetchDiagrams, setError, showSettingsModal, setConfirm } = this.props;
+    const { setError, toggle, setConfirm, goToCanvas } = this.props;
 
     try {
       const { data } = await axios.post(`/skill/${versionId}/restore`);
-
-      updateSkill('skill_id', data.skill_id);
-      updateSkill('diagram', data.diagram);
-      await fetchDiagrams(data.skill_id);
-      updateDiagramRoot(data.diagram);
-      showSettingsModal(false);
       setConfirm({
-        text: <Alert className="mb-0">Successfully Restored Backup</Alert>,
+        text: 'Successfully Restored Backup',
       });
-      history.push(`/canvas/${data.skill_id}/${data.diagram}`);
+      toggle();
+      goToCanvas(data.skill_id, data.diagram);
     } catch (err) {
       console.error(err.response);
       setError('Unable to restore version');
@@ -93,7 +81,7 @@ class BackupSettings extends Component {
   };
 
   renderBackups = () => {
-    const { loading, versions, live_version, live_version_id, curr_preview, preview } = this.state;
+    const { loading, versions, live_version, live_version_id } = this.state;
     if (loading) {
       return (
         <div className="mt-5">
@@ -114,38 +102,17 @@ class BackupSettings extends Component {
 
     return (
       <>
-        {/* Modal for previewing backups */}
-        <Modal isOpen={preview} size="xl" toggle={() => this.setState({ preview: false })} className="light-canvas-modal">
-          <div id="light-canvas-wrap">
-            <div className="no-select" id="PreviewBar">
-              <h3 className="font-weight-light">{moment(curr_preview.created).fromNow()}</h3>
-            </div>
-            <LightCanvas diagram_id={curr_preview.diagram} />
-          </div>
-          <Button className="goback-btn position-absolute" onClick={() => this.setState({ preview: false })} style={{ top: 320, left: -90 }} />
-
-          <ModalFooter>
-            <Button isPrimary className="ml-auto mr-auto" onClick={() => this.confirmRestore(curr_preview.skill_id)}>
-              Restore
-            </Button>
-          </ModalFooter>
-        </Modal>
         <div id="backup">
           <Table>
             <thead>
               <tr>
                 <th>
-                  <label className="text-left">Saved</label>
+                  <label>Saved</label>
                 </th>
                 <th>
-                  <label className="text-left">Platform</label>
+                  <label>Platform</label>
                 </th>
-                <th>
-                  <label className="text-left ml-4">Preview</label>
-                </th>
-                <th>
-                  <label className="text-left">Restore</label>
-                </th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -154,7 +121,7 @@ class BackupSettings extends Component {
                   <td>
                     {moment(live_version.created).fromNow()} <br /> (Current live version)
                   </td>
-                  <td className="text-center">
+                  <td>
                     <i
                       className={cn('fab', {
                         'fa-google': live_version.published_platform === 'google',
@@ -162,12 +129,7 @@ class BackupSettings extends Component {
                       })}
                     />
                   </td>
-                  <td>
-                    <Button isPrimary onClick={() => this.previewBackup(live_version)}>
-                      Preview
-                    </Button>
-                  </td>
-                  <td>
+                  <td className="text-right">
                     <Button isPrimary onClick={() => this.confirmRestore(live_version_id)}>
                       Restore
                     </Button>
@@ -178,7 +140,7 @@ class BackupSettings extends Component {
                 return (
                   <tr key={i}>
                     <td>{moment(version.created).fromNow()}</td>
-                    <td className="text-center">
+                    <td>
                       <i
                         className={cn('fab', {
                           'fa-google': version.published_platform === 'google',
@@ -186,12 +148,7 @@ class BackupSettings extends Component {
                         })}
                       />
                     </td>
-                    <td>
-                      <Button isFlat onClick={() => this.previewBackup(version)}>
-                        Preview
-                      </Button>
-                    </td>
-                    <td>
+                    <td className="text-right">
                       <Button isPrimarySmall onClick={() => this.confirmRestore(version.skill_id)}>
                         Restore
                       </Button>
@@ -209,7 +166,7 @@ class BackupSettings extends Component {
   render() {
     return (
       <>
-        <div className="settings-content settings-backups clearfix">
+        <div className="settings-content settings-backups clearfix mt-4">
           <FormGroup>
             <Label>Backups</Label>
             <div className="helper-text mb-2">
@@ -223,17 +180,16 @@ class BackupSettings extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.account,
-  team: state.team.byId[state.team.team_id],
-});
+const mapStateToProps = {
+  projectID: activeProjectIDSelector,
+};
 
 const mapDispatchToProps = {
-  showSettingsModal,
-  fetchDiagrams,
   setConfirm,
+  goToCanvas,
   setError,
 };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

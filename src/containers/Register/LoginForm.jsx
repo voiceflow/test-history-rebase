@@ -7,13 +7,13 @@ import { Link } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/Button';
-import { login } from '@/ducks/account';
+import { basicAuthLogin } from '@/ducks/session';
 
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
 
-export const LoginForm = ({ login, history, location }) => {
+export const LoginForm = ({ basicAuthLogin, history, location }) => {
   const query = queryString.parse(location.search);
   const [loginError, setLoginError] = useState(null);
   const [email, setEmail] = useState(query.email ? query.email : '');
@@ -30,11 +30,11 @@ export const LoginForm = ({ login, history, location }) => {
 
   const loginSubmit = (e) => {
     e.preventDefault();
-    login({
+    basicAuthLogin({
       email,
       password,
     }).catch((err) => {
-      const errText = _.get(err, ['response', 'data', 'data']) || (unverified ? 'Please verify your email to use Facebook login' : false);
+      const errText = _.get(err, ['body', 'data']) || (unverified ? 'Please verify your email to use Facebook login' : false);
       setLoginError(errText);
     });
     return false;
@@ -118,9 +118,9 @@ export const LoginForm = ({ login, history, location }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  login: (user) => dispatch(login(user)),
-});
+const mapDispatchToProps = {
+  basicAuthLogin,
+};
 
 export default connect(
   null,

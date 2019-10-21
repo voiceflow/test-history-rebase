@@ -352,10 +352,3 @@ export default class Form extends Component {
     );
   }
 }
-
-export const FormReviewField = ({ label, children, childrenClassName }) => (
-  <>
-    <label className="form-label">{label}</label>
-    <p className={childrenClassName}>{children}</p>
-  </>
-);

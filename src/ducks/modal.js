@@ -2,13 +2,11 @@ export const SET_CONFIRM = 'SET_CONFIRM';
 export const SET_ERROR = 'SET_ERROR';
 export const SET_MODAL = 'SET_MODAL';
 export const CLEAR_MODAL = 'CLEAR_MODAL';
-export const SET_SETTINGS = 'SET_SETTINGS';
 
 const initialState = {
   confirmModal: null,
   errorModal: null,
   modal: null,
-  showSettings: { show: false, tag: 'basic' },
 };
 
 export default function modalReducer(state = initialState, action = {}) {
@@ -35,23 +33,10 @@ export default function modalReducer(state = initialState, action = {}) {
         errorModal: null,
         modal: null,
       };
-    case SET_SETTINGS:
-      return {
-        ...state,
-        showSettings: action.payload,
-      };
     default:
       return state;
   }
 }
-
-export const showSettingsModal = (show, tag = 'basic') => ({
-  type: SET_SETTINGS,
-  payload: {
-    show,
-    tag,
-  },
-});
 
 export const setConfirm = (confirm) => ({
   type: SET_CONFIRM,

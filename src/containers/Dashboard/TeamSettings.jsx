@@ -2,18 +2,19 @@ import cn from 'classnames';
 import update from 'immutability-helper';
 import { cloneDeep } from 'lodash';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Alert, DropdownItem, DropdownMenu, DropdownToggle, Input, Modal, ModalBody, UncontrolledDropdown } from 'reactstrap';
+import { Alert, Input, Modal, ModalBody } from 'reactstrap';
 
 import Button from '@/components/Button';
 import CheckMark from '@/components/CheckMark';
-import { ModalHeader } from '@/components/Modals/ModalHeader';
+import { ModalHeader } from '@/components/Modal';
 import { Spinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
 import Image from '@/components/Uploads/Image';
+import Dropdown from '@/componentsV2/Dropdown';
+import { userSelector } from '@/ducks/account';
 import { setConfirm, setError } from '@/ducks/modal';
 import { deleteTeam, getMembers, leaveTeam, removeTrial, updateCurrentTeamItem, updateMembers, updateTeamName } from '@/ducks/team';
-import CogIcon from '@/svgs/cog.svg';
+import { connect } from '@/hocs';
 
 import Billing from './Billing';
 import { PLANS_ID } from './PLANS';
@@ -45,12 +46,12 @@ class TeamSettings extends Component {
     name: '',
     members: [],
     diff: [],
-    is_diff: false,
+    isDiff: false,
   };
 
   componentDidMount() {
     const { team } = this.props;
-    if (team.members && team.members.length === 0) this.updateMembers();
+    if (team?.members?.length === 0) this.updateMembers();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -60,8 +61,8 @@ class TeamSettings extends Component {
       this.setState({
         name: team.name,
         stage: open,
-        update_pay: false,
-        is_diff: false,
+        updatePay: false,
+        isDiff: false,
         members: cloneDeep(team.members),
         diff: cloneDeep(team.members),
       });
@@ -71,8 +72,12 @@ class TeamSettings extends Component {
       this.checkDiff();
     }
 
-    if (team.state !== prevProps.team.state && ['LOCKED', 'WARNING'].includes(team.state)) update('BILLING');
-    if (team.team_id && team.team_id !== prevProps.team.team_id) this.updateMembers();
+    if (!team) {
+      return;
+    }
+
+    if (team.state !== prevProps.team?.state && ['LOCKED', 'WARNING'].includes(team.state)) update('BILLING');
+    if (team.team_id && prevProps.team?.team_id && team.team_id !== prevProps.team?.team_id) this.updateMembers();
   }
 
   updateMembers = () => {
@@ -86,14 +91,14 @@ class TeamSettings extends Component {
     const { diff, members } = this.state;
     const empty = (m) => !m.creator_id && !m.email;
 
-    const empty_diff = diff.filter(empty);
-    const empty_members = members.filter(empty);
+    const emptyDiff = diff.filter(empty);
+    const emptyMembers = members.filter(empty);
 
     // 3 conditions to check for: total length of members changed, number of invites changed, invites updated
-    if (diff.length !== members.length || empty_diff.length !== empty_members.length || empty_members.filter((m) => !!m.invite).length !== 0) {
-      this.setState({ is_diff: true });
+    if (diff.length !== members.length || emptyDiff.length !== emptyMembers.length || emptyMembers.filter((m) => !!m.invite).length !== 0) {
+      this.setState({ isDiff: true });
     } else {
-      this.setState({ is_diff: false });
+      this.setState({ isDiff: false });
     }
   };
 
@@ -145,8 +150,8 @@ class TeamSettings extends Component {
     const { team } = this.props;
     this.setState({
       stage: 'MEMBERS',
-      update_pay: true,
-      is_diff: false,
+      updatePay: true,
+      isDiff: false,
       members: cloneDeep(team.members),
       diff: cloneDeep(team.members),
     });
@@ -181,7 +186,7 @@ class TeamSettings extends Component {
   };
 
   renderBody = () => {
-    const { stage, name, members, is_diff, input } = this.state;
+    const { stage, name, members, isDiff, input } = this.state;
     const { team, user, setError, updateTeam, setConfirm, updateTeamName } = this.props;
     switch (stage) {
       case 'PLAN':
@@ -269,7 +274,7 @@ class TeamSettings extends Component {
             <label>Enter this board's name to confirm</label>
             <Input name="input" onChange={this.handleChange} value={input} placeholder="Board Name" />
             <div className="my-3 text-center">
-              <Button isBtn isWarning disabled={!equal} onClick={this.deleteTeam}>
+              <Button isBtn isPrimary disabled={!equal} onClick={this.deleteTeam}>
                 Delete Board
               </Button>
             </div>
@@ -283,7 +288,7 @@ class TeamSettings extends Component {
             setError={setError}
             user={user}
             team={team}
-            update_pay={() => this.setState({ update_pay: true })}
+            updatePay={() => this.setState({ updatePay: true })}
             update={(stage) => this.setState({ stage })}
           />
         );
@@ -294,7 +299,7 @@ class TeamSettings extends Component {
             <label>Board Icon</label>
             {team.status === 0 ? (
               <div className="mb-3">
-                <img src="/images/icons/vf_logo.png" alt="Voiceflow" width={80} className="py-2 mb-1 no-select" />
+                <img src="/images/icons/vf_logo.png" alt="Voiceflow" width={80} className="mt-2 mb-1 no-select" />
                 <br />
                 <small className="text-muted">Upgrade this board under billing to add a custom image</small>
               </div>
@@ -338,15 +343,16 @@ class TeamSettings extends Component {
       default:
         /* eslint-disable no-case-declarations */
         const UPDATING = stage === 'UPDATING_MEMBERS';
-        const DISABLED = UPDATING || !is_diff;
+        const DISABLED = UPDATING || !isDiff;
         /* eslint-enable no-case-declarations */
 
         return (
           <div className={UPDATING ? 'disabled' : ''}>
             {this.IS_ADMIN && (
-              <small className="d-flex text-muted mt-2 mb-2">
-                <span className="badge mr-2">{team.seats}</span> current seats
-              </small>
+              <>
+                <span className="number-bubble mr-2">{team.seats}</span> current seats
+                <small className="d-flex text-muted mt-2 mb-2"></small>
+              </>
             )}
             {members.map((m, i) => {
               return (
@@ -383,13 +389,13 @@ class TeamSettings extends Component {
             {this.IS_ADMIN && (
               <div className="my-3">
                 <div className="text-center mb-3">
-                  <Button isBtn isLinkLarge className="pointer mt-4" onClick={this.addMember}>
+                  <Button isBtn isLinkLarge className="pointer" onClick={this.addMember}>
                     Add teammates
                   </Button>
                 </div>
                 <div className="text-center mt-3 position-relative">
                   <Button isBtn isPrimary type="submit" disabled={DISABLED} style={{ width: 150 }} onClick={this.applyChanges}>
-                    {UPDATING ? <Spinner isEmpty /> : 'Apply Changes'}
+                    {UPDATING ? <Spinner isEmpty /> : 'Apply'}
                   </Button>
                   <div
                     style={{
@@ -429,36 +435,52 @@ class TeamSettings extends Component {
 
   render() {
     const { team, user, update, open, close, hideIcon } = this.props;
-    const { update_pay, stage } = this.state;
+    const { updatePay, stage } = this.state;
 
     if (!team) return null;
     this.IS_ADMIN = user.creator_id === team.creator_id;
 
     const fullscreen = stage in STAGES && STAGES[stage].fullscreen;
 
+    let options;
+    if (this.IS_ADMIN) {
+      options = [
+        {
+          label: 'Manage Members',
+          onClick: () => update('MEMBERS'),
+        },
+        {
+          label: 'Board Settings',
+          onClick: () => update('SETTINGS'),
+        },
+        {
+          label: 'Board Plan',
+          onClick: () => update('PLAN'),
+        },
+      ];
+    } else {
+      options = [
+        {
+          label: 'Team Members',
+          onClick: () => update('MEMBERS'),
+        },
+        {
+          label: 'Leave Team',
+          onClick: this.leaveTeam,
+        },
+      ];
+    }
+
     return (
       <div className="nav-child-item">
         {!hideIcon && (
-          <UncontrolledDropdown inNavbar>
-            <DropdownToggle tag="div" className="pointer team-setting-cog">
-              <SvgIcon icon={CogIcon} />
-            </DropdownToggle>
-            <DropdownMenu right className="no-select">
-              <DropdownItem onClick={() => update('MEMBERS')}>{this.IS_ADMIN ? 'Manage Members' : 'Team Members'}</DropdownItem>
-              {this.IS_ADMIN ? (
-                <>
-                  <DropdownItem onClick={() => update('SETTINGS')}>Board Settings</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem onClick={() => update('PLAN')}>Board Plan</DropdownItem>
-                </>
-              ) : (
-                <>
-                  <DropdownItem divider />
-                  <DropdownItem onClick={this.leaveTeam}>Leave Board</DropdownItem>
-                </>
-              )}
-            </DropdownMenu>
-          </UncontrolledDropdown>
+          <Dropdown options={options} placement="bottom-end">
+            {(ref, onToggle) => (
+              <div className="pointer btn-square" onClick={onToggle} ref={ref}>
+                <SvgIcon icon="cog" />
+              </div>
+            )}
+          </Dropdown>
         )}
         <Modal
           isOpen={!!open}
@@ -470,7 +492,7 @@ class TeamSettings extends Component {
           <ModalHeader toggle={close} className="pb-2" header={(STAGES[stage] && STAGES[stage].title) || 'Board Settings'} />
           <ModalBody className="px-45 pt-0 overflow-hidden">
             {['WARNING', 'LOCKED'].includes(team.state) &&
-              (update_pay ? (
+              (updatePay ? (
                 <Alert>Please refresh your page to see updates</Alert>
               ) : (
                 <>
@@ -499,24 +521,22 @@ class TeamSettings extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.account,
-  team: state.team.byId[state.team.team_id] || {},
-  teamId: state.team.team_id,
-});
+const mapStateToProps = {
+  user: userSelector,
+  team: (state) => state.team.byId[state.team.team_id],
+  teamId: (state) => state.team.team_id,
+};
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    removeTrial: (team_id) => dispatch(removeTrial(team_id)),
-    updateMembers: (members, options) => dispatch(updateMembers(members, options)),
-    deleteTeam: (teamId) => dispatch(deleteTeam(teamId)),
-    leaveTeam: (teamId) => dispatch(leaveTeam(teamId)),
-    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
-    updateTeam: (payload) => dispatch(updateCurrentTeamItem(payload)),
-    updateTeamName: (name) => dispatch(updateTeamName(name)),
-    setError: (error) => dispatch(setError(error)),
-    getMembers: (teamId) => dispatch(getMembers(teamId)),
-  };
+const mapDispatchToProps = {
+  updateMembers,
+  deleteTeam,
+  leaveTeam,
+  setConfirm,
+  updateTeamName,
+  setError,
+  updateTeam: updateCurrentTeamItem,
+  removeTrial,
+  getMembers,
 };
 
 export default connect(

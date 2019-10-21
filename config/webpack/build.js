@@ -30,7 +30,7 @@ module.exports = merge(configObject, {
 
   ...(IS_PRODUCTION && { stats: 'minimal' }),
 
-  devtool: IS_PRODUCTION ? 'nosources-source-map' : 'cheap-eval-source-map',
+  devtool: IS_PRODUCTION ? 'nosources-source-map' : 'source-map',
 
   optimization: {
     minimize: IS_PRODUCTION,

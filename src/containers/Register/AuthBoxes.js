@@ -35,9 +35,9 @@ export const AuthBox = styled.div`
     padding: 32px;
     background-color: #fff;
     border-radius: 5px;
-    box-shadow: 0px 1px 3px rgba(17, 49, 96, 0.08), 0px 0px 1px rgba(17, 49, 96, 0.08);
+    box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.08), 0 1px 3px 0 rgba(17, 49, 96, 0.08);
     .form-group {
-      margin-bottom: 23px;
+      margin-bottom: 22px;
     }
     .row {
       margin-top: 32px;

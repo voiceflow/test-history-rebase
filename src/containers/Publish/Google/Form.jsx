@@ -1,6 +1,5 @@
 import { constants } from '@voiceflow/common';
 import axios from 'axios';
-import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button as ReactstrapButton, ButtonGroup, Collapse, Form, FormGroup, Label } from 'reactstrap';
@@ -9,10 +8,12 @@ import styled from 'styled-components';
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import { Spinner } from '@/components/Spinner';
 import { setError } from '@/ducks/modal';
-import { updateEntireVersion } from '@/ducks/version';
+import { publishStateSelector, updatePublishInfo } from '@/ducks/publish/google';
+import { activeNameSelector, activeSkillIDSelector } from '@/ducks/skill';
 
 import GuidedSteps, { GuidedStepsWrapper } from '../../../components/GuidedSteps';
 import UnlinkProject from './Unlink';
+import googleFormAdapter from './googleAdapter';
 
 const { GOOGLE_LOCALES } = constants.locales;
 
@@ -61,22 +62,16 @@ const LegalDisclaimer = styled.div`
 `;
 
 class GooglePublish extends Component {
-  constructor(props) {
-    super(props);
-
-    const { skill } = this.props;
-
-    this.state = {
-      loaded: false,
-      name: skill.name,
-      locales: [],
-      main_locale: null,
-      id_collapse: false,
-    };
-  }
+  state = {
+    loaded: false,
+    name: this.props.name,
+    locales: [],
+    main_locale: null,
+    id_collapse: false,
+  };
 
   render() {
-    const { google_id, google_email } = this.props;
+    const { googleId, googleEmail } = this.props;
     const { loaded, id_collapse, live } = this.state;
 
     if (!loaded)
@@ -96,7 +91,7 @@ class GooglePublish extends Component {
               </div>
             </div>
           ) : null}
-          {google_id && (
+          {googleId && (
             <div className="alert alert-success mb-4" role="alert">
               <div className="d-flex justify-content-between align-items-center">
                 <span>This Action is linked on the Google Actions Console</span>
@@ -113,11 +108,11 @@ class GooglePublish extends Component {
                   <div>
                     <span>Project ID | </span>
                     <a
-                      href={`https://console.actions.google.com/u/${google_email}/project/${google_id}/simulator`}
+                      href={`https://console.actions.google.com/u/${googleEmail}/project/${googleId}/simulator`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <b>{google_id} </b>
+                      <b>{googleId} </b>
                     </a>
                   </div>
                   <UnlinkProject />
@@ -131,42 +126,21 @@ class GooglePublish extends Component {
     );
   }
 
-  onPublish = () =>
-    this.save(true, () => {
-      this.props.publish();
-    });
+  onPublish = async () => {
+    await this.save();
+    this.props.publish();
+  };
 
   async componentDidMount() {
-    const { skill_id, setError } = this.props;
+    const { skillId, setError } = this.props;
 
     try {
-      const res = await axios.get(`/skill/google/${skill_id}`);
+      const res = await axios.get(`/skill/google/${skillId}`);
+      const properties = googleFormAdapter.fromDB(res.data);
 
-      if (!_.isObject(res.data.publish_info)) {
-        res.data.publish_info = {};
-      }
-
-      const publish_info = res.data.publish_info;
-
-      if (!publish_info.locales) {
-        publish_info.locales = [];
-      }
-      if (!publish_info.main_locale) {
-        publish_info.main_locale = 'en';
-      }
-
-      if (!publish_info.google_link_user) {
-        publish_info.google_link_user = '0';
-      }
-
-      const { privacy_policy, terms_and_cond } = res.data;
-
-      // TODO: Antipattern, fix this when we do redux
       this.setState({
         loaded: true,
-        ...publish_info,
-        privacy_policy,
-        terms_and_cond,
+        ...properties,
       });
     } catch (err) {
       this.setState({ loaded: true });
@@ -177,31 +151,25 @@ class GooglePublish extends Component {
   componentWillUnmount() {
     const { loaded } = this.state;
     if (loaded) {
-      this.save(true);
+      this.save();
     }
   }
 
-  save = (publish = false, cb) => {
-    const { setError, skill_id, skill, updateEntireSkill, google_id } = this.props;
+  save = async () => {
+    const { setError, skillId, updatePublishInfo, googleId } = this.props;
     const { locales, main_locale } = this.state;
 
-    const google_publish_info = {
+    const googlePublishInfo = {
       locales,
       main_locale,
     };
 
-    axios
-      .patch(`/skill/${skill_id}?platform=google${publish === true ? '&publish=true' : ''}`, { google_publish_info })
-      .then(() => {
-        updateEntireSkill({ ...skill, google_publish_info, google_id });
-        // eslint-disable-next-line callback-return
-        if (typeof cb === 'function') cb();
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err);
-        setError('Save Error, updates not saved');
-      });
+    try {
+      await axios.patch(`/skill/${skillId}?platform=google&publish=true`, { google_publish_info: googlePublishInfo });
+      updatePublishInfo({ ...googlePublishInfo, googleId });
+    } catch (err) {
+      setError('Save Error, updates not saved');
+    }
   };
 
   handleChange = (event) => {
@@ -224,8 +192,8 @@ class GooglePublish extends Component {
   };
 
   renderBlocks = () => {
-    const { google_id, google_email } = this.props;
-    const { main_locale, privacy_policy, terms_and_cond } = this.state;
+    const { googleId, googleEmail } = this.props;
+    const { main_locale, privacyPolicy, termsAndCond } = this.state;
 
     const blocks = [];
     const enterText = (
@@ -240,7 +208,7 @@ class GooglePublish extends Component {
       content: (
         <>
           <FormGroup className="mb-4 pa__locale-limited">
-            <Label className="publish-label">Main Language *</Label>
+            <Label className="publish-label">Main Language</Label>
             <ButtonGroup className="locale-button-group">
               {FORMATTED_LOCALES.map((locale, i) => {
                 const active = main_locale === locale.value ? 'active' : '';
@@ -282,7 +250,7 @@ class GooglePublish extends Component {
             Unfortunately the Privacy Policy or Terms and Conditions for Google Actions must be updated manually. Copy these links into the "Privacy
             and Consent" portion of the{' '}
             <a
-              href={`https://console.actions.google.com/u/${google_email}/project/${google_id}/directoryinformation/`}
+              href={`https://console.actions.google.com/u/${googleEmail}/project/${googleId}/directoryinformation/`}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -293,15 +261,15 @@ class GooglePublish extends Component {
 
           <FormGroup>
             <Label className="publish-label">Privacy Policy URL</Label>
-            <ClipBoard name="link" value={privacy_policy}>
-              <PrivacyPolicyLink>{privacy_policy}</PrivacyPolicyLink>
+            <ClipBoard name="link" value={privacyPolicy}>
+              <PrivacyPolicyLink>{privacyPolicy}</PrivacyPolicyLink>
             </ClipBoard>
           </FormGroup>
 
           <FormGroup className="mb-4">
             <Label className="publish-label">Terms and Conditions URL</Label>
-            <ClipBoard name="link" value={terms_and_cond}>
-              <PrivacyPolicyLink>{terms_and_cond}</PrivacyPolicyLink>
+            <ClipBoard name="link" value={termsAndCond}>
+              <PrivacyPolicyLink>{termsAndCond}</PrivacyPolicyLink>
             </ClipBoard>
           </FormGroup>
         </>
@@ -313,17 +281,15 @@ class GooglePublish extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  skill: state.skills.skill,
-  skill_id: state.skills.skill.skill_id,
-  google_id: state.publish.google.google_id,
-  google_email: _.get(state, ['account', 'google', 'profile', 'email']) || '0',
+  name: activeNameSelector(state),
+  skillId: activeSkillIDSelector(state),
+  googleId: publishStateSelector(state).googleId,
+  googleEmail: state.account.google?.profile?.email || '0',
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setError: (err) => dispatch(setError(err)),
-    updateEntireSkill: (val) => dispatch(updateEntireVersion(val)),
-  };
+const mapDispatchToProps = {
+  setError,
+  updatePublishInfo,
 };
 
 export default connect(

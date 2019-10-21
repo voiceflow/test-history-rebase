@@ -2,6 +2,7 @@ const { default: webpackConfig } = require('./config/webpack/common');
 
 module.exports = {
   extends: '@voiceflow/eslint-config/frontend',
+  plugins: ['prettier'],
   parser: 'babel-eslint',
   rules: {
     // errors
@@ -9,7 +10,7 @@ module.exports = {
     'react/jsx-fragments': 'error',
     'no-console': ['error', { allow: ['error'] }],
     quotes: ['error', 'single', 'avoid-escape'],
-    'no-secrets/no-secrets': ['error', { tolerance: 4.2 }],
+    'no-secrets/no-secrets': ['error', { tolerance: 4.25 }],
     'lodash/path-style': ['error', 'array'],
     'no-use-before-define': ['error', 'nofunc'],
     'prefer-destructuring': [
@@ -38,6 +39,7 @@ module.exports = {
     'react/destructuring-assignment': 'off',
     'lodash/import-scope': 'off',
     'sonarjs/no-duplicate-string': 'off',
+    'no-prototype-builtins': 'off',
 
     // disabled temporarily by setting as warnings
     'max-len': 'warn',

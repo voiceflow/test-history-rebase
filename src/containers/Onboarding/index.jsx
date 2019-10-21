@@ -3,13 +3,15 @@ import './onboarding.css';
 import axios from 'axios';
 import cn from 'classnames';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
 import StepProgressBar from '@/components/StepProgressBar/StepProgressBar';
+import { ButtonCard } from '@/containers/Onboarding/container';
+import { userSelector } from '@/ducks/account';
+import { connect } from '@/hocs';
 
 const CLASS_MUTED = 'text-muted';
 const PROG_XP = (xp) => {
@@ -244,52 +246,40 @@ class Onboarding extends Component {
         return (
           <div key={stage} className="pb-5 mb-5">
             <StepProgressBar num_stages={3} stage={2} classes="onboarding-progress" />
-            <p className="modal-bg-txt text-center mb-5 mt-4">How much experience do you have coding?</p>
-            <div className="row justify-content-center mb-3">
-              <div className="col-s mr-4">
-                <Button
-                  isTransparent
-                  className="mb-2"
-                  onClick={() => {
-                    this.setState({ experience: 'beginner' });
-                  }}
-                >
-                  <img
-                    className="image-selector"
-                    alt="beginner"
-                    src={experience === 'beginner' ? '/beginner-selected.png' : '/beginner-unselected.png'}
-                  />
-                </Button>
+            <label className="modal-bg-txt text-center mb-3 mt-4">How much experience do you have coding?</label>
+            <div className="row justify-content-center mb-4">
+              <ButtonCard
+                onClick={() => {
+                  this.setState({ experience: 'beginner' });
+                }}
+              >
+                <img
+                  className="image-selector"
+                  alt="beginner"
+                  src={experience === 'beginner' ? '/beginner-selected.png' : '/beginner-unselected.png'}
+                />
                 <p className={experience === 'beginner' ? '' : CLASS_MUTED}>None</p>
-              </div>
-              <div className="col-s ml-4 mr-4">
-                <Button
-                  isTransparent
-                  className="mb-2"
-                  onClick={() => {
-                    this.setState({ experience: 'intermediate' });
-                  }}
-                >
-                  <img
-                    className="image-selector"
-                    alt="intermediate"
-                    src={experience === 'intermediate' ? '/little-selected.png' : '/little-unselected.png'}
-                  />
-                </Button>
-                <p className={experience === 'intermediate' ? '' : CLASS_MUTED}>A little</p>
-              </div>
-              <div className="col-s ml-4">
-                <Button
-                  isTransparent
-                  className="mb-2"
-                  onClick={() => {
-                    this.setState({ experience: 'expert' });
-                  }}
-                >
-                  <img className="image-selector" alt="alot" src={experience === 'expert' ? '/alot-selected.png' : '/alot-unselected.png'} />
-                </Button>
-                <p className={experience === 'expert' ? '' : CLASS_MUTED}>A lot</p>
-              </div>
+              </ButtonCard>
+              <ButtonCard
+                onClick={() => {
+                  this.setState({ experience: 'intermediate' });
+                }}
+              >
+                <img
+                  className="image-selector"
+                  alt="intermediate"
+                  src={experience === 'intermediate' ? '/little-selected.png' : '/little-unselected.png'}
+                />
+                <p className={experience === 'intermediate' ? '' : CLASS_MUTED}>A Little</p>
+              </ButtonCard>
+              <ButtonCard
+                onClick={() => {
+                  this.setState({ experience: 'expert' });
+                }}
+              >
+                <img className="image-selector" alt="alot" src={experience === 'expert' ? '/alot-selected.png' : '/alot-unselected.png'} />
+                <p className={experience === 'expert' ? '' : CLASS_MUTED}>A Lot</p>
+              </ButtonCard>
             </div>
             <Button isPrimary isTransparent disabled={!['beginner', 'intermediate', 'expert'].includes(experience)} onClick={this.submitSurvey}>
               Complete
@@ -300,43 +290,36 @@ class Onboarding extends Component {
         return (
           <div key={stage} className="pb-5 mb-5">
             <StepProgressBar num_stages={3} stage={1} classes="onboarding-progress" />
-            <p className="modal-bg-txt text-center mb-5 mt-4">What do you plan to use Voiceflow for?</p>
-            <div className="row justify-content-center mb-3">
-              <div className="col-s mr-4">
-                <Button
-                  isTransparent
-                  className="mt-2 mb-2"
-                  onClick={() => {
-                    this.setState((prev_state) => ({ design: !prev_state.design }));
-                  }}
-                >
-                  <img id="design-2" alt="design" src={design ? '/design-selected.png' : '/design-unselected.png'} />
-                </Button>
+            <label className="modal-bg-txt text-center mb-3 mt-4">What do you plan to use Voiceflow for?</label>
+            <div className="row justify-content-center mb-4">
+              <ButtonCard
+                onClick={() => {
+                  this.setState((prev_state) => ({ design: !prev_state.design }));
+                }}
+              >
+                <img id="design-2" alt="design" src={design ? '/blank.svg' : '/blank_inactive.svg'} />
                 <p className={design ? '' : CLASS_MUTED}>Design & Prototype</p>
-              </div>
-              <div className="col-s ml-4">
-                <Button
-                  isTransparent
-                  className="mb-2"
-                  onClick={() => {
-                    this.setState((prev_state) => ({ build: !prev_state.build }));
-                  }}
-                >
-                  <img id="design" alt="publish" src={build ? '/publish-selected.png' : '/publish-unselected.png'} />
-                </Button>
+              </ButtonCard>
+              <ButtonCard
+                onClick={() => {
+                  this.setState((prev_state) => ({ build: !prev_state.build }));
+                }}
+              >
+                <img id="design" alt="publish" src={build ? '/build.svg' : '/build_inactive.svg'} />
                 <p className={build ? '' : CLASS_MUTED}>Build & Publish</p>
-              </div>
+              </ButtonCard>
             </div>
             <Button isPrimary disabled={!(design || build)} onClick={() => this.setState({ stage: 'code_stage' })}>
               Continue
             </Button>
+            <p className="small text-dull mt-3">Select all that apply</p>
           </div>
         );
       case 'work_name':
         return (
           <div key={stage} className="pb-5 mb-5">
             <StepProgressBar num_stages={3} stage={1} classes="onboarding-progress" />
-            <p className="modal-bg-txt text-center mb-4 mt-4">Tell us more about your company</p>
+            <label className="modal-bg-txt text-center mb-3 mt-4">Tell us more about your company</label>
             <div className="d-flex justify-content-center mb-3">
               <Form className="w-100">
                 <FormGroup>
@@ -395,44 +378,37 @@ class Onboarding extends Component {
         return (
           <div key={stage} className="pb-5 mb-5">
             <StepProgressBar num_stages={3} stage={0} classes="onboarding-progress" />
-            <p className="modal-bg-txt text-center mb-5">What are you using Voiceflow for?</p>
-            <div className="row justify-content-center mb-3">
-              <div className="col-s mr-4">
-                <Button
-                  isTransparent
-                  className="mb-2"
-                  onClick={() => {
-                    this.setState({ type: 'PERSONAL' });
-                  }}
-                >
-                  <img id="design" alt="selected" src={type === 'PERSONAL' ? '/selected.png' : '/unselected.png'} />
-                </Button>
+            <label className="modal-bg-txt text-center mb-3">Who will use Voiceflow?</label>
+            <div className="row justify-content-center mb-4">
+              <ButtonCard
+                onClick={() => {
+                  this.setState({ type: 'PERSONAL' });
+                }}
+              >
+                <img alt="selected" src={type === 'PERSONAL' ? '/images/icons/solo-active.svg' : '/images/icons/solo.svg'} />
                 <p
                   className={cn({
                     CLASS_MUTED: type !== 'PERSONAL',
                   })}
                 >
-                  Personal
+                  Just Me
                 </p>
-              </div>
-              <div className="col-s ml-4">
-                <Button
-                  isTransparent
-                  className="mb-2"
-                  onClick={() => {
-                    this.setState({ type: 'WORK' });
-                  }}
-                >
-                  <img id="design" alt="work" src={type === 'WORK' ? '/selected-2.png' : '/unselected-2.png'} />
-                </Button>
+              </ButtonCard>
+
+              <ButtonCard
+                onClick={() => {
+                  this.setState({ type: 'WORK' });
+                }}
+              >
+                <img alt="work" src={type === 'WORK' ? '/images/icons/collaborate-selected.svg' : '/images/icons/collaborate.svg'} />
                 <p
                   className={cn({
                     CLASS_MUTED: type !== 'WORK',
                   })}
                 >
-                  Work
+                  My Team
                 </p>
-              </div>
+              </ButtonCard>
             </div>
             <Button
               isPrimary
@@ -453,13 +429,12 @@ class Onboarding extends Component {
         return (
           <div key={stage} className="pb-5 mb-5">
             <div className="text-center">
-              <img className="logo mb-3" src="/logo.png" alt="logo" height="25" />
-              <p className="modal-bg-txt text-center mb-3">Hi, {user.name}</p>
-              <p className="onboarding-modal-txt text-center mb-2">
-                You just joined the worlds biggest community of VUI designer and developers building voice apps. We have a few questions to
-                personalize your experience!
+              <label className="modal-bg-txt dark text-center mb-3">Hi, {user.name}</label>
+              <p className="onboarding-modal-txt text-muted text-center mb-2">
+                You just joined the worlds biggest community of designers and developers building for voice. We have a few questions to personalize
+                your experience!
               </p>
-              <p className="onboarding-modal-txt text-center mb-4">
+              <p className="onboarding-modal-txt text-muted text-center mb-5">
                 - Voiceflow team{' '}
                 <span role="img" aria-label="Heart">
                   ❤️
@@ -485,7 +460,7 @@ class Onboarding extends Component {
     return (
       <div id="template-box-container">
         <div className="card super-center flex-column text-center">
-          <div className="text-dull">WELCOME SURVEY</div>
+          <div className="uppercase-header">WELCOME SURVEY</div>
           <div className="flex-grow-1 super-center">{this.renderModalContent()}</div>
         </div>
       </div>
@@ -493,8 +468,8 @@ class Onboarding extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.account,
-});
+const mapStateToProps = {
+  user: userSelector,
+};
 
 export default connect(mapStateToProps)(Onboarding);

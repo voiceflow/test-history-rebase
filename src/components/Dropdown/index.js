@@ -3,10 +3,10 @@ import camelCase from 'lodash/camelCase';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import Button from '../Button';
 import Popover from '../Popover';
 import PopoverList from '../PopoverList';
 import Selectable from '../Selectable';
+import DropdownButton from './components/DropdownButton';
 
 export default class Dropdown extends Component {
   static propTypes = {
@@ -57,9 +57,9 @@ export default class Dropdown extends Component {
       <Selectable {...popoverProps} onSelect={this.onSelect} popoverRenderer={this.popoverRenderer}>
         {children ||
           (({ show, onRef, opened }) => (
-            <Button ref={onRef} onClick={show} isActive={opened} isDropdown {...buttonProps}>
+            <DropdownButton ref={onRef} onClick={show} isActive={opened} {...buttonProps}>
               {label}
-            </Button>
+            </DropdownButton>
           ))}
       </Selectable>
     );

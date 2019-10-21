@@ -3,11 +3,11 @@ import * as _ from 'lodash';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
-import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 
 import Button from '@/components/Button';
 import RoundButton from '@/components/Button/RoundButton';
 import Form from '@/components/Form';
+import Dropdown from '@/componentsV2/Dropdown';
 import { ScrollContextProvider } from '@/contexts';
 import withDraggable from '@/hocs/withDraggable';
 import { useHorizontalScrollToNode, useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
@@ -49,7 +49,6 @@ export function List(props) {
   const inputRef = useRef(null);
 
   const [isCreatingSkill] = useToggle(false);
-  const [showOptions, toggleShow] = useToggle(false);
 
   useHorizontalScrollToNode(listRef, isCreated, [id, isCreated]);
 
@@ -68,7 +67,6 @@ export function List(props) {
 
   const list = (
     <div
-      style={{ background: isDraggingPreview ? 'transparent' : null }}
       className={cn('main-list', {
         '__is-draggable __is-dragging': isDraggingPreview,
       })}
@@ -78,7 +76,7 @@ export function List(props) {
           listRef.current = node;
         }}
         style={{ height: isDraggingPreview || isDragging ? '100%' : null }}
-        className={cn('main-list', {
+        className={cn({
           hidden: isDragging,
           '__type-create': isCreatingSkill,
           '__is-draggable __is-dragging': isDraggingPreview,
@@ -121,13 +119,18 @@ export function List(props) {
                 </div>
 
                 <div className="main-list-header__aside">
-                  <Dropdown isOpen={showOptions} toggle={() => toggleShow(!showOptions)} inNavbar>
-                    <DropdownToggle tag="div">
-                      <RoundButton variant="shadow" noShadow active={showOptions} icon="elipsis" imgSize={15} />
-                    </DropdownToggle>
-                    <DropdownMenu right className="no-select py-1">
-                      <DropdownItem onClick={onRemove}>Remove List</DropdownItem>
-                    </DropdownMenu>
+                  <Dropdown
+                    options={[
+                      {
+                        label: 'Remove List',
+                        onClick: () => onRemove({ id, name, projects }),
+                      },
+                    ]}
+                    placement="bottom-end"
+                  >
+                    {(ref, onToggle, isOpen) => (
+                      <RoundButton icon="elipsis" variant="shadow" active={isOpen} imgSize={15} onClick={onToggle} ref={ref} />
+                    )}
                   </Dropdown>
                 </div>
               </DropContainer>
@@ -146,33 +149,32 @@ export function List(props) {
                       {projects.map((project, i) => {
                         if (!project) return null;
                         let icon;
-                        const smallIcon = project.small_icon;
-                        const largeIcon = project.large_icon;
+                        const { smallIcon, largeIcon } = project;
                         if (largeIcon) {
                           icon = largeIcon;
                         } else if (smallIcon) {
                           icon = smallIcon;
                         }
                         return (
-                          <li key={project.project_id} className="projects-list__list-item">
+                          <li key={project.id} className="projects-list__list-item">
                             <Item
                               index={i}
-                              id={project.project_id}
-                              version_id={project.skill_id}
+                              id={project.id}
+                              version_id={project.versionID}
                               listId={id}
                               created={project.created}
                               isFB={false}
                               isReference={project.reference}
                               avatarUrl={icon}
                               name={project.name}
-                              diagram={project.diagram}
+                              diagram={project.diagramID}
                               onDrop={onDropProject}
                               onMove={onMoveProject}
                               onToggleDragging={setMoving}
                               language={project.locales}
-                              isLive={project.islive}
-                              onRemove={() => onDeleteProject(project.project_id)}
-                              onDuplicate={() => onCopyProject(project.project_id, id)}
+                              isLive={project.isLive}
+                              onRemove={() => onDeleteProject(project.id, project.name)}
+                              onDuplicate={() => onCopyProject(project.id, id)}
                             />
                           </li>
                         );

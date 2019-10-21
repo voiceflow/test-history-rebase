@@ -1,14 +1,18 @@
-import styled from 'styled-components';
+import { css, styled } from '@/hocs';
 
 import { BUTTON_HEIGHT } from '../styles';
 import BaseButton from './BaseButton';
 
-const ButtonContainer = styled(BaseButton)`
+export const buttonContainerStyles = css`
   height: ${BUTTON_HEIGHT}px;
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
-  letter-spacing: 0.2px;
+  width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
+`;
+
+const ButtonContainer = styled(BaseButton)`
+  ${buttonContainerStyles}
 `;
 
 export default ButtonContainer;

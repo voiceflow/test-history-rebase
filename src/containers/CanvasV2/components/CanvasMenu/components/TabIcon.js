@@ -1,0 +1,15 @@
+import SvgIcon from '@/components/SvgIcon';
+import { styled } from '@/hocs';
+
+const TabIcon = styled(SvgIcon)`
+  display: block;
+  padding: ${({ theme }) => theme.unit * 1.5}px;
+  cursor: pointer;
+  color: #8da2b5;
+
+  &:hover {
+    color: #233050;
+  }
+`;
+
+export default TabIcon;

@@ -2,14 +2,13 @@ import './Account.css';
 
 import moment from 'moment';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 import Image from '@/components/Uploads/Image';
-import { checkAmazonAccount, checkGoogleAccount, deleteAmazonAccount, deleteGoogleAccount, updateAccount } from '@/ducks/account';
+import { checkAmazonAccount, checkGoogleAccount, deleteAmazonAccount, deleteGoogleAccount, updateAccount, userSelector } from '@/ducks/account';
 import { setConfirm, setError } from '@/ducks/modal';
+import { connect } from '@/hocs';
 
 class Account extends Component {
   state = {
@@ -29,12 +28,12 @@ class Account extends Component {
     const { setConfirm, deleteAmazonAccount } = this.props;
     setConfirm({
       text: (
-        <Alert color="danger" className="mb-0">
+        <>
           <i className="fas fa-exclamation-triangle fa-2x" />
           <br />
           Resetting your Amazon Account is dangerous and will de-sync all your published projects/versions and can lead to live skills being deleted.
           Do not reset unless you know what you are doing
-        </Alert>
+        </>
       ),
       warning: true,
       confirm: async () => {
@@ -49,11 +48,11 @@ class Account extends Component {
     const { setConfirm, deleteGoogleAccount } = this.props;
     setConfirm({
       text: (
-        <Alert color="danger" className="mb-0">
+        <>
           <i className="fas fa-exclamation-triangle fa-2x" />
           <br />
           Resetting your Google Account is dangerous and will de-sync all your published projects. Do not reset unless you know what you are doing
-        </Alert>
+        </>
       ),
       warning: true,
       confirm: async () => {
@@ -216,9 +215,9 @@ class Account extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.account,
-});
+const mapStateToProps = {
+  user: userSelector,
+};
 
 const mapDispatchToProps = {
   checkAmazonAccount,

@@ -5,8 +5,10 @@ import randomstring from 'randomstring';
 
 import Normalize, { unnormalize } from '@/ducks/_normalize';
 import { setError } from '@/ducks/modal';
+import { activeTeamIDSelector } from '@/ducks/team';
+import { withoutValue } from '@/utils/array';
 
-import { deleteProject, fetchProjects } from './project';
+import { deleteProject, loadProjectsForTeam, projectsKeySelector } from './project';
 
 const initialState = {
   byId: {},
@@ -21,6 +23,14 @@ export default function boardReducer(state = initialState, action) {
         ...state,
         byId: action.payload.byId,
         allIds: action.payload.allIds,
+      };
+    case 'UPDATE_BOARD':
+      return {
+        ...state,
+        byId: {
+          ...state.byId,
+          [action.payload.boardID]: action.payload.boardValues,
+        },
       };
     case 'RESET_BOARDS':
       return {
@@ -46,77 +56,85 @@ export const updateBoards = ({ byId, allIds }) => ({
   },
 });
 
+export const updateBoard = (boardID, boardValues) => ({
+  type: 'UPDATE_BOARD',
+  payload: {
+    boardID,
+    boardValues,
+  },
+});
+
 const Boards = new Normalize('board_id', 'board', updateBoards);
 
 export const resetBoards = () => ({
   type: 'RESET_BOARDS',
 });
 
-export const fetchBoards = (team_id) => {
-  return async (dispatch, getState) => {
-    dispatch(resetBoards());
-    if (!team_id) return;
+export const fetchBoards = (teamID) => async (dispatch, getState) => {
+  dispatch(resetBoards());
+  if (!teamID) return;
 
-    try {
-      let url = '/boards';
-      if (team_id !== -1) url = `/team/${team_id}/boards`;
-      const boards = (await axios.get(url)).data.boards;
+  try {
+    const boards = (await axios.get(teamID !== -1 ? `/team/${teamID}/boards` : '/boards')).data.boards;
 
-      // get the projects on this board
-      await dispatch(fetchProjects(team_id));
+    // get the projects on this board into redux state
+    await dispatch(loadProjectsForTeam(teamID));
 
-      // determine if there are any projects not on a board
-      let board_projects = [];
-      _.forEach(boards, (board) => {
-        // eslint-disable-next-line no-return-assign
-        if (!Array.isArray(board.projects)) return (board.projects = []);
-        board_projects.push(...board.projects);
-      });
-      board_projects = new Set(board_projects);
-      const projects = getState().project.allIds;
-      const unsorted_projects = projects.filter((p) => !board_projects.has(p));
+    // master list of all projects on board
+    const projects = projectsKeySelector(getState());
 
-      if (unsorted_projects.length > 0) {
-        let board = boards.filter((board) => board.name === 'Default List')[0];
-        if (!board) {
-          board = {
-            board_id: randomstring.generate(10),
-            name: 'Default List',
-            projects: [],
-          };
-          boards.push(board);
-        }
-        board.projects.push(...unsorted_projects);
+    // determine if there are any projects not on a board
+    const usedProjects = new Set();
+    boards.forEach((list) => {
+      if (!Array.isArray(list.projects)) {
+        list.projects = [];
+      } else {
+        list.projects = _.uniq(list.projects).filter((projectID) => projects.includes(projectID) && !usedProjects.has(projectID));
+        list.projects.forEach((projectID) => usedProjects.add(projectID));
       }
+    });
 
-      // NORMALIZE
-      dispatch(
-        Boards.create({
-          data: boards,
-        })
-      );
+    const unusedProjects = new Set(projects.filter((projectID) => !usedProjects.has(projectID)));
 
-      dispatch({
-        type: 'UPDATE_BOARD_SAVE',
-        payload: JSON.stringify(unnormalize(getState().board)),
-      });
-
-      return Promise.resolve();
-    } catch (err) {
-      console.error(err);
-      dispatch(setError('Unable to retrieve boards'));
+    // dump all projects not used in any of the other lists
+    if (unusedProjects.size > 0) {
+      let defaultList = boards.find((board) => board.name === 'Default List');
+      if (!defaultList) {
+        defaultList = {
+          board_id: randomstring.generate(10),
+          name: 'Default List',
+          projects: [],
+        };
+        boards.push(defaultList);
+      }
+      defaultList.projects.push(...unusedProjects);
     }
-  };
+
+    // NORMALIZE
+    dispatch(
+      Boards.create({
+        data: boards,
+      })
+    );
+
+    dispatch({
+      type: 'UPDATE_BOARD_SAVE',
+      payload: JSON.stringify(unnormalize(getState().board)),
+    });
+  } catch (err) {
+    console.error(err);
+    dispatch(setError('Unable to retrieve boards'));
+  }
 };
 
-export const updateLists = (team_id) => async (dispatch, getState) => {
+export const updateLists = (teamID) => async (dispatch, getState) => {
   try {
     const boards = getState().board;
     const boards_array = unnormalize(boards);
 
     if (boards.save === JSON.stringify(boards_array)) return;
 
-    await axios.patch(`/team/${team_id}/update_board`, {
+    await axios.patch(`/team/${teamID}/update_board`, {
       boards: boards_array,
     });
 
@@ -132,7 +150,7 @@ export const updateLists = (team_id) => async (dispatch, getState) => {
   return Promise.resolve();
 };
 
-export const addBoard = (team_id) => {
+export const addBoard = (teamID) => {
   return async (dispatch) => {
     const current_id = randomstring.generate(10);
     try {
@@ -147,7 +165,7 @@ export const addBoard = (team_id) => {
           data: empty_board,
         })
       );
-      dispatch(updateLists(team_id));
+      dispatch(updateLists(teamID));
     } catch (err) {
       console.error(err);
       dispatch(setError('Unable to add board'));
@@ -161,7 +179,7 @@ export const addProjectToList = (board_id, project_id) => {
   return async (dispatch, getState) => {
     try {
       const boards = getState().board;
-      const team_id = getState().team.team_id;
+      const teamID = getState().team.team_id;
       let board;
       if (!board_id) {
         board = Object.values(boards.byId).filter((board) => board.name === 'Default List')[0];
@@ -194,7 +212,7 @@ export const addProjectToList = (board_id, project_id) => {
           data: board,
         })
       );
-      if (team_id) dispatch(updateLists(team_id));
+      if (teamID) dispatch(updateLists(teamID));
     } catch (err) {
       console.error(err);
       dispatch(setError('Unable to add project to list'));
@@ -221,8 +239,8 @@ export const renameList = (board_id, new_name) => {
           })
         );
 
-        const team_id = getState().team.team_id;
-        if (team_id) dispatch(updateLists(team_id));
+        const teamID = getState().team.team_id;
+        if (teamID) dispatch(updateLists(teamID));
       }
     } catch (err) {
       console.error(err);
@@ -234,7 +252,7 @@ export const renameList = (board_id, new_name) => {
 export const deleteBoard = (board_id) => {
   return async (dispatch, getState) => {
     try {
-      const team_id = getState().team.team_id;
+      const teamID = getState().team.team_id;
       const boards = getState().board;
       const board = boards.byId[board_id];
       _.forEach(board.projects, (project) => dispatch(deleteProject(project)));
@@ -243,7 +261,7 @@ export const deleteBoard = (board_id) => {
           id: board_id,
         })
       );
-      if (team_id) dispatch(updateLists(team_id));
+      if (teamID) dispatch(updateLists(teamID));
     } catch (err) {
       dispatch(setError('Problem Deleting List'));
       console.error(err);
@@ -355,4 +373,16 @@ export const changeListPosition = (drag, hover) => (dispatch, getState) => {
   } catch (err) {
     console.error(err);
   }
+};
+
+export const deleteBoardProject = (boardID, projectID) => async (dispatch, getState) => {
+  const state = getState();
+  const teamID = activeTeamIDSelector(state);
+
+  const projectList = withoutValue(state.board.byId[boardID].projects, projectID);
+  const updatedBoard = { ...state.board.byId[boardID], projects: projectList };
+
+  await dispatch(deleteProject(projectID));
+  await dispatch(updateBoard(boardID, updatedBoard));
+  await dispatch(updateLists(teamID));
 };

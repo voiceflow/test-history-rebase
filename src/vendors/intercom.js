@@ -1,6 +1,7 @@
 import { LOGROCKET_PROJECT } from '@/config';
 import { getUserPlanName } from '@/utils/admin';
 
+// eslint-disable-next-line import/prefer-default-export
 export function createIntercomUser(user) {
   return user.creator_id
     ? {

@@ -1,28 +1,35 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
-import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Popover, PopoverBody } from 'reactstrap';
+import { Popover, PopoverBody } from 'reactstrap';
 
 import RoundButton from '@/components/Button/RoundButton';
-import { YOUTUBE_CHANNEL_ID } from '@/config';
-import InformationIcon from '@/svgs/information.svg';
+import Dropdown from '@/componentsV2/Dropdown';
+import Menu, { MenuItem } from '@/componentsV2/Menu';
+import { IS_PRODUCTION, YOUTUBE_CHANNEL_ID } from '@/config';
+import { goToDesigner } from '@/ducks/router';
+import { connect } from '@/hocs';
 
 import UpdatesPopover from '../UpdatesPopover';
 
 const YOUTUBE_CHANNEL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
 
-export default function RightNavSection({
+function RightNavSection({
   updates_open,
   toggleUpdatesOpen,
   setNewProductUpdates,
   setShowUpdateBubble,
   product_updates,
   new_product_updates,
-  showInfo,
-  setShowInfo,
   renderUpdatesButton,
+  goToDesigner,
 }) {
   return (
     <>
+      {!IS_PRODUCTION && (
+        <div className="subheader-right nav-child-item" onClick={goToDesigner}>
+          <RoundButton icon="star" imgSize={15} />
+        </div>
+      )}
       <div className="subheader-right nav-child-item">
         <div id="update-popup">{renderUpdatesButton()}</div>
         <Popover
@@ -42,28 +49,40 @@ export default function RightNavSection({
         </Popover>
       </div>
       <div className="subheader-right nav-child-item">
-        <Dropdown isOpen={showInfo} toggle={() => setShowInfo(!showInfo)}>
-          <DropdownToggle tag="div">
+        <Dropdown
+          menu={
+            <Menu>
+              <a href="https://learn.voiceflow.com/" target="_blank" rel="noopener noreferrer">
+                <MenuItem>University</MenuItem>
+              </a>
+              <a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
+                <MenuItem>Youtube</MenuItem>
+              </a>
+              <a href="https://www.facebook.com/groups/voiceflowgroup/" target="_blank" rel="noopener noreferrer">
+                <MenuItem>Community</MenuItem>
+              </a>
+              <a href="https://forum.voiceflow.com/" target="_blank" rel="noopener noreferrer">
+                <MenuItem>Forums</MenuItem>
+              </a>
+            </Menu>
+          }
+        >
+          {(ref, onToggle) => (
             <Tooltip distance={19} title="Resources" position="bottom">
-              <RoundButton icon={InformationIcon} imgSize={15} active={showInfo} />
+              <RoundButton icon="information" imgSize={15} onClick={onToggle} ref={ref} />
             </Tooltip>
-          </DropdownToggle>
-          <DropdownMenu className="mt-2">
-            <a href="https://learn.voiceflow.com/" target="_blank" rel="noopener noreferrer">
-              <DropdownItem>University</DropdownItem>
-            </a>
-            <a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
-              <DropdownItem>Youtube</DropdownItem>
-            </a>
-            <a href="https://www.facebook.com/groups/voiceflowgroup/" target="_blank" rel="noopener noreferrer">
-              <DropdownItem>Community</DropdownItem>
-            </a>
-            <a href="https://forum.voiceflow.com/" target="_blank" rel="noopener noreferrer">
-              <DropdownItem>Forums</DropdownItem>
-            </a>
-          </DropdownMenu>
+          )}
         </Dropdown>
       </div>
     </>
   );
 }
+
+const mapDispatchToProps = {
+  goToDesigner,
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(RightNavSection);

@@ -1,19 +1,16 @@
-// Components
 import * as _ from 'lodash';
 import queryString from 'query-string';
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Button from '@/components/Button';
 import { FullSpinner } from '@/components/Spinner';
 import Dashboard from '@/containers/Dashboard';
-// Views
 import Onboarding from '@/containers/Onboarding';
 import Templates from '@/containers/Templates';
 import { setConfirm, setError, setModal } from '@/ducks/modal';
-// Actions
 import { fetchTeams, teamInvite, updateCurrentTeam } from '@/ducks/team';
+import { connect } from '@/hocs';
 
 const DASHBOARD_PATH = '/dashboard';
 
@@ -135,15 +132,13 @@ const mapStateToProps = (state) => ({
   teams: state.team,
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchTeams: () => dispatch(fetchTeams()),
-    updateCurrentTeam: (team_id) => dispatch(updateCurrentTeam(team_id)),
-    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
-    setError: (err) => dispatch(setError(err)),
-    teamInvite: (invite) => dispatch(teamInvite(invite)),
-    setModal: (modal) => dispatch(setModal(modal)),
-  };
+const mapDispatchToProps = {
+  fetchTeams,
+  updateCurrentTeam,
+  setConfirm,
+  setError,
+  teamInvite,
+  setModal,
 };
 
 export default connect(

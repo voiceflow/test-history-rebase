@@ -1,0 +1,45 @@
+import React from 'react';
+import { Tooltip } from 'react-tippy';
+
+import { FlexCenter } from '@/componentsV2/Flex';
+import { REPROMPT_TYPE } from '@/constants';
+import { HelpModalConsumer } from '@/containers/CanvasV2/contexts/HelpModalContext';
+
+import { Body, Container, Content, Header, RemovableSection, Section, SettingsMenu, Title } from './components';
+
+export { Section, Content, RemovableSection, Title };
+
+function BlockEditor({ data, onChange, children, onExpand, onRemove, onDuplicate, expanded, hideHeader, renameActiveRevision }) {
+  const addEmptyReprompt = () => {
+    onChange({ reprompt: { type: REPROMPT_TYPE.TEXT } });
+  };
+
+  return (
+    <Container>
+      {!hideHeader && (
+        <Header>
+          <Title name={data.name} onChange={onChange} renameActiveRevision={renameActiveRevision} />
+          <FlexCenter>
+            <Tooltip html="Learn more" position="left" distance={10}>
+              <HelpModalConsumer>
+                {({ setType, toggle }) => (
+                  <i
+                    className="more-info d-flex align-items-center"
+                    onClick={() => {
+                      setType(data.type);
+                      toggle(true);
+                    }}
+                  />
+                )}
+              </HelpModalConsumer>
+            </Tooltip>
+            <SettingsMenu addReprompt={addEmptyReprompt} data={data} onExpand={onExpand} onRemove={onRemove} onDuplicate={onDuplicate} />
+          </FlexCenter>
+        </Header>
+      )}
+      <Body expanded={expanded}>{children}</Body>
+    </Container>
+  );
+}
+
+export default BlockEditor;

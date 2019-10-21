@@ -5,12 +5,6 @@ class ShortCuts extends Component {
     return (
       <div className="px-3">
         <div className="shortcut">
-          <div className="shortcut-desc">Save</div>
-          <div className="shortcut-cmd">
-            <kbd>⌘</kbd> / <kbd>Ctrl</kbd> + <kbd>S</kbd>
-          </div>
-        </div>
-        <div className="shortcut">
           <div className="shortcut-desc">Copy</div>
           <div className="shortcut-cmd">
             <kbd>⌘</kbd> / <kbd>Ctrl</kbd> + <kbd>C</kbd>
@@ -55,7 +49,7 @@ class ShortCuts extends Component {
         <div className="shortcut">
           <div className="shortcut-desc">Delete Block</div>
           <div className="shortcut-cmd">
-            <kbd>Backspace</kbd>
+            <kbd>Backspace</kbd> / <kbd>Del</kbd>
           </div>
         </div>
         <div className="shortcut">

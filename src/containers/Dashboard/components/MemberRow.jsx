@@ -1,7 +1,9 @@
 import React from 'react';
-import { DropdownItem, DropdownMenu, DropdownToggle, Input, UncontrolledDropdown } from 'reactstrap';
+import { Input } from 'reactstrap';
 
+import RoundButton from '@/components/Button/RoundButton';
 import { User } from '@/components/User/User';
+import Dropdown from '@/componentsV2/Dropdown';
 
 const MemberRow = ({ member, admin, user, confirm, update, remove }) => {
   const IS_ADMIN = admin === user;
@@ -70,21 +72,21 @@ const MemberRow = ({ member, admin, user, confirm, update, remove }) => {
     );
   }
 
+  const options = [
+    {
+      label: (type === 'FILLED' && 'Remove Member') || (type === 'INVITE' && 'Cancel Invite') || (type === 'EMPTY' && 'Remove Seat'),
+      onClick: remove_action,
+    },
+  ];
+
   return (
     <div className="member-row">
       <div className="w-100 space-between">
         <div className="horizontal-center">{info}</div>
         {IS_ADMIN && user !== member.creator_id && (
-          <UncontrolledDropdown inNavbar>
-            <DropdownToggle tag="div" className="dropdown-button">
-              <i className="far fa-ellipsis-h" />
-            </DropdownToggle>
-            <DropdownMenu right className="no-select py-1">
-              {type === 'FILLED' && <DropdownItem onClick={remove_action}>Remove Member</DropdownItem>}
-              {type === 'INVITE' && <DropdownItem onClick={remove_action}>Cancel Invite</DropdownItem>}
-              {type === 'EMPTY' && <DropdownItem onClick={remove_action}>Remove Seat</DropdownItem>}
-            </DropdownMenu>
-          </UncontrolledDropdown>
+          <Dropdown options={options} placement="bottom-end">
+            {(ref, onToggle, isOpen) => <RoundButton icon="elipsis" variant="shadow" active={isOpen} imgSize={15} onClick={onToggle} ref={ref} />}
+          </Dropdown>
         )}
         {member.status === 100 && <label className="text-muted mr-2">OWNER</label>}
       </div>

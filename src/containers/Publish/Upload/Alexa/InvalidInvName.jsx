@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 
 import Button from '@/componentsV2/Button';
 import { checkInvName, invNameError } from '@/ducks/publish/alexa';
-import { syncInvocationName } from '@/ducks/version';
+import { activeLocalesSelector, invNameSelector, updateInvName } from '@/ducks/skill';
+import { connect } from '@/hocs';
 
 import { IndefiniteLoading } from '../common/Loading';
 import { PopUpText, PopupButtonSection, UploadPromptWrapper } from '../styled';
 
 const InvalidInvName = (props) => {
-  const { checkInvName, inv_name, syncInvocationName, locales = [] } = props;
+  const { checkInvName, invName, updateInvName, locales = [] } = props;
 
-  const [name, setName] = useState(inv_name);
+  const [name, setName] = useState(invName);
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState(invNameError(name, locales));
@@ -28,7 +28,7 @@ const InvalidInvName = (props) => {
     setLoading(true);
     try {
       // save the name to backend and redux
-      await syncInvocationName(name);
+      await updateInvName(name);
       // check status again
       checkInvName();
     } catch (err) {
@@ -42,25 +42,27 @@ const InvalidInvName = (props) => {
   return (
     <UploadPromptWrapper>
       <div className="d-flex text-muted align-items-center">
-        <label className="mr-1">Invocation Name</label>
-        <Tooltip
-          html={
-            <>
-              Alexa listens for the Invocation Name
-              <br /> to launch your Skill
-              <br /> e.g.{' '}
-              <i>
-                Alexa, open <b>Invocation Name</b>
-              </i>
-            </>
-          }
-          position="bottom"
-        >
-          <i className="fal fa-question-circle" />
-        </Tooltip>
+        <label className="mr-1">
+          Invocation Name{' '}
+          <Tooltip
+            html={
+              <>
+                Alexa listens for the Invocation Name
+                <br /> to launch your Skill
+                <br /> e.g.{' '}
+                <i>
+                  Alexa, open <b>Invocation Name</b>
+                </i>
+              </>
+            }
+            position="bottom"
+          >
+            <i className="fal fa-question-circle" />
+          </Tooltip>
+        </label>
       </div>
       <input className="form-control" value={name} placeholder="Invocation Name" onChange={updateName} />
-      <PopUpText align="left">
+      <PopUpText>
         <small>{error}</small>
       </PopUpText>
       <PopupButtonSection>
@@ -73,9 +75,9 @@ const InvalidInvName = (props) => {
 };
 
 export default connect(
-  (state) => ({
-    inv_name: state.skills.skill.inv_name,
-    locales: state.skills.skill.locales,
-  }),
-  { checkInvName, syncInvocationName }
+  {
+    invName: invNameSelector,
+    locales: activeLocalesSelector,
+  },
+  { checkInvName, updateInvName }
 )(InvalidInvName);

@@ -34,6 +34,8 @@
     ],
     "order/order": ["custom-properties", "declarations"],
 
+    "declaration-empty-line-before": ["never"],
+    "no-missing-end-of-source-newline": ["never"],
     "declaration-no-important": [
       true,
       {

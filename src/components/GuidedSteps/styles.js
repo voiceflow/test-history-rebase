@@ -1,30 +1,24 @@
-import styled, { css } from 'styled-components';
+/* eslint-disable no-secrets/no-secrets */
+import { css, styled } from '@/hocs';
 
 const GuidedStepsWrapper = styled.div`
   max-width: 1040px;
   margin-left: auto;
   margin-right: auto;
   padding: 32px;
-  /* stylelint-disable no-secrets/no-secrets */
+
   ${({ noDetail }) =>
-    noDetail
-      ? css`
-          max-width: 700px;
-        ` /* eslint-disable-next-line no-secrets/no-secrets */
-      : '' /* eslint-disable-next-line no-secrets/no-secrets */};
+    noDetail &&
+    css`
+      max-width: 700px;
+    `}
 
   .alert {
     margin-bottom: 15px;
   }
 
   .alert:last-child {
-    margin-bottom: 0px;
-  }
-
-  textarea {
-    resize: none;
-    min-height: 94px;
-    padding: 12px 12px 12px 15px;
+    margin-bottom: 0;
   }
 
   .gs__steps-list {
@@ -163,6 +157,7 @@ const GuidedStepsWrapper = styled.div`
     display: flex;
 
     .gs__panel {
+      width: 60%;
       flex: 3 1 auto;
       width: 60%;
       display: -ms-flexbox;
@@ -201,13 +196,12 @@ const GuidedStepsWrapper = styled.div`
       color: #8da2b5;
     }
     ${({ noDetail }) =>
-      noDetail
-        ? css`
-            .gs__details {
-              display: none;
-            }
-          `
-        : ''};
+      noDetail &&
+      css`
+        .gs__details {
+          display: none;
+        }
+      `};
   }
 
   .publish-info {

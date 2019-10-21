@@ -10,7 +10,7 @@ function PrimaryButton({ icon, children, ...props }) {
       <Label>{children}</Label>
       {icon && (
         <Icon>
-          <SvgIcon icon={icon} />
+          <SvgIcon icon={icon} color="#FFF" />
         </Icon>
       )}
     </Container>

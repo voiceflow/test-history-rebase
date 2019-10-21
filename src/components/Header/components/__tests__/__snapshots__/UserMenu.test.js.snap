@@ -1,55 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`User Menu render user menu 1`] = `
-<UncontrolledDropdown
+<div
   className="account-dropdown nav-child-item"
 >
-  <DropdownToggle
-    aria-haspopup={true}
-    className="account hover"
-    color="secondary"
-    nav={true}
-    tag="div"
+  <Dropdown
+    menu={
+      <Menu>
+        <ForwardRef(MenuItem)
+          header={true}
+        />
+        <Link
+          to="/account"
+        >
+          <ForwardRef(MenuItem)>
+            Account
+          </ForwardRef(MenuItem)>
+        </Link>
+        <ForwardRef(MenuItem)
+          href="#"
+          onClick={[Function]}
+          tag="a"
+        >
+          Logout
+        </ForwardRef(MenuItem)>
+      </Menu>
+    }
+    placement="bottom-end"
   >
-    <User
-      className="pointer"
-      user={
-        Object {
-          "creator_id": "123",
-        }
-      }
-    />
-  </DropdownToggle>
-  <DropdownMenu
-    className="arrow arrow-right no-select"
-    flip={true}
-    right={true}
-    tag="div"
-  >
-    <DropdownItem
-      header={true}
-      tag="button"
-      toggle={true}
-    />
-    <DropdownItem
-      divider={true}
-      tag="button"
-      toggle={true}
-    />
-    <Link
-      className="dropdown-item"
-      to="/account"
-    >
-      Account
-    </Link>
-    <DropdownItem
-      href="#"
-      onClick={[Function]}
-      tag="a"
-      toggle={true}
-    >
-      Logout
-    </DropdownItem>
-  </DropdownMenu>
-</UncontrolledDropdown>
+    <Component />
+  </Dropdown>
+</div>
 `;

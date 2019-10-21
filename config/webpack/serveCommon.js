@@ -8,7 +8,7 @@ module.exports = (port = 3000, buildDirectory = paths.buildDir) => ({
     app: ['webpack-plugin-serve/client'],
   },
 
-  devtool: 'cheap-eval-source-map',
+  devtool: 'source-map',
 
   resolve: {
     alias: {

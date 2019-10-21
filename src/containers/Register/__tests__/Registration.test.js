@@ -2,7 +2,7 @@ import axios from 'axios';
 import { shallow } from 'enzyme/build';
 import React from 'react';
 
-import { fbLogin, googleLogin } from '@/ducks/account';
+import { facebookLogin, googleLogin } from '@/ducks/session';
 
 import { LoginForm } from '../LoginForm';
 import { SignupForm } from '../SignupForm';
@@ -85,7 +85,7 @@ describe('Onboarding', () => {
   });
   it('tests the facebook login functionality', async () => {
     axios.put.mockResolvedValue({ data: { user: { id: 'test id' } } });
-    await fbLogin()(mockDispatch, mockGetState);
+    await facebookLogin()(mockDispatch, mockGetState);
     expect(axios.put.mock.calls.length).toBe(1);
     expect(mockGetState.mock.calls.length).toBe(1);
     expect(mockDispatch.mock.calls.length).toBe(2);

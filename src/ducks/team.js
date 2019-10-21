@@ -1,12 +1,16 @@
 import axios from 'axios';
 import * as _ from 'lodash';
+import { createSelector } from 'reselect';
 
 import Normalize, { deleteNormalize, normalize } from '@/ducks/_normalize';
 import { setError } from '@/ducks/modal';
 
+import { createRootSelector } from './utils';
+
 export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid'];
 export const WARNING_STATES = ['past_due'];
 
+export const STATE_KEY = 'team';
 const MEMBER_UPDATE_ERR = 'Unable to Update Members';
 const initialState = {
   team_id: localStorage.getItem('team'),
@@ -14,7 +18,8 @@ const initialState = {
   allIds: [],
 };
 
-// Reducer
+// reducers
+
 export default function teamReducer(state = initialState, action) {
   switch (action.type) {
     case 'UPDATE_CURRENT_TEAM':
@@ -33,6 +38,23 @@ export default function teamReducer(state = initialState, action) {
       return state;
   }
 }
+
+// selectors
+
+const rootSelector = createRootSelector(STATE_KEY);
+
+export const activeTeamIDSelector = createSelector(
+  rootSelector,
+  ({ team_id }) => team_id
+);
+
+export const activeTeamSelector = createSelector(
+  rootSelector,
+  activeTeamIDSelector,
+  ({ byId }, teamID) => byId[teamID]
+);
+
+// actions
 
 const updateTeams = ({ byId, allIds }) => ({
   type: 'UPDATE_TEAMS',

@@ -3,8 +3,7 @@ import { push } from 'connected-react-router';
 import queryString from 'query-string';
 import Cookies from 'universal-cookie';
 
-import { getDevice } from '@/Helper';
-import { AUTH_COOKIE, removeAuthCookie, removeLastSessionCookie, setAuthCookie } from '@/cookies';
+import { AUTH_COOKIE, removeAuthCookie, removeLastSessionCookie, setAuthCookie } from '@/utils/cookies';
 
 const cookies = new Cookies();
 
@@ -112,7 +111,7 @@ const createSession = (endpoint) => {
   return (user) => {
     return async (dispatch, getState) => {
       try {
-        const data = (await axios.put(endpoint, { user, device: getDevice() })).data;
+        const data = (await axios.put(endpoint, { user })).data;
         if (data.user.id) {
           data.user.creator_id = data.user.id;
           delete data.user.id;

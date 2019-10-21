@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import styled from 'styled-components';
 
@@ -8,13 +7,16 @@ import RoundButton from '@/components/Button/RoundButton';
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import Popover from '@/components/Popover';
 import { Spinner } from '@/components/Spinner';
+import { userSelector } from '@/ducks/account';
 import { setConfirm } from '@/ducks/modal';
 import { renderTest, shareTest } from '@/ducks/test';
+import { connect } from '@/hocs';
+import { FadeDownContainer } from '@/styles/animations';
 
 import TeamSettings from '../Dashboard/TeamSettings';
 
 const BodyContainer = styled.div`
-  padding: ${(props) => (props.index === 1 ? '11px 30px 21px 30px' : '11px 30px 11px 30px')};
+  padding: 22px 30px 22px 30px;
   font-family: 'Open Sans';
 `;
 
@@ -38,7 +40,7 @@ const TestingHeader = (props) => {
   const renderBody = () => {
     if (link && user) {
       return (
-        <>
+        <FadeDownContainer>
           <BodyContainer index={1}>
             <div className="mb-3">
               <label className="text-muted">Share testable link</label>
@@ -64,7 +66,7 @@ const TestingHeader = (props) => {
               </div>
             </div>
           </BodyContainer>
-        </>
+        </FadeDownContainer>
       );
     }
     return <Spinner isEmpty isMd />;
@@ -73,7 +75,7 @@ const TestingHeader = (props) => {
   return (
     <div ref={sharingButton}>
       <Tooltip title="Share Test" position="bottom">
-        <RoundButton id="icon-share" active={share} variant="color" color="#5b9dfa" icon="share" onClick={makeConfig} imgSize={16} />
+        <RoundButton active={share} variant="color" color="#5b9dfa" icon="share" onClick={makeConfig} imgSize={16} />
       </Tooltip>
       <Popover gap={-10} show={share} className="mt-3 share" target={sharingButton.current} onHide={() => setShare(!share)} renderBody={renderBody} />
       <TeamSettings hideIcon={true} open={teamSetting} update={(setting) => setTeamSetting(setting)} close={() => setTeamSetting(false)} />
@@ -81,9 +83,9 @@ const TestingHeader = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  user: state.account,
-});
+const mapStateToProps = {
+  user: userSelector,
+};
 
 const mapDispatchToProps = {
   shareTest,

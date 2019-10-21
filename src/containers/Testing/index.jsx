@@ -1,68 +1,58 @@
 import './TestingSidebar.css';
 
 import cn from 'classnames';
-import _ from 'lodash';
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import { Tooltip } from 'react-tippy';
-import { compose } from 'recompose';
 
 import SvgIcon from '@/components/SvgIcon';
+import { TestingModeContext } from '@/containers/CanvasV2/contexts';
+import { saveActiveDiagram } from '@/ducks/diagram';
 import { setError } from '@/ducks/modal';
-import { TEST_STATUS, renderTest, resetTest } from '@/ducks/test';
+import { TEST_STATUS, renderTest, resetTest, testStatusSelector, userTestSelector } from '@/ducks/test';
+import { connect } from '@/hocs';
 import { RemoveIntercom } from '@/hocs/removeIntercom';
 import { useToggle } from '@/hooks/toggle';
 
-// eslint-disable-next-line no-unused-vars
-import ShowDisplay from './ShowDisplay';
-import TestSettings from './TestingSettings';
-import Timeline from './timeline';
+import TestSettings from './components/TestingSettings';
+import Timeline from './components/Timeline';
 
-function Test(props) {
-  const { open, status, preview, renderTest, resetTest, setSaveCB, save, rendered, enterFlow, diagramEngine, loading, userTest } = props;
-
+const Testing = ({ status, renderTest, resetTest, userTest, saveActiveDiagram }) => {
+  const [settingsOpen, toggleSettingsOpen] = useToggle();
+  const isOpen = React.useContext(TestingModeContext);
   const active = status !== TEST_STATUS.IDLE;
-  const [conditionsOpen, toggleConditionsOpen] = useToggle(false);
-
-  const render = () => {
-    if (!rendered) {
-      if (preview) {
-        renderTest();
-      } else {
-        _.isFunction(setSaveCB) && setSaveCB(renderTest);
-        _.isFunction(save) && save();
-      }
-    }
-  };
 
   // eslint-disable-next-line consistent-return
-  useEffect(() => {
-    if (open && !loading) render();
-    if (open)
+  React.useEffect(() => {
+    if (isOpen) {
+      saveActiveDiagram()
+        .then(() => renderTest())
+        .catch(() => renderTest());
+
       return () => {
-        toggleConditionsOpen(false);
+        toggleSettingsOpen(false);
         resetTest();
       };
-  }, [open]);
-
-  useEffect(() => {
-    if (!loading && open) render();
-  }, [loading]);
+    }
+  }, [isOpen]);
 
   return (
     <>
       <div id="speech-bar-portal-element"></div>
-      {open && <TestSettings open={conditionsOpen} />}
-      {open && <RemoveIntercom />}
-      <div id="TestSidebar" className={cn({ open })}>
+      {isOpen && (
+        <>
+          <TestSettings open={settingsOpen} />
+          <RemoveIntercom />
+        </>
+      )}
+      <div id="TestSidebar" className={cn({ open: isOpen })}>
         {!userTest && (
           <>
-            <div className={cn('sidebar_container variables_container', { open: conditionsOpen })}>
-              <div className="condition-label pointer" onClick={toggleConditionsOpen}>
-                <label>Settings</label>
+            <div className={cn('sidebar_container variables_container', { open: settingsOpen })}>
+              <div className="condition-label pointer" onClick={toggleSettingsOpen}>
+                <label className="mb-0">Settings</label>
                 <i
                   className={cn('fas fa-caret-up fa-lg light-grey rotate', {
-                    'fa-rotate--90': conditionsOpen,
+                    'fa-rotate--90': settingsOpen,
                   })}
                 />
               </div>
@@ -72,9 +62,8 @@ function Test(props) {
         )}
         <div className={cn('sidebar_container dialog_container')}>
           <div className="condition-label" id="TestDialog">
-            <label>Dialog</label>
+            <label className="mb-0">Dialog</label>
             <div className="d-flex">
-              {/* <ShowDisplay /> */}
               <div onClick={resetTest} className={cn('d-flex align-items-center pointer mx-1', { disabled: !active })}>
                 <Tooltip title="Reset Test" position="bottom">
                   <SvgIcon icon="restart" />
@@ -82,28 +71,26 @@ function Test(props) {
               </div>
             </div>
           </div>
-          <Timeline diagramEngine={diagramEngine} enterFlow={enterFlow || _.noop} open={open} toggleConditions={toggleConditionsOpen} />
+          {isOpen && <Timeline toggleConditions={toggleSettingsOpen} />}
         </div>
       </div>
     </>
   );
-}
+};
 
-const mapStateToProps = (state) => ({
-  status: state.test.status,
-  rendered: state.test.rendered,
-  userTest: state.test.userTest,
-});
+const mapStateToProps = {
+  status: testStatusSelector,
+  userTest: userTestSelector,
+};
 
 const mapDispatchToProps = {
   setError,
   resetTest,
   renderTest,
+  saveActiveDiagram,
 };
 
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(Test);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Testing);

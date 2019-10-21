@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled, { css } from 'styled-components';
 
 import SvgIcon from '@/components/SvgIcon';
 import { clickableStyles } from '@/componentsV2/Button/styles';
+import { css, styled, transition } from '@/hocs';
 
 const activeStyles = css`
   background-color: #eef4f6cc;
@@ -66,16 +66,11 @@ const Button = styled.button`
   border-radius: 50%;
   text-align: center;
   padding: 0;
-  transition: all 0.15s linear;
-  ${({ variant, noShadow }) => {
+  ${transition()}
+  ${({ variant }) => {
     if (variant === 'color') {
       return css`
         box-shadow: 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.18);
-      `;
-    }
-    if (variant === 'shadow' && !noShadow) {
-      return css`
-        box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
       `;
     }
   }};
@@ -86,6 +81,10 @@ const Button = styled.button`
   color: ${({ color }) => color || '#8da2b5'};
   background-image: ${({ color }) => (color ? `linear-gradient(${color}15, ${color}30)` : 'none')};
 
+  &:disabled {
+    opacity: 0.5;
+  }
+
   &:hover {
     ${({ active }) => !active && hoverStyles}
   }
@@ -95,15 +94,16 @@ const Button = styled.button`
   }
 `;
 
-const RoundButton = (props) => {
-  const { icon, color, imgSize, className, innerRef, onClick, disabled, children } = props;
+// eslint-disable-next-line react/display-name
+const RoundButton = React.forwardRef((props, ref) => {
+  const { icon, color, imgSize, className, onClick, disabled, children } = props;
 
   return (
-    <Button {...props} className={className} ref={innerRef} disabled={disabled} onClick={(e) => onClick(e)}>
+    <Button {...props} className={className} ref={ref} disabled={disabled} onClick={(e) => onClick(e)}>
       {children || <SvgIcon icon={icon} width={imgSize} height={imgSize} color={color || 'currentColor'} />}
     </Button>
   );
-};
+});
 
 RoundButton.propTypes = {
   className: PropTypes.string,

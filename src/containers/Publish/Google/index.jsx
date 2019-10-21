@@ -1,16 +1,17 @@
 /* eslint-disable no-secrets/no-secrets */
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { Modal } from 'reactstrap';
 
+import Modal from '@/components/Modal';
 import UploadGoogle from '@/containers/Publish/Upload/Google';
 import { checkGoogleAccount } from '@/ducks/account';
 import { GOOGLE_STATES, loadDialogflow, publish, resetGoogleUpload } from '@/ducks/publish/google';
+import { activeProjectIDSelector } from '@/ducks/skill';
+import { connect } from '@/hocs';
 
 import PublishGoogleForm from './Form';
 
 export function PublishGoogle(props) {
-  const { stage, google, project_id, checkGoogleAccount, resetGoogleUpload, publish, loadDialogflow } = props;
+  const { stage, google, projectID, checkGoogleAccount, resetGoogleUpload, publish, loadDialogflow } = props;
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
 
@@ -24,7 +25,7 @@ export function PublishGoogle(props) {
 
   useEffect(() => {
     loadDialogflow();
-  }, [project_id]);
+  }, [projectID]);
   useEffect(() => {
     if (!google) {
       (async () => {
@@ -49,7 +50,7 @@ export function PublishGoogle(props) {
 const mapStateToProps = (state) => ({
   stage: state.publish.google.stage,
   google: state.account.google,
-  project_id: state.skills.skill.project_id,
+  projectID: activeProjectIDSelector(state),
 });
 
 const mapDispatchToProps = {

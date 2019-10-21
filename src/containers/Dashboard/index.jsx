@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 import moment from 'moment';
 import queryString from 'query-string';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
@@ -15,8 +15,8 @@ import { Alert } from 'reactstrap';
 import Button from '@/components/Button';
 import RoundButton from '@/components/Button/RoundButton';
 import DragLayer from '@/components/DragLayer';
-import LoadingModal from '@/components/Modals/LoadingModal';
-import UpdatesModal from '@/components/Modals/UpdatesModal';
+import LoadingModal from '@/components/Modal/LoadingModal';
+import UpdatesModal from '@/components/Modal/UpdatesModal';
 import { FullSpinner } from '@/components/Spinner';
 import { ScrollContextProvider } from '@/contexts';
 import { unnormalize } from '@/ducks/_normalize';
@@ -26,15 +26,17 @@ import {
   changeProjectPosition,
   clearNewList,
   deleteBoard,
+  deleteBoardProject,
   fetchBoards,
   renameList,
   updateBoards,
   updateLists,
 } from '@/ducks/board';
 import { setConfirm, setError } from '@/ducks/modal';
-import { copyProject, deleteProject, importProject, updateProjects } from '@/ducks/project';
+import { allProjectsSelector, projectsMapSelector } from '@/ducks/project';
 import { removeTrial } from '@/ducks/team';
 import { useScrollHelpers } from '@/hooks/scroll';
+import { copyProject, importProject } from '@/store/sideEffects';
 
 import ExpiryButton from './ExpiryButton';
 import DashboardHeader from './Header';
@@ -42,13 +44,17 @@ import ImportModal from './components/ImportModal';
 import { Item as ListItem } from './components/Item';
 import List, { List as SimpleList } from './components/List';
 
-const filter_projects = (projects, filter) => {
-  const filtered = {};
-  projects.allIds.forEach((p) => {
-    if (projects.byId[p].name.toLowerCase().includes(filter)) {
-      filtered[p] = projects.byId[p];
+const getBoardFilteredProjects = (projectsIds, projectsMap, filter) => {
+  const filtered = [];
+
+  projectsIds.forEach((id) => {
+    const project = projectsMap[id];
+
+    if (project?.name.toLowerCase().includes(filter)) {
+      filtered.push(project);
     }
   });
+
   return filtered;
 };
 
@@ -68,6 +74,7 @@ export const DashBoard = (props) => {
       props.setError('Bad Import Link');
     }
   }
+
   const [loading, toggleLoading] = useState(true);
   const [importOpen, toggleImport] = useState(!!importToken);
   const [filter_text, handleFilterText] = useState('');
@@ -101,45 +108,61 @@ export const DashBoard = (props) => {
       });
   };
 
-  const copyProject = (project_id, board_id = null) => {
-    if (props.projects.allIds.length >= props.team.projects) {
-      return setTeamSetting('CHECKOUT:PROJECTS');
-    }
-    toggleLoadingModal(true);
-    props.copyProject(project_id, props.team_id, board_id).then(() => {
-      toggleLoadingModal(false);
-    });
-  };
+  const onCopyProject = useCallback(
+    async (projectId, boardId = null) => {
+      if (props.projects.length >= props.team.projects) {
+        return setTeamSetting('CHECKOUT:PROJECTS');
+      }
+      toggleLoadingModal(true);
 
-  const deleteProject = (project_id, project_name) => {
-    props.setConfirm({
-      text: (
-        <Alert color="danger" className="mb-0">
-          WARNING: This action can not be undone, <i>{project_name}</i> and all flows can not be recovered
-        </Alert>
-      ),
-      warning: true,
-      confirm: () => {
-        props.deleteProject(project_id);
-      },
-    });
-  };
+      await props.copyProject(projectId, props.team_id, boardId);
+
+      toggleLoadingModal(false);
+    },
+    [props.projects, props.team, props.team_id, props.copyProject]
+  );
+
+  const onDeleteProject = useCallback(
+    (boardID) => (projectId, projectName) => {
+      props.setConfirm({
+        text: <p className="mb-0">This action can not be undone, {projectName} and all flows can not be recovered</p>,
+        warning: true,
+        confirm: () => props.deleteBoardProject(boardID, projectId),
+      });
+    },
+    [props.deleteBoardProject]
+  );
+
+  const onCreateProject = useCallback(
+    (id) => {
+      if (props.projects.length >= props.team.projects) {
+        setTeamSetting('CHECKOUT:PROJECTS');
+      } else {
+        props.history.push(id !== 'initial' ? `/team/template/${id}` : '/team/template');
+      }
+    },
+    [props.projects, props.team, props.history]
+  );
+
   let fetchBoards;
-  const deleteBoard = (board_id) => {
-    const board = props.boards.byId[board_id];
-    props.setConfirm({
-      text: (
-        <Alert color="danger" className="mb-0">
-          WARNING: This action can not be undone, <i>{board.name}</i> and all {!!board.projects && board.projects.length} projects can not be
-          recovered
-        </Alert>
-      ),
-      warning: true,
-      confirm: () => {
-        props.removeBoard(board_id);
-      },
-    });
-  };
+
+  const onDeleteBoard = useCallback(
+    ({ name, id, projects }) => {
+      props.setConfirm({
+        text: (
+          <p className="mb-0">
+            This action can not be undone, {name} and all {!!projects && projects.length} projects can not be recovered
+          </p>
+        ),
+        warning: true,
+        confirm: () => {
+          props.removeBoard(id);
+        },
+      });
+    },
+    [props.setConfirm, props.removeBoard]
+  );
+
   const updateTeam = () => {
     // ensure team hasn't changed
     toggleLoading(true);
@@ -196,22 +219,12 @@ export const DashBoard = (props) => {
     fetchData();
   }, []);
 
-  const newProject = (id) => {
-    if (props.projects.allIds.length >= props.team.projects) {
-      setTeamSetting('CHECKOUT:PROJECTS');
-    } else {
-      props.history.push(id !== 'initial' ? `/team/template/${id}` : '/team/template');
-    }
-  };
-
   const LOCKED = props.team.state === 'LOCKED';
   const EXPIRED = props.team.state === 'EXPIRED';
 
   const filter = filter_text.trim().toLowerCase();
 
-  const filtered_projects = filter ? filter_projects(props.projects, filter) : props.projects.byId;
-
-  const saveList = () => props.updateLists(props.team_id);
+  const onSaveList = useCallback(() => props.updateLists(props.team_id), [props.updateLists, props.team_id]);
 
   const renderUpdatesButton = () => {
     if (!show_update_bubble) {
@@ -238,14 +251,18 @@ export const DashBoard = (props) => {
   return (
     <>
       <ExpiryButton team={props.team} upgrade={() => setTeamSetting('CHECKOUT')} />
+
       <LoadingModal open={loading_modal} />
+
       {importToken && <ImportModal open={importOpen} toggle={closeImport} importProject={importProject} token={importToken} />}
+
       <div id="app" className="dashboard">
         <UpdatesModal
           show_update_modal={show_updates_modal}
           toggle={() => toggleShowUpdatesModal(!props.show_updates_modl)}
           product_updates={product_updates}
         />
+
         <DashboardHeader
           history={props.history}
           handleFilterText={handleFilterText}
@@ -265,6 +282,7 @@ export const DashBoard = (props) => {
           team_setting={team_setting}
           setTeamSetting={setTeamSetting}
         />
+
         {LOCKED && (
           <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
             <Alert color="danger" onClick={() => setTeamSetting('BILLING')} className="pointer text-center py-3">
@@ -277,13 +295,14 @@ export const DashBoard = (props) => {
             </Alert>
           </div>
         )}
+
         {EXPIRED && (
           <div className="w-100 h-100 super-center text-center position-absolute z-hard pb-5">
             <div>
               <h3>Your free trial has expired</h3>
               <div className="text-dull mt-3 mb-4">Please Upgrade to continue using Voiceflow</div>
               <Button isPrimary className="mb-4" onClick={() => setTeamSetting('CHECKOUT')}>
-                Upgrade Plan
+                Upgrade
               </Button>
               <div className="btn-link" onClick={() => downgrade()}>
                 Downgrade to Personal
@@ -291,6 +310,7 @@ export const DashBoard = (props) => {
             </div>
           </div>
         )}
+
         {loading ? (
           <FullSpinner name="Projects" />
         ) : (
@@ -306,7 +326,7 @@ export const DashBoard = (props) => {
               }
             }}
           >
-            {props.projects.allIds.length === 0 ? (
+            {props.projects.length === 0 ? (
               <div className="h-100 d-flex justify-content-center">
                 <div className="align-self-center">
                   <div className="text-center">
@@ -335,16 +355,16 @@ export const DashBoard = (props) => {
                             index={idx}
                             name={board.name}
                             onRename={props.renameBoard}
-                            onRemove={() => deleteBoard(board.board_id)}
-                            projects={board.projects.map((p) => filtered_projects[p])}
-                            onCopyProject={copyProject}
-                            onDeleteProject={deleteProject}
-                            createSkill={newProject}
+                            onRemove={onDeleteBoard}
+                            projects={getBoardFilteredProjects(board.projects, props.projectsMap, filter)}
+                            onCopyProject={onCopyProject}
+                            onDeleteProject={onDeleteProject(board.board_id)}
+                            createSkill={onCreateProject}
                             onMove={props.changeListPosition}
-                            onDrop={saveList}
+                            onDrop={onSaveList}
                             onMoveProject={props.changeProjectPosition}
                             clearNewBoard={props.clearIsNewBoard}
-                            onDropProject={saveList}
+                            onDropProject={onSaveList}
                             disableDragging={!!filter}
                           />
                         ))}
@@ -383,30 +403,28 @@ export const DashBoard = (props) => {
 
 const mapStateToProps = (state) => ({
   user: state.account,
-  projects: state.project,
+  projects: allProjectsSelector(state),
+  projectsMap: projectsMapSelector(state),
   boards: state.board,
   boards_array: unnormalize(state.board),
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    removeTrial: (team_id) => dispatch(removeTrial(team_id)),
-    fetchBoards: (team_id) => dispatch(fetchBoards(team_id)),
-    addBoard: (team_id) => dispatch(addBoard(team_id)),
-    deleteProject: (project_id) => dispatch(deleteProject(project_id)),
-    importProject: (team_id, token) => dispatch(importProject(team_id, token)),
-    copyProject: (project_id, team_id, board_id) => dispatch(copyProject(project_id, team_id, board_id)),
-    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
-    setError: (err) => dispatch(setError(err)),
-    updateLists: (team_id) => dispatch(updateLists(team_id)),
-    removeBoard: (board_id) => dispatch(deleteBoard(board_id)),
-    renameBoard: (board_id, new_name) => dispatch(renameList(board_id, new_name)),
-    clearIsNewBoard: (board_id) => dispatch(clearNewList(board_id)),
-    updateBoards: (boards) => dispatch(updateBoards(boards)),
-    updateProjects: (projects) => dispatch(updateProjects(projects)),
-    changeProjectPosition: (drag, hover) => dispatch(changeProjectPosition(drag, hover)),
-    changeListPosition: (drag, hover) => dispatch(changeListPosition(drag, hover)),
-  };
+const mapDispatchToProps = {
+  removeTrial,
+  fetchBoards,
+  addBoard,
+  deleteBoardProject,
+  importProject,
+  copyProject,
+  setConfirm,
+  setError,
+  updateLists,
+  removeBoard: deleteBoard,
+  renameBoard: renameList,
+  clearIsNewBoard: clearNewList,
+  updateBoards,
+  changeProjectPosition,
+  changeListPosition,
 };
 
 export default connect(

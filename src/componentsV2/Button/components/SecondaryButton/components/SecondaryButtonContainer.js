@@ -7,9 +7,11 @@ import Icon from './SecondaryButtonIcon';
 
 const SecondaryButtonContainer = styled(ButtonContainer)`
   border: 1px solid #dfe3ed;
-  padding: 0 22px;
+  font-weight: 600;
+  padding: 9px 22px 10px;
   color: #132144;
-  background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #ffffff;
+  line-height: 22px;
+  background: linear-gradient(-180deg, rgba(238, 244, 246, 0.85), #eef4f6);
   box-sizing: border-box;
 
   ${({ disabled }) =>

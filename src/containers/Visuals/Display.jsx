@@ -14,6 +14,7 @@ import { Spinner } from '@/components/Spinner';
 import { FormTextInput } from '@/componentsV2/form/TextInput';
 import { addDisplay, updateDisplay } from '@/ducks/display';
 import { setError } from '@/ducks/modal';
+import { activeSkillIDSelector } from '@/ducks/skill';
 
 const DISPLAY_FORM_NAME = 'display_visual_form';
 
@@ -120,11 +121,21 @@ class Display extends Component {
         .post(`/multimodal/display?skill_id=${skill_id}`, payload)
         .then((res) => {
           // get display id back
-          history.push(`/visuals/${skill_id}/display/${res.data}`);
-          payload.display_id = res.data;
-          dispatch(addDisplay(payload));
+          const displayID = res.data;
+          history.push(`/visuals/${skill_id}/display/${displayID}`);
+
+          const addDisplayPayload = {
+            id: displayID,
+            document,
+            datasource,
+            title,
+            name: title,
+            description,
+          };
+
+          dispatch(addDisplay(displayID, addDisplayPayload));
           this.setState({
-            display_id: res.data,
+            display_id: displayID,
             saved: true,
             saving: false,
           });
@@ -142,8 +153,15 @@ class Display extends Component {
       axios
         .patch(`/multimodal/display/${display_id}?skill_id=${skill_id}`, payload)
         .then(() => {
-          payload.display_id = display_id;
-          dispatch(updateDisplay(payload));
+          const updateDisplayPayload = {
+            id: display_id,
+            document,
+            datasource,
+            title,
+            name: title,
+            description,
+          };
+          dispatch(updateDisplay(display_id, updateDisplayPayload));
           this.setState({
             saved: true,
             saving: false,
@@ -220,6 +238,7 @@ class Display extends Component {
               maxSize={1024 * 1024}
               accept=".json,.JSON,application/json"
               onDrop={this.onDropJSON}
+              style={{ overflow: 'visible' }}
             >
               {({ open }) => (
                 <>
@@ -264,7 +283,7 @@ class Display extends Component {
                           Back
                         </Button>
                         <Button isPrimary varient="contained" style={{ width: 100 }}>
-                          {saving ? <Spinner isEmpty /> : <>Save{saved ? '' : '*'}</>}
+                          {saving ? 'Saving...' : <>Save{saved ? '' : '*'}</>}
                         </Button>
                       </div>
                     </div>
@@ -287,7 +306,6 @@ class Display extends Component {
                           <div>APL Document</div>
                           <AceEditor
                             name="document_editor"
-                            className="document_editor"
                             mode="json"
                             theme="monokai"
                             onChange={this.onChangeDocument}
@@ -311,7 +329,6 @@ class Display extends Component {
                           <div>Default Datasource (optional)</div>
                           <AceEditor
                             name="document_editor"
-                            className="document_editor"
                             mode="json"
                             theme="monokai"
                             onChange={this.onChangeDataSource}
@@ -353,7 +370,7 @@ const validate = (values) => {
 };
 
 const mapStateToProps = (state) => ({
-  skill_id: state.skills.skill.skill_id,
+  skill_id: activeSkillIDSelector(state),
   displayForm: getFormValues(DISPLAY_FORM_NAME)(state),
   isDirty: isDirty(DISPLAY_FORM_NAME)(state),
 });

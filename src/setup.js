@@ -1,0 +1,37 @@
+import axios from 'axios';
+import ReactGA from 'react-ga';
+import { toast } from 'react-toastify';
+
+import { GLOBAL_HEADERS } from '@/client/fetch';
+import { API_ENDPOINT, GOOGLE_ANALYTICS_ID } from '@/config';
+import { initializeLogRocket } from '@/vendors/logRocket';
+
+const setupApp = (history, tabID) => {
+  axios.defaults.baseURL = API_ENDPOINT;
+  axios.defaults.withCredentials = true;
+  axios.defaults.crossDomain = true;
+  axios.defaults.headers.common.tabid = tabID;
+  GLOBAL_HEADERS.set('tabid', tabID);
+
+  initializeLogRocket((sessionURL) => {
+    // add session URL to all outgoing HTTP requests
+    axios.defaults.headers.common['X-LogRocket-URL'] = sessionURL;
+    GLOBAL_HEADERS.set('X-LogRocket-URL', sessionURL);
+  });
+
+  ReactGA.initialize(GOOGLE_ANALYTICS_ID);
+  toast.configure({
+    autoClose: 2000,
+    draggable: false,
+    pauseOnFocusLoss: false,
+  });
+
+  // report pageview events
+  // TODO: should probably replace this with redux-beacon
+  history.listen((location) => {
+    ReactGA.set({ page: location.pathname });
+    ReactGA.pageview(location.pathname);
+  });
+};
+
+export default setupApp;

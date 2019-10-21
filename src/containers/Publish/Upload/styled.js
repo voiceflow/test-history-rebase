@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const UploadPromptWrapper = styled.div`
   text-align: center;
-  padding: 20px;
+  padding: 36px 22px 22px 22px;
   width: 100%;
 
   .modal & {
@@ -15,9 +15,10 @@ export const PopupButtonSection = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 -20px -20px;
-  padding: 16px 2rem;
-  background: #f9fafc;
+  margin: 0 -22px -24px;
+  padding: 23px 32px 24px;
+  background: #f9f9f9;
+  border-top: 1px solid #eaeff4;
 
   .modal & {
     justify-content: space-between;
@@ -29,8 +30,7 @@ export const PopupButtonSection = styled.div`
 export const PopUpText = styled.div`
   font-size: 15px;
   color: #62778c;
-  padding: 20px 0;
-  font-size: 15px;
+  padding: 20px 0px 32px 0px;
 `;
 
 export const PopUpLink = styled.a`

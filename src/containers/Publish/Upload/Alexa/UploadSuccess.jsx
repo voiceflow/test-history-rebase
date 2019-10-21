@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import BaseConfetti from 'react-dom-confetti';
-import { connect } from 'react-redux';
 import { Alert } from 'reactstrap';
+
+import { userIDSelector } from '@/ducks/account';
+import { amznIDSelector, publishStateSelector } from '@/ducks/publish/alexa';
+import { activeLocalesSelector, invNameSelector } from '@/ducks/skill';
+import { connect } from '@/hocs';
 
 import { UploadPromptWrapper } from '../styled';
 
@@ -15,34 +19,30 @@ const Video = ({ link }) => (
 );
 
 const UploadSuccess = (props) => {
-  const { skill, succeedLocale, creator_id } = props;
+  const { amznID, invName, locales, publishState, userID } = props;
 
-  const [firstSession] = useState(localStorage.getItem(`is_first_session_${creator_id}`) !== 'false');
+  const [firstSession] = useState(localStorage.getItem(`is_first_session_${userID}`) !== 'false');
 
   useEffect(() => {
-    localStorage.setItem(`is_first_session_${creator_id}`, false);
+    localStorage.setItem(`is_first_session_${userID}`, false);
   }, []);
 
   // eslint-disable-next-line no-case-declarations
-  const locale = (succeedLocale || skill.locales[0] || 'en-US').replace('-', '_');
+  const locale = (publishState.succeedLocale || locales[0] || 'en-US').replace('-', '_');
 
   if (firstSession) {
     return (
       <UploadPromptWrapper>
         {/* eslint-disable-next-line sonarjs/no-duplicate-string */}
-        <div className="d-flex align-items-center justify-content-center">
-          <span className="pass-icon mr-2" /> Upload Successful
+        <div className="d-flex justify-content-center">
+          <label className="success-label">Upload Successful</label>
         </div>
         <Video link="https://s3.amazonaws.com/com.getvoiceflow.videos/loomopt.mp4" />
-        <div className="modal-txt text-center mt-3">You may test on the Alexa simulator or live on your personal Alexa device</div>
-        {!!succeedLocale && (
-          <Alert className="mb-0 mt-3 text-center mx-2">
-            <b>Alexa,</b> open {skill.inv_name}
-          </Alert>
-        )}
+        <div className="text-muted text-center mt-3">You may test on the Alexa simulator or live on your personal Alexa device</div>
+        {!!publishState.succeedLocale && <Alert className="mb-0 mt-3 text-center mx-2">Alexa, open {invName}</Alert>}
         <div className="my-45">
           <a
-            href={`https://developer.amazon.com/alexa/console/ask/test/${skill.amzn_id}/development/${locale}/`}
+            href={`https://developer.amazon.com/alexa/console/ask/test/${amznID}/development/${locale}/`}
             className="btn-primary mr-2 no-underline"
             target="_blank"
             rel="noopener noreferrer"
@@ -70,17 +70,13 @@ const UploadSuccess = (props) => {
 
   return (
     <UploadPromptWrapper>
-      <div className="d-flex align-items-center justify-content-center upload-prompt-title mb-2">
+      <div className="d-flex align-items-center justify-content-center upload-prompt-title">
         {/* eslint-disable-next-line sonarjs/no-duplicate-string */}
-        <span className="pass-icon mr-2" /> Upload Successful
+        <label className="success-label">Upload Successful</label>
       </div>
-      <div className="upload-prompt-text">
+      <div className="text-muted mb-2">
         Your Skill is now available to test on your Alexa and the{' '}
-        <a
-          href={`https://developer.amazon.com/alexa/console/ask/test/${skill.amzn_id}/development/${locale}/`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={`https://developer.amazon.com/alexa/console/ask/test/${amznID}/development/${locale}/`} target="_blank" rel="noopener noreferrer">
           Amazon console
         </a>
         .
@@ -89,8 +85,10 @@ const UploadSuccess = (props) => {
   );
 };
 
-export default connect((state) => ({
-  skill: state.skills.skill,
-  creator_id: state.account.creator_id,
-  succeedLocale: state.publish.alexa.locale,
-}))(UploadSuccess);
+export default connect({
+  locales: activeLocalesSelector,
+  invName: invNameSelector,
+  amznID: amznIDSelector,
+  userID: userIDSelector,
+  publishState: publishStateSelector,
+})(UploadSuccess);

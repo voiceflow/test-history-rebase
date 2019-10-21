@@ -50,37 +50,47 @@ button {
 /* Primary Button */
 .btn-primary {
   padding: 9px 22px 10px;
+  height: 42px;
   color: #fff;
-  font-weight: 500;
+  font-weight: 600 !important;
   font-size: 15px;
   font-family: 'Open Sans', sans-serif !important;
-  line-height: 26px;
-  letter-spacing: 0.2px;
   text-transform: none;
-  background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
+  background-image: linear-gradient(180deg, #72adfd 0%, #3083f3 78%);
+  background-color: #5d9df5 !important;
+  /* added important to override bootstrap hover and active states on br color */
   border: none;
   border-radius: 90px;
   box-shadow: 0 4px 8px rgba(17, 49, 96, 0.16), 0 0 4px rgba(17, 49, 96, 0.08);
   cursor: pointer;
-  transition: all 0.2s ease;
-  transition: all 0.2s ease;
+  -moz-transition: all .2s ease-in-out;
+  -webkit-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(180deg, rgba(93, 157, 245, 0.99) 0%, #2c85ff 100%);
+  background-image: linear-gradient(180deg, #3083f3 0%, #3083f3 78%);
   box-shadow: 0 4px 8px rgba(17, 49, 96, 0.16), 0 0 4px rgba(17, 49, 96, 0.08);
 }
 
 .btn-primary:active {
-  background: linear-gradient(0deg, #3087fe, #3087fe) !;
+  background-image: linear-gradient(0deg, #3087fe, #3087fe) !;
   box-shadow: 0 6px 12px rgba(17, 49, 96, 0.2), 0 0 6px rgba(17, 49, 96, 0.1);
 }
 
-.btn-primary:active,
 .btn-primary:focus {
   border: none !important;
   outline: none !important;
-  box-shadow: none !important;
+  box-shadow: 0 6px 12px rgba(17, 49, 96, 0.2), 0 0 6px rgba(17, 49, 96, 0.1) !important;
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+  box-shadow: none;
+  background-color: transparent !important;
+  border: none !important;
 }
 
 .btn-primary.__small {
@@ -93,30 +103,32 @@ button {
 
 /* Secondary Button */
 .btn-secondary {
-  height: 45px;
-  padding: 11px 22px 10px;
+  height: 42px;
+  padding: 9px 22px 10px;
   color: #132144;
-  font-weight: 500 !important;
+  font-weight: 600;
   font-size: 15px;
   line-height: 20px;
-  background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #fff;
-  border: 1px solid #e2e9ec;
+  background: linear-gradient(-180deg, rgba(238, 244, 246, 0.85), #eef4f6);
+  background-color: #fff !important;
+  border: 1px solid #dfe3ed;
   border-radius: 90px;
   cursor: pointer;
-  -webkit-transition: all 0.25s;
-  transition: all 0.25s;
+  transition: all 0.5s ease;
+  font-weight: 600;
 }
 
 .btn-secondary:hover {
   color: #132144;
-  background: linear-gradient(180deg, rgba(222, 233, 237, 0.85) 0%, #dee9ed 100%), #fff;
-  border: 1px solid #e2e9ec;
+  background-image: linear-gradient(-180deg, #e9f2f5, #e9f2f5);
+  border: 1px solid #dfe3ed;
 }
 
 .btn-secondary:active {
   color: #132144 !important;
-  background: linear-gradient(180deg, rgba(222, 233, 237, 0.85) 0%, #dee9ed 100%), #fff;
-  border: 1px solid #e2e9ec !important;
+  background-image: linear-gradient(-180deg, #dfeaee, #dfeaee);
+  border: 1px solid #dfe3ed !important;
+  background-color: #fff !important;
 }
 
 .btn-secondary.btn-opaque {
@@ -491,11 +503,10 @@ button {
 
 /* Tertiary Button */
 .btn-tertiary {
-  padding: 10px 22px;
-  font-weight: 500 !important;
+  padding: 9px 22px 10px;
+  font-weight: 600;
   font-size: 15px;
   font-family: 'Open Sans', sans-serif !important;
-  letter-spacing: 0.2px;
   background: none;
   border: none;
   border-radius: 50px;
@@ -559,21 +570,27 @@ button {
 
 /* Primary Outline */
 .btn-outline-primary {
-  color: #5d9df5;
-  font-weight: 400;
-  background-color: #5d9df520;
-  border: 1px solid #5d9df540;
+  color: #62778c;
+  background-color: #fff;
+  border: 1px solid #dfe3ed;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.15s ease;
 }
 
 .btn-outline-primary:hover {
-  color: #5d9df5;
-  background-color: #5d9df530;
-  border: 1px solid #5d9df550;
+  color: #62778c;
+  background-color: #fff;
+  background: linear-gradient(180deg,rgba(238,244,246,0.85) 0%,#eef4f6 100%),#ffffff;
+  border: 1px solid #dfe3ed;
 }
 
 .btn-outline-primary:active {
-  background-color: #5d9df5 !important;
-  border: 1px solid #5d9df5 !important;
+  color: #132042 !important;
+  background-color: #fff !important;
+  background: linear-gradient(180deg,rgba(238,244,246,0.85) 0%,#eef4f6 100%),#ffffff !important;
+  border: 1px solid #dfe3ed !important;
+  /* Need to important to override bootstrap classes */
 }
 
 /* Secondary Outline */
@@ -604,7 +621,7 @@ button {
 
 .toggle-group .btn.btn-outline-secondary:hover {
   color: #132144 !important;
-  background-color: #f7f9fb !important;
+  background-color: #f9f9f9 !important;
 }
 
 .toggle-group .btn.btn-outline-secondary:active {
@@ -665,14 +682,15 @@ button {
   box-shadow: none;
   cursor: pointer;
 }
-
+.warning {
+  color: purple;
+}
 /* Warning Button */
 .btn-warning {
   padding: 10px 22px 10px;
   color: #fff !important;
   font-weight: normal;
   font-size: 16px;
-  letter-spacing: 0.2px;
   text-transform: none;
   background: linear-gradient(to bottom, #f83f5597, #f83f55) !important;
   border: none !important;
@@ -772,4 +790,15 @@ button {
   background: linear-gradient(#5d9df515, #5d9df530);
   border: 1px solid #fff;
   box-shadow: 0 0 0 1px rgba(184, 218, 255, 1);
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 23px 32px 24px;
+  border-top: 1px solid #eaeff4;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  background-color: #f9f9f9;
 }

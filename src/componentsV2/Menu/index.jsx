@@ -1,40 +1,73 @@
-import React from 'react';
+/* eslint-disable jsx-a11y/no-autofocus */
+
+import React, { useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { generateLocalKey } from 'react-smart-key/dist/es5/generateKey';
 
+import { useKeygen } from '@/components/KeyedComponent';
 import { FlexLabel } from '@/componentsV2/Flex';
+import { FadeDownContainer } from '@/styles/animations';
 import { stopPropagation } from '@/utils/dom';
+import { stringify } from '@/utils/functional';
 
-import { ButtonContainer, Checkbox, Container, Item } from './components';
+import { ButtonContainer, Container, Item } from './components';
+import SearchBox from './components/SearchBox';
 
-class Menu extends React.PureComponent {
-  genKey = this.props.getKey || generateLocalKey();
+export { Item as MenuItem, Container as MenuContainer };
 
-  render() {
-    const { options = [], onSelect, multiSelect, selectedItems, buttonLabel, buttonClick } = this.props;
+function Menu({ options, onSelect, searchable, multiSelectProps: { multiselect, buttonClick, buttonLabel } = {}, children }) {
+  const genKey = useKeygen();
+  const menuRef = React.useRef();
+  const [searchText, setSearchText] = React.useState('');
+  const [visibleOptions, setVisibleOptions] = React.useState(options);
 
-    return (
-      <Container>
+  const filterOptions = (text) => {
+    setSearchText(text);
+    const newVisibleOptions = [];
+
+    options.forEach((option) => {
+      if (option.label.toLowerCase().includes(text.toLowerCase())) newVisibleOptions.push(option);
+    });
+
+    setVisibleOptions(newVisibleOptions);
+  };
+
+  useEffect(() => {
+    const callback = (event) => event.stopImmediatePropagation();
+    const node = menuRef.current;
+
+    node.addEventListener('wheel', callback, { passive: true });
+
+    return () => node.removeEventListener('wheel', callback);
+  });
+
+  useEffect(() => {
+    setSearchText('');
+    setVisibleOptions(options);
+  }, [options]);
+
+  return (
+    <Container ref={menuRef}>
+      <FadeDownContainer>
+        {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
+        {searchable && <SearchBox onChange={(e) => filterOptions(e.target.value)} value={searchText} autoFocus placeholder="Search..." />}
         <Scrollbars autoHeight autoHide hideTracksWhenNotNeeded>
-          {options.map(({ value, label, onClick }) => {
-            return (
+          {children ||
+            visibleOptions.map(({ value, label, onClick }) => (
               <Item
                 onClick={stopPropagation(() => {
                   onClick && onClick();
                   onSelect && onSelect(value);
-                }, true)}
-                key={this.genKey(value)}
+                })}
+                key={genKey(value || label)}
               >
-                {multiSelect && <Checkbox type="checkbox" readOnly checked={selectedItems.includes(value)} />}
-                <FlexLabel>{label || value.toString()}</FlexLabel>
+                <FlexLabel>{label || stringify(value)}</FlexLabel>
               </Item>
-            );
-          })}
+            ))}
         </Scrollbars>
-        {multiSelect && <ButtonContainer onClick={buttonClick}>{buttonLabel}</ButtonContainer>}
-      </Container>
-    );
-  }
+      </FadeDownContainer>
+      {multiselect && <ButtonContainer onClick={buttonClick}>{buttonLabel}</ButtonContainer>}
+    </Container>
+  );
 }
 
 export default Menu;

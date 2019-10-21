@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import cn from 'classnames';
 import _ from 'lodash';
 import React from 'react';
@@ -24,6 +26,7 @@ class GuidedSteps extends React.Component {
         },
       };
     }
+
     return null;
   }
 
@@ -41,6 +44,7 @@ class GuidedSteps extends React.Component {
       }
     }
     if (farthestBlock >= nextStep) return true;
+
     // Don't let the user skip a step
     if (nextStep > this.state.stepNumber + 1) return false;
 
@@ -56,7 +60,10 @@ class GuidedSteps extends React.Component {
 
     if (!this.validStepChange(nextStep)) return;
 
-    this.props.setStage && this.props.setStage(nextStep);
+    // eslint-disable-next-line lodash/prefer-lodash-typecheck
+    if (typeof this.props.step === 'number' && this.props.setStage) {
+      this.props.setStage(nextStep);
+    }
 
     const prevStep = this.state.stepNumber;
     // Check if the last step was a valid step, if no step check function is provided, default to true
@@ -66,8 +73,8 @@ class GuidedSteps extends React.Component {
     if (nextStep - prevStep > 1 && this.props.checkStep) {
       // If we jumped steps we want to check all the steps inbetween
       for (let i = prevStep; i < nextStep; i++) {
-        const stepValid = this.props.checkStep(i);
-        stepStatus[i] = stepValid;
+        const validStep = this.props.checkStep(i);
+        stepStatus[i] = validStep;
       }
     } else {
       stepStatus[prevStep] = stepValid;
@@ -139,6 +146,7 @@ class GuidedSteps extends React.Component {
                   <div className={cn('gs__steps-list__content')}>
                     <div className="gs__panel">
                       <div className="gs__panel-body">{block.content}</div>
+
                       {!haveFooter && (
                         <div className="gs__panel-footer">
                           {idx < blocks.length - 1 ? (

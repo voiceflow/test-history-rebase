@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { components } from 'react-select';
-import { generateLocalKey } from 'react-smart-key/dist/es5/generateKey';
 import styled, { css } from 'styled-components';
 
 import SvgIcon from '@/components/SvgIcon';
+import { generateLocalKey } from '@/utils/key';
 
 import DropdownMenu from './NestedMenu';
 import { ActionButton, InnerContainer, Label, MenuContainer, Option } from './components';

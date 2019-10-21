@@ -5,8 +5,8 @@ import ButtonContainer from '@/componentsV2/Button/components/ButtonContainer';
 const TertiaryButton = styled(ButtonContainer)`
   border: 0;
   padding: 0 22px;
+  font-weight: 600;
   color: #5d9df5;
-  background: transparent;
   box-shadow: none;
 
   ${({ disabled }) =>

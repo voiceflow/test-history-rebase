@@ -1,7 +1,6 @@
 import axios from 'axios';
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Select from 'react-select';
 import Toggle from 'react-toggle';
 import { Button, ButtonGroup, Collapse, FormFeedback, FormGroup, Input, Label } from 'reactstrap';
@@ -17,8 +16,11 @@ import { Spinner } from '@/components/Spinner';
 import Image from '@/components/Uploads/Image';
 import { FormTextBox } from '@/componentsV2/form/TextBox';
 import { FormTextInput } from '@/componentsV2/form/TextInput';
+import amazonFormAdapter from '@/containers/Publish/Amazon/amazonAdaptor';
 import { setError } from '@/ducks/modal';
-import { updateEntireVersion, updateVersion } from '@/ducks/version';
+import { amznIDSelector, reviewSelector } from '@/ducks/publish/alexa';
+import { activeSkillIDSelector, updateActiveSkill, updateSkillMeta } from '@/ducks/skill';
+import { connect } from '@/hocs';
 
 import { AMAZON_CATEGORIES } from '../../../services/Categories';
 import LOCALE_MAP from '../../../services/LocaleMap';
@@ -34,56 +36,25 @@ class Skill extends Component {
     saving: false,
   };
 
-  privacyTop = React.createRef();
-
   componentDidMount() {
-    const { skill_id } = this.props;
-
-    // TODO: Antipattern, fix this when we do redux ( sync with redux store )
+    const { skillID } = this.props;
     axios
-      .get(`/skill/${skill_id}?verbose=1`)
+      .get(`/skill/${skillID}?verbose=1`)
       .then((res) => {
-        if (res.data.category) {
-          // eslint-disable-next-line no-restricted-syntax
-          for (const option of AMAZON_CATEGORIES) {
-            if (option.value === res.data.category) {
-              res.data.category = option;
-              break;
-            }
-          }
-        }
-
-        if (res.data.invocations && res.data.invocations.value) {
-          res.data.invocations = res.data.invocations.value;
-        }
-
-        if (!Array.isArray(res.data.invocations) || res.data.invocations.length === 0) {
-          res.data.invocations = [''];
-        }
-
-        if (!res.data.keywords) {
-          res.data.keywords = '';
-        }
-
-        if (res.data.review) {
-          res.data.stage = 11;
-        } else {
-          delete res.data.stage;
-        }
-        res.data.privacy_policy = !_.isEmpty(res.data.privacy_policy) ? res.data.privacy_policy : '';
+        const skill = amazonFormAdapter.fromDB(res.data);
 
         this.setState({
           loaded: true,
-          ...res.data,
+          ...skill,
         });
 
         this.props.initialize({
-          name: res.data.name,
-          summary: res.data.summary,
-          description: res.data.description,
-          keywords: res.data.keywords,
-          inv_name: res.data.inv_name,
-          instructions: res.data.instructions,
+          name: skill.name,
+          summary: skill.summary,
+          description: skill.description,
+          keywords: skill.keywords,
+          inv_name: skill.invName,
+          instructions: skill.instructions,
         });
       })
       .catch((err) => {
@@ -98,24 +69,6 @@ class Skill extends Component {
     });
   };
 
-  onWithdraw = () => {
-    const { amzn_id } = this.props;
-    axios
-      .post(`/amazon/${amzn_id}/withdraw`)
-      .then(() => {
-        this.setState({
-          stage: 0,
-          displayingConfirmWithdraw: false,
-        });
-      })
-      .catch((err) => {
-        this.handleError(err, 'Withdrawal Error');
-        this.setState({
-          stage: 11,
-        });
-      });
-  };
-
   componentWillUnmount() {
     if (this.state.loaded) this.save();
   }
@@ -123,88 +76,89 @@ class Skill extends Component {
   validateForm = async () => {
     const { setError, publish, review } = this.props;
 
-    const s = this.state;
-    const split_keywords = s.keywords.split(',');
-    if (review) {
-      setError('This skill is currently under review and can not be resubmitted');
-    } else if (s.privacy_policy && !validUrl.isUri(s.privacy_policy)) {
-      setError('Privacy policy must be a url');
-    } else if (s.terms_and_cond && !validUrl.isUri(s.terms_and_cond)) {
-      setError('Terms and conditions must be a url');
-    } else if (split_keywords.length > 30) {
-      setError('Limited to 30 keywords');
-    } else if (s.keywords.length - split_keywords.length + 1 > 500) {
-      setError('All keywords must be less than or equal to 30 keywords or 150 characters.');
-    } else if (!s.export) {
-      setError('Please Certify Alexa Skill Import/Export in Privacy/Complicance');
-    } else if (!s.instructions) {
-      setError('Please Provide Testing Instructions');
-    } else {
-      this.setState({ saving: true });
-      await this.save();
-      this.setState({ saving: false });
-      publish();
+    const formState = this.state;
+    const split_keywords = formState.keywords.split(',');
+    switch (true) {
+      case review:
+        setError('This skill is currently under review and can not be resubmitted');
+        break;
+      case formState.privacyPolicy && !validUrl.isUri(formState.privacyPolicy):
+        setError('Privacy policy must be a url');
+        break;
+      case formState.termsAndCond && !validUrl.isUri(formState.termsAndCond):
+        setError('Terms and conditions must be a url');
+        break;
+      case split_keywords.length > 30:
+        setError('Limited to 30 keywords');
+        break;
+      case formState.keywords.length - split_keywords.length + 1 > 500:
+        setError('All keywords must be less than or equal to 30 keywords or 150 characters.');
+        break;
+      case !formState.export:
+        setError('Please Certify Alexa Skill Import/Export in Privacy/Complicance');
+        break;
+      case !formState.instructions:
+        setError('Please Provide Testing Instructions');
+        break;
+      default:
+        this.setState({ saving: true });
+        await this.save();
+        this.setState({ saving: false });
+        publish();
+        break;
     }
   };
 
-  save = async () => {
-    const { skill_id, updateEntireSkill } = this.props;
-    const s = this.state;
-    const category = s.category && s.category.value ? s.category.value : null;
-
-    const name = _.get(this.props.amazonForm, ['name'], null);
-    const summary = _.get(this.props.amazonForm, ['summary'], null);
-    const description = _.get(this.props.amazonForm, ['description'], null);
-    const updatesDescription = _.get(this.props.amazonForm, ['updatesDescription'], null);
-    const keywords = _.get(this.props.amazonForm, ['keywords'], null);
-    const inv_name = _.get(this.props.amazonForm, ['inv_name'], null);
-    const instructions = _.get(this.props.amazonForm, ['instructions'], null);
-
-    const properties = {
+  getFormValueObj = () => {
+    const { amazonForm } = this.props;
+    const name = _.get(amazonForm, ['name'], null);
+    const summary = _.get(amazonForm, ['summary'], null);
+    const description = _.get(amazonForm, ['description'], null);
+    const updatesDescription = _.get(amazonForm, ['updatesDescription'], null);
+    const keywords = _.get(amazonForm, ['keywords'], null);
+    const invName = _.get(amazonForm, ['inv_name'], null);
+    const instructions = _.get(amazonForm, ['instructions'], null);
+    return {
       name,
-      inv_name,
       summary,
       description,
-      updates_description: updatesDescription,
+      updatesDescription,
       keywords,
-      invocations: s.invocations,
-      small_icon: s.small_icon,
-      large_icon: s.large_icon,
-      category,
-      locales: s.locales,
-      copa: s.copa,
-      privacy_policy: !_.isEmpty(s.privacy_policy) ? s.privacy_policy : '',
-      terms_and_cond: s.terms_and_cond,
-      purchase: s.purchase,
-      personal: s.personal,
-      ads: s.ads,
-      export: s.export,
+      invName,
       instructions,
     };
+  };
 
-    if (!properties.name) {
+  save = async () => {
+    const { skillID, updateSkill, updateSkillMeta } = this.props;
+    const amazonFormObj = this.getFormValueObj();
+    const formState = this.state;
+
+    const toDbProperties = amazonFormAdapter.toDb(formState, amazonFormObj);
+    const toStoreProperties = amazonFormAdapter.toStore(formState, amazonFormObj);
+
+    if (!amazonFormObj.name) {
       throw new Error('Publish Settings not Saved: No Project Name');
     }
 
     try {
-      await axios.patch(`/skill/${skill_id}?publish=true`, {
-        ...properties,
-        locales: JSON.stringify(properties.locales),
-      });
-
-      updateEntireSkill(properties);
+      await axios.patch(`/skill/${skillID}?publish=true`, toDbProperties);
+      updateSkillMeta(toStoreProperties.meta);
+      updateSkill(toStoreProperties.skill);
     } catch (err) {
       throw new Error('Save Error, Publish Settings not Saved');
     }
   };
 
-  handleChange = (event) => {
+  handleChangeUrl = (event) => {
+    event.persist();
     this.setState({
       [event.target.name]: event.target.value,
     });
   };
 
   handleSelection = (value) => {
+    // selecting Amazon categories
     this.setState({
       category: value,
     });
@@ -227,28 +181,40 @@ class Skill extends Component {
   };
 
   checkValidStep = (stepNumber) => {
-    const { small_icon, large_icon, category, invocations } = this.state;
-    const name = _.get(this.props.amazonForm, ['name'], null);
-    const summary = _.get(this.props.amazonForm, ['summary'], null);
-    const description = _.get(this.props.amazonForm, ['description'], null);
-    const inv_name = _.get(this.props.amazonForm, ['inv_name'], null);
-    const instructions = _.get(this.props.amazonForm, ['instructions'], null);
+    const { smallIcon, largeIcon, category, invocations, export: stateExport } = this.state;
+    const formValue = this.getFormValueObj();
     switch (stepNumber) {
       case 0:
-        return !!(name && small_icon && large_icon);
+        return !!(formValue.name && smallIcon && largeIcon);
       case 1:
-        return !!(summary && description && category);
+        return !!(formValue.summary && formValue.description && category);
       case 2:
-        return !!(inv_name && invocations[0]);
+        return !!(formValue.invName && invocations[0]);
       case 5:
-        return !!(this.state.export && instructions);
+        return !!(stateExport && formValue.instructions);
       default:
         return true;
     }
   };
 
   renderBlocks = () => {
-    const { locales, small_icon, large_icon, category, invocations, privacy_policy, terms_and_cond, copa, name, saving, live } = this.state;
+    const {
+      locales,
+      name,
+      saving,
+      live,
+      smallIcon,
+      largeIcon,
+      category,
+      invocations,
+      privacyPolicy,
+      termsAndCond,
+      copa,
+      purchase,
+      personal,
+      ads,
+      export: stateExport,
+    } = this.state;
 
     const blocks = [];
     const enterText = (
@@ -268,7 +234,7 @@ class Skill extends Component {
         <>
           <FormGroup className="mb-4">
             <div className="mb-4">
-              <Label className="publish-label">Display Name *</Label>
+              <Label className="publish-label">Display Name</Label>
               <FormTextInput name="name" type="text" placeholder="Storyflow - Interactive Story Adventures" />
               <FormFeedback>Uh oh! Looks like there is an issue with your email. Please input a correct email.</FormFeedback>
             </div>
@@ -279,18 +245,18 @@ class Skill extends Component {
               <Image
                 className="icon-image large-icon text-center pa__icon"
                 path="/image/large_icon"
-                image={large_icon}
-                update={(url) => this.setState({ large_icon: url })}
-                title="Large Icon *"
+                image={largeIcon}
+                update={(url) => this.setState({ largeIcon: url })}
+                title="Large Icon"
               />
             </div>
             <div style={{ width: '50%' }}>
               <Image
                 className="icon-image small-icon text-center pa__icon"
                 path="/image/small_icon"
-                image={small_icon}
-                update={(url) => this.setState({ small_icon: url })}
-                title="Small Icon *"
+                image={smallIcon}
+                update={(url) => this.setState({ smallIcon: url })}
+                title="Small Icon"
               />
             </div>
           </div>
@@ -317,12 +283,12 @@ class Skill extends Component {
       content: (
         <>
           <FormGroup className="mt-0 mb-4">
-            <Label className="publish-label">Summary *</Label>
+            <Label className="publish-label">Summary</Label>
             <FormTextInput type="text" name="summary" placeholder="One Sentence Skill Summary" />
           </FormGroup>
 
           <FormGroup className="mb-4">
-            <Label className="publish-label">Description *</Label>
+            <Label className="publish-label">Description</Label>
             <FormTextBox
               name="description"
               minRows={4}
@@ -348,15 +314,22 @@ class Skill extends Component {
           )}
 
           <FormGroup className="mb-4">
-            <Label className="publish-label">Category *</Label>
-            <Select classNamePrefix="select-box" name="category" value={category} onChange={this.handleSelection} options={AMAZON_CATEGORIES} />
+            <Label className="publish-label">Category</Label>
+            <Select
+              menuPortalTarget={document.body}
+              classNamePrefix="select-box"
+              name="category"
+              value={category}
+              onChange={this.handleSelection}
+              options={AMAZON_CATEGORIES}
+            />
           </FormGroup>
 
           <FormGroup className="mb-4">
             <Label className="publish-label">
-              Keywords (Search Tags) <small>optional</small>
+              Keywords <small>Seperated by commas</small>
             </Label>
-            <FormTextInput type="text" name="keywords" placeholder="Keywords (Separated By Commas) e.g. Game, Space, Adventure" />
+            <FormTextInput type="text" name="keywords" placeholder="e.g. Game, Quiz, Space..." />
           </FormGroup>
         </>
       ),
@@ -398,12 +371,12 @@ class Skill extends Component {
       content: (
         <>
           <FormGroup className="mb-4">
-            <Label className="publish-label">Invocation Name *</Label>
+            <Label className="publish-label">Invocation Name</Label>
             <FormTextInput type="text" name="inv_name" placeholder="Enter an invocation name" />
           </FormGroup>
 
           <FormGroup className="mb-4">
-            <Label className="publish-label">Invocations *</Label>
+            <Label className="publish-label">Invocations</Label>
             <Multiple
               className="mt-0 input-group-text"
               list={invocations}
@@ -483,10 +456,10 @@ class Skill extends Component {
             <Input
               className="form-bg"
               type="text"
-              name="privacy_policy"
+              name="privacyPolicy"
               placeholder="Privacy Policy"
-              value={privacy_policy}
-              onChange={this.handleChange}
+              value={privacyPolicy}
+              onChange={this.handleChangeUrl}
             />
           </FormGroup>
 
@@ -496,16 +469,16 @@ class Skill extends Component {
               <Input
                 className="form-bg"
                 type="text"
-                name="terms_and_cond"
+                name="termsAndCond"
                 placeholder="Terms and Conditions"
-                value={terms_and_cond}
-                onChange={this.handleChange}
+                value={termsAndCond}
+                onChange={this.handleChangeUrl}
               />
             </div>
 
             <Label className="publish-label">Is this skill directed to children under the age of 13?</Label>
             <div className="d-flex">
-              <u className="font-weight-bold mr-2">{copa ? 'YES' : 'NO'}</u>
+              <u className="mr-2">{copa ? 'YES' : 'NO'}</u>
               <Toggle checked={copa} icons={false} onChange={() => this.setState({ copa: !copa })} />
             </div>
           </FormGroup>
@@ -547,15 +520,15 @@ class Skill extends Component {
         <div className="form pa__locale-limited">
           <div className="pb-3 pa__form_container">
             <label>Does this skill allow users to make purchases or spend real money?</label>
-            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={this.state.purchase} onChange={(val) => this.onRadio('purchase', val)} />
+            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={purchase} onChange={(val) => this.onRadio('purchase', val)} />
           </div>
           <div className="pb-3 pa__form_container">
             <label>Does this Alexa skill collect users' personal information?</label>
-            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={this.state.personal} onChange={(val) => this.onRadio('personal', val)} />
+            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={personal} onChange={(val) => this.onRadio('personal', val)} />
           </div>
           <div className="pb-3 pa__form_container">
             <label>Does this skill contain advertising?</label>
-            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={this.state.ads} onChange={(val) => this.onRadio('ads', val)} />
+            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={ads} onChange={(val) => this.onRadio('ads', val)} />
           </div>
           <div>
             <label>Export Compliance</label>
@@ -568,9 +541,9 @@ class Skill extends Component {
             <div className="pb-3 pa__checkbox_container">
               <Checkbox
                 value="export"
-                checked={this.state.export}
+                checked={stateExport}
                 onChange={() => {
-                  this.setState({ export: !this.state.export });
+                  this.setState({ export: !stateExport });
                 }}
               />
               <div>I Certify</div>
@@ -615,7 +588,7 @@ class Skill extends Component {
   };
 
   render() {
-    const { amzn_id, review } = this.props;
+    const { amznID, review } = this.props;
     const { locales, loaded, live, id_collapse } = this.state;
 
     if (!loaded)
@@ -642,7 +615,7 @@ class Skill extends Component {
                   <div className="d-flex justify-content-between align-items-center">This skill currently has a live version in production</div>
                 </div>
               )}
-              {amzn_id && (
+              {amznID && (
                 <div className="alert alert-success" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <span>This skill is linked on Amazon Developer Console</span>
@@ -663,11 +636,11 @@ class Skill extends Component {
                     <hr />
                     <span>Skill ID | </span>
                     <a
-                      href={`https://developer.amazon.com/alexa/console/ask/test/${amzn_id}/development/${locales[0].replace('-', '_')}/`}
+                      href={`https://developer.amazon.com/alexa/console/ask/test/${amznID}/development/${locales[0].replace('-', '_')}/`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <b>{amzn_id}</b>
+                      <b>{amznID}</b>
                     </a>
                   </Collapse>
                 </div>
@@ -701,20 +674,17 @@ const validate = (values) => {
   return errors;
 };
 
-const mapStateToProps = (state) => ({
-  skill_id: state.skills.skill.skill_id,
-  project_id: state.skills.skill.project_id,
-  amzn_id: state.skills.skill.amzn_id,
-  review: state.skills.skill.review,
-  amazonForm: getFormValues(PUBLISH_AMAZON_FORM)(state),
-});
+const mapStateToProps = {
+  skillID: activeSkillIDSelector,
+  amznID: amznIDSelector,
+  review: reviewSelector,
+  amazonForm: getFormValues(PUBLISH_AMAZON_FORM),
+};
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateSkill: (type, val) => dispatch(updateVersion(type, val)),
-    updateEntireSkill: (val) => dispatch(updateEntireVersion(val)),
-    setError: (err) => dispatch(setError(err)),
-  };
+const mapDispatchToProps = {
+  updateSkill: updateActiveSkill,
+  updateSkillMeta,
+  setError,
 };
 
 export default compose(

@@ -1,3 +1,8 @@
+import _ from 'lodash';
+import mouseEventOffset from 'mouse-event-offset';
+
+const MOUSE_BOUNDING_TOLERANCE = 1;
+
 export const getNodePosition = (node) => {
   const box = node.getBoundingClientRect();
   const body = document.body;
@@ -220,6 +225,8 @@ export const stopPropagation = withHandler((e, stopNativePropagation) => {
   }
 });
 
+export const stopImmediatePropagation = withHandler((e) => e.nativeEvent.stopImmediatePropagation());
+
 export const preventDefault = withHandler((e) => e.preventDefault());
 
 export const swallowEvent = withHandler((e, stopNativePropagation) => {
@@ -230,3 +237,58 @@ export const swallowEvent = withHandler((e, stopNativePropagation) => {
     e.nativeEvent.stopImmediatePropagation();
   }
 });
+
+export const withKeyPress = (charCode, cb) => (event) => {
+  if (event.charCode === charCode) {
+    return cb(event);
+  }
+};
+
+export const swallowKeyPress = (charCode) => withKeyPress(charCode, preventDefault());
+
+export function getBoundedMovement(event) {
+  const { clientWidth, clientHeight } = document.body;
+  const [mouseX, mouseY] = mouseEventOffset(event, document.body);
+  const { movementX, movementY } = event;
+
+  /* eslint-disable no-nested-ternary */
+  const offsetX = mouseX <= MOUSE_BOUNDING_TOLERANCE || mouseX >= clientWidth - MOUSE_BOUNDING_TOLERANCE ? 0 : movementX;
+  const offsetY = mouseY <= MOUSE_BOUNDING_TOLERANCE || mouseY >= clientHeight - MOUSE_BOUNDING_TOLERANCE ? 0 : movementY;
+  /* eslint-enable no-nested-ternary */
+
+  return [offsetX, offsetY];
+}
+
+export const copyJSONPath = (copy_event) => {
+  const total_path = copy_event.namespace.slice();
+
+  if (copy_event.name !== '') {
+    total_path.push(copy_event.name);
+  }
+
+  // Copy to clipboard
+  const el = document.createElement('textarea');
+  el.value = total_path.join('.');
+  el.setAttribute('readonly', '');
+  el.style.position = 'absolute';
+  el.style.left = '-9999px';
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+};
+
+export const moveCursorToEnd = (el) => {
+  if (_.isNumber(el.selectionStart)) {
+    const valueLength = el.value.length;
+    el.selectionStart = valueLength;
+    el.selectionEnd = valueLength;
+  } else if (_.isUndefined(el.createTextRange)) {
+    el.focus();
+    const range = el.createTextRange();
+    range.collapse(false);
+    range.select();
+  }
+};
+
+export const withTargetValue = (task) => (e) => task(e.target.value);

@@ -67,7 +67,7 @@ const NoDialogFlow = ({ credentials, linkDialogflowCredential, error, checkDialo
           {loading && (
             <div className="text-dull">
               <LoadCircle color="transparent" style={{ position: 'absolute', left: 25, top: 25 }} />
-              Uploading
+              Upload
             </div>
           )}
           {credentials && !error && (

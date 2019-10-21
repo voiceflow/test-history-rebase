@@ -22,7 +22,7 @@
   position: relative;
   flex: 1;
   height: 100%;
-  overflow: auto;
+  overflow: scroll;
 }
 
 #business .business-page-inner {
@@ -56,8 +56,6 @@
 .settings-content {
   max-width: 99%;
   height: auto;
-  margin-right: auto;
-  margin-left: auto;
   background-color: #fff;
   border-bottom: 1px solid rgba(141, 162, 181, 0.28);
 }
@@ -100,17 +98,6 @@ transform: scale(1.03);
 .document_editor {
   width: 100% !important;
   height: 500px !important;
-}
-
-.datasource_editor {
-  width: 100% !important;
-  height: 420px !important;
-}
-
-.datasource_editor {
-  width: 100% !important;
-  height: 420px !important;
-  border-radius: 5px;
 }
 
 .template-card {

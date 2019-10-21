@@ -37,7 +37,7 @@ function Header({
         )}
         {onBackClick && (
           <BackButton>
-            <SvgIcon icon={LeftIcon} className="icon-back" onClick={onBackClick} />
+            <SvgIcon icon={LeftIcon} size={3} className="icon-back" onClick={onBackClick} />
           </BackButton>
         )}
         <HeaderNavigation>

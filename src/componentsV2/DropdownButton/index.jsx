@@ -1,6 +1,6 @@
 import React from 'react';
 
-import DropdownMenu from '@/componentsV2/DropdownMenu';
+import Dropdown from '@/componentsV2/Dropdown';
 
 import PrimaryDropdownButton from './components/PrimaryDropdownButton';
 import SecondaryDropdownButton from './components/SecondaryDropdownButton';
@@ -14,13 +14,13 @@ function DropdownButton({ variant, options, onSelect, disabled, children }) {
   const Component = DROPDOWN_VARIANTS[variant] || PrimaryDropdownButton;
 
   return (
-    <DropdownMenu options={options} onSelect={onSelect} placement="bottom-end">
+    <Dropdown options={options} onSelect={onSelect} placement="bottom-end">
       {(ref, onToggle) => (
         <Component disabled={disabled} onToggle={onToggle} ref={ref}>
           {children}
         </Component>
       )}
-    </DropdownMenu>
+    </Dropdown>
   );
 }
 

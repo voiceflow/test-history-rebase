@@ -66,7 +66,7 @@ class Billing extends Component {
   }
 
   async updateSource() {
-    const { stripe, team, user, checkChargeable, update_pay, setError } = this.props;
+    const { stripe, team, user, checkChargeable, updatePay, setError } = this.props;
     try {
       this.setState({ stage: 'UPDATE_SOURCE' });
 
@@ -92,7 +92,7 @@ class Billing extends Component {
         stage: 'INVOICE',
       });
 
-      update_pay();
+      updatePay();
     } catch (err) {
       setError(_.get(err, ['response', 'data']) || err || 'Unable to Retrieve Information');
       this.setState({ stage: 'STRIPE' });

@@ -13,7 +13,7 @@ const PLANS = {
     name: 'Professional',
     rate: 29,
     image: '/images/icons/collaborate-selected.svg',
-    features: ['Intercom support', 'Unlimited projects', '3 collaborators'],
+    features: ['Unlimited projects', '3 collaborators', 'Intercom support'],
   },
   BUSINESS: {
     id: 2,

@@ -8,16 +8,16 @@ import MultiModal from '../Multimodal';
 describe('MultiModal not loading', () => {
   const DISPLAYS = [
     {
-      title: 'VisualTmplateTest',
-      display_id: 'displayMockId',
+      name: 'VisualTmplateTest',
+      id: 'displayMockId',
     },
     {
-      title: 'VisualTmplateTest2',
-      display_id: 'displayMockId2',
+      name: 'VisualTmplateTest2',
+      id: 'displayMockId2',
     },
     {
-      title: 'VisualTmplateTest3',
-      display_id: 'displayMockId3',
+      name: 'VisualTmplateTest3',
+      id: 'displayMockId3',
     },
   ];
 

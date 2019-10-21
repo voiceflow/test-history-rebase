@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Default Modal Test render default modal 1`] = `
+<Modal>
+  <ModalHeader />
+  <styled.div
+    style={
+      Object {
+        "border": "0",
+        "overflow": "none",
+        "padding": undefined,
+      }
+    }
+  />
+  <styled.div
+    className="super-center"
+  >
+    <Button
+      className="btn-tertiary tertiary"
+      iconPosition="right"
+      onRef={[Function]}
+      trackEvent="Button Click"
+    >
+      Close
+    </Button>
+  </styled.div>
+</Modal>
+`;

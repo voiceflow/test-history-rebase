@@ -6,6 +6,8 @@ import React, { Component } from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
 
+import { PopoverListItem, PopoverListNoItem, PopoverListWrapper } from './styled';
+
 export default class PopoverList extends Component {
   static propTypes = {
     items: PropTypes.arrayOf(
@@ -51,32 +53,17 @@ export default class PopoverList extends Component {
     if (!items.length) {
       return (
         notFound && (
-          <ul className="popover-list">
-            <li className="popover-list__list-item">
-              <p
-                style={{
-                  // FIXME: Move to css
-                  pointerEvents: 'none',
-                  backgroundImage: 'none',
-                  backgroundColor: 'transparent',
-                }}
-                className={cn('dropdown-item text-muted', { 'text-nowrap': noWrap })}
-              >
-                No results found
-              </p>
+          <PopoverListWrapper>
+            <li>
+              <PopoverListNoItem>No results found</PopoverListNoItem>
             </li>
-          </ul>
+          </PopoverListWrapper>
         )
       );
     }
 
     return (
-      <ul
-        className={cn('popover-list', {
-          '__with-icons': this.withIcons(items),
-          '__with-right-icons': this.withRightIcons(items),
-        })}
-      >
+      <PopoverListWrapper>
         {items.map((item) => {
           const { id, icon, level, label, rightIcon, labelNode } = item;
           const isActive = id === selectedId;
@@ -102,7 +89,7 @@ export default class PopoverList extends Component {
             <li
               key={id}
               onClick={() => onClick && onClick(item)}
-              className={cn('popover-list__list-item', {
+              className={cn({
                 'text-nowrap': noWrap,
                 [`__${level}-level`]: level,
               })}
@@ -110,16 +97,12 @@ export default class PopoverList extends Component {
               {renderListItem ? (
                 renderListItem(item, childProps)
               ) : (
-                <div
-                  className={cn('dropdown-item', { '__is-active': !hovered && isActive })}
-                  onMouseEnter={() => !isActive && this.onMouseEnter()}
-                  {...childProps}
-                />
+                <PopoverListItem active={!hovered && !isActive} onMouseEnter={() => !isActive && this.onMouseEnter()} {...childProps} />
               )}
             </li>
           );
         })}
-      </ul>
+      </PopoverListWrapper>
     );
   }
 }

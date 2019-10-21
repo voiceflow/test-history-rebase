@@ -12,8 +12,7 @@ import { Button, Input } from 'reactstrap';
 
 import { AdminTitle } from '@/admin/styles';
 import { Spinner } from '@/components/Spinner';
-
-import { LogTable } from '../../../containers/Logs';
+import LogTable from '@/containers/Logs/components/LogTable';
 
 const COLUMNS = [
   {

@@ -1,9 +1,7 @@
-import styled, { css } from 'styled-components';
+import { css, styled } from '@/hocs';
 
 export const cardStyles = css`
-  border: 1px solid #eaeff4;
   border-radius: 8px;
-  padding: 12px 22px;
 `;
 
 const Card = styled.div`
@@ -11,3 +9,13 @@ const Card = styled.div`
 `;
 
 export default Card;
+
+export const floatingCardStyles = css`
+  ${cardStyles}
+
+  box-shadow: ${({ isSelected }) => (isSelected ? '0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08)' : '0 0 0 1px #d4d9e2')};
+`;
+
+export const FloatingCard = styled.div`
+  ${floatingCardStyles}
+`;

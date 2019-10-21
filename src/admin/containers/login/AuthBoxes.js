@@ -31,9 +31,9 @@ export const AuthBox = styled.div`
     padding: 32px;
     background-color: #fff;
     border-radius: 5px;
-    box-shadow: 0px 1px 3px rgba(17, 49, 96, 0.08), 0px 0px 1px rgba(17, 49, 96, 0.08);
+    box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.08), 0 1px 3px 0 rgba(17, 49, 96, 0.08);
     .form-group {
-      margin-bottom: 23px;
+      margin-bottom: 22px;
     }
     .row {
       margin-top: 32px;
@@ -133,14 +133,14 @@ export const SocialLoginContainer = styled.div`
     display: inline-flex;
     align-items: center;
     width: fit-content;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 15px;
     text-align: center;
     box-shadow: 0 2px 5px 0 rgba(14, 30, 37, 0.15);
     cursor: pointer;
-    transition: transform 0.25s ease;
-    padding: 10px 22px;
-    background-color: #fff;
+    transition: 0.12s linear;
+    padding: 9px 22px 10px;
+    background-image: linear-gradient(-180deg, rgba(222, 233, 237, 0.85), #dee9ed);
     border: 1px solid #dfe3ed;
     border-radius: 90px;
     margin-left: 8px;
@@ -150,9 +150,10 @@ export const SocialLoginContainer = styled.div`
   }
 
   .social-button-light {
-    background: transparent;
+    background-image: linear-gradient(-180deg, rgba(222, 233, 237, 0.85), #dee9ed);
     border: 1px solid #dfe3ed;
     box-shadow: none;
+    font-weight: 600;
   }
 
   img {

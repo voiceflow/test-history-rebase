@@ -12,7 +12,7 @@ import { Form, FormGroup, Input } from 'reactstrap';
 import Button from '@/components/Button';
 import Icon from '@/components/SvgIcon';
 import { PLAN_NAME } from '@/containers/Dashboard/PLANS';
-import { signup } from '@/ducks/account';
+import { signup } from '@/ducks/session';
 
 import { AuthBox, Check, MsgBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
@@ -57,7 +57,7 @@ export const SignupForm = ({ signup, history, promo }) => {
       password,
       coupon,
     }).catch((err) => {
-      setSignupError(err.response.data.data);
+      setSignupError(err.body.data);
     });
     return false;
   };
@@ -203,9 +203,9 @@ export const SignupForm = ({ signup, history, promo }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  signup: (user) => dispatch(signup(user)),
-});
+const mapDispatchToProps = {
+  signup,
+};
 
 export default connect(
   null,

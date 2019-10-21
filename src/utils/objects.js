@@ -1,9 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import toPath from 'lodash/toPath';
 
-export const mapKeysAndValuesObjects = (keysObj, valuesObj) =>
-  Object.keys(keysObj).reduce((res, key) => Object.assign(res, { [keysObj[key]]: valuesObj[key] }), {});
-
 export const getIn = (rawObj, key, def, index = 0) => {
   const path = toPath(key);
   let obj = rawObj;

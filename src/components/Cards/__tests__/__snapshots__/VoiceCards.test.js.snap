@@ -5,7 +5,6 @@ exports[`Voice Card Test render empty card 1`] = `
   className="product-card"
 >
   <Card
-    onClick={[Function]}
     tag="div"
   >
     <div

@@ -1,4 +1,3 @@
-import './Socket';
 // Import Dependent CSS
 import 'react-tippy/dist/tippy.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,104 +6,44 @@ import './assets/fontawesome/css/all.min.css';
 import './App.css';
 import 'react-day-picker/lib/style.css';
 
-import { ConnectedRouter } from 'connected-react-router';
-import React, { Component } from 'react';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
-import ReactGA from 'react-ga';
+import React from 'react';
+import { Helmet } from 'react-helmet';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { hot } from 'react-hot-loader/root';
-import { connect } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
-import { compose } from 'recompose';
-import { ThemeProvider } from 'styled-components';
+import { ToastContainer } from 'react-toastify';
 
 import IntercomChat from '@/components/IntercomChat';
-import ConfirmModal from '@/components/Modals/ConfirmModal';
-import ErrorModal from '@/components/Modals/ErrorModal';
-import Modal from '@/components/Modals/Modal';
-import { FullSpinner } from '@/components/Spinner';
-import { getAuth, getUser } from '@/ducks/account';
-import { history } from '@/store/store';
-import MaintenanceGate from '@/utils/maintenance';
+import ConfirmModal from '@/components/Modal/ConfirmModal';
+import ErrorModal from '@/components/Modal/ErrorModal';
+import Modal from '@/components/Modal/Modal';
 
-import allRoutes from './Routes/allRoutes';
+import Routes from './Routes';
 import Alerts from './components/Alerts/Alerts';
-import theme from './styles/theme';
+import AccountLoadingGate from './contexts/AccountLoadingGate';
+import GlobalProviders from './contexts/GlobalProviders';
+import SocketLoadingGate from './contexts/SocketLoadingGate';
 
-ReactGA.initialize('UA-124745244-3');
-toast.configure({
-  autoClose: 2000,
-  draggable: false,
-  pauseOnFocusLoss: false,
-});
-
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: !!getAuth(),
-      session: false,
-      stripe: null,
-    };
-
-    if (this.state.loading) {
-      this.props
-        .getUser()
-        .then(() =>
-          this.setState({
-            session: true,
-            loading: false,
-          })
-        )
-        .catch((err) => {
-          console.error(err);
-          this.setState({ loading: false });
-          if (window.location.pathname !== '/ssml') history.push('/login');
-        });
-    }
-
-    history.listen((location) => {
-      ReactGA.set({ page: location.pathname });
-      ReactGA.pageview(location.pathname);
-      this.setState({ session: !!getAuth() });
-    });
-  }
-
-  render() {
-    if (this.state.loading) return <FullSpinner name="Account" />;
-
-    return (
-      <ThemeProvider theme={theme}>
-        <div id="body">
-          <MaintenanceGate>
-            <ConnectedRouter history={history}>
-              <ConfirmModal />
-              <ErrorModal />
-              <Modal />
-              <Alerts />
-              <ToastContainer />
-              {allRoutes}
-            </ConnectedRouter>
+const App = ({ history }) => (
+  <GlobalProviders history={history}>
+    <SocketLoadingGate>
+      <AccountLoadingGate>
+        {() => (
+          <>
+            <Helmet>
+              <title>Voiceflow Creator</title>
+            </Helmet>
+            <ConfirmModal />
+            <ErrorModal />
+            <Modal />
+            <Alerts />
+            <ToastContainer />
+            <Routes />
             <IntercomChat />
-          </MaintenanceGate>
-        </div>
-      </ThemeProvider>
-    );
-  }
-}
+          </>
+        )}
+      </AccountLoadingGate>
+    </SocketLoadingGate>
+  </GlobalProviders>
+);
 
-// Hack until this ticket is fixed https://github.com/react-dnd/react-dnd/issues/894
-global.__isReactDndBackendSetUp = false; // eslint-disable-line no-underscore-dangle
-
-export default compose(
-  hot,
-  connect(
-    null,
-    {
-      getUser,
-    }
-  ),
-  // eslint-disable-next-line xss/no-mixed-html
-  DragDropContext(HTML5Backend)
-)(App);
+export default hot(App);

@@ -18,9 +18,8 @@ export const PrimaryHeader = styled.div`
   display: flex;
   align-items: center;
   background-color: #fff;
-  padding-right: ${(props) => (props.isBackClick ? 40 : 28)}px
-  padding-left: 28px;
-  height: 64px;
+  padding: 0px 34px 0 40px;
+  height: 70px;
 `;
 
 export const HeaderNavigation = styled.div`
@@ -50,14 +49,15 @@ export const JustifiedHeaderActions = styled.div`
 `;
 
 export const BackButton = styled.span`
-  padding: 20px 20px 20px 0;
-  margin-right: 6px;
+  padding: 22px 22px 22px 36px;
+  margin-right: 12px;
   cursor: pointer;
   height: inherit;
   display: flex;
   align-items: center;
   opacity: 0.8;
   transition: opacity 0.15s ease;
+  color: #8da2b5;
 
   &:hover {
     opacity: 1;

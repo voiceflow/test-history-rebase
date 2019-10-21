@@ -9,6 +9,30 @@
 
 This Repository Relies on `yarn` and does not work with `npm`
 
+### Debugging
+
+Different types of debugging can be granularly enabled within the app, or globally enabled although it may cause a lot of noise in the logs.
+
+To enable granular debugging, pass all of the debug flags described below that you would like enabled.
+To enable all debugging, you can pass the flag `--debug` when starting the app:
+
+```sh
+yarn start --debug
+```
+
+#### Network Debugging
+
+Display all outgoing network requests (that pass through `src/client/fetch` or the socket client) in the console.
+
+To enable network debugging:
+
+```sh
+yarn start --debugNet
+```
+
+You can also enable more granular network debugging by passing `--debugHttp` to only see HTTP/HTTPS requests
+or `--debugSocket` to only see websocket events.
+
 ### LogRocket
 
 To enable LogRocket when running locally, set the environment variable `REACT_APP_LOGROCKET_ENABLED` to `"true"`
@@ -25,11 +49,11 @@ REACT_APP_LOGROCKET_ENABLED='true'
 3. Run `yarn preview <environment name>`
 4. Monitor CircleCI to check your ephemeral branch's (`ephemeral-<environment name>`) deployment status.
 
-* Make sure you run `yarn preview <environment name>` at least once in the `creator-app` repository after you have received your ephemeral environment. This will ensure that the app's API_URL is set correctly to your ephemeral API server.
+- Make sure you run `yarn preview <environment name>` at least once in the `creator-app` repository after you have received your ephemeral environment. This will ensure that the app's API_URL is set correctly to your ephemeral API server.
 
-| Component | URL |
-| --------- | --- |
-| creator-api | `https://api.<environment name>.voiceflow.com` |
+| Component   | URL                                                |
+| ----------- | -------------------------------------------------- |
+| creator-api | `https://api.<environment name>.voiceflow.com`     |
 | creator-app | `https://creator.<environment name>.voiceflow.com` |
 
 Currently, only the `creator` component is supported; `voiceflow-server` and `integrations` services are not deployed as of this writing. HTTP 500 errors on the `/integrations` path is normal since the `integrations` service is not deployed.

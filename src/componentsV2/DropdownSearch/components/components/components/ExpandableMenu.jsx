@@ -8,6 +8,7 @@ export const MenuContainer = styled.div`
   background: #fff;
   box-shadow: ${({ depth }) => depth > 0 && '0px 8px 16px rgba(17, 49, 96, 0.16), 0px 0px 0px rgba(17, 49, 96, 0.06)'};
   border-radius: 5px;
+  border: none;
 `;
 
 export const InnerContainer = styled.div`
@@ -29,4 +30,5 @@ export const Label = styled.div`
   line-height: 18px;
   color: #132144;
   padding-right: 12px;
+  font-weight: 600;
 `;

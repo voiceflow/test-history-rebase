@@ -1,0 +1,18 @@
+import { SvgIconContainer } from '@/components/SvgIcon';
+import { FlexApart } from '@/componentsV2/Flex';
+import { styled } from '@/hocs';
+
+const ExpandingListSectionHeader = styled(FlexApart)`
+  cursor: pointer;
+  color: #62778c;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 6px;
+
+  & ${SvgIconContainer} {
+    margin-right: ${({ theme }) => theme.unit * 0.1}px;
+    color: #8da2b5;
+  }
+`;
+
+export default ExpandingListSectionHeader;

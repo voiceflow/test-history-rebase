@@ -67,7 +67,7 @@ export class ProgressLoading extends PureComponent {
         <div className="mt-2" />
         <Progress type="circle" strokeWidth={5} theme={{ default: { color: '#42a5ff' } }} percent={percent} />
         {label && (
-          <div className="text-center my-3">
+          <div className="text-center mt-3 mb-2">
             <p className="mb-0">{label}</p>
           </div>
         )}

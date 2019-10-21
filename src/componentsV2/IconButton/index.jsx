@@ -2,11 +2,12 @@ import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
 
-import { ActionContainer, Container } from './components';
+import { ActionContainer, Container, SubtleContainer } from './components';
 
 const ICON_BUTTON_CONTAINERS = {
   normal: Container,
   flat: Container,
+  subtle: SubtleContainer,
   action: ActionContainer,
 };
 
@@ -15,7 +16,7 @@ function IconButton({ icon, ...props }) {
 
   return (
     <IconButtonContainer {...props}>
-      <SvgIcon icon={icon} />
+      <SvgIcon icon={icon} color="currentColor" />
     </IconButtonContainer>
   );
 }

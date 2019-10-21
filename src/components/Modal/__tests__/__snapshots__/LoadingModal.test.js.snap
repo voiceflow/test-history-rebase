@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loading Modal Test render loading modal 1`] = `
+<Modal
+  centered={true}
+  size="sm"
+>
+  <styled.div
+    className="text-center my-4"
+  >
+    <Spinner
+      message="Loading"
+    />
+  </styled.div>
+</Modal>
+`;

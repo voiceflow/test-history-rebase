@@ -1,90 +1,140 @@
+import composeRefs from '@seznam/compose-react-refs';
 import mouseEventOffset from 'mouse-event-offset';
 import React from 'react';
 
-import { stopPropagation } from '@/utils/dom';
+import { isMac, isSafari } from '@/config';
+import { withOverlay } from '@/contexts';
 
 import { Container, RenderLayer } from './components';
-import { ZOOM_FACTOR } from './constants';
+import { ControlScheme, ControlType, ZOOM_FACTOR } from './constants';
 import { CanvasProvider } from './contexts';
-import { calculateScrollTranslation, getScrollDelta, normalizeZoom, transformStyle } from './utils';
+import generateControls from './controls';
+import { calculateScrollTranslation, normalizeZoom, transformStyle } from './controls/utils';
 
 export const ORIGIN = [0, 0];
-
-export const MAX_CLICK_TRAVEL = 3;
 
 class Canvas extends React.PureComponent {
   rootRef = React.createRef();
 
   renderLayerRef = React.createRef();
 
-  zoom = ZOOM_FACTOR;
+  zoom = this.props.viewport ? this.props.viewport.zoom : ZOOM_FACTOR;
 
-  position = ORIGIN;
+  position = this.props.viewport ? [this.props.viewport.x, this.props.viewport.y] : ORIGIN;
 
-  offset = this.props.offset || ORIGIN;
-
-  isPanning = false;
-
-  panDistance = 0;
+  controlTeardownHandlers = [];
 
   api = {
+    isPanning: () => this.controls.isPanning,
     getZoom: () => this.zoom / ZOOM_FACTOR,
     getPosition: () => this.position,
+    getRef: () => this.rootRef.current,
+    getRect: () => this.rootRef.current.getBoundingClientRect(),
     zoomIn: (delta) => this.offsetZoom(delta),
     zoomOut: (delta) => this.offsetZoom(-delta),
     reorient: () => this.resetPosition(),
+
+    setZoom: (zoom) => this.setZoom(zoom),
+
+    setPosition: (position) => {
+      this.position = position;
+      this.onChange();
+
+      this.styleRenderLayer();
+    },
+
+    applyStyles: (...params) => this.applyStyles(...params),
+
+    transformPoint(point, relative) {
+      const [posX, posY] = this.getPosition();
+      const zoom = this.getZoom();
+      const [x, y] = relative ? point : this.mapPoint(point);
+
+      return [(x - posX) / zoom, (y - posY) / zoom];
+    },
+
+    mapPoint([x, y]) {
+      const rect = this.getRect();
+
+      return [x - rect.left, y - rect.top];
+    },
+
+    reverseTransformPoint(point, relative) {
+      const [posX, posY] = this.getPosition();
+      const zoom = this.getZoom();
+      const [x, y] = relative ? point : this.reverseMapPoint(point);
+
+      return [x * zoom + posX, y * zoom + posY];
+    },
+
+    reverseMapPoint([x, y]) {
+      const rect = this.getRect();
+
+      return [x + rect.left, y + rect.top];
+    },
   };
 
-  onScroll = stopPropagation((event) => {
-    const scrollDelta = getScrollDelta(event);
-    const scrollOrigin = mouseEventOffset(event, this.rootRef.current);
+  onChange = () =>
+    this.props.onChange &&
+    this.props.onChange({
+      x: this.position[0],
+      y: this.position[1],
+      zoom: this.zoom,
+    });
 
-    this.offsetZoom(scrollDelta, scrollOrigin);
-  });
-
-  onPan = ({ movementX, movementY }) => {
-    this.isPanning = true;
-
+  onPan = (offsetX, offsetY) => {
     const [posX, posY] = this.position;
-    const nextPosition = [posX + movementX, posY + movementY];
+    const nextPosition = [posX + offsetX, posY + offsetY];
     this.position = nextPosition;
-    this.panDistance += Math.max(Math.abs(movementX), Math.abs(movementY));
-
     this.styleRenderLayer(nextPosition);
-  };
 
-  onMouseDown = stopPropagation(() => {
-    document.addEventListener('mousemove', this.onPan);
-    document.addEventListener('mouseup', this.onMouseUp);
-  });
-
-  onMouseUp = () => {
-    if (this.isPanning) {
-      this.isPanning = false;
-
-      if (this.panDistance < MAX_CLICK_TRAVEL) {
-        this.props.onClick();
-      }
-
-      this.panDistance = 0;
-    } else {
-      this.props.onClick();
+    if (this.props.onPan) {
+      this.props.onPan(offsetX, offsetY);
     }
-
-    document.removeEventListener('mouseup', this.onMouseUp);
-    document.removeEventListener('mousemove', this.onPan);
   };
 
-  styleRenderLayer([posX, posY] = this.position, zoom = this.zoom) {
+  onZoom = (control) => {
+    // scale or delta type zoom
+    if (control.scale) {
+      this.setZoom(this.zoom * control.scale, mouseEventOffset(control.event, this.rootRef.current));
+    } else if (control.delta) {
+      this.setZoom(this.zoom + control.delta, mouseEventOffset(control.event, this.rootRef.current));
+    }
+  };
+
+  applyStyles = (styles, interval) => {
+    const renderLayerEl = this.renderLayerRef.current;
+
     // eslint-disable-next-line compat/compat
     window.requestAnimationFrame(() => {
-      this.renderLayerRef.current.style.transform = transformStyle([posX + this.offset[0], posY + this.offset[1]], zoom);
+      Object.keys(styles).forEach((style) => {
+        renderLayerEl.style[style] = styles[style];
+      });
+    });
+
+    if (interval) {
+      setTimeout(() => {
+        // eslint-disable-next-line compat/compat
+        window.requestAnimationFrame(() => {
+          Object.keys(styles).forEach((style) => {
+            renderLayerEl.style[style] = null;
+          });
+        });
+      }, interval);
+    }
+  };
+
+  styleRenderLayer(position = this.position, zoom = this.zoom) {
+    const renderLayerEl = this.renderLayerRef.current;
+
+    // eslint-disable-next-line compat/compat
+    window.requestAnimationFrame(() => {
+      renderLayerEl.style.transform = transformStyle(position, zoom);
     });
   }
 
-  getScrollTranslation([originX, originY], prevZoom, nextZoom) {
-    return calculateScrollTranslation([originX, originY], prevZoom, nextZoom, this.position, this.rootRef.current.getBoundingClientRect());
-  }
+  getScrollTranslation = ([originX, originY], prevZoom, nextZoom) =>
+    calculateScrollTranslation([originX, originY], prevZoom, nextZoom, this.position, this.rootRef.current.getBoundingClientRect());
 
   serialize = () => ({
     zoom: this.zoom,
@@ -92,18 +142,24 @@ class Canvas extends React.PureComponent {
     y: this.position[1],
   });
 
-  offsetZoom = (zoomOffset, origin = [this.rootRef.current.clientWidth / 2, this.rootRef.current.clientHeight / 2]) => {
+  offsetZoom = (delta) => this.setZoom(this.zoom + delta);
+
+  setZoom = (newZoom, origin = [this.rootRef.current.clientWidth / 2, this.rootRef.current.clientHeight / 2]) => {
     const prevZoom = this.zoom / ZOOM_FACTOR;
-    const nextZoom = normalizeZoom(this.zoom + zoomOffset);
-    if (nextZoom === this.zoom) {
-      return;
-    }
+    const nextZoom = normalizeZoom(newZoom);
+    if (nextZoom === this.zoom) return;
     this.zoom = nextZoom;
 
-    const nextPosition = this.getScrollTranslation(origin, prevZoom, nextZoom);
+    const [x, y] = this.position;
+    const [moveX, moveY] = this.getScrollTranslation(origin, prevZoom, nextZoom);
+    const nextPosition = [x + moveX, y + moveY];
     this.position = nextPosition;
 
     this.styleRenderLayer(nextPosition, nextZoom);
+
+    if (this.props.onZoom) {
+      this.props.onZoom((position) => calculateScrollTranslation(origin, prevZoom, nextZoom, position, this.rootRef.current.getBoundingClientRect()));
+    }
   };
 
   resetPosition = () => {
@@ -112,21 +168,91 @@ class Canvas extends React.PureComponent {
     this.styleRenderLayer(ORIGIN);
   };
 
+  handleControl = (control = {}) => {
+    if (!control.type) return;
+
+    switch (control.type) {
+      case ControlType.PAN:
+        this.props.overlay.dismiss();
+        this.onPan(control.deltaX, control.deltaY);
+        break;
+      case ControlType.SCALE:
+        this.props.overlay.dismiss();
+        this.onZoom(control);
+        break;
+      case ControlType.CLICK:
+        this.props.overlay.dismiss();
+        this.props.onClick && this.props.onClick();
+        break;
+      case ControlType.END:
+        this.onChange();
+        break;
+      case ControlType.SHIFT_MOUSEDOWN:
+        this.props.onShiftClick && this.props.onShiftClick(control.event);
+        break;
+      default:
+    }
+  };
+
+  controls = generateControls(this.props.controlScheme, this.handleControl);
+
   componentDidMount() {
-    this.styleRenderLayer();
+    if (this.props.onRegister) {
+      this.props.onRegister(this.api);
+    }
+
+    const bindControl = (type) => (e) => this.controls[type](e);
+    const addListener = (type, options) => {
+      const handler = bindControl(type);
+      this.rootRef.current.addEventListener(type, handler, options);
+
+      this.controlTeardownHandlers.push(() => this.rootRef.current.removeEventListener(type, handler));
+    };
+
+    addListener('wheel', { passive: false });
+
+    if (isSafari) {
+      addListener('gesturestart');
+      addListener('gesturechange');
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.onRegister) {
+      this.props.onRegister(null);
+    }
+
+    this.controlTeardownHandlers.forEach((teardownHandler) => teardownHandler());
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.controlScheme !== this.props.controlScheme) {
+      this.controls = generateControls(this.props.controlScheme, this.handleControl);
+    }
   }
 
   render() {
-    const { children } = this.props;
+    const { onRightClick, innerRef, children, disableClick } = this.props;
 
     return (
       <CanvasProvider value={this.api}>
-        <Container ref={this.rootRef} onWheel={this.onScroll} onMouseDown={this.onMouseDown}>
-          <RenderLayer ref={this.renderLayerRef}>{children}</RenderLayer>
+        <Container
+          onContextMenu={onRightClick}
+          onMouseDown={disableClick ? undefined : this.controls.mousedown}
+          tabIndex={-1}
+          ref={composeRefs(this.rootRef, innerRef)}
+        >
+          <RenderLayer ref={this.renderLayerRef} style={{ transform: transformStyle(this.position, this.zoom) }}>
+            {children}
+          </RenderLayer>
         </Container>
       </CanvasProvider>
     );
   }
 }
 
-export default Canvas;
+Canvas.defaultProps = {
+  controlScheme: isMac ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,
+};
+
+export default withOverlay(Canvas);

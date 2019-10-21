@@ -20,8 +20,8 @@
   height: 50px;
   padding: 0 40px;
   white-space: nowrap;
-  background-color: #f7f9fb;
-  border-top: 1px solid #dce5e8;
+  background-color: #f9f9f9;
+  border-top: 1px solid #dfe3ed;
 }
 
 .header.__without-shadow {
@@ -104,7 +104,7 @@
   width: 32px;
   height: 32px;
   color: #8da2b5;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 28px;
   text-align: center;
   background-color: #f7f9fb;
@@ -115,6 +115,8 @@
   box-shadow: 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
   cursor: default;
   transition: all 0.25s ease;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .title-group {

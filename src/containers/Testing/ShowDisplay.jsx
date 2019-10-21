@@ -1,17 +1,19 @@
 import cn from 'classnames';
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import { Tooltip } from 'react-tippy';
-import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 
+import Modal, { ModalBody, ModalHeader } from '@/components/Modal';
 import SvgIcon from '@/components/SvgIcon';
-import DisplayRender from '@/containers/Canvas/Editors/components/DisplayRender';
+import DisplayRender from '@/containers/CanvasV2/managers/Display/components/DisplayRender';
+import { allDisplaysSelector } from '@/ducks/display';
+import { testDisplaySelector } from '@/ducks/test';
+import { connect } from '@/hocs';
+import { useToggle } from '@/hooks';
 
-function showDisplay(props) {
-  const { displays, currentDisplay } = props;
-  const [showDisplay, setShow] = useState(false);
-  const toggle = () => setShow(!showDisplay);
-  const apl = currentDisplay && displays.filter((display) => display.display_id === currentDisplay.current_display)[0];
+function ShowDisplay({ displays, currentDisplay }) {
+  const [isOpen, toggle] = useToggle();
+  const apl = currentDisplay && displays.filter((display) => display.id === currentDisplay.current_display)[0];
+
   return (
     <>
       <div onClick={toggle} className={cn('d-flex align-items-center pointer mr-2', { disabled: !apl })}>
@@ -19,7 +21,7 @@ function showDisplay(props) {
           <SvgIcon icon="display" />
         </Tooltip>
       </div>
-      <Modal isOpen={showDisplay} toggle={toggle} size="lg">
+      <Modal isOpen={isOpen} toggle={toggle} size="lg">
         <ModalHeader toggle={toggle}>Display Preview</ModalHeader>
         <ModalBody className="pt-0">{apl && <DisplayRender apl={apl.document} data={currentDisplay.datasource} commands="[]" />}</ModalBody>
       </Modal>
@@ -27,9 +29,9 @@ function showDisplay(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  displays: state.displays.displays,
-  currentDisplay: state.test.state.display_info,
-});
+const mapStateToProps = {
+  displays: allDisplaysSelector,
+  currentDisplay: testDisplaySelector,
+};
 
-export default connect(mapStateToProps)(showDisplay);
+export default connect(mapStateToProps)(ShowDisplay);

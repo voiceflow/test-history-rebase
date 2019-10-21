@@ -6,11 +6,11 @@ import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
 
 import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from '@/config';
-import { fbLogin, googleLogin } from '@/ducks/account';
+import { facebookLogin, googleLogin } from '@/ducks/session';
 
 import { SocialLoginContainer } from './AuthBoxes';
 
-const SocialLogin = ({ entryText, light, googleLogin, fbLogin, coupon, checkCoupon = _.constant(true) }) => {
+const SocialLogin = ({ entryText, light, coupon, checkCoupon = _.constant(true), googleLogin, facebookLogin }) => {
   const [authError, setAuthError] = useState(null);
   let timeout;
 
@@ -22,13 +22,13 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin, coupon, checkCoup
       token: userProfile.tokenId,
       coupon,
     }).catch((err) => {
-      setAuthError(err.response.data);
+      setAuthError(err.body.data);
     });
     return false;
   };
 
   const triggerFbLogin = (fbUser) => {
-    fbLogin({
+    facebookLogin({
       name: fbUser.name,
       email: fbUser.email,
       fbId: fbUser.id,
@@ -36,7 +36,7 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin, coupon, checkCoup
       uri: window.location.href,
       coupon,
     }).catch((err) => {
-      setAuthError(err.response.data);
+      setAuthError(err.body.data);
     });
     return false;
   };
@@ -95,10 +95,10 @@ const SocialLogin = ({ entryText, light, googleLogin, fbLogin, coupon, checkCoup
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  fbLogin: (user) => dispatch(fbLogin(user)),
-  googleLogin: (user) => dispatch(googleLogin(user)),
-});
+const mapDispatchToProps = {
+  facebookLogin,
+  googleLogin,
+};
 
 export default connect(
   null,

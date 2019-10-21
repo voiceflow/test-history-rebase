@@ -5,6 +5,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 
 import * as ICONS from '@/svgs';
+import { compose } from '@/utils/functional';
 
 export const SvgIconContainer = styled.span`
   color: ${({ color }) => color};
@@ -18,12 +19,17 @@ export const SvgIconContainer = styled.span`
     `};
   }
 
-  &:hover {
+  &:hover,
+  &:active {
     color: ${({ hoverColor, color }) => hoverColor || color};
   }
 `;
 
-function SvgIcon({ icon, ...props }) {
+// eslint-disable-next-line react/display-name
+const SvgIcon = compose(
+  React.memo,
+  React.forwardRef
+)(function SvgIcon({ icon, ...props }, ref) {
   let IconElement;
   if (_.isString(icon)) {
     if (!(icon in ICONS)) return null;
@@ -33,15 +39,15 @@ function SvgIcon({ icon, ...props }) {
   }
 
   return (
-    <SvgIconContainer {...props}>
+    <SvgIconContainer {...props} ref={ref}>
       <IconElement />
     </SvgIconContainer>
   );
-}
+});
 
 SvgIcon.propTypes = {
   icon: PropTypes.elementType,
-  size: PropTypes.number,
+  size: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   height: PropTypes.number,
   width: PropTypes.number,
   color: PropTypes.string,
@@ -49,7 +55,7 @@ SvgIcon.propTypes = {
 
 SvgIcon.defaultProps = {
   size: 16,
-  color: '#6E849A',
+  color: 'currentColor',
 };
 
 export default SvgIcon;

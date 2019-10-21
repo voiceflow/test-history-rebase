@@ -2,7 +2,9 @@ import { parse } from 'html-parse-stringify';
 import _ from 'lodash';
 import React from 'react';
 
-const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text']);
+import { TestAction } from './constants';
+
+const VALID_TAGS = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text']);
 
 export const recurse = (tag, index = 0) => {
   if (tag.type === 'text') {
@@ -11,7 +13,8 @@ export const recurse = (tag, index = 0) => {
     }
     return tag.content;
   }
-  if (!valid_tags.has(tag.name)) {
+
+  if (!VALID_TAGS.has(tag.name)) {
     return null;
   }
 
@@ -24,6 +27,7 @@ export const recurse = (tag, index = 0) => {
     if (tag.name === 's') {
       return returnString;
     }
+
     if (tag.name === 'voice') {
       return (
         <React.Fragment key={index}>
@@ -37,12 +41,14 @@ export const recurse = (tag, index = 0) => {
         </React.Fragment>
       );
     }
+
     return (
       <span key={index} className="tag-wrap">
         <span className="tag-span">{tag.name}</span> {returnString}
       </span>
     );
   }
+
   return (
     <span key={index} className="tag-wrap tag-span">
       ({tag.name})
@@ -50,35 +56,38 @@ export const recurse = (tag, index = 0) => {
   );
 };
 
-const getAudioMeta = (audio) => {
-  return new Promise((resolve, reject) => {
+const getAudioMeta = (audio) =>
+  new Promise((resolve, reject) => {
     if (!audio) return resolve(0);
+
     audio.addEventListener('error', reject);
     audio.addEventListener('loadedmetadata', (e) => {
       resolve(e.target.duration);
     });
   });
-};
 
 const newAudio = (src) => {
   if (!src) return null;
+
   let newSrc = src;
   if (newSrc.startsWith('soundbank://soundlibrary/')) {
     newSrc = `${src.replace('soundbank://soundlibrary/', 'https://d3qhmae9zx9eb.cloudfront.net/')}.mp3`;
   }
+
   return new Audio(newSrc);
 };
 
 export const getUserTestOutputs = async (trace, ending) => {
   const dom = [];
   let idx = 0;
+
   // eslint-disable-next-line no-restricted-syntax
   for (const block of trace) {
     if (block.diagram) {
       dom.push({
         debug: 'diagram',
-        type: block.isExitFlow ? 'EXIT_FLOW' : 'ENTER_FLOW',
-        diagram: block.diagram,
+        type: block.isExitFlow ? TestAction.EXIT_FLOW : TestAction.ENTER_FLOW,
+        diagram: typeof block.diagram === 'object' ? block.diagram.diagram_id : block.diagram,
       });
     } else if (block.debug) {
       dom.push(block);
@@ -86,8 +95,10 @@ export const getUserTestOutputs = async (trace, ending) => {
 
     // eslint-disable-next-line no-continue
     if (!block.output) continue;
+
     const type = block.block;
     const parsed = parse(block.output)[0];
+
     if (idx === 0 && type === 'Choice' && ending) {
       const outputBlock = {
         node: block.line.id,
@@ -96,6 +107,7 @@ export const getUserTestOutputs = async (trace, ending) => {
       };
       dom.push(outputBlock);
     }
+
     if (type === 'Speak') {
       // eslint-disable-next-line no-await-in-loop
       const results = await Promise.all(
@@ -114,6 +126,7 @@ export const getUserTestOutputs = async (trace, ending) => {
           }
         })
       );
+
       parsed.children.forEach((child, idx) => {
         const audioData = results[idx];
 

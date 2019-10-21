@@ -40,7 +40,7 @@ export const mainTheme = {
       strong: '#8C94A6',
     },
     background: {
-      default: '#f7f9fb',
+      default: '#f9f9f9',
       highlight: '#fff',
     },
     link: {

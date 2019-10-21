@@ -1,0 +1,26 @@
+import { draftJSContentAdapter } from '@/client/adapters/draft';
+
+import { createBlockAdapter } from './utils';
+
+const streamBlockAdapter = createBlockAdapter(
+  ({ audio, title, description, icon_img, background_img, custom_pause, loop }) => ({
+    audio,
+    title: draftJSContentAdapter.fromDB(title),
+    description: draftJSContentAdapter.fromDB(description),
+    iconImage: icon_img || null,
+    backgroundImage: background_img || null,
+    customPause: custom_pause,
+    loop,
+  }),
+  ({ audio, title, description, iconImage, backgroundImage, customPause, loop }) => ({
+    audio,
+    title: draftJSContentAdapter.toDB(title),
+    description: draftJSContentAdapter.toDB(description),
+    icon_img: iconImage,
+    background_img: backgroundImage,
+    custom_pause: customPause,
+    loop,
+  })
+);
+
+export default streamBlockAdapter;

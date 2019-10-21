@@ -7,10 +7,10 @@ export default (props) => {
 
   return (
     <>
-      <p className="text-muted text-center mb-5 mt-4">{props.question}</p>
-      <div className="row justify-content-center mb-3">
+      <p className="text-muted text-center mb-3 mt-4">{props.question}</p>
+      <div className="row justify-content-center mb-4">
         {props.options.map((o) => (
-          <div className="col-s ml-4 mr-4" key={o.type}>
+          <div className="selector-card col-s ml-2 mr-2" key={o.type}>
             <Button isTransparent className="mb-2" onClick={() => props.update(o.type)}>
               <img className="image-selector" alt="intermediate" src={props.state === o.type ? o.selected : o.unselected} />
             </Button>

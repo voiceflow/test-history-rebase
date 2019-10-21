@@ -1,8 +1,8 @@
 /* eslint-disable no-secrets/no-secrets */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Modal } from 'reactstrap';
 
+import Modal from '@/components/Modal';
 import UploadAlexa from '@/containers/Publish/Upload/Alexa';
 import { checkAmazonAccount, getVendors } from '@/ducks/account';
 import { ALEXA_STATES, publish, resetAlexaUpload } from '@/ducks/publish/alexa';

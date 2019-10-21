@@ -1,30 +1,37 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+
+import { styled } from '@/hocs';
 
 import Display from './Display';
 import Multimodal from './Multimodal';
 
-class Business extends Component {
-  render() {
-    const { page: propPage } = this.props;
+const VisualsPageContainer = styled.div`
+  display: flex;
+  height: 100%;
+  overflow-y: auto;
+`;
 
-    let page;
+const VisualsPageContent = styled.div`
+  min-height: 100%;
+  position: relative;
+  flex: 1 1;
+`;
 
-    if (propPage === 'display') {
-      page = <Display {...this.props} />;
-    } else {
-      page = <Multimodal {...this.props} />;
-    }
+function Visuals(props) {
+  const { page: propPage } = props;
 
-    return (
-      <div id="business">
-        <div className="business-page">{page}</div>
-      </div>
-    );
+  let page;
+  if (propPage === 'display') {
+    page = <Display {...props} />;
+  } else {
+    page = <Multimodal {...props} />;
   }
+
+  return (
+    <VisualsPageContainer>
+      <VisualsPageContent>{page}</VisualsPageContent>
+    </VisualsPageContainer>
+  );
 }
 
-const mapStateToProps = (state) => ({
-  skill_id: state.skills.skill.skill_kd,
-});
-export default connect(mapStateToProps)(Business);
+export default Visuals;

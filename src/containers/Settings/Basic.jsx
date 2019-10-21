@@ -1,8 +1,6 @@
-import axios from 'axios';
 import update from 'immutability-helper';
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import Toggle from 'react-toggle';
 import { Collapse, FormGroup, Input, Label } from 'reactstrap';
@@ -12,29 +10,34 @@ import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import SvgIcon from '@/components/SvgIcon';
 import Prompt from '@/components/Uploads/Prompt';
 import { setError } from '@/ducks/modal';
-import { updateVersionMerge } from '@/ducks/version';
+import { activeSkillSelector, getImportToken, saveSkillSettings, skillMetaSelector } from '@/ducks/skill';
+import { connect } from '@/hocs';
 
 class BasicSettings extends Component {
   constructor(props) {
     super(props);
-
-    const { name, inv_name, resume_prompt, repeat, restart } = props.skill;
+    const { invName, resumePrompt, repeat, restart } = props.meta;
+    const { name } = props.skill;
     // creates a copy of settings as local state and updates redux store when saved
     this.state = {
+      name,
       settings: {
-        name,
         repeat,
         restart,
-        inv_name,
-        resume_prompt: resume_prompt || { voice: 'Alexa', content: '' },
+        invName,
+        resumePrompt: resumePrompt || { voice: 'Alexa', content: '' },
       },
-      hideResume: !resume_prompt,
-      resumeCollapse: !!resume_prompt && !!resume_prompt.follow_content,
+      hideResume: !resumePrompt,
+      resumeCollapse: !!resumePrompt && !!resumePrompt.follow_content,
       importCollapse: false,
     };
 
     // compare against for diff
     this.baseline = JSON.stringify(this.state);
+  }
+
+  componentDidMount() {
+    this.props.getImportToken();
   }
 
   componentWillUnmount() {
@@ -61,10 +64,16 @@ class BasicSettings extends Component {
     });
   };
 
+  updateName = (e) => {
+    this.setState({
+      name: e.target.value,
+    });
+  };
+
   updateResumePrompt = (prompt) => {
     const { settings } = this.state;
     this.setState({
-      settings: update(settings, { resume_prompt: { $merge: prompt } }),
+      settings: update(settings, { resumePrompt: { $merge: prompt } }),
     });
   };
 
@@ -76,8 +85,8 @@ class BasicSettings extends Component {
   };
 
   saveSettings = async () => {
-    const { settings, hideResume, resumeCollapse } = this.state;
-    const { setError, updateVersionMerge, skill } = this.props;
+    const { name, settings, hideResume, resumeCollapse } = this.state;
+    const { setError, saveSkillSettings } = this.props;
 
     // Don't save if nothing has changed - save me some HTTP calls
     const stateString = JSON.stringify(this.state);
@@ -85,42 +94,38 @@ class BasicSettings extends Component {
     this.baseline = stateString;
 
     const tempSettings = _.cloneDeep(settings);
-
-    if (hideResume || !settings.resume_prompt.content) {
+    tempSettings.name = name;
+    if (hideResume || !settings.resumePrompt.content) {
       // if hidden (toggled off or no content) set to null
-      tempSettings.resume_prompt = null;
+      tempSettings.resumePrompt = null;
     } else if (!resumeCollapse) {
       // if collapsed remove all traces of follow content/voice
-      delete tempSettings.resume_prompt.follow_content;
-      delete tempSettings.resume_prompt.follow_voice;
+      delete tempSettings.resumePrompt.follow_content;
+      delete tempSettings.resumePrompt.follow_voice;
     }
 
     try {
-      await axios.patch(`/skill/${skill.skill_id}?settings=1`, tempSettings);
-      updateVersionMerge(tempSettings);
+      await saveSkillSettings(tempSettings);
     } catch (err) {
       setError('Settings Save Error');
     }
   };
 
   render() {
-    const { name, inv_name, repeat, restart, resume_prompt } = this.state.settings;
-    const { resumeCollapse, importCollapse, hideResume } = this.state;
+    const { meta } = this.props;
+    const { importToken } = meta;
+
+    const { name, resumeCollapse, importCollapse, hideResume, settings } = this.state;
+    const { invName, repeat, restart, resumePrompt } = settings;
+
     return (
-      <>
-        <div className="settings-content clearfix pb-11 no-bottom">
+      <div>
+        <div className="settings-content pb-11 no-bottom mt-4">
           <FormGroup>
             <Label>Project Name</Label>
-            <Input className="form-bg mb-3" name="name" value={name} onChange={this.handleUpdate} placeholder="Enter Project Name" />
+            <Input className="form-bg mb-3" name="name" value={name} onChange={this.updateName} placeholder="Enter Project Name" />
             <Label>Invocation Name</Label>
-            <Input
-              className="form-bg"
-              type="text"
-              name="inv_name"
-              placeholder="Enter invocation name"
-              value={inv_name}
-              onChange={this.handleUpdate}
-            />
+            <Input className="form-bg" type="text" name="invName" placeholder="Enter invocation name" value={invName} onChange={this.handleUpdate} />
           </FormGroup>
           <hr />
           <FormGroup>
@@ -172,7 +177,7 @@ class BasicSettings extends Component {
           </FormGroup>
           <hr />
         </div>
-        <div className="settings-content settings-basic clearfix no-bottom">
+        <div className="settings-content settings-basic no-bottom">
           <FormGroup>
             {/* <Label className="mb-1">Restart Every Session</Label> */}
             <div className="helper-text">
@@ -226,8 +231,8 @@ class BasicSettings extends Component {
                   <>
                     <Prompt
                       placeholder="Welcome back, would you like to resume?"
-                      voice={resume_prompt.voice}
-                      content={resume_prompt.content}
+                      voice={resumePrompt.voice}
+                      content={resumePrompt.content}
                       updatePrompt={this.updateResumePrompt}
                     />
                     <Collapse isOpen={resumeCollapse} className="pt-3">
@@ -237,8 +242,8 @@ class BasicSettings extends Component {
                         placeholder="Welcome back, would you like to resume?"
                         voice_id="follow_voice"
                         content_id="follow_content"
-                        voice={resume_prompt.follow_voice}
-                        content={resume_prompt.follow_content}
+                        voice={resumePrompt.follow_voice}
+                        content={resumePrompt.follow_content}
                         updatePrompt={this.updateResumePrompt}
                       />
                     </Collapse>
@@ -252,7 +257,7 @@ class BasicSettings extends Component {
             )}
           </FormGroup>
         </div>
-        <div className="settings-content settings-basic clearfix no-bottom">
+        <div className="settings-content settings-basic no-bottom">
           <FormGroup>
             <div className="helper-text">
               <div className="row space-between mb-3" onClick={() => this.setState({ importCollapse: !importCollapse })}>
@@ -266,28 +271,29 @@ class BasicSettings extends Component {
                     <img alt="info" src="/info.svg" />
                   </Tooltip>
                 </div>
-                <SvgIcon icon="arrowLeft" color="#BECEDC" style={{ transform: importCollapse ? 'rotate(90deg)' : 'rotate(-90deg)' }} />
+                <SvgIcon icon="arrowLeft" color="#BECEDC" size={13} style={{ transform: importCollapse ? 'rotate(90deg)' : 'rotate(-90deg)' }} />
               </div>
               <Collapse isOpen={importCollapse}>
-                <ClipBoard name="link" value={`${window.location.origin}/dashboard?import=${this.props.skill.importToken}`} id="shareLink" />
+                <ClipBoard name="link" value={`${window.location.origin}/dashboard?import=${importToken}`} id="shareLink" />
               </Collapse>
             </div>
             <hr />
           </FormGroup>
         </div>
-      </>
+      </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.account,
-  skill: state.skills.skill,
-});
+const mapStateToProps = {
+  meta: skillMetaSelector,
+  skill: activeSkillSelector,
+};
 
 const mapDispatchToProps = {
-  updateVersionMerge,
   setError,
+  saveSkillSettings,
+  getImportToken,
 };
 
 export default connect(

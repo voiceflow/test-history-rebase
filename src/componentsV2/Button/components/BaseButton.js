@@ -1,10 +1,10 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { flexCenterStyles } from '@/componentsV2/Flex';
 
 import { clickableStyles } from '../styles';
 
-const BaseButton = styled.button`
+export const baseButtonStyles = css`
   ${flexCenterStyles}
   ${clickableStyles}
 
@@ -16,6 +16,10 @@ const BaseButton = styled.button`
   &:active {
     outline: 0;
   }
+`;
+
+const BaseButton = styled.button`
+  ${baseButtonStyles}
 `;
 
 export default BaseButton;

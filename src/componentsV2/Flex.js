@@ -4,6 +4,18 @@ import styled, { css } from 'styled-components';
 export const flexStyles = css`
   display: ${({ inline }) => (inline ? 'inline-flex' : 'flex')};
   align-items: center;
+
+  ${({ column }) =>
+    column &&
+    css`
+      flex-direction: column;
+    `}
+
+  ${({ fullWidth }) =>
+    fullWidth &&
+    css`
+      width: 100%;
+    `}
 `;
 
 const Flex = styled.div`

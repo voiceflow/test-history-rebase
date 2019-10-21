@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-import alexa from './alexa';
-import google from './google';
+import alexa, * as Alexa from './alexa';
+import google, * as Google from './google';
 
 export default combineReducers({
-  alexa,
-  google,
+  [Alexa.PLATFORM]: alexa,
+  [Google.PLATFORM]: google,
 });

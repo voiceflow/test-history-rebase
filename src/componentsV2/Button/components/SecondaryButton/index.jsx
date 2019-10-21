@@ -4,12 +4,12 @@ import SvgIcon from '@/components/SvgIcon';
 
 import { Container, Icon } from './components';
 
-function SecondaryButton({ icon, children, ...props }, ref) {
+function SecondaryButton({ icon, children, iconProps, ...props }, ref) {
   return (
     <Container {...props} ref={ref}>
       {icon && (
         <Icon>
-          <SvgIcon icon={icon} />
+          <SvgIcon icon={icon} {...iconProps} />
         </Icon>
       )}
       {children}

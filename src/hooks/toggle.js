@@ -1,33 +1,25 @@
-import { useReducer, useState } from 'react';
+import React from 'react';
 
 export const useToggle = (defaultValue = false) => {
-  const [value, toggleValue] = useState(defaultValue);
+  const [value, setValue] = React.useState(defaultValue);
 
-  return [value, (input) => toggleValue((v) => (typeof input === 'boolean' ? input : !v))];
+  const toggle = React.useCallback((nextValue) => setValue((currValue) => (typeof nextValue === 'boolean' ? nextValue : !currValue)), []);
+
+  return [value, toggle];
 };
 
 export const useEnableDisable = (defaultValue = false) => {
-  const [value, toggleValue] = useState(defaultValue);
+  const [value, toggleValue] = React.useState(defaultValue);
+  const onEnable = React.useCallback(() => toggleValue(true), []);
+  const onDisable = React.useCallback(() => toggleValue(false), []);
 
-  return [value, () => toggleValue(true), () => toggleValue(false)];
+  return [value, onEnable, onDisable];
 };
 
-const reducer = (state, { type, payload }) => {
-  switch (type) {
-    case 'show':
-      return { ...state, opened: true, ...payload };
-    case 'hide':
-      return { ...state, opened: false, ...payload };
-    default:
-      return state;
-  }
-};
+export function useSwitch(defaultValue = null) {
+  const [{ isSet, value }, setState] = React.useState({ isSet: !!defaultValue, value: defaultValue });
+  const onChange = (nextValue) => setState({ isSet: true, value: nextValue });
+  const onUnset = () => isSet && setState((state) => ({ ...state, isSet: false }));
 
-const createDispatcher = (dispatch, type) => (payload = {}) =>
-  dispatch({ type, payload: payload.nativeEvent instanceof window.Event ? undefined : payload });
-
-export const useToggleReducer = (initialState = { opened: false }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  return [state, createDispatcher(dispatch, 'show'), createDispatcher(dispatch, 'hide')];
-};
+  return [isSet, value, onChange, onUnset];
+}

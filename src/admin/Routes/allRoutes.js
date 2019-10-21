@@ -25,7 +25,7 @@ class AllRoutes extends React.Component {
   render() {
     return (
       <div className="body">
-        <LoadingGate load={this.getUser} isLoaded={!getAuth() || this.props.user.id}>
+        <LoadingGate label="Session" load={this.getUser} isLoaded={!getAuth() || this.props.user.id}>
           {() => (this.isInitialized() ? <AuthenticatedRouter /> : <PublicRouter />)}
         </LoadingGate>
       </div>

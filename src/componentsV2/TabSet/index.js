@@ -1,15 +1,12 @@
 import styled from 'styled-components';
 
 import { FlexCenter } from '@/componentsV2/Flex';
-
-import Tab from './components/Tab';
-
-export { Tab };
+import * as Tab from '@/componentsV2/Tab';
 
 const TabSet = styled(FlexCenter)`
   height: 100%;
 
-  & ${Tab} {
+  & ${Tab.Container} {
     height: 100%;
   }
 `;

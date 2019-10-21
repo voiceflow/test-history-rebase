@@ -1,74 +1,37 @@
 import cn from 'classnames';
-import _ from 'lodash';
 import React, { Component } from 'react';
 import { Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 
+import { stopPropagation } from '@/utils/dom';
+
 class VoiceCards extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    dropdownOpen: false,
+  };
 
-    this.state = {
-      dropdownOpen: false,
-    };
+  onMouseEnter = () => this.setState({ dropdownOpen: true });
 
-    this.onMouseEnter = this.onMouseEnter.bind(this);
-    this.onMouseLeave = this.onMouseLeave.bind(this);
-  }
+  onMouseLeave = () => this.setState({ dropdownOpen: false });
 
-  toggleDropDown() {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen,
-    });
-  }
-
-  onMouseEnter() {
-    this.setState({
-      dropdownOpen: true,
-    });
-  }
-
-  onMouseLeave() {
-    this.setState({
-      dropdownOpen: false,
-    });
-  }
+  toggleDropdown = () => this.setState({ dropdownOpen: !this.state.dropdownOpen });
 
   render() {
+    const { dropdownOpen } = this.state;
+
     return (
-      <div key={this.props.id} className="product-card">
-        <Card
-          key={this.props.id}
-          onClick={() => {
-            !_.isNull(this.props.extension) ? this.props.onClick(this.props.id, this.props.extension) : this.props.onClick(this.props.id);
-          }}
-        >
+      <div className="product-card">
+        <Card onClick={this.props.onClick}>
           <div className="product-image" style={this.props.icon ? { backgroundImage: `url(${this.props.icon})` } : {}}>
             <div className="overlay">
               {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
-              <div className={cn('elispie', { open: this.state.dropdownOpen })} onMouseOver={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
-                <Dropdown isOpen={this.state.dropdownOpen} direction="down" toggle={() => this.setState({ dropdownOpen: !this.state.dropdownOpen })}>
+              <div className={cn('elispie', { open: dropdownOpen })} onMouseOver={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+                <Dropdown isOpen={dropdownOpen} direction="down" toggle={this.toggleDropdown}>
                   <DropdownToggle tag="div" className="elispie-button">
                     <i className="far fa-ellipsis-h" />
                   </DropdownToggle>
                   <DropdownMenu right>
-                    {this.props.copyLabel && (
-                      <DropdownItem
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          this.props.onCopy(this.props.id);
-                        }}
-                      >
-                        {this.props.copyLabel}
-                      </DropdownItem>
-                    )}
-                    <DropdownItem
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        this.props.onDelete(this.props.id, this.props.name);
-                      }}
-                    >
-                      {this.props.deleteLabel}
-                    </DropdownItem>
+                    {this.props.copyLabel && <DropdownItem onClick={stopPropagation(this.props.onCopy)}>{this.props.copyLabel}</DropdownItem>}
+                    <DropdownItem onClick={stopPropagation(this.props.onDelete)}>{this.props.deleteLabel}</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               </div>

@@ -1,7 +1,8 @@
 import React from 'react';
 import Intercom from 'react-intercom';
-import { connect } from 'react-redux';
 
+import { userSelector } from '@/ducks/account';
+import { connect } from '@/hocs';
 import { createIntercomUser } from '@/vendors/intercom';
 
 export function IntercomChat({ user }) {
@@ -10,8 +11,8 @@ export function IntercomChat({ user }) {
   return <Intercom appID="vw911b0m" {...intercomUser} />;
 }
 
-const mapStateToProps = (state) => ({
-  user: state.account,
-});
+const mapStateToProps = {
+  user: userSelector,
+};
 
 export default connect(mapStateToProps)(IntercomChat);

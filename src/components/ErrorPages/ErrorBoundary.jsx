@@ -1,9 +1,10 @@
 import LogRocket from 'logrocket';
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import SvgIcon from '@/components/SvgIcon';
+import { userSelector } from '@/ducks/account';
+import { connect } from '@/hocs';
 
 import { ErrorBoundaryWrapper, Page404Wrapper } from './styled';
 
@@ -33,15 +34,15 @@ class ErrorBoundary extends React.Component {
         <ErrorBoundaryWrapper>
           <Page404Wrapper>
             <div>
-              <SvgIcon icon="error500" height={128} width={128} />
+              <SvgIcon icon="error500" height={80} width={80} />
             </div>
 
-            <h4>Alexa, what happened?</h4>
+            <label className="mt-3 dark">Alexa, what happened?</label>
 
-            <p>Something went wrong. Try reloading the page</p>
+            <p className="mt-1 mb-2">Something went wrong, return to dashboard.</p>
 
             <Link to="/" className="btn btn-primary mt-3">
-              Go to Dashboard
+              Dashboard
             </Link>
           </Page404Wrapper>
         </ErrorBoundaryWrapper>
@@ -51,8 +52,8 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.account,
-});
+const mapStateToProps = {
+  user: userSelector,
+};
 
 export default connect(mapStateToProps)(ErrorBoundary);

@@ -319,7 +319,7 @@ class SeatsCheckout extends Component {
             <>
               {!source && !freeCoupon && (
                 <>
-                  <label>Address *</label>
+                  <label>Address</label>
                   <Select
                     classNamePrefix="select-box"
                     className="mb-3"
@@ -361,7 +361,7 @@ class SeatsCheckout extends Component {
                   ) : (
                     <>
                       <div className="space-between">
-                        <label>Payment Details *</label>
+                        <label>Payment Details</label>
                         <small
                           className="btn-link"
                           onClick={() =>
@@ -414,12 +414,12 @@ class SeatsCheckout extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  removeTrial: (team_id) => dispatch(removeTrial(team_id)),
-  setError: (err) => dispatch(setError(err)),
-  updateMembers: (members, options) => dispatch(updateMembers(members, options)),
-  createTeam: (data) => dispatch(createTeam(data)),
-});
+const mapDispatchToProps = {
+  removeTrial,
+  setError,
+  updateMembers,
+  createTeam,
+};
 
 export default StripeHandler(
   connect(

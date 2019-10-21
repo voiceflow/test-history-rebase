@@ -1,13 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
 import { User } from '@/components/User/User';
-import { ADMIN_HOST } from '@/config';
-import { logout } from '@/ducks/account';
+import Dropdown from '@/componentsV2/Dropdown';
+import Menu, { MenuItem } from '@/componentsV2/Menu';
+import { userSelector } from '@/ducks/account';
+import { logout } from '@/ducks/session';
+import { connect } from '@/hocs';
+import { preventDefault } from '@/utils/dom';
 
-export function UserMenu({ user, logout, history, preview }) {
+export function UserMenu({ user, logout, preview }) {
   if (preview) {
     <div className="title-group no-select">
       <span className="text-blue" id="preview-title">
@@ -16,39 +18,31 @@ export function UserMenu({ user, logout, history, preview }) {
     </div>;
   }
 
-  const userLogout = (e) => {
-    e.preventDefault();
-    logout().then(() => history.push('/login'));
-    return false;
-  };
-
   return (
-    <UncontrolledDropdown className="account-dropdown nav-child-item">
-      <DropdownToggle className="account hover" nav tag="div">
-        <User user={user} className="pointer" />
-      </DropdownToggle>
-      <DropdownMenu right className="arrow arrow-right no-select">
-        <DropdownItem header>{user.email}</DropdownItem>
-        <DropdownItem divider />
-        <Link className="dropdown-item" to="/account">
-          Account
-        </Link>
-        {user.admin >= 100 && (
-          <a className="dropdown-item" href={ADMIN_HOST}>
-            Admin
-          </a>
-        )}
-        <DropdownItem onClick={userLogout} tag="a" href="#">
-          Logout
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledDropdown>
+    <div className="account-dropdown nav-child-item">
+      <Dropdown
+        menu={
+          <Menu>
+            <MenuItem header>{user.email}</MenuItem>
+            <Link to="/account">
+              <MenuItem>Account</MenuItem>
+            </Link>
+            <MenuItem onClick={preventDefault(logout)} tag="a" href="#">
+              Logout
+            </MenuItem>
+          </Menu>
+        }
+        placement="bottom-end"
+      >
+        {(ref, onToggle) => <User user={user} onClick={onToggle} ref={ref} className="pointer" />}
+      </Dropdown>
+    </div>
   );
 }
 
-const mapStateToProps = (state) => ({
-  user: state.account,
-});
+const mapStateToProps = {
+  user: userSelector,
+};
 
 const mapDispatchToProps = {
   logout,

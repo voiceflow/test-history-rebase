@@ -45,7 +45,7 @@ export default ({ plan, upgrade, delay, team, downgrade }) => {
           ) : (
             upgrade && (
               <Button isPrimary className="mt-2" onClick={() => upgrade(pricing)}>
-                Upgrade Plan
+                Upgrade
               </Button>
             )
           )}

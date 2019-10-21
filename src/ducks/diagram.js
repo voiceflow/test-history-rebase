@@ -1,180 +1,252 @@
-import axios from 'axios';
-import update from 'immutability-helper';
-import _ from 'lodash';
+import { createSelector } from 'reselect';
 
-import { setConfirm, setError } from '@/ducks/modal';
+import client from '@/client';
+import linkAdapter from '@/client/adapters/creator/link';
+import nodeAdapter from '@/client/adapters/creator/node';
+import { BlockType } from '@/constants';
+import { getAllNormalizedByKeys } from '@/utils/normalized';
 
-export const FETCH_DIAGRAMS_BEGIN = 'FETCH_DIAGRAMS_BEGIN';
-export const FETCH_DIAGRAMS_SUCCESS = 'FETCH_DIAGRAMS_SUCCESS';
-export const FETCH_DIAGRAMS_FAILURE = 'FETCH_DIAGRAMS_FAILURE';
-// const FETCH_DIAGRAM = 'FETCH_DIAGRAM'
-export const ON_FLOW_RENAME = 'ON_FLOW_RENAME';
-export const UPDATE_DIAGRAM_ROOT = 'UPDATE_DIAGRAM_ROOT';
-export const APPEND_DIAGRAMS = 'APPEND_DIAGRAMS';
-export const UPDATE_DIAGRAMS = 'UPDATE_DIAGRAMS';
-export const UPDATE_DIAGRAM = 'UPDATE_DIAGRAM';
+import { allLinksSelector, allNodeDataSelector, creatorDiagramIDSelector, creatorStateSelector } from './creator';
+import { lastRealtimeTimestampSelector } from './realtime';
+import { goToDiagram, goToRootDiagram } from './router';
+import { activeDiagramIDSelector, activePlatformSelector, activeSkillIDSelector } from './skill';
+import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from './utils/crud';
+import { loadVariableSetForDiagram, variablesByDiagramIDSelector } from './variableSet';
+import { viewportByIDSelector } from './viewport';
 
-const initialState = {
-  diagrams: [],
-  loading: false,
-  error: null,
+export const STATE_KEY = 'diagram';
+
+const DEFAULT_DIAGRAM = {
+  offsetX: 0,
+  offsetY: 0,
+  zoom: 100,
+  gridSize: 0,
+  links: [],
+  nodes: [
+    {
+      id: '09c59c5e-579c-49b2-a59b-125b6d8924b3',
+      type: 'default',
+      selected: false,
+      x: 360,
+      y: 120,
+      extras: {
+        audio: '',
+        audioText: '',
+        audioVoice: '',
+        preview: '',
+        previewText: '',
+        previewVoice: '',
+        prompt: '',
+        promptText: '',
+        promptVoice: '',
+        type: 'story',
+      },
+      ports: [
+        {
+          id: '7b3ce0a0-5cd2-4b46-a3c5-67909add19bc',
+          type: 'default',
+          selected: false,
+          name: '76579fee-85d2-4685-82b8-bb7dde6f5b79',
+          parentNode: '09c59c5e-579c-49b2-a59b-125b6d8924b3',
+          links: [],
+          maximumLinks: 1,
+          in: false,
+          label: ' ',
+        },
+      ],
+      name: 'Start',
+      color: '#FBE9E7',
+    },
+  ],
 };
 
-export default function diagramReducer(state = initialState, action) {
-  switch (action.type) {
-    case UPDATE_DIAGRAM_ROOT:
-      return {
-        ...state,
-        root_id: action.payload.root_id,
-      };
-    case APPEND_DIAGRAMS:
-      return {
-        ...state,
-        diagrams: [...state.diagrams, action.payload.diagrams],
-      };
-    case UPDATE_DIAGRAMS:
-      return {
-        ...state,
-        diagrams: update(state.diagrams, { $set: action.payload.diagrams }),
-      };
-    case FETCH_DIAGRAMS_BEGIN:
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
-    case FETCH_DIAGRAMS_SUCCESS:
-      return {
-        ...state,
-        diagrams: action.payload.diagrams,
-        loading: false,
-      };
-    case FETCH_DIAGRAMS_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload.error,
-        diagrams: [],
-      };
-    case ON_FLOW_RENAME:
-      // eslint-disable-next-line no-case-declarations
-      const idx = state.diagrams.findIndex((d) => d.id === action.payload.flow_id);
-      return {
-        ...state,
-        diagrams: update(state.diagrams, { [idx]: { name: { $set: action.payload.name } } }),
-      };
-    default:
-      return state;
+const diagramReducer = createCRUDReducer(STATE_KEY);
+
+export default diagramReducer;
+
+// selectors
+
+export const {
+  root: rootDiagramsSelector,
+  all: allDiagramsSelector,
+  byID: diagramByIDSelector,
+  findByIDs: diagramsByIDsSelector,
+  has: hasDiagramsSelector,
+  key: allDiagramIDsSelector,
+} = createCRUDSelectors(STATE_KEY);
+
+export const flowStructureSelector = createSelector(
+  rootDiagramsSelector,
+  ({ byKey, allKeys }) => (diagramID) => {
+    const flows = allKeys.reduce((acc, key) => Object.assign(acc, { [key]: { id: byKey[key].id, name: byKey[key].name } }), {});
+
+    allKeys.forEach((id) => {
+      flows[id].children = byKey[id].subDiagrams.map((subDiagramID) => flows[subDiagramID]).filter(Boolean);
+      flows[id].parents = allKeys
+        .filter((subDiagramID) => byKey[subDiagramID].subDiagrams.includes(id))
+        .map((subDiagramID) => flows[subDiagramID])
+        .filter(Boolean);
+    });
+
+    return flows[diagramID];
   }
-}
+);
 
-export const fetchDiagramsBegin = () => ({
-  type: FETCH_DIAGRAMS_BEGIN,
-});
+// action creators
 
-export const fetchDiagramsSuccess = (diagrams) => ({
-  type: FETCH_DIAGRAMS_SUCCESS,
-  payload: { diagrams },
-});
+export const {
+  add: addDiagram,
+  addMany: addDiagrams,
+  update: updateDiagram,
+  remove: removeDiagram,
+  replace: replaceDiagrams,
+} = createCRUDActionCreators(STATE_KEY);
 
-export const fetchDiagramsFailure = (error) => ({
-  type: FETCH_DIAGRAMS_FAILURE,
-  payload: { error },
-});
+export const updateDiagramViewport = (diagramID, x, y, zoom) => updateDiagram(diagramID, { x, y, zoom }, true);
 
-export const onFlowRename = (flow_id, name) => ({
-  type: ON_FLOW_RENAME,
-  payload: { flow_id, name },
-});
+export const replaceSubDiagrams = (diagramID, subDiagrams) => updateDiagram(diagramID, { subDiagrams }, true);
 
-export const updateDiagramRoot = (root_id) => ({
-  type: UPDATE_DIAGRAM_ROOT,
-  payload: { root_id },
-});
+// side effects
 
-export const appendDiagrams = (diagrams) => ({
-  type: APPEND_DIAGRAMS,
-  payload: { diagrams },
-});
+export const loadDiagramsForSkill = (skillID) => async (dispatch) => {
+  const diagrams = await client.skill.findDiagrams(skillID);
 
-export const updateDiagrams = (diagrams) => ({
-  type: UPDATE_DIAGRAMS,
-  payload: { diagrams },
-});
+  dispatch(replaceDiagrams(diagrams));
 
-export const fetchDiagrams = (skill_id) => {
-  return async (dispatch) => {
-    dispatch(fetchDiagramsBegin());
-
-    return axios
-      .get(`/skill/${skill_id}/diagrams`)
-      .then((res) => {
-        const diagrams = res.data.map((flow) => {
-          try {
-            return {
-              id: flow.id,
-              name: flow.name,
-              sub_diagrams: JSON.parse(flow.sub_diagrams),
-              module_id: flow.module_id,
-            };
-          } catch (err) {
-            return {
-              id: flow.id,
-              name: flow.name,
-            };
-          }
-        });
-
-        if (diagrams.length === 0) throw new Error('No Diagrams Associated With this Skill');
-
-        let root = _.find(diagrams, ['name', 'ROOT']);
-        if (!root) {
-          diagrams[0].name = 'ROOT';
-          root = diagrams[0];
-          dispatch(renameDiagram(root.id, 'ROOT'));
-        }
-        dispatch(updateDiagramRoot(root.id));
-        dispatch(fetchDiagramsSuccess(diagrams));
-      })
-      .catch((err) => {
-        console.error(err.response);
-        dispatch(fetchDiagramsFailure('Could Not Retrieve Project Diagrams'));
-      });
-  };
+  await Promise.all(diagrams.map((diagram) => dispatch(loadVariableSetForDiagram(diagram.id))));
 };
 
-export function renameDiagram(flow_id, rawName) {
-  return async (dispatch, getState) => {
-    const name = rawName.trim();
+export const loadUpdatedDiagram = (diagramID, name) => async (dispatch) => {
+  const diagram = await client.diagram.get(diagramID);
 
-    if (name === 'ROOT') {
-      dispatch(setError('ROOT/HOME is a reserved flow name'));
-      return;
-    }
-    const index = getState().diagrams.diagrams.findIndex((d) => d.id === flow_id);
-    if (index !== -1) {
-      const flow = getState().diagrams.diagrams.find((d) => d.name === name);
-      if (flow && flow.name !== name) {
-        return dispatch(
-          setConfirm({
-            text: 'Flow names must be unique',
-            confirm: () =>
-              this.setState({
-                confirm: null,
-              }),
-          })
-        );
+  dispatch(addDiagram(diagramID, { ...diagram, name }));
+  dispatch(loadVariableSetForDiagram(diagramID));
+};
+
+export const updateSubDiagrams = (diagramID) => async (dispatch, getState) => {
+  const state = getState();
+  const targetDiagramID = diagramID || activeDiagramIDSelector(state);
+  const platform = activePlatformSelector(state);
+  const allNodeData = allNodeDataSelector(state);
+
+  const subDiagramIDs = Array.from(
+    allNodeData.reduce((acc, data) => {
+      if (data.type === BlockType.FLOW && data.diagramID) {
+        acc.add(data.diagramID);
+      } else if (data.type === BlockType.COMMAND && data[platform].diagramID) {
+        acc.add(data[platform].diagramID);
       }
-      try {
-        await axios.post(`/diagram/${flow_id}/name`, {
-          name,
-        });
-        dispatch(onFlowRename(flow_id, name));
-      } catch (err) {
-        console.error(err);
-        dispatch(setError('unable to save new flow name'));
-      }
-      Promise.resolve();
-    }
+
+      return acc;
+    }, new Set())
+  );
+
+  dispatch(replaceSubDiagrams(targetDiagramID, subDiagramIDs));
+
+  return subDiagramIDs;
+};
+
+export const saveDiagram = (skillID, diagramID, data) => async (dispatch, getState) => {
+  const state = getState();
+  const lastTimestamp = lastRealtimeTimestampSelector(state);
+  const diagram = diagramByIDSelector(state)(diagramID);
+  const variables = variablesByDiagramIDSelector(state)(diagramID);
+
+  const subDiagramIDs = await dispatch(updateSubDiagrams(diagramID));
+
+  const diagramRequest = {
+    skill: skillID,
+    sub_diagrams: JSON.stringify(subDiagramIDs),
+    title: diagram.name,
+    variables,
+    data,
+    ...(lastTimestamp && { lastTimestamp }),
   };
-}
+
+  await client.diagram.update(diagramRequest);
+};
+
+export const saveActiveDiagram = () => async (dispatch, getState) => {
+  const state = getState();
+  const skillID = activeSkillIDSelector(state);
+  const diagramID = creatorDiagramIDSelector(state);
+
+  if (!diagramID) {
+    throw new Error('No Active Diagram');
+  }
+
+  const viewport = viewportByIDSelector(state)(diagramID);
+  const platform = activePlatformSelector(state);
+  const { rootNodes: rootNodeIDs, nodes, ports, data, linksByPortID } = creatorStateSelector(state);
+  const links = allLinksSelector(state);
+
+  const rootNodes = getAllNormalizedByKeys(nodes, rootNodeIDs);
+
+  const updatedData = {
+    id: diagramID,
+    offsetX: viewport.x,
+    offsetY: viewport.y,
+    zoom: viewport.zoom,
+    links: linkAdapter.mapToDB(links),
+    nodes: rootNodes.map((node) => nodeAdapter.toDB(node, { nodes, ports, data, linksByPortID, platform })),
+  };
+
+  await dispatch(saveDiagram(skillID, diagramID, JSON.stringify(updatedData)));
+};
+
+export const createDiagram = (diagramID, name) => async (dispatch, getState) => {
+  const skillID = activeSkillIDSelector(getState());
+  const data = JSON.stringify(DEFAULT_DIAGRAM);
+
+  await client.diagram.create({
+    id: diagramID,
+    data,
+    title: name,
+    variables: [],
+    skill: skillID,
+  });
+  await dispatch(loadUpdatedDiagram(diagramID, name));
+};
+
+export const copyDiagram = (diagramID) => async (dispatch, getState) => {
+  const state = getState();
+  const diagram = diagramByIDSelector(state)(diagramID);
+  const allDiagrams = allDiagramsSelector(state);
+  const skillID = activeSkillIDSelector(state);
+
+  const exists = (name) => allDiagrams.find((d) => d.name === name);
+
+  let newFlowName = `${diagram.name} (COPY)`;
+  let index = 1;
+  while (exists(newFlowName)) {
+    newFlowName = `${diagram.name} (COPY ${index})`;
+    index++;
+  }
+
+  const newDiagramID = await client.diagram.copy(diagramID, newFlowName);
+
+  await dispatch(loadDiagramsForSkill(skillID));
+  await dispatch(goToDiagram(newDiagramID));
+};
+
+export const deleteDiagram = (diagramID) => async (dispatch, getState) => {
+  const state = getState();
+  const skillID = activeSkillIDSelector(state);
+
+  await client.diagram.delete(diagramID);
+  await dispatch(loadDiagramsForSkill(skillID));
+
+  const activeDiagramID = activeDiagramIDSelector(state);
+  if (diagramID === activeDiagramID) {
+    await dispatch(goToRootDiagram());
+  }
+};
+
+export const renameDiagram = (diagramID, name) => async (dispatch, getState) => {
+  const skillID = activeSkillIDSelector(getState());
+  dispatch(updateDiagram(diagramID, { name }, true));
+
+  await client.diagram.rename(diagramID, name);
+
+  dispatch(loadDiagramsForSkill(skillID));
+};

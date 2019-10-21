@@ -1,13 +1,29 @@
+/* eslint-disable react/display-name */
 import React from 'react';
+import { setDisplayName, wrapDisplayName } from 'recompose';
 
-// eslint-disable-next-line import/prefer-default-export
-export const withContext = (Context, key) => (Component) => {
-  const WrappedComponent = (props) => {
-    const value = React.useContext(Context);
+export const withContext = (Context, key) => (Component) =>
+  setDisplayName(wrapDisplayName(Component, 'withContext'))(
+    React.forwardRef((props, ref) => {
+      const value = React.useContext(Context);
 
-    return <Component {...props} {...{ [key]: value }} />;
-  };
-  WrappedComponent.displayName = `withContext(${Component.displayName || Component.name})`;
+      return <Component {...props} {...{ [key]: value }} ref={ref} />;
+    })
+  );
 
-  return WrappedComponent;
-};
+/**
+ * Static Contexts give a component access to all the context's API/state
+ * manipulation functions without any effect by state
+ *
+ * @param {React.Context} Context
+ * @param {string} key
+ * @returns {Function}
+ */
+export const withStaticContext = (Context, key) => (Component) =>
+  setDisplayName(wrapDisplayName(Component, 'withStaticContext'))(
+    React.forwardRef((props, ref) => {
+      const value = React.useContext(Context);
+
+      return React.useMemo(() => <Component {...props} {...{ [key]: value }} ref={ref} />, []);
+    })
+  );

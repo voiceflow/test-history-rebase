@@ -16,8 +16,6 @@ export default function DashboardHeader({
   setShowUpdateBubble,
   product_updates,
   new_product_updates,
-  showInfo,
-  setShowInfo,
   teams,
   team_id,
   team,
@@ -48,8 +46,6 @@ export default function DashboardHeader({
           setShowUpdateBubble={setShowUpdateBubble}
           product_updates={product_updates}
           new_product_updates={new_product_updates}
-          showInfo={showInfo}
-          setShowInfo={setShowInfo}
           renderUpdatesButton={renderUpdatesButton}
         />
       )}

@@ -13,7 +13,7 @@ export const AdminWrapper = styled.div`
   font-family: 'Open Sans', sans-serif;
   letter-spacing: 0.1px;
   background-color: ${(props) => props.theme.palette.background.default};
-  transition: background-color 0.2s ease;
+  transition: background-color 0.15s ease;
   height: 100%;
 
   overflow: hidden;

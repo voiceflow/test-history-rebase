@@ -236,7 +236,7 @@ class Skill extends Component {
             <div className="mb-4">
               <Label className="publish-label">Display Name</Label>
               <FormTextInput name="name" type="text" placeholder="Storyflow - Interactive Story Adventures" />
-              <FormFeedback>Uh oh! Looks like there is an issue with your email. Please input a correct email.</FormFeedback>
+              <FormFeedback>Uh oh! Looks like there is an issue with your email address. Please provide a correct email address.</FormFeedback>
             </div>
           </FormGroup>
 

@@ -39,7 +39,7 @@ export const LANGUAGES = {
   'fr-FR': 'French (FR)',
   'it-IT': 'Italian (IT)',
   'ja-JP': 'Japanese (JP)',
-  'pt-BR': 'Portugese (BR)',
+  'pt-BR': 'Portuguese (BR)',
   'hi-IN': 'Hindi (IN)',
   // english: 'English (USA)',
   // english_gb: 'English (UK)',

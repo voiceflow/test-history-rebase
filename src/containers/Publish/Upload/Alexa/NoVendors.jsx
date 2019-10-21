@@ -10,7 +10,7 @@ import { PopUpLink, PopUpText, PopupButtonSection, UploadPromptWrapper } from '.
 const NoVendors = ({ resetAlexaUpload }) => (
   <UploadPromptWrapper>
     <img src="/Support.svg" alt="" />
-    <PopUpText>Looks like you dont have a developer account, create one to get started!</PopUpText>
+    <PopUpText>Looks like you don't have a developer account, create one to get started!</PopUpText>
     <PopupButtonSection>
       <PopUpLink href="https://developer.amazon.com/login.html" target="_blank" rel="noopener noreferrer" onClick={resetAlexaUpload}>
         <Button variant="primary">Developer Sign Up</Button>

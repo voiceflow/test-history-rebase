@@ -7,7 +7,7 @@ export const repromptAdapter = {
   fromDB: (reprompt) =>
     reprompt
       ? {
-          type: reprompt.type,
+          type: reprompt.type || (reprompt.voice === 'audio' ? REPROMPT_TYPE.AUDIO : REPROMPT_TYPE.TEXT),
           audio: reprompt.type === REPROMPT_TYPE.TEXT ? null : reprompt.content,
           content: reprompt.type === REPROMPT_TYPE.TEXT ? reprompt.content : '',
           voice: reprompt.type === REPROMPT_TYPE.TEXT ? reprompt.voice : null,

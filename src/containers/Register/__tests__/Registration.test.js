@@ -1,7 +1,8 @@
-import axios from 'axios';
+import * as ConnectedReactRouter from 'connected-react-router';
 import { shallow } from 'enzyme/build';
 import React from 'react';
 
+import fetch from '@/client/fetch';
 import { facebookLogin, googleLogin } from '@/ducks/session';
 
 import { LoginForm } from '../LoginForm';
@@ -12,8 +13,9 @@ const TEST_EMAIL = 'tests@getvoiceflow.com';
 require('dotenv').config({ path: './.env.test' });
 
 jest.mock('react-ga');
-jest.mock('axios');
+jest.mock('@/client/fetch');
 jest.mock('universal-cookie');
+jest.mock('connected-react-router');
 const mockDispatch = jest.fn();
 const mockGetState = jest.fn(() => ({ router: { location: 'test location' }, session: { tabID: 'foo ' } }));
 
@@ -77,17 +79,19 @@ describe('Onboarding', () => {
     }, 500);
   });
   it('tests the google login functionality', async () => {
-    axios.put.mockResolvedValue({ data: { user: { id: 'test id' } } });
+    ConnectedReactRouter.getLocation.mockResolvedValue('foo');
+    fetch.put.mockResolvedValue({ user: { id: 'test id' } });
     await googleLogin()(mockDispatch, mockGetState);
-    expect(axios.put.mock.calls.length).toBe(1);
+    expect(fetch.put.mock.calls.length).toBe(1);
     expect(mockGetState.mock.calls.length).toBe(1);
-    expect(mockDispatch.mock.calls.length).toBe(2);
+    expect(mockDispatch.mock.calls.length).toBe(3);
   });
   it('tests the facebook login functionality', async () => {
-    axios.put.mockResolvedValue({ data: { user: { id: 'test id' } } });
+    ConnectedReactRouter.getLocation.mockResolvedValue('foo');
+    fetch.put.mockResolvedValue({ user: { id: 'test id' } });
     await facebookLogin()(mockDispatch, mockGetState);
-    expect(axios.put.mock.calls.length).toBe(1);
+    expect(fetch.put.mock.calls.length).toBe(1);
     expect(mockGetState.mock.calls.length).toBe(1);
-    expect(mockDispatch.mock.calls.length).toBe(2);
+    expect(mockDispatch.mock.calls.length).toBe(3);
   });
 });

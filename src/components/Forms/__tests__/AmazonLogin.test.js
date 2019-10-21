@@ -2,11 +2,11 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 
-import AmazonLogin from '../AmazonLogin';
+import { AmazonLoginButton } from '../AmazonLogin';
 
 describe('Amazon Login Test', () => {
   it('render empty card', () => {
-    const component = shallow(<AmazonLogin />);
+    const component = shallow(<AmazonLoginButton />);
     expect(toJson(component)).toMatchSnapshot();
   });
 });

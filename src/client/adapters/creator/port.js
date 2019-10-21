@@ -1,10 +1,15 @@
 import { BlockType, PlatformType } from '@/constants';
+import PortLabels from '@/containers/CanvasV2/managers/labels';
 
 import { createAdapter } from '../utils';
 
 const getAlternativePlatform = (platform) => (platform === PlatformType.ALEXA ? PlatformType.GOOGLE : PlatformType.ALEXA);
 
-const getPortLabel = (port, index) => {
+const getPortLabel = (port, type, index, platform) => {
+  if (type !== BlockType.STREAM) {
+    return PortLabels[type]?.(port, index, platform);
+  }
+
   if (port.platform !== PlatformType.ALEXA) {
     return null;
   }
@@ -35,7 +40,7 @@ const portAdapter = createAdapter(
     parentNode: appPort.nodeID,
     links: linksByPortID[appPort.id] || [],
     in: !!isInPort,
-    label: (!isInPort && (getPortLabel(appPort, index) || appPort.label)) || ' ',
+    label: (!isInPort && (getPortLabel(appPort, type, index, platform) || appPort.label)) || ' ',
     ...(appPort.platform && { hidden: appPort.platform !== platform }),
   })
 );

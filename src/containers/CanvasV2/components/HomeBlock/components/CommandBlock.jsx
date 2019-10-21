@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { BlockType } from '@/constants';
+import CombinedBlockItem from '@/containers/CanvasV2/components/CombinedBlock/components/CombinedBlockItem';
 import EnterFlow from '@/containers/CanvasV2/components/EnterFlow';
 import NestedBlock from '@/containers/CanvasV2/components/NestedBlock';
 import PortLabel from '@/containers/CanvasV2/components/Port/components/PortLabel';
@@ -17,6 +19,9 @@ const CommandBlock = ({ data, node, platform, diagram: getDiagram }) => {
   const isTesting = React.useContext(TestingModeContext);
   const contextMenu = React.useContext(ContextMenuContext);
   const platformData = data[platform];
+
+  if (node.type !== BlockType.COMMAND) return <CombinedBlockItem />;
+
   const diagram = platformData.diagramID && getDiagram(platformData.diagramID);
 
   const openContextMenu = (event) => !isTesting && contextMenu.onOpen(event, ContextMenuTarget.NODE, node.id);

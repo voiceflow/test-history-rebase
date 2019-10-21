@@ -6,6 +6,7 @@ const DeprecatedManager = {
   type: BlockType.DEPRECATED,
   label: 'Deprecated',
   editor: DeprecatedEditor,
+  icon: 'warning',
   mergeTerminator: true,
   factory: () => ({
     node: {

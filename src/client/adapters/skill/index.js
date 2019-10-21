@@ -29,7 +29,7 @@ const skillAdapter = createAdapter(
     projectID: project_id,
     rootDiagramID: diagram,
     diagramID: diagram,
-    platform,
+    platform: platform || PlatformType.ALEXA,
     publishInfo: {
       [PlatformType.GOOGLE]: {
         ...google_publish_info,

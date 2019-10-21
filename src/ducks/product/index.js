@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import client from '@/client';
 import { NEW_PRODUCT_ID } from '@/constants';
 import { activeLocalesSelector, activeSkillIDSelector } from '@/ducks/skill';
@@ -70,9 +68,7 @@ export const uploadProduct = (productID) => async (dispatch, getState) => {
   const skillID = activeSkillIDSelector(state);
 
   if (product.id === NEW_PRODUCT_ID) {
-    const releaseDate = moment().format('YYYY-MM-DD');
-
-    await client.product.create({ ...product, releaseDate, skill: skillID });
+    await client.product.create({ ...product, skill: skillID });
   } else {
     await client.product.update({ ...product, skill: skillID });
   }

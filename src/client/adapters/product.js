@@ -21,7 +21,6 @@ const productAdapter = createAdapter(
       subscriptionInformation = {},
     },
   }) => {
-    const { marketPlaces, releaseDate } = parseMarketPlaces(publishingInformation.pricing, publishingInformation.distributionCountries);
     const { summary, smallIconUri, largeIconUri, description, phrases, keywords, cardDescription, purchasePrompt, privacyPolicyUrl } = parseLocals(
       publishingInformation.locales,
       privacyAndCompliance
@@ -34,9 +33,8 @@ const productAdapter = createAdapter(
       type,
       version,
       referenceName,
-      releaseDate,
       testingInstructions,
-      marketPlaces,
+      marketPlaces: parseMarketPlaces(publishingInformation.pricing, publishingInformation.distributionCountries),
       taxCategory: publishingInformation.taxInformation.category,
       locales: Object.keys(publishingInformation.locales),
       smallIconUri,
@@ -69,7 +67,6 @@ const productAdapter = createAdapter(
     trialPeriodDays,
     taxCategory,
 
-    releaseDate,
     marketPlaces,
 
     locales,
@@ -100,7 +97,7 @@ const productAdapter = createAdapter(
       }),
       publishingInformation: {
         distributionCountries: getDistributionCountries(marketPlaces),
-        pricing: formatMarketPlaces(marketPlaces, releaseDate),
+        pricing: formatMarketPlaces(marketPlaces),
         taxInformation: {
           category: taxCategory,
         },

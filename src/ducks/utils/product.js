@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { ProductType } from '@/constants';
 import { MarketPlaceAvailability } from '@/services/LocaleMap';
 
@@ -8,42 +10,41 @@ export const getDistributionCountries = (marketPlaces) =>
     .map((place) => marketPlaces[place].countries)
     .reduce((a, b) => a.concat(b), []);
 
-export const formatMarketPlaces = (marketPlaces, releaseDate) =>
-  Object.keys(marketPlaces).reduce((acc, place) => {
-    return {
+export const formatMarketPlaces = (marketPlaces) => {
+  // find any valid release date
+  const generalReleaseDate = Object.values(marketPlaces).find((place) => !!place?.releaseDate)?.releaseDate || moment().format('YYYY-MM-DD');
+
+  return Object.keys(marketPlaces).reduce(
+    (acc, place) => ({
       ...acc,
       [place]: {
-        releaseDate,
+        releaseDate: marketPlaces[place].releaseDate || generalReleaseDate,
         defaultPriceListing: {
           price: marketPlaces[place].price,
           currency: marketPlaces[place].currency,
         },
       },
-    };
-  }, {});
+    }),
+    {}
+  );
+};
 
 // db to app
 
-export const parseMarketPlaces = (allPlaces, distributionCountries) => {
-  let releaseDate;
-
-  return {
-    marketPlaces: Object.keys(allPlaces).reduce((acc, place) => {
-      releaseDate = allPlaces[place].releaseDate;
-
-      return {
-        ...acc,
-        [place]: {
-          ...allPlaces[place].defaultPriceListing,
-          countries: MarketPlaceAvailability.find(({ marketPlace }) => marketPlace === place).countries.filter((country) =>
-            distributionCountries.includes(country)
-          ),
-        },
-      };
-    }, {}),
-    releaseDate,
-  };
-};
+export const parseMarketPlaces = (allPlaces, distributionCountries) =>
+  Object.keys(allPlaces).reduce(
+    (acc, place) => ({
+      ...acc,
+      [place]: {
+        ...allPlaces[place].defaultPriceListing,
+        releaseDate: allPlaces[place].releaseDate,
+        countries: MarketPlaceAvailability.find(({ marketPlace }) => marketPlace === place).countries.filter((country) =>
+          distributionCountries.includes(country)
+        ),
+      },
+    }),
+    {}
+  );
 
 export const parseLocals = (locales, privacyAndCompliance) =>
   Object.keys(locales).reduce(

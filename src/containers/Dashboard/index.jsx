@@ -18,6 +18,7 @@ import DragLayer from '@/components/DragLayer';
 import LoadingModal from '@/components/Modal/LoadingModal';
 import UpdatesModal from '@/components/Modal/UpdatesModal';
 import { FullSpinner } from '@/components/Spinner';
+import IconButton from '@/componentsV2/IconButton';
 import { ScrollContextProvider } from '@/contexts';
 import { unnormalize } from '@/ducks/_normalize';
 import {
@@ -368,6 +369,7 @@ export const DashBoard = (props) => {
                             disableDragging={!!filter}
                           />
                         ))}
+
                         <DragLayer withMemo>
                           {(item) => {
                             if (item.dragType === 'dashboard-list') {
@@ -376,15 +378,15 @@ export const DashBoard = (props) => {
                             return <ListItem {...item} />;
                           }}
                         </DragLayer>
+
                         <div className="main-list-add">
                           <Tooltip distance={10} title="Add new list" position="bottom">
-                            <RoundButton
-                              variant="shadow"
+                            <IconButton
                               icon="addStep"
                               onClick={() => {
                                 props.addBoard(props.team_id);
                               }}
-                              imgSize={13}
+                              size={13}
                             />
                           </Tooltip>
                         </div>

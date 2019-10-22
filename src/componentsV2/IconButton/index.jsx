@@ -11,12 +11,12 @@ const ICON_BUTTON_CONTAINERS = {
   action: ActionContainer,
 };
 
-function IconButton({ icon, ...props }) {
+function IconButton({ icon, size, ...props }) {
   const IconButtonContainer = ICON_BUTTON_CONTAINERS[props.variant] || Container;
 
   return (
     <IconButtonContainer {...props}>
-      <SvgIcon icon={icon} color="currentColor" />
+      <SvgIcon icon={icon} color="currentColor" size={size} />
     </IconButtonContainer>
   );
 }

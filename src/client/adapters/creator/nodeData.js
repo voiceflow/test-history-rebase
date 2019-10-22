@@ -13,12 +13,27 @@ const nodeDataAdapter = createSimpleAdapter(
       type = BlockType.DEPRECATED;
     }
 
+    // EMERGENCY FIX - LOOK FOR ALTERNATE SOLUTION IN FUTURE
+    try {
+      if (Array.isArray(dbData.choices) && Array.isArray(dbData.inputs) && dbData.type === BlockType.DEPRECATED) {
+        type = BlockType.CHOICE;
+      } else if (dbData.slot_type && dbData.slot_inputs && dbData.type === BlockType.DEPRECATED) {
+        type = BlockType.CAPTURE;
+      } else if (Array.isArray(dbData.alexa?.choices) && Array.isArray(dbData.google?.choices) && dbData.type === BlockType.DEPRECATED) {
+        type = BlockType.INTERACTION;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    // END EMERGENCY FIX
+
     let data = {};
     try {
       data = blockAdapter[type].fromDB(dbData);
     } catch (err) {
-      type = BlockType.DEPRECATED;
       data = dbData;
+      data.deprecatedType = type;
+      type = BlockType.DEPRECATED;
     }
 
     return {

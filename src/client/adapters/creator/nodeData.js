@@ -35,7 +35,6 @@ const nodeDataAdapter = createSimpleAdapter(
 
     let data = {};
     try {
-      // if (type === BlockType.SPEAK) throw new Error();
       data = blockAdapter[type].fromDB(dbData);
     } catch (err) {
       data = dbData;

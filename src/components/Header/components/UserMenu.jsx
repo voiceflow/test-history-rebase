@@ -6,16 +6,30 @@ import Dropdown from '@/componentsV2/Dropdown';
 import Menu, { MenuItem } from '@/componentsV2/Menu';
 import { userSelector } from '@/ducks/account';
 import { logout } from '@/ducks/session';
-import { connect } from '@/hocs';
+import { connect, styled } from '@/hocs';
 import { preventDefault } from '@/utils/dom';
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: '#132144';
+  &:focus,
+  &:hover,
+  &:visited,
+  &:link,
+  &:active {
+    text-decoration: none;
+  }
+`;
 
 export function UserMenu({ user, logout, preview }) {
   if (preview) {
-    <div className="title-group no-select">
-      <span className="text-blue" id="preview-title">
-        <span className="dot" /> PREVIEW MODE
-      </span>
-    </div>;
+    return (
+      <div className="title-group no-select">
+        <span className="text-blue" id="preview-title">
+          <span className="dot" /> PREVIEW MODE
+        </span>
+      </div>
+    );
   }
 
   return (
@@ -23,10 +37,10 @@ export function UserMenu({ user, logout, preview }) {
       <Dropdown
         menu={
           <Menu>
-            <MenuItem header>{user.email}</MenuItem>
-            <Link to="/account">
+            <MenuItem disabled>{user.email}</MenuItem>
+            <StyledLink style={{ color: '#132144' }} to="/account">
               <MenuItem>Account</MenuItem>
-            </Link>
+            </StyledLink>
             <MenuItem onClick={preventDefault(logout)} tag="a" href="#">
               Logout
             </MenuItem>

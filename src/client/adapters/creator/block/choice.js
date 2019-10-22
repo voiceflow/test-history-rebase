@@ -3,7 +3,7 @@ import { createBlockAdapter, repromptAdapter } from './utils';
 const choiceBlockAdapter = createBlockAdapter(
   ({ choices, inputs, reprompt }) => ({
     choices: choices.map(({ open }, index) => {
-      const [value, ...synonyms] = inputs[index].split(/\s+/);
+      const [value, ...synonyms] = inputs[index].split('\n');
 
       return {
         value: value || null,

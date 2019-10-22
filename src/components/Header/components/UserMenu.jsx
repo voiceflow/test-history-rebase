@@ -10,14 +10,8 @@ import { connect, styled } from '@/hocs';
 import { preventDefault } from '@/utils/dom';
 
 const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: #132144;
-  &:focus,
-  &:hover,
-  &:active {
-    text-decoration: none;
-    color: #132144;
-  }
+  text-decoration: none !important;
+  color: inherit !important;
 `;
 
 export function UserMenu({ user, logout, preview }) {

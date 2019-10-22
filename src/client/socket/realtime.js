@@ -53,6 +53,8 @@ function createRealtimeSocketClient(client) {
       };
 
       const handleRecover = (updates) => {
+        // TODO: replay updates
+        // eslint-disable-next-line no-console
         console.log('replay these updates', updates);
       };
 

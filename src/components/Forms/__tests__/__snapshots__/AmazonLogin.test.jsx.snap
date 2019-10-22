@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Amazon Login Test render empty card 1`] = `
+<Connect(AmazonLoginButton)>
+  <AmazonLoginButton
+    createAmazonSession={[Function]}
+  >
+    <Button
+      className="LoginWithAmazon"
+      onClick={[Function]}
+      variant="primary"
+    >
+      <PrimaryButton
+        className="LoginWithAmazon"
+        onClick={[Function]}
+      >
+        <Styled(Styled(BaseButton))
+          canHover={true}
+          className="LoginWithAmazon"
+          onClick={[Function]}
+        >
+          <StyledComponent
+            canHover={true}
+            className="LoginWithAmazon"
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "_foldedDefaultProps": Object {
+                  "canHover": true,
+                },
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-bwzfXH",
+                  "isStatic": false,
+                  "lastClassName": "KfXyU",
+                  "rules": Array [
+                    "display:",
+                    [Function],
+                    ";align-items:center;",
+                    [Function],
+                    " ",
+                    [Function],
+                    " justify-content:center;",
+                    " ",
+                    [Function],
+                    " padding:0;border:0;background:inherit;&:focus,&:active{outline:0;}",
+                    "
+  ",
+                    "
+  height: ",
+                    "42",
+                    "px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: ",
+                    [Function],
+                    ";
+",
+                    "
+",
+                    "
+  color: #fff;
+  background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
+  box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  font-weight: 600;
+  ",
+                    [Function],
+                    "
+
+  ",
+                    [Function],
+                    "
+
+  &:active {
+    background: linear-gradient(180deg, rgba(93, 157, 245, 0.99) 0%, #2c85ff 100%);
+    box-shadow: 0px 7px 12px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  }
+",
+                  ],
+                },
+                "displayName": "Styled(Styled(BaseButton))",
+                "foldedComponentIds": Array [
+                  "BaseButton-xe84nb-0",
+                  "sc-bdVaJa",
+                ],
+                "render": [Function],
+                "styledComponentId": "sc-bwzfXH",
+                "target": "button",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={null}
+            onClick={[Function]}
+          >
+            <button
+              className="BaseButton-xe84nb-0 sc-bdVaJa LoginWithAmazon sc-bwzfXH KfXyU"
+              onClick={[Function]}
+            >
+              <components__PrimaryButtonLabel>
+                <StyledComponent
+                  forwardedComponent={
+                    Object {
+                      "$$typeof": Symbol(react.forward_ref),
+                      "attrs": Array [],
+                      "componentStyle": ComponentStyle {
+                        "componentId": "components__PrimaryButtonLabel-rbaz43-0",
+                        "isStatic": true,
+                        "lastClassName": "bPKTiG",
+                        "rules": Array [
+                          "padding:0 22px;",
+                        ],
+                      },
+                      "displayName": "components__PrimaryButtonLabel",
+                      "foldedComponentIds": Array [],
+                      "render": [Function],
+                      "styledComponentId": "components__PrimaryButtonLabel-rbaz43-0",
+                      "target": "span",
+                      "toString": [Function],
+                      "warnTooManyClasses": [Function],
+                      "withComponent": [Function],
+                    }
+                  }
+                  forwardedRef={null}
+                >
+                  <span
+                    className="components__PrimaryButtonLabel-rbaz43-0 bPKTiG"
+                  >
+                    Connect Amazon
+                  </span>
+                </StyledComponent>
+              </components__PrimaryButtonLabel>
+            </button>
+          </StyledComponent>
+        </Styled(Styled(BaseButton))>
+      </PrimaryButton>
+    </Button>
+  </AmazonLoginButton>
+</Connect(AmazonLoginButton)>
+`;

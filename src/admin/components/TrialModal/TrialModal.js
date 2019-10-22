@@ -1,5 +1,3 @@
-import './TrialModal.css';
-
 import moment from 'moment';
 import React from 'react';
 import DayPicker from 'react-day-picker';

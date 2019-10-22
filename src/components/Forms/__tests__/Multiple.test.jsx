@@ -1,5 +1,4 @@
 import { mount, shallow } from 'enzyme';
-import toJson from 'enzyme-to-json';
 import _ from 'lodash';
 import React from 'react';
 
@@ -9,7 +8,7 @@ describe('Multiple Form Test', () => {
   const list = ['a', 'b'];
   it('render form', () => {
     const component = shallow(<Multiple update={_.noop} />);
-    expect(toJson(component)).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
   });
   it('fill form', () => {
     const handleChange = jest.spyOn(Multiple.prototype, 'handleChange');

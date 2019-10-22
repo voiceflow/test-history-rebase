@@ -1,7 +1,9 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import TabSet, { Tab } from '.';
+import { Container as Tab } from '@/componentsV2/Tab';
+
+import TabSet from '.';
 
 storiesOf('Tab Set', module).add('variants', () => (
   <TabSet style={{ height: 50 }}>

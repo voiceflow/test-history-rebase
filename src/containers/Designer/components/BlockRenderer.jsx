@@ -11,6 +11,7 @@ import UserUtteranceStep from '@/containers/Designer/steps/UserUtterance';
 import BlockDivider from './BlockDivider';
 
 const BlockRenderer = () => {
+  // eslint-disable-next-line no-unused-vars
   const [userUtterance, setUserUtterance] = React.useState({
     value: 'Lorem ipsum dolor sit',
   });

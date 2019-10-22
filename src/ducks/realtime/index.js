@@ -105,6 +105,7 @@ export const lastRealtimeTimestampSelector = createSelector(
 
 export const isNodeLockedSelector = createSelector(
   realtimeLocksSelector,
+  // eslint-disable-next-line no-unused-vars,lodash/prefer-constant
   ({ blocks }) => (nodeID) => false
 );
 

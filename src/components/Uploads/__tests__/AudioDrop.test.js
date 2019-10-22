@@ -1,5 +1,4 @@
 import { shallow } from 'enzyme';
-import toJson from 'enzyme-to-json';
 import React from 'react';
 
 import AudioDrop from '../AudioDrop';
@@ -10,7 +9,7 @@ const updateFn = jest.fn();
 describe('Audio Drop Test', () => {
   it('render audio drop', () => {
     const component = shallow(<AudioDrop />);
-    expect(toJson(component)).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
   });
   it('drop audio', () => {
     const drop = jest.spyOn(AudioDrop.prototype, 'onDrop');

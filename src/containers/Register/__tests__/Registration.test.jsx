@@ -2,7 +2,7 @@ import * as ConnectedReactRouter from 'connected-react-router';
 import { shallow } from 'enzyme/build';
 import React from 'react';
 
-import fetch from '@/client/fetch';
+import client from '@/client';
 import { facebookLogin, googleLogin } from '@/ducks/session';
 
 import { LoginForm } from '../LoginForm';
@@ -13,22 +13,17 @@ const TEST_EMAIL = 'tests@getvoiceflow.com';
 require('dotenv').config({ path: './.env.test' });
 
 jest.mock('react-ga');
-jest.mock('@/client/fetch');
+jest.mock('@/client');
 jest.mock('universal-cookie');
 jest.mock('connected-react-router');
 const mockDispatch = jest.fn();
 const mockGetState = jest.fn(() => ({ router: { location: 'test location' }, session: { tabID: 'foo ' } }));
 
-/* beforeAll(() => {
-  pool.query('DELETE FROM creators WHERE email = \'tests@getvoiceflow.com\'',
-    (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-  });
-}); */
-
+beforeEach(() => {
+  client.socket = { auth: jest.fn() };
+});
 afterEach(() => {
+  client.socket = null;
   jest.clearAllMocks();
 });
 
@@ -78,19 +73,21 @@ describe('Onboarding', () => {
       expect(app.exists('.Window')).toBe(true);
     }, 500);
   });
+
   it('tests the google login functionality', async () => {
-    ConnectedReactRouter.getLocation.mockResolvedValue('foo');
-    fetch.put.mockResolvedValue({ user: { id: 'test id' } });
+    client.session.create.mockResolvedValue({ user: { id: 'test id' }, token: 'token' });
+    ConnectedReactRouter.getLocation.mockResolvedValue({ search: 'search' });
     await googleLogin()(mockDispatch, mockGetState);
-    expect(fetch.put.mock.calls.length).toBe(1);
+    expect(client.session.create.mock.calls.length).toBe(1);
     expect(mockGetState.mock.calls.length).toBe(1);
     expect(mockDispatch.mock.calls.length).toBe(3);
   });
+
   it('tests the facebook login functionality', async () => {
-    ConnectedReactRouter.getLocation.mockResolvedValue('foo');
-    fetch.put.mockResolvedValue({ user: { id: 'test id' } });
+    client.session.create.mockResolvedValue({ user: { id: 'test id' }, token: 'token' });
+    ConnectedReactRouter.getLocation.mockResolvedValue({ search: 'search' });
     await facebookLogin()(mockDispatch, mockGetState);
-    expect(fetch.put.mock.calls.length).toBe(1);
+    expect(client.session.create.mock.calls.length).toBe(1);
     expect(mockGetState.mock.calls.length).toBe(1);
     expect(mockDispatch.mock.calls.length).toBe(3);
   });

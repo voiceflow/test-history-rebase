@@ -121,7 +121,7 @@ export const restoreSession = () => async (dispatch, getState) => {
     const tabID = tabIDSelector(state);
     const user = await client.user.get();
 
-    await client.socket?.auth(token, tabID);
+    await client.socket.auth(token, tabID);
     dispatch(updateAccount(user));
 
     identifyLogRocketUser(user);
@@ -138,7 +138,7 @@ const createSession = (sessionType) => (authRequest) => async (dispatch, getStat
   Cookies.removeLastSessionCookie();
   await dispatch(updateAuthToken(token));
 
-  await client.socket?.auth(token, tabID);
+  await client.socket.auth(token, tabID);
   dispatch(updateAccount(user));
 
   const location = ConnectedReactRouter.getLocation(state);

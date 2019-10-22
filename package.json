@@ -236,7 +236,7 @@
     "storybook": "start-storybook --https --ssl-cert=certs/localhost.crt --ssl-key=certs/localhost.key",
     "storybook:build": "build-storybook --output-dir storybook_build --quiet",
     "tdd": "npm run test -- --watchAll=true",
-    "test": "jest",
+    "test": "NODE_ENV=test jest",
     "test:dependencies": "depcheck $(exargs .depcheckrc)"
   }
 }

@@ -4,15 +4,21 @@ import { css, styled, transition } from '@/hocs';
 
 import { importantStyles } from '../styles';
 
+export const SIZE = {
+  small: 36,
+  large: 42,
+};
+
 const IconButtonContainer = styled(ButtonContainer)`
   width: ${BUTTON_HEIGHT}px;
   border: 0;
   color: #8da2b5;
   background: #fff;
-  height: 35px;
-  width: 35px;
   border: 1px solid #fff;
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
+
+  height: ${({ large }) => (large ? `${SIZE[large]}px` : `${SIZE.small}px`)};
+  width: ${({ large }) => (large ? `${SIZE[large]}px` : `${SIZE.small}px`)};
 
   ${({ variant }) =>
     variant === 'flat'

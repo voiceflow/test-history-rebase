@@ -9,7 +9,7 @@ const speakBlockAdapter = createBlockAdapter(
   ({ randomize, dialogs }) => ({
     randomize,
     dialogs: dialogs.map(({ audio, voice, rawContent, open }) => ({
-      open,
+      open: open || true,
       ...(_.isString(audio)
         ? {
             type: DialogType.AUDIO,

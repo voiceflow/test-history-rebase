@@ -4,15 +4,20 @@ import { PLATFORMS, REPROMPT_TYPE } from '@/constants';
 export const createBlockAdapter = createSimpleAdapter;
 
 export const repromptAdapter = {
-  fromDB: (reprompt) =>
-    reprompt
+  fromDB: (reprompt) => {
+    let type = reprompt.type || REPROMPT_TYPE.TEXT;
+    if (reprompt.voice === 'audio') {
+      type = REPROMPT_TYPE.AUDIO;
+    }
+    return reprompt
       ? {
-          type: reprompt.type || (reprompt.voice === 'audio' ? REPROMPT_TYPE.AUDIO : REPROMPT_TYPE.TEXT),
-          audio: reprompt.type === REPROMPT_TYPE.TEXT ? null : reprompt.content,
-          content: reprompt.type === REPROMPT_TYPE.TEXT ? reprompt.content : '',
-          voice: reprompt.type === REPROMPT_TYPE.TEXT ? reprompt.voice : null,
+          type,
+          audio: type === REPROMPT_TYPE.TEXT ? null : reprompt.content,
+          content: type === REPROMPT_TYPE.TEXT ? reprompt.content : '',
+          voice: type === REPROMPT_TYPE.TEXT ? reprompt.voice : null,
         }
-      : null,
+      : null;
+  },
   toDB: (reprompt) =>
     reprompt
       ? {

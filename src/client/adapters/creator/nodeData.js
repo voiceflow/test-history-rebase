@@ -15,12 +15,18 @@ const nodeDataAdapter = createSimpleAdapter(
 
     // EMERGENCY FIX - LOOK FOR ALTERNATE SOLUTION IN FUTURE
     try {
-      if (Array.isArray(dbData.choices) && Array.isArray(dbData.inputs) && dbData.type === BlockType.DEPRECATED) {
-        type = BlockType.CHOICE;
-      } else if (dbData.slot_type && dbData.slot_inputs && dbData.type === BlockType.DEPRECATED) {
-        type = BlockType.CAPTURE;
-      } else if (Array.isArray(dbData.alexa?.choices) && Array.isArray(dbData.google?.choices) && dbData.type === BlockType.DEPRECATED) {
-        type = BlockType.INTERACTION;
+      if (dbData.type === BlockType.DEPRECATED) {
+        if (Array.isArray(dbData.choices) && Array.isArray(dbData.inputs)) {
+          type = BlockType.CHOICE;
+        } else if (dbData.slot_type && dbData.slot_inputs) {
+          type = BlockType.CAPTURE;
+        } else if (Array.isArray(dbData.alexa?.choices) && Array.isArray(dbData.google?.choices)) {
+          type = BlockType.INTERACTION;
+        } else if (Array.isArray(dbData.dialogs) && typeof dbData.randomize === 'boolean') {
+          type = BlockType.SPEAK;
+        } else if (typeof dbData.selected_integration === 'string' && typeof dbData.integrations_data === 'object') {
+          type = BlockType.INTEGRATION;
+        }
       }
     } catch (err) {
       console.error(err);
@@ -29,6 +35,7 @@ const nodeDataAdapter = createSimpleAdapter(
 
     let data = {};
     try {
+      // if (type === BlockType.SPEAK) throw new Error();
       data = blockAdapter[type].fromDB(dbData);
     } catch (err) {
       data = dbData;

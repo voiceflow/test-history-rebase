@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
 import React from 'react';
 
 import { compose } from '@/utils/functional';
@@ -16,6 +15,6 @@ describe('Amazon Login Test', () => {
   it('render empty card', () => {
     const component = mount(<Component />);
 
-    expect(toJson(component.find(AmazonLogin))).toMatchSnapshot();
+    expect(component.find(AmazonLogin)).toMatchSnapshot();
   });
 });

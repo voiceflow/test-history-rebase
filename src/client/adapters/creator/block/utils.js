@@ -5,6 +5,7 @@ export const createBlockAdapter = createSimpleAdapter;
 
 export const repromptAdapter = {
   fromDB: (reprompt) => {
+    if (!reprompt) return null;
     let type = reprompt.type || REPROMPT_TYPE.TEXT;
     if (reprompt.voice === 'audio') {
       type = REPROMPT_TYPE.AUDIO;

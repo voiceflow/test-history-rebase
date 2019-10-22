@@ -380,7 +380,7 @@ export const DashBoard = (props) => {
                         </DragLayer>
 
                         <div className="main-list-add">
-                          <Tooltip distance={10} title="Add new list blah blah blah" position="bottom">
+                          <Tooltip distance={10} title="Add new list" position="bottom">
                             <IconButton
                               icon="addStep"
                               onClick={() => {

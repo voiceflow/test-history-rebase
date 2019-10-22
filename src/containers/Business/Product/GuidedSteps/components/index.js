@@ -7,7 +7,6 @@ export { default as Text } from './Text';
 export { default as PhraseButton } from './PhraseButton';
 export { default as PhraseSection } from './PhraseSection';
 export { default as IconContainer } from './IconContainer';
-export { default as PriceInput } from './PriceInput';
 export { default as AvailabilitySubSection } from './AvailabilitySubSection';
 export { default as ToggleIcon } from './ToggleIcon';
 export { default as DropdownWrapper } from './DropdownWrapper';

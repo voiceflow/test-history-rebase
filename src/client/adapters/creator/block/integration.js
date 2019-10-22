@@ -7,37 +7,29 @@ const CUSTOM_API_DEFAULTS = INTEGRATION_DATA_MODELS.CUSTOM_API;
 const GOOGLE_SHEET_DEFAULTS = INTEGRATION_DATA_MODELS.GOOGLE_SHEETS;
 const ZAPIER_DEFAULTS = INTEGRATION_DATA_MODELS.ZAPIER;
 
+const keyValFromDB = ({ index, key, val }) => ({
+  index,
+  key: draftJSContentAdapter.fromDB(key),
+  val: draftJSContentAdapter.fromDB(val),
+});
+
+const keyValToDB = ({ index, key, val }) => ({
+  index,
+  key: draftJSContentAdapter.toDB(key),
+  val: draftJSContentAdapter.toDB(val),
+});
+
 // Incoming Integrations Data Mapping Functions
 const addCustomAPIData = (dataModel, actionData, selectedAction) => {
   const url = draftJSContentAdapter.fromDB(actionData.url);
-  const headers = actionData.headers.map(({ index, key, val }) => {
-    return {
-      index,
-      key: draftJSContentAdapter.fromDB(key),
-      val: draftJSContentAdapter.fromDB(val),
-    };
-  });
-  const mapping = actionData.mapping.map(({ index, path, var: varVal }) => {
-    return {
-      index,
-      path: draftJSContentAdapter.fromDB(path),
-      var: varVal,
-    };
-  });
-  const parameters = actionData.params.map(({ index, key, val }) => {
-    return {
-      index,
-      key: draftJSContentAdapter.fromDB(key),
-      val: draftJSContentAdapter.fromDB(val),
-    };
-  });
-  const body = actionData.body.map(({ index, key, val }) => {
-    return {
-      index,
-      key: draftJSContentAdapter.fromDB(key),
-      val: draftJSContentAdapter.fromDB(val),
-    };
-  });
+  const headers = actionData.headers.map(keyValFromDB);
+  const mapping = actionData.mapping.map(({ index, path, var: varVal }) => ({
+    index,
+    path: draftJSContentAdapter.fromDB(path),
+    var: varVal,
+  }));
+  const parameters = actionData.params.map(keyValFromDB);
+  const body = actionData.body.map(keyValFromDB);
 
   dataModel.headers = (headers.length > 0 && headers) || CUSTOM_API_DEFAULTS.headers;
   dataModel.selectedAction = selectedAction || CUSTOM_API_DEFAULTS.selectedAction;
@@ -78,37 +70,17 @@ const setCustomAPIData = (dataModel, data) => {
     actions_data: {
       [selectedAction]: {
         bodyInputType,
-        body: body.map(({ index, key, val }) => {
-          return {
-            index,
-            key: draftJSContentAdapter.toDB(key),
-            val: draftJSContentAdapter.toDB(val),
-          };
-        }),
+        body: body.map(keyValToDB),
         selected_action: selectedAction,
         url: draftJSContentAdapter.toDB(url),
-        headers: headers.map(({ index, key, val }) => {
-          return {
-            index,
-            key: draftJSContentAdapter.toDB(key),
-            val: draftJSContentAdapter.toDB(val),
-          };
-        }),
-        mapping: mapping.map(({ index, path, var: varVal }) => {
-          return {
-            index,
-            path: draftJSContentAdapter.toDB(path),
-            var: varVal,
-          };
-        }),
+        headers: headers.map(keyValToDB),
+        mapping: mapping.map(({ index, path, var: varVal }) => ({
+          index,
+          path: draftJSContentAdapter.toDB(path),
+          var: varVal,
+        })),
         method: selectedAction.split(' ')[2],
-        params: parameters.map(({ index, key, val }) => {
-          return {
-            index,
-            key: draftJSContentAdapter.toDB(key),
-            val: draftJSContentAdapter.toDB(val),
-          };
-        }),
+        params: parameters.map(keyValToDB),
         content,
       },
     },

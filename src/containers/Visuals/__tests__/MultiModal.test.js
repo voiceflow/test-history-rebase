@@ -1,4 +1,3 @@
-import toJson from 'enzyme-to-json';
 import { shallow } from 'enzyme/build';
 import * as _ from 'lodash';
 import React from 'react';
@@ -33,7 +32,7 @@ describe('MultiModal not loading', () => {
       />
     );
 
-    expect(toJson(component)).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
   });
 
   it('renders MultiModal loading', () => {
@@ -48,7 +47,7 @@ describe('MultiModal not loading', () => {
       />
     );
 
-    expect(toJson(component)).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
   });
 
   it('renders MultiModal no existing displays', () => {
@@ -56,6 +55,6 @@ describe('MultiModal not loading', () => {
       <MultiModal.WrappedComponent deleteDisplay={_.noop()} setConfirm={_.noop()} loading={true} displays={[]} history={{}} skill_id="mockId3" />
     );
 
-    expect(toJson(component)).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
   });
 });

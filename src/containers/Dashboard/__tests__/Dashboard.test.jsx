@@ -1,4 +1,3 @@
-import toJson from 'enzyme-to-json';
 import { shallow } from 'enzyme/build';
 import React from 'react';
 
@@ -28,7 +27,7 @@ const props = {
 describe('Dashboard', () => {
   it('render dashboard', () => {
     const component = shallow(<DashBoard {...props} />);
-    expect(toJson(component)).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
   });
 });
 

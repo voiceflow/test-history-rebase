@@ -55,15 +55,15 @@ jobs:
       - run_tests:
           saveCache: true
           tests:
-            # - run:
-            #     name: (React Tests)
-            #     command: npm run test -- --detectOpenHandles --runInBand
-            # - run:
-            #     name: (Code Style)
-            #     command: npm run lint:quiet
-            # - run:
-            #     name: (Dependency Tests)
-            #     command: npm run test:dependencies
+            - run:
+                name: (React Tests)
+                command: npm run test -- --detectOpenHandles --runInBand
+            - run:
+                name: (Code Style)
+                command: npm run lint:quiet
+            - run:
+                name: (Dependency Tests)
+                command: npm run test:dependencies
             - run:
                 name: (Build App)
                 command: npm run build

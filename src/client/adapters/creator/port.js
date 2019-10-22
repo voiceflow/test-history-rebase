@@ -34,6 +34,7 @@ const portAdapter = createAdapter(
     // eslint-disable-next-line no-nested-ternary
     platform: nodeType === BlockType.STREAM && !dbPort.in ? (dbPort.hidden ? getAlternativePlatform(platform) : platform) : null,
   }),
+  // eslint-disable-next-line max-params
   (appPort, isInPort, linksByPortID, platform, type, index) => ({
     id: appPort.id,
     name: appPort.id,

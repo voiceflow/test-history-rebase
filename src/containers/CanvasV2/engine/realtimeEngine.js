@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-underscore-dangle, lodash/prefer-noop */
 import client from '@/client';
 import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';

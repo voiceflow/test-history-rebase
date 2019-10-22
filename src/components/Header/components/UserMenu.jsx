@@ -11,13 +11,12 @@ import { preventDefault } from '@/utils/dom';
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-  color: '#132144';
+  color: #132144;
   &:focus,
   &:hover,
-  &:visited,
-  &:link,
   &:active {
     text-decoration: none;
+    color: #132144;
   }
 `;
 
@@ -38,7 +37,7 @@ export function UserMenu({ user, logout, preview }) {
         menu={
           <Menu>
             <MenuItem disabled>{user.email}</MenuItem>
-            <StyledLink style={{ color: '#132144' }} to="/account">
+            <StyledLink to="/account">
               <MenuItem>Account</MenuItem>
             </StyledLink>
             <MenuItem onClick={preventDefault(logout)} tag="a" href="#">

@@ -157,7 +157,9 @@
 .locale-button {
   width: 130px;
   margin: 4px 4px 4px 4px !important;
+  background-color: #fff !important;
   border-radius: 5px !important;
+
 }
 
 .locale-button.active {

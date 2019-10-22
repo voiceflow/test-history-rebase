@@ -69,13 +69,19 @@ function CanvasMenu({ activePanel, selectPanel, isHidden, toggleHidden, theme })
                 </MenuActionContainer>
                 <MenuActionContainer>
                   <a href="//www.facebook.com/groups/199476704186240/" target="_blank" rel="noopener noreferrer">
-                    <TabIcon icon="community" />
+                    <Tooltip title="Community" position="right">
+                      <TabIcon icon="community" />
+                    </Tooltip>
                   </a>
                   <a href="//forum.voiceflow.com" target="_blank" rel="noopener noreferrer">
-                    <TabIcon icon="support" />
+                    <Tooltip title="Forum" position="right">
+                      <TabIcon icon="support" />
+                    </Tooltip>
                   </a>
                   <a href="//docs.voiceflow.com" target="_blank" rel="noopener noreferrer">
-                    <TabIcon icon="docs" />
+                    <Tooltip title="Docs" position="right">
+                      <TabIcon icon="docs" />
+                    </Tooltip>
                   </a>
                 </MenuActionContainer>
               </>

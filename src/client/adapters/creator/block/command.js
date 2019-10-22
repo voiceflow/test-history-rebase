@@ -13,6 +13,7 @@ const commandBlockAdapter = platformDependentAdapter(
     ({ intent, mappings, resume, diagramID }) => ({
       intent: intent
         ? {
+            key: intent,
             value: intent,
             built_in: isBuiltInIntent(intent),
           }

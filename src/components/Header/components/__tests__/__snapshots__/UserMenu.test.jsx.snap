@@ -8,15 +8,15 @@ exports[`User Menu render user menu 1`] = `
     menu={
       <Menu>
         <ForwardRef(MenuItem)
-          header={true}
+          disabled={true}
         />
-        <Link
+        <ForwardRef(Styled(Link))
           to="/account"
         >
           <ForwardRef(MenuItem)>
             Account
           </ForwardRef(MenuItem)>
-        </Link>
+        </ForwardRef(Styled(Link))>
         <ForwardRef(MenuItem)
           href="#"
           onClick={[Function]}

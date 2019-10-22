@@ -2,7 +2,7 @@ import { constants } from '@voiceflow/common';
 import axios from 'axios';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button as ReactstrapButton, ButtonGroup, Collapse, Form, FormGroup, Label } from 'reactstrap';
+import { Button, ButtonGroup, Collapse, Form, FormGroup, Label } from 'reactstrap';
 import styled from 'styled-components';
 
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
@@ -213,7 +213,7 @@ class GooglePublish extends Component {
               {FORMATTED_LOCALES.map((locale, i) => {
                 const active = main_locale === locale.value ? 'active' : '';
                 return (
-                  <ReactstrapButton
+                  <Button
                     outline
                     color="primary"
                     className={`locale-button ${active}`}
@@ -223,7 +223,7 @@ class GooglePublish extends Component {
                     }}
                   >
                     {locale.name}
-                  </ReactstrapButton>
+                  </Button>
                 );
               })}
             </ButtonGroup>

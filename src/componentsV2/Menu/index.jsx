@@ -47,7 +47,7 @@ function Menu({ options, onSelect, searchable, multiSelectProps: { multiselect, 
   }, [options]);
 
   return (
-    <Container ref={menuRef} nativeScrollbar={!scrollBarWidth}>
+    <Container ref={menuRef} nativeScrollbar={scrollBarWidth === 0}>
       <FadeDownContainer>
         {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
         {searchable && <SearchBox onChange={(e) => filterOptions(e.target.value)} value={searchText} autoFocus placeholder="Search..." />}

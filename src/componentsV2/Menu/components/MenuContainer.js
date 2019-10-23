@@ -29,7 +29,7 @@ const MenuContainer = styled.ul`
   animation: fadein 0.15s ease, movein 0.15s ease, scaleY 0.1s ease;
   transform-origin: top;
 
-  ${(props) => props.nativeScrollbar && nativeScrollbarsStyle}
+  ${({ nativeScrollbar }) => nativeScrollbar && nativeScrollbarsStyle}
 `;
 
 export default MenuContainer;

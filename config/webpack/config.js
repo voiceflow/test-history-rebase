@@ -4,6 +4,14 @@ const { action, env, logrocket, debug, debugNet, debugHttp, debugSocket } = requ
 const { NODE_ENV } = process.env;
 const ENV_PREFIX = 'VF_APP_';
 
+const ENV = Object.keys(process.env).reduce((acc, key) => {
+  if (key.startsWith(ENV_PREFIX)) {
+    acc[key.slice(ENV_PREFIX.length)] = process.env[key];
+  }
+
+  return acc;
+}, {})
+
 module.exports = {
   IS_PRODUCTION: NODE_ENV === 'production',
   IS_SERVING: action === 'serve' || action === 'admin-serve',
@@ -15,14 +23,8 @@ module.exports = {
     BUILD_ENV: env || process.env.BUILD_ENV || 'local',
     LOGROCKET_ENABLED: logrocket && 'true',
     API_HOST: 'localhost',
-    VERSION: process.env.VERSION || `(${branch.sync()})`,
-    ...Object.keys(process.env).reduce((acc, key) => {
-      if (key.startsWith(ENV_PREFIX)) {
-        acc[key.slice(ENV_PREFIX.length)] = process.env[key];
-      }
-
-      return acc;
-    }, {}),
+    ...ENV,
+    VERSION: ENV.VERSION || `(${branch.sync()})`,
     ...(debug ? {
       DEBUG_NETWORK: true
     }: {

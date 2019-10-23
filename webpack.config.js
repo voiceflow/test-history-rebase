@@ -17,13 +17,13 @@ if (fs.existsSync(envFile)) {
 module.exports = () => {
   switch (action) {
     case 'serve':
-      return require('./config/webpack/serve');
+      return require('./config/webpack/creator/serve');
     case 'admin':
-      return require('./config/webpack/adminBuild');
+      return require('./config/webpack/admin/build');
     case 'admin-serve':
-      return require('./config/webpack/adminServe');
+      return require('./config/webpack/admin/serve');
     case 'build':
     default:
-      return require('./config/webpack/build');
+      return require('./config/webpack/creator/build');
   }
 };

@@ -9,20 +9,12 @@ const safePostCssParser = require('postcss-safe-parser');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const InlineManifestPlugin = require('inline-manifest-webpack-plugin');
 const Md5HashPlugin = require('webpack-md5-hash');
-const merge = require('webpack-merge');
 const path = require('path');
-const commonConfig = require('./common');
-const adminConfig = require('./adminCommon');
-const paths = require('../paths');
-const { BASE_HREF, IS_ADMIN, IS_PRODUCTION, IS_SERVING } = require('./config');
-const { action } = require('webpack-nano/argv');
 
-let configObject = commonConfig;
-if (action === 'admin-serve' || action === 'admin') {
-  configObject = adminConfig;
-}
+const paths = require('../../paths');
+const { BASE_HREF, IS_ADMIN, IS_PRODUCTION, IS_SERVING } = require('../config');
 
-module.exports = merge(configObject, {
+module.exports = {
   output: {
     filename: `${paths.staticJS}${IS_PRODUCTION ? '[name].[hash:8]' : 'bundle'}.js`,
     chunkFilename: `${paths.staticJS}[name]${IS_PRODUCTION ? '.[chunkhash:8]' : ''}.chunk.js`,
@@ -90,25 +82,25 @@ module.exports = merge(configObject, {
     ...(IS_SERVING ? [] : [new CopyPlugin([{ from: paths.publicDir, to: IS_ADMIN ? paths.adminBuildDir : paths.buildDir }])]),
     ...(IS_PRODUCTION
       ? [
-          new Md5HashPlugin(),
-          new MiniCssExtractPlugin({
-            filename: `${paths.staticCSS}[name].[contenthash:8].css`,
-            chunkFilename: `${paths.staticCSS}[name].[contenthash:8].chunk.css`,
-          }),
-          new WorkboxWebpackPlugin.GenerateSW({
-            clientsClaim: true,
-            exclude: [/\.map$/],
-            importWorkboxFrom: 'cdn',
-            navigateFallback: `${BASE_HREF}index.html`,
-            navigateFallbackBlacklist: [
-              // Exclude URLs starting with /_, as they're likely an API call
-              new RegExp('^/_'),
-              // Exclude URLs containing a dot, as they're likely a resource in
-              // public/ and not a SPA route
-              new RegExp('/[^/]+\\.[^/]+$'),
-            ],
-          }),
-        ]
+        new Md5HashPlugin(),
+        new MiniCssExtractPlugin({
+          filename: `${paths.staticCSS}[name].[contenthash:8].css`,
+          chunkFilename: `${paths.staticCSS}[name].[contenthash:8].chunk.css`,
+        }),
+        new WorkboxWebpackPlugin.GenerateSW({
+          clientsClaim: true,
+          exclude: [/\.map$/],
+          importWorkboxFrom: 'cdn',
+          navigateFallback: `${BASE_HREF}index.html`,
+          navigateFallbackBlacklist: [
+            // Exclude URLs starting with /_, as they're likely an API call
+            new RegExp('^/_'),
+            // Exclude URLs containing a dot, as they're likely a resource in
+            // public/ and not a SPA route
+            new RegExp('/[^/]+\\.[^/]+$'),
+          ],
+        }),
+      ]
       : []),
   ],
 
@@ -204,4 +196,4 @@ module.exports = merge(configObject, {
       },
     ],
   },
-});
+};

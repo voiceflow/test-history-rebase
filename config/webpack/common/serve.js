@@ -1,7 +1,9 @@
+const { open = true } = require('webpack-nano/argv');
 const { WebpackPluginServe } = require('webpack-plugin-serve');
 const fs = require('fs');
 const path = require('path');
-const paths = require('../paths');
+
+const paths = require('../../paths');
 
 module.exports = (port = 3000, buildDirectory = paths.buildDir) => ({
   entry: {
@@ -20,7 +22,7 @@ module.exports = (port = 3000, buildDirectory = paths.buildDir) => ({
     new WebpackPluginServe({
       port,
       host: 'localhost',
-      open: true,
+      open,
       compress: true,
       historyFallback: true,
       progress: 'minimal',
@@ -29,8 +31,8 @@ module.exports = (port = 3000, buildDirectory = paths.buildDir) => ({
       static: [buildDirectory, paths.publicDir],
 
       https: {
-        key: fs.readFileSync(path.resolve(__dirname, '../../certs/localhost.key')),
-        cert: fs.readFileSync(path.resolve(__dirname, '../../certs/localhost.crt')),
+        key: fs.readFileSync(path.resolve(__dirname, '../../../certs/localhost.key')),
+        cert: fs.readFileSync(path.resolve(__dirname, '../../../certs/localhost.crt')),
       },
     }),
   ],

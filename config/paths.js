@@ -7,23 +7,32 @@ const staticDir = 'static/';
 const PATHS = {
   pkg: 'package.json',
   entrypoint: `${sourceDir}index.jsx`,
-  adminpoint: `${sourceDir}admin/index.jsx`,
   indexHTML: `${publicDir}index.html`,
   sourceDir,
   publicDir,
   buildDir: 'build/',
-  adminBuildDir: 'adminbuild/',
 };
 
-module.exports = Object.entries(PATHS).reduce(
-  (acc, [key, value]) => {
-    acc[key] = path.resolve(value);
+const ADMIN_PATHS = {
+  entrypoint: `${sourceDir}admin/index.jsx`,
+  buildDir: 'adminbuild/',
+}
 
-    return acc;
-  },
-  {
-    staticJS: `${staticDir}js/`,
-    staticCSS: `${staticDir}css/`,
-    staticMedia: `${staticDir}media/`,
-  }
-);
+function resolvePaths(paths) {
+  return Object.entries(paths).reduce(
+    (acc, [key, value]) => {
+      acc[key] = path.resolve(value);
+
+      return acc;
+    },
+    {}
+  );
+}
+
+module.exports = {
+  ...resolvePaths(PATHS),
+  admin: resolvePaths(ADMIN_PATHS),
+  staticJS: `${staticDir}js/`,
+  staticCSS: `${staticDir}css/`,
+  staticMedia: `${staticDir}media/`,
+};

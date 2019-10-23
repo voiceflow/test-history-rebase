@@ -15,7 +15,7 @@ export function initializeLogRocket(cb) {
 
 export function identifyLogRocketUser(user) {
   if (LOGROCKET_ENABLED) {
-    LogRocket.identify(user.creator_id, {
+    LogRocket.identify(user.creator_id || user.id, {
       email: user.email,
       name: user.name,
     });

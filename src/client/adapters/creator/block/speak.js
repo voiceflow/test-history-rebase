@@ -26,7 +26,7 @@ const speakBlockAdapter = createBlockAdapter(
     randomize,
     dialogs: dialogs.map((dialog) => ({
       index: '',
-      open: false,
+      open: dialog.open,
       ...(dialog.type === DialogType.AUDIO
         ? {
             audio: dialog.url || '',

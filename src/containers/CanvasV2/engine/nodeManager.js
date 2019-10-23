@@ -316,12 +316,7 @@ class NodeManager extends EngineConsumer {
 
     const canvasAPI = this.engine.canvas;
 
-    canvasAPI.applyStyles(
-      {
-        transition: 'transform 150ms ease-in-out',
-      },
-      200
-    );
+    canvasAPI.applyTransition();
     canvasAPI.setZoom(80);
     canvasAPI.setPosition([(xOffset - posX) * 0.8, (yOffset - posY - 100) * 0.8]);
   }

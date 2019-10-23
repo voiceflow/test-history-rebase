@@ -4,6 +4,7 @@ import React from 'react';
 
 import { isMac, isSafari } from '@/config';
 import { withOverlay } from '@/contexts';
+import { ANIMATION_SPEED } from '@/styles/theme';
 
 import { Container, RenderLayer } from './components';
 import { ControlScheme, ControlType, ZOOM_FACTOR } from './constants';
@@ -30,11 +31,11 @@ class Canvas extends React.PureComponent {
     getPosition: () => this.position,
     getRef: () => this.rootRef.current,
     getRect: () => this.rootRef.current.getBoundingClientRect(),
-    zoomIn: (delta) => this.offsetZoom(delta),
-    zoomOut: (delta) => this.offsetZoom(-delta),
+    zoomIn: (delta, options) => this.offsetZoom(delta, { animated: true, ...options }),
+    zoomOut: (delta, options) => this.offsetZoom(-delta, { animated: true, ...options }),
     reorient: () => this.resetPosition(),
 
-    setZoom: (zoom) => this.setZoom(zoom),
+    setZoom: (zoom, options) => this.setZoom(zoom, options),
 
     setPosition: (position) => {
       this.position = position;
@@ -43,7 +44,9 @@ class Canvas extends React.PureComponent {
       this.styleRenderLayer();
     },
 
-    applyStyles: (...params) => this.applyStyles(...params),
+    applyStyles: (styles) => this.applyStyles(styles),
+
+    applyTransition: () => this.applyTransition(),
 
     transformPoint(point, relative) {
       const [posX, posY] = this.getPosition();
@@ -86,7 +89,7 @@ class Canvas extends React.PureComponent {
     const [posX, posY] = this.position;
     const nextPosition = [posX + offsetX, posY + offsetY];
     this.position = nextPosition;
-    this.styleRenderLayer(nextPosition);
+    this.styleRenderLayer({ position: nextPosition });
 
     if (this.props.onPan) {
       this.props.onPan(offsetX, offsetY);
@@ -96,13 +99,20 @@ class Canvas extends React.PureComponent {
   onZoom = (control) => {
     // scale or delta type zoom
     if (control.scale) {
-      this.setZoom(this.zoom * control.scale, mouseEventOffset(control.event, this.rootRef.current));
+      this.setZoom(this.zoom * control.scale, { animated: false, origin: mouseEventOffset(control.event, this.rootRef.current) });
     } else if (control.delta) {
-      this.setZoom(this.zoom + control.delta, mouseEventOffset(control.event, this.rootRef.current));
+      this.setZoom(this.zoom + control.delta, { animated: false, origin: mouseEventOffset(control.event, this.rootRef.current) });
     }
   };
 
-  applyStyles = (styles, interval) => {
+  onTransitionEnd = () => {
+    const renderLayerEl = this.renderLayerRef.current;
+
+    renderLayerEl.style.transition = '';
+    renderLayerEl.removeEventListener('transitionend', this.onTransitionEnd);
+  };
+
+  applyStyles = (styles) => {
     const renderLayerEl = this.renderLayerRef.current;
 
     // eslint-disable-next-line compat/compat
@@ -111,21 +121,22 @@ class Canvas extends React.PureComponent {
         renderLayerEl.style[style] = styles[style];
       });
     });
-
-    if (interval) {
-      setTimeout(() => {
-        // eslint-disable-next-line compat/compat
-        window.requestAnimationFrame(() => {
-          Object.keys(styles).forEach((style) => {
-            renderLayerEl.style[style] = null;
-          });
-        });
-      }, interval);
-    }
   };
 
-  styleRenderLayer(position = this.position, zoom = this.zoom) {
+  applyTransition = () => {
     const renderLayerEl = this.renderLayerRef.current;
+
+    renderLayerEl.removeEventListener('transitionend', this.onTransitionEnd);
+    renderLayerEl.addEventListener('transitionend', this.onTransitionEnd);
+    renderLayerEl.style.transition = `transform ease-in-out ${ANIMATION_SPEED}s`;
+  };
+
+  styleRenderLayer({ zoom = this.zoom, position = this.position, animated } = {}) {
+    const renderLayerEl = this.renderLayerRef.current;
+
+    if (animated) {
+      this.applyTransition();
+    }
 
     // eslint-disable-next-line compat/compat
     window.requestAnimationFrame(() => {
@@ -142,9 +153,9 @@ class Canvas extends React.PureComponent {
     y: this.position[1],
   });
 
-  offsetZoom = (delta) => this.setZoom(this.zoom + delta);
+  offsetZoom = (delta, options) => this.setZoom(this.zoom + delta, options);
 
-  setZoom = (newZoom, origin = [this.rootRef.current.clientWidth / 2, this.rootRef.current.clientHeight / 2]) => {
+  setZoom = (newZoom, { origin = [this.rootRef.current.clientWidth / 2, this.rootRef.current.clientHeight / 2], animated } = {}) => {
     const prevZoom = this.zoom / ZOOM_FACTOR;
     const nextZoom = normalizeZoom(newZoom);
     if (nextZoom === this.zoom) return;
@@ -155,7 +166,7 @@ class Canvas extends React.PureComponent {
     const nextPosition = [x + moveX, y + moveY];
     this.position = nextPosition;
 
-    this.styleRenderLayer(nextPosition, nextZoom);
+    this.styleRenderLayer({ zoom: nextZoom, animated, position: nextPosition });
 
     if (this.props.onZoom) {
       this.props.onZoom((position) => calculateScrollTranslation(origin, prevZoom, nextZoom, position, this.rootRef.current.getBoundingClientRect()));
@@ -165,7 +176,7 @@ class Canvas extends React.PureComponent {
   resetPosition = () => {
     this.position = ORIGIN;
 
-    this.styleRenderLayer(ORIGIN);
+    this.styleRenderLayer({ position: ORIGIN });
   };
 
   handleControl = (control = {}) => {

@@ -105,11 +105,11 @@ class Canvas extends React.PureComponent {
     }
   };
 
-  onZoomTransitionEnd = () => {
+  onTransitionEnd = () => {
     const renderLayerEl = this.renderLayerRef.current;
 
     renderLayerEl.style.transition = '';
-    renderLayerEl.removeEventListener('transitionend', this.onZoomTransitionEnd);
+    renderLayerEl.removeEventListener('transitionend', this.onTransitionEnd);
   };
 
   applyStyles = (styles) => {
@@ -126,8 +126,8 @@ class Canvas extends React.PureComponent {
   applyTransition = () => {
     const renderLayerEl = this.renderLayerRef.current;
 
-    renderLayerEl.removeEventListener('transitionend', this.onZoomTransitionEnd);
-    renderLayerEl.addEventListener('transitionend', this.onZoomTransitionEnd);
+    renderLayerEl.removeEventListener('transitionend', this.onTransitionEnd);
+    renderLayerEl.addEventListener('transitionend', this.onTransitionEnd);
     renderLayerEl.style.transition = `transform ease-in-out ${ANIMATION_SPEED}s`;
   };
 

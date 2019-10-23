@@ -6,7 +6,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useKeygen } from '@/components/KeyedComponent';
 import { FlexLabel } from '@/componentsV2/Flex';
 import { FadeDownContainer } from '@/styles/animations';
-import { stopPropagation } from '@/utils/dom';
+import { getScrollbarWidth, stopPropagation } from '@/utils/dom';
 import { stringify } from '@/utils/functional';
 
 import { ButtonContainer, Container, Item } from './components';
@@ -19,6 +19,7 @@ function Menu({ options, onSelect, searchable, multiSelectProps: { multiselect, 
   const menuRef = React.useRef();
   const [searchText, setSearchText] = React.useState('');
   const [visibleOptions, setVisibleOptions] = React.useState(options);
+  const scrollBarWidth = React.useMemo(() => getScrollbarWidth(), []);
 
   const filterOptions = (text) => {
     setSearchText(text);
@@ -46,11 +47,11 @@ function Menu({ options, onSelect, searchable, multiSelectProps: { multiselect, 
   }, [options]);
 
   return (
-    <Container ref={menuRef}>
+    <Container ref={menuRef} nativeScrollbar={!scrollBarWidth}>
       <FadeDownContainer>
         {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
         {searchable && <SearchBox onChange={(e) => filterOptions(e.target.value)} value={searchText} autoFocus placeholder="Search..." />}
-        <Scrollbars autoHeight autoHide hideTracksWhenNotNeeded>
+        <Scrollbars className="scrollbars" autoHeight autoHide hideTracksWhenNotNeeded>
           {children ||
             visibleOptions.map(({ value, label, onClick }) => (
               <Item

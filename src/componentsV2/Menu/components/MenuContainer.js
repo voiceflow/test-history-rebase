@@ -1,7 +1,13 @@
 import { cardStyles } from '@/componentsV2/Card';
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 const MAX_VISIBLE_ITEMS = 7.5;
+
+const nativeScrollbarsStyle = css`
+  .scrollbars > div {
+    overflow: auto !important;
+  }
+`;
 
 const MenuContainer = styled.ul`
   ${cardStyles}
@@ -22,6 +28,8 @@ const MenuContainer = styled.ul`
   overflow: hidden;
   animation: fadein 0.15s ease, movein 0.15s ease, scaleY 0.1s ease;
   transform-origin: top;
+
+  ${(props) => props.nativeScrollbar && nativeScrollbarsStyle}
 `;
 
 export default MenuContainer;

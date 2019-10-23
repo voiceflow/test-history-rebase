@@ -5,7 +5,7 @@ const TabIcon = styled(SvgIcon)`
   display: block;
   padding: ${({ theme }) => theme.unit * 1.5}px;
   cursor: pointer;
-  color: #8da2b5;
+  color: ${({ active }) => (active ? '#233050' : '#8da2b5')};
 
   &:hover {
     color: #233050;

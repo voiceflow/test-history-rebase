@@ -43,7 +43,8 @@ const Tabs = [
 
 function CanvasMenu({ activePanel, selectPanel, isHidden, toggleHidden, theme }) {
   const isVisible = !React.useContext(TestingModeContext);
-  const Panel = PANELS[activePanel || PanelType.BLOCK_PANEL];
+  const activeTab = activePanel || PanelType.BLOCK_PANEL;
+  const Panel = PANELS[activeTab];
   const isOpen = !isHidden && isVisible;
 
   const changePanel = (panel) => () => selectPanel(panel);
@@ -62,8 +63,8 @@ function CanvasMenu({ activePanel, selectPanel, isHidden, toggleHidden, theme })
               <>
                 <MenuActionContainer>
                   {Tabs.map(({ type, tip, icon }) => (
-                    <Tooltip key={type} title={tip} position="right">
-                      <TabIcon onClick={changePanel(type)} icon={icon} />
+                    <Tooltip key={type} title={tip} disabled={type === activeTab} position="right">
+                      <TabIcon onClick={changePanel(type)} icon={icon} active={type === activeTab} />
                     </Tooltip>
                   ))}
                 </MenuActionContainer>

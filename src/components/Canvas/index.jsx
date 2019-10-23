@@ -31,8 +31,8 @@ class Canvas extends React.PureComponent {
     getPosition: () => this.position,
     getRef: () => this.rootRef.current,
     getRect: () => this.rootRef.current.getBoundingClientRect(),
-    zoomIn: (delta, { animated = true, ...opts } = {}) => this.offsetZoom(delta, { animated, ...opts }),
-    zoomOut: (delta, { animated = true, ...opts } = {}) => this.offsetZoom(-delta, { animated, ...opts }),
+    zoomIn: (delta, options) => this.offsetZoom(delta, { animated: true, ...options }),
+    zoomOut: (delta, options) => this.offsetZoom(-delta, { animated: true, ...options }),
     reorient: () => this.resetPosition(),
 
     setZoom: (zoom, options) => this.setZoom(zoom, options),
@@ -44,7 +44,9 @@ class Canvas extends React.PureComponent {
       this.styleRenderLayer();
     },
 
-    applyStyles: (...params) => this.applyStyles(...params),
+    applyStyles: (styles) => this.applyStyles(styles),
+
+    applyTransition: () => this.applyTransition(),
 
     transformPoint(point, relative) {
       const [posX, posY] = this.getPosition();
@@ -110,7 +112,7 @@ class Canvas extends React.PureComponent {
     renderLayerEl.removeEventListener('transitionend', this.onZoomTransitionEnd);
   };
 
-  applyStyles = (styles, interval) => {
+  applyStyles = (styles) => {
     const renderLayerEl = this.renderLayerRef.current;
 
     // eslint-disable-next-line compat/compat
@@ -119,26 +121,21 @@ class Canvas extends React.PureComponent {
         renderLayerEl.style[style] = styles[style];
       });
     });
+  };
 
-    if (interval) {
-      setTimeout(() => {
-        // eslint-disable-next-line compat/compat
-        window.requestAnimationFrame(() => {
-          Object.keys(styles).forEach((style) => {
-            renderLayerEl.style[style] = null;
-          });
-        });
-      }, interval);
-    }
+  applyTransition = () => {
+    const renderLayerEl = this.renderLayerRef.current;
+
+    renderLayerEl.removeEventListener('transitionend', this.onZoomTransitionEnd);
+    renderLayerEl.addEventListener('transitionend', this.onZoomTransitionEnd);
+    renderLayerEl.style.transition = `transform ease-in-out ${ANIMATION_SPEED}s`;
   };
 
   styleRenderLayer({ zoom = this.zoom, position = this.position, animated } = {}) {
     const renderLayerEl = this.renderLayerRef.current;
 
     if (animated) {
-      renderLayerEl.removeEventListener('transitionend', this.onZoomTransitionEnd);
-      renderLayerEl.addEventListener('transitionend', this.onZoomTransitionEnd);
-      renderLayerEl.style.transition = `transform ease-in-out ${ANIMATION_SPEED}s`;
+      this.applyTransition();
     }
 
     // eslint-disable-next-line compat/compat

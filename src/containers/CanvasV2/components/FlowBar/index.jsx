@@ -24,7 +24,7 @@ function FlowBar({ withMenu, withDrawer, goToRootDiagram, flow, parentDiagrams, 
         >
           {(ref, onToggle, isOpen) => (
             <RoundButton
-              icon="longArrowLeft"
+              icon="back"
               variant="shadow"
               active={isOpen}
               onClick={stopPropagation(parentDiagrams.length !== 0 && onToggle)}
@@ -51,7 +51,7 @@ function FlowBar({ withMenu, withDrawer, goToRootDiagram, flow, parentDiagrams, 
         >
           {(ref, onToggle, isOpen) => (
             <RoundButton
-              icon="longArrowRight"
+              icon="next"
               variant="shadow"
               active={isOpen}
               onClick={stopPropagation(childDiagrams.length !== 0 && onToggle)}

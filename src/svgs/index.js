@@ -100,3 +100,4 @@ export { default as googleSheets } from './google-sheets.svg';
 export { default as longArrowLeft } from './solid/long-arrow-left.svg';
 export { default as longArrowRight } from './solid/long-arrow-right.svg';
 export { default as safe } from './safe.svg';
+export { default as next } from './next.svg';

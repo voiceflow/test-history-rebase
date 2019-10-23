@@ -49,7 +49,8 @@ class NewLink extends React.PureComponent {
   render() {
     const { canvas, engine, linkCreation } = this.props;
 
-    if (!linkCreation.isDrawing) {
+    // NOTE: extra protection against linkCreation being falsy needed for HMR
+    if (!linkCreation?.isDrawing) {
       this.points = null;
       return null;
     }

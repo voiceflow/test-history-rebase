@@ -1,6 +1,7 @@
 const { action } = require('webpack-nano/argv');
 const WebpackBar = require('webpackbar');
 const webpack = require('webpack');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 const paths = require('../../paths');
@@ -9,7 +10,6 @@ const { BASE_HREF, IS_PRODUCTION, IS_SERVING, ENV } = require('../config');
 module.exports = {
   output: {
     publicPath: BASE_HREF,
-    pathinfo: !IS_PRODUCTION,
   },
 
   resolve: {
@@ -29,6 +29,14 @@ module.exports = {
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new WebpackBar({ name: `Voiceflow Creator - ${action || 'build'}` }),
+
+    ...(IS_PRODUCTION ? [
+      new webpack.optimize.ModuleConcatenationPlugin(),
+      new webpack.HashedModuleIdsPlugin(),
+    ]: [
+      new webpack.NamedModulesPlugin(),
+      new CaseSensitivePathsPlugin(),
+    ]),
 
     ...(IS_SERVING
       ? []

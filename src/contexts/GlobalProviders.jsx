@@ -15,8 +15,8 @@ import { OverlayProvider } from './OverlayContext';
 import StoreProvider from './StoreProvider';
 
 // eslint-disable-next-line xss/no-mixed-html
-const GlobalProviders = ({ history, children }) => (
-  <StoreProvider history={history}>
+const GlobalProviders = ({ history, store, persistor, children }) => (
+  <StoreProvider store={store} persistor={persistor}>
     <DndProvider backend={HTML5Backend}>
       <ThemeProvider theme={theme}>
         <MousePositionProvider>

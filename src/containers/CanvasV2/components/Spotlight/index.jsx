@@ -13,7 +13,8 @@ const BLOCK_TYPES = MANAGERS.filter(({ type }) => !NO_EDITOR_BLOCKS.includes(typ
 export const filterSpotlightOption = (value, input) => value.label.toLowerCase().startsWith(input.toLowerCase().trim());
 
 const Spotlight = () => {
-  const { isVisible, hide } = React.useContext(SpotlightContext);
+  // NOTE: extra protection against context being falsy needed for HMR
+  const { isVisible, hide } = React.useContext(SpotlightContext) || {};
   const mousePosition = React.useContext(MousePositionContext);
   const engine = React.useContext(EngineContext);
 

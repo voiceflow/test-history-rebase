@@ -42,7 +42,7 @@ function CanvasControls({ withMenu, withDrawer, goToRootDiagram, isRootDiagram, 
           <IconButton icon="home" onClick={() => eventualEngine.get().focusHome()} />
         </Tooltip>
         <Tooltip distance={19} title="See Shortcuts" position="top">
-          <IconButton icon="star" onClick={shortcutModal.toggle} />
+          <IconButton icon="star" onClick={() => shortcutModal.toggle()} />
         </Tooltip>
       </CanvasControlsContainer>
 

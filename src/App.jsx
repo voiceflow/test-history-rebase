@@ -23,8 +23,8 @@ import AccountLoadingGate from './contexts/AccountLoadingGate';
 import GlobalProviders from './contexts/GlobalProviders';
 import SocketLoadingGate from './contexts/SocketLoadingGate';
 
-const App = ({ history }) => (
-  <GlobalProviders history={history}>
+const App = ({ history, store, persistor }) => (
+  <GlobalProviders history={history} store={store} persistor={persistor}>
     <SocketLoadingGate>
       <AccountLoadingGate>
         {() => (

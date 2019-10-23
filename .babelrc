@@ -1,6 +1,7 @@
 {
   "presets": ["react-app"],
   "plugins": [
+    "react-hot-loader/babel",
     "@babel/plugin-proposal-optional-chaining",
     [
       "@babel/plugin-proposal-decorators",
@@ -15,6 +16,16 @@
       }
     ],
     "@babel/plugin-transform-modules-commonjs",
-    "babel-plugin-styled-components"
+    "babel-plugin-styled-components",
+    [
+      "babel-plugin-named-asset-import",
+      {
+        "loaderMap": {
+          "svg": {
+            "ReactComponent": "@svgr/webpack?-prettier,-svgo![path]"
+          }
+        }
+      }
+    ]
   ]
 }

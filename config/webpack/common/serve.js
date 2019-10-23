@@ -10,8 +10,6 @@ module.exports = (port = 3000, buildDirectory = paths.buildDir) => ({
     app: ['webpack-plugin-serve/client'],
   },
 
-  devtool: 'source-map',
-
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom',
@@ -23,7 +21,7 @@ module.exports = (port = 3000, buildDirectory = paths.buildDir) => ({
       port,
       host: 'localhost',
       open,
-      compress: true,
+      hmr: true,
       historyFallback: true,
       progress: 'minimal',
 

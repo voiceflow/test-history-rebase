@@ -128,6 +128,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-app": "^7.0.0",
     "base-href-webpack-plugin": "^2.0.0",
+    "case-sensitive-paths-webpack-plugin": "^2.2.0",
     "circular-dependency-plugin": "^5.0.2",
     "clean-webpack-plugin": "^3.0.0",
     "commitizen": "^3.1.1",
@@ -149,10 +150,10 @@
     "exargs": "^1.0.0",
     "file-loader": "2.0.0",
     "fixpack": "^2.3.1",
+    "html-webpack-inline-source-plugin": "^0.0.10",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^2.7.0",
     "identity-obj-proxy": "^3.0.0",
-    "inline-manifest-webpack-plugin": "^4.0.2",
     "jest": "24.7.1",
     "jest-pnp-resolver": "^1.0.1",
     "lint-staged": "^8.2.1",
@@ -163,6 +164,7 @@
     "postcss-loader": "3.0.0",
     "postcss-preset-env": "6.3.1",
     "postcss-safe-parser": "4.0.1",
+    "preload-webpack-plugin": "^3.0.0-beta.4",
     "prettier-eslint-cli": "^5.0.0",
     "prettier-stylelint": "^0.4.2",
     "react-hot-loader": "^4.12.6",
@@ -175,12 +177,11 @@
     "stylelint-order": "^3.0.0",
     "terser-webpack-plugin": "1.1.0",
     "webpack": "^4.35.3",
-    "webpack-md5-hash": "^0.0.6",
+    "webpack-manifest-plugin": "^2.2.0",
     "webpack-merge": "^4.2.1",
     "webpack-nano": "^0.6.2",
     "webpack-plugin-serve": "^0.12.0",
-    "webpackbar": "^3.2.0",
-    "workbox-webpack-plugin": "3.6.3"
+    "webpackbar": "^3.2.0"
   },
   "husky": {
     "hooks": {

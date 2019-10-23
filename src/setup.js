@@ -3,7 +3,7 @@ import ReactGA from 'react-ga';
 import { toast } from 'react-toastify';
 
 import { GLOBAL_HEADERS } from '@/client/fetch';
-import { API_ENDPOINT, GOOGLE_ANALYTICS_ID } from '@/config';
+import { API_ENDPOINT, GOOGLE_ANALYTICS_ID, VERSION } from '@/config';
 import { initializeLogRocket } from '@/vendors/logRocket';
 
 const setupApp = (history, tabID) => {
@@ -32,6 +32,20 @@ const setupApp = (history, tabID) => {
     ReactGA.set({ page: location.pathname });
     ReactGA.pageview(location.pathname);
   });
+
+  // eslint-disable-next-line no-console
+  console.info(
+    `%c
+            _           __ _
+/\\   /\\___ (_) ___ ___ / _| | _____      __
+\\ \\ / / _ \\| |/ __/ _ \\ |_| |/ _ \\ \\ /\\ / /
+ \\ V / (_) | | (_|  __/  _| | (_) \\ V  V /
+  \\_/ \\___/|_|\\___\\___|_| |_|\\___/ \\_/\\_/
+
+${VERSION}
+  `,
+    'color: grey'
+  );
 };
 
 export default setupApp;

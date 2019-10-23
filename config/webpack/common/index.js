@@ -29,6 +29,7 @@ module.exports = {
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new WebpackBar({ name: `Voiceflow Creator - ${action || 'build'}` }),
+    new webpack.BannerPlugin(`Voiceflow ${ENV.VERSION}`),
 
     ...(IS_PRODUCTION ? [
       new webpack.optimize.ModuleConcatenationPlugin(),

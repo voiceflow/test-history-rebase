@@ -150,6 +150,7 @@
     "exargs": "^1.0.0",
     "file-loader": "2.0.0",
     "fixpack": "^2.3.1",
+    "git-branch": "^2.0.1",
     "html-webpack-inline-source-plugin": "^0.0.10",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^2.7.0",

@@ -61,18 +61,21 @@ const getBoardFilteredProjects = (projectsIds, projectsMap, filter) => {
 
 export const DashBoard = (props) => {
   let importToken = null;
-  if (props.location && props.location.search) {
+  if (props.location?.search) {
     const query = queryString.parse(props.location.search);
     importToken = query.import;
-    try {
-      const result = jwt.decode(importToken);
-      if (!result.projectId || !result.projectName) {
-        throw new Error('Unexpected JWT content');
+
+    if (importToken) {
+      try {
+        const result = jwt.decode(importToken);
+        if (!result.projectId || !result.projectName) {
+          throw new Error('Unexpected JWT content');
+        }
+      } catch (e) {
+        importToken = null;
+        props.history.replace({ search: '' });
+        props.setError('Bad Import Link');
       }
-    } catch (e) {
-      importToken = null;
-      props.history.replace({ search: '' });
-      props.setError('Bad Import Link');
     }
   }
 

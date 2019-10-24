@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import Modal from '@/components/Modal';
+import Modal, { ModalHeader } from '@/components/Modal';
 import UploadAlexa from '@/containers/Publish/Upload/Alexa';
 import { checkAmazonAccount, getVendors } from '@/ducks/account';
 import { ALEXA_STATES, publish, resetAlexaUpload } from '@/ducks/publish/alexa';
@@ -36,7 +36,7 @@ export function PublishAmazon(props) {
     <>
       <PublishAmazonForm publish={onPublish} />
       <Modal isOpen={open} onClosed={resetAlexaUpload} centered contentClassName="overflow-hidden">
-        {close && <button className="close close-upload-success-popup" onClick={() => setOpen(false)} />}
+        {close && <ModalHeader toggle={() => setOpen(false)} header="" />}
         <UploadAlexa />
       </Modal>
     </>

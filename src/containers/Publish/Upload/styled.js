@@ -2,13 +2,8 @@ import styled from 'styled-components';
 
 export const UploadPromptWrapper = styled.div`
   text-align: center;
-  padding: 36px 22px 22px 22px;
+  padding: 22px;
   width: 100%;
-
-  .modal & {
-    padding: 0 2rem;
-    text-align: left;
-  }
 `;
 
 export const PopupButtonSection = styled.div`

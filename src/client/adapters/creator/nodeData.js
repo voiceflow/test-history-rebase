@@ -39,7 +39,7 @@ const nodeDataAdapter = createSimpleAdapter(
     } catch (err) {
       console.error('Block Adapter Error', err);
       data = dbData;
-      data.deprecatedType = type;
+      data.deprecatedType = dbData.type;
       type = BlockType.DEPRECATED;
     }
 

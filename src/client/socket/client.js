@@ -95,7 +95,7 @@ class SocketClient {
   // lifecycle methods
 
   // eslint-disable-next-line consistent-return
-  connect = async () => {
+  connect = () => {
     if (!this.socket.connected) {
       this.setupErrorHandlers();
 
@@ -124,15 +124,7 @@ class SocketClient {
     };
 
     return new Promise((resolve) => {
-      const timeout = setTimeout(
-        () =>
-          this.dispatch(
-            setConfirm({
-              text: 'Unable to connect to Voiceflow, please refresh.',
-            })
-          ),
-        SOCKET_INIT_TIMEOUT
-      );
+      const timeout = setTimeout(() => console.error('Unable to connect to Voiceflow'), SOCKET_INIT_TIMEOUT);
 
       this.once('init', () => {
         this.handleConnection();

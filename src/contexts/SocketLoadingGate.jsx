@@ -4,11 +4,9 @@ import { useDispatch } from 'react-redux';
 import client from '@/client';
 import createSocketClient from '@/client/socket';
 import LoadingGate from '@/components/LoadingGate';
-import { authTokenSelector, tabIDSelector } from '@/ducks/session';
-import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 
-const SocketLoadingGate = ({ authToken, tabID, children }) => {
+const SocketLoadingGate = ({ children }) => {
   const [isConnected, acknowledgeConnection] = useEnableDisable();
   const dispatch = useDispatch();
   const disconnectSocket = () => client.socket.disconnect();
@@ -16,7 +14,7 @@ const SocketLoadingGate = ({ authToken, tabID, children }) => {
     try {
       client.socket = createSocketClient(dispatch);
 
-      await client.socket.connect(authToken, tabID);
+      await client.socket.connect();
 
       acknowledgeConnection();
     } catch (err) {
@@ -25,15 +23,10 @@ const SocketLoadingGate = ({ authToken, tabID, children }) => {
   };
 
   return (
-    <LoadingGate label="Realtime" isLoaded={isConnected} load={connectSocket} unload={disconnectSocket}>
+    <LoadingGate label="Connection" isLoaded={isConnected} load={connectSocket} unload={disconnectSocket}>
       {children}
     </LoadingGate>
   );
 };
 
-const mapStateToProps = {
-  tabID: tabIDSelector,
-  authToken: authTokenSelector,
-};
-
-export default connect(mapStateToProps)(SocketLoadingGate);
+export default SocketLoadingGate;

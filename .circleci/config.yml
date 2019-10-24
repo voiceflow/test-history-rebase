@@ -184,6 +184,7 @@ jobs:
             docker build \
               -f admin.dockerfile \
               --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} \
+              --build-arg VF_APP_VERSION="($CIRCLE_BRANCH-$CIRCLE_SHA1)" \
               --build-arg VF_APP_BUILD_ENV=$VF_APP_BUILD_ENV \
               --build-arg VF_APP_API_HOST=$VF_APP_API_HOST \
               -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:k8s-$DEPLOY_SUFFIX-$CIRCLE_BUILD_NUM .
@@ -211,6 +212,7 @@ jobs:
               --build-arg BUILD_URL=$CIRCLE_BUILD_URL	\
               --build-arg GIT_SHA=$CIRCLE_SHA1 \
               --build-arg SEM_VER=$SEM_VER \
+              --build-arg VF_APP_VERSION="($SEM_VER)" \
               --build-arg VF_APP_BUILD_ENV=$VF_APP_BUILD_ENV \
               --build-arg VF_APP_API_HOST=$VF_APP_API_HOST \
               -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM .
@@ -219,6 +221,7 @@ jobs:
             docker build \
               -f admin.dockerfile \
               --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} \
+              --build-arg VF_APP_VERSION="($SEM_VER)" \
               --build-arg VF_APP_BUILD_ENV=$VF_APP_BUILD_ENV \
               --build-arg VF_APP_API_HOST=$VF_APP_API_HOST \
               -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM .

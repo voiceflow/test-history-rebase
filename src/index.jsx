@@ -1,4 +1,5 @@
 import './index.css';
+import './polyfills';
 
 import { createBrowserHistory } from 'history';
 import React from 'react';

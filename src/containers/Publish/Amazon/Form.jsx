@@ -11,7 +11,7 @@ import validUrl from 'valid-url';
 import Checkbox from '@/components/Checkbox';
 import Multiple from '@/components/Forms/Multiple';
 import GuidedSteps, { GuidedStepsWrapper } from '@/components/GuidedSteps';
-import RadioButtons, { YES_NO_RADIO_BUTTONS } from '@/components/RadioButtons';
+import RadioGroup from '@/components/RadioGroup';
 import { Spinner } from '@/components/Spinner';
 import Image from '@/components/Uploads/Image';
 import { FormTextBox } from '@/componentsV2/form/TextBox';
@@ -520,15 +520,15 @@ class Skill extends Component {
         <div className="form pa__locale-limited">
           <div className="pb-3 pa__form_container">
             <label>Does this skill allow users to make purchases or spend real money?</label>
-            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={purchase} onChange={(val) => this.onRadio('purchase', val)} />
+            <RadioGroup name="purchase" checked={purchase} onChange={(val) => this.onRadio('purchase', val)} />
           </div>
           <div className="pb-3 pa__form_container">
             <label>Does this Alexa skill collect users' personal information?</label>
-            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={personal} onChange={(val) => this.onRadio('personal', val)} />
+            <RadioGroup name="personal" checked={personal} onChange={(val) => this.onRadio('personal', val)} />
           </div>
           <div className="pb-3 pa__form_container">
             <label>Does this skill contain advertising?</label>
-            <RadioButtons buttons={YES_NO_RADIO_BUTTONS} checked={ads} onChange={(val) => this.onRadio('ads', val)} />
+            <RadioGroup name="ads" checked={ads} onChange={(val) => this.onRadio('ads', val)} />
           </div>
           <div>
             <label>Export Compliance</label>
@@ -540,13 +540,13 @@ class Skill extends Component {
             </div>
             <div className="pb-3 pa__checkbox_container">
               <Checkbox
-                value="export"
                 checked={stateExport}
                 onChange={() => {
                   this.setState({ export: !stateExport });
                 }}
-              />
-              <div>I Certify</div>
+              >
+                <div>I Certify</div>
+              </Checkbox>
             </div>
           </div>
           <div className="">

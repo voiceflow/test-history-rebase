@@ -1,6 +1,7 @@
 import React from 'react';
-import { Input, InputGroup } from 'reactstrap';
+import { InputGroup } from 'reactstrap';
 
+import Checkbox from '@/components/Checkbox';
 import Button from '@/componentsV2/Button';
 import { FlexEnd } from '@/componentsV2/Flex';
 import { Content, Section } from '@/containers/CanvasV2/components/BlockEditor';
@@ -46,8 +47,8 @@ function SpeakEditor({ data, onChange }) {
           </FlexEnd>
           <InputGroup className="my-3">
             <label className="input-group-text w-100 text-left">
-              <Input addon type="checkbox" checked={!!data.randomize} onChange={toggleRandomized} />
-              <span className="ml-3">Output Random Entry</span>
+              <Checkbox checked={!!data.randomize} onChange={toggleRandomized} />
+              <span>Output Random Entry</span>
             </label>
           </InputGroup>
         </Section>

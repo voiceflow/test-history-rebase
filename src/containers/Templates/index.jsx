@@ -13,6 +13,8 @@ import { addProjectToList } from '@/ducks/board';
 import { connect } from '@/hocs';
 
 import LOCALE_MAP from '../../services/LocaleMap';
+import LocalCheckbox from './components/LocalCheckBox';
+import LocaleLabelFlex from './components/LocaleLabelFlex';
 
 const getBoardFromURL = (computedMatch) => _.get(computedMatch, ['params', 'board_id']);
 
@@ -165,17 +167,18 @@ class Templates extends React.Component {
             <div className="grid-col-3 mx--1">
               {LOCALE_MAP.map((locale, i) => {
                 return (
-                  <Button
-                    isActive={locales.includes(locale.value)}
-                    className="country-checkbox"
+                  <LocalCheckbox
+                    checked={locales.includes(locale.value)}
                     key={i}
-                    onClick={() => {
+                    onChange={() => {
                       this.onLocaleBtnClick(locale.value);
                     }}
                   >
-                    <span>{locale.name}</span>
-                    <img src={`/images/icons/countries/${locale.value}.svg`} alt={locale.name} />
-                  </Button>
+                    <LocaleLabelFlex>
+                      <span>{locale.name}</span>
+                      <img src={`/images/icons/countries/${locale.value}.svg`} alt={locale.name} />
+                    </LocaleLabelFlex>
+                  </LocalCheckbox>
                 );
               })}
             </div>

@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 16 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <defs>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
-            <stop stop-color="currentColor" offset="0%"></stop>
-            <stop stop-color="currentColor" offset="100%"></stop>
-        </linearGradient>
+<svg width="16px" height="17px" viewBox="0 0 16 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Rectangle 3</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
         <rect id="path-2" x="0" y="0" width="16" height="16" rx="3"></rect>
-        <filter x="-3.1%" y="-3.1%" width="106.2%" height="112.5%" filterUnits="objectBoundingBox" id="filter-3">
-            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feComposite in="shadowOffsetOuter1" in2="SourceAlpha" operator="out" result="shadowOffsetOuter1"></feComposite>
-            <feColorMatrix values="0 0 0 0 0.0666666667   0 0 0 0 0.192156863   0 0 0 0 0.376470588  0 0 0 0.05 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
-        </filter>
     </defs>
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Checkbox/Off">
             <g id="Rectangle-3">
-                <use fill="currentColor" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
-                <rect stroke="#8DA2B5" stroke-width="1" stroke-linejoin="square" fill="url(#linearGradient-1)" fill-rule="evenodd" x="0.5" y="0.5" width="15" height="15" rx="3"></rect>
+               <rect stroke="currentColor" stroke-width="1" x="0.5" y="0.5" width="15" height="15" rx="3"></rect>
             </g>
         </g>
     </g>

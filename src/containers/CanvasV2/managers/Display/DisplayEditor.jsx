@@ -2,9 +2,10 @@ import './DisplayEditor.css';
 
 import React from 'react';
 import { Tooltip } from 'react-tippy';
-import { Input, InputGroup } from 'reactstrap';
+import { InputGroup } from 'reactstrap';
 
 import AceEditor from '@/components/AceEditor';
+import Checkbox from '@/components/Checkbox';
 import DisplaySelect from '@/components/DisplaySelect';
 import Divider from '@/components/Divider';
 import Button from '@/componentsV2/Button';
@@ -76,9 +77,9 @@ function DisplayEditor({ data, onChange, displays, goToDisplays, displayModal })
           <>
             <InputGroup className="mb-0 mt-1">
               <label className="input-group-text w-100 m-0 d-flex">
-                <Input addon type="checkbox" checked={data.updateOnChange} onChange={toggleUpdateOnChange} />
+                <Checkbox checked={data.updateOnChange} onChange={toggleUpdateOnChange} />
 
-                <div className="ml-2 space-between flex-hard">
+                <div className="space-between flex-hard">
                   <span>Update on Variable Changes</span>
                   <span>
                     <Tooltip

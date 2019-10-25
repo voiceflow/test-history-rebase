@@ -177,27 +177,6 @@
   transform: translate(-50%, 0);
 }
 
-.platform-checkbox {
-  position: absolute !important;
-  top: 0;
-  left: 0;
-  width: 1em;
-  height: 1em;
-  margin: 0.5em;
-  color: #eaeff4 !important;
-  background: none;
-  background-image: url('/images/icons/empty.svg');
-  background-repeat: no-repeat;
-}
-
-.platform-checkbox:hover {
-  background-image: url('/images/icons/hover.svg');
-}
-
-.platform-checkbox.active {
-  background-image: url('/images/icons/check.svg');
-}
-
 .platform-image.alexa {
   bottom: -6rem;
 }

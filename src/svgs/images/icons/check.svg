@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 16 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <defs>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
-            <stop stop-color="currentColor" offset="0%"></stop>
-            <stop stop-color="currentColor" offset="100%"></stop>
-        </linearGradient>
-        <rect id="path-2" x="0" y="0" width="16" height="16" rx="3"></rect>
-        <filter x="-3.1%" y="-3.1%" width="106.2%" height="112.5%" filterUnits="objectBoundingBox" id="filter-3">
-            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feComposite in="shadowOffsetOuter1" in2="SourceAlpha" operator="out" result="shadowOffsetOuter1"></feComposite>
-            <feColorMatrix values="0 0 0 0 0.0666666667   0 0 0 0 0.192156863   0 0 0 0 0.376470588  0 0 0 0.05 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
-        </filter>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
-            <stop stop-color="currentColor" stop-opacity="0.85" offset="0%"></stop>
-            <stop stop-color="currentColor" offset="100%"></stop>
-        </linearGradient>
-        <path d="M7.15079937,8.56537308 L11.1315787,5.12852595 C11.3483726,4.94135465 11.6615241,4.96063005 11.8570706,5.17318212 C12.0476431,5.38032774 12.0476431,5.71398555 11.8570706,5.92113117 L7.47829611,10.6807036 C7.08939549,11.1034248 6.4556785,11.1068516 6.06284959,10.6883577 C6.03802175,10.6619077 6.01449789,10.634077 5.99237462,10.6049799 L4.12276855,8.64706215 C3.94674221,8.41554754 3.96158035,8.07837647 4.15715045,7.86579871 C4.3542915,7.65151339 4.66818268,7.62675929 4.89224855,7.80782734 L6.23027397,8.5812401 C6.50446849,8.80281721 6.88334032,8.79628663 7.15079937,8.56537308 Z" id="path-5"></path>
-    </defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Checkbox/On">
-            <g id="Group">
-                <g id="Rectangle-3">
-                    <use fill="currentColor" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
-                    <rect stroke="#5D9DF5" stroke-width="1" stroke-linejoin="square" fill="url(#linearGradient-1)" fill-rule="evenodd" x="0.5" y="0.5" width="15" height="15" rx="3"></rect>
-                </g>
-                <g id="Combined-Shape">
-                    <use fill="currentColor" xlink:href="#path-5"></use>
-                    <use fill="url(#linearGradient-4)" xlink:href="#path-5"></use>
-                </g>
-            </g>
+<svg width="16px" height="17px" viewBox="0 0 16 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+  <title>Group</title>
+  <desc>Created with Sketch.</desc>
+  <defs>
+    <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+      <stop stop-color="#FFFFFF" offset="0%"></stop>
+      <stop stop-color="#F9FAFB" offset="100%"></stop>
+    </linearGradient>
+    <rect id="path-2" x="0" y="0" width="16" height="16" rx="3"></rect>
+    <filter x="-3.1%" y="-3.1%" width="106.2%" height="112.5%" filterUnits="objectBoundingBox" id="filter-3">
+      <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+      <feComposite in="shadowOffsetOuter1" in2="SourceAlpha" operator="out" result="shadowOffsetOuter1"></feComposite>
+      <feColorMatrix values="0 0 0 0 0.0666666667   0 0 0 0 0.192156863   0 0 0 0 0.376470588  0 0 0 0.05 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+    </filter>
+    <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
+      <stop stop-color="#5D9DF5" stop-opacity="0.85" offset="0%"></stop>
+      <stop stop-color="#5D9DF5" offset="100%"></stop>
+    </linearGradient>
+    <path d="M7.15079937,8.56537308 L11.1315787,5.12852595 C11.3483726,4.94135465 11.6615241,4.96063005 11.8570706,5.17318212 C12.0476431,5.38032774 12.0476431,5.71398555 11.8570706,5.92113117 L7.47829611,10.6807036 C7.08939549,11.1034248 6.4556785,11.1068516 6.06284959,10.6883577 C6.03802175,10.6619077 6.01449789,10.634077 5.99237462,10.6049799 L4.12276855,8.64706215 C3.94674221,8.41554754 3.96158035,8.07837647 4.15715045,7.86579871 C4.3542915,7.65151339 4.66818268,7.62675929 4.89224855,7.80782734 L6.23027397,8.5812401 C6.50446849,8.80281721 6.88334032,8.79628663 7.15079937,8.56537308 Z" id="path-5"></path>
+  </defs>
+  <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Checkbox/On">
+      <g id="Group">
+        <g id="Rectangle-3">
+          <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+          <rect stroke="#5D9DF5" stroke-width="1" stroke-linejoin="square" fill="url(#linearGradient-1)" fill-rule="evenodd" x="0.5" y="0.5" width="15" height="15" rx="3"></rect>
         </g>
+        <g id="Combined-Shape">
+          <use fill="#FFFFFF" xlink:href="#path-5"></use>
+          <use fill="url(#linearGradient-4)" xlink:href="#path-5"></use>
+        </g>
+      </g>
     </g>
+  </g>
 </svg>

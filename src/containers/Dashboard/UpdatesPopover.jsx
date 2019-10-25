@@ -2,6 +2,8 @@ import cn from 'classnames';
 import moment from 'moment';
 import React from 'react';
 
+import { styled, units } from '@/hocs';
+
 const class_mapping = {
   FEATURE: {
     class: 'update-modal-feature',
@@ -17,16 +19,24 @@ const class_mapping = {
   },
 };
 
+export const NotificationContainer = styled.div`
+  padding: ${units(1.5)}px;
+
+  & > * {
+    white-space: normal;
+  }
+`;
+
 class UpdatesPopover extends React.Component {
   render() {
     const { product_updates, new_product_updates } = this.props;
     return (
-      <div className="text-center pt-1 pb-1">
+      <NotificationContainer>
         {Array.isArray(product_updates) &&
           product_updates.map((entry, i) => {
             return (
               <React.Fragment key={i}>
-                <div align="left" className="pr-1 pl-1">
+                <div align="left" className="pr-1 pl-1 app-notification">
                   {new_product_updates.includes(entry) && (
                     <p className={cn('d-inline-block mb-0 ', class_mapping[entry.type].class)}>&bull; {class_mapping[entry.type].label}:&nbsp;</p>
                   )}
@@ -38,7 +48,7 @@ class UpdatesPopover extends React.Component {
               </React.Fragment>
             );
           })}
-      </div>
+      </NotificationContainer>
     );
   }
 }

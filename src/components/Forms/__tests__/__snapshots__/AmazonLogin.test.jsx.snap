@@ -14,7 +14,7 @@ exports[`Amazon Login Test render empty card 1`] = `
         className="LoginWithAmazon"
         onClick={[Function]}
       >
-        <Styled(Styled(BaseButton))
+        <Styled(Styled(styled.button))
           canHover={true}
           className="LoginWithAmazon"
           onClick={[Function]}
@@ -30,10 +30,14 @@ exports[`Amazon Login Test render empty card 1`] = `
                 },
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "sc-bwzfXH",
+                  "componentId": "sc-htpNat",
                   "isStatic": false,
-                  "lastClassName": "KfXyU",
+                  "lastClassName": "dpFeQA",
                   "rules": Array [
+                    "
+  ",
+                    "
+  ",
                     "display:",
                     [Function],
                     ";align-items:center;",
@@ -41,9 +45,22 @@ exports[`Amazon Login Test render empty card 1`] = `
                     " ",
                     [Function],
                     " justify-content:center;",
-                    " ",
+                    "
+  ",
                     [Function],
-                    " padding:0;border:0;background:inherit;&:focus,&:active{outline:0;}",
+                    "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+                    "
+",
                     "
   ",
                     "
@@ -79,13 +96,13 @@ exports[`Amazon Login Test render empty card 1`] = `
 ",
                   ],
                 },
-                "displayName": "Styled(Styled(BaseButton))",
+                "displayName": "Styled(Styled(styled.button))",
                 "foldedComponentIds": Array [
-                  "BaseButton-xe84nb-0",
                   "sc-bdVaJa",
+                  "sc-bwzfXH",
                 ],
                 "render": [Function],
-                "styledComponentId": "sc-bwzfXH",
+                "styledComponentId": "sc-htpNat",
                 "target": "button",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -96,7 +113,7 @@ exports[`Amazon Login Test render empty card 1`] = `
             onClick={[Function]}
           >
             <button
-              className="BaseButton-xe84nb-0 sc-bdVaJa LoginWithAmazon sc-bwzfXH KfXyU"
+              className="sc-bdVaJa sc-bwzfXH LoginWithAmazon sc-htpNat dpFeQA"
               onClick={[Function]}
             >
               <components__PrimaryButtonLabel>
@@ -134,7 +151,7 @@ exports[`Amazon Login Test render empty card 1`] = `
               </components__PrimaryButtonLabel>
             </button>
           </StyledComponent>
-        </Styled(Styled(BaseButton))>
+        </Styled(Styled(styled.button))>
       </PrimaryButton>
     </Button>
   </AmazonLoginButton>

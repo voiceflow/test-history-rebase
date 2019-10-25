@@ -1,6 +1,5 @@
-import styled, { css } from 'styled-components';
-
 import { flexCenterStyles } from '@/componentsV2/Flex';
+import { css, styled } from '@/hocs';
 
 import { clickableStyles } from '../styles';
 

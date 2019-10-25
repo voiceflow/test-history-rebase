@@ -13,7 +13,6 @@ import { Tooltip } from 'react-tippy';
 import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
-import RoundButton from '@/components/Button/RoundButton';
 import DragLayer from '@/components/DragLayer';
 import LoadingModal from '@/components/Modal/LoadingModal';
 import UpdatesModal from '@/components/Modal/UpdatesModal';
@@ -90,7 +89,6 @@ export const DashBoard = (props) => {
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
   const [updates_open, toggleUpdatesOpen] = useState(false);
   const [new_product_updates, setNewProductUpdates] = useState([]);
-  const [updates_hover, toggleUpdatesHover] = useState(false);
   const [show_update_bubble, setShowUpdateBubble] = useState(false);
 
   const closeImport = () => {
@@ -189,6 +187,7 @@ export const DashBoard = (props) => {
     async function fetchData() {
       try {
         const updates = await axios.get(`/product_updates/${props.user.creator_id}`);
+
         if (updates.data.rows.length > 0) {
           let lastCheckedTime;
           if (!updates.data.last_checked) {
@@ -196,14 +195,17 @@ export const DashBoard = (props) => {
           } else {
             lastCheckedTime = moment(updates.data.last_checked).unix();
           }
+
           const newUpdates = updates.data.rows.filter((update) => {
             const updateTime = Math.floor(new Date(update.created) / 1000);
             return updateTime > lastCheckedTime;
           });
-          if (newUpdates && newUpdates.length > 0) {
+
+          if (newUpdates?.length > 0) {
             setNewProductUpdates(newUpdates);
             setShowUpdateBubble(true);
           }
+
           setProductUpdates(updates.data.rows);
         } else {
           // For when there are no updates
@@ -230,24 +232,6 @@ export const DashBoard = (props) => {
 
   const onSaveList = useCallback(() => props.updateLists(props.team_id), [props.updateLists, props.team_id]);
 
-  const renderUpdatesButton = () => {
-    if (!show_update_bubble) {
-      return <RoundButton active={updates_open} icon="notifications" onClick={updateButtonClick} imgSize={15} />;
-    }
-    return (
-      <div className="dropdown-update-container" onMouseEnter={() => toggleUpdatesHover(true)} onMouseLeave={() => toggleUpdatesHover(false)}>
-        <div className="dropdown-update-bubble" />
-        {!updates_hover && !updates_open ? (
-          <RoundButton active={updates_open} icon="notifications" onClick={updateButtonClick} imgSize={15} />
-        ) : (
-          <div className={cn('dropdown-button-numbered')} onClick={updateButtonClick}>
-            <div className="update-number-circle">{new_product_updates.length}</div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
   const downgrade = () => {
     props.removeTrial(props.team.team_id);
   };
@@ -270,13 +254,13 @@ export const DashBoard = (props) => {
         <DashboardHeader
           history={props.history}
           handleFilterText={handleFilterText}
-          renderUpdatesButton={renderUpdatesButton}
-          updates_open={updates_open}
-          toggleUpdatesOpen={toggleUpdatesOpen}
+          updatesCount={new_product_updates?.length}
+          show_update_bubble={show_update_bubble}
           setNewProductUpdates={setNewProductUpdates}
           setShowUpdateBubble={setShowUpdateBubble}
           product_updates={product_updates}
           new_product_updates={new_product_updates}
+          updateButtonClick={updateButtonClick}
           showInfo={showInfo}
           setShowInfo={setShowInfo}
           teams={props.teams}

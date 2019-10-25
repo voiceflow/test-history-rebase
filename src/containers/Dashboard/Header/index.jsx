@@ -9,9 +9,8 @@ import SecondaryNav from './secondary-nav';
 export default function DashboardHeader({
   history,
   handleFilterText,
-  renderUpdatesButton,
-  updates_open,
-  toggleUpdatesOpen,
+  updateButtonClick,
+  show_update_bubble,
   setNewProductUpdates,
   setShowUpdateBubble,
   product_updates,
@@ -22,6 +21,7 @@ export default function DashboardHeader({
   fetchBoards,
   team_setting,
   setTeamSetting,
+  updatesCount,
 }) {
   return (
     <Header
@@ -40,13 +40,13 @@ export default function DashboardHeader({
       )}
       rightRenderer={() => (
         <RightNavSection
-          updates_open={updates_open}
-          toggleUpdatesOpen={toggleUpdatesOpen}
           setNewProductUpdates={setNewProductUpdates}
           setShowUpdateBubble={setShowUpdateBubble}
           product_updates={product_updates}
           new_product_updates={new_product_updates}
-          renderUpdatesButton={renderUpdatesButton}
+          show_update_bubble={show_update_bubble}
+          updateButtonClick={updateButtonClick}
+          updatesCount={updatesCount}
         />
       )}
       subHeaderRenderer={() => (

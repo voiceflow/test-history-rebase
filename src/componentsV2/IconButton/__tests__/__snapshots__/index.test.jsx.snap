@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Icon Button renders 1`] = `
-<Styled(Styled(BaseButton))>
+<Styled(Styled(styled.button))>
   <Memo([object Object])
     color="currentColor"
     icon="plus"
     size={16}
   />
-</Styled(Styled(BaseButton))>
+</Styled(Styled(styled.button))>
 `;

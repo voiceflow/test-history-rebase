@@ -17,18 +17,8 @@ const IconButtonContainer = styled(ButtonContainer)`
   border: 1px solid #fff;
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
 
-  height: ${({ large }) => (large ? `${SIZE[large]}px` : `${SIZE.small}px`)};
-  width: ${({ large }) => (large ? `${SIZE[large]}px` : `${SIZE.small}px`)};
-
-  ${({ variant }) =>
-    variant === 'flat'
-      ? css`
-          background: inherit;
-        `
-      : css`
-          box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
-          ${transition()}
-        `}
+  height: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
+  width: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
 
   ${({ disabled }) =>
     disabled
@@ -48,6 +38,17 @@ const IconButtonContainer = styled(ButtonContainer)`
     color: #5b9dfa;
     box-shadow: 0 0 0 1px #5b9dfa99;
   }
+
+  ${({ variant }) => {
+    variant === 'flat'
+      ? css`
+          background: inherit;
+        `
+      : css`
+          box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
+          ${transition()}
+        `;
+  }}
 `;
 
 export default IconButtonContainer;

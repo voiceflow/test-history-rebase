@@ -1,28 +1,33 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
-import { Popover, PopoverBody } from 'reactstrap';
 
 import RoundButton from '@/components/Button/RoundButton';
+import SvgIcon from '@/components/SvgIcon';
 import Dropdown from '@/componentsV2/Dropdown';
 import Menu, { MenuItem } from '@/componentsV2/Menu';
 import { IS_PRODUCTION, YOUTUBE_CHANNEL_ID } from '@/config';
 import { goToDesigner } from '@/ducks/router';
 import { connect } from '@/hocs';
+import { useToggle } from '@/hooks/toggle';
+import { stopPropagation } from '@/utils/dom';
 
 import UpdatesPopover from '../UpdatesPopover';
+import { Numbered, UpdateBubble } from './components';
 
 const YOUTUBE_CHANNEL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
 
 function RightNavSection({
-  updates_open,
-  toggleUpdatesOpen,
   setNewProductUpdates,
   setShowUpdateBubble,
   product_updates,
   new_product_updates,
-  renderUpdatesButton,
   goToDesigner,
+  updateButtonClick,
+  show_update_bubble,
+  updatesCount,
 }) {
+  const [onHover, toggleUpdatesHover] = useToggle(false);
+
   return (
     <>
       {!IS_PRODUCTION && (
@@ -30,24 +35,58 @@ function RightNavSection({
           <RoundButton icon="star" imgSize={15} />
         </div>
       )}
+
       <div className="subheader-right nav-child-item">
-        <div id="update-popup">{renderUpdatesButton()}</div>
-        <Popover
-          className="updates-popover-container"
-          placement="bottom"
-          isOpen={updates_open}
-          target="update-popup"
-          toggle={() => {
-            toggleUpdatesOpen(!updates_open);
-            setNewProductUpdates([]);
-            setShowUpdateBubble(false);
-          }}
+        {/* notifications component */}
+        <Dropdown
+          menu={
+            <Menu>
+              <UpdatesPopover product_updates={product_updates} new_product_updates={new_product_updates} />
+            </Menu>
+          }
+          placement="bottom-end"
         >
-          <PopoverBody>
-            <UpdatesPopover product_updates={product_updates} new_product_updates={new_product_updates} />
-          </PopoverBody>
-        </Popover>
+          {(ref, onToggle, isOpen) => {
+            return (
+              <div style={{ position: 'relative' }} onMouseEnter={toggleUpdatesHover} onMouseLeave={toggleUpdatesHover}>
+                {/* if updates available show notifications bubble and expand it on hover */}
+                {show_update_bubble ? (
+                  <>
+                    <UpdateBubble
+                      ref={ref}
+                      onClick={stopPropagation(() => {
+                        onToggle();
+                        updateButtonClick();
+                        setNewProductUpdates([]);
+                        setShowUpdateBubble(false);
+                      })}
+                      expand={onHover || isOpen}
+                    >
+                      <span>{updatesCount}</span>
+                    </UpdateBubble>
+                    <Numbered>
+                      <SvgIcon icon="notifications" size={15} />
+                    </Numbered>
+                  </>
+                ) : (
+                  // else just show button with notifications icon
+                  <RoundButton
+                    ref={ref}
+                    active={isOpen}
+                    icon="notifications"
+                    onClick={() => {
+                      onToggle();
+                      updateButtonClick();
+                    }}
+                    imgSize={15}
+                  />
+                )}
+              </div>
+            );
+          }}
+        </Dropdown>
       </div>
+
       <div className="subheader-right nav-child-item">
         <Dropdown
           menu={

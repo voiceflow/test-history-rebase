@@ -70,7 +70,7 @@ class Skill extends React.PureComponent {
                   <CanvasHeader />
                   <CanvasMenu />
                   <Canvas page={page} />
-                  <Testing />
+                  <Testing render />
                 </SettingsModalProvider>
               </ShortcutModalProvider>
             </TestingModeProvider>

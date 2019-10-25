@@ -16,14 +16,14 @@ import { useToggle } from '@/hooks/toggle';
 import TestSettings from './components/TestingSettings';
 import Timeline from './components/Timeline';
 
-const Testing = ({ status, renderTest, resetTest, userTest, saveActiveDiagram }) => {
+const Testing = ({ status, renderTest, resetTest, userTest, saveActiveDiagram, render }) => {
   const [settingsOpen, toggleSettingsOpen] = useToggle();
   const isOpen = React.useContext(TestingModeContext);
   const active = status !== TEST_STATUS.IDLE;
 
   // eslint-disable-next-line consistent-return
   React.useEffect(() => {
-    if (isOpen) {
+    if (isOpen && render) {
       saveActiveDiagram()
         .then(() => renderTest())
         .catch(() => renderTest());

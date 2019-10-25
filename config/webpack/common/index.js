@@ -16,6 +16,7 @@ module.exports = {
     extensions: ['.js', '.json', '.jsx', '.css'],
     alias: {
       '@': paths.sourceDir,
+      lodash: 'lodash-es',
     },
   },
 
@@ -31,13 +32,9 @@ module.exports = {
     new WebpackBar({ name: `Voiceflow Creator - ${action || 'build'}` }),
     new webpack.BannerPlugin(`Voiceflow ${ENV.VERSION}`),
 
-    ...(IS_PRODUCTION ? [
-      new webpack.optimize.ModuleConcatenationPlugin(),
-      new webpack.HashedModuleIdsPlugin(),
-    ]: [
-      new webpack.NamedModulesPlugin(),
-      new CaseSensitivePathsPlugin(),
-    ]),
+    ...(IS_PRODUCTION
+      ? [new webpack.optimize.ModuleConcatenationPlugin(), new webpack.HashedModuleIdsPlugin()]
+      : [new webpack.NamedModulesPlugin(), new CaseSensitivePathsPlugin()]),
 
     ...(IS_SERVING
       ? []

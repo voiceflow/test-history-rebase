@@ -1,6 +1,7 @@
 {
   "presets": ["react-app"],
   "plugins": [
+    "babel-plugin-lodash",
     "react-hot-loader/babel",
     "@babel/plugin-proposal-optional-chaining",
     [
@@ -15,7 +16,6 @@
         "loose": true
       }
     ],
-    "@babel/plugin-transform-modules-commonjs",
     "babel-plugin-styled-components",
     [
       "babel-plugin-named-asset-import",
@@ -27,5 +27,10 @@
         }
       }
     ]
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": ["@babel/plugin-transform-modules-commonjs"]
+    }
+  }
 }

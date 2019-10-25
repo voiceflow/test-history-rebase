@@ -3,6 +3,7 @@ import { createAction } from '@/ducks/utils';
 // actions
 
 export const ADD_NODE = 'REALTIME:SOCKET:NODE:ADD';
+export const COPY_NODE = 'REALTIME:SOCKET:NODE:COPY';
 export const ADD_MANY_NODES = 'REALTIME:SOCKET:NODE:ADD';
 export const REMOVE_NODE = 'REALTIME:SOCKET:NODE:REMOVE';
 export const REMOVE_MANY_NODES = 'REALTIME:SOCKET:NODE:REMOVE_MANY';

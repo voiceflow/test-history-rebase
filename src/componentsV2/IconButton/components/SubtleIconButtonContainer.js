@@ -1,16 +1,16 @@
-import * as SvgIcon from '@/components/SvgIcon';
+import { SvgIconContainer } from '@/components/SvgIcon';
 import { buttonContainerStyles } from '@/componentsV2/Button/components/ButtonContainer';
 import { styled } from '@/hocs';
 
 const SubtleIconButtonContainer = styled.button`
   ${buttonContainerStyles}
 
-  & ${SvgIcon.Container} {
+  & ${SvgIconContainer} {
     color: #8da2b5;
     max-width: 16px;
   }
 
-  &:hover ${SvgIcon.Container} {
+  &:hover ${SvgIconContainer} {
     color: #2e3852;
   }
 `;

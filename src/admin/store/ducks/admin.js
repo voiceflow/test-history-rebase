@@ -1,6 +1,6 @@
 /* eslint no-restricted-globals: ["error", "isFinite"] */
 import axios from 'axios';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 

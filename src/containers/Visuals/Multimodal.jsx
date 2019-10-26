@@ -2,7 +2,6 @@ import './Display.css';
 
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Masonry from 'react-masonry-component';
 import { Link } from 'react-router-dom';
 
 import Button from '@/components/Button';
@@ -67,40 +66,33 @@ class Multimodal extends Component {
               </Button>
             </div>
           </div>
-          <Masonry
-            elementType="div"
-            imagesLoadedOptions={{
-              columnWidth: '200',
-              itemSelector: '.grid-item',
-            }}
-          >
-            {displays.map((display) => {
-              let name = display.name.match(/\b(\w)/g);
-              if (name) {
-                name = name.join('');
-              } else {
-                name = display.name;
-              }
-              name = name.substring(0, 3);
 
-              return (
-                <VoiceCards
-                  key={display.id}
-                  name={display.name}
-                  placeholder={
-                    <div className="no-image card-image">
-                      <h1>{name}</h1>
-                    </div>
-                  }
-                  onDelete={() => this.onDelete(display.id)}
-                  deleteLabel="Delete Visual"
-                  onClick={() => goToDisplay(display.id)}
-                  buttonLabel="Edit Visual"
-                />
-              );
-            })}
-            <EmptyCard onClick={goToNewDisplay} />
-          </Masonry>
+          {displays.map((display) => {
+            let name = display.name.match(/\b(\w)/g);
+            if (name) {
+              name = name.join('');
+            } else {
+              name = display.name;
+            }
+            name = name.substring(0, 3);
+
+            return (
+              <VoiceCards
+                key={display.id}
+                name={display.name}
+                placeholder={
+                  <div className="no-image card-image">
+                    <h1>{name}</h1>
+                  </div>
+                }
+                onDelete={() => this.onDelete(display.id)}
+                deleteLabel="Delete Visual"
+                onClick={() => goToDisplay(display.id)}
+                buttonLabel="Edit Visual"
+              />
+            );
+          })}
+          <EmptyCard onClick={goToNewDisplay} />
         </div>
       </div>
     );

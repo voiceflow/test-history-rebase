@@ -1,4 +1,4 @@
-import skillAdapter from '@/client/adapters/skill';
+import skillAdapter, { extractIntents, extractSlots } from '@/client/adapters/skill';
 
 import fetch from './fetch';
 
@@ -12,9 +12,11 @@ const testingClient = {
   createInfo: (skillID, diagramID, globals) => fetch.post(`${TESTING_PATH}/makeInfo/${skillID}`, { diagram: diagramID, globals }),
 
   getInfo: (configID) =>
-    fetch(`${TESTING_PATH}/getInfo/${configID}`).then((body) => {
-      body.skill = skillAdapter.fromDB(body.skill);
-      return body;
+    fetch(`${TESTING_PATH}/getInfo/${configID}`).then((data) => {
+      const skill = skillAdapter.fromDB(data.skill);
+      const intents = extractIntents(data.skill);
+      const slots = extractSlots(data.skill);
+      return { skill, intents, slots, testVariableValues: data.globals };
     }),
 };
 

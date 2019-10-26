@@ -38,75 +38,58 @@ exports[`MultiModal not loading renders MultiModal 1`] = `
         </Button>
       </div>
     </div>
-    <MasonryComponent
-      className=""
-      disableImagesLoaded={false}
-      elementType="div"
-      enableResizableChildren={false}
-      imagesLoadedOptions={
-        Object {
-          "columnWidth": "200",
-          "itemSelector": ".grid-item",
-        }
+    <VoiceCards
+      buttonLabel="Edit Visual"
+      deleteLabel="Delete Visual"
+      key="displayMockId"
+      name="VisualTmplateTest"
+      onClick={[Function]}
+      onDelete={[Function]}
+      placeholder={
+        <div
+          className="no-image card-image"
+        >
+          <h1>
+            V
+          </h1>
+        </div>
       }
-      onLayoutComplete={[Function]}
-      onRemoveComplete={[Function]}
-      options={Object {}}
-      updateOnEachImageLoad={false}
-    >
-      <VoiceCards
-        buttonLabel="Edit Visual"
-        deleteLabel="Delete Visual"
-        key="displayMockId"
-        name="VisualTmplateTest"
-        onClick={[Function]}
-        onDelete={[Function]}
-        placeholder={
-          <div
-            className="no-image card-image"
-          >
-            <h1>
-              V
-            </h1>
-          </div>
-        }
-      />
-      <VoiceCards
-        buttonLabel="Edit Visual"
-        deleteLabel="Delete Visual"
-        key="displayMockId2"
-        name="VisualTmplateTest2"
-        onClick={[Function]}
-        onDelete={[Function]}
-        placeholder={
-          <div
-            className="no-image card-image"
-          >
-            <h1>
-              V
-            </h1>
-          </div>
-        }
-      />
-      <VoiceCards
-        buttonLabel="Edit Visual"
-        deleteLabel="Delete Visual"
-        key="displayMockId3"
-        name="VisualTmplateTest3"
-        onClick={[Function]}
-        onDelete={[Function]}
-        placeholder={
-          <div
-            className="no-image card-image"
-          >
-            <h1>
-              V
-            </h1>
-          </div>
-        }
-      />
-      <EmptyCard />
-    </MasonryComponent>
+    />
+    <VoiceCards
+      buttonLabel="Edit Visual"
+      deleteLabel="Delete Visual"
+      key="displayMockId2"
+      name="VisualTmplateTest2"
+      onClick={[Function]}
+      onDelete={[Function]}
+      placeholder={
+        <div
+          className="no-image card-image"
+        >
+          <h1>
+            V
+          </h1>
+        </div>
+      }
+    />
+    <VoiceCards
+      buttonLabel="Edit Visual"
+      deleteLabel="Delete Visual"
+      key="displayMockId3"
+      name="VisualTmplateTest3"
+      onClick={[Function]}
+      onDelete={[Function]}
+      placeholder={
+        <div
+          className="no-image card-image"
+        >
+          <h1>
+            V
+          </h1>
+        </div>
+      }
+    />
+    <EmptyCard />
   </div>
 </div>
 `;

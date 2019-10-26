@@ -15,7 +15,7 @@ const skillAdapter = createAdapter(
     platform,
     google_publish_info,
     locales,
-    global,
+    global = [],
     amzn_id,
     vendor_id,
     live,

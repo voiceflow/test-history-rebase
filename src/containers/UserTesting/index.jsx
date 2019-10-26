@@ -12,7 +12,9 @@ import Header from '@/components/Header';
 import Popover from '@/components/Popover';
 import { TestingModeProvider } from '@/containers/CanvasV2/contexts';
 import Testing from '@/containers/Testing';
+import { replaceIntents } from '@/ducks/intent';
 import { activeDiagramIDSelector, activeNameSelector, setActiveSkill } from '@/ducks/skill';
+import { replaceSlots } from '@/ducks/slot';
 import { initializeTest, updateTest } from '@/ducks/test';
 import { connect } from '@/hocs';
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["componentDidMount","componentWillUnmount","render"] }] */
@@ -59,19 +61,20 @@ class UserTesting extends React.Component {
   }
 
   async fetchInformation() {
-    const { setActiveSkill, initializeTest, updateTest } = this.props;
-    const data = await client.testing.getInfo(this.props.match.params.skill_id);
-    const skillData = data.skill;
-    const globals = Array.isArray(skillData.global) ? skillData.global : [];
-    skillData.global = [...new Set(['sessions', 'user_id', 'timestamp', 'platform', 'locale', ...globals])];
-    if (!skillData.fulfillment) {
-      skillData.fulfillment = {};
+    const { setActiveSkill, initializeTest, updateTest, replaceIntents, replaceSlots } = this.props;
+    const { skill, intents, slots, testVariableValues } = await client.testing.getInfo(this.props.match.params.skill_id);
+
+    skill.globalVariables = [...new Set(['sessions', 'user_id', 'timestamp', 'platform', 'locale', ...skill.globalVariables])];
+    if (!skill.fulfillment) {
+      skill.fulfillment = {};
     }
-    skillData.platform = skillData.platform === 'google' ? 'google' : 'alexa';
+    skill.platform = skill.platform === 'google' ? 'google' : 'alexa';
 
-    setActiveSkill(skillData);
+    setActiveSkill(skill);
+    replaceIntents(intents);
+    replaceSlots(slots);
 
-    localStorage.setItem(`TEST_VARIABLES_${skillData.skill_id}`, JSON.stringify(data.globals));
+    localStorage.setItem(`TEST_VARIABLES_${skill.id}`, JSON.stringify(testVariableValues));
 
     this.setState({ loading: 0 });
     initializeTest({ userTest: true });
@@ -143,6 +146,8 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   initializeTest,
+  replaceIntents,
+  replaceSlots,
   updateTest,
   setActiveSkill,
 };

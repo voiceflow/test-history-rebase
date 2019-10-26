@@ -12,9 +12,9 @@ function Results({ variableMap }) {
     <ResultsTable borderless>
       <thead>
         <tr>
-          <th style={{ width: '40%' }}>Data Path</th>
+          <th style={{ width: '35%' }}>Data Path</th>
           <th style={{ width: '40%' }}>Value</th>
-          <th style={{ width: '20%' }}>Stored to</th>
+          <th style={{ width: '25%' }}>Stored to</th>
         </tr>
       </thead>
       <tbody>

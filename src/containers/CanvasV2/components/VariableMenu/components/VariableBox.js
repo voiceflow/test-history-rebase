@@ -11,7 +11,7 @@ const VariableBox = styled.div`
     ${SvgIconContainer} {
       /* provide a bigger hitbox for the close button */
       padding: 7px;
-      margin: -7px;
+      margin: -7px -3px -7px -7px;
       display: inline-block;
       cursor: pointer;
       color: #8da2b5;

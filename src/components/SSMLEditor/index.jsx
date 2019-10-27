@@ -7,7 +7,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import VariableTag from '@/components/VariableTag';
+import { InlineVariableTag } from '@/components/VariableTag';
 
 import Menu from './Menu';
 import Recent from './Recent';
@@ -92,7 +92,7 @@ class SSMLEditor extends Component {
       mentionRegExp: '[\\w_-]*',
       mentionPrefix: '{',
       mentionSuffix: '}',
-      mentionComponent: (mentionProps) => <VariableTag>{mentionProps.children}</VariableTag>,
+      mentionComponent: (mentionProps) => <InlineVariableTag>{mentionProps.children}</InlineVariableTag>,
     });
 
     const { value, variables = [] } = props;

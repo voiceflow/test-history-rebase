@@ -7,7 +7,7 @@ import React from 'react';
 
 import { draftJSContentAdapter } from '@/client/adapters/draft';
 import DraftJSEditor from '@/components/DraftJSEditor';
-import VariableTag from '@/components/VariableTag';
+import { InlineVariableTag } from '@/components/VariableTag';
 import { connect } from '@/hocs';
 import { allVariablesSelector } from '@/store/selectors';
 import { swallowEvent } from '@/utils/dom';
@@ -33,7 +33,7 @@ class VariableText extends React.PureComponent {
     mentionRegExp: '[\\w_-]*',
     mentionPrefix: '{',
     mentionSuffix: '}',
-    mentionComponent: ({ children }) => <VariableTag>{children}</VariableTag>,
+    mentionComponent: ({ children }) => <InlineVariableTag>{children}</InlineVariableTag>,
   });
 
   state = {

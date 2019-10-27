@@ -307,7 +307,6 @@ class Display extends Component {
                           <AceEditor
                             name="document_editor"
                             mode="json"
-                            theme="monokai"
                             onChange={this.onChangeDocument}
                             fontSize={14}
                             showPrintMargin={false}
@@ -330,7 +329,6 @@ class Display extends Component {
                           <AceEditor
                             name="document_editor"
                             mode="json"
-                            theme="monokai"
                             onChange={this.onChangeDataSource}
                             fontSize={14}
                             showPrintMargin={false}

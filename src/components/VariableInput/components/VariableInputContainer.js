@@ -1,4 +1,3 @@
-import VariableTag from '@/components/VariableTag';
 import { VariableTextField } from '@/components/VariableText';
 import { styled } from '@/hocs';
 
@@ -8,7 +7,6 @@ const VariableInputContainer = styled.div`
   }
 
   & .public-DraftStyleDefault-block {
-    display: flex;
     align-items: baseline;
     white-space: pre;
     overflow-x: auto;
@@ -27,11 +25,6 @@ const VariableInputContainer = styled.div`
     height: 28px;
     padding-top: 6px;
     padding-bottom: 6px;
-  }
-
-  ${VariableTag} {
-    margin-top: 2px;
-    margin-bottom: 0px;
   }
 `;
 

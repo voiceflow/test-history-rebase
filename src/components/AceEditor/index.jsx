@@ -7,10 +7,20 @@ import 'brace/mode/javascript';
 import 'brace/mode/json';
 import 'brace/mode/json_custom';
 import 'brace/theme/chrome';
-import 'brace/theme/monokai';
 /* eslint-enable simple-import-sort/sort */
 
 export default styled(AceEditor)`
+  .ace_custom_variable {
+    display: inline;
+    text-decoration: none;
+    background-color: #eef4f6;
+    color: #132144;
+    border: 1px solid #dfe3ed;
+    margin: -1px;
+
+    border-radius: 7px;
+  }
+
   ${({ variant }) => {
     // eslint-disable-next-line sonarjs/no-small-switch
     switch (variant) {

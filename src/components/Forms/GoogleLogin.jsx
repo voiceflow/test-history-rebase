@@ -38,7 +38,7 @@ export const GoogleLoginForm = (props) => {
             Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.
           </div>
           <a href={OAUTH_URL} target="_blank" rel="noopener noreferrer" className="no-underline">
-            <Button type="button" variant="secondary">
+            <Button className="d-inline-block" variant="secondary">
               Login with Google
             </Button>
           </a>

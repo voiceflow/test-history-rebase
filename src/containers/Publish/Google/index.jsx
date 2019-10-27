@@ -1,7 +1,7 @@
 /* eslint-disable no-secrets/no-secrets */
 import React, { useEffect, useState } from 'react';
 
-import Modal from '@/components/Modal';
+import Modal, { ModalHeader } from '@/components/Modal';
 import UploadGoogle from '@/containers/Publish/Upload/Google';
 import { checkGoogleAccount } from '@/ducks/account';
 import { GOOGLE_STATES, loadDialogflow, publish, resetGoogleUpload } from '@/ducks/publish/google';
@@ -40,7 +40,7 @@ export function PublishGoogle(props) {
     <>
       <PublishGoogleForm publish={onPublish} />
       <Modal isOpen={open} centered contentClassName="overflow-hidden">
-        {close && <button className="close close-upload-success-popup" onClick={() => setOpen(false)} />}
+        {close && <ModalHeader toggle={() => setOpen(false)} header={GOOGLE_STATES[stage]?.description} />}
         <UploadGoogle />
       </Modal>
     </>

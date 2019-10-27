@@ -1,10 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
+
+import { googleIDSelector } from '@/ducks/publish/google';
+import { connect } from '@/hocs';
 
 import { UploadPromptWrapper } from '../styled';
 
 const UploadSuccess = (props) => {
-  const { google_id } = props;
+  const { googleID } = props;
 
   return (
     <UploadPromptWrapper>
@@ -14,7 +16,7 @@ const UploadSuccess = (props) => {
       </div>
       <div className="upload-prompt-text">
         You may test on the{' '}
-        <a href={`https://console.actions.google.com/u/0/project/${google_id}/simulator`} target="_blank" rel="noopener noreferrer">
+        <a href={`https://console.actions.google.com/u/0/project/${googleID}/simulator`} target="_blank" rel="noopener noreferrer">
           Google Actions Simulator
         </a>
         . To submit for review, please follow the instructions on the Google Actions Developer Console.
@@ -23,6 +25,8 @@ const UploadSuccess = (props) => {
   );
 };
 
-export default connect((state) => ({
-  google_id: state.publish.google.google_id,
-}))(UploadSuccess);
+const mapStateToProps = {
+  googleID: googleIDSelector,
+};
+
+export default connect(mapStateToProps)(UploadSuccess);

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import _ from 'lodash';
 import randomstring from 'randomstring';
+import { createSelector } from 'reselect';
 
 import { PlatformType } from '@/constants';
 import { activeProjectIDSelector, publishPlatformSelectors, updatePublishPlatforms } from '@/ducks/skill';
@@ -11,6 +12,11 @@ export const PLATFORM = PlatformType.GOOGLE;
 
 export const publishInfoSelector = publishPlatformSelectors[PLATFORM];
 export const updatePublishInfo = updatePublishPlatforms[PLATFORM];
+
+export const googleIDSelector = createSelector(
+  publishInfoSelector,
+  ({ googleID }) => googleID
+);
 
 export const GOOGLE_STATES = {
   IDLE: {

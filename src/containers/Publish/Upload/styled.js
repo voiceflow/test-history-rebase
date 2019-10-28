@@ -18,7 +18,7 @@ export const PopupButtonSection = styled.div`
   .modal & {
     justify-content: space-between;
     flex-direction: row-reverse;
-    margin: 0 -2rem;
+    margin: 0 -22px -22px -22px;
   }
 `;
 

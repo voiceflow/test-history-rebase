@@ -1,5 +1,3 @@
-import './DisplayEditor.css';
-
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 import { InputGroup } from 'reactstrap';
@@ -103,7 +101,6 @@ function DisplayEditor({ data, onChange, displays, goToDisplays, displayModal })
               <AceEditor
                 name="datasource_editor"
                 mode="json_custom"
-                theme="monokai"
                 onChange={updateDatasource}
                 fontSize={14}
                 showPrintMargin={false}
@@ -134,7 +131,6 @@ function DisplayEditor({ data, onChange, displays, goToDisplays, displayModal })
               <AceEditor
                 name="apl_commands_editor"
                 mode="json_custom"
-                theme="monokai"
                 onChange={updateAPLCommands}
                 fontSize={14}
                 showPrintMargin={false}

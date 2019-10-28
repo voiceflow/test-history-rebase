@@ -1,5 +1,6 @@
 import React from 'react';
 
+import VariableTag from '@/components/VariableTag';
 import { ExpressionType } from '@/constants';
 
 import { ARITHMETIC, SYMBOLS } from '../constants';
@@ -26,9 +27,7 @@ const expressionfy = (expression, depth = 0) => {
       <span className="math brackets">
         {expression.value.map((valuePart, index) =>
           typeof valuePart === 'object' ? (
-            <span className="math variable" key={index}>
-              {`{${valuePart.name}}`}
-            </span>
+            <VariableTag key={{ index }}>{`{${valuePart.name}}`}</VariableTag>
           ) : (
             valuePart
               .split('\n')
@@ -57,7 +56,7 @@ const expressionfy = (expression, depth = 0) => {
 
   if (expression.type === ExpressionType.VARIABLE) {
     if (expression.value) {
-      return <span className="math variable">{`{${expression.value}}`}</span>;
+      return <VariableTag>{`{${expression.value}}`}</VariableTag>;
     }
 
     return <span className="math unknown">?</span>;

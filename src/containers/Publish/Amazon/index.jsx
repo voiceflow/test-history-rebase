@@ -36,7 +36,7 @@ export function PublishAmazon(props) {
     <>
       <PublishAmazonForm publish={onPublish} />
       <Modal isOpen={open} onClosed={resetAlexaUpload} centered contentClassName="overflow-hidden">
-        {close && <ModalHeader toggle={() => setOpen(false)} header="" />}
+        {close && <ModalHeader toggle={() => setOpen(false)} header={ALEXA_STATES[stage]?.description} />}
         <UploadAlexa />
       </Modal>
     </>

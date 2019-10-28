@@ -18,9 +18,9 @@ export const YES_NO_RADIO_BUTTONS = [
   },
 ];
 
-export default function RadioGroup({ options = YES_NO_RADIO_BUTTONS, name, checked, onChange, ...props }) {
+export default function RadioGroup({ options = YES_NO_RADIO_BUTTONS, name, checked, onChange, className, ...props }) {
   return (
-    <Container>
+    <Container className={className}>
       {options.map((button, index) => {
         return (
           <RadioButtonContainer key={index}>

@@ -5,7 +5,6 @@ exports[`Captioned Icon Button renders 1`] = `
   <Memo([object Object])
     color="#becedc"
     icon="plus"
-    size={16}
   />
   <CaptionedIconButtonLabel>
     LABEL

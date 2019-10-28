@@ -5,6 +5,7 @@ import Textarea from 'react-textarea-autosize';
 import { Collapse } from 'reactstrap';
 
 import Button from '@/components/Button';
+import SvgIcon from '@/components/SvgIcon';
 
 import SpeakBox from './SpeakBox';
 import SpeechBar from './SpeechBar';
@@ -213,10 +214,14 @@ class TestBox extends React.PureComponent {
           ) : (
             <div className="condition-label pointer" onClick={this.toggleInputOpen}>
               <label className="mb-0">{listening ? 'Listening...' : 'User Says'}</label>
-              <i
-                className={cn('fas fa-caret-left fa-lg light-grey rotate', {
-                  'fa-rotate--90': inputOpen,
-                })}
+
+              <SvgIcon
+                icon="arrowLeft"
+                width={24}
+                height={13}
+                style={{ transform: `rotate(${inputOpen ? -90 : 90}deg)` }}
+                color="#90a2b3"
+                transition="transform"
               />
             </div>
           )}

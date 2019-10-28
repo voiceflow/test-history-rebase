@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 
 import { findCreator, getCharges } from '@/admin/store/ducks/admin';
 import { AdminTitle } from '@/admin/styles';
-import Input from '@/components/Input';
 import Button from '@/componentsV2/Button';
+import Input from '@/componentsV2/Input';
 
 import ChargeList from './components/ChargeList/ChargeList';
 
@@ -52,7 +52,7 @@ class FinanceBoard extends React.Component {
             <div className="row">
               <div className="col-sm-8">
                 <Input
-                  className="search-input form-control-2"
+                  className="search-input"
                   placeholder="Find creator by id or email"
                   onChange={this.handleSearch}
                   onEnterPress={() => this.props.getCharges(this.state.searchTerm)}

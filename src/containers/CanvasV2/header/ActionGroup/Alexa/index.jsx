@@ -2,12 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import Close from '@/components/Close';
 import UploadAlexa from '@/containers/Publish/Upload/Alexa';
 import { checkAmazonAccount, getVendors } from '@/ducks/account';
 import { ALEXA_STAGES, ALEXA_STATES, resetAlexaUpload } from '@/ducks/publish/alexa';
 
-import { PopupContainer, PopupTransition } from '../styled';
+import { Close, PopupContainer, PopupTransition } from '../styled';
 import UploadButton from './UploadButton';
 
 const AlexaActionGroup = (props) => {

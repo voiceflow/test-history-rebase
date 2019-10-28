@@ -1,12 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Tooltip } from 'react-tippy';
 import styled from 'styled-components';
 
 import Button from '@/components/Button';
 import RoundButton from '@/components/Button/RoundButton';
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
-import Popover from '@/components/Popover';
 import { Spinner } from '@/components/Spinner';
+import Dropdown from '@/componentsV2/Dropdown';
+import { MenuContainer } from '@/componentsV2/Menu';
 import { userSelector } from '@/ducks/account';
 import { setConfirm } from '@/ducks/modal';
 import { renderTest, shareTest } from '@/ducks/test';
@@ -20,21 +21,22 @@ const BodyContainer = styled.div`
   font-family: 'Open Sans';
 `;
 
+const ShareMenuContainer = styled(MenuContainer)`
+  width: 440px;
+  max-width: 440px;
+  margin-top: 10px;
+`;
+
 const TestingHeader = (props) => {
   const { shareTest, renderTest, render, user } = props;
 
-  const [share, setShare] = useState(false);
   const [link, setLink] = useState(false);
   const [teamSetting, setTeamSetting] = useState(null);
-  const sharingButton = useRef(null);
 
   const makeConfig = async () => {
-    setShare(!share);
-    if (!share) {
-      setLink(false);
-      if (render) await renderTest();
-      setLink(`${window.location.origin}/demo/${await shareTest()}`);
-    }
+    setLink(false);
+    if (render) await renderTest();
+    setLink(`${window.location.origin}/demo/${await shareTest()}`);
   };
 
   const renderBody = () => {
@@ -73,11 +75,27 @@ const TestingHeader = (props) => {
   };
 
   return (
-    <div ref={sharingButton}>
-      <Tooltip title="Share Test" position="bottom">
-        <RoundButton active={share} variant="color" color="#5b9dfa" icon="share" onClick={makeConfig} imgSize={16} />
-      </Tooltip>
-      <Popover gap={-10} show={share} className="mt-3 share" target={sharingButton.current} onHide={() => setShare(!share)} renderBody={renderBody} />
+    <div>
+      <Dropdown menu={() => <ShareMenuContainer>{renderBody()}</ShareMenuContainer>} placement="bottom" selfDismiss>
+        {(ref, onToggle, isOpen) => (
+          <Tooltip title="Share Test" position="bottom">
+            <RoundButton
+              active={isOpen}
+              variant="color"
+              color="#5b9dfa"
+              icon="share"
+              onClick={() => {
+                if (!isOpen) {
+                  makeConfig();
+                }
+                onToggle();
+              }}
+              imgSize={16}
+              ref={ref}
+            />
+          </Tooltip>
+        )}
+      </Dropdown>
       <TeamSettings hideIcon={true} open={teamSetting} update={(setting) => setTeamSetting(setting)} close={() => setTeamSetting(false)} />
     </div>
   );

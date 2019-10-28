@@ -1,0 +1,167 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Title variants: heading 1`] = `
+<Title
+  as="h1"
+>
+  <StyledComponent
+    as="h1"
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "Title-sc-1dcpukq-0",
+          "isStatic": false,
+          "lastClassName": "bpoOSN",
+          "rules": Array [
+            "color:#132144;",
+            [Function],
+          ],
+        },
+        "displayName": "Title",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "Title-sc-1dcpukq-0",
+        "target": "span",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+  >
+    <h1
+      className="Title-sc-1dcpukq-0 exyzsu"
+    >
+      Title
+    </h1>
+  </StyledComponent>
+</Title>
+`;
+
+exports[`Storyshots Title variants: label 1`] = `
+<Title
+  as="h4"
+  variant="label"
+>
+  <StyledComponent
+    as="h4"
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "Title-sc-1dcpukq-0",
+          "isStatic": false,
+          "lastClassName": "bpoOSN",
+          "rules": Array [
+            "color:#132144;",
+            [Function],
+          ],
+        },
+        "displayName": "Title",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "Title-sc-1dcpukq-0",
+        "target": "span",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+    variant="label"
+  >
+    <h4
+      className="Title-sc-1dcpukq-0 bpoOSN"
+    >
+      Title
+    </h4>
+  </StyledComponent>
+</Title>
+`;
+
+exports[`Storyshots Title variants: subheading 1`] = `
+<Title
+  as="h2"
+  variant="subheading"
+>
+  <StyledComponent
+    as="h2"
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "Title-sc-1dcpukq-0",
+          "isStatic": false,
+          "lastClassName": "bpoOSN",
+          "rules": Array [
+            "color:#132144;",
+            [Function],
+          ],
+        },
+        "displayName": "Title",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "Title-sc-1dcpukq-0",
+        "target": "span",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+    variant="subheading"
+  >
+    <h2
+      className="Title-sc-1dcpukq-0 bknjRM"
+    >
+      Title
+    </h2>
+  </StyledComponent>
+</Title>
+`;
+
+exports[`Storyshots Title variants: subtitle 1`] = `
+<Title
+  as="h3"
+  variant="subtitle"
+>
+  <StyledComponent
+    as="h3"
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "Title-sc-1dcpukq-0",
+          "isStatic": false,
+          "lastClassName": "bpoOSN",
+          "rules": Array [
+            "color:#132144;",
+            [Function],
+          ],
+        },
+        "displayName": "Title",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "Title-sc-1dcpukq-0",
+        "target": "span",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+    variant="subtitle"
+  >
+    <h3
+      className="Title-sc-1dcpukq-0 bGKbSU"
+    >
+      Title
+    </h3>
+  </StyledComponent>
+</Title>
+`;

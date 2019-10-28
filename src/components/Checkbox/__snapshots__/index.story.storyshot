@@ -1,0 +1,391 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Checkbox variants: Checkbox 1`] = `
+<styled.label>
+  <StyledComponent
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "sc-gqjmRU",
+          "isStatic": true,
+          "lastClassName": "etzSgW",
+          "rules": Array [
+            "
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin-bottom: 0;
+  text-align: left;
+  cursor: pointer;
+",
+          ],
+        },
+        "displayName": "styled.label",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "sc-gqjmRU",
+        "target": "label",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+  >
+    <label
+      className="sc-gqjmRU etzSgW"
+    >
+      <styled.div>
+        <StyledComponent
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-gZMcBi",
+                "isStatic": true,
+                "lastClassName": "dqAXEC",
+                "rules": Array [
+                  "
+  flex: 0 0 auto;
+  min-width: 0;
+  margin-right: 10px;
+  padding: 4px;
+  padding-left: 0;
+  color: #8da2b5;
+",
+                ],
+              },
+              "displayName": "styled.div",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-gZMcBi",
+              "target": "div",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={null}
+        >
+          <div
+            className="sc-gZMcBi dqAXEC"
+          >
+            <styled.input
+              checked={false}
+              onChange={[Function]}
+              type="checkbox"
+            >
+              <StyledComponent
+                checked={false}
+                forwardedComponent={
+                  Object {
+                    "$$typeof": Symbol(react.forward_ref),
+                    "attrs": Array [],
+                    "componentStyle": ComponentStyle {
+                      "componentId": "sc-iwsKbI",
+                      "isStatic": true,
+                      "lastClassName": "bkouDE",
+                      "rules": Array [
+                        "
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+
+  :focus ~ ",
+                        ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        " {
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
+  }
+  :hover ~ ",
+                        ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        " {
+    color: #5d9df5;
+  }
+",
+                      ],
+                    },
+                    "displayName": "styled.input",
+                    "foldedComponentIds": Array [],
+                    "render": [Function],
+                    "styledComponentId": "sc-iwsKbI",
+                    "target": "input",
+                    "toString": [Function],
+                    "warnTooManyClasses": [Function],
+                    "withComponent": [Function],
+                  }
+                }
+                forwardedRef={null}
+                onChange={[Function]}
+                type="checkbox"
+              >
+                <input
+                  checked={false}
+                  className="sc-iwsKbI bkouDE"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+              </StyledComponent>
+            </styled.input>
+            <ForwardRef(SvgIcon)
+              color="currentColor"
+              icon="emptyCheckbox"
+              size={16}
+            >
+              <SvgIcon__SvgIconContainer
+                color="currentColor"
+                size={16}
+              >
+                <StyledComponent
+                  color="currentColor"
+                  forwardedComponent={
+                    Object {
+                      "$$typeof": Symbol(react.forward_ref),
+                      "attrs": Array [],
+                      "componentStyle": ComponentStyle {
+                        "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        "isStatic": false,
+                        "lastClassName": "rRXjk",
+                        "rules": Array [
+                          "color:",
+                          [Function],
+                          ";& > svg{display:block;",
+                          [Function],
+                          ";}&:hover,&:active{color:",
+                          [Function],
+                          ";}",
+                        ],
+                      },
+                      "displayName": "SvgIcon__SvgIconContainer",
+                      "foldedComponentIds": Array [],
+                      "render": [Function],
+                      "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                      "target": "span",
+                      "toString": [Function],
+                      "warnTooManyClasses": [Function],
+                      "withComponent": [Function],
+                    }
+                  }
+                  forwardedRef={null}
+                  size={16}
+                >
+                  <span
+                    className="SvgIcon__SvgIconContainer-sc-1krgz98-0 rRXjk"
+                    color="currentColor"
+                    size={16}
+                  >
+                    <test-file-stub />
+                  </span>
+                </StyledComponent>
+              </SvgIcon__SvgIconContainer>
+            </ForwardRef(SvgIcon)>
+          </div>
+        </StyledComponent>
+      </styled.div>
+      <span>
+        checkbox
+      </span>
+    </label>
+  </StyledComponent>
+</styled.label>
+`;
+
+exports[`Storyshots Checkbox variants: Radio button 1`] = `
+<styled.label>
+  <StyledComponent
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "sc-gqjmRU",
+          "isStatic": true,
+          "lastClassName": "etzSgW",
+          "rules": Array [
+            "
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin-bottom: 0;
+  text-align: left;
+  cursor: pointer;
+",
+          ],
+        },
+        "displayName": "styled.label",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "sc-gqjmRU",
+        "target": "label",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+  >
+    <label
+      className="sc-gqjmRU etzSgW"
+    >
+      <styled.div>
+        <StyledComponent
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-gZMcBi",
+                "isStatic": true,
+                "lastClassName": "dqAXEC",
+                "rules": Array [
+                  "
+  flex: 0 0 auto;
+  min-width: 0;
+  margin-right: 10px;
+  padding: 4px;
+  padding-left: 0;
+  color: #8da2b5;
+",
+                ],
+              },
+              "displayName": "styled.div",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-gZMcBi",
+              "target": "div",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={null}
+        >
+          <div
+            className="sc-gZMcBi dqAXEC"
+          >
+            <styled.input
+              checked={false}
+              onChange={[Function]}
+              type="checkbox"
+            >
+              <StyledComponent
+                checked={false}
+                forwardedComponent={
+                  Object {
+                    "$$typeof": Symbol(react.forward_ref),
+                    "attrs": Array [],
+                    "componentStyle": ComponentStyle {
+                      "componentId": "sc-iwsKbI",
+                      "isStatic": true,
+                      "lastClassName": "bkouDE",
+                      "rules": Array [
+                        "
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+
+  :focus ~ ",
+                        ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        " {
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
+  }
+  :hover ~ ",
+                        ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        " {
+    color: #5d9df5;
+  }
+",
+                      ],
+                    },
+                    "displayName": "styled.input",
+                    "foldedComponentIds": Array [],
+                    "render": [Function],
+                    "styledComponentId": "sc-iwsKbI",
+                    "target": "input",
+                    "toString": [Function],
+                    "warnTooManyClasses": [Function],
+                    "withComponent": [Function],
+                  }
+                }
+                forwardedRef={null}
+                onChange={[Function]}
+                type="checkbox"
+              >
+                <input
+                  checked={false}
+                  className="sc-iwsKbI bkouDE"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+              </StyledComponent>
+            </styled.input>
+            <ForwardRef(SvgIcon)
+              color="currentColor"
+              icon="emptyCheckbox"
+              size={16}
+            >
+              <SvgIcon__SvgIconContainer
+                color="currentColor"
+                size={16}
+              >
+                <StyledComponent
+                  color="currentColor"
+                  forwardedComponent={
+                    Object {
+                      "$$typeof": Symbol(react.forward_ref),
+                      "attrs": Array [],
+                      "componentStyle": ComponentStyle {
+                        "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        "isStatic": false,
+                        "lastClassName": "rRXjk",
+                        "rules": Array [
+                          "color:",
+                          [Function],
+                          ";& > svg{display:block;",
+                          [Function],
+                          ";}&:hover,&:active{color:",
+                          [Function],
+                          ";}",
+                        ],
+                      },
+                      "displayName": "SvgIcon__SvgIconContainer",
+                      "foldedComponentIds": Array [],
+                      "render": [Function],
+                      "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                      "target": "span",
+                      "toString": [Function],
+                      "warnTooManyClasses": [Function],
+                      "withComponent": [Function],
+                    }
+                  }
+                  forwardedRef={null}
+                  size={16}
+                >
+                  <span
+                    className="SvgIcon__SvgIconContainer-sc-1krgz98-0 rRXjk"
+                    color="currentColor"
+                    size={16}
+                  >
+                    <test-file-stub />
+                  </span>
+                </StyledComponent>
+              </SvgIcon__SvgIconContainer>
+            </ForwardRef(SvgIcon)>
+          </div>
+        </StyledComponent>
+      </styled.div>
+      <span>
+        Radio button
+      </span>
+    </label>
+  </StyledComponent>
+</styled.label>
+`;

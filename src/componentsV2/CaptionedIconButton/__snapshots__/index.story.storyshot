@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Captioned Icon Button variants: default 1`] = `
+<CaptionedIconButtonContainer
+  disabled={false}
+  onClick={[Function]}
+>
+  <StyledComponent
+    disabled={false}
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "CaptionedIconButtonContainer-sc-1h2g29o-0",
+          "isStatic": false,
+          "lastClassName": "bDwdcI",
+          "rules": Array [
+            "
+  ",
+            "
+  ",
+            "display:",
+            [Function],
+            ";align-items:center;",
+            [Function],
+            " ",
+            [Function],
+            " justify-content:center;",
+            "
+  ",
+            [Function],
+            "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+            "
+",
+            "
+  ",
+            "
+  height: ",
+            "42",
+            "px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: ",
+            [Function],
+            ";
+",
+            "
+",
+            "height:",
+            "60",
+            "px;width:",
+            "60",
+            "px;flex-direction:column;color:#6e849a;",
+            [Function],
+            " &:hover{background:#eef4f6;}& > *:nth-child(1){padding-bottom:2px;}& > *:nth-last-child(1){padding-top:2px;}",
+          ],
+        },
+        "displayName": "CaptionedIconButtonContainer",
+        "foldedComponentIds": Array [
+          "sc-bdVaJa",
+          "sc-bxivhb",
+        ],
+        "render": [Function],
+        "styledComponentId": "CaptionedIconButtonContainer-sc-1h2g29o-0",
+        "target": "button",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+    onClick={[Function]}
+  >
+    <button
+      className="sc-bdVaJa sc-bxivhb CaptionedIconButtonContainer-sc-1h2g29o-0 bDwdcI"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <ForwardRef(SvgIcon)
+        color="#becedc"
+        icon="elipsis"
+        size={16}
+      >
+        <SvgIcon__SvgIconContainer
+          color="#becedc"
+          size={16}
+        >
+          <StyledComponent
+            color="#becedc"
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                  "isStatic": false,
+                  "lastClassName": "bXkjBk",
+                  "rules": Array [
+                    "color:",
+                    [Function],
+                    ";& > svg{display:block;",
+                    [Function],
+                    ";}&:hover,&:active{color:",
+                    [Function],
+                    ";}",
+                  ],
+                },
+                "displayName": "SvgIcon__SvgIconContainer",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                "target": "span",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={null}
+            size={16}
+          >
+            <span
+              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 bXkjBk"
+              color="#becedc"
+              size={16}
+            >
+              <test-file-stub />
+            </span>
+          </StyledComponent>
+        </SvgIcon__SvgIconContainer>
+      </ForwardRef(SvgIcon)>
+      <CaptionedIconButtonLabel>
+        <StyledComponent
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "CaptionedIconButtonLabel-xduuz7-0",
+                "isStatic": true,
+                "lastClassName": "gEYgnO",
+                "rules": Array [
+                  "width:inherit;padding:0 8px;overflow-x:hidden;box-sizing:border-box;text-overflow:ellipsis;white-space:nowrap;font-weight:bold;font-size:11px;line-height:15px;",
+                ],
+              },
+              "displayName": "CaptionedIconButtonLabel",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "CaptionedIconButtonLabel-xduuz7-0",
+              "target": "span",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={null}
+        >
+          <span
+            className="CaptionedIconButtonLabel-xduuz7-0 gEYgnO"
+          >
+            LABEL
+          </span>
+        </StyledComponent>
+      </CaptionedIconButtonLabel>
+    </button>
+  </StyledComponent>
+</CaptionedIconButtonContainer>
+`;

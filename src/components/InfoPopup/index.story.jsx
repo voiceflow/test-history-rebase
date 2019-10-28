@@ -2,11 +2,10 @@ import { select, text } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import Variant from '@/../.storybook/Variant';
+import { Variant, createTestableStory } from '@/../.storybook';
 import SvgIcon from '@/components/SvgIcon';
 import Button from '@/componentsV2/Button';
-// eslint-disable-next-line no-unused-vars
-import { css, styled } from '@/hocs';
+import { styled } from '@/hocs';
 
 import InfoPopUp from '.';
 
@@ -51,56 +50,60 @@ const InfoBox = styled.div`
   padding: 20px;
   box-shadow: 0 0 5px #ccc;
 `;
-storiesOf('Info Popup', module).add('variants', () => {
-  const placement = select('Placement', PLACEMENT_OPTIONS);
-  const labelText = text('Information', 'Popup');
 
-  return (
-    <>
-      <Variant label="Icon Popup">
-        <InfoPopUp
-          portal={false}
-          placement={placement}
-          reference={() => (
-            <div>
-              <Button>Info</Button>
-            </div>
-          )}
-        >
-          <InfoBox>{labelText}</InfoBox>
-        </InfoPopUp>
-      </Variant>
+storiesOf('Info Popup', module).add(
+  'variants',
+  createTestableStory(() => {
+    const placement = select('Placement', PLACEMENT_OPTIONS);
+    const labelText = text('Information', 'Popup');
 
-      <Variant label="Label Icon Popup">
-        <InfoPopUp
-          portal={false}
-          placement={placement}
-          reference={(isOpen) => (
-            <div>
-              <InfoLabel>Slots</InfoLabel>
-              <RefContainer>
-                <SvgIcon color={isOpen ? '#6E849A' : '#8da2b5'} icon="info" />
-              </RefContainer>
-            </div>
-          )}
-        >
-          <InfoBox>{labelText}</InfoBox>
-        </InfoPopUp>
-      </Variant>
+    return (
+      <>
+        <Variant label="Icon Popup">
+          <InfoPopUp
+            portal={false}
+            placement={placement}
+            reference={() => (
+              <div>
+                <Button>Info</Button>
+              </div>
+            )}
+          >
+            <InfoBox>{labelText}</InfoBox>
+          </InfoPopUp>
+        </Variant>
 
-      <Variant label="Label Popup">
-        <InfoPopUp
-          portal={false}
-          placement={placement}
-          reference={() => (
-            <div>
-              <RefContainer>How it Works</RefContainer>
-            </div>
-          )}
-        >
-          <InfoBox>{labelText}</InfoBox>
-        </InfoPopUp>
-      </Variant>
-    </>
-  );
-});
+        <Variant label="Label Icon Popup">
+          <InfoPopUp
+            portal={false}
+            placement={placement}
+            reference={(isOpen) => (
+              <div>
+                <InfoLabel>Slots</InfoLabel>
+                <RefContainer>
+                  <SvgIcon color={isOpen ? '#6E849A' : '#8da2b5'} icon="info" />
+                </RefContainer>
+              </div>
+            )}
+          >
+            <InfoBox>{labelText}</InfoBox>
+          </InfoPopUp>
+        </Variant>
+
+        <Variant label="Label Popup">
+          <InfoPopUp
+            portal={false}
+            placement={placement}
+            reference={() => (
+              <div>
+                <RefContainer>How it Works</RefContainer>
+              </div>
+            )}
+          >
+            <InfoBox>{labelText}</InfoBox>
+          </InfoPopUp>
+        </Variant>
+      </>
+    );
+  })
+);

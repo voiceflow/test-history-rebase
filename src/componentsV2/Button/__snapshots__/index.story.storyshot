@@ -1,0 +1,743 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Button variants - with icon: primary 1`] = `
+<PrimaryButton
+  disabled={false}
+  icon="plus"
+  onClick={[Function]}
+>
+  <Styled(Styled(styled.button))
+    canHover={true}
+    disabled={false}
+    onClick={[Function]}
+  >
+    <StyledComponent
+      canHover={true}
+      disabled={false}
+      forwardedComponent={
+        Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "_foldedDefaultProps": Object {
+            "canHover": true,
+          },
+          "attrs": Array [],
+          "componentStyle": ComponentStyle {
+            "componentId": "sc-fjdhpX",
+            "isStatic": false,
+            "lastClassName": "gZKPwt",
+            "rules": Array [
+              "
+  ",
+              "
+  ",
+              "display:",
+              [Function],
+              ";align-items:center;",
+              [Function],
+              " ",
+              [Function],
+              " justify-content:center;",
+              "
+  ",
+              [Function],
+              "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+              "
+",
+              "
+  ",
+              "
+  height: ",
+              "42",
+              "px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: ",
+              [Function],
+              ";
+",
+              "
+",
+              "
+  color: #fff;
+  background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
+  box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  font-weight: 600;
+  ",
+              [Function],
+              "
+
+  ",
+              [Function],
+              "
+
+  &:active {
+    background: linear-gradient(180deg, rgba(93, 157, 245, 0.99) 0%, #2c85ff 100%);
+    box-shadow: 0px 7px 12px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  }
+",
+            ],
+          },
+          "displayName": "Styled(Styled(styled.button))",
+          "foldedComponentIds": Array [
+            "sc-bdVaJa",
+            "sc-bxivhb",
+          ],
+          "render": [Function],
+          "styledComponentId": "sc-fjdhpX",
+          "target": "button",
+          "toString": [Function],
+          "warnTooManyClasses": [Function],
+          "withComponent": [Function],
+        }
+      }
+      forwardedRef={null}
+      onClick={[Function]}
+    >
+      <button
+        className="sc-bdVaJa sc-bxivhb sc-fjdhpX gZKPwt"
+        disabled={false}
+        onClick={[Function]}
+      >
+        <components__PrimaryButtonLabel>
+          <StyledComponent
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "components__PrimaryButtonLabel-rbaz43-0",
+                  "isStatic": true,
+                  "lastClassName": "bPKTiG",
+                  "rules": Array [
+                    "padding:0 22px;",
+                  ],
+                },
+                "displayName": "components__PrimaryButtonLabel",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "components__PrimaryButtonLabel-rbaz43-0",
+                "target": "span",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={null}
+          >
+            <span
+              className="components__PrimaryButtonLabel-rbaz43-0 bPKTiG"
+            >
+              Button
+            </span>
+          </StyledComponent>
+        </components__PrimaryButtonLabel>
+        <PrimaryButtonIcon>
+          <StyledComponent
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "PrimaryButtonIcon-sc-1ldd3qi-0",
+                  "isStatic": true,
+                  "lastClassName": "dqFGAa",
+                  "rules": Array [
+                    "margin-right:6px;padding:7px;border-radius:50%;background-color:#00000030;",
+                  ],
+                },
+                "displayName": "PrimaryButtonIcon",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "PrimaryButtonIcon-sc-1ldd3qi-0",
+                "target": "span",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={null}
+          >
+            <span
+              className="PrimaryButtonIcon-sc-1ldd3qi-0 dqFGAa"
+            >
+              <ForwardRef(SvgIcon)
+                color="#FFF"
+                icon="plus"
+                size={16}
+              >
+                <SvgIcon__SvgIconContainer
+                  color="#FFF"
+                  size={16}
+                >
+                  <StyledComponent
+                    color="#FFF"
+                    forwardedComponent={
+                      Object {
+                        "$$typeof": Symbol(react.forward_ref),
+                        "attrs": Array [],
+                        "componentStyle": ComponentStyle {
+                          "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                          "isStatic": false,
+                          "lastClassName": "rRXjk",
+                          "rules": Array [
+                            "color:",
+                            [Function],
+                            ";& > svg{display:block;",
+                            [Function],
+                            ";}&:hover,&:active{color:",
+                            [Function],
+                            ";}",
+                          ],
+                        },
+                        "displayName": "SvgIcon__SvgIconContainer",
+                        "foldedComponentIds": Array [],
+                        "render": [Function],
+                        "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        "target": "span",
+                        "toString": [Function],
+                        "warnTooManyClasses": [Function],
+                        "withComponent": [Function],
+                      }
+                    }
+                    forwardedRef={null}
+                    size={16}
+                  >
+                    <span
+                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 lbHhRZ"
+                      color="#FFF"
+                      size={16}
+                    >
+                      <test-file-stub />
+                    </span>
+                  </StyledComponent>
+                </SvgIcon__SvgIconContainer>
+              </ForwardRef(SvgIcon)>
+            </span>
+          </StyledComponent>
+        </PrimaryButtonIcon>
+      </button>
+    </StyledComponent>
+  </Styled(Styled(styled.button))>
+</PrimaryButton>
+`;
+
+exports[`Storyshots Button variants - with icon: secondary 1`] = `
+<ForwardRef(SecondaryButton)
+  disabled={false}
+  icon="sync"
+  onClick={[Function]}
+>
+  <SecondaryButtonContainer
+    disabled={false}
+    onClick={[Function]}
+  >
+    <StyledComponent
+      disabled={false}
+      forwardedComponent={
+        Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "attrs": Array [],
+          "componentStyle": ComponentStyle {
+            "componentId": "SecondaryButtonContainer-djlxo5-0",
+            "isStatic": false,
+            "lastClassName": "kcbUso",
+            "rules": Array [
+              "
+  ",
+              "
+  ",
+              "display:",
+              [Function],
+              ";align-items:center;",
+              [Function],
+              " ",
+              [Function],
+              " justify-content:center;",
+              "
+  ",
+              [Function],
+              "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+              "
+",
+              "
+  ",
+              "
+  height: ",
+              "42",
+              "px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: ",
+              [Function],
+              ";
+",
+              "
+",
+              "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background:linear-gradient(-180deg,rgba(238,244,246,0.85),#eef4f6);box-sizing:border-box;",
+              [Function],
+            ],
+          },
+          "displayName": "SecondaryButtonContainer",
+          "foldedComponentIds": Array [
+            "sc-bdVaJa",
+            "sc-bxivhb",
+          ],
+          "render": [Function],
+          "styledComponentId": "SecondaryButtonContainer-djlxo5-0",
+          "target": "button",
+          "toString": [Function],
+          "warnTooManyClasses": [Function],
+          "withComponent": [Function],
+        }
+      }
+      forwardedRef={null}
+      onClick={[Function]}
+    >
+      <button
+        className="sc-bdVaJa sc-bxivhb SecondaryButtonContainer-djlxo5-0 kcbUso"
+        disabled={false}
+        onClick={[Function]}
+      >
+        <SecondaryButtonIcon>
+          <StyledComponent
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "SecondaryButtonIcon-kknuwu-0",
+                  "isStatic": true,
+                  "lastClassName": "jOFIt",
+                  "rules": Array [
+                    "height:16px;width:16px;margin-right:16px;color:rgba(110,132,154,0.85);",
+                  ],
+                },
+                "displayName": "SecondaryButtonIcon",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "SecondaryButtonIcon-kknuwu-0",
+                "target": "span",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={null}
+          >
+            <span
+              className="SecondaryButtonIcon-kknuwu-0 jOFIt"
+            >
+              <ForwardRef(SvgIcon)
+                color="currentColor"
+                icon="sync"
+                size={16}
+              >
+                <SvgIcon__SvgIconContainer
+                  color="currentColor"
+                  size={16}
+                >
+                  <StyledComponent
+                    color="currentColor"
+                    forwardedComponent={
+                      Object {
+                        "$$typeof": Symbol(react.forward_ref),
+                        "attrs": Array [],
+                        "componentStyle": ComponentStyle {
+                          "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                          "isStatic": false,
+                          "lastClassName": "rRXjk",
+                          "rules": Array [
+                            "color:",
+                            [Function],
+                            ";& > svg{display:block;",
+                            [Function],
+                            ";}&:hover,&:active{color:",
+                            [Function],
+                            ";}",
+                          ],
+                        },
+                        "displayName": "SvgIcon__SvgIconContainer",
+                        "foldedComponentIds": Array [],
+                        "render": [Function],
+                        "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        "target": "span",
+                        "toString": [Function],
+                        "warnTooManyClasses": [Function],
+                        "withComponent": [Function],
+                      }
+                    }
+                    forwardedRef={null}
+                    size={16}
+                  >
+                    <span
+                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 rRXjk"
+                      color="currentColor"
+                      size={16}
+                    >
+                      <test-file-stub />
+                    </span>
+                  </StyledComponent>
+                </SvgIcon__SvgIconContainer>
+              </ForwardRef(SvgIcon)>
+            </span>
+          </StyledComponent>
+        </SecondaryButtonIcon>
+        Button
+      </button>
+    </StyledComponent>
+  </SecondaryButtonContainer>
+</ForwardRef(SecondaryButton)>
+`;
+
+exports[`Storyshots Button variants: primary 1`] = `
+<PrimaryButton
+  disabled={false}
+  onClick={[Function]}
+>
+  <Styled(Styled(styled.button))
+    canHover={true}
+    disabled={false}
+    onClick={[Function]}
+  >
+    <StyledComponent
+      canHover={true}
+      disabled={false}
+      forwardedComponent={
+        Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "_foldedDefaultProps": Object {
+            "canHover": true,
+          },
+          "attrs": Array [],
+          "componentStyle": ComponentStyle {
+            "componentId": "sc-fjdhpX",
+            "isStatic": false,
+            "lastClassName": "gZKPwt",
+            "rules": Array [
+              "
+  ",
+              "
+  ",
+              "display:",
+              [Function],
+              ";align-items:center;",
+              [Function],
+              " ",
+              [Function],
+              " justify-content:center;",
+              "
+  ",
+              [Function],
+              "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+              "
+",
+              "
+  ",
+              "
+  height: ",
+              "42",
+              "px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: ",
+              [Function],
+              ";
+",
+              "
+",
+              "
+  color: #fff;
+  background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
+  box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  font-weight: 600;
+  ",
+              [Function],
+              "
+
+  ",
+              [Function],
+              "
+
+  &:active {
+    background: linear-gradient(180deg, rgba(93, 157, 245, 0.99) 0%, #2c85ff 100%);
+    box-shadow: 0px 7px 12px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  }
+",
+            ],
+          },
+          "displayName": "Styled(Styled(styled.button))",
+          "foldedComponentIds": Array [
+            "sc-bdVaJa",
+            "sc-bxivhb",
+          ],
+          "render": [Function],
+          "styledComponentId": "sc-fjdhpX",
+          "target": "button",
+          "toString": [Function],
+          "warnTooManyClasses": [Function],
+          "withComponent": [Function],
+        }
+      }
+      forwardedRef={null}
+      onClick={[Function]}
+    >
+      <button
+        className="sc-bdVaJa sc-bxivhb sc-fjdhpX gZKPwt"
+        disabled={false}
+        onClick={[Function]}
+      >
+        <components__PrimaryButtonLabel>
+          <StyledComponent
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "components__PrimaryButtonLabel-rbaz43-0",
+                  "isStatic": true,
+                  "lastClassName": "bPKTiG",
+                  "rules": Array [
+                    "padding:0 22px;",
+                  ],
+                },
+                "displayName": "components__PrimaryButtonLabel",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "components__PrimaryButtonLabel-rbaz43-0",
+                "target": "span",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={null}
+          >
+            <span
+              className="components__PrimaryButtonLabel-rbaz43-0 bPKTiG"
+            >
+              Button
+            </span>
+          </StyledComponent>
+        </components__PrimaryButtonLabel>
+      </button>
+    </StyledComponent>
+  </Styled(Styled(styled.button))>
+</PrimaryButton>
+`;
+
+exports[`Storyshots Button variants: secondary 1`] = `
+<ForwardRef(SecondaryButton)
+  disabled={false}
+  onClick={[Function]}
+>
+  <SecondaryButtonContainer
+    disabled={false}
+    onClick={[Function]}
+  >
+    <StyledComponent
+      disabled={false}
+      forwardedComponent={
+        Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "attrs": Array [],
+          "componentStyle": ComponentStyle {
+            "componentId": "SecondaryButtonContainer-djlxo5-0",
+            "isStatic": false,
+            "lastClassName": "kcbUso",
+            "rules": Array [
+              "
+  ",
+              "
+  ",
+              "display:",
+              [Function],
+              ";align-items:center;",
+              [Function],
+              " ",
+              [Function],
+              " justify-content:center;",
+              "
+  ",
+              [Function],
+              "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+              "
+",
+              "
+  ",
+              "
+  height: ",
+              "42",
+              "px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: ",
+              [Function],
+              ";
+",
+              "
+",
+              "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background:linear-gradient(-180deg,rgba(238,244,246,0.85),#eef4f6);box-sizing:border-box;",
+              [Function],
+            ],
+          },
+          "displayName": "SecondaryButtonContainer",
+          "foldedComponentIds": Array [
+            "sc-bdVaJa",
+            "sc-bxivhb",
+          ],
+          "render": [Function],
+          "styledComponentId": "SecondaryButtonContainer-djlxo5-0",
+          "target": "button",
+          "toString": [Function],
+          "warnTooManyClasses": [Function],
+          "withComponent": [Function],
+        }
+      }
+      forwardedRef={null}
+      onClick={[Function]}
+    >
+      <button
+        className="sc-bdVaJa sc-bxivhb SecondaryButtonContainer-djlxo5-0 kcbUso"
+        disabled={false}
+        onClick={[Function]}
+      >
+        Button
+      </button>
+    </StyledComponent>
+  </SecondaryButtonContainer>
+</ForwardRef(SecondaryButton)>
+`;
+
+exports[`Storyshots Button variants: tertiary 1`] = `
+<TertiaryButton
+  disabled={false}
+  onClick={[Function]}
+>
+  <StyledComponent
+    disabled={false}
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "TertiaryButton-sc-1ecurkc-0",
+          "isStatic": false,
+          "lastClassName": "glBWfe",
+          "rules": Array [
+            "
+  ",
+            "
+  ",
+            "display:",
+            [Function],
+            ";align-items:center;",
+            [Function],
+            " ",
+            [Function],
+            " justify-content:center;",
+            "
+  ",
+            [Function],
+            "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+            "
+",
+            "
+  ",
+            "
+  height: ",
+            "42",
+            "px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: ",
+            [Function],
+            ";
+",
+            "
+",
+            "border:0;padding:0 22px;font-weight:600;color:#5d9df5;box-shadow:none;",
+            [Function],
+            " &:active{background:rgba(93,157,245,0.16);}",
+          ],
+        },
+        "displayName": "TertiaryButton",
+        "foldedComponentIds": Array [
+          "sc-bdVaJa",
+          "sc-bxivhb",
+        ],
+        "render": [Function],
+        "styledComponentId": "TertiaryButton-sc-1ecurkc-0",
+        "target": "button",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+    onClick={[Function]}
+  >
+    <button
+      className="sc-bdVaJa sc-bxivhb TertiaryButton-sc-1ecurkc-0 glBWfe"
+      disabled={false}
+      onClick={[Function]}
+    >
+      Button
+    </button>
+  </StyledComponent>
+</TertiaryButton>
+`;

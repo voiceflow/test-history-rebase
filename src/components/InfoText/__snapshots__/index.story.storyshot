@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Info Text variants: info 1`] = `
+<StyledComponent
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "sc-chPdSV",
+        "isStatic": false,
+        "lastClassName": "ggjxND",
+        "rules": Array [
+          "
+  border-radius: ",
+          [Function],
+          "px;
+  border: 1px solid rgba(93, 157, 245, 0.25);
+  padding: ",
+          [Function],
+          ";
+  color: ",
+          "#5d9df5",
+          ";
+  background-color: rgba(93, 157, 245, 0.08);
+
+  ",
+          [Function],
+          "
+",
+        ],
+      },
+      "displayName": "styled.p",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "sc-chPdSV",
+      "target": "p",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+>
+  <p
+    className="sc-chPdSV cWHeGY"
+  >
+    Informative Text
+  </p>
+</StyledComponent>
+`;
+
+exports[`Storyshots Info Text variants: warn 1`] = `
+<StyledComponent
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "sc-chPdSV",
+        "isStatic": false,
+        "lastClassName": "ggjxND",
+        "rules": Array [
+          "
+  border-radius: ",
+          [Function],
+          "px;
+  border: 1px solid rgba(93, 157, 245, 0.25);
+  padding: ",
+          [Function],
+          ";
+  color: ",
+          "#5d9df5",
+          ";
+  background-color: rgba(93, 157, 245, 0.08);
+
+  ",
+          [Function],
+          "
+",
+        ],
+      },
+      "displayName": "styled.p",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "sc-chPdSV",
+      "target": "p",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+  variant="warn"
+>
+  <p
+    className="sc-chPdSV ggjxND"
+  >
+    Informative Text
+  </p>
+</StyledComponent>
+`;

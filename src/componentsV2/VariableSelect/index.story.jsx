@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/react';
 import cn from 'classnames';
 import React from 'react';
 
-import Variant from '@/../.storybook/Variant';
+import { Variant, createTestableStory } from '@/../.storybook';
 
 import VariableSelectControl from './components/VariableSelectControl';
 
@@ -21,8 +21,9 @@ const VARIABLE_OPTIONS = [
   },
 ];
 
-storiesOf('Variable Select', module).add('variant', () => {
-  return (
+storiesOf('Variable Select', module).add(
+  'variant',
+  createTestableStory(() => (
     <>
       <Variant label="Variable Select">
         <VariableSelectControl placeholder="Variables" options={VARIABLE_OPTIONS} />
@@ -32,5 +33,5 @@ storiesOf('Variable Select', module).add('variant', () => {
         <VariableSelectControl classNamePrefix="variable-box" className={cn('variable-box')} placeholder="Variables" options={VARIABLE_OPTIONS} />
       </Variant>
     </>
-  );
-});
+  ))
+);

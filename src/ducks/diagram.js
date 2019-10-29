@@ -4,6 +4,7 @@ import client from '@/client';
 import linkAdapter from '@/client/adapters/creator/link';
 import nodeAdapter from '@/client/adapters/creator/node';
 import { BlockType } from '@/constants';
+import { clearModal, setConfirm } from '@/ducks/modal';
 import { getAllNormalizedByKeys } from '@/utils/normalized';
 
 import { allLinksSelector, allNodeDataSelector, creatorDiagramIDSelector, creatorStateSelector } from './creator';
@@ -15,6 +16,7 @@ import { loadVariableSetForDiagram, variablesByDiagramIDSelector } from './varia
 import { viewportByIDSelector } from './viewport';
 
 export const STATE_KEY = 'diagram';
+const MAX_DIAGRAM_SIZE = 395000;
 
 const DEFAULT_DIAGRAM = {
   offsetX: 0,
@@ -191,7 +193,21 @@ export const saveActiveDiagram = () => async (dispatch, getState) => {
     nodes: rootNodes.map((node) => nodeAdapter.toDB(node, { nodes, ports, data, linksByPortID, platform })),
   };
 
-  await dispatch(saveDiagram(skillID, diagramID, JSON.stringify(updatedData)));
+  const dataString = JSON.stringify(updatedData);
+
+  if (Buffer.from(dataString).length > MAX_DIAGRAM_SIZE) {
+    await dispatch(
+      setConfirm({
+        text: 'The current flow has exceeded the size limit, updates will not save. Please separate into different flows or reduce blocks.',
+        confirm: () => {
+          dispatch(clearModal());
+        },
+      })
+    );
+    return;
+  }
+
+  await dispatch(saveDiagram(skillID, diagramID, dataString));
 };
 
 export const createDiagram = (diagramID, name) => async (dispatch, getState) => {

@@ -171,10 +171,9 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
             <span
               className="PrimaryButtonIcon-sc-1ldd3qi-0 dqFGAa"
             >
-              <ForwardRef(SvgIcon)
+              <ForwardRef
                 color="#FFF"
                 icon="plus"
-                size={16}
               >
                 <SvgIcon__SvgIconContainer
                   color="#FFF"
@@ -189,13 +188,16 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
                         "componentStyle": ComponentStyle {
                           "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                           "isStatic": false,
-                          "lastClassName": "rRXjk",
+                          "lastClassName": "idcXee",
                           "rules": Array [
-                            "color:",
                             [Function],
-                            ";& > svg{display:block;",
+                            " color:",
                             [Function],
-                            ";}&:hover,&:active{color:",
+                            ";width:",
+                            [Function],
+                            "px;height:",
+                            [Function],
+                            "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                             [Function],
                             ";}",
                           ],
@@ -214,7 +216,7 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
                     size={16}
                   >
                     <span
-                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 lbHhRZ"
+                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hGAVIb"
                       color="#FFF"
                       size={16}
                     >
@@ -222,7 +224,7 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
                     </span>
                   </StyledComponent>
                 </SvgIcon__SvgIconContainer>
-              </ForwardRef(SvgIcon)>
+              </ForwardRef>
             </span>
           </StyledComponent>
         </PrimaryButtonIcon>
@@ -349,10 +351,8 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
             <span
               className="SecondaryButtonIcon-kknuwu-0 jOFIt"
             >
-              <ForwardRef(SvgIcon)
-                color="currentColor"
+              <ForwardRef
                 icon="sync"
-                size={16}
               >
                 <SvgIcon__SvgIconContainer
                   color="currentColor"
@@ -367,13 +367,16 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
                         "componentStyle": ComponentStyle {
                           "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                           "isStatic": false,
-                          "lastClassName": "rRXjk",
+                          "lastClassName": "idcXee",
                           "rules": Array [
-                            "color:",
                             [Function],
-                            ";& > svg{display:block;",
+                            " color:",
                             [Function],
-                            ";}&:hover,&:active{color:",
+                            ";width:",
+                            [Function],
+                            "px;height:",
+                            [Function],
+                            "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                             [Function],
                             ";}",
                           ],
@@ -392,7 +395,7 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
                     size={16}
                   >
                     <span
-                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 rRXjk"
+                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 idcXee"
                       color="currentColor"
                       size={16}
                     >
@@ -400,7 +403,7 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
                     </span>
                   </StyledComponent>
                 </SvgIcon__SvgIconContainer>
-              </ForwardRef(SvgIcon)>
+              </ForwardRef>
             </span>
           </StyledComponent>
         </SecondaryButtonIcon>

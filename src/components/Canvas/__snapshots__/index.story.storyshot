@@ -167,7 +167,7 @@ Array [
                               class="sc-bdVaJa sc-bxivhb sc-ifAKCX kPAYOO"
                             >
                               <span
-                                class="SvgIcon__SvgIconContainer-sc-1krgz98-0 rRXjk"
+                                class="SvgIcon__SvgIconContainer-sc-1krgz98-0 idcXee"
                                 color="currentColor"
                                 size="16"
                               >
@@ -178,7 +178,7 @@ Array [
                               class="sc-bdVaJa sc-bxivhb sc-ifAKCX kPAYOO"
                             >
                               <span
-                                class="SvgIcon__SvgIconContainer-sc-1krgz98-0 rRXjk"
+                                class="SvgIcon__SvgIconContainer-sc-1krgz98-0 idcXee"
                                 color="currentColor"
                                 size="16"
                               >
@@ -190,7 +190,7 @@ Array [
                             class="sc-bdVaJa sc-bxivhb sc-ifAKCX kPAYOO"
                           >
                             <span
-                              class="SvgIcon__SvgIconContainer-sc-1krgz98-0 rRXjk"
+                              class="SvgIcon__SvgIconContainer-sc-1krgz98-0 idcXee"
                               color="currentColor"
                               size="16"
                             >
@@ -375,10 +375,9 @@ Array [
                                       className="sc-bdVaJa sc-bxivhb sc-ifAKCX kPAYOO"
                                       onClick={[Function]}
                                     >
-                                      <ForwardRef(SvgIcon)
+                                      <ForwardRef
                                         color="currentColor"
                                         icon="zoomIn"
-                                        size={16}
                                       >
                                         <SvgIcon__SvgIconContainer
                                           color="currentColor"
@@ -393,13 +392,16 @@ Array [
                                                 "componentStyle": ComponentStyle {
                                                   "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                                                   "isStatic": false,
-                                                  "lastClassName": "rRXjk",
+                                                  "lastClassName": "idcXee",
                                                   "rules": Array [
-                                                    "color:",
                                                     [Function],
-                                                    ";& > svg{display:block;",
+                                                    " color:",
                                                     [Function],
-                                                    ";}&:hover,&:active{color:",
+                                                    ";width:",
+                                                    [Function],
+                                                    "px;height:",
+                                                    [Function],
+                                                    "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                                                     [Function],
                                                     ";}",
                                                   ],
@@ -418,7 +420,7 @@ Array [
                                             size={16}
                                           >
                                             <span
-                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 rRXjk"
+                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 idcXee"
                                               color="currentColor"
                                               size={16}
                                             >
@@ -426,7 +428,7 @@ Array [
                                             </span>
                                           </StyledComponent>
                                         </SvgIcon__SvgIconContainer>
-                                      </ForwardRef(SvgIcon)>
+                                      </ForwardRef>
                                     </button>
                                   </StyledComponent>
                                 </Styled(Styled(styled.button))>
@@ -547,10 +549,9 @@ Array [
                                       className="sc-bdVaJa sc-bxivhb sc-ifAKCX kPAYOO"
                                       onClick={[Function]}
                                     >
-                                      <ForwardRef(SvgIcon)
+                                      <ForwardRef
                                         color="currentColor"
                                         icon="zoomOut"
-                                        size={16}
                                       >
                                         <SvgIcon__SvgIconContainer
                                           color="currentColor"
@@ -565,13 +566,16 @@ Array [
                                                 "componentStyle": ComponentStyle {
                                                   "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                                                   "isStatic": false,
-                                                  "lastClassName": "rRXjk",
+                                                  "lastClassName": "idcXee",
                                                   "rules": Array [
-                                                    "color:",
                                                     [Function],
-                                                    ";& > svg{display:block;",
+                                                    " color:",
                                                     [Function],
-                                                    ";}&:hover,&:active{color:",
+                                                    ";width:",
+                                                    [Function],
+                                                    "px;height:",
+                                                    [Function],
+                                                    "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                                                     [Function],
                                                     ";}",
                                                   ],
@@ -590,7 +594,7 @@ Array [
                                             size={16}
                                           >
                                             <span
-                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 rRXjk"
+                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 idcXee"
                                               color="currentColor"
                                               size={16}
                                             >
@@ -598,7 +602,7 @@ Array [
                                             </span>
                                           </StyledComponent>
                                         </SvgIcon__SvgIconContainer>
-                                      </ForwardRef(SvgIcon)>
+                                      </ForwardRef>
                                     </button>
                                   </StyledComponent>
                                 </Styled(Styled(styled.button))>
@@ -722,10 +726,9 @@ Array [
                                 className="sc-bdVaJa sc-bxivhb sc-ifAKCX kPAYOO"
                                 onClick={[Function]}
                               >
-                                <ForwardRef(SvgIcon)
+                                <ForwardRef
                                   color="currentColor"
                                   icon="home"
-                                  size={16}
                                 >
                                   <SvgIcon__SvgIconContainer
                                     color="currentColor"
@@ -740,13 +743,16 @@ Array [
                                           "componentStyle": ComponentStyle {
                                             "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                                             "isStatic": false,
-                                            "lastClassName": "rRXjk",
+                                            "lastClassName": "idcXee",
                                             "rules": Array [
-                                              "color:",
                                               [Function],
-                                              ";& > svg{display:block;",
+                                              " color:",
                                               [Function],
-                                              ";}&:hover,&:active{color:",
+                                              ";width:",
+                                              [Function],
+                                              "px;height:",
+                                              [Function],
+                                              "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                                               [Function],
                                               ";}",
                                             ],
@@ -765,7 +771,7 @@ Array [
                                       size={16}
                                     >
                                       <span
-                                        className="SvgIcon__SvgIconContainer-sc-1krgz98-0 rRXjk"
+                                        className="SvgIcon__SvgIconContainer-sc-1krgz98-0 idcXee"
                                         color="currentColor"
                                         size={16}
                                       >
@@ -773,7 +779,7 @@ Array [
                                       </span>
                                     </StyledComponent>
                                   </SvgIcon__SvgIconContainer>
-                                </ForwardRef(SvgIcon)>
+                                </ForwardRef>
                               </button>
                             </StyledComponent>
                           </Styled(Styled(styled.button))>

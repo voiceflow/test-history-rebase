@@ -238,10 +238,9 @@ exports[`Storyshots Info Popup variants: Label Icon Popup 1`] = `
               <div
                 className="sc-jzJRlG gotqPr"
               >
-                <ForwardRef(SvgIcon)
+                <ForwardRef
                   color="#8da2b5"
                   icon="info"
-                  size={16}
                 >
                   <SvgIcon__SvgIconContainer
                     color="#8da2b5"
@@ -256,13 +255,16 @@ exports[`Storyshots Info Popup variants: Label Icon Popup 1`] = `
                           "componentStyle": ComponentStyle {
                             "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                             "isStatic": false,
-                            "lastClassName": "ddISyQ",
+                            "lastClassName": "kpuuPz",
                             "rules": Array [
-                              "color:",
                               [Function],
-                              ";& > svg{display:block;",
+                              " color:",
                               [Function],
-                              ";}&:hover,&:active{color:",
+                              ";width:",
+                              [Function],
+                              "px;height:",
+                              [Function],
+                              "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                               [Function],
                               ";}",
                             ],
@@ -281,7 +283,7 @@ exports[`Storyshots Info Popup variants: Label Icon Popup 1`] = `
                       size={16}
                     >
                       <span
-                        className="SvgIcon__SvgIconContainer-sc-1krgz98-0 ddISyQ"
+                        className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kpuuPz"
                         color="#8da2b5"
                         size={16}
                       >
@@ -289,7 +291,7 @@ exports[`Storyshots Info Popup variants: Label Icon Popup 1`] = `
                       </span>
                     </StyledComponent>
                   </SvgIcon__SvgIconContainer>
-                </ForwardRef(SvgIcon)>
+                </ForwardRef>
               </div>
             </StyledComponent>
           </styled.div>

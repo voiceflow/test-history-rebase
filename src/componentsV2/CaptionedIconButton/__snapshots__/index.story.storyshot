@@ -88,10 +88,9 @@ exports[`Storyshots Captioned Icon Button variants: default 1`] = `
       disabled={false}
       onClick={[Function]}
     >
-      <ForwardRef(SvgIcon)
+      <ForwardRef
         color="#becedc"
         icon="elipsis"
-        size={16}
       >
         <SvgIcon__SvgIconContainer
           color="#becedc"
@@ -106,13 +105,16 @@ exports[`Storyshots Captioned Icon Button variants: default 1`] = `
                 "componentStyle": ComponentStyle {
                   "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                   "isStatic": false,
-                  "lastClassName": "bXkjBk",
+                  "lastClassName": "lmMSIV",
                   "rules": Array [
-                    "color:",
                     [Function],
-                    ";& > svg{display:block;",
+                    " color:",
                     [Function],
-                    ";}&:hover,&:active{color:",
+                    ";width:",
+                    [Function],
+                    "px;height:",
+                    [Function],
+                    "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                     [Function],
                     ";}",
                   ],
@@ -131,7 +133,7 @@ exports[`Storyshots Captioned Icon Button variants: default 1`] = `
             size={16}
           >
             <span
-              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 bXkjBk"
+              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 lmMSIV"
               color="#becedc"
               size={16}
             >
@@ -139,7 +141,7 @@ exports[`Storyshots Captioned Icon Button variants: default 1`] = `
             </span>
           </StyledComponent>
         </SvgIcon__SvgIconContainer>
-      </ForwardRef(SvgIcon)>
+      </ForwardRef>
       <CaptionedIconButtonLabel>
         <StyledComponent
           forwardedComponent={

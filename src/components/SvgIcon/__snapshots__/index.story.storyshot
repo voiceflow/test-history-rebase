@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots SvgIcon variants: size 1`] = `
+<SvgIcon__SvgIconContainer
+  color="#000"
+  size={24}
+  transition="width"
+>
+  <StyledComponent
+    color="#000"
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+          "isStatic": false,
+          "lastClassName": "hVieCC",
+          "rules": Array [
+            [Function],
+            " color:",
+            [Function],
+            ";width:",
+            [Function],
+            "px;height:",
+            [Function],
+            "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+            [Function],
+            ";}",
+          ],
+        },
+        "displayName": "SvgIcon__SvgIconContainer",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+        "target": "span",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+    size={24}
+    transition="width"
+  >
+    <span
+      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dCsaXy"
+      color="#000"
+      size={24}
+    >
+      <test-file-stub />
+    </span>
+  </StyledComponent>
+</SvgIcon__SvgIconContainer>
+`;
+
+exports[`Storyshots SvgIcon variants: transition array 1`] = `
+<SvgIcon__SvgIconContainer
+  color="#000"
+  size={24}
+  transition={
+    Array [
+      "width",
+      "height",
+    ]
+  }
+>
+  <StyledComponent
+    color="#000"
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+          "isStatic": false,
+          "lastClassName": "hVieCC",
+          "rules": Array [
+            [Function],
+            " color:",
+            [Function],
+            ";width:",
+            [Function],
+            "px;height:",
+            [Function],
+            "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+            [Function],
+            ";}",
+          ],
+        },
+        "displayName": "SvgIcon__SvgIconContainer",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+        "target": "span",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+    size={24}
+    transition={
+      Array [
+        "width",
+        "height",
+      ]
+    }
+  >
+    <span
+      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hVieCC"
+      color="#000"
+      size={24}
+    >
+      <test-file-stub />
+    </span>
+  </StyledComponent>
+</SvgIcon__SvgIconContainer>
+`;
+
+exports[`Storyshots SvgIcon variants: width height 1`] = `
+<SvgIcon__SvgIconContainer
+  color="#000"
+  height={24}
+  size={16}
+  transition="width"
+  width={24}
+>
+  <StyledComponent
+    color="#000"
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+          "isStatic": false,
+          "lastClassName": "hVieCC",
+          "rules": Array [
+            [Function],
+            " color:",
+            [Function],
+            ";width:",
+            [Function],
+            "px;height:",
+            [Function],
+            "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+            [Function],
+            ";}",
+          ],
+        },
+        "displayName": "SvgIcon__SvgIconContainer",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+        "target": "span",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+    height={24}
+    size={16}
+    transition="width"
+    width={24}
+  >
+    <span
+      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dCsaXy"
+      color="#000"
+      height={24}
+      size={16}
+      width={24}
+    >
+      <test-file-stub />
+    </span>
+  </StyledComponent>
+</SvgIcon__SvgIconContainer>
+`;

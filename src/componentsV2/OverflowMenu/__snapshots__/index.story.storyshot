@@ -164,10 +164,8 @@ exports[`Storyshots Overflow Menu variants: default 1`] = `
                     disabled={false}
                     onClick={[Function]}
                   >
-                    <ForwardRef(SvgIcon)
-                      color="currentColor"
+                    <ForwardRef
                       icon="elipsis"
-                      size={16}
                     >
                       <SvgIcon__SvgIconContainer
                         color="currentColor"
@@ -182,13 +180,16 @@ exports[`Storyshots Overflow Menu variants: default 1`] = `
                               "componentStyle": ComponentStyle {
                                 "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                                 "isStatic": false,
-                                "lastClassName": "rRXjk",
+                                "lastClassName": "idcXee",
                                 "rules": Array [
-                                  "color:",
                                   [Function],
-                                  ";& > svg{display:block;",
+                                  " color:",
                                   [Function],
-                                  ";}&:hover,&:active{color:",
+                                  ";width:",
+                                  [Function],
+                                  "px;height:",
+                                  [Function],
+                                  "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                                   [Function],
                                   ";}",
                                 ],
@@ -207,7 +208,7 @@ exports[`Storyshots Overflow Menu variants: default 1`] = `
                           size={16}
                         >
                           <span
-                            className="SvgIcon__SvgIconContainer-sc-1krgz98-0 rRXjk"
+                            className="SvgIcon__SvgIconContainer-sc-1krgz98-0 idcXee"
                             color="currentColor"
                             size={16}
                           >
@@ -215,7 +216,7 @@ exports[`Storyshots Overflow Menu variants: default 1`] = `
                           </span>
                         </StyledComponent>
                       </SvgIcon__SvgIconContainer>
-                    </ForwardRef(SvgIcon)>
+                    </ForwardRef>
                   </button>
                 </StyledComponent>
               </SecondaryButtonContainer>

@@ -12,14 +12,14 @@ storiesOf('Checkbox', module).add(
 
     return (
       <>
-        <Variant type="checkbox" label="Checkbox">
-          <Checkbox checked={checked} onChange={() => setChecked(!checked)}>
+        <Variant label="Checkbox">
+          <Checkbox type="checkbox" checked={checked} onChange={() => setChecked(!checked)}>
             <span>checkbox</span>
           </Checkbox>
         </Variant>
 
-        <Variant type="radio" label="Radio button">
-          <Checkbox checked={checked} onChange={() => setChecked(!checked)}>
+        <Variant label="Radio button">
+          <Checkbox type="radio" checked={checked} onChange={() => setChecked(!checked)}>
             <span>Radio button</span>
           </Checkbox>
         </Variant>

@@ -143,11 +143,10 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
               onClick={[Function]}
               size={42}
             >
-              <ForwardRef(SvgIcon)
+              <ForwardRef
                 color="currentColor"
                 height={15}
                 icon="back"
-                size={16}
                 width={15}
               >
                 <SvgIcon__SvgIconContainer
@@ -165,13 +164,16 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                         "componentStyle": ComponentStyle {
                           "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                           "isStatic": false,
-                          "lastClassName": "iJmAKx",
+                          "lastClassName": "dCCraz",
                           "rules": Array [
-                            "color:",
                             [Function],
-                            ";& > svg{display:block;",
+                            " color:",
                             [Function],
-                            ";}&:hover,&:active{color:",
+                            ";width:",
+                            [Function],
+                            "px;height:",
+                            [Function],
+                            "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                             [Function],
                             ";}",
                           ],
@@ -192,7 +194,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                     width={15}
                   >
                     <span
-                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 iJmAKx"
+                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dCCraz"
                       color="currentColor"
                       height={15}
                       size={16}
@@ -202,7 +204,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                     </span>
                   </StyledComponent>
                 </SvgIcon__SvgIconContainer>
-              </ForwardRef(SvgIcon)>
+              </ForwardRef>
             </button>
           </StyledComponent>
         </styled.button>
@@ -336,11 +338,10 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
               onClick={[Function]}
               size={42}
             >
-              <ForwardRef(SvgIcon)
+              <ForwardRef
                 color="currentColor"
                 height={15}
                 icon="back"
-                size={16}
                 width={15}
               >
                 <SvgIcon__SvgIconContainer
@@ -358,13 +359,16 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                         "componentStyle": ComponentStyle {
                           "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                           "isStatic": false,
-                          "lastClassName": "iJmAKx",
+                          "lastClassName": "dCCraz",
                           "rules": Array [
-                            "color:",
                             [Function],
-                            ";& > svg{display:block;",
+                            " color:",
                             [Function],
-                            ";}&:hover,&:active{color:",
+                            ";width:",
+                            [Function],
+                            "px;height:",
+                            [Function],
+                            "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                             [Function],
                             ";}",
                           ],
@@ -385,7 +389,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                     width={15}
                   >
                     <span
-                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 iJmAKx"
+                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dCCraz"
                       color="currentColor"
                       height={15}
                       size={16}
@@ -395,7 +399,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                     </span>
                   </StyledComponent>
                 </SvgIcon__SvgIconContainer>
-              </ForwardRef(SvgIcon)>
+              </ForwardRef>
             </button>
           </StyledComponent>
         </styled.button>

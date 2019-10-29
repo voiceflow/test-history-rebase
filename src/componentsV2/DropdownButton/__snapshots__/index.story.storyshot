@@ -377,10 +377,8 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                           <div
                             className="Flex-sc-127y44r-0 PrimaryDropdownButtonToggle-sc-15cmejx-0 bxIaOm"
                           >
-                            <ForwardRef(SvgIcon)
-                              color="currentColor"
+                            <ForwardRef
                               icon="caretDown"
-                              size={16}
                               width={12}
                             >
                               <SvgIcon__SvgIconContainer
@@ -397,13 +395,16 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                                       "componentStyle": ComponentStyle {
                                         "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                                         "isStatic": false,
-                                        "lastClassName": "dqOAys",
+                                        "lastClassName": "hcCOnH",
                                         "rules": Array [
-                                          "color:",
                                           [Function],
-                                          ";& > svg{display:block;",
+                                          " color:",
                                           [Function],
-                                          ";}&:hover,&:active{color:",
+                                          ";width:",
+                                          [Function],
+                                          "px;height:",
+                                          [Function],
+                                          "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                                           [Function],
                                           ";}",
                                         ],
@@ -423,7 +424,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                                   width={12}
                                 >
                                   <span
-                                    className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dqOAys"
+                                    className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hcCOnH"
                                     color="currentColor"
                                     size={16}
                                     width={12}
@@ -432,7 +433,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                                   </span>
                                 </StyledComponent>
                               </SvgIcon__SvgIconContainer>
-                            </ForwardRef(SvgIcon)>
+                            </ForwardRef>
                           </div>
                         </StyledComponent>
                       </PrimaryDropdownButtonToggle>
@@ -662,10 +663,8 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
                           <div
                             className="Flex-sc-127y44r-0 SecondaryDropdownButtonToggle-sc-1ns1nqi-0 kIRdeT"
                           >
-                            <ForwardRef(SvgIcon)
-                              color="currentColor"
+                            <ForwardRef
                               icon="caretDown"
-                              size={16}
                               width={12}
                             >
                               <SvgIcon__SvgIconContainer
@@ -682,13 +681,16 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
                                       "componentStyle": ComponentStyle {
                                         "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                                         "isStatic": false,
-                                        "lastClassName": "dqOAys",
+                                        "lastClassName": "hcCOnH",
                                         "rules": Array [
-                                          "color:",
                                           [Function],
-                                          ";& > svg{display:block;",
+                                          " color:",
                                           [Function],
-                                          ";}&:hover,&:active{color:",
+                                          ";width:",
+                                          [Function],
+                                          "px;height:",
+                                          [Function],
+                                          "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                                           [Function],
                                           ";}",
                                         ],
@@ -708,7 +710,7 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
                                   width={12}
                                 >
                                   <span
-                                    className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dqOAys"
+                                    className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hcCOnH"
                                     color="currentColor"
                                     size={16}
                                     width={12}
@@ -717,7 +719,7 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
                                   </span>
                                 </StyledComponent>
                               </SvgIcon__SvgIconContainer>
-                            </ForwardRef(SvgIcon)>
+                            </ForwardRef>
                           </div>
                         </StyledComponent>
                       </SecondaryDropdownButtonToggle>

@@ -221,7 +221,7 @@
     "build:admin": "wp --action=admin --prod",
     "build:dev": "patch-package && wp",
     "commit": "scripts/change_remote.sh && git-cz",
-    "demo": "scripts/apply_demo_env.sh && wp --action=serve",
+    "demo": "scripts/apply_demo_env.sh && wp --action=serve --host 0.0.0.0",
     "deploy:staging": "git push origin $(git branch | grep \\* | cut -d ' ' -f2):staging -f",
     "gen-certs": "scripts/generate_certs.sh",
     "lint": "npm run lint:js && npm run lint:css",

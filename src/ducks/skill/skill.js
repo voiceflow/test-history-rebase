@@ -1,3 +1,4 @@
+import { constants } from '@voiceflow/common';
 import { createSelector } from 'reselect';
 
 import client from '@/client';
@@ -8,6 +9,8 @@ import { allIntentsSelector } from '@/ducks/intent';
 import { allSlotsSelector } from '@/ducks/slot';
 import { createAction, createRootSelector } from '@/ducks/utils';
 import { withoutValue } from '@/utils/array';
+
+const { LOCALES } = constants.locales;
 
 export const STATE_KEY = 'skill';
 
@@ -123,6 +126,12 @@ export const activeLocalesSelector = createSelector(
 export const activeSkillMetaSelector = createSelector(
   activeSkillSelector,
   ({ meta }) => meta
+);
+
+export const parentCtrlSelector = createSelector(
+  activeLocalesSelector,
+  activeSkillMetaSelector,
+  (locales, meta) => meta.copa && locales.includes(LOCALES.US)
 );
 
 export const isLiveSelector = createSelector(

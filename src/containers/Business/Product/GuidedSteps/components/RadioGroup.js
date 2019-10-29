@@ -7,6 +7,7 @@ const RadioButtonGroup = styled(FormGroup)`
 
   & > * {
     margin-right: 30px;
+    padding: 0;
   }
 `;
 

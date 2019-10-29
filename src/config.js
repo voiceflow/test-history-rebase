@@ -80,3 +80,6 @@ export const LOGROCKET_PROJECT = process.env.LOGROCKET_PROJECT;
 
 // maintenance
 export const MAINTENANCE_STATUS_SOURCE = process.env.MAINTENANCE_STATUS_SOURCE;
+
+// copy-paste
+export const COPY_PASTE_KEY = process.env.COPY_PASTE_KEY;

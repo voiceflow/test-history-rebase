@@ -15,7 +15,6 @@ import { Alert } from 'reactstrap';
 import Button from '@/components/Button';
 import DragLayer from '@/components/DragLayer';
 import LoadingModal from '@/components/Modal/LoadingModal';
-import UpdatesModal from '@/components/Modal/UpdatesModal';
 import { FullSpinner } from '@/components/Spinner';
 import IconButton from '@/componentsV2/IconButton';
 import { ScrollContextProvider } from '@/contexts';
@@ -83,7 +82,6 @@ export const DashBoard = (props) => {
   const [filter_text, handleFilterText] = useState('');
   const [showInfo, setShowInfo] = useState(false);
   const [loading_modal, toggleLoadingModal] = useState(false);
-  const [show_updates_modal, toggleShowUpdatesModal] = useState(false);
   const [team_setting, setTeamSetting] = useState(null);
   const [product_updates, setProductUpdates] = useState([]);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
@@ -245,12 +243,6 @@ export const DashBoard = (props) => {
       {importToken && <ImportModal open={importOpen} toggle={closeImport} importProject={importProject} token={importToken} />}
 
       <div id="app" className="dashboard">
-        <UpdatesModal
-          show_update_modal={show_updates_modal}
-          toggle={() => toggleShowUpdatesModal(!props.show_updates_modl)}
-          product_updates={product_updates}
-        />
-
         <DashboardHeader
           history={props.history}
           handleFilterText={handleFilterText}

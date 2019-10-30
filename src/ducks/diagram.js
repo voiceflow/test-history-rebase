@@ -114,8 +114,6 @@ export const loadDiagramsForSkill = (skillID) => async (dispatch) => {
   const diagrams = await client.skill.findDiagrams(skillID);
 
   dispatch(replaceDiagrams(diagrams));
-
-  await Promise.all(diagrams.map((diagram) => dispatch(loadVariableSetForDiagram(diagram.id))));
 };
 
 export const loadUpdatedDiagram = (diagramID, name) => async (dispatch) => {

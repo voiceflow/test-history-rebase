@@ -37,9 +37,9 @@ const ContextMenu = ({ className, ...props }) => {
   React.useEffect(() => {
     const onHide = contextMenu.onHide;
 
-    document.addEventListener('click', onHide);
+    document.addEventListener('mousedown', onHide);
 
-    return () => document.removeEventListener('click', onHide);
+    return () => document.removeEventListener('mousedown', onHide);
   }, [contextMenu.onHide]);
 
   if (!contextMenu.isOpen || !options) {

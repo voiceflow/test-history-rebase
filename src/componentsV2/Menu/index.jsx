@@ -37,8 +37,11 @@ function Menu({ options, onSelect, searchable, multiSelectProps: { multiselect, 
     const node = menuRef.current;
 
     node.addEventListener('wheel', callback, { passive: true });
-
-    return () => node.removeEventListener('wheel', callback);
+    node.addEventListener('mousedown', stopPropagation());
+    return () => {
+      node.removeEventListener('wheel', callback);
+      node.removeEventListener('mousedown', stopPropagation());
+    };
   });
 
   useEffect(() => {

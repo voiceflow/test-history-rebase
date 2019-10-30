@@ -3,7 +3,7 @@ import ReactGA from 'react-ga';
 import { toast } from 'react-toastify';
 
 import { GLOBAL_HEADERS } from '@/client/fetch';
-import { API_ENDPOINT, GOOGLE_ANALYTICS_ID, VERSION } from '@/config';
+import { API_ENDPOINT, GA_ENABLED, GOOGLE_ANALYTICS_ID, VERSION } from '@/config';
 import { initializeLogRocket } from '@/vendors/logRocket';
 
 const setupApp = (history, tabID) => {
@@ -19,18 +19,21 @@ const setupApp = (history, tabID) => {
     GLOBAL_HEADERS.set('X-LogRocket-URL', sessionURL);
   });
 
-  ReactGA.initialize(GOOGLE_ANALYTICS_ID);
+  if (GA_ENABLED) {
+    ReactGA.initialize(GOOGLE_ANALYTICS_ID);
+
+    // report pageview events
+    // TODO: should probably replace this with redux-beacon
+    history.listen((location) => {
+      ReactGA.set({ page: location.pathname });
+      ReactGA.pageview(location.pathname);
+    });
+  }
+
   toast.configure({
     autoClose: 2000,
     draggable: false,
     pauseOnFocusLoss: false,
-  });
-
-  // report pageview events
-  // TODO: should probably replace this with redux-beacon
-  history.listen((location) => {
-    ReactGA.set({ page: location.pathname });
-    ReactGA.pageview(location.pathname);
   });
 
   // eslint-disable-next-line no-console

@@ -1,5 +1,5 @@
 const branch = require('git-branch');
-const { action, env, logrocket, debug, debugNet, debugHttp, debugSocket } = require('webpack-nano/argv');
+const { action, env, logrocket, intercom, ga, debug, debugNet, debugHttp, debugSocket } = require('webpack-nano/argv');
 
 const { NODE_ENV } = process.env;
 const ENV_PREFIX = 'VF_APP_';
@@ -10,7 +10,7 @@ const ENV = Object.keys(process.env).reduce((acc, key) => {
   }
 
   return acc;
-}, {})
+}, {});
 
 module.exports = {
   IS_PRODUCTION: NODE_ENV === 'production',
@@ -22,15 +22,19 @@ module.exports = {
     NODE_ENV,
     BUILD_ENV: env || process.env.BUILD_ENV || 'local',
     LOGROCKET_ENABLED: logrocket && 'true',
+    INTERCOM_ENABLED: intercom && 'true',
+    GA_ENABLED: ga && 'true',
     API_HOST: 'localhost',
     ...ENV,
     VERSION: ENV.VERSION || `(${branch.sync()})`,
-    ...(debug ? {
-      DEBUG_NETWORK: true
-    }: {
-      DEBUG_NETWORK: debugNet ? true : '',
-      DEBUG_HTTP: debugHttp ? true : '',
-      DEBUG_SOCKET: debugSocket ? true : '',
-    })
+    ...(debug
+      ? {
+          DEBUG_NETWORK: true,
+        }
+      : {
+          DEBUG_NETWORK: debugNet ? true : '',
+          DEBUG_HTTP: debugHttp ? true : '',
+          DEBUG_SOCKET: debugSocket ? true : '',
+        }),
   },
 };

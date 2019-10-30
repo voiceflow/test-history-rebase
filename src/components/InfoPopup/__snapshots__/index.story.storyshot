@@ -255,7 +255,7 @@ exports[`Storyshots Info Popup variants: Label Icon Popup 1`] = `
                           "componentStyle": ComponentStyle {
                             "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                             "isStatic": false,
-                            "lastClassName": "kpuuPz",
+                            "lastClassName": "hinGTE",
                             "rules": Array [
                               [Function],
                               " color:",
@@ -264,7 +264,7 @@ exports[`Storyshots Info Popup variants: Label Icon Popup 1`] = `
                               [Function],
                               "px;height:",
                               [Function],
-                              "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                              "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                               [Function],
                               ";}",
                             ],
@@ -283,7 +283,7 @@ exports[`Storyshots Info Popup variants: Label Icon Popup 1`] = `
                       size={16}
                     >
                       <span
-                        className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kpuuPz"
+                        className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hinGTE"
                         color="#8da2b5"
                         size={16}
                       >

@@ -15,7 +15,7 @@ exports[`Storyshots SvgIcon variants: size 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
           "isStatic": false,
-          "lastClassName": "hVieCC",
+          "lastClassName": "fDOjHg",
           "rules": Array [
             [Function],
             " color:",
@@ -24,7 +24,7 @@ exports[`Storyshots SvgIcon variants: size 1`] = `
             [Function],
             "px;height:",
             [Function],
-            "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+            "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
             [Function],
             ";}",
           ],
@@ -44,7 +44,7 @@ exports[`Storyshots SvgIcon variants: size 1`] = `
     transition="width"
   >
     <span
-      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dCsaXy"
+      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 camEdz"
       color="#000"
       size={24}
     >
@@ -74,7 +74,7 @@ exports[`Storyshots SvgIcon variants: transition array 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
           "isStatic": false,
-          "lastClassName": "hVieCC",
+          "lastClassName": "fDOjHg",
           "rules": Array [
             [Function],
             " color:",
@@ -83,7 +83,7 @@ exports[`Storyshots SvgIcon variants: transition array 1`] = `
             [Function],
             "px;height:",
             [Function],
-            "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+            "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
             [Function],
             ";}",
           ],
@@ -108,7 +108,7 @@ exports[`Storyshots SvgIcon variants: transition array 1`] = `
     }
   >
     <span
-      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hVieCC"
+      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 fDOjHg"
       color="#000"
       size={24}
     >
@@ -135,7 +135,7 @@ exports[`Storyshots SvgIcon variants: width height 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
           "isStatic": false,
-          "lastClassName": "hVieCC",
+          "lastClassName": "fDOjHg",
           "rules": Array [
             [Function],
             " color:",
@@ -144,7 +144,7 @@ exports[`Storyshots SvgIcon variants: width height 1`] = `
             [Function],
             "px;height:",
             [Function],
-            "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+            "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
             [Function],
             ";}",
           ],
@@ -166,7 +166,7 @@ exports[`Storyshots SvgIcon variants: width height 1`] = `
     width={24}
   >
     <span
-      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dCsaXy"
+      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 camEdz"
       color="#000"
       height={24}
       size={16}

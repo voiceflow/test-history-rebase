@@ -139,7 +139,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
                 "componentStyle": ComponentStyle {
                   "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                   "isStatic": false,
-                  "lastClassName": "idcXee",
+                  "lastClassName": "kycatR",
                   "rules": Array [
                     [Function],
                     " color:",
@@ -148,7 +148,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
                     [Function],
                     "px;height:",
                     [Function],
-                    "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                     [Function],
                     ";}",
                   ],
@@ -167,7 +167,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
             size={16}
           >
             <span
-              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 idcXee"
+              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
               color="currentColor"
               size={16}
             >
@@ -316,7 +316,7 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
                 "componentStyle": ComponentStyle {
                   "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                   "isStatic": false,
-                  "lastClassName": "idcXee",
+                  "lastClassName": "kycatR",
                   "rules": Array [
                     [Function],
                     " color:",
@@ -325,7 +325,7 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
                     [Function],
                     "px;height:",
                     [Function],
-                    "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                     [Function],
                     ";}",
                   ],
@@ -344,7 +344,7 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
             size={16}
           >
             <span
-              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 idcXee"
+              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
               color="currentColor"
               size={16}
             >
@@ -491,7 +491,7 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
                 "componentStyle": ComponentStyle {
                   "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                   "isStatic": false,
-                  "lastClassName": "idcXee",
+                  "lastClassName": "kycatR",
                   "rules": Array [
                     [Function],
                     " color:",
@@ -500,7 +500,7 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
                     [Function],
                     "px;height:",
                     [Function],
-                    "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                     [Function],
                     ";}",
                   ],
@@ -519,7 +519,7 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
             size={16}
           >
             <span
-              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 idcXee"
+              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
               color="currentColor"
               size={16}
             >

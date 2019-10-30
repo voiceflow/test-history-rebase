@@ -105,7 +105,7 @@ exports[`Storyshots Captioned Icon Button variants: default 1`] = `
                 "componentStyle": ComponentStyle {
                   "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                   "isStatic": false,
-                  "lastClassName": "lmMSIV",
+                  "lastClassName": "eJSECB",
                   "rules": Array [
                     [Function],
                     " color:",
@@ -114,7 +114,7 @@ exports[`Storyshots Captioned Icon Button variants: default 1`] = `
                     [Function],
                     "px;height:",
                     [Function],
-                    "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                     [Function],
                     ";}",
                   ],
@@ -133,7 +133,7 @@ exports[`Storyshots Captioned Icon Button variants: default 1`] = `
             size={16}
           >
             <span
-              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 lmMSIV"
+              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 eJSECB"
               color="#becedc"
               size={16}
             >

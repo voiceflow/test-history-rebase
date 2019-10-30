@@ -164,7 +164,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                         "componentStyle": ComponentStyle {
                           "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                           "isStatic": false,
-                          "lastClassName": "dCCraz",
+                          "lastClassName": "dYyJmx",
                           "rules": Array [
                             [Function],
                             " color:",
@@ -173,7 +173,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                             [Function],
                             "px;height:",
                             [Function],
-                            "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                            "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                             [Function],
                             ";}",
                           ],
@@ -194,7 +194,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                     width={15}
                   >
                     <span
-                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dCCraz"
+                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dYyJmx"
                       color="currentColor"
                       height={15}
                       size={16}
@@ -359,7 +359,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                         "componentStyle": ComponentStyle {
                           "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                           "isStatic": false,
-                          "lastClassName": "dCCraz",
+                          "lastClassName": "dYyJmx",
                           "rules": Array [
                             [Function],
                             " color:",
@@ -368,7 +368,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                             [Function],
                             "px;height:",
                             [Function],
-                            "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                            "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                             [Function],
                             ";}",
                           ],
@@ -389,7 +389,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                     width={15}
                   >
                     <span
-                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dCCraz"
+                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dYyJmx"
                       color="currentColor"
                       height={15}
                       size={16}

@@ -395,7 +395,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                                       "componentStyle": ComponentStyle {
                                         "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                                         "isStatic": false,
-                                        "lastClassName": "hcCOnH",
+                                        "lastClassName": "jhAaAz",
                                         "rules": Array [
                                           [Function],
                                           " color:",
@@ -404,7 +404,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                                           [Function],
                                           "px;height:",
                                           [Function],
-                                          "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                          "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                                           [Function],
                                           ";}",
                                         ],
@@ -424,7 +424,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                                   width={12}
                                 >
                                   <span
-                                    className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hcCOnH"
+                                    className="SvgIcon__SvgIconContainer-sc-1krgz98-0 jhAaAz"
                                     color="currentColor"
                                     size={16}
                                     width={12}
@@ -681,7 +681,7 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
                                       "componentStyle": ComponentStyle {
                                         "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
                                         "isStatic": false,
-                                        "lastClassName": "hcCOnH",
+                                        "lastClassName": "jhAaAz",
                                         "rules": Array [
                                           [Function],
                                           " color:",
@@ -690,7 +690,7 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
                                           [Function],
                                           "px;height:",
                                           [Function],
-                                          "px;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                          "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
                                           [Function],
                                           ";}",
                                         ],
@@ -710,7 +710,7 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
                                   width={12}
                                 >
                                   <span
-                                    className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hcCOnH"
+                                    className="SvgIcon__SvgIconContainer-sc-1krgz98-0 jhAaAz"
                                     color="currentColor"
                                     size={16}
                                     width={12}

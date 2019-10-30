@@ -335,27 +335,33 @@ export const DashBoard = (props) => {
                   <ScrollContextProvider value={scrollHelpers}>
                     <div ref={bodyRef} className="main-lists">
                       <div ref={innerRef} className="main-lists-inner">
-                        {_.map(props.boards_array, (board, idx) => (
-                          <List
-                            id={board.board_id}
-                            key={board.board_id}
-                            isNew={board.isNew}
-                            index={idx}
-                            name={board.name}
-                            onRename={props.renameBoard}
-                            onRemove={onDeleteBoard}
-                            projects={getBoardFilteredProjects(board.projects, props.projectsMap, filter)}
-                            onCopyProject={onCopyProject}
-                            onDeleteProject={onDeleteProject(board.board_id)}
-                            createSkill={onCreateProject}
-                            onMove={props.changeListPosition}
-                            onDrop={onSaveList}
-                            onMoveProject={props.changeProjectPosition}
-                            clearNewBoard={props.clearIsNewBoard}
-                            onDropProject={onSaveList}
-                            disableDragging={!!filter}
-                          />
-                        ))}
+                        {_.map(props.boards_array, (board, idx) => {
+                          const projects = getBoardFilteredProjects(board.projects, props.projectsMap, filter);
+                          if (filter && !projects.length) {
+                            return null;
+                          }
+                          return (
+                            <List
+                              id={board.board_id}
+                              key={board.board_id}
+                              isNew={board.isNew}
+                              index={idx}
+                              name={board.name}
+                              onRename={props.renameBoard}
+                              onRemove={onDeleteBoard}
+                              projects={projects}
+                              onCopyProject={onCopyProject}
+                              onDeleteProject={onDeleteProject(board.board_id)}
+                              createSkill={onCreateProject}
+                              onMove={props.changeListPosition}
+                              onDrop={onSaveList}
+                              onMoveProject={props.changeProjectPosition}
+                              clearNewBoard={props.clearIsNewBoard}
+                              onDropProject={onSaveList}
+                              disableDragging={!!filter}
+                            />
+                          );
+                        })}
 
                         <DragLayer withMemo>
                           {(item) => {

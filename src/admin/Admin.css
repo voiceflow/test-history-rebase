@@ -172,8 +172,9 @@ h3 {
   border-color: #19ab27;
 }
 
+/* csslint ignore:start*/
 .sample {
-  margin: 32px 0px;
+  margin: 32px 0;
 }
 
 .sample p {
@@ -195,3 +196,4 @@ h3 {
   padding: 8px;
   background: #eaeaea;
 }
+/* csslint ignore:end*/

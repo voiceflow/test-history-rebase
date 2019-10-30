@@ -103,3 +103,4 @@ export { default as safe } from './safe.svg';
 export { default as emptyCheckbox } from './images/icons/empty.svg';
 export { default as checked } from './images/icons/check.svg';
 export { default as next } from './next.svg';
+export { default as moreInfo } from './more-info.svg';

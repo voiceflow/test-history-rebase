@@ -1,12 +1,15 @@
 import React from 'react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { formatDate, parseDate } from 'react-day-picker/moment';
+import { Tooltip } from 'react-tippy';
 
 import { TIMEZONES } from '@/assets/timezones';
 import ButtonGroupRouter from '@/components/ButtonGroupRouter';
 import Select from '@/components/Select';
+import SvgIcon from '@/components/SvgIcon';
 import VariableInput from '@/components/VariableInput';
 import { FlexApart } from '@/componentsV2/Flex';
+import { styled } from '@/hocs';
 
 import DayOptions from './DayOptions';
 import { RecurrenceToggle } from './ReminderStyle';
@@ -15,6 +18,10 @@ const RECURRENCE_TYPE = {
   DAILY: 'DAILY',
   WEEKLY: 'WEEKLY',
 };
+
+const LabelContainer = styled.div`
+  display: flex;
+`;
 
 const RECURRENCE_ROUTE = [
   {
@@ -52,19 +59,30 @@ function ReminderForm({ data, withDate, onChange }) {
 
   return (
     <>
-      {data.reminderType === 'timer' ? <label>Time From Now</label> : <label>Time</label>}
+      <LabelContainer>
+        {data.reminderType === 'timer' ? (
+          <label>Time From Now</label>
+        ) : (
+          <>
+            <label>Time</label>{' '}
+            <Tooltip className="ml-1 mt-1" theme="menu" position="top" title="In 24-hour format">
+              <SvgIcon color="#BECEDC" hoverColor="#6e849a" icon="info" size={15} />
+            </Tooltip>
+          </>
+        )}
+      </LabelContainer>
       <div className="grid-col-3 text-muted mb-2">
         <div>Hours</div>
         <div className="px-1">Minutes</div>
         <div>Seconds</div>
         <div>
-          <VariableInput className="form-control" placeholder="0" value={data.hours} onChange={updateTime('hours')} />
+          <VariableInput className="form-control" placeholder="24" value={data.hours} onChange={updateTime('hours')} />
         </div>
         <div className="px-1">
-          <VariableInput className="form-control" placeholder="0" value={data.minutes} onChange={updateTime('minutes')} />
+          <VariableInput className="form-control" placeholder="60" value={data.minutes} onChange={updateTime('minutes')} />
         </div>
         <div>
-          <VariableInput className="form-control" placeholder="0" value={data.seconds} onChange={updateTime('seconds')} />
+          <VariableInput className="form-control" placeholder="60" value={data.seconds} onChange={updateTime('seconds')} />
         </div>
       </div>
       {withDate && (

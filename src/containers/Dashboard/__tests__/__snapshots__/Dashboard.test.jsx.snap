@@ -18,11 +18,6 @@ exports[`Dashboard render dashboard 1`] = `
     className="dashboard"
     id="app"
   >
-    <UpdatesModal
-      product_updates={Array []}
-      show_update_modal={false}
-      toggle={[Function]}
-    />
     <DashboardHeader
       handleFilterText={[Function]}
       new_product_updates={Array []}

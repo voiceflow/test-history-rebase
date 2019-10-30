@@ -13,6 +13,7 @@ export const SvgIconContainer = styled.span`
   color: ${({ color }) => color};
   width: ${({ size, width = size }) => width}px;
   height: ${({ size, height = size }) => height}px;
+  box-sizing: content-box;
 
   & > svg {
     display: block;

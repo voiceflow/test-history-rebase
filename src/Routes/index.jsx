@@ -25,7 +25,7 @@ const Reference = React.lazy(() => import('@/components/Reference'));
 const UserTesting = React.lazy(() => import('@/containers/UserTesting'));
 
 const Routes = ({ authToken }) => (
-  <Suspense fallback={<FullSpinner name="assets" />}>
+  <Suspense fallback={<FullSpinner name="Assets" />}>
     <Switch>
       <Route exact path="/ssml" component={SSML} />
       {/* User routes */}

@@ -3,7 +3,7 @@ import React from 'react';
 import { withProps } from 'recompose';
 
 import { withCanvas } from '@/components/Canvas/contexts';
-import { withEngine, withLinkCreation, withNode, withPlatform, withTestingMode } from '@/containers/CanvasV2/contexts';
+import { withEngine, withLinkCreation, withNodeWithoutData, withPlatform, withTestingMode } from '@/containers/CanvasV2/contexts';
 import PortLabels from '@/containers/CanvasV2/managers/labels';
 import { swallowEvent } from '@/utils/dom';
 import { compose } from '@/utils/functional';
@@ -94,7 +94,7 @@ class Port extends React.PureComponent {
 }
 
 export default compose(
-  withNode,
+  withNodeWithoutData,
   withCanvas,
   withEngine,
   withPlatform,

@@ -17,7 +17,7 @@ export const useLazy = (callback, dependencies = [], compareDependencies = hasId
   }, [callback]);
 
   // re-calculate values when dependencies change
-  React.useEffect(() => {
+  React.useMemo(() => {
     if (prevDependencies.current === null || !compareDependencies(dependencies, prevDependencies.current)) {
       update();
     }

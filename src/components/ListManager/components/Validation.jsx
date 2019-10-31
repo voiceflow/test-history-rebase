@@ -21,4 +21,4 @@ const Validation = ({ validate, component: Component, onChange, onBlur, ...props
   );
 };
 
-export default Validation;
+export default React.memo(Validation);

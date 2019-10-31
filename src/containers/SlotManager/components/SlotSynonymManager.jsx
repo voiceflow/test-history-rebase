@@ -17,9 +17,9 @@ function SlotSynonymManager({ items, onChange }) {
   };
   const updateExample = (key) => (value) => {
     if (value) {
-      slotSynonymManager.onUpdate(key)(value);
+      slotSynonymManager.onUpdate(key, value);
     } else {
-      slotSynonymManager.onRemove(key)();
+      slotSynonymManager.onRemove(key);
     }
   };
 

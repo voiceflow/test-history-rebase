@@ -47,7 +47,7 @@ const IntentInput = ({ value, platform, onUpdate, onRemove }) => {
   };
 
   const updateUtterance = (key) => (text) => {
-    utteranceManager.onUpdate(key)({
+    utteranceManager.onUpdate(key, {
       text,
       slots: getSlotKeys(text),
     });

@@ -1,4 +1,5 @@
 import cuid from 'cuid';
+import debounce from 'lodash/debounce';
 import moize from 'moize';
 import React from 'react';
 
@@ -11,12 +12,20 @@ import { useLazy } from './lazy';
 const UNIQUE_TYPES = ['object', 'function'];
 
 // eslint-disable-next-line import/prefer-default-export
-export const useManager = (items, onChange, { factory = identity, getKey } = {}) => {
+export const useManager = (items, onChange, { factory = identity, getKey, debounced = true, handleRemove } = {}) => {
+  const [, forceRerender] = React.useState(null);
   const keyLookup = React.useRef();
   const normalized = React.useRef();
+  const cachedOnChange = React.useRef();
 
-  const generateLookupKey = React.useCallback(
-    moize((value, index) => (value !== null && UNIQUE_TYPES.includes(typeof value) ? value : [value, index])),
+  cachedOnChange.current = onChange;
+
+  const debouncedOnChange = React.useMemo(() => (debounced ? debounce((...args) => cachedOnChange.current(...args), 300) : cachedOnChange.current), [
+    debounced,
+  ]);
+
+  const generateLookupKey = React.useMemo(
+    () => moize((value, index) => (value !== null && UNIQUE_TYPES.includes(typeof value) ? value : [value, index])),
     []
   );
 
@@ -37,14 +46,15 @@ export const useManager = (items, onChange, { factory = identity, getKey } = {})
   const getIndex = React.useCallback((key) => normalized.current.allKeys.indexOf(key), []);
 
   const onSave = React.useCallback(
-    (value) => {
+    (value, { update } = {}) => {
       const denormalized = denormalize(value);
 
       normalized.current = value;
       setDependencies([denormalized]);
-      onChange(denormalized);
+      forceRerender(Math.random());
+      update ? debouncedOnChange(denormalized) : cachedOnChange.current(denormalized);
     },
-    [onChange]
+    [setDependencies, debouncedOnChange]
   );
 
   const onAdd = React.useCallback(
@@ -73,7 +83,7 @@ export const useManager = (items, onChange, { factory = identity, getKey } = {})
   );
 
   const onUpdate = React.useCallback(
-    (key) => (value) => {
+    (key, value) => {
       const currValue = getItem(key);
 
       const updated = updateNormalizedByKey(
@@ -83,39 +93,55 @@ export const useManager = (items, onChange, { factory = identity, getKey } = {})
       );
 
       const index = getIndex(key);
-      keyLookup.current.delete(generateLookupKey(currValue), index);
+      keyLookup.current.delete(generateLookupKey(currValue, index));
       keyLookup.current.set(generateLookupKey(updated.byKey[key], index), key);
 
-      onSave(updated);
+      onSave(updated, { update: true });
     },
     [onSave]
   );
+
+  const memoizedUpdate = React.useMemo(() => moize((key) => (value) => onUpdate(key, value)), [onUpdate]);
 
   const onRemove = React.useCallback(
-    (key) => () => {
+    (key) => {
+      const currValue = getItem(key);
+      const currIndex = getIndex(key);
+
       const updated = removeNormalizedByKey(normalized.current, key);
 
-      keyLookup.current.delete(generateLookupKey(getItem(key), getIndex(key)));
+      keyLookup.current.delete(generateLookupKey(currValue, currIndex));
 
       onSave(updated);
+
+      if (handleRemove) {
+        handleRemove(currValue, currIndex);
+      }
     },
-    [onSave]
+    [onSave, handleRemove]
   );
+
+  const memoizedRemove = React.useMemo(() => moize((key) => () => onRemove(key)), [onRemove]);
 
   const toggleOpen = React.useCallback((key) => () => onUpdate(key)({ open: !getItem(key).open }), [onUpdate]);
 
-  const mapManaged = (render) =>
-    normalized.current.allKeys
-      .map((key) => [key, getItem(key)])
-      .map(([key, value], index) =>
-        render(value, {
-          key,
-          index,
-          onUpdate: onUpdate(key),
-          onRemove: onRemove(key),
-          toggleOpen: toggleOpen(key),
-        })
-      );
+  const memoizedToggle = React.useMemo(() => moize((key) => () => toggleOpen(key)), [toggleOpen]);
+
+  const mapManaged = React.useCallback(
+    (render) =>
+      normalized.current.allKeys
+        .map((key) => [key, getItem(key)])
+        .map(([key, value], index) =>
+          render(value, {
+            key,
+            index,
+            onUpdate: memoizedUpdate(key),
+            onRemove: memoizedRemove(key),
+            toggleOpen: memoizedToggle(key),
+          })
+        ),
+    [getItem, memoizedUpdate, memoizedRemove, memoizedToggle]
+  );
 
   return {
     items,

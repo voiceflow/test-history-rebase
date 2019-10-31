@@ -1,7 +1,7 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
-import { creatorStateSelector } from '@/ducks/creator';
+import { creatorDiagramIDSelector } from '@/ducks/creator';
 import { activeDiagramIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { withLoadingGate } from '@/hocs/withLoadingGate';
@@ -15,15 +15,15 @@ const RawDiagramLoadingGate = ({ isDiagramLoaded, loadDiagram, children }) => (
 
 const mapStateToProps = {
   diagramID: activeDiagramIDSelector,
-  creator: creatorStateSelector,
+  creatorDiagramID: creatorDiagramIDSelector,
 };
 
 const mapDispatchToProps = {
   loadDiagram: initializeCreatorForDiagram,
 };
 
-const mergeProps = ({ diagramID, creator }, { loadDiagram }) => ({
-  isDiagramLoaded: creator.diagramID === diagramID,
+const mergeProps = ({ diagramID, creatorDiagramID }, { loadDiagram }) => ({
+  isDiagramLoaded: creatorDiagramID === diagramID,
   loadDiagram: () => loadDiagram(diagramID),
 });
 

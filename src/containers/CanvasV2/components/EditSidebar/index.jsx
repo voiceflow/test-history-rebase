@@ -19,11 +19,12 @@ import EditorModal from './components/EditorModal';
 
 const UNEDITABLE_BLOCKS = [BlockType.START, BlockType.COMBINED, BlockType.COMMENT];
 
-function EditSidebar({ updateData, focus, data, theme, engine }) {
+function EditSidebar({ focus, data, theme, engine }) {
   const isVisible = !React.useContext(TestingModeContext);
   const [isModal, enableModalMode, disableModalMode] = useEnableDisable(false);
   const shouldRender = data && !UNEDITABLE_BLOCKS.includes(data.type);
   const isOpen = isVisible && shouldRender && focus.isActive && !isModal;
+  const updateData = React.useCallback((value) => focus.target && engine.node.updateData(focus.target, value), [focus.target]);
 
   const removeNode = () => engine.node.remove(data.nodeID);
   const duplicateNode = () => engine.node.duplicate(data.nodeID);
@@ -76,9 +77,8 @@ const mapStateToProps = {
   focus: focusSelector,
 };
 
-const mergeProps = ({ data, focus }, _, { engine }) => ({
+const mergeProps = ({ data, focus }) => ({
   data: focus.target && data(focus.target),
-  updateData: (value) => focus.target && engine.node.updateData(focus.target, value),
 });
 
 export default compose(

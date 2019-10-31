@@ -37,3 +37,12 @@ export const withNode = (Component) =>
       return <Component {...state} {...props} ref={ref}></Component>;
     })
   );
+
+export const withNodeWithoutData = (Component) =>
+  setDisplayName(wrapDisplayName(Component, 'withNodeWithoutData'))(
+    React.forwardRef((props, ref) => {
+      const state = useNode();
+
+      return <Component node={state.node} {...props} ref={ref}></Component>;
+    })
+  );

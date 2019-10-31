@@ -29,13 +29,17 @@ class ListManager extends React.Component {
     }
   };
 
+  addOnEnter = withKeyPress(13, preventDefault(this.addItem));
+
+  updateValidation = (formValue) => this.setState({ formValue, isEditing: true });
+
+  onManagerItemKeyPress = swallowKeyPress(13);
+
   render() {
     const {
       placeholder,
       items,
       mapManaged,
-      onRemove,
-      onUpdate,
       extractValue = identity,
       inputComponent: InputComponent,
       formComponent: FormComponent = ListManagerForm,
@@ -44,15 +48,16 @@ class ListManager extends React.Component {
     } = this.props;
     const { formValue } = this.state;
     const showText = showHelpText && !items.length && this.state.isEditing && formValue;
+
     return (
       <ListManagerContainer>
         <Validation
           validate={validate}
           component={FormComponent}
           value={formValue}
-          onChange={(formValue) => this.setState({ formValue, isEditing: true })}
+          onChange={this.updateValidation}
           placeholder={placeholder}
-          onKeyPress={withKeyPress(13, preventDefault(this.addItem))}
+          onKeyPress={this.addOnEnter}
         />
         {showText && (
           <PressEnterContainer>
@@ -65,7 +70,7 @@ class ListManager extends React.Component {
           <>
             <ListManagerDivider />
             <List>
-              {mapManaged((item, { key }) => (
+              {mapManaged((item, { key, onUpdate, onRemove }) => (
                 // this is fine as long as items are immutable
                 <ListManagerItem key={key}>
                   <div>
@@ -73,11 +78,11 @@ class ListManager extends React.Component {
                       validate={validate}
                       component={InputComponent}
                       value={extractValue(item)}
-                      onChange={onUpdate(key)}
-                      onKeyPress={swallowKeyPress(13)}
+                      onChange={onUpdate}
+                      onKeyPress={this.onManagerItemKeyPress}
                     />
                   </div>
-                  <i onClick={onRemove(key)} className="fas fa-minus-circle trash-icon" />
+                  <i onClick={onRemove} className="fas fa-minus-circle trash-icon" />
                 </ListManagerItem>
               ))}
             </List>

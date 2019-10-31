@@ -23,11 +23,18 @@ const validateFormValue = (value) => {
 };
 
 const ChoiceInput = ({ choice, index: choiceIndex, onRemove, onChange, isLive }) => {
+  const updateSynonyms = React.useCallback((synonyms) => onChange({ synonyms }), [onChange]);
+  const synonymManager = useManager(choice.synonyms, updateSynonyms);
+
+  const toggleOpen = React.useCallback(() => onChange({ open: !choice.open }), [choice.open, onChange]);
+  const updateValue = React.useCallback((value) => onChange({ value }), [onChange]);
+  const addUtterance = React.useCallback((value) => (choice.value ? synonymManager.onAdd : updateValue)(value), [
+    choice.value,
+    synonymManager.onAdd,
+    updateValue,
+  ]);
+
   const hasSynonyms = !!choice.synonyms.length;
-  const toggleOpen = () => onChange({ open: !choice.open });
-  const synonymManager = useManager(choice.synonyms, (synonyms) => onChange({ synonyms }));
-  const updateValue = (value) => onChange({ value });
-  const addUtterance = (value) => (choice.value ? synonymManager.onAdd : updateValue)(value);
 
   return (
     <ChoiceInputContainer>

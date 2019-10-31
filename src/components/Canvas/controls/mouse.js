@@ -1,4 +1,5 @@
-import { getBoundedMovement, preventDefault } from '@/utils/dom';
+import { preventDefault } from '@/utils/dom';
+import MouseMovement from '@/utils/mouseMovement';
 
 import { ControlType, MAX_CLICK_TRAVEL } from '../constants';
 import { getScrollDelta } from './utils';
@@ -9,6 +10,8 @@ class MouseControls {
   panDistance = 0;
 
   scrollComplete = null;
+
+  mouseMovement = new MouseMovement();
 
   constructor(handle) {
     this.handle = handle;
@@ -21,14 +24,20 @@ class MouseControls {
   });
 
   mousemove = (event) => {
-    const [deltaX, deltaY] = getBoundedMovement(event);
+    this.mouseMovement.track(event);
+
+    const [deltaX, deltaY] = this.mouseMovement.getBoundedMovement(event);
+    const [movementX, movementY] = this.mouseMovement.getMovement();
+
     this.handle({ type: ControlType.PAN, deltaX, deltaY });
 
     this.isPanning = true;
-    this.panDistance += Math.max(Math.abs(event.movementX), Math.abs(event.movementY));
+    this.panDistance += Math.max(Math.abs(movementX), Math.abs(movementY));
   };
 
   mouseup = () => {
+    this.mouseMovement.clear();
+
     if (this.isPanning) {
       this.isPanning = false;
 

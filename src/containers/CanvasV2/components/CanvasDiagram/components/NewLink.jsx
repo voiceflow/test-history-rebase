@@ -5,6 +5,7 @@ import LinkPath from '@/containers/CanvasV2/components/Link/components/LinkPath'
 import { buildPath } from '@/containers/CanvasV2/components/Link/utils';
 import { withEngine, withLinkCreation } from '@/containers/CanvasV2/contexts';
 import { compose } from '@/utils/functional';
+import MouseMovement from '@/utils/mouseMovement';
 
 const extractPoints = (canvas, { right, top, height }, [mouseX, mouseY]) => {
   const startPoint = [right, top + height / 2];
@@ -18,11 +19,17 @@ class NewLink extends React.PureComponent {
 
   points = null;
 
+  mouseMovement = new MouseMovement();
+
   onMouseMove = (event) => {
+    this.mouseMovement.track(event);
+
+    const [movementX, movementY] = this.mouseMovement.getMovement();
+
     const zoom = this.props.canvas.getZoom();
     const [start, [endX, endY]] = this.points;
 
-    const nextPoints = [start, [endX + event.movementX / zoom, endY + event.movementY / zoom]];
+    const nextPoints = [start, [endX + movementX / zoom, endY + movementY / zoom]];
     this.points = nextPoints;
 
     const linkEl = this.linkRef.current;
@@ -38,6 +45,8 @@ class NewLink extends React.PureComponent {
   };
 
   removeEventListeners() {
+    this.mouseMovement.clear();
+
     document.removeEventListener('mouseup', this.onMouseUp);
     document.removeEventListener('mousemove', this.onMouseMove);
   }

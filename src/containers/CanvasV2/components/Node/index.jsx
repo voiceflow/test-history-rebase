@@ -8,8 +8,9 @@ import CommentBlock from '@/containers/CanvasV2/components/CommentBlock';
 import { MergeStatusProvider } from '@/containers/CanvasV2/components/MergeOverlay/contexts';
 import { ContextMenuTarget } from '@/containers/CanvasV2/constants';
 import { withEngine, withNode, withStaticContextMenu, withTestingMode } from '@/containers/CanvasV2/contexts';
-import { getBoundedMovement, stopPropagation } from '@/utils/dom';
+import { stopPropagation } from '@/utils/dom';
 import { compose } from '@/utils/functional';
+import MouseMovement from '@/utils/mouseMovement';
 
 import GroupNodeRenderer from './components/GroupNodeRenderer';
 import Container from './components/NodeContainer';
@@ -31,6 +32,8 @@ export class Node extends React.PureComponent {
   dragDistance = 0;
 
   holdingShift = 0;
+
+  mouseMovement = new MouseMovement();
 
   api = {
     translate: ([movementX, movementY]) => {
@@ -87,6 +90,8 @@ export class Node extends React.PureComponent {
   }
 
   teardownMouseListeners() {
+    this.mouseMovement.clear();
+
     document.removeEventListener('mousemove', this.onDrag);
     document.removeEventListener('mouseup', this.onMouseUp);
   }
@@ -127,15 +132,21 @@ export class Node extends React.PureComponent {
 
   onDrag = (event) => {
     const { canvas, engine, node } = this.props;
+
+    this.mouseMovement.track(event);
+
+    const [movementX, movementY] = this.mouseMovement.getBoundedMovement();
+
     const zoom = canvas.getZoom();
-    const [movementX, movementY] = getBoundedMovement(event);
 
     this.dragDistance += Math.max(Math.abs(movementX), Math.abs(movementY));
 
     engine.dragNode(node.id, [movementX / zoom, movementY / zoom]);
   };
 
-  onDrop = () => this.props.engine.dropNode();
+  onDrop = () => {
+    this.props.engine.dropNode();
+  };
 
   onRightClick = stopPropagation((event) => {
     const { contextMenu, node, isTesting } = this.props;

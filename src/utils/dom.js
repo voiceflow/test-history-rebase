@@ -1,7 +1,4 @@
 import _ from 'lodash';
-import mouseEventOffset from 'mouse-event-offset';
-
-const MOUSE_BOUNDING_TOLERANCE = 1;
 
 export const getNodePosition = (node) => {
   const box = node.getBoundingClientRect();
@@ -245,19 +242,6 @@ export const withKeyPress = (charCode, cb) => (event) => {
 };
 
 export const swallowKeyPress = (charCode) => withKeyPress(charCode, preventDefault());
-
-export function getBoundedMovement(event) {
-  const { clientWidth, clientHeight } = document.body;
-  const [mouseX, mouseY] = mouseEventOffset(event, document.body);
-  const { movementX, movementY } = event;
-
-  /* eslint-disable no-nested-ternary */
-  const offsetX = mouseX <= MOUSE_BOUNDING_TOLERANCE || mouseX >= clientWidth - MOUSE_BOUNDING_TOLERANCE ? 0 : movementX;
-  const offsetY = mouseY <= MOUSE_BOUNDING_TOLERANCE || mouseY >= clientHeight - MOUSE_BOUNDING_TOLERANCE ? 0 : movementY;
-  /* eslint-enable no-nested-ternary */
-
-  return [offsetX, offsetY];
-}
 
 export const copyJSONPath = (copy_event) => {
   const total_path = copy_event.namespace.slice();

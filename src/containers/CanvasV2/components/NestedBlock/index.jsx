@@ -5,8 +5,9 @@ import { withCanvas } from '@/components/Canvas/contexts';
 import { getBlockCategory } from '@/containers/CanvasV2/constants';
 import { withEngine, withNode, withTestingMode } from '@/containers/CanvasV2/contexts';
 import { withOverlay } from '@/contexts';
-import { getBoundedMovement, stopPropagation } from '@/utils/dom';
+import { stopPropagation } from '@/utils/dom';
 import { compose } from '@/utils/functional';
+import MouseMovement from '@/utils/mouseMovement';
 
 import { Container, Overlay } from './components';
 
@@ -22,6 +23,8 @@ class NestedBlock extends React.PureComponent {
   rootRef = React.createRef();
 
   dragDistance = 0;
+
+  mouseMovement = new MouseMovement();
 
   api = {
     highlight: () => this.setState({ isHighlighted: true }),
@@ -52,7 +55,9 @@ class NestedBlock extends React.PureComponent {
       return;
     }
 
-    const [movementX, movementY] = getBoundedMovement(event);
+    this.mouseMovement.track(event);
+
+    const [movementX, movementY] = this.mouseMovement.getBoundedMovement();
 
     this.dragDistance += Math.max(Math.abs(movementX), Math.abs(movementY));
 
@@ -81,6 +86,8 @@ class NestedBlock extends React.PureComponent {
   };
 
   teardownMouseListeners() {
+    this.mouseMovement.clear();
+
     document.removeEventListener('mousemove', this.onDrag);
     document.removeEventListener('mouseup', this.onMouseUp);
   }

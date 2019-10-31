@@ -5,14 +5,16 @@ import { OverlayContext } from '@/contexts';
 import { useEnableDisable } from './toggle';
 
 // eslint-disable-next-line import/prefer-default-export
-export function useDismissable(defaultValue = false, onClose, autoDismiss = false) {
+export function useDismissable(defaultValue = false, onClose, autoDismiss = false, ref) {
   const overlay = React.useContext(OverlayContext);
   const [isOpen, setOpen, setClosed] = useEnableDisable(defaultValue);
 
-  const handleClose = () => {
-    if (onClose) {
-      onClose();
+  const handleClose = (event) => {
+    if (ref?.current?.contains?.(event.target)) {
+      return;
     }
+
+    onClose?.();
 
     setClosed();
 

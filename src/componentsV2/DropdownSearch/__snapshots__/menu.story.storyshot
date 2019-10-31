@@ -1,0 +1,813 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Dropdown Menus variants: 2-Level Nested 1`] = `
+<StyledComponent
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "Containers__DropdownContainer-sc-12mfjzu-0",
+        "isStatic": true,
+        "rules": Array [
+          "width:240px;",
+        ],
+      },
+      "displayName": "Containers__DropdownContainer",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "Containers__DropdownContainer-sc-12mfjzu-0",
+      "target": "div",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+>
+  <Memo(SearchableDropdown)
+    disabled={false}
+    onSelect={[Function]}
+    options={
+      Array [
+        Object {
+          "label": "Parent Option 1",
+          "options": Array [
+            Object {
+              "label": "Option 1",
+              "value": Object {
+                "id": "opt1",
+              },
+            },
+            Object {
+              "label": "Option 2",
+              "value": Object {
+                "id": "opt2",
+              },
+            },
+            Object {
+              "label": "Option 3",
+              "value": Object {
+                "id": "opt3",
+              },
+            },
+            Object {
+              "label": "Option 4",
+              "value": Object {
+                "id": "opt4",
+              },
+            },
+            Object {
+              "label": "Option 5",
+              "value": Object {
+                "id": "opt5",
+              },
+            },
+          ],
+        },
+        Object {
+          "label": "Parent Option 2",
+          "options": Array [
+            Object {
+              "label": "Option 1",
+              "value": Object {
+                "id": "opt1",
+              },
+            },
+            Object {
+              "label": "Option 2",
+              "value": Object {
+                "id": "opt2",
+              },
+            },
+            Object {
+              "label": "Option 3",
+              "value": Object {
+                "id": "opt3",
+              },
+            },
+            Object {
+              "label": "Option 4",
+              "value": Object {
+                "id": "opt4",
+              },
+            },
+            Object {
+              "label": "Option 5",
+              "value": Object {
+                "id": "opt5",
+              },
+            },
+          ],
+        },
+        Object {
+          "label": "Parent Option 3",
+          "options": Array [
+            Object {
+              "label": "Option 1",
+              "value": Object {
+                "id": "opt1",
+              },
+            },
+            Object {
+              "label": "Option 2",
+              "value": Object {
+                "id": "opt2",
+              },
+            },
+            Object {
+              "label": "Option 3",
+              "value": Object {
+                "id": "opt3",
+              },
+            },
+            Object {
+              "label": "Option 4",
+              "value": Object {
+                "id": "opt4",
+              },
+            },
+            Object {
+              "label": "Option 5",
+              "value": Object {
+                "id": "opt5",
+              },
+            },
+          ],
+        },
+        Object {
+          "label": "Parent Option 4",
+          "options": Array [
+            Object {
+              "label": "Option 1",
+              "value": Object {
+                "id": "opt1",
+              },
+            },
+            Object {
+              "label": "Option 2",
+              "value": Object {
+                "id": "opt2",
+              },
+            },
+            Object {
+              "label": "Option 3",
+              "value": Object {
+                "id": "opt3",
+              },
+            },
+            Object {
+              "label": "Option 4",
+              "value": Object {
+                "id": "opt4",
+              },
+            },
+            Object {
+              "label": "Option 5",
+              "value": Object {
+                "id": "opt5",
+              },
+            },
+          ],
+        },
+      ]
+    }
+  />
+</StyledComponent>
+`;
+
+exports[`Storyshots Dropdown Menus variants: Actions 1`] = `
+<StyledComponent
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "Containers__DropdownContainer-sc-12mfjzu-0",
+        "isStatic": true,
+        "rules": Array [
+          "width:240px;",
+        ],
+      },
+      "displayName": "Containers__DropdownContainer",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "Containers__DropdownContainer-sc-12mfjzu-0",
+      "target": "div",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+>
+  <Memo(SearchableDropdown)
+    actionClick={[Function]}
+    actionText="Action Link"
+    disabled={false}
+    icon="back"
+    onSelect={[Function]}
+    options={
+      Array [
+        Object {
+          "label": "Regular Option 1",
+          "value": Object {
+            "id": "opt1",
+          },
+        },
+        Object {
+          "label": "Regular Option 2",
+          "value": Object {
+            "id": "opt2",
+          },
+        },
+        Object {
+          "label": "Regular Option 3",
+          "value": Object {
+            "id": "opt3",
+          },
+        },
+        Object {
+          "label": "Regular Option 4",
+          "value": Object {
+            "id": "opt4",
+          },
+        },
+      ]
+    }
+  />
+</StyledComponent>
+`;
+
+exports[`Storyshots Dropdown Menus variants: Multi-level Expandable 1`] = `
+<StyledComponent
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "Containers__DropdownContainer-sc-12mfjzu-0",
+        "isStatic": true,
+        "rules": Array [
+          "width:240px;",
+        ],
+      },
+      "displayName": "Containers__DropdownContainer",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "Containers__DropdownContainer-sc-12mfjzu-0",
+      "target": "div",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+>
+  <Memo(SearchableDropdown)
+    disabled={false}
+    isExpandable={true}
+    label="label"
+    onClear={[Function]}
+    onSelect={[Function]}
+    options={
+      Array [
+        Object {
+          "label": "Parent Option 1",
+          "nestedOptions": Array [
+            Object {
+              "label": "Parent 1 Sub-Parent 1",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+              ],
+              "value": "Parent 1 sub-parent 1",
+            },
+            Object {
+              "label": "Parent 1 Sub-Parent 2",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+              ],
+              "value": "Parent 1 sub-parent 2",
+            },
+            Object {
+              "label": "Parent 1 Sub-Parent 3",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+              ],
+              "value": "Parent 1 sub-parent 3",
+            },
+            Object {
+              "label": "Parent 1 Sub-Parent 4",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+              ],
+              "value": "Parent 1 sub-parent 4",
+            },
+            Object {
+              "label": "Regular Option 1",
+              "value": Object {
+                "id": "opt1",
+              },
+            },
+            Object {
+              "label": "Regular Option 2",
+              "value": Object {
+                "id": "opt2",
+              },
+            },
+            Object {
+              "label": "Regular Option 3",
+              "value": Object {
+                "id": "opt3",
+              },
+            },
+            Object {
+              "label": "Regular Option 4",
+              "value": Object {
+                "id": "opt4",
+              },
+            },
+          ],
+          "value": "Parent option 1",
+        },
+        Object {
+          "label": "Parent Option 2",
+          "nestedOptions": Array [
+            Object {
+              "label": "Parent 2 Sub-Parent 1",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+              ],
+              "value": "Parent 2 sub-parent 1",
+            },
+            Object {
+              "label": "Parent 2 Sub-Parent 2",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+              ],
+              "value": "Parent 2 sub-parent 2",
+            },
+            Object {
+              "label": "Parent 2 Sub-Parent 3",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+              ],
+              "value": "Parent 2 sub-parent 3",
+            },
+            Object {
+              "label": "Parent 2 Sub-Parent 4",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+              ],
+              "value": "Parent 2 sub-parent 4",
+            },
+            Object {
+              "label": "Regular Option 1",
+              "value": Object {
+                "id": "opt1",
+              },
+            },
+            Object {
+              "label": "Regular Option 2",
+              "value": Object {
+                "id": "opt2",
+              },
+            },
+            Object {
+              "label": "Regular Option 3",
+              "value": Object {
+                "id": "opt3",
+              },
+            },
+            Object {
+              "label": "Regular Option 4",
+              "value": Object {
+                "id": "opt4",
+              },
+            },
+          ],
+          "value": "Parent option 2",
+        },
+        Object {
+          "label": "Parent Option 3",
+          "nestedOptions": Array [
+            Object {
+              "label": "Parent 3 Sub-Parent 1",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+                Object {
+                  "label": "Option 3",
+                  "value": "Option 3",
+                },
+              ],
+              "value": "Parent 3 sub-parent 1",
+            },
+            Object {
+              "label": "Parent 3 Sub-Parent 2",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+                Object {
+                  "label": "Option 3",
+                  "value": "Option 3",
+                },
+              ],
+              "value": "Parent 3 sub-parent 2",
+            },
+            Object {
+              "label": "Parent 3 Sub-Parent 3",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+                Object {
+                  "label": "Option 3",
+                  "value": "Option 3",
+                },
+              ],
+              "value": "Parent 3 sub-parent 3",
+            },
+            Object {
+              "label": "Parent 3 Sub-Parent 4",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+                Object {
+                  "label": "Option 3",
+                  "value": "Option 3",
+                },
+              ],
+              "value": "Parent 3 sub-parent 4",
+            },
+            Object {
+              "label": "Regular Option 1",
+              "value": Object {
+                "id": "opt1",
+              },
+            },
+            Object {
+              "label": "Regular Option 2",
+              "value": Object {
+                "id": "opt2",
+              },
+            },
+            Object {
+              "label": "Regular Option 3",
+              "value": Object {
+                "id": "opt3",
+              },
+            },
+            Object {
+              "label": "Regular Option 4",
+              "value": Object {
+                "id": "opt4",
+              },
+            },
+          ],
+          "value": "Parent option 3",
+        },
+        Object {
+          "label": "Parent Option 4",
+          "nestedOptions": Array [
+            Object {
+              "label": "Parent 4 Sub-Parent 1",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+                Object {
+                  "label": "Option 3",
+                  "value": "Option 3",
+                },
+                Object {
+                  "label": "Option 4",
+                  "value": "Option 4",
+                },
+              ],
+              "value": "Parent 4 sub-parent 1",
+            },
+            Object {
+              "label": "Parent 4 Sub-Parent 2",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+                Object {
+                  "label": "Option 3",
+                  "value": "Option 3",
+                },
+                Object {
+                  "label": "Option 4",
+                  "value": "Option 4",
+                },
+              ],
+              "value": "Parent 4 sub-parent 2",
+            },
+            Object {
+              "label": "Parent 4 Sub-Parent 3",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+                Object {
+                  "label": "Option 3",
+                  "value": "Option 3",
+                },
+                Object {
+                  "label": "Option 4",
+                  "value": "Option 4",
+                },
+              ],
+              "value": "Parent 4 sub-parent 3",
+            },
+            Object {
+              "label": "Parent 4 Sub-Parent 4",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+                Object {
+                  "label": "Option 3",
+                  "value": "Option 3",
+                },
+                Object {
+                  "label": "Option 4",
+                  "value": "Option 4",
+                },
+              ],
+              "value": "Parent 4 sub-parent 4",
+            },
+            Object {
+              "label": "Regular Option 1",
+              "value": Object {
+                "id": "opt1",
+              },
+            },
+            Object {
+              "label": "Regular Option 2",
+              "value": Object {
+                "id": "opt2",
+              },
+            },
+            Object {
+              "label": "Regular Option 3",
+              "value": Object {
+                "id": "opt3",
+              },
+            },
+            Object {
+              "label": "Regular Option 4",
+              "value": Object {
+                "id": "opt4",
+              },
+            },
+          ],
+          "value": "Parent option 4",
+        },
+        Object {
+          "label": "Parent Option 5",
+          "nestedOptions": Array [
+            Object {
+              "label": "Parent 5 Sub-Parent 1",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+                Object {
+                  "label": "Option 3",
+                  "value": "Option 3",
+                },
+                Object {
+                  "label": "Option 4",
+                  "value": "Option 4",
+                },
+                Object {
+                  "label": "Option 5",
+                  "value": "Option 5",
+                },
+              ],
+              "value": "Parent 5 sub-parent 1",
+            },
+            Object {
+              "label": "Parent 5 Sub-Parent 2",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+                Object {
+                  "label": "Option 3",
+                  "value": "Option 3",
+                },
+                Object {
+                  "label": "Option 4",
+                  "value": "Option 4",
+                },
+                Object {
+                  "label": "Option 5",
+                  "value": "Option 5",
+                },
+              ],
+              "value": "Parent 5 sub-parent 2",
+            },
+            Object {
+              "label": "Parent 5 Sub-Parent 3",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+                Object {
+                  "label": "Option 3",
+                  "value": "Option 3",
+                },
+                Object {
+                  "label": "Option 4",
+                  "value": "Option 4",
+                },
+                Object {
+                  "label": "Option 5",
+                  "value": "Option 5",
+                },
+              ],
+              "value": "Parent 5 sub-parent 3",
+            },
+            Object {
+              "label": "Parent 5 Sub-Parent 4",
+              "nestedOptions": Array [
+                Object {
+                  "label": "Option 1",
+                  "value": "Option 1",
+                },
+                Object {
+                  "label": "Option 2",
+                  "value": "Option 2",
+                },
+                Object {
+                  "label": "Option 3",
+                  "value": "Option 3",
+                },
+                Object {
+                  "label": "Option 4",
+                  "value": "Option 4",
+                },
+                Object {
+                  "label": "Option 5",
+                  "value": "Option 5",
+                },
+              ],
+              "value": "Parent 5 sub-parent 4",
+            },
+            Object {
+              "label": "Regular Option 1",
+              "value": Object {
+                "id": "opt1",
+              },
+            },
+            Object {
+              "label": "Regular Option 2",
+              "value": Object {
+                "id": "opt2",
+              },
+            },
+            Object {
+              "label": "Regular Option 3",
+              "value": Object {
+                "id": "opt3",
+              },
+            },
+            Object {
+              "label": "Regular Option 4",
+              "value": Object {
+                "id": "opt4",
+              },
+            },
+          ],
+          "value": "Parent option 5",
+        },
+        Object {
+          "label": "Regular Option 1",
+          "value": Object {
+            "id": "opt1",
+          },
+        },
+        Object {
+          "label": "Regular Option 2",
+          "value": Object {
+            "id": "opt2",
+          },
+        },
+        Object {
+          "label": "Regular Option 3",
+          "value": Object {
+            "id": "opt3",
+          },
+        },
+        Object {
+          "label": "Regular Option 4",
+          "value": Object {
+            "id": "opt4",
+          },
+        },
+      ]
+    }
+  />
+</StyledComponent>
+`;

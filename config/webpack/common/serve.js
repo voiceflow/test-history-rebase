@@ -1,4 +1,4 @@
-const { open = true } = require('webpack-nano/argv');
+const { open = true, host } = require('webpack-nano/argv');
 const { WebpackPluginServe } = require('webpack-plugin-serve');
 const fs = require('fs');
 const path = require('path');
@@ -19,7 +19,7 @@ module.exports = (port = 3000, buildDirectory = paths.buildDir) => ({
   plugins: [
     new WebpackPluginServe({
       port,
-      host: 'localhost',
+      host: host || 'localhost',
       open,
       hmr: true,
       historyFallback: true,

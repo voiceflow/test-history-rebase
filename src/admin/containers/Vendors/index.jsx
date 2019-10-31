@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import { findCreator, getVendors } from '@/admin/store/ducks/admin';
 import { AdminTitle } from '@/admin/styles';
-import Input from '@/components/Input';
 import Button from '@/componentsV2/Button';
+import Input from '@/componentsV2/Input';
 
 import VendorList from './components/VendorList/VendorList';
 

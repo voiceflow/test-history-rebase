@@ -10,9 +10,7 @@ exports[`Seconday Button renders with icon 1`] = `
 <SecondaryButtonContainer>
   <SecondaryButtonIcon>
     <Memo([object Object])
-      color="currentColor"
       icon="plus"
-      size={16}
     />
   </SecondaryButtonIcon>
   Button

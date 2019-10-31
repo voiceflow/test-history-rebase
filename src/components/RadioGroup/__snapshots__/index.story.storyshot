@@ -1,0 +1,1314 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
+<styled.div>
+  <StyledComponent
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "sc-ckVGcZ",
+          "isStatic": true,
+          "lastClassName": "hJexYd",
+          "rules": Array [
+            "
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+",
+          ],
+        },
+        "displayName": "styled.div",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "sc-ckVGcZ",
+        "target": "div",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+  >
+    <div
+      className="sc-ckVGcZ hJexYd"
+    >
+      <styled.div
+        key="0"
+      >
+        <StyledComponent
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-dxgOiQ",
+                "isStatic": true,
+                "lastClassName": "gbykQm",
+                "rules": Array [
+                  "
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-right: 20px;
+",
+                ],
+              },
+              "displayName": "styled.div",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-dxgOiQ",
+              "target": "div",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={null}
+        >
+          <div
+            className="sc-dxgOiQ gbykQm"
+          >
+            <Checkbox
+              checked={true}
+              name="multiple"
+              onChange={[Function]}
+              type="radio"
+              value={1}
+            >
+              <styled.label>
+                <StyledComponent
+                  forwardedComponent={
+                    Object {
+                      "$$typeof": Symbol(react.forward_ref),
+                      "attrs": Array [],
+                      "componentStyle": ComponentStyle {
+                        "componentId": "sc-gqjmRU",
+                        "isStatic": true,
+                        "lastClassName": "etzSgW",
+                        "rules": Array [
+                          "
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin-bottom: 0;
+  text-align: left;
+  cursor: pointer;
+",
+                        ],
+                      },
+                      "displayName": "styled.label",
+                      "foldedComponentIds": Array [],
+                      "render": [Function],
+                      "styledComponentId": "sc-gqjmRU",
+                      "target": "label",
+                      "toString": [Function],
+                      "warnTooManyClasses": [Function],
+                      "withComponent": [Function],
+                    }
+                  }
+                  forwardedRef={null}
+                >
+                  <label
+                    className="sc-gqjmRU etzSgW"
+                  >
+                    <styled.div>
+                      <StyledComponent
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-gZMcBi",
+                              "isStatic": true,
+                              "lastClassName": "dqAXEC",
+                              "rules": Array [
+                                "
+  flex: 0 0 auto;
+  min-width: 0;
+  margin-right: 10px;
+  padding: 4px;
+  padding-left: 0;
+  color: #8da2b5;
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-gZMcBi",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                      >
+                        <div
+                          className="sc-gZMcBi dqAXEC"
+                        >
+                          <styled.input
+                            checked={true}
+                            name="multiple"
+                            onChange={[Function]}
+                            type="radio"
+                            value={1}
+                          >
+                            <StyledComponent
+                              checked={true}
+                              forwardedComponent={
+                                Object {
+                                  "$$typeof": Symbol(react.forward_ref),
+                                  "attrs": Array [],
+                                  "componentStyle": ComponentStyle {
+                                    "componentId": "sc-iwsKbI",
+                                    "isStatic": true,
+                                    "lastClassName": "bkouDE",
+                                    "rules": Array [
+                                      "
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+
+  :focus ~ ",
+                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      " {
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
+  }
+  :hover ~ ",
+                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      " {
+    color: #5d9df5;
+  }
+",
+                                    ],
+                                  },
+                                  "displayName": "styled.input",
+                                  "foldedComponentIds": Array [],
+                                  "render": [Function],
+                                  "styledComponentId": "sc-iwsKbI",
+                                  "target": "input",
+                                  "toString": [Function],
+                                  "warnTooManyClasses": [Function],
+                                  "withComponent": [Function],
+                                }
+                              }
+                              forwardedRef={null}
+                              name="multiple"
+                              onChange={[Function]}
+                              type="radio"
+                              value={1}
+                            >
+                              <input
+                                checked={true}
+                                className="sc-iwsKbI bkouDE"
+                                name="multiple"
+                                onChange={[Function]}
+                                type="radio"
+                                value={1}
+                              />
+                            </StyledComponent>
+                          </styled.input>
+                          <ForwardRef
+                            icon="checked"
+                            size={16}
+                          >
+                            <SvgIcon__SvgIconContainer
+                              color="currentColor"
+                              size={16}
+                            >
+                              <StyledComponent
+                                color="currentColor"
+                                forwardedComponent={
+                                  Object {
+                                    "$$typeof": Symbol(react.forward_ref),
+                                    "attrs": Array [],
+                                    "componentStyle": ComponentStyle {
+                                      "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      "isStatic": false,
+                                      "lastClassName": "kycatR",
+                                      "rules": Array [
+                                        [Function],
+                                        " color:",
+                                        [Function],
+                                        ";width:",
+                                        [Function],
+                                        "px;height:",
+                                        [Function],
+                                        "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                        [Function],
+                                        ";}",
+                                      ],
+                                    },
+                                    "displayName": "SvgIcon__SvgIconContainer",
+                                    "foldedComponentIds": Array [],
+                                    "render": [Function],
+                                    "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                    "target": "span",
+                                    "toString": [Function],
+                                    "warnTooManyClasses": [Function],
+                                    "withComponent": [Function],
+                                  }
+                                }
+                                forwardedRef={null}
+                                size={16}
+                              >
+                                <span
+                                  className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                  color="currentColor"
+                                  size={16}
+                                >
+                                  <test-file-stub />
+                                </span>
+                              </StyledComponent>
+                            </SvgIcon__SvgIconContainer>
+                          </ForwardRef>
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                    <div>
+                      Option 1
+                    </div>
+                  </label>
+                </StyledComponent>
+              </styled.label>
+            </Checkbox>
+          </div>
+        </StyledComponent>
+      </styled.div>
+      <styled.div
+        key="1"
+      >
+        <StyledComponent
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-dxgOiQ",
+                "isStatic": true,
+                "lastClassName": "gbykQm",
+                "rules": Array [
+                  "
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-right: 20px;
+",
+                ],
+              },
+              "displayName": "styled.div",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-dxgOiQ",
+              "target": "div",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={null}
+        >
+          <div
+            className="sc-dxgOiQ gbykQm"
+          >
+            <Checkbox
+              checked={false}
+              name="multiple"
+              onChange={[Function]}
+              type="radio"
+              value={2}
+            >
+              <styled.label>
+                <StyledComponent
+                  forwardedComponent={
+                    Object {
+                      "$$typeof": Symbol(react.forward_ref),
+                      "attrs": Array [],
+                      "componentStyle": ComponentStyle {
+                        "componentId": "sc-gqjmRU",
+                        "isStatic": true,
+                        "lastClassName": "etzSgW",
+                        "rules": Array [
+                          "
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin-bottom: 0;
+  text-align: left;
+  cursor: pointer;
+",
+                        ],
+                      },
+                      "displayName": "styled.label",
+                      "foldedComponentIds": Array [],
+                      "render": [Function],
+                      "styledComponentId": "sc-gqjmRU",
+                      "target": "label",
+                      "toString": [Function],
+                      "warnTooManyClasses": [Function],
+                      "withComponent": [Function],
+                    }
+                  }
+                  forwardedRef={null}
+                >
+                  <label
+                    className="sc-gqjmRU etzSgW"
+                  >
+                    <styled.div>
+                      <StyledComponent
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-gZMcBi",
+                              "isStatic": true,
+                              "lastClassName": "dqAXEC",
+                              "rules": Array [
+                                "
+  flex: 0 0 auto;
+  min-width: 0;
+  margin-right: 10px;
+  padding: 4px;
+  padding-left: 0;
+  color: #8da2b5;
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-gZMcBi",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                      >
+                        <div
+                          className="sc-gZMcBi dqAXEC"
+                        >
+                          <styled.input
+                            checked={false}
+                            name="multiple"
+                            onChange={[Function]}
+                            type="radio"
+                            value={2}
+                          >
+                            <StyledComponent
+                              checked={false}
+                              forwardedComponent={
+                                Object {
+                                  "$$typeof": Symbol(react.forward_ref),
+                                  "attrs": Array [],
+                                  "componentStyle": ComponentStyle {
+                                    "componentId": "sc-iwsKbI",
+                                    "isStatic": true,
+                                    "lastClassName": "bkouDE",
+                                    "rules": Array [
+                                      "
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+
+  :focus ~ ",
+                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      " {
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
+  }
+  :hover ~ ",
+                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      " {
+    color: #5d9df5;
+  }
+",
+                                    ],
+                                  },
+                                  "displayName": "styled.input",
+                                  "foldedComponentIds": Array [],
+                                  "render": [Function],
+                                  "styledComponentId": "sc-iwsKbI",
+                                  "target": "input",
+                                  "toString": [Function],
+                                  "warnTooManyClasses": [Function],
+                                  "withComponent": [Function],
+                                }
+                              }
+                              forwardedRef={null}
+                              name="multiple"
+                              onChange={[Function]}
+                              type="radio"
+                              value={2}
+                            >
+                              <input
+                                checked={false}
+                                className="sc-iwsKbI bkouDE"
+                                name="multiple"
+                                onChange={[Function]}
+                                type="radio"
+                                value={2}
+                              />
+                            </StyledComponent>
+                          </styled.input>
+                          <ForwardRef
+                            icon="emptyCheckbox"
+                            size={16}
+                          >
+                            <SvgIcon__SvgIconContainer
+                              color="currentColor"
+                              size={16}
+                            >
+                              <StyledComponent
+                                color="currentColor"
+                                forwardedComponent={
+                                  Object {
+                                    "$$typeof": Symbol(react.forward_ref),
+                                    "attrs": Array [],
+                                    "componentStyle": ComponentStyle {
+                                      "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      "isStatic": false,
+                                      "lastClassName": "kycatR",
+                                      "rules": Array [
+                                        [Function],
+                                        " color:",
+                                        [Function],
+                                        ";width:",
+                                        [Function],
+                                        "px;height:",
+                                        [Function],
+                                        "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                        [Function],
+                                        ";}",
+                                      ],
+                                    },
+                                    "displayName": "SvgIcon__SvgIconContainer",
+                                    "foldedComponentIds": Array [],
+                                    "render": [Function],
+                                    "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                    "target": "span",
+                                    "toString": [Function],
+                                    "warnTooManyClasses": [Function],
+                                    "withComponent": [Function],
+                                  }
+                                }
+                                forwardedRef={null}
+                                size={16}
+                              >
+                                <span
+                                  className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                  color="currentColor"
+                                  size={16}
+                                >
+                                  <test-file-stub />
+                                </span>
+                              </StyledComponent>
+                            </SvgIcon__SvgIconContainer>
+                          </ForwardRef>
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                    <div>
+                      Option 2
+                    </div>
+                  </label>
+                </StyledComponent>
+              </styled.label>
+            </Checkbox>
+          </div>
+        </StyledComponent>
+      </styled.div>
+      <styled.div
+        key="2"
+      >
+        <StyledComponent
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-dxgOiQ",
+                "isStatic": true,
+                "lastClassName": "gbykQm",
+                "rules": Array [
+                  "
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-right: 20px;
+",
+                ],
+              },
+              "displayName": "styled.div",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-dxgOiQ",
+              "target": "div",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={null}
+        >
+          <div
+            className="sc-dxgOiQ gbykQm"
+          >
+            <Checkbox
+              checked={false}
+              name="multiple"
+              onChange={[Function]}
+              type="radio"
+              value={3}
+            >
+              <styled.label>
+                <StyledComponent
+                  forwardedComponent={
+                    Object {
+                      "$$typeof": Symbol(react.forward_ref),
+                      "attrs": Array [],
+                      "componentStyle": ComponentStyle {
+                        "componentId": "sc-gqjmRU",
+                        "isStatic": true,
+                        "lastClassName": "etzSgW",
+                        "rules": Array [
+                          "
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin-bottom: 0;
+  text-align: left;
+  cursor: pointer;
+",
+                        ],
+                      },
+                      "displayName": "styled.label",
+                      "foldedComponentIds": Array [],
+                      "render": [Function],
+                      "styledComponentId": "sc-gqjmRU",
+                      "target": "label",
+                      "toString": [Function],
+                      "warnTooManyClasses": [Function],
+                      "withComponent": [Function],
+                    }
+                  }
+                  forwardedRef={null}
+                >
+                  <label
+                    className="sc-gqjmRU etzSgW"
+                  >
+                    <styled.div>
+                      <StyledComponent
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-gZMcBi",
+                              "isStatic": true,
+                              "lastClassName": "dqAXEC",
+                              "rules": Array [
+                                "
+  flex: 0 0 auto;
+  min-width: 0;
+  margin-right: 10px;
+  padding: 4px;
+  padding-left: 0;
+  color: #8da2b5;
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-gZMcBi",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                      >
+                        <div
+                          className="sc-gZMcBi dqAXEC"
+                        >
+                          <styled.input
+                            checked={false}
+                            name="multiple"
+                            onChange={[Function]}
+                            type="radio"
+                            value={3}
+                          >
+                            <StyledComponent
+                              checked={false}
+                              forwardedComponent={
+                                Object {
+                                  "$$typeof": Symbol(react.forward_ref),
+                                  "attrs": Array [],
+                                  "componentStyle": ComponentStyle {
+                                    "componentId": "sc-iwsKbI",
+                                    "isStatic": true,
+                                    "lastClassName": "bkouDE",
+                                    "rules": Array [
+                                      "
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+
+  :focus ~ ",
+                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      " {
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
+  }
+  :hover ~ ",
+                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      " {
+    color: #5d9df5;
+  }
+",
+                                    ],
+                                  },
+                                  "displayName": "styled.input",
+                                  "foldedComponentIds": Array [],
+                                  "render": [Function],
+                                  "styledComponentId": "sc-iwsKbI",
+                                  "target": "input",
+                                  "toString": [Function],
+                                  "warnTooManyClasses": [Function],
+                                  "withComponent": [Function],
+                                }
+                              }
+                              forwardedRef={null}
+                              name="multiple"
+                              onChange={[Function]}
+                              type="radio"
+                              value={3}
+                            >
+                              <input
+                                checked={false}
+                                className="sc-iwsKbI bkouDE"
+                                name="multiple"
+                                onChange={[Function]}
+                                type="radio"
+                                value={3}
+                              />
+                            </StyledComponent>
+                          </styled.input>
+                          <ForwardRef
+                            icon="emptyCheckbox"
+                            size={16}
+                          >
+                            <SvgIcon__SvgIconContainer
+                              color="currentColor"
+                              size={16}
+                            >
+                              <StyledComponent
+                                color="currentColor"
+                                forwardedComponent={
+                                  Object {
+                                    "$$typeof": Symbol(react.forward_ref),
+                                    "attrs": Array [],
+                                    "componentStyle": ComponentStyle {
+                                      "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      "isStatic": false,
+                                      "lastClassName": "kycatR",
+                                      "rules": Array [
+                                        [Function],
+                                        " color:",
+                                        [Function],
+                                        ";width:",
+                                        [Function],
+                                        "px;height:",
+                                        [Function],
+                                        "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                        [Function],
+                                        ";}",
+                                      ],
+                                    },
+                                    "displayName": "SvgIcon__SvgIconContainer",
+                                    "foldedComponentIds": Array [],
+                                    "render": [Function],
+                                    "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                    "target": "span",
+                                    "toString": [Function],
+                                    "warnTooManyClasses": [Function],
+                                    "withComponent": [Function],
+                                  }
+                                }
+                                forwardedRef={null}
+                                size={16}
+                              >
+                                <span
+                                  className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                  color="currentColor"
+                                  size={16}
+                                >
+                                  <test-file-stub />
+                                </span>
+                              </StyledComponent>
+                            </SvgIcon__SvgIconContainer>
+                          </ForwardRef>
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                    <div>
+                      Option 3
+                    </div>
+                  </label>
+                </StyledComponent>
+              </styled.label>
+            </Checkbox>
+          </div>
+        </StyledComponent>
+      </styled.div>
+    </div>
+  </StyledComponent>
+</styled.div>
+`;
+
+exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
+<styled.div>
+  <StyledComponent
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "sc-ckVGcZ",
+          "isStatic": true,
+          "lastClassName": "hJexYd",
+          "rules": Array [
+            "
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+",
+          ],
+        },
+        "displayName": "styled.div",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "sc-ckVGcZ",
+        "target": "div",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+  >
+    <div
+      className="sc-ckVGcZ hJexYd"
+    >
+      <styled.div
+        key="0"
+      >
+        <StyledComponent
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-dxgOiQ",
+                "isStatic": true,
+                "lastClassName": "gbykQm",
+                "rules": Array [
+                  "
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-right: 20px;
+",
+                ],
+              },
+              "displayName": "styled.div",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-dxgOiQ",
+              "target": "div",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={null}
+        >
+          <div
+            className="sc-dxgOiQ gbykQm"
+          >
+            <Checkbox
+              checked={false}
+              name="yesNo"
+              onChange={[Function]}
+              type="radio"
+              value={true}
+            >
+              <styled.label>
+                <StyledComponent
+                  forwardedComponent={
+                    Object {
+                      "$$typeof": Symbol(react.forward_ref),
+                      "attrs": Array [],
+                      "componentStyle": ComponentStyle {
+                        "componentId": "sc-gqjmRU",
+                        "isStatic": true,
+                        "lastClassName": "etzSgW",
+                        "rules": Array [
+                          "
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin-bottom: 0;
+  text-align: left;
+  cursor: pointer;
+",
+                        ],
+                      },
+                      "displayName": "styled.label",
+                      "foldedComponentIds": Array [],
+                      "render": [Function],
+                      "styledComponentId": "sc-gqjmRU",
+                      "target": "label",
+                      "toString": [Function],
+                      "warnTooManyClasses": [Function],
+                      "withComponent": [Function],
+                    }
+                  }
+                  forwardedRef={null}
+                >
+                  <label
+                    className="sc-gqjmRU etzSgW"
+                  >
+                    <styled.div>
+                      <StyledComponent
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-gZMcBi",
+                              "isStatic": true,
+                              "lastClassName": "dqAXEC",
+                              "rules": Array [
+                                "
+  flex: 0 0 auto;
+  min-width: 0;
+  margin-right: 10px;
+  padding: 4px;
+  padding-left: 0;
+  color: #8da2b5;
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-gZMcBi",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                      >
+                        <div
+                          className="sc-gZMcBi dqAXEC"
+                        >
+                          <styled.input
+                            checked={false}
+                            name="yesNo"
+                            onChange={[Function]}
+                            type="radio"
+                            value={true}
+                          >
+                            <StyledComponent
+                              checked={false}
+                              forwardedComponent={
+                                Object {
+                                  "$$typeof": Symbol(react.forward_ref),
+                                  "attrs": Array [],
+                                  "componentStyle": ComponentStyle {
+                                    "componentId": "sc-iwsKbI",
+                                    "isStatic": true,
+                                    "lastClassName": "bkouDE",
+                                    "rules": Array [
+                                      "
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+
+  :focus ~ ",
+                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      " {
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
+  }
+  :hover ~ ",
+                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      " {
+    color: #5d9df5;
+  }
+",
+                                    ],
+                                  },
+                                  "displayName": "styled.input",
+                                  "foldedComponentIds": Array [],
+                                  "render": [Function],
+                                  "styledComponentId": "sc-iwsKbI",
+                                  "target": "input",
+                                  "toString": [Function],
+                                  "warnTooManyClasses": [Function],
+                                  "withComponent": [Function],
+                                }
+                              }
+                              forwardedRef={null}
+                              name="yesNo"
+                              onChange={[Function]}
+                              type="radio"
+                              value={true}
+                            >
+                              <input
+                                checked={false}
+                                className="sc-iwsKbI bkouDE"
+                                name="yesNo"
+                                onChange={[Function]}
+                                type="radio"
+                                value={true}
+                              />
+                            </StyledComponent>
+                          </styled.input>
+                          <ForwardRef
+                            icon="emptyCheckbox"
+                            size={16}
+                          >
+                            <SvgIcon__SvgIconContainer
+                              color="currentColor"
+                              size={16}
+                            >
+                              <StyledComponent
+                                color="currentColor"
+                                forwardedComponent={
+                                  Object {
+                                    "$$typeof": Symbol(react.forward_ref),
+                                    "attrs": Array [],
+                                    "componentStyle": ComponentStyle {
+                                      "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      "isStatic": false,
+                                      "lastClassName": "kycatR",
+                                      "rules": Array [
+                                        [Function],
+                                        " color:",
+                                        [Function],
+                                        ";width:",
+                                        [Function],
+                                        "px;height:",
+                                        [Function],
+                                        "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                        [Function],
+                                        ";}",
+                                      ],
+                                    },
+                                    "displayName": "SvgIcon__SvgIconContainer",
+                                    "foldedComponentIds": Array [],
+                                    "render": [Function],
+                                    "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                    "target": "span",
+                                    "toString": [Function],
+                                    "warnTooManyClasses": [Function],
+                                    "withComponent": [Function],
+                                  }
+                                }
+                                forwardedRef={null}
+                                size={16}
+                              >
+                                <span
+                                  className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                  color="currentColor"
+                                  size={16}
+                                >
+                                  <test-file-stub />
+                                </span>
+                              </StyledComponent>
+                            </SvgIcon__SvgIconContainer>
+                          </ForwardRef>
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                    <div>
+                      Yes
+                    </div>
+                  </label>
+                </StyledComponent>
+              </styled.label>
+            </Checkbox>
+          </div>
+        </StyledComponent>
+      </styled.div>
+      <styled.div
+        key="1"
+      >
+        <StyledComponent
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-dxgOiQ",
+                "isStatic": true,
+                "lastClassName": "gbykQm",
+                "rules": Array [
+                  "
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-right: 20px;
+",
+                ],
+              },
+              "displayName": "styled.div",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-dxgOiQ",
+              "target": "div",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={null}
+        >
+          <div
+            className="sc-dxgOiQ gbykQm"
+          >
+            <Checkbox
+              checked={true}
+              name="yesNo"
+              onChange={[Function]}
+              type="radio"
+              value={false}
+            >
+              <styled.label>
+                <StyledComponent
+                  forwardedComponent={
+                    Object {
+                      "$$typeof": Symbol(react.forward_ref),
+                      "attrs": Array [],
+                      "componentStyle": ComponentStyle {
+                        "componentId": "sc-gqjmRU",
+                        "isStatic": true,
+                        "lastClassName": "etzSgW",
+                        "rules": Array [
+                          "
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin-bottom: 0;
+  text-align: left;
+  cursor: pointer;
+",
+                        ],
+                      },
+                      "displayName": "styled.label",
+                      "foldedComponentIds": Array [],
+                      "render": [Function],
+                      "styledComponentId": "sc-gqjmRU",
+                      "target": "label",
+                      "toString": [Function],
+                      "warnTooManyClasses": [Function],
+                      "withComponent": [Function],
+                    }
+                  }
+                  forwardedRef={null}
+                >
+                  <label
+                    className="sc-gqjmRU etzSgW"
+                  >
+                    <styled.div>
+                      <StyledComponent
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-gZMcBi",
+                              "isStatic": true,
+                              "lastClassName": "dqAXEC",
+                              "rules": Array [
+                                "
+  flex: 0 0 auto;
+  min-width: 0;
+  margin-right: 10px;
+  padding: 4px;
+  padding-left: 0;
+  color: #8da2b5;
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-gZMcBi",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                      >
+                        <div
+                          className="sc-gZMcBi dqAXEC"
+                        >
+                          <styled.input
+                            checked={true}
+                            name="yesNo"
+                            onChange={[Function]}
+                            type="radio"
+                            value={false}
+                          >
+                            <StyledComponent
+                              checked={true}
+                              forwardedComponent={
+                                Object {
+                                  "$$typeof": Symbol(react.forward_ref),
+                                  "attrs": Array [],
+                                  "componentStyle": ComponentStyle {
+                                    "componentId": "sc-iwsKbI",
+                                    "isStatic": true,
+                                    "lastClassName": "bkouDE",
+                                    "rules": Array [
+                                      "
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+
+  :focus ~ ",
+                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      " {
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
+  }
+  :hover ~ ",
+                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      " {
+    color: #5d9df5;
+  }
+",
+                                    ],
+                                  },
+                                  "displayName": "styled.input",
+                                  "foldedComponentIds": Array [],
+                                  "render": [Function],
+                                  "styledComponentId": "sc-iwsKbI",
+                                  "target": "input",
+                                  "toString": [Function],
+                                  "warnTooManyClasses": [Function],
+                                  "withComponent": [Function],
+                                }
+                              }
+                              forwardedRef={null}
+                              name="yesNo"
+                              onChange={[Function]}
+                              type="radio"
+                              value={false}
+                            >
+                              <input
+                                checked={true}
+                                className="sc-iwsKbI bkouDE"
+                                name="yesNo"
+                                onChange={[Function]}
+                                type="radio"
+                                value={false}
+                              />
+                            </StyledComponent>
+                          </styled.input>
+                          <ForwardRef
+                            icon="checked"
+                            size={16}
+                          >
+                            <SvgIcon__SvgIconContainer
+                              color="currentColor"
+                              size={16}
+                            >
+                              <StyledComponent
+                                color="currentColor"
+                                forwardedComponent={
+                                  Object {
+                                    "$$typeof": Symbol(react.forward_ref),
+                                    "attrs": Array [],
+                                    "componentStyle": ComponentStyle {
+                                      "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      "isStatic": false,
+                                      "lastClassName": "kycatR",
+                                      "rules": Array [
+                                        [Function],
+                                        " color:",
+                                        [Function],
+                                        ";width:",
+                                        [Function],
+                                        "px;height:",
+                                        [Function],
+                                        "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                        [Function],
+                                        ";}",
+                                      ],
+                                    },
+                                    "displayName": "SvgIcon__SvgIconContainer",
+                                    "foldedComponentIds": Array [],
+                                    "render": [Function],
+                                    "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                    "target": "span",
+                                    "toString": [Function],
+                                    "warnTooManyClasses": [Function],
+                                    "withComponent": [Function],
+                                  }
+                                }
+                                forwardedRef={null}
+                                size={16}
+                              >
+                                <span
+                                  className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                  color="currentColor"
+                                  size={16}
+                                >
+                                  <test-file-stub />
+                                </span>
+                              </StyledComponent>
+                            </SvgIcon__SvgIconContainer>
+                          </ForwardRef>
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                    <div>
+                      No
+                    </div>
+                  </label>
+                </StyledComponent>
+              </styled.label>
+            </Checkbox>
+          </div>
+        </StyledComponent>
+      </styled.div>
+    </div>
+  </StyledComponent>
+</styled.div>
+`;

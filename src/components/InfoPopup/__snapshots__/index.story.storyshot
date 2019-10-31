@@ -1,0 +1,359 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Info Popup variants: Icon Popup 1`] = `
+<Manager>
+  <Reference>
+    <InnerReference
+      setReferenceNode={[Function]}
+    >
+      <span
+        onClick={[Function]}
+      >
+        <div>
+          <Button>
+            <PrimaryButton>
+              <Styled(Styled(styled.button))
+                canHover={true}
+              >
+                <StyledComponent
+                  canHover={true}
+                  forwardedComponent={
+                    Object {
+                      "$$typeof": Symbol(react.forward_ref),
+                      "_foldedDefaultProps": Object {
+                        "canHover": true,
+                      },
+                      "attrs": Array [],
+                      "componentStyle": ComponentStyle {
+                        "componentId": "sc-fjdhpX",
+                        "isStatic": false,
+                        "lastClassName": "gZKPwt",
+                        "rules": Array [
+                          "
+  ",
+                          "
+  ",
+                          "display:",
+                          [Function],
+                          ";align-items:center;",
+                          [Function],
+                          " ",
+                          [Function],
+                          " justify-content:center;",
+                          "
+  ",
+                          [Function],
+                          "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+                          "
+",
+                          "
+  ",
+                          "
+  height: ",
+                          "42",
+                          "px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: ",
+                          [Function],
+                          ";
+",
+                          "
+",
+                          "
+  color: #fff;
+  background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
+  box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  font-weight: 600;
+  ",
+                          [Function],
+                          "
+
+  ",
+                          [Function],
+                          "
+
+  &:active {
+    background: linear-gradient(180deg, rgba(93, 157, 245, 0.99) 0%, #2c85ff 100%);
+    box-shadow: 0px 7px 12px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  }
+",
+                        ],
+                      },
+                      "displayName": "Styled(Styled(styled.button))",
+                      "foldedComponentIds": Array [
+                        "sc-bdVaJa",
+                        "sc-bxivhb",
+                      ],
+                      "render": [Function],
+                      "styledComponentId": "sc-fjdhpX",
+                      "target": "button",
+                      "toString": [Function],
+                      "warnTooManyClasses": [Function],
+                      "withComponent": [Function],
+                    }
+                  }
+                  forwardedRef={null}
+                >
+                  <button
+                    className="sc-bdVaJa sc-bxivhb sc-fjdhpX gZKPwt"
+                  >
+                    <components__PrimaryButtonLabel>
+                      <StyledComponent
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "components__PrimaryButtonLabel-rbaz43-0",
+                              "isStatic": true,
+                              "lastClassName": "bPKTiG",
+                              "rules": Array [
+                                "padding:0 22px;",
+                              ],
+                            },
+                            "displayName": "components__PrimaryButtonLabel",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "components__PrimaryButtonLabel-rbaz43-0",
+                            "target": "span",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                      >
+                        <span
+                          className="components__PrimaryButtonLabel-rbaz43-0 bPKTiG"
+                        >
+                          Info
+                        </span>
+                      </StyledComponent>
+                    </components__PrimaryButtonLabel>
+                  </button>
+                </StyledComponent>
+              </Styled(Styled(styled.button))>
+            </PrimaryButton>
+          </Button>
+        </div>
+      </span>
+    </InnerReference>
+  </Reference>
+</Manager>
+`;
+
+exports[`Storyshots Info Popup variants: Label Icon Popup 1`] = `
+<Manager>
+  <Reference>
+    <InnerReference
+      setReferenceNode={[Function]}
+    >
+      <span
+        onClick={[Function]}
+      >
+        <div>
+          <styled.div>
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-cSHVUG",
+                    "isStatic": true,
+                    "lastClassName": "zbyMk",
+                    "rules": Array [
+                      "
+  position: relative;
+  top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: inline-block;
+",
+                    ],
+                  },
+                  "displayName": "styled.div",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-cSHVUG",
+                  "target": "div",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={null}
+            >
+              <div
+                className="sc-cSHVUG zbyMk"
+              >
+                Slots
+              </div>
+            </StyledComponent>
+          </styled.div>
+          <styled.div>
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-jzJRlG",
+                    "isStatic": true,
+                    "lastClassName": "gotqPr",
+                    "rules": Array [
+                      "
+  top: 12px;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  color: #5d9df5;
+",
+                    ],
+                  },
+                  "displayName": "styled.div",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-jzJRlG",
+                  "target": "div",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={null}
+            >
+              <div
+                className="sc-jzJRlG gotqPr"
+              >
+                <ForwardRef
+                  color="#8da2b5"
+                  icon="info"
+                >
+                  <SvgIcon__SvgIconContainer
+                    color="#8da2b5"
+                    size={16}
+                  >
+                    <StyledComponent
+                      color="#8da2b5"
+                      forwardedComponent={
+                        Object {
+                          "$$typeof": Symbol(react.forward_ref),
+                          "attrs": Array [],
+                          "componentStyle": ComponentStyle {
+                            "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                            "isStatic": false,
+                            "lastClassName": "hinGTE",
+                            "rules": Array [
+                              [Function],
+                              " color:",
+                              [Function],
+                              ";width:",
+                              [Function],
+                              "px;height:",
+                              [Function],
+                              "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                              [Function],
+                              ";}",
+                            ],
+                          },
+                          "displayName": "SvgIcon__SvgIconContainer",
+                          "foldedComponentIds": Array [],
+                          "render": [Function],
+                          "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                          "target": "span",
+                          "toString": [Function],
+                          "warnTooManyClasses": [Function],
+                          "withComponent": [Function],
+                        }
+                      }
+                      forwardedRef={null}
+                      size={16}
+                    >
+                      <span
+                        className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hinGTE"
+                        color="#8da2b5"
+                        size={16}
+                      >
+                        <test-file-stub />
+                      </span>
+                    </StyledComponent>
+                  </SvgIcon__SvgIconContainer>
+                </ForwardRef>
+              </div>
+            </StyledComponent>
+          </styled.div>
+        </div>
+      </span>
+    </InnerReference>
+  </Reference>
+</Manager>
+`;
+
+exports[`Storyshots Info Popup variants: Label Popup 1`] = `
+<Manager>
+  <Reference>
+    <InnerReference
+      setReferenceNode={[Function]}
+    >
+      <span
+        onClick={[Function]}
+      >
+        <div>
+          <styled.div>
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-jzJRlG",
+                    "isStatic": true,
+                    "lastClassName": "gotqPr",
+                    "rules": Array [
+                      "
+  top: 12px;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  color: #5d9df5;
+",
+                    ],
+                  },
+                  "displayName": "styled.div",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-jzJRlG",
+                  "target": "div",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={null}
+            >
+              <div
+                className="sc-jzJRlG gotqPr"
+              >
+                How it Works
+              </div>
+            </StyledComponent>
+          </styled.div>
+        </div>
+      </span>
+    </InnerReference>
+  </Reference>
+</Manager>
+`;

@@ -1,6 +1,7 @@
-import { State, Store } from '@sambego/storybook-state';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
+
+import { Variant, createTestableStory } from '@/../.storybook';
 
 import ButtonGroup from '.';
 
@@ -19,12 +20,15 @@ const OPTIONS = [
   },
 ];
 
-const store = new Store({
-  selected: 0,
-});
+storiesOf('Button Group', module).add(
+  'variants',
+  createTestableStory(() => {
+    const [selected, updateSelected] = React.useState(OPTIONS[0].value);
 
-storiesOf('Button Group', module).add('uncontrolled', () => (
-  <State store={store}>
-    {(state) => <ButtonGroup options={OPTIONS} selected={state.selected} onChange={(selected) => store.set({ selected })} />}
-  </State>
-));
+    return (
+      <Variant>
+        <ButtonGroup options={OPTIONS} selected={selected} onChange={(value) => updateSelected(value)} />
+      </Variant>
+    );
+  })
+);

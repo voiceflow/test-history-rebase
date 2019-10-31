@@ -21,7 +21,6 @@ exports[`Primary Button renders with icon 1`] = `
     <Memo([object Object])
       color="#FFF"
       icon="plus"
-      size={16}
     />
   </PrimaryButtonIcon>
 </Styled(Styled(styled.button))>

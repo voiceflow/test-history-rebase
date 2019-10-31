@@ -1,6 +1,6 @@
 import _fetch from 'cross-fetch';
 
-import { API_HOST, DEBUG_HTTP, IS_PRODUCTION } from '@/config';
+import { API_ENDPOINT, DEBUG_HTTP } from '@/config';
 
 const BOLD_FONT_STYLE = 'font-weight: bold';
 const NORMAL_FONT_STYLE = 'font-weight: normal';
@@ -51,7 +51,7 @@ async function rawFetch(url, { body, json = true, ...rawOpts } = {}) {
     };
   }
 
-  const finalURL = `${IS_PRODUCTION ? `//${API_HOST}` : '//localhost:8080'}/${url}`;
+  const finalURL = `${API_ENDPOINT}/${url}`;
   const res = await _fetch(finalURL, opts);
 
   let resBody = await res.text();

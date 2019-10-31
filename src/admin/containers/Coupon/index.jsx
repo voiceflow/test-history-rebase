@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { Button, Col, Form, FormGroup, Input as Select, Label, Table } from 'reactstrap';
 
 import { AdminTitle } from '@/admin/styles';
-import Input from '@/components/Input';
+import Input from '@/componentsV2/Input';
 import { PLAN_NAME } from '@/containers/Dashboard/PLANS';
 
 class Coupon extends React.Component {

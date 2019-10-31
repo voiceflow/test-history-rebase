@@ -1,10 +1,18 @@
-import { useHotkeys } from 'react-hotkeys-hook';
+import hotkeys from 'hotkeys-js';
+import { useCallback, useEffect } from 'react';
 
 import HOTKEY_MAPPING from '@/keymap';
 
 // eslint-disable-next-line import/prefer-default-export
-export const useHotKeys = (key, callback, deps) => {
-  const keys = HOTKEY_MAPPING[key];
+export function useHotKeys(key, callback, deps = []) {
+  const memoisedCallback = useCallback(callback, deps);
 
-  return useHotkeys(Array.isArray(keys) ? keys.join(',') : keys, callback, deps);
-};
+  useEffect(() => {
+    const keys = HOTKEY_MAPPING[key];
+    const keysStr = Array.isArray(keys) ? keys.join(',') : keys;
+
+    hotkeys(keysStr, memoisedCallback);
+
+    return () => hotkeys.unbind(keysStr, memoisedCallback);
+  }, [memoisedCallback]);
+}

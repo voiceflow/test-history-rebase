@@ -8,10 +8,16 @@ import Button from '@/componentsV2/Button';
 import DropdownMultiselect from '@/componentsV2/DropdownMultiselect';
 import Input from '@/componentsV2/Input';
 import { productByIDSelector, updateProduct } from '@/ducks/product';
+import { parentCtrlSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { CountriesName, MarketPlaceAvailability } from '@/services/LocaleMap';
 
 import { AvailabilitySubSection, NextButtonContainer, SubSection, Text } from './components';
+
+const PARENT_CONTROLS = {
+  marketplace: 'amazon.com',
+  price: 9.99,
+};
 
 const MarketPlaceOptions = MarketPlaceAvailability.map(({ marketPlace, currency }) => ({
   value: marketPlace,
@@ -34,7 +40,7 @@ class MarketPlace extends React.PureComponent {
 
   render() {
     const { invalidPrice, invalidIndex } = this.state;
-    const { product, changeStep } = this.props;
+    const { product, changeStep, parentCtrl } = this.props;
 
     return (
       <AvForm onValidSubmit={changeStep}>
@@ -75,7 +81,7 @@ class MarketPlace extends React.PureComponent {
                         {invalidPrice && index === invalidIndex && (
                           <Text small noPadding error>
                             {min} min/
-                            {max[product.type]} max
+                            {parentCtrl && place === PARENT_CONTROLS.marketplace ? PARENT_CONTROLS.price : max[product.type]} max
                           </Text>
                         )}
                       </div>
@@ -176,9 +182,14 @@ class MarketPlace extends React.PureComponent {
     const {
       product: { marketPlaces = {}, ...restProduct },
       updateProduct,
+      parentCtrl,
     } = this.props;
 
-    if (e.target.value < MarketPlaceAvailability[index].min || e.target.value > MarketPlaceAvailability[index].max[restProduct.type]) {
+    if (
+      e.target.value < MarketPlaceAvailability[index].min ||
+      e.target.value > MarketPlaceAvailability[index].max[restProduct.type] ||
+      (parentCtrl && place === PARENT_CONTROLS.marketplace && e.target.value > PARENT_CONTROLS.price)
+    ) {
       this.setState({ invalidPrice: true, invalidIndex: index });
     } else {
       this.setState({ invalidPrice: false, invalidIndex: null });
@@ -261,6 +272,7 @@ class MarketPlace extends React.PureComponent {
 
 const mapStateToProps = {
   product: productByIDSelector,
+  parentCtrl: parentCtrlSelector,
 };
 
 const mapDispatchToProps = {

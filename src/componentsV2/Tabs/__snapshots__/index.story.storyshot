@@ -1,0 +1,278 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Tabs variants: default 1`] = `
+<Tabs
+  onChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "ABC",
+        "value": "abc",
+      },
+      Object {
+        "label": "DEF",
+        "value": "def",
+      },
+    ]
+  }
+  selected={-1}
+>
+  <TabSet>
+    <StyledComponent
+      forwardedComponent={
+        Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "attrs": Array [],
+          "componentStyle": ComponentStyle {
+            "componentId": "TabSet-xxhne8-0",
+            "isStatic": false,
+            "lastClassName": "ijGEOO",
+            "rules": Array [
+              "display:",
+              [Function],
+              ";align-items:center;",
+              [Function],
+              " ",
+              [Function],
+              " justify-content:center;",
+              "height:100%;& ",
+              ".sc-cvbbAY",
+              "{height:100%;}",
+            ],
+          },
+          "displayName": "TabSet",
+          "foldedComponentIds": Array [
+            "Flex__FlexCenter-sc-127y44r-1",
+          ],
+          "render": [Function],
+          "styledComponentId": "TabSet-xxhne8-0",
+          "target": "div",
+          "toString": [Function],
+          "warnTooManyClasses": [Function],
+          "withComponent": [Function],
+        }
+      }
+      forwardedRef={null}
+    >
+      <div
+        className="Flex__FlexCenter-sc-127y44r-1 TabSet-xxhne8-0 ijGEOO"
+      >
+        <Tab
+          isActive={false}
+          key="abc"
+          onClick={[Function]}
+        >
+          <styled.button
+            isActive={false}
+            onClick={[Function]}
+          >
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-cvbbAY",
+                    "isStatic": false,
+                    "lastClassName": "dkdjqG",
+                    "rules": Array [
+                      "
+  ",
+                      "
+  ",
+                      "display:",
+                      [Function],
+                      ";align-items:center;",
+                      [Function],
+                      " ",
+                      [Function],
+                      " justify-content:center;",
+                      "
+  ",
+                      [Function],
+                      "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+                      "
+  position: relative;
+  height: 100%;
+  padding: 0 24px;
+  background: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 18px;
+  text-transform: capitalize;
+  user-select: none;
+  cursor: pointer;
+  color: #949db0;
+  ",
+                      [Function],
+                      ";
+
+  &:hover {
+    text-decoration: none;
+    color: #848da0;
+  }
+
+  ::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    overflow: hidden;
+    height: 2px;
+    transition: width 0.2s linear, opacity 0.2s linear;
+    background-color: #5d9df5;
+    opacity: 0;
+  }
+
+  ",
+                      [Function],
+                      ";
+",
+                    ],
+                  },
+                  "displayName": "styled.button",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-cvbbAY",
+                  "target": "button",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={null}
+              isActive={false}
+              onClick={[Function]}
+            >
+              <button
+                className="sc-cvbbAY dkdjqG"
+                onClick={[Function]}
+              >
+                ABC
+              </button>
+            </StyledComponent>
+          </styled.button>
+        </Tab>
+        <Tab
+          isActive={false}
+          key="def"
+          onClick={[Function]}
+        >
+          <styled.button
+            isActive={false}
+            onClick={[Function]}
+          >
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-cvbbAY",
+                    "isStatic": false,
+                    "lastClassName": "dkdjqG",
+                    "rules": Array [
+                      "
+  ",
+                      "
+  ",
+                      "display:",
+                      [Function],
+                      ";align-items:center;",
+                      [Function],
+                      " ",
+                      [Function],
+                      " justify-content:center;",
+                      "
+  ",
+                      [Function],
+                      "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+                      "
+  position: relative;
+  height: 100%;
+  padding: 0 24px;
+  background: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 18px;
+  text-transform: capitalize;
+  user-select: none;
+  cursor: pointer;
+  color: #949db0;
+  ",
+                      [Function],
+                      ";
+
+  &:hover {
+    text-decoration: none;
+    color: #848da0;
+  }
+
+  ::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    overflow: hidden;
+    height: 2px;
+    transition: width 0.2s linear, opacity 0.2s linear;
+    background-color: #5d9df5;
+    opacity: 0;
+  }
+
+  ",
+                      [Function],
+                      ";
+",
+                    ],
+                  },
+                  "displayName": "styled.button",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-cvbbAY",
+                  "target": "button",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={null}
+              isActive={false}
+              onClick={[Function]}
+            >
+              <button
+                className="sc-cvbbAY dkdjqG"
+                onClick={[Function]}
+              >
+                DEF
+              </button>
+            </StyledComponent>
+          </styled.button>
+        </Tab>
+      </div>
+    </StyledComponent>
+  </TabSet>
+</Tabs>
+`;

@@ -2,13 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import Close from '@/components/Close';
 import Modal, { ModalHeader } from '@/components/Modal';
 import UploadGoogle from '@/containers/Publish/Upload/Google';
 import { checkGoogleAccount } from '@/ducks/account';
 import { GOOGLE_STAGES, GOOGLE_STATES, resetGoogleUpload } from '@/ducks/publish/google';
 
-import { PopupContainer, PopupTransition } from '../styled';
+import { Close, PopupContainer, PopupTransition } from '../styled';
 import UploadButton from './UploadButton';
 
 const GoogleActionGroup = (props) => {

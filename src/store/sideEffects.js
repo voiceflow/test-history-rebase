@@ -10,7 +10,7 @@ import { loadProductsForSkill } from '@/ducks/product';
 import { addProject, projectByIDSelector } from '@/ducks/project';
 import { activePlatformSelector, rootDiagramIDSelector, savePlatform, setActiveSkill, updateDiagramID } from '@/ducks/skill';
 import { replaceSlots } from '@/ducks/slot';
-import { saveVariableSet } from '@/ducks/variableSet';
+import { loadVariableSetForDiagram, saveVariableSet } from '@/ducks/variableSet';
 import { rehydrateViewport } from '@/ducks/viewport';
 
 export const resetDiagram = () => async (dispatch, getState) => {
@@ -50,6 +50,8 @@ export const initializeCreatorForDiagram = (diagramID) => async (dispatch, getSt
 
   dispatch(rehydrateViewport(diagramID, viewport));
   dispatch(initializeCreator({ ...creator, diagramID: creator.diagramID !== diagramID ? diagramID : creator.diagramID }));
+
+  dispatch(loadVariableSetForDiagram(diagramID));
 };
 
 export const loadSkill = (skillID, diagramID) => async (dispatch) => {

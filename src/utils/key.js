@@ -4,6 +4,14 @@ let lastKey = new Date().getTime();
 const globalCache = new Map();
 
 function getKey(object, cache) {
+  if (process.env.NODE_ENV === 'test') {
+    const key = cache.get(object) || `test-key-${cache.size}`;
+
+    cache.set(object, key);
+
+    return key;
+  }
+
   switch (typeof object) {
     case 'object':
     case 'function':

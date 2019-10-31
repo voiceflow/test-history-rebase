@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import Variant from '@/../.storybook/Variant';
+import { Variant, createTestableStory } from '@/../.storybook';
 
 import RadioGroup from './index';
 
@@ -20,8 +20,9 @@ const MultipleOptions = [
   },
 ];
 
-storiesOf('Radio Group', module).add('variants', () =>
-  React.createElement(() => {
+storiesOf('Radio Group', module).add(
+  'variants',
+  createTestableStory(() => {
     const [yesNoChecked, setYesNo] = React.useState(false);
     const [multipleChecked, setMultiple] = React.useState(1);
 

@@ -7,6 +7,7 @@ import { createSelector } from 'reselect';
 import client from '@/client';
 import { PlatformType } from '@/constants';
 import { getVendors } from '@/ducks/account';
+import { saveActiveDiagram } from '@/ducks/diagram';
 import {
   activeLocalesSelector,
   activeProjectIDSelector,
@@ -343,7 +344,7 @@ export const renderProject = () =>
 
     dispatch(updateAlexaStage(ALEXA_STAGES.RENDERING));
     try {
-      if (window.canvasSave) await window.canvasSave();
+      await dispatch(saveActiveDiagram());
       const {
         new_skill: { skill_id: newVersionId },
       } = (await axios.post(`/project/${projectID}/render`, { platform: 'alexa' })).data;

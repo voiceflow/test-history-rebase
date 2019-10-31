@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Portal variants: basic 1`] = `
+<Portal
+  containerInfo={
+    <body>
+      Portal content here
+    </body>
+  }
+>
+  Portal content here
+</Portal>
+`;
+
+exports[`Storyshots Portal variants: custom portal node 1`] = `
+<div>
+  <Portal
+    portalNode={
+      <div>
+        Custom Portal content here
+      </div>
+    }
+  >
+    <Portal
+      containerInfo={
+        <div>
+          Custom Portal content here
+        </div>
+      }
+    >
+      Custom Portal content here
+    </Portal>
+  </Portal>
+</div>
+`;

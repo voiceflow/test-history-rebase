@@ -6,14 +6,19 @@ import Button from '@/componentsV2/Button';
 import FlowError from '@/containers/CanvasV2/components/FlowError';
 import { diagramByIDSelector } from '@/ducks/diagram';
 import { goToDiagram } from '@/ducks/router';
+import { loadVariableSetForDiagram } from '@/ducks/variableSet';
 import { connect } from '@/hocs';
 
 import ExistingFlowSection from './ExistingFlowSection';
 import FlowVariables from './FlowVariables';
 
-const ExisitingFlow = ({ data, onChange, goToDiagram, diagram, withVariables }) => {
+const ExisitingFlow = ({ data, onChange, goToDiagram, diagram, withVariables, loadVariableSetForDiagram }) => {
   const updateInputs = (inputs) => onChange({ inputs });
   const updateOutputs = (outputs) => onChange({ outputs });
+
+  React.useEffect(() => {
+    loadVariableSetForDiagram(diagram.diagramID);
+  }, []);
 
   return (
     <ExistingFlowSection>
@@ -50,6 +55,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   goToDiagram,
+  loadVariableSetForDiagram,
 };
 
 const mergeProps = ({ diagram }, { goToDiagram }, { data }) => ({

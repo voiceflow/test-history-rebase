@@ -50,10 +50,14 @@ const Testing = ({ status, renderTest, resetTest, userTest, saveActiveDiagram, r
             <div className={cn('sidebar_container variables_container', { open: settingsOpen })}>
               <div className="condition-label pointer" onClick={toggleSettingsOpen}>
                 <label className="mb-0">Settings</label>
-                <i
-                  className={cn('fas fa-caret-up fa-lg light-grey rotate', {
-                    'fa-rotate--90': settingsOpen,
-                  })}
+
+                <SvgIcon
+                  icon="arrowLeft"
+                  width={24}
+                  height={13}
+                  style={{ transform: `rotate(${settingsOpen ? 0 : 90}deg)` }}
+                  color="#90a2b3"
+                  transition="transform"
                 />
               </div>
             </div>

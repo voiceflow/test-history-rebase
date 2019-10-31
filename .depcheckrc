@@ -16,6 +16,7 @@
     "file-loader",
     "style-loader",
     "pathfinding",
+    "is-color-stop",
     "jest-pnp-resolver",
     "identity-obj-proxy",
     "fixpack",

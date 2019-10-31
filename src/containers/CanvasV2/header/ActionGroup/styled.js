@@ -1,6 +1,8 @@
+import { withProps } from 'recompose';
 import styled, { css, keyframes } from 'styled-components';
 
-import Close from '@/components/Close';
+import SvgIcon from '@/components/SvgIcon';
+import { ANIMATION_SPEED } from '@/styles/theme';
 
 export const SubTitleGroup = styled.div`
   display: flex;
@@ -204,6 +206,18 @@ export const PopupTransition = styled.div`
   width: 100%;
 `;
 
+const CloseIcon = styled(SvgIcon)`
+  cursor: pointer;
+  color: #becedc;
+  transition: color ${ANIMATION_SPEED}s ease;
+
+  & :hover {
+    color: #6e849a;
+  }
+`;
+
+export const Close = withProps({ icon: 'close', size: 12 })(CloseIcon);
+
 export const PopupContainer = styled.div`
   display: ${({ open }) => (open ? 'flex' : 'none')};
   position: absolute;
@@ -222,11 +236,11 @@ export const PopupContainer = styled.div`
   transform: translate3d(0, 0, 0);
   animation: ${fadeIn} 150ms ease-in-out;
 
-  ${Close} {
+  ${CloseIcon} {
     position: absolute;
     top: 0px;
     right: 0px;
-    padding: 24px;
+    padding: 18px;
     z-index: 100;
   }
 `;

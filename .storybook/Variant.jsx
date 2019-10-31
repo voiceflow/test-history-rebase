@@ -16,12 +16,12 @@ const VariantGroup = styled(FlexCenter)`
   align-self: flex-start;
 `;
 
-const VariantContent = styled.div`
+export const VariantContent = styled.div`
   position: relative;
   margin: 8px;
 `;
 
-function Variant({ label, children }) {
+function Variant({ label = 'default', children }) {
   return (
     <VariantGroup>
       <VariantLabel>{label}</VariantLabel>

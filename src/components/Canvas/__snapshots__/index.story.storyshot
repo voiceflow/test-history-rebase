@@ -1,0 +1,836 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Canvas variants: default 1`] = `
+Array [
+  <div
+    style={
+      Object {
+        "pointerEvents": "none",
+        "position": "absolute",
+        "zIndex": 10,
+      }
+    }
+  />,
+  <withContext(Canvas)>
+    <Canvas
+      controlScheme="MOUSE"
+      overlay={null}
+    >
+      <styled.div
+        onMouseDown={[Function]}
+        tabIndex={-1}
+      >
+        <StyledComponent
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-htoDjs",
+                "isStatic": true,
+                "lastClassName": "AEJae",
+                "rules": Array [
+                  "
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  user-select: none;
+
+  &:active {
+    cursor: grabbing;
+  }
+",
+                ],
+              },
+              "displayName": "styled.div",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-htoDjs",
+              "target": "div",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={
+            Object {
+              "current": <div
+                class="sc-htoDjs AEJae"
+                tabindex="-1"
+              >
+                <div
+                  class="sc-dnqmqq huYHX"
+                  style="transform: translate3d(0px, 0px, 0px) scale(1);"
+                >
+                  <div
+                    style="position: absolute; top: 40px; left: 40px; height: 40px; width: 40px; background: red;"
+                  />
+                  <div
+                    style="position: absolute; top: 280px; left: 120px; height: 10px; width: 30px; background: blue;"
+                  />
+                  <div
+                    style="position: absolute; top: 140px; left: 300px; height: 60px; width: 60px; border-radius: 50%; background: yellow;"
+                  />
+                </div>
+              </div>,
+            }
+          }
+          onMouseDown={[Function]}
+          tabIndex={-1}
+        >
+          <div
+            className="sc-htoDjs AEJae"
+            onMouseDown={[Function]}
+            tabIndex={-1}
+          >
+            <styled.div
+              style={
+                Object {
+                  "transform": "translate3d(0px, 0px, 0px) scale(1)",
+                }
+              }
+            >
+              <StyledComponent
+                forwardedComponent={
+                  Object {
+                    "$$typeof": Symbol(react.forward_ref),
+                    "attrs": Array [],
+                    "componentStyle": ComponentStyle {
+                      "componentId": "sc-dnqmqq",
+                      "isStatic": true,
+                      "lastClassName": "huYHX",
+                      "rules": Array [
+                        "
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  transform-origin: 0 0;
+  pointer-events: none;
+  backface-visibility: hidden;
+  perspective: 1000;
+",
+                      ],
+                    },
+                    "displayName": "styled.div",
+                    "foldedComponentIds": Array [],
+                    "render": [Function],
+                    "styledComponentId": "sc-dnqmqq",
+                    "target": "div",
+                    "toString": [Function],
+                    "warnTooManyClasses": [Function],
+                    "withComponent": [Function],
+                  }
+                }
+                forwardedRef={
+                  Object {
+                    "current": <div
+                      class="sc-dnqmqq huYHX"
+                      style="transform: translate3d(0px, 0px, 0px) scale(1);"
+                    >
+                      <div
+                        style="position: absolute; top: 40px; left: 40px; height: 40px; width: 40px; background: red;"
+                      />
+                      <div
+                        style="position: absolute; top: 280px; left: 120px; height: 10px; width: 30px; background: blue;"
+                      />
+                      <div
+                        style="position: absolute; top: 140px; left: 300px; height: 60px; width: 60px; border-radius: 50%; background: yellow;"
+                      />
+                    </div>,
+                  }
+                }
+                style={
+                  Object {
+                    "transform": "translate3d(0px, 0px, 0px) scale(1)",
+                  }
+                }
+              >
+                <div
+                  className="sc-dnqmqq huYHX"
+                  style={
+                    Object {
+                      "transform": "translate3d(0px, 0px, 0px) scale(1)",
+                    }
+                  }
+                >
+                  <Portal
+                    containerInfo={
+                      <div
+                        style="position: absolute; z-index: 10; pointer-events: none;"
+                      >
+                        <div>
+                          <div
+                            class="Flex-sc-127y44r-0 sc-gzVnrw bQShie"
+                          >
+                            <button
+                              class="sc-bdVaJa sc-bxivhb sc-ifAKCX kPAYOO"
+                            >
+                              <span
+                                class="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                color="currentColor"
+                                size="16"
+                              >
+                                <test-file-stub />
+                              </span>
+                            </button>
+                            <button
+                              class="sc-bdVaJa sc-bxivhb sc-ifAKCX kPAYOO"
+                            >
+                              <span
+                                class="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                color="currentColor"
+                                size="16"
+                              >
+                                <test-file-stub />
+                              </span>
+                            </button>
+                          </div>
+                          <button
+                            class="sc-bdVaJa sc-bxivhb sc-ifAKCX kPAYOO"
+                          >
+                            <span
+                              class="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                              color="currentColor"
+                              size="16"
+                            >
+                              <test-file-stub />
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    }
+                  >
+                    <CanvasControls>
+                      <div
+                        onMouseDown={[Function]}
+                      >
+                        <Styled(Flex)>
+                          <StyledComponent
+                            forwardedComponent={
+                              Object {
+                                "$$typeof": Symbol(react.forward_ref),
+                                "attrs": Array [],
+                                "componentStyle": ComponentStyle {
+                                  "componentId": "sc-gzVnrw",
+                                  "isStatic": false,
+                                  "lastClassName": "bQShie",
+                                  "rules": Array [
+                                    "display:",
+                                    [Function],
+                                    ";align-items:center;",
+                                    [Function],
+                                    " ",
+                                    [Function],
+                                    "
+  & ",
+                                    " {
+    box-shadow: none;
+  }
+
+  & ",
+                                    ":not(:last-of-type) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  & ",
+                                    ":not(:first-of-type) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+",
+                                  ],
+                                },
+                                "displayName": "Styled(Flex)",
+                                "foldedComponentIds": Array [
+                                  "Flex-sc-127y44r-0",
+                                ],
+                                "render": [Function],
+                                "styledComponentId": "sc-gzVnrw",
+                                "target": "div",
+                                "toString": [Function],
+                                "warnTooManyClasses": [Function],
+                                "withComponent": [Function],
+                              }
+                            }
+                            forwardedRef={null}
+                          >
+                            <div
+                              className="Flex-sc-127y44r-0 sc-gzVnrw bQShie"
+                            >
+                              <IconButton
+                                icon="zoomIn"
+                                onClick={[Function]}
+                              >
+                                <Styled(Styled(styled.button))
+                                  onClick={[Function]}
+                                >
+                                  <StyledComponent
+                                    forwardedComponent={
+                                      Object {
+                                        "$$typeof": Symbol(react.forward_ref),
+                                        "attrs": Array [],
+                                        "componentStyle": ComponentStyle {
+                                          "componentId": "sc-ifAKCX",
+                                          "isStatic": false,
+                                          "lastClassName": "kPAYOO",
+                                          "rules": Array [
+                                            "
+  ",
+                                            "
+  ",
+                                            "display:",
+                                            [Function],
+                                            ";align-items:center;",
+                                            [Function],
+                                            " ",
+                                            [Function],
+                                            " justify-content:center;",
+                                            "
+  ",
+                                            [Function],
+                                            "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+                                            "
+",
+                                            "
+  ",
+                                            "
+  height: ",
+                                            "42",
+                                            "px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: ",
+                                            [Function],
+                                            ";
+",
+                                            "
+",
+                                            "
+  width: ",
+                                            "42",
+                                            "px;
+  border: 0;
+  color: #8da2b5;
+  background: #fff;
+  border: 1px solid #fff;
+  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
+
+  height: ",
+                                            [Function],
+                                            ";
+  width: ",
+                                            [Function],
+                                            ";
+
+  ",
+                                            [Function],
+                                            "
+
+  &:active {
+    ",
+                                            "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
+                                            "
+
+    border: 1px solid #fff;
+    color: #5b9dfa;
+    box-shadow: 0 0 0 1px #5b9dfa99;
+  }
+
+  ",
+                                            [Function],
+                                            "
+",
+                                          ],
+                                        },
+                                        "displayName": "Styled(Styled(styled.button))",
+                                        "foldedComponentIds": Array [
+                                          "sc-bdVaJa",
+                                          "sc-bxivhb",
+                                        ],
+                                        "render": [Function],
+                                        "styledComponentId": "sc-ifAKCX",
+                                        "target": "button",
+                                        "toString": [Function],
+                                        "warnTooManyClasses": [Function],
+                                        "withComponent": [Function],
+                                      }
+                                    }
+                                    forwardedRef={null}
+                                    onClick={[Function]}
+                                  >
+                                    <button
+                                      className="sc-bdVaJa sc-bxivhb sc-ifAKCX kPAYOO"
+                                      onClick={[Function]}
+                                    >
+                                      <ForwardRef
+                                        color="currentColor"
+                                        icon="zoomIn"
+                                      >
+                                        <SvgIcon__SvgIconContainer
+                                          color="currentColor"
+                                          size={16}
+                                        >
+                                          <StyledComponent
+                                            color="currentColor"
+                                            forwardedComponent={
+                                              Object {
+                                                "$$typeof": Symbol(react.forward_ref),
+                                                "attrs": Array [],
+                                                "componentStyle": ComponentStyle {
+                                                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "isStatic": false,
+                                                  "lastClassName": "kycatR",
+                                                  "rules": Array [
+                                                    [Function],
+                                                    " color:",
+                                                    [Function],
+                                                    ";width:",
+                                                    [Function],
+                                                    "px;height:",
+                                                    [Function],
+                                                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                    [Function],
+                                                    ";}",
+                                                  ],
+                                                },
+                                                "displayName": "SvgIcon__SvgIconContainer",
+                                                "foldedComponentIds": Array [],
+                                                "render": [Function],
+                                                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                "target": "span",
+                                                "toString": [Function],
+                                                "warnTooManyClasses": [Function],
+                                                "withComponent": [Function],
+                                              }
+                                            }
+                                            forwardedRef={null}
+                                            size={16}
+                                          >
+                                            <span
+                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                              color="currentColor"
+                                              size={16}
+                                            >
+                                              <test-file-stub />
+                                            </span>
+                                          </StyledComponent>
+                                        </SvgIcon__SvgIconContainer>
+                                      </ForwardRef>
+                                    </button>
+                                  </StyledComponent>
+                                </Styled(Styled(styled.button))>
+                              </IconButton>
+                              <IconButton
+                                icon="zoomOut"
+                                onClick={[Function]}
+                              >
+                                <Styled(Styled(styled.button))
+                                  onClick={[Function]}
+                                >
+                                  <StyledComponent
+                                    forwardedComponent={
+                                      Object {
+                                        "$$typeof": Symbol(react.forward_ref),
+                                        "attrs": Array [],
+                                        "componentStyle": ComponentStyle {
+                                          "componentId": "sc-ifAKCX",
+                                          "isStatic": false,
+                                          "lastClassName": "kPAYOO",
+                                          "rules": Array [
+                                            "
+  ",
+                                            "
+  ",
+                                            "display:",
+                                            [Function],
+                                            ";align-items:center;",
+                                            [Function],
+                                            " ",
+                                            [Function],
+                                            " justify-content:center;",
+                                            "
+  ",
+                                            [Function],
+                                            "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+                                            "
+",
+                                            "
+  ",
+                                            "
+  height: ",
+                                            "42",
+                                            "px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: ",
+                                            [Function],
+                                            ";
+",
+                                            "
+",
+                                            "
+  width: ",
+                                            "42",
+                                            "px;
+  border: 0;
+  color: #8da2b5;
+  background: #fff;
+  border: 1px solid #fff;
+  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
+
+  height: ",
+                                            [Function],
+                                            ";
+  width: ",
+                                            [Function],
+                                            ";
+
+  ",
+                                            [Function],
+                                            "
+
+  &:active {
+    ",
+                                            "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
+                                            "
+
+    border: 1px solid #fff;
+    color: #5b9dfa;
+    box-shadow: 0 0 0 1px #5b9dfa99;
+  }
+
+  ",
+                                            [Function],
+                                            "
+",
+                                          ],
+                                        },
+                                        "displayName": "Styled(Styled(styled.button))",
+                                        "foldedComponentIds": Array [
+                                          "sc-bdVaJa",
+                                          "sc-bxivhb",
+                                        ],
+                                        "render": [Function],
+                                        "styledComponentId": "sc-ifAKCX",
+                                        "target": "button",
+                                        "toString": [Function],
+                                        "warnTooManyClasses": [Function],
+                                        "withComponent": [Function],
+                                      }
+                                    }
+                                    forwardedRef={null}
+                                    onClick={[Function]}
+                                  >
+                                    <button
+                                      className="sc-bdVaJa sc-bxivhb sc-ifAKCX kPAYOO"
+                                      onClick={[Function]}
+                                    >
+                                      <ForwardRef
+                                        color="currentColor"
+                                        icon="zoomOut"
+                                      >
+                                        <SvgIcon__SvgIconContainer
+                                          color="currentColor"
+                                          size={16}
+                                        >
+                                          <StyledComponent
+                                            color="currentColor"
+                                            forwardedComponent={
+                                              Object {
+                                                "$$typeof": Symbol(react.forward_ref),
+                                                "attrs": Array [],
+                                                "componentStyle": ComponentStyle {
+                                                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "isStatic": false,
+                                                  "lastClassName": "kycatR",
+                                                  "rules": Array [
+                                                    [Function],
+                                                    " color:",
+                                                    [Function],
+                                                    ";width:",
+                                                    [Function],
+                                                    "px;height:",
+                                                    [Function],
+                                                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                    [Function],
+                                                    ";}",
+                                                  ],
+                                                },
+                                                "displayName": "SvgIcon__SvgIconContainer",
+                                                "foldedComponentIds": Array [],
+                                                "render": [Function],
+                                                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                "target": "span",
+                                                "toString": [Function],
+                                                "warnTooManyClasses": [Function],
+                                                "withComponent": [Function],
+                                              }
+                                            }
+                                            forwardedRef={null}
+                                            size={16}
+                                          >
+                                            <span
+                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                              color="currentColor"
+                                              size={16}
+                                            >
+                                              <test-file-stub />
+                                            </span>
+                                          </StyledComponent>
+                                        </SvgIcon__SvgIconContainer>
+                                      </ForwardRef>
+                                    </button>
+                                  </StyledComponent>
+                                </Styled(Styled(styled.button))>
+                              </IconButton>
+                            </div>
+                          </StyledComponent>
+                        </Styled(Flex)>
+                        <IconButton
+                          icon="home"
+                          onClick={[Function]}
+                        >
+                          <Styled(Styled(styled.button))
+                            onClick={[Function]}
+                          >
+                            <StyledComponent
+                              forwardedComponent={
+                                Object {
+                                  "$$typeof": Symbol(react.forward_ref),
+                                  "attrs": Array [],
+                                  "componentStyle": ComponentStyle {
+                                    "componentId": "sc-ifAKCX",
+                                    "isStatic": false,
+                                    "lastClassName": "kPAYOO",
+                                    "rules": Array [
+                                      "
+  ",
+                                      "
+  ",
+                                      "display:",
+                                      [Function],
+                                      ";align-items:center;",
+                                      [Function],
+                                      " ",
+                                      [Function],
+                                      " justify-content:center;",
+                                      "
+  ",
+                                      [Function],
+                                      "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+                                      "
+",
+                                      "
+  ",
+                                      "
+  height: ",
+                                      "42",
+                                      "px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: ",
+                                      [Function],
+                                      ";
+",
+                                      "
+",
+                                      "
+  width: ",
+                                      "42",
+                                      "px;
+  border: 0;
+  color: #8da2b5;
+  background: #fff;
+  border: 1px solid #fff;
+  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
+
+  height: ",
+                                      [Function],
+                                      ";
+  width: ",
+                                      [Function],
+                                      ";
+
+  ",
+                                      [Function],
+                                      "
+
+  &:active {
+    ",
+                                      "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
+                                      "
+
+    border: 1px solid #fff;
+    color: #5b9dfa;
+    box-shadow: 0 0 0 1px #5b9dfa99;
+  }
+
+  ",
+                                      [Function],
+                                      "
+",
+                                    ],
+                                  },
+                                  "displayName": "Styled(Styled(styled.button))",
+                                  "foldedComponentIds": Array [
+                                    "sc-bdVaJa",
+                                    "sc-bxivhb",
+                                  ],
+                                  "render": [Function],
+                                  "styledComponentId": "sc-ifAKCX",
+                                  "target": "button",
+                                  "toString": [Function],
+                                  "warnTooManyClasses": [Function],
+                                  "withComponent": [Function],
+                                }
+                              }
+                              forwardedRef={null}
+                              onClick={[Function]}
+                            >
+                              <button
+                                className="sc-bdVaJa sc-bxivhb sc-ifAKCX kPAYOO"
+                                onClick={[Function]}
+                              >
+                                <ForwardRef
+                                  color="currentColor"
+                                  icon="home"
+                                >
+                                  <SvgIcon__SvgIconContainer
+                                    color="currentColor"
+                                    size={16}
+                                  >
+                                    <StyledComponent
+                                      color="currentColor"
+                                      forwardedComponent={
+                                        Object {
+                                          "$$typeof": Symbol(react.forward_ref),
+                                          "attrs": Array [],
+                                          "componentStyle": ComponentStyle {
+                                            "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                            "isStatic": false,
+                                            "lastClassName": "kycatR",
+                                            "rules": Array [
+                                              [Function],
+                                              " color:",
+                                              [Function],
+                                              ";width:",
+                                              [Function],
+                                              "px;height:",
+                                              [Function],
+                                              "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                              [Function],
+                                              ";}",
+                                            ],
+                                          },
+                                          "displayName": "SvgIcon__SvgIconContainer",
+                                          "foldedComponentIds": Array [],
+                                          "render": [Function],
+                                          "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                          "target": "span",
+                                          "toString": [Function],
+                                          "warnTooManyClasses": [Function],
+                                          "withComponent": [Function],
+                                        }
+                                      }
+                                      forwardedRef={null}
+                                      size={16}
+                                    >
+                                      <span
+                                        className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                        color="currentColor"
+                                        size={16}
+                                      >
+                                        <test-file-stub />
+                                      </span>
+                                    </StyledComponent>
+                                  </SvgIcon__SvgIconContainer>
+                                </ForwardRef>
+                              </button>
+                            </StyledComponent>
+                          </Styled(Styled(styled.button))>
+                        </IconButton>
+                      </div>
+                    </CanvasControls>
+                  </Portal>
+                  <div
+                    style={
+                      Object {
+                        "background": "red",
+                        "height": 40,
+                        "left": 40,
+                        "position": "absolute",
+                        "top": 40,
+                        "width": 40,
+                      }
+                    }
+                  />
+                  <div
+                    style={
+                      Object {
+                        "background": "blue",
+                        "height": 10,
+                        "left": 120,
+                        "position": "absolute",
+                        "top": 280,
+                        "width": 30,
+                      }
+                    }
+                  />
+                  <div
+                    style={
+                      Object {
+                        "background": "yellow",
+                        "borderRadius": "50%",
+                        "height": 60,
+                        "left": 300,
+                        "position": "absolute",
+                        "top": 140,
+                        "width": 60,
+                      }
+                    }
+                  />
+                </div>
+              </StyledComponent>
+            </styled.div>
+          </div>
+        </StyledComponent>
+      </styled.div>
+    </Canvas>
+  </withContext(Canvas)>,
+]
+`;

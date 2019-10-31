@@ -5,7 +5,7 @@ import Toggle from 'react-toggle';
 import { Button, Col, Form, FormGroup, Label, Table } from 'reactstrap';
 
 import { AdminTitle } from '@/admin/styles';
-import Input from '@/components/Input';
+import Input from '@/componentsV2/Input';
 
 class Template extends React.Component {
   constructor(props) {

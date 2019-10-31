@@ -1,0 +1,410 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Regular Dropdown variants: Element w/ Custom Menu 1`] = `
+<Manager>
+  <Reference
+    innerRef={[Function]}
+  >
+    <InnerReference
+      innerRef={[Function]}
+      setReferenceNode={[Function]}
+    >
+      <button
+        onClick={[Function]}
+      >
+        Custom Element
+      </button>
+    </InnerReference>
+  </Reference>
+</Manager>
+`;
+
+exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] = `
+<Manager>
+  <Reference
+    innerRef={[Function]}
+  >
+    <InnerReference
+      innerRef={[Function]}
+      setReferenceNode={[Function]}
+    >
+      <ForwardRef
+        disabled={false}
+        icon="back"
+        imgSize={15}
+        innerRef={[Function]}
+        onClick={[Function]}
+        size={42}
+        variant="plain"
+      >
+        <styled.button
+          disabled={false}
+          icon="back"
+          imgSize={15}
+          innerRef={[Function]}
+          onClick={[Function]}
+          size={42}
+          variant="plain"
+        >
+          <StyledComponent
+            disabled={false}
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-jKJlTe",
+                  "isStatic": false,
+                  "lastClassName": "jjiYUQ",
+                  "rules": Array [
+                    "
+  ",
+                    [Function],
+                    "
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1;
+  background: ",
+                    [Function],
+                    ";
+  border: ",
+                    [Function],
+                    ";
+  border-radius: 50%;
+  text-align: center;
+  padding: 0;
+  ",
+                    [Function],
+                    "
+  ",
+                    [Function],
+                    ";
+  ",
+                    [Function],
+                    "
+  color: ",
+                    [Function],
+                    ";
+  background-image: ",
+                    [Function],
+                    ";
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &:hover {
+    ",
+                    [Function],
+                    "
+  }
+  ",
+                    [Function],
+                    "
+  &:active {
+    ",
+                    "
+  background-color: #eef4f6cc;
+  color: #6e849a;
+
+  ",
+                    [Function],
+                    "
+",
+                    "
+  }
+",
+                  ],
+                },
+                "displayName": "styled.button",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "sc-jKJlTe",
+                "target": "button",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={null}
+            icon="back"
+            imgSize={15}
+            innerRef={[Function]}
+            onClick={[Function]}
+            size={42}
+            variant="plain"
+          >
+            <button
+              className="sc-jKJlTe jjiYUQ"
+              disabled={false}
+              onClick={[Function]}
+              size={42}
+            >
+              <ForwardRef
+                color="currentColor"
+                height={15}
+                icon="back"
+                width={15}
+              >
+                <SvgIcon__SvgIconContainer
+                  color="currentColor"
+                  height={15}
+                  size={16}
+                  width={15}
+                >
+                  <StyledComponent
+                    color="currentColor"
+                    forwardedComponent={
+                      Object {
+                        "$$typeof": Symbol(react.forward_ref),
+                        "attrs": Array [],
+                        "componentStyle": ComponentStyle {
+                          "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                          "isStatic": false,
+                          "lastClassName": "dYyJmx",
+                          "rules": Array [
+                            [Function],
+                            " color:",
+                            [Function],
+                            ";width:",
+                            [Function],
+                            "px;height:",
+                            [Function],
+                            "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                            [Function],
+                            ";}",
+                          ],
+                        },
+                        "displayName": "SvgIcon__SvgIconContainer",
+                        "foldedComponentIds": Array [],
+                        "render": [Function],
+                        "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        "target": "span",
+                        "toString": [Function],
+                        "warnTooManyClasses": [Function],
+                        "withComponent": [Function],
+                      }
+                    }
+                    forwardedRef={null}
+                    height={15}
+                    size={16}
+                    width={15}
+                  >
+                    <span
+                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dYyJmx"
+                      color="currentColor"
+                      height={15}
+                      size={16}
+                      width={15}
+                    >
+                      <test-file-stub />
+                    </span>
+                  </StyledComponent>
+                </SvgIcon__SvgIconContainer>
+              </ForwardRef>
+            </button>
+          </StyledComponent>
+        </styled.button>
+      </ForwardRef>
+    </InnerReference>
+  </Reference>
+</Manager>
+`;
+
+exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] = `
+<Manager>
+  <Reference
+    innerRef={[Function]}
+  >
+    <InnerReference
+      innerRef={[Function]}
+      setReferenceNode={[Function]}
+    >
+      <ForwardRef
+        disabled={false}
+        icon="back"
+        imgSize={15}
+        innerRef={[Function]}
+        onClick={[Function]}
+        size={42}
+        variant="plain"
+      >
+        <styled.button
+          disabled={false}
+          icon="back"
+          imgSize={15}
+          innerRef={[Function]}
+          onClick={[Function]}
+          size={42}
+          variant="plain"
+        >
+          <StyledComponent
+            disabled={false}
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-jKJlTe",
+                  "isStatic": false,
+                  "lastClassName": "jjiYUQ",
+                  "rules": Array [
+                    "
+  ",
+                    [Function],
+                    "
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1;
+  background: ",
+                    [Function],
+                    ";
+  border: ",
+                    [Function],
+                    ";
+  border-radius: 50%;
+  text-align: center;
+  padding: 0;
+  ",
+                    [Function],
+                    "
+  ",
+                    [Function],
+                    ";
+  ",
+                    [Function],
+                    "
+  color: ",
+                    [Function],
+                    ";
+  background-image: ",
+                    [Function],
+                    ";
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &:hover {
+    ",
+                    [Function],
+                    "
+  }
+  ",
+                    [Function],
+                    "
+  &:active {
+    ",
+                    "
+  background-color: #eef4f6cc;
+  color: #6e849a;
+
+  ",
+                    [Function],
+                    "
+",
+                    "
+  }
+",
+                  ],
+                },
+                "displayName": "styled.button",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "sc-jKJlTe",
+                "target": "button",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={null}
+            icon="back"
+            imgSize={15}
+            innerRef={[Function]}
+            onClick={[Function]}
+            size={42}
+            variant="plain"
+          >
+            <button
+              className="sc-jKJlTe jjiYUQ"
+              disabled={false}
+              onClick={[Function]}
+              size={42}
+            >
+              <ForwardRef
+                color="currentColor"
+                height={15}
+                icon="back"
+                width={15}
+              >
+                <SvgIcon__SvgIconContainer
+                  color="currentColor"
+                  height={15}
+                  size={16}
+                  width={15}
+                >
+                  <StyledComponent
+                    color="currentColor"
+                    forwardedComponent={
+                      Object {
+                        "$$typeof": Symbol(react.forward_ref),
+                        "attrs": Array [],
+                        "componentStyle": ComponentStyle {
+                          "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                          "isStatic": false,
+                          "lastClassName": "dYyJmx",
+                          "rules": Array [
+                            [Function],
+                            " color:",
+                            [Function],
+                            ";width:",
+                            [Function],
+                            "px;height:",
+                            [Function],
+                            "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                            [Function],
+                            ";}",
+                          ],
+                        },
+                        "displayName": "SvgIcon__SvgIconContainer",
+                        "foldedComponentIds": Array [],
+                        "render": [Function],
+                        "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        "target": "span",
+                        "toString": [Function],
+                        "warnTooManyClasses": [Function],
+                        "withComponent": [Function],
+                      }
+                    }
+                    forwardedRef={null}
+                    height={15}
+                    size={16}
+                    width={15}
+                  >
+                    <span
+                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dYyJmx"
+                      color="currentColor"
+                      height={15}
+                      size={16}
+                      width={15}
+                    >
+                      <test-file-stub />
+                    </span>
+                  </StyledComponent>
+                </SvgIcon__SvgIconContainer>
+              </ForwardRef>
+            </button>
+          </StyledComponent>
+        </styled.button>
+      </ForwardRef>
+    </InnerReference>
+  </Reference>
+</Manager>
+`;

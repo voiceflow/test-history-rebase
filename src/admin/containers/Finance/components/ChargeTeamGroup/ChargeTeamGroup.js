@@ -9,7 +9,7 @@ import { Alert, Card, CardBody, Collapse, Modal, ModalBody, ModalFooter } from '
 
 import { cancelSubscription, editTrial, refundCharge } from '@/admin/store/ducks/admin';
 import Button from '@/components/Button';
-import Input from '@/components/Input';
+import Input from '@/componentsV2/Input';
 
 import PlanModal from '../../../../components/PlanModal/PlanModal';
 import ChargeItem from '../ChargeItem/ChargeItem';
@@ -179,7 +179,7 @@ class ChargeTeamGroup extends React.Component {
                   <div className="ctg__refund_amount_input">
                     Refund Amount (in cents):
                     <Input
-                      className="form-control-2 ctg__refund_input"
+                      className="ctg__refund_input"
                       placeholder="Enter the amount to refund"
                       onChange={(e) => this.setRefundAmount(e.target.value)}
                       value={this.state.refundAmount}

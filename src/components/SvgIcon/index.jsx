@@ -1,22 +1,24 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import _ from 'lodash';
+import _isString from 'lodash/isString';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import * as ICONS from '@/svgs';
 import { compose } from '@/utils/functional';
 
 export const SvgIconContainer = styled.span`
+  ${({ theme, transition }) => transition && theme.transition(...(_isString(transition) ? [transition] : transition))}
+
   color: ${({ color }) => color};
+  width: ${({ size, width = size }) => width}px;
+  height: ${({ size, height = size }) => height}px;
+  box-sizing: content-box;
 
   & > svg {
     display: block;
-
-    ${({ size, height = size, width = size }) => css`
-      height: ${height}px;
-      width: ${width}px;
-    `};
+    width: inherit;
+    height: inherit;
   }
 
   &:hover,
@@ -25,21 +27,22 @@ export const SvgIconContainer = styled.span`
   }
 `;
 
-// eslint-disable-next-line react/display-name
 const SvgIcon = compose(
   React.memo,
   React.forwardRef
-)(function SvgIcon({ icon, ...props }, ref) {
+)(({ icon, size = 16, color = 'currentColor', ...props }, ref) => {
   let IconElement;
-  if (_.isString(icon)) {
+
+  if (_isString(icon)) {
     if (!(icon in ICONS)) return null;
+
     IconElement = ICONS[icon];
   } else {
     IconElement = icon;
   }
 
   return (
-    <SvgIconContainer {...props} ref={ref}>
+    <SvgIconContainer size={size} color={color} {...props} ref={ref}>
       <IconElement />
     </SvgIconContainer>
   );
@@ -48,14 +51,10 @@ const SvgIcon = compose(
 SvgIcon.propTypes = {
   icon: PropTypes.elementType,
   size: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  height: PropTypes.number,
   width: PropTypes.number,
   color: PropTypes.string,
-};
-
-SvgIcon.defaultProps = {
-  size: 16,
-  color: 'currentColor',
+  height: PropTypes.number,
+  transition: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
 };
 
 export default SvgIcon;

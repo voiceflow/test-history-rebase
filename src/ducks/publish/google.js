@@ -4,6 +4,7 @@ import randomstring from 'randomstring';
 import { createSelector } from 'reselect';
 
 import { PlatformType } from '@/constants';
+import { saveActiveDiagram } from '@/ducks/diagram';
 import { activeProjectIDSelector, publishPlatformSelectors, updatePublishPlatforms } from '@/ducks/skill';
 
 import { createPublishStateSelector, createUploadStep } from './utils';
@@ -163,7 +164,7 @@ export const renderProject = () =>
 
     dispatch(updateGoogleStage(GOOGLE_STAGES.RENDERING));
     try {
-      if (window.canvasSave) await window.canvasSave();
+      await dispatch(saveActiveDiagram());
       const { data } = await axios.post(`/project/${projectID}/render`, { platform: 'google', google_id: googleID });
       const newVersionId = data.new_skill.skill_id;
       dispatch(submitProject(newVersionId));

@@ -11,7 +11,6 @@ import SvgIcon from '@/components/SvgIcon';
 import { track } from '@/utils/tracker';
 
 import Loader from '../Loader';
-import Tooltip from '../Tooltip';
 
 export default class Button extends Component {
   static propTypes = {
@@ -36,9 +35,7 @@ export default class Button extends Component {
     isDropdown: PropTypes.bool,
     withCounter: PropTypes.bool,
     isSecondary: PropTypes.bool,
-    tooltipText: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     iconPosition: PropTypes.oneOf(['left', 'right']),
-    tooltipProps: PropTypes.object,
     isHiddenIcon: PropTypes.bool,
     isIconBordered: PropTypes.bool,
     isDropdownMenu: PropTypes.bool,
@@ -202,12 +199,6 @@ export default class Button extends Component {
       </>
     );
 
-    return tooltipText ? (
-      <Tooltip text={tooltipText} TagName={ButtonComponent} {...tooltipProps} buttonProps={buttonProps}>
-        {content}
-      </Tooltip>
-    ) : (
-      <ButtonComponent {...buttonProps}>{content}</ButtonComponent>
-    );
+    return <ButtonComponent {...buttonProps}>{content}</ButtonComponent>;
   }
 }

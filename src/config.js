@@ -55,6 +55,7 @@ const GOOGLE_DEV_CLIENT_ID = process.env.GOOGLE_DEV_CLIENT_ID;
 export const GOOGLE_CLIENT_ID = BUILD_ENV === 'production' ? GOOGLE_PROD_CLIENT_ID : GOOGLE_DEV_CLIENT_ID;
 
 // google analytics
+export const GA_ENABLED = IS_PRODUCTION || process.env.GA_ENABLED === 'true';
 export const GOOGLE_ANALYTICS_ID = process.env.GOOGLE_ANALYTICS_ID;
 
 // zapier
@@ -78,5 +79,11 @@ export const STRIPE_KEY = IS_PRODUCTION && BUILD_ENV !== 'staging' ? STRIPE_LIVE
 export const LOGROCKET_ENABLED = IS_PRODUCTION || process.env.LOGROCKET_ENABLED === 'true';
 export const LOGROCKET_PROJECT = process.env.LOGROCKET_PROJECT;
 
+// intercom
+export const INTERCOM_ENABLED = IS_PRODUCTION || process.env.INTERCOM_ENABLED === 'true';
+
 // maintenance
 export const MAINTENANCE_STATUS_SOURCE = process.env.MAINTENANCE_STATUS_SOURCE;
+
+// copy-paste
+export const COPY_PASTE_KEY = process.env.COPY_PASTE_KEY;

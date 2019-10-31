@@ -2,6 +2,7 @@ import { BlockType } from '@/constants';
 import { ContextMenuTarget } from '@/containers/CanvasV2/constants';
 
 export const CanvasAction = {
+  PASTE: 'paste',
   ADD_COMMENT: 'add_comment',
   RENAME_BLOCK: 'rename_block',
   COPY_BLOCK: 'copy_block',
@@ -12,6 +13,10 @@ export const CANVAS_OPTIONS = [
   {
     label: 'Add Comment',
     value: CanvasAction.ADD_COMMENT,
+  },
+  {
+    label: 'Paste',
+    value: CanvasAction.PASTE,
   },
 ];
 

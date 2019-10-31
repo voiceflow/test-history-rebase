@@ -10,6 +10,8 @@ export const DIAGRAM_ID_SEPARATOR = '::';
 export const NEW_PRODUCT_ID = 'new';
 export const DEFAULT_PRODUCT_PHRASE = 'Alexa, ';
 
+export const CLIPBOARD_DATA_KEY = 'vf-cp-data';
+
 export const FlowTab = {
   STRUCTURE: 'structure',
   FLOW: 'flow',

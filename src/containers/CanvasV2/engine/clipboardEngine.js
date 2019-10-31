@@ -5,7 +5,7 @@ import { get, set } from 'idb-keyval';
 import client from '@/client';
 import nodeAdapter from '@/client/adapters/creator/node';
 import nodeDataAdapter from '@/client/adapters/creator/nodeData';
-import { BlockType } from '@/constants';
+import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { addDiagrams, diagramsByIDsSelector } from '@/ducks/diagram';
 import { displaysByIDsSelector, loadDisplaysForSkill } from '@/ducks/display';
@@ -82,13 +82,13 @@ class ClipboardEngine extends EngineConsumer {
 
       const encryptedData = synchronousCrypto.encrypt(JSON.stringify(copyData), keyToEncrypt);
 
-      await set('vf-cp-data', base64.encodeObject({ data: encryptedData, key: keyToStore }));
+      await set(CLIPBOARD_DATA_KEY, base64.encodeObject({ data: encryptedData, key: keyToStore }));
 
       this.dispatch(setCanvasInfo(`${copiedNodes.length} block(s) copied to clipboard`));
     },
 
     extractData: async (copiedKey) => {
-      const b64Data = await get('vf-cp-data');
+      const b64Data = await get(CLIPBOARD_DATA_KEY);
 
       const { data, key } = JSON.parse(Utf8.stringify(Base64.parse(b64Data)));
 
@@ -122,7 +122,10 @@ class ClipboardEngine extends EngineConsumer {
   copy(nodeIDs) {
     const [keyToCopy, keyToStore, keyToEncrypt] = synchronousCrypto.generateEncryptedKeys();
 
-    Clipboard.copy(Clipboard.serialize(keyToCopy));
+    const serializedData = Clipboard.serialize(keyToCopy);
+    Clipboard.copy(serializedData);
+    // store key to ls to access it via paste option
+    localStorage.setItem(CLIPBOARD_DATA_KEY, serializedData);
 
     // we do no need await here since copying is a background job, .encrypt called here to increase the complexity of debugging
     this.internal.storeData(nodeIDs, keyToStore, keyToEncrypt);
@@ -154,9 +157,12 @@ class ClipboardEngine extends EngineConsumer {
 
         this.engine.node.clone({ nodesWithData, ports, links }, mousePosition);
       } catch (err) {
+        localStorage.clear(CLIPBOARD_DATA_KEY);
         // eslint-disable-next-line no-console
         console.warn('error while pasting data:', err);
       }
+    } else {
+      localStorage.clear(CLIPBOARD_DATA_KEY);
     }
   }
 }

@@ -3,7 +3,7 @@ import React from 'react';
 import { Popper } from 'react-popper';
 
 import Menu from '@/componentsV2/Menu';
-import { BlockType } from '@/constants';
+import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import { ContextMenuContext, withClipboard, withEngine } from '@/containers/CanvasV2/contexts';
 import { styled } from '@/hocs';
 import { compose } from '@/utils/functional';
@@ -12,6 +12,7 @@ import { CanvasAction, TARGET_OPTIONS } from './constants';
 import { buildVirtualElement } from './utils';
 
 const OPTION_HANDLERS = {
+  [CanvasAction.PASTE]: ({ position }, { engine }) => engine.paste(localStorage.getItem(CLIPBOARD_DATA_KEY), engine.canvas.transformPoint(position)),
   [CanvasAction.COPY_BLOCK]: ({ target: nodeID }, { clipboard }) => clipboard.copy(nodeID),
   [CanvasAction.ADD_COMMENT]: ({ position }, { engine }) => engine.node.add(cuid(), BlockType.COMMENT, engine.canvas.transformPoint(position)),
   [CanvasAction.RENAME_BLOCK]: ({ target: nodeID }, { engine }) => engine.node.rename(nodeID),

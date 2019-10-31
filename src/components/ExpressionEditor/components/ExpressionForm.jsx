@@ -87,12 +87,12 @@ class ExpressionForm extends Component {
         return (
           // eslint-disable-next-line sonarjs/no-duplicate-string
           <Container className={cn('expression-block', type)}>
+            <VariableSelect value={expression.value} onChange={updateValue} fullWidth />
             <div className="type-button-container">
               <OperatorDropdown update={this.updateType} className="type-button" depth={expression.depth}>
                 {OPERATOR_SELECT}
               </OperatorDropdown>
             </div>
-            <VariableSelect value={expression.value} onChange={updateValue} fullWidth />
           </Container>
         );
 
@@ -111,11 +111,6 @@ class ExpressionForm extends Component {
       case ExpressionType.ADVANCE:
         return (
           <Container className={cn('expression-block', type)}>
-            <div className="type-button-container">
-              <OperatorDropdown update={this.updateType} className="type-button" depth={expression.depth}>
-                {OPERATOR_SELECT}
-              </OperatorDropdown>
-            </div>
             <VariableText
               className={cn('editor', 'form-control', 'auto-height', 'oneline', { 'is-invalid': expression.value.error })}
               value={expression.value}
@@ -123,6 +118,11 @@ class ExpressionForm extends Component {
               variables={variables}
               onChange={this.updateAdvanced}
             />
+            <div className="type-button-container">
+              <OperatorDropdown update={this.updateType} className="type-button" depth={expression.depth}>
+                {OPERATOR_SELECT}
+              </OperatorDropdown>
+            </div>
           </Container>
         );
 

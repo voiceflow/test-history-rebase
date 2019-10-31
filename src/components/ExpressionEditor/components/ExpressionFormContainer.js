@@ -24,7 +24,6 @@ const ExpressionFormContainer = styled.div`
     position: absolute;
     top: 9px;
     right: 8px;
-    z-index: 1;
   }
 
   & .type-button {
@@ -85,8 +84,6 @@ const ExpressionFormContainer = styled.div`
     border-radius: 5px;
     box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
     border: none;
-    transition: all 0.15s ease;
-    animation: fadein 0.15s ease-out;
   }
 
   & .expression-group {

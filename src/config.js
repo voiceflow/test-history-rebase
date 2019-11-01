@@ -22,15 +22,25 @@ export const IS_PRODUCTION = NODE_ENV === 'production';
 export const IS_DEVELOPMENT = NODE_ENV === 'development';
 
 export const BUILD_ENV = process.env.BUILD_ENV;
+export const CREATOR_URL = 'creator.voiceflow.com';
+export const LEGACY_URL = 'creator.getvoiceflow.com';
 
-export const API_HOST = process.env.API_HOST;
+// Dynamically set API_HOST based on the url
+const APP_SUBDOMAIN = 'creator';
+const API_SUBDOMAIN = 'api';
+
+function getHost() {
+  if (window.location.hostname.startsWith(`${APP_SUBDOMAIN}.`)) {
+    return window.location.hostname.replace(RegExp(`^${APP_SUBDOMAIN}\\b`), API_SUBDOMAIN);
+  }
+  return process.env.API_HOST;
+}
+
+export const API_HOST = getHost();
 export const API_ENDPOINT = `https://${API_HOST}${IS_DEVELOPMENT ? ':8080' : ''}`;
 
 export const ROOT_DOMAIN = process.env.ROOT_DOMAIN || (IS_PRODUCTION ? 'voiceflow.com' : window.location.hostname);
 export const VERSION = process.env.VERSION;
-
-export const CREATOR_URL = 'creator.voiceflow.com';
-export const LEGACY_URL = 'creator.getvoiceflow.com';
 
 // debugging
 export const DEBUG_NETWORK = !IS_PRODUCTION && process.env.DEBUG_NETWORK;

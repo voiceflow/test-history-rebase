@@ -77,7 +77,7 @@ const newAudio = (src) => {
   return new Audio(newSrc);
 };
 
-export const getUserTestOutputs = async (trace, ending) => {
+export const getUserTestOutputs = async (trace, ending, state) => {
   const dom = [];
   let idx = 0;
 
@@ -161,8 +161,9 @@ export const getUserTestOutputs = async (trace, ending) => {
         dom.push(outputBlock);
       });
     } else if (type === 'Stream') {
-      const audio = newAudio(block.line.play);
-      const text = block.line.play.length > 40 ? `...${block.line.play.substr(-33)}` : block.line.play;
+      const url = state.play.url;
+      const audio = newAudio(url);
+      const text = url.length > 40 ? `...${url.substr(-33)}` : url;
       // eslint-disable-next-line no-await-in-loop
       const duration = await getAudioMeta(audio);
       const outputBlock = {

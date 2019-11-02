@@ -223,7 +223,7 @@ class Timeline extends Component {
     const { trace, ending } = newState;
     if (!trace) return;
 
-    const outputQueue = await getUserTestOutputs(trace, ending);
+    const outputQueue = await getUserTestOutputs(trace, ending, newState);
 
     this.interval = {
       queue: outputQueue,

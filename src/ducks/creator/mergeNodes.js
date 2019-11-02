@@ -2,6 +2,7 @@ import { BlockType } from '@/constants';
 import { compose } from '@/utils/functional';
 import { getNormalizedByKey } from '@/utils/normalized';
 
+import { nodeFactory } from './factories';
 import { addNodeToState, getLinkIDsByPortID, patchNodeInState, removeAllLinksFromState } from './utils';
 
 const mergeNodesReducer = (state, { payload: { sourceNodeID, targetNodeID, invert, mergedNodeID } }) => {
@@ -12,18 +13,12 @@ const mergeNodesReducer = (state, { payload: { sourceNodeID, targetNodeID, inver
   const targetPorts = oldPortIdTargets.map((portID) => getNormalizedByKey(state.ports, portID));
   const targetLinkIds = targetPorts.flatMap((port) => getLinkIDsByPortID(state)(port.id));
 
-  const mergedNode = {
-    id: mergedNodeID,
+  const mergedNode = nodeFactory(mergedNodeID, {
     type: BlockType.COMBINED,
     x: invert ? sourceNode.x : targetNode.x,
     y: invert ? sourceNode.y : targetNode.y,
-    parentNode: null,
     combinedNodes: [targetNodeID, sourceNodeID],
-    ports: {
-      in: [],
-      out: [],
-    },
-  };
+  });
   const mergedData = {
     nodeID: mergedNodeID,
     name: 'New Block',

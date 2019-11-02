@@ -5,7 +5,7 @@ import { BlockType } from '@/constants';
 import AddStepButton from '@/containers/CanvasV2/components/AddStepButton';
 import GroupBlock, { Section as GroupBlockSection } from '@/containers/CanvasV2/components/GroupBlock';
 import { MergeStatus } from '@/containers/CanvasV2/constants';
-import { NodeIDProvider, withEngine, withNode, withTestingMode } from '@/containers/CanvasV2/contexts';
+import { NodeIDProvider, withEngine, withNode, withNodeData, withTestingMode } from '@/containers/CanvasV2/contexts';
 import { NODE_MANAGERS } from '@/containers/CanvasV2/managers';
 import { insert, reorder } from '@/utils/array';
 import { compose } from '@/utils/functional';
@@ -46,7 +46,7 @@ class CombinedBlock extends React.PureComponent {
   labelRef = React.createRef();
 
   get isMerging() {
-    return this.props.engine.merge.isTarget(this.props.node.id);
+    return this.props.engine.merge.isTarget(this.props.nodeID);
   }
 
   get canMerge() {
@@ -155,41 +155,37 @@ class CombinedBlock extends React.PureComponent {
     this.merge(engine.drag.target);
   };
 
-  onAddBlock = (type) => this.props.engine.node.addNested(this.props.node.id, cuid(), type);
+  onAddBlock = (type) => this.props.engine.node.addNested(this.props.nodeID, cuid(), type);
 
   applyReorder = () => {
-    const { engine, node } = this.props;
+    const { engine, nodeID } = this.props;
     const { reorderContext } = this.state;
 
     if (reorderContext) {
       const { sourceIndex, targetIndex } = reorderContext;
 
       this.setState({ reorderContext: null });
-      engine.node.reorderNested(node.id, sourceIndex, targetIndex);
+      engine.node.reorderNested(nodeID, sourceIndex, targetIndex);
     }
     return false;
   };
 
-  updateName = (name) => this.props.engine.node.updateData(this.props.node.id, { name });
+  updateName = (name) => this.props.engine.node.updateData(this.props.nodeID, { name });
 
   componentDidUpdate(_, prevState) {
     const { placeholderIndex, reorderContext } = this.state;
 
     if (placeholderIndex !== prevState.placeholderIndex || reorderContext !== prevState.reorderContext) {
-      this.props.engine.node.redrawNestedLinks(this.props.node.id);
+      this.props.engine.node.redrawNestedLinks(this.props.nodeID);
     }
   }
 
-  componentDidMount() {
-    this.props.engine.node.redrawNestedLinks(this.props.node.id);
-  }
-
   merge = (dragTarget) => {
-    const { engine, node } = this.props;
+    const { engine, nodeID } = this.props;
     const { placeholderIndex } = this.state;
 
     if (placeholderIndex !== null) {
-      engine.node.insertNested(node.id, placeholderIndex, dragTarget);
+      engine.node.insertNested(nodeID, placeholderIndex, dragTarget);
     } else if (this.isMerging) {
       engine.showMergeWarning();
     }
@@ -210,14 +206,14 @@ class CombinedBlock extends React.PureComponent {
   };
 
   render() {
-    const { data, isActive, nextSteps, isTesting, engine } = this.props;
+    const { data, isHighlighted, nextSteps, isTesting, engine } = this.props;
     const { localNodeIDs, placeholderIndex } = this.state;
     const hasNextSteps = !!nextSteps.length;
     const canAdd = placeholderIndex === null && !isTesting && hasNextSteps;
 
     return (
       <GroupBlock
-        isActive={isActive}
+        isActive={isHighlighted}
         addButton={canAdd && <AddStepButton options={nextSteps} onAdd={this.onAddBlock} />}
         onMouseUp={this.onMouseUp}
         onMouseMove={this.onMouseMove}
@@ -249,7 +245,8 @@ class CombinedBlock extends React.PureComponent {
 }
 
 export default compose(
+  withNode,
+  withNodeData,
   withEngine,
-  withTestingMode,
-  withNode
+  withTestingMode
 )(CombinedBlock);

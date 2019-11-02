@@ -11,3 +11,16 @@ export const portFactory = (nodeID, portID, port) => ({
   id: portID,
   nodeID,
 });
+
+export const nodeFactory = (nodeID, node) => ({
+  x: 0,
+  y: 0,
+  parentNode: null,
+  combinedNodes: [],
+  ports: {
+    in: [],
+    out: [],
+  },
+  ...node,
+  id: nodeID,
+});

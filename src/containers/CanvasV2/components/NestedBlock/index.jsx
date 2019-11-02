@@ -2,6 +2,7 @@ import cuid from 'cuid';
 import React from 'react';
 
 import { withCanvas } from '@/components/Canvas/contexts';
+import { withNodeLifecycle } from '@/containers/CanvasV2/components/Node/hocs';
 import { getBlockCategory } from '@/containers/CanvasV2/constants';
 import { withEngine, withNode, withTestingMode } from '@/containers/CanvasV2/contexts';
 import { withOverlay } from '@/contexts';
@@ -16,10 +17,6 @@ export * from './components';
 const NESTED_DRAG_DISTANCE = 5;
 
 class NestedBlock extends React.PureComponent {
-  state = {
-    isHighlighted: this.props.engine.isActive(this.props.node.id),
-  };
-
   rootRef = React.createRef();
 
   dragDistance = 0;
@@ -27,29 +24,25 @@ class NestedBlock extends React.PureComponent {
   mouseMovement = new MouseMovement();
 
   api = {
-    highlight: () => this.setState({ isHighlighted: true }),
-
-    clearHighlight: () => this.setState({ isHighlighted: false }),
-
     getPosition: () => {
       const rect = this.rootRef.current.getBoundingClientRect();
 
       return this.props.engine.canvas.transformPoint([rect.x + rect.width / 2, rect.y + rect.height / 2]);
     },
 
-    rename: () => this.props.engine.focus.set(this.props.node.id, { renameActiveRevision: cuid() }),
+    rename: () => this.props.engine.focus.set(this.props.nodeID, { renameActiveRevision: cuid() }),
   };
 
   onClick = (event) => {
-    const { engine, node, overlay } = this.props;
+    const { engine, nodeID, overlay } = this.props;
 
     overlay.dismiss();
 
-    engine.setActivation(node.id, event.shiftKey);
+    engine.setActivation(nodeID, event.shiftKey);
   };
 
   onDrag = (event) => {
-    const { engine, node, isTesting } = this.props;
+    const { engine, nodeID, isTesting } = this.props;
 
     if (isTesting) {
       return;
@@ -63,7 +56,7 @@ class NestedBlock extends React.PureComponent {
 
     if (this.dragDistance > NESTED_DRAG_DISTANCE) {
       const { clientX, clientY } = event;
-      engine.transitionNested(node.id, engine.canvas.transformPoint([clientX, clientY]));
+      engine.transitionNested(nodeID, engine.canvas.transformPoint([clientX, clientY]));
       this.teardownMouseListeners();
     }
   };
@@ -93,20 +86,17 @@ class NestedBlock extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { engine, node } = this.props;
-
-    engine.registerNode(node, this.api);
-    engine.node.redrawLinks(node.id);
+    this.props.engine.registerNode(this.props.node, this.api);
   }
 
   componentWillUnmount() {
-    this.props.engine.expireNode(this.props.node.id, this.api);
+    this.props.engine.expireNode(this.props.nodeID, this.api);
     this.teardownMouseListeners();
   }
 
   render() {
-    const { node, data: _data, column, canDrag = true, className, children, ...props } = this.props;
-    const { isHighlighted } = this.state;
+    const { node, isHighlighted, column, canDrag = true, className, children, ...props } = this.props;
+
     const { color } = getBlockCategory(node.type);
 
     return (
@@ -127,9 +117,10 @@ class NestedBlock extends React.PureComponent {
 }
 
 export default compose(
+  withNode,
+  withNodeLifecycle,
   withEngine,
   withCanvas,
   withOverlay,
-  withTestingMode,
-  withNode
+  withTestingMode
 )(NestedBlock);

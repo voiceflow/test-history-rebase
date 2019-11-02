@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Port from '@/containers/CanvasV2/components/Port';
-import { EngineContext, PlatformContext } from '@/containers/CanvasV2/contexts';
+import { EngineContext, PlatformContext, PortIDProvider } from '@/containers/CanvasV2/contexts';
 
 import { Container, PortList, PortListItem } from './components';
 
@@ -13,9 +13,11 @@ function PortSet({ ports, children }) {
     <Container>
       <PortList>
         {ports.in.map((portID, index) => (
-          <PortListItem key={portID}>
-            <Port canDrop portID={portID} index={index} />
-          </PortListItem>
+          <PortIDProvider value={portID} key={portID}>
+            <PortListItem>
+              <Port canDrop index={index} />
+            </PortListItem>
+          </PortIDProvider>
         ))}
       </PortList>
       {children}
@@ -28,9 +30,11 @@ function PortSet({ ports, children }) {
             return port && (!port.platform || port.platform === platform);
           })
           .map((portID, index) => (
-            <PortListItem key={portID}>
-              <Port canDrag withLabel portID={portID} index={index} />
-            </PortListItem>
+            <PortIDProvider value={portID} key={portID}>
+              <PortListItem>
+                <Port canDrag withLabel index={index} />
+              </PortListItem>
+            </PortIDProvider>
           ))}
       </PortList>
     </Container>

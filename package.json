@@ -32,6 +32,7 @@
     "draft-js-plugins-editor": "^2.1.1",
     "draft-js-single-line-plugin": "^2.0.2",
     "enzyme-to-json": "^3.4.3",
+    "eventemitter3": "^4.0.0",
     "history": "^4.9.0",
     "hotkeys-js": "3.7.2",
     "html-parse-stringify": "^1.0.3",

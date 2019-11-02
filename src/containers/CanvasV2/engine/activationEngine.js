@@ -52,8 +52,8 @@ class ActivationEngine extends EngineConsumer {
    */
   activate(nodeID, mode = this.mode) {
     this.setMode(mode);
-    this.engine.node.highlight(nodeID);
     this.targets.add(nodeID);
+    this.engine.node.redraw(nodeID);
   }
 
   /**
@@ -63,8 +63,8 @@ class ActivationEngine extends EngineConsumer {
    * @returns {void}
    */
   deactivate(nodeID) {
-    this.engine.node.clearHighlight(nodeID);
     this.targets.delete(nodeID);
+    this.engine.node.redraw(nodeID);
 
     if (!this.hasTargets) {
       this.mode = null;

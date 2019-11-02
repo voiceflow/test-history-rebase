@@ -15,17 +15,9 @@ class LinkManager extends EngineConsumer {
       if (!sourcePort || !targetPort || sourcePort.nodeID === targetPort.nodeID) return;
 
       this.dispatch(Creator.addLink(sourcePortID, targetPortID, linkID));
-
-      const link = this.engine.getLinkByID(linkID);
-      this.redrawPorts(link);
     },
 
-    remove: (linkID) => {
-      const link = this.engine.getLinkByID(linkID);
-
-      this.dispatch(Creator.removeLink(linkID));
-      this.redrawPorts(link);
-    },
+    remove: (linkID) => this.dispatch(Creator.removeLink(linkID)),
   };
 
   api(linkID) {
@@ -44,22 +36,17 @@ class LinkManager extends EngineConsumer {
     this.dispatch(Realtime.removeLink(linkID));
   }
 
+  translatePoint(linkID, movement, isSource) {
+    this.api(linkID).translatePoint(movement, isSource);
+  }
+
   redraw(linkID) {
-    this.api(linkID).redraw();
+    this.engine.dispatcher.redrawLink(linkID);
   }
 
   redrawPorts({ source: { portID: sourcePortID }, target: { portID: targetPortID } }) {
-    if (this.engine.getPortByID(sourcePortID)) {
-      this.engine.port.redraw(sourcePortID);
-    }
-
-    if (this.engine.getPortByID(targetPortID)) {
-      this.engine.port.redraw(targetPortID);
-    }
-  }
-
-  translatePoint(linkID, movement, isSource) {
-    this.api(linkID).translatePoint(movement, isSource);
+    this.engine.port.redraw(sourcePortID);
+    this.engine.port.redraw(targetPortID);
   }
 }
 

@@ -10,15 +10,11 @@ class PortManager extends EngineConsumer {
   internal = {
     add: (nodeID, portID, port) => {
       this.dispatch(Creator.addPort(nodeID, portID, port));
-      this.engine.node.redraw(nodeID);
     },
 
     remove: (portID) => {
-      const port = this.engine.getPortByID(portID);
-
       this.engine.getLinkIDsByPortID(portID).forEach((linkID) => this.engine.link.remove(linkID));
       this.dispatch(Creator.removePort(portID));
-      this.engine.node.redraw(port.nodeID);
     },
   };
 
@@ -49,21 +45,12 @@ class PortManager extends EngineConsumer {
     this.dispatch(Realtime.removePort(portID));
   }
 
-  redrawLinks(portID) {
-    if (!this.engine.ports.has(portID)) {
-      return;
-    }
-
-    this.engine
-      .getLinkIDsByPortID(portID)
-      .filter((linkID) => this.engine.links.has(linkID))
-      .forEach((linkID) => this.engine.link.redraw(linkID));
+  redraw(portID) {
+    this.engine.dispatcher.redrawPort(portID);
   }
 
-  redraw(portID) {
-    if (this.engine.ports.has(portID)) {
-      this.api(portID).redraw();
-    }
+  redrawLinks(portID) {
+    this.engine.getLinkIDsByPortID(portID).forEach((linkID) => this.engine.link.redraw(linkID));
   }
 
   getRect(portID) {

@@ -15,23 +15,18 @@ class NodeManager extends EngineConsumer {
 
     updateData: (nodeID, data) => {
       this.dispatch(Creator.updateNodeData(nodeID, data));
-      this.redraw(nodeID);
     },
 
     remove: (nodeID) => {
       this.engine.activation.deactivate(nodeID);
-      const node = this.engine.getNodeByID(nodeID);
-      const { parentNode } = node;
-      // save last location of parent node
+      const { parentNode } = this.engine.getNodeByID(nodeID);
+
+      // save last location of parent node in case unmerging
       if (parentNode) {
         this.saveLocation(parentNode);
       }
 
       this.dispatch(Creator.removeNode(nodeID));
-
-      if (parentNode && this.engine.getNodeByID(parentNode)) {
-        this.redrawCombined(parentNode);
-      }
     },
 
     removeMany: (nodeIDs) => {
@@ -57,8 +52,6 @@ class NodeManager extends EngineConsumer {
       });
 
       this.dispatch(Creator.removeNodes(removedIDs));
-
-      parentIDs.forEach((nodeID) => this.redrawCombined(nodeID));
     },
 
     translate: (nodeID, movement) => {
@@ -185,24 +178,24 @@ class NodeManager extends EngineConsumer {
     const { node, data } = nodeFactory(type);
     this.dispatch(Creator.addNestedNode(parentNodeID, { ...node, type }, data, nodeID));
     this.engine.focus.set(nodeID);
-    this.redrawCombined(parentNodeID);
+    this.redrawNestedLinks(parentNodeID);
   }
 
   insertNested(parentNodeID, index, nodeID) {
     this.dispatch(Creator.insertNestedNode(parentNodeID, index, nodeID));
-    this.redrawCombined(parentNodeID);
+    this.redrawNestedLinks(parentNodeID);
   }
 
   reorderNested(parentNodeID, sourceIndex, targetIndex) {
     this.dispatch(Creator.reorderNestedNodes(parentNodeID, sourceIndex, targetIndex));
-    this.redrawCombined(parentNodeID);
+    this.redrawNestedLinks(parentNodeID);
   }
 
   unmerge(nodeID, position) {
     const { parentNode } = this.engine.getNodeByID(nodeID);
     this.saveLocation(parentNode);
     this.dispatch(Creator.unmergeNode(nodeID, position));
-    this.redrawCombined(parentNode);
+    this.redrawNestedLinks(parentNode);
   }
 
   async merge(sourceNodeID, targetNodeID, invert) {
@@ -262,36 +255,6 @@ class NodeManager extends EngineConsumer {
     });
   }
 
-  redrawLinks(nodeID) {
-    const node = this.engine.getNodeByID(nodeID);
-
-    [...node.ports.in, ...node.ports.out].forEach((portID) => this.engine.port.redrawLinks(portID));
-  }
-
-  redrawNestedLinks(parentNodeID) {
-    const { combinedNodes } = this.engine.getNodeByID(parentNodeID);
-    combinedNodes.forEach((nodeID) => this.redrawLinks(nodeID));
-  }
-
-  redrawCombined(parentNodeID) {
-    if (this.engine.nodes.has(parentNodeID)) {
-      this.redraw(parentNodeID);
-      this.redrawNestedLinks(parentNodeID);
-    }
-  }
-
-  highlight(nodeID) {
-    this.api(nodeID)?.highlight?.();
-  }
-
-  clearHighlight(nodeID) {
-    this.api(nodeID)?.clearHighlight?.();
-  }
-
-  redraw(nodeID) {
-    this.engine.dispatcher.redrawNode(nodeID);
-  }
-
   drag(nodeID) {
     this.api(nodeID)?.drag?.();
   }
@@ -323,6 +286,21 @@ class NodeManager extends EngineConsumer {
 
   rename(nodeID) {
     return this.api(nodeID).rename?.();
+  }
+
+  redraw(nodeID) {
+    this.engine.dispatcher.redrawNode(nodeID);
+  }
+
+  redrawLinks(nodeID) {
+    const node = this.engine.getNodeByID(nodeID);
+
+    [...node.ports.in, ...node.ports.out].forEach((portID) => this.engine.port.redrawLinks(portID));
+  }
+
+  redrawNestedLinks(parentNodeID) {
+    const node = this.engine.getNodeByID(parentNodeID);
+    node?.combinedNodes.forEach((nodeID) => this.redrawLinks(nodeID));
   }
 }
 

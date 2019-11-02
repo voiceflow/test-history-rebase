@@ -5,15 +5,16 @@ import AddStepButton from '@/containers/CanvasV2/components/AddStepButton';
 import MergeOverlay from '@/containers/CanvasV2/components/MergeOverlay';
 import PortSet from '@/containers/CanvasV2/components/PortSet';
 import { getBlockCategory } from '@/containers/CanvasV2/constants';
-import { EngineContext, PlatformContext, TestingModeContext, useNode } from '@/containers/CanvasV2/contexts';
+import { EngineContext, PlatformContext, TestingModeContext, useNode, useNodeData } from '@/containers/CanvasV2/contexts';
 import { NODE_MANAGERS } from '@/containers/CanvasV2/managers';
 import { getNextSteps } from '@/containers/CanvasV2/utils';
 import { useImperativeApi } from '@/hooks';
 
 import { Container, Overlay, Title } from './components';
 
-function Block({ isActive }, ref) {
-  const { node, data } = useNode();
+function Block(_, ref) {
+  const { node, isHighlighted } = useNode();
+  const { data } = useNodeData();
   const platform = React.useContext(PlatformContext);
   const isTesting = React.useContext(TestingModeContext);
   const engine = React.useContext(EngineContext);
@@ -32,7 +33,7 @@ function Block({ isActive }, ref) {
   const onAddStep = (type) => engine.node.addNested(node.id, cuid(), type);
 
   return (
-    <Container isEnabled={isEnabled} isActive={isActive} color={color} ref={nodeRef}>
+    <Container isEnabled={isEnabled} isActive={isHighlighted} color={color} ref={nodeRef}>
       <Title>{data.name}</Title>
       <PortSet ports={node.ports}>{BlockContent && <BlockContent data={data} />}</PortSet>
       <MergeOverlay component={Overlay} />

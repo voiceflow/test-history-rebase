@@ -2,41 +2,42 @@ import { createSelector } from 'reselect';
 
 import { GLOBAL_VARIABLES } from '@/constants';
 import { userSelector } from '@/ducks/account';
+import { linksByPortIDSelector, portByIDSelector } from '@/ducks/creator';
 import { allDiagramIDsSelector, diagramsByIDsSelector, flowStructureSelector } from '@/ducks/diagram';
 import { projectByIDSelector } from '@/ducks/project';
 import { realtimeLocksSelector } from '@/ducks/realtime';
 import { authTokenSelector } from '@/ducks/session';
-import { activeDiagramIDSelector, activeProjectIDSelector, activeSkillSelector, globalVariablesSelector, rootDiagramIDSelector } from '@/ducks/skill';
+import * as Skill from '@/ducks/skill';
 import { activeTeamSelector } from '@/ducks/team';
 import { variablesByDiagramIDSelector } from '@/ducks/variableSet';
 import { viewportByIDSelector } from '@/ducks/viewport';
 import { getSlotTypes } from '@/utils/slot';
 
 export const activeDiagramVariablesSelector = createSelector(
-  activeDiagramIDSelector,
+  Skill.activeDiagramIDSelector,
   variablesByDiagramIDSelector,
   (diagramID, getVariables) => getVariables(diagramID)
 );
 
 export const activeDiagramViewportSelector = createSelector(
-  activeDiagramIDSelector,
+  Skill.activeDiagramIDSelector,
   viewportByIDSelector,
   (diagramID, getViewportByID) => getViewportByID(diagramID)
 );
 
 export const allVariablesSelector = createSelector(
-  globalVariablesSelector,
+  Skill.globalVariablesSelector,
   activeDiagramVariablesSelector,
   (globalVariables, activeDiagramVariables) => [...GLOBAL_VARIABLES, ...globalVariables, ...activeDiagramVariables]
 );
 
 export const activeSlotTypes = createSelector(
-  activeSkillSelector,
+  Skill.activeSkillSelector,
   ({ locales, platform, publishInfo }) => getSlotTypes(locales, platform, publishInfo)
 );
 
 export const activeProjectSelector = createSelector(
-  activeProjectIDSelector,
+  Skill.activeProjectIDSelector,
   projectByIDSelector,
   (projectID, getProject) => getProject(projectID)
 );
@@ -83,7 +84,7 @@ export const diagramViewersLookupSelector = createSelector(
 
 export const rootFlowStructureSelector = createSelector(
   flowStructureSelector,
-  rootDiagramIDSelector,
+  Skill.rootDiagramIDSelector,
   (getFlowStructure, rootDiagramID) => getFlowStructure(rootDiagramID)
 );
 
@@ -105,4 +106,15 @@ export const unusedDiagramsSelector = createSelector(
 
     return getDiagrams(Array.from(unusedDiagramIDs));
   }
+);
+
+export const hasActiveLinksSelector = createSelector(
+  Skill.activePlatformSelector,
+  portByIDSelector,
+  linksByPortIDSelector,
+  (platform, getPortByID, getAllLinksByPortID) => (portID) =>
+    getAllLinksByPortID(portID).some((link) => {
+      const sourcePort = getPortByID(link.source.portID);
+      return !sourcePort.platform || sourcePort.platform === platform;
+    })
 );

@@ -23,8 +23,6 @@ import RealtimeEngine from './realtimeEngine';
 import SelectionEngine from './selectionEngine';
 
 export class Engine {
-  dispatcher = new Dispatcher();
-
   drag = new DragEngine(this);
 
   activation = new ActivationEngine(this);
@@ -60,8 +58,10 @@ export class Engine {
     this.finalize = finalize;
     this.mousePosition = mousePosition;
     this.linkIDs = Creator.allLinkIDsSelector(store.getState());
-    // do not change to property declaration, depends on this.store being set
+
+    // do not change these to property declarations, they depend on this.store being set
     this.realtime = new RealtimeEngine(this);
+    this.dispatcher = new Dispatcher(this);
   }
 
   // store accessors
@@ -80,13 +80,9 @@ export class Engine {
 
   getLinkIDsByNodeID = (nodeID) => Creator.linkIDsByNodeIDSelector(this.store.getState())(nodeID);
 
-  getLinkedNodeIDsForNode = (node) => Creator.linkedNodeIDsByNodeIDSelector(this.store.getState())(node.id);
-
   getRootNodeIDs = () => Creator.rootNodeIDsSelector(this.store.getState());
 
-  getAllNodeData = () => Creator.allNodeDataSelector(this.store.getState());
-
-  getDiagram = (diagramID) => diagramByIDSelector(this.store.getState())(diagramID);
+  getDiagramByID = (diagramID) => diagramByIDSelector(this.store.getState())(diagramID);
 
   isRootDiagram = () => isRootDiagramSelector(this.store.getState());
 
@@ -98,8 +94,6 @@ export class Engine {
 
   registerNode({ id, x, y, type }, api) {
     this.nodes.set(id, { x, y, api, type });
-
-    this.node.redrawLinks(id);
   }
 
   expireNode(nodeID, api) {
@@ -108,12 +102,10 @@ export class Engine {
     }
   }
 
-  registerPort(port, api) {
-    this.ports.set(port.id, { ...port, api });
+  registerPort(portID, api) {
+    this.ports.set(portID, { api });
 
-    this.addSupportedLinks(port.id);
-
-    this.port.redrawLinks(port.id);
+    this.addSupportedLinks(portID);
   }
 
   expirePort(portID, api) {
@@ -122,14 +114,12 @@ export class Engine {
     }
   }
 
-  registerLink(link, api) {
-    this.links.set(link.id, { ...link, api });
+  registerLink(linkID, api) {
+    this.links.set(linkID, { api });
   }
 
-  expireLink(link) {
-    this.links.delete(link.id);
-
-    this.link.redrawPorts(link);
+  expireLink(linkID) {
+    this.links.delete(linkID);
   }
 
   // canvas orchestration methods
@@ -288,7 +278,11 @@ export class Engine {
    * @returns {void}
    */
   copyActive(nodeID) {
-    this.clipboard.copy(this.activation.hasTargets ? this.activation.getTargets() : [nodeID]);
+    if (nodeID) {
+      this.clipboard.copy([nodeID]);
+    } else if (this.activation.hasTargets) {
+      this.clipboard.copy(this.activation.getTargets());
+    }
   }
 
   /**
@@ -335,6 +329,7 @@ export class Engine {
     this.selection.clear();
     this.drag.clear();
     this.merge.clear();
+    this.dispatcher.teardown();
     this.realtime.teardown();
     this.links.clear();
     this.ports.clear();
@@ -350,12 +345,12 @@ function useEngine() {
   const linkIDs = Creator.allLinkIDsSelector(state);
   const [isFinalized, finalize] = useEnableDisable(linkIDs.length === 0);
   const mousePosition = React.useContext(MousePositionContext);
-  const engine = React.useRef(createEngine(store, finalize, mousePosition));
+  const engine = React.useMemo(() => createEngine(store, finalize, mousePosition));
 
-  React.useEffect(() => () => engine.current.teardown(), []);
+  React.useEffect(() => () => engine.teardown(), []);
 
   return {
-    engine: engine.current,
+    engine,
     isFinalized,
   };
 }

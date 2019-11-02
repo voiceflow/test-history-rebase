@@ -1,19 +1,31 @@
 import React from 'react';
-import { withProps } from 'recompose';
 
 import { withCanvas } from '@/components/Canvas/contexts';
-import { withEngine, withPlatform, withTestingMode } from '@/containers/CanvasV2/contexts';
+import { withEngine, withLink, withPlatform, withTestingMode } from '@/containers/CanvasV2/contexts';
 import { compose } from '@/utils/functional';
 
 import { Overlay, Path, RemoveButton } from './components';
-import { buildCenter, buildPath, extractPoints } from './utils';
+import { withLinkLifecycle } from './hocs';
+import { buildCenter, buildPath } from './utils';
 
 export class Link extends React.PureComponent {
+  // keep track of changes to points
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (!nextProps.points) {
+      return null;
+    }
+
+    return {
+      points: nextProps.points,
+      pointsChanged: prevState.points !== nextProps.points,
+    };
+  }
+
   state = {
     isHovering: false,
+    points: null,
+    pointsChanged: false,
   };
-
-  points = null;
 
   containerRef = React.createRef();
 
@@ -31,45 +43,16 @@ export class Link extends React.PureComponent {
 
       this.drawFromPoints(nextPoints);
     },
-
-    redraw: () => {
-      const { canvas } = this.props;
-
-      if (!this.hasPort('source') || !this.hasPort('target')) {
-        return;
-      }
-
-      const nextPoints = extractPoints(canvas, this.getPortRect('source'), this.getPortRect('target'));
-
-      if (nextPoints) {
-        this.points = nextPoints;
-
-        if (this.containerRef.current) {
-          this.drawFromPoints(nextPoints);
-        } else {
-          // force initial render
-          this.forceUpdate();
-        }
-      }
-    },
   };
 
   get isDraggingNode() {
     return this.props.engine.drag.hasTarget;
   }
 
-  hasPort(relationship) {
-    return this.props.engine.ports.has(this.props.link[relationship].portID);
-  }
-
-  getPortRect(relationship) {
-    return this.props.engine.port.getRect(this.props.link[relationship].portID);
-  }
-
   matchesPlatform(platform) {
-    const port = this.props.engine.getPortByID(this.props.link.source.portID);
+    const sourcePort = this.props.engine.getPortByID(this.props.link.source.portID);
 
-    return !port.platform || port.platform === platform;
+    return !sourcePort.platform || sourcePort.platform === platform;
   }
 
   drawFromPoints(nextPoints) {
@@ -93,26 +76,22 @@ export class Link extends React.PureComponent {
     }
   };
 
-  onRemove = () => this.props.engine.link.remove(this.props.link.id);
+  onRemove = () => this.props.engine.link.remove(this.props.linkID);
 
   componentDidMount() {
-    this.props.engine.registerLink(this.props.link, this.api);
+    this.props.engine.registerLink(this.props.linkID, this.api);
   }
 
   componentWillUnmount() {
-    this.props.engine.expireLink(this.props.link);
+    this.props.engine.expireLink(this.props.linkID);
   }
 
   render() {
-    const { link, isTesting, platform } = this.props;
-    const { isHovering } = this.state;
+    const { points, isTesting, platform } = this.props;
+    const { isHovering, pointsChanged } = this.state;
 
-    if (!link || !this.hasPort('source') || !this.hasPort('target')) {
-      return null;
-    }
-
-    if (!this.points) {
-      this.points = extractPoints(this.props.canvas, this.getPortRect('source'), this.getPortRect('target'));
+    if (pointsChanged) {
+      this.points = points;
     }
 
     const path = buildPath(this.points);
@@ -131,11 +110,10 @@ export class Link extends React.PureComponent {
 }
 
 export default compose(
+  withLink,
+  withLinkLifecycle,
   withEngine,
   withCanvas,
   withPlatform,
-  withTestingMode,
-  withProps(({ linkID, engine }) => ({
-    link: engine.getLinkByID(linkID),
-  }))
+  withTestingMode
 )(Link);

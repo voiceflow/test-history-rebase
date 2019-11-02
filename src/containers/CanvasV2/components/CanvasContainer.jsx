@@ -34,7 +34,7 @@ function CanvasContainer({ openMenu, children }) {
     engine.node.add(cuid(), BlockType.COMMENT, position);
   }, []);
 
-  useHotKeys(Hotkey.COPY, preventDefault(clipboard.copy), []);
+  useHotKeys(Hotkey.COPY, preventDefault(() => clipboard.copy()), []);
   useHotKeys(Hotkey.DELETE, preventDefault(deleteActive), [deleteActive]);
   useHotKeys(Hotkey.COMMENT, addComment, []);
   useHotKeys(Hotkey.SPOTLIGHT, preventDefault(showSpotlight), [showSpotlight]);

@@ -1,48 +1,28 @@
-/* eslint-disable react/display-name */
-
 import React from 'react';
-import { setDisplayName, wrapDisplayName } from 'recompose';
+
+import { withHook } from '@/hocs';
 
 import { EngineContext } from './EngineContext';
 
 export const NodeIDContext = React.createContext(null);
 export const { Provider: NodeIDProvider, Consumer: NodeIDConsumer } = NodeIDContext;
 
-const computeProps = (engine, nodeID) => ({
-  node: engine.getNodeByID(nodeID),
-  data: engine.getDataByNodeID(nodeID),
-});
-
 export const useNode = () => {
   const nodeID = React.useContext(NodeIDContext);
   const engine = React.useContext(EngineContext);
-  const [state, setState] = React.useState(computeProps(engine, nodeID));
 
-  React.useEffect(() => {
-    const redraw = () => setState(computeProps(engine, nodeID));
-
-    engine.dispatcher.connectNode(nodeID, redraw);
-
-    return () => engine.dispatcher.disconnectNode(nodeID, redraw);
-  }, []);
-
-  return state;
+  return engine.dispatcher.useNode(nodeID);
 };
 
-export const withNode = (Component) =>
-  setDisplayName(wrapDisplayName(Component, 'withNode'))(
-    React.forwardRef((props, ref) => {
-      const state = useNode();
+export const useNodeData = () => {
+  const nodeID = React.useContext(NodeIDContext);
+  const engine = React.useContext(EngineContext);
 
-      return <Component {...state} {...props} ref={ref}></Component>;
-    })
-  );
+  return engine.dispatcher.useNodeData(nodeID);
+};
 
-export const withNodeWithoutData = (Component) =>
-  setDisplayName(wrapDisplayName(Component, 'withNodeWithoutData'))(
-    React.forwardRef((props, ref) => {
-      const state = useNode();
+export const withNode = withHook(useNode, {
+  shouldRender: ({ node }) => node,
+});
 
-      return <Component node={state.node} {...props} ref={ref}></Component>;
-    })
-  );
+export const withNodeData = withHook(useNodeData);

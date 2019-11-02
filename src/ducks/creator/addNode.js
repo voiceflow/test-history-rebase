@@ -4,6 +4,7 @@ import { BlockType } from '@/constants';
 import { compose } from '@/utils/functional';
 import { getNormalizedByKey } from '@/utils/normalized';
 
+import { nodeFactory } from './factories';
 import {
   addAllLinksToState,
   addAllNodesToState,
@@ -30,17 +31,14 @@ const addNodeReducer = (state, { payload: { node, data } }) => {
     nodeID: node.id,
     type: node.type,
   };
-  const newNode = {
-    x: 0,
-    y: 0,
-    parentNode: null,
+  const newNode = nodeFactory(node.id, {
     ...node,
     ports: {
       in: inPorts.map((port) => port.id),
       out: outPorts.map((port) => port.id),
     },
     combinedNodes: [],
-  };
+  });
 
   return addBlockToState(newNode, [...inPorts, ...outPorts], newNodeData)(state);
 };
@@ -57,9 +55,7 @@ export const addNestedNodeReducer = (state, { payload: { parentNodeID, node, dat
     nodeID: node.id,
     type: node.type,
   };
-  const newNode = {
-    x: 0,
-    y: 0,
+  const newNode = nodeFactory(node.id, {
     ...node,
     parentNode: parentNodeID,
     ports: {
@@ -67,15 +63,25 @@ export const addNestedNodeReducer = (state, { payload: { parentNodeID, node, dat
       out: outPorts.map((port) => port.id),
     },
     combinedNodes: [],
-  };
+  });
 
-  // adding to existing combined block
-  if (parentNode.combinedNodes.length || parentNode.type === BlockType.START) {
+  const isCombinedBlock = parentNode.combinedNodes.length;
+  // adding to existing combined block or start block
+  if (isCombinedBlock || parentNode.type === BlockType.START) {
+    const additionalActions = [];
+    if (isCombinedBlock) {
+      const terminalBlock = getNormalizedByKey(state.nodes, parentNode.combinedNodes[parentNode.combinedNodes.length - 1]);
+      const outLinkIDs = terminalBlock.ports.out.flatMap(getLinkIDsByPortID(state));
+
+      additionalActions.push(removeAllLinksFromState(outLinkIDs));
+    }
+
     return compose(
       addBlockToState(newNode, [...inPorts, ...outPorts], newNodeData),
       patchNodeInState(parentNodeID, {
         combinedNodes: [...parentNode.combinedNodes, node.id],
-      })
+      }),
+      ...additionalActions
     )(state);
   }
 
@@ -84,18 +90,12 @@ export const addNestedNodeReducer = (state, { payload: { parentNodeID, node, dat
   const parentNodeOutLinkIDs = parentNodeOutPortIDs.flatMap(getLinkIDsByPortID(state));
   const mergedNodeID = cuid();
 
-  const mergedNode = {
-    id: mergedNodeID,
+  const mergedNode = nodeFactory(mergedNodeID, {
     type: BlockType.COMBINED,
     x: parentNode.x,
     y: parentNode.y,
-    parentNode: null,
     combinedNodes: [parentNode.id, node.id],
-    ports: {
-      in: [],
-      out: [],
-    },
-  };
+  });
   const mergedData = {
     nodeID: mergedNodeID,
     name: 'New Block',
@@ -107,9 +107,7 @@ export const addNestedNodeReducer = (state, { payload: { parentNodeID, node, dat
   return compose(
     addNodeToState(mergedNode, mergedData),
     removeAllLinksFromState(parentNodeOutLinkIDs),
-    patchNodeInState(parentNode.id, {
-      parentNode: mergedNodeID,
-    }),
+    patchNodeInState(parentNode.id, { parentNode: mergedNodeID }),
     addBlockToState(newNode, [...inPorts, ...outPorts], newNodeData)
   )(state);
 };

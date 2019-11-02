@@ -14,10 +14,10 @@ import MouseMovement from '@/utils/mouseMovement';
 
 import GroupNodeRenderer from './components/GroupNodeRenderer';
 import Container from './components/NodeContainer';
+import { withNodeLifecycle } from './hocs';
 
 export class Node extends React.PureComponent {
   state = {
-    isHighlighted: this.props.engine.isActive(this.props.node.id),
     isDragging: false,
   };
 
@@ -49,10 +49,6 @@ export class Node extends React.PureComponent {
       });
     },
 
-    highlight: () => this.setState({ isHighlighted: true }),
-
-    clearHighlight: () => this.setState({ isHighlighted: false }),
-
     setMergeStatus: (mergeStatus) => this.mergeContextRef.current.setStatus(mergeStatus),
 
     forceDrag: () => {
@@ -74,11 +70,11 @@ export class Node extends React.PureComponent {
   };
 
   get isFocused() {
-    return this.props.engine.focus.isTarget(this.props.node.id);
+    return this.props.engine.focus.isTarget(this.props.nodeID);
   }
 
   get isSelected() {
-    return this.props.engine.selection.isTarget(this.props.node.id);
+    return this.props.engine.selection.isTarget(this.props.nodeID);
   }
 
   addMouseListeners() {
@@ -108,11 +104,11 @@ export class Node extends React.PureComponent {
   };
 
   onMouseUp = () => {
-    const { engine, node } = this.props;
+    const { engine, nodeID } = this.props;
 
     if (this.dragDistance < MAX_CLICK_TRAVEL) {
       this.onClick();
-    } else if (engine.drag.isTarget(node.id)) {
+    } else if (engine.drag.isTarget(nodeID)) {
       this.onDrop();
     }
 
@@ -124,14 +120,10 @@ export class Node extends React.PureComponent {
     this.teardownMouseListeners();
   };
 
-  onClick = () => {
-    const { engine, node } = this.props;
-
-    engine.setActivation(node.id, this.holdingShift);
-  };
+  onClick = () => this.props.engine.setActivation(this.props.nodeID, this.holdingShift);
 
   onDrag = (event) => {
-    const { canvas, engine, node } = this.props;
+    const { canvas, engine, nodeID } = this.props;
 
     this.mouseMovement.track(event);
 
@@ -141,7 +133,7 @@ export class Node extends React.PureComponent {
 
     this.dragDistance += Math.max(Math.abs(movementX), Math.abs(movementY));
 
-    engine.dragNode(node.id, [movementX / zoom, movementY / zoom]);
+    engine.dragNode(nodeID, [movementX / zoom, movementY / zoom]);
   };
 
   onDrop = () => {
@@ -149,22 +141,17 @@ export class Node extends React.PureComponent {
   };
 
   onRightClick = stopPropagation((event) => {
-    const { contextMenu, node, isTesting } = this.props;
+    const { contextMenu, nodeID, node, isTesting } = this.props;
 
     if (node.type !== BlockType.START && !isTesting) {
-      contextMenu.onOpen(event, ContextMenuTarget.NODE, node.id);
+      contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeID);
     }
   });
 
-  center = () => {
-    const { engine, node } = this.props;
-    engine.node.center(node.id);
-  };
+  center = () => this.props.engine.node.center(this.props.nodeID);
 
   componentDidMount() {
-    const { engine, node } = this.props;
-
-    engine.registerNode(node, this.api);
+    this.props.engine.registerNode(this.props.node, this.api);
 
     if (this.isFocused) {
       this.nodeRef.current.focus();
@@ -172,33 +159,27 @@ export class Node extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    const { engine, node } = this.props;
-
-    engine.expireNode(node.id, this.api);
+    this.props.engine.expireNode(this.props.nodeID, this.api);
     this.teardownMouseListeners();
   }
 
   render() {
-    const { node } = this.props;
-    const { isHighlighted, isDragging } = this.state;
+    const { node, isHighlighted } = this.props;
+    const { isDragging } = this.state;
     const shouldRender = node.type !== BlockType.COMMAND;
 
     if (!shouldRender) {
       return null;
     }
 
-    const renderProps = {
-      isActive: isHighlighted,
-    };
-
     let nodeEl = null;
 
     if (node.type === BlockType.COMMENT) {
-      nodeEl = <CommentBlock isActive={isHighlighted} ref={this.blockRef} />;
+      nodeEl = <CommentBlock ref={this.blockRef} />;
     } else if (INTERNAL_BLOCKS.includes(node.type)) {
-      nodeEl = <GroupNodeRenderer combinedNodeIDs={node.combinedNodes} {...renderProps} ref={this.blockRef} />;
+      nodeEl = <GroupNodeRenderer combinedNodeIDs={node.combinedNodes} ref={this.blockRef} />;
     } else {
-      nodeEl = <Block isActive={isHighlighted} ref={this.blockRef} />;
+      nodeEl = <Block ref={this.blockRef} />;
     }
 
     return (
@@ -219,9 +200,10 @@ export class Node extends React.PureComponent {
 }
 
 export default compose(
+  withNode,
+  withNodeLifecycle,
   withCanvas,
   withEngine,
   withStaticContextMenu,
-  withTestingMode,
-  withNode
+  withTestingMode
 )(Node);

@@ -6,7 +6,7 @@ import EnterFlow from '@/containers/CanvasV2/components/EnterFlow';
 import { PortSet } from '@/containers/CanvasV2/components/NestedBlock';
 import PortLabel from '@/containers/CanvasV2/components/Port/components/PortLabel';
 import { ContextMenuTarget, getBlockCategory } from '@/containers/CanvasV2/constants';
-import { ContextMenuContext, PlatformContext, TestingModeContext, useNode } from '@/containers/CanvasV2/contexts';
+import { ContextMenuContext, PlatformContext, TestingModeContext, useNodeData, withNode } from '@/containers/CanvasV2/contexts';
 import { NODE_MANAGERS } from '@/containers/CanvasV2/managers';
 import { stopPropagation } from '@/utils/dom';
 
@@ -14,15 +14,16 @@ import CombinedBlockContent from './CombinedBlockContent';
 import CombinedBlockHandle from './CombinedBlockHandle';
 import CombinedBlockItemContainer from './CombinedBlockItemContainer';
 
-const CombinedBlockItem = ({ showOutPorts, index, onReorder, onDrop, engine, ...props }) => {
-  const { node, data } = useNode();
+const CombinedBlockItem = ({ node, showOutPorts, index, onReorder, onDrop, engine, ...props }) => {
+  const { data } = useNodeData();
   const isTesting = React.useContext(TestingModeContext);
   const platform = React.useContext(PlatformContext);
   const contextMenu = React.useContext(ContextMenuContext);
+
   const { icon, platforms } = NODE_MANAGERS[node.type];
   const { color } = getBlockCategory(node.type);
   const showIcon = !INTERNAL_BLOCKS.includes(node.type);
-  const diagram = node.type === BlockType.FLOW && engine.getDiagram(data.diagramID);
+  const diagram = node.type === BlockType.FLOW && engine.getDiagramByID(data.diagramID);
   const isEnabled = !platforms || platforms.includes(platform);
   const outPorts = showOutPorts && <PortSet ports={node.ports.out} direction="out" withLabel canDrag fullWidth={!diagram} />;
 
@@ -49,4 +50,5 @@ const CombinedBlockItem = ({ showOutPorts, index, onReorder, onDrop, engine, ...
   );
 };
 
-export default CombinedBlockItem;
+// withNode keeps this from rendering when node does not exist
+export default withNode(CombinedBlockItem);

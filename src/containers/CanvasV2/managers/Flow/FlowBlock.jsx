@@ -1,13 +1,15 @@
 import React from 'react';
 
 import EnterFlow from '@/containers/CanvasV2/components/EnterFlow';
-import { diagramByIDSelector } from '@/ducks/diagram';
-import { connect } from '@/hocs';
+import { EngineContext } from '@/containers/CanvasV2/contexts';
 
 import FlowBlockContainer from './components/FlowBlockContainer';
 import FlowButtonOverlay from './components/FlowButtonOverlay';
 
-const FlowBlock = ({ diagram }) => {
+const FlowBlock = ({ data }) => {
+  const engine = React.useContext(EngineContext);
+  const diagram = engine.getDiagramByID(data.diagramID);
+
   if (!diagram) {
     return null;
   }
@@ -23,16 +25,4 @@ const FlowBlock = ({ diagram }) => {
   );
 };
 
-const mapStateToProps = {
-  diagram: diagramByIDSelector,
-};
-
-const mergeProps = ({ diagram: getDiagram }, _, { data }) => ({
-  diagram: data.diagramID && getDiagram(data.diagramID),
-});
-
-export default connect(
-  mapStateToProps,
-  null,
-  mergeProps
-)(FlowBlock);
+export default FlowBlock;

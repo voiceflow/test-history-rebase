@@ -115,3 +115,10 @@ export const cloneNodeGroup = ({ nodesWithData, ports, links }) => {
     links: clonedLinks,
   };
 };
+
+export const extractPoints = (canvas, start, end) => {
+  const startY = start.top + start.height / 2;
+  const endY = end.top + start.height / 2;
+
+  return [canvas.transformPoint([start.right, startY]), canvas.transformPoint([end.left, endY])];
+};

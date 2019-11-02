@@ -25,6 +25,8 @@ export * from './ShortcutModalContext';
 export * from './HelpModalContext';
 export * from './SettingsModalContext';
 export * from './NodeIDContext';
+export * from './PortIDContext';
+export * from './LinkIDContext';
 
 export const LinkLayerContext = React.createContext(null);
 export const { Provider: LinkLayerProvider, Consumer: LinkLayerConsumer } = LinkLayerContext;

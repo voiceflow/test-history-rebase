@@ -12,8 +12,8 @@ import { useImperativeApi } from '@/hooks';
 
 import CommandBlock from './components/CommandBlock';
 
-const HomeBlock = ({ isActive }, ref) => {
-  const { data, node } = useNode();
+const HomeBlock = (_, ref) => {
+  const { node, isHighlighted } = useNode();
   const engine = React.useContext(EngineContext);
   const isTesting = React.useContext(TestingModeContext);
   const nodeRef = useImperativeApi({ ref, nodeWithApi: true });
@@ -21,11 +21,11 @@ const HomeBlock = ({ isActive }, ref) => {
   const onAddCommand = () => {
     const newBlockID = cuid();
 
-    engine.node.addNested(data.nodeID, newBlockID, BlockType.COMMAND);
+    engine.node.addNested(node.id, newBlockID, BlockType.COMMAND);
   };
 
   return (
-    <GroupBlock isActive={isActive} addButton={!isTesting && <AddButton onClick={onAddCommand} tooltip="Add Command" />} ref={nodeRef}>
+    <GroupBlock isActive={isHighlighted} addButton={!isTesting && <AddButton onClick={onAddCommand} tooltip="Add Command" />} ref={nodeRef}>
       <GroupBlockSection label="Home" icon="home" tooltip="This is where your project begins">
         <NestedBlock.Container>
           <FlexCenter fullWidth>

@@ -6,9 +6,9 @@ import { getLinkIDsByPortID, patchNodeInState, removeAllLinksFromState } from '.
 
 const insertNestedNodeReducer = (state, { payload: { parentNodeID, nodeID, index } }) => {
   const parentNode = getNormalizedByKey(state.nodes, parentNodeID);
-
   const nextCombinedIDs = insert(parentNode.combinedNodes, index, nodeID);
   const isLast = index === nextCombinedIDs.length - 1;
+
   let removeLinks = [];
   if (isLast) {
     const combinedNodes = parentNode.combinedNodes;
@@ -16,11 +16,13 @@ const insertNestedNodeReducer = (state, { payload: { parentNodeID, nodeID, index
     const lastNode = getNormalizedByKey(state.nodes, lastNodeId);
     const lastNodeOutPortIDs = lastNode.ports.out;
     const lastNodeOutLinkIDs = lastNodeOutPortIDs.flatMap((portId) => getLinkIDsByPortID(state)(portId));
+
     removeLinks = lastNodeOutLinkIDs;
   } else {
     const node = getNormalizedByKey(state.nodes, nodeID);
     const outgoingPortIDs = [...node.ports.out];
     const nodeLinkIDs = outgoingPortIDs.flatMap((portId) => getLinkIDsByPortID(state)(portId));
+
     removeLinks = nodeLinkIDs;
   }
 

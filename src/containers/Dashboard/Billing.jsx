@@ -6,7 +6,7 @@ import { CardElement } from 'react-stripe-elements';
 
 import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
-import StripeHandler from '@/hocs/withStripeHandler';
+import { withStripe } from '@/hocs';
 
 const Invoice = ({ invoice }) => {
   if (!invoice) return null;
@@ -147,4 +147,4 @@ class Billing extends Component {
   }
 }
 
-export default StripeHandler(Billing);
+export default withStripe(Billing);

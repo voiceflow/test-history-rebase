@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { compose } from '@/utils/functional';
+
 import Test from './Test';
 import Variant from './Variant';
 
@@ -11,4 +13,8 @@ const StoryComponent = ({ Component }) => {
   );
 };
 
-export default (Component) => () => React.createElement(StoryComponent, { Component });
+export default (Component, ...hocs) => {
+  const ComponentToRender = hocs ? compose(...hocs)(Component) : Component;
+
+  return () => React.createElement(StoryComponent, { Component: ComponentToRender });
+};

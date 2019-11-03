@@ -11,7 +11,7 @@ import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
 import { setError } from '@/ducks/modal';
 import { createTeam, removeTrial, updateMembers } from '@/ducks/team';
-import StripeHandler from '@/hocs/withStripeHandler';
+import { withStripe } from '@/hocs';
 
 import { PLANS_ID } from './PLANS';
 import PricingCard from './PricingCard';
@@ -421,7 +421,7 @@ const mapDispatchToProps = {
   createTeam,
 };
 
-export default StripeHandler(
+export default withStripe(
   connect(
     null,
     mapDispatchToProps

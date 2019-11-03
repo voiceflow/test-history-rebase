@@ -7,8 +7,6 @@ import * as ICONS from '@/svgs';
 
 import SvgIcon from '.';
 
-jest.mock('@/svgs/mail.svg', () => (props) => <mock-mail-icon {...props} />);
-
 storiesOf('SvgIcon', module).add(
   'variants',
   createTestableStory(() => {

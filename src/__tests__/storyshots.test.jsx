@@ -1,12 +1,25 @@
+/* eslint-disable react/display-name */
+
 import 'jest-styled-components';
 
 import initStoryshots from '@storybook/addon-storyshots';
 import { mount, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import _ from 'lodash';
 import path from 'path';
+import React from 'react';
 
 import { Test, Variant } from '@/../.storybook';
 import { VariantContent } from '@/../.storybook/Variant';
+
+jest.mock('react-stripe-elements', () => ({
+  Elements: (props) => <mock-stripe-elements {...props} />,
+  CardElement: (props) => <mock-stripe-card-element {...props} />,
+  injectStripe: (Component) => (props) => <Component {...props} />,
+  StripeProvider: (props) => <mock-stripe-provider {...props} />,
+}));
+
+window.Stripe = _.constant('stripe');
 
 function getSnapshotFileName(context) {
   const fileName = context.fileName;

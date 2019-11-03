@@ -1,3 +1,7 @@
+import 'react-tippy/dist/tippy.css';
+
+import '@/App.css';
+
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 

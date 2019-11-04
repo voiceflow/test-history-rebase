@@ -15,6 +15,7 @@ import { userSelector } from '@/ducks/account';
 import { setConfirm, setError } from '@/ducks/modal';
 import { deleteTeam, getMembers, leaveTeam, removeTrial, updateCurrentTeamItem, updateMembers, updateTeamName } from '@/ducks/team';
 import { connect } from '@/hocs';
+import { swallowEvent } from '@/utils/dom';
 
 import Billing from './Billing';
 import { PLANS_ID } from './PLANS';
@@ -299,7 +300,13 @@ class TeamSettings extends Component {
             <label>Board Icon</label>
             {team.status === 0 ? (
               <div className="mb-3">
-                <img src="/images/icons/vf_logo.png" alt="Voiceflow" width={80} className="mt-2 mb-1 no-select" />
+                <img
+                  src="/images/icons/vf_logo.png"
+                  alt="Voiceflow"
+                  width={80}
+                  className="mt-2 mb-1 no-select"
+                  onDragStart={swallowEvent(null, true)}
+                />
                 <br />
                 <small className="text-muted">Upgrade this board under billing to add a custom image</small>
               </div>

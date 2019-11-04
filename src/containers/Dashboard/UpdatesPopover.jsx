@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import Markdown from 'markdown-to-jsx';
 import moment from 'moment';
 import React from 'react';
 
@@ -41,7 +42,10 @@ class UpdatesPopover extends React.Component {
                     <p className={cn('d-inline-block mb-0 ', class_mapping[entry.type].class)}>&bull; {class_mapping[entry.type].label}:&nbsp;</p>
                   )}
                   {/* eslint-disable-next-line xss/no-mixed-html */}
-                  <p className="d-inline-block mb-1" dangerouslySetInnerHTML={{ __html: entry.details }} />
+                  <div className="d-inline-block mb-1">
+                    <Markdown>{entry.details}</Markdown>
+                  </div>
+
                   <p className="text-secondary mb-0">{entry.created ? moment(entry.created).fromNow() : ''}</p>
                 </div>
                 {i !== product_updates.length - 1 && <hr className="w-100" />}

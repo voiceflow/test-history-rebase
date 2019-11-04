@@ -1,4 +1,5 @@
 import axios from 'axios/index';
+import Markdown from 'markdown-to-jsx';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -58,9 +59,38 @@ class ProductUpdates extends Component {
             </FormGroup>
             <FormGroup>
               <Label for="details">Enter your update here</Label>
-              <Input type="textarea" name="details" id="details" onChange={this.handleChange} maxLength={150} />
+              <Input
+                type="textarea"
+                name="details"
+                id="details"
+                placeholder="Checkout new **features** of [Voiceflow Creator](https://creator.voiceflow.com)"
+                onChange={this.handleChange}
+                maxLength={150}
+              />
             </FormGroup>
           </Form>
+
+          <div className="sample">
+            <h6>Sample update:</h6>
+            <hr />
+            <div className="wrapper">
+              <span>Input: </span>
+              <p className="code">Checkout new **features** of [Voiceflow Creator](https://creator.voiceflow.com)</p>
+            </div>
+            <div className="wrapper">
+              <span>Output: </span>
+              <p className="code">
+                <Markdown>Checkout new **features** of [Voiceflow Creator](https://creator.voiceflow.com)</Markdown>
+              </p>
+            </div>
+            <p>
+              Can also use - {/* eslint-disable-next-line react/jsx-no-target-blank */}
+              <a href="https://stackedit.io/app#" target="_blank">
+                Slack Markdown editor
+              </a>{' '}
+              (third-party)
+            </p>
+          </div>
 
           <Button isBtn isPrimary onClick={this.createNewUpdate}>
             Create New Update

@@ -34,8 +34,20 @@ function CanvasControls({ withMenu, withDrawer, goToRootDiagram, isRootDiagram, 
 
       <CanvasControlsContainer withMenu={withMenu} withDrawer={withDrawer}>
         <CanvasControlsZoom>
-          <IconButton icon="zoomIn" onClick={() => eventualEngine.get().canvas.zoomIn(ZOOM_DELTA)} />
-          <IconButton icon="zoomOut" onClick={() => eventualEngine.get().canvas.zoomOut(ZOOM_DELTA)} />
+          <IconButton
+            icon="zoomIn"
+            onClick={() => {
+              eventualEngine.get().canvas.applyTransition();
+              eventualEngine.get().canvas.zoomIn(ZOOM_DELTA);
+            }}
+          />
+          <IconButton
+            icon="zoomOut"
+            onClick={() => {
+              eventualEngine.get().canvas.applyTransition();
+              eventualEngine.get().canvas.zoomOut(ZOOM_DELTA);
+            }}
+          />
         </CanvasControlsZoom>
 
         <Tooltip distance={19} title="Go to Home" position="top">

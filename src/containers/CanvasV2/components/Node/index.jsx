@@ -103,10 +103,11 @@ export class Node extends React.PureComponent {
     }
   };
 
-  onMouseUp = () => {
+  onMouseUp = ({ detail }) => {
     const { engine, nodeID } = this.props;
 
-    if (this.dragDistance < MAX_CLICK_TRAVEL) {
+    // do not click in case double click event
+    if (this.dragDistance < MAX_CLICK_TRAVEL && detail !== 2) {
       this.onClick();
     } else if (engine.drag.isTarget(nodeID)) {
       this.onDrop();
@@ -148,7 +149,9 @@ export class Node extends React.PureComponent {
     }
   });
 
-  center = () => this.props.engine.node.center(this.props.nodeID);
+  onDoubleClick = () => {
+    this.props.engine.node.center(this.props.nodeID);
+  };
 
   componentDidMount() {
     this.props.engine.registerNode(this.props.node, this.api);
@@ -189,7 +192,7 @@ export class Node extends React.PureComponent {
         position={this.position}
         onMouseDown={this.onMouseDown}
         onContextMenu={this.onRightClick}
-        onDoubleClick={this.center}
+        onDoubleClick={this.onDoubleClick}
         ref={this.nodeRef}
         tabIndex={-1}
       >

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import RoundButton from '@/components/Button/RoundButton';
 import SvgIcon from '@/components/SvgIcon';
 import Dropdown from '@/componentsV2/Dropdown';
+import IconButton from '@/componentsV2/IconButton';
 import { ROOT_DIAGRAM_NAME } from '@/constants';
 import { goToDiagram, goToRootDiagram } from '@/ducks/router';
 import { connect } from '@/hocs';
@@ -23,14 +23,13 @@ function FlowBar({ withMenu, withDrawer, goToRootDiagram, flow, parentDiagrams, 
           }))}
         >
           {(ref, onToggle, isOpen) => (
-            <RoundButton
+            <IconButton
               icon="back"
-              variant="shadow"
+              variant="flat"
               active={isOpen}
               onClick={stopPropagation(parentDiagrams.length !== 0 && onToggle)}
               ref={ref}
               disabled={parentDiagrams.length === 0}
-              size={36}
             />
           )}
         </Dropdown>
@@ -50,14 +49,13 @@ function FlowBar({ withMenu, withDrawer, goToRootDiagram, flow, parentDiagrams, 
           }))}
         >
           {(ref, onToggle, isOpen) => (
-            <RoundButton
+            <IconButton
               icon="next"
-              variant="shadow"
+              variant="flat"
               active={isOpen}
               onClick={stopPropagation(childDiagrams.length !== 0 && onToggle)}
               ref={ref}
               disabled={childDiagrams.length === 0}
-              size={36}
             />
           )}
         </Dropdown>

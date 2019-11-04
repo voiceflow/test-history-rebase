@@ -9,16 +9,27 @@ export const SIZE = {
   large: 42,
 };
 
+const activeStyle = css`
+  ${importantStyles}
+
+  border: 1px solid #fff;
+  color: #5b9dfa;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+`;
+
 const IconButtonContainer = styled(ButtonContainer)`
   width: ${BUTTON_HEIGHT}px;
   border: 0;
   color: #8da2b5;
   background: #fff;
   border: 1px solid #fff;
-  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
 
   height: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
   width: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
+
+  &:active {
+    ${activeStyle}
+  }
 
   ${({ disabled }) =>
     disabled
@@ -31,15 +42,7 @@ const IconButtonContainer = styled(ButtonContainer)`
           }
         `}
 
-  &:active {
-    ${importantStyles}
-
-    border: 1px solid #fff;
-    color: #5b9dfa;
-    box-shadow: 0 0 0 1px #5b9dfa99;
-  }
-
-  ${({ variant }) => {
+  ${({ variant }) =>
     variant === 'flat'
       ? css`
           background: inherit;
@@ -47,8 +50,9 @@ const IconButtonContainer = styled(ButtonContainer)`
       : css`
           box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
           ${transition()}
-        `;
-  }}
+        `}
+
+  ${({ active }) => active && activeStyle}
 `;
 
 export default IconButtonContainer;

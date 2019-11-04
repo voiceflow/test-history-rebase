@@ -1,9 +1,9 @@
 import React from 'react';
 import { Input } from 'reactstrap';
 
-import RoundButton from '@/components/Button/RoundButton';
 import { User } from '@/components/User/User';
 import Dropdown from '@/componentsV2/Dropdown';
+import IconButton from '@/componentsV2/IconButton';
 
 const MemberRow = ({ member, admin, user, confirm, update, remove }) => {
   const IS_ADMIN = admin === user;
@@ -85,7 +85,7 @@ const MemberRow = ({ member, admin, user, confirm, update, remove }) => {
         <div className="horizontal-center">{info}</div>
         {IS_ADMIN && user !== member.creator_id && (
           <Dropdown options={options} placement="bottom-end">
-            {(ref, onToggle, isOpen) => <RoundButton icon="elipsis" variant="shadow" active={isOpen} imgSize={15} onClick={onToggle} ref={ref} />}
+            {(ref, onToggle, isOpen) => <IconButton icon="elipsis" variant="flat" active={isOpen} size={15} onClick={onToggle} ref={ref} large />}
           </Dropdown>
         )}
         {member.status === 100 && <label className="text-muted mr-2">OWNER</label>}

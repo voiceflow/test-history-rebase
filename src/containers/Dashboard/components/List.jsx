@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 
 import Button from '@/components/Button';
-import RoundButton from '@/components/Button/RoundButton';
 import Form from '@/components/Form';
 import Dropdown from '@/componentsV2/Dropdown';
+import IconButton from '@/componentsV2/IconButton';
 import { ScrollContextProvider } from '@/contexts';
 import withDraggable from '@/hocs/withDraggable';
 import { useHorizontalScrollToNode, useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
@@ -129,7 +129,7 @@ export function List(props) {
                     placement="bottom-end"
                   >
                     {(ref, onToggle, isOpen) => (
-                      <RoundButton icon="elipsis" variant="shadow" active={isOpen} imgSize={15} onClick={onToggle} ref={ref} />
+                      <IconButton icon="elipsis" variant="flat" active={isOpen} size={15} onClick={onToggle} ref={ref} large />
                     )}
                   </Dropdown>
                 </div>

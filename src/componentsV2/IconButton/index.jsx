@@ -12,14 +12,15 @@ const ICON_BUTTON_CONTAINERS = {
   outline: OutlineContainer,
 };
 
-function IconButton({ icon, size, ref, ...props }) {
+// eslint-disable-next-line react/display-name
+const IconButton = React.forwardRef(({ icon, size, iconProps, ...props }, ref) => {
   const IconButtonContainer = ICON_BUTTON_CONTAINERS[props.variant] || Container;
 
   return (
     <IconButtonContainer ref={ref} {...props}>
-      <SvgIcon icon={icon} color="currentColor" size={size} />
+      <SvgIcon icon={icon} color="currentColor" size={size} {...iconProps} />
     </IconButtonContainer>
   );
-}
+});
 
 export default IconButton;

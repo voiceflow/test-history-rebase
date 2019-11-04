@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import RoundButton from '@/components/Button/RoundButton';
 import SvgIcon from '@/components/SvgIcon';
 import Dropdown from '@/componentsV2/Dropdown';
+import IconButton from '@/componentsV2/IconButton';
 import { PRODUCT_TYPES } from '@/containers/Business/Product/GuidedSteps/PricingModel';
 import { copyProduct, deleteProduct } from '@/ducks/product';
 import { goToEditProduct } from '@/ducks/router';
@@ -67,7 +67,7 @@ function ProductCard({
 
       <Dropdown options={options}>
         {(ref, onToggle, isOpen) => (
-          <RoundButton icon="elipsis" variant="shadow" active={isOpen} imgSize={15} onClick={stopPropagation(onToggle)} ref={ref} />
+          <IconButton icon="elipsis" variant="flat" active={isOpen} size={15} onClick={stopPropagation(onToggle)} ref={ref} />
         )}
       </Dropdown>
 

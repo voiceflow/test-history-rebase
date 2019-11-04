@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import React from 'react';
 
 import { Variant, createTestableStory } from '@/../.storybook';
-import RoundButton from '@/components/Button/RoundButton';
+import IconButton from '@/componentsV2/IconButton';
 
 import Dropdown from '.';
 
@@ -39,13 +39,13 @@ storiesOf('Regular Dropdown', module).add(
       <>
         <Variant label="Round Button w/ Options Menu">
           <Dropdown options={MENU_OPTIONS(options)} placement={placement}>
-            {(ref, onToggle) => <RoundButton icon="back" imgSize={15} onClick={onToggle} innerRef={ref} />}
+            {(ref, onToggle, isOpen) => <IconButton active={isOpen} variant="flat" icon="back" size={15} onClick={onToggle} ref={ref} />}
           </Dropdown>
         </Variant>
 
         <Variant label="Round Button w/ Custom Menu">
           <Dropdown menu={<h1>This is a custom menu</h1>} placement={placement}>
-            {(ref, onToggle) => <RoundButton icon="back" imgSize={15} onClick={onToggle} innerRef={ref} />}
+            {(ref, onToggle, isOpen) => <IconButton active={isOpen} variant="flat" icon="back" size={15} onClick={onToggle} ref={ref} />}
           </Dropdown>
         </Variant>
 

@@ -5,10 +5,10 @@ import { IntercomAPI } from 'react-intercom';
 import { Tooltip } from 'react-tippy';
 
 import client from '@/client';
-import RoundButton from '@/components/Button/RoundButton';
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import Header from '@/components/Header';
 import Dropdown from '@/componentsV2/Dropdown';
+import IconButton from '@/componentsV2/IconButton';
 import { MenuContainer } from '@/componentsV2/Menu';
 import { TestingModeProvider } from '@/containers/CanvasV2/contexts';
 import Testing from '@/containers/Testing';
@@ -102,7 +102,7 @@ class UserTesting extends React.Component {
               <Dropdown menu={this.renderBody} placement="bottom-end" selfDismiss>
                 {(ref, onToggle, isOpen) => (
                   <Tooltip className="top-nav-icon" title="Share" position="bottom" distance={16}>
-                    <RoundButton variant="color" color="#5b9dfa" active={isOpen} size={44} icon="share" onClick={onToggle} imgSize={15} ref={ref} />
+                    <IconButton variant="action" color="#5b9dfa" active={isOpen} large icon="share" onClick={onToggle} size={16} ref={ref} />
                   </Tooltip>
                 )}
               </Dropdown>

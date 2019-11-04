@@ -3,10 +3,10 @@ import { Tooltip } from 'react-tippy';
 import styled from 'styled-components';
 
 import Button from '@/components/Button';
-import RoundButton from '@/components/Button/RoundButton';
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import { Spinner } from '@/components/Spinner';
 import Dropdown from '@/componentsV2/Dropdown';
+import IconButton from '@/componentsV2/IconButton';
 import { MenuContainer } from '@/componentsV2/Menu';
 import { userSelector } from '@/ducks/account';
 import { setConfirm } from '@/ducks/modal';
@@ -79,9 +79,9 @@ const TestingHeader = (props) => {
       <Dropdown menu={() => <ShareMenuContainer>{renderBody()}</ShareMenuContainer>} placement="bottom" selfDismiss>
         {(ref, onToggle, isOpen) => (
           <Tooltip title="Share Test" position="bottom">
-            <RoundButton
+            <IconButton
               active={isOpen}
-              variant="color"
+              variant="action"
               color="#5b9dfa"
               icon="share"
               onClick={() => {
@@ -90,8 +90,9 @@ const TestingHeader = (props) => {
                 }
                 onToggle();
               }}
-              imgSize={16}
+              size={16}
               ref={ref}
+              large
             />
           </Tooltip>
         )}

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import RoundButton from '@/components/Button/RoundButton';
 import SvgIcon from '@/components/SvgIcon';
 import Dropdown from '@/componentsV2/Dropdown';
+import IconButton from '@/componentsV2/IconButton';
 import Menu, { MenuItem } from '@/componentsV2/Menu';
 import { IS_PRODUCTION, YOUTUBE_CHANNEL_ID } from '@/config';
 import { goToDesigner } from '@/ducks/router';
@@ -32,7 +32,7 @@ function RightNavSection({
     <>
       {!IS_PRODUCTION && (
         <div className="subheader-right nav-child-item" onClick={goToDesigner}>
-          <RoundButton icon="star" imgSize={15} />
+          <IconButton icon="star" size={15} large variant="outline" />
         </div>
       )}
 
@@ -70,15 +70,17 @@ function RightNavSection({
                   </>
                 ) : (
                   // else just show button with notifications icon
-                  <RoundButton
+                  <IconButton
                     ref={ref}
+                    variant="outline"
                     active={isOpen}
                     icon="notifications"
                     onClick={() => {
                       onToggle();
                       updateButtonClick();
                     }}
-                    imgSize={15}
+                    iconProps={{ width: 16, height: 15 }}
+                    large
                   />
                 )}
               </div>
@@ -106,9 +108,17 @@ function RightNavSection({
             </Menu>
           }
         >
-          {(ref, onToggle) => (
+          {(ref, onToggle, isOpen) => (
             <Tooltip distance={19} title="Resources" position="bottom">
-              <RoundButton icon="information" imgSize={15} onClick={onToggle} ref={ref} />
+              <IconButton
+                active={isOpen}
+                variant="outline"
+                icon="information"
+                iconProps={{ width: 16, height: 15 }}
+                onClick={onToggle}
+                ref={ref}
+                large
+              />
             </Tooltip>
           )}
         </Dropdown>

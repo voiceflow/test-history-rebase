@@ -10,9 +10,9 @@ exports[`Storyshots Menu variants: basic 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-hSdWYo",
+          "componentId": "sc-iAyFgw",
           "isStatic": false,
-          "lastClassName": "cweWCk",
+          "lastClassName": "frjNSd",
           "rules": Array [
             "
   ",
@@ -53,7 +53,7 @@ exports[`Storyshots Menu variants: basic 1`] = `
         "displayName": "styled.ul",
         "foldedComponentIds": Array [],
         "render": [Function],
-        "styledComponentId": "sc-hSdWYo",
+        "styledComponentId": "sc-iAyFgw",
         "target": "ul",
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -63,10 +63,10 @@ exports[`Storyshots Menu variants: basic 1`] = `
     forwardedRef={
       Object {
         "current": <ul
-          class="sc-hSdWYo cweWCk"
+          class="sc-iAyFgw frjNSd"
         >
           <div
-            class="sc-eNQAEJ WHaNR"
+            class="sc-jKJlTe krKQme"
           >
             <div
               class="scrollbars"
@@ -134,7 +134,7 @@ exports[`Storyshots Menu variants: basic 1`] = `
     nativeScrollbar={true}
   >
     <ul
-      className="sc-hSdWYo cweWCk"
+      className="sc-iAyFgw frjNSd"
     >
       <styled.div>
         <StyledComponent
@@ -143,9 +143,9 @@ exports[`Storyshots Menu variants: basic 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-eNQAEJ",
+                "componentId": "sc-jKJlTe",
                 "isStatic": false,
-                "lastClassName": "WHaNR",
+                "lastClassName": "krKQme",
                 "rules": Array [
                   "
   ",
@@ -180,7 +180,7 @@ exports[`Storyshots Menu variants: basic 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-eNQAEJ",
+              "styledComponentId": "sc-jKJlTe",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -190,7 +190,7 @@ exports[`Storyshots Menu variants: basic 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-eNQAEJ WHaNR"
+            className="sc-jKJlTe krKQme"
           >
             <Scrollbars
               autoHeight={true}
@@ -656,9 +656,9 @@ exports[`Storyshots Menu variants: scrolling 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-hSdWYo",
+          "componentId": "sc-iAyFgw",
           "isStatic": false,
-          "lastClassName": "cweWCk",
+          "lastClassName": "frjNSd",
           "rules": Array [
             "
   ",
@@ -699,7 +699,7 @@ exports[`Storyshots Menu variants: scrolling 1`] = `
         "displayName": "styled.ul",
         "foldedComponentIds": Array [],
         "render": [Function],
-        "styledComponentId": "sc-hSdWYo",
+        "styledComponentId": "sc-iAyFgw",
         "target": "ul",
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -709,10 +709,10 @@ exports[`Storyshots Menu variants: scrolling 1`] = `
     forwardedRef={
       Object {
         "current": <ul
-          class="sc-hSdWYo cweWCk"
+          class="sc-iAyFgw frjNSd"
         >
           <div
-            class="sc-eNQAEJ WHaNR"
+            class="sc-jKJlTe krKQme"
           >
             <div
               class="scrollbars"
@@ -924,7 +924,7 @@ exports[`Storyshots Menu variants: scrolling 1`] = `
     nativeScrollbar={true}
   >
     <ul
-      className="sc-hSdWYo cweWCk"
+      className="sc-iAyFgw frjNSd"
     >
       <styled.div>
         <StyledComponent
@@ -933,9 +933,9 @@ exports[`Storyshots Menu variants: scrolling 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-eNQAEJ",
+                "componentId": "sc-jKJlTe",
                 "isStatic": false,
-                "lastClassName": "WHaNR",
+                "lastClassName": "krKQme",
                 "rules": Array [
                   "
   ",
@@ -970,7 +970,7 @@ exports[`Storyshots Menu variants: scrolling 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-eNQAEJ",
+              "styledComponentId": "sc-jKJlTe",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -980,7 +980,7 @@ exports[`Storyshots Menu variants: scrolling 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-eNQAEJ WHaNR"
+            className="sc-jKJlTe krKQme"
           >
             <Scrollbars
               autoHeight={true}
@@ -2790,9 +2790,9 @@ exports[`Storyshots Menu variants: thin 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-hSdWYo",
+          "componentId": "sc-iAyFgw",
           "isStatic": false,
-          "lastClassName": "cweWCk",
+          "lastClassName": "frjNSd",
           "rules": Array [
             "
   ",
@@ -2833,7 +2833,7 @@ exports[`Storyshots Menu variants: thin 1`] = `
         "displayName": "styled.ul",
         "foldedComponentIds": Array [],
         "render": [Function],
-        "styledComponentId": "sc-hSdWYo",
+        "styledComponentId": "sc-iAyFgw",
         "target": "ul",
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -2843,10 +2843,10 @@ exports[`Storyshots Menu variants: thin 1`] = `
     forwardedRef={
       Object {
         "current": <ul
-          class="sc-hSdWYo cweWCk"
+          class="sc-iAyFgw frjNSd"
         >
           <div
-            class="sc-eNQAEJ WHaNR"
+            class="sc-jKJlTe krKQme"
           >
             <div
               class="scrollbars"
@@ -2914,7 +2914,7 @@ exports[`Storyshots Menu variants: thin 1`] = `
     nativeScrollbar={true}
   >
     <ul
-      className="sc-hSdWYo cweWCk"
+      className="sc-iAyFgw frjNSd"
     >
       <styled.div>
         <StyledComponent
@@ -2923,9 +2923,9 @@ exports[`Storyshots Menu variants: thin 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-eNQAEJ",
+                "componentId": "sc-jKJlTe",
                 "isStatic": false,
-                "lastClassName": "WHaNR",
+                "lastClassName": "krKQme",
                 "rules": Array [
                   "
   ",
@@ -2960,7 +2960,7 @@ exports[`Storyshots Menu variants: thin 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-eNQAEJ",
+              "styledComponentId": "sc-jKJlTe",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -2970,7 +2970,7 @@ exports[`Storyshots Menu variants: thin 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-eNQAEJ WHaNR"
+            className="sc-jKJlTe krKQme"
           >
             <Scrollbars
               autoHeight={true}
@@ -3436,9 +3436,9 @@ exports[`Storyshots Menu variants: wide 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-hSdWYo",
+          "componentId": "sc-iAyFgw",
           "isStatic": false,
-          "lastClassName": "cweWCk",
+          "lastClassName": "frjNSd",
           "rules": Array [
             "
   ",
@@ -3479,7 +3479,7 @@ exports[`Storyshots Menu variants: wide 1`] = `
         "displayName": "styled.ul",
         "foldedComponentIds": Array [],
         "render": [Function],
-        "styledComponentId": "sc-hSdWYo",
+        "styledComponentId": "sc-iAyFgw",
         "target": "ul",
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -3489,10 +3489,10 @@ exports[`Storyshots Menu variants: wide 1`] = `
     forwardedRef={
       Object {
         "current": <ul
-          class="sc-hSdWYo cweWCk"
+          class="sc-iAyFgw frjNSd"
         >
           <div
-            class="sc-eNQAEJ WHaNR"
+            class="sc-jKJlTe krKQme"
           >
             <div
               class="scrollbars"
@@ -3560,7 +3560,7 @@ exports[`Storyshots Menu variants: wide 1`] = `
     nativeScrollbar={true}
   >
     <ul
-      className="sc-hSdWYo cweWCk"
+      className="sc-iAyFgw frjNSd"
     >
       <styled.div>
         <StyledComponent
@@ -3569,9 +3569,9 @@ exports[`Storyshots Menu variants: wide 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-eNQAEJ",
+                "componentId": "sc-jKJlTe",
                 "isStatic": false,
-                "lastClassName": "WHaNR",
+                "lastClassName": "krKQme",
                 "rules": Array [
                   "
   ",
@@ -3606,7 +3606,7 @@ exports[`Storyshots Menu variants: wide 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-eNQAEJ",
+              "styledComponentId": "sc-jKJlTe",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -3616,7 +3616,7 @@ exports[`Storyshots Menu variants: wide 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-eNQAEJ WHaNR"
+            className="sc-jKJlTe krKQme"
           >
             <Scrollbars
               autoHeight={true}

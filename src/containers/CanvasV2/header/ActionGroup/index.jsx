@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import RoundButton from '@/components/Button/RoundButton';
+import IconButton from '@/componentsV2/IconButton';
 import { PlatformType } from '@/constants';
 import { SettingsModalConsumer } from '@/containers/CanvasV2/contexts/SettingsModalContext';
 import ShareTest from '@/containers/Testing/ShareTest';
@@ -27,7 +27,7 @@ function ActionGroup(props) {
         <SettingsModalConsumer>
           {({ isEnabled, toggle }) => (
             <Tooltip title="Settings" position="bottom">
-              <RoundButton active={isEnabled} icon="cog" onClick={toggle} imgSize={15} />
+              <IconButton active={isEnabled} variant="outline" icon="cog" onClick={toggle} iconProps={{ width: 16, height: 15 }} large />
             </Tooltip>
           )}
         </SettingsModalConsumer>

@@ -15,7 +15,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "ActionIconButtonContainer-sc-1imkol5-0",
           "isStatic": false,
-          "lastClassName": "drohIF",
+          "lastClassName": "jgIsvl",
           "rules": Array [
             "
   ",
@@ -67,7 +67,6 @@ exports[`Storyshots Icon Button variants: action 1`] = `
   color: #8da2b5;
   background: #fff;
   border: 1px solid #fff;
-  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
 
   height: ",
             [Function],
@@ -76,19 +75,27 @@ exports[`Storyshots Icon Button variants: action 1`] = `
             [Function],
             ";
 
+  &:active {
+    ",
+            "
+  ",
+            "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
+            "
+
+  border: 1px solid #fff;
+  color: #5b9dfa;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+",
+            "
+  }
+
   ",
             [Function],
             "
 
-  &:active {
-    ",
-            "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
+  ",
+            [Function],
             "
-
-    border: 1px solid #fff;
-    color: #5b9dfa;
-    box-shadow: 0 0 0 1px #5b9dfa99;
-  }
 
   ",
             [Function],
@@ -118,7 +125,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
     variant="action"
   >
     <button
-      className="sc-bdVaJa sc-bxivhb sc-ifAKCX ActionIconButtonContainer-sc-1imkol5-0 drohIF"
+      className="sc-bdVaJa sc-bxivhb sc-ifAKCX ActionIconButtonContainer-sc-1imkol5-0 jgIsvl"
       disabled={false}
       onClick={[Function]}
     >
@@ -196,7 +203,7 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "sc-ifAKCX",
           "isStatic": false,
-          "lastClassName": "kPAYOO",
+          "lastClassName": "keVtQN",
           "rules": Array [
             "
   ",
@@ -248,7 +255,6 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
   color: #8da2b5;
   background: #fff;
   border: 1px solid #fff;
-  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
 
   height: ",
             [Function],
@@ -257,19 +263,27 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
             [Function],
             ";
 
+  &:active {
+    ",
+            "
+  ",
+            "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
+            "
+
+  border: 1px solid #fff;
+  color: #5b9dfa;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+",
+            "
+  }
+
   ",
             [Function],
             "
 
-  &:active {
-    ",
-            "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
+  ",
+            [Function],
             "
-
-    border: 1px solid #fff;
-    color: #5b9dfa;
-    box-shadow: 0 0 0 1px #5b9dfa99;
-  }
 
   ",
             [Function],
@@ -295,7 +309,7 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
     variant="flat"
   >
     <button
-      className="sc-bdVaJa sc-bxivhb sc-ifAKCX kPAYOO"
+      className="sc-bdVaJa sc-bxivhb sc-ifAKCX keVtQN"
       disabled={false}
       onClick={[Function]}
     >
@@ -372,7 +386,7 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "sc-ifAKCX",
           "isStatic": false,
-          "lastClassName": "kPAYOO",
+          "lastClassName": "keVtQN",
           "rules": Array [
             "
   ",
@@ -424,7 +438,6 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
   color: #8da2b5;
   background: #fff;
   border: 1px solid #fff;
-  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
 
   height: ",
             [Function],
@@ -433,19 +446,27 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
             [Function],
             ";
 
+  &:active {
+    ",
+            "
+  ",
+            "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
+            "
+
+  border: 1px solid #fff;
+  color: #5b9dfa;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+",
+            "
+  }
+
   ",
             [Function],
             "
 
-  &:active {
-    ",
-            "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
+  ",
+            [Function],
             "
-
-    border: 1px solid #fff;
-    color: #5b9dfa;
-    box-shadow: 0 0 0 1px #5b9dfa99;
-  }
 
   ",
             [Function],
@@ -470,7 +491,7 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
     onClick={[Function]}
   >
     <button
-      className="sc-bdVaJa sc-bxivhb sc-ifAKCX kPAYOO"
+      className="sc-bdVaJa sc-bxivhb sc-ifAKCX dGDbTb"
       disabled={false}
       onClick={[Function]}
     >

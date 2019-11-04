@@ -29,131 +29,143 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
       setReferenceNode={[Function]}
     >
       <ForwardRef
-        disabled={false}
+        active={false}
         icon="back"
-        imgSize={15}
-        innerRef={[Function]}
         onClick={[Function]}
-        size={42}
-        variant="plain"
+        size={15}
+        variant="flat"
       >
-        <styled.button
-          disabled={false}
-          icon="back"
-          imgSize={15}
-          innerRef={[Function]}
+        <Styled(Styled(styled.button))
+          active={false}
           onClick={[Function]}
-          size={42}
-          variant="plain"
+          variant="flat"
         >
           <StyledComponent
-            disabled={false}
+            active={false}
             forwardedComponent={
               Object {
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "sc-jKJlTe",
+                  "componentId": "sc-ifAKCX",
                   "isStatic": false,
-                  "lastClassName": "jjiYUQ",
+                  "lastClassName": "keVtQN",
                   "rules": Array [
                     "
   ",
+                    "
+  ",
+                    "display:",
+                    [Function],
+                    ";align-items:center;",
+                    [Function],
+                    " ",
+                    [Function],
+                    " justify-content:center;",
+                    "
+  ",
                     [Function],
                     "
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  z-index: 1;
-  background: ",
-                    [Function],
-                    ";
-  border: ",
-                    [Function],
-                    ";
-  border-radius: 50%;
-  text-align: center;
+
   padding: 0;
-  ",
-                    [Function],
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+                    "
+",
                     "
   ",
-                    [Function],
-                    ";
-  ",
-                    [Function],
                     "
-  color: ",
+  height: ",
+                    "42",
+                    "px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: ",
                     [Function],
                     ";
-  background-image: ",
+",
+                    "
+",
+                    "
+  width: ",
+                    "42",
+                    "px;
+  border: 0;
+  color: #8da2b5;
+  background: #fff;
+  border: 1px solid #fff;
+
+  height: ",
+                    [Function],
+                    ";
+  width: ",
                     [Function],
                     ";
 
-  &:disabled {
-    opacity: 0.5;
-  }
-
-  &:hover {
-    ",
-                    [Function],
-                    "
-  }
-  ",
-                    [Function],
-                    "
   &:active {
     ",
                     "
-  background-color: #eef4f6cc;
-  color: #6e849a;
+  ",
+                    "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
+                    "
+
+  border: 1px solid #fff;
+  color: #5b9dfa;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+",
+                    "
+  }
+
+  ",
+                    [Function],
+                    "
+
+  ",
+                    [Function],
+                    "
 
   ",
                     [Function],
                     "
 ",
-                    "
-  }
-",
                   ],
                 },
-                "displayName": "styled.button",
-                "foldedComponentIds": Array [],
+                "displayName": "Styled(Styled(styled.button))",
+                "foldedComponentIds": Array [
+                  "sc-bdVaJa",
+                  "sc-bxivhb",
+                ],
                 "render": [Function],
-                "styledComponentId": "sc-jKJlTe",
+                "styledComponentId": "sc-ifAKCX",
                 "target": "button",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
                 "withComponent": [Function],
               }
             }
-            forwardedRef={null}
-            icon="back"
-            imgSize={15}
-            innerRef={[Function]}
+            forwardedRef={[Function]}
             onClick={[Function]}
-            size={42}
-            variant="plain"
+            variant="flat"
           >
             <button
-              className="sc-jKJlTe jjiYUQ"
-              disabled={false}
+              className="sc-bdVaJa sc-bxivhb sc-ifAKCX keVtQN"
               onClick={[Function]}
-              size={42}
             >
               <ForwardRef
                 color="currentColor"
-                height={15}
                 icon="back"
-                width={15}
+                size={15}
               >
                 <SvgIcon__SvgIconContainer
                   color="currentColor"
-                  height={15}
-                  size={16}
-                  width={15}
+                  size={15}
                 >
                   <StyledComponent
                     color="currentColor"
@@ -189,16 +201,12 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                       }
                     }
                     forwardedRef={null}
-                    height={15}
-                    size={16}
-                    width={15}
+                    size={15}
                   >
                     <span
                       className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dYyJmx"
                       color="currentColor"
-                      height={15}
-                      size={16}
-                      width={15}
+                      size={15}
                     >
                       <test-file-stub />
                     </span>
@@ -207,7 +215,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
               </ForwardRef>
             </button>
           </StyledComponent>
-        </styled.button>
+        </Styled(Styled(styled.button))>
       </ForwardRef>
     </InnerReference>
   </Reference>
@@ -224,131 +232,143 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
       setReferenceNode={[Function]}
     >
       <ForwardRef
-        disabled={false}
+        active={false}
         icon="back"
-        imgSize={15}
-        innerRef={[Function]}
         onClick={[Function]}
-        size={42}
-        variant="plain"
+        size={15}
+        variant="flat"
       >
-        <styled.button
-          disabled={false}
-          icon="back"
-          imgSize={15}
-          innerRef={[Function]}
+        <Styled(Styled(styled.button))
+          active={false}
           onClick={[Function]}
-          size={42}
-          variant="plain"
+          variant="flat"
         >
           <StyledComponent
-            disabled={false}
+            active={false}
             forwardedComponent={
               Object {
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "sc-jKJlTe",
+                  "componentId": "sc-ifAKCX",
                   "isStatic": false,
-                  "lastClassName": "jjiYUQ",
+                  "lastClassName": "keVtQN",
                   "rules": Array [
                     "
   ",
+                    "
+  ",
+                    "display:",
+                    [Function],
+                    ";align-items:center;",
+                    [Function],
+                    " ",
+                    [Function],
+                    " justify-content:center;",
+                    "
+  ",
                     [Function],
                     "
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  z-index: 1;
-  background: ",
-                    [Function],
-                    ";
-  border: ",
-                    [Function],
-                    ";
-  border-radius: 50%;
-  text-align: center;
+
   padding: 0;
-  ",
-                    [Function],
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+                    "
+",
                     "
   ",
-                    [Function],
-                    ";
-  ",
-                    [Function],
                     "
-  color: ",
+  height: ",
+                    "42",
+                    "px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: ",
                     [Function],
                     ";
-  background-image: ",
+",
+                    "
+",
+                    "
+  width: ",
+                    "42",
+                    "px;
+  border: 0;
+  color: #8da2b5;
+  background: #fff;
+  border: 1px solid #fff;
+
+  height: ",
+                    [Function],
+                    ";
+  width: ",
                     [Function],
                     ";
 
-  &:disabled {
-    opacity: 0.5;
-  }
-
-  &:hover {
-    ",
-                    [Function],
-                    "
-  }
-  ",
-                    [Function],
-                    "
   &:active {
     ",
                     "
-  background-color: #eef4f6cc;
-  color: #6e849a;
+  ",
+                    "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
+                    "
+
+  border: 1px solid #fff;
+  color: #5b9dfa;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+",
+                    "
+  }
+
+  ",
+                    [Function],
+                    "
+
+  ",
+                    [Function],
+                    "
 
   ",
                     [Function],
                     "
 ",
-                    "
-  }
-",
                   ],
                 },
-                "displayName": "styled.button",
-                "foldedComponentIds": Array [],
+                "displayName": "Styled(Styled(styled.button))",
+                "foldedComponentIds": Array [
+                  "sc-bdVaJa",
+                  "sc-bxivhb",
+                ],
                 "render": [Function],
-                "styledComponentId": "sc-jKJlTe",
+                "styledComponentId": "sc-ifAKCX",
                 "target": "button",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
                 "withComponent": [Function],
               }
             }
-            forwardedRef={null}
-            icon="back"
-            imgSize={15}
-            innerRef={[Function]}
+            forwardedRef={[Function]}
             onClick={[Function]}
-            size={42}
-            variant="plain"
+            variant="flat"
           >
             <button
-              className="sc-jKJlTe jjiYUQ"
-              disabled={false}
+              className="sc-bdVaJa sc-bxivhb sc-ifAKCX keVtQN"
               onClick={[Function]}
-              size={42}
             >
               <ForwardRef
                 color="currentColor"
-                height={15}
                 icon="back"
-                width={15}
+                size={15}
               >
                 <SvgIcon__SvgIconContainer
                   color="currentColor"
-                  height={15}
-                  size={16}
-                  width={15}
+                  size={15}
                 >
                   <StyledComponent
                     color="currentColor"
@@ -384,16 +404,12 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                       }
                     }
                     forwardedRef={null}
-                    height={15}
-                    size={16}
-                    width={15}
+                    size={15}
                   >
                     <span
                       className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dYyJmx"
                       color="currentColor"
-                      height={15}
-                      size={16}
-                      width={15}
+                      size={15}
                     >
                       <test-file-stub />
                     </span>
@@ -402,7 +418,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
               </ForwardRef>
             </button>
           </StyledComponent>
-        </styled.button>
+        </Styled(Styled(styled.button))>
       </ForwardRef>
     </InnerReference>
   </Reference>

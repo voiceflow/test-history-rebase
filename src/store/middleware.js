@@ -11,9 +11,9 @@ import { allIntentsSelector } from '@/ducks/intent';
 // import { sendRealtimeUpdate } from '@/ducks/realtime';
 import { SET_ACTIVE_SKILL, activePlatformSelector, activeSkillSelector, globalVariablesSelector, saveIntents, saveVariables } from '@/ducks/skill';
 import { allSlotsSelector } from '@/ducks/slot';
-import { variableSetSelector } from '@/ducks/variableSet';
+import { REPLACE_VARIABLE_SET, activeDiagramVariables, saveActiveDiagramVariables } from '@/ducks/variableSet';
 
-import { savePlatformAndActiveDiagram, saveVariableSets } from './sideEffects';
+import { savePlatformAndActiveDiagram } from './sideEffects';
 
 const CREATOR_AUTOSAVE_DEBOUNCE_TIMEOUT = 200;
 const CREATOR_AUTOSAVE_IGNORED_ACTIONS = [INITIALIZE_CREATOR, RESET_CREATOR];
@@ -54,8 +54,11 @@ const createMiddleware = (history) => {
     createAutosaveMiddleware((state) => ({ creator: creatorStateSelector(state) }), saveActiveDiagram, CREATOR_AUTOSAVE_IGNORED_ACTIONS),
     createAutosaveMiddleware((state) => ({ intent: allIntentsSelector(state), slot: allSlotsSelector(state) }), saveIntents),
     createAutosaveMiddleware((state) => ({ platform: activePlatformSelector(state) }), savePlatformAndActiveDiagram, [SET_ACTIVE_SKILL]),
-    createAutosaveMiddleware((state) => ({ variables: globalVariablesSelector(state) }), saveVariables),
-    createAutosaveMiddleware((state) => ({ variableSets: variableSetSelector(state) }), saveVariableSets),
+    createAutosaveMiddleware((state) => ({ variables: globalVariablesSelector(state) }), saveVariables, [SET_ACTIVE_SKILL]),
+    createAutosaveMiddleware((state) => ({ diagramVariables: activeDiagramVariables(state) }), saveActiveDiagramVariables, [
+      REPLACE_VARIABLE_SET,
+      INITIALIZE_CREATOR,
+    ]),
     realtimeMiddleware,
   ];
 

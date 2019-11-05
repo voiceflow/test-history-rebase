@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 import client from '@/client';
+import { creatorDiagramIDSelector } from '@/ducks/creator';
 import { hasIdenticalMembers, withoutValue } from '@/utils/array';
 
 import { createAction, createPureReducer, createRootSelector } from './utils';
@@ -9,9 +10,9 @@ export const STATE_KEY = 'variableSet';
 
 // actions
 
-const ADD_VARIABLE = 'VARIABLE:ADD';
-const REMOVE_VARIABLE = 'VARIABLE:REMOVE';
-const REPLACE_VARIABLE_SET = 'VARIABLE_SET:REPLACE';
+export const ADD_VARIABLE = 'VARIABLE:ADD';
+export const REMOVE_VARIABLE = 'VARIABLE:REMOVE';
+export const REPLACE_VARIABLE_SET = 'VARIABLE_SET:REPLACE';
 
 // reducers
 
@@ -66,6 +67,12 @@ export const hasVariablesByDiagramIDSelector = createSelector(
   (variables) => (diagramID) => !!variables(diagramID).length
 );
 
+export const activeDiagramVariables = createSelector(
+  creatorDiagramIDSelector,
+  variablesByDiagramIDSelector,
+  (diagramID, variablesByDiagramID) => variablesByDiagramID(diagramID)
+);
+
 // action creators
 
 export const replaceVariableSet = (diagramID, variables) => createAction(REPLACE_VARIABLE_SET, { diagramID, variables });
@@ -93,4 +100,9 @@ export const saveVariableSet = (diagramID) => async (dispatch, getState) => {
   if (!hasIdenticalMembers(remoteDiagramVariables, variables)) {
     await client.diagram.updateVariables(diagramID, variables);
   }
+};
+
+export const saveActiveDiagramVariables = () => async (dispatch, getState) => {
+  const diagramID = creatorDiagramIDSelector(getState());
+  dispatch(saveVariableSet(diagramID));
 };

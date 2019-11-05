@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { useEnableDisable } from '@/hooks/toggle';
-import { moveCursorToEnd } from '@/utils/dom';
 
 import ProjectTitleContainer from './ProjectTitleContainer';
 
@@ -41,10 +40,9 @@ const ProjectTitle = ({ title, onChange }) => {
         onDoubleClick={(e) => {
           if (!isEditing) {
             enableEditing();
-            moveCursorToEnd(e.target);
+            e.target.select();
           }
         }}
-        autoFocus // eslint-disable-line jsx-a11y/no-autofocus
         className="edit-input"
         readOnly={!isEditing}
         value={formValue}

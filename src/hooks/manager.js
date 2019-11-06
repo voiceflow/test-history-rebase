@@ -123,7 +123,7 @@ export const useManager = (items, onChange, { factory = identity, getKey, deboun
 
   const memoizedRemove = React.useMemo(() => moize((key) => () => onRemove(key)), [onRemove]);
 
-  const toggleOpen = React.useCallback((key) => () => onUpdate(key)({ open: !getItem(key).open }), [onUpdate]);
+  const toggleOpen = React.useCallback((key) => onUpdate(key, { open: !getItem(key).open }), [onUpdate]);
 
   const memoizedToggle = React.useMemo(() => moize((key) => () => toggleOpen(key)), [toggleOpen]);
 

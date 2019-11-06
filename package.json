@@ -232,6 +232,7 @@
     "local": "yarn start",
     "postinstall": "patch-package",
     "preview": "scripts/deploy_ephemeral.sh",
+    "preview:check": "exit 0",
     "preview:delete": "scripts/delete_ephemeral.sh",
     "start": "scripts/apply_local_env.sh && wp --action=serve",
     "start:admin": "wp --action=admin-serve",

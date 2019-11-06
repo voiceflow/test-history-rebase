@@ -55,7 +55,9 @@ class ProductEditPage extends PureComponent {
             description: (
               <>
                 <DescriptionSection>
-                  Choose which countries and regions to distribute your in-skill product. Each marketplace has minimum and maximum prices.
+                  Choose which countries and regions to distribute your in-skill product. To make product available for the marketplace, skill must
+                  also support the respective region (e.g. Skill must support Japanese (JP) to make in-skill product available for AMAZON.CO.JP).Each
+                  marketplace has minimum and maximum prices.
                 </DescriptionSection>
               </>
             ),

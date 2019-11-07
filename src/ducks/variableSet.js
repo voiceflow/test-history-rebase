@@ -91,7 +91,7 @@ export const loadVariableSetForDiagram = (diagramID) => async (dispatch) => {
   return variables;
 };
 
-export const saveVariableSet = (diagramID) => async (dispatch, getState) => {
+export const saveVariableSet = (diagramID) => async (_, getState) => {
   const state = getState();
   const variables = variablesByDiagramIDSelector(state)(diagramID);
 
@@ -104,5 +104,6 @@ export const saveVariableSet = (diagramID) => async (dispatch, getState) => {
 
 export const saveActiveDiagramVariables = () => async (dispatch, getState) => {
   const diagramID = creatorDiagramIDSelector(getState());
+
   dispatch(saveVariableSet(diagramID));
 };

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { MAX_CLICK_TRAVEL } from '@/components/Canvas/constants';
-import { withCanvas } from '@/components/Canvas/contexts';
 import { BlockType, INTERNAL_BLOCKS } from '@/constants';
 import Block from '@/containers/CanvasV2/components/Block';
 import CommentBlock from '@/containers/CanvasV2/components/CommentBlock';
@@ -17,17 +16,32 @@ import Container from './components/NodeContainer';
 import { withNodeLifecycle } from './hocs';
 
 export class Node extends React.PureComponent {
+  // keep track of changes to location
+  static getDerivedStateFromProps(
+    {
+      node: { x, y },
+    },
+    { position }
+  ) {
+    return {
+      position: [x, y],
+      positionChanged: position[0] !== x || position[1] !== y,
+    };
+  }
+
   state = {
     isDragging: false,
+    position: [null, null],
+    positionChanged: false,
   };
-
-  position = [this.props.node.x, this.props.node.y];
 
   nodeRef = React.createRef();
 
   blockRef = React.createRef();
 
   mergeContextRef = React.createRef();
+
+  position = null;
 
   dragDistance = 0;
 
@@ -37,16 +51,11 @@ export class Node extends React.PureComponent {
 
   api = {
     translate: ([movementX, movementY]) => {
-      const nodeEl = this.nodeRef.current;
-
       const [posX, posY] = this.position;
       const nextPosition = [posX + movementX, posY + movementY];
       this.position = nextPosition;
 
-      // eslint-disable-next-line compat/compat
-      window.requestAnimationFrame(() => {
-        nodeEl.style.transform = `translate3d(${nextPosition[0]}px, ${nextPosition[1]}px, 0)`;
-      });
+      this.updateTransform(nextPosition);
     },
 
     setMergeStatus: (mergeStatus) => this.mergeContextRef.current.setStatus(mergeStatus),
@@ -75,6 +84,17 @@ export class Node extends React.PureComponent {
 
   get isSelected() {
     return this.props.engine.selection.isTarget(this.props.nodeID);
+  }
+
+  updateTransform(position, callback) {
+    const nodeEl = this.nodeRef.current;
+
+    // eslint-disable-next-line compat/compat
+    window.requestAnimationFrame(() => {
+      nodeEl.style.transform = `translate3d(${position[0]}px, ${position[1]}px, 0)`;
+
+      callback?.();
+    });
   }
 
   addMouseListeners() {
@@ -124,13 +144,13 @@ export class Node extends React.PureComponent {
   onClick = () => this.props.engine.setActivation(this.props.nodeID, this.holdingShift);
 
   onDrag = (event) => {
-    const { canvas, engine, nodeID } = this.props;
+    const { engine, nodeID } = this.props;
 
     this.mouseMovement.track(event);
 
     const [movementX, movementY] = this.mouseMovement.getBoundedMovement();
 
-    const zoom = canvas.getZoom();
+    const zoom = engine.canvas.getZoom();
 
     this.dragDistance += Math.max(Math.abs(movementX), Math.abs(movementY));
 
@@ -166,13 +186,26 @@ export class Node extends React.PureComponent {
     this.teardownMouseListeners();
   }
 
+  componentDidUpdate() {
+    // handle undo / redo movement
+    if (this.state.positionChanged) {
+      const { engine, nodeID } = this.props;
+
+      this.updateTransform(this.position, () => engine.node.redrawLinks(nodeID));
+    }
+  }
+
   render() {
     const { node, isHighlighted } = this.props;
-    const { isDragging } = this.state;
+    const { isDragging, position, positionChanged } = this.state;
     const shouldRender = node.type !== BlockType.COMMAND;
 
     if (!shouldRender) {
       return null;
+    }
+
+    if (positionChanged) {
+      this.position = position;
     }
 
     let nodeEl = null;
@@ -189,7 +222,7 @@ export class Node extends React.PureComponent {
       <Container
         isActive={isHighlighted}
         isDragging={isDragging}
-        position={this.position}
+        position={position}
         onMouseDown={this.onMouseDown}
         onContextMenu={this.onRightClick}
         onDoubleClick={this.onDoubleClick}
@@ -203,10 +236,9 @@ export class Node extends React.PureComponent {
 }
 
 export default compose(
+  withStaticContextMenu,
   withNode,
   withNodeLifecycle,
-  withCanvas,
   withEngine,
-  withStaticContextMenu,
   withTestingMode
 )(Node);

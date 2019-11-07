@@ -7,7 +7,7 @@ import { BlockType } from '@/constants';
 import BlockEditor from '@/containers/CanvasV2/components/BlockEditor';
 import Reprompt from '@/containers/CanvasV2/components/Reprompt';
 import { getManager } from '@/containers/CanvasV2/managers';
-import { dataByNodeIDSelector, focusSelector } from '@/ducks/creator';
+import { creatorFocusSelector, dataByNodeIDSelector } from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { RemoveIntercom } from '@/hocs/removeIntercom';
 import { useEnableDisable } from '@/hooks/toggle';
@@ -24,7 +24,7 @@ function EditSidebar({ focus, data, theme, engine }) {
   const [isModal, enableModalMode, disableModalMode] = useEnableDisable(false);
   const shouldRender = data && !UNEDITABLE_BLOCKS.includes(data.type);
   const isOpen = isVisible && shouldRender && focus.isActive && !isModal;
-  const updateData = React.useCallback((value) => focus.target && engine.node.updateData(focus.target, value), [focus.target]);
+  const updateData = React.useCallback((value, save = true) => focus.target && engine.node.updateData(focus.target, value, save), [focus.target]);
 
   const removeNode = () => engine.node.remove(data.nodeID);
   const duplicateNode = () => engine.node.duplicate(data.nodeID);
@@ -74,7 +74,7 @@ function EditSidebar({ focus, data, theme, engine }) {
 
 const mapStateToProps = {
   data: dataByNodeIDSelector,
-  focus: focusSelector,
+  focus: creatorFocusSelector,
 };
 
 const mergeProps = ({ data, focus }) => ({

@@ -17,7 +17,9 @@ const setFactory = () => ({
 });
 
 function SetEditor({ data, onChange }) {
-  const { items, onAdd, mapManaged } = useManager(data.sets, (sets) => onChange({ sets }), { factory: setFactory });
+  const updateSets = React.useCallback((sets) => onChange({ sets }), [onChange]);
+
+  const { items, onAdd, mapManaged } = useManager(data.sets, updateSets, { factory: setFactory });
 
   return (
     <Content>

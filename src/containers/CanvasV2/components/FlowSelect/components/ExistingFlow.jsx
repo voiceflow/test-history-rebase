@@ -17,7 +17,9 @@ const ExisitingFlow = ({ data, onChange, goToDiagram, diagram, withVariables, lo
   const updateOutputs = (outputs) => onChange({ outputs });
 
   React.useEffect(() => {
-    loadVariableSetForDiagram(diagram.diagramID);
+    if (diagram) {
+      loadVariableSetForDiagram(data.diagramID);
+    }
   }, []);
 
   return (

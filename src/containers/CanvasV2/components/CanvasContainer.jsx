@@ -5,6 +5,7 @@ import { isSafari } from '@/config';
 import { BlockType } from '@/constants';
 import { ClipboardContext, EngineContext, SpotlightContext, TestingModeContext } from '@/containers/CanvasV2/contexts';
 import { MousePositionContext } from '@/contexts';
+import * as Creator from '@/ducks/creator';
 import { setActiveCreatorMenu } from '@/ducks/ui';
 import { connect, styled } from '@/hocs';
 import { useHotKeys } from '@/hooks';
@@ -19,7 +20,7 @@ const Wrapper = styled.div`
   overflow: hidden;
 `;
 
-function CanvasContainer({ openMenu, children }) {
+function CanvasContainer({ openMenu, undoHistory, redoHistory, children }) {
   const isTesting = React.useContext(TestingModeContext);
   const engine = React.useContext(EngineContext);
   const mousePosition = React.useContext(MousePositionContext);
@@ -36,6 +37,8 @@ function CanvasContainer({ openMenu, children }) {
 
   useHotKeys(Hotkey.COPY, preventDefault(() => clipboard.copy()), []);
   useHotKeys(Hotkey.DELETE, preventDefault(deleteActive), [deleteActive]);
+  useHotKeys(Hotkey.UNDO, preventDefault(undoHistory), []);
+  useHotKeys(Hotkey.REDO, preventDefault(redoHistory), []);
   useHotKeys(Hotkey.COMMENT, addComment, []);
   useHotKeys(Hotkey.SPOTLIGHT, preventDefault(showSpotlight), [showSpotlight]);
   useHotKeys(Hotkey.OPEN_BLOCK_MENU, () => openMenu(PanelType.BLOCK_PANEL), []);
@@ -47,6 +50,8 @@ function CanvasContainer({ openMenu, children }) {
 
 const mapDispatchToProps = {
   openMenu: setActiveCreatorMenu,
+  undoHistory: Creator.undoHistory,
+  redoHistory: Creator.redoHistory,
 };
 
 export default connect(

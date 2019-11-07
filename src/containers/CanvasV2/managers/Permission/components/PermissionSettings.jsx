@@ -17,13 +17,17 @@ const PERMISSIONS = [
 ];
 
 const PermissionSettings = ({ data, onChange, onToggle }) => {
-  const toggleCustom = () => onChange({ custom: !data.custom });
-  const togglePermission = (permission) => () =>
-    onChange({
-      permissions: data.permissions.includes(permission)
-        ? without(data.permissions, data.permissions.indexOf(permission))
-        : [...data.permissions, permission],
-    });
+  const toggleCustom = React.useCallback(() => onChange({ custom: !data.custom }), [data.custom, onChange]);
+
+  const togglePermission = React.useCallback(
+    (permission) => () =>
+      onChange({
+        permissions: data.permissions.includes(permission)
+          ? without(data.permissions, data.permissions.indexOf(permission))
+          : [...data.permissions, permission],
+      }),
+    [data.permissions, onChange]
+  );
 
   return (
     <div>

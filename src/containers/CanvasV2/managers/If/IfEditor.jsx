@@ -31,21 +31,24 @@ const expressionFactory = () => ({
 
 function IfEditor({ data, onChange, focusedNode }) {
   const engine = React.useContext(EngineContext);
-  const { items, onAdd, mapManaged } = useManager(data.expressions, (expressions) => onChange({ expressions }), { factory: expressionFactory });
+  const updateExpressions = React.useCallback((expressions, save) => onChange({ expressions }, save), [onChange]);
+  const onRemoveExpression = React.useCallback((_, index) => engine.port.remove(focusedNode.ports.out[index + 1]), [focusedNode.ports.out]);
 
-  const addExpression = () => {
+  const { items, onAdd, mapManaged } = useManager(data.expressions, updateExpressions, {
+    autosave: false,
+    factory: expressionFactory,
+    handleRemove: onRemoveExpression,
+  });
+
+  const addExpression = React.useCallback(() => {
     onAdd();
     engine.port.add(focusedNode.id, { label: items.length + 1 });
-  };
-  const removeExpression = (onRemove, index) => () => {
-    onRemove();
-    engine.port.remove(focusedNode.ports.out[index + 1]);
-  };
+  }, [focusedNode.id, items.length, onAdd]);
 
   return (
     <Content>
       {mapManaged((expression, { key, index, onRemove, onUpdate }) => (
-        <RemovableSection onClose={items.length > 1 && removeExpression(onRemove, index)} key={key}>
+        <RemovableSection onClose={items.length > 1 && onRemove} key={key}>
           <Flex>
             <div className="number-bubble mr-2">{index + 1}</div>
             <span className="text-bold-label">If</span>

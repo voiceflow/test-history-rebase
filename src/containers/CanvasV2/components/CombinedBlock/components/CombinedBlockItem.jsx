@@ -2,7 +2,6 @@ import React from 'react';
 
 import Flex from '@/componentsV2/Flex';
 import { BlockType, INTERNAL_BLOCKS } from '@/constants';
-import EnterFlow from '@/containers/CanvasV2/components/EnterFlow';
 import { PortSet } from '@/containers/CanvasV2/components/NestedBlock';
 import PortLabel from '@/containers/CanvasV2/components/Port/components/PortLabel';
 import { ContextMenuTarget, getBlockCategory } from '@/containers/CanvasV2/constants';
@@ -10,7 +9,7 @@ import { ContextMenuContext, PlatformContext, TestingModeContext, useNodeData, w
 import { NODE_MANAGERS } from '@/containers/CanvasV2/managers';
 import { stopPropagation } from '@/utils/dom';
 
-import CombinedBlockContent from './CombinedBlockContent';
+import CombinedBlockEnterFlow from './CombinedBlockEnterFlow';
 import CombinedBlockHandle from './CombinedBlockHandle';
 import CombinedBlockItemContainer from './CombinedBlockItemContainer';
 
@@ -20,12 +19,16 @@ const CombinedBlockItem = ({ node, showOutPorts, index, onReorder, onDrop, engin
   const platform = React.useContext(PlatformContext);
   const contextMenu = React.useContext(ContextMenuContext);
 
+  React.useEffect(() => {
+    engine.node.redrawLinks(node.id);
+  }, [index]);
+
   const { icon, platforms } = NODE_MANAGERS[node.type];
   const { color } = getBlockCategory(node.type);
   const showIcon = !INTERNAL_BLOCKS.includes(node.type);
-  const diagram = node.type === BlockType.FLOW && engine.getDiagramByID(data.diagramID);
+  const hasDiagram = node.type === BlockType.FLOW && data.diagramID;
   const isEnabled = !platforms || platforms.includes(platform);
-  const outPorts = showOutPorts && <PortSet ports={node.ports.out} direction="out" withLabel canDrag fullWidth={!diagram} />;
+  const outPorts = showOutPorts && <PortSet ports={node.ports.out} direction="out" withLabel canDrag fullWidth={!hasDiagram} />;
 
   const openContextMenu = (event) => !isTesting && contextMenu.onOpen(event, ContextMenuTarget.NODE, node.id);
 
@@ -38,14 +41,7 @@ const CombinedBlockItem = ({ node, showOutPorts, index, onReorder, onDrop, engin
           {showIcon && <CombinedBlockHandle icon={icon} color={color} />}
         </PortLabel>
       </Flex>
-      {diagram ? (
-        <CombinedBlockContent fullWidth>
-          <EnterFlow diagramID={data.diagramID} />
-          {outPorts}
-        </CombinedBlockContent>
-      ) : (
-        outPorts
-      )}
+      {hasDiagram ? <CombinedBlockEnterFlow diagramID={data.diagramID}>{outPorts}</CombinedBlockEnterFlow> : outPorts}
     </CombinedBlockItemContainer>
   );
 };

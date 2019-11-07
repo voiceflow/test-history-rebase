@@ -42,20 +42,35 @@ const DEFAULT_TIMEZONE = { label: USER_TIMEZONE, value: USER_TIMEZONE };
 const TIMEZONE_OPTIONS = [DEFAULT_TIMEZONE, ...TIMEZONES.map((zone) => ({ label: zone.value, value: zone.value }))];
 
 function ReminderForm({ data, withDate, onChange }) {
-  const updateTime = (key) => (value) => onChange({ [key]: value });
-  const updateDate = (date) => onChange({ date });
-  const updateTimezone = (timezone) => onChange({ timezone });
+  const { recurrence, recurrenceBool } = data;
 
-  const updateRecurrenceType = (val) => {
-    onChange({
-      recurrence: {
-        freq: val,
-        byDay: data.recurrence.byDay,
-      },
-    });
-  };
+  const updateTime = React.useCallback((key) => (value) => onChange({ [key]: value }), [onChange]);
+  const updateDate = React.useCallback((date) => onChange({ date }), [onChange]);
+  const updateTimezone = React.useCallback((timezone) => onChange({ timezone }), [onChange]);
 
-  const { recurrenceBool } = data;
+  const updateRecurrenceType = React.useCallback(
+    (val) =>
+      onChange({
+        recurrence: {
+          freq: val,
+          byDay: recurrence.byDay,
+        },
+      }),
+    [recurrence.byDay, onChange]
+  );
+
+  const updateRecurrenceBool = React.useCallback(() => onChange({ recurrenceBool: !recurrenceBool }), [recurrenceBool, onChange]);
+
+  const changeDate = React.useCallback(
+    (day, modifiers, dayPickerInput) => {
+      if (day) {
+        updateDate(new Date(day));
+      } else {
+        setTimeout(() => updateDate(dayPickerInput.state.value), 0);
+      }
+    },
+    [updateDate]
+  );
 
   return (
     <>
@@ -103,13 +118,7 @@ function ReminderForm({ data, withDate, onChange }) {
                 }}
                 inputProps={{ className: 'form-control' }}
                 value={data.date}
-                onDayChange={(day, modifiers, dayPickerInput) => {
-                  if (day) {
-                    updateDate(new Date(day));
-                  } else {
-                    setTimeout(() => updateDate(dayPickerInput.state.value), 0);
-                  }
-                }}
+                onDayChange={changeDate}
               />
             </div>
             <div>
@@ -123,13 +132,7 @@ function ReminderForm({ data, withDate, onChange }) {
           </div>
           <FlexApart>
             <label className="mb-0">Recurrence</label>
-            <RecurrenceToggle
-              checked={recurrenceBool}
-              icons={false}
-              onChange={() => {
-                onChange({ recurrenceBool: !recurrenceBool });
-              }}
-            />
+            <RecurrenceToggle checked={recurrenceBool} icons={false} onChange={updateRecurrenceBool} />
           </FlexApart>
 
           {recurrenceBool && (

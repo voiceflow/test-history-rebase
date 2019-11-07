@@ -5,9 +5,10 @@ import linkAdapter from '@/client/adapters/creator/link';
 import nodeAdapter from '@/client/adapters/creator/node';
 import { BlockType } from '@/constants';
 import { clearModal, setConfirm } from '@/ducks/modal';
+import { hasIdenticalMembers } from '@/utils/array';
 import { getAllNormalizedByKeys } from '@/utils/normalized';
 
-import { allLinksSelector, allNodeDataSelector, creatorDiagramIDSelector, creatorStateSelector } from './creator';
+import * as Creator from './creator';
 import { lastRealtimeTimestampSelector } from './realtime';
 import { goToDiagram, goToRootDiagram } from './router';
 import { activeDiagramIDSelector, activePlatformSelector, activeSkillIDSelector } from './skill';
@@ -77,6 +78,11 @@ export const {
   key: allDiagramIDsSelector,
 } = createCRUDSelectors(STATE_KEY);
 
+export const subDiagramsByIDSelector = createSelector(
+  diagramByIDSelector,
+  (getDiagram) => (diagramID) => getDiagram(diagramID)?.subDiagrams || []
+);
+
 export const flowStructureSelector = createSelector(
   rootDiagramsSelector,
   ({ byKey, allKeys }) => (diagramID) => {
@@ -127,7 +133,8 @@ export const updateSubDiagrams = (diagramID) => async (dispatch, getState) => {
   const state = getState();
   const targetDiagramID = diagramID || activeDiagramIDSelector(state);
   const platform = activePlatformSelector(state);
-  const allNodeData = allNodeDataSelector(state);
+  const allNodeData = Creator.allNodeDataSelector(state);
+  const currentSubDiagramIDs = subDiagramsByIDSelector(state)(diagramID);
 
   const subDiagramIDs = Array.from(
     allNodeData.reduce((acc, data) => {
@@ -141,7 +148,9 @@ export const updateSubDiagrams = (diagramID) => async (dispatch, getState) => {
     }, new Set())
   );
 
-  dispatch(replaceSubDiagrams(targetDiagramID, subDiagramIDs));
+  if (!hasIdenticalMembers(subDiagramIDs, currentSubDiagramIDs)) {
+    dispatch(replaceSubDiagrams(targetDiagramID, subDiagramIDs));
+  }
 
   return subDiagramIDs;
 };
@@ -169,7 +178,7 @@ export const saveDiagram = (skillID, diagramID, data) => async (dispatch, getSta
 export const saveActiveDiagram = () => async (dispatch, getState) => {
   const state = getState();
   const skillID = activeSkillIDSelector(state);
-  const diagramID = creatorDiagramIDSelector(state);
+  const diagramID = Creator.creatorDiagramIDSelector(state);
 
   if (!diagramID) {
     throw new Error('No Active Diagram');
@@ -177,8 +186,8 @@ export const saveActiveDiagram = () => async (dispatch, getState) => {
 
   const viewport = viewportByIDSelector(state)(diagramID);
   const platform = activePlatformSelector(state);
-  const { rootNodes: rootNodeIDs, nodes, ports, data, linksByPortID } = creatorStateSelector(state);
-  const links = allLinksSelector(state);
+  const { rootNodes: rootNodeIDs, nodes, ports, data, linksByPortID } = Creator.creatorDiagramSelector(state);
+  const links = Creator.allLinksSelector(state);
 
   const rootNodes = getAllNormalizedByKeys(nodes, rootNodeIDs);
 

@@ -12,19 +12,21 @@ import { connect } from '@/hocs';
 function RandomEditor({ data, onChange, focusedNode }) {
   const engine = React.useContext(EngineContext);
 
-  const addPath = () => {
+  const addPath = React.useCallback(() => {
     const index = data.paths + 1;
 
-    onChange({ paths: index });
+    onChange({ paths: index }, false);
     engine.port.add(focusedNode.id, { label: index });
-  };
-  const removePath = () => {
+  }, [data.paths, focusedNode.id, onChange]);
+
+  const removePath = React.useCallback(() => {
     const lastPortID = focusedNode.ports.out[focusedNode.ports.out.length - 1];
 
-    onChange({ paths: data.paths - 1 });
+    onChange({ paths: data.paths - 1 }, false);
     engine.port.remove(lastPortID);
-  };
-  const toggleDuplicates = () => onChange({ noDuplicates: !data.noDuplicates });
+  }, [data.paths, focusedNode.ports.out, onChange]);
+
+  const toggleDuplicates = React.useCallback(() => onChange({ noDuplicates: !data.noDuplicates }), [data.noDuplicates, onChange]);
 
   return (
     <Content>

@@ -75,12 +75,14 @@ class NodeManager extends EngineConsumer {
 
     this.internal.add(augmentedNode, data, nodeID);
     this.dispatch(Realtime.addNode(augmentedNode, data, nodeID));
+    this.engine.saveHistory();
     this.engine.focus.set(nodeID);
   }
 
   addMany(nodeGroup, position) {
     this.internal.addMany(nodeGroup, position);
     this.dispatch(Realtime.addManyNodes(nodeGroup, position));
+    this.engine.saveHistory();
   }
 
   clone(nodeGroup, position) {
@@ -103,12 +105,17 @@ class NodeManager extends EngineConsumer {
       [node.x + DUPLICATE_OFFSET, node.y + DUPLICATE_OFFSET]
     );
 
+    this.engine.saveHistory();
     this.engine.focus.set(clonedNodeGroup.nodesWithData[0]?.node.id);
   }
 
-  updateData(nodeID, data) {
+  updateData(nodeID, data, save = true) {
     this.internal.updateData(nodeID, data);
     this.dispatch(Realtime.updateNodeData(nodeID, data));
+
+    if (save) {
+      this.engine.saveHistory();
+    }
   }
 
   // TODO: move this validator out into a seperate handler
@@ -162,6 +169,7 @@ class NodeManager extends EngineConsumer {
     this.validateRemove([nodeID], ([removeNodeID]) => {
       this.internal.remove(removeNodeID);
       this.dispatch(Realtime.removeNode(removeNodeID));
+      this.engine.saveHistory();
     });
   }
 
@@ -169,6 +177,7 @@ class NodeManager extends EngineConsumer {
     this.validateRemove(nodeIDs, (removableNodeIDs) => {
       this.internal.removeMany(removableNodeIDs);
       this.dispatch(Realtime.removeManyNodes(removableNodeIDs));
+      this.engine.saveHistory();
     });
   }
 
@@ -177,17 +186,20 @@ class NodeManager extends EngineConsumer {
   addNested(parentNodeID, nodeID, type) {
     const { node, data } = nodeFactory(type);
     this.dispatch(Creator.addNestedNode(parentNodeID, { ...node, type }, data, nodeID));
+    this.engine.saveHistory();
     this.engine.focus.set(nodeID);
     this.redrawNestedLinks(parentNodeID);
   }
 
   insertNested(parentNodeID, index, nodeID) {
     this.dispatch(Creator.insertNestedNode(parentNodeID, index, nodeID));
+    this.engine.saveHistory();
     this.redrawNestedLinks(parentNodeID);
   }
 
   reorderNested(parentNodeID, sourceIndex, targetIndex) {
     this.dispatch(Creator.reorderNestedNodes(parentNodeID, sourceIndex, targetIndex));
+    this.engine.saveHistory();
     this.redrawNestedLinks(parentNodeID);
   }
 
@@ -202,6 +214,7 @@ class NodeManager extends EngineConsumer {
     // QUESTION: why does this only work when async?
     await this.dispatch(Creator.mergeNodes(sourceNodeID, targetNodeID, invert));
 
+    this.engine.saveHistory();
     this.redrawLinks(sourceNodeID);
     this.redrawLinks(targetNodeID);
   }
@@ -232,6 +245,12 @@ class NodeManager extends EngineConsumer {
     const node = this.engine.nodes.get(nodeID);
 
     this.engine.nodes.set(nodeID, { ...node, x: node.x + moveX, y: node.y + moveY });
+  }
+
+  setOrigin(nodeID, [x, y]) {
+    const node = this.engine.nodes.get(nodeID);
+
+    this.engine.nodes.set(nodeID, { ...node, x, y });
   }
 
   translateAllLinks(nodeID, movement) {
@@ -296,6 +315,10 @@ class NodeManager extends EngineConsumer {
     const node = this.engine.getNodeByID(nodeID);
 
     [...node.ports.in, ...node.ports.out].forEach((portID) => this.engine.port.redrawLinks(portID));
+
+    if (node.combinedNodes.length) {
+      this.redrawNestedLinks(nodeID);
+    }
   }
 
   redrawNestedLinks(parentNodeID) {

@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { EngineContext, useNode } from '@/containers/CanvasV2/contexts';
+import { EngineContext } from '@/containers/CanvasV2/contexts';
 import { withHook } from '@/hocs';
 
-export const useNodeLifecycle = () => {
+export const useNodeLifecycle = ({ nodeID, node }) => {
   const engine = React.useContext(EngineContext);
-  const { node, nodeID } = useNode();
   const nodeCache = React.useRef();
 
   nodeCache.current = node || nodeCache.current;
@@ -16,6 +15,13 @@ export const useNodeLifecycle = () => {
       engine.node.redrawLinks(nodeID);
     }
   }, [!!node]);
+
+  // update origin when changing position
+  React.useEffect(() => {
+    if (node) {
+      engine.node.setOrigin(nodeID, [node.x, node.y]);
+    }
+  }, [node?.x, node?.y]);
 
   // redraw links in parent block when unmounting
   React.useEffect(

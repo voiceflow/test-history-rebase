@@ -10,9 +10,13 @@ import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 
 function CommandForm({ platformData, slotIDs, onChange, platform }) {
-  const updatePlatformData = (value) => onChange({ [platform]: { ...platformData, ...value } });
-  const updateIntent = (intent) => updatePlatformData({ intent });
-  const updateMappings = (mappings) => updatePlatformData({ mappings });
+  const updatePlatformData = React.useCallback((value) => onChange({ [platform]: { ...platformData, ...value } }), [
+    platform,
+    platformData,
+    onChange,
+  ]);
+  const updateIntent = React.useCallback((intent) => updatePlatformData({ intent }), [updatePlatformData]);
+  const updateMappings = React.useCallback((mappings) => updatePlatformData({ mappings }), [updatePlatformData]);
 
   return (
     <>

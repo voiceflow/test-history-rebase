@@ -16,8 +16,8 @@ import { stopPropagation } from '@/utils/dom';
 import { LabelTitle, SeeAll, Separator } from './styled';
 
 function PaymentEditor({ data, selectedProduct, goToEditProduct, goToProducts, goToNewProduct, onChange, hasProducts }) {
-  const updateProduct = (productID) => onChange({ productID });
-  const unlinkProduct = () => updateProduct(null);
+  const updateProduct = React.useCallback((productID) => onChange({ productID }), [onChange]);
+  const unlinkProduct = React.useCallback(() => updateProduct(null), [updateProduct]);
 
   if (!hasProducts) {
     return (

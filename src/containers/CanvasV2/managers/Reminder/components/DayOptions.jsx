@@ -24,16 +24,18 @@ const RECURRENCE_TYPE = {
 };
 
 function DayOptions({ data, onChange }) {
-  const setRecurrenceDay = (val) => {
-    onChange({
-      recurrence: {
-        freq: data.recurrence.freq,
-        byDay: val,
-      },
-    });
-  };
-
   const { recurrence } = data;
+
+  const setRecurrenceDay = React.useCallback(
+    (val) =>
+      onChange({
+        recurrence: {
+          freq: recurrence.freq,
+          byDay: val,
+        },
+      }),
+    [recurrence.freq, onChange]
+  );
 
   return (
     <div className="mt-3">

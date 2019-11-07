@@ -6,8 +6,11 @@ import VariableSelect from '@/componentsV2/VariableSelect';
 import { RemovableSection } from '@/containers/CanvasV2/components/BlockEditor';
 
 const SetExpression = ({ set, onRemove, onUpdate }) => {
-  const updateVariable = (variable) => onUpdate({ variable });
-  const updateExpression = (expression) => onUpdate({ expression: { ...set.expression, ...expression } });
+  const updateVariable = React.useCallback((variable) => onUpdate({ variable }), [onUpdate]);
+  const updateExpression = React.useCallback((expression) => onUpdate({ expression: { ...set.expression, ...expression } }), [
+    set.expression,
+    onUpdate,
+  ]);
 
   return (
     <RemovableSection onClose={onRemove}>

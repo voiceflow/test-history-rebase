@@ -29,11 +29,13 @@ class LinkManager extends EngineConsumer {
 
     this.internal.add(sourcePortID, targetPortID, linkID);
     this.dispatch(Realtime.addLink(sourcePortID, targetPortID, linkID));
+    this.engine.saveHistory();
   }
 
   remove(linkID) {
     this.internal.remove(linkID);
     this.dispatch(Realtime.removeLink(linkID));
+    this.engine.saveHistory();
   }
 
   translatePoint(linkID, movement, isSource) {

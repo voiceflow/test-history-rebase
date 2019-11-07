@@ -8,7 +8,7 @@ import VariableLabel from './VariableLabel';
 
 function Permission({ permission, selectedPermissions, onRemove, onUpdate }) {
   const canVariableMap = permission.selected && PERMISSIONS_WITH_VARIABLE_MAPS.includes(permission.selected);
-  const updateSelected = (selected) => onUpdate({ selected });
+  const updateSelected = React.useCallback((selected) => onUpdate({ selected }), [onUpdate]);
 
   return (
     <RemovableSection onClose={onRemove}>

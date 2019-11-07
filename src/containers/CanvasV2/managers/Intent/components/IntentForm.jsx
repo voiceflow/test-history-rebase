@@ -17,9 +17,9 @@ const isCanFulfill = (intent) => intent && ALEXA_BUILT_INS.every(({ key }) => ke
 
 function IntentForm({ data, slotIDs, onChange, platform, isRoot }) {
   const platformData = data[platform];
-  const updatePlatformData = (value) => onChange({ [platform]: { ...platformData, ...value } });
-  const updateIntent = (intent) => updatePlatformData({ intent });
-  const updateMappings = (mappings) => updatePlatformData({ mappings });
+  const updatePlatformData = React.useCallback((value) => onChange({ [platform]: { ...platformData, ...value } }), [onChange]);
+  const updateIntent = React.useCallback((intent) => updatePlatformData({ intent }), [updatePlatformData]);
+  const updateMappings = React.useCallback((mappings) => updatePlatformData({ mappings }), [updatePlatformData]);
 
   const validForCanFulfill = platform === PlatformType.ALEXA && isRoot && isCanFulfill(platformData.intent);
 

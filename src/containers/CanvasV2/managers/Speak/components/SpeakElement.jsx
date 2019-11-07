@@ -22,10 +22,18 @@ import Toggle from './SpeakElementToggle';
 const VOICES = constants.voices;
 
 const SpeakElement = ({ dialog, index, block, onRemove, onUpdate, onToggle, recentVoices, addRecentVoice }) => {
-  const updateContent = (content) => onUpdate({ content });
   const isAudio = dialog.type === DialogType.AUDIO;
   const options = recentVoices.length ? [{ label: 'Recent', options: recentVoices }, ...VOICES] : VOICES;
-  const updateAudio = (url) => onUpdate({ url });
+
+  const updateContent = React.useCallback((content) => onUpdate({ content }), [onUpdate]);
+  const updateAudio = React.useCallback((url) => onUpdate({ url }), [onUpdate]);
+  const updateVoice = React.useCallback(
+    (selected) => {
+      onUpdate({ voice: selected.value });
+      addRecentVoice(selected);
+    },
+    [onUpdate, addRecentVoice]
+  );
 
   const toggle = <Toggle isOpen={dialog.open} randomize={block.randomize} index={index} />;
 
@@ -36,16 +44,7 @@ const SpeakElement = ({ dialog, index, block, onRemove, onUpdate, onToggle, rece
           {toggle}
           Speaking as
         </div>
-        <Select
-          className="speak-box"
-          value={{ label: dialog.voice, value: dialog.voice }}
-          onChange={(selected) => {
-            onUpdate({ voice: selected.value });
-            addRecentVoice(selected);
-          }}
-          options={options}
-          fullWidth
-        />
+        <Select className="speak-box" value={{ label: dialog.voice, value: dialog.voice }} onChange={updateVoice} options={options} fullWidth />
         <Button isClose onClick={onRemove} />
       </Header>
 

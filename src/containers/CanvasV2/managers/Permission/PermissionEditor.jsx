@@ -26,8 +26,8 @@ const ROUTES = [
 ];
 
 function PermissionEditor({ data, onChange }) {
-  const toggleSettings = () => onChange({ settingsOpen: !data.settingsOpen });
-  const updateRoute = (route) => onChange({ accountLinking: route === PermissionRoute.ACCOUNT_LINKING });
+  const toggleSettings = React.useCallback(() => onChange({ settingsOpen: !data.settingsOpen }), [data.settingsOpen, onChange]);
+  const updateRoute = React.useCallback((route) => onChange({ accountLinking: route === PermissionRoute.ACCOUNT_LINKING }), [onChange]);
 
   return (
     <Content>

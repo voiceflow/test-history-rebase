@@ -10,9 +10,9 @@ import { activePlatformSelector, isLiveSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 
 function CaptureEditor({ data, onChange, platform, isLive }) {
-  const onSelectVariable = (variable) => onChange({ variable });
-  const updateSlot = (slot) => onChange({ slot });
-  const updateExamples = (examples) => onChange({ examples });
+  const onSelectVariable = React.useCallback((variable) => onChange({ variable }), [onChange]);
+  const updateSlot = React.useCallback((slot) => onChange({ slot }), [onChange]);
+  const updateExamples = React.useCallback((examples) => onChange({ examples }), [onChange]);
 
   return (
     <Content>

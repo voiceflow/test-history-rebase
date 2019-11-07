@@ -29,29 +29,34 @@ const INTEGRATION_OPTIONS = {
 };
 
 function IntegrationEditor({ data, onChange }) {
-  const updateSelected = (targetIntegration) => {
-    if (targetIntegration === data.selectedIntegration) return;
-    switch (targetIntegration) {
-      case INTEGRATION_OPTIONS.CUSTOM_API.type:
-        onChange(INTEGRATION_DATA_MODELS.CUSTOM_API);
-        break;
-      case INTEGRATION_OPTIONS.GOOGLE_SHEETS.type:
-        onChange(INTEGRATION_DATA_MODELS.GOOGLE_SHEETS);
-        break;
-      case INTEGRATION_OPTIONS.ZAPIER.type:
-        onChange(INTEGRATION_DATA_MODELS.ZAPIER);
-        break;
-      default:
-        break;
-    }
-  };
+  const updateSelected = React.useCallback(
+    (targetIntegration) => {
+      if (targetIntegration === data.selectedIntegration) return;
+      switch (targetIntegration) {
+        case INTEGRATION_OPTIONS.CUSTOM_API.type:
+          onChange(INTEGRATION_DATA_MODELS.CUSTOM_API);
+          break;
+        case INTEGRATION_OPTIONS.GOOGLE_SHEETS.type:
+          onChange(INTEGRATION_DATA_MODELS.GOOGLE_SHEETS);
+          break;
+        case INTEGRATION_OPTIONS.ZAPIER.type:
+          onChange(INTEGRATION_DATA_MODELS.ZAPIER);
+          break;
+        default:
+          break;
+      }
+    },
+    [data.selectedIntegration, onChange]
+  );
+
+  const changeIntegration = React.useCallback(() => onChange({ selectedIntegration: null }), [onChange]);
 
   const { selectedIntegration } = data;
 
   return (
     <Content>
       {selectedIntegration ? (
-        <Editor onChange={onChange} data={data} type={selectedIntegration} changeIntegration={() => onChange({ selectedIntegration: null })} />
+        <Editor onChange={onChange} data={data} type={selectedIntegration} changeIntegration={changeIntegration} />
       ) : (
         <Section>
           <div className="mb-4 text-center">Choose an integration</div>

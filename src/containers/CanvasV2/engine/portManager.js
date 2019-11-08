@@ -38,11 +38,13 @@ class PortManager extends EngineConsumer {
 
     this.internal.add(nodeID, portID, port);
     this.dispatch(Realtime.addPort(nodeID, portID, port));
+    this.engine.saveHistory();
   }
 
   remove(portID) {
     this.internal.remove(portID);
     this.dispatch(Realtime.removePort(portID));
+    this.engine.saveHistory();
   }
 
   redraw(portID) {

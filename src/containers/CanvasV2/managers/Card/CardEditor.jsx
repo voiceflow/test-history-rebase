@@ -22,8 +22,8 @@ const CARD_ROUTES = [
 ];
 
 function CardEditor({ data, onChange }) {
-  const onUpdateContent = (content) => onChange({ content });
-  const updateCardType = (cardType) => onChange({ cardType });
+  const onUpdateContent = React.useCallback((content) => onChange({ content }), [onChange]);
+  const updateCardType = React.useCallback((cardType) => onChange({ cardType }), [onChange]);
   const isSimple = data.cardType === CardType.SIMPLE;
 
   return (

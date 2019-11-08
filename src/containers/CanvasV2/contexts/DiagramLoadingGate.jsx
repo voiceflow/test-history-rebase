@@ -1,4 +1,5 @@
 import React from 'react';
+import { ActionCreators } from 'redux-undo';
 
 import LoadingGate from '@/components/LoadingGate';
 import { creatorDiagramIDSelector } from '@/ducks/creator';
@@ -7,11 +8,23 @@ import { connect } from '@/hocs';
 import { withLoadingGate } from '@/hocs/withLoadingGate';
 import { initializeCreatorForDiagram } from '@/store/sideEffects';
 
-const RawDiagramLoadingGate = ({ isDiagramLoaded, loadDiagram, children }) => (
-  <LoadingGate label="Diagrams" isLoaded={isDiagramLoaded} load={loadDiagram}>
-    {children}
-  </LoadingGate>
-);
+const RawDiagramLoadingGate = ({ diagramID, creatorDiagramID, isDiagramLoaded, loadDiagram, clearHistory, children }) => {
+  const prevDiagramID = React.useRef(diagramID);
+
+  // reset history if switching between diagrams
+  React.useEffect(() => {
+    if (isDiagramLoaded && prevDiagramID.current !== creatorDiagramID) {
+      prevDiagramID.current = creatorDiagramID;
+      clearHistory();
+    }
+  }, [isDiagramLoaded, creatorDiagramID, clearHistory]);
+
+  return (
+    <LoadingGate label="Diagrams" isLoaded={isDiagramLoaded} load={loadDiagram}>
+      {children}
+    </LoadingGate>
+  );
+};
 
 const mapStateToProps = {
   diagramID: activeDiagramIDSelector,
@@ -20,6 +33,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   loadDiagram: initializeCreatorForDiagram,
+  clearHistory: ActionCreators.clearHistory,
 };
 
 const mergeProps = ({ diagramID, creatorDiagramID }, { loadDiagram }) => ({

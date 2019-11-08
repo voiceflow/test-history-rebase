@@ -33,6 +33,8 @@ export class Link extends React.PureComponent {
 
   hiddenPathRef = React.createRef();
 
+  points = null;
+
   api = {
     translatePoint: ([moveX, moveY], isSource) => {
       const [[startX, startY], [endX, endY]] = this.points;

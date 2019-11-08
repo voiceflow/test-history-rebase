@@ -14,25 +14,24 @@ import { connect } from '@/hocs';
 function StreamEditor({ data, focusedNode, platform, onChange }) {
   const engine = React.useContext(EngineContext);
 
+  const hadPause = data.customPause;
   const isAlexa = platform === PlatformType.ALEXA;
-  const updateAudio = (audio) => onChange({ audio });
-  const updateTitle = (title) => onChange({ title });
-  const updateDescription = (description) => onChange({ description });
-  const updateIconImage = (iconImage) => onChange({ iconImage });
-  const updateBackgroundImage = (backgroundImage) => onChange({ backgroundImage });
-  const toggleLoop = () => onChange({ loop: !data.loop });
+  const updateAudio = React.useCallback((audio) => onChange({ audio }), [onChange]);
+  const updateTitle = React.useCallback((title) => onChange({ title }), [onChange]);
+  const updateDescription = React.useCallback((description) => onChange({ description }), [onChange]);
+  const updateIconImage = React.useCallback((iconImage) => onChange({ iconImage }), [onChange]);
+  const updateBackgroundImage = React.useCallback((backgroundImage) => onChange({ backgroundImage }), [onChange]);
+  const toggleLoop = React.useCallback(() => onChange({ loop: !data.loop }), [data.loop, onChange]);
 
-  const togglePause = () => {
-    const hadPause = data.customPause;
+  const togglePause = React.useCallback(() => {
+    onChange({ customPause: !hadPause }, false);
 
     if (hadPause) {
       engine.port.remove(focusedNode.ports.out[focusedNode.ports.out.length - 1]);
     } else {
       engine.port.add(focusedNode.id, { label: focusedNode.ports.out.length, platform: PlatformType.ALEXA });
     }
-
-    onChange({ customPause: !hadPause });
-  };
+  }, [hadPause, focusedNode.id, focusedNode.ports.out, onChange]);
 
   return (
     <Content>

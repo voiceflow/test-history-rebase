@@ -23,8 +23,8 @@ const REMINDER_ROUTES = [
 ];
 
 function ReminderEditor({ data, onChange }) {
-  const updateText = (text) => onChange({ text });
-  const updateReminderType = (reminderType) => onChange({ reminderType });
+  const updateText = React.useCallback((text) => onChange({ text }), [onChange]);
+  const updateReminderType = React.useCallback((reminderType) => onChange({ reminderType }), [onChange]);
 
   return (
     <Content>

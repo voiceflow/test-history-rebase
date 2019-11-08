@@ -19,10 +19,11 @@ const choiceFactory = () => ({
 function ChoiceEditor({ data, onChange, focusedNode, isLive }) {
   const engine = React.useContext(EngineContext);
 
-  const updateChoices = React.useCallback((choices) => onChange({ choices }), [onChange]);
+  const updateChoices = React.useCallback((choices, save) => onChange({ choices }, save), [onChange]);
   const onRemoveChoice = React.useCallback((_, index) => engine.port.remove(focusedNode.ports.out[index + 1]), [focusedNode.ports.out]);
 
   const { onAdd, mapManaged } = useManager(data.choices, updateChoices, {
+    autosave: false,
     factory: choiceFactory,
     handleRemove: onRemoveChoice,
   });
@@ -30,7 +31,7 @@ function ChoiceEditor({ data, onChange, focusedNode, isLive }) {
   const addChoice = React.useCallback(() => {
     onAdd();
     engine.port.add(focusedNode.id, { label: data.choices.length + 1 });
-  }, [onAdd, focusedNode.id, data.choices.length]);
+  }, [focusedNode.id, data.choices.length, onAdd]);
 
   return (
     <Content className={cn({ 'disabled-overlay': isLive })}>

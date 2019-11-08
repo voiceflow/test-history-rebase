@@ -9,7 +9,7 @@ import { allVariablesSelector } from '@/store/selectors';
 function CodeEditor({ data, onChange, variables }) {
   const editorRef = React.useRef();
   const [editorState, onUpdateEditorState] = React.useState(data.code);
-  const onUpdateCode = () => onChange({ code: editorState });
+  const onUpdateCode = React.useCallback(() => onChange({ code: editorState }), [editorState, onChange]);
 
   React.useEffect(() => {
     if (editorRef.current) {
@@ -35,7 +35,7 @@ function CodeEditor({ data, onChange, variables }) {
       <AceEditor
         ref={editorRef}
         value={editorState}
-        onChange={(value) => onUpdateEditorState(value)}
+        onChange={onUpdateEditorState}
         onBlur={onUpdateCode}
         name="code"
         mode="javascript"

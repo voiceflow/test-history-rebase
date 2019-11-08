@@ -1,22 +1,22 @@
 import client from '@/client';
 import skillAdapter, { extractIntents, extractProject, extractSlots } from '@/client/adapters/skill';
 import { addProjectToList } from '@/ducks/board';
-import { initializeCreator, resetCreator } from '@/ducks/creator';
-import { loadDiagramsForSkill, saveActiveDiagram } from '@/ducks/diagram';
+import * as Creator from '@/ducks/creator';
+import * as Diagram from '@/ducks/diagram';
 import { loadDisplaysForSkill } from '@/ducks/display';
 import { fetchIntegrationUsers } from '@/ducks/integration';
 import { replaceIntents } from '@/ducks/intent';
 import { loadProductsForSkill } from '@/ducks/product';
 import { addProject, projectByIDSelector } from '@/ducks/project';
-import { activePlatformSelector, rootDiagramIDSelector, savePlatform, setActiveSkill, updateDiagramID } from '@/ducks/skill';
+import * as Skill from '@/ducks/skill';
 import { replaceSlots } from '@/ducks/slot';
-import { loadVariableSetForDiagram } from '@/ducks/variableSet';
+import { loadVariableSetForDiagram, saveVariableSet } from '@/ducks/variableSet';
 import { rehydrateViewport } from '@/ducks/viewport';
 
 export const resetDiagram = () => async (dispatch, getState) => {
-  const rootDiagramID = rootDiagramIDSelector(getState());
+  const rootDiagramID = Skill.rootDiagramIDSelector(getState());
 
-  dispatch(updateDiagramID(rootDiagramID));
+  dispatch(Skill.updateDiagramID(rootDiagramID));
 };
 
 export const copyProject = (projectID, teamID, boardID) => async (dispatch, getState) => {
@@ -45,11 +45,12 @@ export const importProject = (teamID, importToken) => async (dispatch, getState)
 };
 
 export const initializeCreatorForDiagram = (diagramID) => async (dispatch, getState) => {
-  const platform = activePlatformSelector(getState());
+  const platform = Skill.activePlatformSelector(getState());
   const { viewport, ...creator } = await client.diagram.getData(diagramID, platform);
 
   dispatch(rehydrateViewport(diagramID, viewport));
-  dispatch(initializeCreator({ ...creator, diagramID: creator.diagramID !== diagramID ? diagramID : creator.diagramID }));
+  dispatch(Creator.initializeCreator({ ...creator, diagramID: creator.diagramID !== diagramID ? diagramID : creator.diagramID }));
+  dispatch(Creator.saveHistory());
 
   dispatch(loadVariableSetForDiagram(diagramID));
 };
@@ -57,7 +58,7 @@ export const initializeCreatorForDiagram = (diagramID) => async (dispatch, getSt
 export const loadSkill = (skillID, diagramID) => async (dispatch) => {
   const [body] = await Promise.all([
     client.skill.get(skillID),
-    dispatch(loadDiagramsForSkill(skillID)),
+    dispatch(Diagram.loadDiagramsForSkill(skillID)),
     dispatch(loadProductsForSkill(skillID)),
     dispatch(loadDisplaysForSkill(skillID)),
   ]);
@@ -67,7 +68,7 @@ export const loadSkill = (skillID, diagramID) => async (dispatch) => {
   const intents = extractIntents(body);
   const slots = extractSlots(body);
 
-  dispatch(resetCreator());
+  dispatch(Creator.resetCreator());
 
   try {
     await dispatch(fetchIntegrationUsers());
@@ -79,9 +80,15 @@ export const loadSkill = (skillID, diagramID) => async (dispatch) => {
   dispatch(replaceIntents(intents));
   dispatch(replaceSlots(slots));
   dispatch(addProject(project.id, project));
-  dispatch(setActiveSkill(skill, diagramID));
+  dispatch(Skill.setActiveSkill(skill, diagramID));
 
   return skill;
 };
 
-export const savePlatformAndActiveDiagram = () => (dispatch) => Promise.all([dispatch(savePlatform()), dispatch(saveActiveDiagram())]);
+export const saveVariableSets = () => async (dispatch, getState) => {
+  const diagrams = Diagram.allDiagramsSelector(getState());
+
+  await Promise.all(diagrams.map((diagram) => dispatch(saveVariableSet(diagram.id))));
+};
+
+export const savePlatformAndActiveDiagram = () => (dispatch) => Promise.all([dispatch(Skill.savePlatform()), dispatch(Diagram.saveActiveDiagram())]);

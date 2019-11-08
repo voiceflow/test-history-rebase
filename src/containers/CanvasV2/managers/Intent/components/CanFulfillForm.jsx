@@ -6,15 +6,7 @@ import Flex, { FlexApart } from '@/componentsV2/Flex';
 import { addFulfillment, deleteFulfillment, fulfillmentSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 
-function CanFulfillForm({ fulfillment, intentID, deleteFulfillment, addFulfillment }) {
-  const toggleCanFulfill = () => {
-    if (fulfillment) {
-      deleteFulfillment(intentID);
-    } else {
-      addFulfillment(intentID);
-    }
-  };
-
+function CanFulfillForm({ fulfillment, toggleCanFulfill }) {
   return (
     <FlexApart>
       <Flex>
@@ -41,9 +33,20 @@ const mapDispatchToProps = {
   addFulfillment,
 };
 
-const mergeProps = ({ fulfillment: fulfillmentSelector }, _, { intentID }) => ({
-  fulfillment: fulfillmentSelector(intentID),
-});
+const mergeProps = ({ fulfillment: fulfillmentSelector }, { addFulfillment, deleteFulfillment }, { intentID }) => {
+  const fulfillment = fulfillmentSelector(intentID);
+
+  return {
+    fulfillment,
+    toggleCanFulfill: () => {
+      if (fulfillment) {
+        deleteFulfillment(intentID);
+      } else {
+        addFulfillment(intentID);
+      }
+    },
+  };
+};
 
 export default connect(
   mapStateToProps,

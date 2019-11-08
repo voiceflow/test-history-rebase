@@ -24,7 +24,7 @@ class ClipboardEngine extends EngineConsumer {
   internal = {
     storeData: async (nodeIDs, keyToStore, keyToEncrypt) => {
       const state = this.engine.store.getState();
-      const creator = Creator.creatorStateSelector(state);
+      const creator = Creator.creatorDiagramSelector(state);
       const platform = activePlatformSelector(state);
 
       const skillID = activeSkillIDSelector(state);

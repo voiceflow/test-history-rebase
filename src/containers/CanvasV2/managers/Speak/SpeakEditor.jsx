@@ -18,8 +18,9 @@ const speakFactory = (type) => ({
 });
 
 function SpeakEditor({ data, onChange }) {
-  const toggleRandomized = () => onChange({ randomize: !data.randomize });
-  const { items, onAdd, onReorder, mapManaged } = useManager(data.dialogs, (dialogs) => onChange({ dialogs }), { factory: speakFactory });
+  const toggleRandomized = React.useCallback(() => onChange({ randomize: !data.randomize }), [data.randomize, onChange]);
+  const updateDialogs = React.useCallback((dialogs) => onChange({ dialogs }), [onChange]);
+  const { items, onAdd, onReorder, mapManaged } = useManager(data.dialogs, updateDialogs, { factory: speakFactory });
 
   return (
     <Content>

@@ -10,9 +10,7 @@ import { Body, Container, Content, Header, RemovableSection, Section, SettingsMe
 export { Section, Content, RemovableSection, Title };
 
 function BlockEditor({ data, onChange, children, onExpand, onRemove, onDuplicate, expanded, hideHeader, renameActiveRevision }) {
-  const addEmptyReprompt = () => {
-    onChange({ reprompt: { type: REPROMPT_TYPE.TEXT } });
-  };
+  const addEmptyReprompt = React.useCallback(() => onChange({ reprompt: { type: REPROMPT_TYPE.TEXT } }), [onChange]);
 
   return (
     <Container>
@@ -23,6 +21,7 @@ function BlockEditor({ data, onChange, children, onExpand, onRemove, onDuplicate
             <Tooltip html="Learn more" position="left" distance={10}>
               <HelpModalConsumer>
                 {({ setType, toggle }) => (
+                  // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                   <i
                     className="more-info d-flex align-items-center"
                     onClick={() => {

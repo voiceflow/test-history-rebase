@@ -206,6 +206,7 @@ export class Engine {
     this.saveActiveLocations();
 
     this.merge.confirm();
+    this.saveHistory();
     this.drag.clear();
   }
 
@@ -295,6 +296,7 @@ export class Engine {
   paste(pastedText, mousePosition) {
     this.clearActivation();
     this.clipboard.paste(pastedText, mousePosition);
+    this.saveHistory();
   }
 
   /**
@@ -322,6 +324,10 @@ export class Engine {
 
   showMergeWarning() {
     this.store.dispatch(setCanvasError('Cannot combine blocks'));
+  }
+
+  saveHistory() {
+    this.store.dispatch(Creator.saveHistory());
   }
 
   teardown() {

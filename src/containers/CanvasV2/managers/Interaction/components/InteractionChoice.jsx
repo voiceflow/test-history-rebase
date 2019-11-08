@@ -11,8 +11,8 @@ import { isLiveSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 
 const InteractionChoice = ({ choice, slots, index, onRemove, onUpdate, toggleOpen, isLive }) => {
-  const updateSelected = (selected) => onUpdate({ selected });
-  const updateMappings = (mappings) => onUpdate({ mappings });
+  const updateSelected = React.useCallback((selected) => onUpdate({ selected }), [onUpdate]);
+  const updateMappings = React.useCallback((mappings) => onUpdate({ mappings }), [onUpdate]);
 
   return (
     <>

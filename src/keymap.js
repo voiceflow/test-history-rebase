@@ -5,6 +5,8 @@
 export const Hotkey = {
   DELETE: 'DELETE',
   COPY: 'COPY',
+  UNDO: 'UNDO',
+  REDO: 'REDO',
   COMMENT: 'COMMENT',
   SPOTLIGHT: 'SPOTLIGHT',
   OPEN_BLOCK_MENU: 'OPEN_BLOCK_MENU',
@@ -15,6 +17,8 @@ export const Hotkey = {
 const HOTKEY_MAPPING = {
   [Hotkey.DELETE]: ['del', 'backspace'],
   [Hotkey.COPY]: ['control+c', 'command+c'],
+  [Hotkey.UNDO]: ['control+z', 'command+z'],
+  [Hotkey.REDO]: ['control+shift+z', 'command+shift+z'],
   [Hotkey.COMMENT]: ['control+/', 'command+/'],
   [Hotkey.SPOTLIGHT]: 'space',
   [Hotkey.OPEN_BLOCK_MENU]: 'shift+1',

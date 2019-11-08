@@ -15,8 +15,8 @@ const PERMISSION_LABEL = {
 };
 
 const VariableLabel = ({ canVariableMap, permission, products, onUpdate }) => {
-  const updateVariable = (mapTo, mapToLabel) => onUpdate({ mapTo, mapToLabel });
-  const updateProduct = (product) => onUpdate({ product });
+  const updateVariable = React.useCallback((mapTo, mapToLabel) => onUpdate({ mapTo, mapToLabel }), [onUpdate]);
+  const updateProduct = React.useCallback((product) => onUpdate({ product }), [onUpdate]);
 
   if (canVariableMap) {
     return (

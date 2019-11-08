@@ -6,22 +6,20 @@ import EnterFlow from '@/containers/CanvasV2/components/EnterFlow';
 import NestedBlock from '@/containers/CanvasV2/components/NestedBlock';
 import PortLabel from '@/containers/CanvasV2/components/Port/components/PortLabel';
 import { ContextMenuTarget } from '@/containers/CanvasV2/constants';
-import { ContextMenuContext, EngineContext, PlatformContext, TestingModeContext, withNode, withNodeData } from '@/containers/CanvasV2/contexts';
+import { ContextMenuContext, TestingModeContext, withNode, withNodeData } from '@/containers/CanvasV2/contexts';
+import { diagramByIDSelector } from '@/ducks/diagram';
+import { activePlatformSelector } from '@/ducks/skill';
+import { connect } from '@/hocs';
 import { stopPropagation } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 
 import CommandBlockContainer from './CommandBlockContainer';
 
-const CommandBlock = ({ data, node }) => {
-  const engine = React.useContext(EngineContext);
-  const platform = React.useContext(PlatformContext);
+const CommandBlock = ({ data, platformData, diagram, node }) => {
   const isTesting = React.useContext(TestingModeContext);
   const contextMenu = React.useContext(ContextMenuContext);
-  const platformData = data[platform];
 
   if (node.type !== BlockType.COMMAND) return <CombinedBlockItem />;
-
-  const diagram = platformData.diagramID && engine.getDiagramByID(platformData.diagramID);
 
   const openContextMenu = (event) => !isTesting && contextMenu.onOpen(event, ContextMenuTarget.NODE, node.id);
 
@@ -35,7 +33,26 @@ const CommandBlock = ({ data, node }) => {
   );
 };
 
+const mapStateToProps = {
+  platform: activePlatformSelector,
+  diagram: diagramByIDSelector,
+};
+
+const mergeProps = ({ platform, diagram: getDiagramByID }, _, { data }) => {
+  const platformData = data[platform];
+
+  return {
+    platformData,
+    diagram: platformData.diagramID && getDiagramByID(platformData.diagramID),
+  };
+};
+
 export default compose(
   withNode,
-  withNodeData
+  withNodeData,
+  connect(
+    mapStateToProps,
+    null,
+    mergeProps
+  )
 )(CommandBlock);

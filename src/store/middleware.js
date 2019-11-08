@@ -5,7 +5,7 @@ import shallowequal from 'shallowequal';
 import { debounce } from 'throttle-debounce';
 
 import { LOGROCKET_ENABLED } from '@/config';
-import { INITIALIZE_CREATOR, RESET_CREATOR, creatorStateSelector } from '@/ducks/creator';
+import { INITIALIZE_CREATOR, RESET_CREATOR, creatorDiagramSelector } from '@/ducks/creator';
 import { saveActiveDiagram } from '@/ducks/diagram';
 import { allIntentsSelector } from '@/ducks/intent';
 // import { sendRealtimeUpdate } from '@/ducks/realtime';
@@ -51,7 +51,7 @@ const createMiddleware = (history) => {
   const middleware = [
     routerMiddleware(history),
     thunk,
-    createAutosaveMiddleware((state) => ({ creator: creatorStateSelector(state) }), saveActiveDiagram, CREATOR_AUTOSAVE_IGNORED_ACTIONS),
+    createAutosaveMiddleware((state) => ({ creator: creatorDiagramSelector(state) }), saveActiveDiagram, CREATOR_AUTOSAVE_IGNORED_ACTIONS),
     createAutosaveMiddleware((state) => ({ intent: allIntentsSelector(state), slot: allSlotsSelector(state) }), saveIntents),
     createAutosaveMiddleware((state) => ({ platform: activePlatformSelector(state) }), savePlatformAndActiveDiagram, [SET_ACTIVE_SKILL]),
     createAutosaveMiddleware((state) => ({ variables: globalVariablesSelector(state) }), saveVariables, [SET_ACTIVE_SKILL]),

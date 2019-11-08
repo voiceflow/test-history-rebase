@@ -21,7 +21,8 @@ const permissionFactory = (selectedPermissions) => {
 
 function UserInfoEditor({ data, onChange, isLive }) {
   const selectedPermissions = data.permissions.map(({ selected }) => selected);
-  const { onAdd, mapManaged } = useManager(data.permissions, (permissions) => onChange({ permissions }), {
+  const updatePermissions = React.useCallback((permissions) => onChange({ permissions }), [onChange]);
+  const { onAdd, mapManaged } = useManager(data.permissions, updatePermissions, {
     factory: permissionFactory(selectedPermissions),
   });
 

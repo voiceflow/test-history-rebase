@@ -20,16 +20,20 @@ const interactionChoiceFactory = () => ({
 function InteractionChoiceManager({ data, platform, onChange, focusedNode, isLive }) {
   const choices = data[platform];
   const engine = React.useContext(EngineContext);
-  const { onAdd, mapManaged } = useManager(choices, (nextChoices) => onChange({ [platform]: nextChoices }), { factory: interactionChoiceFactory });
 
-  const addChoice = () => {
+  const updateChoices = React.useCallback((nextChoices, save) => onChange({ [platform]: nextChoices }, save), [platform, onChange]);
+  const onRemoveChoice = React.useCallback((_, index) => engine.port.remove(focusedNode.ports.out[index + 1]), [focusedNode.ports.out]);
+
+  const { onAdd, mapManaged } = useManager(choices, updateChoices, {
+    autosave: false,
+    factory: interactionChoiceFactory,
+    handleRemove: onRemoveChoice,
+  });
+
+  const addChoice = React.useCallback(() => {
     onAdd();
-    engine.port.add(focusedNode.id, { label: data[platform].length + 1 });
-  };
-  const removeChoice = (onRemove, index) => () => {
-    onRemove();
-    engine.port.remove(focusedNode.ports.out[index + 1]);
-  };
+    engine.port.add(focusedNode.id, { label: choices.length + 1 });
+  }, [focusedNode.id, choices.length, onAdd]);
 
   return (
     <>
@@ -42,7 +46,7 @@ function InteractionChoiceManager({ data, platform, onChange, focusedNode, isLiv
       </Button>
       {mapManaged((choice, { key, index, onRemove, onUpdate, toggleOpen }) => (
         <CardManagerItem key={key}>
-          <InteractionChoice choice={choice} index={index} onRemove={removeChoice(onRemove, index)} onUpdate={onUpdate} toggleOpen={toggleOpen} />
+          <InteractionChoice choice={choice} index={index} onRemove={onRemove} onUpdate={onUpdate} toggleOpen={toggleOpen} />
         </CardManagerItem>
       ))}
     </>

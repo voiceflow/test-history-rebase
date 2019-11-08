@@ -36,22 +36,21 @@ function DisplayEditor({ data, onChange, displays, goToDisplays, displayModal })
     );
   }
 
-  const getDatasource = (displayID) => {
-    return displays.find((display) => display.id === displayID).datasource || null;
-  };
+  const getDatasource = (displayID) => displays.find((display) => display.id === displayID).datasource || null;
 
-  const updateDatasource = (datasource) => {
-    onChange({ datasource });
-  };
-  const updateDisplay = (displayID) => {
-    onChange({ displayID });
-    updateDatasource(getDatasource(displayID));
-  };
-  const updateAPLCommands = (aplCommands) => {
-    onChange({ aplCommands });
-  };
+  const updateDatasource = React.useCallback((datasource) => onChange({ datasource }), [onChange]);
 
-  const toggleUpdateOnChange = () => onChange({ updateOnChange: !data.updateOnChange });
+  const updateDisplay = React.useCallback(
+    (displayID) => {
+      onChange({ displayID });
+      updateDatasource(getDatasource(displayID));
+    },
+    [onChange, updateDatasource, getDatasource]
+  );
+
+  const updateAPLCommands = React.useCallback((aplCommands) => onChange({ aplCommands }), [onChange]);
+
+  const toggleUpdateOnChange = React.useCallback(() => onChange({ updateOnChange: !data.updateOnChange }), [data.updateOnChange, onChange]);
 
   const showTestModal = () => {
     setDisplayID(data.displayID);
@@ -65,7 +64,7 @@ function DisplayEditor({ data, onChange, displays, goToDisplays, displayModal })
       <Section>
         <FlexApart>
           <label className="mb-0">Multimodal Display</label>
-          <Link href="" onClick={preventDefault(() => goToDisplays())}>
+          <Link href="" onClick={preventDefault(goToDisplays)}>
             See all
           </Link>
         </FlexApart>

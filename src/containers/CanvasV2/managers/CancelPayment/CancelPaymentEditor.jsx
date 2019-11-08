@@ -12,8 +12,8 @@ import { activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 
 function CancelPaymentEditor({ onChange, goToProducts, goToEditProduct, selectedProduct, hasProducts }) {
-  const updateProduct = (productID) => onChange({ productID });
-  const unlinkProduct = () => updateProduct(null);
+  const updateProduct = React.useCallback((productID) => onChange({ productID }), [onChange]);
+  const unlinkProduct = React.useCallback(() => updateProduct(null), [updateProduct]);
 
   if (!hasProducts) {
     return (

@@ -11,8 +11,10 @@ import { useLazy } from './lazy';
 
 const UNIQUE_TYPES = ['object', 'function'];
 
+const DEBOUNCE_TIMEOUT = 300;
+
 // eslint-disable-next-line import/prefer-default-export
-export const useManager = (items, onChange, { factory = identity, getKey, debounced = true, handleRemove } = {}) => {
+export const useManager = (items, onChange, { factory = identity, getKey, autosave = true, debounced = true, handleRemove } = {}) => {
   const [, forceRerender] = React.useState(null);
   const keyLookup = React.useRef();
   const normalized = React.useRef();
@@ -20,9 +22,10 @@ export const useManager = (items, onChange, { factory = identity, getKey, deboun
 
   cachedOnChange.current = onChange;
 
-  const debouncedOnChange = React.useMemo(() => (debounced ? debounce((...args) => cachedOnChange.current(...args), 300) : cachedOnChange.current), [
-    debounced,
-  ]);
+  const debouncedOnChange = React.useMemo(
+    () => (debounced ? debounce((...args) => cachedOnChange.current(...args), DEBOUNCE_TIMEOUT) : cachedOnChange.current),
+    [debounced]
+  );
 
   const generateLookupKey = React.useMemo(
     () => moize((value, index) => (value !== null && UNIQUE_TYPES.includes(typeof value) ? value : [value, index])),
@@ -46,13 +49,13 @@ export const useManager = (items, onChange, { factory = identity, getKey, deboun
   const getIndex = React.useCallback((key) => normalized.current.allKeys.indexOf(key), []);
 
   const onSave = React.useCallback(
-    (value, { update } = {}) => {
+    (value, { update, save = true } = {}) => {
       const denormalized = denormalize(value);
 
       normalized.current = value;
       setDependencies([denormalized]);
       forceRerender(Math.random());
-      update ? debouncedOnChange(denormalized) : cachedOnChange.current(denormalized);
+      update ? debouncedOnChange(denormalized) : cachedOnChange.current(denormalized, save);
     },
     [setDependencies, debouncedOnChange]
   );
@@ -65,9 +68,9 @@ export const useManager = (items, onChange, { factory = identity, getKey, deboun
 
       keyLookup.current.set(generateLookupKey(value, updated.allKeys.length - 1), key);
 
-      onSave(updated);
+      onSave(updated, { save: autosave });
     },
-    [factory, onSave]
+    [autosave, factory, onSave]
   );
 
   const onReorder = React.useCallback(
@@ -112,13 +115,13 @@ export const useManager = (items, onChange, { factory = identity, getKey, deboun
 
       keyLookup.current.delete(generateLookupKey(currValue, currIndex));
 
-      onSave(updated);
+      onSave(updated, { save: autosave });
 
       if (handleRemove) {
         handleRemove(currValue, currIndex);
       }
     },
-    [onSave, handleRemove]
+    [autosave, onSave, handleRemove]
   );
 
   const memoizedRemove = React.useMemo(() => moize((key) => () => onRemove(key)), [onRemove]);

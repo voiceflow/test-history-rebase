@@ -43,7 +43,7 @@ const HomeBlock = (_, ref) => {
         >
           {node.combinedNodes.map((nodeID) => (
             <NodeIDProvider value={nodeID} key={nodeID}>
-              <CommandBlock />
+              <CommandBlock engine={engine} />
             </NodeIDProvider>
           ))}
         </GroupBlockSection>

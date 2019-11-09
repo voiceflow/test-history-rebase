@@ -15,11 +15,11 @@ import { compose } from '@/utils/functional';
 
 import CommandBlockContainer from './CommandBlockContainer';
 
-const CommandBlock = ({ data, platformData, diagram, node }) => {
+const CommandBlock = ({ data, platformData, diagram, node, engine }) => {
   const isTesting = React.useContext(TestingModeContext);
   const contextMenu = React.useContext(ContextMenuContext);
 
-  if (node.type !== BlockType.COMMAND) return <CombinedBlockItem />;
+  if (node.type !== BlockType.COMMAND) return <CombinedBlockItem engine={engine} />;
 
   const openContextMenu = (event) => !isTesting && contextMenu.onOpen(event, ContextMenuTarget.NODE, node.id);
 

@@ -1,5 +1,7 @@
 import { push } from 'connected-react-router';
 
+import { RootRoutes } from '@/utils/routes';
+
 import { activeDiagramIDSelector, activeSkillIDSelector, activeSkillSelector } from './skill';
 
 const goTo = (path, search) => push(`/${path}`, search && { search });
@@ -20,16 +22,16 @@ export const goToNewTeamFlow = () => goTo('team/new');
 
 export const gotToNewProjectFlow = (boardID) => goTo(`team/template/${boardID}`);
 
-export const goToCanvas = (skillID, diagramID) => goTo(`canvas/${skillID}${diagramID ? `/${diagramID}` : ''}`);
+export const goToCanvas = (versionID, diagramID) => goTo(`${RootRoutes.PROJECT}/${versionID}${diagramID ? `/canvas/${diagramID}` : ''}`);
 
-export const goToTestDiagram = (skillID) => goTo(`test/${skillID}`);
+export const goToTestDiagram = (versionID) => goTo(`${RootRoutes.PROJECT}/${versionID}/test`);
 
-export const goToPublish = (skillID, platform) => goTo(`publish/${skillID}${platform ? `/${platform}` : ''}`);
+export const goToPublish = (versionID, platform) => goTo(`${RootRoutes.PROJECT}/${versionID}/publish${platform ? `/${platform}` : ''}`);
 
 export const goToCurrentCanvas = () => async (dispatch, getState) => {
-  const skillID = activeSkillIDSelector(getState());
+  const versionID = activeSkillIDSelector(getState());
   const diagramID = activeDiagramIDSelector(getState());
-  dispatch(goToCanvas(skillID, diagramID));
+  dispatch(goToCanvas(versionID, diagramID));
 };
 
 export const goToRootDiagram = () => async (dispatch, getState) => {
@@ -39,21 +41,21 @@ export const goToRootDiagram = () => async (dispatch, getState) => {
 };
 
 export const goToDiagram = (diagramID) => async (dispatch, getState) => {
-  const skillID = activeSkillIDSelector(getState());
+  const versionID = activeSkillIDSelector(getState());
 
-  dispatch(goToCanvas(skillID, diagramID));
+  dispatch(goToCanvas(versionID, diagramID));
 };
 
-export const goToProducts = (skillID) => goTo(`tools/${skillID}/products`);
+export const goToProducts = (versionID) => goTo(`${RootRoutes.PROJECT}/${versionID}/tools/products`);
 
-export const goToNewProduct = (skillID) => goTo(`tools/${skillID}/product/new`);
+export const goToNewProduct = (versionID) => goTo(`${RootRoutes.PROJECT}/${versionID}/tools/product/new`);
 
-export const goToEditProduct = (skillID, productID) => goTo(`tools/${skillID}/product/${productID}`);
+export const goToEditProduct = (versionID, productID) => goTo(`${RootRoutes.PROJECT}/${versionID}/tools/product/${productID}`);
 
-export const goToDisplays = (skillID) => goTo(`visuals/${skillID}`);
+export const goToDisplays = (versionID) => goTo(`${RootRoutes.PROJECT}/${versionID}/visuals`);
 
-export const goToNewDisplay = (skillID) => goTo(`visuals/${skillID}/display/new`);
+export const goToNewDisplay = (versionID) => goTo(`${RootRoutes.PROJECT}/${versionID}/visuals/new`);
 
-export const goToDisplay = (skillID, displayID) => goTo(`visuals/${skillID}/display/${displayID}`);
+export const goToDisplay = (versionID, displayID) => goTo(`${RootRoutes.PROJECT}/${versionID}/visuals/${displayID}`);
 
 export const goToDesigner = () => goTo('designer/preview');

@@ -105,7 +105,7 @@ class MaintenanceGate extends React.Component {
     const { checked } = this.state;
     return (
       <LoadingGate load={this.checkMaintenance} isLoaded={checked}>
-        {() => children}
+        {children}
       </LoadingGate>
     );
   }

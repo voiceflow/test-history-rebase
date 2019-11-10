@@ -139,7 +139,7 @@ class ProductEditPage extends PureComponent {
   componentDidMount() {
     const {
       createProduct,
-      computedMatch: {
+      match: {
         params: { id },
       },
     } = this.props;
@@ -187,12 +187,12 @@ class ProductEditPage extends PureComponent {
   };
 }
 
-ProductEditPage.proptypes = {
+ProductEditPage.propTypes = {
   goToProducts: PropTypes.func,
   product: PropTypes.object,
   productID: PropTypes.string,
   uploadProduct: PropTypes.func,
-  computedMatch: PropTypes.object,
+  match: PropTypes.object,
 };
 
 const mapStateToProps = {
@@ -206,8 +206,8 @@ const mapDispatchToProps = {
   uploadProduct,
 };
 
-const mergeProps = ({ product: productByIDSelector }, { goToProducts, uploadProduct }, { computedMatch, skillID }) => {
-  const productID = computedMatch.params.id;
+const mergeProps = ({ product: productByIDSelector }, { goToProducts, uploadProduct }, { match, skillID }) => {
+  const productID = match.params.id;
 
   return {
     productID,

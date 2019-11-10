@@ -73,16 +73,16 @@ class SkillLookup extends React.Component {
     super(props);
 
     this.state = {
-      skill_id: _.get(props, ['match', 'params', 'version_id']) || '',
+      versionID: _.get(props, ['match', 'params', 'version_id']) || '',
       encoded: true,
       loading: false,
-      version_info: null,
+      versionInfo: null,
     };
   }
 
   componentDidMount() {
-    if (this.state.skill_id) {
-      if (isNaN(this.state.skill_id)) this.lookupSkill();
+    if (this.state.versionID) {
+      if (isNaN(this.state.versionID)) this.lookupSkill();
       else {
         // Assume that it's a number I guess
         this.setState(
@@ -102,16 +102,16 @@ class SkillLookup extends React.Component {
   };
 
   lookupSkill = () => {
-    if (!this.state.skill_id) return;
+    if (!this.state.versionID) return;
     this.setState({ loading: true, errors: '' });
     axios
-      .get(`/version/${this.state.skill_id}/info`, { params: { encoded: this.state.encoded ? '1' : undefined } })
+      .get(`/version/${this.state.versionID}/info`, { params: { encoded: this.state.encoded ? '1' : undefined } })
       .then((res) => {
         const v = res.data;
         v.dev_version = v.versions.find((vers) => vers.version_id === v.project.dev_version);
         this.setState({
           loading: false,
-          version_info: v,
+          versionInfo: v,
         });
       })
       .catch((e) => {
@@ -122,7 +122,7 @@ class SkillLookup extends React.Component {
   };
 
   render() {
-    const v = this.state.version_info;
+    const v = this.state.versionInfo;
     return (
       <>
         <AdminTitle>
@@ -150,8 +150,8 @@ class SkillLookup extends React.Component {
               />
             </label>
             <Input
-              name="skill_id"
-              value={this.state.skill_id}
+              name="versionID"
+              value={this.state.versionID}
               onChange={this.handleChange}
               placeholder={this.state.encoded ? '86d84lrdAB' : '38728'}
             />

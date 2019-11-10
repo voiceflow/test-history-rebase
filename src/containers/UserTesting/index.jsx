@@ -62,7 +62,7 @@ class UserTesting extends React.Component {
 
   async fetchInformation() {
     const { setActiveSkill, initializeTest, updateTest, replaceIntents, replaceSlots } = this.props;
-    const { skill, intents, slots, testVariableValues } = await client.testing.getInfo(this.props.match.params.skill_id);
+    const { skill, intents, slots, testVariableValues } = await client.testing.getInfo(this.props.match.params.versionID);
 
     skill.globalVariables = [...new Set(['sessions', 'user_id', 'timestamp', 'platform', 'locale', ...skill.globalVariables])];
     if (!skill.fulfillment) {

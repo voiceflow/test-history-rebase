@@ -23,9 +23,9 @@ const mapDispatchToProps = {
   setError,
 };
 
-const mergeProps = ({ activeSkill }, { loadSkill, setError }, { skillID, diagramID }) => ({
-  isProjectLoaded: activeSkill && activeSkill.id === skillID,
-  loadProject: () => loadSkill(skillID, diagramID).catch(setError),
+const mergeProps = ({ activeSkill }, { loadSkill, setError }, { versionID, diagramID }) => ({
+  isProjectLoaded: activeSkill && activeSkill.id === versionID,
+  loadProject: () => loadSkill(versionID, diagramID).catch(setError),
 });
 
 export default connect(

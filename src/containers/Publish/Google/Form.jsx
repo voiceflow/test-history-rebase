@@ -133,10 +133,10 @@ class GooglePublish extends Component {
   };
 
   async componentDidMount() {
-    const { skillId, setError } = this.props;
+    const { versionID, setError } = this.props;
 
     try {
-      const res = await axios.get(`/skill/google/${skillId}`);
+      const res = await axios.get(`/skill/google/${versionID}`);
       const properties = googleFormAdapter.fromDB(res.data);
 
       this.setState({
@@ -157,7 +157,7 @@ class GooglePublish extends Component {
   }
 
   save = async () => {
-    const { setError, skillId, updatePublishInfo, googleId } = this.props;
+    const { setError, versionID, updatePublishInfo, googleId } = this.props;
     const { locales, main_locale } = this.state;
 
     const googlePublishInfo = {
@@ -166,7 +166,7 @@ class GooglePublish extends Component {
     };
 
     try {
-      await axios.patch(`/skill/${skillId}?platform=google&publish=true`, { google_publish_info: googlePublishInfo });
+      await axios.patch(`/skill/${versionID}?platform=google&publish=true`, { google_publish_info: googlePublishInfo });
       updatePublishInfo({ ...googlePublishInfo, googleId });
     } catch (err) {
       setError('Save Error, updates not saved');
@@ -283,8 +283,8 @@ class GooglePublish extends Component {
 
 const mapStateToProps = (state) => ({
   name: activeNameSelector(state),
-  skillId: activeSkillIDSelector(state),
   googleId: publishStateSelector(state).googleId,
+  versionID: activeSkillIDSelector(state),
   googleEmail: state.account.google?.profile?.email || '0',
 });
 

@@ -11,6 +11,7 @@ import { FullSpinner } from '@/components/Spinner';
 import { userSelector } from '@/ducks/account';
 import { addProjectToList } from '@/ducks/board';
 import { connect } from '@/hocs';
+import { RootRoutes } from '@/utils/routes';
 
 import LOCALE_MAP from '../../services/LocaleMap';
 import LocalCheckbox from './components/LocalCheckBox';
@@ -78,7 +79,7 @@ class Templates extends React.Component {
     this.loadDefaultTemplates();
   }
 
-  createProject(module_id) {
+  createProject(moduleId) {
     const { team_id, computedMatch, addProjectToList, history } = this.props;
     const { name, locales, google } = this.state;
 
@@ -91,7 +92,7 @@ class Templates extends React.Component {
     }
 
     axios
-      .post(`/team/${team_id}/copy/module/${module_id}`, {
+      .post(`/team/${team_id}/copy/module/${moduleId}`, {
         name,
         locales,
         platform: google ? 'google' : 'alexa',
@@ -103,7 +104,7 @@ class Templates extends React.Component {
             addProjectToList(board_id, res.data.project_id);
           }
           setTimeout(() => {
-            history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`);
+            history.push(`/${RootRoutes.PROJECT}/${res.data.skill_id}/canvas/${res.data.diagram}`);
           }, 3000);
         } else {
           throw new Error('Invalid Response Format');
@@ -138,7 +139,7 @@ class Templates extends React.Component {
     const { loading, error, name, locales } = this.state;
 
     if (loading) {
-      return <FullSpinner name="Template" />;
+      return <FullSpinner name="Template" backgroundColor="#f9f9f9" />;
     }
 
     return (

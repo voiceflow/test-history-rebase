@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import * as _ from 'lodash';
+import _ from 'lodash';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';

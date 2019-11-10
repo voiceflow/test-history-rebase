@@ -3,8 +3,8 @@ import { Tooltip } from 'react-tippy';
 
 import { User } from '@/components/User/User';
 import Flex from '@/componentsV2/Flex';
-import { withTeamLoaded } from '@/contexts/TeamLoadingGate';
-import { connect } from '@/hocs';
+import { TeamLoadingGate } from '@/gates';
+import { connect, withBatchLoadingGate } from '@/hocs';
 import { diagramViewersSelector } from '@/store/selectors';
 import { compose } from '@/utils/functional';
 
@@ -23,6 +23,6 @@ const mapStateToProps = {
 };
 
 export default compose(
-  withTeamLoaded,
+  withBatchLoadingGate(TeamLoadingGate),
   connect(mapStateToProps)
 )(CanvasViewers);

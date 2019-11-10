@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import map from 'lodash/map';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
@@ -13,6 +13,7 @@ import { useToggle } from '@/hooks/toggle';
 import { colors } from '@/utils/colors';
 import { stopPropagation } from '@/utils/dom';
 import { getHumanLanguageName } from '@/utils/languages';
+import { RootRoutes } from '@/utils/routes';
 
 import {
   DropdownIconWrapper,
@@ -45,7 +46,7 @@ export function Item(props) {
 
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
 
-  const pathTo = isReference ? `/reference/${id}` : `/canvas/${version_id}/${diagram}`;
+  const pathTo = isReference ? `/reference/${id}` : `/${RootRoutes.PROJECT}/${version_id}/canvas/${diagram}`;
   const color = colors[new Date(created).getTime() % colors.length];
   const options = [
     {

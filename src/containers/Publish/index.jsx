@@ -1,7 +1,7 @@
 import './Skill.css';
 
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Switch } from 'react-router-dom';
 import { Badge } from 'reactstrap';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
@@ -65,8 +65,10 @@ function Publish(props) {
       </Sidebar>
 
       <div md="9" className="business-page">
-        <PrivateRoute {...ownProps} path={`${path}/alexa`} component={PublishAmazon} skillID={skillID} />
-        <PrivateRoute {...ownProps} path={`${path}/google`} component={PublishGoogle} skillID={skillID} />
+        <Switch>
+          <PrivateRoute {...ownProps} path={`${path}/alexa`} component={PublishAmazon} skillID={skillID} />
+          <PrivateRoute {...ownProps} path={`${path}/google`} component={PublishGoogle} skillID={skillID} />
+        </Switch>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import './Business.css';
 
 import React from 'react';
+import { Switch } from 'react-router-dom';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import { userSelector } from '@/ducks/account';
@@ -22,9 +23,11 @@ function Business(props) {
   return (
     <div id="business">
       <div className="business-page">
-        <PrivateRoute {...ownProps} exact path={path} component={Home} />
-        <PrivateRoute {...ownProps} path={`${path}/products`} component={ProductsList} />
-        <PrivateRoute {...ownProps} path={`${path}/product/:id`} component={Product} />
+        <Switch>
+          <PrivateRoute {...ownProps} exact path={path} component={Home} />
+          <PrivateRoute {...ownProps} path={`${path}/products`} component={ProductsList} />
+          <PrivateRoute {...ownProps} path={`${path}/product/:id`} component={Product} />
+        </Switch>
       </div>
     </div>
   );

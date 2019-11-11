@@ -1,4 +1,5 @@
 import React from 'react';
+import { Switch } from 'react-router-dom';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import { styled } from '@/hocs';
@@ -29,8 +30,10 @@ function Visuals(props) {
   return (
     <VisualsPageContainer>
       <VisualsPageContent>
-        <PrivateRoute {...ownProps} exact path={path} component={Multimodal} />
-        <PrivateRoute {...ownProps} path={`${path}/:id`} component={Display} />
+        <Switch>
+          <PrivateRoute {...ownProps} exact path={path} component={Multimodal} />
+          <PrivateRoute {...ownProps} path={`${path}/:id`} component={Display} />
+        </Switch>
       </VisualsPageContent>
     </VisualsPageContainer>
   );

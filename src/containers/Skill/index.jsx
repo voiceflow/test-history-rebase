@@ -1,7 +1,10 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { Redirect, Switch } from 'react-router-dom';
 import { Alert } from 'reactstrap';
+import { compose } from 'recompose';
 
+import PrivateRoute from '@/Routes/PrivateRoute';
 import Page from '@/components/Page';
 import DragLayer from '@/componentsV2/DragLayer';
 import Business from '@/containers/Business';
@@ -18,129 +21,103 @@ import { trackSessionTime } from '@/ducks/analytics';
 import { updateProjectName } from '@/ducks/project';
 import { goToDashboard } from '@/ducks/router';
 import { activeSkillSelector, saveSkillSettings } from '@/ducks/skill';
-import { connect } from '@/hocs';
+import { ProjectLoadingGate, ProjectLockGate } from '@/gates';
+import { connect, withBatchLoadingGate } from '@/hocs';
+import { getActivePageAndMatch } from '@/utils/routes';
 
 import ProjectTitle from './components/ProjectTitle';
 import SkillSubHeader from './components/SkillSubHeader';
 import DiagramSync from './contexts/DiagramSync';
-import ProjectLoadingGate from './contexts/ProjectLoadingGate';
-import ProjectLockGate from './contexts/ProjectLockGate';
-// import RealtimeLoadingGate from './contexts/RealtimeLoadingGate';
 
-class Skill extends React.PureComponent {
-  timeMounted = null;
+const PAGES_MATCHES = {
+  test: ['/test/:diagramID?'],
+  logs: ['/creator_logs'],
+  tools: ['/tools'],
+  canvas: ['/canvas/:diagramID?'],
+  migrate: ['/migrate'],
+  visuals: ['/visuals'],
+  publish: ['/publish'],
+};
 
-  trackCanvasTime() {
-    const { skill } = this.props;
+function RenderCanvas({ diagramID, isTesting }) {
+  return (
+    <>
+      {!isTesting && <DiagramSync diagramID={diagramID} />}
+      <TestingModeProvider value={isTesting}>
+        <ShortcutModalProvider>
+          <SettingsModalProvider>
+            <CanvasHeader />
+            <CanvasMenu />
+            <Canvas isTesting={isTesting} />
+            <Testing render />
+          </SettingsModalProvider>
+        </ShortcutModalProvider>
+      </TestingModeProvider>
+    </>
+  );
+}
 
-    const timeUnmounted = new Date();
-    if (skill) {
-      this.props.trackSessionTime(timeUnmounted - this.timeMounted, skill.skill_id);
+function Skill(props) {
+  const { match, error, diagramID, activePage, activeSkill = {}, goToDashboard, updateProjectName } = props;
+
+  const timeMounted = null;
+
+  React.useEffect(() => {
+    if (window.performance?.navigation.type === 1) {
+      const { skill } = props;
+
+      const timeUnmounted = new Date();
+
+      skill && props.trackSessionTime(timeUnmounted - timeMounted, skill.skill_id);
     }
-    this.timeMounted = null;
-  }
+  }, []);
 
-  componentDidMount() {
-    /* Logic for detecting when page refreshed */
-    // eslint-disable-next-line compat/compat
-    if (window.performance && window.performance.navigation.type === 1) {
-      this.trackCanvasTime();
-    }
-  }
-
-  renderPage() {
-    const {
-      page,
-      secondaryPage,
-      match: {
-        params: { diagram_id: diagramID },
-      },
-    } = this.props;
-    const isTesting = page === 'test';
-
-    switch (page) {
-      case 'canvas':
-      case 'test':
-        return (
-          <>
-            {!isTesting && <DiagramSync diagramID={diagramID} />}
-            <TestingModeProvider value={isTesting}>
-              <ShortcutModalProvider>
-                <SettingsModalProvider>
-                  <CanvasHeader />
-                  <CanvasMenu />
-                  <Canvas page={page} />
-                  <Testing render />
-                </SettingsModalProvider>
-              </ShortcutModalProvider>
-            </TestingModeProvider>
-          </>
-        );
-      case 'tools':
-        return <Business {...this.props} page={secondaryPage} toggleUpgrade={this.toggleUpgrade} />;
-      case 'publish':
-        return <Publish {...this.props} page={secondaryPage} />;
-      case 'logs':
-        return <Logs {...this.props} />;
-      case 'visuals':
-        return <Visuals {...this.props} page={secondaryPage} />;
-      case 'migrate':
-        return <Migrate {...this.props} />;
-      default:
-        return null;
-    }
-  }
-
-  render() {
-    const {
-      error,
-      updateProjectName,
-      goToDashboard,
-      activeSkill = {},
-      page,
-      match: {
-        params: { skill_id: skillID, diagram_id: diagramID },
-      },
-    } = this.props;
-
-    if (error) {
-      return (
-        <div className="super-center w-100 h-100">
-          <Alert color="danger">{error}</Alert>
-        </div>
-      );
-    }
-
+  if (error) {
     return (
-      <ProjectLockGate skillID={skillID}>
-        {() => (
-          <ProjectLoadingGate skillID={skillID} diagramID={diagramID}>
-            {() => (
-              // <RealtimeLoadingGate>
-              //   {() => (
-              <>
-                <Helmet>
-                  <title>{activeSkill.name || 'Voiceflow Creator'}</title>
-                </Helmet>
-                <Page
-                  onNavigateBack={goToDashboard}
-                  header={<ProjectTitle title={activeSkill.name} onChange={updateProjectName} />}
-                  subHeader={<SkillSubHeader activePage={page} />}
-                  canScroll={false}
-                  userMenu={false}
-                >
-                  {this.renderPage()}
-                </Page>
-                <DragLayer />
-              </>
-              //   )}
-              // </RealtimeLoadingGate>
-            )}
-          </ProjectLoadingGate>
-        )}
-      </ProjectLockGate>
+      <div className="super-center w-100 h-100">
+        <Alert color="danger">{error}</Alert>
+      </div>
     );
   }
+  const isTesting = activePage === 'test';
+
+  return (
+    <>
+      <Helmet>
+        <title>{activeSkill.name || 'Voiceflow Creator'}</title>
+      </Helmet>
+
+      <Page
+        header={<ProjectTitle title={activeSkill.name} onChange={updateProjectName} />}
+        userMenu={false}
+        canScroll={false}
+        subHeader={<SkillSubHeader activePage={activePage} />}
+        onNavigateBack={goToDashboard}
+      >
+        <Switch>
+          <PrivateRoute
+            path={[`${match.path}/test/:diagramID?`, `${match.path}/canvas/:diagramID?`]}
+            component={RenderCanvas}
+            diagramID={diagramID}
+            isTesting={isTesting}
+          />
+
+          <PrivateRoute path={`${match.path}/tools`} component={Business} />
+
+          <PrivateRoute path={`${match.path}/migrate`} component={Migrate} />
+
+          <PrivateRoute path={`${match.path}/visuals`} component={Visuals} />
+
+          <PrivateRoute path={`${match.path}/publish`} component={Publish} />
+
+          <PrivateRoute path={`${match.path}/creator_logs`} component={Logs} />
+
+          <Redirect to={`${match.path}/canvas`} />
+        </Switch>
+      </Page>
+      <DragLayer />
+    </>
+  );
 }
 
 const mapStateToProps = {
@@ -161,8 +138,24 @@ const mergeProps = ({ activeSkill }, { updateProjectName, updateSkillName }) => 
   },
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+    mergeProps
+  ),
+  withBatchLoadingGate(
+    [ProjectLockGate, ({ match }) => ({ versionID: match.params?.versionID })],
+    [
+      ProjectLoadingGate,
+      ({ match, location }) => {
+        const { activePage, activePageMatch } = getActivePageAndMatch(PAGES_MATCHES, location.pathname, match.path);
+
+        return {
+          diagramID: activePageMatch?.params?.diagramID,
+          activePage,
+        };
+      },
+    ]
+  )
 )(Skill);

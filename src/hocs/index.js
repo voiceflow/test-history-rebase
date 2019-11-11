@@ -6,3 +6,4 @@ export * from './withDebug';
 export * from './withStripe';
 export * from './withLoadingGate';
 export * from './withExternalResources';
+export * from './withBatchLoadingGate';

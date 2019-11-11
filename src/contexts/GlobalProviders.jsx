@@ -4,8 +4,8 @@ import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { ThemeProvider } from 'styled-components';
 
+import { MaintenanceGate } from '@/gates';
 import theme from '@/styles/theme';
-import MaintenanceGate from '@/utils/maintenance';
 
 import { DragProvider } from './DragContext';
 import { EventualEngineProvider } from './EventualEngineContext';
@@ -24,9 +24,11 @@ const GlobalProviders = ({ history, store, persistor, children }) => (
             <OverlayProvider>
               <EventualEngineProvider>
                 <MaintenanceGate>
-                  <ConnectedRouter history={history}>
-                    <LifecycleProvider history={history}>{children}</LifecycleProvider>
-                  </ConnectedRouter>
+                  {() => (
+                    <ConnectedRouter history={history}>
+                      <LifecycleProvider history={history}>{children}</LifecycleProvider>
+                    </ConnectedRouter>
+                  )}
                 </MaintenanceGate>
               </EventualEngineProvider>
             </OverlayProvider>

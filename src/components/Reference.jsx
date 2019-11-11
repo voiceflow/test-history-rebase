@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { FullSpinner } from '@/components/Spinner';
+import { RootRoutes } from '@/utils/routes';
 
 const Diagram = styled.div`
   position: fixed;
@@ -18,11 +19,13 @@ const Diagram = styled.div`
 `;
 
 function Reference(props) {
-  const project_id = props.match.params.project_id;
+  const projectID = props.match.params.project_id;
   const history = props.history;
+
   useEffect(() => {
-    axios.post(`/project/${project_id}/use_reference`).then((res) => history.replace(`/canvas/${res.data.skill_id}`));
-  }, [project_id]);
+    axios.post(`/project/${projectID}/use_reference`).then((res) => history.replace(`/${RootRoutes.PROJECT}/${res.data.skill_id}/canvas`));
+  }, [projectID]);
+
   return (
     <Diagram>
       <FullSpinner name="Project" />

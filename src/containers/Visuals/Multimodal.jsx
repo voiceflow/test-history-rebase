@@ -13,6 +13,7 @@ import { setConfirm } from '@/ducks/modal';
 import { goToCurrentCanvas, goToDisplay, goToNewDisplay } from '@/ducks/router';
 import { activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { RootRoutes } from '@/utils/routes';
 
 class Multimodal extends Component {
   state = {
@@ -42,7 +43,7 @@ class Multimodal extends Component {
             <img src="/desktop.svg" alt="open safe" width="80" />
             <p className="empty">No Visual Templates Exist</p>
             <p className="empty-desc">Add visuals to your project with Alexa Presentation Language.</p>
-            <Link to={`/visuals/${skillID}/display/new`} className="no-underline">
+            <Link to={`/${RootRoutes.PROJECT}/${skillID}/visuals/new`} className="no-underline">
               <Button isPrimary varient="contained">
                 New Display
               </Button>

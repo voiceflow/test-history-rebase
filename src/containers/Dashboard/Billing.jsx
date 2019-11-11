@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import moment from 'moment';
 import React, { Component } from 'react';
 import { CardElement } from 'react-stripe-elements';

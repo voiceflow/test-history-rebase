@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { createSelector } from 'reselect';
 
 import Normalize, { deleteNormalize, normalize } from '@/ducks/_normalize';

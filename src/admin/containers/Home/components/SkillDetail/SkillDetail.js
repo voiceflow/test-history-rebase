@@ -34,13 +34,13 @@ export class SkillDetail extends Component {
     });
   };
 
-  copy(skill_id) {
-    if (!(skill_id && this.state.target_board)) {
+  copy(versionID) {
+    if (!(versionID && this.state.target_board)) {
       toast.error('Fields not Complete!');
       return;
     }
     axios
-      .post(`/version/${skill_id}/copy/team/${this.state.target_board.value}`)
+      .post(`/version/${versionID}/copy/team/${this.state.target_board.value}`)
       .then(() => {
         this.setState({
           target_board: '',

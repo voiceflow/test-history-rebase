@@ -6,6 +6,8 @@ import { DisplayModalConsumer } from '@/containers/CanvasV2/contexts/DisplayModa
 import DisplayModal from '@/containers/CanvasV2/managers/Display/components/DisplayTestModal';
 import HelpModal from '@/containers/Help';
 import SettingsModal from '@/containers/Settings';
+import { DiagramLoadingGate } from '@/gates';
+import { withBatchLoadingGate } from '@/hocs';
 import { compose } from '@/utils/functional';
 
 import Container from './components/CanvasContainer';
@@ -16,12 +18,10 @@ import EditSidebar from './components/EditSidebar';
 import RealtimeOverlay from './components/RealtimeOverlay';
 import Spotlight from './components/Spotlight';
 import { CanvasProviders, HelpModalConsumer, SettingsModalConsumer, ShortcutModalConsumer } from './contexts';
-import { withDiagramLoaded } from './contexts/DiagramLoadingGate';
 import useEngine from './engine';
 
-const Canvas = ({ page }) => {
+const Canvas = ({ isTesting }) => {
   const { engine, isFinalized } = useEngine();
-  const isTesting = page === 'test';
 
   React.useEffect(() => {
     if (engine.getRootNodeIDs().length === 1) {
@@ -58,5 +58,5 @@ const Canvas = ({ page }) => {
 
 export default compose(
   React.memo,
-  withDiagramLoaded
+  withBatchLoadingGate(DiagramLoadingGate)
 )(Canvas);

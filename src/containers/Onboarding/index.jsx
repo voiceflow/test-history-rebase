@@ -12,6 +12,7 @@ import StepProgressBar from '@/components/StepProgressBar/StepProgressBar';
 import { ButtonCard } from '@/containers/Onboarding/container';
 import { userSelector } from '@/ducks/account';
 import { connect } from '@/hocs';
+import { RootRoutes } from '@/utils/routes';
 
 const CLASS_MUTED = 'text-muted';
 const PROG_XP = (xp) => {
@@ -106,7 +107,7 @@ class Onboarding extends Component {
       .then((res) => {
         if (res.data.skill_id && res.data.diagram) {
           setTimeout(() => {
-            history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`);
+            history.push(`/${RootRoutes.PROJECT}/${res.data.skill_id}/canvas/${res.data.diagram}`);
           }, 3000);
         } else {
           throw new Error('Invalid Response Format');

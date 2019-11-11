@@ -1,10 +1,10 @@
 import './Skill.css';
 
-import cloneDeep from 'lodash/cloneDeep';
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { Badge } from 'reactstrap';
 
+import PrivateRoute from '@/Routes/PrivateRoute';
 import { userSelector } from '@/ducks/account';
 import { activePlatformSelector, activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -14,81 +14,62 @@ import PublishGoogle from './Google';
 import Sidebar from './components/PublishSidebar';
 import SidebarItem from './components/PublishSidebarItem';
 
-const updateLink = (link, skillID) => {
-  return link.replace(':skill_id', skillID);
+const updateLink = (link, versionID) => {
+  return link.replace(':versionID', versionID);
 };
 
-const tabs = [
+const TABS = [
   {
     // eslint-disable-next-line react/display-name
-    display: (key) => (
-      <React.Fragment key={key}>
+    display: () => (
+      <>
         <i className="fab fa-amazon mr-2" /> Alexa
-      </React.Fragment>
+      </>
     ),
+    link: '/alexa',
+    exact: true,
     match: ['alexa'],
-    link: '/publish/:skill_id',
   },
   {
     // eslint-disable-next-line react/display-name
-    display: (key) => (
-      <React.Fragment key={key}>
+    display: () => (
+      <>
         <i className="fab fa-google mr-2" /> Google{' '}
         <Badge color="primary" className="beta-badge align-middle ml-1">
           Beta
         </Badge>
-      </React.Fragment>
+      </>
     ),
+    link: '/google',
     match: ['google'],
-    link: '/publish/:skill_id/google',
   },
 ];
 
-class Publish extends Component {
-  constructor(props) {
-    super(props);
+function Publish(props) {
+  const {
+    match: { path },
+    history,
+    skillID,
+    location,
+    ...ownProps
+  } = props;
 
-    const TABS = cloneDeep(tabs);
+  return (
+    <div id="business">
+      <Sidebar md="3">
+        {TABS.map((tab, i) => (
+          <SidebarItem key={i} as={NavLink} to={updateLink(`${path}${tab.link}`, skillID)} exact={tab.exact} activeClassName="active">
+            {tab.display(i)}
+          </SidebarItem>
+        ))}
+      </Sidebar>
 
-    this.state = {
-      tabs: TABS,
-    };
-  }
-
-  render() {
-    const { page: propsPage, skillID } = this.props;
-    const { tabs } = this.state;
-
-    let page;
-    if (propsPage === 'google') {
-      page = <PublishGoogle {...this.props} />;
-    } else {
-      page = <PublishAmazon {...this.props} />;
-    }
-
-    return (
-      <div id="business">
-        <Sidebar md="3">
-          {tabs.map((tab, i) => {
-            let res;
-            if (tab.match.includes(propsPage)) {
-              res = <SidebarItem isActive>{tab.display(i)}</SidebarItem>;
-            } else {
-              res = (
-                <SidebarItem as={Link} to={updateLink(tab.link, skillID)}>
-                  {tab.display(i)}
-                </SidebarItem>
-              );
-            }
-            return <React.Fragment key={i}>{res}</React.Fragment>;
-          })}
-        </Sidebar>
-        <div md="9" className="business-page">
-          {page}
-        </div>
+      <div md="9" className="business-page">
+        <PrivateRoute {...ownProps} path={`${path}/alexa`} component={PublishAmazon} skillID={skillID} />
+        <PrivateRoute {...ownProps} path={`${path}/google`} component={PublishGoogle} skillID={skillID} />
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 const mapStateToProps = {

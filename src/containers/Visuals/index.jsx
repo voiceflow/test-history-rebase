@@ -1,5 +1,6 @@
 import React from 'react';
 
+import PrivateRoute from '@/Routes/PrivateRoute';
 import { styled } from '@/hocs';
 
 import Display from './Display';
@@ -18,18 +19,19 @@ const VisualsPageContent = styled.div`
 `;
 
 function Visuals(props) {
-  const { page: propPage } = props;
-
-  let page;
-  if (propPage === 'display') {
-    page = <Display {...props} />;
-  } else {
-    page = <Multimodal {...props} />;
-  }
+  const {
+    match: { path },
+    history,
+    location,
+    ...ownProps
+  } = props;
 
   return (
     <VisualsPageContainer>
-      <VisualsPageContent>{page}</VisualsPageContent>
+      <VisualsPageContent>
+        <PrivateRoute {...ownProps} exact path={path} component={Multimodal} />
+        <PrivateRoute {...ownProps} path={`${path}/:id`} component={Display} />
+      </VisualsPageContent>
     </VisualsPageContainer>
   );
 }

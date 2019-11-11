@@ -15,20 +15,21 @@ import { FormTextInput } from '@/componentsV2/form/TextInput';
 import { addDisplay, updateDisplay } from '@/ducks/display';
 import { setError } from '@/ducks/modal';
 import { activeSkillIDSelector } from '@/ducks/skill';
+import { RootRoutes } from '@/utils/routes';
 
 const DISPLAY_FORM_NAME = 'display_visual_form';
 
 class Display extends Component {
   constructor(props) {
     super(props);
-    const { computedMatch } = this.props;
+    const { match } = this.props;
 
-    const id = computedMatch.params.id;
+    const id = match.params.id;
     const is_new = id === 'new';
 
     this.state = {
       loading: !is_new,
-      display_id: id,
+      displayID: id,
       document: is_new ? 'Write/Paste APL Document Here' : '',
       title: '',
       description: '',
@@ -52,11 +53,11 @@ class Display extends Component {
   }
 
   componentDidMount() {
-    const { display_id } = this.state;
+    const { displayID } = this.state;
     const { setError } = this.props;
-    if (display_id !== 'new') {
+    if (displayID !== 'new') {
       axios
-        .get(`/multimodal/display/${display_id}`)
+        .get(`/multimodal/display/${displayID}`)
         .then((res) => {
           this.setState({
             document: res.data.document,
@@ -98,8 +99,8 @@ class Display extends Component {
   }
 
   save() {
-    const { saved, document, datasource, display_id } = this.state;
-    const { skill_id, history, dispatch, setError } = this.props;
+    const { saved, document, datasource, displayID } = this.state;
+    const { versionID, history, dispatch, setError } = this.props;
 
     const title = this.props.displayForm.display_name;
     const description = this.props.displayForm.display_description;
@@ -116,16 +117,16 @@ class Display extends Component {
       description,
     };
 
-    if (display_id === 'new') {
+    if (displayID === 'new') {
       axios
-        .post(`/multimodal/display?skill_id=${skill_id}`, payload)
+        .post(`/multimodal/display?skill_id=${versionID}`, payload)
         .then((res) => {
           // get display id back
-          const displayID = res.data;
-          history.push(`/visuals/${skill_id}/display/${displayID}`);
+          const newDisplayID = res.data;
+          history.push(`/${RootRoutes.PROJECT}/${versionID}/visuals/${newDisplayID}`);
 
           const addDisplayPayload = {
-            id: displayID,
+            id: newDisplayID,
             document,
             datasource,
             title,
@@ -133,9 +134,9 @@ class Display extends Component {
             description,
           };
 
-          dispatch(addDisplay(displayID, addDisplayPayload));
+          dispatch(addDisplay(newDisplayID, addDisplayPayload));
           this.setState({
-            display_id: displayID,
+            displayID: newDisplayID,
             saved: true,
             saving: false,
           });
@@ -151,17 +152,17 @@ class Display extends Component {
         });
     } else {
       axios
-        .patch(`/multimodal/display/${display_id}?skill_id=${skill_id}`, payload)
+        .patch(`/multimodal/display/${displayID}?skill_id=${versionID}`, payload)
         .then(() => {
           const updateDisplayPayload = {
-            id: display_id,
+            id: displayID,
             document,
             datasource,
             title,
             name: title,
             description,
           };
-          dispatch(updateDisplay(display_id, updateDisplayPayload));
+          dispatch(updateDisplay(displayID, updateDisplayPayload));
           this.setState({
             saved: true,
             saving: false,
@@ -222,7 +223,7 @@ class Display extends Component {
 
   render() {
     const { loading, saving, saved, document, datasource } = this.state;
-    const { history, skill_id } = this.props;
+    const { history, versionID } = this.props;
     return (
       <form onSubmit={this.props.handleSubmit(this.save)}>
         <div className="business-page-inner">
@@ -277,7 +278,7 @@ class Display extends Component {
                           className="mr-2"
                           type="button"
                           onClick={() => {
-                            history.push(`/visuals/${skill_id}`);
+                            history.push(`/${RootRoutes.PROJECT}/${versionID}/visuals`);
                           }}
                         >
                           Back
@@ -368,9 +369,9 @@ const validate = (values) => {
 };
 
 const mapStateToProps = (state) => ({
-  skill_id: activeSkillIDSelector(state),
-  displayForm: getFormValues(DISPLAY_FORM_NAME)(state),
   isDirty: isDirty(DISPLAY_FORM_NAME)(state),
+  versionID: activeSkillIDSelector(state),
+  displayForm: getFormValues(DISPLAY_FORM_NAME)(state),
 });
 
 const mapDispatchToProps = (dispatch) => {

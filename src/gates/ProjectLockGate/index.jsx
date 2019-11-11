@@ -6,18 +6,18 @@ import { useEnableDisable } from '@/hooks';
 
 import { ConnectionError, Warning } from './components';
 
-const ProjectLockGate = ({ skillID, children }) => {
+const ProjectLockGate = ({ versionID, children }) => {
   const [hasLock, acceptLock] = useEnableDisable();
   const [errorScreen, setErrorScreen] = React.useState(null);
 
   const lockProject = () => {
     if (client.socket.isHealthy) {
-      client.socket.lockProject(skillID, acceptLock, (target) =>
+      client.socket.lockProject(versionID, acceptLock, (target) =>
         setErrorScreen(
           <Warning
             target={target}
             onTakeover={() => {
-              client.socket.takeoverProject(skillID);
+              client.socket.takeoverProject(versionID);
               window.location.reload();
             }}
           />
@@ -27,7 +27,7 @@ const ProjectLockGate = ({ skillID, children }) => {
       setErrorScreen(<ConnectionError />);
     }
   };
-  const releaseLock = () => client.socket.releaseProject(skillID);
+  const releaseLock = () => client.socket.releaseProject(versionID);
 
   if (errorScreen) {
     return <div className="super-center w-100 h-100">{errorScreen}</div>;

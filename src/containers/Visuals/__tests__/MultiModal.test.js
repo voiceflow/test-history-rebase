@@ -1,5 +1,5 @@
 import { shallow } from 'enzyme/build';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import React from 'react';
 
 import MultiModal from '../Multimodal';

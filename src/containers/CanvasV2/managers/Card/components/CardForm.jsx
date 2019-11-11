@@ -8,7 +8,7 @@ import { FlexApart } from '@/componentsV2/Flex';
 
 function CardForm({ data, onChange, withImage }) {
   const toggleSmallImage = React.useCallback(() => onChange({ hasSmallImage: !data.hasSmallImage }), [data.hasSmallImage, onChange]);
-  const updateSmallImage = React.useCallbaclk((smallImage) => onChange({ smallImage, hasSmallImage: true }), [onChange]);
+  const updateSmallImage = React.useCallback((smallImage) => onChange({ smallImage, hasSmallImage: true }), [onChange]);
   const updateLargeImage = React.useCallback((largeImage) => onChange({ largeImage }), [onChange]);
   const updateTitle = React.useCallback((title) => onChange({ title }), [onChange]);
 

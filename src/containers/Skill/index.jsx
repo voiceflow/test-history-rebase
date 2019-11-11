@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { Redirect, Switch } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 import { compose } from 'recompose';
 
@@ -93,22 +94,26 @@ function Skill(props) {
         subHeader={<SkillSubHeader activePage={activePage} />}
         onNavigateBack={goToDashboard}
       >
-        <PrivateRoute
-          path={[`${match.path}/test/:diagramID?`, `${match.path}/canvas/:diagramID?`]}
-          component={RenderCanvas}
-          diagramID={diagramID}
-          isTesting={isTesting}
-        />
+        <Switch>
+          <PrivateRoute
+            path={[`${match.path}/test/:diagramID?`, `${match.path}/canvas/:diagramID?`]}
+            component={RenderCanvas}
+            diagramID={diagramID}
+            isTesting={isTesting}
+          />
 
-        <PrivateRoute path={`${match.path}/tools`} component={Business} />
+          <PrivateRoute path={`${match.path}/tools`} component={Business} />
 
-        <PrivateRoute path={`${match.path}/migrate`} component={Migrate} />
+          <PrivateRoute path={`${match.path}/migrate`} component={Migrate} />
 
-        <PrivateRoute path={`${match.path}/visuals`} component={Visuals} />
+          <PrivateRoute path={`${match.path}/visuals`} component={Visuals} />
 
-        <PrivateRoute path={`${match.path}/publish`} component={Publish} />
+          <PrivateRoute path={`${match.path}/publish`} component={Publish} />
 
-        <PrivateRoute path={`${match.path}/creator_logs`} component={Logs} />
+          <PrivateRoute path={`${match.path}/creator_logs`} component={Logs} />
+
+          <Redirect to={`${match.path}/canvas`} />
+        </Switch>
       </Page>
       <DragLayer />
     </>
@@ -140,14 +145,14 @@ export default compose(
     mergeProps
   ),
   withBatchLoadingGate(
-    [ProjectLockGate, ({ match }) => ({ versionID: match.params.versionID })],
+    [ProjectLockGate, ({ match }) => ({ versionID: match.params?.versionID })],
     [
       ProjectLoadingGate,
       ({ match, location }) => {
         const { activePage, activePageMatch } = getActivePageAndMatch(PAGES_MATCHES, location.pathname, match.path);
 
         return {
-          diagramID: activePageMatch.params?.diagramID,
+          diagramID: activePageMatch?.params?.diagramID,
           activePage,
         };
       },

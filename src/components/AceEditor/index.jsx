@@ -10,6 +10,9 @@ import 'brace/theme/chrome';
 /* eslint-enable simple-import-sort/sort */
 
 export default styled(AceEditor)`
+  border: 1px solid #d2dae2;
+  border-radius: 5px;
+
   .ace_custom_variable {
     display: inline;
     text-decoration: none;
@@ -19,6 +22,12 @@ export default styled(AceEditor)`
     margin: -1px;
 
     border-radius: 7px;
+  }
+
+  .ace_gutter {
+    background: #fff !important;
+    color: #62778c !important;
+    border-right: 1px solid #d2dae2;
   }
 
   ${({ variant }) => {

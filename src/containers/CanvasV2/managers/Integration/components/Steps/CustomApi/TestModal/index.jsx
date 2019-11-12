@@ -10,10 +10,11 @@ import DropdownCollapse from '@/componentsV2/DropdownCollapse';
 import { styled } from '@/hocs';
 import { copyJSONPath } from '@/utils/dom';
 
-import Formatted from './TestModalComponents/Formatted';
-import Raw from './TestModalComponents/Raw';
-import Results from './TestModalComponents/Results';
-import SetVariableInput from './TestModalComponents/SetVariableInput';
+import Formatted from './Formatted';
+import Raw from './Raw';
+import Results from './Results';
+import SetVariableInput from './SetVariableInput';
+import { deepVariableReplacement, deepVariableSearch, findPath, normalize, variableReplacement } from './util';
 
 const API_TEST_TABS = [
   {
@@ -61,143 +62,38 @@ const TabContentContainer = styled(ButtonGroupRouter)`
   overflow: auto;
 `;
 
-function CustomApiTestModal({ data, closeTestModal, testModalOpened }) {
-  const variables = [];
+function APITestModal({ data, closeTestModal, testModalOpened }) {
   const [activeTabIndex, updateTabIndex] = React.useState(0);
-  const [variableValuesArray, setVariableValuesArray] = React.useState([]);
-  const [dropdownRef, setDropdownRef] = React.useState(null);
+  const [variableValues, setVariableValues] = React.useState({});
+
+  const dropdownRef = React.useRef(null);
 
   const [responseMetaData, setResponseMetaData] = React.useState({});
   const [variableMap, setVariableMap] = React.useState([]);
   const [requestResponse, setRequestResponse] = React.useState({});
 
-  const { headers, parameters, mapping, selectedAction, url } = data;
   const [hasResponse, setHasReponse] = React.useState(false);
   const [sendingRequest, setSendingRequest] = React.useState(false);
 
-  const variableAlreadyExtracted = (variableName) => {
-    return variables.some((variable) => {
-      return variable.name === variableName;
+  const formattedData = React.useRef({});
+
+  const setVarValue = (key, value) => {
+    setVariableValues({
+      ...variableValues,
+      [key]: value,
     });
-  };
-
-  const extractVariableName = (subText) => {
-    if (subText.name && !variableAlreadyExtracted(subText.name)) {
-      variables.push({
-        name: subText.name,
-        value: '',
-      });
-    }
-  };
-
-  const extractVariables = () => {
-    const metaDataTargets = [headers, parameters];
-
-    metaDataTargets.forEach((target) => {
-      target.forEach((lineitem) => {
-        const { key, val } = lineitem;
-        key.forEach((subText) => {
-          extractVariableName(subText);
-        });
-        val.forEach((subText) => {
-          extractVariableName(subText);
-        });
-      });
-    });
-
-    url.forEach((subText) => {
-      extractVariableName(subText);
-    });
-  };
-
-  const setVarValue = (value, index) => {
-    variableValuesArray[index].value = value;
-    setVariableValuesArray(variableValuesArray);
-  };
-
-  const getVariableValue = (variableName) => {
-    let variableValue = null;
-    variableValuesArray.forEach((variable) => {
-      if (variable.name === variableName) {
-        variableValue = variable.value;
-      }
-    });
-    return variableValue;
-  };
-
-  const findPath = (path, data) => {
-    const props = path.split('.');
-    let cur_data = { response: data };
-    props.forEach((prop) => {
-      const props_and_inds = prop.split('[');
-      props_and_inds.forEach((prop_or_ind) => {
-        if (prop_or_ind.includes(']')) {
-          const index_str = prop_or_ind.slice(0, -1);
-          let index;
-          if (index_str.toLowerCase() === '{random}') {
-            index = Math.floor(Math.random() * cur_data.length);
-          } else {
-            index = parseInt(index_str, 10);
-          }
-          cur_data = cur_data[index];
-        } else {
-          cur_data = cur_data[prop_or_ind];
-        }
-      });
-    });
-
-    return cur_data;
-  };
-
-  const buildMeta = (textArray) => {
-    let builtValue = '';
-    textArray.forEach((subText) => {
-      const subTextIsVariable = _.has(subText, ['name']);
-      if (subTextIsVariable) {
-        builtValue = builtValue.concat(getVariableValue(subText.name));
-      } else {
-        builtValue = builtValue.concat(subText);
-      }
-    });
-    return builtValue;
-  };
-
-  const buildMetaObjectFromArray = (array) => {
-    const returnObject = {};
-
-    array.forEach((object) => {
-      const keyName = buildMeta(object.key);
-      const value = buildMeta(object.val);
-      if (keyName && value) {
-        returnObject[keyName] = value;
-      }
-    });
-
-    return returnObject;
-  };
-
-  const createRequestObj = () => {
-    const requestObj = {
-      method: '',
-      headers: [],
-      url: [],
-    };
-
-    requestObj.method = selectedAction.split(' ')[2] || 'GET';
-    requestObj.headers = buildMetaObjectFromArray(headers);
-    requestObj.url = buildMeta(url);
-    return requestObj;
   };
 
   const mapVars = (responseData) => {
     const mappedVars = [];
 
-    mapping.forEach((mappedOutput) => {
+    formattedData.current.mapping?.forEach((mappedOutput) => {
       try {
+        const path = variableReplacement(mappedOutput.path, variableValues);
         mappedVars.push({
-          path: mappedOutput.path,
+          path,
           var: mappedOutput.var,
-          value: findPath(buildMeta(mappedOutput.path), responseData),
+          value: findPath(path, responseData),
         });
       } catch (error) {
         mappedVars.push({
@@ -212,11 +108,12 @@ function CustomApiTestModal({ data, closeTestModal, testModalOpened }) {
   };
 
   const makeRequest = () => {
-    const requestObj = createRequestObj();
+    const requestObj = deepVariableReplacement(formattedData.current, variableValues);
+
     const VariableDropdown = dropdownRef?.current;
     const initTime = Date.now();
     setSendingRequest(true);
-    if (dropdownRef && variableValuesArray.length > 0 && VariableDropdown.state.isOpened === true) {
+    if (dropdownRef && !_.isEmpty(variableValues) && VariableDropdown.state.isOpened === true) {
       VariableDropdown.toggle();
     }
 
@@ -253,24 +150,27 @@ function CustomApiTestModal({ data, closeTestModal, testModalOpened }) {
   };
 
   useEffect(() => {
-    extractVariables();
-    setDropdownRef(React.createRef());
-    setVariableValuesArray(variables);
-    if (variables.length === 0) {
+    const normalizedData = normalize(data);
+    const usedVariables = deepVariableSearch(normalizedData);
+
+    setVariableValues(usedVariables.reduce((acc, key) => ({ ...acc, [key]: null }), {}));
+    formattedData.current = normalizedData;
+
+    if (usedVariables.length === 0) {
       makeRequest();
     }
   }, []);
 
   return (
-    <Modal data={data} toggle={closeTestModal} isOpen={testModalOpened} onClosed={closeTestModal}>
+    <Modal toggle={closeTestModal} isOpen={testModalOpened} onClosed={closeTestModal} size="lg">
       <ModalHeader toggle={closeTestModal} header="API TEST" />
       <ModalBody>
-        {variableValuesArray.length > 0 && (
+        {!_.isEmpty(variableValues) && (
           <DropdownCollapseContainer>
             <DropdownCollapse text="Set Variable Values" ref={dropdownRef}>
               <div className="pb-2">
-                {variableValuesArray.map((variable, index) => (
-                  <SetVariableInput prefix={variable.name} key={index} onChange={(e) => setVarValue(e.target.value, index)} />
+                {Object.keys(variableValues).map((name) => (
+                  <SetVariableInput prefix={name} key={name} onChange={(e) => setVarValue(name, e.target.value)} />
                 ))}
               </div>
             </DropdownCollapse>
@@ -302,4 +202,4 @@ function CustomApiTestModal({ data, closeTestModal, testModalOpened }) {
   );
 }
 
-export default CustomApiTestModal;
+export default APITestModal;

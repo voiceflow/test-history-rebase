@@ -11,7 +11,7 @@ const Container = styled.tr`
 function ResultLineItem({ variable }) {
   return (
     <Container>
-      <Item value={variable.path[0]} />
+      <Item value={variable.path} />
       <Item value={variable.value} />
       <Item variable value={variable.var} />
     </Container>

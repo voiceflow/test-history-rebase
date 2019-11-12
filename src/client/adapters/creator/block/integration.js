@@ -61,28 +61,33 @@ const addZapierData = (dataModel, actionData, integrationsData, selectedIntegrat
   dataModel.user = integrationsData[selectedIntegration].user || ZAPIER_DEFAULTS.user;
 };
 
+export const encodeCustomAPIData = (data) => {
+  const { selectedAction, bodyInputType, body, url, headers, mapping, parameters, content } = data;
+  return {
+    bodyInputType,
+    body: body.map(keyValToDB),
+    selected_action: selectedAction,
+    url: draftJSContentAdapter.toDB(url),
+    headers: headers.map(keyValToDB),
+    mapping: mapping.map(({ index, path, var: varVal }) => ({
+      index,
+      path: draftJSContentAdapter.toDB(path),
+      var: varVal,
+    })),
+    method: selectedAction.split(' ')[2],
+    params: parameters.map(keyValToDB),
+    content,
+  };
+};
+
 // Outgoing Integrations Data Mapping Functions
 const setCustomAPIData = (dataModel, data) => {
-  const { selectedIntegration, selectedAction, bodyInputType, body, url, headers, mapping, parameters, content } = data;
+  const { selectedIntegration, selectedAction } = data;
 
   dataModel.integrations_data[selectedIntegration] = {
     selected_action: selectedAction,
     actions_data: {
-      [selectedAction]: {
-        bodyInputType,
-        body: body.map(keyValToDB),
-        selected_action: selectedAction,
-        url: draftJSContentAdapter.toDB(url),
-        headers: headers.map(keyValToDB),
-        mapping: mapping.map(({ index, path, var: varVal }) => ({
-          index,
-          path: draftJSContentAdapter.toDB(path),
-          var: varVal,
-        })),
-        method: selectedAction.split(' ')[2],
-        params: parameters.map(keyValToDB),
-        content,
-      },
+      [selectedAction]: encodeCustomAPIData(data),
     },
   };
 };

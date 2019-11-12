@@ -9,7 +9,7 @@ function Formatted({ requestResponse, copyJSONPath, responseMetaData }) {
     <>
       <ResultsMetaHeader data={responseMetaData} />
       <ReactJson
-        style={{ padding: '15px', 'font-size': '13px' }}
+        style={{ padding: 15, fontSize: 13 }}
         src={requestResponse}
         theme="monokai"
         displayDataTypes={false}

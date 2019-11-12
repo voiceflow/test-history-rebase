@@ -43,7 +43,7 @@ const mergeProps = ({ platform, diagram: getDiagramByID }, _, { data }) => {
 
   return {
     platformData,
-    diagram: platformData.diagramID && getDiagramByID(platformData.diagramID),
+    diagram: platformData?.diagramID && getDiagramByID(platformData.diagramID),
   };
 };
 

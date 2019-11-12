@@ -857,14 +857,6 @@ hr.full-width {
   box-shadow: none;
 }
 
-.ace_gutter {
-  color: #62778c !important;
-  font-weight: 500;
-  background: #fff !important;
-  border: 1px solid #d2dae2 !important;
-  border-radius: 5px 0 0 5px;
-}
-
 .ace_gutter-layer {
   height: inherit !important;
 }
@@ -2584,14 +2576,6 @@ kbd {
   width: 100% !important;
 }
 
-.ace_content {
-  height: 500px !important;
-  color: #436282;
-  border: 1px solid #d2dae2;
-  border-left: none;
-  border-radius: 0 5px 5px 0;
-}
-
 .ace-tm .ace_variable {
   color: #a156d8 !important;
 }
@@ -2601,7 +2585,7 @@ kbd {
 }
 
 .react-json-view {
-  overflow: scroll;
+  overflow: auto;
   background-color: #142e55 !important;
 }
 

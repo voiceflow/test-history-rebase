@@ -6,12 +6,12 @@ import { IntegrationActionType } from '@/constants';
 import { useEnableDisable } from '@/hooks/toggle';
 import { variableInputValueIsEmpty } from '@/utils/variableInput';
 
-import CustomApiTestModal from '../../Steps/CustomApi/CustomApiTestModal';
 import MappingOutput from '../../Steps/CustomApi/MappingOutput';
 import RequestBody from '../../Steps/CustomApi/RequestBody';
 import RequestHeaders from '../../Steps/CustomApi/RequestHeaders';
 import RequestParams from '../../Steps/CustomApi/RequestParams';
 import RequestType from '../../Steps/CustomApi/RequestType';
+import CustomApiTestModal from '../../Steps/CustomApi/TestModal';
 import Footer from './components/Footer';
 import MetaDataTab from './components/MetaDataTab';
 import TabsContainer from './components/TabsContainer';

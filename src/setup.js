@@ -1,6 +1,5 @@
 import axios from 'axios';
 import ReactGA from 'react-ga';
-import { toast } from 'react-toastify';
 
 import { GLOBAL_HEADERS } from '@/client/fetch';
 import { API_ENDPOINT, GA_ENABLED, GOOGLE_ANALYTICS_ID, VERSION } from '@/config';
@@ -29,12 +28,6 @@ const setupApp = (history, tabID) => {
       ReactGA.pageview(location.pathname);
     });
   }
-
-  toast.configure({
-    autoClose: 2000,
-    draggable: false,
-    pauseOnFocusLoss: false,
-  });
 
   // eslint-disable-next-line no-console
   console.info(

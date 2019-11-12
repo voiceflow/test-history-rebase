@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
 import { Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
 import UserListCard from '@/admin/components/UserListCard';
@@ -9,6 +8,7 @@ import { BetaUsersFullList, BetaUsersListSearch, BetaUsersListWrapper } from '@/
 import { getBetaUsers } from '@/admin/store/ducks/admin';
 import { AdminTitle } from '@/admin/styles';
 import Button from '@/componentsV2/Button';
+import { toast } from '@/componentsV2/Toast';
 
 class BetaUsersList extends React.Component {
   state = {

@@ -1,3 +1,4 @@
+const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const paths = require('../config/paths');
@@ -18,7 +19,21 @@ module.exports = ({ config }) =>
           oneOf: [
             {
               test: /\.svg$/,
-              use: ['babel-loader', '@svgr/webpack'],
+              include: path.resolve(paths.sourceDir, 'svgs'),
+              use: ({ resource }) => ({
+                loader: '@svgr/webpack',
+                options: {
+                  svgoConfig: {
+                    plugins: [
+                      {
+                        cleanupIDs: {
+                          prefix: `ID-${resource}`,
+                        },
+                      },
+                    ],
+                  },
+                },
+              }),
             },
             ...config.module.rules,
           ],

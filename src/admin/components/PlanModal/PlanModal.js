@@ -4,10 +4,10 @@ import moment from 'moment';
 import React from 'react';
 import DayPicker from 'react-day-picker';
 import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 
 import Button from '@/components/Button';
+import { toast } from '@/componentsV2/Toast';
 import { editTrial, setEnterprise } from '@/ducks/admin';
 
 class PlanModal extends React.Component {

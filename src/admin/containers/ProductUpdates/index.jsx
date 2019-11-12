@@ -2,11 +2,11 @@ import axios from 'axios/index';
 import Markdown from 'markdown-to-jsx';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
 import { Form, FormGroup, Input, Label } from 'reactstrap';
 
 import { AdminTitle } from '@/admin/styles';
 import Button from '@/components/Button';
+import { toast } from '@/componentsV2/Toast';
 
 class ProductUpdates extends Component {
   constructor(props) {

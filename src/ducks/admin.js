@@ -2,7 +2,8 @@
 import axios from 'axios';
 import _ from 'lodash';
 import moment from 'moment';
-import { toast } from 'react-toastify';
+
+import { toast } from '@/componentsV2/Toast';
 
 export const SET_CREATOR = 'SET_CREATOR';
 export const FIND_CREATOR_FAILED = 'FIND_CREATOR_FAILED';

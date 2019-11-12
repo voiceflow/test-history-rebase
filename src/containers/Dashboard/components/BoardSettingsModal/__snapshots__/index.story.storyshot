@@ -1,0 +1,1382 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = `
+<Modal
+  autoFocus={true}
+  backdrop={true}
+  backdropTransition={
+    Object {
+      "mountOnEnter": true,
+      "timeout": 150,
+    }
+  }
+  centered={false}
+  className="upgrade-modal"
+  fade={true}
+  isOpen={true}
+  keyboard={true}
+  modalTransition={
+    Object {
+      "timeout": 300,
+    }
+  }
+  onClosed={[Function]}
+  onOpened={[Function]}
+  role="dialog"
+  toggle={[Function]}
+  zIndex={1050}
+>
+  <Portal
+    node={
+      <div
+        style="position: relative; z-index: 1050;"
+        tabindex="-1"
+      >
+        <div
+          class=""
+        >
+          <div
+            class="modal fade"
+            role="dialog"
+            style="display: block;"
+            tabindex="-1"
+          >
+            <div
+              class="modal-dialog upgrade-modal"
+              role="document"
+            >
+              <div
+                class="modal-content"
+              >
+                <div
+                  class="pb-2 sc-fBuWsC hQFoLU"
+                >
+                  <h5>
+                    Board Settings
+                  </h5>
+                  <span
+                    class="sc-bxivhb fsvlWZ"
+                    color="currentColor"
+                    size="12"
+                  >
+                    <test-file-stub />
+                  </span>
+                </div>
+                <div
+                  class="px-45 pt-0 overflow-hidden modal-body"
+                >
+                  <div
+                    class="mb-3"
+                  >
+                    <label>
+                      Board Icon
+                    </label>
+                    <img
+                      alt="Voiceflow"
+                      class="mt-2 mb-1 no-select"
+                      src="/images/icons/vf_logo.png"
+                      width="80"
+                    />
+                    <br />
+                    <small
+                      class="text-muted"
+                    >
+                      Upgrade this board under billing to add a custom image
+                    </small>
+                    <br />
+                    <br />
+                    <label>
+                      Name
+                    </label>
+                    <input
+                      class="form-control"
+                      name="name"
+                      placeholder="Board Name"
+                      type="text"
+                      value="name"
+                    />
+                    <hr />
+                    <label>
+                      Billing
+                    </label>
+                    <button
+                      class="btn btn-link __large"
+                    >
+                      Invoices
+                    </button>
+                    <br />
+                    <small
+                      class="text-muted"
+                    >
+                      View invoices, update your payment options
+                    </small>
+                    <hr />
+                    <label>
+                      Privacy
+                    </label>
+                    <button
+                      class="btn btn-link __large"
+                    >
+                      Delete Board
+                    </button>
+                    <br />
+                    <small
+                      class="text-muted"
+                    >
+                      This action is irreversible. All team and project data will be removed
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="modal-backdrop fade"
+          />
+        </div>
+      </div>
+    }
+  >
+    <Portal
+      containerInfo={
+        <div
+          style="position: relative; z-index: 1050;"
+          tabindex="-1"
+        >
+          <div
+            class=""
+          >
+            <div
+              class="modal fade"
+              role="dialog"
+              style="display: block;"
+              tabindex="-1"
+            >
+              <div
+                class="modal-dialog upgrade-modal"
+                role="document"
+              >
+                <div
+                  class="modal-content"
+                >
+                  <div
+                    class="pb-2 sc-fBuWsC hQFoLU"
+                  >
+                    <h5>
+                      Board Settings
+                    </h5>
+                    <span
+                      class="sc-bxivhb fsvlWZ"
+                      color="currentColor"
+                      size="12"
+                    >
+                      <test-file-stub />
+                    </span>
+                  </div>
+                  <div
+                    class="px-45 pt-0 overflow-hidden modal-body"
+                  >
+                    <div
+                      class="mb-3"
+                    >
+                      <label>
+                        Board Icon
+                      </label>
+                      <img
+                        alt="Voiceflow"
+                        class="mt-2 mb-1 no-select"
+                        src="/images/icons/vf_logo.png"
+                        width="80"
+                      />
+                      <br />
+                      <small
+                        class="text-muted"
+                      >
+                        Upgrade this board under billing to add a custom image
+                      </small>
+                      <br />
+                      <br />
+                      <label>
+                        Name
+                      </label>
+                      <input
+                        class="form-control"
+                        name="name"
+                        placeholder="Board Name"
+                        type="text"
+                        value="name"
+                      />
+                      <hr />
+                      <label>
+                        Billing
+                      </label>
+                      <button
+                        class="btn btn-link __large"
+                      >
+                        Invoices
+                      </button>
+                      <br />
+                      <small
+                        class="text-muted"
+                      >
+                        View invoices, update your payment options
+                      </small>
+                      <hr />
+                      <label>
+                        Privacy
+                      </label>
+                      <button
+                        class="btn btn-link __large"
+                      >
+                        Delete Board
+                      </button>
+                      <br />
+                      <small
+                        class="text-muted"
+                      >
+                        This action is irreversible. All team and project data will be removed
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="modal-backdrop fade"
+            />
+          </div>
+        </div>
+      }
+    >
+      <div
+        className=""
+      >
+        <Fade
+          appear={true}
+          baseClass="fade"
+          baseClassActive="show"
+          className="modal"
+          enter={true}
+          exit={true}
+          in={true}
+          mountOnEnter={false}
+          onClick={[Function]}
+          onEnter={[Function]}
+          onEntered={[Function]}
+          onEntering={[Function]}
+          onExit={[Function]}
+          onExited={[Function]}
+          onExiting={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          role="dialog"
+          style={
+            Object {
+              "display": "block",
+            }
+          }
+          tabIndex="-1"
+          tag="div"
+          timeout={300}
+          unmountOnExit={false}
+        >
+          <Transition
+            appear={true}
+            enter={true}
+            exit={true}
+            in={true}
+            mountOnEnter={false}
+            onEnter={[Function]}
+            onEntered={[Function]}
+            onEntering={[Function]}
+            onExit={[Function]}
+            onExited={[Function]}
+            onExiting={[Function]}
+            timeout={300}
+            unmountOnExit={false}
+          >
+            <div
+              className="modal fade"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              role="dialog"
+              style={
+                Object {
+                  "display": "block",
+                }
+              }
+              tabIndex="-1"
+            >
+              <div
+                className="modal-dialog upgrade-modal"
+                role="document"
+              >
+                <div
+                  className="modal-content"
+                >
+                  <ModalHeader
+                    className="pb-2"
+                    header="Board Settings"
+                    toggle={[Function]}
+                  >
+                    <styled.div
+                      className="pb-2"
+                    >
+                      <StyledComponent
+                        className="pb-2"
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-fBuWsC",
+                              "isStatic": false,
+                              "lastClassName": "hQFoLU",
+                              "rules": Array [
+                                "
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: ",
+                                [Function],
+                                "px ",
+                                [Function],
+                                "px !important;
+  padding-left: 2rem;
+  border: 0;
+
+  /* adding important caused the padding to work */
+
+  & > h5 {
+    color: #8c94a6;
+    font-weight: 600;
+    font-size: 15px;
+    text-transform: uppercase;
+    margin-bottom: 0px;
+  }
+
+  & > ",
+                                ".sc-bxivhb",
+                                " {
+    padding: 10px;
+    margin: -10px;
+    cursor: pointer;
+    color: #8da2b570;
+    transition: color 150ms;
+
+    &:hover {
+      color: #8da2b5;
+    }
+  }
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-fBuWsC",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                      >
+                        <div
+                          className="pb-2 sc-fBuWsC hQFoLU"
+                        >
+                          <h5>
+                            Board Settings
+                          </h5>
+                          <ForwardRef
+                            icon="close"
+                            onClick={[Function]}
+                            size={12}
+                          >
+                            <styled.span
+                              color="currentColor"
+                              onClick={[Function]}
+                              size={12}
+                            >
+                              <StyledComponent
+                                color="currentColor"
+                                forwardedComponent={
+                                  Object {
+                                    "$$typeof": Symbol(react.forward_ref),
+                                    "attrs": Array [],
+                                    "componentStyle": ComponentStyle {
+                                      "componentId": "sc-bxivhb",
+                                      "isStatic": false,
+                                      "lastClassName": "fsvlWZ",
+                                      "rules": Array [
+                                        "
+  ",
+                                        [Function],
+                                        "
+
+  color: ",
+                                        [Function],
+                                        ";
+  width: ",
+                                        [Function],
+                                        "px;
+  height: ",
+                                        [Function],
+                                        "px;
+  box-sizing: content-box;
+  
+  ",
+                                        [Function],
+                                        "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                        [Function],
+                                        ";
+  }
+",
+                                      ],
+                                    },
+                                    "displayName": "styled.span",
+                                    "foldedComponentIds": Array [],
+                                    "render": [Function],
+                                    "styledComponentId": "sc-bxivhb",
+                                    "target": "span",
+                                    "toString": [Function],
+                                    "warnTooManyClasses": [Function],
+                                    "withComponent": [Function],
+                                  }
+                                }
+                                forwardedRef={null}
+                                onClick={[Function]}
+                                size={12}
+                              >
+                                <span
+                                  className="sc-bxivhb fsvlWZ"
+                                  color="currentColor"
+                                  onClick={[Function]}
+                                  size={12}
+                                >
+                                  <test-file-stub />
+                                </span>
+                              </StyledComponent>
+                            </styled.span>
+                          </ForwardRef>
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                  </ModalHeader>
+                  <ModalBody
+                    className="px-45 pt-0 overflow-hidden"
+                    tag="div"
+                  >
+                    <div
+                      className="px-45 pt-0 overflow-hidden modal-body"
+                    >
+                      <div
+                        className="mb-3"
+                      >
+                        <SettingField
+                          description="Upgrade this board under billing to add a custom image"
+                          label="Board Icon"
+                        >
+                          <label>
+                            Board Icon
+                          </label>
+                          <img
+                            alt="Voiceflow"
+                            className="mt-2 mb-1 no-select"
+                            onDragStart={[Function]}
+                            src="/images/icons/vf_logo.png"
+                            width={80}
+                          />
+                          <br />
+                          <small
+                            className="text-muted"
+                          >
+                            Upgrade this board under billing to add a custom image
+                          </small>
+                        </SettingField>
+                        <br />
+                        <br />
+                        <SettingField
+                          hr={true}
+                          label="Name"
+                        >
+                          <label>
+                            Name
+                          </label>
+                          <Input
+                            name="name"
+                            onChange={[Function]}
+                            placeholder="Board Name"
+                            type="text"
+                            value="name"
+                          >
+                            <input
+                              className="form-control"
+                              name="name"
+                              onChange={[Function]}
+                              placeholder="Board Name"
+                              type="text"
+                              value="name"
+                            />
+                          </Input>
+                          <hr />
+                        </SettingField>
+                        <SettingField
+                          description="View invoices, update your payment options"
+                          hr={true}
+                          label="Billing"
+                        >
+                          <label>
+                            Billing
+                          </label>
+                          <Button
+                            iconPosition="right"
+                            isBtn={true}
+                            isLinkLarge={true}
+                            onRef={[Function]}
+                            trackEvent="Button Click"
+                          >
+                            <button
+                              className="btn btn-link __large"
+                              onClick={[Function]}
+                            >
+                              Invoices
+                            </button>
+                          </Button>
+                          <br />
+                          <small
+                            className="text-muted"
+                          >
+                            View invoices, update your payment options
+                          </small>
+                          <hr />
+                        </SettingField>
+                        <SettingField
+                          description="This action is irreversible. All team and project data will be removed"
+                          label="Privacy"
+                        >
+                          <label>
+                            Privacy
+                          </label>
+                          <Button
+                            iconPosition="right"
+                            isBtn={true}
+                            isLinkLarge={true}
+                            onClick={[Function]}
+                            onRef={[Function]}
+                            trackEvent="Button Click"
+                          >
+                            <button
+                              className="btn btn-link __large"
+                              onClick={[Function]}
+                            >
+                              Delete Board
+                            </button>
+                          </Button>
+                          <br />
+                          <small
+                            className="text-muted"
+                          >
+                            This action is irreversible. All team and project data will be removed
+                          </small>
+                        </SettingField>
+                      </div>
+                    </div>
+                  </ModalBody>
+                </div>
+              </div>
+            </div>
+          </Transition>
+        </Fade>
+        <Fade
+          appear={true}
+          baseClass="fade"
+          baseClassActive="show"
+          className="modal-backdrop"
+          enter={true}
+          exit={true}
+          in={true}
+          mountOnEnter={true}
+          onEnter={[Function]}
+          onEntered={[Function]}
+          onEntering={[Function]}
+          onExit={[Function]}
+          onExited={[Function]}
+          onExiting={[Function]}
+          tag="div"
+          timeout={150}
+          unmountOnExit={false}
+        >
+          <Transition
+            appear={true}
+            enter={true}
+            exit={true}
+            in={true}
+            mountOnEnter={true}
+            onEnter={[Function]}
+            onEntered={[Function]}
+            onEntering={[Function]}
+            onExit={[Function]}
+            onExited={[Function]}
+            onExiting={[Function]}
+            timeout={150}
+            unmountOnExit={false}
+          >
+            <div
+              className="modal-backdrop fade"
+            />
+          </Transition>
+        </Fade>
+      </div>
+    </Portal>
+  </Portal>
+</Modal>
+`;
+
+exports[`Storyshots Dashboard/Board Settings Modal User is not admin: default 1`] = `null`;
+
+exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
+<Modal
+  autoFocus={true}
+  backdrop={true}
+  backdropTransition={
+    Object {
+      "mountOnEnter": true,
+      "timeout": 150,
+    }
+  }
+  centered={false}
+  className="upgrade-modal"
+  fade={true}
+  isOpen={true}
+  keyboard={true}
+  modalTransition={
+    Object {
+      "timeout": 300,
+    }
+  }
+  onClosed={[Function]}
+  onOpened={[Function]}
+  role="dialog"
+  toggle={[Function]}
+  zIndex={1050}
+>
+  <Portal
+    node={
+      <div
+        style="position: relative; z-index: 1050;"
+        tabindex="-1"
+      >
+        <div
+          class=""
+        >
+          <div
+            class="modal fade"
+            role="dialog"
+            style="display: block;"
+            tabindex="-1"
+          >
+            <div
+              class="modal-dialog upgrade-modal"
+              role="document"
+            >
+              <div
+                class="modal-content"
+              >
+                <div
+                  class="pb-2 sc-fBuWsC hQFoLU"
+                >
+                  <h5>
+                    Board Settings
+                  </h5>
+                  <span
+                    class="sc-bxivhb fsvlWZ"
+                    color="currentColor"
+                    size="12"
+                  >
+                    <test-file-stub />
+                  </span>
+                </div>
+                <div
+                  class="px-45 pt-0 overflow-hidden modal-body"
+                >
+                  <div
+                    class="mb-3"
+                  >
+                    <label>
+                      Board Icon
+                    </label>
+                    <div
+                      class="icon-image icon-image-sm icon-image-square mb-3 tiny"
+                    >
+                      <div
+                        aria-disabled="false"
+                        class="dropzone image-box"
+                        style="position: relative;"
+                      >
+                        <div
+                          class="image"
+                          style="background-image: url(/images/img.png);"
+                        />
+                        <div
+                          class="rejected-file text-danger text-center super-center h-100"
+                        >
+                          File not Accepted
+                        </div>
+                        <input
+                          accept="image/jpeg,image/png"
+                          autocomplete="off"
+                          style="position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; opacity: 0.00001; pointer-events: none;"
+                          type="file"
+                        />
+                      </div>
+                    </div>
+                    <label>
+                      Name
+                    </label>
+                    <input
+                      class="form-control"
+                      name="name"
+                      placeholder="Board Name"
+                      type="text"
+                      value="name"
+                    />
+                    <hr />
+                    <label>
+                      Billing
+                    </label>
+                    <button
+                      class="btn btn-link __large"
+                    >
+                      Invoices
+                    </button>
+                    <br />
+                    <small
+                      class="text-muted"
+                    >
+                      View invoices, update your payment options
+                    </small>
+                    <hr />
+                    <label>
+                      Privacy
+                    </label>
+                    <button
+                      class="btn btn-link __large"
+                    >
+                      Delete Board
+                    </button>
+                    <br />
+                    <small
+                      class="text-muted"
+                    >
+                      This action is irreversible. All team and project data will be removed
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="modal-backdrop fade"
+          />
+        </div>
+      </div>
+    }
+  >
+    <Portal
+      containerInfo={
+        <div
+          style="position: relative; z-index: 1050;"
+          tabindex="-1"
+        >
+          <div
+            class=""
+          >
+            <div
+              class="modal fade"
+              role="dialog"
+              style="display: block;"
+              tabindex="-1"
+            >
+              <div
+                class="modal-dialog upgrade-modal"
+                role="document"
+              >
+                <div
+                  class="modal-content"
+                >
+                  <div
+                    class="pb-2 sc-fBuWsC hQFoLU"
+                  >
+                    <h5>
+                      Board Settings
+                    </h5>
+                    <span
+                      class="sc-bxivhb fsvlWZ"
+                      color="currentColor"
+                      size="12"
+                    >
+                      <test-file-stub />
+                    </span>
+                  </div>
+                  <div
+                    class="px-45 pt-0 overflow-hidden modal-body"
+                  >
+                    <div
+                      class="mb-3"
+                    >
+                      <label>
+                        Board Icon
+                      </label>
+                      <div
+                        class="icon-image icon-image-sm icon-image-square mb-3 tiny"
+                      >
+                        <div
+                          aria-disabled="false"
+                          class="dropzone image-box"
+                          style="position: relative;"
+                        >
+                          <div
+                            class="image"
+                            style="background-image: url(/images/img.png);"
+                          />
+                          <div
+                            class="rejected-file text-danger text-center super-center h-100"
+                          >
+                            File not Accepted
+                          </div>
+                          <input
+                            accept="image/jpeg,image/png"
+                            autocomplete="off"
+                            style="position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; opacity: 0.00001; pointer-events: none;"
+                            type="file"
+                          />
+                        </div>
+                      </div>
+                      <label>
+                        Name
+                      </label>
+                      <input
+                        class="form-control"
+                        name="name"
+                        placeholder="Board Name"
+                        type="text"
+                        value="name"
+                      />
+                      <hr />
+                      <label>
+                        Billing
+                      </label>
+                      <button
+                        class="btn btn-link __large"
+                      >
+                        Invoices
+                      </button>
+                      <br />
+                      <small
+                        class="text-muted"
+                      >
+                        View invoices, update your payment options
+                      </small>
+                      <hr />
+                      <label>
+                        Privacy
+                      </label>
+                      <button
+                        class="btn btn-link __large"
+                      >
+                        Delete Board
+                      </button>
+                      <br />
+                      <small
+                        class="text-muted"
+                      >
+                        This action is irreversible. All team and project data will be removed
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="modal-backdrop fade"
+            />
+          </div>
+        </div>
+      }
+    >
+      <div
+        className=""
+      >
+        <Fade
+          appear={true}
+          baseClass="fade"
+          baseClassActive="show"
+          className="modal"
+          enter={true}
+          exit={true}
+          in={true}
+          mountOnEnter={false}
+          onClick={[Function]}
+          onEnter={[Function]}
+          onEntered={[Function]}
+          onEntering={[Function]}
+          onExit={[Function]}
+          onExited={[Function]}
+          onExiting={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          role="dialog"
+          style={
+            Object {
+              "display": "block",
+            }
+          }
+          tabIndex="-1"
+          tag="div"
+          timeout={300}
+          unmountOnExit={false}
+        >
+          <Transition
+            appear={true}
+            enter={true}
+            exit={true}
+            in={true}
+            mountOnEnter={false}
+            onEnter={[Function]}
+            onEntered={[Function]}
+            onEntering={[Function]}
+            onExit={[Function]}
+            onExited={[Function]}
+            onExiting={[Function]}
+            timeout={300}
+            unmountOnExit={false}
+          >
+            <div
+              className="modal fade"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              role="dialog"
+              style={
+                Object {
+                  "display": "block",
+                }
+              }
+              tabIndex="-1"
+            >
+              <div
+                className="modal-dialog upgrade-modal"
+                role="document"
+              >
+                <div
+                  className="modal-content"
+                >
+                  <ModalHeader
+                    className="pb-2"
+                    header="Board Settings"
+                    toggle={[Function]}
+                  >
+                    <styled.div
+                      className="pb-2"
+                    >
+                      <StyledComponent
+                        className="pb-2"
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-fBuWsC",
+                              "isStatic": false,
+                              "lastClassName": "hQFoLU",
+                              "rules": Array [
+                                "
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: ",
+                                [Function],
+                                "px ",
+                                [Function],
+                                "px !important;
+  padding-left: 2rem;
+  border: 0;
+
+  /* adding important caused the padding to work */
+
+  & > h5 {
+    color: #8c94a6;
+    font-weight: 600;
+    font-size: 15px;
+    text-transform: uppercase;
+    margin-bottom: 0px;
+  }
+
+  & > ",
+                                ".sc-bxivhb",
+                                " {
+    padding: 10px;
+    margin: -10px;
+    cursor: pointer;
+    color: #8da2b570;
+    transition: color 150ms;
+
+    &:hover {
+      color: #8da2b5;
+    }
+  }
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-fBuWsC",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                      >
+                        <div
+                          className="pb-2 sc-fBuWsC hQFoLU"
+                        >
+                          <h5>
+                            Board Settings
+                          </h5>
+                          <ForwardRef
+                            icon="close"
+                            onClick={[Function]}
+                            size={12}
+                          >
+                            <styled.span
+                              color="currentColor"
+                              onClick={[Function]}
+                              size={12}
+                            >
+                              <StyledComponent
+                                color="currentColor"
+                                forwardedComponent={
+                                  Object {
+                                    "$$typeof": Symbol(react.forward_ref),
+                                    "attrs": Array [],
+                                    "componentStyle": ComponentStyle {
+                                      "componentId": "sc-bxivhb",
+                                      "isStatic": false,
+                                      "lastClassName": "fsvlWZ",
+                                      "rules": Array [
+                                        "
+  ",
+                                        [Function],
+                                        "
+
+  color: ",
+                                        [Function],
+                                        ";
+  width: ",
+                                        [Function],
+                                        "px;
+  height: ",
+                                        [Function],
+                                        "px;
+  box-sizing: content-box;
+  
+  ",
+                                        [Function],
+                                        "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                        [Function],
+                                        ";
+  }
+",
+                                      ],
+                                    },
+                                    "displayName": "styled.span",
+                                    "foldedComponentIds": Array [],
+                                    "render": [Function],
+                                    "styledComponentId": "sc-bxivhb",
+                                    "target": "span",
+                                    "toString": [Function],
+                                    "warnTooManyClasses": [Function],
+                                    "withComponent": [Function],
+                                  }
+                                }
+                                forwardedRef={null}
+                                onClick={[Function]}
+                                size={12}
+                              >
+                                <span
+                                  className="sc-bxivhb fsvlWZ"
+                                  color="currentColor"
+                                  onClick={[Function]}
+                                  size={12}
+                                >
+                                  <test-file-stub />
+                                </span>
+                              </StyledComponent>
+                            </styled.span>
+                          </ForwardRef>
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                  </ModalHeader>
+                  <ModalBody
+                    className="px-45 pt-0 overflow-hidden"
+                    tag="div"
+                  >
+                    <div
+                      className="px-45 pt-0 overflow-hidden modal-body"
+                    >
+                      <div
+                        className="mb-3"
+                      >
+                        <SettingField
+                          description={null}
+                          label="Board Icon"
+                        >
+                          <label>
+                            Board Icon
+                          </label>
+                          <Image
+                            className="icon-image icon-image-sm icon-image-square mb-3"
+                            image="/images/img.png"
+                            path="/team/1/picture"
+                            replace={true}
+                            tiny={true}
+                            update={[Function]}
+                          >
+                            <div
+                              className="icon-image icon-image-sm icon-image-square mb-3 tiny"
+                            >
+                              <n
+                                accept="image/jpeg,image/png"
+                                activeClassName="active"
+                                className="dropzone image-box"
+                                disableClick={false}
+                                disablePreview={false}
+                                disabled={false}
+                                getDataTransferItems={[Function]}
+                                inputProps={Object {}}
+                                maxSize={5242880}
+                                minSize={0}
+                                multiple={false}
+                                onDrop={[Function]}
+                                preventDropOnDocument={true}
+                                rejectClassName="reject"
+                              >
+                                <div
+                                  aria-disabled={false}
+                                  className="dropzone image-box"
+                                  onClick={[Function]}
+                                  onDragEnter={[Function]}
+                                  onDragLeave={[Function]}
+                                  onDragOver={[Function]}
+                                  onDragStart={[Function]}
+                                  onDrop={[Function]}
+                                  style={
+                                    Object {
+                                      "position": "relative",
+                                    }
+                                  }
+                                >
+                                  <div
+                                    className="image"
+                                    style={
+                                      Object {
+                                        "backgroundImage": "url(/images/img.png)",
+                                      }
+                                    }
+                                  />
+                                  <div
+                                    className="rejected-file text-danger text-center super-center h-100"
+                                  >
+                                    File not Accepted
+                                  </div>
+                                  <input
+                                    accept="image/jpeg,image/png"
+                                    autoComplete="off"
+                                    disabled={false}
+                                    multiple={false}
+                                    onChange={[Function]}
+                                    style={
+                                      Object {
+                                        "bottom": 0,
+                                        "left": 0,
+                                        "opacity": 0.00001,
+                                        "pointerEvents": "none",
+                                        "position": "absolute",
+                                        "right": 0,
+                                        "top": 0,
+                                      }
+                                    }
+                                    type="file"
+                                  />
+                                </div>
+                              </n>
+                            </div>
+                          </Image>
+                        </SettingField>
+                        <SettingField
+                          hr={true}
+                          label="Name"
+                        >
+                          <label>
+                            Name
+                          </label>
+                          <Input
+                            name="name"
+                            onChange={[Function]}
+                            placeholder="Board Name"
+                            type="text"
+                            value="name"
+                          >
+                            <input
+                              className="form-control"
+                              name="name"
+                              onChange={[Function]}
+                              placeholder="Board Name"
+                              type="text"
+                              value="name"
+                            />
+                          </Input>
+                          <hr />
+                        </SettingField>
+                        <SettingField
+                          description="View invoices, update your payment options"
+                          hr={true}
+                          label="Billing"
+                        >
+                          <label>
+                            Billing
+                          </label>
+                          <Button
+                            iconPosition="right"
+                            isBtn={true}
+                            isLinkLarge={true}
+                            onRef={[Function]}
+                            trackEvent="Button Click"
+                          >
+                            <button
+                              className="btn btn-link __large"
+                              onClick={[Function]}
+                            >
+                              Invoices
+                            </button>
+                          </Button>
+                          <br />
+                          <small
+                            className="text-muted"
+                          >
+                            View invoices, update your payment options
+                          </small>
+                          <hr />
+                        </SettingField>
+                        <SettingField
+                          description="This action is irreversible. All team and project data will be removed"
+                          label="Privacy"
+                        >
+                          <label>
+                            Privacy
+                          </label>
+                          <Button
+                            iconPosition="right"
+                            isBtn={true}
+                            isLinkLarge={true}
+                            onClick={[Function]}
+                            onRef={[Function]}
+                            trackEvent="Button Click"
+                          >
+                            <button
+                              className="btn btn-link __large"
+                              onClick={[Function]}
+                            >
+                              Delete Board
+                            </button>
+                          </Button>
+                          <br />
+                          <small
+                            className="text-muted"
+                          >
+                            This action is irreversible. All team and project data will be removed
+                          </small>
+                        </SettingField>
+                      </div>
+                    </div>
+                  </ModalBody>
+                </div>
+              </div>
+            </div>
+          </Transition>
+        </Fade>
+        <Fade
+          appear={true}
+          baseClass="fade"
+          baseClassActive="show"
+          className="modal-backdrop"
+          enter={true}
+          exit={true}
+          in={true}
+          mountOnEnter={true}
+          onEnter={[Function]}
+          onEntered={[Function]}
+          onEntering={[Function]}
+          onExit={[Function]}
+          onExited={[Function]}
+          onExiting={[Function]}
+          tag="div"
+          timeout={150}
+          unmountOnExit={false}
+        >
+          <Transition
+            appear={true}
+            enter={true}
+            exit={true}
+            in={true}
+            mountOnEnter={true}
+            onEnter={[Function]}
+            onEntered={[Function]}
+            onEntering={[Function]}
+            onExit={[Function]}
+            onExited={[Function]}
+            onExiting={[Function]}
+            timeout={150}
+            unmountOnExit={false}
+          >
+            <div
+              className="modal-backdrop fade"
+            />
+          </Transition>
+        </Fade>
+      </div>
+    </Portal>
+  </Portal>
+</Modal>
+`;

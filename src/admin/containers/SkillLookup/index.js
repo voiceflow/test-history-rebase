@@ -6,12 +6,12 @@ import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import ReactTable from 'react-table';
-import { toast } from 'react-toastify';
 import Toggle from 'react-toggle';
 import { Button, Input } from 'reactstrap';
 
 import { AdminTitle } from '@/admin/styles';
 import { Spinner } from '@/components/Spinner';
+import { toast } from '@/componentsV2/Toast';
 import LogTable from '@/containers/Logs/components/LogTable';
 
 const COLUMNS = [

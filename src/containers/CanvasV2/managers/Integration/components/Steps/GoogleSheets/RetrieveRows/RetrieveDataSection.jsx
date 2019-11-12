@@ -33,8 +33,14 @@ function RetrieveData({ headers_list, onChange, headers_loading, data, openNextS
             placeholder="Column"
           />
         </div>
-        <img src="/equals.svg" alt="comment" className="mr-2 ml-2" width="10px" />
-        <div className="column-input" style={{ overflow: 'auto', flex: '1 1' }}>
+        <Tooltip
+          title="The value to match in the selected column. Leaving this blank will select a random row in the spreadsheet"
+          position="bottom"
+          theme="block"
+        >
+          <img src="/equals.svg" alt="comment" className="mr-2 ml-2" width="10px" />
+        </Tooltip>
+        <div className="column-input" style={{ width: '45%' }}>
           <VariableInput
             key={JSON.stringify(!!data.match_value)}
             className="form-control google-sheets-input"
@@ -44,16 +50,6 @@ function RetrieveData({ headers_list, onChange, headers_loading, data, openNextS
             }}
             placeholder="Value to Match"
           />
-        </div>
-        <div>
-          <Tooltip
-            className="menu-tip ml-2"
-            title="The value to match in the selected column. Leaving this blank will select a random row in the spreadsheet"
-            position="bottom"
-            theme="block"
-          >
-            ?
-          </Tooltip>
         </div>
       </div>
       <NextStepButton openNextStep={openNextStep} />

@@ -1,1 +1,1 @@
-export const DEPTH_LIMIT = 3;
+export const DEPTH_LIMIT = 4;

@@ -11,95 +11,86 @@ import { setConfirm } from '@/ducks/modal';
 import { goToDiagram } from '@/ducks/router';
 import { activeDiagramIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { stopPropagation } from '@/utils/dom';
 
 import DiagramBlock from './DiagramBlock';
 import DiagramButton from './DiagramButton';
 import DiagramEdit from './DiagramEdit';
 
-class FlowButton extends React.PureComponent {
-  state = {
-    edit: false,
-    name: this.props.diagram.name || '',
-  };
+function FlowButton({ id, name, isLimit, activeDiagram, goToDiagram, depth = 0, copyFlow, deleteFlow, renameFlow }) {
+  const [state, setState] = React.useState({ edit: false, name: name || '' });
 
-  handleChange = (event) =>
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
+  const onChange = React.useCallback(({ target }) => setState((s) => ({ ...s, name: target.value })), [setState]);
+  const onClose = React.useCallback(() => {
+    renameFlow(state.name);
+    setState((s) => ({ ...s, edit: false }));
+  }, [state.name, renameFlow]);
 
-  close = async () => {
-    const { renameFlow } = this.props;
-    const { name } = this.state;
+  const isActive = activeDiagram === id;
 
-    renameFlow(name);
-    this.setState({ edit: false });
-  };
-
-  render() {
-    const { diagram, activeDiagram, goToDiagram, depth = 0, copyFlow, deleteFlow } = this.props;
-    const { edit, name } = this.state;
-
-    const isActive = activeDiagram === diagram.id;
-
-    return (
-      <DiagramBlock className={cn({ active: isActive })}>
-        <DiagramButton className="diagram-button" onClick={isActive ? null : () => goToDiagram(diagram.id)} depth={depth}>
-          {edit ? (
-            <Input
-              variant="inline"
-              name="name"
-              className="diagram-text"
-              value={name}
-              onChange={this.handleChange}
-              onKeyPress={(target) => (target.charCode === 13 ? this.close() : null)}
-              onBlur={this.close}
-              onFocus={(event) => event.target.select()}
-              // eslint-disable-next-line jsx-a11y/no-autofocus
-              autoFocus
-            />
-          ) : (
-            <span className="diagram-text">
-              {/* eslint-disable no-nested-ternary */}
-              {diagram.name === ROOT_DIAGRAM_NAME
-                ? 'Home'
-                : _.trim(diagram.name)
-                ? diagram.name.length > 15
-                  ? `${diagram.name.substring(0, 15)}...`
-                  : diagram.name
-                : 'Flow'}
-              {/* eslint-enable no-nested-ternary */}
-            </span>
-          )}
-        </DiagramButton>
-
-        {diagram.name !== ROOT_DIAGRAM_NAME && !edit && (
-          <Dropdown
-            options={[
-              {
-                label: 'Edit Name',
-                onClick: () => this.setState({ edit: true, name: diagram.name }),
-              },
-              {
-                label: 'Copy',
-                onClick: copyFlow,
-              },
-              {
-                label: 'Delete',
-                onClick: deleteFlow,
-              },
-            ]}
-            placement="bottom-end"
-          >
-            {(ref, onToggle) => (
-              <DiagramEdit tag="button" onClick={onToggle} ref={ref}>
-                <i className="fas fa-cog" />
-              </DiagramEdit>
+  return (
+    <DiagramBlock>
+      <DiagramButton
+        depth={depth}
+        onClick={isActive ? null : () => goToDiagram(id)}
+        disabled={isLimit}
+        className={cn('diagram-button', { active: isActive })}
+      >
+        {isLimit ? (
+          <span className="diagram-text">{name}</span>
+        ) : (
+          <>
+            {' '}
+            {state.edit ? (
+              <Input
+                variant="inline"
+                name="name"
+                className="diagram-text"
+                value={state.name}
+                onChange={onChange}
+                onKeyPress={(target) => (target.charCode === 13 ? onClose() : null)}
+                onBlur={onClose}
+                onFocus={(event) => event.target.select()}
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus
+              />
+            ) : (
+              <span className="diagram-text">
+                {/* eslint-disable no-nested-ternary */}
+                {name === ROOT_DIAGRAM_NAME ? 'Home' : _.trim(name) || 'Flow'}
+                {/* eslint-enable no-nested-ternary */}
+              </span>
             )}
-          </Dropdown>
+            {!isLimit && name !== ROOT_DIAGRAM_NAME && !state.edit && (
+              <Dropdown
+                options={[
+                  {
+                    label: 'Edit Name',
+                    onClick: () => setState({ edit: true, name }),
+                  },
+                  {
+                    label: 'Copy',
+                    onClick: copyFlow,
+                  },
+                  {
+                    label: 'Delete',
+                    onClick: deleteFlow,
+                  },
+                ]}
+                placement="bottom-end"
+              >
+                {(ref, onToggle) => (
+                  <DiagramEdit tag="button" onClick={stopPropagation(onToggle)} ref={ref}>
+                    <i className="fas fa-cog" />
+                  </DiagramEdit>
+                )}
+              </Dropdown>
+            )}
+          </>
         )}
-      </DiagramBlock>
-    );
-  }
+      </DiagramButton>
+    </DiagramBlock>
+  );
 }
 
 const mapStateToProps = {
@@ -114,8 +105,8 @@ const mapDispatchToProps = {
   setConfirm,
 };
 
-const mergeProps = (_, { copyDiagram, deleteDiagram, renameDiagram, setConfirm }, { diagram }) => ({
-  copyFlow: () => copyDiagram(diagram.id),
+const mergeProps = (_, { copyDiagram, deleteDiagram, renameDiagram, setConfirm }, { id }) => ({
+  copyFlow: () => copyDiagram(id),
   deleteFlow: () =>
     setConfirm({
       warning: true,
@@ -129,9 +120,9 @@ const mergeProps = (_, { copyDiagram, deleteDiagram, renameDiagram, setConfirm }
           Are you sure ?
         </Alert>
       ),
-      confirm: () => deleteDiagram(diagram.id),
+      confirm: () => deleteDiagram(id),
     }),
-  renameFlow: (name) => renameDiagram(diagram.id, name),
+  renameFlow: (name) => renameDiagram(id, name),
 });
 
 export default connect(

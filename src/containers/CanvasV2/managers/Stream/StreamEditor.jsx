@@ -36,7 +36,7 @@ function StreamEditor({ data, focusedNode, platform, onChange }) {
   return (
     <Content>
       <Section>
-        <label>Stream File (AAC/MP4, MP3, HLS)</label>
+        <label>Stream File (AAC, MP3, HLS)</label>
         <AudioDrop audio={data.audio} update={updateAudio} stream />
         <label>Title</label>
         <VariableInput className="form-control" value={data.title} placeholder="Insert audio stream title" onChange={updateTitle} />

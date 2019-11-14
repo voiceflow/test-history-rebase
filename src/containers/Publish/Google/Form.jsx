@@ -7,6 +7,7 @@ import styled from 'styled-components';
 
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import { Spinner } from '@/components/Spinner';
+import { userSelector } from '@/ducks/account';
 import { setError } from '@/ducks/modal';
 import { publishStateSelector, updatePublishInfo } from '@/ducks/publish/google';
 import { activeNameSelector, activeSkillIDSelector } from '@/ducks/skill';
@@ -138,7 +139,6 @@ class GooglePublish extends Component {
     try {
       const res = await axios.get(`/skill/google/${versionID}`);
       const properties = googleFormAdapter.fromDB(res.data);
-
       this.setState({
         loaded: true,
         ...properties,
@@ -193,8 +193,8 @@ class GooglePublish extends Component {
   };
 
   renderBlocks = () => {
-    const { googleId, googleEmail } = this.props;
-    const { main_locale, privacyPolicy, termsAndCond } = this.state;
+    const { googleId, googleEmail, user, name } = this.props;
+    const { main_locale } = this.state;
 
     const blocks = [];
     const enterText = (
@@ -243,6 +243,8 @@ class GooglePublish extends Component {
       ),
     });
 
+    const terms = `${window.location.origin}/creator/terms?name=${encodeURI(user.name)}&skill=${encodeURI(name)}`;
+
     blocks.push({
       title: 'Legal',
       content: (
@@ -262,15 +264,15 @@ class GooglePublish extends Component {
 
           <FormGroup>
             <Label className="publish-label">Privacy Policy URL</Label>
-            <ClipBoard name="link" value={privacyPolicy}>
-              <PrivacyPolicyLink>{privacyPolicy}</PrivacyPolicyLink>
+            <ClipBoard name="link" value={terms}>
+              <PrivacyPolicyLink>{terms}</PrivacyPolicyLink>
             </ClipBoard>
           </FormGroup>
 
           <FormGroup className="mb-4">
             <Label className="publish-label">Terms and Conditions URL</Label>
-            <ClipBoard name="link" value={termsAndCond}>
-              <PrivacyPolicyLink>{termsAndCond}</PrivacyPolicyLink>
+            <ClipBoard name="link" value={terms}>
+              <PrivacyPolicyLink>{terms}</PrivacyPolicyLink>
             </ClipBoard>
           </FormGroup>
         </>
@@ -282,6 +284,7 @@ class GooglePublish extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  user: userSelector(state),
   name: activeNameSelector(state),
   googleId: publishStateSelector(state).googleId,
   versionID: activeSkillIDSelector(state),

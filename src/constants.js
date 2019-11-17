@@ -106,6 +106,7 @@ export const PermissionType = {
   USER_EMAIL: 'alexa::profile:email:read',
   USER_NAME: 'alexa::profile:name:read',
   USER_PHONE: 'alexa::profile:mobile_number:read',
+  USER_PERSON: 'alexa::person_id:read',
   REMINDERS: 'alexa::alerts:reminders:skill:readwrite',
   NOTIFICATIONS: 'alexa::devices:all:notifications:write',
   ACCOUNT_LINKING: 'UNOFFICIAL::account_linking',
@@ -136,6 +137,11 @@ export const PERMISSIONS = [
   {
     name: 'Notifications',
     value: PermissionType.NOTIFICATIONS,
+  },
+  {
+    name: 'Skill Personalization',
+    value: PermissionType.USER_PERSON,
+    variableMap: true,
   },
   {
     name: 'Account Linking',

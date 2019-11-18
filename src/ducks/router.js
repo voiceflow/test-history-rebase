@@ -4,7 +4,7 @@ import { RootRoutes } from '@/utils/routes';
 
 import { activeDiagramIDSelector, activeSkillIDSelector, activeSkillSelector } from './skill';
 
-const goTo = (path, search) => push(`/${path}`, search && { search });
+export const goTo = (path, search) => push(`/${path}`, search && { search });
 
 export const goToHome = () => goTo('');
 

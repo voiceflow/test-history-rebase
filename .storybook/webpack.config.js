@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const paths = require('../config/paths');
 
-const { ENV } = require('../config/webpack/config');
+const { ENV, IS_PRODUCTION } = require('../config/webpack/config');
 
 module.exports = ({ config }) =>
   merge.strategy({ 'module.rules': 'replace' })(config, {
@@ -17,6 +17,16 @@ module.exports = ({ config }) =>
       rules: [
         {
           oneOf: [
+            {
+              test: /\.(js|jsx)$/,
+              include: paths.sourceDir,
+              loader: 'babel-loader',
+              options: {
+                cacheDirectory: true,
+                cacheCompression: IS_PRODUCTION,
+                compact: IS_PRODUCTION,
+              },
+            },
             {
               test: /\.svg$/,
               include: path.resolve(paths.sourceDir, 'svgs'),
@@ -35,6 +45,7 @@ module.exports = ({ config }) =>
                 },
               }),
             },
+
             ...config.module.rules,
           ],
         },

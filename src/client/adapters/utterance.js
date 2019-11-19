@@ -11,7 +11,7 @@ export const extractDraftJSEntities = (text, entityRanges, entityMap) => {
       variableContent.push(text.slice(cursor, offset));
     }
 
-    variableContent.push({ name: entityMap[key].data.mention.name });
+    variableContent.push({ name: entityMap[key].data.mention.name, id: entityMap[key].data.mention.id });
 
     cursor = offset + length;
   });
@@ -23,18 +23,23 @@ export const extractDraftJSEntities = (text, entityRanges, entityMap) => {
   return variableContent;
 };
 
-export const buildDraftJSContent = (content, existingEntitiesMap) => {
+export const buildDraftJSContent = (content, existingEntities = []) => {
+  const nameMap = existingEntities.reduce((obj, entity) => Object.assign(obj, { [entity.name]: entity }), {});
+  const idMap = existingEntities.reduce((obj, entity) => Object.assign(obj, { [entity.id]: entity }), {});
+
   const [text, entityMap, entityRanges] = content.reduce(
     ([textAcc, entityMapAcc, entityRangesAcc, cursor], value) => {
       const isVariable = typeof value === 'object';
-      const textValue = isVariable ? `{${value.name}}` : value;
+      let textValue = value;
 
       if (isVariable) {
-        const existingEntity = existingEntitiesMap?.[value.name];
+        // match by id, then name
+        const existingEntity = idMap[value.id] || nameMap[value.name];
 
-        if (!existingEntitiesMap || existingEntity) {
+        textValue = existingEntity ? `{${existingEntity.name}}` : `{${value.name}}`;
+
+        if (existingEntity) {
           const key = Object.keys(entityMapAcc).length;
-
           entityMapAcc[key] = {
             type: '{mention',
             mutability: 'IMMUTABLE',
@@ -86,5 +91,5 @@ export const draftJSContentAdapter = createSimpleAdapter(
             return acc;
           }, [])
       : [],
-  (content, existingEntitiesMap) => buildDraftJSContent(content, existingEntitiesMap)
+  (content, existingEntities) => buildDraftJSContent(content, existingEntities)
 );

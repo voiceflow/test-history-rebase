@@ -2926,6 +2926,17 @@
     moment "^2.24.0"
     randomstring "^1.1.5"
 
+"@voiceflow/draft-js-mention-plugin@3.3.5":
+  version "3.3.5"
+  resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-mention-plugin/-/draft-js-mention-plugin-3.3.5.tgz#479ce1817f7bb36c4cd55669d78a881b244ae2cf"
+  integrity sha512-6eUhyY+e1KczkTJHq305Yj/QOc4FOWzDE6lBRPvdFyKkBXBdTf04U5OCffcrBPjkQxWS9r/Zfgcg3q2eSllBCQ==
+  dependencies:
+    clsx "^1.0.4"
+    immutable "~3.7.4"
+    lodash "^4.17.14"
+    lodash-es "^4.17.15"
+    prop-types "^15.5.8"
+
 "@voiceflow/eslint-config@2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@voiceflow/eslint-config/-/eslint-config-2.0.1.tgz#230a55e2161d49cf5fe2dff067e4f55b8d303e66"
@@ -5614,7 +5625,7 @@ clone-regexp@^2.1.0:
   dependencies:
     is-regexp "^2.0.0"
 
-clsx@^1.0.1:
+clsx@^1.0.1, clsx@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.0.4.tgz#0c0171f6d5cb2fe83848463c15fcc26b4df8c2ec"
   integrity sha512-1mQ557MIZTrL/140j+JVdRM6e31/OA4vTYxXgqIIZlndyfjHpyawKZia1Im05Vp9BWmImkcNrNtFYQMyFcgJDg==
@@ -6019,6 +6030,11 @@ core-js@^2.4.0, core-js@^2.5.0, core-js@^2.6.5:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.9.tgz#6b4b214620c834152e179323727fc19741b084f2"
   integrity sha512-HOpZf6eXmnl7la+cUdMnLvUxKNqLUzJvgIziQ0DiF3JwSImNphIqdGqzj6hIKyX04MmV0poclQ7+wjWvxQyR2A==
 
+core-js@^2.4.1:
+  version "2.6.10"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.10.tgz#8a5b8391f8cc7013da703411ce5b585706300d7f"
+  integrity sha512-I39t74+4t+zau64EN1fE5v2W31Adtc/REhzWN+gWRRXg6WH5qAsZm62DHpQ1+Yhe4047T55jvzz7MUqF/dBBlA==
+
 core-js@^3.0.1, core-js@^3.0.4, core-js@^3.1.4:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.1.4.tgz#3a2837fc48e582e1ae25907afcd6cf03b0cc7a07"
@@ -6194,7 +6210,7 @@ css-color-keywords@^1.0.0:
   resolved "https://registry.yarnpkg.com/css-color-keywords/-/css-color-keywords-1.0.0.tgz#fea2616dc676b2962686b3af8dbdbe180b244e05"
   integrity sha1-/qJhbcZ2spYmhrOvjb2+GAskTgU=
 
-css-color-names@0.0.4, css-color-names@^0.0.4:
+css-color-names@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
   integrity sha1-gIrcLnnPhHOAabZGyyDsJ762KeA=
@@ -7045,30 +7061,27 @@ dotenv@^8.0.0:
     prop-types "^15.5.8"
     union-class-names "^1.0.0"
 
-draft-js-plugins-editor@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/draft-js-plugins-editor/-/draft-js-plugins-editor-2.1.1.tgz#7c9aedd696737c6ddf45d47c978bd764ef33f688"
-  integrity sha512-fKGe71irNvFHJ5L/lUrh+3vPkBNq0de6x+cgiZUJ9zQERc5KPBtGXIFiarLFVHyrRTCPq+K6xmgfFSAERaFHPw==
+draft-js-plugins-editor@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/draft-js-plugins-editor/-/draft-js-plugins-editor-3.0.0.tgz#196d1e065e2c29faebaab4ec081b734fdef294a2"
+  integrity sha512-bFEL0FUIPg9VK3KSeBZ3D+uMqQEVe4Cv7++LWCMASRH02jy6x2f87NRxSZLzTQES5+oL6Qg+OEUlaTn409145A==
   dependencies:
-    decorate-component-with-props "^1.0.2"
-    find-with-regex "^1.1.3"
     immutable "~3.7.4"
     prop-types "^15.5.8"
-    union-class-names "^1.0.0"
 
-draft-js-single-line-plugin@^2.0.2:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/draft-js-single-line-plugin/-/draft-js-single-line-plugin-2.0.3.tgz#32875c9caf3788fce80a54385c70cf9b7cae33a9"
-  integrity sha512-7Eya6WWtST2GCNXPPC5qwFJbNC13MQlWiAhbCfqnLs86HxXBOOWxHmt7C1WTrtD9BfxkqNp/JuyVWvGYUP8coQ==
+draft-js-single-line-plugin@2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/draft-js-single-line-plugin/-/draft-js-single-line-plugin-2.0.5.tgz#71d3b7612c7477d94fd8a3bab119d6ac1c738b20"
+  integrity sha512-/zdekY1NpH8z/GPv1CnqSuLttRDcUmO+Ryh00p5Y+EqeprjpNfnr/8iHhPsPkB9tjEqv8EUnOph0zX7GW0mIdA==
   dependencies:
-    immutable "~3.8.2"
+    immutable "^3.7.4"
 
-draft-js@^0.10.5:
-  version "0.10.5"
-  resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.10.5.tgz#bfa9beb018fe0533dbb08d6675c371a6b08fa742"
-  integrity sha512-LE6jSCV9nkPhfVX2ggcRLA4FKs6zWq9ceuO/88BpXdNCS7mjRTgs0NsV6piUCJX9YxMsB9An33wnkMmU2sD2Zg==
+draft-js@^0.11.2:
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.11.2.tgz#dd272d9c9e1299c3bd94f5f4aac3ac2784551d4c"
+  integrity sha512-JU96XdAigQ4hAmyBMVXps6RQ8+dMhhNI1dDJPMP6OeHuSv+uwDzDg/7lxGQ1PEq+1Q6575jtvxDa7Aw3vy0WHA==
   dependencies:
-    fbjs "^0.8.15"
+    fbjs "^1.0.0"
     immutable "~3.7.4"
     object-assign "^4.1.0"
 
@@ -8259,12 +8272,31 @@ fbemitter@^2.0.0:
   dependencies:
     fbjs "^0.8.4"
 
-fbjs@^0.8.0, fbjs@^0.8.1, fbjs@^0.8.15, fbjs@^0.8.4, fbjs@^0.8.9:
+fbjs-css-vars@^1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/fbjs-css-vars/-/fbjs-css-vars-1.0.2.tgz#216551136ae02fe255932c3ec8775f18e2c078b8"
+  integrity sha512-b2XGFAFdWZWg0phtAWLHCk836A1Xann+I+Dgd3Gk64MHKZO44FfoD1KxyvbSh0qZsIoXQGGlVztIY+oitJPpRQ==
+
+fbjs@^0.8.0, fbjs@^0.8.1, fbjs@^0.8.4, fbjs@^0.8.9:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
   dependencies:
     core-js "^1.0.0"
+    isomorphic-fetch "^2.1.1"
+    loose-envify "^1.0.0"
+    object-assign "^4.1.0"
+    promise "^7.1.1"
+    setimmediate "^1.0.5"
+    ua-parser-js "^0.7.18"
+
+fbjs@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-1.0.0.tgz#52c215e0883a3c86af2a7a776ed51525ae8e0a5a"
+  integrity sha512-MUgcMEJaFhCaF1QtWGnmq9ZDRAzECTCRAF7O6UZIlAlkTs1SasiX9aP0Iw7wfD2mJ7wDTNfg2w7u5fSCwJk1OA==
+  dependencies:
+    core-js "^2.4.1"
+    fbjs-css-vars "^1.0.0"
     isomorphic-fetch "^2.1.1"
     loose-envify "^1.0.0"
     object-assign "^4.1.0"
@@ -9371,11 +9403,6 @@ heap@0.2.5:
   resolved "https://registry.yarnpkg.com/heap/-/heap-0.2.5.tgz#713b65590ebcc40fcbeeaf55e851694092b39af1"
   integrity sha1-cTtlWQ68xA/L7q9V6FFpQJKzmvE=
 
-hex-color-regex@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
-  integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
-
 highlight.js@~9.12.0:
   version "9.12.0"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.12.0.tgz#e6d9dbe57cbefe60751f02af336195870c90c01e"
@@ -9443,16 +9470,6 @@ hotkeys-js@3.7.2:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/hotkeys-js/-/hotkeys-js-3.7.2.tgz#30378b6db40bcd24fe6e51cd19c29ed1898c125f"
   integrity sha512-LJIPBgejlklphThig2edlYUiPq3iFDHdsXftvZ0VWrpi330dRwD2YxPlzOYv0UQEatvZdgwG3ZLCfJ020ix8vQ==
-
-hsl-regex@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/hsl-regex/-/hsl-regex-1.0.0.tgz#d49330c789ed819e276a4c0d272dffa30b18fe6e"
-  integrity sha1-1JMwx4ntgZ4nakwNJy3/owsY/m4=
-
-hsla-regex@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/hsla-regex/-/hsla-regex-1.0.0.tgz#c1ce7a3168c8c6614033a4b5f7877f3b225f9c38"
-  integrity sha1-wc56MWjIxmFAM6S194d/OyJfnDg=
 
 html-comment-regex@^1.1.0:
   version "1.1.2"
@@ -9735,7 +9752,7 @@ immutability-helper@^2.9.0:
   dependencies:
     invariant "^2.2.0"
 
-immutable@3.8.2, immutable@^3.8.1, immutable@~3.8.2:
+immutable@3.8.2, immutable@^3.7.4, immutable@^3.8.1:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
   integrity sha1-wkOZUUVbs5kT2vKBN28VMOEErfM=
@@ -11934,7 +11951,7 @@ lodash@4.17.11, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.3
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
 
-"lodash@>=3.5 <5", lodash@^4.17.13, lodash@^4.17.15:
+"lodash@>=3.5 <5", lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
@@ -16506,16 +16523,6 @@ reusify@^1.0.0:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/reusify/-/reusify-1.0.4.tgz#90da382b1e126efc02146e90845a88db12925d76"
   integrity sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
-
-rgb-regex@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/rgb-regex/-/rgb-regex-1.0.1.tgz#c0e0d6882df0e23be254a475e8edd41915feaeb1"
-  integrity sha1-wODWiC3w4jviVKR16O3UGRX+rrE=
-
-rgba-regex@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/rgba-regex/-/rgba-regex-1.0.0.tgz#43374e2e2ca0968b0ef1523460b7d730ff22eeb3"
-  integrity sha1-QzdOLiyglosO8VI0YLfXMP8i7rM=
 
 right-pad@^1.0.1:
   version "1.0.1"

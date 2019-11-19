@@ -127,7 +127,7 @@ export const SignupForm = ({ signup, history, promo }) => {
                 className="form-bg"
                 type="email"
                 name="email"
-                onChange={(e) => setEmail(e.target.value.toLowerCase())}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email address"
                 required
                 minLength="6"

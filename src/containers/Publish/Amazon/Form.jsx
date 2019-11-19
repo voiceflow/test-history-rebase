@@ -235,6 +235,8 @@ class Skill extends Component {
       export: stateExport,
     } = this.state;
 
+    const { amznID } = this.props;
+
     const blocks = [];
     const enterText = (
       <>
@@ -603,7 +605,16 @@ class Skill extends Component {
       ),
     });
 
-    return <GuidedSteps blocks={blocks} checkStep={this.checkValidStep} onFinishSteps={this.validateForm} submitText={enterText} disabled={saving} />;
+    return (
+      <GuidedSteps
+        blocks={blocks}
+        checkStep={this.checkValidStep}
+        onFinishSteps={this.validateForm}
+        submitText={enterText}
+        disabled={saving}
+        preventSubmit={!amznID && { message: 'You must upload to Amazon at least once on the canvas before submitting for review' }}
+      />
+    );
   };
 
   render() {

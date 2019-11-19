@@ -17,6 +17,7 @@ import Image from '@/components/Uploads/Image';
 import { FormTextBox } from '@/componentsV2/form/TextBox';
 import { FormTextInput } from '@/componentsV2/form/TextInput';
 import amazonFormAdapter from '@/containers/Publish/Amazon/amazonAdaptor';
+import { userSelector } from '@/ducks/account';
 import { setError } from '@/ducks/modal';
 import { amznIDSelector, reviewSelector } from '@/ducks/publish/alexa';
 import { activeSkillIDSelector, updateActiveSkill, updateSkillMeta } from '@/ducks/skill';
@@ -25,7 +26,11 @@ import { connect } from '@/hocs';
 import { AMAZON_CATEGORIES } from '../../../services/Categories';
 import LOCALE_MAP from '../../../services/LocaleMap';
 
+const DEFAULT_TERM_ENDPOINT = 'https://creator.voiceflow.com/creator';
 const PUBLISH_AMAZON_FORM = 'publish_amazon_form';
+const generateTerms = (name, skill, children) => {
+  return `${DEFAULT_TERM_ENDPOINT}/terms?name=${encodeURI(name)}&skill=${encodeURI(skill)}${_.isBoolean(children) ? `&children=${children}` : ''}`;
+};
 
 class Skill extends Component {
   state = {
@@ -43,10 +48,13 @@ class Skill extends Component {
       .then((res) => {
         const skill = amazonFormAdapter.fromDB(res.data);
 
-        this.setState({
-          loaded: true,
-          ...skill,
-        });
+        this.setState(
+          {
+            loaded: true,
+            ...skill,
+          },
+          this.updateTerms
+        );
 
         this.props.initialize({
           name: skill.name,
@@ -197,6 +205,17 @@ class Skill extends Component {
     }
   };
 
+  updateTerms = () => {
+    const { user } = this.props;
+    const { termsAndCond, privacyPolicy, name, copa } = this.state;
+    if (!termsAndCond || termsAndCond.startsWith(DEFAULT_TERM_ENDPOINT)) {
+      this.setState({ termsAndCond: generateTerms(user.name, name, copa) });
+    }
+    if (!privacyPolicy || privacyPolicy.startsWith(DEFAULT_TERM_ENDPOINT)) {
+      this.setState({ privacyPolicy: generateTerms(user.name, name, copa) });
+    }
+  };
+
   renderBlocks = () => {
     const {
       locales,
@@ -215,6 +234,8 @@ class Skill extends Component {
       ads,
       export: stateExport,
     } = this.state;
+
+    const { amznID } = this.props;
 
     const blocks = [];
     const enterText = (
@@ -479,7 +500,7 @@ class Skill extends Component {
             <Label className="publish-label">Is this skill directed to children under the age of 13?</Label>
             <div className="d-flex">
               <u className="mr-2">{copa ? 'YES' : 'NO'}</u>
-              <Toggle checked={copa} icons={false} onChange={() => this.setState({ copa: !copa })} />
+              <Toggle checked={copa} icons={false} onChange={() => this.setState({ copa: !copa }, this.updateTerms)} />
             </div>
           </FormGroup>
         </>
@@ -584,7 +605,16 @@ class Skill extends Component {
       ),
     });
 
-    return <GuidedSteps blocks={blocks} checkStep={this.checkValidStep} onFinishSteps={this.validateForm} submitText={enterText} disabled={saving} />;
+    return (
+      <GuidedSteps
+        blocks={blocks}
+        checkStep={this.checkValidStep}
+        onFinishSteps={this.validateForm}
+        submitText={enterText}
+        disabled={saving}
+        preventSubmit={!amznID && { message: 'You must upload to Amazon at least once on the canvas before submitting for review' }}
+      />
+    );
   };
 
   render() {
@@ -675,6 +705,7 @@ const validate = (values) => {
 };
 
 const mapStateToProps = {
+  user: userSelector,
   skillID: activeSkillIDSelector,
   amznID: amznIDSelector,
   review: reviewSelector,

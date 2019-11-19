@@ -4,6 +4,8 @@ import SvgIcon from '@/components/SvgIcon';
 
 import { ActionContainer, Container, OutlineContainer, SubtleContainer } from './components';
 
+export { Container };
+
 const ICON_BUTTON_CONTAINERS = {
   normal: Container,
   flat: Container,

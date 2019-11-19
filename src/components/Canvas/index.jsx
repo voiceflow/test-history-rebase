@@ -89,6 +89,9 @@ class Canvas extends React.PureComponent {
     const [posX, posY] = this.position;
     const nextPosition = [posX + offsetX, posY + offsetY];
     this.position = nextPosition;
+
+    this.onTransitionEnd();
+
     this.styleRenderLayer({ position: nextPosition });
 
     if (this.props.onPan) {
@@ -106,9 +109,16 @@ class Canvas extends React.PureComponent {
   };
 
   onTransitionEnd = () => {
+    if (this.applyTransitionTimeout === null) {
+      return;
+    }
+
     const renderLayerEl = this.renderLayerRef.current;
 
     clearTimeout(this.applyTransitionTimeout);
+
+    this.applyTransitionTimeout = null;
+
     renderLayerEl.style.willChange = '';
     renderLayerEl.style.transition = '';
   };

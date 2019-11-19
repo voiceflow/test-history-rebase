@@ -1,11 +1,10 @@
 import axios from 'axios';
 import React from 'react';
-import { toast } from 'react-toastify';
 import { Button, Col, Form, FormGroup, Input as Select, Label, Table } from 'reactstrap';
 
 import { AdminTitle } from '@/admin/styles';
 import Input from '@/componentsV2/Input';
-import { PLAN_NAME } from '@/containers/Dashboard/PLANS';
+import { toast } from '@/componentsV2/Toast';
 
 class Coupon extends React.Component {
   constructor(props) {
@@ -117,7 +116,7 @@ class Coupon extends React.Component {
                   {t.code}
                 </th>
                 <td>{t.duration}</td>
-                <td>{PLAN_NAME[t.plan]}</td>
+                <td>{t.plan}</td>
                 <td>
                   <Button color="warning" onClick={() => this.delete(t.code)}>
                     Delete

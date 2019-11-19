@@ -2,7 +2,20 @@
 
 exports[`Audio Drop Test render audio drop 1`] = `
 <n
-  accept="audio/*"
+  accept={
+    Array [
+      "audio/pcm",
+      "audio/wav",
+      "audio/aiff",
+      "audio/aac",
+      "audio/alac",
+      "audio/flac",
+      "audio/mp2",
+      "audio/mp3",
+      "audio/aa",
+      "audio/ogg",
+    ]
+  }
   activeClassName="active"
   className="dropzone"
   disableClick={false}

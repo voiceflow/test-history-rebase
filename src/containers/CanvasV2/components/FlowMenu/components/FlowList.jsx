@@ -1,4 +1,7 @@
+import _toLower from 'lodash/toLower';
+import _trim from 'lodash/trim';
 import React from 'react';
+import { List, WindowScroller } from 'react-virtualized';
 import { Input } from 'reactstrap';
 
 import { ROOT_DIAGRAM_NAME } from '@/constants';
@@ -13,30 +16,51 @@ export const SearchSection = styled.div`
   padding-right: 15px;
 `;
 
-const FlowList = ({ diagrams }) => {
+const FlowList = ({ diagrams, scrollNode }) => {
   const [filter, setFilter] = React.useState('');
-  const trimmedFilter = filter.trim();
   const updateFilter = ({ target }) => setFilter(target.value);
 
-  return (
-    <>
-      <SectionTitle className="mt-1">All Flows</SectionTitle>
-      <SearchSection>
-        <Input placeholder="Search Flows" name="filter" value={filter} onChange={updateFilter} className="mb-2 search-input" />
-      </SearchSection>
+  const diagramsToRender = diagrams.filter((diagram) => {
+    const name = _toLower(diagram.name === ROOT_DIAGRAM_NAME ? 'Home' : diagram.name);
 
-      <div className="flows-list">
-        {diagrams.map((diagram) => {
-          const name = diagram.name === ROOT_DIAGRAM_NAME ? 'Home' : diagram.name;
+    return name.includes(_toLower(_trim(filter)));
+  });
 
-          if (trimmedFilter && !name.toLowerCase().includes(filter.toLowerCase())) {
-            return null;
-          }
-
-          return <FlowButton diagram={diagram} key={diagram.id} />;
-        })}
+  const rowRenderer = React.useCallback(
+    ({ key, index, style }) => (
+      <div key={key} style={style}>
+        <FlowButton {...diagramsToRender[index]} />
       </div>
-    </>
+    ),
+    [diagramsToRender]
+  );
+
+  return (
+    <WindowScroller scrollElement={scrollNode}>
+      {({ height, isScrolling, registerChild, scrollTop }) =>
+        !!height && (
+          <>
+            <SectionTitle className="mt-1">All Flows</SectionTitle>
+            <SearchSection>
+              <Input placeholder="Search Flows" name="filter" value={filter} onChange={updateFilter} className="mb-2 search-input" />
+            </SearchSection>
+
+            <div ref={registerChild} className="flows-list">
+              <List
+                width={250}
+                height={height}
+                scrollTop={scrollTop}
+                rowCount={diagramsToRender.length}
+                rowHeight={42}
+                autoHeight
+                rowRenderer={rowRenderer}
+                isScrolling={isScrolling}
+              />
+            </div>
+          </>
+        )
+      }
+    </WindowScroller>
   );
 };
 

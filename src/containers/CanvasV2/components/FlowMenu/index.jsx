@@ -22,13 +22,25 @@ const FLOW_ROUTES = [
   },
 ];
 
-const FlowMenu = ({ onClose, setActiveTab, activeTab }) => (
-  <Panel title="Flows" onClose={onClose}>
-    <PanelContent>
-      <ButtonGroupRouter selected={activeTab} onChange={setActiveTab} routes={FLOW_ROUTES} containerComponent={PanelSection} />
-    </PanelContent>
-  </Panel>
-);
+const FlowMenu = ({ onClose, setActiveTab, activeTab }) => {
+  const [scrollNode, setScrollNode] = React.useState(null);
+
+  return (
+    <Panel title="Flows" onClose={onClose}>
+      <PanelContent ref={setScrollNode}>
+        {!!scrollNode && (
+          <ButtonGroupRouter
+            routes={FLOW_ROUTES}
+            selected={activeTab}
+            onChange={setActiveTab}
+            routeProps={{ scrollNode }}
+            containerComponent={PanelSection}
+          />
+        )}
+      </PanelContent>
+    </Panel>
+  );
+};
 
 const mapStateToProps = {
   activeTab: activeFlowMenuTabSelector,

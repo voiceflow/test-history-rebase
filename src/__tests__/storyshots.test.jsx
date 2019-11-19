@@ -19,6 +19,13 @@ jest.mock('react-stripe-elements', () => ({
   StripeProvider: (props) => <mock-stripe-provider {...props} />,
 }));
 
+jest.mock('draft-js-plugins-editor', () => (props) => <mock-draft-js-plugins-editor {...props} />);
+
+// eslint-disable-next-line no-secrets/no-secrets
+jest.mock('@voiceflow/draft-js-mention-plugin', () => () => ({
+  MentionSuggestions: (props) => <mock-voiceflow-draft-js-mention-plugin {...props} />,
+}));
+
 window.Stripe = _.constant('stripe');
 
 function getSnapshotFileName(context) {
@@ -80,4 +87,4 @@ function test({ story, context }) {
   }
 }
 
-initStoryshots({ test });
+initStoryshots({ test, storyKindRegex: /^((?!.*?DontTest).)*$/ });

@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Toast variants: default 1`] = `
+Array [
+  <GlobalStyleComponent />,
+  <ToastContainer
+    autoClose={5000}
+    bodyClassName={null}
+    className={null}
+    closeButton={false}
+    closeOnClick={true}
+    draggable={false}
+    draggablePercent={80}
+    hideProgressBar={true}
+    newestOnTop={true}
+    pauseOnFocusLoss={false}
+    pauseOnHover={true}
+    position="top-right"
+    progressClassName={null}
+    progressStyle={null}
+    role="alert"
+    rtl={false}
+    style={null}
+    toastClassName={null}
+    transition={[Function]}
+  >
+    <div
+      className="Toastify"
+    />
+  </ToastContainer>,
+]
+`;

@@ -10,13 +10,13 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { hot } from 'react-hot-loader/root';
-import { ToastContainer } from 'react-toastify';
 
 import IntercomChat from '@/components/IntercomChat';
 import ConfirmModal from '@/components/Modal/ConfirmModal';
 import ErrorModal from '@/components/Modal/ErrorModal';
 import Modal from '@/components/Modal/Modal';
 import BatchLoadingGate from '@/componentsV2/BatchLoadingGate';
+import { ToastContainer } from '@/componentsV2/Toast';
 import { AccountLoadingGate, SocketLoadingGate } from '@/gates';
 
 import Routes from './Routes';

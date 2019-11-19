@@ -14,6 +14,7 @@ const PERMISSIONS = [
   { name: 'Full Name', code: 'alexa::profile:name:read' },
   { name: 'Email', code: 'alexa::profile:email:read' },
   { name: 'Phone', code: 'alexa::profile:mobile_number:read' },
+  { name: 'Skill Personalization', code: 'alexa::person_id:read' },
 ];
 
 const PermissionSettings = ({ data, onChange, onToggle }) => {

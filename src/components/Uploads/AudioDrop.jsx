@@ -5,6 +5,7 @@ import { Input } from 'reactstrap';
 
 import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
+import { AV_FILE_FORMATS, AV_FORMATS_STREAMING } from '@/constants';
 
 const MAX_SIZE = 10 * 1024 * 1024;
 
@@ -160,6 +161,7 @@ class AudioDrop extends Component {
         </div>
       );
     }
+
     return (
       <Dropzone
         className="dropzone"
@@ -168,7 +170,7 @@ class AudioDrop extends Component {
         multiple={false}
         disableClick={false}
         maxSize={MAX_SIZE}
-        accept={`${this.props.stream ? '.m3u,.m3u8,' : ''}audio/*`}
+        accept={this.props.stream ? AV_FORMATS_STREAMING : AV_FILE_FORMATS}
         onDrop={this.onDrop}
       >
         <div>

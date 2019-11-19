@@ -161,7 +161,7 @@ Array [
                       >
                         <div>
                           <div
-                            class="Flex-sc-127y44r-0 sc-gzVnrw bQShie"
+                            class="Flex-sc-127y44r-0 sc-gzVnrw eXCZBX"
                           >
                             <button
                               class="sc-bdVaJa sc-bxivhb sc-ifAKCX dGDbTb"
@@ -214,7 +214,7 @@ Array [
                                 "componentStyle": ComponentStyle {
                                   "componentId": "sc-gzVnrw",
                                   "isStatic": false,
-                                  "lastClassName": "bQShie",
+                                  "lastClassName": "eXCZBX",
                                   "rules": Array [
                                     "display:",
                                     [Function],
@@ -224,17 +224,20 @@ Array [
                                     [Function],
                                     "
   & ",
+                                    ".sc-ifAKCX",
                                     " {
     box-shadow: none;
   }
 
   & ",
+                                    ".sc-ifAKCX",
                                     ":not(:last-of-type) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
   & ",
+                                    ".sc-ifAKCX",
                                     ":not(:first-of-type) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
@@ -257,7 +260,7 @@ Array [
                             forwardedRef={null}
                           >
                             <div
-                              className="Flex-sc-127y44r-0 sc-gzVnrw bQShie"
+                              className="Flex-sc-127y44r-0 sc-gzVnrw eXCZBX"
                             >
                               <ForwardRef
                                 icon="zoomIn"

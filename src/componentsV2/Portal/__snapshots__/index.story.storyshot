@@ -4,11 +4,15 @@ exports[`Storyshots Portal variants: basic 1`] = `
 <Portal
   containerInfo={
     <body>
-      Portal content here
+      <div>
+        Portal content here
+      </div>
     </body>
   }
 >
-  Portal content here
+  <div>
+    Portal content here
+  </div>
 </Portal>
 `;
 
@@ -17,18 +21,24 @@ exports[`Storyshots Portal variants: custom portal node 1`] = `
   <Portal
     portalNode={
       <div>
-        Custom Portal content here
+        <div>
+          Custom Portal content here
+        </div>
       </div>
     }
   >
     <Portal
       containerInfo={
         <div>
-          Custom Portal content here
+          <div>
+            Custom Portal content here
+          </div>
         </div>
       }
     >
-      Custom Portal content here
+      <div>
+        Custom Portal content here
+      </div>
     </Portal>
   </Portal>
 </div>

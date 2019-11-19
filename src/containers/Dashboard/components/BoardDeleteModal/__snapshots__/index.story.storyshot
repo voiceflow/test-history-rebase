@@ -1,0 +1,600 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
+<Modal
+  autoFocus={true}
+  backdrop={true}
+  backdropTransition={
+    Object {
+      "mountOnEnter": true,
+      "timeout": 150,
+    }
+  }
+  centered={false}
+  className="upgrade-modal"
+  fade={true}
+  isOpen={true}
+  keyboard={true}
+  modalTransition={
+    Object {
+      "timeout": 300,
+    }
+  }
+  onClosed={[Function]}
+  onOpened={[Function]}
+  role="dialog"
+  toggle={[Function]}
+  zIndex={1050}
+>
+  <Portal
+    node={
+      <div
+        style="position: relative; z-index: 1050;"
+        tabindex="-1"
+      >
+        <div
+          class=""
+        >
+          <div
+            class="modal fade"
+            role="dialog"
+            style="display: block;"
+            tabindex="-1"
+          >
+            <div
+              class="modal-dialog upgrade-modal"
+              role="document"
+            >
+              <div
+                class="modal-content"
+              >
+                <div
+                  class="pb-2 sc-fBuWsC hQFoLU"
+                >
+                  <h5>
+                    Board Settings
+                  </h5>
+                  <span
+                    class="sc-bxivhb fsvlWZ"
+                    color="currentColor"
+                    size="12"
+                  >
+                    <test-file-stub />
+                  </span>
+                </div>
+                <div
+                  class="px-45 pt-0 overflow-hidden modal-body"
+                >
+                  <div
+                    class="mb-3"
+                  >
+                    <div
+                      class="mt-2 alert alert-danger"
+                      role="alert"
+                    >
+                      <b>
+                        Are you sure you want to delete this?
+                      </b>
+                      <br />
+                      Deleting a Board will Permenantly Delete all of its Projects and Live Voice Applications
+                    </div>
+                    <label>
+                      Enter this board's name to confirm
+                    </label>
+                    <input
+                      class="form-control"
+                      name="input"
+                      placeholder="Board Name"
+                      type="text"
+                      value=""
+                    />
+                    <div
+                      class="my-3 text-center"
+                    >
+                      <button
+                        class="btn btn-primary disabled"
+                      >
+                        Delete Board
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="modal-backdrop fade"
+          />
+        </div>
+      </div>
+    }
+  >
+    <Portal
+      containerInfo={
+        <div
+          style="position: relative; z-index: 1050;"
+          tabindex="-1"
+        >
+          <div
+            class=""
+          >
+            <div
+              class="modal fade"
+              role="dialog"
+              style="display: block;"
+              tabindex="-1"
+            >
+              <div
+                class="modal-dialog upgrade-modal"
+                role="document"
+              >
+                <div
+                  class="modal-content"
+                >
+                  <div
+                    class="pb-2 sc-fBuWsC hQFoLU"
+                  >
+                    <h5>
+                      Board Settings
+                    </h5>
+                    <span
+                      class="sc-bxivhb fsvlWZ"
+                      color="currentColor"
+                      size="12"
+                    >
+                      <test-file-stub />
+                    </span>
+                  </div>
+                  <div
+                    class="px-45 pt-0 overflow-hidden modal-body"
+                  >
+                    <div
+                      class="mb-3"
+                    >
+                      <div
+                        class="mt-2 alert alert-danger"
+                        role="alert"
+                      >
+                        <b>
+                          Are you sure you want to delete this?
+                        </b>
+                        <br />
+                        Deleting a Board will Permenantly Delete all of its Projects and Live Voice Applications
+                      </div>
+                      <label>
+                        Enter this board's name to confirm
+                      </label>
+                      <input
+                        class="form-control"
+                        name="input"
+                        placeholder="Board Name"
+                        type="text"
+                        value=""
+                      />
+                      <div
+                        class="my-3 text-center"
+                      >
+                        <button
+                          class="btn btn-primary disabled"
+                        >
+                          Delete Board
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="modal-backdrop fade"
+            />
+          </div>
+        </div>
+      }
+    >
+      <div
+        className=""
+      >
+        <Fade
+          appear={true}
+          baseClass="fade"
+          baseClassActive="show"
+          className="modal"
+          enter={true}
+          exit={true}
+          in={true}
+          mountOnEnter={false}
+          onClick={[Function]}
+          onEnter={[Function]}
+          onEntered={[Function]}
+          onEntering={[Function]}
+          onExit={[Function]}
+          onExited={[Function]}
+          onExiting={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          role="dialog"
+          style={
+            Object {
+              "display": "block",
+            }
+          }
+          tabIndex="-1"
+          tag="div"
+          timeout={300}
+          unmountOnExit={false}
+        >
+          <Transition
+            appear={true}
+            enter={true}
+            exit={true}
+            in={true}
+            mountOnEnter={false}
+            onEnter={[Function]}
+            onEntered={[Function]}
+            onEntering={[Function]}
+            onExit={[Function]}
+            onExited={[Function]}
+            onExiting={[Function]}
+            timeout={300}
+            unmountOnExit={false}
+          >
+            <div
+              className="modal fade"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              role="dialog"
+              style={
+                Object {
+                  "display": "block",
+                }
+              }
+              tabIndex="-1"
+            >
+              <div
+                className="modal-dialog upgrade-modal"
+                role="document"
+              >
+                <div
+                  className="modal-content"
+                >
+                  <ModalHeader
+                    className="pb-2"
+                    header="Board Settings"
+                    toggle={[Function]}
+                  >
+                    <styled.div
+                      className="pb-2"
+                    >
+                      <StyledComponent
+                        className="pb-2"
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-fBuWsC",
+                              "isStatic": false,
+                              "lastClassName": "hQFoLU",
+                              "rules": Array [
+                                "
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: ",
+                                [Function],
+                                "px ",
+                                [Function],
+                                "px !important;
+  padding-left: 2rem;
+  border: 0;
+
+  /* adding important caused the padding to work */
+
+  & > h5 {
+    color: #8c94a6;
+    font-weight: 600;
+    font-size: 15px;
+    text-transform: uppercase;
+    margin-bottom: 0px;
+  }
+
+  & > ",
+                                ".sc-bxivhb",
+                                " {
+    padding: 10px;
+    margin: -10px;
+    cursor: pointer;
+    color: #8da2b570;
+    transition: color 150ms;
+
+    &:hover {
+      color: #8da2b5;
+    }
+  }
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-fBuWsC",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                      >
+                        <div
+                          className="pb-2 sc-fBuWsC hQFoLU"
+                        >
+                          <h5>
+                            Board Settings
+                          </h5>
+                          <ForwardRef
+                            icon="close"
+                            onClick={[Function]}
+                            size={12}
+                          >
+                            <styled.span
+                              color="currentColor"
+                              onClick={[Function]}
+                              size={12}
+                            >
+                              <StyledComponent
+                                color="currentColor"
+                                forwardedComponent={
+                                  Object {
+                                    "$$typeof": Symbol(react.forward_ref),
+                                    "attrs": Array [],
+                                    "componentStyle": ComponentStyle {
+                                      "componentId": "sc-bxivhb",
+                                      "isStatic": false,
+                                      "lastClassName": "fsvlWZ",
+                                      "rules": Array [
+                                        "
+  ",
+                                        [Function],
+                                        "
+
+  color: ",
+                                        [Function],
+                                        ";
+  width: ",
+                                        [Function],
+                                        "px;
+  height: ",
+                                        [Function],
+                                        "px;
+  box-sizing: content-box;
+  
+  ",
+                                        [Function],
+                                        "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                        [Function],
+                                        ";
+  }
+",
+                                      ],
+                                    },
+                                    "displayName": "styled.span",
+                                    "foldedComponentIds": Array [],
+                                    "render": [Function],
+                                    "styledComponentId": "sc-bxivhb",
+                                    "target": "span",
+                                    "toString": [Function],
+                                    "warnTooManyClasses": [Function],
+                                    "withComponent": [Function],
+                                  }
+                                }
+                                forwardedRef={null}
+                                onClick={[Function]}
+                                size={12}
+                              >
+                                <span
+                                  className="sc-bxivhb fsvlWZ"
+                                  color="currentColor"
+                                  onClick={[Function]}
+                                  size={12}
+                                >
+                                  <test-file-stub />
+                                </span>
+                              </StyledComponent>
+                            </styled.span>
+                          </ForwardRef>
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                  </ModalHeader>
+                  <ModalBody
+                    className="px-45 pt-0 overflow-hidden"
+                    tag="div"
+                  >
+                    <div
+                      className="px-45 pt-0 overflow-hidden modal-body"
+                    >
+                      <div
+                        className="mb-3"
+                      >
+                        <Alert
+                          className="mt-2"
+                          closeAriaLabel="Close"
+                          color="danger"
+                          fade={false}
+                          isOpen={true}
+                          tag="div"
+                          transition={
+                            Object {
+                              "appear": true,
+                              "baseClass": "fade",
+                              "baseClassActive": "show",
+                              "enter": true,
+                              "exit": true,
+                              "in": true,
+                              "mountOnEnter": false,
+                              "onEnter": [Function],
+                              "onEntered": [Function],
+                              "onEntering": [Function],
+                              "onExit": [Function],
+                              "onExited": [Function],
+                              "onExiting": [Function],
+                              "tag": "div",
+                              "timeout": 150,
+                              "unmountOnExit": true,
+                            }
+                          }
+                        >
+                          <Fade
+                            appear={true}
+                            baseClass=""
+                            baseClassActive="show"
+                            className="mt-2 alert alert-danger"
+                            enter={true}
+                            exit={true}
+                            in={true}
+                            mountOnEnter={false}
+                            onEnter={[Function]}
+                            onEntered={[Function]}
+                            onEntering={[Function]}
+                            onExit={[Function]}
+                            onExited={[Function]}
+                            onExiting={[Function]}
+                            role="alert"
+                            tag="div"
+                            timeout={0}
+                            unmountOnExit={true}
+                          >
+                            <Transition
+                              appear={true}
+                              enter={true}
+                              exit={true}
+                              in={true}
+                              mountOnEnter={false}
+                              onEnter={[Function]}
+                              onEntered={[Function]}
+                              onEntering={[Function]}
+                              onExit={[Function]}
+                              onExited={[Function]}
+                              onExiting={[Function]}
+                              timeout={0}
+                              unmountOnExit={true}
+                            >
+                              <div
+                                className="mt-2 alert alert-danger"
+                                role="alert"
+                              >
+                                <b>
+                                  Are you sure you want to delete this?
+                                </b>
+                                <br />
+                                Deleting a Board will Permenantly Delete all of its Projects and Live Voice Applications
+                              </div>
+                            </Transition>
+                          </Fade>
+                        </Alert>
+                        <label>
+                          Enter this board's name to confirm
+                        </label>
+                        <Input
+                          name="input"
+                          onChange={[Function]}
+                          placeholder="Board Name"
+                          type="text"
+                          value=""
+                        >
+                          <input
+                            className="form-control"
+                            name="input"
+                            onChange={[Function]}
+                            placeholder="Board Name"
+                            type="text"
+                            value=""
+                          />
+                        </Input>
+                        <div
+                          className="my-3 text-center"
+                        >
+                          <Button
+                            disabled={true}
+                            iconPosition="right"
+                            isBtn={true}
+                            isPrimary={true}
+                            onClick={[Function]}
+                            onRef={[Function]}
+                            trackEvent="Button Click"
+                          >
+                            <button
+                              className="btn btn-primary disabled"
+                              onClick={[Function]}
+                            >
+                              Delete Board
+                            </button>
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </ModalBody>
+                </div>
+              </div>
+            </div>
+          </Transition>
+        </Fade>
+        <Fade
+          appear={true}
+          baseClass="fade"
+          baseClassActive="show"
+          className="modal-backdrop"
+          enter={true}
+          exit={true}
+          in={true}
+          mountOnEnter={true}
+          onEnter={[Function]}
+          onEntered={[Function]}
+          onEntering={[Function]}
+          onExit={[Function]}
+          onExited={[Function]}
+          onExiting={[Function]}
+          tag="div"
+          timeout={150}
+          unmountOnExit={false}
+        >
+          <Transition
+            appear={true}
+            enter={true}
+            exit={true}
+            in={true}
+            mountOnEnter={true}
+            onEnter={[Function]}
+            onEntered={[Function]}
+            onEntering={[Function]}
+            onExit={[Function]}
+            onExited={[Function]}
+            onExiting={[Function]}
+            timeout={150}
+            unmountOnExit={false}
+          >
+            <div
+              className="modal-backdrop fade"
+            />
+          </Transition>
+        </Fade>
+      </div>
+    </Portal>
+  </Portal>
+</Modal>
+`;

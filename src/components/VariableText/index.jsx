@@ -1,5 +1,3 @@
-import 'draft-js-mention-plugin/lib/plugin.css';
-
 import cn from 'classnames';
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';

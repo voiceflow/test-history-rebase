@@ -1,13 +1,13 @@
-import styled from 'styled-components';
+import { css, styled } from '@/hocs';
 
-const VariableTag = styled.span`
+export const VariableStyle = css`
   display: inline-block;
   padding: 0px 2px 1px 2px;
   color: #132144;
   font-weight: 600;
   font-size: 13px;
   background-color: #eef4f6;
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid #dfe3ed;
   cursor: default;
   line-height: 20px;
@@ -16,6 +16,10 @@ const VariableTag = styled.span`
   &.default {
     color: #62778c;
   }
+`;
+
+const VariableTag = styled.span`
+  ${VariableStyle}
 `;
 
 export const InlineVariableTag = styled(VariableTag)`

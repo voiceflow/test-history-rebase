@@ -23,7 +23,8 @@ const TABS = [
     // eslint-disable-next-line react/display-name
     display: () => (
       <>
-        <i className="fab fa-amazon mr-2" /> Alexa
+        <i className="fab fa-amazon mr-2" />
+        Alexa
       </>
     ),
     link: '/alexa',
@@ -34,7 +35,8 @@ const TABS = [
     // eslint-disable-next-line react/display-name
     display: () => (
       <>
-        <i className="fab fa-google mr-2" /> Google{' '}
+        <i className="fab fa-google mr-2" />
+        Google
         <Badge color="primary" className="beta-badge align-middle ml-1">
           Beta
         </Badge>

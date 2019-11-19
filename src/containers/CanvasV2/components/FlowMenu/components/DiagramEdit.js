@@ -1,9 +1,12 @@
 import styled from 'styled-components';
 
-const DiagramEdit = styled.button`
-  width: 40px;
+const DiagramEdit = styled.div`
+  display: flex;
+  width: 54px;
   height: 42px;
-  margin-left: 0;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
   padding-top: 1px;
   color: #8da2b590;
   font-size: 12px;

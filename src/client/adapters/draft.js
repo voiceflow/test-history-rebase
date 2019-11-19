@@ -23,29 +23,29 @@ export const extractDraftJSEntities = (text, entityRanges, entityMap) => {
   return variableContent;
 };
 
-export const buildDraftJSContent = (content) => {
+export const buildDraftJSContent = (content, existingEntitiesMap) => {
   const [text, entityMap, entityRanges] = content.reduce(
     ([textAcc, entityMapAcc, entityRangesAcc, cursor], value) => {
       const isVariable = typeof value === 'object';
       const textValue = isVariable ? `{${value.name}}` : value;
 
       if (isVariable) {
-        const key = Object.keys(entityMapAcc).length;
+        const existingEntity = existingEntitiesMap?.[value.name];
 
-        entityMapAcc[key] = {
-          type: '{mention',
-          mutability: 'IMMUTABLE',
-          data: {
-            mention: {
-              name: value.name,
-            },
-          },
-        };
-        entityRangesAcc.push({
-          key,
-          offset: cursor,
-          length: textValue.length,
-        });
+        if (!existingEntitiesMap || existingEntity) {
+          const key = Object.keys(entityMapAcc).length;
+
+          entityMapAcc[key] = {
+            type: '{mention',
+            mutability: 'IMMUTABLE',
+            data: { mention: existingEntity || { name: value.name } },
+          };
+          entityRangesAcc.push({
+            key,
+            offset: cursor,
+            length: textValue.length,
+          });
+        }
       }
 
       return [textAcc + textValue, entityMapAcc, entityRangesAcc, cursor + textValue.length];
@@ -86,5 +86,5 @@ export const draftJSContentAdapter = createSimpleAdapter(
             return acc;
           }, [])
       : [],
-  (content) => buildDraftJSContent(content)
+  (content, existingEntitiesMap) => buildDraftJSContent(content, existingEntitiesMap)
 );

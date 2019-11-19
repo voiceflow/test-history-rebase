@@ -84,7 +84,7 @@ class Reset extends Component {
         return (
           <>
             <div className="confirm-helper">
-              The confirmation link has been sent to {this.state.email}. If it doesn't appear within a few minutes, check your span folder.
+              The confirmation link has been sent to {this.state.email}. If it doesn't appear within a few minutes, check your spam folder.
             </div>
             <div className="auth__link">
               {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}

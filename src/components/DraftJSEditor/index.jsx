@@ -1,4 +1,5 @@
 import 'draft-js/dist/Draft.css';
+import 'draft-js-mention-plugin/lib/plugin.css';
 
 import BaseDraftJSEditor from 'draft-js-plugins-editor';
 import React from 'react';

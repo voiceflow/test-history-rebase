@@ -106,6 +106,7 @@ export const PermissionType = {
   USER_EMAIL: 'alexa::profile:email:read',
   USER_NAME: 'alexa::profile:name:read',
   USER_PHONE: 'alexa::profile:mobile_number:read',
+  USER_PERSON: 'alexa::person_id:read',
   REMINDERS: 'alexa::alerts:reminders:skill:readwrite',
   NOTIFICATIONS: 'alexa::devices:all:notifications:write',
   ACCOUNT_LINKING: 'UNOFFICIAL::account_linking',
@@ -136,6 +137,11 @@ export const PERMISSIONS = [
   {
     name: 'Notifications',
     value: PermissionType.NOTIFICATIONS,
+  },
+  {
+    name: 'Skill Personalization',
+    value: PermissionType.USER_PERSON,
+    variableMap: true,
   },
   {
     name: 'Account Linking',
@@ -279,3 +285,18 @@ export const REPROMPT_TYPE = {
 export const VALID_VARIABLE_NAME = /^[A-Za-z]\w{0,16}$/;
 
 export const AUDIO_FILE_BUCKET_NAME = 'https://s3.amazonaws.com/com.getstoryflow.audio.sandbox';
+
+export const AV_FILE_FORMATS = [
+  'audio/pcm',
+  'audio/wav',
+  'audio/aiff',
+  'audio/aac',
+  'audio/alac',
+  'audio/flac',
+  'audio/mp2',
+  'audio/mp3',
+  'audio/aa',
+  'audio/ogg',
+];
+
+export const AV_FORMATS_STREAMING = [...AV_FILE_FORMATS, 'audio/m3u', 'audio/m3u8,'];

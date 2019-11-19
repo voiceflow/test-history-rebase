@@ -11,11 +11,19 @@ storiesOf('Portal', module).add(
     return (
       <>
         <Variant label="basic">
-          <Portal>Portal content here</Portal>
+          <Portal>
+            <div>Portal content here</div>
+          </Portal>
         </Variant>
 
         <Variant label="custom portal node">
-          <PortalContainer>{({ portalNode }) => <Portal portalNode={portalNode}>Custom Portal content here</Portal>}</PortalContainer>
+          <PortalContainer>
+            {({ portalNode }) => (
+              <Portal portalNode={portalNode}>
+                <div>Custom Portal content here</div>
+              </Portal>
+            )}
+          </PortalContainer>
         </Variant>
       </>
     );

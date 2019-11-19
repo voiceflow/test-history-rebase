@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
 import { Input } from 'reactstrap';
 
 import { User } from '@/admin/containers/Home/components/User/User';
 import { findBetaCreator } from '@/admin/store/ducks/admin';
 import { AdminTitle } from '@/admin/styles';
+import { toast } from '@/componentsV2/Toast';
 
 import {
   AddToBetaButton,

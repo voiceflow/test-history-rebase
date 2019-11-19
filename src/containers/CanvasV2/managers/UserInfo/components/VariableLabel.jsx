@@ -12,6 +12,7 @@ const PERMISSION_LABEL = {
   [PermissionType.USER_NAME]: 'User Name',
   [PermissionType.USER_PHONE]: 'User Phone Number',
   [PermissionType.ACCOUNT_LINKING]: 'Access Token',
+  [PermissionType.USER_PERSON]: 'Person ID',
 };
 
 const VariableLabel = ({ canVariableMap, permission, products, onUpdate }) => {

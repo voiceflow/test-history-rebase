@@ -3,6 +3,7 @@
 import cn from 'classnames';
 import _ from 'lodash';
 import React from 'react';
+import { Tooltip } from 'react-tippy';
 
 import Button from '@/componentsV2/Button';
 
@@ -113,10 +114,15 @@ class GuidedSteps extends React.Component {
 
   render() {
     const stepStatus = _.cloneDeep(this.state.stepStatus);
-    const { disabled, blocks, noDetail, submitText, haveFooter, step } = this.props;
+    const { disabled, blocks, noDetail, submitText, haveFooter, step, preventSubmit } = this.props;
 
     // Check if the for is valid up until now
     const formValid = this.checkFormValidity(stepStatus);
+
+    const showPreventSubmitTooltip = preventSubmit && formValid && preventSubmit?.message;
+    const SubmitWrapper = showPreventSubmitTooltip ? Tooltip : React.Fragment;
+    const WrapperProps = showPreventSubmitTooltip ? { position: 'top-end', title: preventSubmit.message, distance: 5 } : {};
+
     return (
       <GuidedStepsWrapper noDetail={noDetail}>
         <ul className="gs__steps-list">
@@ -154,9 +160,11 @@ class GuidedSteps extends React.Component {
                               Next
                             </Button>
                           ) : (
-                            <Button variant="primary" disabled={!formValid || disabled} onClick={(e) => this.submit(e, idx)}>
-                              {submitText}
-                            </Button>
+                            <SubmitWrapper {...WrapperProps}>
+                              <Button variant="primary" disabled={!formValid || disabled || preventSubmit} onClick={(e) => this.submit(e, idx)}>
+                                {submitText}
+                              </Button>
+                            </SubmitWrapper>
                           )}
                         </div>
                       )}

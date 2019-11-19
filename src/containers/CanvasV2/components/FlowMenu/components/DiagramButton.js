@@ -1,28 +1,61 @@
-import { css, styled } from '@/hocs';
+import { styled } from '@/hocs';
 
-export const DiagramButton = styled.button`
+import DiagramEdit from './DiagramEdit';
+
+/*
+ *  attrs is used due to performance reason
+ */
+export const DiagramButton = styled.button.attrs(({ depth }) => ({
+  style: { paddingLeft: `${depth > 1 ? (depth - 1) * 14 + 16 : 16}px` },
+}))`
   position: relative;
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
   width: 100%;
-  padding: 10px 0 10px 16px;
+  height: 100%;
+  padding: 0;
   color: #132144;
   font-size: 13px;
   text-align: left;
   background: none;
   border: none;
-  border-radius: 5px;
+  border-radius: 0;
   cursor: pointer;
-  transition: all 0.15s ease;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
 
-  ${({ depth }) =>
-    depth &&
-    css`
-      padding: 10px 0;
-    `}
+  background: #fff;
 
-  /* margin-left: ${({ depth }) => (depth ? `${depth * 5}px` : 0)}; */
+  &[disabled] {
+    pointer-events: none;
+  }
+
+  &.active {
+    background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #ffffff !important;
+    color: #132144;
+    border-top-color: #dfe3ed;
+    border-bottom-color: #dfe3ed;
+  }
+
+  &:hover {
+    background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eff5f7 100%), #ffffff;
+
+    ${DiagramEdit} {
+      opacity: 1;
+    }
+  }
+
+  &::before {
+    position: relative;
+    top: 2px;
+    display: ${({ depth }) => (depth ? 'inline' : 'none')};
+    margin-right: 4px;
+    width: 14px;
+    color: #62778c;
+    content: '↳';
+    font-size: 12px;
+  }
 
   .diagram-text {
     display: block;

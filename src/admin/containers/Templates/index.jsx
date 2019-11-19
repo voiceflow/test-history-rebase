@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React from 'react';
-import { toast } from 'react-toastify';
 import Toggle from 'react-toggle';
 import { Button, Col, Form, FormGroup, Label, Table } from 'reactstrap';
 
 import { AdminTitle } from '@/admin/styles';
 import Input from '@/componentsV2/Input';
+import { toast } from '@/componentsV2/Toast';
 
 class Template extends React.Component {
   constructor(props) {

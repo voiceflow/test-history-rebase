@@ -1,12 +1,10 @@
-import 'draft-js-mention-plugin/lib/plugin.css';
-
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
-import Editor from 'draft-js-plugins-editor';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+import DraftJSEditor from '@/components/DraftJSEditor';
 import { InlineVariableTag } from '@/components/VariableTag';
 
 import Menu from './Menu';
@@ -179,7 +177,7 @@ class SSMLEditor extends Component {
 
     return (
       <Container>
-        <Editor
+        <DraftJSEditor
           plugins={plugins}
           editorState={this.state.editorState}
           onChange={this.onChange}

@@ -12,6 +12,7 @@ import display, * as Display from '@/ducks/display';
 import integrationUsers from '@/ducks/integration';
 import intent, * as Intent from '@/ducks/intent';
 import modal from '@/ducks/modal';
+import notifications, * as Notifications from '@/ducks/notifications';
 import product, * as Product from '@/ducks/product';
 import project, * as Project from '@/ducks/project';
 import publish from '@/ducks/publish';
@@ -57,4 +58,5 @@ export default (history) =>
     [UI.STATE_KEY]: ui,
     [Realtime.STATE_KEY]: realtime,
     [Viewport.STATE_KEY]: viewport,
+    [Notifications.STATE_KEY]: notifications,
   });

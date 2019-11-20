@@ -6,6 +6,7 @@ import Dropdown from '@/componentsV2/Dropdown';
 import IconButton from '@/componentsV2/IconButton';
 import Menu, { MenuItem } from '@/componentsV2/Menu';
 import { IS_PRODUCTION, YOUTUBE_CHANNEL_ID } from '@/config';
+import { notificationsSelector, readNotifications } from '@/ducks/notifications';
 import { goToDesigner } from '@/ducks/router';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks/toggle';
@@ -16,17 +17,17 @@ import { Numbered, UpdateBubble } from './components';
 
 const YOUTUBE_CHANNEL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
 
-function RightNavSection({
-  setNewProductUpdates,
-  setShowUpdateBubble,
-  product_updates,
-  new_product_updates,
-  goToDesigner,
-  updateButtonClick,
-  show_update_bubble,
-  updatesCount,
-}) {
+const DEFAULT_MESSAGE = [
+  {
+    details: 'There are no new updates available.',
+    type: 'empty',
+    created: 0,
+  },
+];
+
+function RightNavSection({ notifications, goToDesigner, readNotifications }) {
   const [onHover, toggleUpdatesHover] = useToggle(false);
+  const newNotifications = React.useMemo(() => notifications.filter(({ isNew }) => isNew), [notifications]);
 
   return (
     <>
@@ -41,7 +42,7 @@ function RightNavSection({
         <Dropdown
           menu={
             <Menu>
-              <UpdatesPopover product_updates={product_updates} new_product_updates={new_product_updates} />
+              <UpdatesPopover notifications={notifications.length ? notifications : DEFAULT_MESSAGE} />
             </Menu>
           }
           placement="bottom-end"
@@ -50,20 +51,19 @@ function RightNavSection({
             return (
               <div style={{ position: 'relative' }} onMouseEnter={toggleUpdatesHover} onMouseLeave={toggleUpdatesHover}>
                 {/* if updates available show notifications bubble and expand it on hover */}
-                {show_update_bubble ? (
+                {newNotifications.length > 0 ? (
                   <>
                     <UpdateBubble
                       ref={ref}
                       onClick={stopPropagation(() => {
                         onToggle();
-                        updateButtonClick();
-                        setNewProductUpdates([]);
-                        setShowUpdateBubble(false);
+                        readNotifications();
                       })}
                       expand={onHover || isOpen}
                     >
-                      <span>{updatesCount}</span>
+                      <span>{newNotifications.length}</span>
                     </UpdateBubble>
+
                     <Numbered>
                       <SvgIcon icon="notifications" size={15} />
                     </Numbered>
@@ -77,7 +77,7 @@ function RightNavSection({
                     icon="notifications"
                     onClick={() => {
                       onToggle();
-                      updateButtonClick();
+                      readNotifications();
                     }}
                     iconProps={{ width: 16, height: 15 }}
                     large
@@ -127,11 +127,16 @@ function RightNavSection({
   );
 }
 
+const mapStateToProps = {
+  notifications: notificationsSelector,
+};
+
 const mapDispatchToProps = {
   goToDesigner,
+  readNotifications,
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(RightNavSection);

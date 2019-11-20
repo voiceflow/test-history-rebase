@@ -6,23 +6,7 @@ import Header from '@/components/Header';
 import RightNavSection from './right-nav-section';
 import SecondaryNav from './secondary-nav';
 
-export default function DashboardHeader({
-  history,
-  handleFilterText,
-  updateButtonClick,
-  show_update_bubble,
-  setNewProductUpdates,
-  setShowUpdateBubble,
-  product_updates,
-  new_product_updates,
-  teams,
-  team_id,
-  team,
-  fetchBoards,
-  team_setting,
-  setTeamSetting,
-  updatesCount,
-}) {
+export default function DashboardHeader({ history, handleFilterText, teams, team_id, team, fetchBoards, team_setting, setTeamSetting }) {
   return (
     <Header
       withLogo
@@ -38,17 +22,7 @@ export default function DashboardHeader({
           />
         </div>
       )}
-      rightRenderer={() => (
-        <RightNavSection
-          setNewProductUpdates={setNewProductUpdates}
-          setShowUpdateBubble={setShowUpdateBubble}
-          product_updates={product_updates}
-          new_product_updates={new_product_updates}
-          show_update_bubble={show_update_bubble}
-          updateButtonClick={updateButtonClick}
-          updatesCount={updatesCount}
-        />
-      )}
+      rightRenderer={() => <RightNavSection />}
       subHeaderRenderer={() => (
         <SecondaryNav
           teams={teams}

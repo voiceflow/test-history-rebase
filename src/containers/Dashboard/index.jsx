@@ -1,10 +1,8 @@
 import './DashBoard.css';
 
-import axios from 'axios';
 import cn from 'classnames';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
-import moment from 'moment';
 import queryString from 'query-string';
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
@@ -32,6 +30,7 @@ import {
   updateLists,
 } from '@/ducks/board';
 import { setConfirm, setError } from '@/ducks/modal';
+import { fetchNotifications } from '@/ducks/notifications';
 import { allProjectsSelector, projectsMapSelector } from '@/ducks/project';
 import { removeTrial } from '@/ducks/team';
 import { useScrollHelpers } from '@/hooks/scroll';
@@ -83,11 +82,7 @@ export const DashBoard = (props) => {
   const [showInfo, setShowInfo] = useState(false);
   const [loading_modal, toggleLoadingModal] = useState(false);
   const [team_setting, setTeamSetting] = useState(null);
-  const [product_updates, setProductUpdates] = useState([]);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
-  const [updates_open, toggleUpdatesOpen] = useState(false);
-  const [new_product_updates, setNewProductUpdates] = useState([]);
-  const [show_update_bubble, setShowUpdateBubble] = useState(false);
 
   const closeImport = () => {
     toggleImport(false);
@@ -176,51 +171,8 @@ export const DashBoard = (props) => {
     updateTeam();
   }, [props.team_id]);
 
-  const updateButtonClick = () => {
-    toggleUpdatesOpen(!updates_open);
-    axios.post(`/product_updates/${props.user.creator_id}`);
-  };
-
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const updates = await axios.get(`/product_updates/${props.user.creator_id}`);
-
-        if (updates.data.rows.length > 0) {
-          let lastCheckedTime;
-          if (!updates.data.last_checked) {
-            lastCheckedTime = 0;
-          } else {
-            lastCheckedTime = moment(updates.data.last_checked).unix();
-          }
-
-          const newUpdates = updates.data.rows.filter((update) => {
-            const updateTime = Math.floor(new Date(update.created) / 1000);
-            return updateTime > lastCheckedTime;
-          });
-
-          if (newUpdates?.length > 0) {
-            setNewProductUpdates(newUpdates);
-            setShowUpdateBubble(true);
-          }
-
-          setProductUpdates(updates.data.rows);
-        } else {
-          // For when there are no updates
-          setProductUpdates([
-            {
-              details: 'There are no new updates available.',
-              type: 'empty',
-              created: 0,
-            },
-          ]);
-        }
-      } catch (err) {
-        console.error('there was an error getting the product updates: ', err);
-      }
-    }
-
-    fetchData();
+    props.fetchNotifications();
   }, []);
 
   const LOCKED = props.team.state === 'LOCKED';
@@ -246,13 +198,6 @@ export const DashBoard = (props) => {
         <DashboardHeader
           history={props.history}
           handleFilterText={handleFilterText}
-          updatesCount={new_product_updates?.length}
-          show_update_bubble={show_update_bubble}
-          setNewProductUpdates={setNewProductUpdates}
-          setShowUpdateBubble={setShowUpdateBubble}
-          product_updates={product_updates}
-          new_product_updates={new_product_updates}
-          updateButtonClick={updateButtonClick}
           showInfo={showInfo}
           setShowInfo={setShowInfo}
           teams={props.teams}
@@ -413,6 +358,7 @@ const mapDispatchToProps = {
   updateBoards,
   changeProjectPosition,
   changeListPosition,
+  fetchNotifications,
 };
 
 export default connect(

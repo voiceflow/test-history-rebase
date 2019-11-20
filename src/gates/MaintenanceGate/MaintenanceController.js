@@ -1,7 +1,5 @@
 import moment from 'moment';
 
-const WARNING_INTERVALS = [60, 30, 10, 5, 1];
-
 // evaluates maintenance intervals and calls a given action callback at appropriate interavals
 class MaintenanceController {
   start = -1;
@@ -10,11 +8,12 @@ class MaintenanceController {
 
   timeout = null;
 
-  constructor(action) {
+  constructor(action, intervals) {
     this.action = action;
+    this.intervals = intervals.map((interval) => interval * 60 * 1000);
   }
 
-  maintenanceInterval = (first = true) => {
+  maintenanceInterval = () => {
     // how far out the maintenance is (negative if during maintanence)
     const farOut = this.start - Date.now();
     const farOutEnd = this.end - Date.now();
@@ -28,15 +27,15 @@ class MaintenanceController {
       // wait time before the next action/warning
       let waitTime = farOut;
 
-      // find rhe closest warning interval that time to maintenance `farOut` is still bigger than
-      const closestInterval = WARNING_INTERVALS.map((interval) => interval * 60 * 1000).find((interval) => farOut > interval);
+      // find the closest warning interval that time to maintenance `farOut` is still bigger than
+      const closestInterval = this.intervals.find((interval) => farOut > interval);
 
       if (closestInterval) {
         waitTime = farOut - closestInterval;
       }
 
-      // don't spam them the moment they come in, they will recieve a warning in the next warning interval
-      if (!first) {
+      // only show pop up warning if within intervals
+      if (closestInterval < this.intervals[0]) {
         this.action(moment(this.start).fromNow(true));
       }
 

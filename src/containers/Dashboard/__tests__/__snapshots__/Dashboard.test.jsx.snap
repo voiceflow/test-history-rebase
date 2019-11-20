@@ -20,14 +20,9 @@ exports[`Dashboard render dashboard 1`] = `
   >
     <DashboardHeader
       handleFilterText={[Function]}
-      new_product_updates={Array []}
-      product_updates={Array []}
-      setNewProductUpdates={[Function]}
       setShowInfo={[Function]}
-      setShowUpdateBubble={[Function]}
       setTeamSetting={[Function]}
       showInfo={false}
-      show_update_bubble={false}
       team={
         Object {
           "state": null,
@@ -41,8 +36,6 @@ exports[`Dashboard render dashboard 1`] = `
           "byId": Object {},
         }
       }
-      updateButtonClick={[Function]}
-      updatesCount={0}
     />
     <FullSpinner
       name="Projects"

@@ -3,6 +3,7 @@ import './onboarding.css';
 import axios from 'axios';
 import cn from 'classnames';
 import React, { Component } from 'react';
+import { Helmet } from 'react-helmet';
 import Select from 'react-select';
 import { Form, FormGroup, Input } from 'reactstrap';
 
@@ -460,6 +461,9 @@ class Onboarding extends Component {
   render() {
     return (
       <div id="template-box-container">
+        <Helmet>
+          <meta name="robots" content="noindex" />
+        </Helmet>
         <div className="card super-center flex-column text-center">
           <div className="uppercase-header">WELCOME SURVEY</div>
           <div className="flex-grow-1 super-center">{this.renderModalContent()}</div>

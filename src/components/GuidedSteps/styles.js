@@ -208,6 +208,13 @@ const GuidedStepsWrapper = styled.div`
     margin-bottom: 1.5em;
   }
 
+  &[disabled] {
+    .gs__panel-body {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+  }
+
   @media (max-width: 1100px) {
     .gs__details {
       display: none;

@@ -124,7 +124,7 @@ class GuidedSteps extends React.Component {
     const WrapperProps = showPreventSubmitTooltip ? { position: 'top-end', title: preventSubmit.message, distance: 5 } : {};
 
     return (
-      <GuidedStepsWrapper noDetail={noDetail}>
+      <GuidedStepsWrapper noDetail={noDetail} disabled={disabled}>
         <ul className="gs__steps-list">
           {blocks &&
             blocks.map((block, idx) => (

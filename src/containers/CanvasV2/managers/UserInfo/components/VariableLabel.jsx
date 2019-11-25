@@ -13,6 +13,7 @@ const PERMISSION_LABEL = {
   [PermissionType.USER_PHONE]: 'User Phone Number',
   [PermissionType.ACCOUNT_LINKING]: 'Access Token',
   [PermissionType.USER_PERSON]: 'Person ID',
+  [PermissionType.USER_GEOLOCATION]: 'Geolocation Info',
 };
 
 const VariableLabel = ({ canVariableMap, permission, products, onUpdate }) => {

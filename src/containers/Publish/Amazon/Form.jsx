@@ -235,7 +235,7 @@ class Skill extends Component {
       export: stateExport,
     } = this.state;
 
-    const { amznID } = this.props;
+    const { amznID, review } = this.props;
 
     const blocks = [];
     const enterText = (
@@ -611,7 +611,7 @@ class Skill extends Component {
         checkStep={this.checkValidStep}
         onFinishSteps={this.validateForm}
         submitText={enterText}
-        disabled={saving}
+        disabled={saving || review}
         preventSubmit={!amznID && { message: 'You must upload to Amazon at least once on the canvas before submitting for review' }}
       />
     );
@@ -636,7 +636,7 @@ class Skill extends Component {
               {review && (
                 <div className="alert alert-success" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
-                    This skill currently under review and can not be submitted again
+                    This skill currently under review and can not be submitted again or edited
                   </div>
                 </div>
               )}

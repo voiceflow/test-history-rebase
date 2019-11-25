@@ -107,6 +107,7 @@ export const PermissionType = {
   USER_NAME: 'alexa::profile:name:read',
   USER_PHONE: 'alexa::profile:mobile_number:read',
   USER_PERSON: 'alexa::person_id:read',
+  USER_GEOLOCATION: 'alexa::devices:all:geolocation:read',
   REMINDERS: 'alexa::alerts:reminders:skill:readwrite',
   NOTIFICATIONS: 'alexa::devices:all:notifications:write',
   ACCOUNT_LINKING: 'UNOFFICIAL::account_linking',
@@ -128,6 +129,11 @@ export const PERMISSIONS = [
   {
     name: 'User Phone Number',
     value: PermissionType.USER_PHONE,
+    variableMap: true,
+  },
+  {
+    name: 'Location Services',
+    value: PermissionType.USER_GEOLOCATION,
     variableMap: true,
   },
   {

@@ -4,29 +4,35 @@ import cn from 'classnames';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
+import { Spinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
+import { FlexCenter } from '@/componentsV2/Flex';
 import { TestingModeContext } from '@/containers/CanvasV2/contexts';
 import { saveActiveDiagram } from '@/ducks/diagram';
 import { setError } from '@/ducks/modal';
 import { TEST_STATUS, renderTest, resetTest, testStatusSelector, userTestSelector } from '@/ducks/test';
 import { connect } from '@/hocs';
 import { RemoveIntercom } from '@/hocs/removeIntercom';
-import { useToggle } from '@/hooks/toggle';
+import { useEnableDisable, useToggle } from '@/hooks/toggle';
 
 import TestSettings from './components/TestingSettings';
 import Timeline from './components/Timeline';
 
 const Testing = ({ status, renderTest, resetTest, userTest, saveActiveDiagram, render }) => {
   const [settingsOpen, toggleSettingsOpen] = useToggle();
+  const [rendering, enableRendering, disableRendering] = useEnableDisable(!!render);
   const isOpen = React.useContext(TestingModeContext);
   const active = status !== TEST_STATUS.IDLE;
 
-  // eslint-disable-next-line consistent-return
   React.useEffect(() => {
     if (isOpen && render) {
+      enableRendering();
       saveActiveDiagram()
-        .then(() => renderTest())
-        .catch(() => renderTest());
+        .catch((err) => console.error(err))
+        .then(async () => {
+          await renderTest();
+          disableRendering();
+        });
 
       return () => {
         toggleSettingsOpen(false);
@@ -75,7 +81,14 @@ const Testing = ({ status, renderTest, resetTest, userTest, saveActiveDiagram, r
               </div>
             </div>
           </div>
-          {isOpen && <Timeline toggleConditions={toggleSettingsOpen} />}
+          {isOpen &&
+            (rendering ? (
+              <FlexCenter className="h-100 pb-5">
+                <Spinner name="Test" />
+              </FlexCenter>
+            ) : (
+              <Timeline toggleConditions={toggleSettingsOpen} />
+            ))}
         </div>
       </div>
     </>

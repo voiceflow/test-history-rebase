@@ -1,0 +1,436 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Image Carousel variants: normal 1`] = `
+<StyledComponent
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "sc-csuQGl",
+        "isStatic": true,
+        "lastClassName": "cuVwjl",
+        "rules": Array [
+          "
+  width: 500px;
+",
+        ],
+      },
+      "displayName": "styled.div",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "sc-csuQGl",
+      "target": "div",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+>
+  <div
+    className="sc-csuQGl cuVwjl"
+  >
+    <ImageCarousel
+      imageUrls={
+        Array [
+          "https://picsum.photos/350/250",
+          "https://picsum.photos/350/250",
+          "https://picsum.photos/350/250",
+          "https://picsum.photos/350/250",
+        ]
+      }
+    >
+      <Styled(DragScroll)>
+        <StyledComponent
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-gipzik",
+                "isStatic": true,
+                "lastClassName": "gnwDkw",
+                "rules": Array [
+                  "
+  overflow-y: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 100%;
+  padding: 10px 20px;
+",
+                ],
+              },
+              "displayName": "Styled(DragScroll)",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-gipzik",
+              "target": [Function],
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={
+            Object {
+              "current": undefined,
+            }
+          }
+        >
+          <DragScroll
+            className="sc-gipzik gnwDkw"
+          >
+            <SimpleBar
+              className="sc-gipzik gnwDkw"
+              onMouseDown={[Function]}
+              onMouseLeave={[Function]}
+              onMouseMove={[Function]}
+              onMouseUp={[Function]}
+              scrollableNodeProps={
+                Object {
+                  "ref": Object {
+                    "current": <div
+                      class="simplebar-content-wrapper"
+                      style="height: auto; overflow-x: hidden; overflow-y: hidden;"
+                    >
+                      <div
+                        class="simplebar-content"
+                        style="padding: 10px 20px 10px 20px;"
+                      >
+                        <div
+                          class="sc-iRbamj hZmKYt"
+                        >
+                          <img
+                            class="sc-jlyJG eLgoLC"
+                            src="https://i.imgur.com/hSkp0F2.png"
+                          />
+                        </div>
+                        <div
+                          class="sc-iRbamj hZmKYt"
+                        >
+                          <img
+                            class="sc-jlyJG eLgoLC"
+                            src="https://i.imgur.com/hSkp0F2.png"
+                          />
+                        </div>
+                        <div
+                          class="sc-iRbamj hZmKYt"
+                        >
+                          <img
+                            class="sc-jlyJG eLgoLC"
+                            src="https://i.imgur.com/hSkp0F2.png"
+                          />
+                        </div>
+                      </div>
+                    </div>,
+                  },
+                }
+              }
+            >
+              <div
+                className="sc-gipzik gnwDkw"
+                data-simplebar={true}
+                onMouseDown={[Function]}
+                onMouseLeave={[Function]}
+                onMouseMove={[Function]}
+                onMouseUp={[Function]}
+              >
+                <div
+                  className="simplebar-wrapper"
+                >
+                  <div
+                    className="simplebar-height-auto-observer-wrapper"
+                  >
+                    <div
+                      className="simplebar-height-auto-observer"
+                    />
+                  </div>
+                  <div
+                    className="simplebar-mask"
+                  >
+                    <div
+                      className="simplebar-offset"
+                    >
+                      <div
+                        className="simplebar-content-wrapper"
+                      >
+                        <div
+                          className="simplebar-content"
+                        >
+                          <styled.div
+                            key="0"
+                          >
+                            <StyledComponent
+                              forwardedComponent={
+                                Object {
+                                  "$$typeof": Symbol(react.forward_ref),
+                                  "attrs": Array [],
+                                  "componentStyle": ComponentStyle {
+                                    "componentId": "sc-iRbamj",
+                                    "isStatic": true,
+                                    "lastClassName": "hZmKYt",
+                                    "rules": Array [
+                                      "
+  margin-right: 20px;
+  display: inline-block;
+  padding-bottom: 6px;
+
+  :last-child {
+    margin-right: 0;
+  }
+",
+                                    ],
+                                  },
+                                  "displayName": "styled.div",
+                                  "foldedComponentIds": Array [],
+                                  "render": [Function],
+                                  "styledComponentId": "sc-iRbamj",
+                                  "target": "div",
+                                  "toString": [Function],
+                                  "warnTooManyClasses": [Function],
+                                  "withComponent": [Function],
+                                }
+                              }
+                              forwardedRef={null}
+                            >
+                              <div
+                                className="sc-iRbamj hZmKYt"
+                              >
+                                <styled.img
+                                  src="https://i.imgur.com/hSkp0F2.png"
+                                >
+                                  <StyledComponent
+                                    forwardedComponent={
+                                      Object {
+                                        "$$typeof": Symbol(react.forward_ref),
+                                        "attrs": Array [],
+                                        "componentStyle": ComponentStyle {
+                                          "componentId": "sc-jlyJG",
+                                          "isStatic": true,
+                                          "lastClassName": "eLgoLC",
+                                          "rules": Array [
+                                            "
+  box-shadow: 0px 4px 12px rgba(17, 49, 96, 0.16), 0px 0px 1px rgba(17, 49, 96, 0.18);
+  border-radius: 5px;
+  height: 250px;
+  width: 400px;
+",
+                                          ],
+                                        },
+                                        "displayName": "styled.img",
+                                        "foldedComponentIds": Array [],
+                                        "render": [Function],
+                                        "styledComponentId": "sc-jlyJG",
+                                        "target": "img",
+                                        "toString": [Function],
+                                        "warnTooManyClasses": [Function],
+                                        "withComponent": [Function],
+                                      }
+                                    }
+                                    forwardedRef={null}
+                                    src="https://i.imgur.com/hSkp0F2.png"
+                                  >
+                                    <img
+                                      className="sc-jlyJG eLgoLC"
+                                      src="https://i.imgur.com/hSkp0F2.png"
+                                    />
+                                  </StyledComponent>
+                                </styled.img>
+                              </div>
+                            </StyledComponent>
+                          </styled.div>
+                          <styled.div
+                            key="1"
+                          >
+                            <StyledComponent
+                              forwardedComponent={
+                                Object {
+                                  "$$typeof": Symbol(react.forward_ref),
+                                  "attrs": Array [],
+                                  "componentStyle": ComponentStyle {
+                                    "componentId": "sc-iRbamj",
+                                    "isStatic": true,
+                                    "lastClassName": "hZmKYt",
+                                    "rules": Array [
+                                      "
+  margin-right: 20px;
+  display: inline-block;
+  padding-bottom: 6px;
+
+  :last-child {
+    margin-right: 0;
+  }
+",
+                                    ],
+                                  },
+                                  "displayName": "styled.div",
+                                  "foldedComponentIds": Array [],
+                                  "render": [Function],
+                                  "styledComponentId": "sc-iRbamj",
+                                  "target": "div",
+                                  "toString": [Function],
+                                  "warnTooManyClasses": [Function],
+                                  "withComponent": [Function],
+                                }
+                              }
+                              forwardedRef={null}
+                            >
+                              <div
+                                className="sc-iRbamj hZmKYt"
+                              >
+                                <styled.img
+                                  src="https://i.imgur.com/hSkp0F2.png"
+                                >
+                                  <StyledComponent
+                                    forwardedComponent={
+                                      Object {
+                                        "$$typeof": Symbol(react.forward_ref),
+                                        "attrs": Array [],
+                                        "componentStyle": ComponentStyle {
+                                          "componentId": "sc-jlyJG",
+                                          "isStatic": true,
+                                          "lastClassName": "eLgoLC",
+                                          "rules": Array [
+                                            "
+  box-shadow: 0px 4px 12px rgba(17, 49, 96, 0.16), 0px 0px 1px rgba(17, 49, 96, 0.18);
+  border-radius: 5px;
+  height: 250px;
+  width: 400px;
+",
+                                          ],
+                                        },
+                                        "displayName": "styled.img",
+                                        "foldedComponentIds": Array [],
+                                        "render": [Function],
+                                        "styledComponentId": "sc-jlyJG",
+                                        "target": "img",
+                                        "toString": [Function],
+                                        "warnTooManyClasses": [Function],
+                                        "withComponent": [Function],
+                                      }
+                                    }
+                                    forwardedRef={null}
+                                    src="https://i.imgur.com/hSkp0F2.png"
+                                  >
+                                    <img
+                                      className="sc-jlyJG eLgoLC"
+                                      src="https://i.imgur.com/hSkp0F2.png"
+                                    />
+                                  </StyledComponent>
+                                </styled.img>
+                              </div>
+                            </StyledComponent>
+                          </styled.div>
+                          <styled.div
+                            key="2"
+                          >
+                            <StyledComponent
+                              forwardedComponent={
+                                Object {
+                                  "$$typeof": Symbol(react.forward_ref),
+                                  "attrs": Array [],
+                                  "componentStyle": ComponentStyle {
+                                    "componentId": "sc-iRbamj",
+                                    "isStatic": true,
+                                    "lastClassName": "hZmKYt",
+                                    "rules": Array [
+                                      "
+  margin-right: 20px;
+  display: inline-block;
+  padding-bottom: 6px;
+
+  :last-child {
+    margin-right: 0;
+  }
+",
+                                    ],
+                                  },
+                                  "displayName": "styled.div",
+                                  "foldedComponentIds": Array [],
+                                  "render": [Function],
+                                  "styledComponentId": "sc-iRbamj",
+                                  "target": "div",
+                                  "toString": [Function],
+                                  "warnTooManyClasses": [Function],
+                                  "withComponent": [Function],
+                                }
+                              }
+                              forwardedRef={null}
+                            >
+                              <div
+                                className="sc-iRbamj hZmKYt"
+                              >
+                                <styled.img
+                                  src="https://i.imgur.com/hSkp0F2.png"
+                                >
+                                  <StyledComponent
+                                    forwardedComponent={
+                                      Object {
+                                        "$$typeof": Symbol(react.forward_ref),
+                                        "attrs": Array [],
+                                        "componentStyle": ComponentStyle {
+                                          "componentId": "sc-jlyJG",
+                                          "isStatic": true,
+                                          "lastClassName": "eLgoLC",
+                                          "rules": Array [
+                                            "
+  box-shadow: 0px 4px 12px rgba(17, 49, 96, 0.16), 0px 0px 1px rgba(17, 49, 96, 0.18);
+  border-radius: 5px;
+  height: 250px;
+  width: 400px;
+",
+                                          ],
+                                        },
+                                        "displayName": "styled.img",
+                                        "foldedComponentIds": Array [],
+                                        "render": [Function],
+                                        "styledComponentId": "sc-jlyJG",
+                                        "target": "img",
+                                        "toString": [Function],
+                                        "warnTooManyClasses": [Function],
+                                        "withComponent": [Function],
+                                      }
+                                    }
+                                    forwardedRef={null}
+                                    src="https://i.imgur.com/hSkp0F2.png"
+                                  >
+                                    <img
+                                      className="sc-jlyJG eLgoLC"
+                                      src="https://i.imgur.com/hSkp0F2.png"
+                                    />
+                                  </StyledComponent>
+                                </styled.img>
+                              </div>
+                            </StyledComponent>
+                          </styled.div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="simplebar-placeholder"
+                  />
+                </div>
+                <div
+                  className="simplebar-track simplebar-horizontal"
+                >
+                  <div
+                    className="simplebar-scrollbar"
+                  />
+                </div>
+                <div
+                  className="simplebar-track simplebar-vertical"
+                >
+                  <div
+                    className="simplebar-scrollbar"
+                  />
+                </div>
+              </div>
+            </SimpleBar>
+          </DragScroll>
+        </StyledComponent>
+      </Styled(DragScroll)>
+    </ImageCarousel>
+  </div>
+</StyledComponent>
+`;

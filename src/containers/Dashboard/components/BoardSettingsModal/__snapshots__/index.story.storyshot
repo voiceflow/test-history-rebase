@@ -160,7 +160,11 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                   class="modal-content"
                 >
                   <div
+<<<<<<< Updated upstream
                     class="pb-2 sc-fBuWsC hQFoLU"
+=======
+                    class="pb-2 sc-feJyhm eScQzT"
+>>>>>>> Stashed changes
                   >
                     <h5>
                       Board Settings
@@ -174,7 +178,11 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                     </span>
                   </div>
                   <div
+<<<<<<< Updated upstream
                     class="px-45 pt-0 overflow-hidden modal-body"
+=======
+                    class="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
+>>>>>>> Stashed changes
                   >
                     <div
                       class="mb-3"
@@ -248,8 +256,121 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
         </div>
       }
     >
+<<<<<<< Updated upstream
       <div
         className=""
+=======
+      <Portal
+        containerInfo={
+          <div
+            style="position: relative; z-index: 1050;"
+            tabindex="-1"
+          >
+            <div
+              class=""
+            >
+              <div
+                class="modal fade"
+                role="dialog"
+                style="display: block;"
+                tabindex="-1"
+              >
+                <div
+                  class="modal-dialog upgrade-modal"
+                  role="document"
+                >
+                  <div
+                    class="modal-content"
+                  >
+                    <div
+                      class="pb-2 sc-feJyhm eScQzT"
+                    >
+                      <h5>
+                        Workspace Settings
+                      </h5>
+                      <span
+                        class="sc-bxivhb iYlQyD"
+                        color="currentColor"
+                        size="12"
+                      >
+                        <test-file-stub />
+                      </span>
+                    </div>
+                    <div
+                      class="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
+                    >
+                      <div
+                        class="mb-3"
+                      >
+                        <label>
+                          Workspace Icon
+                        </label>
+                        <img
+                          alt="Voiceflow"
+                          class="mt-2 mb-1 no-select"
+                          src="/images/icons/vf_logo.png"
+                          width="80"
+                        />
+                        <br />
+                        <small
+                          class="text-muted"
+                        >
+                          Upgrade this workspace under billing to add a custom image
+                        </small>
+                        <br />
+                        <br />
+                        <label>
+                          Name
+                        </label>
+                        <input
+                          class="form-control"
+                          name="name"
+                          placeholder="Board Name"
+                          type="text"
+                          value="name"
+                        />
+                        <hr />
+                        <label>
+                          Billing
+                        </label>
+                        <button
+                          class="btn btn-link __large"
+                        >
+                          Invoices
+                        </button>
+                        <br />
+                        <small
+                          class="text-muted"
+                        >
+                          View invoices, update your payment options
+                        </small>
+                        <hr />
+                        <label>
+                          Privacy
+                        </label>
+                        <button
+                          class="btn btn-link __large"
+                        >
+                          Delete Workspace
+                        </button>
+                        <br />
+                        <small
+                          class="text-muted"
+                        >
+                          This action is irreversible. All workspace and project data will be removed
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="modal-backdrop modal-backdrop-invisible fade"
+              />
+            </div>
+          </div>
+        }
+>>>>>>> Stashed changes
       >
         <Fade
           appear={true}
@@ -327,6 +448,7 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                     >
                       <StyledComponent
                         className="pb-2"
+<<<<<<< Updated upstream
                         forwardedComponent={
                           Object {
                             "$$typeof": Symbol(react.forward_ref),
@@ -337,6 +459,21 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                               "lastClassName": "hQFoLU",
                               "rules": Array [
                                 "
+=======
+                      >
+                        <StyledComponent
+                          className="pb-2"
+                          forwardedComponent={
+                            Object {
+                              "$$typeof": Symbol(react.forward_ref),
+                              "attrs": Array [],
+                              "componentStyle": ComponentStyle {
+                                "componentId": "sc-feJyhm",
+                                "isStatic": false,
+                                "lastClassName": "eScQzT",
+                                "rules": Array [
+                                  "
+>>>>>>> Stashed changes
   align-items: center;
   display: flex;
   justify-content: space-between;
@@ -372,6 +509,7 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
     }
   }
 ",
+<<<<<<< Updated upstream
                               ],
                             },
                             "displayName": "styled.div",
@@ -382,6 +520,19 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
                             "withComponent": [Function],
+=======
+                                ],
+                              },
+                              "displayName": "styled.div",
+                              "foldedComponentIds": Array [],
+                              "render": [Function],
+                              "styledComponentId": "sc-feJyhm",
+                              "target": "div",
+                              "toString": [Function],
+                              "warnTooManyClasses": [Function],
+                              "withComponent": [Function],
+                            }
+>>>>>>> Stashed changes
                           }
                         }
                         forwardedRef={null}
@@ -389,6 +540,7 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                         <div
                           className="pb-2 sc-fBuWsC hQFoLU"
                         >
+<<<<<<< Updated upstream
                           <h5>
                             Board Settings
                           </h5>
@@ -396,6 +548,10 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                             icon="close"
                             onClick={[Function]}
                             size={12}
+=======
+                          <div
+                            className="pb-2 sc-feJyhm eScQzT"
+>>>>>>> Stashed changes
                           >
                             <styled.span
                               color="currentColor"
@@ -484,12 +640,49 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                     <div
                       className="px-45 pt-0 overflow-hidden modal-body"
                     >
+<<<<<<< Updated upstream
                       <div
                         className="mb-3"
                       >
                         <SettingField
                           description="Upgrade this board under billing to add a custom image"
                           label="Board Icon"
+=======
+                      <StyledComponent
+                        className="px-45 pt-0 overflow-hidden"
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-cIShpX",
+                              "isStatic": false,
+                              "lastClassName": "haqxvv",
+                              "rules": Array [
+                                "
+  position: relative;
+  flex: 1 1 auto;
+  padding: ",
+                                [Function],
+                                "px;
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-cIShpX",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                      >
+                        <div
+                          className="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
+>>>>>>> Stashed changes
                         >
                           <label>
                             Board Icon
@@ -820,7 +1013,11 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                   class="modal-content"
                 >
                   <div
+<<<<<<< Updated upstream
                     class="pb-2 sc-fBuWsC hQFoLU"
+=======
+                    class="pb-2 sc-feJyhm eScQzT"
+>>>>>>> Stashed changes
                   >
                     <h5>
                       Board Settings
@@ -834,7 +1031,11 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                     </span>
                   </div>
                   <div
+<<<<<<< Updated upstream
                     class="px-45 pt-0 overflow-hidden modal-body"
+=======
+                    class="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
+>>>>>>> Stashed changes
                   >
                     <div
                       class="mb-3"
@@ -919,8 +1120,132 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
         </div>
       }
     >
+<<<<<<< Updated upstream
       <div
         className=""
+=======
+      <Portal
+        containerInfo={
+          <div
+            style="position: relative; z-index: 1050;"
+            tabindex="-1"
+          >
+            <div
+              class=""
+            >
+              <div
+                class="modal fade"
+                role="dialog"
+                style="display: block;"
+                tabindex="-1"
+              >
+                <div
+                  class="modal-dialog upgrade-modal"
+                  role="document"
+                >
+                  <div
+                    class="modal-content"
+                  >
+                    <div
+                      class="pb-2 sc-feJyhm eScQzT"
+                    >
+                      <h5>
+                        Workspace Settings
+                      </h5>
+                      <span
+                        class="sc-bxivhb iYlQyD"
+                        color="currentColor"
+                        size="12"
+                      >
+                        <test-file-stub />
+                      </span>
+                    </div>
+                    <div
+                      class="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
+                    >
+                      <div
+                        class="mb-3"
+                      >
+                        <label>
+                          Workspace Icon
+                        </label>
+                        <div
+                          class="icon-image icon-image-sm icon-image-square mb-3 tiny"
+                        >
+                          <div
+                            aria-disabled="false"
+                            class="dropzone image-box"
+                            style="position: relative;"
+                          >
+                            <div
+                              class="image"
+                              style="background-image: url(/images/img.png);"
+                            />
+                            <div
+                              class="rejected-file text-danger text-center super-center h-100"
+                            >
+                              File not Accepted
+                            </div>
+                            <input
+                              accept="image/jpeg,image/png"
+                              autocomplete="off"
+                              style="position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; opacity: 0.00001; pointer-events: none;"
+                              type="file"
+                            />
+                          </div>
+                        </div>
+                        <label>
+                          Name
+                        </label>
+                        <input
+                          class="form-control"
+                          name="name"
+                          placeholder="Board Name"
+                          type="text"
+                          value="name"
+                        />
+                        <hr />
+                        <label>
+                          Billing
+                        </label>
+                        <button
+                          class="btn btn-link __large"
+                        >
+                          Invoices
+                        </button>
+                        <br />
+                        <small
+                          class="text-muted"
+                        >
+                          View invoices, update your payment options
+                        </small>
+                        <hr />
+                        <label>
+                          Privacy
+                        </label>
+                        <button
+                          class="btn btn-link __large"
+                        >
+                          Delete Workspace
+                        </button>
+                        <br />
+                        <small
+                          class="text-muted"
+                        >
+                          This action is irreversible. All workspace and project data will be removed
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="modal-backdrop modal-backdrop-invisible fade"
+              />
+            </div>
+          </div>
+        }
+>>>>>>> Stashed changes
       >
         <Fade
           appear={true}
@@ -998,6 +1323,7 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                     >
                       <StyledComponent
                         className="pb-2"
+<<<<<<< Updated upstream
                         forwardedComponent={
                           Object {
                             "$$typeof": Symbol(react.forward_ref),
@@ -1008,6 +1334,21 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                               "lastClassName": "hQFoLU",
                               "rules": Array [
                                 "
+=======
+                      >
+                        <StyledComponent
+                          className="pb-2"
+                          forwardedComponent={
+                            Object {
+                              "$$typeof": Symbol(react.forward_ref),
+                              "attrs": Array [],
+                              "componentStyle": ComponentStyle {
+                                "componentId": "sc-feJyhm",
+                                "isStatic": false,
+                                "lastClassName": "eScQzT",
+                                "rules": Array [
+                                  "
+>>>>>>> Stashed changes
   align-items: center;
   display: flex;
   justify-content: space-between;
@@ -1043,6 +1384,7 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
     }
   }
 ",
+<<<<<<< Updated upstream
                               ],
                             },
                             "displayName": "styled.div",
@@ -1053,6 +1395,19 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
                             "withComponent": [Function],
+=======
+                                ],
+                              },
+                              "displayName": "styled.div",
+                              "foldedComponentIds": Array [],
+                              "render": [Function],
+                              "styledComponentId": "sc-feJyhm",
+                              "target": "div",
+                              "toString": [Function],
+                              "warnTooManyClasses": [Function],
+                              "withComponent": [Function],
+                            }
+>>>>>>> Stashed changes
                           }
                         }
                         forwardedRef={null}
@@ -1060,6 +1415,7 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                         <div
                           className="pb-2 sc-fBuWsC hQFoLU"
                         >
+<<<<<<< Updated upstream
                           <h5>
                             Board Settings
                           </h5>
@@ -1067,6 +1423,10 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                             icon="close"
                             onClick={[Function]}
                             size={12}
+=======
+                          <div
+                            className="pb-2 sc-feJyhm eScQzT"
+>>>>>>> Stashed changes
                           >
                             <styled.span
                               color="currentColor"
@@ -1155,12 +1515,49 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                     <div
                       className="px-45 pt-0 overflow-hidden modal-body"
                     >
+<<<<<<< Updated upstream
                       <div
                         className="mb-3"
                       >
                         <SettingField
                           description={null}
                           label="Board Icon"
+=======
+                      <StyledComponent
+                        className="px-45 pt-0 overflow-hidden"
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-cIShpX",
+                              "isStatic": false,
+                              "lastClassName": "haqxvv",
+                              "rules": Array [
+                                "
+  position: relative;
+  flex: 1 1 auto;
+  padding: ",
+                                [Function],
+                                "px;
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-cIShpX",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                      >
+                        <div
+                          className="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
+>>>>>>> Stashed changes
                         >
                           <label>
                             Board Icon

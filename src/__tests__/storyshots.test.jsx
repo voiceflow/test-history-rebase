@@ -87,4 +87,4 @@ function test({ story, context }) {
   }
 }
 
-initStoryshots({ test, storyKindRegex: /^((?!.*?DontTest).)*$/ });
+initStoryshots({ test, storyKindRegex: /^((?!.*?DontTest).)*$/, storyNameRegex: /^((?!.*?DontTest).)*$/ });

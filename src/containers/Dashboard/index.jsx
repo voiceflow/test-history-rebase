@@ -57,6 +57,7 @@ const getBoardFilteredProjects = (projectsIds, projectsMap, filter) => {
 };
 
 export const DashBoard = (props) => {
+  const [team_setting, setTeamSetting] = useState(null);
   let importToken = null;
   if (props.location?.search) {
     const query = queryString.parse(props.location.search);
@@ -74,6 +75,10 @@ export const DashBoard = (props) => {
         props.setError('Bad Import Link');
       }
     }
+    if (query.plan) {
+      props.history.replace({ search: '' });
+      setTimeout(() => setTeamSetting('PLAN'), 100);
+    }
   }
 
   const [loading, toggleLoading] = useState(true);
@@ -81,7 +86,6 @@ export const DashBoard = (props) => {
   const [filter_text, handleFilterText] = useState('');
   const [showInfo, setShowInfo] = useState(false);
   const [loading_modal, toggleLoadingModal] = useState(false);
-  const [team_setting, setTeamSetting] = useState(null);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
 
   const closeImport = () => {

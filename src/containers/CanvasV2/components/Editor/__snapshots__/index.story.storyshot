@@ -8,9 +8,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-fAjcbJ",
+        "componentId": "sc-TOsTZ",
         "isStatic": false,
-        "lastClassName": "gKOXgP",
+        "lastClassName": "kXRHko",
         "rules": Array [
           "
   position: absolute;
@@ -50,10 +50,10 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
       },
       "displayName": "Styled(styled.div)",
       "foldedComponentIds": Array [
-        "sc-eqIVtm",
+        "sc-cHGsZl",
       ],
       "render": [Function],
-      "styledComponentId": "sc-fAjcbJ",
+      "styledComponentId": "sc-TOsTZ",
       "target": "div",
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -65,7 +65,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
   width={450}
 >
   <div
-    className="sc-eqIVtm sc-fAjcbJ gKOXgP"
+    className="sc-cHGsZl sc-TOsTZ kXRHko"
     direction="left"
     open={true}
     width={450}
@@ -114,9 +114,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-caSCKo",
+                "componentId": "sc-kgAjT",
                 "isStatic": true,
-                "lastClassName": "gqWUEv",
+                "lastClassName": "kOGALl",
                 "rules": Array [
                   "
   position: relative;
@@ -128,7 +128,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-caSCKo",
+              "styledComponentId": "sc-kgAjT",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -138,7 +138,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-caSCKo gqWUEv"
+            className="sc-kgAjT kOGALl"
           >
             <Styled(EditorHeader)
               path={
@@ -160,9 +160,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                     "$$typeof": Symbol(react.forward_ref),
                     "attrs": Array [],
                     "componentStyle": ComponentStyle {
-                      "componentId": "sc-cJSrbW",
+                      "componentId": "sc-hqyNC",
                       "isStatic": false,
-                      "lastClassName": "epzROV",
+                      "lastClassName": "ljzftX",
                       "rules": Array [
                         "
   ",
@@ -198,7 +198,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                     "displayName": "Styled(EditorHeader)",
                     "foldedComponentIds": Array [],
                     "render": [Function],
-                    "styledComponentId": "sc-cJSrbW",
+                    "styledComponentId": "sc-hqyNC",
                     "target": [Function],
                     "toString": [Function],
                     "warnTooManyClasses": [Function],
@@ -220,7 +220,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                 }
               >
                 <EditorHeader
-                  className="sc-cJSrbW epzROV"
+                  className="sc-hqyNC ljzftX"
                   path={
                     Array [
                       Object {
@@ -235,7 +235,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                   }
                 >
                   <div
-                    className="sc-cJSrbW epzROV"
+                    className="sc-hqyNC ljzftX"
                   >
                     <a
                       href=""
@@ -263,9 +263,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                     "$$typeof": Symbol(react.forward_ref),
                     "attrs": Array [],
                     "componentStyle": ComponentStyle {
-                      "componentId": "sc-gisBJw",
+                      "componentId": "sc-cJSrbW",
                       "isStatic": true,
-                      "lastClassName": "gmfofY",
+                      "lastClassName": "cwYRsi",
                       "rules": Array [
                         "
   ",
@@ -286,7 +286,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                     "displayName": "styled.div",
                     "foldedComponentIds": Array [],
                     "render": [Function],
-                    "styledComponentId": "sc-gisBJw",
+                    "styledComponentId": "sc-cJSrbW",
                     "target": "div",
                     "toString": [Function],
                     "warnTooManyClasses": [Function],
@@ -296,7 +296,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                 forwardedRef={null}
               >
                 <div
-                  className="sc-gisBJw gmfofY"
+                  className="sc-cJSrbW cwYRsi"
                 >
                   <EditorSection
                     collapse={true}
@@ -309,9 +309,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                             "$$typeof": Symbol(react.forward_ref),
                             "attrs": Array [],
                             "componentStyle": ComponentStyle {
-                              "componentId": "sc-ksYbfQ",
+                              "componentId": "sc-jbKcbu",
                               "isStatic": false,
-                              "lastClassName": "hCpoyA",
+                              "lastClassName": "eHFcCC",
                               "rules": Array [
                                 "
   ",
@@ -335,7 +335,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                             "displayName": "styled.div",
                             "foldedComponentIds": Array [],
                             "render": [Function],
-                            "styledComponentId": "sc-ksYbfQ",
+                            "styledComponentId": "sc-jbKcbu",
                             "target": "div",
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
@@ -345,7 +345,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                         forwardedRef={null}
                       >
                         <div
-                          className="sc-ksYbfQ hCpoyA"
+                          className="sc-jbKcbu eHFcCC"
                         >
                           <Styled(Flex__FlexApart)>
                             <StyledComponent
@@ -354,9 +354,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                   "$$typeof": Symbol(react.forward_ref),
                                   "attrs": Array [],
                                   "componentStyle": ComponentStyle {
-                                    "componentId": "sc-hmzhuo",
+                                    "componentId": "sc-dNLxif",
                                     "isStatic": false,
-                                    "lastClassName": "euGDXB",
+                                    "lastClassName": "jllBls",
                                     "rules": Array [
                                       "display:",
                                       [Function],
@@ -375,7 +375,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "Flex__FlexApart-sc-127y44r-3",
                                   ],
                                   "render": [Function],
-                                  "styledComponentId": "sc-hmzhuo",
+                                  "styledComponentId": "sc-dNLxif",
                                   "target": "div",
                                   "toString": [Function],
                                   "warnTooManyClasses": [Function],
@@ -385,7 +385,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                               forwardedRef={null}
                             >
                               <div
-                                className="Flex__FlexApart-sc-127y44r-3 sc-hmzhuo euGDXB"
+                                className="Flex__FlexApart-sc-127y44r-3 sc-dNLxif jllBls"
                               >
                                 <div>
                                   Collapsible Section
@@ -456,9 +456,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "sc-kgAjT",
+                                      "componentId": "sc-kvZOFW",
                                       "isStatic": false,
-                                      "lastClassName": "hfTwgy",
+                                      "lastClassName": "fksIzK",
                                       "rules": Array [
                                         "
   margin-bottom: ",
@@ -470,7 +470,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "displayName": "styled.label",
                                     "foldedComponentIds": Array [],
                                     "render": [Function],
-                                    "styledComponentId": "sc-kgAjT",
+                                    "styledComponentId": "sc-kvZOFW",
                                     "target": "label",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -480,7 +480,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                 forwardedRef={null}
                               >
                                 <label
-                                  className="sc-kgAjT hfTwgy"
+                                  className="sc-kvZOFW fksIzK"
                                 >
                                   Some Control
                                 </label>
@@ -493,9 +493,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "sc-TOsTZ",
+                                      "componentId": "sc-frDJqD",
                                       "isStatic": false,
-                                      "lastClassName": "idFsWk",
+                                      "lastClassName": "iquxXC",
                                       "rules": Array [
                                         "
   margin-bottom: ",
@@ -507,7 +507,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "displayName": "styled.div",
                                     "foldedComponentIds": Array [],
                                     "render": [Function],
-                                    "styledComponentId": "sc-TOsTZ",
+                                    "styledComponentId": "sc-frDJqD",
                                     "target": "div",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -517,7 +517,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                 forwardedRef={null}
                               >
                                 <div
-                                  className="sc-TOsTZ idFsWk"
+                                  className="sc-frDJqD iquxXC"
                                 >
                                   <input />
                                 </div>
@@ -532,9 +532,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "sc-TOsTZ",
+                                      "componentId": "sc-frDJqD",
                                       "isStatic": false,
-                                      "lastClassName": "idFsWk",
+                                      "lastClassName": "iquxXC",
                                       "rules": Array [
                                         "
   margin-bottom: ",
@@ -546,7 +546,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "displayName": "styled.div",
                                     "foldedComponentIds": Array [],
                                     "render": [Function],
-                                    "styledComponentId": "sc-TOsTZ",
+                                    "styledComponentId": "sc-frDJqD",
                                     "target": "div",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -556,7 +556,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                 forwardedRef={null}
                               >
                                 <div
-                                  className="sc-TOsTZ idFsWk"
+                                  className="sc-frDJqD iquxXC"
                                 >
                                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quas, eligendi pariatur dolores fuga expedita, placeat ullam earum similique porro repellendus provident iusto esse saepe totam perferendis, deserunt accusamus ducimus.
                                 </div>
@@ -577,9 +577,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                             "$$typeof": Symbol(react.forward_ref),
                             "attrs": Array [],
                             "componentStyle": ComponentStyle {
-                              "componentId": "sc-ksYbfQ",
+                              "componentId": "sc-jbKcbu",
                               "isStatic": false,
-                              "lastClassName": "hCpoyA",
+                              "lastClassName": "eHFcCC",
                               "rules": Array [
                                 "
   ",
@@ -603,7 +603,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                             "displayName": "styled.div",
                             "foldedComponentIds": Array [],
                             "render": [Function],
-                            "styledComponentId": "sc-ksYbfQ",
+                            "styledComponentId": "sc-jbKcbu",
                             "target": "div",
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
@@ -613,7 +613,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                         forwardedRef={null}
                       >
                         <div
-                          className="sc-ksYbfQ hCpoyA"
+                          className="sc-jbKcbu eHFcCC"
                         >
                           <Styled(Flex__FlexApart)>
                             <StyledComponent
@@ -622,9 +622,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                   "$$typeof": Symbol(react.forward_ref),
                                   "attrs": Array [],
                                   "componentStyle": ComponentStyle {
-                                    "componentId": "sc-hmzhuo",
+                                    "componentId": "sc-dNLxif",
                                     "isStatic": false,
-                                    "lastClassName": "euGDXB",
+                                    "lastClassName": "jllBls",
                                     "rules": Array [
                                       "display:",
                                       [Function],
@@ -643,7 +643,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "Flex__FlexApart-sc-127y44r-3",
                                   ],
                                   "render": [Function],
-                                  "styledComponentId": "sc-hmzhuo",
+                                  "styledComponentId": "sc-dNLxif",
                                   "target": "div",
                                   "toString": [Function],
                                   "warnTooManyClasses": [Function],
@@ -653,7 +653,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                               forwardedRef={null}
                             >
                               <div
-                                className="Flex__FlexApart-sc-127y44r-3 sc-hmzhuo euGDXB"
+                                className="Flex__FlexApart-sc-127y44r-3 sc-dNLxif jllBls"
                               >
                                 <div>
                                   Second Section
@@ -671,9 +671,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "sc-kgAjT",
+                                      "componentId": "sc-kvZOFW",
                                       "isStatic": false,
-                                      "lastClassName": "hfTwgy",
+                                      "lastClassName": "fksIzK",
                                       "rules": Array [
                                         "
   margin-bottom: ",
@@ -685,7 +685,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "displayName": "styled.label",
                                     "foldedComponentIds": Array [],
                                     "render": [Function],
-                                    "styledComponentId": "sc-kgAjT",
+                                    "styledComponentId": "sc-kvZOFW",
                                     "target": "label",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -695,7 +695,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                 forwardedRef={null}
                               >
                                 <label
-                                  className="sc-kgAjT hfTwgy"
+                                  className="sc-kvZOFW fksIzK"
                                 >
                                   Some Control
                                 </label>
@@ -708,9 +708,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "sc-TOsTZ",
+                                      "componentId": "sc-frDJqD",
                                       "isStatic": false,
-                                      "lastClassName": "idFsWk",
+                                      "lastClassName": "iquxXC",
                                       "rules": Array [
                                         "
   margin-bottom: ",
@@ -722,7 +722,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "displayName": "styled.div",
                                     "foldedComponentIds": Array [],
                                     "render": [Function],
-                                    "styledComponentId": "sc-TOsTZ",
+                                    "styledComponentId": "sc-frDJqD",
                                     "target": "div",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -732,7 +732,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                 forwardedRef={null}
                               >
                                 <div
-                                  className="sc-TOsTZ idFsWk"
+                                  className="sc-frDJqD iquxXC"
                                 >
                                   <input />
                                 </div>
@@ -753,9 +753,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                             "$$typeof": Symbol(react.forward_ref),
                             "attrs": Array [],
                             "componentStyle": ComponentStyle {
-                              "componentId": "sc-ksYbfQ",
+                              "componentId": "sc-jbKcbu",
                               "isStatic": false,
-                              "lastClassName": "hCpoyA",
+                              "lastClassName": "eHFcCC",
                               "rules": Array [
                                 "
   ",
@@ -779,7 +779,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                             "displayName": "styled.div",
                             "foldedComponentIds": Array [],
                             "render": [Function],
-                            "styledComponentId": "sc-ksYbfQ",
+                            "styledComponentId": "sc-jbKcbu",
                             "target": "div",
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
@@ -789,7 +789,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                         forwardedRef={null}
                       >
                         <div
-                          className="sc-ksYbfQ hCpoyA"
+                          className="sc-jbKcbu eHFcCC"
                         >
                           <Styled(Flex__FlexApart)>
                             <StyledComponent
@@ -798,9 +798,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                   "$$typeof": Symbol(react.forward_ref),
                                   "attrs": Array [],
                                   "componentStyle": ComponentStyle {
-                                    "componentId": "sc-hmzhuo",
+                                    "componentId": "sc-dNLxif",
                                     "isStatic": false,
-                                    "lastClassName": "euGDXB",
+                                    "lastClassName": "jllBls",
                                     "rules": Array [
                                       "display:",
                                       [Function],
@@ -819,7 +819,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "Flex__FlexApart-sc-127y44r-3",
                                   ],
                                   "render": [Function],
-                                  "styledComponentId": "sc-hmzhuo",
+                                  "styledComponentId": "sc-dNLxif",
                                   "target": "div",
                                   "toString": [Function],
                                   "warnTooManyClasses": [Function],
@@ -829,7 +829,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                               forwardedRef={null}
                             >
                               <div
-                                className="Flex__FlexApart-sc-127y44r-3 sc-hmzhuo euGDXB"
+                                className="Flex__FlexApart-sc-127y44r-3 sc-dNLxif jllBls"
                               >
                                 <div>
                                   Third Section
@@ -845,9 +845,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "sc-TOsTZ",
+                                      "componentId": "sc-frDJqD",
                                       "isStatic": false,
-                                      "lastClassName": "idFsWk",
+                                      "lastClassName": "iquxXC",
                                       "rules": Array [
                                         "
   margin-bottom: ",
@@ -859,7 +859,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "displayName": "styled.div",
                                     "foldedComponentIds": Array [],
                                     "render": [Function],
-                                    "styledComponentId": "sc-TOsTZ",
+                                    "styledComponentId": "sc-frDJqD",
                                     "target": "div",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -869,7 +869,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                 forwardedRef={null}
                               >
                                 <div
-                                  className="sc-TOsTZ idFsWk"
+                                  className="sc-frDJqD iquxXC"
                                 >
                                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quas, eligendi pariatur dolores fuga expedita, placeat ullam earum similique porro repellendus provident iusto esse saepe totam perferendis, deserunt accusamus ducimus.
                                 </div>
@@ -890,9 +890,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                             "$$typeof": Symbol(react.forward_ref),
                             "attrs": Array [],
                             "componentStyle": ComponentStyle {
-                              "componentId": "sc-ksYbfQ",
+                              "componentId": "sc-jbKcbu",
                               "isStatic": false,
-                              "lastClassName": "hCpoyA",
+                              "lastClassName": "eHFcCC",
                               "rules": Array [
                                 "
   ",
@@ -916,7 +916,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                             "displayName": "styled.div",
                             "foldedComponentIds": Array [],
                             "render": [Function],
-                            "styledComponentId": "sc-ksYbfQ",
+                            "styledComponentId": "sc-jbKcbu",
                             "target": "div",
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
@@ -926,7 +926,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                         forwardedRef={null}
                       >
                         <div
-                          className="sc-ksYbfQ hCpoyA"
+                          className="sc-jbKcbu eHFcCC"
                         >
                           <Styled(Flex__FlexApart)>
                             <StyledComponent
@@ -935,9 +935,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                   "$$typeof": Symbol(react.forward_ref),
                                   "attrs": Array [],
                                   "componentStyle": ComponentStyle {
-                                    "componentId": "sc-hmzhuo",
+                                    "componentId": "sc-dNLxif",
                                     "isStatic": false,
-                                    "lastClassName": "euGDXB",
+                                    "lastClassName": "jllBls",
                                     "rules": Array [
                                       "display:",
                                       [Function],
@@ -956,7 +956,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "Flex__FlexApart-sc-127y44r-3",
                                   ],
                                   "render": [Function],
-                                  "styledComponentId": "sc-hmzhuo",
+                                  "styledComponentId": "sc-dNLxif",
                                   "target": "div",
                                   "toString": [Function],
                                   "warnTooManyClasses": [Function],
@@ -966,7 +966,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                               forwardedRef={null}
                             >
                               <div
-                                className="Flex__FlexApart-sc-127y44r-3 sc-hmzhuo euGDXB"
+                                className="Flex__FlexApart-sc-127y44r-3 sc-dNLxif jllBls"
                               >
                                 <div>
                                   Fourth Section
@@ -984,9 +984,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "sc-kgAjT",
+                                      "componentId": "sc-kvZOFW",
                                       "isStatic": false,
-                                      "lastClassName": "hfTwgy",
+                                      "lastClassName": "fksIzK",
                                       "rules": Array [
                                         "
   margin-bottom: ",
@@ -998,7 +998,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "displayName": "styled.label",
                                     "foldedComponentIds": Array [],
                                     "render": [Function],
-                                    "styledComponentId": "sc-kgAjT",
+                                    "styledComponentId": "sc-kvZOFW",
                                     "target": "label",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -1008,7 +1008,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                 forwardedRef={null}
                               >
                                 <label
-                                  className="sc-kgAjT hfTwgy"
+                                  className="sc-kvZOFW fksIzK"
                                 >
                                   Some Control
                                 </label>
@@ -1021,9 +1021,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "sc-TOsTZ",
+                                      "componentId": "sc-frDJqD",
                                       "isStatic": false,
-                                      "lastClassName": "idFsWk",
+                                      "lastClassName": "iquxXC",
                                       "rules": Array [
                                         "
   margin-bottom: ",
@@ -1035,7 +1035,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "displayName": "styled.div",
                                     "foldedComponentIds": Array [],
                                     "render": [Function],
-                                    "styledComponentId": "sc-TOsTZ",
+                                    "styledComponentId": "sc-frDJqD",
                                     "target": "div",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -1045,7 +1045,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                 forwardedRef={null}
                               >
                                 <div
-                                  className="sc-TOsTZ idFsWk"
+                                  className="sc-frDJqD iquxXC"
                                 >
                                   <input />
                                 </div>
@@ -1060,9 +1060,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "sc-TOsTZ",
+                                      "componentId": "sc-frDJqD",
                                       "isStatic": false,
-                                      "lastClassName": "idFsWk",
+                                      "lastClassName": "iquxXC",
                                       "rules": Array [
                                         "
   margin-bottom: ",
@@ -1074,7 +1074,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "displayName": "styled.div",
                                     "foldedComponentIds": Array [],
                                     "render": [Function],
-                                    "styledComponentId": "sc-TOsTZ",
+                                    "styledComponentId": "sc-frDJqD",
                                     "target": "div",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -1084,7 +1084,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                 forwardedRef={null}
                               >
                                 <div
-                                  className="sc-TOsTZ idFsWk"
+                                  className="sc-frDJqD iquxXC"
                                 >
                                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quas, eligendi pariatur dolores fuga expedita, placeat ullam earum similique porro repellendus provident iusto esse saepe totam perferendis, deserunt accusamus ducimus.
                                 </div>
@@ -1105,9 +1105,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                     "$$typeof": Symbol(react.forward_ref),
                     "attrs": Array [],
                     "componentStyle": ComponentStyle {
-                      "componentId": "sc-cHGsZl",
+                      "componentId": "sc-hmzhuo",
                       "isStatic": false,
-                      "lastClassName": "bkYxgM",
+                      "lastClassName": "ihcsEO",
                       "rules": Array [
                         "
   ",
@@ -1143,7 +1143,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                     "displayName": "Styled(EditorFooter)",
                     "foldedComponentIds": Array [],
                     "render": [Function],
-                    "styledComponentId": "sc-cHGsZl",
+                    "styledComponentId": "sc-hmzhuo",
                     "target": [Function],
                     "toString": [Function],
                     "warnTooManyClasses": [Function],
@@ -1153,10 +1153,10 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                 forwardedRef={null}
               >
                 <EditorFooter
-                  className="sc-cHGsZl bkYxgM"
+                  className="sc-hmzhuo ihcsEO"
                 >
                   <div
-                    className="sc-cHGsZl bkYxgM"
+                    className="sc-hmzhuo ihcsEO"
                   >
                     <EditorControls
                       menu={
@@ -1225,9 +1225,9 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "sc-kjoXOD",
+                                      "componentId": "sc-ksYbfQ",
                                       "isStatic": false,
-                                      "lastClassName": "jJjAxl",
+                                      "lastClassName": "beIKSQ",
                                       "rules": Array [
                                         "display:",
                                         [Function],
@@ -1255,7 +1255,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                       "Flex-sc-127y44r-0",
                                     ],
                                     "render": [Function],
-                                    "styledComponentId": "sc-kjoXOD",
+                                    "styledComponentId": "sc-ksYbfQ",
                                     "target": "div",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -1265,7 +1265,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                 forwardedRef={null}
                               >
                                 <div
-                                  className="Flex-sc-127y44r-0 sc-kjoXOD jJjAxl"
+                                  className="Flex-sc-127y44r-0 sc-ksYbfQ beIKSQ"
                                 >
                                   <OverflowMenu
                                     options={Array []}

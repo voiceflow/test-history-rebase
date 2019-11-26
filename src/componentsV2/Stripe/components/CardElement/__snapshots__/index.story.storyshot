@@ -60,9 +60,9 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-eHgmQL",
+                "componentId": "sc-jAaTju",
                 "isStatic": false,
-                "lastClassName": "jVzGbg",
+                "lastClassName": "eLHVaf",
                 "rules": Array [
                   "
   display: flex;
@@ -101,7 +101,7 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-eHgmQL",
+              "styledComponentId": "sc-jAaTju",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -112,7 +112,7 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-eHgmQL jVzGbg"
+            className="sc-jAaTju eLHVaf"
             onClick={[Function]}
           >
             <ForwardRef
@@ -176,9 +176,9 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
                     "$$typeof": Symbol(react.forward_ref),
                     "attrs": Array [],
                     "componentStyle": ComponentStyle {
-                      "componentId": "sc-cvbbAY",
+                      "componentId": "sc-jDwBTQ",
                       "isStatic": true,
-                      "lastClassName": "bqRwEh",
+                      "lastClassName": "jmOmYL",
                       "rules": Array [
                         "
   flex: 1;
@@ -189,7 +189,7 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
                     "displayName": "styled.div",
                     "foldedComponentIds": Array [],
                     "render": [Function],
-                    "styledComponentId": "sc-cvbbAY",
+                    "styledComponentId": "sc-jDwBTQ",
                     "target": "div",
                     "toString": [Function],
                     "warnTooManyClasses": [Function],
@@ -199,7 +199,7 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
                 forwardedRef={null}
               >
                 <div
-                  className="sc-cvbbAY bqRwEh"
+                  className="sc-jDwBTQ jmOmYL"
                 >
                   <CardElement
                     hideIcon={true}

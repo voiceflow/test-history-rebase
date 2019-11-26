@@ -1,0 +1,663 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots DraggableList variants: default 1`] = `
+<DraggableList
+  deleteComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    }
+  }
+  itemComponent={[Function]}
+  items={
+    Array [
+      Object {
+        "id": 0,
+        "text": "item 1",
+      },
+      Object {
+        "id": 1,
+        "text": "item 2",
+      },
+      Object {
+        "id": 2,
+        "text": "item 3",
+      },
+      Object {
+        "id": 3,
+        "text": "item 4",
+      },
+      Object {
+        "id": 4,
+        "text": "item 5",
+      },
+    ]
+  }
+  onDelete={[Function]}
+  onDrop={[Function]}
+  onEndDrag={[Function]}
+  onReorder={[Function]}
+  onStartDrag={[Function]}
+  previewComponent={[Function]}
+  type="default"
+>
+  <styled.div>
+    <StyledComponent
+      forwardedComponent={
+        Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "attrs": Array [],
+          "componentStyle": ComponentStyle {
+            "componentId": "sc-iAyFgw",
+            "isStatic": true,
+            "lastClassName": "iLyryY",
+            "rules": Array [
+              "
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+",
+            ],
+          },
+          "displayName": "styled.div",
+          "foldedComponentIds": Array [],
+          "render": [Function],
+          "styledComponentId": "sc-iAyFgw",
+          "target": "div",
+          "toString": [Function],
+          "warnTooManyClasses": [Function],
+          "withComponent": [Function],
+        }
+      }
+      forwardedRef={[Function]}
+    >
+      <div
+        className="sc-iAyFgw iLyryY"
+      >
+        <Memo()
+          handlers={
+            Object {
+              "current": Object {
+                "deleteHovered": false,
+                "onDeleteDrop": [Function],
+                "onDragEnd": [Function],
+                "onDragStart": [Function],
+                "onDrop": [Function],
+                "onReorder": [Function],
+                "onToggleHoverDelete": [Function],
+              },
+            }
+          }
+          id={0}
+          index={0}
+          itemComponent={[Function]}
+          key="0"
+          text="item 1"
+          type="default"
+        >
+          <styled.div
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-kkGfuU",
+                    "isStatic": true,
+                    "lastClassName": "hlVQIa",
+                    "rules": Array [
+                      "
+  width: 100%;
+",
+                    ],
+                  },
+                  "displayName": "styled.div",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-kkGfuU",
+                  "target": "div",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={
+                Object {
+                  "current": <div
+                    class="sc-kkGfuU hlVQIa"
+                    draggable="true"
+                    style="opacity: 1;"
+                  >
+                    <div
+                      style="display: flex; width: 100%; height: 40px; align-items: center; justify-content: center; background-color: rgb(126, 174, 254); border-top: 1px solid #f3f3f3; color: rgb(255, 255, 255);"
+                    >
+                      0
+                      : 
+                      item 1
+                    </div>
+                  </div>,
+                }
+              }
+              style={
+                Object {
+                  "opacity": 1,
+                }
+              }
+            >
+              <div
+                className="sc-kkGfuU hlVQIa"
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ItemComponent
+                  id={0}
+                  index={0}
+                  isDragging={false}
+                  text="item 1"
+                >
+                  <div
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "backgroundColor": "#7eaefe",
+                        "borderTop": "1px solid #f3f3f3",
+                        "color": "#fff",
+                        "display": "flex",
+                        "height": "40px",
+                        "justifyContent": "center",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    0
+                    : 
+                    item 1
+                  </div>
+                </ItemComponent>
+              </div>
+            </StyledComponent>
+          </styled.div>
+        </Memo()>
+        <Memo()
+          handlers={
+            Object {
+              "current": Object {
+                "deleteHovered": false,
+                "onDeleteDrop": [Function],
+                "onDragEnd": [Function],
+                "onDragStart": [Function],
+                "onDrop": [Function],
+                "onReorder": [Function],
+                "onToggleHoverDelete": [Function],
+              },
+            }
+          }
+          id={1}
+          index={1}
+          itemComponent={[Function]}
+          key="1"
+          text="item 2"
+          type="default"
+        >
+          <styled.div
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-kkGfuU",
+                    "isStatic": true,
+                    "lastClassName": "hlVQIa",
+                    "rules": Array [
+                      "
+  width: 100%;
+",
+                    ],
+                  },
+                  "displayName": "styled.div",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-kkGfuU",
+                  "target": "div",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={
+                Object {
+                  "current": <div
+                    class="sc-kkGfuU hlVQIa"
+                    draggable="true"
+                    style="opacity: 1;"
+                  >
+                    <div
+                      style="display: flex; width: 100%; height: 40px; align-items: center; justify-content: center; background-color: rgb(126, 174, 254); border-top: 1px solid #f3f3f3; color: rgb(255, 255, 255);"
+                    >
+                      1
+                      : 
+                      item 2
+                    </div>
+                  </div>,
+                }
+              }
+              style={
+                Object {
+                  "opacity": 1,
+                }
+              }
+            >
+              <div
+                className="sc-kkGfuU hlVQIa"
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ItemComponent
+                  id={1}
+                  index={1}
+                  isDragging={false}
+                  text="item 2"
+                >
+                  <div
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "backgroundColor": "#7eaefe",
+                        "borderTop": "1px solid #f3f3f3",
+                        "color": "#fff",
+                        "display": "flex",
+                        "height": "40px",
+                        "justifyContent": "center",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    1
+                    : 
+                    item 2
+                  </div>
+                </ItemComponent>
+              </div>
+            </StyledComponent>
+          </styled.div>
+        </Memo()>
+        <Memo()
+          handlers={
+            Object {
+              "current": Object {
+                "deleteHovered": false,
+                "onDeleteDrop": [Function],
+                "onDragEnd": [Function],
+                "onDragStart": [Function],
+                "onDrop": [Function],
+                "onReorder": [Function],
+                "onToggleHoverDelete": [Function],
+              },
+            }
+          }
+          id={2}
+          index={2}
+          itemComponent={[Function]}
+          key="2"
+          text="item 3"
+          type="default"
+        >
+          <styled.div
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-kkGfuU",
+                    "isStatic": true,
+                    "lastClassName": "hlVQIa",
+                    "rules": Array [
+                      "
+  width: 100%;
+",
+                    ],
+                  },
+                  "displayName": "styled.div",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-kkGfuU",
+                  "target": "div",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={
+                Object {
+                  "current": <div
+                    class="sc-kkGfuU hlVQIa"
+                    draggable="true"
+                    style="opacity: 1;"
+                  >
+                    <div
+                      style="display: flex; width: 100%; height: 40px; align-items: center; justify-content: center; background-color: rgb(126, 174, 254); border-top: 1px solid #f3f3f3; color: rgb(255, 255, 255);"
+                    >
+                      2
+                      : 
+                      item 3
+                    </div>
+                  </div>,
+                }
+              }
+              style={
+                Object {
+                  "opacity": 1,
+                }
+              }
+            >
+              <div
+                className="sc-kkGfuU hlVQIa"
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ItemComponent
+                  id={2}
+                  index={2}
+                  isDragging={false}
+                  text="item 3"
+                >
+                  <div
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "backgroundColor": "#7eaefe",
+                        "borderTop": "1px solid #f3f3f3",
+                        "color": "#fff",
+                        "display": "flex",
+                        "height": "40px",
+                        "justifyContent": "center",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    2
+                    : 
+                    item 3
+                  </div>
+                </ItemComponent>
+              </div>
+            </StyledComponent>
+          </styled.div>
+        </Memo()>
+        <Memo()
+          handlers={
+            Object {
+              "current": Object {
+                "deleteHovered": false,
+                "onDeleteDrop": [Function],
+                "onDragEnd": [Function],
+                "onDragStart": [Function],
+                "onDrop": [Function],
+                "onReorder": [Function],
+                "onToggleHoverDelete": [Function],
+              },
+            }
+          }
+          id={3}
+          index={3}
+          itemComponent={[Function]}
+          key="3"
+          text="item 4"
+          type="default"
+        >
+          <styled.div
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-kkGfuU",
+                    "isStatic": true,
+                    "lastClassName": "hlVQIa",
+                    "rules": Array [
+                      "
+  width: 100%;
+",
+                    ],
+                  },
+                  "displayName": "styled.div",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-kkGfuU",
+                  "target": "div",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={
+                Object {
+                  "current": <div
+                    class="sc-kkGfuU hlVQIa"
+                    draggable="true"
+                    style="opacity: 1;"
+                  >
+                    <div
+                      style="display: flex; width: 100%; height: 40px; align-items: center; justify-content: center; background-color: rgb(126, 174, 254); border-top: 1px solid #f3f3f3; color: rgb(255, 255, 255);"
+                    >
+                      3
+                      : 
+                      item 4
+                    </div>
+                  </div>,
+                }
+              }
+              style={
+                Object {
+                  "opacity": 1,
+                }
+              }
+            >
+              <div
+                className="sc-kkGfuU hlVQIa"
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ItemComponent
+                  id={3}
+                  index={3}
+                  isDragging={false}
+                  text="item 4"
+                >
+                  <div
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "backgroundColor": "#7eaefe",
+                        "borderTop": "1px solid #f3f3f3",
+                        "color": "#fff",
+                        "display": "flex",
+                        "height": "40px",
+                        "justifyContent": "center",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    3
+                    : 
+                    item 4
+                  </div>
+                </ItemComponent>
+              </div>
+            </StyledComponent>
+          </styled.div>
+        </Memo()>
+        <Memo()
+          handlers={
+            Object {
+              "current": Object {
+                "deleteHovered": false,
+                "onDeleteDrop": [Function],
+                "onDragEnd": [Function],
+                "onDragStart": [Function],
+                "onDrop": [Function],
+                "onReorder": [Function],
+                "onToggleHoverDelete": [Function],
+              },
+            }
+          }
+          id={4}
+          index={4}
+          itemComponent={[Function]}
+          key="4"
+          text="item 5"
+          type="default"
+        >
+          <styled.div
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-kkGfuU",
+                    "isStatic": true,
+                    "lastClassName": "hlVQIa",
+                    "rules": Array [
+                      "
+  width: 100%;
+",
+                    ],
+                  },
+                  "displayName": "styled.div",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-kkGfuU",
+                  "target": "div",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={
+                Object {
+                  "current": <div
+                    class="sc-kkGfuU hlVQIa"
+                    draggable="true"
+                    style="opacity: 1;"
+                  >
+                    <div
+                      style="display: flex; width: 100%; height: 40px; align-items: center; justify-content: center; background-color: rgb(126, 174, 254); border-top: 1px solid #f3f3f3; color: rgb(255, 255, 255);"
+                    >
+                      4
+                      : 
+                      item 5
+                    </div>
+                  </div>,
+                }
+              }
+              style={
+                Object {
+                  "opacity": 1,
+                }
+              }
+            >
+              <div
+                className="sc-kkGfuU hlVQIa"
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ItemComponent
+                  id={4}
+                  index={4}
+                  isDragging={false}
+                  text="item 5"
+                >
+                  <div
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "backgroundColor": "#7eaefe",
+                        "borderTop": "1px solid #f3f3f3",
+                        "color": "#fff",
+                        "display": "flex",
+                        "height": "40px",
+                        "justifyContent": "center",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    4
+                    : 
+                    item 5
+                  </div>
+                </ItemComponent>
+              </div>
+            </StyledComponent>
+          </styled.div>
+        </Memo()>
+        <Memo()
+          component={[Function]}
+          handlers={
+            Object {
+              "current": Object {
+                "deleteHovered": false,
+                "onDeleteDrop": [Function],
+                "onDragEnd": [Function],
+                "onDragStart": [Function],
+                "onDrop": [Function],
+                "onReorder": [Function],
+                "onToggleHoverDelete": [Function],
+              },
+            }
+          }
+          type="default"
+        />
+      </div>
+    </StyledComponent>
+  </styled.div>
+</DraggableList>
+`;

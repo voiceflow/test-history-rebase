@@ -1,3 +1,4 @@
+import { BlockType } from '@/constants';
 import { getAllNormalizedByKeys } from '@/utils/normalized';
 
 import { createSimpleAdapter } from '../utils';
@@ -39,6 +40,19 @@ export default nodeAdapter;
 function convertNodeForDB(appNode, ports, data, linksByPortID, platform, nextID) {
   const { id, type, x, y, parentNode } = appNode;
   const { name, ...appData } = data[id];
+
+  let outPorts = getAllNormalizedByKeys(ports, appNode.ports.out);
+  if (type === BlockType.STREAM) {
+    const { alexa, google } = outPorts.reduce(
+      (acc, port) => {
+        acc[port.platform]?.push(port);
+        return acc;
+      },
+      { alexa: [], google: [] }
+    );
+    outPorts = [...google, ...alexa];
+  }
+
   const node = {
     id,
     name,
@@ -48,7 +62,7 @@ function convertNodeForDB(appNode, ports, data, linksByPortID, platform, nextID)
     parentNode,
     extras: nodeDataAdapter.toDB(appData),
     ports: [
-      ...getAllNormalizedByKeys(ports, appNode.ports.out).map((port, index) => portAdapter.toDB(port, false, linksByPortID, platform, type, index)),
+      ...outPorts.map((port, index) => portAdapter.toDB(port, false, linksByPortID, platform, type, index)),
       ...getAllNormalizedByKeys(ports, appNode.ports.in).map((port) => portAdapter.toDB(port, true, linksByPortID, platform)),
     ],
   };

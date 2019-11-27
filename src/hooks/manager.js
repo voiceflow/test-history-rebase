@@ -52,6 +52,10 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
     (value, { update, save = true } = {}) => {
       const denormalized = denormalize(value);
 
+      if (!update && debouncedOnChange?.cancel) {
+        debouncedOnChange.cancel();
+      }
+
       normalized.current = value;
       setDependencies([denormalized]);
       forceRerender(Math.random());

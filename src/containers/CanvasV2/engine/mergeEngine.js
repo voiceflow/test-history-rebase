@@ -36,6 +36,11 @@ class MergeEngine extends EngineConsumer {
     }
 
     const targetNode = this.engine.getNodeByID(this.target);
+
+    if (sourceNode.type === BlockType.INTENT && targetNode.type !== BlockType.COMBINED) {
+      return true;
+    }
+
     return NODE_MANAGERS[targetNode.type].mergeTerminator;
   }
 
@@ -110,6 +115,10 @@ class MergeEngine extends EngineConsumer {
 
     const targetMergeTerminator = NODE_MANAGERS[targetNode.type].mergeTerminator;
     if (targetMergeTerminator) {
+      return MergeStatus.DENY;
+    }
+
+    if (sourceNode.type === BlockType.INTENT && targetNode.type === BlockType.INTENT) {
       return MergeStatus.DENY;
     }
 

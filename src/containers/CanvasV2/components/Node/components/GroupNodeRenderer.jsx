@@ -17,7 +17,11 @@ function GroupNodeRenderer(_, ref) {
     case BlockType.COMBINED:
       /* eslint-disable no-case-declarations */
       const lastNestedNode = node.combinedNodes.length && engine.getNodeByID(node.combinedNodes[node.combinedNodes.length - 1]);
-      const nextSteps = getNextSteps(lastNestedNode.type);
+      let nextSteps = getNextSteps(lastNestedNode.type);
+
+      if (node.combinedNodes.find((nodeId) => engine.getNodeByID(nodeId).type === BlockType.INTENT)) {
+        nextSteps = nextSteps.filter((step) => step.value !== BlockType.INTENT);
+      }
       /* eslint-enable no-case-declarations */
 
       return <CombinedBlock nextSteps={nextSteps} ref={ref} />;

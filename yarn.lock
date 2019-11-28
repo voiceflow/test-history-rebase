@@ -2926,10 +2926,10 @@
     moment "^2.24.0"
     randomstring "^1.1.5"
 
-"@voiceflow/draft-js-mention-plugin@3.3.5":
-  version "3.3.5"
-  resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-mention-plugin/-/draft-js-mention-plugin-3.3.5.tgz#479ce1817f7bb36c4cd55669d78a881b244ae2cf"
-  integrity sha512-6eUhyY+e1KczkTJHq305Yj/QOc4FOWzDE6lBRPvdFyKkBXBdTf04U5OCffcrBPjkQxWS9r/Zfgcg3q2eSllBCQ==
+"@voiceflow/draft-js-mention-plugin@3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-mention-plugin/-/draft-js-mention-plugin-3.3.6.tgz#2472ea709027657731e3aec53908f3b3f76f48a1"
+  integrity sha512-ZuQrMaTiyqflLtm4626wpVkdkQdoQ4aDZhk++DJooR0XsEJjQavOqmN2rKg4g5A+tSjcMYmqdhqfA0qN4wmKog==
   dependencies:
     clsx "^1.0.4"
     immutable "~3.7.4"

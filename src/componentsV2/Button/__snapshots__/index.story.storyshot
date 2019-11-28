@@ -22,9 +22,9 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
           },
           "attrs": Array [],
           "componentStyle": ComponentStyle {
-            "componentId": "sc-fjdhpX",
+            "componentId": "sc-kkGfuU",
             "isStatic": false,
-            "lastClassName": "gZKPwt",
+            "lastClassName": "biUsNy",
             "rules": Array [
               "
   ",
@@ -94,7 +94,7 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
             "sc-bxivhb",
           ],
           "render": [Function],
-          "styledComponentId": "sc-fjdhpX",
+          "styledComponentId": "sc-kkGfuU",
           "target": "button",
           "toString": [Function],
           "warnTooManyClasses": [Function],
@@ -105,7 +105,7 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
       onClick={[Function]}
     >
       <button
-        className="sc-bdVaJa sc-bxivhb sc-fjdhpX gZKPwt"
+        className="sc-bdVaJa sc-bxivhb sc-kkGfuU biUsNy"
         disabled={false}
         onClick={[Function]}
       >
@@ -435,9 +435,9 @@ exports[`Storyshots Button variants: primary 1`] = `
           },
           "attrs": Array [],
           "componentStyle": ComponentStyle {
-            "componentId": "sc-fjdhpX",
+            "componentId": "sc-kkGfuU",
             "isStatic": false,
-            "lastClassName": "gZKPwt",
+            "lastClassName": "biUsNy",
             "rules": Array [
               "
   ",
@@ -507,7 +507,7 @@ exports[`Storyshots Button variants: primary 1`] = `
             "sc-bxivhb",
           ],
           "render": [Function],
-          "styledComponentId": "sc-fjdhpX",
+          "styledComponentId": "sc-kkGfuU",
           "target": "button",
           "toString": [Function],
           "warnTooManyClasses": [Function],
@@ -518,7 +518,7 @@ exports[`Storyshots Button variants: primary 1`] = `
       onClick={[Function]}
     >
       <button
-        className="sc-bdVaJa sc-bxivhb sc-fjdhpX gZKPwt"
+        className="sc-bdVaJa sc-bxivhb sc-kkGfuU biUsNy"
         disabled={false}
         onClick={[Function]}
       >

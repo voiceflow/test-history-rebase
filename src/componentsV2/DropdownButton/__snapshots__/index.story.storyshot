@@ -56,7 +56,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                   "componentStyle": ComponentStyle {
                     "componentId": "PrimaryDropdownButtonContainer-sc-1tpt2nt-0",
                     "isStatic": false,
-                    "lastClassName": "bqbqol",
+                    "lastClassName": "fOoylM",
                     "rules": Array [
                       "display:",
                       [Function],
@@ -66,13 +66,13 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                       [Function],
                       " justify-content:center;",
                       "& ",
-                      ".sc-fjdhpX",
+                      ".sc-kkGfuU",
                       "{margin-right:1px;}& ",
-                      ".sc-fjdhpX",
+                      ".sc-kkGfuU",
                       ":not(:first-of-type){border-top-left-radius:6px;border-bottom-left-radius:6px;margin-right:0;}& ",
-                      ".sc-fjdhpX",
+                      ".sc-kkGfuU",
                       ":not(:last-of-type){border-top-right-radius:6px;border-bottom-right-radius:6px;}& ",
-                      ".sc-fjdhpX",
+                      ".sc-kkGfuU",
                       ":last-of-type{margin-right:0;}",
                     ],
                   },
@@ -92,7 +92,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
               inline={true}
             >
               <div
-                className="Flex__FlexCenter-sc-127y44r-1 PrimaryDropdownButtonContainer-sc-1tpt2nt-0 bqbqol"
+                className="Flex__FlexCenter-sc-127y44r-1 PrimaryDropdownButtonContainer-sc-1tpt2nt-0 fOoylM"
               >
                 <PrimaryButton
                   canHover={false}
@@ -113,9 +113,9 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                           },
                           "attrs": Array [],
                           "componentStyle": ComponentStyle {
-                            "componentId": "sc-fjdhpX",
+                            "componentId": "sc-kkGfuU",
                             "isStatic": false,
-                            "lastClassName": "ivRomo",
+                            "lastClassName": "emSNGG",
                             "rules": Array [
                               "
   ",
@@ -185,7 +185,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                             "sc-bxivhb",
                           ],
                           "render": [Function],
-                          "styledComponentId": "sc-fjdhpX",
+                          "styledComponentId": "sc-kkGfuU",
                           "target": "button",
                           "toString": [Function],
                           "warnTooManyClasses": [Function],
@@ -195,7 +195,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                       forwardedRef={null}
                     >
                       <button
-                        className="sc-bdVaJa sc-bxivhb sc-fjdhpX ivRomo"
+                        className="sc-bdVaJa sc-bxivhb sc-kkGfuU emSNGG"
                         disabled={false}
                       >
                         <components__PrimaryButtonLabel>
@@ -251,9 +251,9 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                         },
                         "attrs": Array [],
                         "componentStyle": ComponentStyle {
-                          "componentId": "sc-fjdhpX",
+                          "componentId": "sc-kkGfuU",
                           "isStatic": false,
-                          "lastClassName": "ivRomo",
+                          "lastClassName": "emSNGG",
                           "rules": Array [
                             "
   ",
@@ -323,7 +323,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                           "sc-bxivhb",
                         ],
                         "render": [Function],
-                        "styledComponentId": "sc-fjdhpX",
+                        "styledComponentId": "sc-kkGfuU",
                         "target": "button",
                         "toString": [Function],
                         "warnTooManyClasses": [Function],
@@ -334,7 +334,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                     onClick={[Function]}
                   >
                     <button
-                      className="sc-bdVaJa sc-bxivhb sc-fjdhpX ivRomo"
+                      className="sc-bdVaJa sc-bxivhb sc-kkGfuU emSNGG"
                       disabled={false}
                       onClick={[Function]}
                     >

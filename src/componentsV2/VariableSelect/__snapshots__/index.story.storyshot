@@ -7,9 +7,9 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-kjoXOD",
+        "componentId": "sc-eNQAEJ",
         "isStatic": false,
-        "lastClassName": "djChNG",
+        "lastClassName": "csPHJS",
         "rules": Array [
           "
   ",
@@ -209,10 +209,10 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
       },
       "displayName": "Styled(Styled(Select))",
       "foldedComponentIds": Array [
-        "sc-gisBJw",
+        "sc-jKJlTe",
       ],
       "render": [Function],
-      "styledComponentId": "sc-kjoXOD",
+      "styledComponentId": "sc-eNQAEJ",
       "target": [Function],
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -239,7 +239,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
   placeholder="Variables"
 >
   <Select
-    className="sc-gisBJw sc-kjoXOD djChNG"
+    className="sc-jKJlTe sc-eNQAEJ csPHJS"
     options={
       Array [
         Object {
@@ -259,7 +259,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
     placeholder="Variables"
   >
     <StateManager
-      className="select-box sc-gisBJw sc-kjoXOD djChNG"
+      className="select-box sc-jKJlTe sc-eNQAEJ csPHJS"
       classNamePrefix="select-box"
       defaultInputValue=""
       defaultMenuIsOpen={false}
@@ -286,7 +286,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
         backspaceRemovesValue={true}
         blurInputOnSelect={true}
         captureMenuScroll={false}
-        className="select-box sc-gisBJw sc-kjoXOD djChNG"
+        className="select-box sc-jKJlTe sc-eNQAEJ csPHJS"
         classNamePrefix="select-box"
         closeMenuOnScroll={false}
         closeMenuOnSelect={true}
@@ -344,7 +344,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
         value={null}
       >
         <SelectContainer
-          className="select-box sc-gisBJw sc-kjoXOD djChNG"
+          className="select-box sc-jKJlTe sc-eNQAEJ csPHJS"
           clearValue={[Function]}
           cx={[Function]}
           getStyles={[Function]}
@@ -382,7 +382,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
               "backspaceRemovesValue": true,
               "blurInputOnSelect": true,
               "captureMenuScroll": false,
-              "className": "select-box sc-gisBJw sc-kjoXOD djChNG",
+              "className": "select-box sc-jKJlTe sc-eNQAEJ csPHJS",
               "classNamePrefix": "select-box",
               "closeMenuOnScroll": false,
               "closeMenuOnSelect": true,
@@ -470,7 +470,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
           }
         >
           <div
-            className="css-1pcexqc-container select-box sc-gisBJw sc-kjoXOD djChNG"
+            className="css-1pcexqc-container select-box sc-jKJlTe sc-eNQAEJ csPHJS"
             onKeyDown={[Function]}
           >
             <Control
@@ -513,7 +513,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
                   "backspaceRemovesValue": true,
                   "blurInputOnSelect": true,
                   "captureMenuScroll": false,
-                  "className": "select-box sc-gisBJw sc-kjoXOD djChNG",
+                  "className": "select-box sc-jKJlTe sc-eNQAEJ csPHJS",
                   "classNamePrefix": "select-box",
                   "closeMenuOnScroll": false,
                   "closeMenuOnSelect": true,
@@ -636,7 +636,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
                       "backspaceRemovesValue": true,
                       "blurInputOnSelect": true,
                       "captureMenuScroll": false,
-                      "className": "select-box sc-gisBJw sc-kjoXOD djChNG",
+                      "className": "select-box sc-jKJlTe sc-eNQAEJ csPHJS",
                       "classNamePrefix": "select-box",
                       "closeMenuOnScroll": false,
                       "closeMenuOnSelect": true,
@@ -759,7 +759,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
                           "backspaceRemovesValue": true,
                           "blurInputOnSelect": true,
                           "captureMenuScroll": false,
-                          "className": "select-box sc-gisBJw sc-kjoXOD djChNG",
+                          "className": "select-box sc-jKJlTe sc-eNQAEJ csPHJS",
                           "classNamePrefix": "select-box",
                           "closeMenuOnScroll": false,
                           "closeMenuOnSelect": true,
@@ -859,7 +859,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
                       autoCorrect="off"
                       cx={[Function]}
                       getStyles={[Function]}
-                      id="react-select-8-input"
+                      id="react-select-9-input"
                       innerRef={[Function]}
                       isDisabled={false}
                       isHidden={false}
@@ -871,7 +871,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
                           "backspaceRemovesValue": true,
                           "blurInputOnSelect": true,
                           "captureMenuScroll": false,
-                          "className": "select-box sc-gisBJw sc-kjoXOD djChNG",
+                          "className": "select-box sc-jKJlTe sc-eNQAEJ csPHJS",
                           "classNamePrefix": "select-box",
                           "closeMenuOnScroll": false,
                           "closeMenuOnSelect": true,
@@ -971,7 +971,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
                           autoCorrect="off"
                           className="select-box__input"
                           disabled={false}
-                          id="react-select-8-input"
+                          id="react-select-9-input"
                           injectStyles={true}
                           inputRef={[Function]}
                           inputStyle={
@@ -1009,7 +1009,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
                               autoComplete="off"
                               autoCorrect="off"
                               disabled={false}
-                              id="react-select-8-input"
+                              id="react-select-9-input"
                               onBlur={[Function]}
                               onChange={[Function]}
                               onFocus={[Function]}
@@ -1082,7 +1082,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
                       "backspaceRemovesValue": true,
                       "blurInputOnSelect": true,
                       "captureMenuScroll": false,
-                      "className": "select-box sc-gisBJw sc-kjoXOD djChNG",
+                      "className": "select-box sc-jKJlTe sc-eNQAEJ csPHJS",
                       "classNamePrefix": "select-box",
                       "closeMenuOnScroll": false,
                       "closeMenuOnSelect": true,
@@ -1204,7 +1204,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
                           "backspaceRemovesValue": true,
                           "blurInputOnSelect": true,
                           "captureMenuScroll": false,
-                          "className": "select-box sc-gisBJw sc-kjoXOD djChNG",
+                          "className": "select-box sc-jKJlTe sc-eNQAEJ csPHJS",
                           "classNamePrefix": "select-box",
                           "closeMenuOnScroll": false,
                           "closeMenuOnSelect": true,
@@ -1334,7 +1334,7 @@ exports[`Storyshots Variable Select variant: Variable Select 1`] = `
                           "backspaceRemovesValue": true,
                           "blurInputOnSelect": true,
                           "captureMenuScroll": false,
-                          "className": "select-box sc-gisBJw sc-kjoXOD djChNG",
+                          "className": "select-box sc-jKJlTe sc-eNQAEJ csPHJS",
                           "classNamePrefix": "select-box",
                           "closeMenuOnScroll": false,
                           "closeMenuOnSelect": true,
@@ -1468,9 +1468,9 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-kjoXOD",
+        "componentId": "sc-eNQAEJ",
         "isStatic": false,
-        "lastClassName": "djChNG",
+        "lastClassName": "csPHJS",
         "rules": Array [
           "
   ",
@@ -1670,10 +1670,10 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
       },
       "displayName": "Styled(Styled(Select))",
       "foldedComponentIds": Array [
-        "sc-gisBJw",
+        "sc-jKJlTe",
       ],
       "render": [Function],
-      "styledComponentId": "sc-kjoXOD",
+      "styledComponentId": "sc-eNQAEJ",
       "target": [Function],
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -1700,7 +1700,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
   placeholder="Variables"
 >
   <Select
-    className="sc-gisBJw variable-box sc-kjoXOD djChNG"
+    className="sc-jKJlTe variable-box sc-eNQAEJ csPHJS"
     classNamePrefix="variable-box"
     options={
       Array [
@@ -1721,7 +1721,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
     placeholder="Variables"
   >
     <StateManager
-      className="select-box sc-gisBJw variable-box sc-kjoXOD djChNG"
+      className="select-box sc-jKJlTe variable-box sc-eNQAEJ csPHJS"
       classNamePrefix="variable-box"
       defaultInputValue=""
       defaultMenuIsOpen={false}
@@ -1748,7 +1748,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
         backspaceRemovesValue={true}
         blurInputOnSelect={true}
         captureMenuScroll={false}
-        className="select-box sc-gisBJw variable-box sc-kjoXOD djChNG"
+        className="select-box sc-jKJlTe variable-box sc-eNQAEJ csPHJS"
         classNamePrefix="variable-box"
         closeMenuOnScroll={false}
         closeMenuOnSelect={true}
@@ -1806,7 +1806,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
         value={null}
       >
         <SelectContainer
-          className="select-box sc-gisBJw variable-box sc-kjoXOD djChNG"
+          className="select-box sc-jKJlTe variable-box sc-eNQAEJ csPHJS"
           clearValue={[Function]}
           cx={[Function]}
           getStyles={[Function]}
@@ -1844,7 +1844,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
               "backspaceRemovesValue": true,
               "blurInputOnSelect": true,
               "captureMenuScroll": false,
-              "className": "select-box sc-gisBJw variable-box sc-kjoXOD djChNG",
+              "className": "select-box sc-jKJlTe variable-box sc-eNQAEJ csPHJS",
               "classNamePrefix": "variable-box",
               "closeMenuOnScroll": false,
               "closeMenuOnSelect": true,
@@ -1932,7 +1932,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
           }
         >
           <div
-            className="css-1pcexqc-container select-box sc-gisBJw variable-box sc-kjoXOD djChNG"
+            className="css-1pcexqc-container select-box sc-jKJlTe variable-box sc-eNQAEJ csPHJS"
             onKeyDown={[Function]}
           >
             <Control
@@ -1975,7 +1975,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
                   "backspaceRemovesValue": true,
                   "blurInputOnSelect": true,
                   "captureMenuScroll": false,
-                  "className": "select-box sc-gisBJw variable-box sc-kjoXOD djChNG",
+                  "className": "select-box sc-jKJlTe variable-box sc-eNQAEJ csPHJS",
                   "classNamePrefix": "variable-box",
                   "closeMenuOnScroll": false,
                   "closeMenuOnSelect": true,
@@ -2098,7 +2098,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
                       "backspaceRemovesValue": true,
                       "blurInputOnSelect": true,
                       "captureMenuScroll": false,
-                      "className": "select-box sc-gisBJw variable-box sc-kjoXOD djChNG",
+                      "className": "select-box sc-jKJlTe variable-box sc-eNQAEJ csPHJS",
                       "classNamePrefix": "variable-box",
                       "closeMenuOnScroll": false,
                       "closeMenuOnSelect": true,
@@ -2221,7 +2221,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
                           "backspaceRemovesValue": true,
                           "blurInputOnSelect": true,
                           "captureMenuScroll": false,
-                          "className": "select-box sc-gisBJw variable-box sc-kjoXOD djChNG",
+                          "className": "select-box sc-jKJlTe variable-box sc-eNQAEJ csPHJS",
                           "classNamePrefix": "variable-box",
                           "closeMenuOnScroll": false,
                           "closeMenuOnSelect": true,
@@ -2321,7 +2321,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
                       autoCorrect="off"
                       cx={[Function]}
                       getStyles={[Function]}
-                      id="react-select-9-input"
+                      id="react-select-10-input"
                       innerRef={[Function]}
                       isDisabled={false}
                       isHidden={false}
@@ -2333,7 +2333,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
                           "backspaceRemovesValue": true,
                           "blurInputOnSelect": true,
                           "captureMenuScroll": false,
-                          "className": "select-box sc-gisBJw variable-box sc-kjoXOD djChNG",
+                          "className": "select-box sc-jKJlTe variable-box sc-eNQAEJ csPHJS",
                           "classNamePrefix": "variable-box",
                           "closeMenuOnScroll": false,
                           "closeMenuOnSelect": true,
@@ -2433,7 +2433,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
                           autoCorrect="off"
                           className="variable-box__input"
                           disabled={false}
-                          id="react-select-9-input"
+                          id="react-select-10-input"
                           injectStyles={true}
                           inputRef={[Function]}
                           inputStyle={
@@ -2471,7 +2471,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
                               autoComplete="off"
                               autoCorrect="off"
                               disabled={false}
-                              id="react-select-9-input"
+                              id="react-select-10-input"
                               onBlur={[Function]}
                               onChange={[Function]}
                               onFocus={[Function]}
@@ -2544,7 +2544,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
                       "backspaceRemovesValue": true,
                       "blurInputOnSelect": true,
                       "captureMenuScroll": false,
-                      "className": "select-box sc-gisBJw variable-box sc-kjoXOD djChNG",
+                      "className": "select-box sc-jKJlTe variable-box sc-eNQAEJ csPHJS",
                       "classNamePrefix": "variable-box",
                       "closeMenuOnScroll": false,
                       "closeMenuOnSelect": true,
@@ -2666,7 +2666,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
                           "backspaceRemovesValue": true,
                           "blurInputOnSelect": true,
                           "captureMenuScroll": false,
-                          "className": "select-box sc-gisBJw variable-box sc-kjoXOD djChNG",
+                          "className": "select-box sc-jKJlTe variable-box sc-eNQAEJ csPHJS",
                           "classNamePrefix": "variable-box",
                           "closeMenuOnScroll": false,
                           "closeMenuOnSelect": true,
@@ -2796,7 +2796,7 @@ exports[`Storyshots Variable Select variant: Variable Select Box 1`] = `
                           "backspaceRemovesValue": true,
                           "blurInputOnSelect": true,
                           "captureMenuScroll": false,
-                          "className": "select-box sc-gisBJw variable-box sc-kjoXOD djChNG",
+                          "className": "select-box sc-jKJlTe variable-box sc-eNQAEJ csPHJS",
                           "classNamePrefix": "variable-box",
                           "closeMenuOnScroll": false,
                           "closeMenuOnSelect": true,

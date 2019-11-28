@@ -25,9 +25,9 @@ exports[`Storyshots Info Popup variants: Icon Popup 1`] = `
                       },
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-fjdhpX",
+                        "componentId": "sc-kkGfuU",
                         "isStatic": false,
-                        "lastClassName": "gZKPwt",
+                        "lastClassName": "biUsNy",
                         "rules": Array [
                           "
   ",
@@ -97,7 +97,7 @@ exports[`Storyshots Info Popup variants: Icon Popup 1`] = `
                         "sc-bxivhb",
                       ],
                       "render": [Function],
-                      "styledComponentId": "sc-fjdhpX",
+                      "styledComponentId": "sc-kkGfuU",
                       "target": "button",
                       "toString": [Function],
                       "warnTooManyClasses": [Function],
@@ -107,7 +107,7 @@ exports[`Storyshots Info Popup variants: Icon Popup 1`] = `
                   forwardedRef={null}
                 >
                   <button
-                    className="sc-bdVaJa sc-bxivhb sc-fjdhpX gZKPwt"
+                    className="sc-bdVaJa sc-bxivhb sc-kkGfuU biUsNy"
                   >
                     <components__PrimaryButtonLabel>
                       <StyledComponent
@@ -171,9 +171,9 @@ exports[`Storyshots Info Popup variants: Label Icon Popup 1`] = `
                   "$$typeof": Symbol(react.forward_ref),
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
-                    "componentId": "sc-cSHVUG",
+                    "componentId": "sc-hSdWYo",
                     "isStatic": true,
-                    "lastClassName": "zbyMk",
+                    "lastClassName": "KERTu",
                     "rules": Array [
                       "
   position: relative;
@@ -187,7 +187,7 @@ exports[`Storyshots Info Popup variants: Label Icon Popup 1`] = `
                   "displayName": "styled.div",
                   "foldedComponentIds": Array [],
                   "render": [Function],
-                  "styledComponentId": "sc-cSHVUG",
+                  "styledComponentId": "sc-hSdWYo",
                   "target": "div",
                   "toString": [Function],
                   "warnTooManyClasses": [Function],
@@ -197,7 +197,7 @@ exports[`Storyshots Info Popup variants: Label Icon Popup 1`] = `
               forwardedRef={null}
             >
               <div
-                className="sc-cSHVUG zbyMk"
+                className="sc-hSdWYo KERTu"
               >
                 Slots
               </div>
@@ -210,9 +210,9 @@ exports[`Storyshots Info Popup variants: Label Icon Popup 1`] = `
                   "$$typeof": Symbol(react.forward_ref),
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
-                    "componentId": "sc-jzJRlG",
+                    "componentId": "sc-iAyFgw",
                     "isStatic": true,
-                    "lastClassName": "gotqPr",
+                    "lastClassName": "eHsCda",
                     "rules": Array [
                       "
   top: 12px;
@@ -226,7 +226,7 @@ exports[`Storyshots Info Popup variants: Label Icon Popup 1`] = `
                   "displayName": "styled.div",
                   "foldedComponentIds": Array [],
                   "render": [Function],
-                  "styledComponentId": "sc-jzJRlG",
+                  "styledComponentId": "sc-iAyFgw",
                   "target": "div",
                   "toString": [Function],
                   "warnTooManyClasses": [Function],
@@ -236,7 +236,7 @@ exports[`Storyshots Info Popup variants: Label Icon Popup 1`] = `
               forwardedRef={null}
             >
               <div
-                className="sc-jzJRlG gotqPr"
+                className="sc-iAyFgw eHsCda"
               >
                 <ForwardRef
                   color="#8da2b5"
@@ -319,9 +319,9 @@ exports[`Storyshots Info Popup variants: Label Popup 1`] = `
                   "$$typeof": Symbol(react.forward_ref),
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
-                    "componentId": "sc-jzJRlG",
+                    "componentId": "sc-iAyFgw",
                     "isStatic": true,
-                    "lastClassName": "gotqPr",
+                    "lastClassName": "eHsCda",
                     "rules": Array [
                       "
   top: 12px;
@@ -335,7 +335,7 @@ exports[`Storyshots Info Popup variants: Label Popup 1`] = `
                   "displayName": "styled.div",
                   "foldedComponentIds": Array [],
                   "render": [Function],
-                  "styledComponentId": "sc-jzJRlG",
+                  "styledComponentId": "sc-iAyFgw",
                   "target": "div",
                   "toString": [Function],
                   "warnTooManyClasses": [Function],
@@ -345,7 +345,7 @@ exports[`Storyshots Info Popup variants: Label Popup 1`] = `
               forwardedRef={null}
             >
               <div
-                className="sc-jzJRlG gotqPr"
+                className="sc-iAyFgw eHsCda"
               >
                 How it Works
               </div>

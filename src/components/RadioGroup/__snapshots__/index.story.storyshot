@@ -8,9 +8,9 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-ckVGcZ",
+          "componentId": "sc-jDwBTQ",
           "isStatic": true,
-          "lastClassName": "hJexYd",
+          "lastClassName": "hBUBcm",
           "rules": Array [
             "
   display: flex;
@@ -22,7 +22,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
         "displayName": "styled.div",
         "foldedComponentIds": Array [],
         "render": [Function],
-        "styledComponentId": "sc-ckVGcZ",
+        "styledComponentId": "sc-jDwBTQ",
         "target": "div",
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -32,7 +32,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
     forwardedRef={null}
   >
     <div
-      className="sc-ckVGcZ hJexYd"
+      className="sc-jDwBTQ hBUBcm"
     >
       <styled.div
         key="0"
@@ -43,9 +43,9 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-dxgOiQ",
+                "componentId": "sc-jAaTju",
                 "isStatic": true,
-                "lastClassName": "gbykQm",
+                "lastClassName": "hvIsoj",
                 "rules": Array [
                   "
   display: inline-flex;
@@ -58,7 +58,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-dxgOiQ",
+              "styledComponentId": "sc-jAaTju",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -68,7 +68,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-dxgOiQ gbykQm"
+            className="sc-jAaTju hvIsoj"
           >
             <Checkbox
               checked={true}
@@ -290,9 +290,9 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-dxgOiQ",
+                "componentId": "sc-jAaTju",
                 "isStatic": true,
-                "lastClassName": "gbykQm",
+                "lastClassName": "hvIsoj",
                 "rules": Array [
                   "
   display: inline-flex;
@@ -305,7 +305,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-dxgOiQ",
+              "styledComponentId": "sc-jAaTju",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -315,7 +315,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-dxgOiQ gbykQm"
+            className="sc-jAaTju hvIsoj"
           >
             <Checkbox
               checked={false}
@@ -537,9 +537,9 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-dxgOiQ",
+                "componentId": "sc-jAaTju",
                 "isStatic": true,
-                "lastClassName": "gbykQm",
+                "lastClassName": "hvIsoj",
                 "rules": Array [
                   "
   display: inline-flex;
@@ -552,7 +552,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-dxgOiQ",
+              "styledComponentId": "sc-jAaTju",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -562,7 +562,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-dxgOiQ gbykQm"
+            className="sc-jAaTju hvIsoj"
           >
             <Checkbox
               checked={false}
@@ -788,9 +788,9 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-ckVGcZ",
+          "componentId": "sc-jDwBTQ",
           "isStatic": true,
-          "lastClassName": "hJexYd",
+          "lastClassName": "hBUBcm",
           "rules": Array [
             "
   display: flex;
@@ -802,7 +802,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
         "displayName": "styled.div",
         "foldedComponentIds": Array [],
         "render": [Function],
-        "styledComponentId": "sc-ckVGcZ",
+        "styledComponentId": "sc-jDwBTQ",
         "target": "div",
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -812,7 +812,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
     forwardedRef={null}
   >
     <div
-      className="sc-ckVGcZ hJexYd"
+      className="sc-jDwBTQ hBUBcm"
     >
       <styled.div
         key="0"
@@ -823,9 +823,9 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-dxgOiQ",
+                "componentId": "sc-jAaTju",
                 "isStatic": true,
-                "lastClassName": "gbykQm",
+                "lastClassName": "hvIsoj",
                 "rules": Array [
                   "
   display: inline-flex;
@@ -838,7 +838,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-dxgOiQ",
+              "styledComponentId": "sc-jAaTju",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -848,7 +848,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-dxgOiQ gbykQm"
+            className="sc-jAaTju hvIsoj"
           >
             <Checkbox
               checked={false}
@@ -1070,9 +1070,9 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-dxgOiQ",
+                "componentId": "sc-jAaTju",
                 "isStatic": true,
-                "lastClassName": "gbykQm",
+                "lastClassName": "hvIsoj",
                 "rules": Array [
                   "
   display: inline-flex;
@@ -1085,7 +1085,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-dxgOiQ",
+              "styledComponentId": "sc-jAaTju",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -1095,7 +1095,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-dxgOiQ gbykQm"
+            className="sc-jAaTju hvIsoj"
           >
             <Checkbox
               checked={true}

@@ -1,6 +1,6 @@
 import { styled } from '@/hocs';
 
-const ExpressionPreviewContainer = styled.div`
+const PreviewContainer = styled.div`
   border: 1px dashed #c5d3e0;
   border-radius: 5px;
   margin-bottom: 10px;
@@ -52,4 +52,4 @@ const ExpressionPreviewContainer = styled.div`
   }
 `;
 
-export default ExpressionPreviewContainer;
+export default PreviewContainer;

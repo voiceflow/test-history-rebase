@@ -1,11 +1,24 @@
 import { styled } from '@/hocs';
 
-const ExpressionFormContainer = styled.div`
+const FormContainer = styled.div`
   position: relative;
   padding: 10px;
   background-color: #f7f9fb;
   border: 1px solid #c5d3e0ad;
   border-radius: 6px;
+
+  & > .composite {
+    padding: 0 0 0 10px !important;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 0;
+  }
+
+  & > .same {
+    padding: 0 !important;
+    border: none !important;
+  }
 
   & & {
     padding: 10px;
@@ -27,13 +40,15 @@ const ExpressionFormContainer = styled.div`
   }
 
   & .type-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 24px;
     height: 24px;
     border: 0;
     border-radius: 50%;
     color: #8da2b5;
     background: #fff;
-    font-size: 11px;
     line-height: 24px;
     text-align: center;
     cursor: pointer;
@@ -133,4 +148,4 @@ const ExpressionFormContainer = styled.div`
   }
 `;
 
-export default ExpressionFormContainer;
+export default FormContainer;

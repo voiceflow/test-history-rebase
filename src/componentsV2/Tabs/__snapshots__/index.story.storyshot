@@ -26,7 +26,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
           "componentStyle": ComponentStyle {
             "componentId": "TabSet-xxhne8-0",
             "isStatic": false,
-            "lastClassName": "fKTUjC",
+            "lastClassName": "iuADMu",
             "rules": Array [
               "display:",
               [Function],
@@ -36,7 +36,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
               [Function],
               " justify-content:center;",
               "height:100%;& ",
-              ".sc-gPEVay",
+              ".sc-fAjcbJ",
               "{height:100%;}",
             ],
           },
@@ -55,7 +55,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
       forwardedRef={null}
     >
       <div
-        className="Flex__FlexCenter-sc-127y44r-1 TabSet-xxhne8-0 fKTUjC"
+        className="Flex__FlexCenter-sc-127y44r-1 TabSet-xxhne8-0 iuADMu"
       >
         <Tab
           isActive={false}
@@ -72,9 +72,9 @@ exports[`Storyshots Tabs variants: default 1`] = `
                   "$$typeof": Symbol(react.forward_ref),
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
-                    "componentId": "sc-gPEVay",
+                    "componentId": "sc-fAjcbJ",
                     "isStatic": false,
-                    "lastClassName": "dplUPy",
+                    "lastClassName": "eUpMol",
                     "rules": Array [
                       "
   ",
@@ -144,7 +144,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
                   "displayName": "styled.button",
                   "foldedComponentIds": Array [],
                   "render": [Function],
-                  "styledComponentId": "sc-gPEVay",
+                  "styledComponentId": "sc-fAjcbJ",
                   "target": "button",
                   "toString": [Function],
                   "warnTooManyClasses": [Function],
@@ -156,7 +156,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
               onClick={[Function]}
             >
               <button
-                className="sc-gPEVay dplUPy"
+                className="sc-fAjcbJ eUpMol"
                 onClick={[Function]}
               >
                 ABC
@@ -179,9 +179,9 @@ exports[`Storyshots Tabs variants: default 1`] = `
                   "$$typeof": Symbol(react.forward_ref),
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
-                    "componentId": "sc-gPEVay",
+                    "componentId": "sc-fAjcbJ",
                     "isStatic": false,
-                    "lastClassName": "dplUPy",
+                    "lastClassName": "eUpMol",
                     "rules": Array [
                       "
   ",
@@ -251,7 +251,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
                   "displayName": "styled.button",
                   "foldedComponentIds": Array [],
                   "render": [Function],
-                  "styledComponentId": "sc-gPEVay",
+                  "styledComponentId": "sc-fAjcbJ",
                   "target": "button",
                   "toString": [Function],
                   "warnTooManyClasses": [Function],
@@ -263,7 +263,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
               onClick={[Function]}
             >
               <button
-                className="sc-gPEVay dplUPy"
+                className="sc-fAjcbJ eUpMol"
                 onClick={[Function]}
               >
                 DEF

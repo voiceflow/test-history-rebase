@@ -6,10 +6,10 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import rootReducer from '@/ducks/_root';
 import createMiddleware from '@/store/middleware';
 
-export default () => (Component) => {
+export default (defaultValue = {}) => (Component) => {
   const history = createMemoryHistory();
   const middleware = createMiddleware(history);
-  const store = createStore(rootReducer(history), {}, compose(applyMiddleware(...middleware)));
+  const store = createStore(rootReducer(history), defaultValue, compose(applyMiddleware(...middleware)));
 
   // eslint-disable-next-line react/display-name
   return (props) => (

@@ -7,9 +7,9 @@ exports[`Storyshots Info Text variants: info 1`] = `
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-chPdSV",
+        "componentId": "sc-cvbbAY",
         "isStatic": false,
-        "lastClassName": "ggjxND",
+        "lastClassName": "bhmCLv",
         "rules": Array [
           "
   border-radius: ",
@@ -33,7 +33,7 @@ exports[`Storyshots Info Text variants: info 1`] = `
       "displayName": "styled.p",
       "foldedComponentIds": Array [],
       "render": [Function],
-      "styledComponentId": "sc-chPdSV",
+      "styledComponentId": "sc-cvbbAY",
       "target": "p",
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -43,7 +43,7 @@ exports[`Storyshots Info Text variants: info 1`] = `
   forwardedRef={null}
 >
   <p
-    className="sc-chPdSV cWHeGY"
+    className="sc-cvbbAY hRuOlb"
   >
     Informative Text
   </p>
@@ -57,9 +57,9 @@ exports[`Storyshots Info Text variants: warn 1`] = `
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-chPdSV",
+        "componentId": "sc-cvbbAY",
         "isStatic": false,
-        "lastClassName": "ggjxND",
+        "lastClassName": "bhmCLv",
         "rules": Array [
           "
   border-radius: ",
@@ -83,7 +83,7 @@ exports[`Storyshots Info Text variants: warn 1`] = `
       "displayName": "styled.p",
       "foldedComponentIds": Array [],
       "render": [Function],
-      "styledComponentId": "sc-chPdSV",
+      "styledComponentId": "sc-cvbbAY",
       "target": "p",
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -94,7 +94,7 @@ exports[`Storyshots Info Text variants: warn 1`] = `
   variant="warn"
 >
   <p
-    className="sc-chPdSV ggjxND"
+    className="sc-cvbbAY bhmCLv"
   >
     Informative Text
   </p>

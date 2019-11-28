@@ -293,16 +293,18 @@ export const VALID_VARIABLE_NAME = /^[A-Za-z]\w{0,16}$/;
 export const AUDIO_FILE_BUCKET_NAME = 'https://s3.amazonaws.com/com.getstoryflow.audio.sandbox';
 
 export const AV_FILE_FORMATS = [
-  'audio/pcm',
-  'audio/wav',
-  'audio/aiff',
-  'audio/aac',
+  'audio/x-wav',
+  'audio/x-aiff',
   'audio/alac',
+  'audio/mpeg',
   'audio/flac',
-  'audio/mp2',
-  'audio/mp3',
-  'audio/aa',
+  'audio/x-flac',
+  'audio/x-wav',
+  'audio/vnd.wave',
+  'audio/wav',
+  'audio/wave',
+  'audio/x-pn-wav',
   'audio/ogg',
 ];
 
-export const AV_FORMATS_STREAMING = [...AV_FILE_FORMATS, 'audio/m3u', 'audio/m3u8,'];
+export const AV_FORMATS_STREAMING = [...AV_FILE_FORMATS, 'audio/x-mpegurl', 'application/vnd.apple.mpegurl'];

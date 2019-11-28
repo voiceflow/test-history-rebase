@@ -170,7 +170,7 @@ class AudioDrop extends Component {
         multiple={false}
         disableClick={false}
         maxSize={MAX_SIZE}
-        accept={this.props.stream ? AV_FORMATS_STREAMING : AV_FILE_FORMATS}
+        accept={this.props.stream ? AV_FORMATS_STREAMING.join(',') : AV_FILE_FORMATS.join(',')}
         onDrop={this.onDrop}
       >
         <div>

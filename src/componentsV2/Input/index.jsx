@@ -10,10 +10,10 @@ const INPUT_VARIANTS = {
   inline: InlineInput,
 };
 
-function Input({ variant, ...props }) {
+function Input({ variant, ...props }, ref) {
   const Component = INPUT_VARIANTS[variant] || DefaultInput;
 
-  return <Component {...props} />;
+  return <Component {...props} ref={ref} />;
 }
 
-export default Input;
+export default React.forwardRef(Input);

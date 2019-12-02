@@ -9,7 +9,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
       "componentStyle": ComponentStyle {
         "componentId": "TabSet-xxhne8-0",
         "isStatic": false,
-        "lastClassName": "iuADMu",
+        "lastClassName": "gkrwSM",
         "rules": Array [
           "display:",
           [Function],
@@ -19,7 +19,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
           [Function],
           " justify-content:center;",
           "height:100%;& ",
-          ".sc-fAjcbJ",
+          ".sc-kgAjT",
           "{height:100%;}",
         ],
       },
@@ -43,7 +43,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
   }
 >
   <div
-    className="Flex__FlexCenter-sc-127y44r-1 TabSet-xxhne8-0 iuADMu"
+    className="Flex__FlexCenter-sc-127y44r-1 TabSet-xxhne8-0 gkrwSM"
     style={
       Object {
         "height": 50,
@@ -57,9 +57,9 @@ exports[`Storyshots Tab Set variants: default 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-fAjcbJ",
+              "componentId": "sc-kgAjT",
               "isStatic": false,
-              "lastClassName": "cWxBOt",
+              "lastClassName": "gQYQTf",
               "rules": Array [
                 "
   ",
@@ -129,7 +129,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
             "displayName": "styled.button",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-fAjcbJ",
+            "styledComponentId": "sc-kgAjT",
             "target": "button",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -139,7 +139,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
         forwardedRef={null}
       >
         <button
-          className="sc-fAjcbJ eUpMol"
+          className="sc-kgAjT iVKQIt"
         >
           Basic Tab
         </button>
@@ -152,9 +152,9 @@ exports[`Storyshots Tab Set variants: default 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-fAjcbJ",
+              "componentId": "sc-kgAjT",
               "isStatic": false,
-              "lastClassName": "cWxBOt",
+              "lastClassName": "gQYQTf",
               "rules": Array [
                 "
   ",
@@ -224,7 +224,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
             "displayName": "styled.button",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-fAjcbJ",
+            "styledComponentId": "sc-kgAjT",
             "target": "button",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -234,7 +234,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
         forwardedRef={null}
       >
         <button
-          className="sc-fAjcbJ eUpMol"
+          className="sc-kgAjT iVKQIt"
         >
           Other Tab
         </button>
@@ -249,9 +249,9 @@ exports[`Storyshots Tab Set variants: default 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-fAjcbJ",
+              "componentId": "sc-kgAjT",
               "isStatic": false,
-              "lastClassName": "cWxBOt",
+              "lastClassName": "gQYQTf",
               "rules": Array [
                 "
   ",
@@ -321,7 +321,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
             "displayName": "styled.button",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-fAjcbJ",
+            "styledComponentId": "sc-kgAjT",
             "target": "button",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -332,7 +332,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
         isActive={true}
       >
         <button
-          className="sc-fAjcbJ cWxBOt"
+          className="sc-kgAjT gQYQTf"
         >
           Active Tab
         </button>

@@ -10,5 +10,6 @@ COPY . .
 RUN echo $NPM_TOKEN > .npmrc
 RUN yarn install
 RUN yarn storybook:build
+RUN rm -rf node_modules
 
 ENTRYPOINT ["npx", "http-server", "storybook_build"]

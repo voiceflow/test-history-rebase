@@ -97,7 +97,7 @@ jobs:
             else
               SEM_VER=$CIRCLE_BRANCH-$CIRCLE_SHA1
               VF_APP_BUILD_ENV=staging
-              VF_APP_API_HOST=api-$CIRCLE_BRANCH.ephemeral.voiceflow.com
+              VF_APP_API_HOST=api-$CIRCLE_BRANCH.development.voiceflow.com
               VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.dev.maintenance/maintenance.json
             fi
             echo -e "Building with SEM_VER=$SEM_VER"
@@ -205,7 +205,7 @@ jobs:
             SEM_VER=$CIRCLE_BRANCH-$CIRCLE_SHA1
             VF_APP_BUILD_ENV=staging
             ENV_NAME=${CIRCLE_BRANCH##*-}
-            VF_APP_API_HOST=api-$ENV_NAME.ephemeral.voiceflow.com
+            VF_APP_API_HOST=api-$ENV_NAME.development.voiceflow.com
             $(aws ecr get-login --no-include-email --region us-east-1)
             docker build \
               --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} \

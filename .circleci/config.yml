@@ -148,6 +148,8 @@ jobs:
       - setup_remote_docker
       - run:
           name: "Build storybook docker image"
+          environment:
+            DOCKER_BUILDKIT: 1
           command: |
             $(aws ecr get-login --no-include-email --region us-east-1)
             docker build \

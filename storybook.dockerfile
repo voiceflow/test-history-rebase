@@ -11,7 +11,4 @@ RUN echo $NPM_TOKEN > .npmrc
 RUN yarn install
 RUN yarn storybook:build
 
-FROM nginx:stable
-
-COPY --from=build /app/storybook_build /var/www
-COPY ./config/nginx.conf /etc/nginx/conf.d/default.conf
+ENTRYPOINT ["npx", "http-server", "storybook_build"]

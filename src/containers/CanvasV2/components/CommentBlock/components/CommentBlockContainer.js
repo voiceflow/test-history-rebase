@@ -36,6 +36,18 @@ const CommentBlockContainer = styled(Flex)`
     &:focus {
       outline: 0;
     }
+
+    &:disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+  }
+
+  .avatar {
+    position: absolute;
+    top: -20px;
+    left: -15px;
+    z-index: 99;
   }
 `;
 

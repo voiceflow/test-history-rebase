@@ -43,7 +43,7 @@ export const crudRemoveReducer = (state, { payload: key }) => removeNormalizedBy
 export const crudReplaceReducer = ({ payload: values }, getKey) => normalize(values, getKey);
 
 const createCRUDReducer = (modelType, getKey = (obj) => stringify(obj.id)) => (state = DEFAULT_STATE, action) => {
-  if (!action.context || action.context.modelType !== modelType) {
+  if (!action.meta || action.meta.modelType !== modelType) {
     return state;
   }
 
@@ -117,7 +117,7 @@ export const createCRUDSelectors = (modelType) => {
 
 // action creators
 
-export const crudAction = (modelType, type, payload) => createAction(type, payload, { modelType });
+export const crudAction = (modelType, type, payload, meta) => createAction(type, payload, { modelType, ...meta });
 
 export const addModel = (modelType) => (key, value) => crudAction(modelType, CRUD_ADD, { key, value });
 
@@ -127,7 +127,7 @@ export const updateModel = (modelType) => (key, value, patch = false) => crudAct
 
 export const removeModel = (modelType) => (key) => crudAction(modelType, CRUD_REMOVE, key);
 
-export const replaceModels = (modelType) => (values) => crudAction(modelType, CRUD_REPLACE, values);
+export const replaceModels = (modelType) => (values, meta) => crudAction(modelType, CRUD_REPLACE, values, meta);
 
 export const createCRUDActionCreators = (modelType) => ({
   add: addModel(modelType),

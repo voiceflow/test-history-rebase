@@ -1,10 +1,13 @@
 import { push } from 'connected-react-router';
 
+import client from '@/client';
 import { RootRoutes } from '@/utils/routes';
 
-import { activeDiagramIDSelector, activeSkillIDSelector, activeSkillSelector } from './skill';
+import * as Modal from './modal';
+import * as Realtime from './realtime';
+import * as Skill from './skill';
 
-export const goTo = (path, search) => push(`/${path}`, search && { search });
+export const goTo = (path, state = null) => push(`/${path}`, state);
 
 export const goToHome = () => goTo('');
 
@@ -12,7 +15,7 @@ export const goToLogin = () => goTo('login');
 
 export const goToDashboard = () => goTo('dashboard');
 
-export const goToDashboardWithSearch = (search) => goTo('dashboard', search);
+export const goToDashboardWithSearch = (search) => goTo(`dashboard${search}`);
 
 export const goToOnboarding = () => goTo('onboarding');
 
@@ -22,26 +25,47 @@ export const goToNewTeamFlow = () => goTo('team/new');
 
 export const gotToNewProjectFlow = (boardID) => goTo(`team/template/${boardID}`);
 
-export const goToCanvas = (versionID, diagramID) => goTo(`${RootRoutes.PROJECT}/${versionID}${diagramID ? `/canvas/${diagramID}` : ''}`);
+export const goToCanvas = (versionID, diagramID, isNewDiagram) => async (dispatch, getState) => {
+  const state = getState();
+  const isRealtimeConnected = Realtime.isRealtimeConnectedSelector(state);
+  const realtimeDiagramID = Realtime.realtimeDiagramIDSelector(state);
+
+  // switch the realtime connection to a new diagram
+  if (isRealtimeConnected && realtimeDiagramID !== diagramID) {
+    try {
+      const locks = isNewDiagram
+        ? await client.socket.realtime.initialize(versionID, diagramID)
+        : await client.socket.realtime.switch(versionID, diagramID);
+
+      dispatch(Realtime.initializeRealtime(diagramID, locks));
+    } catch {
+      dispatch(Modal.setError('Error Switching Flows'));
+    }
+  }
+
+  dispatch(goTo(`${RootRoutes.PROJECT}/${versionID}${diagramID ? `/canvas/${diagramID}` : ''}`));
+};
 
 export const goToTestDiagram = (versionID) => goTo(`${RootRoutes.PROJECT}/${versionID}/test`);
 
 export const goToPublish = (versionID, platform) => goTo(`${RootRoutes.PROJECT}/${versionID}/publish${platform ? `/${platform}` : ''}`);
 
 export const goToCurrentCanvas = () => async (dispatch, getState) => {
-  const versionID = activeSkillIDSelector(getState());
-  const diagramID = activeDiagramIDSelector(getState());
+  const state = getState();
+  const versionID = Skill.activeSkillIDSelector(state);
+  const diagramID = Skill.activeDiagramIDSelector(state);
+
   dispatch(goToCanvas(versionID, diagramID));
 };
 
 export const goToRootDiagram = () => async (dispatch, getState) => {
-  const skill = activeSkillSelector(getState());
+  const skill = Skill.activeSkillSelector(getState());
 
   dispatch(goToCanvas(skill.id, skill.rootDiagramID));
 };
 
 export const goToDiagram = (diagramID) => async (dispatch, getState) => {
-  const versionID = activeSkillIDSelector(getState());
+  const versionID = Skill.activeSkillIDSelector(getState());
 
   dispatch(goToCanvas(versionID, diagramID));
 };

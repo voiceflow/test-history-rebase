@@ -112,3 +112,8 @@ export { default as less } from './less.svg';
 export { default as code } from './code.svg';
 export { default as add } from './add.svg';
 export { default as subtract } from './subtract.svg';
+export { default as globe } from './images/globe.svg';
+export { default as activeProject } from './active-project.svg';
+export { default as clock } from './clock.svg';
+export { default as takeoff } from './takeoff.svg';
+export { default as upgrade } from './Upgrade.svg';

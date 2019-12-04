@@ -14,6 +14,13 @@ const LinkPath = styled.path`
       stroke-dasharray: 10, 2;
       animation: dash 16s linear infinite;
     `}
+
+  ${({ strokeColor }) =>
+    strokeColor &&
+    css`
+      stroke: ${strokeColor};
+      stroke-dasharray: 10, 2;
+    `}
 `;
 
 export default LinkPath;

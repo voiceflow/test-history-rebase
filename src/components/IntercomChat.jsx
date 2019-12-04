@@ -12,7 +12,6 @@ export function IntercomChat({ user }) {
   }
 
   const intercomUser = createIntercomUser(user);
-
   return <Intercom appID="vw911b0m" {...intercomUser} />;
 }
 

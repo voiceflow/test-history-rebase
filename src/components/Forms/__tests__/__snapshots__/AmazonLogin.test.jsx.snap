@@ -30,9 +30,9 @@ exports[`Amazon Login Test render empty card 1`] = `
                 },
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "sc-ifAKCX",
+                  "componentId": "sc-EHOje",
                   "isStatic": false,
-                  "lastClassName": "gCpLIC",
+                  "lastClassName": "cgMRoQ",
                   "rules": Array [
                     "
   ",
@@ -70,6 +70,7 @@ exports[`Amazon Login Test render empty card 1`] = `
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
                     [Function],
                     ";
@@ -98,11 +99,11 @@ exports[`Amazon Login Test render empty card 1`] = `
                 },
                 "displayName": "Styled(Styled(styled.button))",
                 "foldedComponentIds": Array [
-                  "sc-htpNat",
                   "sc-bxivhb",
+                  "sc-ifAKCX",
                 ],
                 "render": [Function],
-                "styledComponentId": "sc-ifAKCX",
+                "styledComponentId": "sc-EHOje",
                 "target": "button",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -113,7 +114,7 @@ exports[`Amazon Login Test render empty card 1`] = `
             onClick={[Function]}
           >
             <button
-              className="sc-htpNat sc-bxivhb LoginWithAmazon sc-ifAKCX gCpLIC"
+              className="sc-bxivhb sc-ifAKCX LoginWithAmazon sc-EHOje cgMRoQ"
               onClick={[Function]}
             >
               <components__PrimaryButtonLabel>

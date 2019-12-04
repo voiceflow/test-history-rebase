@@ -16,17 +16,14 @@ const PATHS = {
 const ADMIN_PATHS = {
   entrypoint: `${sourceDir}admin/index.jsx`,
   buildDir: 'adminbuild/',
-}
+};
 
 function resolvePaths(paths) {
-  return Object.entries(paths).reduce(
-    (acc, [key, value]) => {
-      acc[key] = path.resolve(value);
+  return Object.entries(paths).reduce((acc, [key, value]) => {
+    acc[key] = path.resolve(value);
 
-      return acc;
-    },
-    {}
-  );
+    return acc;
+  }, {});
 }
 
 module.exports = {

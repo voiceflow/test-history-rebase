@@ -6,14 +6,15 @@ import { DashBoard } from '..';
 const clickFn = jest.fn();
 
 const props = {
-  team: {
-    team_id: 1,
+  workspace: {
+    id: 1,
     state: null,
   },
-  teams: {
+  workspaces: {
     byId: {},
     allIds: [],
   },
+  workspaceID: 1,
   projects: {
     byId: {},
     allIds: [],

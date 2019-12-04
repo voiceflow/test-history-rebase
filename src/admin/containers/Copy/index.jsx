@@ -138,7 +138,7 @@ class Copy extends Component {
               </Button>
             </ToField>
             <Select
-              placeholder="Select Board"
+              placeholder="Select Workspace"
               classNamePrefix="select-box"
               className="select-box mb-2"
               value={this.state.target_board}
@@ -157,7 +157,7 @@ class Copy extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.account,
-  teams: state.team,
+  teams: state.workspace,
 });
 
 export default connect(mapStateToProps)(Copy);

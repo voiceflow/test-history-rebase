@@ -1,9 +1,9 @@
-import styled from 'styled-components';
+import { css, styled } from '@/hocs';
 
 const DiagramEdit = styled.div`
   display: flex;
   width: 54px;
-  height: 42px;
+  height: 32px;
   align-items: center;
   justify-content: center;
   margin-right: 8px;
@@ -19,6 +19,13 @@ const DiagramEdit = styled.div`
   &:hover {
     color: #62778c;
   }
+
+  ${({ isOpen }) =>
+    isOpen &&
+    css`
+      opacity: 1;
+      color: #62778c;
+    `}
 `;
 
 export default DiagramEdit;

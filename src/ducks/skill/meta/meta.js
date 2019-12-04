@@ -23,7 +23,7 @@ function skillMetaReducer(state = null, action) {
 
 export default skillMetaReducer;
 
-export const updateSkillMeta = (properties) => createAction(UPDATE_SKILL_META, { ...properties });
+export const updateSkillMeta = (properties, meta) => createAction(UPDATE_SKILL_META, { ...properties }, meta);
 
 // SELECTORS
 export const skillMetaSelector = createSelector(

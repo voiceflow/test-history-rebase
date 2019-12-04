@@ -6,6 +6,7 @@ import { Tooltip } from 'react-tippy';
 
 import Button from '@/components/Button';
 import SvgIcon from '@/components/SvgIcon';
+import { EditPermissionContext } from '@/containers/CanvasV2/contexts';
 import { ALEXA_STATES, publish } from '@/ducks/publish/alexa';
 
 import { UploadButtonWrapper } from '../styled';
@@ -13,6 +14,7 @@ import VendorSelectList from './VendorSelectList';
 
 function UploadButton(props) {
   const { stage, publish, vendors = [], setPopup } = props;
+  const { isViewer } = React.useContext(EditPermissionContext);
   const state = ALEXA_STATES[stage];
 
   const [vendorsOpen, setVendorsOpen] = useState(false);
@@ -30,14 +32,14 @@ function UploadButton(props) {
         position="bottom"
         distance={19}
         className={cn({ 'multi-vendor-tooltip': multiVendor })}
-        disabled={vendorsOpen}
+        disabled={vendorsOpen || isViewer}
       >
         {multiVendor ? (
-          <Button variant="contained" className="publish-btn multi-vendor-btn" onClick={action}>
+          <Button disabled={isViewer} variant="contained" className="publish-btn multi-vendor-btn" onClick={action}>
             {text}
           </Button>
         ) : (
-          <Button variant="contained" className={cn('publish-btn', { 'spinning-publish': !state.end })} onClick={action}>
+          <Button disabled={isViewer} variant="contained" className={cn('publish-btn', { 'spinning-publish': !state.end })} onClick={action}>
             {text}
             <div className="publish-spinner">
               <div className="spinner-icon">

@@ -4,17 +4,23 @@ import { useDispatch } from 'react-redux';
 import client from '@/client';
 import createSocketClient from '@/client/socket';
 import LoadingGate from '@/components/LoadingGate';
+import * as Realtime from '@/ducks/realtime';
+import * as Session from '@/ducks/session';
+import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 
-const SocketLoadingGate = ({ children }) => {
+const SocketLoadingGate = ({ disableWebsockets, children }) => {
   const [isConnected, acknowledgeConnection] = useEnableDisable();
   const dispatch = useDispatch();
   const disconnectSocket = () => client.socket.disconnect();
+  const sessionCancelHandler = (data) => dispatch(Realtime.handleSessionCancelled(data));
+  const websocketsSupported = !!window.WebSocket;
+
   const connectSocket = async () => {
     try {
       client.socket = createSocketClient(dispatch);
 
-      await client.socket.connect();
+      await client.socket.connect(sessionCancelHandler);
 
       acknowledgeConnection();
     } catch (err) {
@@ -22,11 +28,24 @@ const SocketLoadingGate = ({ children }) => {
     }
   };
 
+  React.useEffect(() => {
+    if (!websocketsSupported) {
+      disableWebsockets();
+    }
+  }, []);
+
   return (
-    <LoadingGate label="Connection" isLoaded={isConnected} load={connectSocket} unload={disconnectSocket}>
+    <LoadingGate label="Connection" isLoaded={!websocketsSupported || isConnected} load={connectSocket} unload={disconnectSocket}>
       {children}
     </LoadingGate>
   );
 };
 
-export default SocketLoadingGate;
+const mapDispatchToProps = {
+  disableWebsockets: Session.disableWebsockets,
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SocketLoadingGate);

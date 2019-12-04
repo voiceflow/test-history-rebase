@@ -6,8 +6,11 @@ import { styled } from '@/hocs';
 const Text = styled.span`
   > span {
     ${VariableStyle}
+    display: inline;
+    border: none;
+    padding-top: 0px;
+    margin-bottom: -1px;
     background-color: ${({ color }) => color};
-    border-color: ${({ color }) => color};
     color: #fff;
   }
 `;

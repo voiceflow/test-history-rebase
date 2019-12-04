@@ -15,7 +15,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "ActionIconButtonContainer-sc-1imkol5-0",
           "isStatic": false,
-          "lastClassName": "jgIsvl",
+          "lastClassName": "kBqLoN",
           "rules": Array [
             "
   ",
@@ -53,6 +53,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
             [Function],
             ";
@@ -67,7 +68,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
   color: #8da2b5;
   background: #fff;
   border: 1px solid #fff;
-
+ 
   height: ",
             [Function],
             ";
@@ -104,13 +105,14 @@ exports[`Storyshots Icon Button variants: action 1`] = `
             "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
             " border:1px solid #fff;color:rgba(93,157,245,0.85);",
             [Function],
+            ";",
           ],
         },
         "displayName": "ActionIconButtonContainer",
         "foldedComponentIds": Array [
           "sc-bdVaJa",
-          "sc-bxivhb",
           "sc-ifAKCX",
+          "sc-EHOje",
         ],
         "render": [Function],
         "styledComponentId": "ActionIconButtonContainer-sc-1imkol5-0",
@@ -125,7 +127,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
     variant="action"
   >
     <button
-      className="sc-bdVaJa sc-bxivhb sc-ifAKCX ActionIconButtonContainer-sc-1imkol5-0 jgIsvl"
+      className="sc-bdVaJa sc-ifAKCX sc-EHOje ActionIconButtonContainer-sc-1imkol5-0 kBqLoN"
       disabled={false}
       onClick={[Function]}
     >
@@ -133,7 +135,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
         color="currentColor"
         icon="elipsis"
       >
-        <SvgIcon__SvgIconContainer
+        <styled.span
           color="currentColor"
           size={16}
         >
@@ -144,26 +146,51 @@ exports[`Storyshots Icon Button variants: action 1`] = `
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                  "componentId": "sc-bxivhb",
                   "isStatic": false,
-                  "lastClassName": "kycatR",
+                  "lastClassName": "iqcteL",
                   "rules": Array [
+                    "
+  ",
                     [Function],
-                    " color:",
+                    "
+
+  color: ",
                     [Function],
-                    ";width:",
+                    ";
+  width: ",
                     [Function],
-                    "px;height:",
+                    "px;
+  height: ",
                     [Function],
-                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                    "px;
+  box-sizing: content-box;
+  
+  ",
                     [Function],
-                    ";}",
+                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                    [Function],
+                    ";
+
+  }
+",
                   ],
                 },
-                "displayName": "SvgIcon__SvgIconContainer",
+                "displayName": "styled.span",
                 "foldedComponentIds": Array [],
                 "render": [Function],
-                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                "styledComponentId": "sc-bxivhb",
                 "target": "span",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -174,14 +201,14 @@ exports[`Storyshots Icon Button variants: action 1`] = `
             size={16}
           >
             <span
-              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+              className="sc-bxivhb iqcteL"
               color="currentColor"
               size={16}
             >
               <test-file-stub />
             </span>
           </StyledComponent>
-        </SvgIcon__SvgIconContainer>
+        </styled.span>
       </ForwardRef>
     </button>
   </StyledComponent>
@@ -201,9 +228,9 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-ifAKCX",
+          "componentId": "sc-EHOje",
           "isStatic": false,
-          "lastClassName": "keVtQN",
+          "lastClassName": "ehcvDr",
           "rules": Array [
             "
   ",
@@ -241,6 +268,7 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
             [Function],
             ";
@@ -255,7 +283,7 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
   color: #8da2b5;
   background: #fff;
   border: 1px solid #fff;
-
+ 
   height: ",
             [Function],
             ";
@@ -294,10 +322,10 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
         "displayName": "Styled(Styled(styled.button))",
         "foldedComponentIds": Array [
           "sc-bdVaJa",
-          "sc-bxivhb",
+          "sc-ifAKCX",
         ],
         "render": [Function],
-        "styledComponentId": "sc-ifAKCX",
+        "styledComponentId": "sc-EHOje",
         "target": "button",
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -309,7 +337,7 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
     variant="flat"
   >
     <button
-      className="sc-bdVaJa sc-bxivhb sc-ifAKCX keVtQN"
+      className="sc-bdVaJa sc-ifAKCX sc-EHOje ehcvDr"
       disabled={false}
       onClick={[Function]}
     >
@@ -317,7 +345,7 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
         color="currentColor"
         icon="elipsis"
       >
-        <SvgIcon__SvgIconContainer
+        <styled.span
           color="currentColor"
           size={16}
         >
@@ -328,26 +356,51 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                  "componentId": "sc-bxivhb",
                   "isStatic": false,
-                  "lastClassName": "kycatR",
+                  "lastClassName": "iqcteL",
                   "rules": Array [
+                    "
+  ",
                     [Function],
-                    " color:",
+                    "
+
+  color: ",
                     [Function],
-                    ";width:",
+                    ";
+  width: ",
                     [Function],
-                    "px;height:",
+                    "px;
+  height: ",
                     [Function],
-                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                    "px;
+  box-sizing: content-box;
+  
+  ",
                     [Function],
-                    ";}",
+                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                    [Function],
+                    ";
+
+  }
+",
                   ],
                 },
-                "displayName": "SvgIcon__SvgIconContainer",
+                "displayName": "styled.span",
                 "foldedComponentIds": Array [],
                 "render": [Function],
-                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                "styledComponentId": "sc-bxivhb",
                 "target": "span",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -358,14 +411,14 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
             size={16}
           >
             <span
-              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+              className="sc-bxivhb iqcteL"
               color="currentColor"
               size={16}
             >
               <test-file-stub />
             </span>
           </StyledComponent>
-        </SvgIcon__SvgIconContainer>
+        </styled.span>
       </ForwardRef>
     </button>
   </StyledComponent>
@@ -384,9 +437,9 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-ifAKCX",
+          "componentId": "sc-EHOje",
           "isStatic": false,
-          "lastClassName": "keVtQN",
+          "lastClassName": "ehcvDr",
           "rules": Array [
             "
   ",
@@ -424,6 +477,7 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
             [Function],
             ";
@@ -438,7 +492,7 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
   color: #8da2b5;
   background: #fff;
   border: 1px solid #fff;
-
+ 
   height: ",
             [Function],
             ";
@@ -477,10 +531,10 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
         "displayName": "Styled(Styled(styled.button))",
         "foldedComponentIds": Array [
           "sc-bdVaJa",
-          "sc-bxivhb",
+          "sc-ifAKCX",
         ],
         "render": [Function],
-        "styledComponentId": "sc-ifAKCX",
+        "styledComponentId": "sc-EHOje",
         "target": "button",
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -491,7 +545,7 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
     onClick={[Function]}
   >
     <button
-      className="sc-bdVaJa sc-bxivhb sc-ifAKCX dGDbTb"
+      className="sc-bdVaJa sc-ifAKCX sc-EHOje gydlaL"
       disabled={false}
       onClick={[Function]}
     >
@@ -499,7 +553,7 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
         color="currentColor"
         icon="elipsis"
       >
-        <SvgIcon__SvgIconContainer
+        <styled.span
           color="currentColor"
           size={16}
         >
@@ -510,26 +564,51 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                  "componentId": "sc-bxivhb",
                   "isStatic": false,
-                  "lastClassName": "kycatR",
+                  "lastClassName": "iqcteL",
                   "rules": Array [
+                    "
+  ",
                     [Function],
-                    " color:",
+                    "
+
+  color: ",
                     [Function],
-                    ";width:",
+                    ";
+  width: ",
                     [Function],
-                    "px;height:",
+                    "px;
+  height: ",
                     [Function],
-                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                    "px;
+  box-sizing: content-box;
+  
+  ",
                     [Function],
-                    ";}",
+                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                    [Function],
+                    ";
+
+  }
+",
                   ],
                 },
-                "displayName": "SvgIcon__SvgIconContainer",
+                "displayName": "styled.span",
                 "foldedComponentIds": Array [],
                 "render": [Function],
-                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                "styledComponentId": "sc-bxivhb",
                 "target": "span",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -540,14 +619,14 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
             size={16}
           >
             <span
-              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+              className="sc-bxivhb iqcteL"
               color="currentColor"
               size={16}
             >
               <test-file-stub />
             </span>
           </StyledComponent>
-        </SvgIcon__SvgIconContainer>
+        </styled.span>
       </ForwardRef>
     </button>
   </StyledComponent>

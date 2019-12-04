@@ -12,13 +12,13 @@ import Link from '@/componentsV2/Link';
 import { Content, Section } from '@/containers/CanvasV2/components/BlockEditor';
 import { withDisplayModalContext } from '@/containers/CanvasV2/contexts/DisplayModalContext';
 import { allDisplaysSelector } from '@/ducks/display';
-import { goToDisplays } from '@/ducks/router';
+import { goToDisplays, goToNewDisplay } from '@/ducks/router';
 import { activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { preventDefault } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 
-function DisplayEditor({ data, onChange, displays, goToDisplays, displayModal }) {
+function DisplayEditor({ data, onChange, displays, goToDisplays, goToNewDisplay, displayModal }) {
   const { setDisplayID, setDataSource, setAPLCommands, toggle } = displayModal;
   if (displays.length === 0) {
     return (
@@ -28,7 +28,7 @@ function DisplayEditor({ data, onChange, displays, goToDisplays, displayModal })
           <br />
           <label className="dark">No Displays Exist</label>
           <div className="text-muted">You currently have no Multimodal Displays</div>
-          <button className="btn btn-secondary mt-4" onClick={goToDisplays}>
+          <button className="btn btn-secondary mt-4" onClick={goToNewDisplay}>
             Add Displays
           </button>
         </div>
@@ -162,7 +162,7 @@ function DisplayEditor({ data, onChange, displays, goToDisplays, displayModal })
           <>
             <Divider>or</Divider>
 
-            <button className="btn-clear btn-block btn-lg" onClick={goToDisplays}>
+            <button className="btn-clear btn-block btn-lg" onClick={goToNewDisplay}>
               Create new visual
             </button>
           </>
@@ -179,10 +179,12 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   goToDisplays,
+  goToNewDisplay,
 };
 
-const mergeProps = ({ skillID }, { goToDisplays }) => ({
+const mergeProps = ({ skillID }, { goToDisplays, goToNewDisplay }) => ({
   goToDisplays: () => goToDisplays(skillID),
+  goToNewDisplay: () => goToNewDisplay(skillID),
 });
 
 export default compose(

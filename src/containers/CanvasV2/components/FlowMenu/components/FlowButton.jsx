@@ -3,21 +3,24 @@ import _ from 'lodash';
 import React from 'react';
 import { Alert } from 'reactstrap';
 
+import { Members } from '@/components/User/User';
 import Dropdown from '@/componentsV2/Dropdown';
 import Input from '@/componentsV2/Input';
 import { ROOT_DIAGRAM_NAME } from '@/constants';
-import { copyDiagram, deleteDiagram, renameDiagram } from '@/ducks/diagram';
-import { setConfirm } from '@/ducks/modal';
-import { goToDiagram } from '@/ducks/router';
+import * as Diagram from '@/ducks/diagram';
+import * as Modal from '@/ducks/modal';
+import * as Router from '@/ducks/router';
 import { activeDiagramIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { diagramViewersSelector } from '@/store/selectors';
 import { stopPropagation } from '@/utils/dom';
 
 import DiagramBlock from './DiagramBlock';
 import DiagramButton from './DiagramButton';
 import DiagramEdit from './DiagramEdit';
+import MembersWrapper from './MembersWrapper';
 
-function FlowButton({ id, name, isLimit, activeDiagram, goToDiagram, depth = 0, copyFlow, deleteFlow, renameFlow }) {
+function FlowButton({ id, name, isLimit, activeDiagram, goToDiagram, depth = 0, copyFlow, deleteFlow, renameFlow, viewers }) {
   const [state, setState] = React.useState({ edit: false, name: name || '' });
 
   const onChange = React.useCallback(({ target }) => setState((s) => ({ ...s, name: target.value })), [setState]);
@@ -30,12 +33,7 @@ function FlowButton({ id, name, isLimit, activeDiagram, goToDiagram, depth = 0, 
 
   return (
     <DiagramBlock>
-      <DiagramButton
-        depth={depth}
-        onClick={isActive ? null : () => goToDiagram(id)}
-        disabled={isLimit}
-        className={cn('diagram-button', { active: isActive })}
-      >
+      <DiagramButton depth={depth} onClick={isActive ? null : goToDiagram} disabled={isLimit} className={cn('diagram-button', { active: isActive })}>
         {isLimit ? (
           <span className="diagram-text">{name}</span>
         ) : (
@@ -72,15 +70,19 @@ function FlowButton({ id, name, isLimit, activeDiagram, goToDiagram, depth = 0, 
                     label: 'Copy',
                     onClick: copyFlow,
                   },
-                  {
-                    label: 'Delete',
-                    onClick: deleteFlow,
-                  },
+                  ...(viewers.length
+                    ? []
+                    : [
+                        {
+                          label: 'Delete',
+                          onClick: deleteFlow,
+                        },
+                      ]),
                 ]}
                 placement="bottom-end"
               >
-                {(ref, onToggle) => (
-                  <DiagramEdit tag="button" onClick={stopPropagation(onToggle)} ref={ref}>
+                {(ref, onToggle, isOpen) => (
+                  <DiagramEdit tag="button" onClick={stopPropagation(onToggle)} ref={ref} isOpen={isOpen}>
                     <i className="fas fa-cog" />
                   </DiagramEdit>
                 )}
@@ -88,6 +90,10 @@ function FlowButton({ id, name, isLimit, activeDiagram, goToDiagram, depth = 0, 
             )}
           </>
         )}
+
+        <MembersWrapper>
+          <Members members={viewers} />
+        </MembersWrapper>
       </DiagramButton>
     </DiagramBlock>
   );
@@ -95,17 +101,20 @@ function FlowButton({ id, name, isLimit, activeDiagram, goToDiagram, depth = 0, 
 
 const mapStateToProps = {
   activeDiagram: activeDiagramIDSelector,
+  viewers: diagramViewersSelector,
 };
 
 const mapDispatchToProps = {
-  renameDiagram,
-  copyDiagram,
-  deleteDiagram,
-  goToDiagram,
-  setConfirm,
+  renameDiagram: Diagram.renameDiagram,
+  copyDiagram: Diagram.copyDiagram,
+  deleteDiagram: Diagram.deleteDiagram,
+  goToDiagram: Router.goToDiagram,
+  setConfirm: Modal.setConfirm,
+  setError: Modal.setError,
 };
 
-const mergeProps = (_, { copyDiagram, deleteDiagram, renameDiagram, setConfirm }, { id }) => ({
+const mergeProps = ({ viewers: getViewers }, { copyDiagram, deleteDiagram, renameDiagram, goToDiagram, setConfirm, setError }, { id }) => ({
+  viewers: getViewers(id),
   copyFlow: () => copyDiagram(id),
   deleteFlow: () =>
     setConfirm({
@@ -120,9 +129,10 @@ const mergeProps = (_, { copyDiagram, deleteDiagram, renameDiagram, setConfirm }
           Are you sure ?
         </Alert>
       ),
-      confirm: () => deleteDiagram(id),
+      confirm: () => deleteDiagram(id).catch((err) => setError(err.message)),
     }),
   renameFlow: (name) => renameDiagram(id, name),
+  goToDiagram: () => goToDiagram(id),
 });
 
 export default connect(

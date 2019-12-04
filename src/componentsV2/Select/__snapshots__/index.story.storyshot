@@ -34,9 +34,9 @@ exports[`Storyshots Select variants: creatable 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-fMiknA",
+              "componentId": "sc-cJSrbW",
               "isStatic": true,
-              "lastClassName": "gCGJfv",
+              "lastClassName": "fdJBli",
               "rules": Array [
                 "
   position: relative;
@@ -48,7 +48,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
             "displayName": "styled.div",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-fMiknA",
+            "styledComponentId": "sc-cJSrbW",
             "target": "div",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -61,7 +61,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
         tabIndex={0}
       >
         <div
-          className="sc-fMiknA gCGJfv"
+          className="sc-cJSrbW fdJBli"
           onClick={[Function]}
           onFocus={[Function]}
           tabIndex={0}
@@ -89,9 +89,9 @@ exports[`Storyshots Select variants: creatable 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-dVhcbM",
+                        "componentId": "sc-ksYbfQ",
                         "isStatic": false,
-                        "lastClassName": "fvMWwL",
+                        "lastClassName": "hIntx",
                         "rules": Array [
                           "
   ",
@@ -107,7 +107,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
                       "displayName": "Styled(Component)",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-dVhcbM",
+                      "styledComponentId": "sc-ksYbfQ",
                       "target": Object {
                         "$$typeof": Symbol(react.forward_ref),
                         "render": [Function],
@@ -126,7 +126,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
                   value=""
                 >
                   <ForwardRef(Input)
-                    className="sc-dVhcbM iKFwOb"
+                    className="sc-ksYbfQ hrAIbn"
                     disabled={true}
                     isFocused={false}
                     onChange={[Function]}
@@ -135,8 +135,8 @@ exports[`Storyshots Select variants: creatable 1`] = `
                     placeholder="placeholder"
                     value=""
                   >
-                    <styled.input
-                      className="sc-dVhcbM iKFwOb"
+                    <ForwardRef
+                      className="sc-ksYbfQ hrAIbn"
                       disabled={true}
                       isFocused={false}
                       onChange={[Function]}
@@ -145,26 +145,36 @@ exports[`Storyshots Select variants: creatable 1`] = `
                       placeholder="placeholder"
                       value=""
                     >
-                      <StyledComponent
-                        className="sc-dVhcbM iKFwOb"
+                      <styled.input
+                        className="sc-ksYbfQ hrAIbn"
                         disabled={true}
-                        forwardedComponent={
-                          Object {
-                            "$$typeof": Symbol(react.forward_ref),
-                            "attrs": Array [],
-                            "componentStyle": ComponentStyle {
-                              "componentId": "sc-kgoBCf",
-                              "isStatic": false,
-                              "lastClassName": "hQZYxl",
-                              "rules": Array [
-                                "
+                        isFocused={false}
+                        onChange={[Function]}
+                        onClick={null}
+                        onFocus={null}
+                        placeholder="placeholder"
+                        value=""
+                      >
+                        <StyledComponent
+                          className="sc-ksYbfQ hrAIbn"
+                          disabled={true}
+                          forwardedComponent={
+                            Object {
+                              "$$typeof": Symbol(react.forward_ref),
+                              "attrs": Array [],
+                              "componentStyle": ComponentStyle {
+                                "componentId": "sc-jKJlTe",
+                                "isStatic": false,
+                                "lastClassName": "hcCSZd",
+                                "rules": Array [
+                                  "
   ",
-                                "
+                                  "
   ",
-                                "
+                                  "
   min-height: 42px;
 ",
-                                ";
+                                  ";
   display: block;
   width: 100%;
   color: #132042;
@@ -173,59 +183,71 @@ exports[`Storyshots Select variants: creatable 1`] = `
   background: #fff;
   border: 1px solid #d2dae2;
   border-radius: 6px;
-  padding: 10px ",
-                                [Function],
-                                "px 10px;
-  line-height: 20px;
+  padding: 9px 16px 9px;
+  line-height: 22px;
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+
+  &:disabled {
+    ",
+                                  "
+  color: #949db0;
+  pointer-events: none;
+",
+                                  "
+  }
 
   &:active,
   &:focus,
   &:focus-within {
     ",
-                                "
+                                  "
   border: 1px solid #5d9df5;
   box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
   outline: 0;
 ",
-                                "
+                                  "
   }
+
+  ",
+                                  [Function],
+                                  "
 ",
-                                "
+                                  "
 ",
-                              ],
-                            },
-                            "displayName": "styled.input",
-                            "foldedComponentIds": Array [],
-                            "render": [Function],
-                            "styledComponentId": "sc-kgoBCf",
-                            "target": "input",
-                            "toString": [Function],
-                            "warnTooManyClasses": [Function],
-                            "withComponent": [Function],
+                                ],
+                              },
+                              "displayName": "styled.input",
+                              "foldedComponentIds": Array [],
+                              "render": [Function],
+                              "styledComponentId": "sc-jKJlTe",
+                              "target": "input",
+                              "toString": [Function],
+                              "warnTooManyClasses": [Function],
+                              "withComponent": [Function],
+                            }
                           }
-                        }
-                        forwardedRef={[Function]}
-                        isFocused={false}
-                        onChange={[Function]}
-                        onClick={null}
-                        onFocus={null}
-                        placeholder="placeholder"
-                        value=""
-                      >
-                        <input
-                          className="sc-dVhcbM iKFwOb sc-kgoBCf hQZYxl"
-                          disabled={true}
+                          forwardedRef={[Function]}
+                          isFocused={false}
                           onChange={[Function]}
                           onClick={null}
                           onFocus={null}
                           placeholder="placeholder"
                           value=""
-                        />
-                      </StyledComponent>
-                    </styled.input>
+                        >
+                          <input
+                            className="sc-ksYbfQ hrAIbn sc-jKJlTe hcCSZd"
+                            disabled={true}
+                            onChange={[Function]}
+                            onClick={null}
+                            onFocus={null}
+                            placeholder="placeholder"
+                            value=""
+                          />
+                        </StyledComponent>
+                      </styled.input>
+                    </ForwardRef>
                   </ForwardRef(Input)>
                 </StyledComponent>
               </Styled(Component)>
@@ -273,9 +295,9 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-fMiknA",
+              "componentId": "sc-cJSrbW",
               "isStatic": true,
-              "lastClassName": "gCGJfv",
+              "lastClassName": "fdJBli",
               "rules": Array [
                 "
   position: relative;
@@ -287,7 +309,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
             "displayName": "styled.div",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-fMiknA",
+            "styledComponentId": "sc-cJSrbW",
             "target": "div",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -300,7 +322,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
         tabIndex={-1}
       >
         <div
-          className="sc-fMiknA gCGJfv"
+          className="sc-cJSrbW fdJBli"
           onClick={null}
           onFocus={null}
           tabIndex={-1}
@@ -329,9 +351,9 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-dVhcbM",
+                        "componentId": "sc-ksYbfQ",
                         "isStatic": false,
-                        "lastClassName": "fvMWwL",
+                        "lastClassName": "hIntx",
                         "rules": Array [
                           "
   ",
@@ -347,7 +369,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                       "displayName": "Styled(Component)",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-dVhcbM",
+                      "styledComponentId": "sc-ksYbfQ",
                       "target": Object {
                         "$$typeof": Symbol(react.forward_ref),
                         "render": [Function],
@@ -367,7 +389,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                   value=""
                 >
                   <ForwardRef(Input)
-                    className="sc-dVhcbM fvMWwL"
+                    className="sc-ksYbfQ hIntx"
                     disabled={false}
                     isFocused={false}
                     onChange={[Function]}
@@ -377,8 +399,8 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                     searchable={true}
                     value=""
                   >
-                    <styled.input
-                      className="sc-dVhcbM fvMWwL"
+                    <ForwardRef
+                      className="sc-ksYbfQ hIntx"
                       disabled={false}
                       isFocused={false}
                       onChange={[Function]}
@@ -388,69 +410,9 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                       searchable={true}
                       value=""
                     >
-                      <StyledComponent
-                        className="sc-dVhcbM fvMWwL"
+                      <styled.input
+                        className="sc-ksYbfQ hIntx"
                         disabled={false}
-                        forwardedComponent={
-                          Object {
-                            "$$typeof": Symbol(react.forward_ref),
-                            "attrs": Array [],
-                            "componentStyle": ComponentStyle {
-                              "componentId": "sc-kgoBCf",
-                              "isStatic": false,
-                              "lastClassName": "hQZYxl",
-                              "rules": Array [
-                                "
-  ",
-                                "
-  ",
-                                "
-  min-height: 42px;
-",
-                                ";
-  display: block;
-  width: 100%;
-  color: #132042;
-  font: normal 15px Open Sans, Arial, sans-serif;
-  font-size: 15px;
-  background: #fff;
-  border: 1px solid #d2dae2;
-  border-radius: 6px;
-  padding: 10px ",
-                                [Function],
-                                "px 10px;
-  line-height: 20px;
-  cursor: text;
-  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
-    max-height 0.12s linear;
-
-  &:active,
-  &:focus,
-  &:focus-within {
-    ",
-                                "
-  border: 1px solid #5d9df5;
-  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
-  outline: 0;
-",
-                                "
-  }
-",
-                                "
-",
-                              ],
-                            },
-                            "displayName": "styled.input",
-                            "foldedComponentIds": Array [],
-                            "render": [Function],
-                            "styledComponentId": "sc-kgoBCf",
-                            "target": "input",
-                            "toString": [Function],
-                            "warnTooManyClasses": [Function],
-                            "withComponent": [Function],
-                          }
-                        }
-                        forwardedRef={[Function]}
                         isFocused={false}
                         onChange={[Function]}
                         onClick={[Function]}
@@ -459,17 +421,100 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                         searchable={true}
                         value=""
                       >
-                        <input
-                          className="sc-dVhcbM fvMWwL sc-kgoBCf hQZYxl"
+                        <StyledComponent
+                          className="sc-ksYbfQ hIntx"
                           disabled={false}
+                          forwardedComponent={
+                            Object {
+                              "$$typeof": Symbol(react.forward_ref),
+                              "attrs": Array [],
+                              "componentStyle": ComponentStyle {
+                                "componentId": "sc-jKJlTe",
+                                "isStatic": false,
+                                "lastClassName": "hcCSZd",
+                                "rules": Array [
+                                  "
+  ",
+                                  "
+  ",
+                                  "
+  min-height: 42px;
+",
+                                  ";
+  display: block;
+  width: 100%;
+  color: #132042;
+  font: normal 15px Open Sans, Arial, sans-serif;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d2dae2;
+  border-radius: 6px;
+  padding: 9px 16px 9px;
+  line-height: 22px;
+  cursor: text;
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+    max-height 0.12s linear;
+
+  &:disabled {
+    ",
+                                  "
+  color: #949db0;
+  pointer-events: none;
+",
+                                  "
+  }
+
+  &:active,
+  &:focus,
+  &:focus-within {
+    ",
+                                  "
+  border: 1px solid #5d9df5;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
+  outline: 0;
+",
+                                  "
+  }
+
+  ",
+                                  [Function],
+                                  "
+",
+                                  "
+",
+                                ],
+                              },
+                              "displayName": "styled.input",
+                              "foldedComponentIds": Array [],
+                              "render": [Function],
+                              "styledComponentId": "sc-jKJlTe",
+                              "target": "input",
+                              "toString": [Function],
+                              "warnTooManyClasses": [Function],
+                              "withComponent": [Function],
+                            }
+                          }
+                          forwardedRef={[Function]}
+                          isFocused={false}
                           onChange={[Function]}
                           onClick={[Function]}
                           onFocus={[Function]}
                           placeholder="placeholder"
+                          searchable={true}
                           value=""
-                        />
-                      </StyledComponent>
-                    </styled.input>
+                        >
+                          <input
+                            className="sc-ksYbfQ hIntx sc-jKJlTe hcCSZd"
+                            disabled={false}
+                            onChange={[Function]}
+                            onClick={[Function]}
+                            onFocus={[Function]}
+                            placeholder="placeholder"
+                            value=""
+                          />
+                        </StyledComponent>
+                      </styled.input>
+                    </ForwardRef>
                   </ForwardRef(Input)>
                 </StyledComponent>
               </Styled(Component)>
@@ -560,9 +605,9 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-fMiknA",
+              "componentId": "sc-cJSrbW",
               "isStatic": true,
-              "lastClassName": "gCGJfv",
+              "lastClassName": "fdJBli",
               "rules": Array [
                 "
   position: relative;
@@ -574,7 +619,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
             "displayName": "styled.div",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-fMiknA",
+            "styledComponentId": "sc-cJSrbW",
             "target": "div",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -587,7 +632,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
         tabIndex={-1}
       >
         <div
-          className="sc-fMiknA gCGJfv"
+          className="sc-cJSrbW fdJBli"
           onClick={null}
           onFocus={null}
           tabIndex={-1}
@@ -616,9 +661,9 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-dVhcbM",
+                        "componentId": "sc-ksYbfQ",
                         "isStatic": false,
-                        "lastClassName": "fvMWwL",
+                        "lastClassName": "hIntx",
                         "rules": Array [
                           "
   ",
@@ -634,7 +679,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                       "displayName": "Styled(Component)",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-dVhcbM",
+                      "styledComponentId": "sc-ksYbfQ",
                       "target": Object {
                         "$$typeof": Symbol(react.forward_ref),
                         "render": [Function],
@@ -654,7 +699,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                   value=""
                 >
                   <ForwardRef(Input)
-                    className="sc-dVhcbM fvMWwL"
+                    className="sc-ksYbfQ hIntx"
                     disabled={false}
                     isFocused={false}
                     onChange={[Function]}
@@ -664,8 +709,8 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                     searchable={true}
                     value=""
                   >
-                    <styled.input
-                      className="sc-dVhcbM fvMWwL"
+                    <ForwardRef
+                      className="sc-ksYbfQ hIntx"
                       disabled={false}
                       isFocused={false}
                       onChange={[Function]}
@@ -675,69 +720,9 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                       searchable={true}
                       value=""
                     >
-                      <StyledComponent
-                        className="sc-dVhcbM fvMWwL"
+                      <styled.input
+                        className="sc-ksYbfQ hIntx"
                         disabled={false}
-                        forwardedComponent={
-                          Object {
-                            "$$typeof": Symbol(react.forward_ref),
-                            "attrs": Array [],
-                            "componentStyle": ComponentStyle {
-                              "componentId": "sc-kgoBCf",
-                              "isStatic": false,
-                              "lastClassName": "hQZYxl",
-                              "rules": Array [
-                                "
-  ",
-                                "
-  ",
-                                "
-  min-height: 42px;
-",
-                                ";
-  display: block;
-  width: 100%;
-  color: #132042;
-  font: normal 15px Open Sans, Arial, sans-serif;
-  font-size: 15px;
-  background: #fff;
-  border: 1px solid #d2dae2;
-  border-radius: 6px;
-  padding: 10px ",
-                                [Function],
-                                "px 10px;
-  line-height: 20px;
-  cursor: text;
-  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
-    max-height 0.12s linear;
-
-  &:active,
-  &:focus,
-  &:focus-within {
-    ",
-                                "
-  border: 1px solid #5d9df5;
-  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
-  outline: 0;
-",
-                                "
-  }
-",
-                                "
-",
-                              ],
-                            },
-                            "displayName": "styled.input",
-                            "foldedComponentIds": Array [],
-                            "render": [Function],
-                            "styledComponentId": "sc-kgoBCf",
-                            "target": "input",
-                            "toString": [Function],
-                            "warnTooManyClasses": [Function],
-                            "withComponent": [Function],
-                          }
-                        }
-                        forwardedRef={[Function]}
                         isFocused={false}
                         onChange={[Function]}
                         onClick={[Function]}
@@ -746,17 +731,100 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                         searchable={true}
                         value=""
                       >
-                        <input
-                          className="sc-dVhcbM fvMWwL sc-kgoBCf hQZYxl"
+                        <StyledComponent
+                          className="sc-ksYbfQ hIntx"
                           disabled={false}
+                          forwardedComponent={
+                            Object {
+                              "$$typeof": Symbol(react.forward_ref),
+                              "attrs": Array [],
+                              "componentStyle": ComponentStyle {
+                                "componentId": "sc-jKJlTe",
+                                "isStatic": false,
+                                "lastClassName": "hcCSZd",
+                                "rules": Array [
+                                  "
+  ",
+                                  "
+  ",
+                                  "
+  min-height: 42px;
+",
+                                  ";
+  display: block;
+  width: 100%;
+  color: #132042;
+  font: normal 15px Open Sans, Arial, sans-serif;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d2dae2;
+  border-radius: 6px;
+  padding: 9px 16px 9px;
+  line-height: 22px;
+  cursor: text;
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+    max-height 0.12s linear;
+
+  &:disabled {
+    ",
+                                  "
+  color: #949db0;
+  pointer-events: none;
+",
+                                  "
+  }
+
+  &:active,
+  &:focus,
+  &:focus-within {
+    ",
+                                  "
+  border: 1px solid #5d9df5;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
+  outline: 0;
+",
+                                  "
+  }
+
+  ",
+                                  [Function],
+                                  "
+",
+                                  "
+",
+                                ],
+                              },
+                              "displayName": "styled.input",
+                              "foldedComponentIds": Array [],
+                              "render": [Function],
+                              "styledComponentId": "sc-jKJlTe",
+                              "target": "input",
+                              "toString": [Function],
+                              "warnTooManyClasses": [Function],
+                              "withComponent": [Function],
+                            }
+                          }
+                          forwardedRef={[Function]}
+                          isFocused={false}
                           onChange={[Function]}
                           onClick={[Function]}
                           onFocus={[Function]}
                           placeholder="placeholder"
+                          searchable={true}
                           value=""
-                        />
-                      </StyledComponent>
-                    </styled.input>
+                        >
+                          <input
+                            className="sc-ksYbfQ hIntx sc-jKJlTe hcCSZd"
+                            disabled={false}
+                            onChange={[Function]}
+                            onClick={[Function]}
+                            onFocus={[Function]}
+                            placeholder="placeholder"
+                            value=""
+                          />
+                        </StyledComponent>
+                      </styled.input>
+                    </ForwardRef>
                   </ForwardRef(Input)>
                 </StyledComponent>
               </Styled(Component)>
@@ -800,9 +868,9 @@ exports[`Storyshots Select variants: default 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-fMiknA",
+              "componentId": "sc-cJSrbW",
               "isStatic": true,
-              "lastClassName": "gCGJfv",
+              "lastClassName": "fdJBli",
               "rules": Array [
                 "
   position: relative;
@@ -814,7 +882,7 @@ exports[`Storyshots Select variants: default 1`] = `
             "displayName": "styled.div",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-fMiknA",
+            "styledComponentId": "sc-cJSrbW",
             "target": "div",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -827,7 +895,7 @@ exports[`Storyshots Select variants: default 1`] = `
         tabIndex={0}
       >
         <div
-          className="sc-fMiknA gCGJfv"
+          className="sc-cJSrbW fdJBli"
           onClick={[Function]}
           onFocus={[Function]}
           tabIndex={0}
@@ -855,9 +923,9 @@ exports[`Storyshots Select variants: default 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-dVhcbM",
+                        "componentId": "sc-ksYbfQ",
                         "isStatic": false,
-                        "lastClassName": "fvMWwL",
+                        "lastClassName": "hIntx",
                         "rules": Array [
                           "
   ",
@@ -873,7 +941,7 @@ exports[`Storyshots Select variants: default 1`] = `
                       "displayName": "Styled(Component)",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-dVhcbM",
+                      "styledComponentId": "sc-ksYbfQ",
                       "target": Object {
                         "$$typeof": Symbol(react.forward_ref),
                         "render": [Function],
@@ -892,7 +960,7 @@ exports[`Storyshots Select variants: default 1`] = `
                   value=""
                 >
                   <ForwardRef(Input)
-                    className="sc-dVhcbM iKFwOb"
+                    className="sc-ksYbfQ hrAIbn"
                     disabled={true}
                     isFocused={false}
                     onChange={[Function]}
@@ -901,8 +969,8 @@ exports[`Storyshots Select variants: default 1`] = `
                     placeholder="placeholder"
                     value=""
                   >
-                    <styled.input
-                      className="sc-dVhcbM iKFwOb"
+                    <ForwardRef
+                      className="sc-ksYbfQ hrAIbn"
                       disabled={true}
                       isFocused={false}
                       onChange={[Function]}
@@ -911,26 +979,36 @@ exports[`Storyshots Select variants: default 1`] = `
                       placeholder="placeholder"
                       value=""
                     >
-                      <StyledComponent
-                        className="sc-dVhcbM iKFwOb"
+                      <styled.input
+                        className="sc-ksYbfQ hrAIbn"
                         disabled={true}
-                        forwardedComponent={
-                          Object {
-                            "$$typeof": Symbol(react.forward_ref),
-                            "attrs": Array [],
-                            "componentStyle": ComponentStyle {
-                              "componentId": "sc-kgoBCf",
-                              "isStatic": false,
-                              "lastClassName": "hQZYxl",
-                              "rules": Array [
-                                "
+                        isFocused={false}
+                        onChange={[Function]}
+                        onClick={null}
+                        onFocus={null}
+                        placeholder="placeholder"
+                        value=""
+                      >
+                        <StyledComponent
+                          className="sc-ksYbfQ hrAIbn"
+                          disabled={true}
+                          forwardedComponent={
+                            Object {
+                              "$$typeof": Symbol(react.forward_ref),
+                              "attrs": Array [],
+                              "componentStyle": ComponentStyle {
+                                "componentId": "sc-jKJlTe",
+                                "isStatic": false,
+                                "lastClassName": "hcCSZd",
+                                "rules": Array [
+                                  "
   ",
-                                "
+                                  "
   ",
-                                "
+                                  "
   min-height: 42px;
 ",
-                                ";
+                                  ";
   display: block;
   width: 100%;
   color: #132042;
@@ -939,59 +1017,71 @@ exports[`Storyshots Select variants: default 1`] = `
   background: #fff;
   border: 1px solid #d2dae2;
   border-radius: 6px;
-  padding: 10px ",
-                                [Function],
-                                "px 10px;
-  line-height: 20px;
+  padding: 9px 16px 9px;
+  line-height: 22px;
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+
+  &:disabled {
+    ",
+                                  "
+  color: #949db0;
+  pointer-events: none;
+",
+                                  "
+  }
 
   &:active,
   &:focus,
   &:focus-within {
     ",
-                                "
+                                  "
   border: 1px solid #5d9df5;
   box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
   outline: 0;
 ",
-                                "
+                                  "
   }
+
+  ",
+                                  [Function],
+                                  "
 ",
-                                "
+                                  "
 ",
-                              ],
-                            },
-                            "displayName": "styled.input",
-                            "foldedComponentIds": Array [],
-                            "render": [Function],
-                            "styledComponentId": "sc-kgoBCf",
-                            "target": "input",
-                            "toString": [Function],
-                            "warnTooManyClasses": [Function],
-                            "withComponent": [Function],
+                                ],
+                              },
+                              "displayName": "styled.input",
+                              "foldedComponentIds": Array [],
+                              "render": [Function],
+                              "styledComponentId": "sc-jKJlTe",
+                              "target": "input",
+                              "toString": [Function],
+                              "warnTooManyClasses": [Function],
+                              "withComponent": [Function],
+                            }
                           }
-                        }
-                        forwardedRef={[Function]}
-                        isFocused={false}
-                        onChange={[Function]}
-                        onClick={null}
-                        onFocus={null}
-                        placeholder="placeholder"
-                        value=""
-                      >
-                        <input
-                          className="sc-dVhcbM iKFwOb sc-kgoBCf hQZYxl"
-                          disabled={true}
+                          forwardedRef={[Function]}
+                          isFocused={false}
                           onChange={[Function]}
                           onClick={null}
                           onFocus={null}
                           placeholder="placeholder"
                           value=""
-                        />
-                      </StyledComponent>
-                    </styled.input>
+                        >
+                          <input
+                            className="sc-ksYbfQ hrAIbn sc-jKJlTe hcCSZd"
+                            disabled={true}
+                            onChange={[Function]}
+                            onClick={null}
+                            onFocus={null}
+                            placeholder="placeholder"
+                            value=""
+                          />
+                        </StyledComponent>
+                      </styled.input>
+                    </ForwardRef>
                   </ForwardRef(Input)>
                 </StyledComponent>
               </Styled(Component)>
@@ -1036,9 +1126,9 @@ exports[`Storyshots Select variants: searchable 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-fMiknA",
+              "componentId": "sc-cJSrbW",
               "isStatic": true,
-              "lastClassName": "gCGJfv",
+              "lastClassName": "fdJBli",
               "rules": Array [
                 "
   position: relative;
@@ -1050,7 +1140,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
             "displayName": "styled.div",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-fMiknA",
+            "styledComponentId": "sc-cJSrbW",
             "target": "div",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -1063,7 +1153,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
         tabIndex={-1}
       >
         <div
-          className="sc-fMiknA gCGJfv"
+          className="sc-cJSrbW fdJBli"
           onClick={null}
           onFocus={null}
           tabIndex={-1}
@@ -1092,9 +1182,9 @@ exports[`Storyshots Select variants: searchable 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-dVhcbM",
+                        "componentId": "sc-ksYbfQ",
                         "isStatic": false,
-                        "lastClassName": "fvMWwL",
+                        "lastClassName": "hIntx",
                         "rules": Array [
                           "
   ",
@@ -1110,7 +1200,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
                       "displayName": "Styled(Component)",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-dVhcbM",
+                      "styledComponentId": "sc-ksYbfQ",
                       "target": Object {
                         "$$typeof": Symbol(react.forward_ref),
                         "render": [Function],
@@ -1130,7 +1220,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
                   value=""
                 >
                   <ForwardRef(Input)
-                    className="sc-dVhcbM fvMWwL"
+                    className="sc-ksYbfQ hIntx"
                     disabled={false}
                     isFocused={false}
                     onChange={[Function]}
@@ -1140,8 +1230,8 @@ exports[`Storyshots Select variants: searchable 1`] = `
                     searchable={true}
                     value=""
                   >
-                    <styled.input
-                      className="sc-dVhcbM fvMWwL"
+                    <ForwardRef
+                      className="sc-ksYbfQ hIntx"
                       disabled={false}
                       isFocused={false}
                       onChange={[Function]}
@@ -1151,69 +1241,9 @@ exports[`Storyshots Select variants: searchable 1`] = `
                       searchable={true}
                       value=""
                     >
-                      <StyledComponent
-                        className="sc-dVhcbM fvMWwL"
+                      <styled.input
+                        className="sc-ksYbfQ hIntx"
                         disabled={false}
-                        forwardedComponent={
-                          Object {
-                            "$$typeof": Symbol(react.forward_ref),
-                            "attrs": Array [],
-                            "componentStyle": ComponentStyle {
-                              "componentId": "sc-kgoBCf",
-                              "isStatic": false,
-                              "lastClassName": "hQZYxl",
-                              "rules": Array [
-                                "
-  ",
-                                "
-  ",
-                                "
-  min-height: 42px;
-",
-                                ";
-  display: block;
-  width: 100%;
-  color: #132042;
-  font: normal 15px Open Sans, Arial, sans-serif;
-  font-size: 15px;
-  background: #fff;
-  border: 1px solid #d2dae2;
-  border-radius: 6px;
-  padding: 10px ",
-                                [Function],
-                                "px 10px;
-  line-height: 20px;
-  cursor: text;
-  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
-    max-height 0.12s linear;
-
-  &:active,
-  &:focus,
-  &:focus-within {
-    ",
-                                "
-  border: 1px solid #5d9df5;
-  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
-  outline: 0;
-",
-                                "
-  }
-",
-                                "
-",
-                              ],
-                            },
-                            "displayName": "styled.input",
-                            "foldedComponentIds": Array [],
-                            "render": [Function],
-                            "styledComponentId": "sc-kgoBCf",
-                            "target": "input",
-                            "toString": [Function],
-                            "warnTooManyClasses": [Function],
-                            "withComponent": [Function],
-                          }
-                        }
-                        forwardedRef={[Function]}
                         isFocused={false}
                         onChange={[Function]}
                         onClick={[Function]}
@@ -1222,17 +1252,100 @@ exports[`Storyshots Select variants: searchable 1`] = `
                         searchable={true}
                         value=""
                       >
-                        <input
-                          className="sc-dVhcbM fvMWwL sc-kgoBCf hQZYxl"
+                        <StyledComponent
+                          className="sc-ksYbfQ hIntx"
                           disabled={false}
+                          forwardedComponent={
+                            Object {
+                              "$$typeof": Symbol(react.forward_ref),
+                              "attrs": Array [],
+                              "componentStyle": ComponentStyle {
+                                "componentId": "sc-jKJlTe",
+                                "isStatic": false,
+                                "lastClassName": "hcCSZd",
+                                "rules": Array [
+                                  "
+  ",
+                                  "
+  ",
+                                  "
+  min-height: 42px;
+",
+                                  ";
+  display: block;
+  width: 100%;
+  color: #132042;
+  font: normal 15px Open Sans, Arial, sans-serif;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d2dae2;
+  border-radius: 6px;
+  padding: 9px 16px 9px;
+  line-height: 22px;
+  cursor: text;
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+    max-height 0.12s linear;
+
+  &:disabled {
+    ",
+                                  "
+  color: #949db0;
+  pointer-events: none;
+",
+                                  "
+  }
+
+  &:active,
+  &:focus,
+  &:focus-within {
+    ",
+                                  "
+  border: 1px solid #5d9df5;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
+  outline: 0;
+",
+                                  "
+  }
+
+  ",
+                                  [Function],
+                                  "
+",
+                                  "
+",
+                                ],
+                              },
+                              "displayName": "styled.input",
+                              "foldedComponentIds": Array [],
+                              "render": [Function],
+                              "styledComponentId": "sc-jKJlTe",
+                              "target": "input",
+                              "toString": [Function],
+                              "warnTooManyClasses": [Function],
+                              "withComponent": [Function],
+                            }
+                          }
+                          forwardedRef={[Function]}
+                          isFocused={false}
                           onChange={[Function]}
                           onClick={[Function]}
                           onFocus={[Function]}
                           placeholder="placeholder"
+                          searchable={true}
                           value=""
-                        />
-                      </StyledComponent>
-                    </styled.input>
+                        >
+                          <input
+                            className="sc-ksYbfQ hIntx sc-jKJlTe hcCSZd"
+                            disabled={false}
+                            onChange={[Function]}
+                            onClick={[Function]}
+                            onFocus={[Function]}
+                            placeholder="placeholder"
+                            value=""
+                          />
+                        </StyledComponent>
+                      </styled.input>
+                    </ForwardRef>
                   </ForwardRef(Input)>
                 </StyledComponent>
               </Styled(Component)>

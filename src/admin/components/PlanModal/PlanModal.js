@@ -37,14 +37,14 @@ class PlanModal extends React.Component {
       toast.error('You must select a day for the trial');
       return;
     }
-    if (!expiry && !this.props.team.expiry) {
+    if (!expiry && !this.props.workspace.expiry) {
       toast.error('User already has no trial');
       return;
     }
-    if (this.props.team) {
-      this.props.editTrial(this.props.team.team_id, expiry);
+    if (this.props.workspace) {
+      this.props.editTrial(this.props.workspace.team_id, expiry);
     } else {
-      toast.error('Team not found.');
+      toast.error('Workspace not found.');
     }
     this.props.togglePlanModal();
   };
@@ -54,21 +54,21 @@ class PlanModal extends React.Component {
       toast.error('You must select a day for the trial');
       return;
     }
-    if (!expiry && !this.props.team.expiry) {
+    if (!expiry && !this.props.workspace.expiry) {
       toast.error('User already has no trial');
       return;
     }
-    if (this.props.team) {
-      this.props.setEnterprise(this.props.team.team_id, planId, expiry);
+    if (this.props.workspace) {
+      this.props.setEnterprise(this.props.workspace.team_id, planId, expiry);
     } else {
-      toast.error('Team not found.');
+      toast.error('Workspace not found.');
     }
     this.props.togglePlanModal();
   };
 
   getSelectedDays = () => {
-    if (this.props.team && this.props.team.expiry && !this.state.selectedDay) {
-      return { from: new Date(), to: new Date(this.props.team.expiry) };
+    if (this.props.workspace && this.props.workspace.expiry && !this.state.selectedDay) {
+      return { from: new Date(), to: new Date(this.props.workspace.expiry) };
     }
     return { from: new Date(), to: this.state.selectedDay };
   };
@@ -83,11 +83,11 @@ class PlanModal extends React.Component {
 
     const selectedDays = this.getSelectedDays();
 
-    const { team } = this.props;
+    const { workspace } = this.props;
 
     let planType;
 
-    switch (team.plan_id) {
+    switch (workspace.plan_id) {
       case 0:
         planType = 'Community';
         break;
@@ -98,7 +98,7 @@ class PlanModal extends React.Component {
         planType = 'Business';
         break;
       default:
-        planType = `Unknown: ${team.plan_id}`;
+        planType = `Unknown: ${workspace.plan_id}`;
         break;
     }
 
@@ -113,11 +113,11 @@ class PlanModal extends React.Component {
             <div>
               <div className="ctg__charge_overview">
                 <div className="ctg__charge_for">Editing plan for:</div>
-                <div className="ctg__charge_header">Team #{team.team_id}</div>
+                <div className="ctg__charge_header">Team #{workspace.team_id}</div>
                 <div className="ctg__receipt_divider"></div>
                 <div className="ctg__charge_amount">
                   <div>Current Plan: {planType}</div>
-                  <div>Expiry: {team.expiry ? moment(team.expiry).format('MMMM Do YYYY, h:mm:ss a') : 'No expiry set'}</div>
+                  <div>Expiry: {workspace.expiry ? moment(workspace.expiry).format('MMMM Do YYYY, h:mm:ss a') : 'No expiry set'}</div>
                   <div className="ctg__date-picker">
                     <DayPicker
                       onDayClick={this.handleDayClick}

@@ -17,6 +17,8 @@ class TrackPadControls {
 
   lastScale = 1;
 
+  isPanning = false;
+
   constructor(handle) {
     this.handle = handle;
   }
@@ -37,6 +39,7 @@ class TrackPadControls {
 
   onScrollComplete = () => {
     this.scrollComplete = null;
+    this.isPanning = false;
     this.handle({ type: ControlType.END });
   };
 
@@ -132,6 +135,8 @@ class TrackPadControls {
       this.handle({ type: ControlType.SCALE, scale: Math.exp(deltaY / 100), event });
       return;
     }
+
+    this.isPanning = true;
     this.handle({ type: ControlType.PAN, deltaX, deltaY });
   });
 }

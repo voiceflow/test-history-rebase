@@ -13,11 +13,11 @@ const LogIndicator = ({ page, skillID, amznID, platform }) => {
   }
 
   return page === 'logs' ? (
-    <div className="log-icon">
+    <div className="log-icon ml-3">
       <SvgIcon icon="logs" />
     </div>
   ) : (
-    <Link to={`/creator_logs/${skillID}`} className="log-icon">
+    <Link to={`/creator_logs/${skillID}`} className="log-icon ml-3">
       <SvgIcon icon="logs" />
     </Link>
   );

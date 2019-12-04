@@ -5,22 +5,23 @@ import { withTheme } from 'styled-components';
 import Drawer from '@/components/Drawer';
 import { BlockType } from '@/constants';
 import BlockEditor from '@/containers/CanvasV2/components/BlockEditor';
+import { LockedBlockOverlay } from '@/containers/CanvasV2/components/LockedEditorOverlay';
 import Reprompt from '@/containers/CanvasV2/components/Reprompt';
+import { EditPermissionContext, withEngine } from '@/containers/CanvasV2/contexts';
 import { getManager } from '@/containers/CanvasV2/managers';
-import { creatorFocusSelector, dataByNodeIDSelector } from '@/ducks/creator';
+import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { RemoveIntercom } from '@/hocs/removeIntercom';
 import { useEnableDisable } from '@/hooks/toggle';
 import { stopImmediatePropagation } from '@/utils/dom';
 
-import { TestingModeContext, withEngine } from '../../contexts';
 import EditorContentContainer from './components/EditorContentContainer';
 import EditorModal from './components/EditorModal';
 
 const UNEDITABLE_BLOCKS = [BlockType.START, BlockType.COMBINED, BlockType.COMMENT];
 
 function EditSidebar({ focus, data, theme, engine }) {
-  const isVisible = !React.useContext(TestingModeContext);
+  const { canEdit: isVisible } = React.useContext(EditPermissionContext);
   const [isModal, enableModalMode, disableModalMode] = useEnableDisable(false);
   const shouldRender = data && !UNEDITABLE_BLOCKS.includes(data.type);
   const isOpen = isVisible && shouldRender && focus.isActive && !isModal;
@@ -35,22 +36,24 @@ function EditSidebar({ focus, data, theme, engine }) {
     const { editor: Editor, reprompt } = getManager(data.type);
 
     editor = (
-      <BlockEditor
-        onExpand={enableModalMode}
-        expanded={isModal}
-        data={data}
-        onChange={updateData}
-        onRemove={removeNode}
-        onDuplicate={duplicateNode}
-        hideHeader={isModal}
-        key={data.nodeID}
-        renameActiveRevision={focus.renameActiveRevision}
-      >
-        <EditorContentContainer>
-          <Editor data={data} onChange={updateData} />
-          {reprompt && <Reprompt data={data} onChange={updateData} />}
-        </EditorContentContainer>
-      </BlockEditor>
+      <>
+        <BlockEditor
+          onExpand={enableModalMode}
+          expanded={isModal}
+          data={data}
+          onChange={updateData}
+          onRemove={removeNode}
+          onDuplicate={duplicateNode}
+          hideHeader={isModal}
+          key={data.nodeID}
+          renameActiveRevision={focus.renameActiveRevision}
+        >
+          <EditorContentContainer>
+            <Editor data={data} onChange={updateData} />
+            {reprompt && <Reprompt data={data} onChange={updateData} />}
+          </EditorContentContainer>
+        </BlockEditor>
+      </>
     );
   }
 
@@ -65,6 +68,7 @@ function EditSidebar({ focus, data, theme, engine }) {
         disableAnimation={!shouldRender}
       >
         {!isModal && editor}
+        {shouldRender && <LockedBlockOverlay nodeID={data.nodeID} disabled={!isOpen && !isModal} />}
       </Drawer>
       {isOpen && !isModal && <RemoveIntercom />}
       {isModal && <EditorModal disableModalMode={disableModalMode} isModal={isModal} editor={editor} data={data} />}
@@ -73,8 +77,8 @@ function EditSidebar({ focus, data, theme, engine }) {
 }
 
 const mapStateToProps = {
-  data: dataByNodeIDSelector,
-  focus: creatorFocusSelector,
+  data: Creator.dataByNodeIDSelector,
+  focus: Creator.creatorFocusSelector,
 };
 
 const mergeProps = ({ data, focus }) => ({

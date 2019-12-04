@@ -10,10 +10,10 @@ const BUTTON_VARIANTS = {
   tertiary: TertiaryButton,
 };
 
-function Button({ variant, ...props }) {
+function Button({ variant, children, ...props }) {
   const Component = BUTTON_VARIANTS[variant] || PrimaryButton;
 
-  return <Component {...props} />;
+  return <Component {...props}>{children}</Component>;
 }
 
 export default Button;

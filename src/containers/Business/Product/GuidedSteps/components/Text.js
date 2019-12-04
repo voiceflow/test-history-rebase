@@ -1,4 +1,4 @@
-import { styled, css } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 const Text = styled.span`
   padding: 0 10px;

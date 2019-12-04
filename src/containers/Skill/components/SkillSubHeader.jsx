@@ -1,47 +1,57 @@
 import React from 'react';
 
-import Tab from '@/componentsV2/Tab';
-import TabSet from '@/componentsV2/TabSet';
+import Flex from '@/componentsV2/Flex';
+import Tabs from '@/componentsV2/Tabs';
 import { goToCurrentCanvas, goToPublish, goToTestDiagram } from '@/ducks/router';
 import { activePlatformSelector, activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { preventDefault } from '@/utils/dom';
 
 import CanvasViewers from './CanvasViewers';
 import LogIndicator from './LogIndicator';
 
 const TABS = [
   {
+    value: 'canvas',
     label: 'canvas',
-    onClick: ({ goToCurrentCanvas }) => goToCurrentCanvas,
   },
   {
+    value: 'test',
     label: 'test',
-    onClick: ({ goToTestDiagram }) => goToTestDiagram,
   },
   {
+    value: 'publish',
     label: 'publish',
-    onClick: ({ goToPublish }) => goToPublish,
   },
 ];
 
-const SkillSubHeader = ({ activePage, ...props }) => (
-  <>
-    <TabSet>
-      {TABS.map(({ label, onClick }) => {
-        const isActive = label === activePage;
+const SkillSubHeader = ({ showPublish, activePage, goToCurrentCanvas, goToTestDiagram, goToPublish }) => {
+  const options = showPublish ? TABS : TABS.filter((tab) => tab.value !== 'publish');
 
-        return (
-          <Tab isActive={isActive} onClick={preventDefault(!isActive && onClick(props))} key={label}>
-            {label}
-          </Tab>
-        );
-      })}
-    </TabSet>
-    <CanvasViewers />
-    <LogIndicator />
-  </>
-);
+  const onChange = React.useCallback(
+    (value) => {
+      switch (value) {
+        case 'test':
+          return goToTestDiagram();
+        case 'publish':
+          return goToPublish();
+        case 'canvas':
+        default:
+          return goToCurrentCanvas();
+      }
+    },
+    [goToCurrentCanvas, goToTestDiagram, goToPublish]
+  );
+
+  return (
+    <>
+      <Tabs options={options} selected={activePage} onChange={onChange} />
+      <Flex>
+        <CanvasViewers />
+        <LogIndicator />
+      </Flex>
+    </>
+  );
+};
 
 const mapStateToProps = {
   platform: activePlatformSelector,

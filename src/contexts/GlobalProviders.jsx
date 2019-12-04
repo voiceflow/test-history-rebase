@@ -11,8 +11,10 @@ import theme from '@/styles/theme';
 import { DragProvider } from './DragContext';
 import { EventualEngineProvider } from './EventualEngineContext';
 import LifecycleProvider from './LifecycleProvider';
+import { ModalsContextProvider } from './ModalsContext';
 import { MousePositionProvider } from './MousePositionContext';
 import { OverlayProvider } from './OverlayContext';
+import { RolePermissionsProvider } from './RolePermissionsContext';
 import StoreProvider from './StoreProvider';
 
 const GlobalProviders = ({ history, store, persistor, children }) => {
@@ -30,7 +32,11 @@ const GlobalProviders = ({ history, store, persistor, children }) => {
           <MousePositionProvider>
             <DragProvider>
               <OverlayProvider>
-                <EventualEngineProvider>{IS_PRODUCTION ? <MaintenanceGate>{renderApp}</MaintenanceGate> : renderApp()}</EventualEngineProvider>
+                <EventualEngineProvider>
+                  <RolePermissionsProvider>
+                    <ModalsContextProvider>{IS_PRODUCTION ? <MaintenanceGate>{renderApp}</MaintenanceGate> : renderApp()}</ModalsContextProvider>
+                  </RolePermissionsProvider>
+                </EventualEngineProvider>
               </OverlayProvider>
             </DragProvider>
           </MousePositionProvider>

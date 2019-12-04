@@ -1,9 +1,9 @@
 import moize from 'moize';
 
-export const createAction = (type, payload, context) => ({
+export const createAction = (type, payload, meta) => ({
   type,
   ...(payload !== undefined && { payload }),
-  ...(context && { context }),
+  ...(meta && { meta }),
 });
 
 export const createRootSelector = (stateKey) => moize(({ [stateKey]: state }) => state);

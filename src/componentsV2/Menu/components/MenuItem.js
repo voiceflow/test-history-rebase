@@ -5,12 +5,14 @@ import { flexStyles } from '@/componentsV2/Flex';
 const MenuItem = styled.li`
   ${flexStyles}
 
-  height: ${({ theme }) => theme.components.menuItem.height}px;
+  height: ${({ theme, divider }) => (!divider ? `${theme.components.menuItem.height}px` : 0)};
   padding: 0 24px;
   background: #fff;
   overflow: hidden;
   user-select: none;
   cursor: pointer;
+  margin: ${({ divider }) => (divider ? '4px 0' : 'none')};
+  border-bottom: ${({ divider }) => (divider ? '1px solid #EAEFF4' : 'none')};
 
   ${({ disabled }) =>
     disabled &&
@@ -28,6 +30,12 @@ const MenuItem = styled.li`
      `}
    
   }
+  
+   ${({ active }) =>
+     active &&
+     css`
+       background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #ffffff;
+     `}
 
   &:active {
    ${({ disabled }) =>

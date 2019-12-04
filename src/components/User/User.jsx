@@ -1,9 +1,26 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
+import SvgIcon from '@/components/SvgIcon';
+
+import { MemberIcon, MembersContainer, MembersWrapper } from './components';
+
 // eslint-disable-next-line react/display-name
-export const User = React.forwardRef(({ user, className, ...props }, ref) => {
-  if (!user.image) return null;
+export const User = React.forwardRef(({ user, className, pending, ...props }, ref) => {
+  if (pending) {
+    return (
+      <MemberIcon className={className} ref={ref} {...props}>
+        <SvgIcon icon="clock" size={12} />
+      </MemberIcon>
+    );
+  }
+  if (!user?.image) {
+    return (
+      <MemberIcon className={className} ref={ref} {...props}>
+        ?
+      </MemberIcon>
+    );
+  }
 
   const style = {};
   let letter = null;
@@ -17,33 +34,44 @@ export const User = React.forwardRef(({ user, className, ...props }, ref) => {
   }
 
   return (
-    <div className={['member-icon', className].join(' ')} style={style} ref={ref} {...props}>
-      <span className="no-select">{letter}</span>
-    </div>
+    <MemberIcon className={className} style={style} ref={ref} {...props}>
+      {letter}
+    </MemberIcon>
   );
 });
 
-export const Members = (props) => {
-  const members = props.members.filter((m) => !!m.email);
-  const accepted = members.filter((m) => !!m.creator_id);
-  if (!accepted || accepted.length === 0 || members.length <= 1) {
+export const Members = ({ min = 0, max = 8, ...props }) => {
+  const accepted = props.members.filter((m) => !!m.creator_id).reverse();
+  if (!accepted || accepted.length <= min) {
     return null;
   }
 
   return (
-    <div className="super-center" style={{ paddingLeft: 4, marginLeft: 15, marginRight: 15 }}>
-      {members.length > 1 && (
-        <div className="d-flex flex-row-reverse">
-          {accepted.slice(0, 8).map((m) => {
-            return (
-              <Tooltip key={m.creator_id} title={m.name} position="bottom">
+    <MembersContainer>
+      {accepted.length > min && (
+        <MembersWrapper>
+          {accepted.slice(0, max).map((m) => (
+            <div key={m.tabID || m.creator_id}>
+              <Tooltip title={m.name} position="bottom">
                 <User user={m} />
               </Tooltip>
-            );
-          })}
-        </div>
+            </div>
+          ))}
+        </MembersWrapper>
       )}
-      {accepted.length > 8 && <div className="ml-3 text-muted">+{accepted.length - 8}</div>}
-    </div>
+      {accepted.length > max && (
+        <Tooltip
+          html={accepted.slice(max).map((m) => (
+            <>
+              {m.name}
+              <br />
+            </>
+          ))}
+          position="bottom"
+        >
+          <div className="text-muted no-select">+{accepted.length - max}</div>
+        </Tooltip>
+      )}
+    </MembersContainer>
   );
 };

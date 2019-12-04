@@ -1,9 +1,11 @@
 import React from 'react';
 
+import ControlledInput from './components/ControlledInput';
 import DefaultInput from './components/DefaultInput';
 import InlineInput from './components/InlineInput';
 
 export * from './components/styled';
+export { ControlledInput };
 
 const INPUT_VARIANTS = {
   default: DefaultInput,

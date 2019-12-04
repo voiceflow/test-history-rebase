@@ -116,10 +116,10 @@ export const replaceSubDiagrams = (diagramID, subDiagrams) => updateDiagram(diag
 
 // side effects
 
-export const loadDiagramsForSkill = (skillID) => async (dispatch) => {
+export const loadDiagramsForSkill = (skillID, meta) => async (dispatch) => {
   const diagrams = await client.skill.findDiagrams(skillID);
 
-  dispatch(replaceDiagrams(diagrams));
+  dispatch(replaceDiagrams(diagrams, meta));
 };
 
 export const loadUpdatedDiagram = (diagramID, name) => async (dispatch) => {

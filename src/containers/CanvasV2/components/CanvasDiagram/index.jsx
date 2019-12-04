@@ -1,19 +1,17 @@
 import cuid from 'cuid';
-// import mouseEventOffset from 'mouse-event-offset';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
 import Canvas from '@/components/Canvas';
 import { DragItem } from '@/constants';
-import { ContextMenuContext, EngineContext, GroupSelectionContext, TestingModeContext } from '@/containers/CanvasV2/contexts';
-import { sendMouseMovement } from '@/ducks/realtime';
+import LinkLayer from '@/containers/CanvasV2/components/LinkLayer';
+import { ContextMenuContext, EditPermissionContext, EngineContext, GroupSelectionContext } from '@/containers/CanvasV2/contexts';
 import { connect } from '@/hocs';
 import { activeDiagramViewportSelector } from '@/store/selectors';
-import { compose } from '@/utils/functional';
 
 import GroupSelection from './components/GroupSelection';
-import LinkLayer from './components/LinkLayer';
 import NodeLayer from './components/NodeLayer';
+import { useCursorControls } from './hooks';
 
 const withInitialViewport = connect(
   { viewport: activeDiagramViewportSelector },
@@ -30,41 +28,29 @@ const CanvasDiagram = ({ viewport, renderLinks }) => {
   const engine = React.useContext(EngineContext);
   const groupSelection = React.useContext(GroupSelectionContext);
   const contextMenu = React.useContext(ContextMenuContext);
-  const isTesting = React.useContext(TestingModeContext);
-  const startGroupSelection = ({ clientX, clientY }) => !isTesting && groupSelection.onStart([clientX, clientY]);
-  const onClickCanvas = () => engine.clearActivation();
+  const { canEdit } = React.useContext(EditPermissionContext);
+
+  const { panViewport, zoomViewport, updateViewport } = useCursorControls();
+
+  const onClickCanvas = React.useCallback(() => engine.clearActivation(), []);
+  const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
+
+  const startGroupSelection = React.useCallback(({ clientX, clientY }) => canEdit && groupSelection.onStart([clientX, clientY]), [
+    canEdit,
+    groupSelection.onStart,
+  ]);
 
   const [, connectBlockDrop] = useDrop({
     accept: DragItem.BLOCK_MENU,
-    drop: ({ blockType }, monitor) => {
+    drop: async ({ blockType }, monitor) => {
       const newNodeID = cuid();
       const { x: mouseX, y: mouseY } = monitor.getClientOffset();
 
       const position = engine.canvas.transformPoint([mouseX, mouseY]);
 
-      engine.node.add(newNodeID, blockType, position);
+      await engine.node.add(newNodeID, blockType, position);
     },
   });
-
-  const registerCanvas = (api) => engine.registerCanvas(api);
-  const updateViewport = ({ x, y, zoom }) => engine.updateViewport(x, y, zoom);
-  const panViewport = (moveX, moveY) => engine.realtime.panViewport(moveX, moveY);
-  const zoomViewport = (calculateMovement) => engine.realtime.zoomViewport(calculateMovement);
-
-  // React.useEffect(() => {
-  //   if (engine.canvas) {
-  //     const onMouseMove = (event) => {
-  //       if (!engine.canvas.isPanning()) {
-  //         const transformedPoint = engine.canvas.transformPoint(mouseEventOffset(event, engine.canvas.getRef()), true);
-  //         sendMouseMovement(transformedPoint);
-  //       }
-  //     };
-
-  //     document.addEventListener('mousemove', onMouseMove);
-
-  //     return () => document.removeEventListener('mousemove', onMouseMove);
-  //   }
-  // }, [engine.canvas]);
 
   return (
     <Canvas
@@ -85,14 +71,4 @@ const CanvasDiagram = ({ viewport, renderLinks }) => {
   );
 };
 
-const mapDispatchToProps = {
-  sendMouseMovement,
-};
-
-export default compose(
-  withInitialViewport,
-  connect(
-    null,
-    mapDispatchToProps
-  )
-)(CanvasDiagram);
+export default withInitialViewport(CanvasDiagram);

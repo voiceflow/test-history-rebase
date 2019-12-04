@@ -1,9 +1,9 @@
+import queryString from 'query-string';
 import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { FullSpinner } from '@/components/Spinner';
 import { IS_PRODUCTION } from '@/config';
-import NewTeam from '@/containers/Dashboard/NewTeam';
 import LoginForm from '@/containers/Register/LoginForm';
 import SignupForm from '@/containers/Register/SignupForm';
 import Reset from '@/containers/Register/reset';
@@ -16,7 +16,6 @@ import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
 const SSML = React.lazy(() => import('@/containers/SSML'));
-const Team = React.lazy(() => import('@/containers/Team'));
 const Legal = React.lazy(() => import('@/components/Legal'));
 const Skill = React.lazy(() => import('@/containers/Skill'));
 const Account = React.lazy(() => import('@/containers/Account'));
@@ -24,6 +23,8 @@ const Page404 = React.lazy(() => import('@/components/ErrorPages/404'));
 const Designer = React.lazy(() => import('@/containers/Designer'));
 const Reference = React.lazy(() => import('@/components/Reference'));
 const UserTesting = React.lazy(() => import('@/containers/UserTesting'));
+const Workspace = React.lazy(() => import('@/containers/Workspace'));
+const NewWorkspace = React.lazy(() => import('@/containers/Dashboard/NewWorkspace'));
 
 const Routes = ({ authToken }) => (
   <Suspense fallback={<FullSpinner name="Assets" />}>
@@ -38,8 +39,10 @@ const Routes = ({ authToken }) => (
 
       <Route exact path={['/creator/terms', '/creator/privacy_policy']} name="Privacy Policy" component={Legal} />
       {/* Team routes */}
-      <PrivateRoute exact path="/team/new" component={NewTeam} />
-      <PrivateRoute path={['/team', '/dashboard', '/onboarding']} component={Team} />
+
+      <PrivateRoute exact path="/workspace/new" component={NewWorkspace} />
+      <PrivateRoute path={['/workspace', '/dashboard', '/onboarding']} component={Workspace} />
+
       {/* Designer Routes */}
       {!IS_PRODUCTION && <Route path="/designer/preview" component={Designer} />}
       {/* Canvas Routes */}
@@ -47,6 +50,7 @@ const Routes = ({ authToken }) => (
       <Route path="/demo/:versionID" component={UserTesting} />
 
       {/* Skill old-routes redirects */}
+      <Redirect from="/team/:team_id?" to="/workspace/:workspaceID?" />
       <Redirect from="/canvas/:versionID/:diagramID?" to={`/${RootRoutes.PROJECT}/:versionID/canvas/:diagramID?`} />
       <Redirect from="/preview/:versionID/:diagramID?" to={`/${RootRoutes.PROJECT}/:versionID/canvas/:diagramID?`} />
       <Redirect from="/test/:versionID/:diagramID?" to={`/${RootRoutes.PROJECT}/:versionID/test/:diagramID?`} />
@@ -68,8 +72,14 @@ const Routes = ({ authToken }) => (
 
       <Route
         exact
-        path="/invite/:invite_code"
+        path="/invite"
         render={(props) => {
+          const parsed = queryString.parse(props.location.search);
+          const inviteCode = parsed.invite_code;
+          const email = parsed.email;
+          if (inviteCode) {
+            return authToken ? <Redirect to={`/dashboard?invite=${inviteCode}`} /> : <Redirect to={`/signup?invite=${inviteCode}&email=${email}`} />;
+          }
           const code = props.match.params.invite_code;
           return authToken ? <Redirect to={`/dashboard?invite=${code}`} /> : <Redirect to={`/signup?invite=${code}${props.location.search}`} />;
         }}

@@ -3,6 +3,7 @@ import React from 'react';
 
 import { CanvasContext } from '@/components/Canvas/contexts';
 import { dataByNodeIDSelector, linkByIDSelector, nodeByIDSelector, portByIDSelector } from '@/ducks/creator';
+import * as Realtime from '@/ducks/realtime';
 import { hasActiveLinksSelector } from '@/store/selectors';
 
 import { EngineConsumer, extractPoints } from './utils';
@@ -60,9 +61,10 @@ class Dispatcher extends EngineConsumer {
 
   useNode(nodeID) {
     const node = this.useSubscription(DispatchChannel.NODE, nodeID);
+    const lockOwner = this.select(Realtime.editLockOwnerSelector)(nodeID);
     const isHighlighted = this.engine.isActive(nodeID);
 
-    return { nodeID, node, isHighlighted };
+    return { nodeID, node, isHighlighted, lockOwner };
   }
 
   useNodeData(nodeID) {

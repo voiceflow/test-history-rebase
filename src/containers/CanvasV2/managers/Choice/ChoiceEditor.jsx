@@ -28,9 +28,9 @@ function ChoiceEditor({ data, onChange, focusedNode, isLive }) {
     handleRemove: onRemoveChoice,
   });
 
-  const addChoice = React.useCallback(() => {
+  const addChoice = React.useCallback(async () => {
     onAdd();
-    engine.port.add(focusedNode.id, { label: data.choices.length + 1 });
+    await engine.port.add(focusedNode.id, { label: data.choices.length + 1 });
   }, [focusedNode.id, data.choices.length, onAdd]);
 
   return (

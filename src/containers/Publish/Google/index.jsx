@@ -11,7 +11,7 @@ import { connect } from '@/hocs';
 import PublishGoogleForm from './Form';
 
 export function PublishGoogle(props) {
-  const { stage, google, projectID, checkGoogleAccount, resetGoogleUpload, publish, loadDialogflow } = props;
+  const { stage, google, isLocked, projectID, checkGoogleAccount, resetGoogleUpload, publish, loadDialogflow } = props;
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
 
@@ -38,7 +38,7 @@ export function PublishGoogle(props) {
 
   return (
     <>
-      <PublishGoogleForm publish={onPublish} />
+      <PublishGoogleForm isLocked={isLocked} publish={onPublish} />
       <Modal isOpen={open} centered contentClassName="overflow-hidden">
         {close && <ModalHeader toggle={() => setOpen(false)} header={GOOGLE_STATES[stage]?.description} />}
         <UploadGoogle />

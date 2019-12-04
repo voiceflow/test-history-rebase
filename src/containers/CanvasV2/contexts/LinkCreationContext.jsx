@@ -17,18 +17,18 @@ export const LinkCreationProvider = ({ children }) => {
   const [context, setContext] = React.useState(DEFAULT_CONTEXT);
   const isDrawing = !!context.sourcePortID;
 
-  const onStart = React.useCallback((sourcePortID, mouseOrigin) => {
+  const onStart = React.useCallback(async (sourcePortID, mouseOrigin) => {
     const linkIDs = engine.getLinkIDsByPortID(sourcePortID);
     if (linkIDs.length) {
-      linkIDs.forEach((linkID) => engine.link.remove(linkID));
+      await Promise.all(linkIDs.map((linkID) => engine.link.remove(linkID)));
     }
 
     setContext({ sourcePortID, mouseOrigin });
   }, []);
   const onAbort = React.useCallback(() => setContext(DEFAULT_CONTEXT), []);
   const onComplete = React.useCallback(
-    (targetPortID) => {
-      engine.link.add(context.sourcePortID, targetPortID);
+    async (targetPortID) => {
+      await engine.link.add(context.sourcePortID, targetPortID);
       onAbort();
     },
     [engine, context]

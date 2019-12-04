@@ -12,17 +12,19 @@ export const STATE_KEY = 'variableSet';
 
 export const ADD_VARIABLE = 'VARIABLE:ADD';
 export const REMOVE_VARIABLE = 'VARIABLE:REMOVE';
+export const REPLACE_VARIABLE_SET_DIAGRAM = 'VARIABLE_SET_DIAGRAM:REPLACE';
 export const REPLACE_VARIABLE_SET = 'VARIABLE_SET:REPLACE';
-
 // reducers
 
 const DEFAULT_STATE = {};
 const DEFAULT_VARIABLE_SET = [];
 
-const replaceVariableSetReducer = (state, { payload: { diagramID, variables } }) => ({
+const replaceVariableSetDiagramReducer = (state, { payload: { diagramID, variables } }) => ({
   ...state,
   [diagramID]: variables,
 });
+
+const replaceVariableSetReducer = ({ payload: variableSet }) => variableSet;
 
 const addVariableReducer = (state, { payload: variable }) => [...state, variable];
 
@@ -40,12 +42,13 @@ const variableReducer = createPureReducer((state = DEFAULT_VARIABLE_SET, action)
 });
 
 const variableSetReducer = (state = DEFAULT_STATE, action) => {
-  // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
+    case REPLACE_VARIABLE_SET_DIAGRAM:
+      return replaceVariableSetDiagramReducer(state, action);
     case REPLACE_VARIABLE_SET:
-      return replaceVariableSetReducer(state, action);
+      return replaceVariableSetReducer(action);
     default:
-      return variableReducer(state, action, action.context && action.context.diagramID);
+      return variableReducer(state, action, action.meta && action.meta.diagramID);
   }
 };
 
@@ -75,7 +78,9 @@ export const activeDiagramVariables = createSelector(
 
 // action creators
 
-export const replaceVariableSet = (diagramID, variables) => createAction(REPLACE_VARIABLE_SET, { diagramID, variables });
+export const replaceVariableSet = (variableSet, meta) => createAction(REPLACE_VARIABLE_SET, variableSet, meta);
+
+export const replaceVariableSetDiagram = (diagramID, variables) => createAction(REPLACE_VARIABLE_SET_DIAGRAM, { diagramID, variables });
 
 export const addVariableToDiagram = (diagramID, name) => createAction(ADD_VARIABLE, name, { diagramID });
 
@@ -86,7 +91,7 @@ export const removeVariableFromDiagram = (diagramID, name) => createAction(REMOV
 export const loadVariableSetForDiagram = (diagramID) => async (dispatch) => {
   const variables = await client.diagram.findVariables(diagramID);
 
-  dispatch(replaceVariableSet(diagramID, variables));
+  dispatch(replaceVariableSetDiagram(diagramID, variables));
 
   return variables;
 };
@@ -104,6 +109,8 @@ export const saveVariableSet = (diagramID) => async (_, getState) => {
 
 export const saveActiveDiagramVariables = () => async (dispatch, getState) => {
   const diagramID = creatorDiagramIDSelector(getState());
+
+  if (!diagramID) return;
 
   dispatch(saveVariableSet(diagramID));
 };

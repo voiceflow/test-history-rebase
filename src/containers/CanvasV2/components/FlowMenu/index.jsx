@@ -3,7 +3,10 @@ import React from 'react';
 import ButtonGroupRouter from '@/components/ButtonGroupRouter';
 import Panel, { Content as PanelContent, Section as PanelSection } from '@/components/Panel';
 import { FlowTab } from '@/constants';
-import { activeFlowMenuTabSelector, setActiveFlowMenuTab } from '@/ducks/ui';
+import { LockedResourceOverlay } from '@/containers/CanvasV2/components/LockedEditorOverlay';
+import * as Realtime from '@/ducks/realtime';
+import { activeDiagramIDSelector } from '@/ducks/skill';
+import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
 
 import FlowList from './components/FlowList';
@@ -22,32 +25,36 @@ const FLOW_ROUTES = [
   },
 ];
 
-const FlowMenu = ({ onClose, setActiveTab, activeTab }) => {
+const FlowMenu = ({ isHidden, onClose, setActiveTab, activeTab, activeDiagram }) => {
   const [scrollNode, setScrollNode] = React.useState(null);
 
   return (
-    <Panel title="Flows" onClose={onClose}>
-      <PanelContent ref={setScrollNode}>
-        {!!scrollNode && (
-          <ButtonGroupRouter
-            routes={FLOW_ROUTES}
-            selected={activeTab}
-            onChange={setActiveTab}
-            routeProps={{ scrollNode }}
-            containerComponent={PanelSection}
-          />
-        )}
-      </PanelContent>
-    </Panel>
+    <>
+      <Panel title="Flows" onClose={onClose}>
+        <PanelContent ref={setScrollNode}>
+          {!!scrollNode && (
+            <ButtonGroupRouter
+              routes={FLOW_ROUTES}
+              selected={activeTab}
+              onChange={setActiveTab}
+              routeProps={{ scrollNode }}
+              containerComponent={PanelSection}
+            />
+          )}
+        </PanelContent>
+      </Panel>
+      <LockedResourceOverlay key={activeDiagram} type={Realtime.ResourceType.FLOWS} disabled={isHidden} />
+    </>
   );
 };
 
 const mapStateToProps = {
-  activeTab: activeFlowMenuTabSelector,
+  activeTab: UI.activeFlowMenuTabSelector,
+  activeDiagram: activeDiagramIDSelector,
 };
 
 const mapDispatchToProps = {
-  setActiveTab: setActiveFlowMenuTab,
+  setActiveTab: UI.setActiveFlowMenuTab,
 };
 
 export default connect(

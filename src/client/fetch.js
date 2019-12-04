@@ -10,6 +10,12 @@ const DEFAULT_FETCH_OPTIONS = {
   returnBody: true,
 };
 
+export const StatusCode = {
+  BAD_REQUEST: 400,
+  FORBIDDEN: 403,
+  SERVER_ERROR: 500,
+};
+
 export class NetworkError extends Error {
   constructor(statusCode, message, body) {
     super(message);
@@ -64,7 +70,7 @@ async function rawFetch(url, { body, json = true, ...rawOpts } = {}) {
     // do nothing
   }
 
-  if (res.status >= 400) {
+  if (res.status >= StatusCode.BAD_REQUEST) {
     console.error(`%c${opts.method || 'GET'} %c${finalURL}`, BOLD_FONT_STYLE, NORMAL_FONT_STYLE);
     throw new NetworkError(res.status, res.statusText, resBody);
   } else if (DEBUG_HTTP) {
@@ -86,7 +92,7 @@ const fetch = Object.assign(rawFetch, {
   post: (url, body, opts) => rawFetch(url, { method: 'POST', body, ...opts }),
   put: (url, body, opts) => rawFetch(url, { method: 'PUT', body, ...opts }),
   patch: (url, body, opts) => rawFetch(url, { method: 'PATCH', body, ...opts }),
-  delete: (url, opts) => rawFetch(url, { method: 'DELETE', ...opts }),
+  delete: (url, body, opts) => rawFetch(url, { method: 'DELETE', body, ...opts }),
 });
 
 export default fetch;

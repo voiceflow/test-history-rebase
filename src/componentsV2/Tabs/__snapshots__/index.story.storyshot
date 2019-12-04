@@ -6,27 +6,30 @@ exports[`Storyshots Tabs variants: default 1`] = `
   options={
     Array [
       Object {
-        "label": "ABC",
-        "value": "abc",
+        "label": "First value",
+        "value": "1",
       },
       Object {
-        "label": "DEF",
-        "value": "def",
+        "label": "second value",
+        "value": "2",
+      },
+      Object {
+        "label": "third long long long long value",
+        "value": "3",
       },
     ]
   }
-  selected={-1}
 >
-  <TabSet>
+  <Wrapper__TabWrapper>
     <StyledComponent
       forwardedComponent={
         Object {
           "$$typeof": Symbol(react.forward_ref),
           "attrs": Array [],
           "componentStyle": ComponentStyle {
-            "componentId": "TabSet-xxhne8-0",
+            "componentId": "Wrapper__TabWrapper-nx57tn-0",
             "isStatic": false,
-            "lastClassName": "gkrwSM",
+            "lastClassName": "jCGFGA",
             "rules": Array [
               "display:",
               [Function],
@@ -34,18 +37,17 @@ exports[`Storyshots Tabs variants: default 1`] = `
               [Function],
               " ",
               [Function],
-              " justify-content:center;",
-              "height:100%;& ",
-              ".sc-kgAjT",
+              "position:relative;height:100%;justify-content:flex-start;& ",
+              ".sc-bbmXgH",
               "{height:100%;}",
             ],
           },
-          "displayName": "TabSet",
+          "displayName": "Wrapper__TabWrapper",
           "foldedComponentIds": Array [
-            "Flex__FlexCenter-sc-127y44r-1",
+            "Flex-sc-127y44r-0",
           ],
           "render": [Function],
-          "styledComponentId": "TabSet-xxhne8-0",
+          "styledComponentId": "Wrapper__TabWrapper-nx57tn-0",
           "target": "div",
           "toString": [Function],
           "warnTooManyClasses": [Function],
@@ -55,42 +57,40 @@ exports[`Storyshots Tabs variants: default 1`] = `
       forwardedRef={null}
     >
       <div
-        className="Flex__FlexCenter-sc-127y44r-1 TabSet-xxhne8-0 gkrwSM"
+        className="Flex-sc-127y44r-0 Wrapper__TabWrapper-nx57tn-0 jCGFGA"
       >
-        <Tab
+        <styled.button
+          as="button"
           isActive={false}
-          key="abc"
+          key="1"
           onClick={[Function]}
         >
-          <styled.button
-            isActive={false}
-            onClick={[Function]}
-          >
-            <StyledComponent
-              forwardedComponent={
-                Object {
-                  "$$typeof": Symbol(react.forward_ref),
-                  "attrs": Array [],
-                  "componentStyle": ComponentStyle {
-                    "componentId": "sc-kgAjT",
-                    "isStatic": false,
-                    "lastClassName": "iVKQIt",
-                    "rules": Array [
-                      "
+          <StyledComponent
+            as="button"
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-bbmXgH",
+                  "isStatic": false,
+                  "lastClassName": "bPOhFz",
+                  "rules": Array [
+                    "
   ",
-                      "
+                    "
   ",
-                      "display:",
-                      [Function],
-                      ";align-items:center;",
-                      [Function],
-                      " ",
-                      [Function],
-                      " justify-content:center;",
-                      "
+                    "display:",
+                    [Function],
+                    ";align-items:center;",
+                    [Function],
+                    " ",
+                    [Function],
+                    " justify-content:center;",
+                    "
   ",
-                      [Function],
-                      "
+                    [Function],
+                    "
 
   padding: 0;
   border: 0;
@@ -101,8 +101,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
     outline: 0;
   }
 ",
-                      "
-  position: relative;
+                    "
   height: 100%;
   padding: 0 24px;
   background: inherit;
@@ -113,91 +112,77 @@ exports[`Storyshots Tabs variants: default 1`] = `
   user-select: none;
   cursor: pointer;
   color: #949db0;
+
   ",
-                      [Function],
-                      ";
+                    [Function],
+                    ";
 
   &:hover {
     text-decoration: none;
     color: #848da0;
-  }
-
-  ::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 0;
-    overflow: hidden;
-    height: 2px;
-    transition: width 0.2s linear, opacity 0.2s linear;
-    background-color: #5d9df5;
-    opacity: 0;
+    filter: brightness(90%);
   }
 
   ",
-                      [Function],
-                      ";
+                    [Function],
+                    ";
 ",
-                    ],
-                  },
-                  "displayName": "styled.button",
-                  "foldedComponentIds": Array [],
-                  "render": [Function],
-                  "styledComponentId": "sc-kgAjT",
-                  "target": "button",
-                  "toString": [Function],
-                  "warnTooManyClasses": [Function],
-                  "withComponent": [Function],
-                }
+                  ],
+                },
+                "displayName": "styled.button",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "sc-bbmXgH",
+                "target": "button",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
               }
-              forwardedRef={null}
-              isActive={false}
-              onClick={[Function]}
-            >
-              <button
-                className="sc-kgAjT iVKQIt"
-                onClick={[Function]}
-              >
-                ABC
-              </button>
-            </StyledComponent>
-          </styled.button>
-        </Tab>
-        <Tab
-          isActive={false}
-          key="def"
-          onClick={[Function]}
-        >
-          <styled.button
+            }
+            forwardedRef={[Function]}
             isActive={false}
             onClick={[Function]}
           >
-            <StyledComponent
-              forwardedComponent={
-                Object {
-                  "$$typeof": Symbol(react.forward_ref),
-                  "attrs": Array [],
-                  "componentStyle": ComponentStyle {
-                    "componentId": "sc-kgAjT",
-                    "isStatic": false,
-                    "lastClassName": "iVKQIt",
-                    "rules": Array [
-                      "
+            <button
+              className="sc-bbmXgH bPOhFz"
+              onClick={[Function]}
+            >
+              First value
+            </button>
+          </StyledComponent>
+        </styled.button>
+        <styled.button
+          as="button"
+          isActive={false}
+          key="2"
+          onClick={[Function]}
+        >
+          <StyledComponent
+            as="button"
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-bbmXgH",
+                  "isStatic": false,
+                  "lastClassName": "bPOhFz",
+                  "rules": Array [
+                    "
   ",
-                      "
+                    "
   ",
-                      "display:",
-                      [Function],
-                      ";align-items:center;",
-                      [Function],
-                      " ",
-                      [Function],
-                      " justify-content:center;",
-                      "
+                    "display:",
+                    [Function],
+                    ";align-items:center;",
+                    [Function],
+                    " ",
+                    [Function],
+                    " justify-content:center;",
+                    "
   ",
-                      [Function],
-                      "
+                    [Function],
+                    "
 
   padding: 0;
   border: 0;
@@ -208,8 +193,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
     outline: 0;
   }
 ",
-                      "
-  position: relative;
+                    "
   height: 100%;
   padding: 0 24px;
   background: inherit;
@@ -220,59 +204,591 @@ exports[`Storyshots Tabs variants: default 1`] = `
   user-select: none;
   cursor: pointer;
   color: #949db0;
+
   ",
-                      [Function],
-                      ";
+                    [Function],
+                    ";
 
   &:hover {
     text-decoration: none;
     color: #848da0;
-  }
-
-  ::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 0;
-    overflow: hidden;
-    height: 2px;
-    transition: width 0.2s linear, opacity 0.2s linear;
-    background-color: #5d9df5;
-    opacity: 0;
+    filter: brightness(90%);
   }
 
   ",
-                      [Function],
-                      ";
+                    [Function],
+                    ";
 ",
-                    ],
-                  },
-                  "displayName": "styled.button",
-                  "foldedComponentIds": Array [],
-                  "render": [Function],
-                  "styledComponentId": "sc-kgAjT",
-                  "target": "button",
-                  "toString": [Function],
-                  "warnTooManyClasses": [Function],
-                  "withComponent": [Function],
-                }
+                  ],
+                },
+                "displayName": "styled.button",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "sc-bbmXgH",
+                "target": "button",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
               }
-              forwardedRef={null}
-              isActive={false}
+            }
+            forwardedRef={[Function]}
+            isActive={false}
+            onClick={[Function]}
+          >
+            <button
+              className="sc-bbmXgH bPOhFz"
               onClick={[Function]}
             >
-              <button
-                className="sc-kgAjT iVKQIt"
-                onClick={[Function]}
-              >
-                DEF
-              </button>
-            </StyledComponent>
-          </styled.button>
-        </Tab>
+              second value
+            </button>
+          </StyledComponent>
+        </styled.button>
+        <styled.button
+          as="button"
+          isActive={false}
+          key="3"
+          onClick={[Function]}
+        >
+          <StyledComponent
+            as="button"
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-bbmXgH",
+                  "isStatic": false,
+                  "lastClassName": "bPOhFz",
+                  "rules": Array [
+                    "
+  ",
+                    "
+  ",
+                    "display:",
+                    [Function],
+                    ";align-items:center;",
+                    [Function],
+                    " ",
+                    [Function],
+                    " justify-content:center;",
+                    "
+  ",
+                    [Function],
+                    "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+                    "
+  height: 100%;
+  padding: 0 24px;
+  background: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 18px;
+  text-transform: capitalize;
+  user-select: none;
+  cursor: pointer;
+  color: #949db0;
+
+  ",
+                    [Function],
+                    ";
+
+  &:hover {
+    text-decoration: none;
+    color: #848da0;
+    filter: brightness(90%);
+  }
+
+  ",
+                    [Function],
+                    ";
+",
+                  ],
+                },
+                "displayName": "styled.button",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "sc-bbmXgH",
+                "target": "button",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={[Function]}
+            isActive={false}
+            onClick={[Function]}
+          >
+            <button
+              className="sc-bbmXgH bPOhFz"
+              onClick={[Function]}
+            >
+              third long long long long value
+            </button>
+          </StyledComponent>
+        </styled.button>
+        <styled.div
+          color={null}
+        >
+          <StyledComponent
+            color={null}
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-uJMKN",
+                  "isStatic": false,
+                  "lastClassName": "UnajY",
+                  "rules": Array [
+                    "
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  overflow: hidden;
+  height: 2px;
+  background-color: ",
+                    [Function],
+                    ";
+  will-change: width, transform;
+  ",
+                    [Function],
+                    ";
+",
+                  ],
+                },
+                "displayName": "styled.div",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "sc-uJMKN",
+                "target": "div",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={
+              Object {
+                "current": <div
+                  class="sc-uJMKN UnajY"
+                />,
+              }
+            }
+          >
+            <div
+              className="sc-uJMKN UnajY"
+              color={null}
+            />
+          </StyledComponent>
+        </styled.div>
       </div>
     </StyledComponent>
-  </TabSet>
+  </Wrapper__TabWrapper>
+</Tabs>
+`;
+
+exports[`Storyshots Tabs variants: props control 1`] = `
+<Tabs
+  onChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "First value",
+        "value": "1",
+      },
+      Object {
+        "label": "second value",
+        "value": "2",
+      },
+      Object {
+        "label": "third long long long long value",
+        "value": "3",
+      },
+    ]
+  }
+  selected="1"
+>
+  <Wrapper__TabWrapper>
+    <StyledComponent
+      forwardedComponent={
+        Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "attrs": Array [],
+          "componentStyle": ComponentStyle {
+            "componentId": "Wrapper__TabWrapper-nx57tn-0",
+            "isStatic": false,
+            "lastClassName": "jCGFGA",
+            "rules": Array [
+              "display:",
+              [Function],
+              ";align-items:center;",
+              [Function],
+              " ",
+              [Function],
+              "position:relative;height:100%;justify-content:flex-start;& ",
+              ".sc-bbmXgH",
+              "{height:100%;}",
+            ],
+          },
+          "displayName": "Wrapper__TabWrapper",
+          "foldedComponentIds": Array [
+            "Flex-sc-127y44r-0",
+          ],
+          "render": [Function],
+          "styledComponentId": "Wrapper__TabWrapper-nx57tn-0",
+          "target": "div",
+          "toString": [Function],
+          "warnTooManyClasses": [Function],
+          "withComponent": [Function],
+        }
+      }
+      forwardedRef={null}
+    >
+      <div
+        className="Flex-sc-127y44r-0 Wrapper__TabWrapper-nx57tn-0 jCGFGA"
+      >
+        <styled.button
+          as="button"
+          isActive={true}
+          key="1"
+          onClick={[Function]}
+        >
+          <StyledComponent
+            as="button"
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-bbmXgH",
+                  "isStatic": false,
+                  "lastClassName": "bPOhFz",
+                  "rules": Array [
+                    "
+  ",
+                    "
+  ",
+                    "display:",
+                    [Function],
+                    ";align-items:center;",
+                    [Function],
+                    " ",
+                    [Function],
+                    " justify-content:center;",
+                    "
+  ",
+                    [Function],
+                    "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+                    "
+  height: 100%;
+  padding: 0 24px;
+  background: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 18px;
+  text-transform: capitalize;
+  user-select: none;
+  cursor: pointer;
+  color: #949db0;
+
+  ",
+                    [Function],
+                    ";
+
+  &:hover {
+    text-decoration: none;
+    color: #848da0;
+    filter: brightness(90%);
+  }
+
+  ",
+                    [Function],
+                    ";
+",
+                  ],
+                },
+                "displayName": "styled.button",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "sc-bbmXgH",
+                "target": "button",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={[Function]}
+            isActive={true}
+            onClick={[Function]}
+          >
+            <button
+              className="sc-bbmXgH kJFNng"
+              onClick={[Function]}
+            >
+              First value
+            </button>
+          </StyledComponent>
+        </styled.button>
+        <styled.button
+          as="button"
+          isActive={false}
+          key="2"
+          onClick={[Function]}
+        >
+          <StyledComponent
+            as="button"
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-bbmXgH",
+                  "isStatic": false,
+                  "lastClassName": "bPOhFz",
+                  "rules": Array [
+                    "
+  ",
+                    "
+  ",
+                    "display:",
+                    [Function],
+                    ";align-items:center;",
+                    [Function],
+                    " ",
+                    [Function],
+                    " justify-content:center;",
+                    "
+  ",
+                    [Function],
+                    "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+                    "
+  height: 100%;
+  padding: 0 24px;
+  background: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 18px;
+  text-transform: capitalize;
+  user-select: none;
+  cursor: pointer;
+  color: #949db0;
+
+  ",
+                    [Function],
+                    ";
+
+  &:hover {
+    text-decoration: none;
+    color: #848da0;
+    filter: brightness(90%);
+  }
+
+  ",
+                    [Function],
+                    ";
+",
+                  ],
+                },
+                "displayName": "styled.button",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "sc-bbmXgH",
+                "target": "button",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={[Function]}
+            isActive={false}
+            onClick={[Function]}
+          >
+            <button
+              className="sc-bbmXgH bPOhFz"
+              onClick={[Function]}
+            >
+              second value
+            </button>
+          </StyledComponent>
+        </styled.button>
+        <styled.button
+          as="button"
+          isActive={false}
+          key="3"
+          onClick={[Function]}
+        >
+          <StyledComponent
+            as="button"
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-bbmXgH",
+                  "isStatic": false,
+                  "lastClassName": "bPOhFz",
+                  "rules": Array [
+                    "
+  ",
+                    "
+  ",
+                    "display:",
+                    [Function],
+                    ";align-items:center;",
+                    [Function],
+                    " ",
+                    [Function],
+                    " justify-content:center;",
+                    "
+  ",
+                    [Function],
+                    "
+
+  padding: 0;
+  border: 0;
+  background: inherit;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+",
+                    "
+  height: 100%;
+  padding: 0 24px;
+  background: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 18px;
+  text-transform: capitalize;
+  user-select: none;
+  cursor: pointer;
+  color: #949db0;
+
+  ",
+                    [Function],
+                    ";
+
+  &:hover {
+    text-decoration: none;
+    color: #848da0;
+    filter: brightness(90%);
+  }
+
+  ",
+                    [Function],
+                    ";
+",
+                  ],
+                },
+                "displayName": "styled.button",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "sc-bbmXgH",
+                "target": "button",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={[Function]}
+            isActive={false}
+            onClick={[Function]}
+          >
+            <button
+              className="sc-bbmXgH bPOhFz"
+              onClick={[Function]}
+            >
+              third long long long long value
+            </button>
+          </StyledComponent>
+        </styled.button>
+        <styled.div
+          color={null}
+        >
+          <StyledComponent
+            color={null}
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-uJMKN",
+                  "isStatic": false,
+                  "lastClassName": "UnajY",
+                  "rules": Array [
+                    "
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  overflow: hidden;
+  height: 2px;
+  background-color: ",
+                    [Function],
+                    ";
+  will-change: width, transform;
+  ",
+                    [Function],
+                    ";
+",
+                  ],
+                },
+                "displayName": "styled.div",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "sc-uJMKN",
+                "target": "div",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={
+              Object {
+                "current": <div
+                  class="sc-uJMKN UnajY"
+                />,
+              }
+            }
+          >
+            <div
+              className="sc-uJMKN UnajY"
+              color={null}
+            />
+          </StyledComponent>
+        </styled.div>
+      </div>
+    </StyledComponent>
+  </Wrapper__TabWrapper>
 </Tabs>
 `;

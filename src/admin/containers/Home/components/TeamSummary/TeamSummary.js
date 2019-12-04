@@ -68,7 +68,7 @@ class TeamSummary extends React.Component {
             </div>
           </div>
           <div className="mb-2 col-sm-4 skills_list">
-            <div className="skills_in_board">Skills in this board:</div>
+            <div className="skills_in_board">Skills in this workspace:</div>
             <div className="skills_preview">{this.renderSkillPreviews()}</div>
           </div>
         </div>
@@ -84,7 +84,7 @@ class TeamSummary extends React.Component {
           </Card>
         </Collapse>
 
-        <PlanModal showPlanModal={this.state.showPlanModal} togglePlanModal={this.togglePlanModal} team={this.props.board} />
+        <PlanModal showPlanModal={this.state.showPlanModal} togglePlanModal={this.togglePlanModal} workspace={this.props.board} />
       </TeamSummaryWrapper>
     );
   }

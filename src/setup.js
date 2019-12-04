@@ -5,11 +5,13 @@ import { GLOBAL_HEADERS } from '@/client/fetch';
 import { API_ENDPOINT, GA_ENABLED, GOOGLE_ANALYTICS_ID, VERSION } from '@/config';
 import { initializeLogRocket } from '@/vendors/logRocket';
 
-const setupApp = (history, tabID) => {
+const setupApp = (history, browserID, tabID) => {
   axios.defaults.baseURL = API_ENDPOINT;
   axios.defaults.withCredentials = true;
   axios.defaults.crossDomain = true;
+  axios.defaults.headers.common.browserid = browserID;
   axios.defaults.headers.common.tabid = tabID;
+  GLOBAL_HEADERS.set('browserid', browserID);
   GLOBAL_HEADERS.set('tabid', tabID);
 
   initializeLogRocket((sessionURL) => {

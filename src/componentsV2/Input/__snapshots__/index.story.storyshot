@@ -1,0 +1,1110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Input controlled: controlled input 1`] = `
+<ForwardRef
+  disabled={false}
+  error={false}
+  icon="error"
+  iconProps={
+    Object {
+      "color": "#d4d9e6",
+    }
+  }
+  placeholder="placeholder"
+  rightAction={
+    <ForwardRef(Styled(styled.div))
+      distance={8}
+    >
+      right action
+    </ForwardRef(Styled(styled.div))>
+  }
+  wrapperProps={
+    Object {
+      "borderColor": undefined,
+    }
+  }
+>
+  <styled.div
+    disabled={false}
+    error={false}
+    onClick={[Function]}
+  >
+    <StyledComponent
+      disabled={false}
+      error={false}
+      forwardedComponent={
+        Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "attrs": Array [],
+          "componentStyle": ComponentStyle {
+            "componentId": "sc-ckVGcZ",
+            "isStatic": false,
+            "lastClassName": "cQHHMH",
+            "rules": Array [
+              "
+  ",
+              "
+  ",
+              "
+  min-height: 42px;
+",
+              ";
+  display: block;
+  width: 100%;
+  color: #132042;
+  font: normal 15px Open Sans, Arial, sans-serif;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d2dae2;
+  border-radius: 6px;
+  padding: 9px 16px 9px;
+  line-height: 22px;
+  cursor: text;
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+    max-height 0.12s linear;
+
+  &:disabled {
+    ",
+              "
+  color: #949db0;
+  pointer-events: none;
+",
+              "
+  }
+
+  &:active,
+  &:focus,
+  &:focus-within {
+    ",
+              "
+  border: 1px solid #5d9df5;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
+  outline: 0;
+",
+              "
+  }
+
+  ",
+              [Function],
+              "
+",
+              "
+
+  display: flex;
+  align-items: center;
+
+  &[disabled] {
+    ",
+              "
+  color: #949db0;
+  pointer-events: none;
+",
+              "
+    input {
+      ",
+              "
+  color: #949db0;
+  pointer-events: none;
+",
+              "
+    }
+  }
+
+  & > * {
+    margin-right: 12px;
+    :last-child {
+      margin-right: 0;
+    }
+  }
+",
+            ],
+          },
+          "displayName": "styled.div",
+          "foldedComponentIds": Array [],
+          "render": [Function],
+          "styledComponentId": "sc-ckVGcZ",
+          "target": "div",
+          "toString": [Function],
+          "warnTooManyClasses": [Function],
+          "withComponent": [Function],
+        }
+      }
+      forwardedRef={null}
+      onClick={[Function]}
+    >
+      <div
+        className="sc-ckVGcZ cQHHMH"
+        disabled={false}
+        onClick={[Function]}
+      >
+        <ForwardRef
+          color="#d4d9e6"
+          icon="error"
+        >
+          <styled.span
+            color="#d4d9e6"
+            size={16}
+          >
+            <StyledComponent
+              color="#d4d9e6"
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-bxivhb",
+                    "isStatic": false,
+                    "lastClassName": "jGWIpX",
+                    "rules": Array [
+                      "
+  ",
+                      [Function],
+                      "
+
+  color: ",
+                      [Function],
+                      ";
+  width: ",
+                      [Function],
+                      "px;
+  height: ",
+                      [Function],
+                      "px;
+  box-sizing: content-box;
+  
+  ",
+                      [Function],
+                      "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                      [Function],
+                      ";
+
+  }
+",
+                    ],
+                  },
+                  "displayName": "styled.span",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-bxivhb",
+                  "target": "span",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={null}
+              size={16}
+            >
+              <span
+                className="sc-bxivhb jGWIpX"
+                color="#d4d9e6"
+                size={16}
+              >
+                <test-file-stub />
+              </span>
+            </StyledComponent>
+          </styled.span>
+        </ForwardRef>
+        <styled.div>
+          <StyledComponent
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-dxgOiQ",
+                  "isStatic": true,
+                  "lastClassName": "hpDXDa",
+                  "rules": Array [
+                    "
+  flex: 1;
+  min-width: 50%;
+",
+                  ],
+                },
+                "displayName": "styled.div",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "sc-dxgOiQ",
+                "target": "div",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={null}
+          >
+            <div
+              className="sc-dxgOiQ hpDXDa"
+            >
+              <styled.input
+                disabled={false}
+                placeholder="placeholder"
+              >
+                <StyledComponent
+                  disabled={false}
+                  forwardedComponent={
+                    Object {
+                      "$$typeof": Symbol(react.forward_ref),
+                      "attrs": Array [],
+                      "componentStyle": ComponentStyle {
+                        "componentId": "sc-kpOJdX",
+                        "isStatic": true,
+                        "lastClassName": "gyuXzO",
+                        "rules": Array [
+                          "
+  outline: none !important;
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+",
+                        ],
+                      },
+                      "displayName": "styled.input",
+                      "foldedComponentIds": Array [],
+                      "render": [Function],
+                      "styledComponentId": "sc-kpOJdX",
+                      "target": "input",
+                      "toString": [Function],
+                      "warnTooManyClasses": [Function],
+                      "withComponent": [Function],
+                    }
+                  }
+                  forwardedRef={
+                    Object {
+                      "current": <input
+                        class="sc-kpOJdX gyuXzO"
+                        placeholder="placeholder"
+                      />,
+                    }
+                  }
+                  placeholder="placeholder"
+                >
+                  <input
+                    className="sc-kpOJdX gyuXzO"
+                    disabled={false}
+                    placeholder="placeholder"
+                  />
+                </StyledComponent>
+              </styled.input>
+            </div>
+          </StyledComponent>
+        </styled.div>
+        <Styled(styled.div)
+          distance={8}
+        >
+          <StyledComponent
+            distance={8}
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-eNQAEJ",
+                  "isStatic": false,
+                  "lastClassName": "iVvNTC",
+                  "rules": Array [
+                    "
+  ",
+                    "
+  animation: ",
+                    [Function],
+                    " 180ms ease-in-out;
+  animation-fill-mode: both;
+",
+                    "
+",
+                    "
+  text-transform: capitalize;
+  color: #8da2b5;
+  font-size: 13px;
+",
+                  ],
+                },
+                "displayName": "Styled(styled.div)",
+                "foldedComponentIds": Array [
+                  "sc-kGXeez",
+                ],
+                "render": [Function],
+                "styledComponentId": "sc-eNQAEJ",
+                "target": "div",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={null}
+          >
+            <div
+              className="sc-kGXeez sc-eNQAEJ iVvNTC"
+            >
+              right action
+            </div>
+          </StyledComponent>
+        </Styled(styled.div)>
+      </div>
+    </StyledComponent>
+  </styled.div>
+</ForwardRef>
+`;
+
+exports[`Storyshots Input variants: icon 1`] = `
+<ForwardRef(Input)
+  disabled={false}
+  error={false}
+  icon="user"
+  iconProps={
+    Object {
+      "color": "rgba(93, 157, 245, 0.85)",
+    }
+  }
+  placeholder="placeholder"
+>
+  <ForwardRef
+    disabled={false}
+    error={false}
+    icon="user"
+    iconProps={
+      Object {
+        "color": "rgba(93, 157, 245, 0.85)",
+      }
+    }
+    placeholder="placeholder"
+  >
+    <ForwardRef
+      disabled={false}
+      error={false}
+      icon="user"
+      iconProps={
+        Object {
+          "color": "rgba(93, 157, 245, 0.85)",
+        }
+      }
+      placeholder="placeholder"
+    >
+      <styled.div
+        disabled={false}
+        error={false}
+        onClick={[Function]}
+      >
+        <StyledComponent
+          disabled={false}
+          error={false}
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-ckVGcZ",
+                "isStatic": false,
+                "lastClassName": "cQHHMH",
+                "rules": Array [
+                  "
+  ",
+                  "
+  ",
+                  "
+  min-height: 42px;
+",
+                  ";
+  display: block;
+  width: 100%;
+  color: #132042;
+  font: normal 15px Open Sans, Arial, sans-serif;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d2dae2;
+  border-radius: 6px;
+  padding: 9px 16px 9px;
+  line-height: 22px;
+  cursor: text;
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+    max-height 0.12s linear;
+
+  &:disabled {
+    ",
+                  "
+  color: #949db0;
+  pointer-events: none;
+",
+                  "
+  }
+
+  &:active,
+  &:focus,
+  &:focus-within {
+    ",
+                  "
+  border: 1px solid #5d9df5;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
+  outline: 0;
+",
+                  "
+  }
+
+  ",
+                  [Function],
+                  "
+",
+                  "
+
+  display: flex;
+  align-items: center;
+
+  &[disabled] {
+    ",
+                  "
+  color: #949db0;
+  pointer-events: none;
+",
+                  "
+    input {
+      ",
+                  "
+  color: #949db0;
+  pointer-events: none;
+",
+                  "
+    }
+  }
+
+  & > * {
+    margin-right: 12px;
+    :last-child {
+      margin-right: 0;
+    }
+  }
+",
+                ],
+              },
+              "displayName": "styled.div",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-ckVGcZ",
+              "target": "div",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={null}
+          onClick={[Function]}
+        >
+          <div
+            className="sc-ckVGcZ cQHHMH"
+            disabled={false}
+            onClick={[Function]}
+          >
+            <ForwardRef
+              color="rgba(93, 157, 245, 0.85)"
+              icon="user"
+            >
+              <styled.span
+                color="rgba(93, 157, 245, 0.85)"
+                size={16}
+              >
+                <StyledComponent
+                  color="rgba(93, 157, 245, 0.85)"
+                  forwardedComponent={
+                    Object {
+                      "$$typeof": Symbol(react.forward_ref),
+                      "attrs": Array [],
+                      "componentStyle": ComponentStyle {
+                        "componentId": "sc-bxivhb",
+                        "isStatic": false,
+                        "lastClassName": "ikfdvg",
+                        "rules": Array [
+                          "
+  ",
+                          [Function],
+                          "
+
+  color: ",
+                          [Function],
+                          ";
+  width: ",
+                          [Function],
+                          "px;
+  height: ",
+                          [Function],
+                          "px;
+  box-sizing: content-box;
+  
+  ",
+                          [Function],
+                          "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                          [Function],
+                          ";
+
+  }
+",
+                        ],
+                      },
+                      "displayName": "styled.span",
+                      "foldedComponentIds": Array [],
+                      "render": [Function],
+                      "styledComponentId": "sc-bxivhb",
+                      "target": "span",
+                      "toString": [Function],
+                      "warnTooManyClasses": [Function],
+                      "withComponent": [Function],
+                    }
+                  }
+                  forwardedRef={null}
+                  size={16}
+                >
+                  <span
+                    className="sc-bxivhb ikfdvg"
+                    color="rgba(93, 157, 245, 0.85)"
+                    size={16}
+                  >
+                    <test-file-stub />
+                  </span>
+                </StyledComponent>
+              </styled.span>
+            </ForwardRef>
+            <styled.div>
+              <StyledComponent
+                forwardedComponent={
+                  Object {
+                    "$$typeof": Symbol(react.forward_ref),
+                    "attrs": Array [],
+                    "componentStyle": ComponentStyle {
+                      "componentId": "sc-dxgOiQ",
+                      "isStatic": true,
+                      "lastClassName": "hpDXDa",
+                      "rules": Array [
+                        "
+  flex: 1;
+  min-width: 50%;
+",
+                      ],
+                    },
+                    "displayName": "styled.div",
+                    "foldedComponentIds": Array [],
+                    "render": [Function],
+                    "styledComponentId": "sc-dxgOiQ",
+                    "target": "div",
+                    "toString": [Function],
+                    "warnTooManyClasses": [Function],
+                    "withComponent": [Function],
+                  }
+                }
+                forwardedRef={null}
+              >
+                <div
+                  className="sc-dxgOiQ hpDXDa"
+                >
+                  <styled.input
+                    disabled={false}
+                    placeholder="placeholder"
+                  >
+                    <StyledComponent
+                      disabled={false}
+                      forwardedComponent={
+                        Object {
+                          "$$typeof": Symbol(react.forward_ref),
+                          "attrs": Array [],
+                          "componentStyle": ComponentStyle {
+                            "componentId": "sc-kpOJdX",
+                            "isStatic": true,
+                            "lastClassName": "gyuXzO",
+                            "rules": Array [
+                              "
+  outline: none !important;
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+",
+                            ],
+                          },
+                          "displayName": "styled.input",
+                          "foldedComponentIds": Array [],
+                          "render": [Function],
+                          "styledComponentId": "sc-kpOJdX",
+                          "target": "input",
+                          "toString": [Function],
+                          "warnTooManyClasses": [Function],
+                          "withComponent": [Function],
+                        }
+                      }
+                      forwardedRef={
+                        Object {
+                          "current": <input
+                            class="sc-kpOJdX gyuXzO"
+                            placeholder="placeholder"
+                          />,
+                        }
+                      }
+                      placeholder="placeholder"
+                    >
+                      <input
+                        className="sc-kpOJdX gyuXzO"
+                        disabled={false}
+                        placeholder="placeholder"
+                      />
+                    </StyledComponent>
+                  </styled.input>
+                </div>
+              </StyledComponent>
+            </styled.div>
+          </div>
+        </StyledComponent>
+      </styled.div>
+    </ForwardRef>
+  </ForwardRef>
+</ForwardRef(Input)>
+`;
+
+exports[`Storyshots Input variants: inline 1`] = `
+<p>
+  NOT INPUT 
+  <ForwardRef(Input)
+    disabled={false}
+    error={false}
+    onChange={[Function]}
+    placeholder="INPUT"
+    value="IS INPUT"
+    variant="inline"
+  >
+    <styled.input
+      disabled={false}
+      error={false}
+      onChange={[Function]}
+      placeholder="INPUT"
+      value="IS INPUT"
+    >
+      <StyledComponent
+        disabled={false}
+        error={false}
+        forwardedComponent={
+          Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "attrs": Array [],
+            "componentStyle": ComponentStyle {
+              "componentId": "sc-kpOJdX",
+              "isStatic": true,
+              "lastClassName": "gyuXzO",
+              "rules": Array [
+                "
+  outline: none !important;
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+",
+              ],
+            },
+            "displayName": "styled.input",
+            "foldedComponentIds": Array [],
+            "render": [Function],
+            "styledComponentId": "sc-kpOJdX",
+            "target": "input",
+            "toString": [Function],
+            "warnTooManyClasses": [Function],
+            "withComponent": [Function],
+          }
+        }
+        forwardedRef={null}
+        onChange={[Function]}
+        placeholder="INPUT"
+        value="IS INPUT"
+      >
+        <input
+          className="sc-kpOJdX gyuXzO"
+          disabled={false}
+          onChange={[Function]}
+          placeholder="INPUT"
+          value="IS INPUT"
+        />
+      </StyledComponent>
+    </styled.input>
+  </ForwardRef(Input)>
+</p>
+`;
+
+exports[`Storyshots Input variants: input elements 1`] = `
+<ForwardRef(Input)
+  disabled={false}
+  error={false}
+  leftAction={
+    <b>
+      LEFT
+    </b>
+  }
+  placeholder="input part"
+  rightAction={
+    <u>
+      RIGHT
+    </u>
+  }
+>
+  <ForwardRef
+    disabled={false}
+    error={false}
+    leftAction={
+      <b>
+        LEFT
+      </b>
+    }
+    placeholder="input part"
+    rightAction={
+      <u>
+        RIGHT
+      </u>
+    }
+  >
+    <ForwardRef
+      disabled={false}
+      error={false}
+      leftAction={
+        <b>
+          LEFT
+        </b>
+      }
+      placeholder="input part"
+      rightAction={
+        <u>
+          RIGHT
+        </u>
+      }
+    >
+      <styled.div
+        disabled={false}
+        error={false}
+        onClick={[Function]}
+      >
+        <StyledComponent
+          disabled={false}
+          error={false}
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-ckVGcZ",
+                "isStatic": false,
+                "lastClassName": "cQHHMH",
+                "rules": Array [
+                  "
+  ",
+                  "
+  ",
+                  "
+  min-height: 42px;
+",
+                  ";
+  display: block;
+  width: 100%;
+  color: #132042;
+  font: normal 15px Open Sans, Arial, sans-serif;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d2dae2;
+  border-radius: 6px;
+  padding: 9px 16px 9px;
+  line-height: 22px;
+  cursor: text;
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+    max-height 0.12s linear;
+
+  &:disabled {
+    ",
+                  "
+  color: #949db0;
+  pointer-events: none;
+",
+                  "
+  }
+
+  &:active,
+  &:focus,
+  &:focus-within {
+    ",
+                  "
+  border: 1px solid #5d9df5;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
+  outline: 0;
+",
+                  "
+  }
+
+  ",
+                  [Function],
+                  "
+",
+                  "
+
+  display: flex;
+  align-items: center;
+
+  &[disabled] {
+    ",
+                  "
+  color: #949db0;
+  pointer-events: none;
+",
+                  "
+    input {
+      ",
+                  "
+  color: #949db0;
+  pointer-events: none;
+",
+                  "
+    }
+  }
+
+  & > * {
+    margin-right: 12px;
+    :last-child {
+      margin-right: 0;
+    }
+  }
+",
+                ],
+              },
+              "displayName": "styled.div",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-ckVGcZ",
+              "target": "div",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={null}
+          onClick={[Function]}
+        >
+          <div
+            className="sc-ckVGcZ cQHHMH"
+            disabled={false}
+            onClick={[Function]}
+          >
+            <b>
+              LEFT
+            </b>
+            <styled.div>
+              <StyledComponent
+                forwardedComponent={
+                  Object {
+                    "$$typeof": Symbol(react.forward_ref),
+                    "attrs": Array [],
+                    "componentStyle": ComponentStyle {
+                      "componentId": "sc-dxgOiQ",
+                      "isStatic": true,
+                      "lastClassName": "hpDXDa",
+                      "rules": Array [
+                        "
+  flex: 1;
+  min-width: 50%;
+",
+                      ],
+                    },
+                    "displayName": "styled.div",
+                    "foldedComponentIds": Array [],
+                    "render": [Function],
+                    "styledComponentId": "sc-dxgOiQ",
+                    "target": "div",
+                    "toString": [Function],
+                    "warnTooManyClasses": [Function],
+                    "withComponent": [Function],
+                  }
+                }
+                forwardedRef={null}
+              >
+                <div
+                  className="sc-dxgOiQ hpDXDa"
+                >
+                  <styled.input
+                    disabled={false}
+                    placeholder="input part"
+                  >
+                    <StyledComponent
+                      disabled={false}
+                      forwardedComponent={
+                        Object {
+                          "$$typeof": Symbol(react.forward_ref),
+                          "attrs": Array [],
+                          "componentStyle": ComponentStyle {
+                            "componentId": "sc-kpOJdX",
+                            "isStatic": true,
+                            "lastClassName": "gyuXzO",
+                            "rules": Array [
+                              "
+  outline: none !important;
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+",
+                            ],
+                          },
+                          "displayName": "styled.input",
+                          "foldedComponentIds": Array [],
+                          "render": [Function],
+                          "styledComponentId": "sc-kpOJdX",
+                          "target": "input",
+                          "toString": [Function],
+                          "warnTooManyClasses": [Function],
+                          "withComponent": [Function],
+                        }
+                      }
+                      forwardedRef={
+                        Object {
+                          "current": <input
+                            class="sc-kpOJdX gyuXzO"
+                            placeholder="input part"
+                          />,
+                        }
+                      }
+                      placeholder="input part"
+                    >
+                      <input
+                        className="sc-kpOJdX gyuXzO"
+                        disabled={false}
+                        placeholder="input part"
+                      />
+                    </StyledComponent>
+                  </styled.input>
+                </div>
+              </StyledComponent>
+            </styled.div>
+            <u>
+              RIGHT
+            </u>
+          </div>
+        </StyledComponent>
+      </styled.div>
+    </ForwardRef>
+  </ForwardRef>
+</ForwardRef(Input)>
+`;
+
+exports[`Storyshots Input variants: normal 1`] = `
+<ForwardRef(Input)
+  disabled={false}
+  error={false}
+  placeholder="placeholder"
+>
+  <ForwardRef
+    disabled={false}
+    error={false}
+    placeholder="placeholder"
+  >
+    <styled.input
+      disabled={false}
+      error={false}
+      placeholder="placeholder"
+    >
+      <StyledComponent
+        disabled={false}
+        error={false}
+        forwardedComponent={
+          Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "attrs": Array [],
+            "componentStyle": ComponentStyle {
+              "componentId": "sc-jKJlTe",
+              "isStatic": false,
+              "lastClassName": "hcCSZd",
+              "rules": Array [
+                "
+  ",
+                "
+  ",
+                "
+  min-height: 42px;
+",
+                ";
+  display: block;
+  width: 100%;
+  color: #132042;
+  font: normal 15px Open Sans, Arial, sans-serif;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d2dae2;
+  border-radius: 6px;
+  padding: 9px 16px 9px;
+  line-height: 22px;
+  cursor: text;
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+    max-height 0.12s linear;
+
+  &:disabled {
+    ",
+                "
+  color: #949db0;
+  pointer-events: none;
+",
+                "
+  }
+
+  &:active,
+  &:focus,
+  &:focus-within {
+    ",
+                "
+  border: 1px solid #5d9df5;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
+  outline: 0;
+",
+                "
+  }
+
+  ",
+                [Function],
+                "
+",
+                "
+",
+              ],
+            },
+            "displayName": "styled.input",
+            "foldedComponentIds": Array [],
+            "render": [Function],
+            "styledComponentId": "sc-jKJlTe",
+            "target": "input",
+            "toString": [Function],
+            "warnTooManyClasses": [Function],
+            "withComponent": [Function],
+          }
+        }
+        forwardedRef={null}
+        placeholder="placeholder"
+      >
+        <input
+          className="sc-jKJlTe hcCSZd"
+          disabled={false}
+          placeholder="placeholder"
+        />
+      </StyledComponent>
+    </styled.input>
+  </ForwardRef>
+</ForwardRef(Input)>
+`;

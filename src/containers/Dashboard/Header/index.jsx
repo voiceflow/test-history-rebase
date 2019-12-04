@@ -3,10 +3,21 @@ import { Input } from 'reactstrap';
 
 import Header from '@/components/Header';
 
-import RightNavSection from './right-nav-section';
-import SecondaryNav from './secondary-nav';
+import RightNavSection from './RightNavSection';
+import SecondaryNav from './SecondaryNav';
+import UpgradeButton from './UpgradeButton/index';
 
-export default function DashboardHeader({ history, handleFilterText, teams, team_id, team, fetchBoards, team_setting, setTeamSetting }) {
+export default function DashboardHeader({
+  user,
+  history,
+  handleFilterText,
+  workspaces,
+  workspaceID,
+  workspace,
+  fetchBoards,
+  team_setting,
+  setTeamSetting,
+}) {
   return (
     <Header
       withLogo
@@ -23,11 +34,13 @@ export default function DashboardHeader({ history, handleFilterText, teams, team
         </div>
       )}
       rightRenderer={() => <RightNavSection />}
+      centerRenderer={() => <UpgradeButton />}
       subHeaderRenderer={() => (
         <SecondaryNav
-          teams={teams}
-          team={team}
-          team_id={team_id}
+          user={user}
+          workspaces={workspaces}
+          workspace={workspace}
+          workspaceID={workspaceID}
           team_setting={team_setting}
           setTeamSetting={setTeamSetting}
           fetchBoards={fetchBoards}

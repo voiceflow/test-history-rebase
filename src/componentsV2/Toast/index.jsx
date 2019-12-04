@@ -1,6 +1,7 @@
 import React from 'react';
 import { ToastContainer as ToastifyContainer, toast as toastify } from 'react-toastify';
 
+import Portal from '@/componentsV2/Portal';
 import { createGlobalStyle } from '@/hocs';
 
 import Message from './components/Message';
@@ -42,11 +43,11 @@ const ToastGlobalStyles = createGlobalStyle`
 
 export { toast };
 
-export const ToastContainer = () => {
-  return (
-    <>
-      <ToastGlobalStyles />
+export const ToastContainer = () => (
+  <>
+    <ToastGlobalStyles />
+    <Portal portalNode={window.document.body}>
       <ToastifyContainer autoClose={5000} newestOnTop closeButton={false} hideProgressBar draggable={false} pauseOnFocusLoss={false} />
-    </>
-  );
-};
+    </Portal>
+  </>
+);

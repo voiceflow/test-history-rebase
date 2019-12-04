@@ -1,9 +1,16 @@
 import Flex from '@/componentsV2/Flex';
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 const PlatformToggleContainer = styled(Flex)`
   user-select: none;
   margin: 0 22px;
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      pointer-events: none;
+      opacity: 0.6;
+    `}
 
   & .switch {
     position: relative;

@@ -2,6 +2,8 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
+import { LockedResourceOverlay } from '@/containers/CanvasV2/components/LockedEditorOverlay';
+import * as Realtime from '@/ducks/realtime';
 import { styled } from '@/hocs';
 
 import Display from './Display';
@@ -28,14 +30,18 @@ function Visuals(props) {
   } = props;
 
   return (
-    <VisualsPageContainer>
-      <VisualsPageContent>
-        <Switch>
-          <PrivateRoute {...ownProps} exact path={path} component={Multimodal} />
-          <PrivateRoute {...ownProps} path={`${path}/:id`} component={Display} />
-        </Switch>
-      </VisualsPageContent>
-    </VisualsPageContainer>
+    <LockedResourceOverlay type={Realtime.ResourceType.DISPLAYS}>
+      {({ forceUpdateKey }) => (
+        <VisualsPageContainer>
+          <VisualsPageContent>
+            <Switch>
+              <PrivateRoute {...ownProps} key={forceUpdateKey} exact path={path} component={Multimodal} />
+              <PrivateRoute {...ownProps} key={forceUpdateKey} path={`${path}/:id`} component={Display} />
+            </Switch>
+          </VisualsPageContent>
+        </VisualsPageContainer>
+      )}
+    </LockedResourceOverlay>
   );
 }
 

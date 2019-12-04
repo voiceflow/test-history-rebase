@@ -3,6 +3,7 @@ import debounce from 'lodash/debounce';
 import moize from 'moize';
 import React from 'react';
 
+import { useForceUpdate } from '@/hooks';
 import { hasIdenticalMembers, reorder } from '@/utils/array';
 import { identity } from '@/utils/functional';
 import { addNormalizedByKey, denormalize, normalize, removeNormalizedByKey, updateNormalizedByKey } from '@/utils/normalized';
@@ -15,7 +16,7 @@ const DEBOUNCE_TIMEOUT = 300;
 
 // eslint-disable-next-line import/prefer-default-export
 export const useManager = (items, onChange, { factory = identity, getKey, autosave = true, debounced = true, handleRemove } = {}) => {
-  const [, forceRerender] = React.useState(null);
+  const [forceUpdate] = useForceUpdate();
   const keyLookup = React.useRef();
   const normalized = React.useRef();
   const cachedOnChange = React.useRef();
@@ -58,7 +59,7 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
 
       normalized.current = value;
       setDependencies([denormalized]);
-      forceRerender(Math.random());
+      forceUpdate();
       update ? debouncedOnChange(denormalized) : cachedOnChange.current(denormalized, save);
     },
     [setDependencies, debouncedOnChange]
@@ -111,7 +112,7 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
   const memoizedUpdate = React.useMemo(() => moize((key) => (value) => onUpdate(key, value)), [onUpdate]);
 
   const onRemove = React.useCallback(
-    (key) => {
+    async (key) => {
       const currValue = getItem(key);
       const currIndex = getIndex(key);
 
@@ -122,7 +123,7 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
       onSave(updated, { save: autosave });
 
       if (handleRemove) {
-        handleRemove(currValue, currIndex);
+        await handleRemove(currValue, currIndex);
       }
     },
     [autosave, onSave, handleRemove]

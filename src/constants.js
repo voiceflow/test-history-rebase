@@ -287,6 +287,15 @@ export const REPROMPT_TYPE = {
   TEXT: 'text',
   AUDIO: 'audio',
 };
+export const PERIOD = {
+  monthly: 'MO',
+  annually: 'YR',
+};
+
+export const PERIOD_NAME = {
+  [PERIOD.monthly]: 'Monthly',
+  [PERIOD.annually]: 'Yearly',
+};
 
 export const VALID_VARIABLE_NAME = /^[A-Za-z]\w{0,16}$/;
 
@@ -308,3 +317,40 @@ export const AV_FILE_FORMATS = [
 ];
 
 export const AV_FORMATS_STREAMING = [...AV_FILE_FORMATS, 'audio/x-mpegurl', 'application/vnd.apple.mpegurl'];
+
+export const MODALS = {
+  PAYMENT: 'payment',
+  COLLABORATORS: 'collaborators',
+  BILLING: 'billing',
+
+  BOARD_DELETE: 'board-delete',
+  BOARD_SETTINGS: 'board-settings',
+
+  SUCCESS: 'success',
+};
+
+export const USER_ROLES = {
+  ADMIN: 'admin',
+  EDITOR: 'editor',
+  VIEWER: 'viewer',
+};
+
+export const FEATURE_IDS = {
+  ADD_COLLABORATORS: 'ADD_COLLABORATORS',
+  WORKSPACE_SETTINGS: 'WORKSPACE_SETTINGS',
+  UPGRADE_WORKSPACE: 'UPGRADE_WORKSPACE',
+  EDIT_CANVAS: 'EDIT_CANVAS',
+};
+
+export const FEATURE_PERMISSIONS = {
+  ADD_COLLABORATORS: [USER_ROLES.ADMIN],
+  WORKSPACE_SETTINGS: [USER_ROLES.ADMIN],
+  UPGRADE_WORKSPACE: [USER_ROLES.ADMIN],
+  EDIT_CANVAS: [USER_ROLES.ADMIN, USER_ROLES.EDITOR],
+};
+
+export const PLANS = {
+  pro: 'pro',
+  team: 'team',
+  enterprise: 'enterprise',
+};

@@ -1,13 +1,15 @@
 import React from 'react';
 
 import CardManager from '@/components/CardManager';
-import { addIntent, allIntentsSelector, removeIntent, updateIntent } from '@/ducks/intent';
+import { LockedResourceOverlay } from '@/containers/CanvasV2/components/LockedEditorOverlay';
+import * as Intent from '@/ducks/intent';
+import * as Realtime from '@/ducks/realtime';
 import { connect } from '@/hocs';
 
 import IntentInput from './components/IntentInput';
 
-const IntentManager = ({ intents, addIntent, updateIntent, removeIntent }) => {
-  return (
+const IntentManager = ({ intents, addIntent, updateIntent, removeIntent }) => (
+  <>
     <CardManager
       type="intent"
       label="Intents"
@@ -19,17 +21,18 @@ const IntentManager = ({ intents, addIntent, updateIntent, removeIntent }) => {
       onRemove={removeIntent}
       formComponent={IntentInput}
     />
-  );
-};
+    <LockedResourceOverlay type={Realtime.ResourceType.INTENTS} />
+  </>
+);
 
 const mapStateToProps = {
-  intents: allIntentsSelector,
+  intents: Intent.allIntentsSelector,
 };
 
 const mapDispatchToProps = {
-  addIntent,
-  updateIntent,
-  removeIntent,
+  addIntent: Intent.addIntent,
+  updateIntent: Intent.updateIntent,
+  removeIntent: Intent.removeIntent,
 };
 
 export default connect(

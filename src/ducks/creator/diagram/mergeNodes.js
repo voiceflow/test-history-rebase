@@ -5,8 +5,17 @@ import { getNormalizedByKey } from '@/utils/normalized';
 import { nodeFactory } from './factories';
 import { addNodeToState, getLinkIDsByPortID, patchNodeInState, removeAllLinksFromState } from './utils';
 
-const mergeNodesReducer = (state, { payload: { sourceNodeID, targetNodeID, invert, mergedNodeID } }) => {
-  const sourceNode = getNormalizedByKey(state.nodes, sourceNodeID);
+const mergeNodesReducer = (
+  state,
+  {
+    payload: {
+      sourceNodeID,
+      targetNodeID,
+      position: [x, y],
+      mergedNodeID,
+    },
+  }
+) => {
   const targetNode = getNormalizedByKey(state.nodes, targetNodeID);
   const oldPortIdTargets = [...targetNode.ports.out];
 
@@ -15,8 +24,8 @@ const mergeNodesReducer = (state, { payload: { sourceNodeID, targetNodeID, inver
 
   const mergedNode = nodeFactory(mergedNodeID, {
     type: BlockType.COMBINED,
-    x: invert ? sourceNode.x : targetNode.x,
-    y: invert ? sourceNode.y : targetNode.y,
+    x,
+    y,
     combinedNodes: [targetNodeID, sourceNodeID],
   });
   const mergedData = {

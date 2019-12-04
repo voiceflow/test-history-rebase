@@ -1,1 +1,7 @@
-<svg viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg"><g filter="url(#prefix__filter0_d)" clip-rule="evenodd"><path fill-rule="evenodd" d="M4 24V4l1.098 1.061L19 18.5h-8.793l-.517.125L4 24z" fill="currentColor"/><path d="M4 24V4l1.098 1.061L19 18.5h-8.793l-.517.125L4 24z" stroke="#fff"/></g><defs><filter id="prefix__filter0_d" x=".5" y=".821" width="22.737" height="28.339" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/><feOffset dy="1"/><feGaussianBlur stdDeviation="1.5"/><feColorMatrix values="0 0 0 0 0.0745098 0 0 0 0 0.129412 0 0 0 0 0.266667 0 0 0 0.147985 0"/><feBlend in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter></defs></svg>
+<svg viewBox="0 0 24 30" fill="none" 
+  xmlns="http://www.w3.org/2000/svg">
+  <g clip-rule="evenodd">
+    <path fill-rule="evenodd" d="M4 24V4l1.098 1.061L19 18.5h-8.793l-.517.125L4 24z" fill="currentColor"/>
+    <path d="M4 24V4l1.098 1.061L19 18.5h-8.793l-.517.125L4 24z" stroke="#fff"/>
+  </g>
+</svg>

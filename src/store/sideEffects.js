@@ -1,17 +1,19 @@
 import client from '@/client';
 import skillAdapter, { extractIntents, extractProject, extractSlots } from '@/client/adapters/skill';
-import { addProjectToList } from '@/ducks/board';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import { loadDisplaysForSkill } from '@/ducks/display';
 import { fetchIntegrationUsers } from '@/ducks/integration';
 import { replaceIntents } from '@/ducks/intent';
+import { addProjectToList } from '@/ducks/lists';
 import { loadProductsForSkill } from '@/ducks/product';
 import { addProject, projectByIDSelector } from '@/ducks/project';
+import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import { replaceSlots } from '@/ducks/slot';
 import { loadVariableSetForDiagram, saveVariableSet } from '@/ducks/variableSet';
 import { rehydrateViewport } from '@/ducks/viewport';
+import { activeWorkspaceIDSelector } from '@/ducks/workspace';
 
 export const resetDiagram = () => async (dispatch, getState) => {
   const rootDiagramID = Skill.rootDiagramIDSelector(getState());
@@ -19,26 +21,26 @@ export const resetDiagram = () => async (dispatch, getState) => {
   dispatch(Skill.updateDiagramID(rootDiagramID));
 };
 
-export const copyProject = (projectID, teamID, boardID) => async (dispatch, getState) => {
+export const copyProject = (projectID, workspaceID, boardID) => async (dispatch, getState) => {
   const state = getState();
   const project = projectByIDSelector(state)(projectID);
   if (!project) throw new Error();
 
   let copiedProject = null;
   if (project.module) {
-    copiedProject = await client.project.copyReference(project.module, teamID);
+    copiedProject = await client.project.copyReference(project.module, workspaceID);
   } else {
-    copiedProject = await client.project.copy(project.versionID, teamID);
+    copiedProject = await client.project.copy(project.versionID, workspaceID);
   }
 
   dispatch(addProject(copiedProject.id, copiedProject));
   if (boardID) dispatch(addProjectToList(boardID, copiedProject.id));
 };
 
-export const importProject = (teamID, importToken) => async (dispatch, getState) => {
-  const importedProject = await client.project.import(importToken, teamID);
-  const currentTeam = getState().team.team_id;
-  if (currentTeam === teamID) {
+export const importProject = (workspaceID, importToken) => async (dispatch, getState) => {
+  const importedProject = await client.project.import(importToken, workspaceID);
+  const activeWorkspaceID = activeWorkspaceIDSelector(getState());
+  if (activeWorkspaceID === workspaceID) {
     dispatch(addProject(importedProject.id, importedProject));
     dispatch(addProjectToList(null, importedProject.id));
   }
@@ -46,10 +48,14 @@ export const importProject = (teamID, importToken) => async (dispatch, getState)
 
 export const initializeCreatorForDiagram = (diagramID) => async (dispatch, getState) => {
   const platform = Skill.activePlatformSelector(getState());
-  const { viewport, ...creator } = await client.diagram.getData(diagramID, platform);
+  const {
+    data: { viewport, ...creator },
+    timestamp,
+  } = await client.diagram.getData(diagramID, platform);
 
   dispatch(rehydrateViewport(diagramID, viewport));
   dispatch(Creator.initializeCreator({ ...creator, diagramID: creator.diagramID !== diagramID ? diagramID : creator.diagramID }));
+  dispatch(Realtime.updateLastTimestamp(timestamp));
   dispatch(Creator.saveHistory());
 
   dispatch(loadVariableSetForDiagram(diagramID));

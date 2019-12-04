@@ -10,7 +10,7 @@ import SvgIcon from '@/components/SvgIcon';
 import Dropdown from '@/componentsV2/Dropdown';
 import withDraggable from '@/hocs/withDraggable';
 import { useToggle } from '@/hooks/toggle';
-import { colors } from '@/utils/colors';
+import { PROJECT_COLORS } from '@/styles/colors';
 import { stopPropagation } from '@/utils/dom';
 import { getHumanLanguageName } from '@/utils/languages';
 import { RootRoutes } from '@/utils/routes';
@@ -47,7 +47,7 @@ export function Item(props) {
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
 
   const pathTo = isReference ? `/reference/${id}` : `/${RootRoutes.PROJECT}/${version_id}/canvas/${diagram}`;
-  const color = colors[new Date(created).getTime() % colors.length];
+  const color = PROJECT_COLORS[new Date(created).getTime() % PROJECT_COLORS.length];
   const options = [
     {
       value: 'duplicate',

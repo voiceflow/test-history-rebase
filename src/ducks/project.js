@@ -28,7 +28,7 @@ export const updateProjectName = (id, name) => updateProject(id, { name }, true)
 // side effects
 
 export const loadProjectsForTeam = (teamID) => async (dispatch) => {
-  const projects = await client.team.findProjects(teamID);
+  const projects = await client.workspace.findProjects(teamID);
 
   dispatch(replaceProjects(projects));
 

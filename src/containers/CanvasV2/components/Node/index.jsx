@@ -6,7 +6,7 @@ import Block from '@/containers/CanvasV2/components/Block';
 import CommentBlock from '@/containers/CanvasV2/components/CommentBlock';
 import { MergeStatusProvider } from '@/containers/CanvasV2/components/MergeOverlay/contexts';
 import { ContextMenuTarget } from '@/containers/CanvasV2/constants';
-import { withEngine, withNode, withStaticContextMenu, withTestingMode } from '@/containers/CanvasV2/contexts';
+import { withEditPermission, withEngine, withNode, withStaticContextMenu } from '@/containers/CanvasV2/contexts';
 import { stopPropagation } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 import MouseMovement from '@/utils/mouseMovement';
@@ -116,7 +116,7 @@ export class Node extends React.PureComponent {
     // don't capture right-click events
     if (event.button !== 2) {
       event.stopPropagation();
-      if (!this.props.isTesting) {
+      if (this.props.editPermission.canEdit) {
         this.holdingShift = event.shiftKey;
         this.addMouseListeners();
       }
@@ -143,8 +143,14 @@ export class Node extends React.PureComponent {
 
   onClick = () => this.props.engine.setActivation(this.props.nodeID, this.holdingShift);
 
-  onDrag = (event) => {
+  onDrag = async (event) => {
     const { engine, nodeID } = this.props;
+
+    if (engine.isNodeMovementLocked(nodeID)) {
+      // abort drag if node is locked
+      document.removeEventListener('mousemove', this.onDrag);
+      return;
+    }
 
     this.mouseMovement.track(event);
 
@@ -154,17 +160,15 @@ export class Node extends React.PureComponent {
 
     this.dragDistance += Math.max(Math.abs(movementX), Math.abs(movementY));
 
-    engine.dragNode(nodeID, [movementX / zoom, movementY / zoom]);
+    await engine.dragNode(nodeID, [movementX / zoom, movementY / zoom]);
   };
 
-  onDrop = () => {
-    this.props.engine.dropNode();
-  };
+  onDrop = () => this.props.engine.dropNode();
 
   onRightClick = stopPropagation((event) => {
-    const { contextMenu, nodeID, node, isTesting } = this.props;
+    const { contextMenu, nodeID, node, editPermission } = this.props;
 
-    if (node.type !== BlockType.START && !isTesting) {
+    if (node.type !== BlockType.START && editPermission.canEdit) {
       contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeID);
     }
   });
@@ -240,5 +244,5 @@ export default compose(
   withNode,
   withNodeLifecycle,
   withEngine,
-  withTestingMode
+  withEditPermission
 )(Node);

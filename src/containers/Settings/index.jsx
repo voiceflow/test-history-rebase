@@ -2,7 +2,9 @@ import React from 'react';
 
 import ButtonGroupRouter from '@/components/ButtonGroupRouter';
 import Modal, { ModalHeader } from '@/components/Modal';
-import { activeSkillIDSelector } from '@/ducks/skill';
+import { LockedResourceOverlay } from '@/containers/CanvasV2/components/LockedEditorOverlay';
+import * as Realtime from '@/ducks/realtime';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 
 import AdvancedSettings from './Advanced';
@@ -34,19 +36,27 @@ const SettingsOptions = [
   },
 ];
 
-function SettingsModal({ open, toggle, type = Settings.BASIC, setType }) {
+const SettingsModal = ({ open, toggle, type = Settings.BASIC, setType }) => {
+  const updateType = React.useCallback((nextType) => setType(nextType), [setType]);
+
   return (
     <Modal isOpen={open} toggle={toggle}>
-      <ModalHeader toggle={toggle} header="Project Settings" />
-      <div className="settings pb-3">
-        <ButtonGroupRouter selected={type} onChange={setType} routes={SettingsOptions} routeProps={{ toggle }} />
-      </div>
+      <LockedResourceOverlay type={Realtime.ResourceType.SETTINGS} disabled={!open}>
+        {({ forceUpdateKey }) => (
+          <>
+            <ModalHeader toggle={toggle} header="Project Settings" />
+            <div className="settings pb-3">
+              <ButtonGroupRouter key={forceUpdateKey} selected={type} onChange={updateType} routes={SettingsOptions} routeProps={{ toggle }} />
+            </div>
+          </>
+        )}
+      </LockedResourceOverlay>
     </Modal>
   );
-}
+};
 
 const mapStateToProps = {
-  skillID: activeSkillIDSelector,
+  skillID: Skill.activeSkillIDSelector,
 };
 
 export default connect(mapStateToProps)(SettingsModal);

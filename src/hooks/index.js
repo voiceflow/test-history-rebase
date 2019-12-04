@@ -8,3 +8,7 @@ export * from './dragPreview';
 export * from './imperativeApi';
 export * from './lazy';
 export * from './manager';
+export * from './reducer';
+export * from './callback';
+export * from './effect';
+export * from './forceUpdate';

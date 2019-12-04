@@ -47,9 +47,9 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "sc-ifAKCX",
+                  "componentId": "sc-EHOje",
                   "isStatic": false,
-                  "lastClassName": "keVtQN",
+                  "lastClassName": "ehcvDr",
                   "rules": Array [
                     "
   ",
@@ -87,6 +87,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
                     [Function],
                     ";
@@ -101,7 +102,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
   color: #8da2b5;
   background: #fff;
   border: 1px solid #fff;
-
+ 
   height: ",
                     [Function],
                     ";
@@ -140,10 +141,10 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                 "displayName": "Styled(Styled(styled.button))",
                 "foldedComponentIds": Array [
                   "sc-bdVaJa",
-                  "sc-bxivhb",
+                  "sc-ifAKCX",
                 ],
                 "render": [Function],
-                "styledComponentId": "sc-ifAKCX",
+                "styledComponentId": "sc-EHOje",
                 "target": "button",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -155,7 +156,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
             variant="flat"
           >
             <button
-              className="sc-bdVaJa sc-bxivhb sc-ifAKCX keVtQN"
+              className="sc-bdVaJa sc-ifAKCX sc-EHOje ehcvDr"
               onClick={[Function]}
             >
               <ForwardRef
@@ -163,7 +164,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                 icon="back"
                 size={15}
               >
-                <SvgIcon__SvgIconContainer
+                <styled.span
                   color="currentColor"
                   size={15}
                 >
@@ -174,26 +175,51 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                         "$$typeof": Symbol(react.forward_ref),
                         "attrs": Array [],
                         "componentStyle": ComponentStyle {
-                          "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                          "componentId": "sc-bxivhb",
                           "isStatic": false,
-                          "lastClassName": "dYyJmx",
+                          "lastClassName": "fjfHJl",
                           "rules": Array [
+                            "
+  ",
                             [Function],
-                            " color:",
+                            "
+
+  color: ",
                             [Function],
-                            ";width:",
+                            ";
+  width: ",
                             [Function],
-                            "px;height:",
+                            "px;
+  height: ",
                             [Function],
-                            "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                            "px;
+  box-sizing: content-box;
+  
+  ",
                             [Function],
-                            ";}",
+                            "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                            [Function],
+                            ";
+
+  }
+",
                           ],
                         },
-                        "displayName": "SvgIcon__SvgIconContainer",
+                        "displayName": "styled.span",
                         "foldedComponentIds": Array [],
                         "render": [Function],
-                        "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        "styledComponentId": "sc-bxivhb",
                         "target": "span",
                         "toString": [Function],
                         "warnTooManyClasses": [Function],
@@ -204,14 +230,14 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                     size={15}
                   >
                     <span
-                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dYyJmx"
+                      className="sc-bxivhb fjfHJl"
                       color="currentColor"
                       size={15}
                     >
                       <test-file-stub />
                     </span>
                   </StyledComponent>
-                </SvgIcon__SvgIconContainer>
+                </styled.span>
               </ForwardRef>
             </button>
           </StyledComponent>
@@ -250,9 +276,9 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "sc-ifAKCX",
+                  "componentId": "sc-EHOje",
                   "isStatic": false,
-                  "lastClassName": "keVtQN",
+                  "lastClassName": "ehcvDr",
                   "rules": Array [
                     "
   ",
@@ -290,6 +316,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
                     [Function],
                     ";
@@ -304,7 +331,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
   color: #8da2b5;
   background: #fff;
   border: 1px solid #fff;
-
+ 
   height: ",
                     [Function],
                     ";
@@ -343,10 +370,10 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                 "displayName": "Styled(Styled(styled.button))",
                 "foldedComponentIds": Array [
                   "sc-bdVaJa",
-                  "sc-bxivhb",
+                  "sc-ifAKCX",
                 ],
                 "render": [Function],
-                "styledComponentId": "sc-ifAKCX",
+                "styledComponentId": "sc-EHOje",
                 "target": "button",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -358,7 +385,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
             variant="flat"
           >
             <button
-              className="sc-bdVaJa sc-bxivhb sc-ifAKCX keVtQN"
+              className="sc-bdVaJa sc-ifAKCX sc-EHOje ehcvDr"
               onClick={[Function]}
             >
               <ForwardRef
@@ -366,7 +393,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                 icon="back"
                 size={15}
               >
-                <SvgIcon__SvgIconContainer
+                <styled.span
                   color="currentColor"
                   size={15}
                 >
@@ -377,26 +404,51 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                         "$$typeof": Symbol(react.forward_ref),
                         "attrs": Array [],
                         "componentStyle": ComponentStyle {
-                          "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                          "componentId": "sc-bxivhb",
                           "isStatic": false,
-                          "lastClassName": "dYyJmx",
+                          "lastClassName": "fjfHJl",
                           "rules": Array [
+                            "
+  ",
                             [Function],
-                            " color:",
+                            "
+
+  color: ",
                             [Function],
-                            ";width:",
+                            ";
+  width: ",
                             [Function],
-                            "px;height:",
+                            "px;
+  height: ",
                             [Function],
-                            "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                            "px;
+  box-sizing: content-box;
+  
+  ",
                             [Function],
-                            ";}",
+                            "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                            [Function],
+                            ";
+
+  }
+",
                           ],
                         },
-                        "displayName": "SvgIcon__SvgIconContainer",
+                        "displayName": "styled.span",
                         "foldedComponentIds": Array [],
                         "render": [Function],
-                        "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        "styledComponentId": "sc-bxivhb",
                         "target": "span",
                         "toString": [Function],
                         "warnTooManyClasses": [Function],
@@ -407,14 +459,14 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                     size={15}
                   >
                     <span
-                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 dYyJmx"
+                      className="sc-bxivhb fjfHJl"
                       color="currentColor"
                       size={15}
                     >
                       <test-file-stub />
                     </span>
                   </StyledComponent>
-                </SvgIcon__SvgIconContainer>
+                </styled.span>
               </ForwardRef>
             </button>
           </StyledComponent>

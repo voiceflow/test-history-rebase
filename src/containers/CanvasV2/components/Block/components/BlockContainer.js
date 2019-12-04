@@ -23,6 +23,13 @@ const BlockContainer = styled(BlockCard)`
     border-color: ${({ color }) => color};
     border-width: ${({ isActive }) => (isActive ? 1 : 0)}px;
   }
+
+  .avatar {
+    position: absolute;
+    top: -20px;
+    left: -15px;
+    z-index: 99;
+  }
 `;
 
 export default BlockContainer;

@@ -4,7 +4,9 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
+import { LockedResourceOverlay } from '@/containers/CanvasV2/components/LockedEditorOverlay';
 import { userSelector } from '@/ducks/account';
+import * as Realtime from '@/ducks/realtime';
 import { activeProjectIDSelector, activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 
@@ -21,15 +23,18 @@ function Business(props) {
   } = props;
 
   return (
-    <div id="business">
-      <div className="business-page">
-        <Switch>
-          <PrivateRoute {...ownProps} exact path={path} component={Home} />
-          <PrivateRoute {...ownProps} path={`${path}/products`} component={ProductsList} />
-          <PrivateRoute {...ownProps} path={`${path}/product/:id`} component={Product} />
-        </Switch>
+    <>
+      <div id="business">
+        <div className="business-page">
+          <Switch>
+            <PrivateRoute {...ownProps} exact path={path} component={Home} />
+            <PrivateRoute {...ownProps} path={`${path}/products`} component={ProductsList} />
+            <PrivateRoute {...ownProps} path={`${path}/product/:id`} component={Product} />
+          </Switch>
+        </div>
       </div>
-    </div>
+      <LockedResourceOverlay type={Realtime.ResourceType.PRODUCTS} />
+    </>
   );
 }
 

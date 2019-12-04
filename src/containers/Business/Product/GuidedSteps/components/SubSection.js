@@ -1,4 +1,4 @@
-import { styled, css } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 const SubSection = styled.div`
   margin-bottom: 16px;

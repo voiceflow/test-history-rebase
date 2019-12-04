@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { COLORS } from '@/styles/colors';
+
 import { Container } from './components';
-import { COLORS } from './constants';
 
 const Avatar = ({ url, name, color }) => (
   <Container avatarUrl={url} color={COLORS[color]}>

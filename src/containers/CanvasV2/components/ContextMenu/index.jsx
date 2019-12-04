@@ -30,8 +30,8 @@ const ContextMenu = ({ className, ...props }) => {
   const contextMenu = React.useContext(ContextMenuContext);
   const options =
     contextMenu.type && TARGET_OPTIONS[contextMenu.type]?.filter((option) => !option.shouldRender || option.shouldRender(contextMenu, props));
-  const onSelect = (option) => {
-    OPTION_HANDLERS[option](contextMenu, props);
+  const onSelect = async (option) => {
+    await OPTION_HANDLERS[option](contextMenu, props);
     contextMenu.onHide();
   };
 

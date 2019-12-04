@@ -2,115 +2,39 @@
 
 exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
 <Modal
-  autoFocus={true}
-  backdrop={true}
-  backdropTransition={
-    Object {
-      "mountOnEnter": true,
-      "timeout": 150,
-    }
-  }
-  centered={false}
   className="upgrade-modal"
-  fade={true}
   isOpen={true}
-  keyboard={true}
-  modalTransition={
-    Object {
-      "timeout": 300,
-    }
-  }
-  onClosed={[Function]}
-  onOpened={[Function]}
-  role="dialog"
   toggle={[Function]}
-  zIndex={1050}
 >
-  <Portal
-    node={
-      <div
-        style="position: relative; z-index: 1050;"
-        tabindex="-1"
-      >
-        <div
-          class=""
-        >
-          <div
-            class="modal fade"
-            role="dialog"
-            style="display: block;"
-            tabindex="-1"
-          >
-            <div
-              class="modal-dialog upgrade-modal"
-              role="document"
-            >
-              <div
-                class="modal-content"
-              >
-                <div
-                  class="pb-2 sc-fBuWsC hQFoLU"
-                >
-                  <h5>
-                    Board Settings
-                  </h5>
-                  <span
-                    class="sc-bxivhb fsvlWZ"
-                    color="currentColor"
-                    size="12"
-                  >
-                    <test-file-stub />
-                  </span>
-                </div>
-                <div
-                  class="px-45 pt-0 overflow-hidden modal-body"
-                >
-                  <div
-                    class="mb-3"
-                  >
-                    <div
-                      class="mt-2 alert alert-danger"
-                      role="alert"
-                    >
-                      <b>
-                        Are you sure you want to delete this?
-                      </b>
-                      <br />
-                      Deleting a Board will Permenantly Delete all of its Projects and Live Voice Applications
-                    </div>
-                    <label>
-                      Enter this board's name to confirm
-                    </label>
-                    <input
-                      class="form-control"
-                      name="input"
-                      placeholder="Board Name"
-                      type="text"
-                      value=""
-                    />
-                    <div
-                      class="my-3 text-center"
-                    >
-                      <button
-                        class="btn btn-primary disabled"
-                      >
-                        Delete Board
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="modal-backdrop fade"
-          />
-        </div>
-      </div>
+  <Modal
+    autoFocus={true}
+    backdrop={true}
+    backdropClassName="modal-backdrop-invisible"
+    backdropTransition={
+      Object {
+        "mountOnEnter": true,
+        "timeout": 150,
+      }
     }
+    centered={false}
+    className="upgrade-modal"
+    fade={true}
+    isOpen={true}
+    keyboard={true}
+    modalTransition={
+      Object {
+        "timeout": 300,
+      }
+    }
+    onClosed={[Function]}
+    onOpened={[Function]}
+    onPaste={[Function]}
+    role="dialog"
+    toggle={[Function]}
+    zIndex={1050}
   >
     <Portal
-      containerInfo={
+      node={
         <div
           style="position: relative; z-index: 1050;"
           tabindex="-1"
@@ -132,17 +56,13 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                   class="modal-content"
                 >
                   <div
-<<<<<<< Updated upstream
-                    class="pb-2 sc-fBuWsC hQFoLU"
-=======
-                    class="pb-2 sc-feJyhm eScQzT"
->>>>>>> Stashed changes
+                    class="pb-2 sc-gzOgki bMwJiZ"
                   >
                     <h5>
-                      Board Settings
+                      Delete Workspace
                     </h5>
                     <span
-                      class="sc-bxivhb fsvlWZ"
+                      class="sc-bxivhb iYlQyD"
                       color="currentColor"
                       size="12"
                     >
@@ -150,42 +70,34 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                     </span>
                   </div>
                   <div
-<<<<<<< Updated upstream
-                    class="px-45 pt-0 overflow-hidden modal-body"
-=======
-                    class="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
->>>>>>> Stashed changes
+                    class="px-45 pt-0 overflow-hidden sc-gxMtzJ hnvNMF"
                   >
-                    <div
-                      class="mb-3"
-                    >
-                      <div
-                        class="mt-2 alert alert-danger"
-                        role="alert"
-                      >
-                        <b>
-                          Are you sure you want to delete this?
-                        </b>
-                        <br />
-                        Deleting a Board will Permenantly Delete all of its Projects and Live Voice Applications
-                      </div>
+                    <div>
+                      <b>
+                        Are you sure you want to delete this?
+                      </b>
+                      <br />
+                      Deleting a workspace will permanently delete all of its projects and live voice applications
+                      <br />
+                       
+                      <br />
                       <label>
-                        Enter this board's name to confirm
+                        Enter this workspace's name to confirm
                       </label>
                       <input
                         class="form-control"
                         name="input"
-                        placeholder="Board Name"
+                        placeholder="Workspace Name"
                         type="text"
                         value=""
                       />
                       <div
-                        class="my-3 text-center"
+                        class="mt-3 mb-2 text-center"
                       >
                         <button
                           class="btn btn-primary disabled"
                         >
-                          Delete Board
+                          Delete Workspace
                         </button>
                       </div>
                     </div>
@@ -194,16 +106,12 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
               </div>
             </div>
             <div
-              class="modal-backdrop fade"
+              class="modal-backdrop modal-backdrop-invisible fade"
             />
           </div>
         </div>
       }
     >
-<<<<<<< Updated upstream
-      <div
-        className=""
-=======
       <Portal
         containerInfo={
           <div
@@ -227,7 +135,7 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                     class="modal-content"
                   >
                     <div
-                      class="pb-2 sc-feJyhm eScQzT"
+                      class="pb-2 sc-gzOgki bMwJiZ"
                     >
                       <h5>
                         Delete Workspace
@@ -241,7 +149,7 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                       </span>
                     </div>
                     <div
-                      class="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
+                      class="px-45 pt-0 overflow-hidden sc-gxMtzJ hnvNMF"
                     >
                       <div>
                         <b>
@@ -282,96 +190,84 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
             </div>
           </div>
         }
->>>>>>> Stashed changes
       >
-        <Fade
-          appear={true}
-          baseClass="fade"
-          baseClassActive="show"
-          className="modal"
-          enter={true}
-          exit={true}
-          in={true}
-          mountOnEnter={false}
-          onClick={[Function]}
-          onEnter={[Function]}
-          onEntered={[Function]}
-          onEntering={[Function]}
-          onExit={[Function]}
-          onExited={[Function]}
-          onExiting={[Function]}
-          onKeyDown={[Function]}
-          onKeyUp={[Function]}
-          onMouseDown={[Function]}
-          role="dialog"
-          style={
-            Object {
-              "display": "block",
-            }
-          }
-          tabIndex="-1"
-          tag="div"
-          timeout={300}
-          unmountOnExit={false}
+        <div
+          className=""
         >
-          <Transition
+          <Fade
             appear={true}
+            baseClass="fade"
+            baseClassActive="show"
+            className="modal"
             enter={true}
             exit={true}
             in={true}
             mountOnEnter={false}
+            onClick={[Function]}
             onEnter={[Function]}
             onEntered={[Function]}
             onEntering={[Function]}
             onExit={[Function]}
             onExited={[Function]}
             onExiting={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            role="dialog"
+            style={
+              Object {
+                "display": "block",
+              }
+            }
+            tabIndex="-1"
+            tag="div"
             timeout={300}
             unmountOnExit={false}
           >
-            <div
-              className="modal fade"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              onKeyUp={[Function]}
-              onMouseDown={[Function]}
-              role="dialog"
-              style={
-                Object {
-                  "display": "block",
-                }
-              }
-              tabIndex="-1"
+            <Transition
+              appear={true}
+              enter={true}
+              exit={true}
+              in={true}
+              mountOnEnter={false}
+              onEnter={[Function]}
+              onEntered={[Function]}
+              onEntering={[Function]}
+              onExit={[Function]}
+              onExited={[Function]}
+              onExiting={[Function]}
+              timeout={300}
+              unmountOnExit={false}
             >
               <div
-                className="modal-dialog upgrade-modal"
-                role="document"
+                className="modal fade"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                onKeyUp={[Function]}
+                onMouseDown={[Function]}
+                role="dialog"
+                style={
+                  Object {
+                    "display": "block",
+                  }
+                }
+                tabIndex="-1"
               >
                 <div
-                  className="modal-content"
+                  className="modal-dialog upgrade-modal"
+                  onPaste={[Function]}
+                  role="document"
                 >
-                  <ModalHeader
-                    className="pb-2"
-                    header="Board Settings"
-                    toggle={[Function]}
+                  <div
+                    className="modal-content"
                   >
-                    <styled.div
+                    <ModalHeader
                       className="pb-2"
+                      header="Delete Workspace"
+                      toggle={[Function]}
                     >
-                      <StyledComponent
+                      <styled.div
                         className="pb-2"
-<<<<<<< Updated upstream
-                        forwardedComponent={
-                          Object {
-                            "$$typeof": Symbol(react.forward_ref),
-                            "attrs": Array [],
-                            "componentStyle": ComponentStyle {
-                              "componentId": "sc-fBuWsC",
-                              "isStatic": false,
-                              "lastClassName": "hQFoLU",
-                              "rules": Array [
-                                "
-=======
                       >
                         <StyledComponent
                           className="pb-2"
@@ -380,20 +276,19 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                               "$$typeof": Symbol(react.forward_ref),
                               "attrs": Array [],
                               "componentStyle": ComponentStyle {
-                                "componentId": "sc-feJyhm",
+                                "componentId": "sc-gzOgki",
                                 "isStatic": false,
-                                "lastClassName": "eScQzT",
+                                "lastClassName": "bMwJiZ",
                                 "rules": Array [
                                   "
->>>>>>> Stashed changes
   align-items: center;
   display: flex;
   justify-content: space-between;
   padding: ",
-                                [Function],
-                                "px ",
-                                [Function],
-                                "px !important;
+                                  [Function],
+                                  "px ",
+                                  [Function],
+                                  "px !important;
   padding-left: 2rem;
   border: 0;
 
@@ -408,8 +303,11 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
   }
 
   & > ",
-                                ".sc-bxivhb",
-                                " {
+                                  ".sc-bxivhb",
+                                  " {
+    ",
+                                  [Function],
+                                  "
     padding: 10px;
     margin: -10px;
     cursor: pointer;
@@ -421,169 +319,116 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
     }
   }
 ",
-<<<<<<< Updated upstream
-                              ],
-                            },
-                            "displayName": "styled.div",
-                            "foldedComponentIds": Array [],
-                            "render": [Function],
-                            "styledComponentId": "sc-fBuWsC",
-                            "target": "div",
-                            "toString": [Function],
-                            "warnTooManyClasses": [Function],
-                            "withComponent": [Function],
-=======
                                 ],
                               },
                               "displayName": "styled.div",
                               "foldedComponentIds": Array [],
                               "render": [Function],
-                              "styledComponentId": "sc-feJyhm",
+                              "styledComponentId": "sc-gzOgki",
                               "target": "div",
                               "toString": [Function],
                               "warnTooManyClasses": [Function],
                               "withComponent": [Function],
                             }
->>>>>>> Stashed changes
                           }
-                        }
-                        forwardedRef={null}
-                      >
-                        <div
-                          className="pb-2 sc-fBuWsC hQFoLU"
+                          forwardedRef={null}
                         >
-<<<<<<< Updated upstream
-                          <h5>
-                            Board Settings
-                          </h5>
-                          <ForwardRef
-                            icon="close"
-                            onClick={[Function]}
-                            size={12}
-=======
                           <div
-                            className="pb-2 sc-feJyhm eScQzT"
->>>>>>> Stashed changes
+                            className="pb-2 sc-gzOgki bMwJiZ"
                           >
-                            <styled.span
-                              color="currentColor"
+                            <h5>
+                              Delete Workspace
+                            </h5>
+                            <ForwardRef
+                              icon="close"
                               onClick={[Function]}
                               size={12}
                             >
-                              <StyledComponent
+                              <styled.span
                                 color="currentColor"
-                                forwardedComponent={
-                                  Object {
-                                    "$$typeof": Symbol(react.forward_ref),
-                                    "attrs": Array [],
-                                    "componentStyle": ComponentStyle {
-                                      "componentId": "sc-bxivhb",
-                                      "isStatic": false,
-                                      "lastClassName": "fsvlWZ",
-                                      "rules": Array [
-                                        "
+                                onClick={[Function]}
+                                size={12}
+                              >
+                                <StyledComponent
+                                  color="currentColor"
+                                  forwardedComponent={
+                                    Object {
+                                      "$$typeof": Symbol(react.forward_ref),
+                                      "attrs": Array [],
+                                      "componentStyle": ComponentStyle {
+                                        "componentId": "sc-bxivhb",
+                                        "isStatic": false,
+                                        "lastClassName": "iYlQyD",
+                                        "rules": Array [
+                                          "
   ",
-                                        [Function],
-                                        "
+                                          [Function],
+                                          "
 
   color: ",
-                                        [Function],
-                                        ";
+                                          [Function],
+                                          ";
   width: ",
-                                        [Function],
-                                        "px;
+                                          [Function],
+                                          "px;
   height: ",
-                                        [Function],
-                                        "px;
+                                          [Function],
+                                          "px;
   box-sizing: content-box;
   
   ",
-                                        [Function],
-                                        "
+                                          [Function],
+                                          "
 
   & > svg {
     display: block;
     width: inherit;
     height: inherit;
+
   }
 
   &:hover,
   &:active {
     color: ",
-                                        [Function],
-                                        ";
+                                          [Function],
+                                          ";
+
   }
 ",
-                                      ],
-                                    },
-                                    "displayName": "styled.span",
-                                    "foldedComponentIds": Array [],
-                                    "render": [Function],
-                                    "styledComponentId": "sc-bxivhb",
-                                    "target": "span",
-                                    "toString": [Function],
-                                    "warnTooManyClasses": [Function],
-                                    "withComponent": [Function],
+                                        ],
+                                      },
+                                      "displayName": "styled.span",
+                                      "foldedComponentIds": Array [],
+                                      "render": [Function],
+                                      "styledComponentId": "sc-bxivhb",
+                                      "target": "span",
+                                      "toString": [Function],
+                                      "warnTooManyClasses": [Function],
+                                      "withComponent": [Function],
+                                    }
                                   }
-                                }
-                                forwardedRef={null}
-                                onClick={[Function]}
-                                size={12}
-                              >
-                                <span
-                                  className="sc-bxivhb fsvlWZ"
-                                  color="currentColor"
+                                  forwardedRef={null}
                                   onClick={[Function]}
                                   size={12}
                                 >
-                                  <test-file-stub />
-                                </span>
-                              </StyledComponent>
-                            </styled.span>
-                          </ForwardRef>
-                        </div>
-                      </StyledComponent>
-                    </styled.div>
-                  </ModalHeader>
-                  <ModalBody
-                    className="px-45 pt-0 overflow-hidden"
-                    tag="div"
-                  >
-                    <div
-                      className="px-45 pt-0 overflow-hidden modal-body"
+                                  <span
+                                    className="sc-bxivhb iYlQyD"
+                                    color="currentColor"
+                                    onClick={[Function]}
+                                    size={12}
+                                  >
+                                    <test-file-stub />
+                                  </span>
+                                </StyledComponent>
+                              </styled.span>
+                            </ForwardRef>
+                          </div>
+                        </StyledComponent>
+                      </styled.div>
+                    </ModalHeader>
+                    <styled.div
+                      className="px-45 pt-0 overflow-hidden"
                     >
-<<<<<<< Updated upstream
-                      <div
-                        className="mb-3"
-                      >
-                        <Alert
-                          className="mt-2"
-                          closeAriaLabel="Close"
-                          color="danger"
-                          fade={false}
-                          isOpen={true}
-                          tag="div"
-                          transition={
-                            Object {
-                              "appear": true,
-                              "baseClass": "fade",
-                              "baseClassActive": "show",
-                              "enter": true,
-                              "exit": true,
-                              "in": true,
-                              "mountOnEnter": false,
-                              "onEnter": [Function],
-                              "onEntered": [Function],
-                              "onEntering": [Function],
-                              "onExit": [Function],
-                              "onExited": [Function],
-                              "onExiting": [Function],
-                              "tag": "div",
-                              "timeout": 150,
-                              "unmountOnExit": true,
-                            }
-                          }
-=======
                       <StyledComponent
                         className="px-45 pt-0 overflow-hidden"
                         forwardedComponent={
@@ -591,9 +436,9 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                             "$$typeof": Symbol(react.forward_ref),
                             "attrs": Array [],
                             "componentStyle": ComponentStyle {
-                              "componentId": "sc-cIShpX",
+                              "componentId": "sc-gxMtzJ",
                               "isStatic": false,
-                              "lastClassName": "haqxvv",
+                              "lastClassName": "hnvNMF",
                               "rules": Array [
                                 "
   position: relative;
@@ -607,7 +452,7 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                             "displayName": "styled.div",
                             "foldedComponentIds": Array [],
                             "render": [Function],
-                            "styledComponentId": "sc-cIShpX",
+                            "styledComponentId": "sc-gxMtzJ",
                             "target": "div",
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
@@ -617,125 +462,70 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                         forwardedRef={null}
                       >
                         <div
-                          className="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
->>>>>>> Stashed changes
+                          className="px-45 pt-0 overflow-hidden sc-gxMtzJ hnvNMF"
                         >
-                          <Fade
-                            appear={true}
-                            baseClass=""
-                            baseClassActive="show"
-                            className="mt-2 alert alert-danger"
-                            enter={true}
-                            exit={true}
-                            in={true}
-                            mountOnEnter={false}
-                            onEnter={[Function]}
-                            onEntered={[Function]}
-                            onEntering={[Function]}
-                            onExit={[Function]}
-                            onExited={[Function]}
-                            onExiting={[Function]}
-                            role="alert"
-                            tag="div"
-                            timeout={0}
-                            unmountOnExit={true}
-                          >
-                            <Transition
-                              appear={true}
-                              enter={true}
-                              exit={true}
-                              in={true}
-                              mountOnEnter={false}
-                              onEnter={[Function]}
-                              onEntered={[Function]}
-                              onEntering={[Function]}
-                              onExit={[Function]}
-                              onExited={[Function]}
-                              onExiting={[Function]}
-                              timeout={0}
-                              unmountOnExit={true}
+                          <div>
+                            <b>
+                              Are you sure you want to delete this?
+                            </b>
+                            <br />
+                            Deleting a workspace will permanently delete all of its projects and live voice applications
+                            <br />
+                             
+                            <br />
+                            <label>
+                              Enter this workspace's name to confirm
+                            </label>
+                            <Input
+                              name="input"
+                              onChange={[Function]}
+                              placeholder="Workspace Name"
+                              type="text"
+                              value=""
                             >
-                              <div
-                                className="mt-2 alert alert-danger"
-                                role="alert"
+                              <input
+                                className="form-control"
+                                name="input"
+                                onChange={[Function]}
+                                placeholder="Workspace Name"
+                                type="text"
+                                value=""
+                              />
+                            </Input>
+                            <div
+                              className="mt-3 mb-2 text-center"
+                            >
+                              <Button
+                                disabled={true}
+                                iconPosition="right"
+                                isBtn={true}
+                                isPrimary={true}
+                                onClick={[Function]}
+                                onRef={[Function]}
+                                trackEvent="Button Click"
                               >
-                                <b>
-                                  Are you sure you want to delete this?
-                                </b>
-                                <br />
-                                Deleting a Board will Permenantly Delete all of its Projects and Live Voice Applications
-                              </div>
-                            </Transition>
-                          </Fade>
-                        </Alert>
-                        <label>
-                          Enter this board's name to confirm
-                        </label>
-                        <Input
-                          name="input"
-                          onChange={[Function]}
-                          placeholder="Board Name"
-                          type="text"
-                          value=""
-                        >
-                          <input
-                            className="form-control"
-                            name="input"
-                            onChange={[Function]}
-                            placeholder="Board Name"
-                            type="text"
-                            value=""
-                          />
-                        </Input>
-                        <div
-                          className="my-3 text-center"
-                        >
-                          <Button
-                            disabled={true}
-                            iconPosition="right"
-                            isBtn={true}
-                            isPrimary={true}
-                            onClick={[Function]}
-                            onRef={[Function]}
-                            trackEvent="Button Click"
-                          >
-                            <button
-                              className="btn btn-primary disabled"
-                              onClick={[Function]}
-                            >
-                              Delete Board
-                            </button>
-                          </Button>
+                                <button
+                                  className="btn btn-primary disabled"
+                                  onClick={[Function]}
+                                >
+                                  Delete Workspace
+                                </button>
+                              </Button>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </ModalBody>
+                      </StyledComponent>
+                    </styled.div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Transition>
-        </Fade>
-        <Fade
-          appear={true}
-          baseClass="fade"
-          baseClassActive="show"
-          className="modal-backdrop"
-          enter={true}
-          exit={true}
-          in={true}
-          mountOnEnter={true}
-          onEnter={[Function]}
-          onEntered={[Function]}
-          onEntering={[Function]}
-          onExit={[Function]}
-          onExited={[Function]}
-          onExiting={[Function]}
-          tag="div"
-          timeout={150}
-          unmountOnExit={false}
-        >
-          <Transition
+            </Transition>
+          </Fade>
+          <Fade
             appear={true}
+            baseClass="fade"
+            baseClassActive="show"
+            className="modal-backdrop modal-backdrop-invisible"
             enter={true}
             exit={true}
             in={true}
@@ -746,16 +536,33 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
             onExit={[Function]}
             onExited={[Function]}
             onExiting={[Function]}
+            tag="div"
             timeout={150}
             unmountOnExit={false}
           >
-            <div
-              className="modal-backdrop fade"
-            />
-          </Transition>
-        </Fade>
-      </div>
+            <Transition
+              appear={true}
+              enter={true}
+              exit={true}
+              in={true}
+              mountOnEnter={true}
+              onEnter={[Function]}
+              onEntered={[Function]}
+              onEntering={[Function]}
+              onExit={[Function]}
+              onExited={[Function]}
+              onExiting={[Function]}
+              timeout={150}
+              unmountOnExit={false}
+            >
+              <div
+                className="modal-backdrop modal-backdrop-invisible fade"
+              />
+            </Transition>
+          </Fade>
+        </div>
+      </Portal>
     </Portal>
-  </Portal>
+  </Modal>
 </Modal>
 `;

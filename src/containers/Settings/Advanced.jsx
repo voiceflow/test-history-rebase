@@ -92,11 +92,7 @@ class AdvancedSettings extends Component {
       confirm: () => {
         deleteProject(projectID)
           .then(() => goToDashboard())
-          .catch((err) => {
-            // eslint-disable-next-line no-console
-            console.log(err);
-            setError('Error Deleting Skill');
-          });
+          .catch((err) => setError(err.message));
       },
     });
   };

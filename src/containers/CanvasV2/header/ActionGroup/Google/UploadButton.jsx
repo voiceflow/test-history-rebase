@@ -5,12 +5,14 @@ import { Tooltip } from 'react-tippy';
 
 import Button from '@/components/Button';
 import SvgIcon from '@/components/SvgIcon';
+import { EditPermissionContext } from '@/containers/CanvasV2/contexts';
 import { GOOGLE_STATES, publish } from '@/ducks/publish/google';
 
 import { UploadButtonWrapper } from '../styled';
 
 function UploadButton(props) {
   const { stage, publish, setPopup } = props;
+  const { isViewer } = React.useContext(EditPermissionContext);
   const state = GOOGLE_STATES[stage];
 
   const text = state.end ? 'Upload to Google' : 'Uploading';
@@ -23,8 +25,9 @@ function UploadButton(props) {
         html={<div style={{ width: 180 }}>Test your Action on your own Google device, or in the Google Actions console</div>}
         position="bottom"
         distance={19}
+        disabled={isViewer}
       >
-        <Button variant="contained" className={cn('publish-btn', { 'spinning-publish': !state.end })} onClick={action}>
+        <Button disabled={isViewer} variant="contained" className={cn('publish-btn', { 'spinning-publish': !state.end })} onClick={action}>
           {text}
           <div className="publish-spinner">
             <div className="spinner-icon">

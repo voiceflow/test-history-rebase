@@ -14,7 +14,7 @@ exports[`Storyshots Captioned Icon Button variants: default 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "CaptionedIconButtonContainer-sc-1h2g29o-0",
           "isStatic": false,
-          "lastClassName": "bDwdcI",
+          "lastClassName": "jCVAps",
           "rules": Array [
             "
   ",
@@ -52,6 +52,7 @@ exports[`Storyshots Captioned Icon Button variants: default 1`] = `
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
             [Function],
             ";
@@ -70,7 +71,7 @@ exports[`Storyshots Captioned Icon Button variants: default 1`] = `
         "displayName": "CaptionedIconButtonContainer",
         "foldedComponentIds": Array [
           "sc-bdVaJa",
-          "sc-bxivhb",
+          "sc-ifAKCX",
         ],
         "render": [Function],
         "styledComponentId": "CaptionedIconButtonContainer-sc-1h2g29o-0",
@@ -84,7 +85,7 @@ exports[`Storyshots Captioned Icon Button variants: default 1`] = `
     onClick={[Function]}
   >
     <button
-      className="sc-bdVaJa sc-bxivhb CaptionedIconButtonContainer-sc-1h2g29o-0 bDwdcI"
+      className="sc-bdVaJa sc-ifAKCX CaptionedIconButtonContainer-sc-1h2g29o-0 jCVAps"
       disabled={false}
       onClick={[Function]}
     >
@@ -92,7 +93,7 @@ exports[`Storyshots Captioned Icon Button variants: default 1`] = `
         color="#becedc"
         icon="elipsis"
       >
-        <SvgIcon__SvgIconContainer
+        <styled.span
           color="#becedc"
           size={16}
         >
@@ -103,26 +104,51 @@ exports[`Storyshots Captioned Icon Button variants: default 1`] = `
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                  "componentId": "sc-bxivhb",
                   "isStatic": false,
-                  "lastClassName": "eJSECB",
+                  "lastClassName": "hbsvVt",
                   "rules": Array [
+                    "
+  ",
                     [Function],
-                    " color:",
+                    "
+
+  color: ",
                     [Function],
-                    ";width:",
+                    ";
+  width: ",
                     [Function],
-                    "px;height:",
+                    "px;
+  height: ",
                     [Function],
-                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                    "px;
+  box-sizing: content-box;
+  
+  ",
                     [Function],
-                    ";}",
+                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                    [Function],
+                    ";
+
+  }
+",
                   ],
                 },
-                "displayName": "SvgIcon__SvgIconContainer",
+                "displayName": "styled.span",
                 "foldedComponentIds": Array [],
                 "render": [Function],
-                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                "styledComponentId": "sc-bxivhb",
                 "target": "span",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -133,14 +159,14 @@ exports[`Storyshots Captioned Icon Button variants: default 1`] = `
             size={16}
           >
             <span
-              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 eJSECB"
+              className="sc-bxivhb hbsvVt"
               color="#becedc"
               size={16}
             >
               <test-file-stub />
             </span>
           </StyledComponent>
-        </SvgIcon__SvgIconContainer>
+        </styled.span>
       </ForwardRef>
       <CaptionedIconButtonLabel>
         <StyledComponent

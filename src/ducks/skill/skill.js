@@ -21,6 +21,7 @@ export const SET_ACTIVE_PLATFORM = 'SKILL:SET_ACTIVE_PLATFORM';
 export const UPDATE_ACTIVE_SKILL = 'SKILL:UPDATE_ACTIVE';
 export const UPDATE_DIAGRAM_ID = 'SKILL:UPDATE_DIAGRAM_ID';
 export const ADD_GLOBAL_VARIABLE = 'SKILL:GLOBAL_VARIABLE:ADD';
+export const REPLACE_GLOBAL_VARIABLES = 'SKILL:GLOBAL_VARIABLES:REPLACE';
 export const REMOVE_GLOBAL_VARIABLE = 'SKILL:GLOBAL_VARIABLE:REMOVE';
 
 // reducers
@@ -50,6 +51,11 @@ export const removeGlobalVariableReducer = (state, { payload: variable }) => ({
   globalVariables: withoutValue(state.globalVariables, variable),
 });
 
+export const replaceGlobalVariablesReducer = (state, { payload: variables }) => ({
+  ...state,
+  globalVariables: variables,
+});
+
 function skillReducer(state = {}, action) {
   switch (action.type) {
     case SET_ACTIVE_SKILL:
@@ -62,6 +68,8 @@ function skillReducer(state = {}, action) {
       return addGlobalVariableReducer(state, action);
     case REMOVE_GLOBAL_VARIABLE:
       return removeGlobalVariableReducer(state, action);
+    case REPLACE_GLOBAL_VARIABLES:
+      return replaceGlobalVariablesReducer(state, action);
     default:
       return state;
   }
@@ -149,11 +157,13 @@ export const isRootDiagramSelector = createSelector(
 
 export const setActiveSkill = (skill, diagramID) => createAction(SET_ACTIVE_SKILL, { skill, diagramID });
 
-export const updateActiveSkill = (properties) => createAction(UPDATE_ACTIVE_SKILL, { ...properties });
+export const updateActiveSkill = (properties, meta) => createAction(UPDATE_ACTIVE_SKILL, { ...properties }, meta);
 
 export const updateDiagramID = (diagramID) => createAction(UPDATE_DIAGRAM_ID, diagramID);
 
 export const setActivePlatform = (platform) => createAction(UPDATE_ACTIVE_SKILL, { platform });
+
+export const replaceGlobalVariables = (variables, meta) => createAction(REPLACE_GLOBAL_VARIABLES, variables, meta);
 
 export const removeGlobalVariable = (variable) => createAction(REMOVE_GLOBAL_VARIABLE, variable);
 

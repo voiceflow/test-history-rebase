@@ -1,10 +1,12 @@
 import React from 'react';
 
 import CardManager from '@/components/CardManager';
-import { allIntentsSelector } from '@/ducks/intent';
-import { setError } from '@/ducks/modal';
-import { activePlatformSelector } from '@/ducks/skill';
-import { addSlot, allSlotsSelector, removeSlot, updateSlot } from '@/ducks/slot';
+import { LockedResourceOverlay } from '@/containers/CanvasV2/components/LockedEditorOverlay';
+import * as Intent from '@/ducks/intent';
+import * as Modal from '@/ducks/modal';
+import * as Realtime from '@/ducks/realtime';
+import * as Skill from '@/ducks/skill';
+import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import { activeSlotTypes } from '@/store/selectors';
 
@@ -30,32 +32,35 @@ function SlotManager({ slots, intents, addSlot, removeSlot, updateSlot, setError
   };
 
   return (
-    <CardManager
-      type="slots"
-      label="Slots"
-      addLabel="Add Slots"
-      searchPlaceholder="Search Slots"
-      items={slots}
-      onAdd={(id, name) => addSlot(id, { id, name, inputs: [], open: true, selected: null })}
-      onUpdate={updateSlot}
-      onRemove={safeRemoveSlot}
-      formComponent={SlotInput}
-    />
+    <>
+      <CardManager
+        type="slots"
+        label="Slots"
+        addLabel="Add Slots"
+        searchPlaceholder="Search Slots"
+        items={slots}
+        onAdd={(id, name) => addSlot(id, { id, name, inputs: [], open: true, selected: null })}
+        onUpdate={updateSlot}
+        onRemove={safeRemoveSlot}
+        formComponent={SlotInput}
+      />
+      <LockedResourceOverlay type={Realtime.ResourceType.SLOTS} />
+    </>
   );
 }
 
 const mapStateToProps = {
-  intents: allIntentsSelector,
+  intents: Intent.allIntentsSelector,
   slotTypes: activeSlotTypes,
-  platform: activePlatformSelector,
-  slots: allSlotsSelector,
+  platform: Skill.activePlatformSelector,
+  slots: Slot.allSlotsSelector,
 };
 
 const mapDispatchToProps = {
-  setError,
-  addSlot,
-  removeSlot,
-  updateSlot,
+  setError: Modal.setError,
+  addSlot: Slot.addSlot,
+  removeSlot: Slot.removeSlot,
+  updateSlot: Slot.updateSlot,
 };
 
 export default connect(

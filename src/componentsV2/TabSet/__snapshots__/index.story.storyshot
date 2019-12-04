@@ -9,7 +9,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
       "componentStyle": ComponentStyle {
         "componentId": "TabSet-xxhne8-0",
         "isStatic": false,
-        "lastClassName": "gkrwSM",
+        "lastClassName": "bDlwiG",
         "rules": Array [
           "display:",
           [Function],
@@ -19,7 +19,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
           [Function],
           " justify-content:center;",
           "height:100%;& ",
-          ".sc-kgAjT",
+          ".sc-jqCOkK",
           "{height:100%;}",
         ],
       },
@@ -43,7 +43,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
   }
 >
   <div
-    className="Flex__FlexCenter-sc-127y44r-1 TabSet-xxhne8-0 gkrwSM"
+    className="Flex__FlexCenter-sc-127y44r-1 TabSet-xxhne8-0 bDlwiG"
     style={
       Object {
         "height": 50,
@@ -57,9 +57,9 @@ exports[`Storyshots Tab Set variants: default 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-kgAjT",
+              "componentId": "sc-jqCOkK",
               "isStatic": false,
-              "lastClassName": "gQYQTf",
+              "lastClassName": "dSjnKy",
               "rules": Array [
                 "
   ",
@@ -104,7 +104,10 @@ exports[`Storyshots Tab Set variants: default 1`] = `
 
   &:hover {
     text-decoration: none;
-    color: #848da0;
+    color: ",
+                [Function],
+                ";
+    filter: brightness(90%);
   }
 
   ::before {
@@ -116,7 +119,9 @@ exports[`Storyshots Tab Set variants: default 1`] = `
     overflow: hidden;
     height: 2px;
     transition: width 0.2s linear, opacity 0.2s linear;
-    background-color: #5d9df5;
+    background-color: ",
+                [Function],
+                ";
     opacity: 0;
   }
 
@@ -129,7 +134,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
             "displayName": "styled.button",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-kgAjT",
+            "styledComponentId": "sc-jqCOkK",
             "target": "button",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -139,7 +144,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
         forwardedRef={null}
       >
         <button
-          className="sc-kgAjT iVKQIt"
+          className="sc-jqCOkK hNdrZh"
         >
           Basic Tab
         </button>
@@ -152,9 +157,9 @@ exports[`Storyshots Tab Set variants: default 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-kgAjT",
+              "componentId": "sc-jqCOkK",
               "isStatic": false,
-              "lastClassName": "gQYQTf",
+              "lastClassName": "dSjnKy",
               "rules": Array [
                 "
   ",
@@ -199,7 +204,10 @@ exports[`Storyshots Tab Set variants: default 1`] = `
 
   &:hover {
     text-decoration: none;
-    color: #848da0;
+    color: ",
+                [Function],
+                ";
+    filter: brightness(90%);
   }
 
   ::before {
@@ -211,7 +219,9 @@ exports[`Storyshots Tab Set variants: default 1`] = `
     overflow: hidden;
     height: 2px;
     transition: width 0.2s linear, opacity 0.2s linear;
-    background-color: #5d9df5;
+    background-color: ",
+                [Function],
+                ";
     opacity: 0;
   }
 
@@ -224,7 +234,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
             "displayName": "styled.button",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-kgAjT",
+            "styledComponentId": "sc-jqCOkK",
             "target": "button",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -234,7 +244,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
         forwardedRef={null}
       >
         <button
-          className="sc-kgAjT iVKQIt"
+          className="sc-jqCOkK hNdrZh"
         >
           Other Tab
         </button>
@@ -249,9 +259,9 @@ exports[`Storyshots Tab Set variants: default 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-kgAjT",
+              "componentId": "sc-jqCOkK",
               "isStatic": false,
-              "lastClassName": "gQYQTf",
+              "lastClassName": "dSjnKy",
               "rules": Array [
                 "
   ",
@@ -296,7 +306,10 @@ exports[`Storyshots Tab Set variants: default 1`] = `
 
   &:hover {
     text-decoration: none;
-    color: #848da0;
+    color: ",
+                [Function],
+                ";
+    filter: brightness(90%);
   }
 
   ::before {
@@ -308,7 +321,9 @@ exports[`Storyshots Tab Set variants: default 1`] = `
     overflow: hidden;
     height: 2px;
     transition: width 0.2s linear, opacity 0.2s linear;
-    background-color: #5d9df5;
+    background-color: ",
+                [Function],
+                ";
     opacity: 0;
   }
 
@@ -321,7 +336,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
             "displayName": "styled.button",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-kgAjT",
+            "styledComponentId": "sc-jqCOkK",
             "target": "button",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -332,7 +347,7 @@ exports[`Storyshots Tab Set variants: default 1`] = `
         isActive={true}
       >
         <button
-          className="sc-kgAjT gQYQTf"
+          className="sc-jqCOkK dSjnKy"
         >
           Active Tab
         </button>

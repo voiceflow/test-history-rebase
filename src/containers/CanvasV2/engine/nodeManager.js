@@ -1,3 +1,6 @@
+import cuid from 'cuid';
+import { partition as _partition } from 'lodash';
+
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { clearModal, setConfirm } from '@/ducks/modal';
@@ -12,6 +15,31 @@ class NodeManager extends EngineConsumer {
     add: (node, data, nodeID) => this.dispatch(Creator.addNode(node, data, nodeID)),
 
     addMany: (nodeGroup, position) => this.dispatch(Creator.addManyNodes(nodeGroup, position)),
+
+    addNested: (parentNodeID, nodeID, node, data, mergedNodeID) => {
+      this.dispatch(Creator.addNestedNode(parentNodeID, node, data, nodeID, mergedNodeID));
+      this.redrawNestedLinks(parentNodeID);
+    },
+
+    insertNested: (parentNodeID, index, nodeID) => {
+      this.dispatch(Creator.insertNestedNode(parentNodeID, index, nodeID));
+      this.redrawNestedLinks(parentNodeID);
+    },
+
+    unmerge: (nodeID, position) => {
+      const { parentNode } = this.engine.getNodeByID(nodeID);
+
+      this.saveLocation(parentNode);
+      this.dispatch(Creator.unmergeNode(nodeID, position));
+      this.redrawNestedLinks(parentNode);
+    },
+
+    merge: (mergedNodeID, sourceNodeID, targetNodeID, position) => {
+      this.dispatch(Creator.mergeNodes(sourceNodeID, targetNodeID, position, mergedNodeID));
+
+      this.redrawLinks(sourceNodeID);
+      this.redrawLinks(targetNodeID);
+    },
 
     updateData: (nodeID, data) => {
       this.dispatch(Creator.updateNodeData(nodeID, data));
@@ -55,12 +83,21 @@ class NodeManager extends EngineConsumer {
     },
 
     translate: (nodeID, movement) => {
-      this.api(nodeID)?.translate(movement);
+      this.api(nodeID)?.translate?.(movement);
       this.updateOrigin(nodeID, movement);
       this.translateAllLinks(nodeID, movement);
     },
 
+    translateBaseOnOrigin: (nodeID, movement, origin) => {
+      const node = this.engine.nodes.get(nodeID);
+
+      this.internal.translate(nodeID, [movement[0] - (node.x - origin[0]), movement[1] - (node.y - origin[1])]);
+    },
+
     translateMany: (nodeIDs, movement) => nodeIDs.forEach((nodeID) => this.internal.translate(nodeID, movement)),
+    translateManyOnOrigins: (nodeIDs, movement, origins) => {
+      nodeIDs.forEach((nodeID, i) => this.internal.translateBaseOnOrigin(nodeID, movement, origins[i]));
+    },
   };
 
   api(nodeID) {
@@ -69,34 +106,34 @@ class NodeManager extends EngineConsumer {
 
   // crud methods
 
-  add(nodeID, type, [x, y]) {
+  async add(nodeID, type, [x, y]) {
     const { node, data } = nodeFactory(type);
     const augmentedNode = { ...node, x, y };
 
+    await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, nodeID));
     this.internal.add(augmentedNode, data, nodeID);
-    this.dispatch(Realtime.addNode(augmentedNode, data, nodeID));
     this.engine.saveHistory();
     this.engine.focus.set(nodeID);
   }
 
-  addMany(nodeGroup, position) {
+  async addMany(nodeGroup, position) {
+    await this.engine.realtime.sendUpdate(Realtime.addManyNodes(nodeGroup, position));
     this.internal.addMany(nodeGroup, position);
-    this.dispatch(Realtime.addManyNodes(nodeGroup, position));
     this.engine.saveHistory();
   }
 
-  clone(nodeGroup, position) {
+  async clone(nodeGroup, position) {
     const clonedNodeGroup = cloneNodeGroup(nodeGroup);
-    this.addMany(clonedNodeGroup, position);
+    await this.addMany(clonedNodeGroup, position);
 
     return clonedNodeGroup;
   }
 
-  duplicate(nodeID) {
+  async duplicate(nodeID) {
     const node = this.engine.getNodeByID(nodeID);
     const data = this.engine.getDataByNodeID(nodeID);
 
-    const clonedNodeGroup = this.clone(
+    const clonedNodeGroup = await this.clone(
       {
         nodesWithData: [{ node, data: { ...data, name: `${data.name} copy` } }],
         ports: [...node.ports.in, ...node.ports.out].map(this.engine.getPortByID),
@@ -109,20 +146,42 @@ class NodeManager extends EngineConsumer {
     this.engine.focus.set(clonedNodeGroup.nodesWithData[0]?.node.id);
   }
 
-  updateData(nodeID, data, save = true) {
+  async updateData(nodeID, data, save = true) {
+    await this.engine.realtime.sendUpdate(Realtime.updateNodeData(nodeID, data));
     this.internal.updateData(nodeID, data);
-    this.dispatch(Realtime.updateNodeData(nodeID, data));
 
     if (save) {
       this.engine.saveHistory();
     }
   }
 
-  // TODO: move this validator out into a seperate handler
-  validateRemove(nodeIDs, remove) {
-    const removableNodes = nodeIDs.map(this.engine.getNodeByID).filter((node) => node.type !== BlockType.START);
-    const removableNodeIDs = removableNodes.map(({ id }) => id);
-    const commandNodes = removableNodes.filter((node) => node.type === BlockType.COMMAND);
+  isRemovingLocked(nodeIDs, remove) {
+    const lockedNodes = this.engine.getDeleteLockedNodes();
+    const combinedNodes = nodeIDs.map(this.engine.getNodeByID).filter((node) => node.type === BlockType.COMBINED);
+
+    const unRemovableCombinedNodeIDs = combinedNodes
+      .filter((node) => node.combinedNodes.some((nestedNodeID) => lockedNodes[nestedNodeID]))
+      .map((node) => node.id);
+    const [lockedNodeIDs, unlockedNodesIDs] = _partition(nodeIDs, (id) => lockedNodes[id] || unRemovableCombinedNodeIDs.includes(id));
+
+    if (lockedNodeIDs.length) {
+      // eslint-disable-next-line no-nested-ternary
+      const text = unlockedNodesIDs.length ? 'Some blocks' : nodeIDs.length > 1 ? 'These blocks' : 'This block';
+
+      this.dispatch(
+        setConfirm({
+          warning: false,
+          text: `${text} being actively working on and cannot be deleted`,
+          confirm: () => (unlockedNodesIDs.length ? remove(unlockedNodesIDs) : this.dispatch(clearModal())),
+        })
+      );
+      return true;
+    }
+    return false;
+  }
+
+  isRemovingDefaultCommand(nodes) {
+    const commandNodes = nodes.filter((node) => node.type === BlockType.COMMAND);
     const commandNodesIDs = commandNodes.map(({ id }) => id);
     // if the deleted node is not a help intent or a stop intent
     const deletingStopIntent = commandNodesIDs.map(this.engine.getDataByNodeID).some((data) => data?.alexa?.intent === 'AMAZON.StopIntent');
@@ -142,20 +201,26 @@ class NodeManager extends EngineConsumer {
           setConfirm({
             warning: false,
             text: `${requiredCommand} is required by default`,
-            confirm: () => {
-              this.dispatch(clearModal());
-            },
+            confirm: () => this.dispatch(clearModal()),
           })
         );
-        return;
+        return requiredCommand;
       }
     }
+    return false;
+  }
+
+  validateRemove(nodeIDs, remove) {
+    const removableNodes = nodeIDs.map(this.engine.getNodeByID).filter((node) => node.type !== BlockType.START);
+    const removableNodeIDs = removableNodes.map(({ id }) => id);
+
+    if (this.isRemovingDefaultCommand(removableNodes) || this.isRemovingLocked(removableNodeIDs, remove)) return;
 
     if (removableNodes.some((node) => [BlockType.COMBINED, BlockType.COMMAND].includes(node.type))) {
       this.dispatch(
         setConfirm({
           warning: true,
-          text: `Are you sure you want to delete ${removableNodes.length > 1 ? 'these blocks?' : 'this block?'}`,
+          text: `Are you sure you want to delete ${removableNodeIDs.length > 1 ? 'these blocks?' : 'this block?'}`,
           confirm: () => remove(removableNodeIDs),
         })
       );
@@ -166,76 +231,83 @@ class NodeManager extends EngineConsumer {
   }
 
   remove(nodeID) {
-    this.validateRemove([nodeID], ([removeNodeID]) => {
+    return this.validateRemove([nodeID], async ([removeNodeID]) => {
+      await this.engine.realtime.sendUpdate(Realtime.removeNode(removeNodeID));
       this.internal.remove(removeNodeID);
-      this.dispatch(Realtime.removeNode(removeNodeID));
       this.engine.saveHistory();
     });
   }
 
   removeMany(nodeIDs) {
-    this.validateRemove(nodeIDs, (removableNodeIDs) => {
+    return this.validateRemove(nodeIDs, async (removableNodeIDs) => {
+      await this.engine.realtime.sendUpdate(Realtime.removeManyNodes(removableNodeIDs));
       this.internal.removeMany(removableNodeIDs);
-      this.dispatch(Realtime.removeManyNodes(removableNodeIDs));
       this.engine.saveHistory();
     });
   }
 
   // nested node management methods
 
-  addNested(parentNodeID, nodeID, type) {
+  async addNested(parentNodeID, nodeID, type, mergedNodeID = cuid()) {
     const { node, data } = nodeFactory(type);
-    this.dispatch(Creator.addNestedNode(parentNodeID, { ...node, type }, data, nodeID));
+
+    await this.engine.realtime.sendUpdate(Realtime.addNestedNode(parentNodeID, nodeID, node, data, mergedNodeID));
+    this.internal.addNested(parentNodeID, nodeID, node, data, mergedNodeID);
     this.engine.saveHistory();
     this.engine.focus.set(nodeID);
-    this.redrawNestedLinks(parentNodeID);
   }
 
-  insertNested(parentNodeID, index, nodeID) {
-    this.dispatch(Creator.insertNestedNode(parentNodeID, index, nodeID));
+  async insertNested(parentNodeID, index, nodeID) {
+    await this.engine.realtime.sendUpdate(Realtime.insertNestedNode(parentNodeID, index, nodeID));
+    this.internal.insertNested(parentNodeID, index, nodeID);
     this.engine.saveHistory();
-    this.redrawNestedLinks(parentNodeID);
   }
 
-  reorderNested(parentNodeID, sourceIndex, targetIndex) {
-    this.dispatch(Creator.reorderNestedNodes(parentNodeID, sourceIndex, targetIndex));
+  async unmerge(nodeID, position) {
+    await this.engine.realtime.sendUpdate(Realtime.unmergeNode(nodeID, position));
+    this.internal.unmerge(nodeID, position);
     this.engine.saveHistory();
-    this.redrawNestedLinks(parentNodeID);
   }
 
-  unmerge(nodeID, position) {
-    const { parentNode } = this.engine.getNodeByID(nodeID);
-    this.saveLocation(parentNode);
-    this.dispatch(Creator.unmergeNode(nodeID, position));
-    this.redrawNestedLinks(parentNode);
-  }
+  async merge(mergedNodeID, sourceNodeID, targetNodeID, invert) {
+    const { x, y } = this.engine.getNodeByID(invert ? sourceNodeID : targetNodeID);
 
-  async merge(sourceNodeID, targetNodeID, invert) {
-    // QUESTION: why does this only work when async?
-    await this.dispatch(Creator.mergeNodes(sourceNodeID, targetNodeID, invert));
-
+    await this.engine.realtime.sendUpdate(Realtime.mergeNodes(mergedNodeID, sourceNodeID, targetNodeID, [x, y]));
+    this.internal.merge(mergedNodeID, sourceNodeID, targetNodeID, [x, y]);
     this.engine.saveHistory();
-    this.redrawLinks(sourceNodeID);
-    this.redrawLinks(targetNodeID);
   }
 
   // location / rendering methods
 
-  translate(nodeID, movement) {
+  async translate(nodeID, movement, volatile = true) {
     if (this.engine.nodes.has(nodeID)) {
+      const node = this.engine.nodes.get(nodeID);
+      const origin = [node.x, node.y];
+
       this.internal.translate(nodeID, movement);
-      this.dispatch(Realtime.moveNode(nodeID, movement));
+
+      const action = Realtime.moveNode(nodeID, movement, origin);
+      await this.engine.realtime[volatile ? 'sendVolatileUpdate' : 'sendUpdate'](action);
     }
   }
 
-  translateMany(nodeIDs, movement) {
+  async translateMany(nodeIDs, movement, volatile = true) {
     const activeNodeIDs = nodeIDs.filter((nodeID) => this.engine.nodes.has(nodeID));
+    const origins = activeNodeIDs.map((nodeID) => {
+      const node = this.engine.nodes.get(nodeID);
+
+      return [node.x, node.y];
+    });
 
     this.internal.translateMany(activeNodeIDs, movement);
-    this.dispatch(Realtime.moveManyNodes(activeNodeIDs, movement));
+
+    const action = Realtime.moveManyNodes(activeNodeIDs, movement, origins);
+    await this.engine.realtime[volatile ? 'sendVolatileUpdate' : 'sendUpdate'](action);
   }
 
   saveLocation(nodeID) {
+    if (!this.engine.nodes.has(nodeID)) return;
+
     const { x, y } = this.engine.nodes.get(nodeID);
 
     this.dispatch(Creator.updateNodeLocation(nodeID, [x, y]));
@@ -313,6 +385,8 @@ class NodeManager extends EngineConsumer {
 
   redrawLinks(nodeID) {
     const node = this.engine.getNodeByID(nodeID);
+
+    if (!node) return;
 
     [...node.ports.in, ...node.ports.out].forEach((portID) => this.engine.port.redrawLinks(portID));
 

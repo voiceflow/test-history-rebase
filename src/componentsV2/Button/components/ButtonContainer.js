@@ -8,7 +8,16 @@ export const buttonContainerStyles = css`
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
-  width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
+
+  width: ${({ fullWidth, square }) => {
+    if (square) {
+      return `${BUTTON_HEIGHT}px`;
+    }
+    if (fullWidth) {
+      return '100%';
+    }
+    return 'auto';
+  }};
 `;
 
 const ButtonContainer = styled(BaseButton)`

@@ -2,7 +2,7 @@ import React from 'react';
 import { ActionCreators } from 'redux-undo';
 
 import LoadingGate from '@/components/LoadingGate';
-import { creatorDiagramIDSelector } from '@/ducks/creator';
+import * as Creator from '@/ducks/creator';
 import { activeDiagramIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { withLoadingGate } from '@/hocs/withLoadingGate';
@@ -28,7 +28,7 @@ const RawDiagramLoadingGate = ({ diagramID, creatorDiagramID, isDiagramLoaded, l
 
 const mapStateToProps = {
   diagramID: activeDiagramIDSelector,
-  creatorDiagramID: creatorDiagramIDSelector,
+  creatorDiagramID: Creator.creatorDiagramIDSelector,
 };
 
 const mapDispatchToProps = {

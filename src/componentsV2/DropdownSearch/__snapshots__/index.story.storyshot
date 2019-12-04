@@ -4488,7 +4488,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                           icon="caretDown"
                                           size={10}
                                         >
-                                          <SvgIcon__SvgIconContainer
+                                          <styled.span
                                             color="currentColor"
                                             size={10}
                                           >
@@ -4499,26 +4499,51 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                   "$$typeof": Symbol(react.forward_ref),
                                                   "attrs": Array [],
                                                   "componentStyle": ComponentStyle {
-                                                    "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                    "componentId": "sc-bxivhb",
                                                     "isStatic": false,
-                                                    "lastClassName": "hRGvZW",
+                                                    "lastClassName": "ftmOTd",
                                                     "rules": Array [
+                                                      "
+  ",
                                                       [Function],
-                                                      " color:",
+                                                      "
+
+  color: ",
                                                       [Function],
-                                                      ";width:",
+                                                      ";
+  width: ",
                                                       [Function],
-                                                      "px;height:",
+                                                      "px;
+  height: ",
                                                       [Function],
-                                                      "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                      "px;
+  box-sizing: content-box;
+  
+  ",
                                                       [Function],
-                                                      ";}",
+                                                      "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                      [Function],
+                                                      ";
+
+  }
+",
                                                     ],
                                                   },
-                                                  "displayName": "SvgIcon__SvgIconContainer",
+                                                  "displayName": "styled.span",
                                                   "foldedComponentIds": Array [],
                                                   "render": [Function],
-                                                  "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "styledComponentId": "sc-bxivhb",
                                                   "target": "span",
                                                   "toString": [Function],
                                                   "warnTooManyClasses": [Function],
@@ -4529,14 +4554,14 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                               size={10}
                                             >
                                               <span
-                                                className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hRGvZW"
+                                                className="sc-bxivhb ftmOTd"
                                                 color="currentColor"
                                                 size={10}
                                               >
                                                 <test-file-stub />
                                               </span>
                                             </StyledComponent>
-                                          </SvgIcon__SvgIconContainer>
+                                          </styled.span>
                                         </ForwardRef>
                                       </div>
                                     </StyledComponent>
@@ -19170,7 +19195,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                           icon="caretDown"
                                           size={10}
                                         >
-                                          <SvgIcon__SvgIconContainer
+                                          <styled.span
                                             color="currentColor"
                                             size={10}
                                           >
@@ -19181,26 +19206,51 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                                   "$$typeof": Symbol(react.forward_ref),
                                                   "attrs": Array [],
                                                   "componentStyle": ComponentStyle {
-                                                    "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                    "componentId": "sc-bxivhb",
                                                     "isStatic": false,
-                                                    "lastClassName": "hRGvZW",
+                                                    "lastClassName": "ftmOTd",
                                                     "rules": Array [
+                                                      "
+  ",
                                                       [Function],
-                                                      " color:",
+                                                      "
+
+  color: ",
                                                       [Function],
-                                                      ";width:",
+                                                      ";
+  width: ",
                                                       [Function],
-                                                      "px;height:",
+                                                      "px;
+  height: ",
                                                       [Function],
-                                                      "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                      "px;
+  box-sizing: content-box;
+  
+  ",
                                                       [Function],
-                                                      ";}",
+                                                      "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                      [Function],
+                                                      ";
+
+  }
+",
                                                     ],
                                                   },
-                                                  "displayName": "SvgIcon__SvgIconContainer",
+                                                  "displayName": "styled.span",
                                                   "foldedComponentIds": Array [],
                                                   "render": [Function],
-                                                  "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "styledComponentId": "sc-bxivhb",
                                                   "target": "span",
                                                   "toString": [Function],
                                                   "warnTooManyClasses": [Function],
@@ -19211,14 +19261,14 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                               size={10}
                                             >
                                               <span
-                                                className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hRGvZW"
+                                                className="sc-bxivhb ftmOTd"
                                                 color="currentColor"
                                                 size={10}
                                               >
                                                 <test-file-stub />
                                               </span>
                                             </StyledComponent>
-                                          </SvgIcon__SvgIconContainer>
+                                          </styled.span>
                                         </ForwardRef>
                                       </div>
                                     </StyledComponent>
@@ -22629,7 +22679,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                           icon="caretDown"
                                           size={10}
                                         >
-                                          <SvgIcon__SvgIconContainer
+                                          <styled.span
                                             color="currentColor"
                                             size={10}
                                           >
@@ -22640,26 +22690,51 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                                   "$$typeof": Symbol(react.forward_ref),
                                                   "attrs": Array [],
                                                   "componentStyle": ComponentStyle {
-                                                    "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                    "componentId": "sc-bxivhb",
                                                     "isStatic": false,
-                                                    "lastClassName": "hRGvZW",
+                                                    "lastClassName": "ftmOTd",
                                                     "rules": Array [
+                                                      "
+  ",
                                                       [Function],
-                                                      " color:",
+                                                      "
+
+  color: ",
                                                       [Function],
-                                                      ";width:",
+                                                      ";
+  width: ",
                                                       [Function],
-                                                      "px;height:",
+                                                      "px;
+  height: ",
                                                       [Function],
-                                                      "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                      "px;
+  box-sizing: content-box;
+  
+  ",
                                                       [Function],
-                                                      ";}",
+                                                      "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                      [Function],
+                                                      ";
+
+  }
+",
                                                     ],
                                                   },
-                                                  "displayName": "SvgIcon__SvgIconContainer",
+                                                  "displayName": "styled.span",
                                                   "foldedComponentIds": Array [],
                                                   "render": [Function],
-                                                  "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "styledComponentId": "sc-bxivhb",
                                                   "target": "span",
                                                   "toString": [Function],
                                                   "warnTooManyClasses": [Function],
@@ -22670,14 +22745,14 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                               size={10}
                                             >
                                               <span
-                                                className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hRGvZW"
+                                                className="sc-bxivhb ftmOTd"
                                                 color="currentColor"
                                                 size={10}
                                               >
                                                 <test-file-stub />
                                               </span>
                                             </StyledComponent>
-                                          </SvgIcon__SvgIconContainer>
+                                          </styled.span>
                                         </ForwardRef>
                                       </div>
                                     </StyledComponent>
@@ -37789,7 +37864,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                           icon="caretDown"
                                           size={10}
                                         >
-                                          <SvgIcon__SvgIconContainer
+                                          <styled.span
                                             color="currentColor"
                                             size={10}
                                           >
@@ -37800,26 +37875,51 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                   "$$typeof": Symbol(react.forward_ref),
                                                   "attrs": Array [],
                                                   "componentStyle": ComponentStyle {
-                                                    "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                    "componentId": "sc-bxivhb",
                                                     "isStatic": false,
-                                                    "lastClassName": "hRGvZW",
+                                                    "lastClassName": "ftmOTd",
                                                     "rules": Array [
+                                                      "
+  ",
                                                       [Function],
-                                                      " color:",
+                                                      "
+
+  color: ",
                                                       [Function],
-                                                      ";width:",
+                                                      ";
+  width: ",
                                                       [Function],
-                                                      "px;height:",
+                                                      "px;
+  height: ",
                                                       [Function],
-                                                      "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                      "px;
+  box-sizing: content-box;
+  
+  ",
                                                       [Function],
-                                                      ";}",
+                                                      "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                      [Function],
+                                                      ";
+
+  }
+",
                                                     ],
                                                   },
-                                                  "displayName": "SvgIcon__SvgIconContainer",
+                                                  "displayName": "styled.span",
                                                   "foldedComponentIds": Array [],
                                                   "render": [Function],
-                                                  "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "styledComponentId": "sc-bxivhb",
                                                   "target": "span",
                                                   "toString": [Function],
                                                   "warnTooManyClasses": [Function],
@@ -37830,14 +37930,14 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                               size={10}
                                             >
                                               <span
-                                                className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hRGvZW"
+                                                className="sc-bxivhb ftmOTd"
                                                 color="currentColor"
                                                 size={10}
                                               >
                                                 <test-file-stub />
                                               </span>
                                             </StyledComponent>
-                                          </SvgIcon__SvgIconContainer>
+                                          </styled.span>
                                         </ForwardRef>
                                       </div>
                                     </StyledComponent>
@@ -41639,7 +41739,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                         icon="arrowRight"
                                                                         size={10}
                                                                       >
-                                                                        <SvgIcon__SvgIconContainer
+                                                                        <styled.span
                                                                           color="#8da2b5"
                                                                           size={10}
                                                                         >
@@ -41650,26 +41750,51 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                                 "$$typeof": Symbol(react.forward_ref),
                                                                                 "attrs": Array [],
                                                                                 "componentStyle": ComponentStyle {
-                                                                                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                  "componentId": "sc-bxivhb",
                                                                                   "isStatic": false,
-                                                                                  "lastClassName": "hRGvZW",
+                                                                                  "lastClassName": "ftmOTd",
                                                                                   "rules": Array [
+                                                                                    "
+  ",
                                                                                     [Function],
-                                                                                    " color:",
+                                                                                    "
+
+  color: ",
                                                                                     [Function],
-                                                                                    ";width:",
+                                                                                    ";
+  width: ",
                                                                                     [Function],
-                                                                                    "px;height:",
+                                                                                    "px;
+  height: ",
                                                                                     [Function],
-                                                                                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                                                    "px;
+  box-sizing: content-box;
+  
+  ",
                                                                                     [Function],
-                                                                                    ";}",
+                                                                                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                                                    [Function],
+                                                                                    ";
+
+  }
+",
                                                                                   ],
                                                                                 },
-                                                                                "displayName": "SvgIcon__SvgIconContainer",
+                                                                                "displayName": "styled.span",
                                                                                 "foldedComponentIds": Array [],
                                                                                 "render": [Function],
-                                                                                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                "styledComponentId": "sc-bxivhb",
                                                                                 "target": "span",
                                                                                 "toString": [Function],
                                                                                 "warnTooManyClasses": [Function],
@@ -41680,14 +41805,14 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                             size={10}
                                                                           >
                                                                             <span
-                                                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hXTNER"
+                                                                              className="sc-bxivhb eePwcL"
                                                                               color="#8da2b5"
                                                                               size={10}
                                                                             >
                                                                               <test-file-stub />
                                                                             </span>
                                                                           </StyledComponent>
-                                                                        </SvgIcon__SvgIconContainer>
+                                                                        </styled.span>
                                                                       </ForwardRef>
                                                                     </div>
                                                                   </StyledComponent>
@@ -41789,7 +41914,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                         icon="arrowRight"
                                                                         size={10}
                                                                       >
-                                                                        <SvgIcon__SvgIconContainer
+                                                                        <styled.span
                                                                           color="#8da2b5"
                                                                           size={10}
                                                                         >
@@ -41800,26 +41925,51 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                                 "$$typeof": Symbol(react.forward_ref),
                                                                                 "attrs": Array [],
                                                                                 "componentStyle": ComponentStyle {
-                                                                                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                  "componentId": "sc-bxivhb",
                                                                                   "isStatic": false,
-                                                                                  "lastClassName": "hRGvZW",
+                                                                                  "lastClassName": "ftmOTd",
                                                                                   "rules": Array [
+                                                                                    "
+  ",
                                                                                     [Function],
-                                                                                    " color:",
+                                                                                    "
+
+  color: ",
                                                                                     [Function],
-                                                                                    ";width:",
+                                                                                    ";
+  width: ",
                                                                                     [Function],
-                                                                                    "px;height:",
+                                                                                    "px;
+  height: ",
                                                                                     [Function],
-                                                                                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                                                    "px;
+  box-sizing: content-box;
+  
+  ",
                                                                                     [Function],
-                                                                                    ";}",
+                                                                                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                                                    [Function],
+                                                                                    ";
+
+  }
+",
                                                                                   ],
                                                                                 },
-                                                                                "displayName": "SvgIcon__SvgIconContainer",
+                                                                                "displayName": "styled.span",
                                                                                 "foldedComponentIds": Array [],
                                                                                 "render": [Function],
-                                                                                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                "styledComponentId": "sc-bxivhb",
                                                                                 "target": "span",
                                                                                 "toString": [Function],
                                                                                 "warnTooManyClasses": [Function],
@@ -41830,14 +41980,14 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                             size={10}
                                                                           >
                                                                             <span
-                                                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hXTNER"
+                                                                              className="sc-bxivhb eePwcL"
                                                                               color="#8da2b5"
                                                                               size={10}
                                                                             >
                                                                               <test-file-stub />
                                                                             </span>
                                                                           </StyledComponent>
-                                                                        </SvgIcon__SvgIconContainer>
+                                                                        </styled.span>
                                                                       </ForwardRef>
                                                                     </div>
                                                                   </StyledComponent>
@@ -41939,7 +42089,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                         icon="arrowRight"
                                                                         size={10}
                                                                       >
-                                                                        <SvgIcon__SvgIconContainer
+                                                                        <styled.span
                                                                           color="#8da2b5"
                                                                           size={10}
                                                                         >
@@ -41950,26 +42100,51 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                                 "$$typeof": Symbol(react.forward_ref),
                                                                                 "attrs": Array [],
                                                                                 "componentStyle": ComponentStyle {
-                                                                                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                  "componentId": "sc-bxivhb",
                                                                                   "isStatic": false,
-                                                                                  "lastClassName": "hRGvZW",
+                                                                                  "lastClassName": "ftmOTd",
                                                                                   "rules": Array [
+                                                                                    "
+  ",
                                                                                     [Function],
-                                                                                    " color:",
+                                                                                    "
+
+  color: ",
                                                                                     [Function],
-                                                                                    ";width:",
+                                                                                    ";
+  width: ",
                                                                                     [Function],
-                                                                                    "px;height:",
+                                                                                    "px;
+  height: ",
                                                                                     [Function],
-                                                                                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                                                    "px;
+  box-sizing: content-box;
+  
+  ",
                                                                                     [Function],
-                                                                                    ";}",
+                                                                                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                                                    [Function],
+                                                                                    ";
+
+  }
+",
                                                                                   ],
                                                                                 },
-                                                                                "displayName": "SvgIcon__SvgIconContainer",
+                                                                                "displayName": "styled.span",
                                                                                 "foldedComponentIds": Array [],
                                                                                 "render": [Function],
-                                                                                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                "styledComponentId": "sc-bxivhb",
                                                                                 "target": "span",
                                                                                 "toString": [Function],
                                                                                 "warnTooManyClasses": [Function],
@@ -41980,14 +42155,14 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                             size={10}
                                                                           >
                                                                             <span
-                                                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hXTNER"
+                                                                              className="sc-bxivhb eePwcL"
                                                                               color="#8da2b5"
                                                                               size={10}
                                                                             >
                                                                               <test-file-stub />
                                                                             </span>
                                                                           </StyledComponent>
-                                                                        </SvgIcon__SvgIconContainer>
+                                                                        </styled.span>
                                                                       </ForwardRef>
                                                                     </div>
                                                                   </StyledComponent>
@@ -42089,7 +42264,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                         icon="arrowRight"
                                                                         size={10}
                                                                       >
-                                                                        <SvgIcon__SvgIconContainer
+                                                                        <styled.span
                                                                           color="#8da2b5"
                                                                           size={10}
                                                                         >
@@ -42100,26 +42275,51 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                                 "$$typeof": Symbol(react.forward_ref),
                                                                                 "attrs": Array [],
                                                                                 "componentStyle": ComponentStyle {
-                                                                                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                  "componentId": "sc-bxivhb",
                                                                                   "isStatic": false,
-                                                                                  "lastClassName": "hRGvZW",
+                                                                                  "lastClassName": "ftmOTd",
                                                                                   "rules": Array [
+                                                                                    "
+  ",
                                                                                     [Function],
-                                                                                    " color:",
+                                                                                    "
+
+  color: ",
                                                                                     [Function],
-                                                                                    ";width:",
+                                                                                    ";
+  width: ",
                                                                                     [Function],
-                                                                                    "px;height:",
+                                                                                    "px;
+  height: ",
                                                                                     [Function],
-                                                                                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                                                    "px;
+  box-sizing: content-box;
+  
+  ",
                                                                                     [Function],
-                                                                                    ";}",
+                                                                                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                                                    [Function],
+                                                                                    ";
+
+  }
+",
                                                                                   ],
                                                                                 },
-                                                                                "displayName": "SvgIcon__SvgIconContainer",
+                                                                                "displayName": "styled.span",
                                                                                 "foldedComponentIds": Array [],
                                                                                 "render": [Function],
-                                                                                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                "styledComponentId": "sc-bxivhb",
                                                                                 "target": "span",
                                                                                 "toString": [Function],
                                                                                 "warnTooManyClasses": [Function],
@@ -42130,14 +42330,14 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                             size={10}
                                                                           >
                                                                             <span
-                                                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hXTNER"
+                                                                              className="sc-bxivhb eePwcL"
                                                                               color="#8da2b5"
                                                                               size={10}
                                                                             >
                                                                               <test-file-stub />
                                                                             </span>
                                                                           </StyledComponent>
-                                                                        </SvgIcon__SvgIconContainer>
+                                                                        </styled.span>
                                                                       </ForwardRef>
                                                                     </div>
                                                                   </StyledComponent>
@@ -42239,7 +42439,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                         icon="arrowRight"
                                                                         size={10}
                                                                       >
-                                                                        <SvgIcon__SvgIconContainer
+                                                                        <styled.span
                                                                           color="#8da2b5"
                                                                           size={10}
                                                                         >
@@ -42250,26 +42450,51 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                                 "$$typeof": Symbol(react.forward_ref),
                                                                                 "attrs": Array [],
                                                                                 "componentStyle": ComponentStyle {
-                                                                                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                  "componentId": "sc-bxivhb",
                                                                                   "isStatic": false,
-                                                                                  "lastClassName": "hRGvZW",
+                                                                                  "lastClassName": "ftmOTd",
                                                                                   "rules": Array [
+                                                                                    "
+  ",
                                                                                     [Function],
-                                                                                    " color:",
+                                                                                    "
+
+  color: ",
                                                                                     [Function],
-                                                                                    ";width:",
+                                                                                    ";
+  width: ",
                                                                                     [Function],
-                                                                                    "px;height:",
+                                                                                    "px;
+  height: ",
                                                                                     [Function],
-                                                                                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                                                    "px;
+  box-sizing: content-box;
+  
+  ",
                                                                                     [Function],
-                                                                                    ";}",
+                                                                                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                                                    [Function],
+                                                                                    ";
+
+  }
+",
                                                                                   ],
                                                                                 },
-                                                                                "displayName": "SvgIcon__SvgIconContainer",
+                                                                                "displayName": "styled.span",
                                                                                 "foldedComponentIds": Array [],
                                                                                 "render": [Function],
-                                                                                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                "styledComponentId": "sc-bxivhb",
                                                                                 "target": "span",
                                                                                 "toString": [Function],
                                                                                 "warnTooManyClasses": [Function],
@@ -42280,14 +42505,14 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                             size={10}
                                                                           >
                                                                             <span
-                                                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hXTNER"
+                                                                              className="sc-bxivhb eePwcL"
                                                                               color="#8da2b5"
                                                                               size={10}
                                                                             >
                                                                               <test-file-stub />
                                                                             </span>
                                                                           </StyledComponent>
-                                                                        </SvgIcon__SvgIconContainer>
+                                                                        </styled.span>
                                                                       </ForwardRef>
                                                                     </div>
                                                                   </StyledComponent>
@@ -44538,7 +44763,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                           icon="caretDown"
                                           size={10}
                                         >
-                                          <SvgIcon__SvgIconContainer
+                                          <styled.span
                                             color="currentColor"
                                             size={10}
                                           >
@@ -44549,26 +44774,51 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                                   "$$typeof": Symbol(react.forward_ref),
                                                   "attrs": Array [],
                                                   "componentStyle": ComponentStyle {
-                                                    "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                    "componentId": "sc-bxivhb",
                                                     "isStatic": false,
-                                                    "lastClassName": "hRGvZW",
+                                                    "lastClassName": "ftmOTd",
                                                     "rules": Array [
+                                                      "
+  ",
                                                       [Function],
-                                                      " color:",
+                                                      "
+
+  color: ",
                                                       [Function],
-                                                      ";width:",
+                                                      ";
+  width: ",
                                                       [Function],
-                                                      "px;height:",
+                                                      "px;
+  height: ",
                                                       [Function],
-                                                      "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                      "px;
+  box-sizing: content-box;
+  
+  ",
                                                       [Function],
-                                                      ";}",
+                                                      "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                      [Function],
+                                                      ";
+
+  }
+",
                                                     ],
                                                   },
-                                                  "displayName": "SvgIcon__SvgIconContainer",
+                                                  "displayName": "styled.span",
                                                   "foldedComponentIds": Array [],
                                                   "render": [Function],
-                                                  "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "styledComponentId": "sc-bxivhb",
                                                   "target": "span",
                                                   "toString": [Function],
                                                   "warnTooManyClasses": [Function],
@@ -44579,14 +44829,14 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                               size={10}
                                             >
                                               <span
-                                                className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hRGvZW"
+                                                className="sc-bxivhb ftmOTd"
                                                 color="currentColor"
                                                 size={10}
                                               >
                                                 <test-file-stub />
                                               </span>
                                             </StyledComponent>
-                                          </SvgIcon__SvgIconContainer>
+                                          </styled.span>
                                         </ForwardRef>
                                       </div>
                                     </StyledComponent>
@@ -47948,7 +48198,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                           icon="caretDown"
                                           size={10}
                                         >
-                                          <SvgIcon__SvgIconContainer
+                                          <styled.span
                                             color="currentColor"
                                             size={10}
                                           >
@@ -47959,26 +48209,51 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                                   "$$typeof": Symbol(react.forward_ref),
                                                   "attrs": Array [],
                                                   "componentStyle": ComponentStyle {
-                                                    "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                    "componentId": "sc-bxivhb",
                                                     "isStatic": false,
-                                                    "lastClassName": "hRGvZW",
+                                                    "lastClassName": "ftmOTd",
                                                     "rules": Array [
+                                                      "
+  ",
                                                       [Function],
-                                                      " color:",
+                                                      "
+
+  color: ",
                                                       [Function],
-                                                      ";width:",
+                                                      ";
+  width: ",
                                                       [Function],
-                                                      "px;height:",
+                                                      "px;
+  height: ",
                                                       [Function],
-                                                      "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                      "px;
+  box-sizing: content-box;
+  
+  ",
                                                       [Function],
-                                                      ";}",
+                                                      "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                      [Function],
+                                                      ";
+
+  }
+",
                                                     ],
                                                   },
-                                                  "displayName": "SvgIcon__SvgIconContainer",
+                                                  "displayName": "styled.span",
                                                   "foldedComponentIds": Array [],
                                                   "render": [Function],
-                                                  "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "styledComponentId": "sc-bxivhb",
                                                   "target": "span",
                                                   "toString": [Function],
                                                   "warnTooManyClasses": [Function],
@@ -47989,14 +48264,14 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                               size={10}
                                             >
                                               <span
-                                                className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hRGvZW"
+                                                className="sc-bxivhb ftmOTd"
                                                 color="currentColor"
                                                 size={10}
                                               >
                                                 <test-file-stub />
                                               </span>
                                             </StyledComponent>
-                                          </SvgIcon__SvgIconContainer>
+                                          </styled.span>
                                         </ForwardRef>
                                       </div>
                                     </StyledComponent>

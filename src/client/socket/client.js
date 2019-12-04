@@ -10,6 +10,7 @@ const BOLD_FONT_STYLE = 'font-weight: bold';
 const NORMAL_FONT_STYLE = 'font-weight: normal';
 
 const SOCKET_INIT_TIMEOUT = 3000;
+const SOCKET_CONNECTION_TIMEOUT = 5000;
 
 /* eslint-disable no-console */
 const createDebugSubscription = moize((event, callback) => (data) => {
@@ -34,20 +35,32 @@ function debugEmit(event, data) {
 /* eslint-enable no-console */
 
 export const SocketStatus = {
-  FAIL: 'fail',
   CONNECTING: 'connecting',
+  RECONNECTING: 'reconnecting',
   CONNECTED: 'connected',
   AUTHENTICATED: 'authenticated',
+  TERMINATED: 'terminated',
 };
 
+const CONNECTED_STATUSES = [SocketStatus.CONNECTED, SocketStatus.AUTHENTICATED];
+
 class SocketClient {
-  socket = io(API_ENDPOINT, { autoConnect: false });
+  socket = io(API_ENDPOINT, {
+    autoConnect: false,
+    timeout: SOCKET_CONNECTION_TIMEOUT,
+    // do not allow downgrading to HTTP
+    transports: ['websocket'],
+  });
 
   status = SocketStatus.CONNECTING;
 
   connectionHandlers = {};
 
   authProfile = null;
+
+  get isConnected() {
+    return CONNECTED_STATUSES.includes(this.status);
+  }
 
   constructor(dispatch) {
     this.dispatch = dispatch;
@@ -95,7 +108,7 @@ class SocketClient {
   // lifecycle methods
 
   // eslint-disable-next-line consistent-return
-  connect = () => {
+  connect = (sessionCancelHandler) => {
     if (!this.socket.connected) {
       this.setupErrorHandlers();
 
@@ -111,14 +124,17 @@ class SocketClient {
           resolve();
         });
 
+        this.once('session:cancelled', sessionCancelHandler);
+
         this.socket.connect();
       });
     }
   };
 
-  auth = (authToken, tabID) => {
+  auth = (authToken, browserID, tabID) => {
     this.authProfile = {
       auth: authToken || undefined,
+      browserId: browserID,
       tabId: tabID,
       device: DEVICE_INFO,
     };
@@ -160,7 +176,6 @@ class SocketClient {
   disconnect = () => this.socket && this.socket.connected && this.socket.disconnect();
 
   handleError = (event) => () => {
-    this.status = SocketStatus.FAIL;
     console.error(`socket failure from event "${event}"`);
   };
 

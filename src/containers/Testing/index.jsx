@@ -7,7 +7,7 @@ import { Tooltip } from 'react-tippy';
 import { Spinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
 import { FlexCenter } from '@/componentsV2/Flex';
-import { TestingModeContext } from '@/containers/CanvasV2/contexts';
+import { EditPermissionContext } from '@/containers/CanvasV2/contexts';
 import { saveActiveDiagram } from '@/ducks/diagram';
 import { setError } from '@/ducks/modal';
 import { TEST_STATUS, renderTest, resetTest, testStatusSelector, userTestSelector } from '@/ducks/test';
@@ -21,7 +21,7 @@ import Timeline from './components/Timeline';
 const Testing = ({ status, renderTest, resetTest, userTest, saveActiveDiagram, render }) => {
   const [settingsOpen, toggleSettingsOpen] = useToggle();
   const [rendering, enableRendering, disableRendering] = useEnableDisable(!!render);
-  const isOpen = React.useContext(TestingModeContext);
+  const { isTesting: isOpen } = React.useContext(EditPermissionContext);
   const active = status !== TEST_STATUS.IDLE;
 
   React.useEffect(() => {

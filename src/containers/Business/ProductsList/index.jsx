@@ -3,8 +3,8 @@ import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
 import Button from '@/componentsV2/Button';
-import { allProductsSelector } from '@/ducks/product';
-import { goToCurrentCanvas, goToNewProduct } from '@/ducks/router';
+import * as Product from '@/ducks/product';
+import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 
 import { BackButtonContainer, BackLink, Container } from '../components';
@@ -42,12 +42,12 @@ function ProductList({ products, goToNewProduct, goToCurrentCanvas }) {
 }
 
 const mapStateToProps = {
-  products: allProductsSelector,
+  products: Product.allProductsSelector,
 };
 
 const mapDispatchToProps = {
-  goToNewProduct,
-  goToCurrentCanvas,
+  goToNewProduct: Router.goToNewProduct,
+  goToCurrentCanvas: Router.goToCurrentCanvas,
 };
 
 const mergeProps = (_, { goToNewProduct }, { skillID }) => ({

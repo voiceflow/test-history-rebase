@@ -6,12 +6,12 @@ import Button from './components/CheckBoxButton';
 import ButtonContainer from './components/CheckBoxButtonContainer';
 import CheckBoxContainer from './components/CheckBoxContainer';
 
-function Checkbox({ type = 'checkbox', checked, name, onChange, children, className, ...props }) {
+function Checkbox({ type = 'checkbox', checked, name, onChange, children, className, color = '#5d9df5', ...props }) {
   return (
     <CheckBoxContainer className={className}>
       <ButtonContainer>
-        <Button type={type} name={name} checked={checked} onChange={onChange} {...props} />
-        <SvgIcon size={16} icon={checked ? 'checked' : 'emptyCheckbox'} />
+        <Button color={color} type={type} name={name} checked={checked} onChange={onChange} {...props} />
+        <SvgIcon checked={checked} color={color} size={16} icon={checked ? 'checked' : 'emptyCheckbox'} />
       </ButtonContainer>
       {children}
     </CheckBoxContainer>

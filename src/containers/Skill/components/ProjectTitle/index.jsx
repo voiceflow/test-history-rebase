@@ -1,5 +1,7 @@
 import React from 'react';
 
+import * as Realtime from '@/ducks/realtime';
+import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks/toggle';
 
 import ProjectTitleContainer from './ProjectTitleContainer';
@@ -13,9 +15,10 @@ const validateTitle = (value) => {
   return value;
 };
 
-const ProjectTitle = ({ title, onChange }) => {
+const ProjectTitle = ({ title, onChange, lockResource, unlockResource, isLockedSelector }) => {
   const [isEditing, enableEditing, disableEditing] = useEnableDisable(false);
   const [formValue, updateFormValue] = React.useState(title);
+  const isLocked = isLockedSelector(Realtime.ResourceType.SETTINGS);
 
   React.useEffect(() => {
     updateFormValue(title);
@@ -26,6 +29,15 @@ const ProjectTitle = ({ title, onChange }) => {
     onChange(validateTitle(formValue));
 
     disableEditing();
+    unlockResource();
+  };
+
+  const onDoubleClick = (e) => {
+    if (!isEditing && !isLocked) {
+      enableEditing();
+      e.target.select();
+      lockResource();
+    }
   };
 
   const handleEnterPress = (event) => {
@@ -37,21 +49,29 @@ const ProjectTitle = ({ title, onChange }) => {
   return (
     <ProjectTitleContainer>
       <input
-        onDoubleClick={(e) => {
-          if (!isEditing) {
-            enableEditing();
-            e.target.select();
-          }
-        }}
+        onDoubleClick={onDoubleClick}
         className="edit-input"
         readOnly={!isEditing}
         value={formValue}
         onChange={({ target }) => updateFormValue(target.value)}
         onBlur={onBlur}
         onKeyPress={handleEnterPress}
+        disabled={!!isLocked}
       />
     </ProjectTitleContainer>
   );
 };
 
-export default ProjectTitle;
+const mapStateToProps = {
+  isLockedSelector: Realtime.isResourceLockedSelector,
+};
+
+const mapDispatchToProps = {
+  lockResource: () => Realtime.sendRealtimeProjectUpdate(Realtime.lockResource(Realtime.ResourceType.SETTINGS)),
+  unlockResource: () => Realtime.sendRealtimeProjectUpdate(Realtime.unlockResource(Realtime.ResourceType.SETTINGS)),
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProjectTitle);

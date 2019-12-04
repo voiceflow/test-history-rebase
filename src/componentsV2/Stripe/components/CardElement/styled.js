@@ -1,25 +1,22 @@
+import { inputStyle } from '@/componentsV2/Input';
 import { styled } from '@/hocs';
 
 export const Wrapper = styled.div`
-  display: flex;
-  height: 42px;
-  padding: 12px 16px;
-  border: 1px solid ${({ borderColor }) => borderColor};
-  align-items: center;
-  box-shadow: 0px 0px 3px rgba(17, 49, 96, 0.06);
-  border-radius: 5px;
+  ${inputStyle}
+  border: 1px solid ${({ borderColor }) => borderColor} !important;
   box-sizing: border-box;
-  ${({ theme }) => theme.transition('border')};
+
+  ${({ disabled }) => (disabled ? 'opacity: 0.5; pointer-events: none;' : '')}
 
   .StripeElement {
     box-sizing: unset;
     width: unset;
-    height: unset;
     padding: unset;
     border: unset;
     border-radius: unset;
     box-shadow: unset;
     transition: unset;
+    height: 20px;
 
     &.StripeElement--focus {
       color: unset !important;
@@ -32,29 +29,27 @@ export const Wrapper = styled.div`
 export const StripeCardElementWrapper = styled.div`
   flex: 1;
   margin-left: 16px;
+  margin-right: -32px;
 `;
 
-export const strypeInputStyle = {
+export const stripeInputStyle = {
   base: {
     fontSize: '15px',
-    lineHeight: '1.4666666667',
     fontWeight: '400',
-    fontFamily: '"Open Sans", Helvetica, Arial, sans-serif',
+    fontFamily: "'Open Sans', sans-serif",
     color: '#132144',
+    fontSmoothing: 'antialiased',
 
     '::placeholder': {
-      fontWeight: '200',
-      color: '#8DA2B5',
-      opacity: '0.6',
+      color: '#8da2b5',
+      fontWeight: '400',
     },
   },
   invalid: {
     color: '#132144',
 
     '::placeholder': {
-      fontWeight: '200',
-      color: '#8DA2B5',
-      opacity: '0.6',
+      color: '#8da2b5',
     },
   },
 };

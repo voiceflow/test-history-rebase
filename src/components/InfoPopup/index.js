@@ -1,41 +1,38 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Manager, Popper, Reference } from 'react-popper';
 
-import { useDismissable } from '@/hooks';
+import Dropdown from '@/componentsV2/Dropdown';
+import Menu from '@/componentsV2/Menu';
+import { styled } from '@/hocs';
 
-import Portal from './component/Portal';
+const PopupContainer = styled.div`
+  z-index: 2;
+  margin: 10px;
+  background: #ffffff;
+  border-radius: 5px;
+  padding: 10px;
+  text-transform: none;
+`;
 
-function InfoPopUp({ portal = true, placement = 'bottom-end', children, onClose, reference }) {
-  const [isOpen, onToggle] = useDismissable(false, onClose);
-
+function InfoPopUp({ placement = 'bottom-start', children, reference }) {
   return (
-    <Manager>
-      <Reference>
-        {({ ref }) => (
+    <Dropdown
+      menu={
+        <Menu>
+          <PopupContainer>{children}</PopupContainer>
+        </Menu>
+      }
+      placement={placement}
+      noScroll={true}
+    >
+      {(ref, onToggle, isOpen) => {
+        return (
           <span onClick={onToggle} ref={ref}>
             {reference(isOpen)}
           </span>
-        )}
-      </Reference>
-      {isOpen && (
-        <Portal isActive={portal}>
-          <Popper
-            placement={placement}
-            modifiers={{
-              hide: { enabled: false },
-              preventOverflow: { enabled: false },
-            }}
-          >
-            {({ ref, style, placement }) => (
-              <div ref={ref} style={style} data-placement={placement}>
-                {children}
-              </div>
-            )}
-          </Popper>
-        </Portal>
-      )}
-    </Manager>
+        );
+      }}
+    </Dropdown>
   );
 }
 

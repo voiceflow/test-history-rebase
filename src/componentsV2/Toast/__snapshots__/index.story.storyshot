@@ -3,30 +3,68 @@
 exports[`Storyshots Toast variants: default 1`] = `
 Array [
   <GlobalStyleComponent />,
-  <ToastContainer
-    autoClose={5000}
-    bodyClassName={null}
-    className={null}
-    closeButton={false}
-    closeOnClick={true}
-    draggable={false}
-    draggablePercent={80}
-    hideProgressBar={true}
-    newestOnTop={true}
-    pauseOnFocusLoss={false}
-    pauseOnHover={true}
-    position="top-right"
-    progressClassName={null}
-    progressStyle={null}
-    role="alert"
-    rtl={false}
-    style={null}
-    toastClassName={null}
-    transition={[Function]}
+  <Portal
+    portalNode={
+      <body>
+        <div>
+          Portal content here
+        </div>
+        <script
+          src="https://js.stripe.com/v3/"
+        />
+        <textarea
+          style="min-height: 0 !important; max-height: none !important; height: 0px !important; visibility: hidden !important; overflow: hidden !important; position: absolute !important; z-index: -1000 !important; top: 0px !important; right: 0px; letter-spacing: normal; line-height: 22px; font-family: Sans,Arial,sans-serif; font-weight: normal; font-size: 15px; font-style: normal; text-rendering: auto; text-transform: none; width: 100%; text-indent: 0; padding: 9px 16px 9px 16px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; box-sizing: border-box;"
+        />
+        <div
+          class="Toastify"
+        />
+      </body>
+    }
   >
-    <div
-      className="Toastify"
-    />
-  </ToastContainer>,
+    <Portal
+      containerInfo={
+        <body>
+          <div>
+            Portal content here
+          </div>
+          <script
+            src="https://js.stripe.com/v3/"
+          />
+          <textarea
+            style="min-height: 0 !important; max-height: none !important; height: 0px !important; visibility: hidden !important; overflow: hidden !important; position: absolute !important; z-index: -1000 !important; top: 0px !important; right: 0px; letter-spacing: normal; line-height: 22px; font-family: Sans,Arial,sans-serif; font-weight: normal; font-size: 15px; font-style: normal; text-rendering: auto; text-transform: none; width: 100%; text-indent: 0; padding: 9px 16px 9px 16px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; box-sizing: border-box;"
+          />
+          <div
+            class="Toastify"
+          />
+        </body>
+      }
+    >
+      <ToastContainer
+        autoClose={5000}
+        bodyClassName={null}
+        className={null}
+        closeButton={false}
+        closeOnClick={true}
+        draggable={false}
+        draggablePercent={80}
+        hideProgressBar={true}
+        newestOnTop={true}
+        pauseOnFocusLoss={false}
+        pauseOnHover={true}
+        position="top-right"
+        progressClassName={null}
+        progressStyle={null}
+        role="alert"
+        rtl={false}
+        style={null}
+        toastClassName={null}
+        transition={[Function]}
+      >
+        <div
+          className="Toastify"
+        />
+      </ToastContainer>
+    </Portal>
+  </Portal>,
 ]
 `;

@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 
 import RightNavSection from './RightNavSection';
 import SecondaryNav from './SecondaryNav';
-import UpgradeButton from './UpgradeButton/index';
+import UpgradeButton from './UpgradeButton';
 
 export default function DashboardHeader({
   user,

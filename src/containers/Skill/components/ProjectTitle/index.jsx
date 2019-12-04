@@ -15,7 +15,7 @@ const validateTitle = (value) => {
   return value;
 };
 
-const ProjectTitle = ({ title, onChange, lockResource, unlockResource, isLockedSelector }) => {
+const ProjectTitle = ({ title, canEdit, onChange, lockResource, unlockResource, isLockedSelector }) => {
   const [isEditing, enableEditing, disableEditing] = useEnableDisable(false);
   const [formValue, updateFormValue] = React.useState(title);
   const isLocked = isLockedSelector(Realtime.ResourceType.SETTINGS);
@@ -33,7 +33,7 @@ const ProjectTitle = ({ title, onChange, lockResource, unlockResource, isLockedS
   };
 
   const onDoubleClick = (e) => {
-    if (!isEditing && !isLocked) {
+    if (!isEditing && !isLocked && canEdit) {
       enableEditing();
       e.target.select();
       lockResource();
@@ -56,7 +56,7 @@ const ProjectTitle = ({ title, onChange, lockResource, unlockResource, isLockedS
         onChange={({ target }) => updateFormValue(target.value)}
         onBlur={onBlur}
         onKeyPress={handleEnterPress}
-        disabled={!!isLocked}
+        disabled={isLocked || !canEdit}
       />
     </ProjectTitleContainer>
   );

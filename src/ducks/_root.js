@@ -18,6 +18,7 @@ import project, * as Project from '@/ducks/project';
 import publish from '@/ducks/publish';
 import realtime, * as Realtime from '@/ducks/realtime';
 import recent, * as Recent from '@/ducks/recent';
+import * as Router from '@/ducks/router';
 import session, * as Session from '@/ducks/session';
 import skill, * as Skill from '@/ducks/skill';
 import slot, * as Slot from '@/ducks/slot';
@@ -30,7 +31,7 @@ import workspace, * as Workspace from '@/ducks/workspace';
 
 export default (history) =>
   combineReducers({
-    router: connectRouter(history),
+    [Router.STATE_KEY]: connectRouter(history),
     list,
     userSetting,
     modal,

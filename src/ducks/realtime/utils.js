@@ -1,4 +1,5 @@
 import * as Creator from '@/ducks/creator';
+import { filterEntries } from '@/utils/objects';
 
 import { ServerAction } from './constants';
 
@@ -17,4 +18,14 @@ export const createServerAction = (action) => {
     default:
       return null;
   }
+};
+
+export const removeSelfFromLocks = ({ blocks, resources, users }, tabID) => {
+  const filterByValue = (_, value) => value !== tabID;
+
+  return {
+    blocks: Object.entries(blocks).reduce((acc, [key, value]) => Object.assign(acc, { [key]: filterEntries(value, filterByValue) }), {}),
+    resources: filterEntries(resources, filterByValue),
+    users,
+  };
 };

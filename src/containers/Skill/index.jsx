@@ -117,7 +117,7 @@ function Skill(props) {
       )}
 
       <Page
-        header={<ProjectTitle title={activeSkill.name} onChange={updateProjectName} />}
+        header={<ProjectTitle title={activeSkill.name} canEdit={canEditCanvas && !isTesting} onChange={updateProjectName} />}
         userMenu={false}
         canScroll={false}
         subHeader={<SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}

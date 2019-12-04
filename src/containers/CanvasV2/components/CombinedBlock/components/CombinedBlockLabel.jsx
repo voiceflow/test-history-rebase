@@ -74,7 +74,7 @@ const CombinedBlockLabel = ({ value, lockOwner, nodeID, onChange }, ref) => {
           ref={inputRef}
         />
       ) : (
-        <Label onClick={!editLocked && onLabelClick} disabled={editLocked}>
+        <Label onClick={editLocked ? null : onLabelClick} disabled={editLocked}>
           {name}
           {lockOwner && <User user={lockOwner} />}
         </Label>

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { EditPermissionContext } from '@/containers/CanvasV2/contexts';
 import * as Realtime from '@/ducks/realtime';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks/toggle';
@@ -16,10 +15,9 @@ const validateTitle = (value) => {
   return value;
 };
 
-const ProjectTitle = ({ title, onChange, lockResource, unlockResource, isLockedSelector }) => {
+const ProjectTitle = ({ title, canEdit, onChange, lockResource, unlockResource, isLockedSelector }) => {
   const [isEditing, enableEditing, disableEditing] = useEnableDisable(false);
   const [formValue, updateFormValue] = React.useState(title);
-  const { canEdit } = React.useContext(EditPermissionContext);
   const isLocked = isLockedSelector(Realtime.ResourceType.SETTINGS);
 
   React.useEffect(() => {
@@ -35,7 +33,7 @@ const ProjectTitle = ({ title, onChange, lockResource, unlockResource, isLockedS
   };
 
   const onDoubleClick = (e) => {
-    if (!isEditing && !isLocked && !canEdit) {
+    if (!isEditing && !isLocked && canEdit) {
       enableEditing();
       e.target.select();
       lockResource();
@@ -58,7 +56,7 @@ const ProjectTitle = ({ title, onChange, lockResource, unlockResource, isLockedS
         onChange={({ target }) => updateFormValue(target.value)}
         onBlur={onBlur}
         onKeyPress={handleEnterPress}
-        disabled={!!isLocked || !canEdit}
+        disabled={isLocked || !canEdit}
       />
     </ProjectTitleContainer>
   );

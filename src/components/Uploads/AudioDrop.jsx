@@ -8,6 +8,8 @@ import { Spinner } from '@/components/Spinner';
 import { AV_FILE_FORMATS, AV_FORMATS_STREAMING } from '@/constants';
 
 const MAX_SIZE = 10 * 1024 * 1024;
+const VARIABLE_REGEX = /^{.*}$/;
+const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+-.:=@~]{2,256}\.[a-z]{2,4}\b([\w#%&+-./:=?@~]*)/;
 
 class AudioDrop extends Component {
   constructor(props) {
@@ -16,6 +18,7 @@ class AudioDrop extends Component {
     this.state = {
       loading: false,
       error: null,
+      url_error: false,
       url_open: false,
       url: '',
     };
@@ -78,25 +81,22 @@ class AudioDrop extends Component {
   }
 
   onClear() {
-    this.props.update('');
+    this.props.update(null);
   }
 
   submit() {
-    if (
-      this.state.url.match(/(http(s)?:\/\/.)?(www\.)?[\w#%+-.:=@~]{2,256}\.[a-z]{2,6}\b([\w#%&+-./:=?@~]*)/g) &&
-      !this.state.url.startsWith('https://')
-    ) {
+    if (VARIABLE_REGEX.test(this.state.url) || HTTPS_URL_REGEX.test(this.state.url)) {
+      this.setState(
+        {
+          url_error: false,
+        },
+        () => this.props.update(this.state.url)
+      );
+    } else {
       this.setState({
         url_error: true,
       });
-      return;
     }
-    this.setState(
-      {
-        url_error: false,
-      },
-      () => this.props.update(this.state.url)
-    );
   }
 
   render() {
@@ -125,6 +125,16 @@ class AudioDrop extends Component {
       );
     }
     if (this.props.audio && typeof this.props.audio === 'string') {
+      if (VARIABLE_REGEX.test(this.state.url)) {
+        return (
+          <div className="audio-box">
+            <Button isBtn withDangerIndicator onClick={this.onClear}>
+              &times;
+            </Button>
+            <div>{this.props.audio}</div>
+          </div>
+        );
+      }
       return (
         <div className="audio-box">
           <Button isBtn withDangerIndicator onClick={this.onClear}>
@@ -149,7 +159,11 @@ class AudioDrop extends Component {
         <div className="dropzone">
           <div className="text-center w-100">
             <label className="text-muted mb-3">Enter Audio URL</label>
-            {this.state.url_error && <span className="text-danger d-block">URL must be HTTPS</span>}
+            {this.state.url_error && (
+              <span className="text-danger d-block">
+                Check your URL (https) or {'{'}variable{'}'}
+              </span>
+            )}
             <Input className="mb-3" placeholder="URL Link (must be [https])" value={this.state.url} onChange={this.handleChange} name="url" />
             <Button isFlat onClick={() => this.setState({ url_open: false })} className="mr-1">
               Back
@@ -183,6 +197,7 @@ class AudioDrop extends Component {
                 Add Audio
               </Button>
               <br />
+              <br />
               <div
                 className="btn-link"
                 onClick={(e) => {
@@ -192,7 +207,7 @@ class AudioDrop extends Component {
                   return false;
                 }}
               >
-                Add URL
+                Add URL or {'{'}variable{'}'}
               </div>
             </div>
           </div>

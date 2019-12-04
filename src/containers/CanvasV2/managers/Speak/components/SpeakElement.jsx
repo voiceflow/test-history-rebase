@@ -62,7 +62,7 @@ const SpeakElement = ({ dialog, index, block, onRemove, onUpdate, onToggle, rece
   );
 
   if (isAudio) {
-    const isUploadedFile = dialog.url.includes(AUDIO_FILE_BUCKET_NAME);
+    const isUploadedFile = dialog.url?.includes(AUDIO_FILE_BUCKET_NAME);
     let fileName = '';
     if (isUploadedFile) {
       fileName = dialog.url

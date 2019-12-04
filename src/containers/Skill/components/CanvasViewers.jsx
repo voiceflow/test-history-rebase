@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Members } from '@/components/User/User';
+import { Members } from '@/components/User';
 import Flex from '@/componentsV2/Flex';
 import { WorkspaceLoadingGate, WorkspaceMembersLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';

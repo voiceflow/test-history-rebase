@@ -1,3 +1,4 @@
+import { MemberIcon } from '@/components/User';
 import { FlexApart } from '@/componentsV2/Flex';
 import { styled, units } from '@/hocs';
 
@@ -9,7 +10,7 @@ const CommandBlockContainer = styled(FlexApart)`
     margin: 0 12px;
   }
 
-  .avatar {
+  ${MemberIcon} {
     margin-right: ${units(2)}px;
   }
 `;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import SvgIcon from '@/components/SvgIcon';
-import { Members } from '@/components/User/User';
+import { Members } from '@/components/User';
 import Dropdown from '@/componentsV2/Dropdown';
 import Tabs from '@/componentsV2/Tabs';
 import { FEATURE_IDS, MODALS } from '@/constants';

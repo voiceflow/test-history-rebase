@@ -3,7 +3,7 @@ import _ from 'lodash';
 import React from 'react';
 import { Alert } from 'reactstrap';
 
-import { Members } from '@/components/User/User';
+import { Members } from '@/components/User';
 import Dropdown from '@/componentsV2/Dropdown';
 import Input from '@/componentsV2/Input';
 import { ROOT_DIAGRAM_NAME } from '@/constants';

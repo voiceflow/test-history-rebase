@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React from 'react';
 
-import { User } from '@/admin/containers/Home/components/User/User';
+import User, { MemberIcon } from '@/components/User';
 import { KeyCodes } from '@/constants';
 import { EngineContext } from '@/containers/CanvasV2/contexts';
 import * as Realtime from '@/ducks/realtime';
@@ -16,10 +16,11 @@ const Label = styled.span`
     ${combinedBlockInputStyle}
   }
 
-  .avatar {
+  ${MemberIcon} {
     position: absolute;
-    top: -6px;
-    left: -10px;
+    top: 6px;
+    left: 3px;
+    transform: translate(-50%, -50%);
     z-index: 99;
   }
 `;
@@ -73,7 +74,7 @@ const CombinedBlockLabel = ({ value, lockOwner, nodeID, onChange }, ref) => {
       ) : (
         <Label onClick={!lockOwner && onLabelClick} disabled={!!lockOwner}>
           {name}
-          {lockOwner && <User user={lockOwner} className="avatar" />}
+          {lockOwner && <User user={lockOwner} />}
         </Label>
       )}
     </>

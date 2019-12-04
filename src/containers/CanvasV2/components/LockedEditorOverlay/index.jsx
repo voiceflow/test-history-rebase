@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { User } from '@/components/User/User';
+import User from '@/components/User';
 import Button from '@/componentsV2/Button';
 import { useEditLock, useResourceLock } from '@/containers/CanvasV2/hooks';
 
@@ -12,7 +12,7 @@ const LockedEditorOverlay = ({ lockOwner, prevOwner, acquireLock }) => {
   if (lockOwner) {
     return (
       <Container>
-        <User user={lockOwner} className="avatar" />
+        <User user={lockOwner} large />
         <p>{lockOwner.name} is hard at work here, check back soon to access this editor</p>
       </Container>
     );

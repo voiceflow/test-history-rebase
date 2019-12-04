@@ -1,14 +1,14 @@
 import { css, styled } from '@/hocs';
 
 const MemberIcon = styled.div`
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
   font-size: 14px;
-  line-height: 30px;
-  color: #8da2b5;
-  font-size: 16px;
+  line-height: 25px;
+  font-size: 13px;
   text-align: center;
-  background-color: #f7f9fb;
+  color: rgb(238, 240, 241);
+  background-color: rgb(105, 121, 134);
   background-position: center center;
   background-size: contain;
   border: 1px solid #fff;
@@ -27,10 +27,11 @@ const MemberIcon = styled.div`
   ${({ large }) =>
     large &&
     css`
-      width: 48px;
-      height: 48px;
-      font-size: 24px;
-      line-height: 48px;
+      width: 42px;
+      height: 42px;
+      font-size: 18px;
+      line-height: 42px;
+      border: 1px solid;
     `}
 
   ${({ solid }) =>

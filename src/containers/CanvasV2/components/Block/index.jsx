@@ -1,7 +1,7 @@
 import cuid from 'cuid';
 import React from 'react';
 
-import { User } from '@/admin/containers/Home/components/User/User';
+import User from '@/components/User';
 import AddStepButton from '@/containers/CanvasV2/components/AddStepButton';
 import MergeOverlay from '@/containers/CanvasV2/components/MergeOverlay';
 import PortSet from '@/containers/CanvasV2/components/PortSet';
@@ -35,7 +35,7 @@ function Block(_, ref) {
 
   return (
     <Container isEnabled={isEnabled} isActive={isHighlighted} color={color} ref={nodeRef}>
-      {lockOwner && <User user={lockOwner} className="avatar" />}
+      {lockOwner && <User user={lockOwner} />}
       <Title>{data.name}</Title>
       <PortSet ports={node.ports}>{BlockContent && <BlockContent data={data} />}</PortSet>
       <MergeOverlay component={Overlay} />

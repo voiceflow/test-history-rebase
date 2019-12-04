@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Flex from '@/componentsV2/Flex';
 import Menu from '@/componentsV2/Menu';
 import { USER_ROLES } from '@/constants';
 import { cancelInvite, deleteMember, updateInvite, updateMember } from '@/ducks/workspace';
@@ -50,10 +51,10 @@ const MemberRow = ({ member, isOwner, pending, resendInvite, updateMember, delet
   return (
     <Container>
       <FadeLeftContainer>
-        <div>
+        <Flex>
           <UserIcon pending={pending} user={member} />
           <MemberName pending={pending}>{pending ? member.email : member.name}</MemberName>
-        </div>
+        </Flex>
       </FadeLeftContainer>
 
       <PermissionDropdown

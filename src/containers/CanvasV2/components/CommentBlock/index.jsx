@@ -1,7 +1,7 @@
 import React from 'react';
 import Textarea from 'react-textarea-autosize';
 
-import { User } from '@/admin/containers/Home/components/User/User';
+import User from '@/components/User';
 import { EngineContext, useNode, useNodeData } from '@/containers/CanvasV2/contexts';
 import * as Realtime from '@/ducks/realtime';
 import { useImperativeApi } from '@/hooks';
@@ -36,7 +36,7 @@ const CommentBlock = (_, ref) => {
   return (
     <Container ref={nodeRef} onPaste={stopImmediatePropagation()} isActive={isHighlighted} onDoubleClick={stopPropagation()}>
       <Textarea value={value} disabled={!!lockOwner} onFocus={onFocus} onChange={withTargetValue(updateValue)} onBlur={onBlur} />
-      {lockOwner && <User user={lockOwner} className="avatar" />}
+      {lockOwner && <User user={lockOwner} />}
     </Container>
   );
 };

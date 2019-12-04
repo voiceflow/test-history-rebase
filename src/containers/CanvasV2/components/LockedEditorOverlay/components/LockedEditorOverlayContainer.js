@@ -1,3 +1,4 @@
+import { MemberIcon } from '@/components/User';
 import { styled, units } from '@/hocs';
 
 const LockedEditorOverlayContainer = styled.div`
@@ -16,8 +17,8 @@ const LockedEditorOverlayContainer = styled.div`
   z-index: 10;
   background: #ffffffaa;
 
-  .avatar {
-    margin-bottom: ${units(3)}px;
+  ${MemberIcon} {
+    margin-bottom: ${units(2)}px;
     box-shadow: 0px 2px 4px rgba(17, 49, 96, 0.16);
   }
 `;

@@ -1,10 +1,11 @@
 import { SvgIconContainer } from '@/components/SvgIcon';
+import { MemberIcon } from '@/components/User';
 import NestedBlock from '@/containers/CanvasV2/components/NestedBlock';
 import { css, styled, transition } from '@/hocs';
 
 export const combinedBlockItemContainerStyles = css`
   ${SvgIconContainer}.drag-handle__icon,
-  .avatar {
+  ${MemberIcon} {
     ${transition('transform')}
   }
 
@@ -18,7 +19,7 @@ export const combinedBlockItemContainerStyles = css`
     }
   }
 
-  &:hover .avatar {
+  &:hover ${MemberIcon} {
     transform: translateX(calc(-100% + ${({ theme }) => theme.unit}px));
   }
 

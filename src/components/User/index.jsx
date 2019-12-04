@@ -5,8 +5,10 @@ import SvgIcon from '@/components/SvgIcon';
 
 import { MemberIcon, MembersContainer, MembersWrapper } from './components';
 
+export * from './components';
+
 // eslint-disable-next-line react/display-name
-export const User = React.forwardRef(({ user, className, pending, ...props }, ref) => {
+const User = React.forwardRef(({ user, className, pending, ...props }, ref) => {
   if (pending) {
     return (
       <MemberIcon className={className} ref={ref} {...props}>
@@ -39,6 +41,8 @@ export const User = React.forwardRef(({ user, className, pending, ...props }, re
     </MemberIcon>
   );
 });
+
+export default User;
 
 export const Members = ({ min = 0, max = 8, ...props }) => {
   const accepted = props.members.filter((m) => !!m.creator_id).reverse();

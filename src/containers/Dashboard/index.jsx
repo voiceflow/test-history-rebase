@@ -4,7 +4,7 @@ import cn from 'classnames';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 import queryString from 'query-string';
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
@@ -15,24 +15,16 @@ import DragLayer from '@/components/DragLayer';
 import LoadingModal from '@/components/Modal/LoadingModal';
 import { FullSpinner } from '@/components/Spinner';
 import IconButton from '@/componentsV2/IconButton';
+import { MODALS } from '@/constants';
 import { ScrollContextProvider } from '@/contexts';
+import { useModals } from '@/contexts/ModalsContext';
 import { unnormalize } from '@/ducks/_normalize';
-import {
-  addList,
-  changeListPosition,
-  changeProjectPosition,
-  clearNewList,
-  deleteBoardProject,
-  deleteList,
-  fetchLists,
-  renameList,
-  updateBoards,
-  updateLists,
-} from '@/ducks/lists';
-import { setConfirm, setError } from '@/ducks/modal';
-import { fetchNotifications } from '@/ducks/notifications';
-import { allProjectsSelector, projectsMapSelector } from '@/ducks/project';
-import { activeWorkspaceIDSelector, activeWorkspaceSelector, allWorkspacesSelector } from '@/ducks/workspace';
+import * as Account from '@/ducks/account';
+import * as Lists from '@/ducks/lists';
+import * as Modal from '@/ducks/modal';
+import * as Notifications from '@/ducks/notifications';
+import * as Project from '@/ducks/project';
+import * as Workspace from '@/ducks/workspace';
 import { useScrollHelpers } from '@/hooks/scroll';
 import { copyProject, importProject } from '@/store/sideEffects';
 
@@ -58,11 +50,11 @@ const getBoardFilteredProjects = (projectsIds, projectsMap, filter) => {
 };
 
 export const DashBoard = (props) => {
-  const [team_setting, setTeamSetting] = useState(null);
+  const [team_setting, setTeamSetting] = React.useState(null);
+  const query = props.location?.search && queryString.parse(props.location.search);
   let importToken = null;
 
-  if (props.location?.search) {
-    const query = queryString.parse(props.location.search);
+  if (query) {
     importToken = query.import;
 
     if (importToken) {
@@ -83,12 +75,13 @@ export const DashBoard = (props) => {
     }
   }
 
-  const [loading, toggleLoading] = useState(true);
-  const [importOpen, toggleImport] = useState(!!importToken);
-  const [filter_text, handleFilterText] = useState('');
-  const [showInfo, setShowInfo] = useState(false);
-  const [loading_modal, toggleLoadingModal] = useState(false);
+  const [loading, toggleLoading] = React.useState(true);
+  const [importOpen, toggleImport] = React.useState(!!importToken);
+  const [filter_text, handleFilterText] = React.useState('');
+  const [showInfo, setShowInfo] = React.useState(false);
+  const [loading_modal, toggleLoadingModal] = React.useState(false);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
+  const { open: openCollaboratorsModal } = useModals(MODALS.COLLABORATORS);
 
   const closeImport = () => {
     toggleImport(false);
@@ -109,7 +102,7 @@ export const DashBoard = (props) => {
       });
   };
 
-  const onCopyProject = useCallback(
+  const onCopyProject = React.useCallback(
     async (projectId, boardId = null) => {
       if (props.projects.length >= props.workspace.projects) {
         //  TODO: implement flimsy project limit
@@ -123,7 +116,7 @@ export const DashBoard = (props) => {
     [props.projects, props.workspace, props.workspaceID, props.copyProject]
   );
 
-  const onDeleteProject = useCallback(
+  const onDeleteProject = React.useCallback(
     (boardID) => (projectId, projectName) => {
       props.setConfirm({
         text: <p className="mb-0">This action can not be undone, {projectName} and all flows can not be recovered</p>,
@@ -134,7 +127,7 @@ export const DashBoard = (props) => {
     [props.deleteBoardProject]
   );
 
-  const onCreateProject = useCallback(
+  const onCreateProject = React.useCallback(
     (id) => {
       if (props.projects.length >= props.workspace.projects) {
         //  TODO: implement flimsy project limit
@@ -147,7 +140,7 @@ export const DashBoard = (props) => {
 
   let fetchLists;
 
-  const onDeleteBoard = useCallback(
+  const onDeleteBoard = React.useCallback(
     ({ name, id, projects }) => {
       props.setConfirm({
         text: (
@@ -171,19 +164,23 @@ export const DashBoard = (props) => {
     });
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     updateWorkspace();
   }, [props.workspaceID]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     props.fetchNotifications();
+
+    if (query.invite_collaborators) {
+      openCollaboratorsModal();
+    }
   }, []);
 
   const LOCKED = props.workspace.state === 'LOCKED';
 
   const filter = filter_text.trim().toLowerCase();
 
-  const onSaveList = useCallback(() => props.updateLists(props.workspaceID), [props.updateLists, props.workspaceID]);
+  const onSaveList = React.useCallback(() => props.updateLists(props.workspaceID), [props.updateLists, props.workspaceID]);
 
   return (
     <>
@@ -322,32 +319,32 @@ export const DashBoard = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  user: state.account,
-  projects: allProjectsSelector(state),
-  projectsMap: projectsMapSelector(state),
+  user: Account.userSelector(state),
+  projects: Project.allProjectsSelector(state),
+  projectsMap: Project.projectsMapSelector(state),
   lists: state.list,
   listsArray: unnormalize(state.list),
-  workspace: activeWorkspaceSelector(state),
-  workspaceID: activeWorkspaceIDSelector(state),
-  workspaces: allWorkspacesSelector(state),
+  workspace: Workspace.activeWorkspaceSelector(state),
+  workspaceID: Workspace.activeWorkspaceIDSelector(state),
+  workspaces: Workspace.allWorkspacesSelector(state),
 });
 
 const mapDispatchToProps = {
-  fetchLists,
-  addList,
-  deleteBoardProject,
+  fetchLists: Lists.fetchLists,
+  addList: Lists.addList,
+  deleteBoardProject: Lists.deleteBoardProject,
   importProject,
   copyProject,
-  setConfirm,
-  setError,
-  updateLists,
-  deleteList,
-  renameList,
-  clearNewList,
-  updateBoards,
-  changeProjectPosition,
-  changeListPosition,
-  fetchNotifications,
+  setConfirm: Modal.setConfirm,
+  setError: Modal.setError,
+  updateLists: Lists.updateLists,
+  deleteList: Lists.deleteList,
+  renameList: Lists.renameList,
+  clearNewList: Lists.clearNewList,
+  updateBoards: Lists.updateBoards,
+  changeProjectPosition: Lists.changeProjectPosition,
+  changeListPosition: Lists.changeListPosition,
+  fetchNotifications: Notifications.fetchNotifications,
 };
 
 export default connect(

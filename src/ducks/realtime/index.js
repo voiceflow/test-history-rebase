@@ -5,13 +5,14 @@ import client from '@/client';
 import { toast } from '@/componentsV2/Toast';
 import * as Creator from '@/ducks/creator';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import { createAction, createRootSelector } from '@/ducks/utils';
 import * as Workspace from '@/ducks/workspace';
 
 import { LockType } from './constants';
 import * as Socket from './socket';
-import { createServerAction } from './utils';
+import { createServerAction, removeSelfFromLocks } from './utils';
 
 export * from './constants';
 
@@ -416,11 +417,13 @@ export const sendRealtimeProjectUpdate = (action) => async (_, getState) => {
   }
 };
 
-export const setupRealtimeConnection = (skillID, diagramID) => async (dispatch) => {
+export const setupRealtimeConnection = (skillID, diagramID) => async (dispatch, getState) => {
+  const tabID = Session.tabIDSelector(getState());
+
   try {
     const locks = await client.socket.realtime.initialize(skillID, diagramID);
 
-    dispatch(initializeRealtime(diagramID, locks));
+    dispatch(initializeRealtime(diagramID, removeSelfFromLocks(locks, tabID)));
     await dispatch(sendRealtimeUpdate(Socket.reconnectNoop()));
   } catch (e) {
     // if socket throws an error then session is busy on another browser

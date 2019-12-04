@@ -54,3 +54,12 @@ export const setIn = (obj, path, value) => {
 
   return result;
 };
+
+export const filterEntries = (obj, predicate) =>
+  Object.entries(obj).reduce((acc, [key, value]) => {
+    if (predicate(key, value)) {
+      acc[key] = value;
+    }
+
+    return acc;
+  }, {});

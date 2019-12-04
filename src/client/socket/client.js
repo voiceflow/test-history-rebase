@@ -40,6 +40,7 @@ export const SocketStatus = {
   CONNECTED: 'connected',
   AUTHENTICATED: 'authenticated',
   TERMINATED: 'terminated',
+  TRANSFERRING: 'transferring',
 };
 
 const CONNECTED_STATUSES = [SocketStatus.CONNECTED, SocketStatus.AUTHENTICATED];

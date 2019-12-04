@@ -23,6 +23,8 @@ function createRealtimeSocketClient(client) {
     },
 
     sendProjectUpdate(action, lastTimestamp, lock = null) {
+      if (!client.isConnected) return;
+
       return new Promise((resolve) => {
         client.once('project:updated', resolve);
 
@@ -35,6 +37,8 @@ function createRealtimeSocketClient(client) {
     },
 
     sendUpdate(action, lastTimestamp, lock = null, serverAction = null) {
+      if (!client.isConnected) return;
+
       return new Promise((resolve) => {
         client.once('diagram:updated', resolve);
 
@@ -48,12 +52,16 @@ function createRealtimeSocketClient(client) {
     },
 
     sendVolatileUpdate(action) {
-      client.emit('diagramVolatile', { action });
+      if (client.isConnected) {
+        client.emit('diagramVolatile', { action });
+      }
     },
 
     initiateSessionTakeOver() {
-      // new client will send this action
-      client.emit('sessionTakeover');
+      if (client.isConnected) {
+        // new client will send this action
+        client.emit('sessionTakeover');
+      }
     },
 
     createSubscription(tabID, { onReload, onDisconnect, onReconnect, updateTimestamp, handleSessionTakeOver, handleSessionTaken }) {
@@ -123,7 +131,7 @@ function createRealtimeSocketClient(client) {
       }
 
       function handleFailure(error) {
-        if (typeof error === 'object' && (error?.code ?? 0 >= 400)) {
+        if (client.status !== SocketStatus.TRANSFERRING && typeof error === 'object' && (error?.code ?? 0 >= 400)) {
           client.status = SocketStatus.TERMINATED;
 
           onDisconnect();
@@ -175,9 +183,16 @@ function createRealtimeSocketClient(client) {
     },
 
     async switch(skillID, diagramID) {
+      const prevStatus = client.status;
+      client.status = SocketStatus.TRANSFERRING;
+
       await this.terminate();
 
-      return this.initialize(skillID, diagramID);
+      const locks = await this.initialize(skillID, diagramID);
+
+      client.status = prevStatus;
+
+      return locks;
     },
   };
 }
